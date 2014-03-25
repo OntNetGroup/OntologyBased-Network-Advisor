@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY parentesco-simples "http://www.semanticweb.org/parentesco-simples.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.semanticweb.org/parentesco-simples.owl#"
+     xml:base="http://www.semanticweb.org/parentesco-simples.owl"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:parentesco-simples="http://www.semanticweb.org/parentesco-simples.owl#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/parentesco-simples.owl"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#isTheFatherOf -->
+
+    <owl:ObjectProperty rdf:about="&parentesco-simples;isTheFatherOf"/>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#isTheSonOf -->
+
+    <owl:ObjectProperty rdf:about="&parentesco-simples;isTheSonOf">
+        <owl:inverseOf rdf:resource="&parentesco-simples;isTheFatherOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#outra -->
+
+    <owl:ObjectProperty rdf:about="&parentesco-simples;outra"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#EvilFather -->
+
+    <owl:Class rdf:about="&parentesco-simples;EvilFather">
+        <rdfs:subClassOf rdf:resource="&parentesco-simples;Father"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#EvilSon -->
+
+    <owl:Class rdf:about="&parentesco-simples;EvilSon">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&parentesco-simples;isTheSonOf"/>
+                <owl:someValuesFrom rdf:resource="&parentesco-simples;EvilFather"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#Father -->
+
+    <owl:Class rdf:about="&parentesco-simples;Father">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&parentesco-simples;isTheFatherOf"/>
+                <owl:someValuesFrom rdf:resource="&parentesco-simples;Son"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&parentesco-simples;isTheFatherOf"/>
+                <owl:someValuesFrom>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&parentesco-simples;outra"/>
+                        <owl:someValuesFrom rdf:resource="&parentesco-simples;Son"/>
+                    </owl:Restriction>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#Pessoa -->
+
+    <owl:Class rdf:about="&parentesco-simples;Pessoa">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="&parentesco-simples;Father"/>
+                    <rdf:Description rdf:about="&parentesco-simples;Son"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#Son -->
+
+    <owl:Class rdf:about="&parentesco-simples;Son">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&parentesco-simples;isTheSonOf"/>
+                <owl:someValuesFrom rdf:resource="&parentesco-simples;Father"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&parentesco-simples;isTheSonOf"/>
+                <owl:onClass rdf:resource="&parentesco-simples;Father"/>
+                <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#evil-son-1 -->
+
+    <owl:NamedIndividual rdf:about="&parentesco-simples;evil-son-1">
+        <rdf:type rdf:resource="&parentesco-simples;EvilSon"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#f1 -->
+
+    <owl:NamedIndividual rdf:about="&parentesco-simples;f1">
+        <rdf:type rdf:resource="&parentesco-simples;Father"/>
+        <outra rdf:resource="&parentesco-simples;s1"/>
+        <isTheFatherOf rdf:resource="&parentesco-simples;s1"/>
+        <outra rdf:resource="&parentesco-simples;s2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#f2 -->
+
+    <owl:NamedIndividual rdf:about="&parentesco-simples;f2">
+        <rdf:type rdf:resource="&parentesco-simples;Father"/>
+        <outra rdf:resource="&parentesco-simples;f1"/>
+        <owl:sameAs rdf:resource="&parentesco-simples;f3"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#f3 -->
+
+    <owl:NamedIndividual rdf:about="&parentesco-simples;f3">
+        <rdf:type rdf:resource="&parentesco-simples;Father"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#s1 -->
+
+    <owl:NamedIndividual rdf:about="&parentesco-simples;s1">
+        <rdf:type rdf:resource="&parentesco-simples;Son"/>
+        <outra rdf:resource="&parentesco-simples;s2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/parentesco-simples.owl#s2 -->
+
+    <owl:NamedIndividual rdf:about="&parentesco-simples;s2">
+        <rdf:type rdf:resource="&parentesco-simples;Son"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+
