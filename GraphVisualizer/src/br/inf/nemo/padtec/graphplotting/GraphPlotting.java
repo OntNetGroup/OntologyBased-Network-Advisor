@@ -73,7 +73,6 @@ public abstract class GraphPlotting {
 		String query = QueryManager.getAllRelationsComingOutOf(centerIndividual);
 		ResultSet resultSet = QueryManager.runQuery(ontology, query);
 
-		
 		ArborParser arborParser = new ArborParser(ontology,this);
 		String arborStructure = arborParser.getArborJsStringFor(resultSet, centerIndividual);
 

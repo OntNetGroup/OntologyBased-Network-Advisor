@@ -1,0 +1,609 @@
+/* description: Parses end executes mathematical expressions. */
+
+/* lexical grammar */
+%lex
+%%
+
+\s+                   /* skip whitespace */
+
+/* Reserved words */
+/* Transport Functions */
+//TF-TTF
+'ttf' 			return 'ttf'
+'so-ttf' 		return 'so-ttf'
+'sk-ttf' 		return 'sk-ttf'
+'bi-ttf'		return 'bi-ttf'
+
+//TF-AF	
+'af'			return 'af'
+'so-af'			return 'so-af'
+'sk-af'			return 'sk-af'
+'bi-af'			return 'bi-af'
+
+//TF-M
+'matrix'		return 'matrix'
+'uni-matrix'	return 'uni-matrix'	
+'so-matrix'		return 'so-matrix'
+'sk-matrix'		return 'sk-matrix'
+'bi-matrix'		return 'bi-matrix'
+
+//TF
+'sn'			return 'sn'
+'pm'			return 'pm'
+
+/* Ports */
+'input'			return 'input'
+'output'		return 'output'
+
+/* Reference Points */
+'rp'			return 'rp'
+'tcp'			return 'tcp'
+'ap'			return 'ap'
+'cp'			return 'cp'
+
+/* Transport Entities */
+'te'			return 'te'
+'trail'			return 'trail'
+'nc'			return 'nc'
+'lc'			return 'lc'
+'mc'			return 'mc'
+'snc'			return 'snc'
+
+/* Layer */
+'layer'			return 'layer'
+
+/* Relations */
+'binds'			return 'binds'
+'connects'		return 'connects'
+'client'		return 'client'
+
+/* Attributes */
+'location'		return 'location'
+'type'			return 'type'
+
+/* Language constraints */
+':'				return 'colon'
+'.'				return 'dot'
+';'				return 'semicolon'
+'='				return 'equal'
+','				return 'comma'
+'{'				return 'l_curly_bracket'
+'}'				return 'r_curly_bracket'
+'('				return 'l_parenthesis'
+')'				return 'r_parenthesis'
+('-')?[0-9]+':'[0-9]+':'[0-9]+ return 'graus'
+[A-Za-z_]+[0-9A-Za-z_]* return 'variavel'
+[0-9]+				return 'n_int'
+"/*"(.|\n|\r)*?"*/"             /* ignore */
+<<EOF>>         return 'EOF'
+.				return 'INVALID'
+
+/lex
+
+
+%start expressions
+
+%% /* language grammar */
+
+expressions
+    : Instruction EOF | Instruction expressions
+    ;
+
+Element:
+TransportFunction | Port |  ReferencePoint | TransportEntity | 'layer'
+;
+
+TransportFunction:
+	TF_TTF | TF_AF | TF_M | 'sn' | 'pm'
+;
+
+TF_TTF:
+	'ttf' | 'so-ttf' | 'sk-ttf' | 'bi-ttf'
+;
+
+TF_AF:
+	'af' | 'so-af' | 'sk-af' | 'bi-af'
+;
+
+TF_M:
+	'matrix' | 'uni-matrix' | 'so-matrix' | 'sk-matrix' | 'bi-matrix'
+;
+
+Port:
+	'input' | 'output'
+;
+
+ReferencePoint:
+	'rp' | 'tcp' | 'ap' | 'cp'
+;
+
+TransportEntity:
+	'te' | 'trail' | 'nc' | 'lc' | 'mc' | 'snc'
+;
+
+uso_variaveis:
+variavel %{usoVar($$);}% | (variavel comma  uso_variaveis) %{usoVar($1);}% 
+;
+
+declaracao_variaveis:
+variavel %{newVar($$);}% | (variavel comma  declaracao_variaveis) %{newVar($1);}% 
+;
+
+Instruction:
+ElementDeclaration | ElementComposition | SimpleRelation | AssignableRelation | AddLocationTF | AddTypeTTF
+;
+
+AddLocationTF:
+	str_location | geo_location
+;
+
+str_location:
+(variavel dot location colon variavel semicolon) %{addLocationStr($1,$5);}% 
+;
+
+geo_location:
+(variavel dot location colon l_parenthesis graus comma graus r_parenthesis semicolon) %{addLocationGeo($1,$6,$8);}% 
+;
+
+AddTypeTTF:
+(variavel dot type colon variavel semicolon) %{addType($1,$5);}% 
+;
+
+ElementDeclaration:
+(Element colon declaracao_variaveis semicolon) %{newElement($1);}%
+;
+
+ElementComposition:
+(variavel Composition semicolon) %{newElementComposition($1);}%
+;
+
+Composition:
+l_curly_bracket uso_variaveis r_curly_bracket
+;
+
+SimpleRelation:
+(Rel l_parenthesis variavel comma variavel r_parenthesis semicolon ) %{newRelation($1,$3,$5);}%
+;
+
+Rel:
+'binds' | 'connects' | 'client'
+;
+
+AssignableRelation:
+(variavel equal Rel l_parenthesis variavel comma variavel r_parenthesis semicolon) %{newAssignableRelation($1,$3,$5,$7);}%
+;
+
+
+%%
+
+
+//javascript code
+
+/*
+Set currentLine like this:
+currentLine = yylineno;
+switch (yystate)
+*/
+
+currentLine = 0;
+ //Global variables used	
+hashVar = new Array();
+hashElement = new Array();
+hashInvElement = new Array();
+hashAux = new Array();
+hashComposition = new Array();
+hashUseVar = new Array();
+hashRelationConnects = new Array();
+hashRelationBinds = new Array();
+hashRelationClient = new Array();
+hashLocationTFGeo = new Array();
+hashLocationTFStr = new Array();
+hashTypeTTF = new Array();
+hashUsedInComposition = new Array();
+
+warning = "";
+    
+/*
+	Put in the hash the variables and verify multi-declarations
+*/
+function newVar(v) {
+	if(hashVar[v] == 0){
+		//An variable was multi-declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+v+" was  multi-declared");	
+	}
+	hashVar[v] = 0;
+	hashAux[hashAux.length] = v;	
+
+	return "";
+}
+
+/*
+	Creating a hash with the name of the element and its variables
+*/
+function newElement(v) {
+	for (var k = 0; k < hashAux.length; k++) {
+		hashInvElement[hashAux[k]] = v;
+	}
+	if(hashElement[v] !== undefined){
+		hashElement[v].push(hashAux);
+	}else{
+		hashElement[v] = hashAux;		
+	}
+	hashAux = new Array();
+	return "";
+}
+
+/*
+	Create a composition between an element and its compenents
+*/
+function newElementComposition(v) {
+	if(hashVar[v] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+v+" was  not declared");	
+	}
+
+	//Create the new hash for the element composition
+	if(hashComposition[v] == null){
+		hashComposition[v] = new Array();
+	}
+	
+	//put the variables in the hashComposition
+	for(var i = 0; i < hashUseVar.length; i++){
+		hashComposition[v].push(hashUseVar[i]);
+	}
+	
+	var validateV = false;
+
+	var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn");
+	
+	for (var j = 0; j < tranFuncs.length; j++) {
+		if(hashInvElement[v].indexOf(tranFuncs[j]) >= 0){
+			//IF v is a Transport Function
+			//split the string. ex.: so-ttf to ttf
+			var all = hashInvElement[v];
+			var aux = hashInvElement[v].split("-");
+			if(aux.length == 2){
+				all = aux[1];
+			}
+			for (var i = 0; i < hashUseVar.length; i++) {
+				//split the string. ex.: so-ttf to ttf
+				var party = hashInvElement[hashUseVar[i]];
+				
+				//Verify if the party was used					
+				if(hashUsedInComposition[hashUseVar[i]] == null){				
+					hashUsedInComposition[hashUseVar[i]] = 0;							
+				}else{
+					throw new Error("Line "+(currentLine+1)+": Invalid cardinality at composition’s part");
+				}
+
+				aux = hashInvElement[hashUseVar[i]].split("-");
+				if(aux.length == 2){
+					party = aux[1];
+				}
+
+				if(all != party){
+					//Some part is not a Transport Function
+					if((party.indexOf("input") == 0) || (party.indexOf("output") == 0)){
+						//Is a composition by a Transport Function and a Port
+						//Verify the use of Ports
+						if(hashUsedInComposition[hashUseVar[i]] == 0){
+							hashUsedInComposition[hashUseVar[i]]++;
+						}else{
+							throw new Error("Line "+(currentLine+1)+": Invalid cardinality at composition’s part");
+						}
+						continue;			
+					}
+					throw new Error("Line "+(currentLine+1)+": Not allowed types at composition");	
+				}
+			}
+			
+			var qntPorts = 0;
+
+			for(var k = 0; k < hashComposition[v].length; k++){
+				if(hashInvElement[hashComposition[v][k]] == "input" || hashInvElement[hashComposition[v][k]] == "output"){
+					qntPorts++;
+				}
+			}
+			if(hashComposition[v].length-qntPorts > 2){
+				throw new Error("Line "+(currentLine+1)+": Invalid cardinality at composition’s whole");			
+			}
+
+			validateV = true;
+			break; //Stop the loop if v is a Transport Function
+		}
+	}
+
+	if(hashInvElement[v].indexOf("layer") == 0){
+		//v is a Layer
+		for (var j = 0; j < hashUseVar.length; j++) {
+			var find = false;
+			for (var i = 0; i < tranFuncs.length; i++) {
+				//look if in all parties of the composition are transport functions
+				if(hashInvElement[hashUseVar[j]].indexOf(tranFuncs[i]) == 0){
+					find = true;
+					break;
+				}
+			}
+			if(!find){
+				throw new Error("Line "+(currentLine+1)+": Composition problem at its part (invalid cardinality or not allowed type)");
+			}
+		}
+		validateV = true;
+	}	
+	
+	//Validate if the order of the composition's paramaters are corrects
+	if(!validateV){
+		throw new Error("Line "+(currentLine+1)+": Not allowed types at composition");
+	}
+
+	hashUseVar = new Array();
+
+	return "";		
+}
+
+function newRelation(r,src,dst){
+	if(hashVar[src] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+src+" was  not declared");	
+	}
+	if(hashVar[dst] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+dst+" was  not declared");	
+	}
+	if(r == "connects"){
+		//Verify if in connects(a,b) a and b are a Reference Point
+		var tranFuncs = new Array("tcp","ap","cp");
+		var toA = hashInvElement[src];
+		var toB = hashInvElement[dst];
+		var keepA = false;
+		var keepB = false;
+
+		for (var i = 0; i < tranFuncs.length; i++) {
+			if(toA == tranFuncs[i]){
+				keepA = true;	
+			}
+			if(toB == tranFuncs[i]){
+				keepB = true;	
+			}
+		}
+
+		if(!keepA){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+
+		if(!keepB){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+		hashRelationConnects.push(new Array(src,dst));
+	}else if(r == "binds"){
+		//Verify if in binds(a,b) a and b are a Bindable Element
+		var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn","input","output");
+		var toA = hashInvElement[src];
+		var toB = hashInvElement[dst];
+		var keepA = false;
+		var keepB = false;
+
+		for (var i = 0; i < tranFuncs.length; i++) {
+			if(toA == tranFuncs[i]){
+				keepA = true;	
+			}
+			if(toB == tranFuncs[i]){
+				keepB = true;	
+			}
+		}
+
+		if(!keepA){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");		
+		}
+
+		if(!keepB){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+		hashRelationBinds.push(new Array(src,dst));
+	}else if(r == "client"){
+		if(hashInvElement[src] != "layer"){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+
+		if(hashInvElement[dst] != "layer"){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+		hashRelationClient.push(new Array(src,dst));
+	}
+}
+
+function newAssignableRelation(org,r,src,dst){
+	if(hashVar[src] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+src+" was  not declared");	
+	}
+	if(hashVar[dst] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+dst+" was  not declared");		
+	}
+	if(hashVar[org] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+org+" was  not declared");	
+	}
+	if(r == "connects"){
+		//Verify if in x = connects(a,b) a and b are a Reference Point and x is a Transport Entity
+		var refPoint = new Array("tcp", "ap", "cp","rp");
+		var toA = hashInvElement[src];
+		var toB = hashInvElement[dst];
+		var keepA = false;
+		var keepB = false;
+
+		for (var i = 0; i < refPoint.length; i++) {
+			if(toA == refPoint[i]){
+				keepA = true;	
+			}
+			if(toB == refPoint[i]){
+				keepB = true;	
+			}
+		}
+
+		if(!keepA){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+
+		if(!keepB){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+
+		//If x is a Transport Entity
+		var tranEntity = new Array("trail", "nc", "lc", "mc","snc");
+		var toX = hashInvElement[org];
+		var keepX = false;
+
+		for (var i = 0; i < tranEntity.length; i++) {
+			if(toX == tranEntity[i]){
+				keepX = true;	
+			}
+		}
+
+		if(!keepX){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+
+		hashRelationConnects.push(new Array(src,dst,org));
+	}else if(r == "binds"){
+		//Verify if in x = binds(a,b) a and b are a Bindable Element and x is a Reference Point
+		var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn","input","output");
+		var toA = hashInvElement[src];
+		var toB = hashInvElement[dst];
+		var keepA = false;
+		var keepB = false;
+
+		for (var i = 0; i < tranFuncs.length; i++) {
+			if(toA == tranFuncs[i]){
+				keepA = true;	
+			}
+			if(toB == tranFuncs[i]){
+				keepB = true;	
+			}
+		}
+
+		if(!keepA){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+
+		if(!keepB){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+	
+		//If x is a Reference Point
+		var refPoint = new Array("tcp", "ap", "cp","rp");
+		var toX = hashInvElement[org];
+		var keepX = false;
+
+		for (var i = 0; i < refPoint.length; i++) {
+			if(toX == refPoint[i]){
+				keepX = true;	
+			}
+		}
+
+		if(!keepX){
+			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
+		}
+		hashRelationBinds.push(new Array(src,dst,org));
+	}else if(r == "client"){
+		throw new Error("Line "+(currentLine+1)+": Incorrect attribution");	
+	}
+}
+
+function usoVar(v){
+	if(hashVar[v] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+v+" was  not declared");	
+	}	
+	hashUseVar.push(v);	
+	
+	return "";
+}
+
+function addLocationStr(tf,str){
+	if(hashVar[tf] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+tf+" was  not declared");	
+	}
+	//Verifiy if the type used are corrects
+	var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn","input","output");
+	var auxTFtype = hashInvElement[tf];
+	var keep = false;
+
+	for (var i = 0; i < tranFuncs.length; i++) {
+		if(auxTFtype == tranFuncs[i]){
+			keep = true;	
+		}
+	}
+
+	if(!keep){
+		//The variable can't have a location
+		throw new Error("Line "+(currentLine+1)+": Incorrect attribution");	
+	}
+
+	if(hashLocationTFStr[tf] != null){
+		warning += "Line "+(currentLine+1)+": The variable "+tf+" was multi-declared. The first declaration was ignored and the last declaration was adopted";	
+	}
+	hashLocationTFStr[tf] = str;
+	return "";
+}
+
+function addLocationGeo(tf,g1,g2){
+	if(hashVar[tf] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+tf+" was  not declared");	
+	}
+	//Verifiy if the types used are corrects
+	var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn","input","output");
+	var auxTFtype = hashInvElement[tf];
+	var keep = false;
+
+	for (var i = 0; i < tranFuncs.length; i++) {
+		if(auxTFtype == tranFuncs[i]){
+			keep = true;	
+		}
+	}
+
+	if(!keep){
+		//The variable can't have a location
+		throw new Error("Line "+(currentLine+1)+": Incorrect attribution");	
+	}
+
+	if(hashLocationTFGeo[tf] != null){
+		warning += "Line "+(currentLine+1)+": The variable "+tf+" was multi-declared. The first declaration was ignored and the last declaration was adopted";	
+	}
+	g1 = g1.replace(/:/g, '*');
+	g2 = g2.replace(/:/g, '*');
+	hashLocationTFGeo[tf] = g1+"+"+g2;
+	return "";
+}
+
+
+function addType(ttf,type){
+	if(hashVar[ttf] != 0){
+		//Variable not declared
+		throw new Error("Line "+(currentLine+1)+": The variable "+ttf+" was  not declared");	
+	}
+//Verifiy if the types used are corrects
+	var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff");
+	var auxTFtype = hashInvElement[ttf];
+	var keep = false;
+
+	for (var i = 0; i < tranFuncs.length; i++) {
+		if(auxTFtype == tranFuncs[i]){
+			keep = true;	
+		}
+	}
+
+	if(!keep){
+		//The variable can't have a location
+		throw new Error("Line "+(currentLine+1)+": Incorrect attribution");
+	}
+
+	if(hashTypeTTF[ttf] != null){
+		warning += "Line "+(currentLine+1)+": The variable "+ttf+" was multi-declared. The first declaration was ignored and the last declaration was adopted";	
+	}
+	hashTypeTTF[ttf] = type;
+	return "";
+}

@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  	<title>Teste Sindel </title>
+	
+	
+	
+<link rel="stylesheet" href="code_mirror/theme/neat.css">
+	
+  </head>
+  <body>
+    <div id="content">
+	
+	<script src="jquery/jquery-1.5.2.min.js"></script> 
+    <script src="jison/sindel-parser.js"></script>
+	
+	<!-- BEGIN Syntax Highlight -->
+	
+	<link rel="stylesheet" href="code_mirror/lib/codemirror.css">		
+	<script src="code_mirror/lib/codemirror.js"></script> 
+	<script src="code_mirror/addon/matchbrackets.js"></script> 
+	<script src="code_mirror/addon/closebrackets.js"></script> 
+	
+	<!-- for Autocomplete -->
+	<link rel="stylesheet" href="code_mirror/addon/show-hint.css">			
+	<script src="code_mirror/addon/show-hint.js"></script> 
+	<script src="code_mirror/sindel_custom/sindel-hint.js"></script> 
+	<script src="code_mirror/sindel_custom/sindel-highlight.js"></script> 
+	
+	<!-- END Syntax Highlight -->
+	
+	<script>
+
+	$(document).ready(function () {
+        $("button").click(function () {
+			try {
+				/*
+					initiate global variables
+				*/
+				hashVar = new Array();
+				hashElement = new Array();
+				hashAux = new Array();
+				hashComposition = new Array();
+				hashUseVar = new Array();
+				hashRelationConnects = new Array();
+				hashRelationBinds = new Array();
+				hashRelationClient = new Array();
+				hashInvElement = new Array();
+				hashLocationTFStr = new Array();
+				hashLocationTFGeo = new Array();
+				hashTypeTTF = new Array();
+				hashUsedInComposition = new Array();
+				warning = "";
+				
+				document.getElementById('res').innerHTML="";
+				//var result = sindel.parse($("input").val());		
+				
+				//Used to get the value of the CodeMirror editor
+				var result = parser.parse(editor.getValue());
+				
+				document.getElementById('res2').innerHTML="";
+				printHash(hashElement, "element");
+				printHash(hashComposition, "composition");
+				printHash(hashRelationConnects, "connects");
+				printHash(hashRelationBinds, "binds");
+				printHash(hashRelationClient, "client");
+				printHash(hashLocationTFStr, "tf_location_str");
+				printHash(hashLocationTFGeo, "tf_location_geo");
+				printHash(hashTypeTTF, "ttf_type");
+				
+				//Verify warning
+				if(warning != ""){
+					//Warning: mensagem
+					alert(warning);
+				}
+			}
+			catch (e) {
+				//Exception: erro durante a analise do parser
+				document.getElementById('res2').innerHTML ="";
+				document.getElementById('error').innerHTML =String(e);
+				//alert(String(e));					
+			}
+        });
+      });
+	  
+	function printHash(hash,type){
+		//var s = "<br>"+type+"#"+"<br>";
+		//for (var key in hash) {					
+		//	s += key+": "+hash[key];
+		//	s = s.substring(0,s.length)+";"+"<br>";
+		//}
+		//s+="!";
+		//document.getElementById('res').innerHTML+=s;
+		
+		var s = type+"#";
+		for (var key in hash) {					
+			s += key+":"+hash[key];
+			s = s.substring(0,s.length)+";";
+		}
+		s+="!";
+		document.getElementById('res2').innerHTML+=s;
+	}
+	
+    </script>
+    
+    <div style="border: 1px solid black; width:400px;"><textarea id="code" name="code">
+ttf:a;
+so-ttf:b,c;
+layer:d;
+input:e1,e2,e3,e4,e5;
+sk-af: x;
+c{b};
+b{c};
+so-matrix:k;
+matrix:q1,q2,q3;
+k{e3,e4,e5};
+k{q1,q2,q3};
+	  
+	  </textarea>
+
+    <!--<div style="border: 1px solid black; width:400px;"><textarea id="code" name="code">
+
+
+
+so-af:aso;
+sk-af:ask;
+so-ttf:tso;
+sk-ttf:tsk;
+pm:lf;
+ap:ap1,ap2;
+rp:tcp1;
+trail:t1;
+input:asoi1, asoi2, tsoi1, lfi1;
+input:tski1,aski1;
+output:asoo1,tsoo1;
+output:lfo1,tsko1,asko1,asko2;
+aso{asoo1,asoi2,asoo1};
+ask{asko1,asko2};
+ask{aski1};
+tso{tsoi1,tsoo1};
+tsk{tski1,tsko1};
+lf{lfi1,lfo1};
+ap1 = binds(asoo1,tsoi1);
+tcp1 = binds(tsoo1,lfi1);
+binds(lfo1,tski1);
+binds(tsko1,aski1);
+t1=connects(ap1,ap2);
+layer:c1;
+c1{tso,tsk};
+	  </textarea>-->	 
+	  </div>
+	  <button>Try</button> <span></span>
+    </p>
+</div>
+    <script>
+	CodeMirror.commands.autocomplete = function(cm) {
+        CodeMirror.showHint(cm, CodeMirror.hint.sindel_hint);
+      };
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "text/sindel",
+		extraKeys: {"Ctrl-Space": "autocomplete"}
+      });
+	  editor.setOption("theme", "neat");
+    </script>
+	<div id="res">
+	
+	</div>
+	<div id="res2" style="border: 2px solid black;">
+	
+	</div>	
+	
+	<div id="error" style="border: 2px solid red;">
+	
+	</div>	
+	
+  </body>
+</html>

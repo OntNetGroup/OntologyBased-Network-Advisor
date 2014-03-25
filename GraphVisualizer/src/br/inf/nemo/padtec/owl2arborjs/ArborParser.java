@@ -53,36 +53,22 @@ public class ArborParser {
 		String arborStrucure = "";
 
 		HashMap<String,String> hashTuplas = new HashMap<String, String>();
-		HashMap<String,String> hashTuplasIn = new HashMap<String, String>();
-		HashMap<String,String> hashTuplasOut = new HashMap<String, String>();
 
 		final String HH = "#!!#";
 
 		for (Tupla tupla : tuplas) {
 			if(hashTuplas.containsKey(tupla.source+HH+tupla.target)){
-				String property  = hashTuplas.get(tupla.source+HH+tupla.target);
-				hashTuplasOut.put(tupla.source+HH+tupla.target, property+", "+tupla.property);
+				String property = hashTuplas.get(tupla.source+HH+tupla.target);
 				hashTuplas.remove(tupla.source+HH+tupla.target);
+				hashTuplas.put(tupla.source+HH+tupla.target, property+", "+tupla.property);
 			}else if(hashTuplas.containsKey(tupla.target+HH+tupla.source)){
 				String property  = hashTuplas.get(tupla.target+HH+tupla.source);
-				hashTuplasIn.put(tupla.target+HH+tupla.source, property+","+tupla.property);
 				hashTuplas.remove(tupla.target+HH+tupla.source);
+				hashTuplas.put(tupla.target+HH+tupla.source, property+", "+tupla.property);
 			}else{
 				//first occurrence
 				hashTuplas.put(tupla.source+HH+tupla.target, tupla.property);
 			}
-		}
-
-		for(Map.Entry<String, String> entry : hashTuplasIn.entrySet()){
-			String source = entry.getKey().split(HH)[0];
-			String target = entry.getKey().split(HH)[1];
-			arborStrucure += getArborEdge(entry.getValue(), graphPlotting.getArborNode(source, false), graphPlotting.getArborNode(target, false), entry.getValue().contains(","));
-		}
-
-		for(Map.Entry<String, String> entry : hashTuplasOut.entrySet()){
-			String source = entry.getKey().split(HH)[0];
-			String target = entry.getKey().split(HH)[1];
-			arborStrucure += getArborEdge(entry.getValue(), graphPlotting.getArborNode(source, false), graphPlotting.getArborNode(target, false), entry.getValue().contains(","));
 		}
 
 		for(Map.Entry<String, String> entry : hashTuplas.entrySet()){
@@ -117,9 +103,13 @@ public class ArborParser {
 		
 		for (Tupla tupla : tuplas) {
 			if(usedTuplas.containsKey(tupla.source+HH+tupla.target)){
-				usedTuplas.put(tupla.source+HH+tupla.target, usedTuplas.get(tupla.source+HH+tupla.target)+","+tupla.property);
+				String property = usedTuplas.get(tupla.source+HH+tupla.target);
+				usedTuplas.remove(tupla.source+HH+tupla.target);
+				usedTuplas.put(tupla.source+HH+tupla.target, property+", "+tupla.property);
 			}else if(usedTuplas.containsKey(tupla.target+HH+tupla.source)){
-				usedTuplas.put(tupla.target+HH+tupla.source, usedTuplas.get(tupla.target+HH+tupla.source)+","+tupla.property);
+				String property  = usedTuplas.get(tupla.target+HH+tupla.source);
+				usedTuplas.remove(tupla.target+HH+tupla.source);
+				usedTuplas.put(tupla.target+HH+tupla.source, property+", "+tupla.property);
 			}else{
 				usedTuplas.put(tupla.source+HH+tupla.target, tupla.property);
 			}
@@ -139,12 +129,7 @@ public class ArborParser {
 		for(Map.Entry<String, String> entry : usedTuplas.entrySet()){
 			String source = entry.getKey().split(HH)[0];
 			String target = entry.getKey().split(HH)[1];
-			if(source.equals(centerNode)){
-				arborStrucure += getArborEdge(entry.getValue(), graphPlotting.getArborNode(source, true), graphPlotting.getArborNode(target, false), entry.getValue().contains(","));
-			}else{
-				arborStrucure += getArborEdge(entry.getValue(), graphPlotting.getArborNode(source, false), graphPlotting.getArborNode(target, false), entry.getValue().contains(","));
-			}
-			
+			arborStrucure += getArborEdge(entry.getValue(), graphPlotting.getArborNode(source, source.equals(centerNode)), graphPlotting.getArborNode(target, false), entry.getValue().contains(","));
 		}
 
 		return arborStrucure;
@@ -188,7 +173,6 @@ public class ArborParser {
 
 			Tupla tupla = new Tupla(source, property, target, isSourceCenterNode, isTargetCenterNode);
 			tuplas.add(tupla);
-			System.out.println(tupla);
 		}
 		return tuplas;
 	}

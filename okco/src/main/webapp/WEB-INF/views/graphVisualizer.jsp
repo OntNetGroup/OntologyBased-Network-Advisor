@@ -69,7 +69,7 @@
 			<div id="subtitle">
 				<%
 					String subtitle = (String)request.getSession().getAttribute("subtitle");
-					out.println("<img id=\"subtitle_table\" src=\"Assets/img/gv_subtitles/"+subtitle+"\">");
+					out.println("<img id=\"subtitle_table\" src=\"Assets/img/subtitles/"+subtitle+"\">");
 				%>				
 			</div>
 			<br>
