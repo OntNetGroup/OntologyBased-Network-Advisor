@@ -15,41 +15,42 @@ CodeMirror.defineMode("sindel", function(config, parserConfig) {
 
   // long list of standard functions from lua manual
   var builtins = wordRE([	
-	"ttf",
-	"so-ttf",
-	"sk-ttf",
-	"bi-ttf",
-
+	"tf",
+	"so-tf",
+	"sk-tf",
+	"bi-tf",
 	"af",
 	"so-af",
 	"sk-af",
 	"bi-af",
-
+	"lpf",
+	"so-lpf",
+	"sk-lpf",
+	"bi-lpf",
 	"matrix",
-	"uni-matrix",	
+	"uni-matrix",
 	"so-matrix",
 	"sk-matrix",
 	"bi-matrix",
-
 	"sn",
 	"pm",
-
 	"input",
 	"output",
-
 	"rp",
-	"tcp",
+	"fep",
 	"ap",
-	"cp",
-
+	"fp",
 	"te",
 	"trail",
 	"nc",
 	"lc",
 	"mc",
 	"snc",
-	
 	"layer",
+	"equip",
+	"input_int",
+	"output_int",
+	"site"
 
 	"location",
 	"type"
@@ -57,7 +58,8 @@ CodeMirror.defineMode("sindel", function(config, parserConfig) {
   var keywords = wordRE([
 	"binds",
 	"connects",
-	"client"
+	"client",
+	"maps"
   ]);
 
   var indentTokens = wordRE(["\\(", "{"]);

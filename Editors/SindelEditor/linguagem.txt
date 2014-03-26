@@ -7,41 +7,48 @@
 \s+                   /* skip whitespace */
 
 /* Reserved words */
-/* Transport Functions */
-//TF-TTF
-'ttf' 			return 'ttf'
-'so-ttf' 		return 'so-ttf'
-'sk-ttf' 		return 'sk-ttf'
-'bi-ttf'		return 'bi-ttf'
+//Termination Functions
+'tf'			return 'tf'
+'so-tf'			return 'so-tf'
+'sk-tf'			return 'sk-tf'
+'bi-tf'			return 'bi-tf'
 
-//TF-AF	
+//Adaptation Functions	
 'af'			return 'af'
 'so-af'			return 'so-af'
 'sk-af'			return 'sk-af'
 'bi-af'			return 'bi-af'
 
-//TF-M
+//Layer Processor Functions
+'lpf'			return 'lpf'
+'so-lpf'		return 'so-lpf'
+'sk-lpf'		return 'sk-lpf'
+'bi-lpf'		return 'bi-lpf'
+
+//Matrices
 'matrix'		return 'matrix'
 'uni-matrix'	return 'uni-matrix'	
 'so-matrix'		return 'so-matrix'
 'sk-matrix'		return 'sk-matrix'
 'bi-matrix'		return 'bi-matrix'
 
-//TF
+//Subnetwork
 'sn'			return 'sn'
+
+//Physical Media
 'pm'			return 'pm'
 
-/* Ports */
+//Port
 'input'			return 'input'
 'output'		return 'output'
 
-/* Reference Points */
+//Reference Points
 'rp'			return 'rp'
-'tcp'			return 'tcp'
+'fep'			return 'fep'
 'ap'			return 'ap'
-'cp'			return 'cp'
+'fp'			return 'fp'
 
-/* Transport Entities */
+//Transport Entities
 'te'			return 'te'
 'trail'			return 'trail'
 'nc'			return 'nc'
@@ -49,13 +56,24 @@
 'mc'			return 'mc'
 'snc'			return 'snc'
 
-/* Layer */
+//Layer Network
 'layer'			return 'layer'
+
+//Equipment
+'equip'			return 'equip'
+
+//Interfaces
+'input_int'		return 'input_int'
+'output_int'	return 'output_int'
+
+//Site
+'site'			return 'site'
 
 /* Relations */
 'binds'			return 'binds'
 'connects'		return 'connects'
 'client'		return 'client'
+'maps'			return 'maps'
 
 /* Attributes */
 'location'		return 'location'
@@ -90,23 +108,31 @@ expressions
     ;
 
 Element:
-TransportFunction | Port |  ReferencePoint | TransportEntity | 'layer'
+TransportFunction | AdaptationFunction | LayerProcessorFunction | Matrices | Subnetwork | PhysicalMedia | Port |  ReferencePoint | TransportEntity | LayerNetwork | Equipment | Interfaces | Site
 ;
 
 TransportFunction:
-	TF_TTF | TF_AF | TF_M | 'sn' | 'pm'
+	'tf' | 'so-tf' | 'sk-tf' | 'bi-tf'
 ;
 
-TF_TTF:
-	'ttf' | 'so-ttf' | 'sk-ttf' | 'bi-ttf'
-;
-
-TF_AF:
+AdaptationFunction:
 	'af' | 'so-af' | 'sk-af' | 'bi-af'
 ;
 
-TF_M:
+LayerProcessorFunction:
+	'lpf' | 'so-lpf' | 'sk-lpf' | 'bi-lpf'
+;
+
+Matrices:
 	'matrix' | 'uni-matrix' | 'so-matrix' | 'sk-matrix' | 'bi-matrix'
+;
+
+Subnetwork:
+	'snc'
+;
+
+PhysicalMedia:
+	'pm'
 ;
 
 Port:
@@ -114,11 +140,27 @@ Port:
 ;
 
 ReferencePoint:
-	'rp' | 'tcp' | 'ap' | 'cp'
+	'rp' | 'fep' | 'ap' | 'fp'
 ;
 
 TransportEntity:
 	'te' | 'trail' | 'nc' | 'lc' | 'mc' | 'snc'
+;
+
+LayerNetwork:
+	'layer'
+;
+
+Equipment:
+	'equip'
+;
+
+Interfaces:
+	'input_int' | 'output_int'
+;
+
+Site:
+	'site'
 ;
 
 uso_variaveis:
@@ -166,7 +208,7 @@ SimpleRelation:
 ;
 
 Rel:
-'binds' | 'connects' | 'client'
+'binds' | 'connects' | 'client' | 'maps'
 ;
 
 AssignableRelation:

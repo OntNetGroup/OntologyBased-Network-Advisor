@@ -176,7 +176,7 @@ public class HomeController {
 		  	  InfModel = Reasoner.run(Model);
 		  	  
 		  	  //Nao executa
-		  	  //InfModel = Repository.CopyModel(Model);
+//		  	  InfModel = Repository.CopyModel(Model);
 		  	  
 		  	  //List modified instances
 		  	  ListModifiedInstances = new ArrayList<String>();
