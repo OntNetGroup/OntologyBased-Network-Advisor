@@ -129,7 +129,7 @@ public class ArborParser {
 		for(Map.Entry<String, String> entry : usedTuplas.entrySet()){
 			String source = entry.getKey().split(HH)[0];
 			String target = entry.getKey().split(HH)[1];
-			arborStrucure += getArborEdge(entry.getValue(), graphPlotting.getArborNode(source, source.equals(centerNode)), graphPlotting.getArborNode(target, false), entry.getValue().contains(","));
+			arborStrucure += getArborEdge(entry.getValue(), graphPlotting.getArborNode(source, source.equals(centerNode)), graphPlotting.getArborNode(target, target.equals(centerNode)), entry.getValue().contains(","));
 		}
 
 		return arborStrucure;

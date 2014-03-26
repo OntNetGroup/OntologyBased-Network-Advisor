@@ -131,7 +131,6 @@ public class HomeController {
 			  if(optionsReasoner.equals("hermit"))
 			  {
 				  Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
-				  
 			  } else if(optionsReasoner.equals("pellet"))
 			  {
 				  Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);

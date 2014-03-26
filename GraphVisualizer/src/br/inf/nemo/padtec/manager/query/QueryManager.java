@@ -43,6 +43,7 @@ public class QueryManager {
 						" ?target  rdf:type owl:Class. " +		
 						"}" +
 						"}";
+		System.out.println("OUT: "+query);
 		return query;	
 	}
 
@@ -63,7 +64,7 @@ public class QueryManager {
 						" ?source rdf:type owl:Class . " +		
 						"}" +
 						"}";
-		System.out.println(query);
+		System.out.println("IN: "+query);
 		return query;
 	}
 
@@ -83,6 +84,7 @@ public class QueryManager {
 						" ?property  rdf:type owl:DatatypeProperty. " +		
 						"} "
 						+ "}";
+		System.out.println("BTW: "+query);
 		return query;
 	}
 
@@ -105,6 +107,7 @@ public class QueryManager {
 						+ " ?inst ?owlclass ?individual "
 						+ " }"
 						+ " }";
+		System.out.println("ALL: "+query);
 		return query;
 	}
 
