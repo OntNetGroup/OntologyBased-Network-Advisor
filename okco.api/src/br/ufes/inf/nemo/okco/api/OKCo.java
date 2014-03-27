@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.okco.api;
 
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
@@ -165,12 +166,15 @@ public class OKCo {
 				//build list incompleteness classes
 				ArrayList<InstanceClassDefinition> ListImcompletenessClassDefinitions = new ArrayList<InstanceClassDefinition>();
 				for (DtoCompleteClass dto : i.ListCompleteClasses) {
-					InstanceClassDefinition classDefinition = new InstanceClassDefinition();
-					classDefinition.TopClass = dto.CompleteClass;
-					for (String cls : dto.Members) {
-						classDefinition.SubClassesToClassify.add(cls);
+					if(dto.Members.size() > 0)
+					{
+						InstanceClassDefinition classDefinition = new InstanceClassDefinition();
+						classDefinition.TopClass = dto.CompleteClass;
+						for (String cls : dto.Members) {
+							classDefinition.SubClassesToClassify.add(cls);
+						}
+						ListImcompletenessClassDefinitions.add(classDefinition);
 					}
-					ListImcompletenessClassDefinitions.add(classDefinition);
 				}				
 				
 				Instance newInstance = new Instance(i.ns, i.name, i.ListClasses, i.ListDiferentInstances, i.ListSameInstances, ListImcompletenessRelationDefinitions, ListImcompletenessClassDefinitions);
@@ -442,17 +446,29 @@ public class OKCo {
 				//build list incompleteness classes
 				ArrayList<InstanceClassDefinition> ListImcompletenessClassDefinitions = new ArrayList<InstanceClassDefinition>();
 				for (DtoCompleteClass dto : i.ListCompleteClasses) {
-					InstanceClassDefinition classDefinition = new InstanceClassDefinition();
-					classDefinition.TopClass = dto.CompleteClass;
-					for (String cls : dto.Members) {
-						classDefinition.SubClassesToClassify.add(cls);
+					if(dto.Members.size() > 0)
+					{
+						InstanceClassDefinition classDefinition = new InstanceClassDefinition();
+						classDefinition.TopClass = dto.CompleteClass;
+						for (String cls : dto.Members) {
+							classDefinition.SubClassesToClassify.add(cls);
+						}
+						ListImcompletenessClassDefinitions.add(classDefinition);
 					}
-					ListImcompletenessClassDefinitions.add(classDefinition);
 				}				
 				
 				Instance newInstance = new Instance(i.ns, i.name, i.ListClasses, i.ListDiferentInstances, i.ListSameInstances, ListImcompletenessRelationDefinitions, ListImcompletenessClassDefinitions);
 				dtoResult.ListInstances.add(newInstance);		
-			}		
+			}
+			
+			/*--------------------------------------------------------------------------------------------- //
+												Write OWL return
+			//--------------------------------------------------------------------------------------------- */
+			
+			StringWriter writer = new StringWriter();
+			model.write(writer,"RDF/XML");
+			String owltext = writer.toString();			
+			dtoResult.owlFile = owltext;
 			
 		} catch (OKCoExceptionInstanceFormat e) {
 
@@ -464,8 +480,7 @@ public class OKCo {
 
 			String error = "INCONSISTENCY: Ontology have inconsistence:" + e.toString() + ".";
 			dtoResult.ListErrors.add(error);
-			return dtoResult;
-			
+			return dtoResult;			
 		}
 		
 		return dtoResult;
@@ -727,18 +742,30 @@ public class OKCo {
 					//build list incompleteness classes
 					ArrayList<InstanceClassDefinition> ListImcompletenessClassDefinitions = new ArrayList<InstanceClassDefinition>();
 					for (DtoCompleteClass dto : i.ListCompleteClasses) {
-						InstanceClassDefinition classDefinition = new InstanceClassDefinition();
-						classDefinition.TopClass = dto.CompleteClass;
-						for (String cls : dto.Members) {
-							classDefinition.SubClassesToClassify.add(cls);
+						if(dto.Members.size() > 0)
+						{
+							InstanceClassDefinition classDefinition = new InstanceClassDefinition();
+							classDefinition.TopClass = dto.CompleteClass;
+							for (String cls : dto.Members) {
+								classDefinition.SubClassesToClassify.add(cls);
+							}
+							ListImcompletenessClassDefinitions.add(classDefinition);
 						}
-						ListImcompletenessClassDefinitions.add(classDefinition);
 					}				
 					
 					Instance newInstance = new Instance(i.ns, i.name, i.ListClasses, i.ListDiferentInstances, i.ListSameInstances, ListImcompletenessRelationDefinitions, ListImcompletenessClassDefinitions);
 					dtoResult.ListInstances.add(newInstance);
 				}
-			}		
+			}
+			
+			/*--------------------------------------------------------------------------------------------- //
+												Write OWL return
+			//--------------------------------------------------------------------------------------------- */
+			
+			StringWriter writer = new StringWriter();
+			model.write(writer,"RDF/XML");
+			String owltext = writer.toString();			
+			dtoResult.owlFile = owltext;
 			
 		} catch (OKCoExceptionInstanceFormat e) {
 
