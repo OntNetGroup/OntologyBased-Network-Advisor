@@ -52,7 +52,7 @@ CodeMirror.defineMode("sindel", function(config, parserConfig) {
 	"output_int",
 	"site"
 
-	"location",
+,	"location",
 	"type"
   ]);
   var keywords = wordRE([

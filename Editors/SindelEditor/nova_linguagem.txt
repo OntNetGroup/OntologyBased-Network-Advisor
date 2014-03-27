@@ -1,0 +1,254 @@
+/* description: Parses end executes mathematical expressions. */
+
+/* lexical grammar */
+%lex
+%%
+
+\s+                   /* skip whitespace */
+
+/* Reserved words */
+//Termination Functions
+'tf'			return 'tf'
+'so-tf'			return 'so-tf'
+'sk-tf'			return 'sk-tf'
+'bi-tf'			return 'bi-tf'
+
+//Adaptation Functions	
+'af'			return 'af'
+'so-af'			return 'so-af'
+'sk-af'			return 'sk-af'
+'bi-af'			return 'bi-af'
+
+//Layer Processor Functions
+'lpf'			return 'lpf'
+'so-lpf'		return 'so-lpf'
+'sk-lpf'		return 'sk-lpf'
+'bi-lpf'		return 'bi-lpf'
+
+//Matrices
+'matrix'		return 'matrix'
+'uni-matrix'	return 'uni-matrix'	
+'so-matrix'		return 'so-matrix'
+'sk-matrix'		return 'sk-matrix'
+'bi-matrix'		return 'bi-matrix'
+
+//Subnetwork
+'sn'			return 'sn'
+
+//Physical Media
+'pm'			return 'pm'
+
+//Port
+'input'			return 'input'
+'output'		return 'output'
+
+//Reference Points
+'rp'			return 'rp'
+'fep'			return 'fep'
+'ap'			return 'ap'
+'fp'			return 'fp'
+
+//Transport Entities
+'te'			return 'te'
+'trail'			return 'trail'
+'nc'			return 'nc'
+'lc'			return 'lc'
+'mc'			return 'mc'
+'snc'			return 'snc'
+
+//Layer Network
+'layer'			return 'layer'
+
+//Equipment
+'equip'			return 'equip'
+
+//Interfaces
+'input_int'		return 'input_int'
+'output_int'	return 'output_int'
+
+//Site
+'site'			return 'site'
+
+/* Relations */
+'binds'			return 'binds'
+'connects'		return 'connects'
+'client'		return 'client'
+'maps'			return 'maps'
+
+/* Attributes */
+'location'		return 'location'
+'type'			return 'type'
+
+/* Language constraints */
+':'				return 'colon'
+'.'				return 'dot'
+';'				return 'semicolon'
+'='				return 'equal'
+','				return 'comma'
+'{'				return 'l_curly_bracket'
+'}'				return 'r_curly_bracket'
+'('				return 'l_parenthesis'
+')'				return 'r_parenthesis'
+('-')?[0-9]+':'[0-9]+':'[0-9]+ return 'graus'
+[A-Za-z_]+[0-9A-Za-z_]* return 'variavel'
+[0-9]+				return 'n_int'
+"/*"(.|\n|\r)*?"*/"             /* ignore */
+<<EOF>>         return 'EOF'
+.				return 'INVALID'
+
+/lex
+
+
+%start expressions
+
+%% /* language grammar */
+
+expressions
+    : Instruction EOF | Instruction expressions
+    ;
+
+Element:
+TransportFunction | AdaptationFunction | LayerProcessorFunction | Matrices | 'sn' | 'pm' | Port |  ReferencePoint | TransportEntity | 'layer' | 'equip' | Interfaces | 'site'
+;
+
+TransportFunction:
+	'tf' | 'so-tf' | 'sk-tf' | 'bi-tf'
+;
+
+AdaptationFunction:
+	'af' | 'so-af' | 'sk-af' | 'bi-af'
+;
+
+LayerProcessorFunction:
+	'lpf' | 'so-lpf' | 'sk-lpf' | 'bi-lpf'
+;
+
+Matrices:
+	'matrix' | 'uni-matrix' | 'so-matrix' | 'sk-matrix' | 'bi-matrix'
+;
+
+Port:
+	'input' | 'output'
+;
+
+ReferencePoint:
+	'rp' | 'fep' | 'ap' | 'fp'
+;
+
+TransportEntity:
+	'te' | 'trail' | 'nc' | 'lc' | 'mc' | 'snc'
+;
+
+Interfaces:
+	'input_int' | 'output_int'
+;
+
+Instruction:
+ElementDeclaration | ElementComposition | SimpleRelation | AssignableRelation | AddLocationTF | AddTypeTTF
+;
+
+ElementDeclaration:
+(Element colon VariableDeclaration semicolon) %{newElement($1);}%
+;
+
+VariableDeclaration:
+variavel %{newVariable($$);}% | (variavel comma  VariableDeclaration) %{newVariable($1);}% 
+;
+
+SimpleRelation:
+(RelationType l_parenthesis variavel comma variavel r_parenthesis semicolon ) %{newSimpleRelation($1,$3,$5);}%
+;
+
+RelationType:
+'binds' | 'connects' | 'client' | 'maps'
+;
+
+%%
+
+
+//javascript code
+
+/*
+Set currentLine like this:
+currentLine = yylineno;
+switch (yystate)
+*/
+
+currentLine = 0;
+//Global variables used	
+ 
+warning = "";
+ 
+hashVarType = new Array();
+hashTypeVar = new Array();
+hashRelation= new Array();
+hashUsedRelation = new Array();
+
+/* Initializing */
+alert("teste");
+
+
+/* Methods */    
+/*
+	Put in the hash the variables and verify multi-declarations
+*/
+function newVariable(variable) {
+	//Verify if the variable has been declared already
+	if(hashVarType[variable] !== undefined){
+		throw new VariableMultiDeclared((currentLine+1),variable);	
+	}
+	//Put a flag in hash of variables to signal the use
+	hashVarType[variable] = 0;
+}
+
+/*
+	Set the type of declared variables
+*/
+function newElement(element){
+	//For all declared variables 
+	for (var variable in hashVarType){
+		//if not initialized yet
+		if(hashVarType[variable] == 0){
+			//set the type for variable
+			hashVarType[variable] = element;
+			//push the variables in hashType
+			if(hashTypeVar[element] === undefined){
+				hashTypeVar[element] = [];
+			}
+			hashTypeVar[element].push(variable);
+		}		
+	}
+}
+
+/*
+	Create a internal relation: source relation target
+*/
+function newSimpleRelation(relation, source, target){
+	verifyDelclaredVariable(source);
+	verifyDelclaredVariable(target);
+	//source and target are valid variables
+	
+	
+	
+}
+
+
+/* Private Functions */
+//Verify if the variable has been declared already
+function verifyDelclaredVariable(variable){
+	if(hashVarType[variable] === undefined){
+		throw new VariableNotDeclared((currentLine+1),variable);	
+	}
+}
+
+/* Exceptions */
+
+//An variable was multi-declared
+function VariableMultiDeclared(line, variable) {
+   this.message = "Line "+line+": The variable "+variable+" was  multi-declared";
+}
+
+//An variable was not declared
+function VariableNotDeclared(line, variable) {
+   this.message = "Line "+line+": The variable "+variable+" was  not declared";
+}

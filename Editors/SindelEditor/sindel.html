@@ -78,7 +78,7 @@
 			catch (e) {
 				//Exception: erro durante a analise do parser
 				document.getElementById('res2').innerHTML ="";
-				document.getElementById('error').innerHTML =String(e);
+				document.getElementById('error').innerHTML = e.message;
 				//alert(String(e));					
 			}
         });
@@ -105,17 +105,8 @@
     </script>
     
     <div style="border: 1px solid black; width:400px;"><textarea id="code" name="code">
-ttf:a;
-so-ttf:b,c;
-layer:d;
-input:e1,e2,e3,e4,e5;
-sk-af: x;
-c{b};
-b{c};
-so-matrix:k;
-matrix:q1,q2,q3;
-k{e3,e4,e5};
-k{q1,q2,q3};
+tf:a,b;
+af:c,d;
 	  
 	  </textarea>
 
