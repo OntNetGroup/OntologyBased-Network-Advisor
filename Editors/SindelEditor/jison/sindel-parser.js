@@ -74,41 +74,42 @@
 var parser = (function(){
 var parser = {trace: function trace(){},
 yy: {},
-symbols_: {"error":2,"expressions":3,"Instruction":4,"EOF":5,"Element":6,"TransportFunction":7,"AdaptationFunction":8,"LayerProcessorFunction":9,"Matrices":10,"sn":11,"pm":12,"Port":13,"ReferencePoint":14,"TransportEntity":15,"layer":16,"equip":17,"Interfaces":18,"site":19,"tf":20,"so-tf":21,"sk-tf":22,"bi-tf":23,"af":24,"so-af":25,"sk-af":26,"bi-af":27,"lpf":28,"so-lpf":29,"sk-lpf":30,"bi-lpf":31,"matrix":32,"uni-matrix":33,"so-matrix":34,"sk-matrix":35,"bi-matrix":36,"input":37,"output":38,"rp":39,"fep":40,"ap":41,"fp":42,"te":43,"trail":44,"nc":45,"lc":46,"mc":47,"snc":48,"input_int":49,"output_int":50,"ElementDeclaration":51,"ElementComposition":52,"SimpleRelation":53,"AssignableRelation":54,"AddLocationTF":55,"AddTypeTTF":56,"colon":57,"VariableDeclaration":58,"semicolon":59,"variavel":60,"comma":61,"RelationType":62,"l_parenthesis":63,"r_parenthesis":64,"binds":65,"connects":66,"client":67,"maps":68,"str_location":69,"geo_location":70,"dot":71,"location":72,"graus":73,"type":74,"Composition":75,"l_curly_bracket":76,"used_variables":77,"r_curly_bracket":78,"equal":79,"Rel":80,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",11:"sn",12:"pm",16:"layer",17:"equip",19:"site",20:"tf",21:"so-tf",22:"sk-tf",23:"bi-tf",24:"af",25:"so-af",26:"sk-af",27:"bi-af",28:"lpf",29:"so-lpf",30:"sk-lpf",31:"bi-lpf",32:"matrix",33:"uni-matrix",34:"so-matrix",35:"sk-matrix",36:"bi-matrix",37:"input",38:"output",39:"rp",40:"fep",41:"ap",42:"fp",43:"te",44:"trail",45:"nc",46:"lc",47:"mc",48:"snc",49:"input_int",50:"output_int",57:"colon",59:"semicolon",60:"variavel",61:"comma",63:"l_parenthesis",64:"r_parenthesis",65:"binds",66:"connects",67:"client",68:"maps",71:"dot",72:"location",73:"graus",74:"type",76:"l_curly_bracket",78:"r_curly_bracket",79:"equal",80:"Rel"},
-productions_: [0,[3,2],[3,2],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[7,1],[7,1],[7,1],[7,1],[8,1],[8,1],[8,1],[8,1],[9,1],[9,1],[9,1],[9,1],[10,1],[10,1],[10,1],[10,1],[10,1],[13,1],[13,1],[14,1],[14,1],[14,1],[14,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[18,1],[18,1],[4,1],[4,1],[4,1],[4,1],[4,1],[4,1],[51,4],[58,1],[58,3],[53,7],[62,1],[62,1],[62,1],[62,1],[55,1],[55,1],[69,6],[70,10],[56,6],[52,3],[75,3],[77,1],[77,3],[54,9]],
+symbols_: {"error":2,"expressions":3,"Instruction":4,"EOF":5,"Element":6,"TransportFunction":7,"AdaptationFunction":8,"LayerProcessorFunction":9,"Matrices":10,"sn":11,"pm":12,"Port":13,"ReferencePoint":14,"TransportEntity":15,"layer":16,"equip":17,"Interfaces":18,"site":19,"tf":20,"so-tf":21,"sk-tf":22,"bi-tf":23,"af":24,"so-af":25,"sk-af":26,"bi-af":27,"lpf":28,"so-lpf":29,"sk-lpf":30,"bi-lpf":31,"matrix":32,"uni-matrix":33,"so-matrix":34,"sk-matrix":35,"bi-matrix":36,"input":37,"output":38,"rp":39,"fep":40,"ap":41,"fp":42,"ate":43,"nc":44,"lc":45,"mc":46,"cfte":47,"input_int":48,"output_int":49,"ElementDeclaration":50,"ElementComposition":51,"SimpleRelation":52,"AssignableRelation":53,"AddLocationTF":54,"AddTypeTTF":55,"colon":56,"VariableDeclaration":57,"semicolon":58,"variavel":59,"comma":60,"RelationType":61,"l_parenthesis":62,"r_parenthesis":63,"binds":64,"connects":65,"client":66,"maps":67,"str_location":68,"geo_location":69,"dot":70,"location":71,"graus":72,"type":73,"Composition":74,"l_curly_bracket":75,"used_variables":76,"r_curly_bracket":77,"equal":78,"Rel":79,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",11:"sn",12:"pm",16:"layer",17:"equip",19:"site",20:"tf",21:"so-tf",22:"sk-tf",23:"bi-tf",24:"af",25:"so-af",26:"sk-af",27:"bi-af",28:"lpf",29:"so-lpf",30:"sk-lpf",31:"bi-lpf",32:"matrix",33:"uni-matrix",34:"so-matrix",35:"sk-matrix",36:"bi-matrix",37:"input",38:"output",39:"rp",40:"fep",41:"ap",42:"fp",43:"ate",44:"nc",45:"lc",46:"mc",47:"cfte",48:"input_int",49:"output_int",56:"colon",58:"semicolon",59:"variavel",60:"comma",62:"l_parenthesis",63:"r_parenthesis",64:"binds",65:"connects",66:"client",67:"maps",70:"dot",71:"location",72:"graus",73:"type",75:"l_curly_bracket",77:"r_curly_bracket",78:"equal",79:"Rel"},
+productions_: [0,[3,2],[3,2],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[7,1],[7,1],[7,1],[7,1],[8,1],[8,1],[8,1],[8,1],[9,1],[9,1],[9,1],[9,1],[10,1],[10,1],[10,1],[10,1],[10,1],[13,1],[13,1],[14,1],[14,1],[14,1],[14,1],[15,1],[15,1],[15,1],[15,1],[15,1],[18,1],[18,1],[4,1],[4,1],[4,1],[4,1],[4,1],[4,1],[50,4],[57,1],[57,3],[52,7],[61,1],[61,1],[61,1],[61,1],[54,1],[54,1],[68,6],[69,10],[55,6],[51,3],[74,3],[76,1],[76,3],[53,9]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */
 /**/) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
+currentLine = yylineno;
 switch (yystate) {
-case 53:newElement($$[$0-3]);
+case 52:newElement($$[$0-3]);
 break;
-case 54:newVariable(this.$);
+case 53:newVariable(this.$);
 break;
-case 55:newVariable($$[$0-2]);
+case 54:newVariable($$[$0-2]);
 break;
-case 56:newSimpleRelation($$[$0-6],$$[$0-4],$$[$0-2]);
+case 55:newSimpleRelation($$[$0-6],$$[$0-4],$$[$0-2]);
 break;
-case 63:addLocationStr($$[$0-5],$$[$0-1]);
+case 62:addLocationStr($$[$0-5],$$[$0-1]);
 break;
-case 64:addLocationGeo($$[$0-9],$$[$0-4],$$[$0-2]);
+case 63:addLocationGeo($$[$0-9],$$[$0-4],$$[$0-2]);
 break;
-case 65:addType($$[$0-5],$$[$0-1]);
+case 64:addType($$[$0-5],$$[$0-1]);
 break;
-case 66:newElementComposition($$[$0-2]);
+case 65:newElementComposition($$[$0-2]);
 break;
-case 68:usedVariable(this.$);
+case 67:usedVariable(this.$);
 break;
-case 69:usedVariable($$[$0-2]);
+case 68:usedVariable($$[$0-2]);
 break;
-case 70:newAssignableRelation($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-2]);
+case 69:newAssignableRelation($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-2]);
 break;
 }
 },
-table: [{3:1,4:2,6:9,7:14,8:15,9:16,10:17,11:[1,18],12:[1,19],13:20,14:21,15:22,16:[1,23],17:[1,24],18:25,19:[1,26],20:[1,31],21:[1,32],22:[1,33],23:[1,34],24:[1,35],25:[1,36],26:[1,37],27:[1,38],28:[1,39],29:[1,40],30:[1,41],31:[1,42],32:[1,43],33:[1,44],34:[1,45],35:[1,46],36:[1,47],37:[1,48],38:[1,49],39:[1,50],40:[1,51],41:[1,52],42:[1,53],43:[1,54],44:[1,55],45:[1,56],46:[1,57],47:[1,58],48:[1,59],49:[1,60],50:[1,61],51:3,52:4,53:5,54:6,55:7,56:8,60:[1,10],62:11,65:[1,27],66:[1,28],67:[1,29],68:[1,30],69:12,70:13},{1:[3]},{3:63,4:2,5:[1,62],6:9,7:14,8:15,9:16,10:17,11:[1,18],12:[1,19],13:20,14:21,15:22,16:[1,23],17:[1,24],18:25,19:[1,26],20:[1,31],21:[1,32],22:[1,33],23:[1,34],24:[1,35],25:[1,36],26:[1,37],27:[1,38],28:[1,39],29:[1,40],30:[1,41],31:[1,42],32:[1,43],33:[1,44],34:[1,45],35:[1,46],36:[1,47],37:[1,48],38:[1,49],39:[1,50],40:[1,51],41:[1,52],42:[1,53],43:[1,54],44:[1,55],45:[1,56],46:[1,57],47:[1,58],48:[1,59],49:[1,60],50:[1,61],51:3,52:4,53:5,54:6,55:7,56:8,60:[1,10],62:11,65:[1,27],66:[1,28],67:[1,29],68:[1,30],69:12,70:13},{5:[2,47],11:[2,47],12:[2,47],16:[2,47],17:[2,47],19:[2,47],20:[2,47],21:[2,47],22:[2,47],23:[2,47],24:[2,47],25:[2,47],26:[2,47],27:[2,47],28:[2,47],29:[2,47],30:[2,47],31:[2,47],32:[2,47],33:[2,47],34:[2,47],35:[2,47],36:[2,47],37:[2,47],38:[2,47],39:[2,47],40:[2,47],41:[2,47],42:[2,47],43:[2,47],44:[2,47],45:[2,47],46:[2,47],47:[2,47],48:[2,47],49:[2,47],50:[2,47],60:[2,47],65:[2,47],66:[2,47],67:[2,47],68:[2,47]},{5:[2,48],11:[2,48],12:[2,48],16:[2,48],17:[2,48],19:[2,48],20:[2,48],21:[2,48],22:[2,48],23:[2,48],24:[2,48],25:[2,48],26:[2,48],27:[2,48],28:[2,48],29:[2,48],30:[2,48],31:[2,48],32:[2,48],33:[2,48],34:[2,48],35:[2,48],36:[2,48],37:[2,48],38:[2,48],39:[2,48],40:[2,48],41:[2,48],42:[2,48],43:[2,48],44:[2,48],45:[2,48],46:[2,48],47:[2,48],48:[2,48],49:[2,48],50:[2,48],60:[2,48],65:[2,48],66:[2,48],67:[2,48],68:[2,48]},{5:[2,49],11:[2,49],12:[2,49],16:[2,49],17:[2,49],19:[2,49],20:[2,49],21:[2,49],22:[2,49],23:[2,49],24:[2,49],25:[2,49],26:[2,49],27:[2,49],28:[2,49],29:[2,49],30:[2,49],31:[2,49],32:[2,49],33:[2,49],34:[2,49],35:[2,49],36:[2,49],37:[2,49],38:[2,49],39:[2,49],40:[2,49],41:[2,49],42:[2,49],43:[2,49],44:[2,49],45:[2,49],46:[2,49],47:[2,49],48:[2,49],49:[2,49],50:[2,49],60:[2,49],65:[2,49],66:[2,49],67:[2,49],68:[2,49]},{5:[2,50],11:[2,50],12:[2,50],16:[2,50],17:[2,50],19:[2,50],20:[2,50],21:[2,50],22:[2,50],23:[2,50],24:[2,50],25:[2,50],26:[2,50],27:[2,50],28:[2,50],29:[2,50],30:[2,50],31:[2,50],32:[2,50],33:[2,50],34:[2,50],35:[2,50],36:[2,50],37:[2,50],38:[2,50],39:[2,50],40:[2,50],41:[2,50],42:[2,50],43:[2,50],44:[2,50],45:[2,50],46:[2,50],47:[2,50],48:[2,50],49:[2,50],50:[2,50],60:[2,50],65:[2,50],66:[2,50],67:[2,50],68:[2,50]},{5:[2,51],11:[2,51],12:[2,51],16:[2,51],17:[2,51],19:[2,51],20:[2,51],21:[2,51],22:[2,51],23:[2,51],24:[2,51],25:[2,51],26:[2,51],27:[2,51],28:[2,51],29:[2,51],30:[2,51],31:[2,51],32:[2,51],33:[2,51],34:[2,51],35:[2,51],36:[2,51],37:[2,51],38:[2,51],39:[2,51],40:[2,51],41:[2,51],42:[2,51],43:[2,51],44:[2,51],45:[2,51],46:[2,51],47:[2,51],48:[2,51],49:[2,51],50:[2,51],60:[2,51],65:[2,51],66:[2,51],67:[2,51],68:[2,51]},{5:[2,52],11:[2,52],12:[2,52],16:[2,52],17:[2,52],19:[2,52],20:[2,52],21:[2,52],22:[2,52],23:[2,52],24:[2,52],25:[2,52],26:[2,52],27:[2,52],28:[2,52],29:[2,52],30:[2,52],31:[2,52],32:[2,52],33:[2,52],34:[2,52],35:[2,52],36:[2,52],37:[2,52],38:[2,52],39:[2,52],40:[2,52],41:[2,52],42:[2,52],43:[2,52],44:[2,52],45:[2,52],46:[2,52],47:[2,52],48:[2,52],49:[2,52],50:[2,52],60:[2,52],65:[2,52],66:[2,52],67:[2,52],68:[2,52]},{57:[1,64]},{71:[1,67],75:65,76:[1,68],79:[1,66]},{63:[1,69]},{5:[2,61],11:[2,61],12:[2,61],16:[2,61],17:[2,61],19:[2,61],20:[2,61],21:[2,61],22:[2,61],23:[2,61],24:[2,61],25:[2,61],26:[2,61],27:[2,61],28:[2,61],29:[2,61],30:[2,61],31:[2,61],32:[2,61],33:[2,61],34:[2,61],35:[2,61],36:[2,61],37:[2,61],38:[2,61],39:[2,61],40:[2,61],41:[2,61],42:[2,61],43:[2,61],44:[2,61],45:[2,61],46:[2,61],47:[2,61],48:[2,61],49:[2,61],50:[2,61],60:[2,61],65:[2,61],66:[2,61],67:[2,61],68:[2,61]},{5:[2,62],11:[2,62],12:[2,62],16:[2,62],17:[2,62],19:[2,62],20:[2,62],21:[2,62],22:[2,62],23:[2,62],24:[2,62],25:[2,62],26:[2,62],27:[2,62],28:[2,62],29:[2,62],30:[2,62],31:[2,62],32:[2,62],33:[2,62],34:[2,62],35:[2,62],36:[2,62],37:[2,62],38:[2,62],39:[2,62],40:[2,62],41:[2,62],42:[2,62],43:[2,62],44:[2,62],45:[2,62],46:[2,62],47:[2,62],48:[2,62],49:[2,62],50:[2,62],60:[2,62],65:[2,62],66:[2,62],67:[2,62],68:[2,62]},{57:[2,3]},{57:[2,4]},{57:[2,5]},{57:[2,6]},{57:[2,7]},{57:[2,8]},{57:[2,9]},{57:[2,10]},{57:[2,11]},{57:[2,12]},{57:[2,13]},{57:[2,14]},{57:[2,15]},{63:[2,57]},{63:[2,58]},{63:[2,59]},{63:[2,60]},{57:[2,16]},{57:[2,17]},{57:[2,18]},{57:[2,19]},{57:[2,20]},{57:[2,21]},{57:[2,22]},{57:[2,23]},{57:[2,24]},{57:[2,25]},{57:[2,26]},{57:[2,27]},{57:[2,28]},{57:[2,29]},{57:[2,30]},{57:[2,31]},{57:[2,32]},{57:[2,33]},{57:[2,34]},{57:[2,35]},{57:[2,36]},{57:[2,37]},{57:[2,38]},{57:[2,39]},{57:[2,40]},{57:[2,41]},{57:[2,42]},{57:[2,43]},{57:[2,44]},{57:[2,45]},{57:[2,46]},{1:[2,1]},{1:[2,2]},{58:70,60:[1,71]},{59:[1,72]},{80:[1,73]},{72:[1,75],74:[1,74]},{60:[1,77],77:76},{60:[1,78]},{59:[1,79]},{59:[2,54],61:[1,80]},{5:[2,66],11:[2,66],12:[2,66],16:[2,66],17:[2,66],19:[2,66],20:[2,66],21:[2,66],22:[2,66],23:[2,66],24:[2,66],25:[2,66],26:[2,66],27:[2,66],28:[2,66],29:[2,66],30:[2,66],31:[2,66],32:[2,66],33:[2,66],34:[2,66],35:[2,66],36:[2,66],37:[2,66],38:[2,66],39:[2,66],40:[2,66],41:[2,66],42:[2,66],43:[2,66],44:[2,66],45:[2,66],46:[2,66],47:[2,66],48:[2,66],49:[2,66],50:[2,66],60:[2,66],65:[2,66],66:[2,66],67:[2,66],68:[2,66]},{63:[1,81]},{57:[1,82]},{57:[1,83]},{78:[1,84]},{61:[1,85],78:[2,68]},{61:[1,86]},{5:[2,53],11:[2,53],12:[2,53],16:[2,53],17:[2,53],19:[2,53],20:[2,53],21:[2,53],22:[2,53],23:[2,53],24:[2,53],25:[2,53],26:[2,53],27:[2,53],28:[2,53],29:[2,53],30:[2,53],31:[2,53],32:[2,53],33:[2,53],34:[2,53],35:[2,53],36:[2,53],37:[2,53],38:[2,53],39:[2,53],40:[2,53],41:[2,53],42:[2,53],43:[2,53],44:[2,53],45:[2,53],46:[2,53],47:[2,53],48:[2,53],49:[2,53],50:[2,53],60:[2,53],65:[2,53],66:[2,53],67:[2,53],68:[2,53]},{58:87,60:[1,71]},{60:[1,88]},{60:[1,89]},{60:[1,90],63:[1,91]},{59:[2,67]},{60:[1,77],77:92},{60:[1,93]},{59:[2,55]},{61:[1,94]},{59:[1,95]},{59:[1,96]},{73:[1,97]},{78:[2,69]},{64:[1,98]},{60:[1,99]},{5:[2,65],11:[2,65],12:[2,65],16:[2,65],17:[2,65],19:[2,65],20:[2,65],21:[2,65],22:[2,65],23:[2,65],24:[2,65],25:[2,65],26:[2,65],27:[2,65],28:[2,65],29:[2,65],30:[2,65],31:[2,65],32:[2,65],33:[2,65],34:[2,65],35:[2,65],36:[2,65],37:[2,65],38:[2,65],39:[2,65],40:[2,65],41:[2,65],42:[2,65],43:[2,65],44:[2,65],45:[2,65],46:[2,65],47:[2,65],48:[2,65],49:[2,65],50:[2,65],60:[2,65],65:[2,65],66:[2,65],67:[2,65],68:[2,65]},{5:[2,63],11:[2,63],12:[2,63],16:[2,63],17:[2,63],19:[2,63],20:[2,63],21:[2,63],22:[2,63],23:[2,63],24:[2,63],25:[2,63],26:[2,63],27:[2,63],28:[2,63],29:[2,63],30:[2,63],31:[2,63],32:[2,63],33:[2,63],34:[2,63],35:[2,63],36:[2,63],37:[2,63],38:[2,63],39:[2,63],40:[2,63],41:[2,63],42:[2,63],43:[2,63],44:[2,63],45:[2,63],46:[2,63],47:[2,63],48:[2,63],49:[2,63],50:[2,63],60:[2,63],65:[2,63],66:[2,63],67:[2,63],68:[2,63]},{61:[1,100]},{59:[1,101]},{64:[1,102]},{73:[1,103]},{5:[2,56],11:[2,56],12:[2,56],16:[2,56],17:[2,56],19:[2,56],20:[2,56],21:[2,56],22:[2,56],23:[2,56],24:[2,56],25:[2,56],26:[2,56],27:[2,56],28:[2,56],29:[2,56],30:[2,56],31:[2,56],32:[2,56],33:[2,56],34:[2,56],35:[2,56],36:[2,56],37:[2,56],38:[2,56],39:[2,56],40:[2,56],41:[2,56],42:[2,56],43:[2,56],44:[2,56],45:[2,56],46:[2,56],47:[2,56],48:[2,56],49:[2,56],50:[2,56],60:[2,56],65:[2,56],66:[2,56],67:[2,56],68:[2,56]},{59:[1,104]},{64:[1,105]},{5:[2,70],11:[2,70],12:[2,70],16:[2,70],17:[2,70],19:[2,70],20:[2,70],21:[2,70],22:[2,70],23:[2,70],24:[2,70],25:[2,70],26:[2,70],27:[2,70],28:[2,70],29:[2,70],30:[2,70],31:[2,70],32:[2,70],33:[2,70],34:[2,70],35:[2,70],36:[2,70],37:[2,70],38:[2,70],39:[2,70],40:[2,70],41:[2,70],42:[2,70],43:[2,70],44:[2,70],45:[2,70],46:[2,70],47:[2,70],48:[2,70],49:[2,70],50:[2,70],60:[2,70],65:[2,70],66:[2,70],67:[2,70],68:[2,70]},{59:[1,106]},{5:[2,64],11:[2,64],12:[2,64],16:[2,64],17:[2,64],19:[2,64],20:[2,64],21:[2,64],22:[2,64],23:[2,64],24:[2,64],25:[2,64],26:[2,64],27:[2,64],28:[2,64],29:[2,64],30:[2,64],31:[2,64],32:[2,64],33:[2,64],34:[2,64],35:[2,64],36:[2,64],37:[2,64],38:[2,64],39:[2,64],40:[2,64],41:[2,64],42:[2,64],43:[2,64],44:[2,64],45:[2,64],46:[2,64],47:[2,64],48:[2,64],49:[2,64],50:[2,64],60:[2,64],65:[2,64],66:[2,64],67:[2,64],68:[2,64]}],
-defaultActions: {14:[2,3],15:[2,4],16:[2,5],17:[2,6],18:[2,7],19:[2,8],20:[2,9],21:[2,10],22:[2,11],23:[2,12],24:[2,13],25:[2,14],26:[2,15],27:[2,57],28:[2,58],29:[2,59],30:[2,60],31:[2,16],32:[2,17],33:[2,18],34:[2,19],35:[2,20],36:[2,21],37:[2,22],38:[2,23],39:[2,24],40:[2,25],41:[2,26],42:[2,27],43:[2,28],44:[2,29],45:[2,30],46:[2,31],47:[2,32],48:[2,33],49:[2,34],50:[2,35],51:[2,36],52:[2,37],53:[2,38],54:[2,39],55:[2,40],56:[2,41],57:[2,42],58:[2,43],59:[2,44],60:[2,45],61:[2,46],62:[2,1],63:[2,2],84:[2,67],87:[2,55],92:[2,69]},
+table: [{3:1,4:2,6:9,7:14,8:15,9:16,10:17,11:[1,18],12:[1,19],13:20,14:21,15:22,16:[1,23],17:[1,24],18:25,19:[1,26],20:[1,31],21:[1,32],22:[1,33],23:[1,34],24:[1,35],25:[1,36],26:[1,37],27:[1,38],28:[1,39],29:[1,40],30:[1,41],31:[1,42],32:[1,43],33:[1,44],34:[1,45],35:[1,46],36:[1,47],37:[1,48],38:[1,49],39:[1,50],40:[1,51],41:[1,52],42:[1,53],43:[1,54],44:[1,55],45:[1,56],46:[1,57],47:[1,58],48:[1,59],49:[1,60],50:3,51:4,52:5,53:6,54:7,55:8,59:[1,10],61:11,64:[1,27],65:[1,28],66:[1,29],67:[1,30],68:12,69:13},{1:[3]},{3:62,4:2,5:[1,61],6:9,7:14,8:15,9:16,10:17,11:[1,18],12:[1,19],13:20,14:21,15:22,16:[1,23],17:[1,24],18:25,19:[1,26],20:[1,31],21:[1,32],22:[1,33],23:[1,34],24:[1,35],25:[1,36],26:[1,37],27:[1,38],28:[1,39],29:[1,40],30:[1,41],31:[1,42],32:[1,43],33:[1,44],34:[1,45],35:[1,46],36:[1,47],37:[1,48],38:[1,49],39:[1,50],40:[1,51],41:[1,52],42:[1,53],43:[1,54],44:[1,55],45:[1,56],46:[1,57],47:[1,58],48:[1,59],49:[1,60],50:3,51:4,52:5,53:6,54:7,55:8,59:[1,10],61:11,64:[1,27],65:[1,28],66:[1,29],67:[1,30],68:12,69:13},{5:[2,46],11:[2,46],12:[2,46],16:[2,46],17:[2,46],19:[2,46],20:[2,46],21:[2,46],22:[2,46],23:[2,46],24:[2,46],25:[2,46],26:[2,46],27:[2,46],28:[2,46],29:[2,46],30:[2,46],31:[2,46],32:[2,46],33:[2,46],34:[2,46],35:[2,46],36:[2,46],37:[2,46],38:[2,46],39:[2,46],40:[2,46],41:[2,46],42:[2,46],43:[2,46],44:[2,46],45:[2,46],46:[2,46],47:[2,46],48:[2,46],49:[2,46],59:[2,46],64:[2,46],65:[2,46],66:[2,46],67:[2,46]},{5:[2,47],11:[2,47],12:[2,47],16:[2,47],17:[2,47],19:[2,47],20:[2,47],21:[2,47],22:[2,47],23:[2,47],24:[2,47],25:[2,47],26:[2,47],27:[2,47],28:[2,47],29:[2,47],30:[2,47],31:[2,47],32:[2,47],33:[2,47],34:[2,47],35:[2,47],36:[2,47],37:[2,47],38:[2,47],39:[2,47],40:[2,47],41:[2,47],42:[2,47],43:[2,47],44:[2,47],45:[2,47],46:[2,47],47:[2,47],48:[2,47],49:[2,47],59:[2,47],64:[2,47],65:[2,47],66:[2,47],67:[2,47]},{5:[2,48],11:[2,48],12:[2,48],16:[2,48],17:[2,48],19:[2,48],20:[2,48],21:[2,48],22:[2,48],23:[2,48],24:[2,48],25:[2,48],26:[2,48],27:[2,48],28:[2,48],29:[2,48],30:[2,48],31:[2,48],32:[2,48],33:[2,48],34:[2,48],35:[2,48],36:[2,48],37:[2,48],38:[2,48],39:[2,48],40:[2,48],41:[2,48],42:[2,48],43:[2,48],44:[2,48],45:[2,48],46:[2,48],47:[2,48],48:[2,48],49:[2,48],59:[2,48],64:[2,48],65:[2,48],66:[2,48],67:[2,48]},{5:[2,49],11:[2,49],12:[2,49],16:[2,49],17:[2,49],19:[2,49],20:[2,49],21:[2,49],22:[2,49],23:[2,49],24:[2,49],25:[2,49],26:[2,49],27:[2,49],28:[2,49],29:[2,49],30:[2,49],31:[2,49],32:[2,49],33:[2,49],34:[2,49],35:[2,49],36:[2,49],37:[2,49],38:[2,49],39:[2,49],40:[2,49],41:[2,49],42:[2,49],43:[2,49],44:[2,49],45:[2,49],46:[2,49],47:[2,49],48:[2,49],49:[2,49],59:[2,49],64:[2,49],65:[2,49],66:[2,49],67:[2,49]},{5:[2,50],11:[2,50],12:[2,50],16:[2,50],17:[2,50],19:[2,50],20:[2,50],21:[2,50],22:[2,50],23:[2,50],24:[2,50],25:[2,50],26:[2,50],27:[2,50],28:[2,50],29:[2,50],30:[2,50],31:[2,50],32:[2,50],33:[2,50],34:[2,50],35:[2,50],36:[2,50],37:[2,50],38:[2,50],39:[2,50],40:[2,50],41:[2,50],42:[2,50],43:[2,50],44:[2,50],45:[2,50],46:[2,50],47:[2,50],48:[2,50],49:[2,50],59:[2,50],64:[2,50],65:[2,50],66:[2,50],67:[2,50]},{5:[2,51],11:[2,51],12:[2,51],16:[2,51],17:[2,51],19:[2,51],20:[2,51],21:[2,51],22:[2,51],23:[2,51],24:[2,51],25:[2,51],26:[2,51],27:[2,51],28:[2,51],29:[2,51],30:[2,51],31:[2,51],32:[2,51],33:[2,51],34:[2,51],35:[2,51],36:[2,51],37:[2,51],38:[2,51],39:[2,51],40:[2,51],41:[2,51],42:[2,51],43:[2,51],44:[2,51],45:[2,51],46:[2,51],47:[2,51],48:[2,51],49:[2,51],59:[2,51],64:[2,51],65:[2,51],66:[2,51],67:[2,51]},{56:[1,63]},{70:[1,66],74:64,75:[1,67],78:[1,65]},{62:[1,68]},{5:[2,60],11:[2,60],12:[2,60],16:[2,60],17:[2,60],19:[2,60],20:[2,60],21:[2,60],22:[2,60],23:[2,60],24:[2,60],25:[2,60],26:[2,60],27:[2,60],28:[2,60],29:[2,60],30:[2,60],31:[2,60],32:[2,60],33:[2,60],34:[2,60],35:[2,60],36:[2,60],37:[2,60],38:[2,60],39:[2,60],40:[2,60],41:[2,60],42:[2,60],43:[2,60],44:[2,60],45:[2,60],46:[2,60],47:[2,60],48:[2,60],49:[2,60],59:[2,60],64:[2,60],65:[2,60],66:[2,60],67:[2,60]},{5:[2,61],11:[2,61],12:[2,61],16:[2,61],17:[2,61],19:[2,61],20:[2,61],21:[2,61],22:[2,61],23:[2,61],24:[2,61],25:[2,61],26:[2,61],27:[2,61],28:[2,61],29:[2,61],30:[2,61],31:[2,61],32:[2,61],33:[2,61],34:[2,61],35:[2,61],36:[2,61],37:[2,61],38:[2,61],39:[2,61],40:[2,61],41:[2,61],42:[2,61],43:[2,61],44:[2,61],45:[2,61],46:[2,61],47:[2,61],48:[2,61],49:[2,61],59:[2,61],64:[2,61],65:[2,61],66:[2,61],67:[2,61]},{56:[2,3]},{56:[2,4]},{56:[2,5]},{56:[2,6]},{56:[2,7]},{56:[2,8]},{56:[2,9]},{56:[2,10]},{56:[2,11]},{56:[2,12]},{56:[2,13]},{56:[2,14]},{56:[2,15]},{62:[2,56]},{62:[2,57]},{62:[2,58]},{62:[2,59]},{56:[2,16]},{56:[2,17]},{56:[2,18]},{56:[2,19]},{56:[2,20]},{56:[2,21]},{56:[2,22]},{56:[2,23]},{56:[2,24]},{56:[2,25]},{56:[2,26]},{56:[2,27]},{56:[2,28]},{56:[2,29]},{56:[2,30]},{56:[2,31]},{56:[2,32]},{56:[2,33]},{56:[2,34]},{56:[2,35]},{56:[2,36]},{56:[2,37]},{56:[2,38]},{56:[2,39]},{56:[2,40]},{56:[2,41]},{56:[2,42]},{56:[2,43]},{56:[2,44]},{56:[2,45]},{1:[2,1]},{1:[2,2]},{57:69,59:[1,70]},{58:[1,71]},{79:[1,72]},{71:[1,74],73:[1,73]},{59:[1,76],76:75},{59:[1,77]},{58:[1,78]},{58:[2,53],60:[1,79]},{5:[2,65],11:[2,65],12:[2,65],16:[2,65],17:[2,65],19:[2,65],20:[2,65],21:[2,65],22:[2,65],23:[2,65],24:[2,65],25:[2,65],26:[2,65],27:[2,65],28:[2,65],29:[2,65],30:[2,65],31:[2,65],32:[2,65],33:[2,65],34:[2,65],35:[2,65],36:[2,65],37:[2,65],38:[2,65],39:[2,65],40:[2,65],41:[2,65],42:[2,65],43:[2,65],44:[2,65],45:[2,65],46:[2,65],47:[2,65],48:[2,65],49:[2,65],59:[2,65],64:[2,65],65:[2,65],66:[2,65],67:[2,65]},{62:[1,80]},{56:[1,81]},{56:[1,82]},{77:[1,83]},{60:[1,84],77:[2,67]},{60:[1,85]},{5:[2,52],11:[2,52],12:[2,52],16:[2,52],17:[2,52],19:[2,52],20:[2,52],21:[2,52],22:[2,52],23:[2,52],24:[2,52],25:[2,52],26:[2,52],27:[2,52],28:[2,52],29:[2,52],30:[2,52],31:[2,52],32:[2,52],33:[2,52],34:[2,52],35:[2,52],36:[2,52],37:[2,52],38:[2,52],39:[2,52],40:[2,52],41:[2,52],42:[2,52],43:[2,52],44:[2,52],45:[2,52],46:[2,52],47:[2,52],48:[2,52],49:[2,52],59:[2,52],64:[2,52],65:[2,52],66:[2,52],67:[2,52]},{57:86,59:[1,70]},{59:[1,87]},{59:[1,88]},{59:[1,89],62:[1,90]},{58:[2,66]},{59:[1,76],76:91},{59:[1,92]},{58:[2,54]},{60:[1,93]},{58:[1,94]},{58:[1,95]},{72:[1,96]},{77:[2,68]},{63:[1,97]},{59:[1,98]},{5:[2,64],11:[2,64],12:[2,64],16:[2,64],17:[2,64],19:[2,64],20:[2,64],21:[2,64],22:[2,64],23:[2,64],24:[2,64],25:[2,64],26:[2,64],27:[2,64],28:[2,64],29:[2,64],30:[2,64],31:[2,64],32:[2,64],33:[2,64],34:[2,64],35:[2,64],36:[2,64],37:[2,64],38:[2,64],39:[2,64],40:[2,64],41:[2,64],42:[2,64],43:[2,64],44:[2,64],45:[2,64],46:[2,64],47:[2,64],48:[2,64],49:[2,64],59:[2,64],64:[2,64],65:[2,64],66:[2,64],67:[2,64]},{5:[2,62],11:[2,62],12:[2,62],16:[2,62],17:[2,62],19:[2,62],20:[2,62],21:[2,62],22:[2,62],23:[2,62],24:[2,62],25:[2,62],26:[2,62],27:[2,62],28:[2,62],29:[2,62],30:[2,62],31:[2,62],32:[2,62],33:[2,62],34:[2,62],35:[2,62],36:[2,62],37:[2,62],38:[2,62],39:[2,62],40:[2,62],41:[2,62],42:[2,62],43:[2,62],44:[2,62],45:[2,62],46:[2,62],47:[2,62],48:[2,62],49:[2,62],59:[2,62],64:[2,62],65:[2,62],66:[2,62],67:[2,62]},{60:[1,99]},{58:[1,100]},{63:[1,101]},{72:[1,102]},{5:[2,55],11:[2,55],12:[2,55],16:[2,55],17:[2,55],19:[2,55],20:[2,55],21:[2,55],22:[2,55],23:[2,55],24:[2,55],25:[2,55],26:[2,55],27:[2,55],28:[2,55],29:[2,55],30:[2,55],31:[2,55],32:[2,55],33:[2,55],34:[2,55],35:[2,55],36:[2,55],37:[2,55],38:[2,55],39:[2,55],40:[2,55],41:[2,55],42:[2,55],43:[2,55],44:[2,55],45:[2,55],46:[2,55],47:[2,55],48:[2,55],49:[2,55],59:[2,55],64:[2,55],65:[2,55],66:[2,55],67:[2,55]},{58:[1,103]},{63:[1,104]},{5:[2,69],11:[2,69],12:[2,69],16:[2,69],17:[2,69],19:[2,69],20:[2,69],21:[2,69],22:[2,69],23:[2,69],24:[2,69],25:[2,69],26:[2,69],27:[2,69],28:[2,69],29:[2,69],30:[2,69],31:[2,69],32:[2,69],33:[2,69],34:[2,69],35:[2,69],36:[2,69],37:[2,69],38:[2,69],39:[2,69],40:[2,69],41:[2,69],42:[2,69],43:[2,69],44:[2,69],45:[2,69],46:[2,69],47:[2,69],48:[2,69],49:[2,69],59:[2,69],64:[2,69],65:[2,69],66:[2,69],67:[2,69]},{58:[1,105]},{5:[2,63],11:[2,63],12:[2,63],16:[2,63],17:[2,63],19:[2,63],20:[2,63],21:[2,63],22:[2,63],23:[2,63],24:[2,63],25:[2,63],26:[2,63],27:[2,63],28:[2,63],29:[2,63],30:[2,63],31:[2,63],32:[2,63],33:[2,63],34:[2,63],35:[2,63],36:[2,63],37:[2,63],38:[2,63],39:[2,63],40:[2,63],41:[2,63],42:[2,63],43:[2,63],44:[2,63],45:[2,63],46:[2,63],47:[2,63],48:[2,63],49:[2,63],59:[2,63],64:[2,63],65:[2,63],66:[2,63],67:[2,63]}],
+defaultActions: {14:[2,3],15:[2,4],16:[2,5],17:[2,6],18:[2,7],19:[2,8],20:[2,9],21:[2,10],22:[2,11],23:[2,12],24:[2,13],25:[2,14],26:[2,15],27:[2,56],28:[2,57],29:[2,58],30:[2,59],31:[2,16],32:[2,17],33:[2,18],34:[2,19],35:[2,20],36:[2,21],37:[2,22],38:[2,23],39:[2,24],40:[2,25],41:[2,26],42:[2,27],43:[2,28],44:[2,29],45:[2,30],46:[2,31],47:[2,32],48:[2,33],49:[2,34],50:[2,35],51:[2,36],52:[2,37],53:[2,38],54:[2,39],55:[2,40],56:[2,41],57:[2,42],58:[2,43],59:[2,44],60:[2,45],61:[2,1],62:[2,2],83:[2,66],86:[2,54],91:[2,68]},
 parseError: function parseError(str,hash){if(hash.recoverable){this.trace(str)}else{throw new Error(str)}},
 parse: function parse(input) {
     var self = this, stack = [0], vstack = [null], lstack = [], table = this.table, yytext = '', yylineno = 0, yyleng = 0, recovering = 0, TERROR = 2, EOF = 1;
@@ -259,29 +260,200 @@ warning = "";
  
 hashVarType = new Array();
 hashTypeVar = new Array();
-hashRelation= new Array();
+hashSimpleRelation= new Array();
+hashAssignableRelation= new Array();
 hashUsedRelation = new Array();
 
 hashUsedVariable = new Array();
 
+hashSuperType = new Array();
+
+/* Initializing super types */
+//TFs
+hashSuperType["so-tf"] = "tf";
+hashSuperType["sk-tf"] = "tf";
+hashSuperType["bi-tf"] = "tf";
+
+//AFs
+hashSuperType["so-af"] = "af";
+hashSuperType["sk-af"] = "af";
+hashSuperType["bi-af"] = "af";
+
+//LPFs
+hashSuperType["so-lpf"] = "lpf";
+hashSuperType["sk-lpf"] = "lpf";
+hashSuperType["bi-lpf"] = "lpf";
+
+//Matrices
+hashSuperType["uni-matrix"] = "matrix";
+hashSuperType["bi-matrix"] = "matrix";
+hashSuperType["so-matrix"] = "matrix";
+hashSuperType["sk-matrix"] = "matrix";
+
+//Ports
+hashSuperType["input"] = "port";
+hashSuperType["output"] = "port";
+
+//Reference Points
+hashSuperType["fp"] = "rp";
+hashSuperType["fep"] = "rp";
+hashSuperType["ap"] = "rp";
+
+//Interfaces
+hashSuperType["input_int"] = "interface";
+hashSuperType["output_int"] = "interface";
+
+//Transport Entity
+hashSuperType["ate"] = "transport_entity";
+hashSuperType["nc"] = "transport_entity";
+hashSuperType["lc"] = "transport_entity";
+hashSuperType["mc"] = "transport_entity";
+hashSuperType["cfte"] = "transport_entity";
+
+
 /* Initializing Relations cardinalities */
+//componentOf cardinalities needs to be inverted!!!
 
-//Equipment
-hashRelation["client"+"layer"+"layer"] = createRelation(0,-1,0,-1);
+/* Simple Relations and Component Of */
+/* Layer */
+//Layer * client * Layer
+hashSimpleRelation["client"+"layer"+"layer"] = createRelation(0,-1,0,-1);
 
-hashRelation["connects"+"output_int"+"input_int"] = createRelation(0,1,0,1);
+//Layer * componentOf * Transport Function
+hashSimpleRelation["component_of"+"layer"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"pm"] = createRelation(0,-1,0,-1);
 
-hashRelation["maps"+"input_int"+"input"] = createRelation(0,1,0,1);
-hashRelation["maps"+"output_int"+"output"] = createRelation(0,1,0,1);
+/* Equipment */
+//Output Interface 0..1 binds 0..1 Input Interface
+hashSimpleRelation["binds"+"output_int"+"input_int"] = createRelation(0,1,0,1);
 
-hashRelation["binds"+"output_int"+"input_int"] = createRelation(0,1,0,1);
-hashRelation["binds"+"output_int"+"input"] = createRelation(0,1,0,1);
-hashRelation["binds"+"input_int"+"input"] = createRelation(0,1,0,1);
-hashRelation["binds"+"output_int"+"output"] = createRelation(0,1,0,1);
-hashRelation["binds"+"input_int"+"output"] = createRelation(0,1,0,1);
+//Input Interface 0..1 connects 0..1 Input
+hashSimpleRelation["connects"+"output_int"+"input_int"] = createRelation(0,1,0,1);
 
-hashRelation["component_of"+"input_int"+"equip"] = createRelation(0,1,0,-1);
-hashRelation["component_of"+"output_int"+"equip"] = createRelation(0,1,0,-1);
+//Input Interface 0..1 maps 0..1 Input
+hashSimpleRelation["maps"+"input_int"+"input"] = createRelation(0,1,0,1);
+
+//Output Interface 0..1 maps 0..1 Output
+hashSimpleRelation["maps"+"output_int"+"output"] = createRelation(0,1,0,1);
+
+//Interface 0..1 binds 0..1 Port
+hashSimpleRelation["binds"+"interface"+"port"] = createRelation(0,1,0,1);
+
+//Equipment 0..1 componentOf * Interface
+hashSimpleRelation["component_of"+"equip"+"interface"] = createRelation(0,-1,0,1);
+
+//Equipment * componentOf 0..1 Transport Function
+hashSimpleRelation["component_of"+"equip"+"tf"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"af"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"lpf"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"matrix"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"sn"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"pm"] = createRelation(0,-1,0,1);
+
+/* Site */
+//Site 0..1 componentOf * Equipment
+hashSimpleRelation["component_of"+"site"+"equip"] = createRelation(0,-1,0,1);
+
+/* Transport Entity */
+//Reference Point * connects * Reference Points
+hashSimpleRelation["connects"+"rp"+"rp"] = createRelation(0,-1,0,1);
+
+/* Reference Point */
+//Bindable Element * binds * Bindable Element
+hashSimpleRelation["binds"+"tf"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"port"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"port"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"port"+"port"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"tf"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"tf"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"tf"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"af"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"af"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"af"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"lpf"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"lpf"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"lpf"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"matrix"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"matrix"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"matrix"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"sn"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"sn"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"sn"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"pm"+"pm"] = createRelation(0,-1,0,-1);
+
+/* Transport Function */
+//TF 0..1 componentOf 0..2 TF
+hashSimpleRelation["component_of"+"tf"+"tf"] = createRelation(0,2,0,1);
+
+//AF 0..1 componentOf 0..2 AF
+hashSimpleRelation["component_of"+"af"+"af"] = createRelation(0,2,0,1);
+
+//LPF 0..1 componentOf 0..2 LPF
+hashSimpleRelation["component_of"+"lpf"+"lpf"] = createRelation(0,2,0,1);
+
+//Matrix 0..1 componentOf 0..2 Matrix
+hashSimpleRelation["component_of"+"matrix"+"matrix"] = createRelation(0,2,0,1);
+
+//************//
+
+/* Assignable Relations */
+/* Transport Entity */
+hashAssignableRelation["transport_entity"+"connects"+"rp"+"rp"] = createRelation(0,2,0,1);
+
+/* Reference Point */
+hashAssignableRelation["rp"+"binds"+"tf"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"af"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"lpf"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"matrix"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"sn"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"pm"+"port"] = createRelation(0,-1,0,1);
+
 
 
 /* Methods */    
@@ -320,15 +492,16 @@ function newElement(element){
 	Create a internal relation: source relation target
 */
 function newSimpleRelation(relation, source, target){
+	//verify if source and target are valid variables
 	verifyDelclaredVariable(source);
 	verifyDelclaredVariable(target);
-	//source and target are valid variables
 	
-	var sourceType = hashVarType[source];
-	var targetType = hashVarType[target];
+	//Get supertypes of source and general
+	var sourceType = getSuperType(hashVarType[source]);
+	var targetType = getSuperType(hashVarType[target]);		
 	
 	//Verify relationship possibility
-	if(hashRelation[relation+sourceType+targetType] === undefined){
+	if(hashSimpleRelation[relation+sourceType+targetType] === undefined){
 		throw new WrongRelation(currentLine+1);
 	}
 	
@@ -341,7 +514,7 @@ function newSimpleRelation(relation, source, target){
 	hashUsedRelation[relation+sourceType+targetType].push(createRelationship(source, relation, target));
 	
 	//Verify cardinality possibility
-	var relationshipDefined = hashRelation[relation+sourceType+targetType];
+	var relationshipDefined = hashSimpleRelation[relation+sourceType+targetType];
 	
 	var srcCont = 0, trgCont = 0;
 	
@@ -370,6 +543,25 @@ function newSimpleRelation(relation, source, target){
 }
 
 /*
+	Create a assignable relation
+*/
+
+function newAssignableRelation(ret, relation, source, target){
+	//Create a new simple relation between source and target
+	newSimpleRelation(relation,source,target);
+	
+	//get supertypes
+	var retType = getSuperType(hashVarType(ret));
+	var sourceType = getSuperType(hashVarType(source));
+	var targetType = getSuperType(hashVarType(target));
+		
+	//verify if it's a possible assignable relation
+	if(hashAssignableRelation[ret+relation+sourceType+targetType] === undefined){
+		throw new WrongRelation(currentLine+1);
+	}
+}
+
+/*
 	Hold used variables
 */
 function usedVariable(variable){
@@ -380,6 +572,8 @@ function newElementComposition(whole){
 	for(var i = 0; i < hashUsedVariable.length; i++){
 		newSimpleRelation("component_of",whole,hashUsedVariable[i]);
 	}
+	//clean up used variables
+	hashUsedVariable = [];
 }
 
 /* Private Functions */
@@ -411,6 +605,13 @@ function createRelationship(source, relation, target){
 	return relationship;
 }
 
+function getSuperType(cls){	
+	if(hashSuperType[cls] === undefined){
+		return cls;
+	}
+	return hashSuperType[cls];	
+}
+
 /* Exceptions */
 
 //An variable was multi-declared
@@ -432,8 +633,6 @@ function WrongRelation(line){
 function WrongCardinality(line){
 	this.message = "Line "+line+": Incorrect attribution";		
 }
-
-
 /* generated by jison-lex 0.2.1 */
 var lexer = (function(){
 var lexer = {
@@ -563,17 +762,17 @@ case 29:return 46
 break;
 case 30:return 47
 break;
-case 31:return 48
+case 31:return 16
 break;
-case 32:return 16
+case 32:return 17
 break;
-case 33:return 17
+case 33:return 48
 break;
 case 34:return 49
 break;
-case 35:return 50
+case 35:return 19
 break;
-case 36:return 19
+case 36:return 64
 break;
 case 37:return 65
 break;
@@ -581,46 +780,44 @@ case 38:return 66
 break;
 case 39:return 67
 break;
-case 40:return 68
+case 40:return 71
 break;
-case 41:return 72
+case 41:return 73
 break;
-case 42:return 74
+case 42:return 56
 break;
-case 43:return 57
+case 43:return 70
 break;
-case 44:return 71
+case 44:return 58
 break;
-case 45:return 59
+case 45:return 78
 break;
-case 46:return 79
+case 46:return 60
 break;
-case 47:return 61
+case 47:return 75
 break;
-case 48:return 76
+case 48:return 77
 break;
-case 49:return 78
+case 49:return 62
 break;
 case 50:return 63
 break;
-case 51:return 64
+case 51:return 72
 break;
-case 52:return 73
+case 52:return 59
 break;
-case 53:return 60
+case 53:return 'n_int'
 break;
-case 54:return 'n_int'
+case 54:/* ignore */
 break;
-case 55:/* ignore */
+case 55:return 5
 break;
-case 56:return 5
-break;
-case 57:return 'INVALID'
+case 56:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:tf\b)/,/^(?:so-tf\b)/,/^(?:sk-tf\b)/,/^(?:bi-tf\b)/,/^(?:af\b)/,/^(?:so-af\b)/,/^(?:sk-af\b)/,/^(?:bi-af\b)/,/^(?:lpf\b)/,/^(?:so-lpf\b)/,/^(?:sk-lpf\b)/,/^(?:bi-lpf\b)/,/^(?:matrix\b)/,/^(?:uni-matrix\b)/,/^(?:so-matrix\b)/,/^(?:sk-matrix\b)/,/^(?:bi-matrix\b)/,/^(?:sn\b)/,/^(?:pm\b)/,/^(?:input\b)/,/^(?:output\b)/,/^(?:rp\b)/,/^(?:fep\b)/,/^(?:ap\b)/,/^(?:fp\b)/,/^(?:te\b)/,/^(?:trail\b)/,/^(?:nc\b)/,/^(?:lc\b)/,/^(?:mc\b)/,/^(?:snc\b)/,/^(?:layer\b)/,/^(?:equip\b)/,/^(?:input_int\b)/,/^(?:output_int\b)/,/^(?:site\b)/,/^(?:binds\b)/,/^(?:connects\b)/,/^(?:client\b)/,/^(?:maps\b)/,/^(?:location\b)/,/^(?:type\b)/,/^(?::)/,/^(?:\.)/,/^(?:;)/,/^(?:=)/,/^(?:,)/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:(-)?[0-9]+:[0-9]+:[0-9]+)/,/^(?:[A-Za-z_]+[0-9A-Za-z_]*)/,/^(?:[0-9]+)/,/^(?:\/\*(.|\n|\r)*?\*\/)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:tf\b)/,/^(?:so-tf\b)/,/^(?:sk-tf\b)/,/^(?:bi-tf\b)/,/^(?:af\b)/,/^(?:so-af\b)/,/^(?:sk-af\b)/,/^(?:bi-af\b)/,/^(?:lpf\b)/,/^(?:so-lpf\b)/,/^(?:sk-lpf\b)/,/^(?:bi-lpf\b)/,/^(?:matrix\b)/,/^(?:uni-matrix\b)/,/^(?:so-matrix\b)/,/^(?:sk-matrix\b)/,/^(?:bi-matrix\b)/,/^(?:sn\b)/,/^(?:pm\b)/,/^(?:input\b)/,/^(?:output\b)/,/^(?:rp\b)/,/^(?:fep\b)/,/^(?:ap\b)/,/^(?:fp\b)/,/^(?:ate\b)/,/^(?:nc\b)/,/^(?:lc\b)/,/^(?:mc\b)/,/^(?:cfte\b)/,/^(?:layer\b)/,/^(?:equip\b)/,/^(?:input_int\b)/,/^(?:output_int\b)/,/^(?:site\b)/,/^(?:binds\b)/,/^(?:connects\b)/,/^(?:client\b)/,/^(?:maps\b)/,/^(?:location\b)/,/^(?:type\b)/,/^(?::)/,/^(?:\.)/,/^(?:;)/,/^(?:=)/,/^(?:,)/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:(-)?[0-9]+:[0-9]+:[0-9]+)/,/^(?:[A-Za-z_]+[0-9A-Za-z_]*)/,/^(?:[0-9]+)/,/^(?:\/\*(.|\n|\r)*?\*\/)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56],"inclusive":true}}
 };
 return lexer;
 })();

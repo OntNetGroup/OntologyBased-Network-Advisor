@@ -105,22 +105,32 @@
     </script>
     
     <div style="border: 1px solid black; width:400px;"><textarea id="code" name="code">
-layer:a,b,c,e;
+/*layer:a,b,c,e;
 
 
 client(a,b);	  
 client(c,b);	
 client(e,b);
-	  
+	*/  
 input_int:in1,in2;
 output_int:out;
 output:pout;
-
+/*
 connects(out,in1);
 binds(out,in2);
 maps(out,pout);	  
+*/
+equip:e1,e2;
+site:st;
+tf: tf1;
+af:af1;
 
-a{b};
+e1{in1,in2};
+
+e1{tf1,af1};
+
+st{e1};	  
+	  
 	  
 	  
 	  </textarea>
