@@ -1,0 +1,40 @@
+[
+        {
+            "title":"UML Class Diagram",
+            "namespace":"http://b3mn.org/stencilset/UML2.2Class#",
+            "description":"UML 2.2 Class Diagrams",
+            "uri":"/uml2.2/uml2.2.json",
+            "icon_url":"/uml2.2/uml2.2class.png",
+            "visible":true
+
+        },
+        {
+            "title":"OntoUML Diagram",
+            "namespace":"http://nemo.inf.ufes.br/stencilset/OntoUML#",
+            "description":"OntoUML Diagrams",
+            "uri":"/ontouml/ontouml.json",
+            "icon_url":"/ontouml/uml2.2class.png",
+            "visible":true
+
+        },
+        
+        {
+            "title":"Transport Network Diagram",
+            "namespace":"http://b3mn.org/stencilset/transportnetwork#",
+            "description":"Transport Network Diagrams",
+            "uri":"/transportnetwork/transportnetwork.json",
+            "icon_url":"/uml2.2/uml2.2class.png",
+            "visible":true
+
+        },
+        
+        {
+            "title":"Transport Network Diagram",
+            "namespace":"http://b3mn.org/stencilset/nova#",
+            "description":"Transport Network Diagrams",
+            "uri":"/nova/nova.json",
+            "icon_url":"/nova/transportnetwork.png",
+            "visible":true
+
+        }
+]
