@@ -1,7 +1,102 @@
 {
-    "title": "Nova",
-    "namespace": "http://b3mn.org/stencilset/nova#",
+    "title": "Network",
+    "namespace": "http://b3mn.org/stencilset/transportnetwork#",
     "description": "Simple stencil set for Let's dance diagrams.",
+    "propertyPackages": [
+        {
+            "name": "transporFunctionsProperties",
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                },
+                {
+                    "id": "Latitude Degree",
+                    "type": "String",
+                    "title": "Lat Deg",
+                    "value": "",
+                    "description": "Latitude Degree",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                },
+                {
+                    "id": "Latitude Minute",
+                    "type": "String",
+                    "title": "Lat Min",
+                    "value": "",
+                    "description": "Latitude Minute",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                },
+                {
+                    "id": "Latitude Second",
+                    "type": "String",
+                    "title": "Lat Sec",
+                    "value": "",
+                    "description": "Latitude Second",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                },
+                {
+                    "id": "Longitude Degree",
+                    "type": "String",
+                    "title": "Lon Deg",
+                    "value": "",
+                    "description": "Longitude Degree",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                },
+                {
+                    "id": "Longitude Minute",
+                    "type": "String",
+                    "title": "Lon Min",
+                    "value": "",
+                    "description": "Longitude Minute",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                },
+                {
+                    "id": "Longitude Second",
+                    "type": "String",
+                    "title": "Lon Sec",
+                    "value": "",
+                    "description": "Longitude Second",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                },
+                {
+                    "id": "AliasLocation",
+                    "type": "String",
+                    "title": "AliasLocation",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
+            ]
+        }
+    ],
     "stencils": [
         {
             "type": "node",
@@ -29,10 +124,10 @@
             ],
             "properties": [
                 {
-                    "id": "className",
+                    "id": "Name",
                     "type": "String",
                     "title": "Name",
-                    "value": "Name",
+                    "value": "",
                     "description": "",
                     "readonly": false,
                     "optional": true,
@@ -51,6 +146,19 @@
             "icon": "edge.binds.png",
             "roles": [
                 "binds"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
@@ -63,6 +171,44 @@
             "icon": "edge.clients.png",
             "roles": [
                 "clients"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
+            ]
+        },
+        {
+            "type": "edge",
+            "id": "Maps",
+            "title": "Maps",
+            "groups": [],
+            "description": "A weak precedes edges",
+            "view": "edge.maps.svg",
+            "icon": "edge.maps.png",
+            "roles": [
+                "maps"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
@@ -71,10 +217,133 @@
             "title": "Connects",
             "groups": [],
             "description": "A weak precedes edges",
-            "view": "edge.weakprecedes.svg",
+            "view": "edge.connects.svg",
             "icon": "edge.weakprecedes.png",
             "roles": [
                 "connect"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
+            ]
+        },
+        {
+            "type": "node",
+            "id": "Equipament",
+            "title": "Equipament",
+            "groups": [
+            	"Extensions"
+            	],
+            "description": "",
+            "view": "node.equipament.svg",
+            "icon": "node.equipament.png",
+            "roles": [
+                "equipament"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
+            ]
+        },
+		{
+            "type": "node",
+            "id": "Site",
+            "title": "Site",
+            "groups": [
+            	"Extensions"
+            	],
+            "description": "",
+            "view": "node.site.svg",
+            "icon": "node.layer.png",
+            "roles": [
+                "site"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
+            ]
+        },
+		{
+            "type": "node",
+            "id": "Input Interface",
+            "title": "Input Interface",
+            "groups": [
+            	"Extensions"
+            	],
+            "description": "",
+            "view": "node.inputinterface.svg",
+            "icon": "node.inputinterface.png",
+            "roles": [
+                "interface",
+                "inputinterface"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
+            ]
+        },
+        {
+            "type": "node",
+            "id": "Output Interface",
+            "title": "Output Interface",
+            "groups": [
+            	"Extensions"
+            	],
+            "description": "",
+            "view": "node.outputinterface.svg",
+            "icon": "node.outputinterface.png",
+            "roles": [
+                "interface",
+                "outputinterface"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
@@ -138,8 +407,8 @@
             "view": "node.output.svg",
             "icon": "node.output.png",
             "roles": [
-                "interaction",
-                "ports"
+                "ports",
+                "output"
             ],
             "properties": [
                 {
@@ -191,40 +460,84 @@
                 "interaction",
                 "transportfunctions"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
+            ]
+        },
+        {
+            "type": "node",
+            "id": "LPF",
+            "title": "LPF",
+            "groups": [
+                "Transport Functions"
+            ],
+            "description": "",
+            "view": "node.lpf.svg",
+            "icon": "node.lpf.png",
+            "roles": [
+                "interaction",
+                "transportfunctions",
+                "lpf"
+            ],
+            "propertyPackages": [
+                "transporFunctionsProperties"
+            ]
+        },
+        {
+            "type": "node",
+            "id": "Source LPF",
+            "title": "Source LPF",
+            "groups": [
+                "Transport Functions"
+            ],
+            "description": "",
+            "view": "node.lpfsource.svg",
+            "icon": "node.lpfsource.png",
+            "roles": [
+                "interaction",
+                "transportfunctions",
+                "lpf"
+            ],
+            "propertyPackages": [
+                "transporFunctionsProperties"
+            ]
+        },
+        {
+            "type": "node",
+            "id": "Sink LPF",
+            "title": "Sink LPF",
+            "groups": [
+                "Transport Functions"
+            ],
+            "description": "",
+            "view": "node.lpfsink.svg",
+            "icon": "node.lpfsink.png",
+            "roles": [
+                "interaction",
+                "transportfunctions",
+                "lpf"
+            ],
+            "propertyPackages": [
+                "transporFunctionsProperties"
+            ]
+        },
+        {
+            "type": "node",
+            "id": "Bidirectional LPF",
+            "title": "Bidirectional LPF",
+            "groups": [
+                "Transport Functions"
+            ],
+            "description": "",
+            "view": "node.lpfbi.svg",
+            "icon": "node.lpfbi.png",
+            "roles": [
+                "interaction",
+                "transportfunctions",
+                "lpf"
+            ],
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -240,42 +553,10 @@
             "roles": [
                 "interaction",
                 "transportfunctions",
-                "matrix"
+                "matriz"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -286,47 +567,15 @@
                 "Transport Functions"
             ],
             "description": "",
-            "view": "node.matriz.svg",
+            "view": "node.matrizuni.svg",
             "icon": "node.matriz.png",
             "roles": [
                 "interaction",
                 "transportfunctions",
-                "matrix"
+                "matriz"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -342,42 +591,10 @@
             "roles": [
                 "interaction",
                 "transportfunctions",
-                "matrix"
+                "matriz"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -393,42 +610,10 @@
             "roles": [
                 "interaction",
                 "transportfunctions",
-                "matrix"
+                "matriz"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -444,42 +629,10 @@
             "roles": [
                 "interaction",
                 "transportfunctions",
-                "matrix"
+                "matriz"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -496,40 +649,8 @@
                 "interaction",
                 "transportfunctions"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -540,47 +661,15 @@
                 "Transport Functions"
             ],
             "description": "",
-            "view": "node.af.svg",
-            "icon": "node.af.png",
+            "view": "node.tf.svg",
+            "icon": "node.ttf.png",
             "roles": [
                 "interaction",
                 "transportfunctions",
                 "af"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -591,47 +680,15 @@
                 "Transport Functions"
             ],
             "description": "",
-            "view": "node.afsource.svg",
-            "icon": "node.afsource.png",
+            "view": "node.tfsource.svg",
+            "icon": "node.ttfsource.png",
             "roles": [
                 "interaction",
                 "transportfunctions",
                 "af"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -642,47 +699,15 @@
                 "Transport Functions"
             ],
             "description": "",
-            "view": "node.afsink.svg",
-            "icon": "node.afsink.png",
+            "view": "node.tfsink.svg",
+            "icon": "node.ttfsink.png",
             "roles": [
                 "interaction",
                 "transportfunctions",
                 "af"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -693,295 +718,91 @@
                 "Transport Functions"
             ],
             "description": "",
-            "view": "node.afbi.svg",
-            "icon": "node.afbi.png",
+            "view": "node.tfbi.svg",
+            "icon": "node.ttfbi.png",
             "roles": [
                 "interaction",
                 "transportfunctions",
                 "af"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
             "type": "node",
-            "id": "TTF",
-            "title": "TTF",
+            "id": "TF",
+            "title": "TF",
             "groups": [
                 "Transport Functions"
             ],
             "description": "",
-            "view": "node.ttf.svg",
-            "icon": "node.ttf.png",
+            "view": "node.af.svg",
+            "icon": "node.af.png",
             "roles": [
                 "interaction",
                 "transportfunctions",
                 "ttf"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "Type",
-                    "type": "String",
-                    "title": "Type",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
             "type": "node",
-            "id": "Source TTF",
-            "title": "Source TTF",
+            "id": "Source TF",
+            "title": "Source TF",
             "groups": [
                 "Transport Functions"
             ],
             "description": "",
-            "view": "node.ttfsource.svg",
-            "icon": "node.ttfsource.png",
+            "view": "node.afsource.svg",
+            "icon": "node.afsource.png",
             "roles": [
                 "interaction",
                 "transportfunctions",
                 "ttf"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "Type",
-                    "type": "String",
-                    "title": "Type",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
             "type": "node",
-            "id": "Sink TTF",
-            "title": "Sink TTF",
+            "id": "Sink TF",
+            "title": "Sink TF",
             "groups": [
                 "Transport Functions"
             ],
             "description": "",
-            "view": "node.ttfsink.svg",
-            "icon": "node.ttfsink.png",
+            "view": "node.afsink.svg",
+            "icon": "node.afsink.png",
             "roles": [
                 "interaction",
                 "transportfunctions",
                 "ttf"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "Type",
-                    "type": "String",
-                    "title": "Type",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
             "type": "node",
-            "id": "Bidirectional TTF",
-            "title": "Bidirectional TTF",
+            "id": "Bidirectional TF",
+            "title": "Bidirectional TF",
             "groups": [
                 "Transport Functions"
             ],
             "description": "",
-            "view": "node.ttfbi.svg",
-            "icon": "node.ttfbi.png",
+            "view": "node.afbi.svg",
+            "icon": "node.afbi.png",
             "roles": [
                 "interaction",
                 "transportfunctions",
                 "ttf"
             ],
-            "properties": [
-                {
-                    "id": "Name",
-                    "type": "String",
-                    "title": "Name",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "Type",
-                    "type": "String",
-                    "title": "Type",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "GeoLocation",
-                    "type": "String",
-                    "title": "GeoLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                },
-                {
-                    "id": "AliasLocation",
-                    "type": "String",
-                    "title": "AliasLocation",
-                    "value": "",
-                    "description": "",
-                    "readonly": false,
-                    "optional": true,
-                    "length": "",
-                    "refToView": "messageType"
-                }
+            "propertyPackages": [
+                "transporFunctionsProperties"
             ]
         },
         {
@@ -992,41 +813,80 @@
                 "Reference Points"
             ],
             "description": "A weak precedes edges",
-            "view": "node.referencepoints.svg",
-            "icon": "node.useCase.png",
+            "view": "node.referencepointsAP.svg",
+            "icon": "node.referencepoint.png",
             "roles": [
                 "interaction",
                 "referentePoints"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
             "type": "node",
-            "id": "CP",
-            "title": "CP",
+            "id": "FP",
+            "title": "FP",
             "groups": [
                 "Reference Points"
             ],
             "description": "A weak precedes edges",
-            "view": "node.referencepoints.svg",
-            "icon": "node.useCase.png",
+            "view": "node.referencepointsFP.svg",
+            "icon": "node.referencepoint.png",
             "roles": [
                 "interaction",
                 "referentePoints"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
             "type": "node",
-            "id": "TCP",
-            "title": "TCP",
+            "id": "FEP",
+            "title": "FEP",
             "groups": [
                 "Reference Points"
             ],
             "description": "A weak precedes edges",
-            "view": "node.referencepoints.svg",
-            "icon": "node.useCase.png",
+            "view": "node.referencepointsFEP.svg",
+            "icon": "node.referencepoint.png",
             "roles": [
                 "interaction",
                 "referentePoints"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
@@ -1042,21 +902,47 @@
             "roles": [
                 "controlflow",
                 "transportEntity"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
             "type": "edge",
-            "id": "Trail",
-            "title": "Trail",
+            "id": "ATE",
+            "title": "ATE",
             "groups": [
                 "Transport Entity"
             ],
             "description": "A weak precedes edges",
-            "view": "edge.transportentity.svg",
+            "view": "edge.ate.svg",
             "icon": "edge.transportentity.png",
             "roles": [
                 "controlflow",
                 "transportEntity"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
@@ -1067,11 +953,24 @@
                 "Transport Entity"
             ],
             "description": "A weak precedes edges",
-            "view": "edge.transportentity.svg",
+            "view": "edge.nc.svg",
             "icon": "edge.transportentity.png",
             "roles": [
                 "controlflow",
                 "transportEntity"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
@@ -1082,11 +981,24 @@
                 "Transport Entity"
             ],
             "description": "A weak precedes edges",
-            "view": "edge.transportentity.svg",
+            "view": "edge.lc.svg",
             "icon": "edge.transportentity.png",
             "roles": [
                 "controlflow",
                 "transportEntity"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
@@ -1097,26 +1009,52 @@
                 "Transport Entity"
             ],
             "description": "A weak precedes edges",
-            "view": "edge.transportentity.svg",
+            "view": "edge.mc.svg",
             "icon": "edge.transportentity.png",
             "roles": [
                 "controlflow",
                 "transportEntity"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         },
         {
             "type": "edge",
-            "id": "SNC",
-            "title": "SNC",
+            "id": "CFTE",
+            "title": "CFTE",
             "groups": [
                 "Transport Entity"
             ],
             "description": "A weak precedes edges",
-            "view": "edge.transportentity.svg",
+            "view": "edge.cfte.svg",
             "icon": "edge.transportentity.png",
             "roles": [
                 "controlflow",
                 "transportEntity"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
             ]
         }
     ],
@@ -1159,6 +1097,15 @@
                 ]
             },
             {
+                "role": "connect",
+                "connects": [
+                    {
+                        "from": "outputinterface",
+                        "to": "inputinterface"
+                    }
+                ]
+            },
+            {
                 "role": "binds",
                 "connects": [
                     {
@@ -1176,7 +1123,7 @@
                     }
                 ]
             },
-			{
+            {
                 "role": "binds",
                 "connects": [
                     {
@@ -1212,7 +1159,7 @@
                     }
                 ]
             },
-                        {
+            {
                 "role": "binds",
                 "connects": [
                     {
@@ -1229,7 +1176,34 @@
                         "to": "ports"
                     }
                 ]
-            }
+            },
+            {
+                "role": "binds",
+                "connects": [
+                    {
+                        "from": "outputinterface",
+                        "to": "inputinterface"
+                    }
+                ]
+            },
+            {
+                "role": "maps",
+                "connects": [
+                    {
+                        "from": "outputinterface",
+                        "to": "output"
+                    }
+                ]
+            },
+            {
+                "role": "maps",
+                "connects": [
+                    {
+                        "from": "inputinterface",
+                        "to": "input"
+                    }
+                ]
+            }          
         ],
         "containmentRules": [
             {
@@ -1239,7 +1213,10 @@
                     "transportfunctions",
                     "referentePoints",
                     "transportEntity",
-                    "layer"
+                    "layer",
+                    "equipament",
+                    "interface",
+                    "site"
                 ]
             },
             {
@@ -1248,7 +1225,22 @@
                     "ports",
                     "transportfunctions",
                     "referentePoints",
-                    "transportEntity"
+                    "transportEntity",
+                    "equipament",
+                    "interface",
+                    "site"
+                ]
+            },
+            {
+                "role": "site",
+                "contains": [
+                    "equipament"
+                ]
+            },
+            {
+                "role": "lpf",
+                "contains": [
+                    "lpf"
                 ]
             },
             {
@@ -1264,11 +1256,11 @@
                 ]
             },
             {
-                "role": "matrix",
+                "role": "matriz",
                 "contains": [
-                    "matrix"
+                    "matriz"
                 ]
-            }          
+            }
         ]
     }
 }

@@ -6,12 +6,13 @@
    	height="60"
    	version="1.0">
   	<g
-     	id="trapezio">
+     	id="triangle">
     	 <polygon  
 		 oryx:anchors="top bottom left right"
-    	 points="50,15 150,15 125,75 75,75"
+    	 points="60,75 140,75 100,150"
     	 stroke-width="2" 
     	 stroke="black" 
     	 fill = "#fdaa9d"/>
+     	<text font-size="12" id="className" x="100" y="100" oryx:align="middle center" oryx:anchors="top" stroke="black">sk-tf</text>
   	</g>
 </svg>

@@ -191,6 +191,10 @@
 								class="hidden-sm"> Export OWL File</span></a></li>
 						<li><a href="/oryx" target="_blank"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Equipment Studio</span></a></li>
+						<li><a href="/tnokco/newEquipment"><i class="icon-eye-open"></i><span
+								class="hidden-sm"> New Equipments</span></a></li>
+						<li><a href="/tnokco/provisioning"><i class="icon-eye-open"></i><span
+								class="hidden-sm"> Provisioning</span></a></li>
 						<li><a href="/tnokco/faq" class=""><i class="icon-eye-open"></i><span
 								class="hidden-sm"> FAQ</span></a></li>
 					</ul>

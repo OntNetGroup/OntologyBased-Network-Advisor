@@ -13,6 +13,6 @@
       stroke-width="2" 
       stroke="black" 
       fill = "#fdaa9d"/>
-      <text font-size="12" id="className" x="60" y="15" oryx:align="middle center" stroke="black"></text>
+	       <text font-size="12" id="className" x="73" y="25" oryx:align="middle center" oryx:anchors="top" stroke="black">input</text>
 	 </g>
 </svg>

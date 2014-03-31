@@ -35,14 +35,6 @@
 	   		stroke-width="0"
 	   		fill="none"
        		oryx:resize="horizontal vertical"/>
-      	<text 
-      		id="text"
-      		font-size="12" 
-      		x="50" 
-      		y="25"
-      		stroke="black" 
-      		oryx:align="middle center"
-      		oryx:fittoelem="text_frame">
-      	</text>
+	       <text font-size="12" id="className" x="50" y="25" oryx:align="middle center" oryx:anchors="top" stroke="black">subnetwork</text>
   	</g>
 </svg>

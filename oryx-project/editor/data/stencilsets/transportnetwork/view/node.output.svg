@@ -13,5 +13,6 @@
       stroke-width="2" 
       stroke="black" 
       fill = "#c7f4b6"/>
+	       <text font-size="12" id="className" x="75" y="25" oryx:align="middle center" oryx:anchors="top" stroke="black">output</text>
 	 </g>
 </svg>

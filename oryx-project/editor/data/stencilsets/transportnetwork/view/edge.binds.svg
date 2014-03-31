@@ -11,6 +11,7 @@
 	</defs> 
    <g>
    	<path d="M50 50 L100 50" stroke="red" fill="none" 
-		stroke-width="2"/> 
+		stroke-width="2" marker-end="url(#arrowEnd)" /> 
+		<text id="name" x="0" y="0" oryx:edgePosition="midTop">binds</text>
    </g>
 </svg>

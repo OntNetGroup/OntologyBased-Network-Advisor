@@ -12,5 +12,6 @@
    <g>
    	<path d="M50 50 L100 50" stroke="black" fill="none" 
 		stroke-width="2" stroke-dasharray="3, 4" /> 
+		<text id="name" x="0" y="0" oryx:edgePosition="midTop">transport entity</text>
    </g>
 </svg>
