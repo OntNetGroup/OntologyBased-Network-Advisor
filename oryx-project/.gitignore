@@ -1,0 +1,14 @@
+bin/**/*
+war/**/*
+dist/**/*
+build/**/*
+war/
+dist/
+build/
+bin/
+build.properties
+*.classpath
+.classpath
+*.properties
+build.properties
+*.swp
