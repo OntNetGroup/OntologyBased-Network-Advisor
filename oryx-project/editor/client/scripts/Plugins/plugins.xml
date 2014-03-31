@@ -4,7 +4,7 @@
 
 		<!-- plugins for OntoUML editor -->
 	    <plugin source="ontouml.js" name="ORYX.Plugins.OntoUML"/>
-		<plugin source="condelExport.js" name="ORYX.Plugins.condelExport"/>
+		<plugin source="sindelExport.js" name="ORYX.Plugins.sindelExport"/>
 		<plugin source="toolbar.js" name="ORYX.Plugins.Toolbar" core="true" />
 		<!-- <plugin source="toolbar2.js" name="ORYX.Plugins.Toolbar2" />-->
 		<plugin source="shapemenu.js" name="ORYX.Plugins.ShapeMenuPlugin" core="true" />

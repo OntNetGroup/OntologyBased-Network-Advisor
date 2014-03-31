@@ -693,10 +693,10 @@ ORYX.I18N.RDFExport.group = "Export";
 ORYX.I18N.RDFExport.rdfExport = "Save as RDF";
 ORYX.I18N.RDFExport.rdfExportDescription = "Exports current model to the XML serialization defined for the Resource Description Framework (RDF)";
 
-if(!ORYX.I18N.condelExport) ORYX.I18N.condelExport = {};
-ORYX.I18N.condelExport.group = "Export";
-ORYX.I18N.condelExport.name = "Save as Condel";
-ORYX.I18N.condelExport.desc = "Export current model to Condel";
+if(!ORYX.I18N.sindelExport) ORYX.I18N.sindelExport = {};
+ORYX.I18N.sindelExport.group = "Export";
+ORYX.I18N.sindelExport.name = "Save as Sindel";
+ORYX.I18N.sindelExport.desc = "Export current model to Sindel";
 
 /** New Language Properties: 15.05.2009*/
 if(!ORYX.I18N.SyntaxChecker.BPMN) ORYX.I18N.SyntaxChecker.BPMN={};
