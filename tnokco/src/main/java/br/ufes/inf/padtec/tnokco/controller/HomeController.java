@@ -81,18 +81,9 @@ public class HomeController {
 			request.getSession().removeAttribute("errorMensage");
 			request.getSession().removeAttribute("loadOk");
 
-			//load g800
-			//
-
+			//Initializing variables
 			Factory = new FactoryModel();
 			Repository = Factory.GetRepository();
-			String path = "http://localhost:8080/tnokco/Assets/owl/g805.owl"; 
-
-			// Load Model
- 
-			Model = Repository.Open(path);
-			tmpModel = Repository.Open(path);
-			NS = Repository.getNameSpace(Model);
 
 			return "index";	//View to return
 		} else {

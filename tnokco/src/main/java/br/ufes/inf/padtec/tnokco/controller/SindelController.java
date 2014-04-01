@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,14 +16,9 @@ import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.IFactory;
 import br.ufes.inf.nemo.okco.model.IRepository;
-
-
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
-
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.reasoner.Reasoner;
 
 @Controller
 public class SindelController {
@@ -37,7 +31,19 @@ public class SindelController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/sindel")
 	public String sindel(HttpSession session, HttpServletRequest request) {
+		//load g800
+		//
 
+//		HomeController.Factory = new FactoryModel();
+//		HomeController.Repository = HomeController.Factory.GetRepository();
+		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
+
+		// Load Model
+
+		HomeController.Model = HomeController.Repository.Open(path);
+		HomeController.tmpModel = HomeController.Repository.Open(path);
+		HomeController.NS = HomeController.Repository.getNameSpace(HomeController.Model);
+		
 		//Get parameter with tells the sindel load from file or not
 
 		if(txtSindelCode == "")
@@ -74,7 +80,7 @@ public class SindelController {
 			Sindel2OWL so = new Sindel2OWL(HomeController.Model);
 			so.run(sindelCode);
 			DtoResultSindel dtoSindel = so.getDtoSindel();
-			
+					
 			HomeController.Model = dtoSindel.model;
 
 			/* Go to OKCo */
@@ -83,9 +89,14 @@ public class SindelController {
 			HomeController.ManagerInstances = new ManagerInstances(HomeController.Search, HomeController.FactoryInstances, HomeController.Model);
 
 			// Reasoning
-			Reasoner r = PelletReasonerFactory.theInstance().create();
-			HomeController.InfModel = ModelFactory.createInfModel(r, HomeController.Model);
+//			Reasoner r = PelletReasonerFactory.theInstance().create();
+//			HomeController.InfModel = ModelFactory.createInfModel(r, HomeController.Model);
 
+//			IReasoner Reasoner = HomeController.Factory.GetReasoner(EnumReasoner.HERMIT);
+//			HomeController.InfModel = Reasoner.run(HomeController.Model);
+			
+			HomeController.InfModel = dtoSindel.model;
+			
 			// Gets relations on model
 			HomeController.dtoSomeRelationsList = HomeController.Search.GetSomeRelations(HomeController.InfModel);
 			HomeController.dtoMinRelationsList = HomeController.Search.GetMinRelations(HomeController.InfModel);

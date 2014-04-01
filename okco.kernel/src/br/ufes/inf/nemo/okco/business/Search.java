@@ -860,9 +860,7 @@ public class Search {
 		//ResultSetFormatter.out(System.out, results, query);
 		
 		DtoDefinitionClass itemList = null;
-		
 		while (results.hasNext()) {
-			
 			QuerySolution row= results.next();
 		    RDFNode Source = row.get("x");
 		    RDFNode Relation = row.get("y");
