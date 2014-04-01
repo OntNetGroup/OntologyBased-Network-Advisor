@@ -564,7 +564,7 @@ ORYX.I18N.JSONSupport = {
     imp: {
         name: "Import from JSON",
         desc: "Imports a model from JSON",
-        group: "Export",
+        group: "Import",
         selectFile: "Select an JSON (.json) file or type in JSON to import it!",
         file: "File",
         btnImp: "Import",
@@ -575,7 +575,7 @@ ORYX.I18N.JSONSupport = {
     exp: {
         name: "Save as JSON",
         desc: "Exports current model to JSON",
-        group: "f"
+        group: "Export"
     }
 };
 
