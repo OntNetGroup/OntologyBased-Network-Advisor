@@ -53,7 +53,7 @@ public class Sindel2OWL {
 
 		//save owl reference
 		owlReference = owl;
-		
+
 		//Getting owl namespace
 		ClassNS = owlReference.getNsPrefixURI("");
 	}
@@ -63,26 +63,27 @@ public class Sindel2OWL {
 		s_parts = sindelCode.split("!");
 		for (String s_elements : s_parts) {
 			String[] element = s_elements.split("#");
-			if(element.length == 2){
-				if(element[0].equalsIgnoreCase("element")){
-					ElementsProcessor.processElements(model, ClassNS, IndNS, element[1]);
-				}else if(element[0].equalsIgnoreCase("composition")){
-					CompositionProcessor.processCompositions(model, ClassNS, IndNS, element[1]);
-				}else if(element[0].equalsIgnoreCase("binds")){
-					BindsProcessor.processBinds(model, ClassNS, IndNS, element[1]);
-				}else if(element[0].equalsIgnoreCase("connects")){
-					ConnectsProcessor.processCompositions(model, ClassNS, IndNS, element[1]);
-				}else if(element[0].equalsIgnoreCase("client")){
-					ClientProcessor.processClient(model, ClassNS, IndNS, element[1]);
-				}else if(element[0].equalsIgnoreCase("maps")){
-					MapsProcessor.processMaps(model, ClassNS, IndNS, element[1]);
-				}else if(element[0].equalsIgnoreCase("tf_location_str")){
-					AttributeProcessor.processLocationTFString(model, ClassNS, IndNS, element[1]);
-				}else if(element[0].equalsIgnoreCase("tf_location_geo")){
-					AttributeProcessor.processLocationTFGeolocalization(model, ClassNS, IndNS, element[1]);
-				}else if(element[0].equalsIgnoreCase("ttf_type")){
-					AttributeProcessor.processTypeTF(model, ClassNS, IndNS, element[1]);
-				}
+			if(element.length != 2){
+				continue;
+			}
+			if(element[0].equalsIgnoreCase("elements")){
+				ElementsProcessor.processElements(model, ClassNS, IndNS, element[1]);
+			}else if(element[0].equalsIgnoreCase("component_of")){
+				CompositionProcessor.processCompositions(model, ClassNS, IndNS, element[1]);
+			}else if(element[0].equalsIgnoreCase("binds")){
+				BindsProcessor.processBinds(model, ClassNS, IndNS, element[1]);
+			}else if(element[0].equalsIgnoreCase("connects")){
+				ConnectsProcessor.processCompositions(model, ClassNS, IndNS, element[1]);
+			}else if(element[0].equalsIgnoreCase("client")){
+				ClientProcessor.processClient(model, ClassNS, IndNS, element[1]);
+			}else if(element[0].equalsIgnoreCase("maps")){
+				MapsProcessor.processMaps(model, ClassNS, IndNS, element[1]);
+			}else if(element[0].equalsIgnoreCase("str_location")){
+				AttributeProcessor.processLocationTFString(model, ClassNS, IndNS, element[1]);
+			}else if(element[0].equalsIgnoreCase("geo_location")){
+				AttributeProcessor.processLocationTFGeolocalization(model, ClassNS, IndNS, element[1]);
+			}else if(element[0].equalsIgnoreCase("tf_type")){
+				AttributeProcessor.processTypeTF(model, ClassNS, IndNS, element[1]);
 			}
 		}
 
@@ -123,15 +124,15 @@ public class Sindel2OWL {
 		}
 		model.createAllDifferent(model.createList(lst.toArray(new RDFNode[]{})));
 	}
-	
-	
+
+
 	public static void main(String[] args) {
-		String sindelCode = "element#input:in_ODUj_Client_AF4,in_ODUj_Client_AF3,in_ODUj_Client_AF2,in_ODUj_Client_AF1;af:ODUj_Client_AF4,ODUj_Client_AF3,ODUj_Client_AF2,ODUj_Client_AF1;tf:ODUj_TTF4,ODUj_TTF3,ODUj_TTF2,ODUj_TTF1;output:out_ODUj_TTF4,out_ODUj_TTF3,out_ODUj_TTF2,out_ODUj_TTF1;!composition#ODUj_Client_AF1:in_ODUj_Client_AF1;ODUj_Client_AF2:in_ODUj_Client_AF2;ODUj_Client_AF3:in_ODUj_Client_AF3;ODUj_Client_AF4:in_ODUj_Client_AF4;ODUj_TTF1:out_ODUj_TTF1;ODUj_TTF2:out_ODUj_TTF2;ODUj_TTF3:out_ODUj_TTF3;ODUj_TTF4:out_ODUj_TTF4;!connects#!binds#0:ODUj_Client_AF1,ODUj_TTF1;1:ODUj_Client_AF2,ODUj_TTF2;2:ODUj_Client_AF3,ODUj_TTF3;3:ODUj_Client_AF4,ODUj_TTF4;!client#!tf_location_str#!tf_location_geo#!ttf_type#!";
+		String sindelCode = "elements#input:in_ODUj_Client_AF4,in_ODUj_Client_AF3,in_ODUj_Client_AF2,in_ODUj_Client_AF1;af:ODUj_Client_AF4,ODUj_Client_AF3,ODUj_Client_AF2,ODUj_Client_AF1;tf:ODUj_TTF4,ODUj_TTF3,ODUj_TTF2,ODUj_TTF1;output:out_ODUj_TTF4,out_ODUj_TTF3,out_ODUj_TTF2,out_ODUj_TTF1;!binds#ODUj_Client_AF1:ODUj_TTF1,ODUj_Client_AF2:ODUj_TTF2,ODUj_Client_AF3:ODUj_TTF3,ODUj_Client_AF4:ODUj_TTF4!connects#!maps#!client#!component_of#ODUj_Client_AF1:in_ODUj_Client_AF1;ODUj_Client_AF2:in_ODUj_Client_AF2;ODUj_Client_AF3:in_ODUj_Client_AF3;ODUj_Client_AF4:in_ODUj_Client_AF4;ODUj_TTF1:out_ODUj_TTF1;ODUj_TTF2:out_ODUj_TTF2;ODUj_TTF3:out_ODUj_TTF3;ODUj_TTF4:out_ODUj_TTF4!str_location!geo_location!tf_type!";
 		try{
 			Model model = FileManager.get().loadModel("g800.owl");
 			Sindel2OWL so = new Sindel2OWL(model);
 			so.run(sindelCode);
-			
+
 			DtoResultSindel dtoSindel = so.getDtoSindel();
 
 			File arquivo;   

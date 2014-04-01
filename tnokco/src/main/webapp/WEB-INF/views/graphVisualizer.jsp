@@ -4,38 +4,34 @@
 <title>Ontology Knowledge Complete - Graph Visualizer</title>
 
 <style>
-	#currentNode{ 
-		border: 1px solid #B8B8B8;
-		width: 300px;
-		height: 250px;
-				
-		padding-left: 15px;
-		padding-top: 15px;
-		top: 20px;
-		
-		overflow-y: auto;
-		max-width:290px;
-		max-height:210px;
-		
-		color: #fff;
-		background: #222 linear-gradient(#444, #222);
-		font-family:verdana,arial,sans-serif;
-		font-size:14px;		
-	}	
+#currentNode {
+	border: 1px solid #B8B8B8;
+	width: 300px;
+	height: 250px;
+	padding-left: 15px;
+	padding-top: 15px;
+	top: 20px;
+	overflow-y: auto;
+	max-width: 290px;
+	max-height: 210px;
+	color: #fff;
+	background: #222 linear-gradient(#444, #222);
+	font-family: verdana, arial, sans-serif;
+	font-size: 14px;
+}
 
-	#subtitle{
-		border: 1px solid #B8B8B8;
-		width: 270px;
-		height: 240px;
-		
-		padding-left: 10px;
-		padding-top: 10px;
-		overflow-y: auto;
-		background: #222 linear-gradient(#444, #222);						
-	}	
+#subtitle {
+	border: 1px solid #B8B8B8;
+	width: 270px;
+	height: 240px;
+	padding-left: 10px;
+	padding-top: 10px;
+	overflow-y: auto;
+	background: #222 linear-gradient(#444, #222);
+}
 </style>
 
-<script	src="Assets/js/jquery-1.10.2.min.js"></script>
+<script src="Assets/js/jquery-1.10.2.min.js"></script>
 <script src="Assets/js/graph/arbor.js"></script>
 <script src="Assets/js/graph/graphics.js"></script>
 <script src="Assets/js/graph/main.js"></script>
@@ -57,24 +53,24 @@
 	<%
 		int width  = (Integer)request.getSession().getAttribute("width");
 		out.println("<div style=\"width:"+(width+320)+"px\">");
-	%>	
-		<div style="float:left; border: 1px solid black;">
-			<%
+	%>
+	<div style="float: left; border: 1px solid black;">
+		<%
 				int height = (Integer)request.getSession().getAttribute("height");
 				out.println("<canvas id=\"viewport\" width=\""+width+"\" height=\""+height+"\"></canvas>");
 				
 			%>
-		</div>	
-		<div style="float:right;">
-			<div id="subtitle">
-				<%
+	</div>
+	<div style="float: right;">
+		<div id="subtitle">
+			<%
 					String subtitle = (String)request.getSession().getAttribute("subtitle");
-					out.println("<img id=\"subtitle_table\" src=\"Assets/img/gv_subtitles/"+subtitle+"\">");
-				%>				
-			</div>
-			<br>
-			<div id="currentNode">Select a node to visualize information about it.</div>
+					out.println("<img id=\"subtitle_table\" src=\"Assets/img/subtitles/"+subtitle+"\">");
+			%>
 		</div>
+		<br>
+		<div id="currentNode">Select a node to visualize information
+			about it.</div>
 	</div>
 
 	<script>
@@ -123,7 +119,6 @@
 	$('#currentNode').drags();
 	$('#subtitle').drags();
 	</script>
-	<!-- Just used in TNOKCO
 	<img id="AF_AZUL" src="shapes/AF_AZUL.png" hidden>
 	<img id="TTF_AZUL" src="shapes/TTF_AZUL.png" hidden>
 	<img id="SN_AZUL" src="shapes/SN_AZUL.png" hidden>
@@ -168,7 +163,6 @@
 	<img id="Datatype_ROXO" src="shapes/Datatype_ROXO.png" hidden>
 	<img id="Input_ROXO" src="shapes/Input_ROXO.png" hidden>
 	<img id="Output_ROXO" src="shapes/Output_ROXO.png" hidden>
-	-->
 
 </body>
 </html>

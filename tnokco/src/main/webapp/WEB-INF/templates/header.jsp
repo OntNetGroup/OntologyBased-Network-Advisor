@@ -185,6 +185,8 @@
 								class="hidden-sm">Start Page</span></a></li>
 						<li><a href="/tnokco/sindel"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Sindel Editor</span></a></li>
+						<li><a href="/tnokco/open_visualizator"><i class="icon-eye-open"></i><span	
+								class="hidden-sm"> Open Visualizator</span></a></li>
 						<li><a href="/tnokco/list"><i class="icon-dashboard"></i><span
 								class="hidden-sm"> OKCo</span></a></li>
 						<li><a href="/tnokco/getModel"><i class="icon-eye-open"></i><span

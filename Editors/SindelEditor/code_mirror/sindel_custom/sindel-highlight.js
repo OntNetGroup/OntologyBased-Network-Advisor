@@ -47,8 +47,8 @@ CodeMirror.defineMode("sindel", function(config, parserConfig) {
 	"cfte",
 	"layer",
 	"equip",
-	"input_int",
-	"output_int",
+	"in_int",
+	"out_int",
 	"site"
 
 ,	"location",

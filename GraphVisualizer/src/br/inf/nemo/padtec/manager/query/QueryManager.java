@@ -43,7 +43,6 @@ public class QueryManager {
 						" ?target  rdf:type owl:Class. " +		
 						"}" +
 						"}";
-		System.out.println("OUT: "+query);
 		return query;	
 	}
 
@@ -64,7 +63,6 @@ public class QueryManager {
 						" ?source rdf:type owl:Class . " +		
 						"}" +
 						"}";
-		System.out.println("IN: "+query);
 		return query;
 	}
 
@@ -84,7 +82,6 @@ public class QueryManager {
 						" ?property  rdf:type owl:DatatypeProperty. " +		
 						"} "
 						+ "}";
-		System.out.println("BTW: "+query);
 		return query;
 	}
 
@@ -107,7 +104,31 @@ public class QueryManager {
 						+ " ?inst ?owlclass ?individual "
 						+ " }"
 						+ " }";
-		System.out.println("ALL: "+query);
+		return query;
+	}
+
+	public static String getRelationsBetweenClass(String cls) {
+		String query = ""
+				+ " PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ " PREFIX  owl:  <http://www.w3.org/2002/07/owl#>"
+				+ " PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ " SELECT  DISTINCT  * "
+				+ " WHERE"
+				+ " {"
+				+ " {"
+				+ " ?source rdf:type owl:NamedIndividual . "
+				+ " ?source rdf:type <"+cls+"> "
+				+ " }"
+				+ " UNION "
+				+ "	{ "
+				+ " ?source ?property ?target . " 
+				+ " ?property rdf:type owl:ObjectProperty . " 
+				+ " } "
+				+ " UNION { " 
+				+"  ?source ?property ?target . " 
+				+"  ?property  rdf:type owl:DatatypeProperty. " 		
+				+"  } "
+				+"  }";
 		return query;
 	}
 

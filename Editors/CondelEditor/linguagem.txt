@@ -809,8 +809,8 @@
 'TT-SN_Sink_Connection'	return	'TT-SN_Sink_Connection'
 'TT-SN_Source_Connection'	return	'TT-SN_Source_Connection'
 
-'disjointWith' return 'disjointWith'
-'sameAs' return 'sameAs'
+'diff' return 'diff'
+'same' return 'same'
 
 /* Attributes */
 'location'		return 'location'
@@ -836,7 +836,7 @@
 ')'				return 'r_parenthesis'
 
 ('-')?[0-9]+	return 'graus'
-[A-Za-z_]+[0-9A-Za-z_]* return 'variavel'
+[A-Za-z_]+[0-9A-Za-z_]* return 'variable'
 [0-9]+					return 'n_int'
 
 "/*"(.|\n|\r)*?"*/"  /* ignore */           
@@ -854,41 +854,50 @@ expressions
     : Instruction  EOF | Instruction  expressions
     ;
 	
-declaracao_variaveis:
-	variavel | (variavel comma  declaracao_variaveis)
+variable_declaration:
+	variable | (variable comma  variable_declaration)
 ;
 
 Instruction:
-ClassDeclaration | AttributeDeclaration | RelationDeclaration | DisjointWithDeclaration | SameAsDeclaration
+IndividualDeclaration | AttributeDeclaration | RelationDeclaration | DifferentFromDeclaration | SameAsDeclaration
 ;
 
-ClassDeclaration:
-(Class colon declaracao_variaveis semicolon)
+IndividualDeclaration:
+(Classes colon variable_declaration semicolon)
 ;
 
 AttributeDeclaration:
-(variavel dot 'type' colon variavel semicolon) | 
-(variavel dot 'location' colon variavel semicolon) | 
+	TypeDeclaration | LocationDeclaration | CoordinateDeclaration
+;
 
-(variavel dot 'lat.deg' colon graus semicolon) | 
-(variavel dot 'lat.min' colon graus semicolon) | 
-(variavel dot 'lat.sec' colon graus semicolon) | 
+TypeDeclaration:
+	variable dot 'type' colon variable semicolon
+;
 
-(variavel dot 'lon.deg' colon graus semicolon) | 
-(variavel dot 'lon.min' colon graus semicolon) | 
-(variavel dot 'lon.sec' colon graus semicolon)
+LocationDeclaration:
+	variable dot 'location' colon variable semicolon
+;
+
+CoordinateDeclaration:
+(variable dot 'lat.deg' colon graus semicolon) | 
+(variable dot 'lat.min' colon graus semicolon) | 
+(variable dot 'lat.sec' colon graus semicolon) | 
+
+(variable dot 'lon.deg' colon graus semicolon) | 
+(variable dot 'lon.min' colon graus semicolon) | 
+(variable dot 'lon.sec' colon graus semicolon)
 ;
 
 RelationDeclaration:
-	variavel Relation declaracao_variaveis semicolon
+	variable Relation variable_declaration semicolon
 ;
 
-DisjointWithDeclaration:
-	variavel 'disjointWith' declaracao_variaveis semicolon
+DifferentFromDeclaration:
+	variable 'diff' variable_declaration semicolon
 ;
 
 SameAsDeclaration:
-	variavel 'sameAs' declaracao_variaveis semicolon
+	variable 'same' variable_declaration semicolon
 ;
 
 Relation:
@@ -1347,7 +1356,7 @@ Relation:
 | 'TT-SN_Source_Connection'	
 ;
 
-Class:
+Classes:
 'A_Sk_-_Trail_Termination_Sink_Connected'
 | 'A_Sk_-_Uni_Matrix_Connected'
 | 'A_Sk_-_Uni_Subnetwork_Connected'

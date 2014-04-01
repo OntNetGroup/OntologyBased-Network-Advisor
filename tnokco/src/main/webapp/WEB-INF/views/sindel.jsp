@@ -4,7 +4,7 @@
 	String sindelValue = (String)request.getSession().getAttribute("txtSindelCode");
 %>
 <%@include file="../templates/header.jsp"%>
-	
+
 <script>
 
 	$(document).ready(function () {
@@ -38,35 +38,18 @@
 			
 			event.preventDefault();
 			var sReturn = "";
-			try {
+			
+			
+			try {				
+				//clean up hashs
+				cleanUpHashs();			
 				
-				hashVar = new Array();
-				hashElement = new Array();
-				hashAux = new Array();
-				hashComposition = new Array();
-				hashUseVar = new Array();
-				hashRelationConnects = new Array();
-				hashRelationBinds = new Array();
-				hashRelationClient = new Array();
-				hashInvElement = new Array();
-				hashLocationTFStr = new Array();
-				hashLocationTFGeo = new Array();
-				hashTypeTTF = new Array();
-				document.getElementById('res').innerHTML="";
-				warning = "";
-
 				//Used to get the value of the CodeMirror editor
-				var result = parser.parse(editor.getValue());
+				parser.parse(editor.getValue());
 				
-				//document.getElementById('res2').innerHTML="";
-				sReturn += printHash(hashElement, "element");
-				sReturn += printHash(hashComposition, "composition");
-				sReturn += printHash(hashRelationConnects, "connects");
-				sReturn += printHash(hashRelationBinds, "binds");
-				sReturn += printHash(hashRelationClient, "client");
-				sReturn += printHash(hashLocationTFStr, "tf_location_str");
-				sReturn += printHash(hashLocationTFGeo, "tf_location_geo");
-				sReturn += printHash(hashTypeTTF, "ttf_type");
+				sReturn  = printHashTypeVar(hashTypeVar);								
+				sReturn += printHashRelations(hashRelation);
+				sReturn += printHashAttribute(hashAttribute);
 
 				//Verify warning
 				if(warning != ""){
@@ -125,7 +108,7 @@
 
 				var html = "<div class=\"alert alert-danger\">" +
 					"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-					"<strong>" + "</strong>"+ String(e) + 
+					"<strong>" + "</strong>"+ e.message + 
 				"</div>";
 	
 				$("#boxerro").prepend(html);
@@ -136,38 +119,97 @@
         
       }); // end document read
 	  
-	function printHash(hash,type){
-		
-		var s = type+"#";
-		for (var key in hash) {					
-			s += key+":"+hash[key];
-			s = s.substring(0,s.length)+";";
-		}
-		s+="!";
-		return s;
-	}
+      function cleanUpHashs(){
+  		currentLine = 0;
+  	 
+  		warning = "";
+  		 
+  		hashVarType = new Array();
+  		hashTypeVar = new Array();
+  		hashUsedRelation = new Array();
+
+  		hashUsedVariable = new Array();
+
+  		hashComposition = new Array();
+
+  		hashRelation = new Array();
+  		hashRelation["binds"] = new Array();
+  		hashRelation["connects"] = new Array();
+  		hashRelation["maps"] = new Array();
+  		hashRelation["client"] = new Array();
+  		hashRelation["component_of"] = new Array();
+
+  		hashAttribute = new Array();
+  		hashAttribute['str_location'] = new Array();
+  		hashAttribute['geo_location'] = new Array();
+  		hashAttribute['tf_type'] = new Array();
+  	}
+  	  
+  	function printHashTypeVar(hash){
+  		var s = "elements"+"#";
+  		
+  		for (var key in hash) {					
+  			s += key+":"+hash[key];
+  			s = s.substring(0,s.length)+";";
+  		}
+  		s+="!";
+  		return s;
+  	}
+  	
+  	function printHashRelations(hash){
+  		var s = "";
+  				
+  		for (var key in hash) {
+  			if(key == "component_of"){
+  				s += key+"#";
+  				for(var i = 0; i < hash[key].length; i++){
+  					s += hash[key][i]+";";
+  				}
+  				s = s.substring(0,s.length-1);
+  				s += "!";
+  			}else{
+  				s += key+"#";
+  				s += hash[key]+"!";						
+  			}
+  		}		
+  		return s;
+  	}
+  	
+  	function printHashAttribute(hash){
+  		var s = "";
+  				
+  		for (var key in hash) {			
+  			s += key+"#";
+  			for(var i = 0; i < hash[key].length; i++){
+  				s += hash[key][i]+";";
+  			}
+  			s = s.substring(0,s.length-1);
+  			s += "!";			
+  		}		
+  		return s;
+  	}
 
 	// Code Mirror
 	
 </script>
 
-	<div id="boxerro">
-	</div>
+<div id="boxerro"></div>
 
-	<h1>Sindel Editor</h1>
+<h1>Sindel Editor</h1>
 
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="box">
-				<div class="box-header">
-					<h2>
-						<i class="icon-edit"></i>Sindel input
-					</h2>
-					<div class="box-icon">
-						<a href="#" class="btn-setting"><i class="icon-wrench"></i></a> 
-						<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
-					</div>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="box">
+			<div class="box-header">
+				<h2>
+					<i class="icon-edit"></i>Sindel input
+				</h2>
+				<div class="box-icon">
+					<a href="#" class="btn-setting"><i class="icon-wrench"></i></a> <a
+						href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
 				</div>
+			</div>
+			<!-- 
 				<div class="box-content">
 				
 					<div class="tooltip-demo well">
@@ -195,8 +237,8 @@
 						</form>
 								 					  
 					</div>  
-		
-					<!--		
+			-->
+			<!--		
 					<div class="col-lg-5 col-md-5 col-sm-5">					
 						<div class="message-view" id="white-area">
 							<div class="message">				
@@ -218,16 +260,16 @@
 							</div>						
 						</div>					
 					</div>	-->
-					
-					<!-- ------------------- -->
-					<!-- Content Sindel here -->
-					<!-- ------------------- -->
-					<form id="sindelForm" method="POST" action="runSindel">
-					
-						<div style="border: 1px solid black; width:100%;">
-						
-							<!-- TEXTA AREA -->
-							<%
+
+			<!-- ------------------- -->
+			<!-- Content Sindel here -->
+			<!-- ------------------- -->
+			<form id="sindelForm" method="POST" action="runSindel">
+
+				<div style="border: 1px solid black; width: 100%;">
+
+					<!-- TEXTA AREA -->
+					<%
 								if(sindelValue == null)
 								{
 									out.println("<textarea id=\"code\" name=\"code\" style=\"width: 100%; padding:5px;\">");
@@ -240,13 +282,13 @@
 									
 								}
 							%>
-							<!-- TEXTA AREA -->
-						 	  
-						 	  <input type="button" class="btn btn-pre btn-load" value="Load file" />
-						 	  <input type="button" class="btn btn-pre btn-clean" value="Clean" />
-						 	  <input type="submit" class="btn btn-pre" value="Run" />					 	  
-						  
-						      <script>
+					<!-- TEXTA AREA -->
+
+					<input type="button" class="btn btn-pre btn-load" value="Load file" />
+					<input type="button" class="btn btn-pre btn-clean" value="Clean" />
+					<input type="submit" class="btn btn-pre" value="Run" />
+
+					<script>
 								CodeMirror.commands.autocomplete = function(cm) {
 							        CodeMirror.showHint(cm, CodeMirror.hint.sindel_hint);
 							      };
@@ -258,38 +300,52 @@
 							      });
 								  editor.setOption("theme", "neat");
 							    </script>
-							<div id="res">	
-							</div>
-							<div id="res2" style="border: 2px solid black;">					
-							</div>	
-							  
-							<!-- ------------------------ -->
-							<!-- END -Content Sindel here -->
-							<!-- ------------------------ -->
-		 
-							</div>
-					
-					</form>
-					
-					<div class="row">
-					  <div class="col-lg-12">
-						<h2>How can you use <i>Sindel?</i></h2>
-						<p>Description of Sindel language:</p>
-						<div class="tooltip-demo well">
-						  <p class="muted" style="margin-bottom: 0;">Tight pants next level keffiyeh <a href="#" data-rel="tooltip" data-original-title="first tooltip">you probably</a> haven't heard of them. Photo booth beard raw denim letterpress vegan messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie sustainable quinoa 8-bit american appadata-rel <a href="#" data-rel="tooltip" data-original-title="Another tooltip">have a</a> terry richardson vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four loko mcsweeney's cleanse vegan chambray. A <a href="#" data-rel="tooltip" data-original-title="Another one here too">really ironic</a> artisan whatever keytar, scenester farm-to-table banksy Austin <a href="#" data-rel="tooltip" data-original-title="The last tip!">twitter handle</a> freegan cred raw denim single-origin coffee viral.
-						  </p>
-						</div>                                  
-					  </div>
-				  	</div>			
-					
+					<div id="res"></div>
+					<div id="res2" style="border: 2px solid black;"></div>
+
+					<!-- ------------------------ -->
+					<!-- END -Content Sindel here -->
+					<!-- ------------------------ -->
+
 				</div>
-				
+
+			</form>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<h2>
+						How can you use <i>Sindel?</i>
+					</h2>
+					<p>Description of Sindel language:</p>
+					<div class="tooltip-demo well">
+						<p class="muted" style="margin-bottom: 0;">
+							Tight pants next level keffiyeh <a href="#" data-rel="tooltip"
+								data-original-title="first tooltip">you probably</a> haven't
+							heard of them. Photo booth beard raw denim letterpress vegan
+							messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie
+							sustainable quinoa 8-bit american appadata-rel <a href="#"
+								data-rel="tooltip" data-original-title="Another tooltip">have
+								a</a> terry richardson vinyl chambray. Beard stumptown, cardigans
+							banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four
+							loko mcsweeney's cleanse vegan chambray. A <a href="#"
+								data-rel="tooltip" data-original-title="Another one here too">really
+								ironic</a> artisan whatever keytar, scenester farm-to-table banksy
+							Austin <a href="#" data-rel="tooltip"
+								data-original-title="The last tip!">twitter handle</a> freegan
+							cred raw denim single-origin coffee viral.
+						</p>
+					</div>
+				</div>
 			</div>
-			
+
 		</div>
-		<!--/col-->
 
 	</div>
-	<!--/row-->
+
+</div>
+<!--/col-->
+
+</div>
+<!--/row-->
 
 <%@include file="../templates/footer.jsp"%>

@@ -35,103 +35,140 @@
 	$(document).ready(function () {
         $("button").click(function () {
 			try {
-				/*
-					initiate global variables
-				*/
-				hashVar = new Array();
-				hashElement = new Array();
-				hashAux = new Array();
-				hashComposition = new Array();
-				hashUseVar = new Array();
-				hashRelationConnects = new Array();
-				hashRelationBinds = new Array();
-				hashRelationClient = new Array();
-				hashInvElement = new Array();
-				hashLocationTFStr = new Array();
-				hashLocationTFGeo = new Array();
-				hashTypeTTF = new Array();
-				hashUsedInComposition = new Array();
-				warning = "";
-				
-				document.getElementById('res').innerHTML="";
-				//var result = sindel.parse($("input").val());		
+				document.getElementById('result').innerHTML = "";
+				document.getElementById('warning').innerHTML = "";
+				document.getElementById('error').innerHTML  = "";
+				cleanUpHashs();			
 				
 				//Used to get the value of the CodeMirror editor
 				var result = parser.parse(editor.getValue());
 				
-				document.getElementById('res2').innerHTML="";
-				printHash(hashElement, "element");
-				printHash(hashComposition, "composition");
-				printHash(hashRelationConnects, "connects");
-				printHash(hashRelationBinds, "binds");
-				printHash(hashRelationClient, "client");
-				printHash(hashLocationTFStr, "tf_location_str");
-				printHash(hashLocationTFGeo, "tf_location_geo");
-				printHash(hashTypeTTF, "ttf_type");
-				
+				document.getElementById('result').innerHTML  = printHashTypeVar(hashTypeVar);								
+				document.getElementById('result').innerHTML += printHashRelations(hashRelation);
+				document.getElementById('result').innerHTML += printHashAttribute(hashAttribute);
+
 				//Verify warning
 				if(warning != ""){
 					//Warning: mensagem
-					alert(warning);
+					document.getElementById('warning').innerHTML = warning;
 				}
 			}
 			catch (e) {
 				//Exception: erro durante a analise do parser
-				document.getElementById('res2').innerHTML ="";
-				document.getElementById('error').innerHTML = e.message;
-				//alert(String(e));					
+				document.getElementById('result').innerHTML = "";
+				document.getElementById('error').innerHTML = e.message;				
 			}
         });
-      });
+    });
 	  
-	function printHash(hash,type){
-		//var s = "<br>"+type+"#"+"<br>";
-		//for (var key in hash) {					
-		//	s += key+": "+hash[key];
-		//	s = s.substring(0,s.length)+";"+"<br>";
-		//}
-		//s+="!";
-		//document.getElementById('res').innerHTML+=s;
+	function cleanUpHashs(){
+		currentLine = 0;
+	 
+		warning = "";
+		 
+		hashVarType = new Array();
+		hashTypeVar = new Array();
+		hashUsedRelation = new Array();
+
+		hashUsedVariable = new Array();
+
+		hashComposition = new Array();
+
+		hashRelation = new Array();
+		hashRelation["binds"] = new Array();
+		hashRelation["connects"] = new Array();
+		hashRelation["maps"] = new Array();
+		hashRelation["client"] = new Array();
+		hashRelation["component_of"] = new Array();
+
+		hashAttribute = new Array();
+		hashAttribute['str_location'] = new Array();
+		hashAttribute['geo_location'] = new Array();
+		hashAttribute['tf_type'] = new Array();
+	}
+	  
+	function printHashTypeVar(hash){
+		var s = "elements"+"#";
 		
-		var s = type+"#";
 		for (var key in hash) {					
 			s += key+":"+hash[key];
 			s = s.substring(0,s.length)+";";
 		}
 		s+="!";
-		document.getElementById('res2').innerHTML+=s;
+		return s;
 	}
 	
+	function printHashRelations(hash){
+		var s = "";
+				
+		for (var key in hash) {
+			if(key == "component_of"){
+				s += key+"#";
+				for(var i = 0; i < hash[key].length; i++){
+					s += hash[key][i]+";";
+				}
+				s = s.substring(0,s.length-1);
+				s += "!";
+			}else{
+				s += key+"#";
+				s += hash[key]+"!";						
+			}
+		}		
+		return s;
+	}
+	
+	function printHashAttribute(hash){
+		var s = "";
+				
+		for (var key in hash) {			
+			s += key+"#";
+			for(var i = 0; i < hash[key].length; i++){
+				s += hash[key][i]+";";
+			}
+			s = s.substring(0,s.length-1);
+			s += "!";			
+		}		
+		return s;
+	}
     </script>
     
     <div style="border: 1px solid black; width:400px;"><textarea id="code" name="code">
-/*layer:a,b,c,e;
+layer:a,b,c,e;
 
 
 client(a,b);	  
 client(c,b);	
 client(e,b);
-	*/  
-input_int:in1,in2;
-output_int:out;
+	  
+in_int:in1,in2;
+out_int:out;
 output:pout;
-/*
+
+rp: r1,r2;
+
 connects(out,in1);
 binds(out,in2);
 maps(out,pout);	  
-*/
+
+
+
 equip:e1,e2;
 site:st;
 tf: tf1;
 af:af1;
 
+r1 = binds(tf1,pout);
+
 e1{in1,in2};
 
 e1{tf1,af1};
 
-st{e1};	  
+st{e1};
 	  
-	  
+	  sk-tf: tf2;
+tf1.type: OCh;
+tf1.location: (-5:54:21 , 44:31:14);
+tf2.location: Campinas;
 	  
 	  </textarea>
 
@@ -181,10 +218,11 @@ c1{tso,tsk};
       });
 	  editor.setOption("theme", "neat");
     </script>
-	<div id="res">
+	<div id="result" style="border: 2px solid black;">
 	
-	</div>
-	<div id="res2" style="border: 2px solid black;">
+	</div>	
+	
+	<div id="warning" style="border: 2px solid yellow;">
 	
 	</div>	
 	

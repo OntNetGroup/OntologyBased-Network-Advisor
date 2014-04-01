@@ -74,41 +74,42 @@
 var parser = (function(){
 var parser = {trace: function trace(){},
 yy: {},
-symbols_: {"error":2,"expressions":3,"Instruction":4,"EOF":5,"Element":6,"TransportFunction":7,"Port":8,"ReferencePoint":9,"TransportEntity":10,"layer":11,"TF_TTF":12,"TF_AF":13,"TF_M":14,"sn":15,"pm":16,"ttf":17,"so-ttf":18,"sk-ttf":19,"bi-ttf":20,"af":21,"so-af":22,"sk-af":23,"bi-af":24,"matrix":25,"uni-matrix":26,"so-matrix":27,"sk-matrix":28,"bi-matrix":29,"input":30,"output":31,"rp":32,"tcp":33,"ap":34,"cp":35,"te":36,"trail":37,"nc":38,"lc":39,"mc":40,"snc":41,"uso_variaveis":42,"variavel":43,"comma":44,"declaracao_variaveis":45,"ElementDeclaration":46,"ElementComposition":47,"SimpleRelation":48,"AssignableRelation":49,"AddLocationTF":50,"AddTypeTTF":51,"str_location":52,"geo_location":53,"dot":54,"location":55,"colon":56,"semicolon":57,"l_parenthesis":58,"graus":59,"r_parenthesis":60,"type":61,"Composition":62,"l_curly_bracket":63,"r_curly_bracket":64,"Rel":65,"binds":66,"connects":67,"client":68,"equal":69,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",11:"layer",15:"sn",16:"pm",17:"ttf",18:"so-ttf",19:"sk-ttf",20:"bi-ttf",21:"af",22:"so-af",23:"sk-af",24:"bi-af",25:"matrix",26:"uni-matrix",27:"so-matrix",28:"sk-matrix",29:"bi-matrix",30:"input",31:"output",32:"rp",33:"tcp",34:"ap",35:"cp",36:"te",37:"trail",38:"nc",39:"lc",40:"mc",41:"snc",43:"variavel",44:"comma",54:"dot",55:"location",56:"colon",57:"semicolon",58:"l_parenthesis",59:"graus",60:"r_parenthesis",61:"type",63:"l_curly_bracket",64:"r_curly_bracket",66:"binds",67:"connects",68:"client",69:"equal"},
-productions_: [0,[3,2],[3,2],[6,1],[6,1],[6,1],[6,1],[6,1],[7,1],[7,1],[7,1],[7,1],[7,1],[12,1],[12,1],[12,1],[12,1],[13,1],[13,1],[13,1],[13,1],[14,1],[14,1],[14,1],[14,1],[14,1],[8,1],[8,1],[9,1],[9,1],[9,1],[9,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[42,1],[42,3],[45,1],[45,3],[4,1],[4,1],[4,1],[4,1],[4,1],[4,1],[50,1],[50,1],[52,6],[53,10],[51,6],[46,4],[47,3],[62,3],[48,7],[65,1],[65,1],[65,1],[49,9]],
+symbols_: {"error":2,"expressions":3,"Instruction":4,"EOF":5,"Element":6,"TransportFunction":7,"AdaptationFunction":8,"LayerProcessorFunction":9,"Matrices":10,"sn":11,"pm":12,"Port":13,"ReferencePoint":14,"TransportEntity":15,"layer":16,"equip":17,"Interfaces":18,"site":19,"tf":20,"so-tf":21,"sk-tf":22,"bi-tf":23,"af":24,"so-af":25,"sk-af":26,"bi-af":27,"lpf":28,"so-lpf":29,"sk-lpf":30,"bi-lpf":31,"matrix":32,"uni-matrix":33,"so-matrix":34,"sk-matrix":35,"bi-matrix":36,"input":37,"output":38,"rp":39,"fep":40,"ap":41,"fp":42,"ate":43,"nc":44,"lc":45,"mc":46,"cfte":47,"in_int":48,"out_int":49,"ElementDeclaration":50,"ElementComposition":51,"SimpleRelation":52,"AssignableRelation":53,"AddLocationTF":54,"AddTypeTTF":55,"colon":56,"VariableDeclaration":57,"semicolon":58,"variavel":59,"comma":60,"RelationType":61,"l_parenthesis":62,"r_parenthesis":63,"binds":64,"connects":65,"client":66,"maps":67,"str_location":68,"geo_location":69,"dot":70,"location":71,"graus":72,"type":73,"Composition":74,"l_curly_bracket":75,"used_variables":76,"r_curly_bracket":77,"equal":78,"RelationTypeAssignable":79,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",11:"sn",12:"pm",16:"layer",17:"equip",19:"site",20:"tf",21:"so-tf",22:"sk-tf",23:"bi-tf",24:"af",25:"so-af",26:"sk-af",27:"bi-af",28:"lpf",29:"so-lpf",30:"sk-lpf",31:"bi-lpf",32:"matrix",33:"uni-matrix",34:"so-matrix",35:"sk-matrix",36:"bi-matrix",37:"input",38:"output",39:"rp",40:"fep",41:"ap",42:"fp",43:"ate",44:"nc",45:"lc",46:"mc",47:"cfte",48:"in_int",49:"out_int",56:"colon",58:"semicolon",59:"variavel",60:"comma",62:"l_parenthesis",63:"r_parenthesis",64:"binds",65:"connects",66:"client",67:"maps",70:"dot",71:"location",72:"graus",73:"type",75:"l_curly_bracket",77:"r_curly_bracket",78:"equal"},
+productions_: [0,[3,2],[3,2],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[7,1],[7,1],[7,1],[7,1],[8,1],[8,1],[8,1],[8,1],[9,1],[9,1],[9,1],[9,1],[10,1],[10,1],[10,1],[10,1],[10,1],[13,1],[13,1],[14,1],[14,1],[14,1],[14,1],[15,1],[15,1],[15,1],[15,1],[15,1],[18,1],[18,1],[4,1],[4,1],[4,1],[4,1],[4,1],[4,1],[50,4],[57,1],[57,3],[52,7],[61,1],[61,1],[61,1],[61,1],[54,1],[54,1],[68,6],[69,10],[55,6],[51,3],[74,3],[76,1],[76,3],[53,9],[79,1],[79,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */
 /**/) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
+currentLine = yylineno;
 switch (yystate) {
-case 38:usoVar(this.$);
+case 52:newElement($$[$0-3]);
 break;
-case 39:usoVar($$[$0-2]);
+case 53:newVariable(this.$);
 break;
-case 40:newVar(this.$);
+case 54:newVariable($$[$0-2]);
 break;
-case 41:newVar($$[$0-2]);
+case 55:newSimpleRelation($$[$0-6],$$[$0-4],$$[$0-2]);
 break;
-case 50:addLocationStr($$[$0-5],$$[$0-1]);
+case 62:addLocationStr($$[$0-5],$$[$0-1]);
 break;
-case 51:addLocationGeo($$[$0-9],$$[$0-4],$$[$0-2]);
+case 63:addLocationGeo($$[$0-9],$$[$0-4],$$[$0-2]);
 break;
-case 52:addType($$[$0-5],$$[$0-1]);
+case 64:addType($$[$0-5],$$[$0-1]);
 break;
-case 53:newElement($$[$0-3]);
+case 65:newElementComposition($$[$0-2]);
 break;
-case 54:newElementComposition($$[$0-2]);
+case 67:usedVariable(this.$);
 break;
-case 56:newRelation($$[$0-6],$$[$0-4],$$[$0-2]);
+case 68:usedVariable($$[$0-2]);
 break;
-case 60:newAssignableRelation($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-2]);
+case 69:newAssignableRelation($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-2]);
 break;
 }
 },
-table: [{3:1,4:2,6:9,7:14,8:15,9:16,10:17,11:[1,18],12:22,13:23,14:24,15:[1,25],16:[1,26],17:[1,39],18:[1,40],19:[1,41],20:[1,42],21:[1,43],22:[1,44],23:[1,45],24:[1,46],25:[1,47],26:[1,48],27:[1,49],28:[1,50],29:[1,51],30:[1,27],31:[1,28],32:[1,29],33:[1,30],34:[1,31],35:[1,32],36:[1,33],37:[1,34],38:[1,35],39:[1,36],40:[1,37],41:[1,38],43:[1,10],46:3,47:4,48:5,49:6,50:7,51:8,52:12,53:13,65:11,66:[1,19],67:[1,20],68:[1,21]},{1:[3]},{3:53,4:2,5:[1,52],6:9,7:14,8:15,9:16,10:17,11:[1,18],12:22,13:23,14:24,15:[1,25],16:[1,26],17:[1,39],18:[1,40],19:[1,41],20:[1,42],21:[1,43],22:[1,44],23:[1,45],24:[1,46],25:[1,47],26:[1,48],27:[1,49],28:[1,50],29:[1,51],30:[1,27],31:[1,28],32:[1,29],33:[1,30],34:[1,31],35:[1,32],36:[1,33],37:[1,34],38:[1,35],39:[1,36],40:[1,37],41:[1,38],43:[1,10],46:3,47:4,48:5,49:6,50:7,51:8,52:12,53:13,65:11,66:[1,19],67:[1,20],68:[1,21]},{5:[2,42],11:[2,42],15:[2,42],16:[2,42],17:[2,42],18:[2,42],19:[2,42],20:[2,42],21:[2,42],22:[2,42],23:[2,42],24:[2,42],25:[2,42],26:[2,42],27:[2,42],28:[2,42],29:[2,42],30:[2,42],31:[2,42],32:[2,42],33:[2,42],34:[2,42],35:[2,42],36:[2,42],37:[2,42],38:[2,42],39:[2,42],40:[2,42],41:[2,42],43:[2,42],66:[2,42],67:[2,42],68:[2,42]},{5:[2,43],11:[2,43],15:[2,43],16:[2,43],17:[2,43],18:[2,43],19:[2,43],20:[2,43],21:[2,43],22:[2,43],23:[2,43],24:[2,43],25:[2,43],26:[2,43],27:[2,43],28:[2,43],29:[2,43],30:[2,43],31:[2,43],32:[2,43],33:[2,43],34:[2,43],35:[2,43],36:[2,43],37:[2,43],38:[2,43],39:[2,43],40:[2,43],41:[2,43],43:[2,43],66:[2,43],67:[2,43],68:[2,43]},{5:[2,44],11:[2,44],15:[2,44],16:[2,44],17:[2,44],18:[2,44],19:[2,44],20:[2,44],21:[2,44],22:[2,44],23:[2,44],24:[2,44],25:[2,44],26:[2,44],27:[2,44],28:[2,44],29:[2,44],30:[2,44],31:[2,44],32:[2,44],33:[2,44],34:[2,44],35:[2,44],36:[2,44],37:[2,44],38:[2,44],39:[2,44],40:[2,44],41:[2,44],43:[2,44],66:[2,44],67:[2,44],68:[2,44]},{5:[2,45],11:[2,45],15:[2,45],16:[2,45],17:[2,45],18:[2,45],19:[2,45],20:[2,45],21:[2,45],22:[2,45],23:[2,45],24:[2,45],25:[2,45],26:[2,45],27:[2,45],28:[2,45],29:[2,45],30:[2,45],31:[2,45],32:[2,45],33:[2,45],34:[2,45],35:[2,45],36:[2,45],37:[2,45],38:[2,45],39:[2,45],40:[2,45],41:[2,45],43:[2,45],66:[2,45],67:[2,45],68:[2,45]},{5:[2,46],11:[2,46],15:[2,46],16:[2,46],17:[2,46],18:[2,46],19:[2,46],20:[2,46],21:[2,46],22:[2,46],23:[2,46],24:[2,46],25:[2,46],26:[2,46],27:[2,46],28:[2,46],29:[2,46],30:[2,46],31:[2,46],32:[2,46],33:[2,46],34:[2,46],35:[2,46],36:[2,46],37:[2,46],38:[2,46],39:[2,46],40:[2,46],41:[2,46],43:[2,46],66:[2,46],67:[2,46],68:[2,46]},{5:[2,47],11:[2,47],15:[2,47],16:[2,47],17:[2,47],18:[2,47],19:[2,47],20:[2,47],21:[2,47],22:[2,47],23:[2,47],24:[2,47],25:[2,47],26:[2,47],27:[2,47],28:[2,47],29:[2,47],30:[2,47],31:[2,47],32:[2,47],33:[2,47],34:[2,47],35:[2,47],36:[2,47],37:[2,47],38:[2,47],39:[2,47],40:[2,47],41:[2,47],43:[2,47],66:[2,47],67:[2,47],68:[2,47]},{56:[1,54]},{54:[1,57],62:55,63:[1,58],69:[1,56]},{58:[1,59]},{5:[2,48],11:[2,48],15:[2,48],16:[2,48],17:[2,48],18:[2,48],19:[2,48],20:[2,48],21:[2,48],22:[2,48],23:[2,48],24:[2,48],25:[2,48],26:[2,48],27:[2,48],28:[2,48],29:[2,48],30:[2,48],31:[2,48],32:[2,48],33:[2,48],34:[2,48],35:[2,48],36:[2,48],37:[2,48],38:[2,48],39:[2,48],40:[2,48],41:[2,48],43:[2,48],66:[2,48],67:[2,48],68:[2,48]},{5:[2,49],11:[2,49],15:[2,49],16:[2,49],17:[2,49],18:[2,49],19:[2,49],20:[2,49],21:[2,49],22:[2,49],23:[2,49],24:[2,49],25:[2,49],26:[2,49],27:[2,49],28:[2,49],29:[2,49],30:[2,49],31:[2,49],32:[2,49],33:[2,49],34:[2,49],35:[2,49],36:[2,49],37:[2,49],38:[2,49],39:[2,49],40:[2,49],41:[2,49],43:[2,49],66:[2,49],67:[2,49],68:[2,49]},{56:[2,3]},{56:[2,4]},{56:[2,5]},{56:[2,6]},{56:[2,7]},{58:[2,57]},{58:[2,58]},{58:[2,59]},{56:[2,8]},{56:[2,9]},{56:[2,10]},{56:[2,11]},{56:[2,12]},{56:[2,26]},{56:[2,27]},{56:[2,28]},{56:[2,29]},{56:[2,30]},{56:[2,31]},{56:[2,32]},{56:[2,33]},{56:[2,34]},{56:[2,35]},{56:[2,36]},{56:[2,37]},{56:[2,13]},{56:[2,14]},{56:[2,15]},{56:[2,16]},{56:[2,17]},{56:[2,18]},{56:[2,19]},{56:[2,20]},{56:[2,21]},{56:[2,22]},{56:[2,23]},{56:[2,24]},{56:[2,25]},{1:[2,1]},{1:[2,2]},{43:[1,61],45:60},{57:[1,62]},{65:63,66:[1,19],67:[1,20],68:[1,21]},{55:[1,65],61:[1,64]},{42:66,43:[1,67]},{43:[1,68]},{57:[1,69]},{44:[1,70],57:[2,40]},{5:[2,54],11:[2,54],15:[2,54],16:[2,54],17:[2,54],18:[2,54],19:[2,54],20:[2,54],21:[2,54],22:[2,54],23:[2,54],24:[2,54],25:[2,54],26:[2,54],27:[2,54],28:[2,54],29:[2,54],30:[2,54],31:[2,54],32:[2,54],33:[2,54],34:[2,54],35:[2,54],36:[2,54],37:[2,54],38:[2,54],39:[2,54],40:[2,54],41:[2,54],43:[2,54],66:[2,54],67:[2,54],68:[2,54]},{58:[1,71]},{56:[1,72]},{56:[1,73]},{64:[1,74]},{44:[1,75],64:[2,38]},{44:[1,76]},{5:[2,53],11:[2,53],15:[2,53],16:[2,53],17:[2,53],18:[2,53],19:[2,53],20:[2,53],21:[2,53],22:[2,53],23:[2,53],24:[2,53],25:[2,53],26:[2,53],27:[2,53],28:[2,53],29:[2,53],30:[2,53],31:[2,53],32:[2,53],33:[2,53],34:[2,53],35:[2,53],36:[2,53],37:[2,53],38:[2,53],39:[2,53],40:[2,53],41:[2,53],43:[2,53],66:[2,53],67:[2,53],68:[2,53]},{43:[1,61],45:77},{43:[1,78]},{43:[1,79]},{43:[1,80],58:[1,81]},{57:[2,55]},{42:82,43:[1,67]},{43:[1,83]},{57:[2,41]},{44:[1,84]},{57:[1,85]},{57:[1,86]},{59:[1,87]},{64:[2,39]},{60:[1,88]},{43:[1,89]},{5:[2,52],11:[2,52],15:[2,52],16:[2,52],17:[2,52],18:[2,52],19:[2,52],20:[2,52],21:[2,52],22:[2,52],23:[2,52],24:[2,52],25:[2,52],26:[2,52],27:[2,52],28:[2,52],29:[2,52],30:[2,52],31:[2,52],32:[2,52],33:[2,52],34:[2,52],35:[2,52],36:[2,52],37:[2,52],38:[2,52],39:[2,52],40:[2,52],41:[2,52],43:[2,52],66:[2,52],67:[2,52],68:[2,52]},{5:[2,50],11:[2,50],15:[2,50],16:[2,50],17:[2,50],18:[2,50],19:[2,50],20:[2,50],21:[2,50],22:[2,50],23:[2,50],24:[2,50],25:[2,50],26:[2,50],27:[2,50],28:[2,50],29:[2,50],30:[2,50],31:[2,50],32:[2,50],33:[2,50],34:[2,50],35:[2,50],36:[2,50],37:[2,50],38:[2,50],39:[2,50],40:[2,50],41:[2,50],43:[2,50],66:[2,50],67:[2,50],68:[2,50]},{44:[1,90]},{57:[1,91]},{60:[1,92]},{59:[1,93]},{5:[2,56],11:[2,56],15:[2,56],16:[2,56],17:[2,56],18:[2,56],19:[2,56],20:[2,56],21:[2,56],22:[2,56],23:[2,56],24:[2,56],25:[2,56],26:[2,56],27:[2,56],28:[2,56],29:[2,56],30:[2,56],31:[2,56],32:[2,56],33:[2,56],34:[2,56],35:[2,56],36:[2,56],37:[2,56],38:[2,56],39:[2,56],40:[2,56],41:[2,56],43:[2,56],66:[2,56],67:[2,56],68:[2,56]},{57:[1,94]},{60:[1,95]},{5:[2,60],11:[2,60],15:[2,60],16:[2,60],17:[2,60],18:[2,60],19:[2,60],20:[2,60],21:[2,60],22:[2,60],23:[2,60],24:[2,60],25:[2,60],26:[2,60],27:[2,60],28:[2,60],29:[2,60],30:[2,60],31:[2,60],32:[2,60],33:[2,60],34:[2,60],35:[2,60],36:[2,60],37:[2,60],38:[2,60],39:[2,60],40:[2,60],41:[2,60],43:[2,60],66:[2,60],67:[2,60],68:[2,60]},{57:[1,96]},{5:[2,51],11:[2,51],15:[2,51],16:[2,51],17:[2,51],18:[2,51],19:[2,51],20:[2,51],21:[2,51],22:[2,51],23:[2,51],24:[2,51],25:[2,51],26:[2,51],27:[2,51],28:[2,51],29:[2,51],30:[2,51],31:[2,51],32:[2,51],33:[2,51],34:[2,51],35:[2,51],36:[2,51],37:[2,51],38:[2,51],39:[2,51],40:[2,51],41:[2,51],43:[2,51],66:[2,51],67:[2,51],68:[2,51]}],
-defaultActions: {14:[2,3],15:[2,4],16:[2,5],17:[2,6],18:[2,7],19:[2,57],20:[2,58],21:[2,59],22:[2,8],23:[2,9],24:[2,10],25:[2,11],26:[2,12],27:[2,26],28:[2,27],29:[2,28],30:[2,29],31:[2,30],32:[2,31],33:[2,32],34:[2,33],35:[2,34],36:[2,35],37:[2,36],38:[2,37],39:[2,13],40:[2,14],41:[2,15],42:[2,16],43:[2,17],44:[2,18],45:[2,19],46:[2,20],47:[2,21],48:[2,22],49:[2,23],50:[2,24],51:[2,25],52:[2,1],53:[2,2],74:[2,55],77:[2,41],82:[2,39]},
+table: [{3:1,4:2,6:9,7:14,8:15,9:16,10:17,11:[1,18],12:[1,19],13:20,14:21,15:22,16:[1,23],17:[1,24],18:25,19:[1,26],20:[1,31],21:[1,32],22:[1,33],23:[1,34],24:[1,35],25:[1,36],26:[1,37],27:[1,38],28:[1,39],29:[1,40],30:[1,41],31:[1,42],32:[1,43],33:[1,44],34:[1,45],35:[1,46],36:[1,47],37:[1,48],38:[1,49],39:[1,50],40:[1,51],41:[1,52],42:[1,53],43:[1,54],44:[1,55],45:[1,56],46:[1,57],47:[1,58],48:[1,59],49:[1,60],50:3,51:4,52:5,53:6,54:7,55:8,59:[1,10],61:11,64:[1,27],65:[1,28],66:[1,29],67:[1,30],68:12,69:13},{1:[3]},{3:62,4:2,5:[1,61],6:9,7:14,8:15,9:16,10:17,11:[1,18],12:[1,19],13:20,14:21,15:22,16:[1,23],17:[1,24],18:25,19:[1,26],20:[1,31],21:[1,32],22:[1,33],23:[1,34],24:[1,35],25:[1,36],26:[1,37],27:[1,38],28:[1,39],29:[1,40],30:[1,41],31:[1,42],32:[1,43],33:[1,44],34:[1,45],35:[1,46],36:[1,47],37:[1,48],38:[1,49],39:[1,50],40:[1,51],41:[1,52],42:[1,53],43:[1,54],44:[1,55],45:[1,56],46:[1,57],47:[1,58],48:[1,59],49:[1,60],50:3,51:4,52:5,53:6,54:7,55:8,59:[1,10],61:11,64:[1,27],65:[1,28],66:[1,29],67:[1,30],68:12,69:13},{5:[2,46],11:[2,46],12:[2,46],16:[2,46],17:[2,46],19:[2,46],20:[2,46],21:[2,46],22:[2,46],23:[2,46],24:[2,46],25:[2,46],26:[2,46],27:[2,46],28:[2,46],29:[2,46],30:[2,46],31:[2,46],32:[2,46],33:[2,46],34:[2,46],35:[2,46],36:[2,46],37:[2,46],38:[2,46],39:[2,46],40:[2,46],41:[2,46],42:[2,46],43:[2,46],44:[2,46],45:[2,46],46:[2,46],47:[2,46],48:[2,46],49:[2,46],59:[2,46],64:[2,46],65:[2,46],66:[2,46],67:[2,46]},{5:[2,47],11:[2,47],12:[2,47],16:[2,47],17:[2,47],19:[2,47],20:[2,47],21:[2,47],22:[2,47],23:[2,47],24:[2,47],25:[2,47],26:[2,47],27:[2,47],28:[2,47],29:[2,47],30:[2,47],31:[2,47],32:[2,47],33:[2,47],34:[2,47],35:[2,47],36:[2,47],37:[2,47],38:[2,47],39:[2,47],40:[2,47],41:[2,47],42:[2,47],43:[2,47],44:[2,47],45:[2,47],46:[2,47],47:[2,47],48:[2,47],49:[2,47],59:[2,47],64:[2,47],65:[2,47],66:[2,47],67:[2,47]},{5:[2,48],11:[2,48],12:[2,48],16:[2,48],17:[2,48],19:[2,48],20:[2,48],21:[2,48],22:[2,48],23:[2,48],24:[2,48],25:[2,48],26:[2,48],27:[2,48],28:[2,48],29:[2,48],30:[2,48],31:[2,48],32:[2,48],33:[2,48],34:[2,48],35:[2,48],36:[2,48],37:[2,48],38:[2,48],39:[2,48],40:[2,48],41:[2,48],42:[2,48],43:[2,48],44:[2,48],45:[2,48],46:[2,48],47:[2,48],48:[2,48],49:[2,48],59:[2,48],64:[2,48],65:[2,48],66:[2,48],67:[2,48]},{5:[2,49],11:[2,49],12:[2,49],16:[2,49],17:[2,49],19:[2,49],20:[2,49],21:[2,49],22:[2,49],23:[2,49],24:[2,49],25:[2,49],26:[2,49],27:[2,49],28:[2,49],29:[2,49],30:[2,49],31:[2,49],32:[2,49],33:[2,49],34:[2,49],35:[2,49],36:[2,49],37:[2,49],38:[2,49],39:[2,49],40:[2,49],41:[2,49],42:[2,49],43:[2,49],44:[2,49],45:[2,49],46:[2,49],47:[2,49],48:[2,49],49:[2,49],59:[2,49],64:[2,49],65:[2,49],66:[2,49],67:[2,49]},{5:[2,50],11:[2,50],12:[2,50],16:[2,50],17:[2,50],19:[2,50],20:[2,50],21:[2,50],22:[2,50],23:[2,50],24:[2,50],25:[2,50],26:[2,50],27:[2,50],28:[2,50],29:[2,50],30:[2,50],31:[2,50],32:[2,50],33:[2,50],34:[2,50],35:[2,50],36:[2,50],37:[2,50],38:[2,50],39:[2,50],40:[2,50],41:[2,50],42:[2,50],43:[2,50],44:[2,50],45:[2,50],46:[2,50],47:[2,50],48:[2,50],49:[2,50],59:[2,50],64:[2,50],65:[2,50],66:[2,50],67:[2,50]},{5:[2,51],11:[2,51],12:[2,51],16:[2,51],17:[2,51],19:[2,51],20:[2,51],21:[2,51],22:[2,51],23:[2,51],24:[2,51],25:[2,51],26:[2,51],27:[2,51],28:[2,51],29:[2,51],30:[2,51],31:[2,51],32:[2,51],33:[2,51],34:[2,51],35:[2,51],36:[2,51],37:[2,51],38:[2,51],39:[2,51],40:[2,51],41:[2,51],42:[2,51],43:[2,51],44:[2,51],45:[2,51],46:[2,51],47:[2,51],48:[2,51],49:[2,51],59:[2,51],64:[2,51],65:[2,51],66:[2,51],67:[2,51]},{56:[1,63]},{70:[1,66],74:64,75:[1,67],78:[1,65]},{62:[1,68]},{5:[2,60],11:[2,60],12:[2,60],16:[2,60],17:[2,60],19:[2,60],20:[2,60],21:[2,60],22:[2,60],23:[2,60],24:[2,60],25:[2,60],26:[2,60],27:[2,60],28:[2,60],29:[2,60],30:[2,60],31:[2,60],32:[2,60],33:[2,60],34:[2,60],35:[2,60],36:[2,60],37:[2,60],38:[2,60],39:[2,60],40:[2,60],41:[2,60],42:[2,60],43:[2,60],44:[2,60],45:[2,60],46:[2,60],47:[2,60],48:[2,60],49:[2,60],59:[2,60],64:[2,60],65:[2,60],66:[2,60],67:[2,60]},{5:[2,61],11:[2,61],12:[2,61],16:[2,61],17:[2,61],19:[2,61],20:[2,61],21:[2,61],22:[2,61],23:[2,61],24:[2,61],25:[2,61],26:[2,61],27:[2,61],28:[2,61],29:[2,61],30:[2,61],31:[2,61],32:[2,61],33:[2,61],34:[2,61],35:[2,61],36:[2,61],37:[2,61],38:[2,61],39:[2,61],40:[2,61],41:[2,61],42:[2,61],43:[2,61],44:[2,61],45:[2,61],46:[2,61],47:[2,61],48:[2,61],49:[2,61],59:[2,61],64:[2,61],65:[2,61],66:[2,61],67:[2,61]},{56:[2,3]},{56:[2,4]},{56:[2,5]},{56:[2,6]},{56:[2,7]},{56:[2,8]},{56:[2,9]},{56:[2,10]},{56:[2,11]},{56:[2,12]},{56:[2,13]},{56:[2,14]},{56:[2,15]},{62:[2,56]},{62:[2,57]},{62:[2,58]},{62:[2,59]},{56:[2,16]},{56:[2,17]},{56:[2,18]},{56:[2,19]},{56:[2,20]},{56:[2,21]},{56:[2,22]},{56:[2,23]},{56:[2,24]},{56:[2,25]},{56:[2,26]},{56:[2,27]},{56:[2,28]},{56:[2,29]},{56:[2,30]},{56:[2,31]},{56:[2,32]},{56:[2,33]},{56:[2,34]},{56:[2,35]},{56:[2,36]},{56:[2,37]},{56:[2,38]},{56:[2,39]},{56:[2,40]},{56:[2,41]},{56:[2,42]},{56:[2,43]},{56:[2,44]},{56:[2,45]},{1:[2,1]},{1:[2,2]},{57:69,59:[1,70]},{58:[1,71]},{64:[1,73],65:[1,74],79:72},{71:[1,76],73:[1,75]},{59:[1,78],76:77},{59:[1,79]},{58:[1,80]},{58:[2,53],60:[1,81]},{5:[2,65],11:[2,65],12:[2,65],16:[2,65],17:[2,65],19:[2,65],20:[2,65],21:[2,65],22:[2,65],23:[2,65],24:[2,65],25:[2,65],26:[2,65],27:[2,65],28:[2,65],29:[2,65],30:[2,65],31:[2,65],32:[2,65],33:[2,65],34:[2,65],35:[2,65],36:[2,65],37:[2,65],38:[2,65],39:[2,65],40:[2,65],41:[2,65],42:[2,65],43:[2,65],44:[2,65],45:[2,65],46:[2,65],47:[2,65],48:[2,65],49:[2,65],59:[2,65],64:[2,65],65:[2,65],66:[2,65],67:[2,65]},{62:[1,82]},{62:[2,70]},{62:[2,71]},{56:[1,83]},{56:[1,84]},{77:[1,85]},{60:[1,86],77:[2,67]},{60:[1,87]},{5:[2,52],11:[2,52],12:[2,52],16:[2,52],17:[2,52],19:[2,52],20:[2,52],21:[2,52],22:[2,52],23:[2,52],24:[2,52],25:[2,52],26:[2,52],27:[2,52],28:[2,52],29:[2,52],30:[2,52],31:[2,52],32:[2,52],33:[2,52],34:[2,52],35:[2,52],36:[2,52],37:[2,52],38:[2,52],39:[2,52],40:[2,52],41:[2,52],42:[2,52],43:[2,52],44:[2,52],45:[2,52],46:[2,52],47:[2,52],48:[2,52],49:[2,52],59:[2,52],64:[2,52],65:[2,52],66:[2,52],67:[2,52]},{57:88,59:[1,70]},{59:[1,89]},{59:[1,90]},{59:[1,91],62:[1,92]},{58:[2,66]},{59:[1,78],76:93},{59:[1,94]},{58:[2,54]},{60:[1,95]},{58:[1,96]},{58:[1,97]},{72:[1,98]},{77:[2,68]},{63:[1,99]},{59:[1,100]},{5:[2,64],11:[2,64],12:[2,64],16:[2,64],17:[2,64],19:[2,64],20:[2,64],21:[2,64],22:[2,64],23:[2,64],24:[2,64],25:[2,64],26:[2,64],27:[2,64],28:[2,64],29:[2,64],30:[2,64],31:[2,64],32:[2,64],33:[2,64],34:[2,64],35:[2,64],36:[2,64],37:[2,64],38:[2,64],39:[2,64],40:[2,64],41:[2,64],42:[2,64],43:[2,64],44:[2,64],45:[2,64],46:[2,64],47:[2,64],48:[2,64],49:[2,64],59:[2,64],64:[2,64],65:[2,64],66:[2,64],67:[2,64]},{5:[2,62],11:[2,62],12:[2,62],16:[2,62],17:[2,62],19:[2,62],20:[2,62],21:[2,62],22:[2,62],23:[2,62],24:[2,62],25:[2,62],26:[2,62],27:[2,62],28:[2,62],29:[2,62],30:[2,62],31:[2,62],32:[2,62],33:[2,62],34:[2,62],35:[2,62],36:[2,62],37:[2,62],38:[2,62],39:[2,62],40:[2,62],41:[2,62],42:[2,62],43:[2,62],44:[2,62],45:[2,62],46:[2,62],47:[2,62],48:[2,62],49:[2,62],59:[2,62],64:[2,62],65:[2,62],66:[2,62],67:[2,62]},{60:[1,101]},{58:[1,102]},{63:[1,103]},{72:[1,104]},{5:[2,55],11:[2,55],12:[2,55],16:[2,55],17:[2,55],19:[2,55],20:[2,55],21:[2,55],22:[2,55],23:[2,55],24:[2,55],25:[2,55],26:[2,55],27:[2,55],28:[2,55],29:[2,55],30:[2,55],31:[2,55],32:[2,55],33:[2,55],34:[2,55],35:[2,55],36:[2,55],37:[2,55],38:[2,55],39:[2,55],40:[2,55],41:[2,55],42:[2,55],43:[2,55],44:[2,55],45:[2,55],46:[2,55],47:[2,55],48:[2,55],49:[2,55],59:[2,55],64:[2,55],65:[2,55],66:[2,55],67:[2,55]},{58:[1,105]},{63:[1,106]},{5:[2,69],11:[2,69],12:[2,69],16:[2,69],17:[2,69],19:[2,69],20:[2,69],21:[2,69],22:[2,69],23:[2,69],24:[2,69],25:[2,69],26:[2,69],27:[2,69],28:[2,69],29:[2,69],30:[2,69],31:[2,69],32:[2,69],33:[2,69],34:[2,69],35:[2,69],36:[2,69],37:[2,69],38:[2,69],39:[2,69],40:[2,69],41:[2,69],42:[2,69],43:[2,69],44:[2,69],45:[2,69],46:[2,69],47:[2,69],48:[2,69],49:[2,69],59:[2,69],64:[2,69],65:[2,69],66:[2,69],67:[2,69]},{58:[1,107]},{5:[2,63],11:[2,63],12:[2,63],16:[2,63],17:[2,63],19:[2,63],20:[2,63],21:[2,63],22:[2,63],23:[2,63],24:[2,63],25:[2,63],26:[2,63],27:[2,63],28:[2,63],29:[2,63],30:[2,63],31:[2,63],32:[2,63],33:[2,63],34:[2,63],35:[2,63],36:[2,63],37:[2,63],38:[2,63],39:[2,63],40:[2,63],41:[2,63],42:[2,63],43:[2,63],44:[2,63],45:[2,63],46:[2,63],47:[2,63],48:[2,63],49:[2,63],59:[2,63],64:[2,63],65:[2,63],66:[2,63],67:[2,63]}],
+defaultActions: {14:[2,3],15:[2,4],16:[2,5],17:[2,6],18:[2,7],19:[2,8],20:[2,9],21:[2,10],22:[2,11],23:[2,12],24:[2,13],25:[2,14],26:[2,15],27:[2,56],28:[2,57],29:[2,58],30:[2,59],31:[2,16],32:[2,17],33:[2,18],34:[2,19],35:[2,20],36:[2,21],37:[2,22],38:[2,23],39:[2,24],40:[2,25],41:[2,26],42:[2,27],43:[2,28],44:[2,29],45:[2,30],46:[2,31],47:[2,32],48:[2,33],49:[2,34],50:[2,35],51:[2,36],52:[2,37],53:[2,38],54:[2,39],55:[2,40],56:[2,41],57:[2,42],58:[2,43],59:[2,44],60:[2,45],61:[2,1],62:[2,2],73:[2,70],74:[2,71],85:[2,66],88:[2,54],93:[2,68]},
 parseError: function parseError(str,hash){if(hash.recoverable){this.trace(str)}else{throw new Error(str)}},
 parse: function parse(input) {
     var self = this, stack = [0], vstack = [null], lstack = [], table = this.table, yytext = '', yylineno = 0, yyleng = 0, recovering = 0, TERROR = 2, EOF = 1;
@@ -252,428 +253,485 @@ switch (yystate)
 */
 
 currentLine = 0;
- //Global variables used	
-hashVar = new Array();
-hashElement = new Array();
-hashInvElement = new Array();
-hashAux = new Array();
-hashComposition = new Array();
-hashUseVar = new Array();
-hashRelationConnects = new Array();
-hashRelationBinds = new Array();
-hashRelationClient = new Array();
-hashLocationTFGeo = new Array();
-hashLocationTFStr = new Array();
-hashTypeTTF = new Array();
-hashUsedInComposition = new Array();
-
+//Global variables used	
+ 
 warning = "";
-    
+ 
+hashVarType = new Array();
+hashTypeVar = new Array();
+hashSimpleRelation= new Array();
+hashAssignableRelation= new Array();
+hashUsedRelation = new Array();
+
+hashUsedVariable = new Array();
+
+hashComposition = new Array();
+
+hashRelation = new Array();
+hashRelation["binds"] = new Array();
+hashRelation["connects"] = new Array();
+hashRelation["maps"] = new Array();
+hashRelation["client"] = new Array();
+hashRelation["component_of"] = new Array();
+
+hashAttribute = new Array();
+hashAttribute['str_location'] = new Array();
+hashAttribute['geo_location'] = new Array();
+hashAttribute['tf_type'] = new Array();
+
+
+hashSuperType = new Array();
+
+/* Initializing super types */
+//TFs
+hashSuperType["so-tf"] = "tf";
+hashSuperType["sk-tf"] = "tf";
+hashSuperType["bi-tf"] = "tf";
+
+//AFs
+hashSuperType["so-af"] = "af";
+hashSuperType["sk-af"] = "af";
+hashSuperType["bi-af"] = "af";
+
+//LPFs
+hashSuperType["so-lpf"] = "lpf";
+hashSuperType["sk-lpf"] = "lpf";
+hashSuperType["bi-lpf"] = "lpf";
+
+//Matrices
+hashSuperType["uni-matrix"] = "matrix";
+hashSuperType["bi-matrix"] = "matrix";
+hashSuperType["so-matrix"] = "matrix";
+hashSuperType["sk-matrix"] = "matrix";
+
+//Ports
+hashSuperType["input"] = "port";
+hashSuperType["output"] = "port";
+
+//Reference Points
+hashSuperType["fp"] = "rp";
+hashSuperType["fep"] = "rp";
+hashSuperType["ap"] = "rp";
+
+//Interfaces
+hashSuperType["in_int"] = "interface";
+hashSuperType["out_int"] = "interface";
+
+//Transport Entity
+hashSuperType["ate"] = "transport_entity";
+hashSuperType["nc"] = "transport_entity";
+hashSuperType["lc"] = "transport_entity";
+hashSuperType["mc"] = "transport_entity";
+hashSuperType["cfte"] = "transport_entity";
+
+
+/* Initializing Relations cardinalities */
+//componentOf cardinalities needs to be inverted!!!
+
+/* Simple Relations and Component Of */
+/* Layer */
+//Layer * client * Layer
+hashSimpleRelation["client"+"layer"+"layer"] = createRelation(0,-1,0,-1);
+
+//Layer * componentOf * Transport Function
+hashSimpleRelation["component_of"+"layer"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"pm"] = createRelation(0,-1,0,-1);
+
+/* Equipment */
+//Output Interface 0..1 binds 0..1 Input Interface
+hashSimpleRelation["binds"+"out_int"+"in_int"] = createRelation(0,1,0,1);
+
+//Input Interface 0..1 connects 0..1 Input
+hashSimpleRelation["connects"+"out_int"+"in_int"] = createRelation(0,1,0,1);
+
+//Input Interface 0..1 maps 0..1 Input
+hashSimpleRelation["maps"+"in_int"+"input"] = createRelation(0,1,0,1);
+
+//Output Interface 0..1 maps 0..1 Output
+hashSimpleRelation["maps"+"out_int"+"output"] = createRelation(0,1,0,1);
+
+//Interface 0..1 binds 0..1 Port
+hashSimpleRelation["binds"+"interface"+"port"] = createRelation(0,1,0,1);
+
+//Equipment 0..1 componentOf * Interface
+hashSimpleRelation["component_of"+"equip"+"interface"] = createRelation(0,-1,0,1);
+
+//Equipment * componentOf 0..1 Transport Function
+hashSimpleRelation["component_of"+"equip"+"tf"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"af"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"lpf"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"matrix"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"sn"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"pm"] = createRelation(0,-1,0,1);
+
+/* Site */
+//Site 0..1 componentOf * Equipment
+hashSimpleRelation["component_of"+"site"+"equip"] = createRelation(0,-1,0,1);
+
+/* Transport Entity */
+//Reference Point * connects * Reference Points
+hashSimpleRelation["connects"+"rp"+"rp"] = createRelation(0,-1,0,1);
+
+/* Reference Point */
+//Bindable Element * binds * Bindable Element
+hashSimpleRelation["binds"+"tf"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"port"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"port"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"port"+"port"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"tf"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"tf"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"tf"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"af"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"af"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"af"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"lpf"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"lpf"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"lpf"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"matrix"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"matrix"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"matrix"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"sn"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"sn"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"sn"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"pm"+"pm"] = createRelation(0,-1,0,-1);
+
+/* Transport Function */
+//Transport Function 0..1 componentOf * Port
+hashSimpleRelation["component_of"+"tf"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"af"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"lpf"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"matrix"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"snc"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"pm"+"port"] = createRelation(0,-1,0,1);
+
+//TF 0..1 componentOf 0..2 TF
+hashSimpleRelation["component_of"+"tf"+"tf"] = createRelation(0,2,0,1);
+
+//AF 0..1 componentOf 0..2 AF
+hashSimpleRelation["component_of"+"af"+"af"] = createRelation(0,2,0,1);
+
+//LPF 0..1 componentOf 0..2 LPF
+hashSimpleRelation["component_of"+"lpf"+"lpf"] = createRelation(0,2,0,1);
+
+//Matrix 0..1 componentOf 0..2 Matrix
+hashSimpleRelation["component_of"+"matrix"+"matrix"] = createRelation(0,2,0,1);
+
+//************//
+
+/* Assignable Relations */
+/* Transport Entity */
+hashAssignableRelation["transport_entity"+"connects"+"rp"+"rp"] = createRelation(0,2,0,1);
+
+/* Reference Point */
+hashAssignableRelation["rp"+"binds"+"tf"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"af"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"lpf"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"matrix"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"sn"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"pm"+"port"] = createRelation(0,-1,0,1);
+
+/* Methods */    
 /*
 	Put in the hash the variables and verify multi-declarations
 */
-function newVar(v) {
-	if(hashVar[v] == 0){
-		//An variable was multi-declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+v+" was  multi-declared");	
+function newVariable(variable) {
+	//Verify if the variable has been declared already
+	if(hashVarType[variable] !== undefined){
+		throw new VariableMultiDeclared((currentLine+1),variable);	
 	}
-	hashVar[v] = 0;
-	hashAux[hashAux.length] = v;	
-
-	return "";
+	//Put a flag in hash of variables to signal the use
+	hashVarType[variable] = 0;
 }
 
 /*
-	Creating a hash with the name of the element and its variables
+	Set the type of declared variables
 */
-function newElement(v) {
-	for (var k = 0; k < hashAux.length; k++) {
-		hashInvElement[hashAux[k]] = v;
+function newElement(element){
+	//For all declared variables 
+	for (var variable in hashVarType){
+		//if not initialized yet
+		if(hashVarType[variable] == 0){
+			//set the type for variable
+			hashVarType[variable] = element;
+			//push the variables in hashType
+			if(hashTypeVar[element] === undefined){
+				hashTypeVar[element] = [];
+			}
+			hashTypeVar[element].push(variable);
+		}		
 	}
-	if(hashElement[v] !== undefined){
-		hashElement[v].push(hashAux);
+}
+
+/*
+	Create a internal relation: source relation target
+*/
+function newSimpleRelation(relation, source, target){
+	//verify if source and target are valid variables
+	verifyDelclaredVariable(source);
+	verifyDelclaredVariable(target);
+	
+	//Get supertypes of source and general
+	var sourceType = getSuperType(hashVarType[source]);
+	var targetType = getSuperType(hashVarType[target]);		
+	
+	var reference;
+	//Verify relationship possibility
+	if(hashSimpleRelation[relation+sourceType+targetType] === undefined){
+		//For specific cases
+		if(hashSimpleRelation[relation+hashVarType[source]+hashVarType[target]] === undefined){
+			throw new WrongRelation(currentLine+1);
+		}else{
+			reference = relation+hashVarType[source]+hashVarType[target];			
+		}		
 	}else{
-		hashElement[v] = hashAux;		
+		reference = relation+sourceType+targetType;
 	}
-	hashAux = new Array();
-	return "";
+	
+	//Create relationship
+	if(hashUsedRelation[reference] === undefined){
+		//first case, initialize
+		hashUsedRelation[reference] = [];
+	}
+	//add current relationship to hashUsedRelation
+	hashUsedRelation[reference].push(createRelationship(source, relation, target));
+	
+	//Verify cardinality possibility
+	var relationshipDefined = hashSimpleRelation[reference];
+	
+	var srcCont = 0, trgCont = 0;
+	
+	var arr = hashUsedRelation[reference];
+	
+	//for all relationships of the tuple {relation, sourceType, targetType}
+	for(var i = 0; i < arr.length; i++){
+		var relationship = arr[i];
+		//source cardinality verification
+		if(relationship.source == source){
+			srcCont++;
+		}
+		
+		if(relationship.target == target){
+			trgCont++;
+		}
+	}
+	
+	if(relationshipDefined.srcMax != -1 && srcCont > relationshipDefined.srcMax){
+		throw new WrongCardinality(currentLine+1);
+	}
+	
+	if(relationshipDefined.trgMax != -1 && trgCont > relationshipDefined.trgMax){
+		throw new WrongCardinality(currentLine+1);
+	}	
+	
+	if(relation != "component_of"){
+		hashRelation[relation].push(source+":"+target);
+	}
 }
 
 /*
-	Create a composition between an element and its compenents
+	Create a assignable relation
 */
-function newElementComposition(v) {
-	if(hashVar[v] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+v+" was  not declared");	
-	}
 
-	//Create the new hash for the element composition
-	if(hashComposition[v] == null){
-		hashComposition[v] = new Array();
+function newAssignableRelation(ret, relation, source, target){
+	//Create a new simple relation between source and target
+	newSimpleRelation(relation,source,target);
+	
+	//get supertypes
+	var retType = getSuperType(hashVarType[ret]);
+	var sourceType = getSuperType(hashVarType[source]);
+	var targetType = getSuperType(hashVarType[target]);
+		
+	//verify if it's a possible assignable relation
+	if(hashAssignableRelation[retType+relation+sourceType+targetType] === undefined){
+		throw new WrongRelation(currentLine+1);
 	}
 	
-	//put the variables in the hashComposition
-	for(var i = 0; i < hashUseVar.length; i++){
-		hashComposition[v].push(hashUseVar[i]);
-	}
-	
-	var validateV = false;
-
-	var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn");
-	
-	for (var j = 0; j < tranFuncs.length; j++) {
-		if(hashInvElement[v].indexOf(tranFuncs[j]) >= 0){
-			//IF v is a Transport Function
-			//split the string. ex.: so-ttf to ttf
-			var all = hashInvElement[v];
-			var aux = hashInvElement[v].split("-");
-			if(aux.length == 2){
-				all = aux[1];
-			}
-			for (var i = 0; i < hashUseVar.length; i++) {
-				//split the string. ex.: so-ttf to ttf
-				var party = hashInvElement[hashUseVar[i]];
-				
-				//Verify if the party was used					
-				if(hashUsedInComposition[hashUseVar[i]] == null){				
-					hashUsedInComposition[hashUseVar[i]] = 0;							
-				}else{
-					throw new Error("Line "+(currentLine+1)+": Invalid cardinality at composition’s part");
-				}
-
-				aux = hashInvElement[hashUseVar[i]].split("-");
-				if(aux.length == 2){
-					party = aux[1];
-				}
-
-				if(all != party){
-					//Some part is not a Transport Function
-					if((party.indexOf("input") == 0) || (party.indexOf("output") == 0)){
-						//Is a composition by a Transport Function and a Port
-						//Verify the use of Ports
-						if(hashUsedInComposition[hashUseVar[i]] == 0){
-							hashUsedInComposition[hashUseVar[i]]++;
-						}else{
-							throw new Error("Line "+(currentLine+1)+": Invalid cardinality at composition’s part");
-						}
-						continue;			
-					}
-					throw new Error("Line "+(currentLine+1)+": Not allowed types at composition");	
-				}
-			}
-			
-			var qntPorts = 0;
-
-			for(var k = 0; k < hashComposition[v].length; k++){
-				if(hashInvElement[hashComposition[v][k]] == "input" || hashInvElement[hashComposition[v][k]] == "output"){
-					qntPorts++;
-				}
-			}
-			if(hashComposition[v].length-qntPorts > 2){
-				throw new Error("Line "+(currentLine+1)+": Invalid cardinality at composition’s whole");			
-			}
-
-			validateV = true;
-			break; //Stop the loop if v is a Transport Function
-		}
-	}
-
-	if(hashInvElement[v].indexOf("layer") == 0){
-		//v is a Layer
-		for (var j = 0; j < hashUseVar.length; j++) {
-			var find = false;
-			for (var i = 0; i < tranFuncs.length; i++) {
-				//look if in all parties of the composition are transport functions
-				if(hashInvElement[hashUseVar[j]].indexOf(tranFuncs[i]) == 0){
-					find = true;
-					break;
-				}
-			}
-			if(!find){
-				throw new Error("Line "+(currentLine+1)+": Composition problem at its part (invalid cardinality or not allowed type)");
-			}
-		}
-		validateV = true;
-	}	
-	
-	//Validate if the order of the composition's paramaters are corrects
-	if(!validateV){
-		throw new Error("Line "+(currentLine+1)+": Not allowed types at composition");
-	}
-
-	hashUseVar = new Array();
-
-	return "";		
+	hashRelation[relation].push(ret+":"+source+":"+target);
 }
 
-function newRelation(r,src,dst){
-	if(hashVar[src] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+src+" was  not declared");	
-	}
-	if(hashVar[dst] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+dst+" was  not declared");	
-	}
-	if(r == "connects"){
-		//Verify if in connects(a,b) a and b are a Reference Point
-		var tranFuncs = new Array("tcp","ap","cp");
-		var toA = hashInvElement[src];
-		var toB = hashInvElement[dst];
-		var keepA = false;
-		var keepB = false;
-
-		for (var i = 0; i < tranFuncs.length; i++) {
-			if(toA == tranFuncs[i]){
-				keepA = true;	
-			}
-			if(toB == tranFuncs[i]){
-				keepB = true;	
-			}
-		}
-
-		if(!keepA){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-
-		if(!keepB){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-		hashRelationConnects.push(new Array(src,dst));
-	}else if(r == "binds"){
-		//Verify if in binds(a,b) a and b are a Bindable Element
-		var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn","input","output");
-		var toA = hashInvElement[src];
-		var toB = hashInvElement[dst];
-		var keepA = false;
-		var keepB = false;
-
-		for (var i = 0; i < tranFuncs.length; i++) {
-			if(toA == tranFuncs[i]){
-				keepA = true;	
-			}
-			if(toB == tranFuncs[i]){
-				keepB = true;	
-			}
-		}
-
-		if(!keepA){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");		
-		}
-
-		if(!keepB){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-		hashRelationBinds.push(new Array(src,dst));
-	}else if(r == "client"){
-		if(hashInvElement[src] != "layer"){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-
-		if(hashInvElement[dst] != "layer"){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-		hashRelationClient.push(new Array(src,dst));
-	}
+/*
+	Hold used variables
+*/
+function usedVariable(variable){
+	hashUsedVariable.push(variable);
 }
 
-function newAssignableRelation(org,r,src,dst){
-	if(hashVar[src] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+src+" was  not declared");	
-	}
-	if(hashVar[dst] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+dst+" was  not declared");		
-	}
-	if(hashVar[org] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+org+" was  not declared");	
-	}
-	if(r == "connects"){
-		//Verify if in x = connects(a,b) a and b are a Reference Point and x is a Transport Entity
-		var refPoint = new Array("tcp", "ap", "cp","rp");
-		var toA = hashInvElement[src];
-		var toB = hashInvElement[dst];
-		var keepA = false;
-		var keepB = false;
-
-		for (var i = 0; i < refPoint.length; i++) {
-			if(toA == refPoint[i]){
-				keepA = true;	
-			}
-			if(toB == refPoint[i]){
-				keepB = true;	
-			}
-		}
-
-		if(!keepA){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-
-		if(!keepB){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-
-		//If x is a Transport Entity
-		var tranEntity = new Array("trail", "nc", "lc", "mc","snc");
-		var toX = hashInvElement[org];
-		var keepX = false;
-
-		for (var i = 0; i < tranEntity.length; i++) {
-			if(toX == tranEntity[i]){
-				keepX = true;	
-			}
-		}
-
-		if(!keepX){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-
-		hashRelationConnects.push(new Array(src,dst,org));
-	}else if(r == "binds"){
-		//Verify if in x = binds(a,b) a and b are a Bindable Element and x is a Reference Point
-		var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn","input","output");
-		var toA = hashInvElement[src];
-		var toB = hashInvElement[dst];
-		var keepA = false;
-		var keepB = false;
-
-		for (var i = 0; i < tranFuncs.length; i++) {
-			if(toA == tranFuncs[i]){
-				keepA = true;	
-			}
-			if(toB == tranFuncs[i]){
-				keepB = true;	
-			}
-		}
-
-		if(!keepA){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-
-		if(!keepB){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
+/*
+	Creating element compositions
+*/
+function newElementComposition(whole){
+	var cofRel = whole+":";
 	
-		//If x is a Reference Point
-		var refPoint = new Array("tcp", "ap", "cp","rp");
-		var toX = hashInvElement[org];
-		var keepX = false;
-
-		for (var i = 0; i < refPoint.length; i++) {
-			if(toX == refPoint[i]){
-				keepX = true;	
-			}
-		}
-
-		if(!keepX){
-			throw new Error("Line "+(currentLine+1)+": Variable type not supported at function");	
-		}
-		hashRelationBinds.push(new Array(src,dst,org));
-	}else if(r == "client"){
-		throw new Error("Line "+(currentLine+1)+": Incorrect attribution");	
+	for(var i = 0; i < hashUsedVariable.length; i++){
+		newSimpleRelation("component_of",whole,hashUsedVariable[i]);
+		cofRel += hashUsedVariable[i]+",";
 	}
-}
-
-function usoVar(v){
-	if(hashVar[v] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+v+" was  not declared");	
-	}	
-	hashUseVar.push(v);	
 	
-	return "";
+	cofRel = cofRel.substring(0,cofRel.length-1);
+	hashRelation["component_of"].push(cofRel);
+	
+	//clean up used variables
+	hashUsedVariable = [];
 }
 
-function addLocationStr(tf,str){
-	if(hashVar[tf] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+tf+" was  not declared");	
-	}
-	//Verifiy if the type used are corrects
-	var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn","input","output");
-	var auxTFtype = hashInvElement[tf];
-	var keep = false;
-
-	for (var i = 0; i < tranFuncs.length; i++) {
-		if(auxTFtype == tranFuncs[i]){
-			keep = true;	
+/*
+	Adding attributes
+*/
+function addLocationStr(owner,str){
+	verifyDelclaredVariable(owner);
+	
+	var elemSuperType = getSuperType(hashVarType[owner]);
+	var transportFunctions = new Array("tf","af","lpf","matrix","pm","sn","port");
+	
+	if(transportFunctions.indexOf(elemSuperType) == -1){
+		if(transportFunctions.indexOf(hashVarType[owner]) == -1){
+			throw new WrongAttributeDeclaration(currentLine+1);
 		}
+		throw new WrongAttributeDeclaration(currentLine+1);
 	}
-
-	if(!keep){
-		//The variable can't have a location
-		throw new Error("Line "+(currentLine+1)+": Incorrect attribution");	
-	}
-
-	if(hashLocationTFStr[tf] != null){
-		warning += "Line "+(currentLine+1)+": The variable "+tf+" was multi-declared. The first declaration was ignored and the last declaration was adopted";	
-	}
-	hashLocationTFStr[tf] = str;
-	return "";
+	
+	hashAttribute['str_location'].push(owner+":"+str);
 }
 
-function addLocationGeo(tf,g1,g2){
-	if(hashVar[tf] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+tf+" was  not declared");	
-	}
-	//Verifiy if the types used are corrects
-	var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff","af","so-af","sk-af","bi-af","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn","input","output");
-	var auxTFtype = hashInvElement[tf];
-	var keep = false;
-
-	for (var i = 0; i < tranFuncs.length; i++) {
-		if(auxTFtype == tranFuncs[i]){
-			keep = true;	
+function addLocationGeo(owner, g1,g2){
+	verifyDelclaredVariable(owner);
+	
+	var elemSuperType = getSuperType(hashVarType[owner]);
+	var transportFunctions = new Array("tf","af","lpf","matrix","pm","sn","port");
+	
+	if(transportFunctions.indexOf(elemSuperType) == -1){
+		if(transportFunctions.indexOf(hashVarType[owner]) == -1){
+			throw new WrongAttributeDeclaration(currentLine+1);
 		}
+		throw new WrongAttributeDeclaration(currentLine+1);
 	}
-
-	if(!keep){
-		//The variable can't have a location
-		throw new Error("Line "+(currentLine+1)+": Incorrect attribution");	
-	}
-
-	if(hashLocationTFGeo[tf] != null){
-		warning += "Line "+(currentLine+1)+": The variable "+tf+" was multi-declared. The first declaration was ignored and the last declaration was adopted";	
-	}
+	
+	
 	g1 = g1.replace(/:/g, '*');
 	g2 = g2.replace(/:/g, '*');
-	hashLocationTFGeo[tf] = g1+"+"+g2;
-	return "";
+	hashAttribute['geo_location'].push(owner+":"+g1+":"+g2);
 }
 
-
-function addType(ttf,type){
-	if(hashVar[ttf] != 0){
-		//Variable not declared
-		throw new Error("Line "+(currentLine+1)+": The variable "+ttf+" was  not declared");	
+function addType(tf,str){
+	verifyDelclaredVariable(tf);
+	
+	var tfSuperType = getSuperType(hashVarType[tf]);
+	
+	if(tfSuperType != "tf"){
+		throw new WrongAttributeDeclaration(currentLine+1);
 	}
-//Verifiy if the types used are corrects
-	var tranFuncs = new Array("ttf","so-ttf","sk-ttf","bi-tff");
-	var auxTFtype = hashInvElement[ttf];
-	var keep = false;
-
-	for (var i = 0; i < tranFuncs.length; i++) {
-		if(auxTFtype == tranFuncs[i]){
-			keep = true;	
-		}
-	}
-
-	if(!keep){
-		//The variable can't have a location
-		throw new Error("Line "+(currentLine+1)+": Incorrect attribution");
-	}
-
-	if(hashTypeTTF[ttf] != null){
-		warning += "Line "+(currentLine+1)+": The variable "+ttf+" was multi-declared. The first declaration was ignored and the last declaration was adopted";	
-	}
-	hashTypeTTF[ttf] = type;
-	return "";
+	
+	hashAttribute['tf_type'].push(tf+":"+str);
 }
-/* generated by jison-lex 0.2.1 */
+
+/* Private Functions */
+//Verify if the variable has been declared already
+function verifyDelclaredVariable(variable){
+	if(hashVarType[variable] === undefined){
+		throw new VariableNotDeclared((currentLine+1),variable);	
+	}
+}
+
+function createRelation(srcMin, srcMax, trgMin, trgMax){
+	var relation = new Object();
+	
+	relation.srcMin = srcMin;
+	relation.srcMax = srcMax;
+	relation.trgMin = trgMin;
+	relation.trgMax = trgMax;
+	
+	return relation;
+}
+
+function createRelationship(source, relation, target){
+	var relationship = new Object();
+	
+	relationship.source = source;
+	relationship.relation = relation;
+	relationship.target = target;
+	
+	return relationship;
+}
+
+function getSuperType(cls){	
+	if(hashSuperType[cls] === undefined){
+		return cls;
+	}
+	return hashSuperType[cls];	
+}
+
+/* Exceptions */
+
+//An variable was multi-declared
+function VariableMultiDeclared(line, variable) {
+   this.message = "Line "+line+": The variable "+variable+" was  multi-declared";
+}
+
+//An variable was not declared
+function VariableNotDeclared(line, variable) {
+   this.message = "Line "+line+": The variable "+variable+" was  not declared";
+}
+
+//An wrong relation was used
+function WrongRelation(line){
+	this.message = "Line "+line+": Variable type not supported at function";		
+}
+
+//Wrong cardinality
+function WrongCardinality(line){
+	this.message = "Line "+line+": Incorrect attribution";		
+}
+
+//Wrong Attribute declaration
+function WrongAttributeDeclaration(line){
+	this.message = "Line "+line+": Incorrect attribution";		
+}/* generated by jison-lex 0.2.1 */
 var lexer = (function(){
 var lexer = {
 
@@ -742,106 +800,122 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 17
+case 1:return 20
 break;
-case 2:return 18
+case 2:return 21
 break;
-case 3:return 19
+case 3:return 22
 break;
-case 4:return 20
+case 4:return 23
 break;
-case 5:return 21
+case 5:return 24
 break;
-case 6:return 22
+case 6:return 25
 break;
-case 7:return 23
+case 7:return 26
 break;
-case 8:return 24
+case 8:return 27
 break;
-case 9:return 25
+case 9:return 28
 break;
-case 10:return 26	
+case 10:return 29
 break;
-case 11:return 27
+case 11:return 30
 break;
-case 12:return 28
+case 12:return 31
 break;
-case 13:return 29
+case 13:return 32
 break;
-case 14:return 15
+case 14:return 33	
 break;
-case 15:return 16
+case 15:return 34
 break;
-case 16:return 30
+case 16:return 35
 break;
-case 17:return 31
+case 17:return 36
 break;
-case 18:return 32
+case 18:return 11
 break;
-case 19:return 33
+case 19:return 12
 break;
-case 20:return 34
+case 20:return 37
 break;
-case 21:return 35
+case 21:return 38
 break;
-case 22:return 36
+case 22:return 39
 break;
-case 23:return 37
+case 23:return 40
 break;
-case 24:return 38
+case 24:return 41
 break;
-case 25:return 39
+case 25:return 42
 break;
-case 26:return 40
+case 26:return 43
 break;
-case 27:return 41
+case 27:return 44
 break;
-case 28:return 11
+case 28:return 45
 break;
-case 29:return 66
+case 29:return 46
 break;
-case 30:return 67
+case 30:return 47
 break;
-case 31:return 68
+case 31:return 16
 break;
-case 32:return 55
+case 32:return 17
 break;
-case 33:return 61
+case 33:return 48
 break;
-case 34:return 56
+case 34:return 49
 break;
-case 35:return 54
+case 35:return 19
 break;
-case 36:return 57
+case 36:return 64
 break;
-case 37:return 69
+case 37:return 65
 break;
-case 38:return 44
+case 38:return 66
 break;
-case 39:return 63
+case 39:return 67
 break;
-case 40:return 64
+case 40:return 71
 break;
-case 41:return 58
+case 41:return 73
 break;
-case 42:return 60
+case 42:return 56
 break;
-case 43:return 59
+case 43:return 70
 break;
-case 44:return 43
+case 44:return 58
 break;
-case 45:return 'n_int'
+case 45:return 78
 break;
-case 46:/* ignore */
+case 46:return 60
 break;
-case 47:return 5
+case 47:return 75
 break;
-case 48:return 'INVALID'
+case 48:return 77
+break;
+case 49:return 62
+break;
+case 50:return 63
+break;
+case 51:return 72
+break;
+case 52:return 59
+break;
+case 53:return 'n_int'
+break;
+case 54:/* ignore */
+break;
+case 55:return 5
+break;
+case 56:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:ttf\b)/,/^(?:so-ttf\b)/,/^(?:sk-ttf\b)/,/^(?:bi-ttf\b)/,/^(?:af\b)/,/^(?:so-af\b)/,/^(?:sk-af\b)/,/^(?:bi-af\b)/,/^(?:matrix\b)/,/^(?:uni-matrix\b)/,/^(?:so-matrix\b)/,/^(?:sk-matrix\b)/,/^(?:bi-matrix\b)/,/^(?:sn\b)/,/^(?:pm\b)/,/^(?:input\b)/,/^(?:output\b)/,/^(?:rp\b)/,/^(?:tcp\b)/,/^(?:ap\b)/,/^(?:cp\b)/,/^(?:te\b)/,/^(?:trail\b)/,/^(?:nc\b)/,/^(?:lc\b)/,/^(?:mc\b)/,/^(?:snc\b)/,/^(?:layer\b)/,/^(?:binds\b)/,/^(?:connects\b)/,/^(?:client\b)/,/^(?:location\b)/,/^(?:type\b)/,/^(?::)/,/^(?:\.)/,/^(?:;)/,/^(?:=)/,/^(?:,)/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:(-)?[0-9]+:[0-9]+:[0-9]+)/,/^(?:[A-Za-z_]+[0-9A-Za-z_]*)/,/^(?:[0-9]+)/,/^(?:\/\*(.|\n|\r)*?\*\/)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:tf\b)/,/^(?:so-tf\b)/,/^(?:sk-tf\b)/,/^(?:bi-tf\b)/,/^(?:af\b)/,/^(?:so-af\b)/,/^(?:sk-af\b)/,/^(?:bi-af\b)/,/^(?:lpf\b)/,/^(?:so-lpf\b)/,/^(?:sk-lpf\b)/,/^(?:bi-lpf\b)/,/^(?:matrix\b)/,/^(?:uni-matrix\b)/,/^(?:so-matrix\b)/,/^(?:sk-matrix\b)/,/^(?:bi-matrix\b)/,/^(?:sn\b)/,/^(?:pm\b)/,/^(?:input\b)/,/^(?:output\b)/,/^(?:rp\b)/,/^(?:fep\b)/,/^(?:ap\b)/,/^(?:fp\b)/,/^(?:ate\b)/,/^(?:nc\b)/,/^(?:lc\b)/,/^(?:mc\b)/,/^(?:cfte\b)/,/^(?:layer\b)/,/^(?:equip\b)/,/^(?:in_int\b)/,/^(?:out_int\b)/,/^(?:site\b)/,/^(?:binds\b)/,/^(?:connects\b)/,/^(?:client\b)/,/^(?:maps\b)/,/^(?:location\b)/,/^(?:type\b)/,/^(?::)/,/^(?:\.)/,/^(?:;)/,/^(?:=)/,/^(?:,)/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:(-)?[0-9]+:[0-9]+:[0-9]+)/,/^(?:[A-Za-z_]+[0-9A-Za-z_]*)/,/^(?:[0-9]+)/,/^(?:\/\*(.|\n|\r)*?\*\/)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56],"inclusive":true}}
 };
 return lexer;
 })();

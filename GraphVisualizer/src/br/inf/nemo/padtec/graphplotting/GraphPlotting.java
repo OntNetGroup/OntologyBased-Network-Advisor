@@ -105,7 +105,7 @@ public abstract class GraphPlotting {
 		return callBack(arborStructure, arborHashStructure);
 	}
 
-	private String callBack(String arborStructure, String arborHashStructure){
+	protected String callBack(String arborStructure, String arborHashStructure){
 		return "	"
 				+ "function addNodes(graph){"
 				+ arborStructure

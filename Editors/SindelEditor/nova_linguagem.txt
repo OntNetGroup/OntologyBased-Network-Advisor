@@ -62,8 +62,8 @@
 'equip'			return 'equip'
 
 //Interfaces
-'input_int'		return 'input_int'
-'output_int'	return 'output_int'
+'in_int'		return 'in_int'
+'out_int'		return 'out_int'
 
 //Site
 'site'			return 'site'
@@ -90,7 +90,7 @@
 ')'				return 'r_parenthesis'
 ('-')?[0-9]+':'[0-9]+':'[0-9]+ return 'graus'
 [A-Za-z_]+[0-9A-Za-z_]* return 'variavel'
-[0-9]+				return 'n_int'
+[0-9]+			return 'n_int'
 "/*"(.|\n|\r)*?"*/"             /* ignore */
 <<EOF>>         return 'EOF'
 .				return 'INVALID'
@@ -139,7 +139,7 @@ TransportEntity:
 ;
 
 Interfaces:
-	'input_int' | 'output_int'
+	'in_int' | 'out_int'
 ;
 
 Instruction:
@@ -191,7 +191,11 @@ variavel %{usedVariable($$);}% | (variavel comma used_variables) %{usedVariable(
 ;
 
 AssignableRelation:
-(variavel equal Rel l_parenthesis variavel comma variavel r_parenthesis semicolon) %{newAssignableRelation($1,$3,$5,$7);}%
+(variavel equal RelationTypeAssignable l_parenthesis variavel comma variavel r_parenthesis semicolon) %{newAssignableRelation($1,$3,$5,$7);}%
+;
+
+RelationTypeAssignable:
+'binds' | 'connects'
 ;
 
 %%
@@ -207,271 +211,227 @@ switch (yystate)
 
 currentLine = 0;
 //Global variables used	
-//Global variables used	
  
 warning = "";
  
 hashVarType = new Array();
 hashTypeVar = new Array();
-hashRelation= new Array();
+hashSimpleRelation= new Array();
+hashAssignableRelation= new Array();
 hashUsedRelation = new Array();
 
 hashUsedVariable = new Array();
 
+hashComposition = new Array();
+
+hashRelation = new Array();
+hashRelation["binds"] = new Array();
+hashRelation["connects"] = new Array();
+hashRelation["maps"] = new Array();
+hashRelation["client"] = new Array();
+hashRelation["component_of"] = new Array();
+
+hashAttribute = new Array();
+hashAttribute['str_location'] = new Array();
+hashAttribute['geo_location'] = new Array();
+hashAttribute['tf_type'] = new Array();
+
+
+hashSuperType = new Array();
+
+/* Initializing super types */
+//TFs
+hashSuperType["so-tf"] = "tf";
+hashSuperType["sk-tf"] = "tf";
+hashSuperType["bi-tf"] = "tf";
+
+//AFs
+hashSuperType["so-af"] = "af";
+hashSuperType["sk-af"] = "af";
+hashSuperType["bi-af"] = "af";
+
+//LPFs
+hashSuperType["so-lpf"] = "lpf";
+hashSuperType["sk-lpf"] = "lpf";
+hashSuperType["bi-lpf"] = "lpf";
+
+//Matrices
+hashSuperType["uni-matrix"] = "matrix";
+hashSuperType["bi-matrix"] = "matrix";
+hashSuperType["so-matrix"] = "matrix";
+hashSuperType["sk-matrix"] = "matrix";
+
+//Ports
+hashSuperType["input"] = "port";
+hashSuperType["output"] = "port";
+
+//Reference Points
+hashSuperType["fp"] = "rp";
+hashSuperType["fep"] = "rp";
+hashSuperType["ap"] = "rp";
+
+//Interfaces
+hashSuperType["in_int"] = "interface";
+hashSuperType["out_int"] = "interface";
+
+//Transport Entity
+hashSuperType["ate"] = "transport_entity";
+hashSuperType["nc"] = "transport_entity";
+hashSuperType["lc"] = "transport_entity";
+hashSuperType["mc"] = "transport_entity";
+hashSuperType["cfte"] = "transport_entity";
+
+
 /* Initializing Relations cardinalities */
 //componentOf cardinalities needs to be inverted!!!
 
+/* Simple Relations and Component Of */
 /* Layer */
 //Layer * client * Layer
-hashRelation["client"+"layer"+"layer"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["client"+"layer"+"layer"] = createRelation(0,-1,0,-1);
 
 //Layer * componentOf * Transport Function
-hashRelation["component_of"+"layer"+"tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"so-tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"sk-tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"bi-tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"so-af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"sk-af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"bi-af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"so-lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"sk-lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"bi-lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"uni-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"so-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"sk-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"bi-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"sn"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"layer"+"pm"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["component_of"+"layer"+"pm"] = createRelation(0,-1,0,-1);
 
 /* Equipment */
 //Output Interface 0..1 binds 0..1 Input Interface
-hashRelation["binds"+"output_int"+"input_int"] = createRelation(0,1,0,1);
+hashSimpleRelation["binds"+"out_int"+"in_int"] = createRelation(0,1,0,1);
 
 //Input Interface 0..1 connects 0..1 Input
-hashRelation["connects"+"output_int"+"input_int"] = createRelation(0,1,0,1);
+hashSimpleRelation["connects"+"out_int"+"in_int"] = createRelation(0,1,0,1);
 
 //Input Interface 0..1 maps 0..1 Input
-hashRelation["maps"+"input_int"+"input"] = createRelation(0,1,0,1);
+hashSimpleRelation["maps"+"in_int"+"input"] = createRelation(0,1,0,1);
 
 //Output Interface 0..1 maps 0..1 Output
-hashRelation["maps"+"output_int"+"output"] = createRelation(0,1,0,1);
+hashSimpleRelation["maps"+"out_int"+"output"] = createRelation(0,1,0,1);
 
 //Interface 0..1 binds 0..1 Port
-hashRelation["binds"+"output_int"+"input"] = createRelation(0,1,0,1);
-hashRelation["binds"+"output_int"+"output"] = createRelation(0,1,0,1);
-hashRelation["binds"+"input_int"+"input"] = createRelation(0,1,0,1);
-hashRelation["binds"+"input_int"+"output"] = createRelation(0,1,0,1);
+hashSimpleRelation["binds"+"interface"+"port"] = createRelation(0,1,0,1);
 
 //Equipment 0..1 componentOf * Interface
-hashRelation["component_of"+"equip"+"input_int"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"output_int"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"interface"] = createRelation(0,-1,0,1);
 
 //Equipment * componentOf 0..1 Transport Function
-hashRelation["component_of"+"equip"+"tf"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"so-tf"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"sk-tf"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"bi-tf"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"af"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"so-af"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"sk-af"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"bi-af"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"lpf"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"so-lpf"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"sk-lpf"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"bi-lpf"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"matrix"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"uni-matrix"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"so-matrix"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"sk-matrix"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"bi-matrix"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"sn"] = createRelation(0,-1,0,1);
-hashRelation["component_of"+"equip"+"pm"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"tf"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"af"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"lpf"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"matrix"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"sn"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"equip"+"pm"] = createRelation(0,-1,0,1);
 
 /* Site */
 //Site 0..1 componentOf * Equipment
-hashRelation["component_of"+"site"+"equip"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"site"+"equip"] = createRelation(0,-1,0,1);
 
 /* Transport Entity */
-//
+//Reference Point * connects * Reference Points
+hashSimpleRelation["connects"+"rp"+"rp"] = createRelation(0,-1,0,1);
 
 /* Reference Point */
 //Bindable Element * binds * Bindable Element
-hashRelation["component_of"+"tf"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"so-tf"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sk-tf"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"bi-tf"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"af"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"so-af"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sk-af"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"bi-af"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"lpf"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"so-lpf"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sk-lpf"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"bi-lpf"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"matrix"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"uni-matrix"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"so-matrix"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sk-matrix"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"bi-matrix"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sn"+"input"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"pm"+"input"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"port"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"port"] = createRelation(0,-1,0,-1);
 
-hashRelation["component_of"+"input"+"tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"so-tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"sk-tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"bi-tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"so-af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"sk-af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"bi-af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"so-lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"sk-lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"bi-lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"uni-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"so-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"sk-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"bi-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"sn"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"input"+"pm"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"pm"] = createRelation(0,-1,0,-1);
 
-hashRelation["component_of"+"tf"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"so-tf"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sk-tf"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"bi-tf"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"af"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"so-af"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sk-af"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"bi-af"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"lpf"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"so-lpf"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sk-lpf"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"bi-lpf"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"matrix"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"uni-matrix"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"so-matrix"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sk-matrix"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"bi-matrix"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"sn"+"output"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"pm"+"output"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"port"+"port"] = createRelation(0,-1,0,-1);
 
-hashRelation["component_of"+"output"+"tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"so-tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"sk-tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"bi-tf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"so-af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"sk-af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"bi-af"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"so-lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"sk-lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"bi-lpf"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"uni-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"so-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"sk-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"bi-matrix"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"sn"] = createRelation(0,-1,0,-1);
-hashRelation["component_of"+"output"+"pm"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"tf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"tf"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"tf"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"tf"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"af"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"af"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"af"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"af"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"af"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"lpf"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"lpf"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"lpf"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"lpf"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"lpf"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"matrix"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"sn"+"matrix"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"matrix"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"matrix"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"matrix"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"sn"+"sn"] = createRelation(0,-1,0,-1);
+hashSimpleRelation["binds"+"pm"+"sn"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"sn"+"pm"] = createRelation(0,-1,0,-1);
+
+hashSimpleRelation["binds"+"pm"+"pm"] = createRelation(0,-1,0,-1);
+
+/* Transport Function */
+//Transport Function 0..1 componentOf * Port
+hashSimpleRelation["component_of"+"tf"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"af"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"lpf"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"matrix"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"snc"+"port"] = createRelation(0,-1,0,1);
+hashSimpleRelation["component_of"+"pm"+"port"] = createRelation(0,-1,0,1);
 
 //TF 0..1 componentOf 0..2 TF
-hashRelation["component_of"+"tf"+"tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"tf"+"so-tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"tf"+"sk-tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"tf"+"bi-tf"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"so-tf"+"tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-tf"+"so-tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-tf"+"sk-tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-tf"+"bi-tf"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"sk-tf"+"tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-tf"+"so-tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-tf"+"sk-tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-tf"+"bi-tf"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"bi-tf"+"tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-tf"+"so-tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-tf"+"sk-tf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-tf"+"bi-tf"] = createRelation(0,2,0,1);
+hashSimpleRelation["component_of"+"tf"+"tf"] = createRelation(0,2,0,1);
 
 //AF 0..1 componentOf 0..2 AF
-hashRelation["component_of"+"af"+"af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"af"+"so-af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"af"+"sk-af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"af"+"bi-af"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"so-af"+"af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-af"+"so-af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-af"+"sk-af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-af"+"bi-af"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"sk-af"+"af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-af"+"so-af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-af"+"sk-af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-af"+"bi-af"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"bi-af"+"af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-af"+"so-af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-af"+"sk-af"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-af"+"bi-af"] = createRelation(0,2,0,1);
+hashSimpleRelation["component_of"+"af"+"af"] = createRelation(0,2,0,1);
 
 //LPF 0..1 componentOf 0..2 LPF
-hashRelation["component_of"+"lpf"+"lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"lpf"+"so-lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"lpf"+"sk-lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"lpf"+"bi-lpf"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"so-lpf"+"lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-lpf"+"so-lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-lpf"+"sk-lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-lpf"+"bi-lpf"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"sk-lpf"+"lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-lpf"+"so-lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-lpf"+"sk-lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-lpf"+"bi-lpf"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"bi-lpf"+"lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-lpf"+"so-lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-lpf"+"sk-lpf"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-lpf"+"bi-lpf"] = createRelation(0,2,0,1);
+hashSimpleRelation["component_of"+"lpf"+"lpf"] = createRelation(0,2,0,1);
 
 //Matrix 0..1 componentOf 0..2 Matrix
-hashRelation["component_of"+"matrix"+"matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"matrix"+"uni-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"matrix"+"bi-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"matrix"+"so-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"matrix"+"sk-matrix"] = createRelation(0,2,0,1);
+hashSimpleRelation["component_of"+"matrix"+"matrix"] = createRelation(0,2,0,1);
 
-hashRelation["component_of"+"uni-matrix"+"matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"uni-matrix"+"uni-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"uni-matrix"+"bi-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"uni-matrix"+"so-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"uni-matrix"+"sk-matrix"] = createRelation(0,2,0,1);
+//************//
 
-hashRelation["component_of"+"bi-matrix"+"matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-matrix"+"uni-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-matrix"+"bi-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-matrix"+"so-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"bi-matrix"+"sk-matrix"] = createRelation(0,2,0,1);
+/* Assignable Relations */
+/* Transport Entity */
+hashAssignableRelation["transport_entity"+"connects"+"rp"+"rp"] = createRelation(0,2,0,1);
 
-hashRelation["component_of"+"so-matrix"+"matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-matrix"+"uni-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-matrix"+"bi-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-matrix"+"so-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"so-matrix"+"sk-matrix"] = createRelation(0,2,0,1);
-
-hashRelation["component_of"+"sk-matrix"+"matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-matrix"+"uni-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-matrix"+"bi-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-matrix"+"so-matrix"] = createRelation(0,2,0,1);
-hashRelation["component_of"+"sk-matrix"+"sk-matrix"] = createRelation(0,2,0,1);
+/* Reference Point */
+hashAssignableRelation["rp"+"binds"+"tf"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"af"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"lpf"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"matrix"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"sn"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"pm"+"port"] = createRelation(0,-1,0,1);
 
 /* Methods */    
 /*
@@ -509,32 +469,41 @@ function newElement(element){
 	Create a internal relation: source relation target
 */
 function newSimpleRelation(relation, source, target){
+	//verify if source and target are valid variables
 	verifyDelclaredVariable(source);
 	verifyDelclaredVariable(target);
-	//source and target are valid variables
 	
-	var sourceType = hashVarType[source];
-	var targetType = hashVarType[target];
+	//Get supertypes of source and general
+	var sourceType = getSuperType(hashVarType[source]);
+	var targetType = getSuperType(hashVarType[target]);		
 	
+	var reference;
 	//Verify relationship possibility
-	if(hashRelation[relation+sourceType+targetType] === undefined){
-		throw new WrongRelation(currentLine+1);
+	if(hashSimpleRelation[relation+sourceType+targetType] === undefined){
+		//For specific cases
+		if(hashSimpleRelation[relation+hashVarType[source]+hashVarType[target]] === undefined){
+			throw new WrongRelation(currentLine+1);
+		}else{
+			reference = relation+hashVarType[source]+hashVarType[target];			
+		}		
+	}else{
+		reference = relation+sourceType+targetType;
 	}
 	
 	//Create relationship
-	if(hashUsedRelation[relation+sourceType+targetType] === undefined){
+	if(hashUsedRelation[reference] === undefined){
 		//first case, initialize
-		hashUsedRelation[relation+sourceType+targetType] = [];
+		hashUsedRelation[reference] = [];
 	}
 	//add current relationship to hashUsedRelation
-	hashUsedRelation[relation+sourceType+targetType].push(createRelationship(source, relation, target));
+	hashUsedRelation[reference].push(createRelationship(source, relation, target));
 	
 	//Verify cardinality possibility
-	var relationshipDefined = hashRelation[relation+sourceType+targetType];
+	var relationshipDefined = hashSimpleRelation[reference];
 	
 	var srcCont = 0, trgCont = 0;
 	
-	var arr = hashUsedRelation[relation+sourceType+targetType];
+	var arr = hashUsedRelation[reference];
 	
 	//for all relationships of the tuple {relation, sourceType, targetType}
 	for(var i = 0; i < arr.length; i++){
@@ -556,6 +525,31 @@ function newSimpleRelation(relation, source, target){
 	if(relationshipDefined.trgMax != -1 && trgCont > relationshipDefined.trgMax){
 		throw new WrongCardinality(currentLine+1);
 	}	
+	
+	if(relation != "component_of"){
+		hashRelation[relation].push(source+":"+target);
+	}
+}
+
+/*
+	Create a assignable relation
+*/
+
+function newAssignableRelation(ret, relation, source, target){
+	//Create a new simple relation between source and target
+	newSimpleRelation(relation,source,target);
+	
+	//get supertypes
+	var retType = getSuperType(hashVarType[ret]);
+	var sourceType = getSuperType(hashVarType[source]);
+	var targetType = getSuperType(hashVarType[target]);
+		
+	//verify if it's a possible assignable relation
+	if(hashAssignableRelation[retType+relation+sourceType+targetType] === undefined){
+		throw new WrongRelation(currentLine+1);
+	}
+	
+	hashRelation[relation].push(ret+":"+source+":"+target);
 }
 
 /*
@@ -565,12 +559,72 @@ function usedVariable(variable){
 	hashUsedVariable.push(variable);
 }
 
+/*
+	Creating element compositions
+*/
 function newElementComposition(whole){
+	var cofRel = whole+":";
+	
 	for(var i = 0; i < hashUsedVariable.length; i++){
 		newSimpleRelation("component_of",whole,hashUsedVariable[i]);
+		cofRel += hashUsedVariable[i]+",";
 	}
+	
+	cofRel = cofRel.substring(0,cofRel.length-1);
+	hashRelation["component_of"].push(cofRel);
+	
 	//clean up used variables
 	hashUsedVariable = [];
+}
+
+/*
+	Adding attributes
+*/
+function addLocationStr(owner,str){
+	verifyDelclaredVariable(owner);
+	
+	var elemSuperType = getSuperType(hashVarType[owner]);
+	var transportFunctions = new Array("tf","af","lpf","matrix","pm","sn","port");
+	
+	if(transportFunctions.indexOf(elemSuperType) == -1){
+		if(transportFunctions.indexOf(hashVarType[owner]) == -1){
+			throw new WrongAttributeDeclaration(currentLine+1);
+		}
+		throw new WrongAttributeDeclaration(currentLine+1);
+	}
+	
+	hashAttribute['str_location'].push(owner+":"+str);
+}
+
+function addLocationGeo(owner, g1,g2){
+	verifyDelclaredVariable(owner);
+	
+	var elemSuperType = getSuperType(hashVarType[owner]);
+	var transportFunctions = new Array("tf","af","lpf","matrix","pm","sn","port");
+	
+	if(transportFunctions.indexOf(elemSuperType) == -1){
+		if(transportFunctions.indexOf(hashVarType[owner]) == -1){
+			throw new WrongAttributeDeclaration(currentLine+1);
+		}
+		throw new WrongAttributeDeclaration(currentLine+1);
+	}
+	
+	
+	g1 = g1.replace(/:/g, '*');
+	g2 = g2.replace(/:/g, '*');
+	hashAttribute['geo_location'].push(owner+":"+g1+":"+g2);
+}
+
+function addType(tf,str){
+	verifyDelclaredVariable(tf);
+	
+	var tfSuperType = getSuperType(hashVarType[tf]);
+	
+	if(tfSuperType != "tf"){
+		throw new WrongAttributeDeclaration(currentLine+1);
+	}
+	
+	hashAttribute['tf_type'].push(tf+":"+str);
 }
 
 /* Private Functions */
@@ -602,6 +656,13 @@ function createRelationship(source, relation, target){
 	return relationship;
 }
 
+function getSuperType(cls){	
+	if(hashSuperType[cls] === undefined){
+		return cls;
+	}
+	return hashSuperType[cls];	
+}
+
 /* Exceptions */
 
 //An variable was multi-declared
@@ -621,5 +682,10 @@ function WrongRelation(line){
 
 //Wrong cardinality
 function WrongCardinality(line){
+	this.message = "Line "+line+": Incorrect attribution";		
+}
+
+//Wrong Attribute declaration
+function WrongAttributeDeclaration(line){
 	this.message = "Line "+line+": Incorrect attribution";		
 }

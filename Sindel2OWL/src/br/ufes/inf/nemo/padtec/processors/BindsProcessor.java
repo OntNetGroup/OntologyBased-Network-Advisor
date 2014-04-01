@@ -14,7 +14,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 public class BindsProcessor {
 	private static List<String>  transportFunctions =  Arrays.asList("tf","so-tf","sk-tf","bi-tf","af","so-af","sk-af","bi-af","lpf","so-lpf","sk-lpf","bi-lpf","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn");
 	private static List<String>  ports =  Arrays.asList("input","output");
-	private static List<String>  interfaces =  Arrays.asList("input_int","output_int");
+	private static List<String>  interfaces =  Arrays.asList("in_int","out_int");
 
 
 	private static OntModel model; 
@@ -44,16 +44,15 @@ public class BindsProcessor {
 	//Simple
 	public static void processBinds(OntModel model, String ClassNS, String IndNS, String binds){
 
-		String[] lin = binds.split(";");
+		String[] declarations = binds.split(",");
 
 		componentOf = model.getObjectProperty(ClassNS+"componentOf");
 		BindsProcessor.model = model;
 		BindsProcessor.ClassNS = ClassNS;
 		BindsProcessor.IndNS = IndNS;
 
-		for (String s : lin) {
-			String[] bind = s.split(":");
-			String[] vars = bind[1].split(",");
+		for (String declaration : declarations) {
+			String[] vars = declaration.split(":");
 
 			boolean isTF1 = false, isTF2 = false;//for Transport Function
 			boolean isP1 = false, isP2 = false;//for Port
