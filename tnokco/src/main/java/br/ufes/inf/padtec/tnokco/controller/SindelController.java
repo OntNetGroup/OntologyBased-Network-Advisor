@@ -96,7 +96,7 @@ public class SindelController {
 //			HomeController.InfModel = Reasoner.run(HomeController.Model);
 			
 			HomeController.InfModel = dtoSindel.model;
-			
+			/* REMOVER COMENTARIO
 			// Gets relations on model
 			HomeController.dtoSomeRelationsList = HomeController.Search.GetSomeRelations(HomeController.InfModel);
 			HomeController.dtoMinRelationsList = HomeController.Search.GetMinRelations(HomeController.InfModel);
@@ -105,6 +105,7 @@ public class SindelController {
 
 			// Update list instances
 			HomeController.UpdateLists();
+			*/
 
 		} catch (InconsistentOntologyException e) {
 
@@ -119,7 +120,8 @@ public class SindelController {
 			dto.result = error;				
 			return dto;
 
-		} catch (OKCoExceptionInstanceFormat e) {
+		} /*REMOVER DEPOIS!!!
+			catch (OKCoExceptionInstanceFormat e) {
 
 			String error = "Entity format error: " + e.toString();
 			System.out.println(error);
@@ -131,7 +133,7 @@ public class SindelController {
 			dto.ok = false;
 			dto.result = error;				
 			return dto;				
-		}
+		}*/
 
 		//FAZER O CATCH DA SINDEL
 

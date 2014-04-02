@@ -23,7 +23,7 @@
 				success : function(dto) {
 
 					if(dto.ok == true)
-						window.location.href = "/tnokco/sindel";
+						window.location.href = "/tnokco/getModel";
 
 				},
 				error:function(x,e){
