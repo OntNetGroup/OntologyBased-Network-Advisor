@@ -42,6 +42,12 @@ public class Sindel2OWL {
 	}
 
 	private OntModel owlReference;
+	
+	public Sindel2OWL(OntModel owl, String individualsPrefixName) {
+		this(owl);
+		IndNS += individualsPrefixName;
+	}
+	
 	public Sindel2OWL(OntModel owl) {
 		//save owl reference
 //		owlReference = owl;
