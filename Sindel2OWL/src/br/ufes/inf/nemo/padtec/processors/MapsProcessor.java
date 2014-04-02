@@ -11,10 +11,9 @@ public class MapsProcessor {
 		ObjectProperty rel;
 		Individual a,b;
 
-		String[] lin = maps.split(";");
+		String[] lin = maps.split(",");
 		for (String s : lin) {
-			String[] bind = s.split(":");
-			String[] vars = bind[1].split(",");
+			String[] vars = s.split(":");
 			
 			a = model.getIndividual(IndNS+vars[0]);
 			b = model.getIndividual(IndNS+vars[1]);

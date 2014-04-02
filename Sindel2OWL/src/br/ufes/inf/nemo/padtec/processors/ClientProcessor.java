@@ -11,7 +11,7 @@ public class ClientProcessor {
 		ObjectProperty rel;
 		Individual a,b;
 
-		String[] lin = clients.split(";");
+		String[] lin = clients.split(",");
 		for (String s : lin) {
 			String[] vars = s.split(":");
 			

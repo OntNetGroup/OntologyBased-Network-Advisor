@@ -90,8 +90,8 @@
 						} else {
 
 							//load list instances
-							alert("Ok! Going to OKCo..");
-							window.location.href = "list";
+							//Mudar para : window.location.href = "list";
+							window.location.href = "getModel";
 
 						}
 
