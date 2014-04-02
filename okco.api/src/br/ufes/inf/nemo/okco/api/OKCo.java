@@ -229,14 +229,14 @@ public class OKCo {
 				
 			} else {
 				
-				dtoResult.ListErrors.add("ERROR: Please select a resoner available.");
+				dtoResult.ListErrors.add("ERROR: Please select an available reasoner.");
 				return dtoResult;
 			}	
 			
 			//Check strength
 			if(! (strength.equals("FULL") || strength.equals("REGULAR")) )
 			{
-				dtoResult.ListErrors.add("ERROR: Please select a strength available.");
+				dtoResult.ListErrors.add("ERROR: Please select an available strength.");
 				return dtoResult;
 			}
 			
@@ -519,14 +519,14 @@ public class OKCo {
 				
 			} else {
 				
-				dtoResult.ListErrors.add("ERROR: Please select a resoner available.");
+				dtoResult.ListErrors.add("ERROR: Please select an available reasoner.");
 				return dtoResult;
 			}
 			
 			//Check strength
 			if(! (strength.equals("FULL") || strength.equals("REGULAR")) )
 			{
-				dtoResult.ListErrors.add("ERROR: Please select a strength available.");
+				dtoResult.ListErrors.add("ERROR: Please select an available strength.");
 				return dtoResult;
 			}			
 			
@@ -775,7 +775,7 @@ public class OKCo {
 			
 		} catch (InconsistentOntologyException e) {
 
-			String error = "INCONSISTENCY: " + " Ontology have inconsistence:" + e.toString() + ".";
+			String error = "INCONSISTENCY: " + " Ontology have inconsistency:" + e.toString() + ".";
 			dtoResult.ListErrors.add(error);
 			return dtoResult;
 			

@@ -1537,21 +1537,52 @@ public class Search {
 		
 		return listSubProperties;
 	}
+
+	public ArrayList<DomainRange> GetDomainRangeFromProperty(String property, InfModel infModel)
+	{
+		//List auxiliary for take the sub-properties and his relations
+		ArrayList<DomainRange> list = new ArrayList<DomainRange>();
+				
+		// Create a new query
+		String queryString = 
+				"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+				"PREFIX ns: <" + NS + ">" +
+				" SELECT DISTINCT *" +
+				" WHERE {\n" +
+					"<" + property + "> rdfs:domain ?domainSubProp ." +
+					"<" + property + "> rdfs:range ?rangeSubProp ." +					
+				"}";
+		
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
+		ResultSet results = qe.execSelect();		
+		
+		while (results.hasNext()) {
+
+			QuerySolution row= results.next();
+			
+		    RDFNode domainNode = row.get("domainSubProp");
+		    RDFNode rangeNode = row.get("rangeSubProp");
+		    
+		    String domainClsSubProp = domainNode.toString();
+		    String rangeClsSubProp = rangeNode.toString();
+		    
+	    	DomainRange dr = new DomainRange(domainClsSubProp, rangeClsSubProp);
+	    	list.add(dr);		    
+		}
+		
+		return list;
+	}
 	
-	public ArrayList<String> GetSubPropertiesWithDomaninAndRange(String instanceSource,	String property, String instanceTarget, ArrayList<DtoInstanceRelation> instanceListRelations, InfModel infModel) {
-		
-		/* Get properties with domains from instanceSource class and Range from instanceTarget class */
-		ArrayList<String> listSubProperties = new ArrayList<String>();
-		
+	public ArrayList<RelationDomainRangeList> GetSubPropertiesWithDomaninAndRange(String property, InfModel infModel)
+	{
 		//List auxiliary for take the sub-properties and his relations
 		ArrayList<RelationDomainRangeList> listMediation = new ArrayList<RelationDomainRangeList>();
-		
-		//Get classes from instances
-		ArrayList<String> listClsSourceInstance = this.GetClassesFrom(instanceSource, infModel);
-		ArrayList<String> listClsTargetInstance = this.GetClassesFrom(instanceTarget, infModel);		
-		
-		//Get sub-properties from property and yours domain and range
-		
+				
 		// Create a new query
 		String queryString = 
 				"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -1598,6 +1629,24 @@ public class Search {
 		    }
 		    
 		}
+		
+		return listMediation;
+	}
+	
+	public ArrayList<String> GetSubPropertiesWithDomaninAndRange(String instanceSource,	String property, String instanceTarget, ArrayList<DtoInstanceRelation> instanceListRelations, InfModel infModel) {
+		
+		/* Get properties with domains from instanceSource class and Range from instanceTarget class */
+		ArrayList<String> listSubProperties = new ArrayList<String>();
+		
+		//List auxiliary for take the sub-properties and his relations
+		ArrayList<RelationDomainRangeList> listMediation = new ArrayList<RelationDomainRangeList>();
+		
+		//Get classes from instances
+		ArrayList<String> listClsSourceInstance = this.GetClassesFrom(instanceSource, infModel);
+		ArrayList<String> listClsTargetInstance = this.GetClassesFrom(instanceTarget, infModel);		
+		
+		//Get sub-properties from property and yours domain and range
+		listMediation = this.GetSubPropertiesWithDomaninAndRange(property, infModel);
 		
 		//Select relations
 		for (RelationDomainRangeList elem : listMediation) 

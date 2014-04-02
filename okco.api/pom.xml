@@ -7,7 +7,7 @@
 
 	<dependencies>
 	
-	<!-- Jena -->
+		<!-- Jena -->
 		<dependency>
 			<groupId>com.hp.hpl.jena</groupId>
 			<artifactId>arq</artifactId>

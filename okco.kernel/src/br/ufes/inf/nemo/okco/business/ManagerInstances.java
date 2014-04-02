@@ -522,4 +522,128 @@ public class ManagerInstances {
 		
 		return model;
 	}
+
+	public ArrayList<DtoDefinitionClass> removeRepeatValuesOn(Instance instanceSelected, EnumRelationType type) {
+
+		ArrayList<DtoDefinitionClass> listDefinition = new ArrayList<DtoDefinitionClass>();
+		
+		if(type.equals(EnumRelationType.SOME))
+		{
+			for (DtoDefinitionClass dto : instanceSelected.ListSome) 
+			{			
+				boolean exist = false;
+				for (DtoDefinitionClass dto2 : listDefinition) {
+					if(dto.sameAs(dto2))
+					{
+						exist = true;
+						break;
+					}
+				}
+				
+				if(exist == false)
+				{
+					listDefinition.add(dto);
+					//dto.print();
+				}			
+			}
+			
+		} else if(type.equals(EnumRelationType.MIN))
+		{
+			for (DtoDefinitionClass dto : instanceSelected.ListMin) 
+			{			
+				boolean exist = false;
+				for (DtoDefinitionClass dto2 : listDefinition) {
+
+					//Doesn't compare the source
+					if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
+					{
+						exist = true;
+						break;
+					}
+				}
+				
+				if(exist == false)
+				{
+					listDefinition.add(dto);
+					//dto.print();
+				}			
+			}
+			
+		} else  if(type.equals(EnumRelationType.MAX))
+		{
+			for (DtoDefinitionClass dto : instanceSelected.ListMax) 
+			{			
+				boolean exist = false;
+				for (DtoDefinitionClass dto2 : listDefinition) {
+
+					//Doesn't compare the source
+					if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
+					{
+						exist = true;
+						break;
+					}
+				}
+				
+				if(exist == false)
+				{
+					listDefinition.add(dto);
+					//dto.print();
+				}			
+			}
+			
+		} else if(type.equals(EnumRelationType.EXACTLY))
+		{
+			for (DtoDefinitionClass dto : instanceSelected.ListExactly) 
+			{			
+				boolean exist = false;
+				for (DtoDefinitionClass dto2 : listDefinition) {
+
+					//Doesn't compare the source
+					if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
+					{
+						exist = true;
+						break;
+					}
+				}
+				
+				if(exist == false)
+				{
+					listDefinition.add(dto);
+					//dto.print();
+				}			
+			}
+		}
+		
+		
+		return listDefinition;
+	}
+
+	public ArrayList<String> getClassesToClassify(Instance instanceSelected, InfModel infModel) {
+
+		//Get all the subclasses without repeat
+		ArrayList<String> listClassesMembersTmpWithoutRepeat = new ArrayList<String>();
+		for (DtoCompleteClass dto : instanceSelected.ListCompleteClasses) {
+			for (String clsComplete : dto.Members) {
+				if(! listClassesMembersTmpWithoutRepeat.contains(clsComplete))
+				{
+					listClassesMembersTmpWithoutRepeat.add(clsComplete);					
+				} 
+			}
+		}
+		
+		//Remove disjoint subclasses from some super class
+		ArrayList<String> listClassesMembersTmp = new ArrayList<String>();
+		for (DtoCompleteClass dto : instanceSelected.ListCompleteClasses) 
+		{
+			ArrayList<String> listDisjoint = search.GetDisjointClassesOf(dto.CompleteClass, infModel);
+			for (String clc : listClassesMembersTmpWithoutRepeat) 
+			{
+				if(! listDisjoint.contains(clc))
+				{
+					listClassesMembersTmp.add(clc);
+				}
+			}			
+		}
+		return listClassesMembersTmp;
+	}
 }
