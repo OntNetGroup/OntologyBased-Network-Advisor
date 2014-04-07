@@ -1,5 +1,7 @@
 package br.ufes.inf.padtec.tnokco.controller;
 
+import br.ufes.inf.padtec.tnokco.business.ManagerRelations;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,10 +57,7 @@ public class HomeController {
 	public static ArrayList<Instance> ListAllInstances;
 	public static ArrayList<String> ListModifiedInstances;
 
-	public static ArrayList<DtoDefinitionClass> dtoSomeRelationsList;
-	public static ArrayList<DtoDefinitionClass> dtoMinRelationsList;
-	public static ArrayList<DtoDefinitionClass> dtoMaxRelationsList;
-	public static ArrayList<DtoDefinitionClass> dtoExactlyRelationsList;	
+	public static ArrayList<DtoDefinitionClass> ModelDefinitions;
 
 	@RequestMapping(method = RequestMethod.GET, value="/")
 	public String index(HttpSession session, HttpServletRequest request) {
@@ -126,171 +125,6 @@ public class HomeController {
 		}
 	}
 
-	@RequestMapping(value = "/uploadOwlTnokco", method = RequestMethod.POST)
-	public String uploadOwlTnokco(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner){
-
-		try {
-
-			Factory = new FactoryModel();
-			Repository = Factory.GetRepository();
-
-			//Select reasoner
-			if(optionsReasoner.equals("hermit"))
-			{
-				Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
-
-			} else if(optionsReasoner.equals("pellet"))
-			{
-				Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
-			} else {
-
-				throw new OKCoExceptionReasoner("Please select a resoner available.");
-			}			  
-
-			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-			MultipartFile file = multipartRequest.getFile("file");
-
-			if(! file.getOriginalFilename().endsWith(".owl"))
-			{
-				throw new OKCoExceptionFileFormat("Please select owl file.");
-			}
-
-			// Load Model
-			InputStream in = file.getInputStream();
-			Model = Repository.Open(in);
-			InputStream in2 = file.getInputStream();
-			tmpModel = Repository.Open(in2);
-
-			// Name space
-			NS = Repository.getNameSpace(Model);
-
-			if(NS == null)
-			{
-				throw new OKCoExceptionNS("Please select owl file with defined namespace.");
-			}
-
-			Search = new Search(NS);
-			FactoryInstances = new FactoryInstances(Search);
-			ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
-
-			//Save temporary model
-			tmpModel = Repository.CopyModel(Model);
-
-			//Call reasoner
-			InfModel = Reasoner.run(Model);
-
-			//Nao executa
-			//		  	  InfModel = Repository.CopyModel(Model);
-
-			//List modified instances
-			ListModifiedInstances = new ArrayList<String>();
-
-			// Gets relations on model
-			dtoSomeRelationsList = Search.GetSomeRelations(InfModel);
-			dtoMinRelationsList = Search.GetMinRelations(InfModel);
-			dtoMaxRelationsList = Search.GetMaxRelations(InfModel);
-			dtoExactlyRelationsList = Search.GetExactlyRelations(InfModel);
-
-			// Update list instances
-			UpdateLists();
-
-		} catch (InconsistentOntologyException e) {
-
-			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
-			request.getSession().setAttribute("errorMensage", error);
-
-			//Roll back the last valid model
-
-			Model = HomeController.Repository.CopyModel(HomeController.tmpModel);
-			InfModel = HomeController.Repository.CopyModel(HomeController.Model);
-
-			try {
-
-				UpdateLists();
-
-			} catch (InconsistentOntologyException e1) {
-
-				// Never get in here
-				e1.printStackTrace();
-
-			} catch (OKCoExceptionInstanceFormat e1) {
-
-				// Never get in here
-				e1.printStackTrace();
-			}			
-
-			return "index";
-
-		} catch (OKCoExceptionInstanceFormat e) {
-
-			String error = "Entity format error: " + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);
-			Model = null;
-			tmpModel = null;
-			InfModel = null;
-			ListAllInstances = null;
-			ListModifiedInstances = null;
-			Reasoner = null;
-
-			return "index";
-
-		} catch (OKCoExceptionFileFormat e) {
-
-			String error = "File format error: " + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);
-			Model = null;
-			tmpModel = null;
-			InfModel = null;
-			ListAllInstances = null;
-			ListModifiedInstances = null;
-			Reasoner = null;
-
-			return "index";
-
-		} catch (IOException e) {
-
-			String error = "File not found.";
-			request.getSession().setAttribute("errorMensage", error);
-			Model = null;
-			tmpModel = null;
-			InfModel = null;
-			ListAllInstances = null;
-			ListModifiedInstances = null;
-			Reasoner = null;
-
-			return "index";
-
-		} catch (OKCoExceptionNS e) {
-
-			String error = "File namespace error: " + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);
-			Model = null;
-			tmpModel = null;
-			InfModel = null;
-			ListAllInstances = null;
-			ListModifiedInstances = null;
-			Reasoner = null;
-
-			return "index";
-
-		} catch (OKCoExceptionReasoner e) {
-
-			String error = "Reasoner error: " + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);
-			Model = null;
-			tmpModel = null;
-			InfModel = null;
-			ListAllInstances = null;
-			ListModifiedInstances = null;
-			Reasoner = null;
-
-			return "index";
-		}
-
-		request.getSession().removeAttribute("errorMensage");  
-		return "redirect:sindel";
-	}
-
 	@RequestMapping(value = "/uploadOwl", method = RequestMethod.POST)
 	public String uploadOwl(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner){
 
@@ -349,13 +183,7 @@ public class HomeController {
 			//InfModel = Repository.CopyModel(Model);
 
 			//List modified instances
-			ListModifiedInstances = new ArrayList<String>();
-
-			// Gets relations on model
-			dtoSomeRelationsList = Search.GetSomeRelations(InfModel);
-			dtoMinRelationsList = Search.GetMinRelations(InfModel);
-			dtoMaxRelationsList = Search.GetMaxRelations(InfModel);
-			dtoExactlyRelationsList = Search.GetExactlyRelations(InfModel);
+			ListModifiedInstances = new ArrayList<String>();		
 
 			// Update list instances
 			UpdateLists();
@@ -505,22 +333,66 @@ public class HomeController {
 		return "redirect:sindel";
 	}
 
+	@RequestMapping(value = "/EnforceSubRelation", method = RequestMethod.GET)
+	public String EnforceSubRelation(HttpServletRequest request){
+
+		String login = (String)request.getSession().getAttribute("login");
+		if(login == null)
+			login = "";
+
+		if(login.equals("true"))
+		{
+			request.getSession().removeAttribute("errorMensage");
+			request.getSession().removeAttribute("loadOk");
+			
+			ManagerRelations mRelations = new ManagerRelations(HomeController.Search, HomeController.ManagerInstances);
+		  	HomeController.Model = mRelations.EnforceSubRelation(HomeController.Model, HomeController.InfModel, HomeController.NS);
+		  	
+		  	//Update list instances
+			try {
+				HomeController.UpdateLists();
+			} catch (InconsistentOntologyException e) {
+
+				e.printStackTrace();
+			} catch (OKCoExceptionInstanceFormat e) {
+
+				e.printStackTrace();
+			}
+
+			//Clean list modified instances
+			//HomeController.ListModifiedInstances = new ArrayList<String>();
+
+			//Update list instances modified
+			HomeController.UpdateListsModified();
+
+		  	request.getSession().removeAttribute("errorMensage");  
+			return "redirect:list";
+			
+		} else {
+
+			return "login";	//View to return
+		}	
+		
+	}
+	
+	
 	public static void UpdateLists() throws InconsistentOntologyException, OKCoExceptionInstanceFormat {
 
 		try {
 
-			// Refresh list of instances
-
-			ListAllInstances = ManagerInstances.getAllInstances(Model, InfModel, NS);
-
+			//Refresh list of instances
+	    	
+	    	ListAllInstances = ManagerInstances.getAllInstances(Model, InfModel, NS);
+	    	
+	    	//Get model definitions on list of instances
+	    	
+		  	ModelDefinitions = Search.GetModelDefinitionsInInstances(ListAllInstances, InfModel);
+			
 			// Organize data (Update the list of all instances)
-
-			ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoSomeRelationsList, EnumRelationType.SOME, Model, InfModel, NS);
-			ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMinRelationsList, EnumRelationType.MIN, Model, InfModel, NS);
-			ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMaxRelationsList, EnumRelationType.MAX, Model, InfModel, NS);
-			ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoExactlyRelationsList, EnumRelationType.EXACTLY, Model, InfModel, NS);
-			ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, InfModel, NS);				
-
+			
+	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, EnumRelationType.SOME, Model, InfModel, NS);			
+			ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, InfModel, NS);	
+			
 		} catch (InconsistentOntologyException e) {
 
 			throw e;

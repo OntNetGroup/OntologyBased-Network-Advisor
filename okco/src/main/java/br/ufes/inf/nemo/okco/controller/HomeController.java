@@ -52,10 +52,7 @@ public class HomeController {
 	public static ArrayList<Instance> ListAllInstances;
 	public static ArrayList<String> ListModifiedInstances;
 	
-	public static ArrayList<DtoDefinitionClass> dtoSomeRelationsList;
-	public static ArrayList<DtoDefinitionClass> dtoMinRelationsList;
-	public static ArrayList<DtoDefinitionClass> dtoMaxRelationsList;
-	public static ArrayList<DtoDefinitionClass> dtoExactlyRelationsList;	
+	public static ArrayList<DtoDefinitionClass> ModelDefinitions;
 
 	@RequestMapping(method = RequestMethod.GET, value="/")
 	  public String index(HttpSession session, HttpServletRequest request) {
@@ -176,12 +173,6 @@ public class HomeController {
 		  	  
 		  	  //List modified instances
 		  	  ListModifiedInstances = new ArrayList<String>();
-		  	  
-		  	  // Gets relations on model
-			  dtoSomeRelationsList = Search.GetSomeRelations(InfModel);
-			  dtoMinRelationsList = Search.GetMinRelations(InfModel);
-			  dtoMaxRelationsList = Search.GetMaxRelations(InfModel);
-			  dtoExactlyRelationsList = Search.GetExactlyRelations(InfModel);
 
 			  // Update list instances
 			  UpdateLists();
@@ -308,13 +299,14 @@ public class HomeController {
 	    	// Refresh list of instances
 	    	
 	    	ListAllInstances = ManagerInstances.getAllInstances(Model, InfModel, NS);
+	    	
+	    	//Get model definitions on list of instances
+	    	
+		  	ModelDefinitions = Search.GetModelDefinitionsInInstances(ListAllInstances, InfModel);
 			
 			// Organize data (Update the list of all instances)
 			
-	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoSomeRelationsList, EnumRelationType.SOME, Model, InfModel, NS);
-			ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMinRelationsList, EnumRelationType.MIN, Model, InfModel, NS);
-			ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMaxRelationsList, EnumRelationType.MAX, Model, InfModel, NS);
-			ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoExactlyRelationsList, EnumRelationType.EXACTLY, Model, InfModel, NS);
+	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, EnumRelationType.SOME, Model, InfModel, NS);			
 			ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, InfModel, NS);				
 			
 		} catch (InconsistentOntologyException e) {

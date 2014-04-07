@@ -15,6 +15,13 @@
 
 	$(document).ready(function() {
 
+		//Enforce Sub Relations
+		$('#EnforceSubRelation').click(function(event) {
+
+			window.location.href = "/tnokco/EnforceSubRelation";
+				
+		});	//End load sindel file
+
 		// Run reasoner
 		$('#runReasonerForm').submit(function(event) {
 
@@ -64,9 +71,12 @@
 			<a class="btn btn-success" target="_blank" href="/tnokco/graphVisualizer?typeView=ALL&id=0"> <i class="icon-zoom-in"></i> </a>
 			VIEW ALL GRAPH			
 		</div>
+		
 		<form id="runReasonerForm" style="float:right" action="runReasoner" method="POST">
 
+			<button id="EnforceSubRelation" type="button" class="btn btn-pre"> <i class="icon-arrow-right"></i> Enforce Sub Relation(s)</button>	
 			<button type="submit"  class="btn btn-pre"> <i class="icon-arrow-right"></i> Run reasoner</button>
+			
 		
 		</form>
 		
