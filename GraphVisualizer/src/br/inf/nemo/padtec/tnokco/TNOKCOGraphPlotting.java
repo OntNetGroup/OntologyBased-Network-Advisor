@@ -2,6 +2,7 @@ package br.inf.nemo.padtec.tnokco;
 
 import java.util.HashMap;
 
+import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
@@ -124,6 +125,11 @@ public class TNOKCOGraphPlotting extends GraphPlotting{
 		String arborHashStructure = arborParser.getArborHashStructure();
 
 		return callBack(arborStructure, arborHashStructure);
+	}
+
+	public String getArborStructureFromEquipmentVisualization(OntModel model) {
+
+		return null;
 	}
 	
 }

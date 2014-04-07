@@ -24,8 +24,8 @@
 					<tr>
 						<td><b>All Sites</b></td>
 						<td style="padding-left: 30px;">
-							<a class="btn btn-success" target="_blank"
-								href="/tnokco/open_network_visualization?allSites"> <i
+							<a class="btn btn-success" 
+								href="/tnokco/open_network_visualization?visualization=allSites"> <i
 									class="icon-zoom-in"></i>
 							</a> 
 						</td>
@@ -33,7 +33,7 @@
 					<tr>
 						<td><b>All Equipment</b></td>
 						<td style="padding-left: 30px;">
-							<a class="btn btn-success" target="_blank"
+							<a class="btn btn-success" 
 								href="/tnokco/open_network_visualization?"> <i
 									class="icon-zoom-in"></i>
 							</a> 
@@ -42,7 +42,7 @@
 					<tr>
 						<td><b>All G.800 Elements</b></td>
 						<td style="padding-left: 30px;">
-							<a class="btn btn-success" target="_blank"
+							<a class="btn btn-success" 
 								href="/tnokco/open_network_visualization?"> <i
 									class="icon-zoom-in"></i>
 							</a> 
@@ -51,7 +51,7 @@
 					<tr>
 						<td><b>Elements from a specific Site</b></td>
 						<td style="padding-left: 30px;">
-							<a class="btn btn-success" target="_blank"
+							<a class="btn btn-success" 
 								href="/tnokco/open_network_visualization?"> <i
 									class="icon-zoom-in"></i>
 							</a> 
@@ -60,7 +60,7 @@
 					<tr>
 						<td><b>G.800 elements from a specific Equipment</b></td>
 						<td style="padding-left: 30px;">
-							<a class="btn btn-success" target="_blank"
+							<a class="btn btn-success" 
 								href="/tnokco/open_network_visualization?"> <i
 									class="icon-zoom-in"></i>
 							</a> 

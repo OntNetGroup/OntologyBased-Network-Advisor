@@ -121,7 +121,7 @@ public class BindsProcessor {
 
 	private static void processSimpleRelation_InterfacexInterface() {
 		//TODO WARNING IN x OUT??
-		rel = model.getObjectProperty(ClassNS+"binds_equip_interface");
+		rel = model.getObjectProperty(ClassNS+"interface_binds");
 		stmt = model.createStatement(a, rel, b);
 		model.add(stmt);
 	}

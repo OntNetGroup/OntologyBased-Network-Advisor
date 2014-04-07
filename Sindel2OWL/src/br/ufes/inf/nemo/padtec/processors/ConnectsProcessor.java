@@ -13,16 +13,20 @@ public class ConnectsProcessor {
 	private static ObjectProperty rel;
 	private static Individual a,b,x,k;
 	private static OntClass o_class;
+	private static String toA,toB;
 	
 	public static void processCompositions(OntModel model, String ClassNS, String IndNS, String connects){
 		o_class = model.getOntClass(ClassNS+"Information_Transfer");
-		String[] lin = connects.split(";");
+		String[] lin = connects.split(",");
 		for (String s : lin) {
-			String[] bind = s.split(":");
-			String[] vars = bind[1].split(",");
+			String[] vars = s.split(":");
 
 			a = model.getIndividual(IndNS+vars[0]);
 			b = model.getIndividual(IndNS+vars[1]);
+			
+			toA = Sindel2OWL.hashIndividuals.get(vars[0]);
+			toB = Sindel2OWL.hashIndividuals.get(vars[1]);
+			
 			if(vars.length == 2){
 				//SimpleRelation
 				processSimpleRelation(model, ClassNS);
@@ -36,7 +40,12 @@ public class ConnectsProcessor {
 	
 	//Simple
 	private static void processSimpleRelation(OntModel model, String ClassNS){
-		rel = model.getObjectProperty(ClassNS+"has_information_transfer");
+		if(toA.equals("site") && toB.equals("site")){
+			rel = model.getObjectProperty(ClassNS+"site_connects");
+		}else{
+			rel = model.getObjectProperty(ClassNS+"has_forwarding");				
+		}
+		
 		stmt = model.createStatement(a, rel, b);
 		model.add(stmt);
 	}

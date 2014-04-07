@@ -36,6 +36,9 @@
 <script src="Assets/js/graph/graphics.js"></script>
 <script src="Assets/js/graph/main.js"></script>
 
+</head>
+<body>
+
 <script>
 	$(document).ready(function(){
 		graph = startArbor("#viewport");
@@ -47,9 +50,6 @@
 		out.println(values);
 	%>
 </script>
-
-</head>
-<body>
 	<%
 		int width  = (Integer)request.getSession().getAttribute("width");
 		out.println("<div style=\"width:"+(width+320)+"px\">");

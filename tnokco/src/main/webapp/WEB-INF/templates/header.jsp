@@ -140,6 +140,41 @@
 
 <!-- END Syntax Highlight -->
 
+<!-- GraphVisualizer includes for EQUIPAMENT!!! -->
+<style>
+#currentNode {
+	border: 1px solid #B8B8B8;
+	width: 300px;
+	height: 250px;
+	padding-left: 15px;
+	padding-top: 15px;
+	top: 20px;
+	overflow-y: auto;
+	max-width: 290px;
+	max-height: 210px;
+	color: #fff;
+	background: #222 linear-gradient(#444, #222);
+	font-family: verdana, arial, sans-serif;
+	font-size: 14px;
+}
+
+#subtitle {
+	border: 1px solid #B8B8B8;
+	width: 270px;
+	height: 240px;
+	padding-left: 10px;
+	padding-top: 10px;
+	overflow-y: auto;
+	background: #222 linear-gradient(#444, #222);
+}
+</style>
+
+<script src="Assets/js/graph/arbor.js"></script>
+<script src="Assets/js/graph/graphics.js"></script>
+<script src="Assets/js/graph/main.js"></script>
+
+<!-- GraphVisualizer includes for EQUIPAMENT!!! -->
+
 </head>
 
 <body>
@@ -195,7 +230,7 @@
 								class="hidden-sm"> Equipment Studio</span></a></li>
 						<li><a href="/tnokco/newEquipment"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> New Equipments</span></a></li>
-						<li><a href="/tnokco/provisioning"><i class="icon-eye-open"></i><span
+						<li><a href="/tnokco/equipmentVisualizer"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Provisioning</span></a></li>
 						<li><a href="/tnokco/faq" class=""><i class="icon-eye-open"></i><span
 								class="hidden-sm"> FAQ</span></a></li>

@@ -91,7 +91,7 @@
 
 							//load list instances
 							//Mudar para : window.location.href = "list";
-							window.location.href = "getModel";
+							window.location.href = "open_visualizator";
 
 						}
 

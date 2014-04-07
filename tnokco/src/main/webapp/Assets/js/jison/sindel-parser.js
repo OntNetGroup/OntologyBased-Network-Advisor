@@ -372,6 +372,8 @@ hashSimpleRelation["component_of"+"equip"+"pm"] = createRelation(0,-1,0,1);
 //Site 0..1 componentOf * Equipment
 hashSimpleRelation["component_of"+"site"+"equip"] = createRelation(0,-1,0,1);
 
+hashSimpleRelation["connects"+"site"+"site"] = createRelation(0,-1,0,-1);
+
 /* Transport Entity */
 //Reference Point * connects * Reference Points
 hashSimpleRelation["connects"+"rp"+"rp"] = createRelation(0,-1,0,1);
