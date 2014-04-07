@@ -1411,10 +1411,14 @@ public class Search {
 				" ?list  rdf:rest*/rdf:first  ?member . \n"  +			
 				" ?member " + "owl:someValuesFrom" + " ?z .\n " +
 				" ?member " + "owl:onProperty ?y .\n" +	
+				
+				" FILTER( ?x = <" + clsuri + "> ) " +
 			"} UNION {\n" +		
 				" ?x " + "owl:equivalentClass" + " _:b0 .\n " +				
 				" _:b0 " + "owl:someValuesFrom" + " ?z .\n " +
 				" _:b0 " + "owl:onProperty ?y .\n" +
+				
+				" FILTER( ?x = <" + clsuri + "> ) " +
 			" }\n" +	
 				
 			"UNION { " +
@@ -1424,10 +1428,14 @@ public class Search {
 				" ?list  rdf:rest*/rdf:first  ?member . \n"  +			
 				" ?member " + "owl:someValuesFrom" + " ?z .\n " +
 				" ?member " + "owl:onProperty ?y .\n" +	
+				
+				" FILTER( ?x = <" + clsuri + "> ) " +
 			"} UNION {\n" +		
 				" ?x " + "rdfs:subClassOf" + " _:b1 .\n " +				
 				" _:b1 " + "owl:someValuesFrom" + " ?z .\n " +
 				" _:b1 " + "owl:onProperty ?y .\n" +
+				
+				" FILTER( ?x = <" + clsuri + "> ) " +
 			" }\n" +			
 		
 		"}";
@@ -2032,10 +2040,10 @@ public class Search {
 				DtoDefinitionClass aux = DtoDefinitionClass.getDtoWithSource(resultListDefinitions, cls);
 				if(aux == null && ! cls.contains("Thing"))	//don't exist yet
 				{
-					ArrayList<DtoDefinitionClass> dtoSomeRelationsList = this.GetSomeRelations(InfModel);
-					ArrayList<DtoDefinitionClass> dtoMinRelationsList = this.GetMinRelations(InfModel);
-					ArrayList<DtoDefinitionClass> dtoMaxRelationsList = this.GetMaxRelations(InfModel);
-					ArrayList<DtoDefinitionClass> dtoExactlyRelationsList = this.GetExactlyRelations(InfModel);	
+					ArrayList<DtoDefinitionClass> dtoSomeRelationsList = this.GetSomeRelationsOfClass(InfModel,cls);
+					ArrayList<DtoDefinitionClass> dtoMinRelationsList = this.GetMinRelationsOfClass(InfModel,cls);
+					ArrayList<DtoDefinitionClass> dtoMaxRelationsList = this.GetMaxRelationsOfClass(InfModel,cls);
+					ArrayList<DtoDefinitionClass> dtoExactlyRelationsList = this.GetExactlyRelationsOfClass(InfModel,cls);	
 					
 					resultListDefinitions.addAll(dtoSomeRelationsList);
 					resultListDefinitions.addAll(dtoMinRelationsList);
