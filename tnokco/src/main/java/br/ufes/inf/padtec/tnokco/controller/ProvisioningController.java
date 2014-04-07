@@ -39,6 +39,15 @@ public class ProvisioningController{
 	
 	@RequestMapping(method = RequestMethod.GET, value="/newEquipment")
 	public String newEquipment(HttpSession session, HttpServletRequest request) {
+		
+		if(HomeController.Model == null)
+		{
+			String error = "Error! You need to load the model first.";
+			request.getSession().setAttribute("errorMensage", error);
+			
+			return "index";
+		}
+
 		this.cleanEquipSindel(request);
 		/*
 		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
@@ -105,13 +114,6 @@ public class ProvisioningController{
 			return dto;
 		}		
 		
-		if(HomeController.Model == null)
-		{
-			dto.ok = false;
-			dto.result = "Error! You need to load the model first.";
-			return dto;
-		}
-
 		try {		  	      
 			
 			// Populate the model
@@ -161,9 +163,10 @@ public class ProvisioningController{
 
 		this.cleanEquipSindel(request);
 		
+		System.out.println("rodou");
 		return dto;
 	}
-	
+	 
 	@RequestMapping(method = RequestMethod.GET, value="/cleanEquipSindel")
 	public @ResponseBody DtoResultAjax cleanEquipSindel(HttpServletRequest request) {
 
