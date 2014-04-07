@@ -19,7 +19,7 @@ public class PelletReasoner implements IReasoner {
 	  	InfModel infModel = ModelFactory.createInfModel(r, model);
 	  	  
         long tempo = System.currentTimeMillis() - antes;
-        System.out.printf("O programa reaosenr pellet executou em %d milissegundos.%n", tempo);  
+        System.out.printf("O programa reasoner pellet executou em %d milissegundos.%n", tempo);  
 	  	
 	  	
 		return infModel;

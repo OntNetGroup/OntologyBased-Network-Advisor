@@ -13,10 +13,15 @@ public class FactoryModel implements IFactory{
 
 	public IReasoner GetReasoner(EnumReasoner reasoner) {
 
-		if (reasoner == EnumReasoner.PELLET)			
-			return new PelletReasoner();		
-		else			
+		if (reasoner == EnumReasoner.PELLET)
+		{
+			return new PelletReasoner();
+		}
+		else //if (reasoner == EnumReasoner.HERMIT)
+		{
 			return new HermitReasoner();
+			
+		}
 	}
 
 }

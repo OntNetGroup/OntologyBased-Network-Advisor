@@ -126,7 +126,7 @@ public class HermitReasoner implements IReasoner {
 		model.read(bais, null);
 		
 		long tempo = System.currentTimeMillis() - antes;
-        System.out.printf("O programa reaosenr hermit executou em %d milissegundos.%n", tempo);  
+        System.out.printf("O programa reasoner hermit executou em %d milissegundos.%n", tempo);  
 
 		return model;
 	}

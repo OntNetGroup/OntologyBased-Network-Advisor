@@ -132,6 +132,7 @@ public class HomeController {
 
 			Factory = new FactoryModel();
 			Repository = Factory.GetRepository();
+			boolean reasoning = true;
 
 			//Select reasoner
 			if(optionsReasoner.equals("hermit"))
@@ -141,6 +142,12 @@ public class HomeController {
 			} else if(optionsReasoner.equals("pellet"))
 			{
 				Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
+				
+			} else if(optionsReasoner.equals("none"))
+			{
+				reasoning = false;
+				Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT); //Hermit by default
+				
 			} else {
 
 				throw new OKCoExceptionReasoner("Please select a resoner available.");
@@ -173,14 +180,18 @@ public class HomeController {
 			ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
 
 			//Save temporary model
-			tmpModel = Repository.CopyModel(Model);
-
-			//Call reasoner
-			InfModel = Reasoner.run(Model);
-			InfModel = Repository.CopyModel(Model);
-
-			//Nao executa
-			//InfModel = Repository.CopyModel(Model);
+			tmpModel = Repository.CopyModel(Model);			
+			
+			if(reasoning == true)
+			{
+				//Call reasoner
+				InfModel = Reasoner.run(Model);
+				
+			} else {
+				
+				//Don't call reasoner
+				InfModel = Repository.CopyModel(Model);
+			}
 
 			//List modified instances
 			ListModifiedInstances = new ArrayList<String>();		
