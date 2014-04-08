@@ -4,14 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,19 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.ufes.inf.nemo.okco.business.FactoryInstances;
 import br.ufes.inf.nemo.okco.business.FactoryModel;
-import br.ufes.inf.nemo.okco.business.ManagerInstances;
-import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
-import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
 import br.ufes.inf.padtec.tnokco.business.Reader;
-
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.reasoner.Reasoner;
 
 @Controller
 public class ProvisioningController{
