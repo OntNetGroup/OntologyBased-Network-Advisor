@@ -32,7 +32,8 @@ public class VisualizationController {
 		String valuesGraph = "";
 		
 		if(visualization.equals("allSites")){
-			valuesGraph = graphPlotting.getArborStructureFromClass(HomeController.InfModel,HomeController.NS+"Site");	
+//			valuesGraph = graphPlotting.getArborStructureFromClass(HomeController.InfModel,HomeController.NS+"Site");	
+			valuesGraph = graphPlotting.getArborStructureFromClass(HomeController.Model,HomeController.NS+"Site");
 		}
 		
 		int width  = graphPlotting.width;

@@ -90,8 +90,9 @@
 						} else {
 
 							//load list instances
-							//Mudar para : window.location.href = "list";
-							window.location.href = "open_visualizator";
+							//Mudar para : 
+								window.location.href = "list";
+// 							window.location.href = "open_visualizator";
 
 						}
 

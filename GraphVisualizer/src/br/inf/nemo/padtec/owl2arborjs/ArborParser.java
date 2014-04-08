@@ -17,13 +17,13 @@ public class ArborParser {
 
 	public ArborParser(InfModel ontology, GraphPlotting graphPlotting) {
 		this.graphPlotting = graphPlotting;
-		String query = QueryManager.getAllIndividuousAndDatatypes();
+		String query = QueryManager.getAllIndividuous();
 		ResultSet results = QueryManager.runQuery(ontology, query);
 
 		ArrayList<String> owlclasses;
 		while (results.hasNext()) {
 			QuerySolution row = results.next();
-			String indiv = row.get("individual").toString();
+			String indiv = row.get("indv").toString();
 			String owlClass = row.get("owlclass").toString();
 			
 			if(graphPlotting.hash.containsKey(indiv)){

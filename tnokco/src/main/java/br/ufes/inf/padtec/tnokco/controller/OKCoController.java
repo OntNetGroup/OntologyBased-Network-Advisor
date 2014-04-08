@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
-import br.inf.nemo.padtec.wokco.WOKCOGraphPlotting;
+import br.inf.nemo.padtec.tnokco.TNOKCOGraphPlotting;
 import br.ufes.inf.nemo.okco.model.DataPropertyValue;
 import br.ufes.inf.nemo.okco.model.DtoClassifyInstancePost;
 import br.ufes.inf.nemo.okco.model.DtoCommitPost;
@@ -459,7 +459,7 @@ public class OKCoController {
 		int width;
 		int height;
 		String subtitle = "";
-		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
+		GraphPlotting graphPlotting = new TNOKCOGraphPlotting();
 		Instance i;
 		int num = 0;
 

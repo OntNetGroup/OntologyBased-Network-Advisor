@@ -1,6 +1,5 @@
 package br.ufes.inf.padtec.tnokco.controller;
 
-import br.ufes.inf.padtec.tnokco.business.ManagerRelations;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,6 +34,7 @@ import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionNS;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionReasoner;
+import br.ufes.inf.padtec.tnokco.business.ManagerRelations;
 import br.ufes.inf.padtec.tnokco.business.Reader;
 
 import com.hp.hpl.jena.ontology.OntModel;

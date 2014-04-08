@@ -34,8 +34,8 @@ public class SindelController {
 		//load g800
 		//
 
-//		HomeController.Factory = new FactoryModel();
-//		HomeController.Repository = HomeController.Factory.GetRepository();
+		//		HomeController.Factory = new FactoryModel();
+		//		HomeController.Repository = HomeController.Factory.GetRepository();
 		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
 
 		// Load Model
@@ -44,6 +44,10 @@ public class SindelController {
 		HomeController.tmpModel = HomeController.Repository.Open(path);
 		HomeController.NS = HomeController.Repository.getNameSpace(HomeController.Model);
 		
+		HomeController.Search = new Search(HomeController.NS);
+		HomeController.FactoryInstances = new FactoryInstances(HomeController.Search);
+		HomeController.ManagerInstances = new ManagerInstances(HomeController.Search, HomeController.FactoryInstances, HomeController.Model);
+
 		//Get parameter with tells the sindel load from file or not
 
 		if(txtSindelCode == "")
@@ -80,32 +84,19 @@ public class SindelController {
 			Sindel2OWL so = new Sindel2OWL(HomeController.Model);
 			so.run(sindelCode);
 			DtoResultSindel dtoSindel = so.getDtoSindel();
-					
+
 			HomeController.Model = dtoSindel.model;
 
-			/* Go to OKCo */
-			HomeController.Search = new Search(HomeController.NS);
-			HomeController.FactoryInstances = new FactoryInstances(HomeController.Search);
-			HomeController.ManagerInstances = new ManagerInstances(HomeController.Search, HomeController.FactoryInstances, HomeController.Model);
-
-			// Reasoning
-//			Reasoner r = PelletReasonerFactory.theInstance().create();
-//			HomeController.InfModel = ModelFactory.createInfModel(r, HomeController.Model);
-
-//			IReasoner Reasoner = HomeController.Factory.GetReasoner(EnumReasoner.HERMIT);
-//			HomeController.InfModel = Reasoner.run(HomeController.Model);
+//			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 			
 			HomeController.InfModel = dtoSindel.model;
-			/* REMOVER COMENTARIO
-			// Gets relations on model
-			HomeController.dtoSomeRelationsList = HomeController.Search.GetSomeRelations(HomeController.InfModel);
-			HomeController.dtoMinRelationsList = HomeController.Search.GetMinRelations(HomeController.InfModel);
-			HomeController.dtoMaxRelationsList = HomeController.Search.GetMaxRelations(HomeController.InfModel);
-			HomeController.dtoExactlyRelationsList = HomeController.Search.GetExactlyRelations(HomeController.InfModel);
-
 			// Update list instances
-			HomeController.UpdateLists();
-			*/
+			try {
+				HomeController.UpdateLists();
+			} catch (OKCoExceptionInstanceFormat e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		} catch (InconsistentOntologyException e) {
 

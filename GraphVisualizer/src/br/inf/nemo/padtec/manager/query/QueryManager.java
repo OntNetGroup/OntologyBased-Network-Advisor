@@ -85,24 +85,16 @@ public class QueryManager {
 		return query;
 	}
 
-	public static String getAllIndividuousAndDatatypes() {
+	public static String getAllIndividuous() {
 		String query = 
 				"PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 						+ " PREFIX  owl:  <http://www.w3.org/2002/07/owl#>"
 						+ " PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-						+ " SELECT  distinct  * "
+						+ " SELECT  DISTINCT  ?indv ?owlclass "
 						+ " WHERE"
 						+ " {"
-						+ " {"
-						+ " ?individual rdf:type owl:NamedIndividual . "
-						+ " ?individual rdf:type ?owlclass "
-						+ " }"
-						+ " UNION "
-						+ " { "
-						+ " ?owlclass rdf:type owl:DatatypeProperty .  "
-						+ " ?inst rdf:type owl:NamedIndividual .  "
-						+ " ?inst ?owlclass ?individual "
-						+ " }"
+						+ " ?indv rdf:type owl:NamedIndividual . "
+						+ " ?indv rdf:type ?owlclass . "
 						+ " }";
 		return query;
 	}
@@ -113,12 +105,10 @@ public class QueryManager {
 				+" SELECT  DISTINCT  *  "
 				+" WHERE" 
 				+" {"
-				+" ?source rdf:type owl:NamedIndividual ."
 				+" ?source rdf:type <"+cls+">  ."
-				+" ?target rdf:type owl:NamedIndividual ."
 				+" ?target rdf:type <"+cls+"> ."
-				+" ?source ?property ?target ."
 				+" ?property rdf:type owl:ObjectProperty ."
+				+" ?source ?property ?target ."
 				+" }";
 		return query;
 	}

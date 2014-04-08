@@ -2,13 +2,13 @@ package br.inf.nemo.padtec.tnokco;
 
 import java.util.HashMap;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.InfModel;
-
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
 import br.inf.nemo.padtec.manager.query.QueryManager;
 import br.inf.nemo.padtec.owl2arborjs.ArborParser;
+
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class TNOKCOGraphPlotting extends GraphPlotting{
 
@@ -92,9 +92,9 @@ public class TNOKCOGraphPlotting extends GraphPlotting{
 	private HashMap<String,String> elements = new HashMap<String, String>();
 
 	private void createHash(){
-		elements.put("Trail_Termination_Function", "TTF");
+		elements.put("Termination_Function", "TF");
 		elements.put("Adaptation_Function", "AF");
-		elements.put("Matrix", "M");
+		elements.put("Matrix", "Matrix");
 		elements.put("Subnetwork", "SN");
 		elements.put("Physical_Media", "PM");
 		elements.put("Input", "Input");
@@ -103,11 +103,15 @@ public class TNOKCOGraphPlotting extends GraphPlotting{
 		elements.put("Transport_Entity", "TE");
 		elements.put("Layer_Network", "Layer");
 		elements.put("Binding", "Binding");
-		elements.put("Information_Transfer", "InfTransfer");
+		elements.put("Input_Interface", "INT_IN");
+		elements.put("Output_Interface", "INT_OUT");
+		elements.put("Forwarding", "FORWARDING");
 		elements.put("Adaptation_Sink_Process", "Process");
 		elements.put("Adaptation_Source_Process", "Process");
-		elements.put("Trail_Termination_Sink_Process", "Process");
-		elements.put("Trail_Termination_Source_Process", "Process");
+		elements.put("Termination_Sink_Process", "Process");
+		elements.put("Layer_Processor_Process", "Process");
+		elements.put("Termination_Source_Process", "Process");
+		elements.put("Forwarding_Rule", "FWR_RULE");
 	}
 
 	@Override
