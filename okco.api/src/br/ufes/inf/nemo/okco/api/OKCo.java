@@ -19,7 +19,6 @@ import br.ufes.inf.nemo.okco.model.DtoCompleteClass;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.EnumReasoner;
-import br.ufes.inf.nemo.okco.model.EnumRelationType;
 import br.ufes.inf.nemo.okco.model.IReasoner;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 
@@ -93,24 +92,19 @@ public class OKCo {
 		  		infModel = model;
 		  	} else {
 		  		infModel = Reasoner.run(model);	
-		  	}		  	
-	  	  
-		  	// Gets definitions on model
-		  	ArrayList<DtoDefinitionClass> dtoSomeRelationsList = search.GetSomeRelations(infModel);
-		  	ArrayList<DtoDefinitionClass> dtoMinRelationsList = search.GetMinRelations(infModel);
-		  	ArrayList<DtoDefinitionClass> dtoMaxRelationsList = search.GetMaxRelations(infModel);
-		  	ArrayList<DtoDefinitionClass> dtoExactlyRelationsList = search.GetExactlyRelations(infModel);
-			
-			//get instances
+		  	}
+		  	
+		  	//get instances
 		  	
 		  	ArrayList<br.ufes.inf.nemo.okco.model.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+	  	  
+		  	// Gets definitions on model
+		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
+			
 			
 			// Organize data (Update the list of all instances)
 			
-	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoSomeRelationsList, EnumRelationType.SOME, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMinRelationsList, EnumRelationType.MIN, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMaxRelationsList, EnumRelationType.MAX, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoExactlyRelationsList, EnumRelationType.EXACTLY, model, infModel, ns);
+	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
 			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			//build the return instances
@@ -269,12 +263,6 @@ public class OKCo {
 		  	} else {
 		  		infModel = Reasoner.run(model);	
 		  	}
-		  	
-		  	// Gets definitions on model
-		  	ArrayList<DtoDefinitionClass> dtoSomeRelationsList = search.GetSomeRelations(infModel);
-		  	ArrayList<DtoDefinitionClass> dtoMinRelationsList = search.GetMinRelations(infModel);
-		  	ArrayList<DtoDefinitionClass> dtoMaxRelationsList = search.GetMaxRelations(infModel);
-		  	ArrayList<DtoDefinitionClass> dtoExactlyRelationsList = search.GetExactlyRelations(infModel);
 
 		  	
 		  	/*--------------------------------------------------------------------------------------------- //
@@ -282,13 +270,14 @@ public class OKCo {
 			//--------------------------------------------------------------------------------------------- */
 		  	
 		  	ArrayList<br.ufes.inf.nemo.okco.model.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+	  	  
+		  	// Gets definitions on model
+		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
+			
 			
 			// Organize data (Update the list of all instances)
 			
-	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoSomeRelationsList, EnumRelationType.SOME, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMinRelationsList, EnumRelationType.MIN, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMaxRelationsList, EnumRelationType.MAX, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoExactlyRelationsList, EnumRelationType.EXACTLY, model, infModel, ns);
+	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
 			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
@@ -378,16 +367,14 @@ public class OKCo {
 											Update List instances
 			//--------------------------------------------------------------------------------------------- */
 
-			//get instances
-			
 			ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+		  	  
+		  	// Gets definitions on model
+		  	ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);		
 			
 			// Organize data (Update the list of all instances)
 			
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoSomeRelationsList, EnumRelationType.SOME, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMinRelationsList, EnumRelationType.MIN, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMaxRelationsList, EnumRelationType.MAX, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoExactlyRelationsList, EnumRelationType.EXACTLY, model, infModel, ns);
+	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
 			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
@@ -561,25 +548,18 @@ public class OKCo {
 		  		infModel = Reasoner.run(model);	
 		  	}
 		  	
-		  	// Gets definitions on model
-		  	ArrayList<DtoDefinitionClass> dtoSomeRelationsList = search.GetSomeRelations(infModel);
-		  	ArrayList<DtoDefinitionClass> dtoMinRelationsList = search.GetMinRelations(infModel);
-		  	ArrayList<DtoDefinitionClass> dtoMaxRelationsList = search.GetMaxRelations(infModel);
-		  	ArrayList<DtoDefinitionClass> dtoExactlyRelationsList = search.GetExactlyRelations(infModel);
-
-		  	
 		  	/*--------------------------------------------------------------------------------------------- //
 												Update List instances
 			//--------------------------------------------------------------------------------------------- */
 		  	
 		  	ArrayList<br.ufes.inf.nemo.okco.model.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+		  	  
+		  	// Gets definitions on model
+		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
 			
 			// Organize data (Update the list of all instances)
 			
-	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoSomeRelationsList, EnumRelationType.SOME, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMinRelationsList, EnumRelationType.MIN, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMaxRelationsList, EnumRelationType.MAX, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoExactlyRelationsList, EnumRelationType.EXACTLY, model, infModel, ns);
+	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
 			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
@@ -672,16 +652,14 @@ public class OKCo {
 											Update List instances
 			//--------------------------------------------------------------------------------------------- */
 
-			//get instances
-			
 			ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+		  	  
+		  	// Gets definitions on model
+		  	ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
 			
 			// Organize data (Update the list of all instances)
 			
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoSomeRelationsList, EnumRelationType.SOME, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMinRelationsList, EnumRelationType.MIN, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoMaxRelationsList, EnumRelationType.MAX, model, infModel, ns);
-			managerInstances.UpdateInstanceAndRelations(ListAllInstances, dtoExactlyRelationsList, EnumRelationType.EXACTLY, model, infModel, ns);
+	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
 			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //

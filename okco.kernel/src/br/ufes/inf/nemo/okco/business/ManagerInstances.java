@@ -52,7 +52,7 @@ public class ManagerInstances {
 		
 	}
 	
-	public void UpdateInstanceAndRelations(ArrayList<Instance> listInstances, ArrayList<DtoDefinitionClass> dtoRelationsList, EnumRelationType type, OntModel model, InfModel infModel, String ns)
+	public void UpdateInstanceAndRelations(ArrayList<Instance> listInstances, ArrayList<DtoDefinitionClass> dtoRelationsList, OntModel model, InfModel infModel, String ns)
 	{		
 		// Some relations
 		for (DtoDefinitionClass dto : dtoRelationsList)
@@ -64,7 +64,7 @@ public class ManagerInstances {
 				{					
 					//---SOME---//
 					
-					if(type.equals(EnumRelationType.SOME))
+					if(dto.PropertyType.equals(EnumRelationType.SOME))
 					{
 						boolean existInstanceTarget = this.search.CheckExistInstanceTarget(infModel, instanceName, dto.Relation, dto.Target);
 						if(existInstanceTarget)
@@ -99,7 +99,7 @@ public class ManagerInstances {
 					
 					//---MIN---//
 					
-					if(type.equals(EnumRelationType.MIN))
+					if(dto.PropertyType.equals(EnumRelationType.MIN))
 					{
 						int quantityInstancesTarget = this.search.CheckExistInstancesTargetCardinality(infModel, instanceName, dto.Relation, dto.Target, dto.Cardinality);
 						if (quantityInstancesTarget < Integer.parseInt(dto.Cardinality))	//Min restriction
@@ -130,7 +130,7 @@ public class ManagerInstances {
 					
 					//---MAX---//
 					
-					if(type.equals(EnumRelationType.MAX))
+					if(dto.PropertyType.equals(EnumRelationType.MAX))
 					{
 						int quantityInstancesTarget = this.search.CheckExistInstancesTargetCardinality(infModel, instanceName, dto.Relation, dto.Target, dto.Cardinality);
 						if (quantityInstancesTarget > Integer.parseInt(dto.Cardinality))	//Max restriction
@@ -161,7 +161,7 @@ public class ManagerInstances {
 					
 					//---EXACLTY---//
 					
-					if(type.equals(EnumRelationType.EXACTLY))
+					if(dto.PropertyType.equals(EnumRelationType.EXACTLY))
 					{
 						int quantityInstancesTarget = this.search.CheckExistInstancesTargetCardinality(infModel, instanceName, dto.Relation, dto.Target, dto.Cardinality);
 						if (quantityInstancesTarget != Integer.parseInt(dto.Cardinality))	//Exactly restriction

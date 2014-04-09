@@ -1,47 +1,44 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <%
-//Get the parameters from controller
-	String error = (String)request.getSession().getAttribute("errorMensage");
-	String loadOk = (String)request.getSession().getAttribute("loadOk");
+	//Get the parameters from controller
+	String error = (String) request.getSession().getAttribute(
+			"errorMensage");
+	String loadOk = (String) request.getSession()
+			.getAttribute("loadOk");
 %>
 
 <%@include file="../templates/header.jsp"%>
 
 <script>
-
-	$(document).ready(function () {
+	$(document).ready(function() {
 
 		$('.btn-editor').click(function(event) {
 
 			window.location.href = "/tnokco/sindel";
-				
-		});	//End load sindel file
+
+		}); //End load sindel file
 
 	}); //end document ready
-	
 </script>
 
 <%
-		if(error != null && !error.equals(""))
-		{
-			String htmlError = "<div class=\"alert alert-danger\">" +
-					"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button>" + 
-					"<strong>" + "Error! " + "</strong>"+ error + 
-				"</div>";
-			out.println(htmlError);
-		}
-	
-		if(loadOk != null && !loadOk.equals("true"))
-		{
-			String htmlLoad = "<div class=\"alert alert-info\">" +
-				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button>" +
-				"<strong>Hey!</strong> Tou need to load owl file first or run Sindel." +
-			"</div>";
-			out.println(htmlLoad);
-		}
-	
-	%>
+	if (error != null && !error.equals("")) {
+		String htmlError = "<div class=\"alert alert-danger\">"
+				+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button>"
+				+ "<strong>" + "Error! " + "</strong>" + error
+				+ "</div>";
+		out.println(htmlError);
+	}
+
+	if (loadOk != null && !loadOk.equals("true")) {
+		String htmlLoad = "<div class=\"alert alert-info\">"
+				+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button>"
+				+ "<strong>Hey!</strong> Tou need to load owl file first or run Sindel."
+				+ "</div>";
+		out.println(htmlLoad);
+	}
+%>
 
 
 <h1>Welcome to TN-OKCo</h1>
@@ -68,8 +65,9 @@
 								<li>
 									<form action="uploadOwl" class="form-horizontal"
 										enctype="multipart/form-data" method="POST">
-										<label class="control-label">Select Reasoner:</label>
-										<div class="controls">
+										<label class="control-label">Select Reasoner:</label> 
+
+										<div class="controls" style="margin-bottom:8px">
 
 											<label class="radio"> <span class=""><input
 													type="radio" name="optionsReasoner" id="optionsRadios1"
@@ -81,12 +79,17 @@
 													value="hermit" checked="checked"></span> Hermit
 											</label>
 											<div style="clear: both"></div>
-											<label class="radio"> <span class=""><input
-													type="radio" name="optionsReasoner" id="optionsRadios3"
-													value="none"></span> None
-											</label>
 
 										</div>
+										
+										<label
+											class="checkbox inline">
+											
+												<input type="checkbox" name="loadReasonerFirstCheckbox"
+													id="loadReasonerFirstCheckbox" checked="checked" />
+												 Use reasoner in load
+										</label>
+										
 										<label class="control-label">Load Owl file:</label>
 										<div class="controls">
 											<input name="file" type="file"> <input type="submit"

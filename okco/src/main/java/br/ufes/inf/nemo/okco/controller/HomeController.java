@@ -22,7 +22,6 @@ import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.DtoResultCommit;
 import br.ufes.inf.nemo.okco.model.EnumReasoner;
-import br.ufes.inf.nemo.okco.model.EnumRelationType;
 import br.ufes.inf.nemo.okco.model.IFactory;
 import br.ufes.inf.nemo.okco.model.IReasoner;
 import br.ufes.inf.nemo.okco.model.IRepository;
@@ -124,6 +123,21 @@ public class HomeController {
 			  Factory = new FactoryModel();
 			  Repository = Factory.GetRepository();
 			  
+			  String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
+			  boolean reasoning = true;
+			  
+			  //first load reasoning
+			  if (loadReasonerFirstCheckbox != null)
+				{
+					if(loadReasonerFirstCheckbox.equals("on"))
+					{
+						reasoning = true;
+					}
+				} else {
+					
+					reasoning = false;
+				}
+			  
 			  //Select reasoner
 			  if(optionsReasoner.equals("hermit"))
 			  {
@@ -133,7 +147,7 @@ public class HomeController {
 				  Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
 			  } else {
 				  
-				  throw new OKCoExceptionReasoner("Please select a resoner available.");
+				  throw new OKCoExceptionReasoner("Please select a reasoner available.");
 			  }			  
 				
 			  MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -147,8 +161,6 @@ public class HomeController {
 			  // Load Model
 			  InputStream in = file.getInputStream();
 			  Model = Repository.Open(in);
-			  InputStream in2 = file.getInputStream();
-			  tmpModel = Repository.Open(in2);
 			  
 			  // Name space
 			  NS = Repository.getNameSpace(Model);
@@ -162,20 +174,25 @@ public class HomeController {
 		  	  FactoryInstances = new FactoryInstances(Search);
 		  	  ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
 		  	  
-		  	  //Save temporary model
-		  	  tmpModel = Repository.CopyModel(Model);
+			 //Save temporary model
+			 tmpModel = Repository.CopyModel(Model);			
+			
+			 if(reasoning == true)
+			 {
+				//Call reasoner
+				InfModel = Reasoner.run(Model);
+				
+			 } else {
+				
+				//Don't call reasoner
+				InfModel = Repository.CopyModel(Model);
+			 }
 		  	  
-		  	  //Call reasoner
-		  	  InfModel = Reasoner.run(Model);
-		  	  
-		  	  //Nao executa
-		  	  //InfModel = Repository.CopyModel(Model);
-		  	  
-		  	  //List modified instances
-		  	  ListModifiedInstances = new ArrayList<String>();
+		  	 //List modified instances
+		  	 ListModifiedInstances = new ArrayList<String>();
 
-			  // Update list instances
-			  UpdateLists();
+			 // Update list instances
+			 UpdateLists();
 			  
 		} catch (InconsistentOntologyException e) {
 
@@ -306,7 +323,7 @@ public class HomeController {
 			
 			// Organize data (Update the list of all instances)
 			
-	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, EnumRelationType.SOME, Model, InfModel, NS);			
+	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, Model, InfModel, NS);			
 			ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, InfModel, NS);				
 			
 		} catch (InconsistentOntologyException e) {

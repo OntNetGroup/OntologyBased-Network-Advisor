@@ -129,10 +129,24 @@ public class HomeController {
 	public String uploadOwl(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner){
 
 		try {
-
+			
+			String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
+			
 			Factory = new FactoryModel();
 			Repository = Factory.GetRepository();
 			boolean reasoning = true;
+			
+			//first load reasoning
+			if (loadReasonerFirstCheckbox != null)
+			{
+				if(loadReasonerFirstCheckbox.equals("on"))
+				{
+					reasoning = true;
+				}
+			} else {
+				
+				reasoning = false;
+			}
 
 			//Select reasoner
 			if(optionsReasoner.equals("hermit"))
@@ -143,14 +157,9 @@ public class HomeController {
 			{
 				Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
 				
-			} else if(optionsReasoner.equals("none"))
-			{
-				reasoning = false;
-				Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT); //Hermit by default
-				
 			} else {
 
-				throw new OKCoExceptionReasoner("Please select a resoner available.");
+				throw new OKCoExceptionReasoner("Please select a reasoner available.");
 			}			  
 
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -164,8 +173,6 @@ public class HomeController {
 			// Load Model
 			InputStream in = file.getInputStream();
 			Model = Repository.Open(in);
-			InputStream in2 = file.getInputStream();
-			tmpModel = Repository.Open(in2);
 
 			// Name space
 			NS = Repository.getNameSpace(Model);
@@ -401,7 +408,7 @@ public class HomeController {
 			
 			// Organize data (Update the list of all instances)
 			
-	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, EnumRelationType.SOME, Model, InfModel, NS);			
+	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, Model, InfModel, NS);			
 			ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, InfModel, NS);	
 			
 		} catch (InconsistentOntologyException e) {
