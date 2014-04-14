@@ -8,8 +8,8 @@ public class Equipment {
 	
 	
 	private String name;
-	private ArrayList<InterfaceOutput> outputs;
-	private ArrayList<InterfaceInput> inputs;
+	private ArrayList<String> outputs;
+	private ArrayList<String> inputs;
 	private HashMap< ArrayList<String>,Equipment> binds= new HashMap<ArrayList<String>, Equipment>();
 	//private HashMap<String,Equipment> binds= new HashMap<String,Equipment>();
 
@@ -34,10 +34,10 @@ public class Equipment {
 		return binds.remove(key);
 	}
 	
-	public ArrayList<InterfaceOutput> getOutputs() {
+	public ArrayList<String> getOutputs() {
 		return outputs;
 	}
-	public ArrayList<InterfaceInput> getInputs() {
+	public ArrayList<String> getInputs() {
 		return inputs;
 	}
 	public String getName() {
@@ -47,16 +47,13 @@ public class Equipment {
 		this.name = name;
 	}
 
-	public void addOut(InterfaceOutput element) {
+	public void addOut(String element) {
 		outputs.add(element);
 	}
-	public void addInp(InterfaceInput element) {
+	public void addInp(String element) {
 		inputs.add( element);
 	}
 	
-	public HashMap<ArrayList<String>, Equipment> getBinds() {
-		return binds;
-	}
-
+	
 	
 }

@@ -286,7 +286,7 @@ public class Provisioning {
 	    		input = new InterfaceInput(ind.getLocalName());
 	    		input.setId(i);
 	    		i++;
-	    		e.addInp(input);
+	    		e.addInp(input.getName());
 	    	}
 	    	i=0;
 	    	for (String string : outInt) {
@@ -294,7 +294,7 @@ public class Provisioning {
 	    		InterfaceOutput outputInt = new InterfaceOutput();
 	    		outputInt.setId(i);
 	    		outputInt.setName(individual.getLocalName());
-	    		e.addOut(outputInt);
+	    		e.addOut(outputInt.getName());
 		    	String out= HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, string, HomeController.NS+"maps_output", HomeController.NS+"Mapped_TF_Output").get(0);
 				//relações de output
 		    	ArrayList<DtoInstanceRelation> rel= HomeController.Search.GetInstanceRelations(HomeController.InfModel, out);
@@ -337,6 +337,10 @@ public class Provisioning {
 		
 	}
 	
-	
+	public static boolean bindsInterfaces(String output, String input){
+		Individual ind= HomeController.Model.getIndividual(output);
+		
+		return true;
+	}
 	
 }
