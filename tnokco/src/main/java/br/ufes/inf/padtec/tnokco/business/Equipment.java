@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 public class Equipment {
 	
+	
+	
 	private String name;
 	private ArrayList<InterfaceOutput> outputs;
 	private ArrayList<InterfaceInput> inputs;
@@ -52,5 +54,9 @@ public class Equipment {
 		inputs.add( element);
 	}
 	
+	public HashMap<ArrayList<String>, Equipment> getBinds() {
+		return binds;
+	}
+
 	
 }
