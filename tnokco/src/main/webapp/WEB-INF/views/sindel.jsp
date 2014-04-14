@@ -35,10 +35,9 @@
 		});	//End load sindel file
 
 		$('#sindelForm').submit(function(event) {
-			
+
 			event.preventDefault();
-			var sReturn = "";
-			
+			var sReturn = "";			
 			
 			try {				
 				//clean up hashs
@@ -53,7 +52,7 @@
 
 				//Verify warning
 				if(warning != ""){
-					
+
 					//Warning: mensagem
 					//alert(warning);
 					var html = "<div class=\"alert alert-danger\">" +

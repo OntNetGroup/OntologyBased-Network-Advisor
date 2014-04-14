@@ -1,5 +1,8 @@
 package br.ufes.inf.padtec.tnokco.controller;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,12 +14,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.ufes.inf.nemo.okco.business.FactoryInstances;
+import br.ufes.inf.nemo.okco.business.FactoryModel;
 import br.ufes.inf.nemo.okco.business.ManagerInstances;
 import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
+import br.ufes.inf.nemo.okco.model.EnumReasoner;
 import br.ufes.inf.nemo.okco.model.IFactory;
+import br.ufes.inf.nemo.okco.model.IReasoner;
 import br.ufes.inf.nemo.okco.model.IRepository;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+import br.ufes.inf.nemo.okco.model.OKCoExceptionNS;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
 
@@ -31,22 +38,32 @@ public class SindelController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/sindel")
 	public String sindel(HttpSession session, HttpServletRequest request) {
-		//load g800
-		//
 
-		//		HomeController.Factory = new FactoryModel();
-		//		HomeController.Repository = HomeController.Factory.GetRepository();
-		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
+		//load g800
+
+		String path = "http://localhost:8081/tnokco/Assets/owl/g800.owl"; 
 
 		// Load Model
 
-		HomeController.Model = HomeController.Repository.Open(path);
-		HomeController.tmpModel = HomeController.Repository.Open(path);
-		HomeController.NS = HomeController.Repository.getNameSpace(HomeController.Model);
+		Factory = new FactoryModel();
+		Repository = Factory.GetRepository();
+		HomeController.Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);		
 		
+		// Load Model
+		HomeController.Model = Repository.Open(path);
+
+		// Name space
+		HomeController.NS = Repository.getNameSpace(HomeController.Model);
+
 		HomeController.Search = new Search(HomeController.NS);
 		HomeController.FactoryInstances = new FactoryInstances(HomeController.Search);
 		HomeController.ManagerInstances = new ManagerInstances(HomeController.Search, HomeController.FactoryInstances, HomeController.Model);
+
+		//Save temporary model
+		HomeController.tmpModel = Repository.CopyModel(HomeController.Model);		
+
+		//List modified instances
+		HomeController.ListModifiedInstances = new ArrayList<String>();		
 
 		//Get parameter with tells the sindel load from file or not
 
