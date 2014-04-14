@@ -9,6 +9,20 @@
 
 	$(document).ready(function () {
 
+		// Function loading
+		 function loading()
+		 {
+		  	var maskHeight = $(document).height();
+			var maskWidth = "100%";//$(document).width();
+		
+			//Define largura e altura do div#maskforloading iguais ás dimensões da tela
+			$('#maskforloading').css({'width':maskWidth,'height':maskHeight});
+		
+			//efeito de transição
+			$('#maskforloading').show();
+		 }
+			
+
 		$('.btn-load').click(function(event) {
 
 			window.location.href = "/tnokco/welcome";
@@ -36,6 +50,7 @@
 
 		$('#sindelForm').submit(function(event) {
 
+			loading();
 			event.preventDefault();
 			var sReturn = "";			
 			
@@ -52,6 +67,8 @@
 
 				//Verify warning
 				if(warning != ""){
+
+					$("#maskforloading").hide();
 
 					//Warning: mensagem
 					//alert(warning);

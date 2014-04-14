@@ -210,18 +210,18 @@ $(document).ready(function() {
 
 	$("#maskforloading").hide();
 
-	  // Function loading
-	  function loading()
-	  {
-		  	var maskHeight = $(document).height();
-			var maskWidth = "100%";//$(document).width();
+	 // Function loading
+	 function loading()
+	 {
+	  	var maskHeight = $(document).height();
+		var maskWidth = "100%";//$(document).width();
 	
-			//Define largura e altura do div#maskforloading iguais ás dimensões da tela
-			$('#maskforloading').css({'width':maskWidth,'height':maskHeight});
+		//Define largura e altura do div#maskforloading iguais ás dimensões da tela
+		$('#maskforloading').css({'width':maskWidth,'height':maskHeight});
 	
-			//efeito de transição
-			$('#maskforloading').show();
-	  }
+		//efeito de transição
+		$('#maskforloading').show();
+	 }
 
 	$(".btnload").click(function(){
 
