@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,10 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.ufes.inf.nemo.okco.business.FactoryModel;
+import br.ufes.inf.nemo.okco.business.ManagerInstances;
+import br.ufes.inf.nemo.okco.business.Search;
+import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
+import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
+import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
+import br.ufes.inf.padtec.tnokco.business.Provisioning;
 import br.ufes.inf.padtec.tnokco.business.Reader;
 
 @Controller
@@ -29,7 +37,18 @@ public class ProvisioningController{
 	
 	@RequestMapping(method = RequestMethod.GET, value="/newEquipment")
 	public String newEquipment(HttpSession session, HttpServletRequest request) {
+		this.getCandidateInterfacesForConnection(null);
 		
+		
+		/*
+		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
+		
+		// Load Model
+		HomeController.Model = HomeController.Repository.Open(path);
+		HomeController.tmpModel = HomeController.Repository.Open(path);
+		HomeController.NS = HomeController.Repository.getNameSpace(HomeController.Model);
+		*/
+     	
 		if(HomeController.Model == null)
 		{
 			String error = "Error! You need to load the model first.";
@@ -39,15 +58,7 @@ public class ProvisioningController{
 		}
 
 		this.cleanEquipSindel(request);
-		/*
-		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
-		
-		// Load Model
-		HomeController.Model = HomeController.Repository.Open(path);
-		HomeController.tmpModel = HomeController.Repository.Open(path);
-		HomeController.NS = HomeController.Repository.getNameSpace(HomeController.Model);
-		*/
-     	return "newEquipment";	//View to return
+		return "newEquipment";	//View to return
 	}
 	
 	@RequestMapping(value = "/uploadSindelEquip", method = RequestMethod.POST)
@@ -112,8 +123,8 @@ public class ProvisioningController{
 			
 			HomeController.Model = so.getDtoSindel().model;
 
-			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
-			
+			//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+			HomeController.InfModel = so.getDtoSindel().model;
 			// Update list instances
 			HomeController.UpdateLists();
 
@@ -153,7 +164,6 @@ public class ProvisioningController{
 
 		this.cleanEquipSindel(request);
 		
-		System.out.println("rodou");
 		return dto;
 	}
 	 
@@ -169,9 +179,75 @@ public class ProvisioningController{
 
 		return dto;
 	}
+	
 	@RequestMapping(method = RequestMethod.GET, value="/provisioning")
 	public String provisioning(HttpSession session, HttpServletRequest request) {
      	
 		return "provisioning";	//View to return
+	}
+
+	public ArrayList<Instance> getCandidateInterfacesForConnection(Instance interfaceOutput){
+		Instance outputInterface = null;
+		for (Instance instance : HomeController.ListAllInstances) {
+			for (String className : instance.ListClasses) {
+				className = className.replace(HomeController.NS, "");
+				if(className.equalsIgnoreCase("Output_Interface")){
+					outputInterface = instance;
+					break;
+				}
+			}
+			
+			if(outputInterface != null){
+				break;
+			}
+		}
+		Search search = new Search(HomeController.NS);
+		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
+		
+		String outputNs = "";
+		for (DtoInstanceRelation outRelation : outIntRelations) {
+			if(outRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#maps_output")){
+				outputNs = outRelation.Target;
+				break;
+			}
+		}
+		
+		Instance output;
+		for (Instance instance : HomeController.ListAllInstances) {
+			if(outputNs.equals(instance.ns+instance.name)){
+				output = instance;
+				break;
+			}
+		}
+		
+		//ArrayList<DtoDefinitionClass> t = HomeController.ModelDefinitions;
+		ArrayList<Instance> inputInterfaces = new ArrayList<Instance>(); 
+		for (Instance instance : HomeController.ListAllInstances) {
+			for (String className : instance.ListClasses) {
+				className = className.replace(HomeController.NS, "");
+				if(className.equalsIgnoreCase("Input_Interface")){
+					inputInterfaces.add(instance);
+					break;
+				}
+			}
+		}
+		
+		for (Instance input : inputInterfaces) {
+			for(String className : input.ListClasses){
+				HashMap<String, String> tf1 = new HashMap<String, String>();
+				tf1.put("INPUT", className);
+				tf1.put("OUTPUT", "Output_Interface");
+				
+				Provisioning.getInstance().values.get(null);
+			}			
+		}
+		
+		
+		
+		ArrayList<Instance> equipmentInterfaces = new ArrayList<Instance>();
+		
+		
+		
+		return equipmentInterfaces;
 	}
 }
