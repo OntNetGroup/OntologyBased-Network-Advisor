@@ -66,7 +66,7 @@
 		</div>
 		<form id="runReasonerForm" style="float:right" action="runReasoner" method="POST">
 
-			<button type="submit"  class="btn btn-pre"> <i class="icon-arrow-right"></i> Run reasoner</button>
+			<button type="submit"  class="btn btn-pre btnload"> <i class="icon-arrow-right"></i> Run reasoner</button>
 		
 		</form>
 		

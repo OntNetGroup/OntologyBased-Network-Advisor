@@ -175,12 +175,73 @@
 
 <!-- GraphVisualizer includes for EQUIPAMENT!!! -->
 
+<!-- Includes for loading.gif -->
+<style type="text/css">
+
+	#maskforloading 
+	{
+		position:absolute;
+		z-index:9990;  
+		background-color:#000; 
+		display:none;
+		width: 100%;	
+		
+		 filter:alpha(opacity=50);
+     	opacity: 0.5;
+     	-moz-opacity:0.5;
+     	-webkit-opacity:0.5;	
+	}
+	
+	#maskforloading img 
+	{
+		position:absolute;
+		top:50%;
+		left:50%;
+	}
+
+</style>
+
+
 </head>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	$("#maskforloading").hide();
+
+	  // Function loading
+	  function loading()
+	  {
+		  	var maskHeight = $(document).height();
+			var maskWidth = "100%";//$(document).width();
+	
+			//Define largura e altura do div#maskforloading iguais ás dimensões da tela
+			$('#maskforloading').css({'width':maskWidth,'height':maskHeight});
+	
+			//efeito de transição
+			$('#maskforloading').show();
+	  }
+
+	$(".btnload").click(function(){
+
+		loading();
+	});	
+	
+}); // End - document ready;
+
+</script>
+
 
 <body>
 
 	<!-- NÃ£o remova o div#mask, pois ele Ã© necessÃ¡rio para preencher toda a janela -->
 	<div id="mask"></div>
+
+	<!-- Não remova o div#maskforloading, pois ele é necessário para preencher toda a janela -->
+	<div id="maskforloading">
+		<img src="Assets/img/loading.gif" height="100px">
+	</div>
 
 	<!-- start: Header -->
 	<div class="navbar">

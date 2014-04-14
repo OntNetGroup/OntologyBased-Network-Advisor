@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.okco.model;
 
-public enum EnumRelationType {
+public enum EnumRelationTypeCompletness {
 	
 	SOME,
 	MIN,

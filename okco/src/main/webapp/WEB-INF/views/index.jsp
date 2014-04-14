@@ -12,22 +12,8 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		
-		$( '#selectH' ).click(function() {
-			
-/*			alert("clicou");
-			if($(this).attr("name") == "Pellet")
-			{
-				alert("Pellet");
-				
-			} else {
 
-				alert("Hermit");
-			}
-			*/
-				
-			
-		});
+		
 		
 	}); // End - document ready;
 
@@ -94,7 +80,7 @@
 								reasoner in load
 							</label> <br /> <label class="control-label">File Upload:</label>
 							<div class="controls">
-								<input name="file" type="file"> <input type="submit"
+								<input name="file" type="file"> <input type="submit" class="btnload"
 									name="submit" value="Upload" />
 							</div>
 						</div>

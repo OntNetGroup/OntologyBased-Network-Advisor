@@ -27,7 +27,7 @@ import br.ufes.inf.nemo.okco.model.DtoPropertyAndSubProperties;
 import br.ufes.inf.nemo.okco.model.DtoResultCommit;
 import br.ufes.inf.nemo.okco.model.DtoViewSelectInstance;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
-import br.ufes.inf.nemo.okco.model.EnumRelationType;
+import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 
@@ -311,24 +311,24 @@ public class OKCoController {
 
 		//Search for the definition class correctly		
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome, Integer.parseInt(idDefinition));
-		EnumRelationType typeRelation = EnumRelationType.SOME;
+		EnumRelationTypeCompletness typeRelation = EnumRelationTypeCompletness.SOME;
 
 		if(dtoSelected == null){
 			dtoSelected = DtoDefinitionClass.get(instance.ListMin, Integer.parseInt(idDefinition));
-			typeRelation = EnumRelationType.MIN;
+			typeRelation = EnumRelationTypeCompletness.MIN;
 		}
 		if(dtoSelected == null){
 			dtoSelected = DtoDefinitionClass.get(instance.ListMax, Integer.parseInt(idDefinition));
-			typeRelation = EnumRelationType.MAX;
+			typeRelation = EnumRelationTypeCompletness.MAX;
 		}
 		if(dtoSelected == null){
 			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, Integer.parseInt(idDefinition));
-			typeRelation = EnumRelationType.EXACTLY;
+			typeRelation = EnumRelationTypeCompletness.EXACTLY;
 		}		
 
 		if(type.equals("object"))
 		{
-			if(typeRelation.equals(EnumRelationType.SOME))
+			if(typeRelation.equals(EnumRelationTypeCompletness.SOME))
 			{
 				//create the the new instance
 				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, dtoSelected.Target).size() + 1);
@@ -340,7 +340,7 @@ public class OKCoController {
 				HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 				HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 
-			} else if(typeRelation.equals(EnumRelationType.MIN))
+			} else if(typeRelation.equals(EnumRelationTypeCompletness.MIN))
 			{
 				int quantityInstancesTarget = HomeController.Search.CheckExistInstancesTargetCardinality(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target, dtoSelected.Cardinality);
 
@@ -360,7 +360,7 @@ public class OKCoController {
 					quantityInstancesTarget ++;
 				}				
 
-			} else if(typeRelation.equals(EnumRelationType.EXACTLY))
+			} else if(typeRelation.equals(EnumRelationTypeCompletness.EXACTLY))
 			{
 				int quantityInstancesTarget = HomeController.Search.CheckExistInstancesTargetCardinality(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target, dtoSelected.Cardinality);				
 
@@ -390,7 +390,7 @@ public class OKCoController {
 
 				}
 
-			} else if(typeRelation.equals(EnumRelationType.MAX))
+			} else if(typeRelation.equals(EnumRelationTypeCompletness.MAX))
 			{
 
 			}

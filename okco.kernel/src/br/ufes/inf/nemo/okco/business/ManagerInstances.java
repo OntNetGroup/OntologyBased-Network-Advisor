@@ -12,7 +12,7 @@ import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoPropertyAndSubProperties;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.Instance;
-import br.ufes.inf.nemo.okco.model.EnumRelationType;
+import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 
 public class ManagerInstances {
@@ -54,7 +54,7 @@ public class ManagerInstances {
 	
 	public void UpdateInstanceAndRelations(ArrayList<Instance> listInstances, ArrayList<DtoDefinitionClass> dtoRelationsList, OntModel model, InfModel infModel, String ns)
 	{		
-		// Some relations
+
 		for (DtoDefinitionClass dto : dtoRelationsList)
 		{			
 			ArrayList<String> listInstancesOfDomain = this.search.GetInstancesFromClass(model, infModel, dto.Source);
@@ -64,7 +64,7 @@ public class ManagerInstances {
 				{					
 					//---SOME---//
 					
-					if(dto.PropertyType.equals(EnumRelationType.SOME))
+					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.SOME))
 					{
 						boolean existInstanceTarget = this.search.CheckExistInstanceTarget(infModel, instanceName, dto.Relation, dto.Target);
 						if(existInstanceTarget)
@@ -88,6 +88,7 @@ public class ManagerInstances {
 								listInstances.add(instance);
 				
 							} else {
+								
 								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListSome);
 								if(!existDto)
 								{
@@ -99,7 +100,7 @@ public class ManagerInstances {
 					
 					//---MIN---//
 					
-					if(dto.PropertyType.equals(EnumRelationType.MIN))
+					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.MIN))
 					{
 						int quantityInstancesTarget = this.search.CheckExistInstancesTargetCardinality(infModel, instanceName, dto.Relation, dto.Target, dto.Cardinality);
 						if (quantityInstancesTarget < Integer.parseInt(dto.Cardinality))	//Min restriction
@@ -130,7 +131,7 @@ public class ManagerInstances {
 					
 					//---MAX---//
 					
-					if(dto.PropertyType.equals(EnumRelationType.MAX))
+					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.MAX))
 					{
 						int quantityInstancesTarget = this.search.CheckExistInstancesTargetCardinality(infModel, instanceName, dto.Relation, dto.Target, dto.Cardinality);
 						if (quantityInstancesTarget > Integer.parseInt(dto.Cardinality))	//Max restriction
@@ -161,7 +162,7 @@ public class ManagerInstances {
 					
 					//---EXACLTY---//
 					
-					if(dto.PropertyType.equals(EnumRelationType.EXACTLY))
+					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.EXACTLY))
 					{
 						int quantityInstancesTarget = this.search.CheckExistInstancesTargetCardinality(infModel, instanceName, dto.Relation, dto.Target, dto.Cardinality);
 						if (quantityInstancesTarget != Integer.parseInt(dto.Cardinality))	//Exactly restriction
@@ -523,11 +524,11 @@ public class ManagerInstances {
 		return model;
 	}
 
-	public ArrayList<DtoDefinitionClass> removeRepeatValuesOn(Instance instanceSelected, EnumRelationType type) {
+	public ArrayList<DtoDefinitionClass> removeRepeatValuesOn(Instance instanceSelected, EnumRelationTypeCompletness type) {
 
 		ArrayList<DtoDefinitionClass> listDefinition = new ArrayList<DtoDefinitionClass>();
 		
-		if(type.equals(EnumRelationType.SOME))
+		if(type.equals(EnumRelationTypeCompletness.SOME))
 		{
 			for (DtoDefinitionClass dto : instanceSelected.ListSome) 
 			{			
@@ -547,7 +548,7 @@ public class ManagerInstances {
 				}			
 			}
 			
-		} else if(type.equals(EnumRelationType.MIN))
+		} else if(type.equals(EnumRelationTypeCompletness.MIN))
 		{
 			for (DtoDefinitionClass dto : instanceSelected.ListMin) 
 			{			
@@ -569,7 +570,7 @@ public class ManagerInstances {
 				}			
 			}
 			
-		} else  if(type.equals(EnumRelationType.MAX))
+		} else  if(type.equals(EnumRelationTypeCompletness.MAX))
 		{
 			for (DtoDefinitionClass dto : instanceSelected.ListMax) 
 			{			
@@ -591,7 +592,7 @@ public class ManagerInstances {
 				}			
 			}
 			
-		} else if(type.equals(EnumRelationType.EXACTLY))
+		} else if(type.equals(EnumRelationTypeCompletness.EXACTLY))
 		{
 			for (DtoDefinitionClass dto : instanceSelected.ListExactly) 
 			{			

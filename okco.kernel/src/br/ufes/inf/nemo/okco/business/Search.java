@@ -27,6 +27,7 @@ import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.DtoInstance;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
+import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.RelationDomainRangeList;
 
@@ -884,6 +885,7 @@ public class Search {
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
 			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.TypeCompletness = EnumRelationTypeCompletness.SOME;
 			itemList.Target = Target.toString();
 			dtoSomeList.add(itemList);
 		}
@@ -925,6 +927,7 @@ public class Search {
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
 						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.TypeCompletness = EnumRelationTypeCompletness.SOME;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
 						dtoSomeList.add(itemList);
@@ -1035,6 +1038,7 @@ public class Search {
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
 			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.TypeCompletness = EnumRelationTypeCompletness.MIN;
 			itemList.Target = Target.toString();
 			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
 			dtoMinList.add(itemList);
@@ -1077,6 +1081,7 @@ public class Search {
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
 						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.TypeCompletness = EnumRelationTypeCompletness.MIN;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
 						dtoMinList.add(itemList);
@@ -1186,6 +1191,7 @@ public class Search {
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
 			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.TypeCompletness = EnumRelationTypeCompletness.MAX;
 			itemList.Target = Target.toString();
 			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
 			dtoMaxList.add(itemList);
@@ -1228,6 +1234,7 @@ public class Search {
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
 						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.TypeCompletness = EnumRelationTypeCompletness.MAX;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
 						dtoMaxList.add(itemList);
@@ -1338,6 +1345,7 @@ public class Search {
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
 			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
 			itemList.Target = Target.toString();
 			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
 			dtoExactlyList.add(itemList);
@@ -1381,6 +1389,7 @@ public class Search {
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
 						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
 						dtoExactlyList.add(itemList);
@@ -1473,6 +1482,7 @@ public class Search {
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
 			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.TypeCompletness = EnumRelationTypeCompletness.SOME;
 			itemList.Target = Target.toString();
 			dtoSomeList.add(itemList);
 		}
@@ -1514,6 +1524,7 @@ public class Search {
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
 						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.TypeCompletness = EnumRelationTypeCompletness.SOME;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
 						dtoSomeList.add(itemList);
@@ -1640,6 +1651,7 @@ public class Search {
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
 			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.TypeCompletness = EnumRelationTypeCompletness.MIN;
 			itemList.Target = Target.toString();
 			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
 			dtoMinList.add(itemList);
@@ -1682,6 +1694,7 @@ public class Search {
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
 						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.TypeCompletness = EnumRelationTypeCompletness.MIN;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
 						dtoMinList.add(itemList);
@@ -1807,6 +1820,7 @@ public class Search {
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
 			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.TypeCompletness = EnumRelationTypeCompletness.MAX;
 			itemList.Target = Target.toString();
 			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
 			dtoMaxList.add(itemList);
@@ -1849,6 +1863,7 @@ public class Search {
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
 						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.TypeCompletness = EnumRelationTypeCompletness.MAX;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
 						dtoMaxList.add(itemList);
@@ -1975,6 +1990,7 @@ public class Search {
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
 			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
 			itemList.Target = Target.toString();
 			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
 			dtoExactlyList.add(itemList);
@@ -2018,6 +2034,7 @@ public class Search {
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
 						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
 						dtoExactlyList.add(itemList);

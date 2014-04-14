@@ -92,7 +92,7 @@
 										
 										<label class="control-label">Load Owl file:</label>
 										<div class="controls">
-											<input name="file" type="file"> <input type="submit"
+											<input name="file" type="file"> <input type="submit" class="btnload"
 												name="submit" value="Upload" />
 										</div>
 									</form>
@@ -102,7 +102,7 @@
 									<form action="uploadSindel" class="form-horizontal"
 										enctype="multipart/form-data" method="POST">
 										<div class="controls">
-											<input name="file" type="file"> <input type="submit"
+											<input name="file" type="file"> <input type="submit" class="btnload"
 												name="submit" value="Upload" />
 										</div>
 									</form>

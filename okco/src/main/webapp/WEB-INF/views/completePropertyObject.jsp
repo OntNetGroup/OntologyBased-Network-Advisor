@@ -1006,9 +1006,9 @@
 							out.println("<button onclick=\"window.location = '/okco/details?id=" + instanceSelected.id + "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
 						%>
 						
-						<button id="commitButton" type="submit" class="btn btn-pre btn-commit"> <i class="icon-arrow-right"></i> Commit</button>
+						<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>
 						
-						<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit"> <i class="icon-arrow-right"></i> Commit and Resoner</button>
+						<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit and Resoner</button>
 						
 					</form>
 				

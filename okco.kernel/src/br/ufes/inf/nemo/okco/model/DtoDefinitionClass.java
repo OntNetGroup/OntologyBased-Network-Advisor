@@ -19,7 +19,8 @@ public class DtoDefinitionClass {
 	public int id;
 	public String Source;
 	public String Relation;
-	public EnumPropertyType PropertyType;
+	public EnumPropertyType PropertyType;				//object or data
+	public EnumRelationTypeCompletness TypeCompletness;	//some,min,max...
 	public String Target;
 	public String Cardinality;					// just in cases we need cardinality (max, min, exactly)
 	public static final String sKey = "#&&#";	// separator key
@@ -33,6 +34,7 @@ public class DtoDefinitionClass {
 		this.Target = "";
 		this.Cardinality = "";
 		this.PropertyType = null;
+		this.TypeCompletness = null;
 	}
 	
 	public static ArrayList<DtoDefinitionClass> getDtosWithSource(ArrayList<DtoDefinitionClass> list, String source)
