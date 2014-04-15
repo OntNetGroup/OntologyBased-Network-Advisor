@@ -37,7 +37,7 @@ public class ProvisioningController{
 	
 	@RequestMapping(method = RequestMethod.GET, value="/newEquipment")
 	public String newEquipment(HttpSession session, HttpServletRequest request) {
-		this.getCandidateInterfacesForConnection(null);
+		//this.getCandidateInterfacesForConnection(null);
 		
 		
 		/*
@@ -212,7 +212,7 @@ public class ProvisioningController{
 			}
 		}
 		
-		Instance output;
+		Instance output = null;
 		for (Instance instance : HomeController.ListAllInstances) {
 			if(outputNs.equals(instance.ns+instance.name)){
 				output = instance;
@@ -232,21 +232,42 @@ public class ProvisioningController{
 			}
 		}
 		
-		for (Instance input : inputInterfaces) {
-			for(String className : input.ListClasses){
-				HashMap<String, String> tf1 = new HashMap<String, String>();
-				tf1.put("INPUT", className);
-				tf1.put("OUTPUT", "Output_Interface");
+		for (String outputClassName : output.ListClasses) {
+			outputClassName = outputClassName.replace(HomeController.NS, "");
+			for (Instance inputInterface : inputInterfaces) {
+				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
+				String inputNs = "";
+				for (DtoInstanceRelation inRelation : inIntRelations) {
+					if(inRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#maps_input")){
+						inputNs = inRelation.Target;
+						break;
+					}
+				}
 				
-				Provisioning.getInstance().values.get(null);
-			}			
+				Instance input = null;
+				for (Instance instance : HomeController.ListAllInstances) {
+					if(inputNs.equals(instance.ns+instance.name)){
+						input = instance;
+						break;
+					}
+				}
+				
+				for(String inputClassName : input.ListClasses){
+					inputClassName = inputClassName.replace(HomeController.NS, ""); 
+					HashMap<String, String> tf1 = new HashMap<String, String>();
+					tf1.put("INPUT", inputClassName);
+					tf1.put("OUTPUT", outputClassName);
+					
+					HashMap<String, String> t = Provisioning.getInstance().values.get(tf1);
+					
+					if(t != null){
+						System.out.println();
+					}
+				}			
+			}
 		}
 		
-		
-		
 		ArrayList<Instance> equipmentInterfaces = new ArrayList<Instance>();
-		
-		
 		
 		return equipmentInterfaces;
 	}
