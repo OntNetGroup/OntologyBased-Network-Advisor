@@ -34,7 +34,7 @@
 						<td><b>All Equipment</b></td>
 						<td style="padding-left: 30px;">
 							<a class="btn btn-success" 
-								href="/tnokco/open_network_visualization?"> <i
+								href="/tnokco/open_equipment_visualization"> <i
 									class="icon-zoom-in"></i>
 							</a> 
 						</td>

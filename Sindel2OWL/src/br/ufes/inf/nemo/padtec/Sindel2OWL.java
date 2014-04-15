@@ -76,7 +76,7 @@ public class Sindel2OWL {
 			}else if(element[0].equalsIgnoreCase("binds")){
 				BindsProcessor.processBinds(model, ClassNS, IndNS, element[1]);
 			}else if(element[0].equalsIgnoreCase("connects")){
-				ConnectsProcessor.processCompositions(model, ClassNS, IndNS, element[1]);
+				ConnectsProcessor.processConnects(model, ClassNS, IndNS, element[1]);
 			}else if(element[0].equalsIgnoreCase("client")){
 				ClientProcessor.processClient(model, ClassNS, IndNS, element[1]);
 			}else if(element[0].equalsIgnoreCase("maps")){

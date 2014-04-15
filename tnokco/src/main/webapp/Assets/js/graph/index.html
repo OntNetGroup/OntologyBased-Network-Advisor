@@ -187,8 +187,8 @@
 						o[key] = {
 							onclick : function(menuItem, menu) {
 								srcEquipBindsClicked = equip;
-								srcInterfaceBindsClicked = menuItem.innerText;
-								alert("Selected " + equip + ":"+ menuItem.innerText);
+								srcInterfaceBindsClicked = menuItem.textContent;
+								//alert("Selected " + equip + ":"+ menuItem.innerText);
 								
 								//create ajax requisition
 								var json = {
@@ -225,39 +225,43 @@
 									error:function(x,e){
 // 										alert("Erro");
 										//set disable the hashs
-										hashEquipIntOut[srcEquipBindsClicked][srcInterfaceBindsClicked] = true;
-										hashEquipIntIn[trgEquipBindsClicked][trgInterfaceBindsClicked] = true;
+										hashEquipIntIn[srcEquipBindsClicked][srcInterfaceBindsClicked] = true;
+										hashEquipIntOut[trgEquipBindsClicked][trgInterfaceBindsClicked] = true;
 										
 										currentSelection = false;
 										var edges = graph.getEdges(srcEquipBindsClicked,trgEquipBindsClicked);
-										if(edges !== "undefined")
-											var edgeName = edges[0].data.name+",binds:"+srcInterfaceBindsClicked+"-"+trgInterfaceBindsClicked;
-										else
+										if(edges.length != 0){
+											edges[0].data.name += ",binds:"+srcInterfaceBindsClicked+"-"+trgInterfaceBindsClicked;
+											graph.renderer.redraw();
+										}else{
+											//create a new edge
 											var edgeName = "binds:"+srcInterfaceBindsClicked+"-"+trgInterfaceBindsClicked;
 										
-										graph.addEdge(graph.addNode(srcEquipBindsClicked, {
-											shape : "dot",
-											color : "green"
-										}), graph.addNode(trgEquipBindsClicked, {
-											shape : "dot",
-											color : "green"
-										}), {
-											name : edgeName
-										});
+											graph.addEdge(graph.addNode(trgEquipBindsClicked, {
+												shape : "dot",
+												color : "green"
+											}), graph.addNode(srcEquipBindsClicked, {
+												shape : "dot",
+												color : "green"
+											}), {
+												name : edgeName
+											});
+											graph.renderer.redraw();
+										}
 									},					
 								});
 							}
 						}
 					}
 				} else {
-					if(hashEquipIntIn[equip][key]){
+					if(hashEquipIntOut[equip][key]){
 						o[key] = {disabled:true}
 					}else{
 						o[key] = {
 							onclick : function(menuItem, menu) {
 								trgEquipBindsClicked = equip;
-								trgInterfaceBindsClicked = menuItem.innerText;
-								alert("Selected " + equip + ":"+ menuItem.innerText);
+								trgInterfaceBindsClicked = menuItem.textContent;
+								//alert("Selected " + equip + ":"+ menuItem.innerText);
 								currentSelection = true;
 							}
 						}

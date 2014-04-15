@@ -8,8 +8,8 @@ public class Equipment {
 	
 	
 	private String name;
-	private ArrayList<String> outputs;
-	private ArrayList<String> inputs;
+	private ArrayList<String> outputs= new ArrayList<String>();
+	private ArrayList<String> inputs= new ArrayList<String>();
 	private HashMap< ArrayList<String>,Equipment> binds= new HashMap<ArrayList<String>, Equipment>();
 	//private HashMap<String,Equipment> binds= new HashMap<String,Equipment>();
 
@@ -33,6 +33,11 @@ public class Equipment {
 	public Equipment remove(Object key) {
 		return binds.remove(key);
 	}
+	
+	public HashMap< ArrayList<String>,Equipment> getBinds(){
+		return binds;
+	}
+	
 	
 	public ArrayList<String> getOutputs() {
 		return outputs;

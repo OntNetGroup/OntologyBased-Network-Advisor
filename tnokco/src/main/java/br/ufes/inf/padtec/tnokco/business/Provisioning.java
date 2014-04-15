@@ -286,6 +286,7 @@ public class Provisioning {
 	    		input = new InterfaceInput(ind.getLocalName());
 	    		input.setId(i);
 	    		i++;
+	    		input.setName(string);
 	    		e.addInp(input.getName());
 	    	}
 	    	i=0;

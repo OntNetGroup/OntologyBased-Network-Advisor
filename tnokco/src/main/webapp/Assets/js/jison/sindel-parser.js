@@ -477,6 +477,7 @@ hashAssignableRelation["rp"+"binds"+"lpf"+"port"] = createRelation(0,-1,0,1);
 hashAssignableRelation["rp"+"binds"+"matrix"+"port"] = createRelation(0,-1,0,1);
 hashAssignableRelation["rp"+"binds"+"sn"+"port"] = createRelation(0,-1,0,1);
 hashAssignableRelation["rp"+"binds"+"pm"+"port"] = createRelation(0,-1,0,1);
+hashAssignableRelation["rp"+"binds"+"port"+"port"] = createRelation(0,-1,0,-1);
 
 /* Methods */    
 /*

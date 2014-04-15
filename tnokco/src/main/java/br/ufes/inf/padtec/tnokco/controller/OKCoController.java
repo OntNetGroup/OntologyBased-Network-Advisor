@@ -1,6 +1,7 @@
 package br.ufes.inf.padtec.tnokco.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -459,7 +460,14 @@ public class OKCoController {
 		int width;
 		int height;
 		String subtitle = "";
-		GraphPlotting graphPlotting = new TNOKCOGraphPlotting();
+		
+		/* Transforming the ListAllInstances in a hash */
+		HashMap<String,ArrayList<String>> hash = new HashMap<String, ArrayList<String>>();
+		for (Instance instance : HomeController.ListAllInstances) {
+			hash.put(instance.name.substring(instance.name.indexOf("#")+1), instance.ListClasses);
+		}
+		
+		GraphPlotting graphPlotting = new TNOKCOGraphPlotting(hash);
 		Instance i;
 		int num = 0;
 
@@ -478,7 +486,6 @@ public class OKCoController {
 
 			//All instances
 			valuesGraph  = graphPlotting.getArborStructureFor(HomeController.InfModel); 
-
 		} else if(id != null && num > 0){
 
 			//Get the instance

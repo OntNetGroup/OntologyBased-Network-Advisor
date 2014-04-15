@@ -15,24 +15,30 @@ public class ConnectsProcessor {
 	private static OntClass o_class;
 	private static String toA,toB;
 	
-	public static void processCompositions(OntModel model, String ClassNS, String IndNS, String connects){
-		o_class = model.getOntClass(ClassNS+"Information_Transfer");
+	public static void processConnects(OntModel model, String ClassNS, String IndNS, String connects){
+		o_class = model.getOntClass(ClassNS+"Forwarding");
 		String[] lin = connects.split(",");
 		for (String s : lin) {
 			String[] vars = s.split(":");
 
-			a = model.getIndividual(IndNS+vars[0]);
-			b = model.getIndividual(IndNS+vars[1]);
-			
-			toA = Sindel2OWL.hashIndividuals.get(vars[0]);
-			toB = Sindel2OWL.hashIndividuals.get(vars[1]);
-			
 			if(vars.length == 2){
 				//SimpleRelation
+				a = model.getIndividual(IndNS+vars[0]);
+				b = model.getIndividual(IndNS+vars[1]);
+				
+				toA = Sindel2OWL.hashIndividuals.get(vars[0]);
+				toB = Sindel2OWL.hashIndividuals.get(vars[1]);
+				
 				processSimpleRelation(model, ClassNS);
 			}else{
 				//Assignable Relation
-				x = model.getIndividual(IndNS+vars[2]);
+				x = model.getIndividual(IndNS+vars[0]);
+				a = model.getIndividual(IndNS+vars[1]);
+				b = model.getIndividual(IndNS+vars[2]);
+				
+				toA = Sindel2OWL.hashIndividuals.get(vars[1]);
+				toB = Sindel2OWL.hashIndividuals.get(vars[2]);
+				
 				processAssignableRelation(model, ClassNS, IndNS);
 			}
 		}

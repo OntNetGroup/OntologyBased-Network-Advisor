@@ -67,7 +67,7 @@ public abstract class GraphPlotting {
 	public int height = 600;
 	
 	//hash<individual,{classes}>
-	public HashMap<String,ArrayList<String>> hash = new HashMap<String, ArrayList<String>>();
+	public HashMap<String,ArrayList<String>> hash = null;
 	
 	public String getArborStructureComingOutOf(InfModel ontology, String centerIndividual){
 		String query = QueryManager.getAllRelationsComingOutOf(centerIndividual);
@@ -98,7 +98,7 @@ public abstract class GraphPlotting {
 		ResultSet resultSet = QueryManager.runQuery(ontology, query);
 
 		ArborParser arborParser = new ArborParser(ontology,this);
-		String arborStructure = arborParser.getArborJsString(resultSet);
+		String arborStructure = arborParser.getArborJsString(resultSet,true);
 
 		String arborHashStructure = arborParser.getArborHashStructure();
 

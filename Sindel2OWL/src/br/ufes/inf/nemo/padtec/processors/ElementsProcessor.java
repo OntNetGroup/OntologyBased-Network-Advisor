@@ -110,16 +110,16 @@ public class ElementsProcessor {
 				//Transport Entities
 				else if(elems[0].equals("te")){
 					o_class = model.getOntClass(ClassNS+"Transport_Entity");
-				}else if(elems[0].equals("trail")){
-					o_class = model.getOntClass(ClassNS+"Trail");
+				}else if(elems[0].equals("ate")){
+					o_class = model.getOntClass(ClassNS+"Access_Transport_Entity");
 				}else if(elems[0].equals("nc")){
 					o_class = model.getOntClass(ClassNS+"Network_Connection");
 				}else if(elems[0].equals("lc")){
 					o_class = model.getOntClass(ClassNS+"Link_Connection");
 				}else if(elems[0].equals("mc")){
 					o_class = model.getOntClass(ClassNS+"Matrix_Connection");
-				}else if(elems[0].equals("snc")){
-					o_class = model.getOntClass(ClassNS+"Subnetwork_Connection");
+				}else if(elems[0].equals("cfte")){
+					o_class = model.getOntClass(ClassNS+"Channel_Forwarding_Transport_Entity");
 				}
 				
 				//Layer Network

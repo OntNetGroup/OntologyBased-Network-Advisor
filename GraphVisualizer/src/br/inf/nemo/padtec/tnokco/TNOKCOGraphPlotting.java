@@ -1,5 +1,6 @@
 package br.inf.nemo.padtec.tnokco;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
@@ -15,6 +16,12 @@ public class TNOKCOGraphPlotting extends GraphPlotting{
 	public TNOKCOGraphPlotting() {
 		super();
 		createHash();
+	}
+
+	public TNOKCOGraphPlotting(HashMap<String, ArrayList<String>> hash) {
+		super();
+		createHash();
+		this.hash = hash;
 	}
 
 	@Override
@@ -78,10 +85,10 @@ public class TNOKCOGraphPlotting extends GraphPlotting{
 		if(elements.containsKey(type))
 			return elements.get(type);
 		
-		if(!hash.containsKey(element))
+		if(!hash.containsKey(type))
 			return "dot";
 		
-		for(String owlType : hash.get(element)){
+		for(String owlType : hash.get(type)){
 			String ituType = owlType.substring(owlType.indexOf("#")+1); 
 			if(elements.containsKey(ituType))
 				return elements.get(ituType);
@@ -112,6 +119,8 @@ public class TNOKCOGraphPlotting extends GraphPlotting{
 		elements.put("Layer_Processor_Process", "Process");
 		elements.put("Termination_Source_Process", "Process");
 		elements.put("Forwarding_Rule", "FWR_RULE");
+		elements.put("Equipment", "Equip");
+		elements.put("Site", "SITE");
 	}
 
 	@Override
@@ -119,12 +128,12 @@ public class TNOKCOGraphPlotting extends GraphPlotting{
 		return "Subtitle_TNOKCO.png";
 	}
 	
-	public String getArborStructureFromClass(InfModel ontology, String cls){
+	public String getArborStructureFromClass(InfModel ontology, String cls, HashMap<String,ArrayList<String>> hashClasses){
 		String query = QueryManager.getRelationsBetweenClass(cls);
 		ResultSet resultSet = QueryManager.runQuery(ontology, query);
 
-		ArborParser arborParser = new ArborParser(ontology,this);
-		String arborStructure = arborParser.getArborJsString(resultSet);
+		ArborParser arborParser = new ArborParser(ontology,this,hashClasses);
+		String arborStructure = arborParser.getArborJsString(resultSet,false);
 
 		String arborHashStructure = arborParser.getArborHashStructure();
 

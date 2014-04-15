@@ -5,6 +5,12 @@
 //
 
 
+/*
+	Outros exemplos:
+	http://nooshu.com/visual-thesaurus-using-arbor-js
+	http://www.joeloughton.com/blog/testing/netmapjs/examples/karen/karen-detail.html
+*/
+
 (function($){
 
   Renderer = function(canvas){
@@ -13,8 +19,6 @@
     var gfx = arbor.Graphics(canvas)
     var particleSystem = null
 	var classHash;
-	var isClickable = false;
-	var showContextMenu = false;
 
 	    var that = {
       init:function(system){
@@ -23,16 +27,6 @@
         particleSystem.screenPadding(100)
 		
 		classHash = getHash();
-		
-		if (typeof canClickable !== 'undefined') {
-			//turns on the clickable
-			isClickable = canClickable;
-		}	
-		
-		if (typeof canShowContextMenu !== 'undefined') {
-			//turns on contextMenu
-			showContextMenu = canShowContextMenu;
-		}
 		
         that.initMouseHandling()
       },
@@ -115,7 +109,10 @@
 			for (var i = 0; i < lines.length; ++i) {
 				ctx.fillText(lines[i], x, y-((lines.length)/2-i)*10);				
 			}
-					
+			
+			
+			
+
           ctx.restore()
 
           // draw an arrowhead if this is a -> style edge
@@ -185,17 +182,8 @@
             _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
             selected = nearest = dragged = particleSystem.nearest(_mouseP);
 
-            
             if (dragged.node !== null){
 				dragged.node.fixed = true
-				if( e.button == 2 ) { 
-					if(showContextMenu){
-						$(canvas).contextMenu(generateContextMenu(dragged.node.name, currentSelection), {
-							theme : 'vista'		
-						});
-						return false;
-		    		} 
-	            }
 				handler.showClasses(dragged.node.name);
 			}
 
@@ -204,23 +192,6 @@
 
             return false
           },
-		  doubleClicked:function(e){
-            var pos = $(canvas).offset();
-            _mouseP = arbor.Point(e.pageX-pos.left, e.pageY-pos.top)
-            var dragged = particleSystem.nearest(_mouseP);
-
-            if (dragged.node !== null){		
-				var r=confirm(popupMessage);
-				if (r==true){
-					window.location.href = targetURL+dragged.node.name;	
-				}				
-			}
-
-            $(canvas).bind('mousemove', handler.dragged)
-            $(window).bind('mouseup', handler.dropped)
-
-            return false
-          },		  
           dragged:function(e){
             var old_nearest = nearest && nearest.node._id
             var pos = $(canvas).offset();
@@ -257,9 +228,6 @@
 		  }
         }
         $(canvas).mousedown(handler.clicked);
-		if(isClickable){
-			$(canvas).dblclick(handler.doubleClicked);
-		}
       }
     }
 
@@ -300,8 +268,8 @@
 	
   })(this.jQuery);
   
-  function startArbor(canvasName, friction){		
-		var sys = arbor.ParticleSystem(1300, 10000, friction) // create the system with sensible repulsion/stiffness/friction
+  function startArbor(canvasName){		
+		var sys = arbor.ParticleSystem(1300, 10000, 0.99) // create the system with sensible repulsion/stiffness/friction
 		sys.parameters({gravity:false}) // use center-gravity to make the graph settle nicely (ymmv)
 		sys.renderer = Renderer(canvasName) // our newly created renderer will have its .init() method called shortly by sys...	
 		return sys;

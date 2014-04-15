@@ -87,14 +87,12 @@ public class QueryManager {
 
 	public static String getAllIndividuous() {
 		String query = 
-				"PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-						+ " PREFIX  owl:  <http://www.w3.org/2002/07/owl#>"
-						+ " PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-						+ " SELECT  DISTINCT  ?indv ?owlclass "
-						+ " WHERE"
+				" PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX  owl:  <http://www.w3.org/2002/07/owl#> PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+						+ " SELECT  DISTINCT * "
+						+ " WHERE "
 						+ " {"
-						+ " ?indv rdf:type owl:NamedIndividual . "
-						+ " ?indv rdf:type ?owlclass . "
+						+ " ?indv rdf:type owl:NamedIndividual ."
+						+ " ?indv rdf:type ?owlclas "
 						+ " }";
 		return query;
 	}
@@ -106,9 +104,9 @@ public class QueryManager {
 				+" WHERE" 
 				+" {"
 				+" ?source rdf:type <"+cls+">  ."
-				+" ?target rdf:type <"+cls+"> ."
+				+" ?target rdf:type <"+cls+"> . "
 				+" ?property rdf:type owl:ObjectProperty ."
-				+" ?source ?property ?target ."
+				+" ?source ?property ?target . "
 				+" }";
 		return query;
 	}

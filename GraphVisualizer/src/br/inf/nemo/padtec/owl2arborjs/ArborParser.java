@@ -17,6 +17,11 @@ public class ArborParser {
 
 	public ArborParser(InfModel ontology, GraphPlotting graphPlotting) {
 		this.graphPlotting = graphPlotting;
+
+		if(graphPlotting.hash != null)
+			return;
+
+		graphPlotting.hash = new HashMap<String, ArrayList<String>>();
 		String query = QueryManager.getAllIndividuous();
 		ResultSet results = QueryManager.runQuery(ontology, query);
 
@@ -25,13 +30,13 @@ public class ArborParser {
 			QuerySolution row = results.next();
 			String indiv = row.get("indv").toString();
 			String owlClass = row.get("owlclass").toString();
-			
+
 			if(graphPlotting.hash.containsKey(indiv)){
 				owlclasses = graphPlotting.hash.get(indiv);
 			}else{
 				owlclasses = new ArrayList<String>();
 			}			
-			
+
 			if(indiv.contains("^^")){
 				owlclasses.add("##DATATYPE##");
 				owlclasses.add(indiv);
@@ -43,13 +48,22 @@ public class ArborParser {
 		}
 	}
 
-	public String getArborJsString(ResultSet results) {
+	public ArborParser(InfModel ontology, GraphPlotting graphPlotting, HashMap<String, ArrayList<String>> hashClasses) {
+		this.graphPlotting = graphPlotting;
+
+		if(graphPlotting.hash != null)
+			return;
+
+		graphPlotting.hash = hashClasses;
+	}
+
+	public String getArborJsString(ResultSet results, boolean showAll) {
 		ArrayList<Tupla> tuplas = this.getTuplas(results);
-		
+
 		//set screen size
 		graphPlotting.width  += 400 * (tuplas.size() / 10);
 		graphPlotting.height += 300  * (tuplas.size() / 10);
-		
+
 		String arborStrucure = "";
 
 		HashMap<String,String> hashTuplas = new HashMap<String, String>();
@@ -77,8 +91,10 @@ public class ArborParser {
 			arborStrucure += getArborEdge(entry.getValue(), graphPlotting.getArborNode(source, false), graphPlotting.getArborNode(target, false), entry.getValue().contains(","));
 		}
 
-		for(Map.Entry<String, ArrayList<String>> entry : graphPlotting.hash.entrySet()){
-			arborStrucure += graphPlotting.getArborNode(entry.getKey(), false)+";";
+		if(showAll){
+			for(Map.Entry<String, ArrayList<String>> entry : graphPlotting.hash.entrySet()){
+				arborStrucure += graphPlotting.getArborNode(entry.getKey(), false)+";";
+			}
 		}
 
 		return arborStrucure;
@@ -97,10 +113,10 @@ public class ArborParser {
 			arborStrucure = graphPlotting.getArborNode(centerNode, true);
 			return arborStrucure;
 		}
-		
+
 		final String HH = "#!!#";
 		HashMap<String,String> usedTuplas = new HashMap<String, String>();
-		
+
 		for (Tupla tupla : tuplas) {
 			if(usedTuplas.containsKey(tupla.source+HH+tupla.target)){
 				String property = usedTuplas.get(tupla.source+HH+tupla.target);
@@ -113,7 +129,7 @@ public class ArborParser {
 			}else{
 				usedTuplas.put(tupla.source+HH+tupla.target, tupla.property);
 			}
-			
+
 			if(!graphPlotting.hash.containsKey(tupla.target)){
 				ArrayList<String> newClass = new ArrayList<String>();
 				if(tupla.target.contains("^^")){
@@ -125,7 +141,7 @@ public class ArborParser {
 				graphPlotting.hash.put(tupla.target,newClass);
 			}
 		}
-		
+
 		for(Map.Entry<String, String> entry : usedTuplas.entrySet()){
 			String source = entry.getKey().split(HH)[0];
 			String target = entry.getKey().split(HH)[1];
@@ -135,7 +151,7 @@ public class ArborParser {
 		return arborStrucure;
 	}
 
-	private String getArborEdge(String edgeName, String sourceNode, String targetNode, boolean isInverse){
+	public static String getArborEdge(String edgeName, String sourceNode, String targetNode, boolean isInverse){
 		if(isInverse)
 			return "graph.addEdge("+sourceNode+","+targetNode+", {name:'"+edgeName+"', inverse:'true'});\n";
 		else
@@ -171,6 +187,10 @@ public class ArborParser {
 			if(target.equals(centerNode))
 				isTargetCenterNode = true;
 
+			//Exclude strange resource
+			if(!source.contains("#") || !target.contains("#"))
+				continue;
+
 			Tupla tupla = new Tupla(source, property, target, isSourceCenterNode, isTargetCenterNode);
 			tuplas.add(tupla);
 		}
@@ -203,7 +223,6 @@ public class ArborParser {
 		return tuplas;
 	}
 
-
 	public String getArborHashStructure() {
 		String row = "";
 		for(Map.Entry<String, ArrayList<String>> entry : graphPlotting.hash.entrySet()){
@@ -214,7 +233,7 @@ public class ArborParser {
 
 	private String getHashLine(String indv, ArrayList<String> owlClasses){
 		String ret;
-		
+
 		if(owlClasses.get(0).equals("##DATATYPE##")){
 			ret = "\nhash[\"";
 			ret += owlClasses.get(1).substring(0, owlClasses.get(1).indexOf("^^"));
@@ -223,18 +242,18 @@ public class ArborParser {
 					+ "Range: "+owlClasses.get(1).substring(owlClasses.get(1).indexOf("#")+1)+"\";";
 			return ret;
 		}
-		
+
 		ret = "\nhash[\"";
 		ret += indv.substring(indv.indexOf("#")+1);
 		ret += "\"] = \"";
-		
+
 		if(owlClasses.get(0).equals("##CLASS##")){
 			ret += "<b>"+indv.substring(indv.indexOf("#")+1)+" is a Class.</b>\";";
 			return ret;
 		}
-		
+
 		ret += "<b>"+indv.substring(indv.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
-		
+
 		for (String owlClass : owlClasses) {
 			if(owlClass.substring(owlClass.indexOf("#")+1).equals("NamedIndividual")){
 				continue;

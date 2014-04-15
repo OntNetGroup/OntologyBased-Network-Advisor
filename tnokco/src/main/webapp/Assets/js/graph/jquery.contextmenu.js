@@ -69,6 +69,8 @@
 		shown:false, // Currently being shown?
 		useIframe:/*@cc_on @*//*@if (@_win32) true, @else @*/false,/*@end @*/ // This is a better check than looking at userAgent!
 		
+		
+		
 		// Create the menu instance
 		create: function(menu,opts) {
 			var cmenu = $.extend({},this,opts); // Clone all default properties to created object
@@ -257,6 +259,9 @@
 	
 	// This actually adds the .contextMenu() function to the jQuery namespace
 	$.fn.contextMenu = function(menu,options) {
+//		"<tbody><tr><td><div class="context-menu context-menu-theme-vista"><div class="context-menu-item " title=""><div class="context-menu-item-inner" style="">eq4.in1</div></div></div></td></tr></tbody>"
+		//$( "div" ).remove( ".context-menu context-menu-theme-vista" );
+		$( "div" ).remove( ".context-menu" );
 		var cmenu = $.contextMenu.create(menu,options);
 		return this.each(function(){
 			$(this).bind('contextmenu',function(e){cmenu.show(this,e);return false;});
