@@ -139,29 +139,6 @@
 		}); // End - Complete Class		
 		
 	}); // End - document ready
-
-
-	
-	//Click checkbox
-	
-	/*$(document).on("click", ".checkboxMarc",function() {	// because add dynamically	
-
-		if( ($(this).children(".checker").children("span").children(".checker").children("span").hasClass("checked")))
-		{
-			alert("Desmarcando");
-			$(this).children("div").children("span").children("div").children("span").removeClass("checked");
-			
-		} 
-		
-		if(! ($(this).children(".checker").children("span").children(".checker").children("span").attr("class") == "checked"))
-		{
-			alert("Marcando");
-			$(this).children("div").children("span").children("div").children("span").addClass("checked");
-			
-		}
-		
-	}); // End - checkbox
-	*/
 	
 	//Previous bottom click
 	$(document).on("click", ".btn-prev",function() {	// because add dynamically	
@@ -538,9 +515,8 @@
 													  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completePropertyAuto?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-edit\"></i> </a>" +
 													  					"</td>");
 												  									  		
-												  		out.println("</tr>");							  		
-											  		}							  		
-													
+												  		out.println("</tr>");
+											  		}	
 												}
 											  	
 												for (DtoDefinitionClass dto : listMinClassDefinition) {
@@ -577,7 +553,7 @@
 												  		out.println("<td>" + "MAX " + dto.Cardinality + "</td>");
 												  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");							  		
 													  	out.println("<td class=\"center\">" + 
-													  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=MAX" + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
+													  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "objectMax" + "&propType=MAX" + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
 										  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completePropertyAuto?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=MAX" + "\"> <i class=\"icon-edit\"></i> </a>" +
 													  					"</td>");
 												  									  		

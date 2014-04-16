@@ -1,8 +1,8 @@
 package br.ufes.inf.padtec.tnokco.controller;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ServletContextAware;
 
 import br.ufes.inf.nemo.okco.business.FactoryInstances;
 import br.ufes.inf.nemo.okco.business.FactoryModel;
@@ -20,28 +21,29 @@ import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.EnumReasoner;
 import br.ufes.inf.nemo.okco.model.IFactory;
-import br.ufes.inf.nemo.okco.model.IReasoner;
 import br.ufes.inf.nemo.okco.model.IRepository;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-import br.ufes.inf.nemo.okco.model.OKCoExceptionNS;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
 
 @Controller
-public class SindelController {
+public class SindelController implements ServletContextAware{
 
 	public static IFactory Factory;
 	public static IRepository Repository;
 
 	//Sindel text value
 	public static String txtSindelCode;	
+	
+	//servelet context
+	private ServletContext servletContext;
 
 	@RequestMapping(method = RequestMethod.GET, value="/sindel")
 	public String sindel(HttpSession session, HttpServletRequest request) {
 
 		//load g800
 
-		String path = "http://localhost:8081/tnokco/Assets/owl/g800.owl"; 
+		String path = servletContext.getInitParameter("PathG800owl"); 
 
 		// Load Model
 
@@ -164,6 +166,12 @@ public class SindelController {
 		dto.result = "ok";
 
 		return dto;
+	}
+
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+		
 	}
 
 }

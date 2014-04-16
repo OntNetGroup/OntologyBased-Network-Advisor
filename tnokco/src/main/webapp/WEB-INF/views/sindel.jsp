@@ -51,34 +51,21 @@
 		$('#sindelForm').submit(function(event) {
 
 			loading();
+			
 			event.preventDefault();
 			var sReturn = "";			
 			
-			try {				
+			try {			
+					
 				//clean up hashs
-				cleanUpHashs();			
+				cleanUpHashs();		
 				
 				//Used to get the value of the CodeMirror editor
 				parser.parse(editor.getValue());
-				
+
 				sReturn  = printHashTypeVar(hashTypeVar);								
 				sReturn += printHashRelations(hashRelation);
 				sReturn += printHashAttribute(hashAttribute);
-
-				//Verify warning
-				if(warning != ""){
-
-					$("#maskforloading").hide();
-
-					//Warning: mensagem
-					//alert(warning);
-					var html = "<div class=\"alert alert-danger\">" +
-						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-						"<strong>" + "Warning! " + "</strong>"+ warning + 
-					"</div>";
-
-					$("#boxerro").prepend(html);
-				}
 				
 				var json = {
 						"result" : sReturn,
@@ -94,6 +81,8 @@
 
 					success : function(dto) {
 
+						$("#maskforloading").hide();
+
 						if(dto.ok == false)
 						{
 							var html = "<div class=\"alert alert-danger\">" +
@@ -106,15 +95,15 @@
 						} else {
 
 							//load list instances
-							//Mudar para : 
-								window.location.href = "list";
-// 							window.location.href = "open_visualizator";
+							window.location.href = "list";
+ 							//window.location.href = "open_visualizator";
 
 						}
 
 					},
 					error:function(x,e){
-						
+
+						$("#maskforloading").hide();
 						alert("Erro");
 					},					
 				});
@@ -122,6 +111,8 @@
 				
 			}
 			catch (e) {
+
+				$("#maskforloading").hide();
 
 				var html = "<div class=\"alert alert-danger\">" +
 					"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 

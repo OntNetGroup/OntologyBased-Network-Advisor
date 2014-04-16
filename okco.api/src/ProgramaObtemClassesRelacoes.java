@@ -54,9 +54,7 @@ public class ProgramaObtemClassesRelacoes {
 		
 		System.out.println(result1);
 		System.out.println("");
-		System.out.println(result2);
-		
-		
+		System.out.println(result2);		
 	  	
 	}
 

@@ -172,6 +172,18 @@ public class OKCoController {
 	    	//return view	    	
 			return "completePropertyObject";
 			
+		} else if (type.equals("objectMax"))
+		{
+			//get instances with had this relation
+	    	ArrayList<String> listInstancesName = HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+	    	
+			//populate the list of instances with had this relation	    	
+	    	ArrayList<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
+	    	
+	    	request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
+			
+	    	return "completePropertyObjectMaxCard";
+	    	
 		} else if (type.equals("data"))
 		{
 			//List auxiliary
@@ -192,6 +204,7 @@ public class OKCoController {
 		}
 		
 	  }
+	
 
 	@RequestMapping(method = RequestMethod.GET, value="/completePropertyAuto")
 	public String completePropertyAuto(@RequestParam("idDefinition") String idDefinition, @RequestParam("idInstance") String idInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
