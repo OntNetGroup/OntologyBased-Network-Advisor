@@ -187,12 +187,14 @@ public class ProvisioningController{
 		return "provisioning";	//View to return
 	}
 
-	public ArrayList<String> getCandidateInterfacesForConnection(Instance outputInterface){
+	public ArrayList<String> getCandidateInterfacesForConnection(String outIntNs){
 		//pego a primeira interface de output que eu achar, só pra simular a entrada de um argumento
 		//ou seja, esse bloco vai ser apagado
-		/*
+		
 		//Instance outputInterface = null;
+		Instance outputInterface = null;
 		for (Instance instance : HomeController.ListAllInstances) {
+			/*
 			for (String className : instance.ListClasses) {
 				className = className.replace(HomeController.NS, "");
 				if(className.equalsIgnoreCase("Output_Interface")){
@@ -200,12 +202,16 @@ public class ProvisioningController{
 					break;
 				}
 			}
-			
-			if(outputInterface != null){
+			*/
+			String instNs = instance.name;
+			instNs = instNs.replace(instance.ns, "");
+			outIntNs = instNs.replace(instance.ns, "");
+			if(instNs.equals(outIntNs)){
+				outputInterface = instance;
 				break;
 			}
 		}
-		*/
+		
 		//busco as relações dessa instância de interface
 		Search search = new Search(HomeController.NS);
 		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
