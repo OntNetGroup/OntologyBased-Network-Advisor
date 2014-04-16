@@ -20,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.ufes.inf.nemo.okco.business.FactoryModel;
-import br.ufes.inf.nemo.okco.business.ManagerInstances;
 import br.ufes.inf.nemo.okco.business.Search;
-import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.Instance;
@@ -37,7 +35,6 @@ public class ProvisioningController{
 	
 	@RequestMapping(method = RequestMethod.GET, value="/newEquipment")
 	public String newEquipment(HttpSession session, HttpServletRequest request) {
-		//this.getCandidateInterfacesForConnection(null);
 		
 		
 		/*
@@ -58,6 +55,10 @@ public class ProvisioningController{
 		}
 
 		this.cleanEquipSindel(request);
+		
+		this.getCandidateInterfacesForConnection(null);
+		
+		
 		return "newEquipment";	//View to return
 	}
 	
@@ -187,6 +188,8 @@ public class ProvisioningController{
 	}
 
 	public ArrayList<Instance> getCandidateInterfacesForConnection(Instance interfaceOutput){
+		//pego a primeira interface de output que eu achar, só pra simular a entrada de um argumento
+		//ou seja, esse bloco vai ser apagado
 		Instance outputInterface = null;
 		for (Instance instance : HomeController.ListAllInstances) {
 			for (String className : instance.ListClasses) {
@@ -201,9 +204,12 @@ public class ProvisioningController{
 				break;
 			}
 		}
+		
+		//busco as relações dessa instância de interface
 		Search search = new Search(HomeController.NS);
 		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
 		
+		//pego o namespace completo da relação de maps_out
 		String outputNs = "";
 		for (DtoInstanceRelation outRelation : outIntRelations) {
 			if(outRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#maps_output")){
@@ -212,6 +218,7 @@ public class ProvisioningController{
 			}
 		}
 		
+		//pego a instancia do output mapeado pela interface de output
 		Instance output = null;
 		for (Instance instance : HomeController.ListAllInstances) {
 			if(outputNs.equals(instance.ns+instance.name)){
@@ -220,7 +227,7 @@ public class ProvisioningController{
 			}
 		}
 		
-		//ArrayList<DtoDefinitionClass> t = HomeController.ModelDefinitions;
+		//pego todas as instancias de interface de input
 		ArrayList<Instance> inputInterfaces = new ArrayList<Instance>(); 
 		for (Instance instance : HomeController.ListAllInstances) {
 			for (String className : instance.ListClasses) {
@@ -232,11 +239,17 @@ public class ProvisioningController{
 			}
 		}
 		
+		ArrayList<Instance> allowedInputInterfaces = new ArrayList<Instance>();
+		//percorro todas as classes do output do TPF
 		for (String outputClassName : output.ListClasses) {
 			outputClassName = outputClassName.replace(HomeController.NS, "");
+			
+			//percorro todas as instancias de interface de input encontradas
 			for (Instance inputInterface : inputInterfaces) {
 				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
 				String inputNs = "";
+				
+				//pego o NS do input mapeada pela interface de input
 				for (DtoInstanceRelation inRelation : inIntRelations) {
 					if(inRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#maps_input")){
 						inputNs = inRelation.Target;
@@ -244,6 +257,7 @@ public class ProvisioningController{
 					}
 				}
 				
+				//busco a instancia do input mapeado pela interface 
 				Instance input = null;
 				for (Instance instance : HomeController.ListAllInstances) {
 					if(inputNs.equals(instance.ns+instance.name)){
@@ -252,23 +266,23 @@ public class ProvisioningController{
 					}
 				}
 				
+				//percorro todas as classes do input
 				for(String inputClassName : input.ListClasses){
 					inputClassName = inputClassName.replace(HomeController.NS, ""); 
 					HashMap<String, String> tf1 = new HashMap<String, String>();
 					tf1.put("INPUT", inputClassName);
 					tf1.put("OUTPUT", outputClassName);
 					
-					HashMap<String, String> t = Provisioning.getInstance().values.get(tf1);
+					//verifica na hash do cassio se existe a combinacao entre inputClassName e outputClassName
+					HashMap<String, String> t = Provisioning.values.get(tf1);
 					
 					if(t != null){
-						System.out.println();
+						allowedInputInterfaces.add(inputInterface);
 					}
 				}			
 			}
 		}
 		
-		ArrayList<Instance> equipmentInterfaces = new ArrayList<Instance>();
-		
-		return equipmentInterfaces;
+		return allowedInputInterfaces;
 	}
 }
