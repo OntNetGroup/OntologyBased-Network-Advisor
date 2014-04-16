@@ -187,10 +187,11 @@ public class ProvisioningController{
 		return "provisioning";	//View to return
 	}
 
-	public ArrayList<Instance> getCandidateInterfacesForConnection(Instance interfaceOutput){
+	public ArrayList<String> getCandidateInterfacesForConnection(Instance outputInterface){
 		//pego a primeira interface de output que eu achar, só pra simular a entrada de um argumento
 		//ou seja, esse bloco vai ser apagado
-		Instance outputInterface = null;
+		/*
+		//Instance outputInterface = null;
 		for (Instance instance : HomeController.ListAllInstances) {
 			for (String className : instance.ListClasses) {
 				className = className.replace(HomeController.NS, "");
@@ -204,17 +205,19 @@ public class ProvisioningController{
 				break;
 			}
 		}
-		
+		*/
 		//busco as relações dessa instância de interface
 		Search search = new Search(HomeController.NS);
 		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
 		
 		//pego o namespace completo da relação de maps_out
 		String outputNs = "";
+		String eqOutNs = "";
 		for (DtoInstanceRelation outRelation : outIntRelations) {
 			if(outRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#maps_output")){
 				outputNs = outRelation.Target;
-				break;
+			}else if(outRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#INV.componentOf")){
+				eqOutNs = outRelation.Target;
 			}
 		}
 		
@@ -239,7 +242,7 @@ public class ProvisioningController{
 			}
 		}
 		
-		ArrayList<Instance> allowedInputInterfaces = new ArrayList<Instance>();
+		ArrayList<String> allowedInputInterfaces = new ArrayList<String>();
 		//percorro todas as classes do output do TPF
 		for (String outputClassName : output.ListClasses) {
 			outputClassName = outputClassName.replace(HomeController.NS, "");
@@ -248,12 +251,16 @@ public class ProvisioningController{
 			for (Instance inputInterface : inputInterfaces) {
 				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
 				String inputNs = "";
-				
+				String eqInNs = "";
+				Boolean alreadyConnected = true;
 				//pego o NS do input mapeada pela interface de input
 				for (DtoInstanceRelation inRelation : inIntRelations) {
 					if(inRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#maps_input")){
 						inputNs = inRelation.Target;
-						break;
+					}else if(inRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#INV.componentOf")){
+						eqInNs = inRelation.Target;						
+					}else if(inRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#binds")){
+						alreadyConnected = false;
 					}
 				}
 				
@@ -266,6 +273,7 @@ public class ProvisioningController{
 					}
 				}
 				
+				Boolean hasAllowedRelation = false;
 				//percorro todas as classes do input
 				for(String inputClassName : input.ListClasses){
 					inputClassName = inputClassName.replace(HomeController.NS, ""); 
@@ -274,12 +282,39 @@ public class ProvisioningController{
 					tf1.put("OUTPUT", outputClassName);
 					
 					//verifica na hash do cassio se existe a combinacao entre inputClassName e outputClassName
-					HashMap<String, String> t = Provisioning.values.get(tf1);
+					HashMap<String, String> allowedRelation = Provisioning.values.get(tf1);
 					
-					if(t != null){
-						allowedInputInterfaces.add(inputInterface);
+					if(allowedRelation != null){
+						hasAllowedRelation = true;
+						break;
 					}
-				}			
+				}
+				
+				String interfaceReturn = "";
+				eqInNs = eqInNs.replace(inputInterface.ns, "");
+				inputNs = inputNs.replace(inputInterface.ns, "");
+				eqOutNs = eqOutNs.replace(inputInterface.ns, "");
+				interfaceReturn += eqInNs; 
+				interfaceReturn += "#";
+				interfaceReturn += inputNs;
+				interfaceReturn += "#";
+				
+				if(hasAllowedRelation && !eqInNs.equals(eqOutNs)){
+					if(allowedInputInterfaces.contains(interfaceReturn)){
+						allowedInputInterfaces.remove(interfaceReturn);
+					}
+					interfaceReturn += "true;";
+				}else{
+					if(!allowedInputInterfaces.contains(interfaceReturn.replace("true;", "false;"))){
+						interfaceReturn += "false;";
+					}					
+				}
+				
+				
+				
+				if(!allowedInputInterfaces.contains(interfaceReturn) && !allowedInputInterfaces.contains(interfaceReturn+"true;")){
+					allowedInputInterfaces.add(interfaceReturn);
+				}				
 			}
 		}
 		
