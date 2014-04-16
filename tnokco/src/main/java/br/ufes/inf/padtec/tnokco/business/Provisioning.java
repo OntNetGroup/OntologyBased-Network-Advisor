@@ -294,9 +294,9 @@ public class Provisioning {
 			for (String string : outInt) {
 				Individual individual= Model.getIndividual(string);
 				InterfaceOutput outputInt = new InterfaceOutput();
-				outputInt.setId(i);
+				//outputInt.setId(i);
 				outputInt.setName(individual.getLocalName());
-				e.addOut(outputInt.getName());
+				e.addOut(outputInt);
 				String out= HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, string, HomeController.NS+"maps_output", HomeController.NS+"Mapped_TF_Output").get(0);
 				//relações de output
 				ArrayList<DtoInstanceRelation> rel= HomeController.Search.GetInstanceRelations(HomeController.InfModel, out);
@@ -366,11 +366,11 @@ public class Provisioning {
 			for (String string : outInt) {
 				Individual individual= Model.getIndividual(string);
 				InterfaceOutput outputInt = new InterfaceOutput();
-				outputInt.setId(i);
 				outputInt.setName(individual.getLocalName());
-				e.addOut(outputInt.getName());
+				e.addOut(outputInt);
 				ArrayList<String> inputs= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, string, HomeController.NS+"interface_binds", HomeController.NS+"Input_Interface");
 				for (String string2 : inputs) {
+					outputInt.setConnected(true);
 					ArrayList<String> binds = new ArrayList<String>();
 					binds.add(individual.getLocalName());
 					Individual indiv= Model.getIndividual(string2);
