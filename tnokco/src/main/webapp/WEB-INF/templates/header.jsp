@@ -140,7 +140,7 @@
 
 <!-- END Syntax Highlight -->
 
-<!-- GraphVisualizer includes for EQUIPAMENT!!! -->
+<!-- GraphVisualizer includes -->
 <style>
 #currentNode {
 	border: 1px solid #B8B8B8;
@@ -172,8 +172,10 @@
 <script src="Assets/js/graph/arbor.js"></script>
 <script src="Assets/js/graph/graphics.js"></script>
 <script src="Assets/js/graph/main.js"></script>
+<script src="Assets/js/graph/jquery.contextmenu.js"></script>
+<link rel="stylesheet" type="text/css" href="Assets/js/graph/contextMenu.css"	media="all">
 
-<!-- GraphVisualizer includes for EQUIPAMENT!!! -->
+<!-- GraphVisualizer includes -->
 
 <!-- Includes for loading.gif -->
 <style type="text/css">

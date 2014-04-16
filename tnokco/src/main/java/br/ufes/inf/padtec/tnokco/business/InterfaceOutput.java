@@ -1,6 +1,6 @@
 package br.ufes.inf.padtec.tnokco.business;
 
-public class InterfaceOutput extends Interface {
+public class InterfaceOutput{
 
 	public boolean isConnected() {
 		return connected;

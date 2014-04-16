@@ -15,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 public class Provisioning {
 
 
-	HashMap<HashMap<String, String>, HashMap<String,String>> values = new HashMap<HashMap<String,String>, HashMap<String,String>>();
+	public static HashMap<HashMap<String, String>, HashMap<String,String>> values = new HashMap<HashMap<String,String>, HashMap<String,String>>();
 	HashMap<String, HashMap<String, String>> equipmentsReleations = new HashMap<String, HashMap<String,String>>();
 	HashMap<String, String> equipmentRP = new HashMap<String, String>();
 	HashMap<String, String> equipmentOut = new HashMap<String, String>();
