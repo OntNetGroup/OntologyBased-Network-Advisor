@@ -1,5 +1,6 @@
 package br.ufes.inf.padtec.tnokco.controller;
 
+import br.ufes.inf.padtec.tnokco.business.Provisioning;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -129,24 +130,12 @@ public class HomeController {
 	public String uploadOwl(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner){
 
 		try {
-			
-			String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
-			
+
 			Factory = new FactoryModel();
 			Repository = Factory.GetRepository();
 			boolean reasoning = true;
 			
-			//first load reasoning
-			if (loadReasonerFirstCheckbox != null)
-			{
-				if(loadReasonerFirstCheckbox.equals("on"))
-				{
-					reasoning = true;
-				}
-			} else {
-				
-				reasoning = false;
-			}
+			
 
 			//Select reasoner
 			if(optionsReasoner.equals("hermit"))
@@ -157,9 +146,14 @@ public class HomeController {
 			{
 				Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
 				
+			} else if(optionsReasoner.equals("none"))
+			{
+				reasoning = false;
+				Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT); //Hermit by default
+				
 			} else {
 
-				throw new OKCoExceptionReasoner("Please select a reasoner available.");
+				throw new OKCoExceptionReasoner("Please select a resoner available.");
 			}			  
 
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -173,6 +167,8 @@ public class HomeController {
 			// Load Model
 			InputStream in = file.getInputStream();
 			Model = Repository.Open(in);
+			InputStream in2 = file.getInputStream();
+			tmpModel = Repository.Open(in2);
 
 			// Name space
 			NS = Repository.getNameSpace(Model);
@@ -183,11 +179,13 @@ public class HomeController {
 			}
 
 			Search = new Search(NS);
+			
 			FactoryInstances = new FactoryInstances(Search);
 			ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
 
 			//Save temporary model
 			tmpModel = Repository.CopyModel(Model);			
+			
 			
 			if(reasoning == true)
 			{
@@ -199,6 +197,8 @@ public class HomeController {
 				//Don't call reasoner
 				InfModel = Repository.CopyModel(Model);
 			}
+			
+			Provisioning.getInstance().getAllEquipmentsandConnections();
 
 			//List modified instances
 			ListModifiedInstances = new ArrayList<String>();		
@@ -377,12 +377,13 @@ public class HomeController {
 				e.printStackTrace();
 			}
 
+			
 			//Clean list modified instances
 			//HomeController.ListModifiedInstances = new ArrayList<String>();
 
 			//Update list instances modified
 			HomeController.UpdateListsModified();
-
+			//Provisioning.getInstance().getEquipmentsConnectionsBinds();
 		  	request.getSession().removeAttribute("errorMensage");  
 			return "redirect:list";
 			

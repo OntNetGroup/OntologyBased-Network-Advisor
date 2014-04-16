@@ -1,6 +1,6 @@
 package br.ufes.inf.padtec.tnokco.business;
 
-public class InterfaceInput {
+public class InterfaceInput extends Interface{
 
 	private int id ;
 	private String name;
