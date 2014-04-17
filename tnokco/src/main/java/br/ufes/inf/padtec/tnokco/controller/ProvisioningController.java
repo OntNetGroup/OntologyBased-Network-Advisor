@@ -56,8 +56,8 @@ public class ProvisioningController{
 
 		this.cleanEquipSindel(request);
 		
-		this.getCandidateInterfacesForConnection(null);
-		
+		//this.getCandidateInterfacesForConnection(null);
+		//this.provision(null, null);
 		
 		return "newEquipment";	//View to return
 	}
@@ -109,12 +109,13 @@ public class ProvisioningController{
 		
 		dto.ok = false;
 		dto.result = "It is necessary to inform the name of the new Equipment.";				
-		
+		/*
 		if(individualsPrefixName == null){
 			return dto;
 		}else if(individualsPrefixName == ""){
 			return dto;
 		}		
+		*/
 		
 		try {		  	      
 			
@@ -186,6 +187,98 @@ public class ProvisioningController{
      	
 		return "provisioning";	//View to return
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/provision")
+	public @ResponseBody DtoResultAjax provision(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+
+		DtoResultAjax dto = new DtoResultAjax();
+		
+		String outInt = "eq1_outInt";
+     	String inInt = "eq2_inInt";
+		
+     	String outputNs = "";
+     	String inputNs = "";
+     	
+     	Search search = new Search(HomeController.NS);
+		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, HomeController.NS+outInt);
+     	for (DtoInstanceRelation outIntRelation : outIntRelations) {
+     		if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
+				outputNs = outIntRelation.Target;
+				outputNs = outputNs.replace(HomeController.NS, "");
+				break;
+			}
+		}		
+		
+		ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, HomeController.NS+inInt);
+		for (DtoInstanceRelation inIntRelation : inIntRelations) {
+     		if(inIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
+				inputNs = inIntRelation.Target;
+				inputNs = inputNs.replace(HomeController.NS, "");
+				break;
+			}
+		}
+		
+		String sindelCode = "";
+		
+		sindelCode += "out_int: " + outInt + ";\n";
+		sindelCode += "in_int: " + inInt + ";\n";
+		sindelCode += "binds(" + outInt + "," + inInt + ");\n";
+		
+		sindelCode += "output: " + outputNs + ";\n";
+		sindelCode += "input: " + inputNs + ";\n";
+		sindelCode += "binds(" + outputNs + "," + inputNs + ");\n";
+		
+		try {		  	      
+			
+			// Populate the model
+			Sindel2OWL so = new Sindel2OWL(HomeController.Model);
+			so.run(sindelCode);
+			
+			HomeController.Model = so.getDtoSindel().model;
+
+			//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+			HomeController.InfModel = so.getDtoSindel().model;
+			// Update list instances
+			HomeController.UpdateLists();
+
+		} catch (InconsistentOntologyException e) {
+
+			String error = "Ontology have inconsistence: " + e.toString();
+			System.out.println(error);
+			request.getSession().setAttribute("errorMensage", error);
+			HomeController.Model = null;
+			HomeController.InfModel = null;
+			HomeController.ListAllInstances = null;
+
+			dto.ok = false;
+			dto.result = error;				
+			return dto;
+
+		} catch (OKCoExceptionInstanceFormat e) {
+
+			String error = "Entity format error: " + e.toString();
+			System.out.println(error);
+			request.getSession().setAttribute("errorMensage", error);
+			HomeController.Model = null;
+			HomeController.InfModel = null;
+			HomeController.ListAllInstances = null;
+
+			dto.ok = false;
+			dto.result = error;				
+			return dto;				
+		}
+
+		//FAZER O CATCH DA SINDEL
+
+		//request.getSession().removeAttribute("errorMensage");      
+		
+		dto.ok = true;
+		dto.result = "ok";
+
+		return dto;
+	}
+	
+	
 
 	public ArrayList<String> getCandidateInterfacesForConnection(String outIntNs){
 		//pego a primeira interface de output que eu achar, só pra simular a entrada de um argumento
@@ -220,9 +313,9 @@ public class ProvisioningController{
 		String outputNs = "";
 		String eqOutNs = "";
 		for (DtoInstanceRelation outRelation : outIntRelations) {
-			if(outRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#maps_output")){
+			if(outRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
 				outputNs = outRelation.Target;
-			}else if(outRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#INV.componentOf")){
+			}else if(outRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
 				eqOutNs = outRelation.Target;
 			}
 		}
@@ -261,11 +354,11 @@ public class ProvisioningController{
 				Boolean alreadyConnected = true;
 				//pego o NS do input mapeada pela interface de input
 				for (DtoInstanceRelation inRelation : inIntRelations) {
-					if(inRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#maps_input")){
+					if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
 						inputNs = inRelation.Target;
-					}else if(inRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#INV.componentOf")){
+					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
 						eqInNs = inRelation.Target;						
-					}else if(inRelation.Property.equalsIgnoreCase("http://www.semanticweb.org/ontologies/2014/4/ontology.owl#binds")){
+					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"binds")){
 						alreadyConnected = false;
 					}
 				}

@@ -129,7 +129,7 @@ public class VisualizationController {
 	@RequestMapping(method = RequestMethod.GET, value="/open_equipment_visualization")
 	public String open_equipment_visualization(HttpServletRequest request) {
 
-		ArrayList<Equipment> list = Provisioning.getAllEquipmentsandConnections();
+		ArrayList<Equipment> list = null;//Provisioning.getAllEquipmentsandConnections();
 		
 		String arborStructure = "";
 		String hashEquipIntOut = "";

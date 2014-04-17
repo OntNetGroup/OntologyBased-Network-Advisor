@@ -23,9 +23,10 @@ import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 
 public class Sindel2OWL {
+	
 	public OntModel model;
 	public String ClassNS;
-	public String IndNS = new String("http://www.semanticweb.org/individuous.owl#");
+	public String IndNS = new String("http://www.semanticweb.org/individuous.owl#");//nao se deve usar esse NS, animal de orelha
 
 	public static String warning = new String();
 	public static String error = new String();
@@ -54,6 +55,7 @@ public class Sindel2OWL {
 
 		//Getting owl namespace
 		ClassNS = owl.getNsPrefixURI("");
+		this.IndNS = this.ClassNS;
 //		
 //		//Transforming a Model to an OntModel
 //		model = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
