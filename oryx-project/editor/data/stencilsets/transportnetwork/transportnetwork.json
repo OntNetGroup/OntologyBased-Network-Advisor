@@ -1,7 +1,7 @@
 {
-    "title": "Network",
+    "title": "Transport Network",
     "namespace": "http://b3mn.org/stencilset/transportnetwork#",
-    "description": "Simple stencil set for Let's dance diagrams.",
+    "description": "Simple stencil set for Transport Network diagrams.",
     "propertyPackages": [
         {
             "name": "transporFunctionsProperties",
@@ -196,6 +196,32 @@
             "icon": "edge.maps.png",
             "roles": [
                 "maps"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "messageType"
+                }
+            ]
+        },
+		{
+            "type": "edge",
+            "id": "PartOf",
+            "title": "PartOf",
+            "groups": [],
+            "description": "",
+            "view": "edge.partof.svg",
+            "icon": "edge.partof.png",
+            "roles": [
+                "controlflow",
+                "partof"
             ],
             "properties": [
                 {
@@ -1091,6 +1117,15 @@
                 "role": "connect",
                 "connects": [
                     {
+                        "from": "site",
+                        "to": "site"
+                    }
+                ]
+            },
+            {
+                "role": "connect",
+                "connects": [
+                    {
                         "from": "referentePoints",
                         "to": "referentePoints"
                     }
@@ -1137,24 +1172,6 @@
                 "connects": [
                     {
                         "from": "ports",
-                        "to": "ports"
-                    }
-                ]
-            },
-            {
-                "role": "binds",
-                "connects": [
-                    {
-                        "from": "ports",
-                        "to": "transportfunctions"
-                    }
-                ]
-            },
-            {
-                "role": "binds",
-                "connects": [
-                    {
-                        "from": "ports",
                         "to": "referentePoints"
                     }
                 ]
@@ -1172,17 +1189,44 @@
                 "role": "binds",
                 "connects": [
                     {
+                        "from": "outputinterface",
+                        "to": "inputinterface"
+                    }
+                ]
+            },
+            {
+                "role": "partof",
+                "connects": [
+                    {
+                        "from": "ports",
+                        "to": "transportfunctions"
+                    }
+                ]
+            },
+            {
+                "role": "partof",
+                "connects": [
+                    {
                         "from": "transportfunctions",
                         "to": "ports"
                     }
                 ]
             },
             {
-                "role": "binds",
+                "role": "partof",
                 "connects": [
                     {
-                        "from": "outputinterface",
-                        "to": "inputinterface"
+                        "from": "equipament",
+                        "to": "interface"
+                    }
+                ]
+            },
+            {
+                "role": "partof",
+                "connects": [
+                    {
+                        "from": "interface",
+                        "to": "equipament"
                     }
                 ]
             },
@@ -1259,6 +1303,12 @@
                 "role": "matriz",
                 "contains": [
                     "matriz"
+                ]
+            },
+            {
+                "role": "equipament",
+                "contains": [
+                    "transportfunctions"
                 ]
             }
         ]
