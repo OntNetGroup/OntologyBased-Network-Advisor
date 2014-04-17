@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.ufes.inf.nemo.okco.business.FactoryModel;
+import br.ufes.inf.nemo.okco.business.ManagerInstances;
 import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
@@ -235,11 +236,35 @@ public class ProvisioningController{
 			so.run(sindelCode);
 			
 			HomeController.Model = so.getDtoSindel().model;
+			
+			ArrayList<String> classesOut= HomeController.Search.GetClassesFrom(HomeController.NS+outputNs, HomeController.InfModel);
+			classesOut.remove("Bound_Input-Output");
+			classesOut.remove("Mapped_TF_Output");
+			classesOut.remove("Geographical_Element");
+			classesOut.remove("Output");
+			
+			ArrayList<String> classesIn= HomeController.Search.GetClassesFrom(HomeController.NS+inputNs, HomeController.InfModel);
+			classesIn.remove("Bound_Input-Output");
+			classesIn.remove("Mapped_TF_Input");
+			classesIn.remove("Geographical_Element");
+			classesIn.remove("Input");
+
+			if(classesOut.size()>0 && classesIn.size()>0){
+				HashMap<String, String> tf1 = new HashMap<String, String>();
+				tf1.put("INPUT", classesIn.get(0));
+				tf1.put("OUTPUT", classesOut.get(0));
+				//verifica na hash do cassio se existe a combinacao entre inputClassName e outputClassName
+				HashMap<String, String> allowedRelation = Provisioning.values.get(tf1);
+				HomeController.Model=HomeController.ManagerInstances.CreateRelationProperty(HomeController.NS+inputNs, "relation", HomeController.NS+outputNs, HomeController.Model);
+			}
+			//
 
 			//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 			HomeController.InfModel = so.getDtoSindel().model;
 			// Update list instances
 			HomeController.UpdateLists();
+			
+			
 
 		} catch (InconsistentOntologyException e) {
 
