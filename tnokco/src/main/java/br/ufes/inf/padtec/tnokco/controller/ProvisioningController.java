@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.ObjectProperty;
+import com.hp.hpl.jena.rdf.model.Statement;
+
 import br.ufes.inf.nemo.okco.business.FactoryModel;
-import br.ufes.inf.nemo.okco.business.ManagerInstances;
 import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
@@ -189,13 +192,9 @@ public class ProvisioningController{
 		return "provisioning";	//View to return
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value="/provision")
-	public @ResponseBody DtoResultAjax provision(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+	public static DtoResultAjax provision(String outInt, String inInt,HttpServletRequest request) {
 
 		DtoResultAjax dto = new DtoResultAjax();
-		
-		String outInt = "eq1_outInt";
-     	String inInt = "eq2_inInt";
 		
      	String outputNs = "";
      	String inputNs = "";
@@ -219,83 +218,21 @@ public class ProvisioningController{
 			}
 		}
 		
-		String sindelCode = "";
+		//binds Interface out with in
+		Individual a = HomeController.Model.getIndividual(HomeController.NS+outInt);
+		Individual b = HomeController.Model.getIndividual(HomeController.NS+inInt);
+		ObjectProperty rel = HomeController.Model.getObjectProperty(HomeController.NS+"interface_binds");
+		Statement stmt = HomeController.Model.createStatement(a, rel, b);
+		HomeController.Model.add(stmt);
 		
-		sindelCode += "out_int: " + outInt + ";\n";
-		sindelCode += "in_int: " + inInt + ";\n";
-		sindelCode += "binds(" + outInt + "," + inInt + ");\n";
 		
-		sindelCode += "output: " + outputNs + ";\n";
-		sindelCode += "input: " + inputNs + ";\n";
-		sindelCode += "binds(" + outputNs + "," + inputNs + ");\n";
-		
-		try {		  	      
-			
-			// Populate the model
-			Sindel2OWL so = new Sindel2OWL(HomeController.Model);
-			so.run(sindelCode);
-			
-			HomeController.Model = so.getDtoSindel().model;
-			
-			ArrayList<String> classesOut= HomeController.Search.GetClassesFrom(HomeController.NS+outputNs, HomeController.InfModel);
-			classesOut.remove("Bound_Input-Output");
-			classesOut.remove("Mapped_TF_Output");
-			classesOut.remove("Geographical_Element");
-			classesOut.remove("Output");
-			
-			ArrayList<String> classesIn= HomeController.Search.GetClassesFrom(HomeController.NS+inputNs, HomeController.InfModel);
-			classesIn.remove("Bound_Input-Output");
-			classesIn.remove("Mapped_TF_Input");
-			classesIn.remove("Geographical_Element");
-			classesIn.remove("Input");
-
-			if(classesOut.size()>0 && classesIn.size()>0){
-				HashMap<String, String> tf1 = new HashMap<String, String>();
-				tf1.put("INPUT", classesIn.get(0));
-				tf1.put("OUTPUT", classesOut.get(0));
-				//verifica na hash do cassio se existe a combinacao entre inputClassName e outputClassName
-				HashMap<String, String> allowedRelation = Provisioning.values.get(tf1);
-				HomeController.Model=HomeController.ManagerInstances.CreateRelationProperty(HomeController.NS+inputNs, "relation", HomeController.NS+outputNs, HomeController.Model);
-			}
-			//
-
-			//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
-			HomeController.InfModel = so.getDtoSindel().model;
-			// Update list instances
-			HomeController.UpdateLists();
-			
-			
-
-		} catch (InconsistentOntologyException e) {
-
-			String error = "Ontology have inconsistence: " + e.toString();
-			System.out.println(error);
-			request.getSession().setAttribute("errorMensage", error);
-			HomeController.Model = null;
-			HomeController.InfModel = null;
-			HomeController.ListAllInstances = null;
-
-			dto.ok = false;
-			dto.result = error;				
-			return dto;
-
-		} catch (OKCoExceptionInstanceFormat e) {
-
-			String error = "Entity format error: " + e.toString();
-			System.out.println(error);
-			request.getSession().setAttribute("errorMensage", error);
-			HomeController.Model = null;
-			HomeController.InfModel = null;
-			HomeController.ListAllInstances = null;
-
-			dto.ok = false;
-			dto.result = error;				
-			return dto;				
+		if(!outputNs.equals("") && !inputNs.equals("")){
+			a = HomeController.Model.getIndividual(HomeController.NS+outputNs);
+			b = HomeController.Model.getIndividual(HomeController.NS+inputNs);
+			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds");
+			stmt = HomeController.Model.createStatement(a, rel, b);
+			HomeController.Model.add(stmt);	
 		}
-
-		//FAZER O CATCH DA SINDEL
-
-		//request.getSession().removeAttribute("errorMensage");      
 		
 		dto.ok = true;
 		dto.result = "ok";
@@ -305,7 +242,7 @@ public class ProvisioningController{
 	
 	
 
-	public ArrayList<String> getCandidateInterfacesForConnection(String outIntNs){
+	public static ArrayList<String> getCandidateInterfacesForConnection(String outIntNs){
 		//pego a primeira interface de output que eu achar, só pra simular a entrada de um argumento
 		//ou seja, esse bloco vai ser apagado
 		
@@ -323,7 +260,7 @@ public class ProvisioningController{
 			*/
 			String instNs = instance.name;
 			instNs = instNs.replace(instance.ns, "");
-			outIntNs = instNs.replace(instance.ns, "");
+			outIntNs = outIntNs.replace(instance.ns, "");
 			if(instNs.equals(outIntNs)){
 				outputInterface = instance;
 				break;

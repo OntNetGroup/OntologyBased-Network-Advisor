@@ -64,7 +64,7 @@
   CodeMirror.sindel_hint = sindel_hint; // deprecated
   CodeMirror.registerHelper("hint", "sindel_hint", sindel_hint);
   
-  var sindelKeywords = ("tf so-tf sk-tf bi-tf af so-af sk-af bi-af lpf so-lpf sk-lpf bi-lpf matrix uni-matrix so-matrix sk-matrix bi-matrix sn pm input output rp fep ap fp ate nc lc mc cfte layer equip in_int out_int site maps binds connects client layer location type").split(" ");
+  var sindelKeywords = ("tf so-tf sk-tf bi-tf af so-af sk-af bi-af lpf so-lpf sk-lpf bi-lpf matrix uni-matrix so-matrix sk-matrix bi-matrix sn pm input output rp fep ap fp ate nc lc mc cfte layer equip in-int out-int site maps binds connects client layer location type").split(" ");
 
   function getCompletions(token, context, keywords, options) {
     var found = [], start = token.string;

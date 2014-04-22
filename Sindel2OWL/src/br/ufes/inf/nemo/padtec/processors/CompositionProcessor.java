@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.padtec.processors;
 
+import br.ufes.inf.nemo.padtec.Sindel2OWL;
+
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -16,6 +18,14 @@ public class CompositionProcessor {
 			Individual src = model.getIndividual(IndNS+comp[0]);
 			for (String var : vars) {
 				Individual dst = model.getIndividual(IndNS+var);
+				
+				if((Sindel2OWL.hashSindelxG800.containsKey(Sindel2OWL.hashIndividuals.get(comp[0]))) && (Sindel2OWL.hashIndividuals.get(var).equals("input") || Sindel2OWL.hashIndividuals.get(var).equals("output"))){
+					if(Sindel2OWL.hashIndividuals.get(var).equals("input"))
+						dst.addOntClass(model.getOntClass(ClassNS+Sindel2OWL.hashSindelxG800.get(Sindel2OWL.hashIndividuals.get(comp[0]))+"_Input"));
+					else
+						dst.addOntClass(model.getOntClass(ClassNS+Sindel2OWL.hashSindelxG800.get(Sindel2OWL.hashIndividuals.get(comp[0]))+"_Output"));
+				}
+				
 				Statement stmt = model.createStatement(src, componentOf, dst);
 				model.add(stmt);
 

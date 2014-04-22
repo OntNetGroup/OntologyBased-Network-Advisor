@@ -31,6 +31,7 @@ public class Sindel2OWL {
 	public static String warning = new String();
 	public static String error = new String();
 	public static HashMap<String,String> hashIndividuals = new HashMap<String,String>();
+	public static HashMap<String,String> hashSindelxG800 = new HashMap<String,String>();
 
 	private DtoResultSindel DtoSindel;
 	public DtoResultSindel getDtoSindel() {
@@ -63,7 +64,28 @@ public class Sindel2OWL {
 		model = owl;
 	}
 
+	private void intializeHashs(){
+		hashSindelxG800.put("so-tf","Termination_Source");
+		hashSindelxG800.put("sk-tf","Termination_Sink");
+		
+		hashSindelxG800.put("so-af","Adaptation_Source");
+		hashSindelxG800.put("sk-af","Adaptation_Sink");
+		
+		hashSindelxG800.put("so-lpf","Layer_Processor_Function_Source");
+		hashSindelxG800.put("sk-lpf","Layer_Processor_Function_Sink");
+		
+		hashSindelxG800.put("so-matrix","Source_Matrix");
+		hashSindelxG800.put("sk-matrix","Sink_Matrix");
+		
+		hashSindelxG800.put("so-sn","Source_Subnetwork");
+		hashSindelxG800.put("sk-sn","Sink_Subnetwork");
+		
+		hashSindelxG800.put("pm","Physical_Media");
+	}
+	
 	public void run(String sindelCode){
+		intializeHashs();
+		
 		String[] s_parts;
 		s_parts = sindelCode.split("!");
 		for (String s_elements : s_parts) {

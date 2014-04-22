@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.padtec.processors;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
@@ -16,7 +17,9 @@ public class BindsProcessor {
 	private static List<String>  ports =  Arrays.asList("input","output");
 	private static List<String>  interfaces =  Arrays.asList("in_int","out_int");
 
-
+	private static HashMap<String, String> simpleBindsHash = new HashMap<>();
+	
+	
 	private static OntModel model; 
 	private static String ClassNS;
 	private static String IndNS;
@@ -43,7 +46,7 @@ public class BindsProcessor {
 
 	//Simple
 	public static void processBinds(OntModel model, String ClassNS, String IndNS, String binds){
-
+		initializeHash();
 		String[] declarations = binds.split(",");
 
 		componentOf = model.getObjectProperty(ClassNS+"componentOf");
@@ -114,6 +117,27 @@ public class BindsProcessor {
 		}
 	}
 
+	private static void initializeHash() {
+		simpleBindsHash.put("Adaptation_Source"+"Input", "Adaptation_Source_Input");
+		simpleBindsHash.put("Adaptation_Source"+"Output", "Adaptation_Source_Output");
+		simpleBindsHash.put("Adaptation_Sink"+"Input", "Adaptation_Sink_Input");
+		simpleBindsHash.put("Adaptation_Sink"+"Output", "Adaptation_Sink_Output");
+		simpleBindsHash.put("Termination_Source"+"Input", "Termination_Source_Input");
+		simpleBindsHash.put("Termination_Source"+"Output", "Termination_Source_Output");
+		simpleBindsHash.put("Termination_Sink"+"Input", "Termination_Sink_Input");
+		simpleBindsHash.put("Termination_Sink"+"Output", "Termination_Sink_Output");
+		simpleBindsHash.put("Layer_Processor_Function_Source"+"Input", "Layer_Processor_Source_Input");
+		simpleBindsHash.put("Layer_Processor_Function_Source"+"Output", "Layer_Processor_Source_Output");
+		simpleBindsHash.put("Layer_Processor_Function_Sink"+"Input", "Layer_Processor_Sink_Input");
+		simpleBindsHash.put("Layer_Processor_Function_Sink"+"Output", "Layer_Processor_Sink_Output");
+		simpleBindsHash.put("Matrix"+"Input", "Marix_Input");
+		simpleBindsHash.put("Matrix"+"Output", "Marix_Output");
+		simpleBindsHash.put("Subnetwork"+"Input", "Subnetwork_Input");
+		simpleBindsHash.put("Subnetwork"+"Output", "Subnetwork_Output");
+		simpleBindsHash.put("Physical_Media"+"Input", "Physical_Media_Input");
+		simpleBindsHash.put("Physical_Media"+"Output", "Physical_Media_Output");
+	}
+
 	private static void processSimpleRelation_InterfacexPort() {
 		// TODO VERIFICAR!!!
 		
@@ -168,6 +192,9 @@ public class BindsProcessor {
 		stmt = model.createStatement(b, componentOf, k);
 		model.add(stmt);
 
+//		if(simpleBindsHash.containsKey(key))
+//		String specificRelation 
+//		
 		//a binds new Port
 		rel = model.getObjectProperty(ClassNS+"binds");
 		stmt = model.createStatement(a, rel, k);

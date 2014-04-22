@@ -34,7 +34,7 @@
 
 		}
 		function getHash() {
-			var hash = {};
+			hash = {};
 			<%
 				out.print(hashTypes);
 			%>
@@ -60,7 +60,7 @@
 			for (key in equipHash) {
 				var o = {};
 				if (src) {
-					if(hashEquipIntIn[equip][key]){
+					if(!hashEquipIntIn[equip][key]){
 						o[key] = {disabled:true};
 					}else{
 						o[key] = {
@@ -70,12 +70,11 @@
 								$.ajax({
 									url : "connect_equip_binds?equip_source="+srcEquipBindsClicked+"&interface_source="+srcInterfaceBindsClicked+"&equip_target="+trgEquipBindsClicked+"&interface_target="+trgInterfaceBindsClicked,
 									type : "GET",
-									success : function(dto) {
-										if(dto.ok == false)
+									success : function(result) {
+										if(result == "false")
 										{
-											alert(dto.result);
+											alert("Something wrong happened.");
 										} else {
-											alert("binds created");
 											//set disable the hashs
 											hashEquipIntOut[trgEquipBindsClicked][trgInterfaceBindsClicked] = true;
 											
@@ -104,9 +103,9 @@
 											graph.renderer.redraw();
 										}
 									},
-									error:function(x,e){
+									error:function(){
 										alert("Erro");
-									},					
+									}					
 								});
 							}
 						};
@@ -141,7 +140,13 @@
 											hashEquipIntIn[hsh[0]][hsh[1]] = hsh[2];
 											
 											//change the graph node color
-											graph.getNode(hsh[0]).data.color = "pink";
+											if(hsh[2] == "true"){
+												graph.getNode(hsh[0]).data.color = "pink";												
+											}else{
+												if(graph.getNode(hsh[0]).data.color != "pink"){
+													graph.getNode(hsh[0]).data.color = "red";
+												}
+											}
 										}
 										//change the first clicked node
 										graph.getNode(trgEquipBindsClicked).data.color = "yellow";

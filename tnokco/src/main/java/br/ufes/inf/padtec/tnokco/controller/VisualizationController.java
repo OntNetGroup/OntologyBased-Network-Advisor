@@ -129,7 +129,7 @@ public class VisualizationController {
 	@RequestMapping(method = RequestMethod.GET, value="/open_equipment_visualization")
 	public String open_equipment_visualization(HttpServletRequest request) {
 
-		ArrayList<Equipment> list = null;//Provisioning.getAllEquipmentsandConnections();
+		ArrayList<Equipment> list = Provisioning.getAllEquipmentsandConnections();
 		
 		String arborStructure = "";
 		String hashEquipIntOut = "";
@@ -137,7 +137,7 @@ public class VisualizationController {
 		
 		for(Equipment equip : list){
 			hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"'] = new Array();";
-			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>eq4 is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
+			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
 			for(InterfaceOutput outs : equip.getOutputs()){
 				hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"']['"+outs.getName()+"'] = "+outs.isConnected()+";";		
 			}
@@ -146,6 +146,9 @@ public class VisualizationController {
 				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"dot\",color:\"green\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"dot\",color:\"green\"}), {name:'binds:";
 				arborStructure += entry.getKey().get(0)+"-"+entry.getKey().get(1);
 				arborStructure += "'});";
+			}
+			if(equip.getBinds().isEmpty()){
+				arborStructure += "graph.addNode(\""+equip.getName()+"\", {shape:\"dot\",color:\"green\"});";
 			}
 		}
 		
@@ -184,43 +187,20 @@ public class VisualizationController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/connect_equip_binds")
-	public DtoResultAjax connect_equip_binds(@RequestParam("equip_source") String equip_source,@RequestParam("interface_source") String interface_source,@RequestParam("equip_target") String equip_target,@RequestParam("interface_target") String interface_target , HttpServletRequest request) {
-		boolean erro = false;
-		DtoResultAjax dto = new DtoResultAjax();
-		
-		if(erro){
-			dto.ok = false;
-			dto.result = "Error! Something wrong happaned.";
-			return dto;
-		}
-		
-		System.out.println(equip_source+"#"+interface_source+" binds "+equip_target+"#"+interface_target);
-		dto.ok = true;
-		return dto;
+	public @ResponseBody String connect_equip_binds(@RequestParam("equip_source") String equip_source,@RequestParam("interface_source") String interface_source,@RequestParam("equip_target") String equip_target,@RequestParam("interface_target") String interface_target , HttpServletRequest request) {
+		DtoResultAjax dto = ProvisioningController.provision(interface_target, interface_source, request);
+		return dto.ok+"";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/get_input_interfaces_from")
 	public @ResponseBody String get_input_interfaces_from(@RequestParam("equip") String equip, @RequestParam("interf") String interf, HttpServletRequest request) {
 		
+		ArrayList<String> list = ProvisioningController.getCandidateInterfacesForConnection(interf);
 		String hashEquipIntIn = "";
-		if(equip.equals(("eq1"))){
-			hashEquipIntIn += "eq2#eq2.in1#true;";
-			hashEquipIntIn += "eq2#eq2.in2#true;";
-			hashEquipIntIn += "eq3#eq3.in2#true;";
-		}else if(equip.equals(("eq2"))){
-			hashEquipIntIn += "eq1#eq1.in1#false;";
-			hashEquipIntIn += "eq2#eq2.in2#true;";
-			hashEquipIntIn += "eq4#eq4.in2#true;";
-		}else if(equip.equals(("eq3"))){
-			hashEquipIntIn += "eq1#eq1.in1#false;";
-			hashEquipIntIn += "eq1#eq1.in2#false;";
-		}else if(equip.equals(("eq4"))){
-			hashEquipIntIn += "eq1#eq1.in3#true;";
-			hashEquipIntIn += "eq3#eq3.in1#true;";
-			hashEquipIntIn += "eq3#eq3.in2#true;";
-			hashEquipIntIn += "eq1#eq1.in1#false;";	
-		}
 		
+		for(String line : list){
+			hashEquipIntIn += line;
+		}
 		return hashEquipIntIn;
 	}
 	
