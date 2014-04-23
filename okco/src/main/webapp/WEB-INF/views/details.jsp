@@ -554,7 +554,7 @@
 												  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");							  		
 													  	out.println("<td class=\"center\">" + 
 													  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "objectMax" + "&propType=MAX" + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
-										  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completePropertyAuto?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=MAX" + "\"> <i class=\"icon-edit\"></i> </a>" +
+										  								
 													  					"</td>");
 												  									  		
 												  		out.println("</tr>");							  		

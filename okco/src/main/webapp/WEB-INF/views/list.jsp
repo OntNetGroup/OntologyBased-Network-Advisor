@@ -141,7 +141,7 @@
 							  		
 							  		out.println("<td class=\"center\">" + 
 							  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/okco/graphVisualizer?typeView=IN&id=" + i.id + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
-							  					"<a class=\"btn btn-info\" href=\"/okco/details?id=" + i.id + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
+							  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/details?id=" + i.id + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
 						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completeInstanceAuto?idInstance="+ i.id + "\"> <i class=\"icon-edit\"></i> </a>" +
 							  					"</td>");
 						  									  		

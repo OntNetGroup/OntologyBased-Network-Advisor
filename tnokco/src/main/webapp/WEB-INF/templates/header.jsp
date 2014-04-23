@@ -258,7 +258,7 @@ $(document).ready(function() {
 					class="icon-reorder"></i></a>
 				<div class="row">
 					<a class="navbar-brand col-lg-2 col-sm-1 col-xs-12"
-						href="/welcome">
+						href="/tnokco/welcome">
 							<img src="Assets/img/TNOKCo_branca.png" alt="TN-OKCo" width="92">
  					</a>
 				</div>
