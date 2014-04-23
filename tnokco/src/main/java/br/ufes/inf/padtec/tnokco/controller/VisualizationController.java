@@ -143,12 +143,12 @@ public class VisualizationController {
 			}
 			
 			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
-				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"dot\",color:\"green\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"dot\",color:\"green\"}), {name:'binds:";
+				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}), {name:'binds:";
 				arborStructure += entry.getKey().get(0)+"-"+entry.getKey().get(1);
 				arborStructure += "'});";
 			}
 			if(equip.getBinds().isEmpty()){
-				arborStructure += "graph.addNode(\""+equip.getName()+"\", {shape:\"dot\",color:\"green\"});";
+				arborStructure += "graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"});";
 			}
 		}
 		

@@ -87,18 +87,16 @@
 												var edgeName = "binds:"+srcInterfaceBindsClicked+"-"+trgInterfaceBindsClicked;
 											
 												graph.addEdge(graph.addNode(trgEquipBindsClicked, {
-													shape : "dot",
-													color : "green"
+													shape : "Equip_AZUL"
 												}), graph.addNode(srcEquipBindsClicked, {
-													shape : "dot",
-													color : "green"
+													shape : "Equip_AZUL"
 												}), {
 													name : edgeName
 												});
 											}
 											//return the start color of nodes
 											for(var nodeKey in hash){
-												graph.getNode(nodeKey).data.color = "green";
+												graph.getNode(nodeKey).data.shape = "Equip_AZUL";
 											}
 											graph.renderer.redraw();
 										}
@@ -141,15 +139,15 @@
 											
 											//change the graph node color
 											if(hsh[2] == "true"){
-												graph.getNode(hsh[0]).data.color = "pink";												
+												graph.getNode(hsh[0]).data.shape = "Equip_VERDE";												
 											}else{
-												if(graph.getNode(hsh[0]).data.color != "pink"){
-													graph.getNode(hsh[0]).data.color = "red";
+												if(graph.getNode(hsh[0]).data.shape != "Equip_VERDE"){
+													graph.getNode(hsh[0]).data.shape = "Equip_ROXO";
 												}
 											}
 										}
 										//change the first clicked node
-										graph.getNode(trgEquipBindsClicked).data.color = "yellow";
+										graph.getNode(trgEquipBindsClicked).data.shape = "Equip_AZUL";
 										graph.renderer.redraw();
 									},
 									error:function(){
@@ -182,7 +180,7 @@
 		
 		
 	</script>
-<div style="width: 1120px">
+<div style="width: 1250px">
 
 	<div style="float: left; border: 1px solid black;">
 		<canvas id="viewport" width="800" height="600"
@@ -192,6 +190,8 @@
 	<div style="float: right;">
 		<div id="currentNode">Select a node to visualize information
 			about it.</div>
+			<br>
+		<img id="sub" src="Assets/img/subtitles/Provisoning.png"></img>
 	</div>
 </div>
 <script>
@@ -276,5 +276,9 @@
 			})(jQuery);
 
 			$('#currentNode').drags();
+			$('#sub').drags();
 		</script>
+		
+			<!-- Images of ITU elements -->
+<%@include file="../templates/tnokco_images_visualization.jsp"%>
 <%@include file="../templates/footer.jsp"%>
