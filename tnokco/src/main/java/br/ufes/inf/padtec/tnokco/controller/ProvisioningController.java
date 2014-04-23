@@ -361,8 +361,8 @@ public class ProvisioningController{
 				interfaceReturn += "#";
 				
 				if(hasAllowedRelation && !eqInNs.equals(eqOutNs)){
-					if(allowedInputInterfaces.contains(interfaceReturn)){
-						allowedInputInterfaces.remove(interfaceReturn);
+					if(allowedInputInterfaces.contains(interfaceReturn+"false;")){
+						allowedInputInterfaces.remove(interfaceReturn+"false;");
 					}
 					interfaceReturn += "true;";
 				}else{
@@ -373,7 +373,7 @@ public class ProvisioningController{
 				
 				
 				
-				if(!allowedInputInterfaces.contains(interfaceReturn) && !allowedInputInterfaces.contains(interfaceReturn+"true;")){
+				if(!allowedInputInterfaces.contains(interfaceReturn) && !allowedInputInterfaces.contains(interfaceReturn.replace("false;", "true;"))){
 					allowedInputInterfaces.add(interfaceReturn);
 				}				
 			}
