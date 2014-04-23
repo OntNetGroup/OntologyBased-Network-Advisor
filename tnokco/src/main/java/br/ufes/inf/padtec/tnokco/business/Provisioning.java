@@ -344,19 +344,18 @@ public class Provisioning {
 
 		return true;
 	}
-	public static HashMap<String, String> hashInputEquipment= new HashMap<String, String>();
-
+	
 	public static ArrayList<Equipment> getAllEquipmentsandConnections(){
 		Model = HomeController.Model;
 		InfModel = HomeController.InfModel;
-		
-		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
+		HashMap<String, String> hashInputEquipment= new HashMap<String, String>();
+		equipments = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Equipment");
 		Equipment e = null;
 		Individual individual;
 		ArrayList<Equipment> equips= new ArrayList<Equipment>();
 		for (String equipment: equipments) {
 			Individual indeq= Model.getIndividual(equipment);
-			ArrayList<String> inpInt= HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
+			ArrayList<String> inpInt= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
 			int i=0;
 			InterfaceInput input;
 			for (String string : inpInt) {
@@ -366,7 +365,7 @@ public class Provisioning {
 	
 		}
 		for (String equipment: equipments) {
-			ArrayList<String> outInt= HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
+			ArrayList<String> outInt= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
 			int i=0;
 			Individual ind= Model.getIndividual(equipment);
 			e = new Equipment(ind.getLocalName());
