@@ -74,8 +74,8 @@
 var parser = (function(){
 var parser = {trace: function trace(){},
 yy: {},
-symbols_: {"error":2,"expressions":3,"Instruction":4,"EOF":5,"Element":6,"TransportFunction":7,"AdaptationFunction":8,"LayerProcessorFunction":9,"Matrices":10,"sn":11,"pm":12,"Port":13,"ReferencePoint":14,"TransportEntity":15,"layer":16,"equip":17,"Interfaces":18,"site":19,"tf":20,"so-tf":21,"sk-tf":22,"bi-tf":23,"af":24,"so-af":25,"sk-af":26,"bi-af":27,"lpf":28,"so-lpf":29,"sk-lpf":30,"bi-lpf":31,"matrix":32,"uni-matrix":33,"so-matrix":34,"sk-matrix":35,"bi-matrix":36,"input":37,"output":38,"rp":39,"fep":40,"ap":41,"fp":42,"ate":43,"nc":44,"lc":45,"mc":46,"cfte":47,"in_int":48,"out_int":49,"ElementDeclaration":50,"ElementComposition":51,"SimpleRelation":52,"AssignableRelation":53,"AddLocationTF":54,"AddTypeTTF":55,"colon":56,"VariableDeclaration":57,"semicolon":58,"variavel":59,"comma":60,"RelationType":61,"l_parenthesis":62,"r_parenthesis":63,"binds":64,"connects":65,"client":66,"maps":67,"str_location":68,"geo_location":69,"dot":70,"location":71,"graus":72,"type":73,"Composition":74,"l_curly_bracket":75,"used_variables":76,"r_curly_bracket":77,"equal":78,"RelationTypeAssignable":79,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",11:"sn",12:"pm",16:"layer",17:"equip",19:"site",20:"tf",21:"so-tf",22:"sk-tf",23:"bi-tf",24:"af",25:"so-af",26:"sk-af",27:"bi-af",28:"lpf",29:"so-lpf",30:"sk-lpf",31:"bi-lpf",32:"matrix",33:"uni-matrix",34:"so-matrix",35:"sk-matrix",36:"bi-matrix",37:"input",38:"output",39:"rp",40:"fep",41:"ap",42:"fp",43:"ate",44:"nc",45:"lc",46:"mc",47:"cfte",48:"in_int",49:"out_int",56:"colon",58:"semicolon",59:"variavel",60:"comma",62:"l_parenthesis",63:"r_parenthesis",64:"binds",65:"connects",66:"client",67:"maps",70:"dot",71:"location",72:"graus",73:"type",75:"l_curly_bracket",77:"r_curly_bracket",78:"equal"},
+symbols_: {"error":2,"expressions":3,"Instruction":4,"EOF":5,"Element":6,"TransportFunction":7,"AdaptationFunction":8,"LayerProcessorFunction":9,"Matrices":10,"sn":11,"pm":12,"Port":13,"ReferencePoint":14,"TransportEntity":15,"layer":16,"equip":17,"Interfaces":18,"site":19,"tf":20,"so-tf":21,"sk-tf":22,"bi-tf":23,"af":24,"so-af":25,"sk-af":26,"bi-af":27,"lpf":28,"so-lpf":29,"sk-lpf":30,"bi-lpf":31,"matrix":32,"uni-matrix":33,"so-matrix":34,"sk-matrix":35,"bi-matrix":36,"input":37,"output":38,"rp":39,"fep":40,"ap":41,"fp":42,"ate":43,"nc":44,"lc":45,"mc":46,"cfte":47,"in-int":48,"out-int":49,"ElementDeclaration":50,"ElementComposition":51,"SimpleRelation":52,"AssignableRelation":53,"AddLocationTF":54,"AddTypeTTF":55,"colon":56,"VariableDeclaration":57,"semicolon":58,"variavel":59,"comma":60,"RelationType":61,"l_parenthesis":62,"r_parenthesis":63,"binds":64,"connects":65,"client":66,"maps":67,"str_location":68,"geo_location":69,"dot":70,"location":71,"graus":72,"type":73,"Composition":74,"l_curly_bracket":75,"used_variables":76,"r_curly_bracket":77,"equal":78,"RelationTypeAssignable":79,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",11:"sn",12:"pm",16:"layer",17:"equip",19:"site",20:"tf",21:"so-tf",22:"sk-tf",23:"bi-tf",24:"af",25:"so-af",26:"sk-af",27:"bi-af",28:"lpf",29:"so-lpf",30:"sk-lpf",31:"bi-lpf",32:"matrix",33:"uni-matrix",34:"so-matrix",35:"sk-matrix",36:"bi-matrix",37:"input",38:"output",39:"rp",40:"fep",41:"ap",42:"fp",43:"ate",44:"nc",45:"lc",46:"mc",47:"cfte",48:"in-int",49:"out-int",56:"colon",58:"semicolon",59:"variavel",60:"comma",62:"l_parenthesis",63:"r_parenthesis",64:"binds",65:"connects",66:"client",67:"maps",70:"dot",71:"location",72:"graus",73:"type",75:"l_curly_bracket",77:"r_curly_bracket",78:"equal"},
 productions_: [0,[3,2],[3,2],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[7,1],[7,1],[7,1],[7,1],[8,1],[8,1],[8,1],[8,1],[9,1],[9,1],[9,1],[9,1],[10,1],[10,1],[10,1],[10,1],[10,1],[13,1],[13,1],[14,1],[14,1],[14,1],[14,1],[15,1],[15,1],[15,1],[15,1],[15,1],[18,1],[18,1],[4,1],[4,1],[4,1],[4,1],[4,1],[4,1],[50,4],[57,1],[57,3],[52,7],[61,1],[61,1],[61,1],[61,1],[54,1],[54,1],[68,6],[69,10],[55,6],[51,3],[74,3],[76,1],[76,3],[53,9],[79,1],[79,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */
 /**/) {
@@ -314,8 +314,8 @@ hashSuperType["fep"] = "rp";
 hashSuperType["ap"] = "rp";
 
 //Interfaces
-hashSuperType["in_int"] = "interface";
-hashSuperType["out_int"] = "interface";
+hashSuperType["in-int"] = "interface";
+hashSuperType["out-int"] = "interface";
 
 //Transport Entity
 hashSuperType["ate"] = "transport_entity";
@@ -343,16 +343,16 @@ hashSimpleRelation["component_of"+"layer"+"pm"] = createRelation(0,-1,0,-1);
 
 /* Equipment */
 //Output Interface 0..1 binds 0..1 Input Interface
-hashSimpleRelation["binds"+"out_int"+"in_int"] = createRelation(0,1,0,1);
+hashSimpleRelation["binds"+"out-int"+"in-int"] = createRelation(0,1,0,1);
 
 //Input Interface 0..1 connects 0..1 Input
-hashSimpleRelation["connects"+"out_int"+"in_int"] = createRelation(0,1,0,1);
+hashSimpleRelation["connects"+"out-int"+"in-int"] = createRelation(0,1,0,1);
 
 //Input Interface 0..1 maps 0..1 Input
-hashSimpleRelation["maps"+"in_int"+"input"] = createRelation(0,1,0,1);
+hashSimpleRelation["maps"+"in-int"+"input"] = createRelation(0,1,0,1);
 
 //Output Interface 0..1 maps 0..1 Output
-hashSimpleRelation["maps"+"out_int"+"output"] = createRelation(0,1,0,1);
+hashSimpleRelation["maps"+"out-int"+"output"] = createRelation(0,1,0,1);
 
 //Interface 0..1 binds 0..1 Port
 hashSimpleRelation["binds"+"interface"+"port"] = createRelation(0,1,0,1);
@@ -917,7 +917,7 @@ case 56:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:tf\b)/,/^(?:so-tf\b)/,/^(?:sk-tf\b)/,/^(?:bi-tf\b)/,/^(?:af\b)/,/^(?:so-af\b)/,/^(?:sk-af\b)/,/^(?:bi-af\b)/,/^(?:lpf\b)/,/^(?:so-lpf\b)/,/^(?:sk-lpf\b)/,/^(?:bi-lpf\b)/,/^(?:matrix\b)/,/^(?:uni-matrix\b)/,/^(?:so-matrix\b)/,/^(?:sk-matrix\b)/,/^(?:bi-matrix\b)/,/^(?:sn\b)/,/^(?:pm\b)/,/^(?:input\b)/,/^(?:output\b)/,/^(?:rp\b)/,/^(?:fep\b)/,/^(?:ap\b)/,/^(?:fp\b)/,/^(?:ate\b)/,/^(?:nc\b)/,/^(?:lc\b)/,/^(?:mc\b)/,/^(?:cfte\b)/,/^(?:layer\b)/,/^(?:equip\b)/,/^(?:in_int\b)/,/^(?:out_int\b)/,/^(?:site\b)/,/^(?:binds\b)/,/^(?:connects\b)/,/^(?:client\b)/,/^(?:maps\b)/,/^(?:location\b)/,/^(?:type\b)/,/^(?::)/,/^(?:\.)/,/^(?:;)/,/^(?:=)/,/^(?:,)/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:(-)?[0-9]+:[0-9]+:[0-9]+)/,/^(?:[A-Za-z_]+[0-9A-Za-z_]*)/,/^(?:[0-9]+)/,/^(?:\/\*(.|\n|\r)*?\*\/)/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:\s+)/,/^(?:tf\b)/,/^(?:so-tf\b)/,/^(?:sk-tf\b)/,/^(?:bi-tf\b)/,/^(?:af\b)/,/^(?:so-af\b)/,/^(?:sk-af\b)/,/^(?:bi-af\b)/,/^(?:lpf\b)/,/^(?:so-lpf\b)/,/^(?:sk-lpf\b)/,/^(?:bi-lpf\b)/,/^(?:matrix\b)/,/^(?:uni-matrix\b)/,/^(?:so-matrix\b)/,/^(?:sk-matrix\b)/,/^(?:bi-matrix\b)/,/^(?:sn\b)/,/^(?:pm\b)/,/^(?:input\b)/,/^(?:output\b)/,/^(?:rp\b)/,/^(?:fep\b)/,/^(?:ap\b)/,/^(?:fp\b)/,/^(?:ate\b)/,/^(?:nc\b)/,/^(?:lc\b)/,/^(?:mc\b)/,/^(?:cfte\b)/,/^(?:layer\b)/,/^(?:equip\b)/,/^(?:in-int\b)/,/^(?:out-int\b)/,/^(?:site\b)/,/^(?:binds\b)/,/^(?:connects\b)/,/^(?:client\b)/,/^(?:maps\b)/,/^(?:location\b)/,/^(?:type\b)/,/^(?::)/,/^(?:\.)/,/^(?:;)/,/^(?:=)/,/^(?:,)/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:(-)?[0-9]+:[0-9]+:[0-9]+)/,/^(?:[A-Za-z_]+[0-9A-Za-z_]*)/,/^(?:[0-9]+)/,/^(?:\/\*(.|\n|\r)*?\*\/)/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56],"inclusive":true}}
 };
 return lexer;

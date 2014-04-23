@@ -60,7 +60,7 @@
 			for (key in equipHash) {
 				var o = {};
 				if (src) {
-					if(!hashEquipIntIn[equip][key]){
+					if(hashEquipIntIn[equip][key] == "false"){
 						o[key] = {disabled:true};
 					}else{
 						o[key] = {
@@ -111,7 +111,7 @@
 						};
 					}
 				} else {
-					if(hashEquipIntOut[equip][key]){
+					if(hashEquipIntOut[equip][key] == "true"){
 						o[key] = {disabled:true};
 					}else{
 						o[key] = {

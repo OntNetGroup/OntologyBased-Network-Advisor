@@ -133,9 +133,9 @@ public class ElementsProcessor {
 				}
 				
 				//Interfaces
-				else if(elems[0].equals("in_int")){
+				else if(elems[0].equals("in-int")){
 					o_class = model.getOntClass(ClassNS+"Input_Interface");
-				}else if(elems[0].equals("out_int")){
+				}else if(elems[0].equals("out-int")){
 					o_class = model.getOntClass(ClassNS+"Output_Interface");
 				}
 				

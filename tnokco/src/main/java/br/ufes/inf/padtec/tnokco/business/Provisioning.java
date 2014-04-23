@@ -347,7 +347,9 @@ public class Provisioning {
 	public static HashMap<String, String> hashInputEquipment= new HashMap<String, String>();
 
 	public static ArrayList<Equipment> getAllEquipmentsandConnections(){
-
+		Model = HomeController.Model;
+		InfModel = HomeController.InfModel;
+		
 		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
 		Equipment e = null;
 		Individual individual;

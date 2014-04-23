@@ -15,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 public class BindsProcessor {
 	private static List<String>  transportFunctions =  Arrays.asList("tf","so-tf","sk-tf","bi-tf","af","so-af","sk-af","bi-af","lpf","so-lpf","sk-lpf","bi-lpf","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn");
 	private static List<String>  ports =  Arrays.asList("input","output");
-	private static List<String>  interfaces =  Arrays.asList("in_int","out_int");
+	private static List<String>  interfaces =  Arrays.asList("in-int","out-int");
 
 	private static HashMap<String, String> simpleBindsHash = new HashMap<>();
 	
