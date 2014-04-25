@@ -1,5 +1,6 @@
 package br.ufes.inf.padtec.tnokco.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
@@ -25,6 +26,7 @@ import br.ufes.inf.nemo.okco.model.IRepository;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
+import br.ufes.inf.padtec.tnokco.business.Code;
 
 @Controller
 public class SindelController implements ServletContextAware{
@@ -37,7 +39,11 @@ public class SindelController implements ServletContextAware{
 	
 	//servelet context
 	private ServletContext servletContext;
-
+	
+	private ArrayList<Code> ListCodes = new ArrayList<Code>();
+	private int totalCodes = 6;
+	private int totalCreated = 0;
+	
 	@RequestMapping(method = RequestMethod.GET, value="/sindel")
 	public String sindel(HttpSession session, HttpServletRequest request) {
 
@@ -77,13 +83,51 @@ public class SindelController implements ServletContextAware{
 
 			//Create the sections				
 			request.getSession().setAttribute("txtSindelCode", txtSindelCode);
+			request.getSession().setAttribute("ListCodes", ListCodes);
+			
 			return "sindel";	//View to return
 		}     	
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/getSindel")
+	public String getSindel(HttpSession session, HttpServletRequest request) throws IOException {
+
+		if(txtSindelCode != "")
+		{
+			request.getSession().setAttribute("txtSindelCode", txtSindelCode);
+			request.getSession().removeAttribute("loadOk");
+
+			return "getSindel";
+
+		} else {
+
+			return "sindel";
+		}
 	}
 
 	/*-------------- -------------- ------------*/
 	/*-------------- AJAX FUNCTIONS ------------*/
 	/*-------------- -------------- ------------*/
+	
+	@RequestMapping(method = RequestMethod.POST, value="/getSindelCode")
+	public @ResponseBody DtoResultAjax getSindelCode(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+		
+		String sindelCode = dtoGet.result;
+		DtoResultAjax dto = new DtoResultAjax();		
+		txtSindelCode = sindelCode;
+		
+		if(sindelCode == "")
+		{
+			dto.ok = false;
+			dto.result = "No Sindel Code to save";
+		} else {
+
+			dto.ok = true;
+			dto.result = "";
+		}
+
+		return dto;
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value="/runSindel")
 	public @ResponseBody DtoResultAjax runSindel(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
@@ -109,6 +153,7 @@ public class SindelController implements ServletContextAware{
 //			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 			
 			HomeController.InfModel = dtoSindel.model;
+			
 			// Update list instances
 			try {
 				HomeController.UpdateLists();
@@ -160,6 +205,42 @@ public class SindelController implements ServletContextAware{
 
 		txtSindelCode = "";
 		request.getSession().setAttribute("txtSindelCode", txtSindelCode);
+
+		DtoResultAjax dto = new DtoResultAjax();
+		dto.ok = true;
+		dto.result = "ok";
+
+		return dto;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/saveSindelCode")
+	public @ResponseBody DtoResultAjax saveSindelCode(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+
+		String sindelCode = dtoGet.result;
+		
+		if(ListCodes.size() < totalCodes)
+		{
+			totalCreated ++;
+			Code code = new Code();
+			code.codevalue = sindelCode;
+			code.name = "ver" + totalCreated;
+			code.version = "ver" + totalCreated;
+			ListCodes.add(code);
+			
+			totalCodes++;
+			
+		} else {
+			
+			ListCodes.remove(0);
+			
+			totalCreated ++;
+			Code code = new Code();
+			code.codevalue = sindelCode;
+			code.name = "ver" + totalCreated;
+			code.version = "ver" + totalCreated;			
+			ListCodes.add(code);
+
+		}		
 
 		DtoResultAjax dto = new DtoResultAjax();
 		dto.ok = true;

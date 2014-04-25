@@ -393,7 +393,6 @@ public class HomeController {
 		
 	}
 	
-	
 	public static void UpdateLists() throws InconsistentOntologyException, OKCoExceptionInstanceFormat {
 
 		try {
