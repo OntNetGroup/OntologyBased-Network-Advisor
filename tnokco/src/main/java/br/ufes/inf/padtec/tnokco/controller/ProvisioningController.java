@@ -285,14 +285,21 @@ public class ProvisioningController{
 		//pego o namespace completo da relação de maps_out
 		String outputNs = "";
 		String eqOutNs = "";
+		String interfaceBindsNs = "";
 		for (DtoInstanceRelation outRelation : outIntRelations) {
 			if(outRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
 				outputNs = outRelation.Target;
 			}else if(outRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
 				eqOutNs = outRelation.Target;
+			}else if(outRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
+				interfaceBindsNs = outRelation.Target;
 			}
 		}
 		
+		Boolean outputAlreadyConnected = false;
+		if(!interfaceBindsNs.equals("")){
+			outputAlreadyConnected = true;
+		}
 		//pego a instancia do output mapeado pela interface de output
 		Instance output = null;
 		for (Instance instance : HomeController.ListAllInstances) {
@@ -324,15 +331,15 @@ public class ProvisioningController{
 				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
 				String inputNs = "";
 				String eqInNs = "";
-				Boolean alreadyConnected = true;
+				Boolean alreadyConnected = false;
 				//pego o NS do input mapeada pela interface de input
 				for (DtoInstanceRelation inRelation : inIntRelations) {
 					if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
 						inputNs = inRelation.Target;
 					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
 						eqInNs = inRelation.Target;						
-					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"binds")){
-						alreadyConnected = false;
+					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.interface_binds")){
+						alreadyConnected = true;
 					}
 				}
 				
@@ -371,7 +378,7 @@ public class ProvisioningController{
 				interfaceReturn += inputNs;
 				interfaceReturn += "#";
 				
-				if(hasAllowedRelation && !eqInNs.equals(eqOutNs)){
+				if(hasAllowedRelation && !eqInNs.equals(eqOutNs) && !outputAlreadyConnected){
 					if(allowedInputInterfaces.contains(interfaceReturn+"false;")){
 						allowedInputInterfaces.remove(interfaceReturn+"false;");
 					}
