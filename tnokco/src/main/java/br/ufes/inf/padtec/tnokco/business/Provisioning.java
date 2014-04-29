@@ -270,8 +270,16 @@ public class Provisioning {
 		return values;
 	}
 
+	
+	public static ArrayList<String> getEquipmentsFromSite(String site){
+		
+		Individual ind = Model.getIndividual(site);
+		return HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Equipment");
+		
+	}
 
-
+	
+	
 	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
 		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
 
