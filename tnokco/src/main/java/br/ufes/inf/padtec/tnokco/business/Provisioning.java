@@ -278,7 +278,10 @@ public class Provisioning {
 		
 	}
 
-	
+	public static ArrayList<String> getTFsFromEquipment(String equipment){
+		Individual ind = Model.getIndividual(equipment);
+		return HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Transport_Function");
+	}
 	
 	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
 		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
