@@ -10,6 +10,7 @@ import br.ufes.inf.padtec.tnokco.controller.HomeController;
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.sparql.function.library.e;
 
 
 public class Provisioning {
@@ -19,10 +20,11 @@ public class Provisioning {
 	HashMap<String, HashMap<String, String>> equipmentsReleations = new HashMap<String, HashMap<String,String>>();
 	HashMap<String, String> equipmentRP = new HashMap<String, String>();
 	HashMap<String, String> equipmentOut = new HashMap<String, String>();
-	static ArrayList<String> equipments = new ArrayList<String>();
 	private static ArrayList<Equipment> equipmentsList= new ArrayList<Equipment>();
 	public static OntModel Model= HomeController.Model;
 	public static InfModel InfModel = HomeController.InfModel;
+	static ArrayList<String> equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
+
 
 	static Provisioning instance = new Provisioning();
 
@@ -270,12 +272,13 @@ public class Provisioning {
 		return values;
 	}
 
-	
-	public static ArrayList<String> getEquipmentsFromSite(String site){
+
+	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
 		
 		Individual ind = Model.getIndividual(site);
-		return HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Equipment");
-		
+		ArrayList<String> equiplist= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Equipment");
+		equiplist= equiplist;
+		return getEquipmentsConnectionsBinds();
 	}
 
 	public static ArrayList<String> getTFsFromEquipment(String equipment){
@@ -284,7 +287,6 @@ public class Provisioning {
 	}
 	
 	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
-		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
 
 		for (String equipment: equipments) {
 			Individual ind= Model.getIndividual(equipment);

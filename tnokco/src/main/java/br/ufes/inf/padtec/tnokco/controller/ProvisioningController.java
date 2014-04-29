@@ -229,9 +229,20 @@ public class ProvisioningController{
 		if(!outputNs.equals("") && !inputNs.equals("")){
 			a = HomeController.Model.getIndividual(HomeController.NS+outputNs);
 			b = HomeController.Model.getIndividual(HomeController.NS+inputNs);
+			ArrayList<String> tiposA=HomeController.Search.GetClassesFrom(a.getLocalName(),HomeController.Model);
+			ArrayList<String> tiposB=HomeController.Search.GetClassesFrom(b.getLocalName(),HomeController.Model);
+			tiposA.remove("Geographic_Element");
+			tiposA.remove("Bound_Transport_Function");
+			tiposB.remove("Geographic_Element");
+			tiposB.remove("Bound_Transport_Function");
 			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds");
 			stmt = HomeController.Model.createStatement(a, rel, b);
 			HomeController.Model.add(stmt);	
+			HashMap<String, String> hash = new HashMap<String, String>();
+			hash.put("INPUT", tiposB.get(0));
+			hash.put("OUTPUT", tiposA.get(0));
+			HashMap<String, String>element= Provisioning.values.get(hash);
+			System.out.println();
 		}
 		
 		dto.ok = true;
