@@ -104,8 +104,8 @@ public class ProvisioningController{
 		return "newEquipment";			
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value="/runEquipSindel")
-	public @ResponseBody DtoResultAjax runEquipSindel(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+	@RequestMapping(method = RequestMethod.POST, value="/runEquipScratch")
+	public @ResponseBody DtoResultAjax runEquipScratch(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
 
 		String sindelCode = dtoGet.result;
 		DtoResultAjax dto = new DtoResultAjax();

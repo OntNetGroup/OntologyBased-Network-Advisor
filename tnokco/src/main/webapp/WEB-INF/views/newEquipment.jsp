@@ -8,7 +8,10 @@
 <script>
 
 	$(document).ready(function () {
-
+		$('#addFields').click(function(){
+			addFields();
+	    });
+		
 		$('.btn-load').click(function(event) {
 
 			window.location.href = "/tnokco/welcome";
@@ -120,77 +123,119 @@
         
       }); // end document read
 	  
-      function cleanUpHashs(){
-  		currentLine = 0;
+//       function cleanUpHashs(){
+//   		currentLine = 0;
   	 
-  		warning = "";
+//   		warning = "";
   		 
-  		hashVarType = new Array();
-  		hashTypeVar = new Array();
-  		hashUsedRelation = new Array();
+//   		hashVarType = new Array();
+//   		hashTypeVar = new Array();
+//   		hashUsedRelation = new Array();
 
-  		hashUsedVariable = new Array();
+//   		hashUsedVariable = new Array();
 
-  		hashComposition = new Array();
+//   		hashComposition = new Array();
 
-  		hashRelation = new Array();
-  		hashRelation["binds"] = new Array();
-  		hashRelation["connects"] = new Array();
-  		hashRelation["maps"] = new Array();
-  		hashRelation["client"] = new Array();
-  		hashRelation["component_of"] = new Array();
+//   		hashRelation = new Array();
+//   		hashRelation["binds"] = new Array();
+//   		hashRelation["connects"] = new Array();
+//   		hashRelation["maps"] = new Array();
+//   		hashRelation["client"] = new Array();
+//   		hashRelation["component_of"] = new Array();
 
-  		hashAttribute = new Array();
-  		hashAttribute['str_location'] = new Array();
-  		hashAttribute['geo_location'] = new Array();
-  		hashAttribute['tf_type'] = new Array();
-  	}
+//   		hashAttribute = new Array();
+//   		hashAttribute['str_location'] = new Array();
+//   		hashAttribute['geo_location'] = new Array();
+//   		hashAttribute['tf_type'] = new Array();
+//   	}
   	  
-  	function printHashTypeVar(hash){
-  		var s = "elements"+"#";
+//   	function printHashTypeVar(hash){
+//   		var s = "elements"+"#";
   		
-  		for (var key in hash) {					
-  			s += key+":"+hash[key];
-  			s = s.substring(0,s.length)+";";
-  		}
-  		s+="!";
-  		return s;
-  	}
+//   		for (var key in hash) {					
+//   			s += key+":"+hash[key];
+//   			s = s.substring(0,s.length)+";";
+//   		}
+//   		s+="!";
+//   		return s;
+//   	}
   	
-  	function printHashRelations(hash){
-  		var s = "";
+//   	function printHashRelations(hash){
+//   		var s = "";
   				
-  		for (var key in hash) {
-  			if(key == "component_of"){
-  				s += key+"#";
-  				for(var i = 0; i < hash[key].length; i++){
-  					s += hash[key][i]+";";
-  				}
-  				s = s.substring(0,s.length-1);
-  				s += "!";
-  			}else{
-  				s += key+"#";
-  				s += hash[key]+"!";						
-  			}
-  		}		
-  		return s;
-  	}
+//   		for (var key in hash) {
+//   			if(key == "component_of"){
+//   				s += key+"#";
+//   				for(var i = 0; i < hash[key].length; i++){
+//   					s += hash[key][i]+";";
+//   				}
+//   				s = s.substring(0,s.length-1);
+//   				s += "!";
+//   			}else{
+//   				s += key+"#";
+//   				s += hash[key]+"!";						
+//   			}
+//   		}		
+//   		return s;
+//   	}
   	
-  	function printHashAttribute(hash){
-  		var s = "";
+//   	function printHashAttribute(hash){
+//   		var s = "";
   				
-  		for (var key in hash) {			
-  			s += key+"#";
-  			for(var i = 0; i < hash[key].length; i++){
-  				s += hash[key][i]+";";
-  			}
-  			s = s.substring(0,s.length-1);
-  			s += "!";			
-  		}		
-  		return s;
-  	}
+//   		for (var key in hash) {			
+//   			s += key+"#";
+//   			for(var i = 0; i < hash[key].length; i++){
+//   				s += hash[key][i]+";";
+//   			}
+//   			s = s.substring(0,s.length-1);
+//   			s += "!";			
+//   		}		
+//   		return s;
+//   	}
 
 	// Code Mirror
+	
+		function addFields(){
+				
+			var container = document.getElementById("equipTypeForm");
+			
+			// Create an <input> element, set its type and name attributes
+			var equipName = document.createElement("input");
+			equipName.name = "equipName";
+			equipName.id = "equipName";
+			container.appendChild(equipName);
+			
+			var fileDiv = document.createElement("div");
+			fileDiv.className = "uploader";
+			fileDiv.id = "uniform-file";
+			
+			var fileText = document.createElement("input");
+			fileText.type = "file";
+			fileText.name = "file";
+			fileText.id = "file";
+			fileDiv.appendChild(fileText);
+			
+			var fileSpanName = document.createElement("span");
+			fileSpanName.className = "filename";
+			fileSpanName.style = "-webkit-user-select: none;"
+			fileSpanName.text = "No file selected";
+			fileDiv.appendChild(fileSpanName);
+			
+			var fileAct = document.createElement("span");
+			fileAct.className = "action";
+			fileAct.style = "-webkit-user-select: none;"
+			fileAct.className = "Choose File";
+			fileDiv.appendChild(fileAct);
+			
+			container.appendChild(fileDiv);
+			
+			
+			// Append a line break 
+			container.appendChild(document.createElement("br"));
+			
+		};
+			
+	
 	
 </script>
 
@@ -203,7 +248,26 @@
 		<div class="box">
 			<div class="box-header">
 				<h2>
-					<i class="icon-edit"></i>New Equipment from Sindel input
+					<i class="icon-edit"></i>New Equipment from Equipment Type
+				</h2>
+				<div class="box-icon">
+					<a href="#" class="btn-setting"><i class="icon-wrench"></i></a> <a
+						href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
+				</div>
+			</div>
+			
+			<div class="tooltip-demo well" id="equipTypeContainer">
+				<form action="runEquipType" class="form-horizontal" enctype="multipart/form-data" method="POST" id="equipTypeForm">
+					<input id="equipName" name="equipName" id="equipName"/>
+					<input name="file" type="file" id="file">
+					<input id="addFields" type="button" value="+" />
+					<input type="submit" name="submit" value="Upload" /><br>
+				</form>
+			</div>  
+			
+			<div class="box-header">
+				<h2>
+					<i class="icon-edit"></i>New Equipment from Scratch
 				</h2>
 				<div class="box-icon">
 					<a href="#" class="btn-setting"><i class="icon-wrench"></i></a> <a
@@ -213,8 +277,7 @@
 			
 			<div class="tooltip-demo well">
 					
-				Create an Equipment from Sindel.
-		 		<form action="uploadSindelEquip" class="form-horizontal" enctype="multipart/form-data" method="POST">
+				<form action="uploadSindelEquip" class="form-horizontal" enctype="multipart/form-data" method="POST">
 		 			<div class="controls">
 		 				<input name="file" type="file">
 						<input type="submit" name="submit" value="Upload" /><br>
@@ -225,7 +288,7 @@
 			<!-- ------------------- -->
 			<!-- Content Sindel here -->
 			<!-- ------------------- -->
-			<form id="sindelForm" method="POST" action="runEquipSindel">
+			<form id="sindelForm" method="POST" action="runEquipScratch">
 
 				<div style="border: 1px solid black; width: 100%;">
 					<input id="equipName" name="equipName"/>
