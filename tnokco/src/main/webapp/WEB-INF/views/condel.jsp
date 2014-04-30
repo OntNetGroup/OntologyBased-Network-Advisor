@@ -1,0 +1,442 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ page import="java.util.ArrayList"%>
+
+<%
+	String condelValue = (String)request.getSession().getAttribute("txtCondelCode");
+%>
+<%@include file="../templates/header.jsp"%>
+
+<script>
+	$(document)
+			.ready(
+					function() {
+
+						// Function loading
+						function loading() {
+							var maskHeight = $(document).height();
+							var maskWidth = "100%";//$(document).width();
+
+							//Define largura e altura do div#maskforloading iguais ás dimensões da tela
+							$('#maskforloading').css({
+								'width' : maskWidth,
+								'height' : maskHeight
+							});
+
+							//efeito de transição
+							$('#maskforloading').show();
+						}
+
+						$('.btn-load').click(function(event) {
+
+							window.location.href = "/tnokco/welcome";
+
+						}); //End load sindel file
+
+
+						$('#getCondelForm')
+						.submit(
+								function(event) {
+
+									loading();
+
+									event.preventDefault();
+									var sReturn = "";
+
+									try {
+
+										//clean up hashs
+										cleanUpHashs();
+
+										//Used to get the value of the CodeMirror editor
+										parser.parse(editor.getValue());
+										
+										var json = {
+												
+											"ok" : true,
+											"result" : editor.getValue()											
+										};
+
+										$
+												.ajax({
+													url : $(
+															"#getCondelForm")
+															.attr("action"),
+													data : JSON
+															.stringify(json),
+													type : "POST",
+													contentType : "application/json; charset=utf-8",
+													dataType : "json",
+
+													success : function(
+															dto) {
+
+														$(
+																"#maskforloading")
+																.hide();
+
+														if (dto.ok == false) {
+															var html = "<div class=\"alert alert-danger\">"
+																	+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+																	+ "<strong>"
+																	+ "</strong>"
+																	+ dto.result
+																	+ "</div>";
+
+															$(
+																	"#boxerro")
+																	.prepend(
+																			html);
+
+														} else {
+
+															//window.location.href = "getCondel";
+															 window.open('getCondel','_blank'); 
+															
+
+														}
+
+													},
+													error : function(x,
+															e) {
+
+														$(
+																"#maskforloading")
+																.hide();
+														alert("Erro");
+													},
+												});
+
+									} catch (e) {
+
+										$("#maskforloading").hide();
+
+										var html = "<div class=\"alert alert-danger\">"
+												+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+												+ "<strong>"
+												+ "</strong>"
+												+ e.message + "</div>";
+
+										$("#boxerro").prepend(html);
+
+									}
+								});
+
+						$('.btn-clean')
+								.click(
+										function(event) {
+
+											$
+													.ajax({
+														url : "cleanCondelCode",
+														type : "GET",
+														success : function(dto) {
+
+															if (dto.ok == true)
+																window.location.href = "/tnokco/condel";
+
+														},
+														error : function(x, e) {
+
+															alert("Problem to clean condel code");
+														},
+													});
+
+										}); //End load sindel file
+
+
+						$('#condelForm')
+								.submit(
+										function(event) {
+
+											loading();
+
+											event.preventDefault();
+											var sReturn = "";
+
+											try {
+
+												//clean up hashs
+												cleanUpHashs();
+
+												//Used to get the value of the CodeMirror editor
+												parser.parse(editor.getValue());
+
+												sReturn = printHashTypeVar(hashTypeVar);
+												sReturn += printHashRelations(hashRelation);
+												sReturn += printHashAttribute(hashAttribute);
+
+												var json = {
+													"result" : sReturn,
+													"ok" : true
+												};
+
+												$
+														.ajax({
+															url : $(
+																	"#condelForm")
+																	.attr(
+																			"action"),
+															data : JSON
+																	.stringify(json),
+															type : "POST",
+															contentType : "application/json; charset=utf-8",
+															dataType : "json",
+
+															success : function(
+																	dto) {
+
+																$(
+																		"#maskforloading")
+																		.hide();
+
+																if (dto.ok == false) {
+																	var html = "<div class=\"alert alert-danger\">"
+																			+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+																			+ "<strong>"
+																			+ "</strong>"
+																			+ dto.result
+																			+ "</div>";
+
+																	$(
+																			"#boxerro")
+																			.prepend(
+																					html);
+
+																} else {
+
+																	//load list instances
+																	window.location.href = "list";
+																	//window.location.href = "open_visualizator";
+
+																}
+
+															},
+															error : function(x,
+																	e) {
+
+																$(
+																		"#maskforloading")
+																		.hide();
+																alert("Erro");
+															},
+														});
+
+											} catch (e) {
+
+												$("#maskforloading").hide();
+
+												var html = "<div class=\"alert alert-danger\">"
+														+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+														+ "<strong>"
+														+ "</strong>"
+														+ e.message + "</div>";
+
+												$("#boxerro").prepend(html);
+
+											}
+										});
+
+					}); // end document read
+
+	function cleanUpHashs() {
+		
+		currentLine = 0;
+
+		warning = "";
+
+		hashVarType = new Array();
+		hashTypeVar = new Array();
+		hashUsedRelation = new Array();
+
+		hashUsedVariable = new Array();
+
+		hashComposition = new Array();
+
+		hashRelation = new Array();
+		hashRelation["binds"] = new Array();
+		hashRelation["connects"] = new Array();
+		hashRelation["maps"] = new Array();
+		hashRelation["client"] = new Array();
+		hashRelation["component_of"] = new Array();
+
+		hashAttribute = new Array();
+		hashAttribute['str_location'] = new Array();
+		hashAttribute['geo_location'] = new Array();
+		hashAttribute['tf_type'] = new Array();
+	}
+
+	function printHashTypeVar(hash) {
+		
+		var s = "elements" + "#";
+
+		for ( var key in hash) {
+			s += key + ":" + hash[key];
+			s = s.substring(0, s.length) + ";";
+		}
+		s += "!";
+		return s;
+	}
+
+	function printHashRelations(hash) {
+		
+		var s = "";
+
+		for ( var key in hash) {
+			if (key == "component_of") {
+				s += key + "#";
+				for (var i = 0; i < hash[key].length; i++) {
+					s += hash[key][i] + ";";
+				}
+				s = s.substring(0, s.length - 1);
+				s += "!";
+			} else {
+				s += key + "#";
+				s += hash[key] + "!";
+			}
+		}
+		return s;
+	}
+
+	function printHashAttribute(hash) {
+		var s = "";
+
+		for ( var key in hash) {
+			s += key + "#";
+			for (var i = 0; i < hash[key].length; i++) {
+				s += hash[key][i] + ";";
+			}
+			s = s.substring(0, s.length - 1);
+			s += "!";
+		}
+		return s;
+	}
+
+	// Code Mirror
+</script>
+
+<div id="boxerro"></div>
+
+<h1>Sindel Editor</h1>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="box">
+			<div class="box-header">
+				<h2>
+					<i class="icon-edit"></i>Sindel input
+				</h2>
+				<div class="box-icon">
+					<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
+				</div>
+			</div>
+
+			<div class="box-content">
+				<ul class="nav tab-menu nav-tabs" style="padding-right: 24px;"
+					id="TabCode">
+				</ul>
+
+				<!-- ------------------- -->
+				<!-- Content Sindel here -->
+				<!-- ------------------- -->
+				
+
+					<div style="border: 1px solid black; width: 100%;">
+
+						<!-- TEXTA AREA -->
+						<%
+							if(condelValue == null)
+												{
+													out.println("<textarea id=\"code\" name=\"code\" style=\"width: 100%; padding:5px;\">");
+													out.println("</textarea>");
+												}else {
+													
+													out.println("<textarea id=\"code\" name=\"code\" style=\"width: 100%; padding:5px;\">");
+													out.println(condelValue);
+													out.println("</textarea>");
+													
+												}
+						%>
+						<!-- TEXTA AREA -->
+
+						
+						<form id="getSindelForm" style="float:left" method="POST" action="getSindelCode">
+							<input type="button" class="btn btn-pre btn-load" value="Load file" /> 
+							<input type="button" class="btn btn-pre btn-clean" value="Clean" />
+							<input type="submit" class="btn btn-pre btn-export" value="Export" />
+						</form>
+						  
+						<!-- <input type="button" class="btn btn-pre btn-save" value="Save" /> --> 
+					
+						<form id="sindelForm" style="float:left; margin-left:3px;" method="POST" action="runSindel">
+							<input type="submit" class="btn btn-pre" value="Run" />
+						</form>
+						
+						<div style="clear:both;"></div>
+
+						<script>
+							CodeMirror.commands.autocomplete = function(cm) {
+								CodeMirror.showHint(cm,
+										CodeMirror.hint.sindel_hint);
+							};
+							var editor = CodeMirror.fromTextArea(document
+									.getElementById("code"), {
+								lineNumbers : true,
+								matchBrackets : true,
+								mode : "text/sindel",
+								extraKeys : {
+									"Ctrl-Space" : "autocomplete"
+								}
+							});
+							editor.setOption("theme", "neat");
+						</script>
+						<div id="res"></div>
+						<div id="res2" style="border: 2px solid black;"></div>
+
+						<!-- ------------------------ -->
+						<!-- END -Content Condel here -->
+						<!-- ------------------------ -->
+
+					</div>
+
+				
+
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<h2>
+						How can you use <i>Condel?</i>
+					</h2>
+					<p>Description of Condel language:</p>
+					<div class="tooltip-demo well">
+						<p class="muted" style="margin-bottom: 0;">
+							Tight pants next level keffiyeh <a href="#" data-rel="tooltip"
+								data-original-title="first tooltip">you probably</a> haven't
+							heard of them. Photo booth beard raw denim letterpress vegan
+							messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie
+							sustainable quinoa 8-bit american appadata-rel <a href="#"
+								data-rel="tooltip" data-original-title="Another tooltip">have
+								a</a> terry richardson vinyl chambray. Beard stumptown, cardigans
+							banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four
+							loko mcsweeney's cleanse vegan chambray. A <a href="#"
+								data-rel="tooltip" data-original-title="Another one here too">really
+								ironic</a> artisan whatever keytar, scenester farm-to-table banksy
+							Austin <a href="#" data-rel="tooltip"
+								data-original-title="The last tip!">twitter handle</a> freegan
+							cred raw denim single-origin coffee viral.
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+<!--/col-->
+
+</div>
+<!--/row-->
+
+<%@include file="../templates/footer.jsp"%>
