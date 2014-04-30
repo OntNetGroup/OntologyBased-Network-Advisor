@@ -30,7 +30,7 @@
 
 							window.location.href = "/tnokco/welcome";
 
-						}); //End load sindel file
+						}); //End load condel file
 
 
 						$('#getCondelForm')
@@ -316,14 +316,14 @@
 
 <div id="boxerro"></div>
 
-<h1>Sindel Editor</h1>
+<h1>Condel Editor</h1>
 
 <div class="row">
 	<div class="col-lg-12">
 		<div class="box">
 			<div class="box-header">
 				<h2>
-					<i class="icon-edit"></i>Sindel input
+					<i class="icon-edit"></i>Condel input
 				</h2>
 				<div class="box-icon">
 					<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
@@ -336,7 +336,7 @@
 				</ul>
 
 				<!-- ------------------- -->
-				<!-- Content Sindel here -->
+				<!-- Content Condel here -->
 				<!-- ------------------- -->
 				
 
@@ -359,7 +359,7 @@
 						<!-- TEXTA AREA -->
 
 						
-						<form id="getSindelForm" style="float:left" method="POST" action="getSindelCode">
+						<form id="getCondelForm" style="float:left" method="POST" action="getCondelCode">
 							<input type="button" class="btn btn-pre btn-load" value="Load file" /> 
 							<input type="button" class="btn btn-pre btn-clean" value="Clean" />
 							<input type="submit" class="btn btn-pre btn-export" value="Export" />
@@ -367,7 +367,7 @@
 						  
 						<!-- <input type="button" class="btn btn-pre btn-save" value="Save" /> --> 
 					
-						<form id="sindelForm" style="float:left; margin-left:3px;" method="POST" action="runSindel">
+						<form id="CondelForm" style="float:left; margin-left:3px;" method="POST" action="runCondel">
 							<input type="submit" class="btn btn-pre" value="Run" />
 						</form>
 						

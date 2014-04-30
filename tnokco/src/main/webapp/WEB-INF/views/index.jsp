@@ -13,9 +13,15 @@
 <script>
 	$(document).ready(function() {
 
-		$('.btn-editor').click(function(event) {
+		$('.btn-editor-sindel').click(function(event) {
 
 			window.location.href = "/tnokco/sindel";
+
+		}); //End load sindel file
+
+		$('.btn-editor-condel').click(function(event) {
+
+			window.location.href = "/tnokco/condel";
 
 		}); //End load sindel file
 
@@ -98,6 +104,8 @@
 									</form>
 								</li>
 
+								<!-- Sindel -->
+								
 								<li style="margin-top: 10px;">Load Sindel file.
 									<form action="uploadSindel" class="form-horizontal"
 										enctype="multipart/form-data" method="POST">
@@ -109,7 +117,26 @@
 								</li>
 								<li style="margin-top: 10px;">
 									<div>Write sindel code online and run.</div>
-									<button type="button" class="btn btn-pre btn-editor">
+									<button type="button" class="btn btn-pre btn-editor-sindel">
+										<i class="icon-arrow-right"></i> Go to editor
+									</button>
+
+								</li>
+								
+								<!-- Condel -->
+								
+								<li style="margin-top: 10px;">Load Condel file.
+									<form action="uploadCondel" class="form-horizontal"
+										enctype="multipart/form-data" method="POST">
+										<div class="controls">
+											<input name="file" type="file"> <input type="submit" class="btnload"
+												name="submit" value="Upload" />
+										</div>
+									</form>
+								</li>
+								<li style="margin-top: 10px;">
+									<div>Write condel code online and run.</div>
+									<button type="button" class="btn btn-pre btn-editor-condel">
 										<i class="icon-arrow-right"></i> Go to editor
 									</button>
 

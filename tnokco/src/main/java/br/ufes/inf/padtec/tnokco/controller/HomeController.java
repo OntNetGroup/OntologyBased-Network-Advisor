@@ -82,9 +82,10 @@ public class HomeController {
 
 			//Initializing variables
 			Factory = new FactoryModel();
-			Repository = Factory.GetRepository();
+			Repository = Factory.GetRepository();		
 
 			return "index";	//View to return
+			
 		} else {
 
 			return "login";	//View to return
@@ -349,6 +350,36 @@ public class HomeController {
 		}
 
 		return "redirect:sindel";
+	}
+	
+	@RequestMapping(value = "/uploadCondel", method = RequestMethod.POST)
+	public String uploadCondel(HttpServletRequest request){
+
+		try {
+
+			Factory = new FactoryModel();
+			Repository = Factory.GetRepository();
+
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+			MultipartFile file = multipartRequest.getFile("file");
+
+			// Load sindel file
+
+			InputStream in = file.getInputStream();
+			InputStreamReader r = new InputStreamReader(in);
+			BufferedReader br = new BufferedReader(r);
+			Reader readerFile = new Reader();
+
+			String txtCondel = readerFile.readFile(br);
+			CondelController.txtCondelCode = txtCondel;
+
+		}  catch (IOException e) {
+
+			System.out.println("File not found.");
+			return "index";
+		}
+
+		return "redirect:condel";
 	}
 
 	@RequestMapping(value = "/EnforceSubRelation", method = RequestMethod.GET)

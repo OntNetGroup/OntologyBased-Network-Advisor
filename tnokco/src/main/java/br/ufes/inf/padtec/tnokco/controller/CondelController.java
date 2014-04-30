@@ -96,8 +96,20 @@ public class CondelController implements ServletContextAware{
 			return "getCondel";
 
 		} else {
+			
+			if(HomeController.Model == null)
+			{
+				request.getSession().removeAttribute("model");
+				request.getSession().setAttribute("loadOk", "false");
+				return "index";
+				
+			} else {
+				
+				return "condel";
+				
+			}
 
-			return "condel";
+			
 		}
 	}
 
@@ -116,6 +128,7 @@ public class CondelController implements ServletContextAware{
 		{
 			dto.ok = false;
 			dto.result = "No Condel Code to save";
+			
 		} else {
 
 			dto.ok = true;

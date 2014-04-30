@@ -23,7 +23,8 @@ public class JavaAplicationGenerateCode {
 				
 		String inputFileName = "C://Users//fabio_000//Desktop//OntologiasOwl//G800Completa.owl";	
 		String NS = "";
-		String javaCode = "";
+		String javaCodeProp = "";
+		String javaCodeCls = "";
 		
 		OntModel model = null;
 		model = ModelFactory.createOntologyModel();
@@ -40,16 +41,20 @@ public class JavaAplicationGenerateCode {
 		ArrayList<String> lprops = GetProperties(model);
 		
 		for (String prop : lprops) {
-			//javaCode = javaCode + " || instruction.contains(\" " + prop + " \")";
+			javaCodeProp = javaCodeProp + " || instruction.contains(\" " + prop + " \")";
 		}
 		
+		System.out.println("");
+		
 		for (String cls : lclasses) {
-			javaCode = javaCode + " || instruction.contains(\"" + cls + ":\")";
+			javaCodeCls = javaCodeCls + " || instruction.contains(\"" + cls + ":\")";
 			//if(! cls.contains("INV."))
 			//	System.out.println("- " + cls);
 		}
 		
-		System.out.println(javaCode);
+		System.out.println(javaCodeProp);
+		System.out.println("");
+		System.out.println(javaCodeCls);
 
 	}
 	

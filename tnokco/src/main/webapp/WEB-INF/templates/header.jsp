@@ -283,12 +283,16 @@ $(document).ready(function() {
 								class="hidden-sm">Start Page</span></a></li>
 						<li><a href="/tnokco/sindel"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Sindel Editor</span></a></li>
+						<li><a href="/tnokco/condel"><i class="icon-eye-open"></i><span
+								class="hidden-sm"> Condel Editor</span></a></li>
 						<li><a href="/tnokco/open_visualizator"><i class="icon-eye-open"></i><span	
 								class="hidden-sm"> Open Visualizator</span></a></li>
 						<li><a href="/tnokco/list"><i class="icon-dashboard"></i><span
 								class="hidden-sm"> OKCo</span></a></li>
 						<li><a href="/tnokco/getModel"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Export OWL File</span></a></li>
+						<li><a href="/tnokco/getCondel"><i class="icon-eye-open"></i><span
+								class="hidden-sm"> Export Condel File</span></a></li>
 						<li><a href="/oryx" target="_blank"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Equipment Studio</span></a></li>
 						<li><a href="/tnokco/newEquipment"><i class="icon-eye-open"></i><span
