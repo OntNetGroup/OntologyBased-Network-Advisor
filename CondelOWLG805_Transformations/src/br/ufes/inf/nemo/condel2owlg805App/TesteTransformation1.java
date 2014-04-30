@@ -18,10 +18,10 @@ public class TesteTransformation1 {
 		OntModel model = null;
 		String separator = "%-%-%";
 		
-		String g805file = "C:/Users/fabio_000/Desktop/mod4.owl";
-		String outFileName = "C:/Users/fabio_000/Desktop/output.owl";
+		String g805file = "C://Users//fabio_000//Desktop//OntologiasOwl//G800Completa.owl";
+		String outFileName = "C:/Users/fabio_000/Desktop/output2.owl";
 		
-		String condelFile = "C:/Users/fabio_000/Dropbox/Ufes/Disciplinas/10 periodo/MDD/Trabalho 2/Condel/condel_exe1.txt";
+		String condelFile = "C://Users//fabio_000//Desktop//outputCondel.txt";
 		
 		model = ModelFactory.createOntologyModel();
 		InputStream in = FileManager.get().open(g805file);

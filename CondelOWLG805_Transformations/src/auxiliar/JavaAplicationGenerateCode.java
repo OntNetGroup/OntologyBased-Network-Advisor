@@ -21,7 +21,7 @@ public class JavaAplicationGenerateCode {
 
 	public static void main(String[] args) {		
 				
-		String inputFileName = "C:/Users/fabio_000/Desktop/mod4.owl";	
+		String inputFileName = "C://Users//fabio_000//Desktop//OntologiasOwl//G800Completa.owl";	
 		String NS = "";
 		String javaCode = "";
 		
@@ -39,24 +39,15 @@ public class JavaAplicationGenerateCode {
 		ArrayList<String> lclasses = GetClasses(model);
 		ArrayList<String> lprops = GetProperties(model);
 		
-		for (String cls : lprops) {
-			//javaCode = javaCode + " || instruction.contains(\" " + cls + " \")";
-			if(! cls.contains("INV."))
-			System.out.println("- " + cls);
+		for (String prop : lprops) {
+			//javaCode = javaCode + " || instruction.contains(\" " + prop + " \")";
 		}
 		
-		
-		//javaCode = "switch (comand) {\n";
-
-		/*for (String cls : lclasses) {
-			javaCode = javaCode + 
-						"		case \"" + cls + "\":" + "\n" + 
-								"			" + "\n" +
-								"			break;" + "\n\n";
+		for (String cls : lclasses) {
+			javaCode = javaCode + " || instruction.contains(\"" + cls + ":\")";
+			//if(! cls.contains("INV."))
+			//	System.out.println("- " + cls);
 		}
-		
-		javaCode = javaCode + " 		default: break;\n}";
-		*/
 		
 		System.out.println(javaCode);
 

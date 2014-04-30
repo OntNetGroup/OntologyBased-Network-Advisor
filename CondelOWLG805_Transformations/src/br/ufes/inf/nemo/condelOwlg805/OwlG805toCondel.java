@@ -4,7 +4,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -25,7 +28,7 @@ public class OwlG805toCondel {
 	public static final String w3String = "http://www.w3.org/";
 	public static final String classIntegerValue = "http://www.w3.org/2001/XMLSchema#integer";
 	
-	public static File transformToCondel(String pathEndFile, OntModel model)
+	public static ArrayList<String> transformToCondel(OntModel model)
 	{	
 		ArrayList<String> instructions = new ArrayList<String>();		
 		ns = model.getNsPrefixURI("");	
@@ -33,13 +36,32 @@ public class OwlG805toCondel {
 		ArrayList<String> listInstances = new ArrayList<String>();
 		listInstances = OwlG805toCondel.GetAllInstances(model, model);
 		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		
+		instructions.add("/* Condel code generated in "+ dateFormat.format(date) + " */");
+		instructions.add("");
+		instructions.add("");
+		instructions.add("/* Instance declarations */");
+		instructions.add("");
+		
+		// Instance declarations
 		for (String ins : listInstances) 
-		{
+		{				
 			/* Create instances */
 			ArrayList<String> listClasses = OwlG805toCondel.GetClassesFrom(ins, model);
 			for (String cls : listClasses) {
 				instructions.add(cls.replace(ns, "") + ":" + ins.replace(ns, "") + ";");
 			}
+		}	
+		
+		
+		// Create Relations		
+		for (String ins : listInstances) 
+		{
+			instructions.add("");
+			instructions.add("/* " + ins + " */");
+			instructions.add("");
 			
 			/* Create Relations */
 			ArrayList<DtoInstanceRelation> listRelations = OwlG805toCondel.GetInstanceRelations(model, ins);
@@ -57,59 +79,15 @@ public class OwlG805toCondel {
 			for (String insS : listSame) {
 				instructions.add(ins.replace(ns, "") + " " + "sameAs" + " " + insS.replace(ns, "") + ";");
 			}
-			
+
 			/* Create Different */
 			ArrayList<String> listDif = OwlG805toCondel.GetDifferentInstancesFrom(model, ins);
 			for (String insD : listDif) {
 				instructions.add(ins.replace(ns, "") + " " + "disjointWith" + " " + insD.replace(ns, "") + ";");
 			}
 		}
-		
-		/* Creating things for file */
-		
-		File file = new File(pathEndFile);
-		
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-				return null;
-			}
-		}
-		
-		FileWriter fw;
-		try {
-			fw = new FileWriter(file.getAbsoluteFile());
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
-		
-		BufferedWriter bw = new BufferedWriter(fw);
-		
-		/*Writing on file*/
-		
-		try {
-			for (String ins : instructions) 
-			{				
-				bw.write(ins);		        
-				bw.newLine();	
-			}
-			
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
-		
-		try {
-			bw.close();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
 				
-		return file;		
+		return instructions;		
 	}
 	
 	
