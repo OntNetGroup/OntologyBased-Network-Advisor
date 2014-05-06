@@ -217,15 +217,18 @@
 			
 			var fileSpanName = document.createElement("span");
 			fileSpanName.className = "filename";
-			fileSpanName.style = "-webkit-user-select: none;"
-			fileSpanName.text = "No file selected";
+			fileSpanName.style.cssText = "-webkit-user-select: none;";
+			var spanText = document.createTextNode("No file selected");
+			fileSpanName.appendChild(spanText);
 			fileDiv.appendChild(fileSpanName);
 			
 			var fileAct = document.createElement("span");
 			fileAct.className = "action";
-			fileAct.style = "-webkit-user-select: none;"
-			fileAct.className = "Choose File";
+			fileAct.style.cssText = "-webkit-user-select: none;";
+			var actText = document.createTextNode("Choose File");
+			fileAct.appendChild(actText);
 			fileDiv.appendChild(fileAct);
+			
 			
 			container.appendChild(fileDiv);
 			

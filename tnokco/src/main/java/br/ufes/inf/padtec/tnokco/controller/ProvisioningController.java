@@ -192,7 +192,7 @@ public class ProvisioningController{
 		return "provisioning";	//View to return
 	}
 	
-	public static DtoResultAjax provision(String outInt, String inInt,HttpServletRequest request) {
+	public static DtoResultAjax binds(String outInt, String inInt,HttpServletRequest request) {
 
 		DtoResultAjax dto = new DtoResultAjax();
 		
@@ -229,12 +229,12 @@ public class ProvisioningController{
 		if(!outputNs.equals("") && !inputNs.equals("")){
 			a = HomeController.Model.getIndividual(HomeController.NS+outputNs);
 			b = HomeController.Model.getIndividual(HomeController.NS+inputNs);
-			ArrayList<String> tiposA=HomeController.Search.GetClassesFrom(a.getLocalName(),HomeController.Model);
-			ArrayList<String> tiposB=HomeController.Search.GetClassesFrom(b.getLocalName(),HomeController.Model);
-			tiposA.remove("Geographic_Element");
-			tiposA.remove("Bound_Transport_Function");
-			tiposB.remove("Geographic_Element");
-			tiposB.remove("Bound_Transport_Function");
+			ArrayList<String> tiposA=HomeController.Search.GetClassesFrom(HomeController.NS+a.getLocalName(),HomeController.Model);
+			ArrayList<String> tiposB=HomeController.Search.GetClassesFrom(HomeController.NS+b.getLocalName(),HomeController.Model);
+			tiposA.remove(HomeController.NS+"Geographical_Element");
+			tiposA.remove(HomeController.NS+"Bound_Input-Output");
+			tiposB.remove(HomeController.NS+"Geographical_Element");
+			tiposB.remove(HomeController.NS+"Bound_Input-Output");
 			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds");
 			stmt = HomeController.Model.createStatement(a, rel, b);
 			HomeController.Model.add(stmt);	
@@ -375,10 +375,11 @@ public class ProvisioningController{
 				eqOutNs = eqOutNs.replace(inputInterface.ns, "");
 				interfaceReturn += eqInNs; 
 				interfaceReturn += "#";
-				interfaceReturn += inputNs;
+				//interfaceReturn += inputNs;
+				interfaceReturn += inputInterface.name;
 				interfaceReturn += "#";
 				
-				if(hasAllowedRelation && !eqInNs.equals(eqOutNs) && !outputAlreadyConnected){
+				if(hasAllowedRelation && !eqInNs.equals(eqOutNs) && !outputAlreadyConnected && !alreadyConnected){
 					if(allowedInputInterfaces.contains(interfaceReturn+"false;")){
 						allowedInputInterfaces.remove(interfaceReturn+"false;");
 					}

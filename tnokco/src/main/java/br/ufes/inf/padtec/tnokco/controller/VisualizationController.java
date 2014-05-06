@@ -188,7 +188,7 @@ public class VisualizationController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/connect_equip_binds")
 	public @ResponseBody String connect_equip_binds(@RequestParam("equip_source") String equip_source,@RequestParam("interface_source") String interface_source,@RequestParam("equip_target") String equip_target,@RequestParam("interface_target") String interface_target , HttpServletRequest request) {
-		DtoResultAjax dto = ProvisioningController.provision(interface_target, interface_source, request);
+		DtoResultAjax dto = ProvisioningController.binds(interface_target, interface_source, request);
 		return dto.ok+"";
 	}
 
