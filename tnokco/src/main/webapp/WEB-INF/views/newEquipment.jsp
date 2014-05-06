@@ -2,12 +2,30 @@
 
 <%
 	String sindelValue = (String)request.getSession().getAttribute("txtSindelCode");
+	
 %>
 <%@include file="../templates/header.jsp"%>
 
 <script>
-
+	
 	$(document).ready(function () {
+		var teste = '${txtSindelCodeBr}';  
+		if(teste != ""){
+			scratchHidden = true;
+		}
+		
+		hideAll();
+		hideScratch();
+		hideEquipmentType();
+		
+		$('#hideScratch').click(function(){
+			hideScratch();
+	    });
+		
+		$('#hideEquipmentType').click(function(){
+			hideEquipmentType();
+	    });
+		
 		$('#addFields').click(function(){
 			addFields();
 	    });
@@ -36,7 +54,55 @@
 			});
 				
 		});	//End load sindel file
+		
+		$('#equipTypeForm').submit(function(event) {
+			
+			event.preventDefault();
+			
+			var json = {
+					"result" : "",
+					"ok" : true,
+					"equipmentName": $("#equipName").val()
+					
+				};
+			
+			$.ajax({
+				url : $("#equipTypeForm").attr("action"),
+				data : JSON.stringify(json),
+				type : "POST",
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
 
+				success : function(dto) {
+
+					if(dto.ok == false)
+					{
+						var html = "<div class=\"alert alert-danger\">" +
+						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+						"<strong>" + "</strong>"+ dto.result + 
+						"</div>";
+		
+						$("#boxerro").prepend(html);
+						
+					} else {
+
+						//load list instances
+						alert("Ok! Going to OKCo..");
+						window.location.href = "list";
+
+					}
+
+				},
+				error:function(x,e){
+					
+					alert("Erro");
+				},					
+			});
+			
+			
+			alert("");
+		});
+		
 		$('#sindelForm').submit(function(event) {
 			
 			event.preventDefault();
@@ -71,6 +137,7 @@
 						"result" : sReturn,
 						"ok" : true,
 						"equipmentName": $("#equipName").val()
+						
 					};
 
 				$.ajax({
@@ -123,120 +190,178 @@
         
       }); // end document read
 	  
-//       function cleanUpHashs(){
-//   		currentLine = 0;
+      function cleanUpHashs(){
+  		currentLine = 0;
   	 
-//   		warning = "";
+  		warning = "";
   		 
-//   		hashVarType = new Array();
-//   		hashTypeVar = new Array();
-//   		hashUsedRelation = new Array();
+  		hashVarType = new Array();
+  		hashTypeVar = new Array();
+  		hashUsedRelation = new Array();
 
-//   		hashUsedVariable = new Array();
+  		hashUsedVariable = new Array();
 
-//   		hashComposition = new Array();
+  		hashComposition = new Array();
 
-//   		hashRelation = new Array();
-//   		hashRelation["binds"] = new Array();
-//   		hashRelation["connects"] = new Array();
-//   		hashRelation["maps"] = new Array();
-//   		hashRelation["client"] = new Array();
-//   		hashRelation["component_of"] = new Array();
+  		hashRelation = new Array();
+  		hashRelation["binds"] = new Array();
+  		hashRelation["connects"] = new Array();
+  		hashRelation["maps"] = new Array();
+  		hashRelation["client"] = new Array();
+  		hashRelation["component_of"] = new Array();
 
-//   		hashAttribute = new Array();
-//   		hashAttribute['str_location'] = new Array();
-//   		hashAttribute['geo_location'] = new Array();
-//   		hashAttribute['tf_type'] = new Array();
-//   	}
+  		hashAttribute = new Array();
+  		hashAttribute['str_location'] = new Array();
+  		hashAttribute['geo_location'] = new Array();
+  		hashAttribute['tf_type'] = new Array();
+  	}
   	  
-//   	function printHashTypeVar(hash){
-//   		var s = "elements"+"#";
+  	function printHashTypeVar(hash){
+  		var s = "elements"+"#";
   		
-//   		for (var key in hash) {					
-//   			s += key+":"+hash[key];
-//   			s = s.substring(0,s.length)+";";
-//   		}
-//   		s+="!";
-//   		return s;
-//   	}
+  		for (var key in hash) {					
+  			s += key+":"+hash[key];
+  			s = s.substring(0,s.length)+";";
+  		}
+  		s+="!";
+  		return s;
+  	}
   	
-//   	function printHashRelations(hash){
-//   		var s = "";
+  	function printHashRelations(hash){
+  		var s = "";
   				
-//   		for (var key in hash) {
-//   			if(key == "component_of"){
-//   				s += key+"#";
-//   				for(var i = 0; i < hash[key].length; i++){
-//   					s += hash[key][i]+";";
-//   				}
-//   				s = s.substring(0,s.length-1);
-//   				s += "!";
-//   			}else{
-//   				s += key+"#";
-//   				s += hash[key]+"!";						
-//   			}
-//   		}		
-//   		return s;
-//   	}
+  		for (var key in hash) {
+  			if(key == "component_of"){
+  				s += key+"#";
+  				for(var i = 0; i < hash[key].length; i++){
+  					s += hash[key][i]+";";
+  				}
+  				s = s.substring(0,s.length-1);
+  				s += "!";
+  			}else{
+  				s += key+"#";
+  				s += hash[key]+"!";						
+  			}
+  		}		
+  		return s;
+  	}
   	
-//   	function printHashAttribute(hash){
-//   		var s = "";
+  	function printHashAttribute(hash){
+  		var s = "";
   				
-//   		for (var key in hash) {			
-//   			s += key+"#";
-//   			for(var i = 0; i < hash[key].length; i++){
-//   				s += hash[key][i]+";";
-//   			}
-//   			s = s.substring(0,s.length-1);
-//   			s += "!";			
-//   		}		
-//   		return s;
-//   	}
-
-	// Code Mirror
+  		for (var key in hash) {			
+  			s += key+"#";
+  			for(var i = 0; i < hash[key].length; i++){
+  				s += hash[key][i]+";";
+  			}
+  			s = s.substring(0,s.length-1);
+  			s += "!";			
+  		}		
+  		return s;
+  	}
+	var scratchHidden = false;
+	var equipmentTypeHidden = false;
 	
-		function addFields(){
-				
-			var container = document.getElementById("equipTypeForm");
+	function hideScratch(){
+		document.getElementById("row").style.height="auto";
+		document.getElementById("content").style.height="auto";
+		
+		if(scratchHidden){
+			document.getElementById("scratchContainer").style.visibility = 'visible';
+			document.getElementById("scratchContainer").style.height="auto";
 			
-			// Create an <input> element, set its type and name attributes
-			var equipName = document.createElement("input");
-			equipName.name = "equipName";
-			equipName.id = "equipName";
-			container.appendChild(equipName);
+			document.getElementById("sindelForm").style.visibility = 'visible';
+			document.getElementById("sindelForm").style.height="auto";
+		}else{
+			document.getElementById("scratchContainer").style.visibility = 'hidden';
+			document.getElementById("scratchContainer").style.height="0px";
 			
-			var fileDiv = document.createElement("div");
-			fileDiv.className = "uploader";
-			fileDiv.id = "uniform-file";
-			
-			var fileText = document.createElement("input");
-			fileText.type = "file";
-			fileText.name = "file";
-			fileText.id = "file";
-			fileDiv.appendChild(fileText);
-			
-			var fileSpanName = document.createElement("span");
-			fileSpanName.className = "filename";
-			fileSpanName.style.cssText = "-webkit-user-select: none;";
-			var spanText = document.createTextNode("No file selected");
-			fileSpanName.appendChild(spanText);
-			fileDiv.appendChild(fileSpanName);
-			
-			var fileAct = document.createElement("span");
-			fileAct.className = "action";
-			fileAct.style.cssText = "-webkit-user-select: none;";
-			var actText = document.createTextNode("Choose File");
-			fileAct.appendChild(actText);
-			fileDiv.appendChild(fileAct);
-			
-			
-			container.appendChild(fileDiv);
-			
-			
-			// Append a line break 
-			container.appendChild(document.createElement("br"));
-			
-		};
+			document.getElementById("sindelForm").style.visibility = 'hidden';
+			document.getElementById("sindelForm").style.height="0px";
+		}
+		
+		scratchHidden = !scratchHidden;
+	};
+	
+	function hideEquipmentType(){
+		document.getElementById("row").style.height="auto";
+		document.getElementById("content").style.height="auto";
+		
+		if(equipmentTypeHidden){
+			document.getElementById("equipTypeContainer").style.visibility = 'visible';
+			document.getElementById("equipTypeContainer").style.height="auto";
+		}else{
+			document.getElementById("equipTypeContainer").style.visibility = 'hidden';
+			document.getElementById("equipTypeContainer").style.height="0px";
+		}
+		
+		equipmentTypeHidden = !equipmentTypeHidden;
+	};
+	
+	var iAdd = 2;
+	var maxElements = 10;
+	function hideAll(){
+		for(j=2; j<=maxElements; j++){
+			document.getElementById("div"+j).style.visibility = 'hidden';
+			document.getElementById("div"+j).style.height="0px";
+			//document.getElementById('div'+j).style.visibility = 'hidden';
+			//document.getElementById('equipName'+j).style.visibility = 'hidden';
+			//document.getElementById('uniform-file'+j).style.visibility = 'hidden';
+			//document.getElementById('file'+j).style.visibility = 'hidden';
+		}
+	}
+		
+	function addFields(){
+		//iAdd++;
+// 		var container = document.getElementById("equipTypeForm");
+		
+// 		// Create an <input> element, set its type and name attributes
+// 		var equipName = document.createElement("input");
+// 		equipName.name = "equipName"+iAdd;
+// 		equipName.id = "equipName"+iAdd;
+// 		container.appendChild(equipName);
+		
+// 		var fileDiv = document.createElement("div");
+// 		fileDiv.className = "uploader";
+// 		fileDiv.id = "uniform-file"+iAdd;
+		
+// 		var fileText = document.createElement("input");
+// 		fileText.type = "file";
+// 		fileText.name = "file"+iAdd;
+// 		fileText.id = "file"+iAdd;
+// 		fileDiv.appendChild(fileText);
+		
+// 		var fileSpanName = document.createElement("span");
+// 		fileSpanName.className = "filename";
+// 		fileSpanName.style.cssText = "-webkit-user-select: none;";
+// 		var spanText = document.createTextNode("No file selected");
+// 		fileSpanName.appendChild(spanText);
+// 		fileDiv.appendChild(fileSpanName);
+		
+// 		var fileAct = document.createElement("span");
+// 		fileAct.className = "action";
+// 		fileAct.style.cssText = "-webkit-user-select: none;";
+// 		var actText = document.createTextNode("Choose File");
+// 		fileAct.appendChild(actText);
+// 		fileDiv.appendChild(fileAct);
+		
+		
+// 		container.appendChild(fileDiv);
+		
+		
+// 		// Append a line break 
+// 		container.appendChild(document.createElement("br"));
+		if(iAdd > maxElements){
+			alert("MAXIMO DE 10!!!");
+			return;
+		}
+		document.getElementById("div"+iAdd).style.visibility = 'visible';
+		document.getElementById("div"+iAdd).style.height="auto";
+		
+		iAdd++;
+		
+		
+	};
 			
 	
 	
@@ -246,25 +371,79 @@
 
 <h1>Equipment from Sindel Editor</h1>
 
-<div class="row">
+<div class="row" id="row">
 	<div class="col-lg-12">
 		<div class="box">
 			<div class="box-header">
 				<h2>
 					<i class="icon-edit"></i>New Equipment from Equipment Type
 				</h2>
-				<div class="box-icon">
-					<a href="#" class="btn-setting"><i class="icon-wrench"></i></a> <a
-						href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
+				<div class="box-icon"> 
+					<a href="#" class="btn-minimize"><i class="icon-chevron-up" id="hideEquipmentType"></i></a>
 				</div>
 			</div>
 			
 			<div class="tooltip-demo well" id="equipTypeContainer">
 				<form action="runEquipType" class="form-horizontal" enctype="multipart/form-data" method="POST" id="equipTypeForm">
-					<input id="equipName" name="equipName" id="equipName"/>
-					<input name="file" type="file" id="file">
+					<input id="equipName1" name="equipName1"/>
+					<input name="file1" type="file" id="file1" >
 					<input id="addFields" type="button" value="+" />
-					<input type="submit" name="submit" value="Upload" /><br>
+					<input type="submit" name="submit" value="Upload" />
+					
+					
+					<div id="div2">
+						<input id="equipName2" name="equipName2"/>
+						<input name="file2" type="file" id="file2">
+						
+					</div>
+					
+					<div id="div3">
+						<input id="equipName3" name="equipName3"/>
+						<input name="file3" type="file" id="file3" >
+						
+					</div>
+					
+					<div id="div4">
+						<input id="equipName4" name="equipName4"/>
+						<input name="file4" type="file" id="file4" >
+						
+					</div>
+					
+					<div id="div5">
+						<input id="equipName5" name="equipName5"/>
+						<input name="file5" type="file" id="file5" >
+						
+					</div>
+					
+					<div id="div6">
+						<input id="equipName6" name="equipName6"/>
+						<input name="file6" type="file" id="file6" >
+						
+					</div>
+					
+					<div id="div7">
+						<input id="equipName7" name="equipName7"/>
+						<input name="file7" type="file" id="file7" >
+						
+					</div>
+					
+					<div id="div8">
+						<input id="equipName8" name="equipName8"/>
+						<input name="file8" type="file" id="file8" >
+					</div>
+					
+					<div id="div9">
+						<input id="equipName9" name="equipName9"/>
+						<input name="file9" type="file" id="file9" >
+						
+					</div>
+					
+					<div id="div10">
+						<input id="equipName10" name="equipName10"/>
+						<input name="file10" type="file" id="file10" >
+						
+					</div>
+					
 				</form>
 			</div>  
 			
@@ -273,12 +452,11 @@
 					<i class="icon-edit"></i>New Equipment from Scratch
 				</h2>
 				<div class="box-icon">
-					<a href="#" class="btn-setting"><i class="icon-wrench"></i></a> <a
-						href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
+					<a href="#" class="btn-minimize"><i class="icon-chevron-up" id="hideScratch"></i></a>
 				</div>
 			</div>
 			
-			<div class="tooltip-demo well">
+			<div class="tooltip-demo well" id="scratchContainer">
 					
 				<form action="uploadSindelEquip" class="form-horizontal" enctype="multipart/form-data" method="POST">
 		 			<div class="controls">
@@ -294,23 +472,9 @@
 			<form id="sindelForm" method="POST" action="runEquipScratch">
 
 				<div style="border: 1px solid black; width: 100%;">
+					<textarea id="code" name="code" style="width: 100%;"><%if(sindelValue != null){out.println(sindelValue);}%>
+					</textarea>
 					<input id="equipName" name="equipName"/>
-					<!-- TEXTA AREA -->
-					<%
-								if(sindelValue == null)
-								{
-									out.println("<textarea id=\"code\" name=\"code\" style=\"width: 100%; padding:5px;\">");
-									out.println("</textarea>");
-								}else {
-									
-									out.println("<textarea id=\"code\" name=\"code\" style=\"width: 100%; padding:5px;\">");
-									out.println(sindelValue);
-									out.println("</textarea>");
-									
-								}
-							%>
-					<!-- TEXTA AREA -->
-
 					<input type="button" class="btn btn-pre btn-clean" value="Clean" />
 					<input type="submit" class="btn btn-pre" value="Run" />
 

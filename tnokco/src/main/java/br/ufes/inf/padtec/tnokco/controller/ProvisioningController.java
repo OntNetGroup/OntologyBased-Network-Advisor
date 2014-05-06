@@ -39,7 +39,8 @@ public class ProvisioningController{
 	
 	@RequestMapping(method = RequestMethod.GET, value="/newEquipment")
 	public String newEquipment(HttpSession session, HttpServletRequest request) {
-		
+		request.getSession().setAttribute("txtSindelCode", "");
+		request.getSession().setAttribute("txtSindelCodeBr", "");
 		
 		/*
 		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
@@ -91,6 +92,8 @@ public class ProvisioningController{
 			String txtSindel = readerFile.readFile(br);
 			//SindelController.txtSindelCode = txtSindel;
 			request.getSession().setAttribute("txtSindelCode", txtSindel);
+			txtSindel = txtSindel.replaceAll("\n", "<br>");
+			request.getSession().setAttribute("txtSindelCodeBr", txtSindel);
 
 		}  catch (IOException e) {
 			String error = "File not found.\n" + e.getMessage();
@@ -104,6 +107,44 @@ public class ProvisioningController{
 		return "newEquipment";			
 	}
 	
+	@RequestMapping(method = RequestMethod.POST, value="/runEquipType")
+	public @ResponseBody DtoResultAjax runEquipType(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+		
+		try{
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+			
+			int maxElements = 10;
+			for(int i = 1; i <= 10; i++){
+				MultipartFile file = multipartRequest.getFile("file"+i);
+				
+				if(! file.getOriginalFilename().endsWith(".sindel"))
+				{
+					throw new OKCoExceptionFileFormat("Please select owl file on the position " + i + ".");		
+				}
+				
+				InputStream in = file.getInputStream();
+				InputStreamReader r = new InputStreamReader(in);
+				BufferedReader br = new BufferedReader(r);
+				Reader readerFile = new Reader();
+	
+				String txtSindel = readerFile.readFile(br);
+				
+				
+			}
+		}  catch (IOException e) {
+			String error = "File not found.\n" + e.getMessage();
+			request.getSession().setAttribute("errorMensage", error);
+			System.out.println("File not found.");
+		} catch (OKCoExceptionFileFormat e) {
+			String error = "File format error: " + e.getMessage();
+			request.getSession().setAttribute("errorMensage", error);			
+		}
+		
+		
+		DtoResultAjax dto = new DtoResultAjax();
+		return dto;
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, value="/runEquipScratch")
 	public @ResponseBody DtoResultAjax runEquipScratch(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
 
@@ -113,13 +154,13 @@ public class ProvisioningController{
 		
 		dto.ok = false;
 		dto.result = "It is necessary to inform the name of the new Equipment.";				
-		/*
+		
 		if(individualsPrefixName == null){
 			return dto;
 		}else if(individualsPrefixName == ""){
 			return dto;
 		}		
-		*/
+		
 		
 		try {		  	      
 			
