@@ -1,27 +1,44 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@include file="../templates/header.jsp"%>
-
-<script>
-	$(document).ready(function(){
-		canClickable = true;
-		targetURL = "open_equipment_visualization_from_site\?site=";
-		popupMessage = "Go to Site\'s components";
-		graph = startArbor("#viewport",1.0);
-		addNodes(graph);			
-	});
-	
-	<%
-		String values = (String)request.getSession().getAttribute("valuesGraph");
-		out.println(values);
-	%>
-</script>
 <%
-		int width  = (Integer)request.getSession().getAttribute("width");
+	String arborStructure = (String) request.getSession().getAttribute("valuesGraph");
+	int width  = (Integer) request.getSession().getAttribute("width");
+	int height = (Integer) request.getSession().getAttribute("height");
+	String hashEquipIntOut = (String) request.getSession().getAttribute("hashEquipIntOut");
+	String hashTypes = (String) request.getSession().getAttribute("hashTypes");
+	String nameSpace = (String) request.getSession().getAttribute("nameSpace");
+%>
+<script>
+		graph = {};
+		$(document).ready(function() {
+			canClickable = true;
+			targetURL = "open_equipment_visualization_from_site?selected_site=";
+			popupMessage = "Go to Site\'s components";
+
+			graph = startArbor("#viewport", 1.0);
+			addNodes(graph);
+		});
+
+		
+		function addNodes(graph) {
+			<%
+				out.print(arborStructure);
+			%>
+
+		}
+		function getHash() {
+			hash = {};
+			<%
+				out.print(hashTypes);
+			%>
+			return hash;
+		}
+</script>
+	<%
 		out.println("<div style=\"width:"+(width+320)+"px\">");
 	%>
 <div style="float: left; border: 1px solid black;">
 	<%
-				int height = (Integer)request.getSession().getAttribute("height");
 				out.println("<canvas id=\"viewport\" width=\""+width+"\" height=\""+height+"\" style=\"background-color:white;\"></canvas>");
 				
 			%>

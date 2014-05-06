@@ -277,10 +277,7 @@ public class Provisioning {
 
 	// get all equipments from specific site
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
-		
-		Individual ind = Model.getIndividual(site);
-		ArrayList<String> equiplist= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Equipment");
-		equipments= equiplist;
+		equipments =  HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"componentOf", HomeController.NS+"Equipment");
 		return getEquipmentsConnectionsBinds();
 	}
 	
@@ -315,7 +312,7 @@ public class Provisioning {
 	}
 	
 	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
-
+		equipmentsList = new ArrayList<Equipment>();
 		for (String equipment: equipments) {
 			Individual ind= Model.getIndividual(equipment);
 			Equipment e = new Equipment(ind.getLocalName());
@@ -376,7 +373,7 @@ public class Provisioning {
 				i++;
 			}
 		}
-
+		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
 		return equipmentsList;
 
 	}
@@ -389,7 +386,7 @@ public class Provisioning {
 	
 	public static ArrayList<String> getAllSitesAndConnections(){
 		connections = new ArrayList<String[]>();
-		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Sites");
+		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Site");
 		for (String site : sites) {
 			if(!HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site").isEmpty()){
 				ArrayList<String>targets=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site");

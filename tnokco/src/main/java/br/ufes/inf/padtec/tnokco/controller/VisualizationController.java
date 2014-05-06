@@ -47,14 +47,23 @@ public class VisualizationController {
 		TNOKCOGraphPlotting graphPlotting = new TNOKCOGraphPlotting();
 
 		String valuesGraph = "";
+		String hashTypes = "";
 
 		if(visualization.equals("allSites")){
-			HashMap<String,ArrayList<String>> hash = new HashMap<String, ArrayList<String>>();
-			for(Instance i : HomeController.ListAllInstances){
-				hash.put(i.name,i.ListClasses);
+			ArrayList<String> sites = Provisioning.getAllSitesAndConnections();
+			ArrayList<String[]> sitesConnections = Provisioning.connections;
+			String rel = Provisioning.relation;
+			
+			for (String site : sites) {
+				valuesGraph += "graph.addNode(\""+site.substring(site.indexOf("#")+1)+"\", {shape:\"SITE_AZUL\"});";
+				hashTypes += "hash[\""+site.substring(site.indexOf("#")+1)+"\"] = \"<b>"+site.substring(site.indexOf("#")+1)+" is an individual of classes: </b><br><ul><li>Site</li></ul>\";";
 			}
-
-			valuesGraph = graphPlotting.getArborStructureFromClass(HomeController.InfModel,HomeController.NS+"Site",hash);
+			
+			for(String[] stCon : sitesConnections){
+				valuesGraph += "graph.addEdge(graph.addNode(\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\", {shape:\"SITE_AZUL\"}),graph.addNode(\""+stCon[1].substring(stCon[1].indexOf("#")+1)+"\", {shape:\"SITE_AZUL\"}), {name:'"+rel+"'});";
+			}
+			
+			
 		}else if(visualization.equals("allG800")){
 			
 		}
@@ -68,6 +77,8 @@ public class VisualizationController {
 		request.getSession().setAttribute("width", width);
 		request.getSession().setAttribute("height", height);
 		request.getSession().setAttribute("subtitle", subtitle);
+		request.getSession().setAttribute("hashTypes", hashTypes);
+		request.getSession().setAttribute("nameSpace", HomeController.NS);
 
 		return "showVisualization";
 	}
