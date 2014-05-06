@@ -24,6 +24,13 @@ public class VisualizationController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_visualizator")
 	public String open_visualizator(HttpServletRequest request) {
+		if(HomeController.Model == null)
+			return "open_visualizator"; 
+		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, HomeController.NS+"Site");
+		
+		//session
+		request.getSession().setAttribute("sites", sites);
+		
 		return "open_visualizator";
 	}
 
@@ -48,6 +55,8 @@ public class VisualizationController {
 			}
 
 			valuesGraph = graphPlotting.getArborStructureFromClass(HomeController.InfModel,HomeController.NS+"Site",hash);
+		}else if(visualization.equals("allG800")){
+			
 		}
 
 		int width  = graphPlotting.width;
@@ -64,55 +73,30 @@ public class VisualizationController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_equipment_visualization_from_site")
-	public String open_equipment_visualization_from_site(@RequestParam("site") String site, HttpServletRequest request) {
-
-		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
+	public String open_equipment_visualization_from_site(@RequestParam("selected_site") String selected_site, HttpServletRequest request) {
+		ArrayList<Equipment> equips = Provisioning.getEquipmentsFromSite(HomeController.NS+selected_site);
 
 		String arborStructure = "";
-		String relationName = "";
-		String target = "";
-		String hashEquipIntIn = "";
 		String hashEquipIntOut = "";
-		String bindsBetween = "";
-//
-//
-//		for(Equipment equip: list){
-//			HashMap<ArrayList<String>, Equipment> binds = equip.getBinds();
-//			relationName = "interface_binds:";
-//			for(Map.Entry<ArrayList<String>, Equipment> x : binds.entrySet()){
-//				relationName += equip.getName()+"."+x.getKey().get(0)+"-"+x.getValue().getName()+"."+x.getKey().get(1)+",";
-//				target = x.getValue().getName();
-//			}
-//			relationName = relationName.substring(0, relationName.length()-1);
-//			arborStructure += ArborParser.getArborEdge("interface_binds", equip.getName(), target, false);
-//			hashEquipIntIn += getJSHash("hashEquipIntIn", equip.getName(), equip.getInputs());
-//			hashEquipIntOut += getJSHash("hashEquipIntOut", equip.getName(), equip.getOutputs());
-//		}
-
-		hashEquipIntIn += "hashEquipIntIn['eq1']['eq1.in1'] = false;";
-		hashEquipIntIn += "hashEquipIntIn['eq1']['eq1.in2'] = false;";
-		hashEquipIntIn += "hashEquipIntIn['eq1']['eq1.in3'] = false;";
-		hashEquipIntIn += "hashEquipIntIn['eq2']['eq2.in1'] = true;";
-		hashEquipIntIn += "hashEquipIntIn['eq2']['eq2.in2'] = true;";
-		hashEquipIntIn += "hashEquipIntIn['eq2']['eq2.in3'] = true;";
-		hashEquipIntIn += "hashEquipIntIn['eq3']['eq3.in1'] = true;";
-		hashEquipIntIn += "hashEquipIntIn['eq3']['eq3.in2'] = true;";
-		hashEquipIntIn += "hashEquipIntIn['eq4']['eq4.in1'] = false;";
-
-		hashEquipIntOut += "hashEquipIntOut['eq1']['eq1.out1'] = true;";
-		hashEquipIntOut += "hashEquipIntOut['eq1']['eq1.out2'] = true;";
-		hashEquipIntOut += "hashEquipIntOut['eq2']['eq2.out1'] = false;";
-		hashEquipIntOut += "hashEquipIntOut['eq2']['eq2.out2'] = false;";
-		hashEquipIntOut += "hashEquipIntOut['eq3']['eq3.out1'] = false;";
-		hashEquipIntOut += "hashEquipIntOut['eq3']['eq3.out2'] = false;";
-		hashEquipIntOut += "hashEquipIntOut['eq4']['eq4.out1'] = false;";
-
-		arborStructure += "graph.addEdge(graph.addNode(\"eq1\", {shape:\"dot\",color:\"green\"}),graph.addNode(\"eq2\", {shape:\"dot\",color:\"green\"}), {name:'binds:eq1.out1-eq2.in1'})";
-		arborStructure += "graph.addEdge(graph.addNode(\"eq1\", {shape:\"dot\",color:\"green\"}),graph.addNode(\"eq3\", {shape:\"dot\",color:\"green\"}), {name:'binds:eq1.out2-eq3.in1'})";
-		arborStructure += "graph.addEdge(graph.addNode(\"eq3\", {shape:\"dot\",color:\"green\"}),graph.addNode(\"eq2\", {shape:\"dot\",color:\"green\"}), {name:'binds:eq3.out1-eq2.in2'})";
-		arborStructure += "graph.addEdge(graph.addNode(\"eq4\", {shape:\"dot\",color:\"green\"}),graph.addNode(\"eq2\", {shape:\"dot\",color:\"green\"}), {name:'binds:eq4.out1-eq2.in3'})";
-
-
+		String hashTypes = "";
+		
+		for(Equipment equip : equips){
+			hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"'] = new Array();";
+			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
+			for(InterfaceOutput outs : equip.getOutputs()){
+				hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"']['"+outs.getName()+"'] = "+outs.isConnected()+";";		
+			}
+			
+			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
+				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}), {name:'binds:";
+				arborStructure += entry.getKey().get(0)+"-"+entry.getKey().get(1);
+				arborStructure += "'});";
+			}
+			if(equip.getBinds().isEmpty()){
+				arborStructure += "graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"});";
+			}
+		}
+		
 		int width  = 800;
 		int height = 600;
 
@@ -120,16 +104,16 @@ public class VisualizationController {
 		request.getSession().setAttribute("valuesGraph", arborStructure);
 		request.getSession().setAttribute("width", width);
 		request.getSession().setAttribute("height", height);
-		request.getSession().setAttribute("hashEquipIntIn", hashEquipIntIn);
 		request.getSession().setAttribute("hashEquipIntOut", hashEquipIntOut);
+		request.getSession().setAttribute("hashTypes", hashTypes);
 
-		return "equipmentVisualization";
+		return "equipmentVisualizer";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_equipment_visualization")
 	public String open_equipment_visualization(HttpServletRequest request) {
 
-		ArrayList<Equipment> list = Provisioning.getAllEquipmentsandConnections();
+		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
 		
 		String arborStructure = "";
 		String hashEquipIntOut = "";
@@ -152,27 +136,6 @@ public class VisualizationController {
 			}
 		}
 		
-//		hashEquipIntOut += "hashEquipIntOut['eq1'] = new Array();";
-//		hashEquipIntOut += "hashEquipIntOut['eq1']['eq1.out1'] = true;";
-//		hashEquipIntOut += "hashEquipIntOut['eq1']['eq1.out2'] = true;";
-//		
-//		hashEquipIntOut += "hashEquipIntOut['eq2'] = new Array();";
-//		hashEquipIntOut += "hashEquipIntOut['eq2']['eq2.out1'] = false;";
-//		hashEquipIntOut += "hashEquipIntOut['eq2']['eq2.out2'] = false;";
-//		
-//		hashEquipIntOut += "hashEquipIntOut['eq3'] = new Array();";
-//		hashEquipIntOut += "hashEquipIntOut['eq3']['eq3.out1'] = false;";
-//		hashEquipIntOut += "hashEquipIntOut['eq3']['eq3.out2'] = false;";
-//		
-//		hashEquipIntOut += "hashEquipIntOut['eq4'] = new Array();";
-//		hashEquipIntOut += "hashEquipIntOut['eq4']['eq4.out1'] = false;";
-
-		
-//		arborStructure += "graph.addEdge(graph.addNode(\"eq1\", {shape:\"dot\",color:\"green\"}),graph.addNode(\"eq2\", {shape:\"dot\",color:\"green\"}), {name:'binds:eq1.out1-eq2.in1'});";
-//		arborStructure += "graph.addEdge(graph.addNode(\"eq1\", {shape:\"dot\",color:\"green\"}),graph.addNode(\"eq3\", {shape:\"dot\",color:\"green\"}), {name:'binds:eq1.out2-eq3.in1'});";
-//		arborStructure += "graph.addEdge(graph.addNode(\"eq3\", {shape:\"dot\",color:\"green\"}),graph.addNode(\"eq2\", {shape:\"dot\",color:\"green\"}), {name:'binds:eq3.out1-eq2.in2'});";
-//		arborStructure += "graph.addEdge(graph.addNode(\"eq4\", {shape:\"dot\",color:\"green\"}),graph.addNode(\"eq2\", {shape:\"dot\",color:\"green\"}), {name:'binds:eq4.out1-eq2.in3'});";
-
 		int width  = 800;
 		int height = 600;
 
@@ -186,6 +149,12 @@ public class VisualizationController {
 		return "equipmentVisualizer";
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value="/open_tfs_from_equipment")
+	public String open_tfs_from_equipment(@RequestParam("equip") String equip, HttpServletRequest request) {
+
+		return "equipmentVisualizer";
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value="/connect_equip_binds")
 	public @ResponseBody String connect_equip_binds(@RequestParam("equip_source") String equip_source,@RequestParam("interface_source") String interface_source,@RequestParam("equip_target") String equip_target,@RequestParam("interface_target") String interface_target , HttpServletRequest request) {
 		DtoResultAjax dto = ProvisioningController.binds(interface_target, interface_source, request);
@@ -204,8 +173,6 @@ public class VisualizationController {
 		return hashEquipIntIn;
 	}
 	
-	
-
 	private String getJSHash(String hashName, String key, ArrayList<String> values){
 		String ret = "\n"+hashName+"[\""+key+"\"] = ";
 		for(String value:values){

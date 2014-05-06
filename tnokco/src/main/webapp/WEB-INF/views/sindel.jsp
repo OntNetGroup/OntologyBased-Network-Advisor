@@ -1,10 +1,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="br.ufes.inf.padtec.tnokco.business.Code"%>
+<%-- <%@ page import="br.ufes.inf.padtec.tnokco.business.Code"%> --%>
 <%@ page import="java.util.ArrayList"%>
 
 <%
 	String sindelValue = (String)request.getSession().getAttribute("txtSindelCode");
-	ArrayList<Code> ListCodes = (ArrayList<Code>)request.getSession().getAttribute("ListCodes");
+// 	ArrayList<Code> ListCodes = (ArrayList<Code>)request.getSession().getAttribute("ListCodes");
 %>
 <%@include file="../templates/header.jsp"%>
 
@@ -477,10 +477,10 @@
 
 					<%
 													
-					for (Code cod : ListCodes) 
-					{
-						out.println("<li class=\"\"><a class=\"btn-select\" href=\"#\" id=\"" + cod.id + "\">" + cod.name + "</a></li>");	
-					}
+// 					for (Code cod : ListCodes) 
+// 					{
+// 						out.println("<li class=\"\"><a class=\"btn-select\" href=\"#\" id=\"" + cod.id + "\">" + cod.name + "</a></li>");	
+// 					}
 					
 					%>
 

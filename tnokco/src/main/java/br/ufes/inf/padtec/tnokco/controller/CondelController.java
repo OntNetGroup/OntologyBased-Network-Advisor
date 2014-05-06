@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 
-import br.ufes.inf.nemo.condelOwlg805.Condel2owlG805;
-import br.ufes.inf.nemo.condelOwlg805.OwlG805toCondel;
 import br.ufes.inf.nemo.okco.business.FactoryInstances;
 import br.ufes.inf.nemo.okco.business.FactoryModel;
 import br.ufes.inf.nemo.okco.business.ManagerInstances;
@@ -26,6 +24,7 @@ import br.ufes.inf.nemo.okco.model.EnumReasoner;
 import br.ufes.inf.nemo.okco.model.IFactory;
 import br.ufes.inf.nemo.okco.model.IRepository;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+//import br.ufes.inf.padtec.tnokco.business.Code;
 
 @Controller
 public class CondelController implements ServletContextAware{
@@ -39,12 +38,16 @@ public class CondelController implements ServletContextAware{
 	//servelet context
 	private ServletContext servletContext;
 	
+//	private ArrayList<Code> ListCodes = new ArrayList<Code>();
+	private int totalCodes = 6;
+	private int totalCreated = 0;
+	
 	@RequestMapping(method = RequestMethod.GET, value="/condel")
 	public String condel(HttpSession session, HttpServletRequest request) {
 
 		//load g800
 
-		String path = servletContext.getInitParameter("PathG800owl");
+		String path = servletContext.getInitParameter("PathG800owl"); 
 
 		// Load Model
 
@@ -78,38 +81,25 @@ public class CondelController implements ServletContextAware{
 
 			//Create the sections				
 			request.getSession().setAttribute("txtCondelCode", txtCondelCode);
+//			request.getSession().setAttribute("ListCodes", ListCodes);
 			
 			return "condel";	//View to return
 		}     	
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/getCondel")
-	public String getSindel(HttpSession session, HttpServletRequest request) throws IOException {
+	public String getCondel(HttpSession session, HttpServletRequest request) throws IOException {
 
 		if(txtCondelCode != "")
 		{
-			ArrayList<String> instructions = OwlG805toCondel.transformToCondel(HomeController.Model);
-			
-			request.getSession().setAttribute("txtCondelCode", instructions);
+			request.getSession().setAttribute("txtCondelCode", txtCondelCode);
 			request.getSession().removeAttribute("loadOk");
 
 			return "getCondel";
 
 		} else {
-			
-			if(HomeController.Model == null)
-			{
-				request.getSession().removeAttribute("model");
-				request.getSession().setAttribute("loadOk", "false");
-				return "index";
-				
-			} else {
-				
-				return "condel";
-				
-			}
 
-			
+			return "condel";
 		}
 	}
 
@@ -118,17 +108,16 @@ public class CondelController implements ServletContextAware{
 	/*-------------- -------------- ------------*/
 	
 	@RequestMapping(method = RequestMethod.POST, value="/getCondelCode")
-	public @ResponseBody DtoResultAjax getSindelCode(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+	public @ResponseBody DtoResultAjax getCondelCode(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
 		
-		String sindelCode = dtoGet.result;
+		String condelCode = dtoGet.result;
 		DtoResultAjax dto = new DtoResultAjax();		
-		txtCondelCode = sindelCode;
+		txtCondelCode = condelCode;
 		
-		if(sindelCode == "")
+		if(condelCode == "")
 		{
 			dto.ok = false;
 			dto.result = "No Condel Code to save";
-			
 		} else {
 
 			dto.ok = true;
@@ -139,12 +128,10 @@ public class CondelController implements ServletContextAware{
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value="/runCondel")
-	public @ResponseBody DtoResultAjax runSindel(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+	public @ResponseBody DtoResultAjax runCondel(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
 
 		String condelCode = dtoGet.result;
 		DtoResultAjax dto = new DtoResultAjax();
-		
-		String separator = "%-%-%";
 
 		if(HomeController.Model == null)
 		{
@@ -153,12 +140,15 @@ public class CondelController implements ServletContextAware{
 			return dto;
 		}
 
-		try {
-			
-			String codeWithSeparator = condelCode;
-			HomeController.Model = Condel2owlG805.transformToOWL(HomeController.Model, codeWithSeparator);
-			
-			HomeController.InfModel = HomeController.Model;
+		try {		  	      
+			// Populate the model
+			//TODO FABIO!!!
+
+//			HomeController.Model = dtoCondel.model;
+//
+////			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+//			
+//			HomeController.InfModel = dtoCondel.model;
 			
 			// Update list instances
 			try {
@@ -181,7 +171,20 @@ public class CondelController implements ServletContextAware{
 			dto.result = error;				
 			return dto;
 
-		}
+		} /*REMOVER DEPOIS!!!
+			catch (OKCoExceptionInstanceFormat e) {
+
+			String error = "Entity format error: " + e.toString();
+			System.out.println(error);
+			request.getSession().setAttribute("errorMensage", error);
+			HomeController.Model = null;
+			HomeController.InfModel = null;
+			HomeController.ListAllInstances = null;
+
+			dto.ok = false;
+			dto.result = error;				
+			return dto;				
+		}*/
 
 		request.getSession().removeAttribute("errorMensage");      
 
@@ -192,7 +195,7 @@ public class CondelController implements ServletContextAware{
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/cleanCondelCode")
-	public @ResponseBody DtoResultAjax cleanSindelCode(HttpServletRequest request) {
+	public @ResponseBody DtoResultAjax cleanCondelCode(HttpServletRequest request) {
 
 		txtCondelCode = "";
 		request.getSession().setAttribute("txtCondelCode", txtCondelCode);
@@ -203,7 +206,7 @@ public class CondelController implements ServletContextAware{
 
 		return dto;
 	}
-
+	
 	@Override
 	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;

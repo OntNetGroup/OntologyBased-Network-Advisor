@@ -277,10 +277,7 @@ public class Provisioning {
 
 	// get all equipments from specific site
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
-		
-		Individual ind = Model.getIndividual(site);
-		ArrayList<String> equiplist= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Equipment");
-		equipments= equiplist;
+		equipments = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"componentOf", HomeController.NS+"Equipment");
 		return getEquipmentsConnectionsBinds();
 	}
 	

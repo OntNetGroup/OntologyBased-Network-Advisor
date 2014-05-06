@@ -26,7 +26,7 @@ import br.ufes.inf.nemo.okco.model.IRepository;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
-import br.ufes.inf.padtec.tnokco.business.Code;
+//import br.ufes.inf.padtec.tnokco.business.Code;
 
 @Controller
 public class SindelController implements ServletContextAware{
@@ -40,7 +40,7 @@ public class SindelController implements ServletContextAware{
 	//servelet context
 	private ServletContext servletContext;
 	
-	private ArrayList<Code> ListCodes = new ArrayList<Code>();
+//	private ArrayList<Code> ListCodes = new ArrayList<Code>();
 	private int totalCodes = 6;
 	private int totalCreated = 0;
 	
@@ -83,7 +83,7 @@ public class SindelController implements ServletContextAware{
 
 			//Create the sections				
 			request.getSession().setAttribute("txtSindelCode", txtSindelCode);
-			request.getSession().setAttribute("ListCodes", ListCodes);
+//			request.getSession().setAttribute("ListCodes", ListCodes);
 			
 			return "sindel";	//View to return
 		}     	
@@ -213,41 +213,41 @@ public class SindelController implements ServletContextAware{
 		return dto;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value="/saveSindelCode")
-	public @ResponseBody DtoResultAjax saveSindelCode(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
-
-		String sindelCode = dtoGet.result;
-		
-		if(ListCodes.size() < totalCodes)
-		{
-			totalCreated ++;
-			Code code = new Code();
-			code.codevalue = sindelCode;
-			code.name = "ver" + totalCreated;
-			code.version = "ver" + totalCreated;
-			ListCodes.add(code);
-			
-			totalCodes++;
-			
-		} else {
-			
-			ListCodes.remove(0);
-			
-			totalCreated ++;
-			Code code = new Code();
-			code.codevalue = sindelCode;
-			code.name = "ver" + totalCreated;
-			code.version = "ver" + totalCreated;			
-			ListCodes.add(code);
-
-		}		
-
-		DtoResultAjax dto = new DtoResultAjax();
-		dto.ok = true;
-		dto.result = "ok";
-
-		return dto;
-	}
+//	@RequestMapping(method = RequestMethod.GET, value="/saveSindelCode")
+//	public @ResponseBody DtoResultAjax saveSindelCode(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+//
+//		String sindelCode = dtoGet.result;
+//		
+//		if(ListCodes.size() < totalCodes)
+//		{
+//			totalCreated ++;
+//			Code code = new Code();
+//			code.codevalue = sindelCode;
+//			code.name = "ver" + totalCreated;
+//			code.version = "ver" + totalCreated;
+//			ListCodes.add(code);
+//			
+//			totalCodes++;
+//			
+//		} else {
+//			
+//			ListCodes.remove(0);
+//			
+//			totalCreated ++;
+//			Code code = new Code();
+//			code.codevalue = sindelCode;
+//			code.name = "ver" + totalCreated;
+//			code.version = "ver" + totalCreated;			
+//			ListCodes.add(code);
+//
+//		}		
+//
+//		DtoResultAjax dto = new DtoResultAjax();
+//		dto.ok = true;
+//		dto.result = "ok";
+//
+//		return dto;
+//	}
 
 	@Override
 	public void setServletContext(ServletContext servletContext) {

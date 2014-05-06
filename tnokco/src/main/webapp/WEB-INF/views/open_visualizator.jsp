@@ -1,4 +1,19 @@
+<%@page import="java.util.ArrayList"%>
 <%@include file="../templates/header.jsp"%>
+<%
+	ArrayList<String> sites = (ArrayList<String>) request.getSession().getAttribute("sites");
+%>
+<script>
+<% 
+	if(!sites.isEmpty())
+		out.println("strUser = '"+sites.get(0).substring(sites.get(0).indexOf("#")+1)+"'");
+%>
+function changedSiteCB(){
+	e = document.getElementById("selected_site");
+	strUser = e.options[e.selectedIndex].value;
+}
+</script>
+
 <div class="row">
 
 	<div style="padding-left: 15px; margin-bottom: 20px;">
@@ -23,11 +38,18 @@
 				<table class="table table-bordered table-striped">
 					<tr>
 						<td><b>All Sites</b></td>
-						<td style="padding-left: 30px;">
-							<a class="btn btn-success" 
-								href="/tnokco/open_network_visualization?visualization=allSites"> <i
-									class="icon-zoom-in"></i>
-							</a> 
+						
+							<%
+								if(sites.isEmpty()){
+									out.println("<td style=\"margin-left:15px;\">No sites");
+								}else{ %>
+									<td style="padding-left: 30px;">
+										<a class="btn btn-success" 
+											href="/tnokco/open_network_visualization?visualization=allSites"> <i
+												class="icon-zoom-in"></i>
+										</a> 
+								<% }
+							%>
 						</td>
 					</tr>
 					<tr>
@@ -49,12 +71,40 @@
 						</td>
 					</tr>
 					<tr>
-						<td><b>Elements from a specific Site</b></td>
-						<td style="padding-left: 30px;">
-							<a class="btn btn-success" 
-								href="/tnokco/open_network_visualization?"> <i
-									class="icon-zoom-in"></i>
-							</a> 
+						<td>
+							<b>Elements from a specific Site</b>
+						</td>
+						<td>
+							
+									<% 
+										if(sites.isEmpty()){
+									%>
+											No sites
+									<%
+										}else{
+											%>
+											<table style="border-collapse:collapse; border:0; margin-left:15px;">
+												<tr>
+													<td style="border-top:0;">
+														<a class="btn btn-success" 
+															href="/tnokco/open_equipment_visualization_from_site" onclick="this.href = '/tnokco/open_equipment_visualization_from_site?selected_site='+strUser"> <i
+																class="icon-zoom-in"></i>
+														</a>
+													</td>
+													<td style="border-top:0;">
+											<%
+												out.println("<select name=\"selected_site\" id=\"selected_site\" value=\"Select some site\" onchange=\"changedSiteCB()\">");
+												for(int i = 0; i < sites.size(); i++){
+													out.println("<option value=\""+sites.get(i).substring(sites.get(i).indexOf("#")+1)+"\"  "+((i == 0)?"selected":"")+" >"+sites.get(i).substring(sites.get(i).indexOf("#")+1)+"</option>");
+												}
+												out.println("</select>");
+											%>
+													</td>
+												</tr>
+											</table> 
+											<%
+										}
+									%> 
 						</td>
 					</tr>
 					<tr>

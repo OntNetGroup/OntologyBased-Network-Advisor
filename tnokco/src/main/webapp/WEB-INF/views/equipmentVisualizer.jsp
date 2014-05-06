@@ -20,12 +20,16 @@
 			addNodes(graph);
 		});
 
-		$(document).keyup(function(e) {
-			  if (e.keyCode == 27) { 
-				//esc pressed
-				curretSelection = false;
-				}   
-			});
+		$(document).keypress(function(e) { 
+		    if (e.which == 27) { src = false; }  // esc   (does not work)
+		});
+		
+// 		$(document).keyup(function(e) {
+// 			  if (e.keyCode == 27) { 
+// 				//esc pressed
+// 				curretSelection = false;
+// 				}   
+// 			});
 		
 		function addNodes(graph) {
 			<%
@@ -56,7 +60,7 @@
 				equipHash = hashEquipIntIn[equip];
 			else
 				equipHash = hashEquipIntOut[equip];
-
+			
 			for (key in equipHash) {
 				var o = {};
 				if (src) {
@@ -76,7 +80,7 @@
 											alert("Something wrong happened.");
 										} else {
 											//set disable the hashs
-											hashEquipIntOut[trgEquipBindsClicked][trgInterfaceBindsClicked] = true;
+											hashEquipIntOut[trgEquipBindsClicked][trgInterfaceBindsClicked] = "true";
 											
 											currentSelection = false;
 											var edges = graph.getEdges(srcEquipBindsClicked,trgEquipBindsClicked);
@@ -159,6 +163,9 @@
 					}
 				}
 				equipMenu.push(o);
+			}
+			if(equipMenu.length == 0){
+				return [{"No interfaces available":{disabled:true} }];
 			}
 			return equipMenu;
 		}
