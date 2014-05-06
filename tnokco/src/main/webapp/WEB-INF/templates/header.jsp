@@ -300,7 +300,7 @@ $(document).ready(function() {
 								class="hidden-sm"> Equipment Studio</span></a></li>
 						<li><a href="/tnokco/newEquipment"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> New Equipments</span></a></li>
-						<li><a href="/tnokco/open_equipment_visualization"><i class="icon-eye-open"></i><span
+						<li><a href="/tnokco/provisoning_visualization"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Provisioning</span></a></li>
 						<li><a href="/tnokco/faq" class=""><i class="icon-eye-open"></i><span
 								class="hidden-sm"> FAQ</span></a></li>

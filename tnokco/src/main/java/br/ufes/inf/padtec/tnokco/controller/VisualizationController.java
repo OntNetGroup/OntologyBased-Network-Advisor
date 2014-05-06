@@ -64,6 +64,21 @@ public class VisualizationController {
 			}
 			
 			
+		}else if(visualization.equals("allEquipments")){
+			ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
+			
+			for(Equipment equip : list){
+				hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
+				
+				for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
+					valuesGraph += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}), {name:'binds:";
+					valuesGraph += entry.getKey().get(0)+"-"+entry.getKey().get(1);
+					valuesGraph += "'});";
+				}
+				if(equip.getBinds().isEmpty()){
+					valuesGraph += "graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"});";
+				}
+			}
 		}else if(visualization.equals("allG800")){
 			
 		}
@@ -121,8 +136,8 @@ public class VisualizationController {
 		return "equipmentVisualizer";
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value="/open_equipment_visualization")
-	public String open_equipment_visualization(HttpServletRequest request) {
+	@RequestMapping(method = RequestMethod.GET, value="/provisoning_visualization")
+	public String provisoning_visualization(HttpServletRequest request) {
 
 		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
 		
