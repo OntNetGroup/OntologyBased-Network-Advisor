@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import arq.remote;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
@@ -272,13 +273,34 @@ public class Provisioning {
 		return values;
 	}
 
-
+	// get all equipments from specific site
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
 		
 		Individual ind = Model.getIndividual(site);
 		ArrayList<String> equiplist= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Equipment");
 		equiplist= equiplist;
 		return getEquipmentsConnectionsBinds();
+	}
+	
+	public static String nameRelation="";
+	public static ArrayList<String[]> siteConnects= new ArrayList<String[]>();
+	public static ArrayList<String> getSitesAndRelations(){
+		
+		nameRelation="site_connects";
+		ArrayList<String[]> siteConnects= new ArrayList<String[]>();
+		ArrayList<String> sites= HomeController.Search.GetInstancesFromClass(Model, InfModel, "Site");
+		for (String site : sites) {
+			Individual indSite = Model.getIndividual(site);
+			ArrayList<String> siteTarget= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, indSite.getNameSpace(), "site_connects", "Site");
+			for (String target : siteTarget) {
+				String[] relation= new String[2];
+				relation[0]=site;
+				relation[1]=target;
+				siteConnects.add(relation);
+			}
+			
+		}
+		return sites;
 	}
 
 	public static ArrayList<String> getTFsFromEquipment(String equipment){
@@ -409,6 +431,26 @@ public class Provisioning {
 	return equips;
 }
 
-
+	public static ArrayList<String[]> connections= new ArrayList<String[]>();
+	public static String relation= "site_connects";
+	
+	public static ArrayList<String> getAllSitesAndConnections(){
+		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Sites");
+		
+		for (String site : sites) {
+			if(!HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site").isEmpty()){
+				ArrayList<String>targets=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site");
+				for (String target : targets) {
+					String[] connection = new String[2];
+					connection[0]=site;
+					connection[1]=target;
+					connections.add(connection);
+				}
+			}
+		}
+		
+		return sites;
+	}
+	
 
 }
