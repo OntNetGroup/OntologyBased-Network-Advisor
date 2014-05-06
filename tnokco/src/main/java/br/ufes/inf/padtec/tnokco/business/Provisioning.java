@@ -277,7 +277,10 @@ public class Provisioning {
 
 	// get all equipments from specific site
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
-		equipments = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"componentOf", HomeController.NS+"Equipment");
+		
+		Individual ind = Model.getIndividual(site);
+		ArrayList<String> equiplist= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Equipment");
+		equipments= equiplist;
 		return getEquipmentsConnectionsBinds();
 	}
 	
@@ -316,6 +319,7 @@ public class Provisioning {
 		for (String equipment: equipments) {
 			Individual ind= Model.getIndividual(equipment);
 			Equipment e = new Equipment(ind.getLocalName());
+			equipmentsList.add(e);
 			ArrayList<String> outInt= HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
 			ArrayList<String> inpInt= HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
 			int i=0;
@@ -361,7 +365,6 @@ public class Provisioning {
 										out_int.add(outputInt.getName());
 										out_int.add(triple.Target);
 										e.putBinds(out_int, e);
-										equipmentsList.add(e);
 									
 									}
 								}
