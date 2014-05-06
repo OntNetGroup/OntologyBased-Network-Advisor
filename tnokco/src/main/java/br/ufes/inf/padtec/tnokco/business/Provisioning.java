@@ -25,7 +25,9 @@ public class Provisioning {
 	public static OntModel Model= HomeController.Model;
 	public static InfModel InfModel = HomeController.InfModel;
 	static ArrayList<String> equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
-
+	public static ArrayList<String[]> connections; 
+	public static ArrayList<String[]> binds; 
+	public static String relation= "site_connects";
 
 	static Provisioning instance = new Provisioning();
 
@@ -278,7 +280,7 @@ public class Provisioning {
 		
 		Individual ind = Model.getIndividual(site);
 		ArrayList<String> equiplist= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Equipment");
-		equiplist= equiplist;
+		equipments= equiplist;
 		return getEquipmentsConnectionsBinds();
 	}
 	
@@ -305,7 +307,11 @@ public class Provisioning {
 
 	public static ArrayList<String> getTFsFromEquipment(String equipment){
 		Individual ind = Model.getIndividual(equipment);
-		return HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Transport_Function");
+		ArrayList<String> tfs= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Transport_Function");
+		for (String string : tfs) {
+			
+		}
+		return tfs;
 	}
 	
 	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
@@ -357,8 +363,9 @@ public class Provisioning {
 										ArrayList<String> out_int = new ArrayList<String>();
 										out_int.add(outputInt.getName());
 										out_int.add(triple.Target);
-										e.put(out_int, e);
+										e.putBinds(out_int, e);
 										equipmentsList.add(e);
+									
 									}
 								}
 							}
@@ -380,63 +387,9 @@ public class Provisioning {
 		return true;
 	}
 	
-	public static ArrayList<Equipment> getAllEquipmentsandConnections(){
-		Model = HomeController.Model;
-		InfModel = HomeController.InfModel;
-		HashMap<String, String> hashInputEquipment= new HashMap<String, String>();
-		equipments = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Equipment");
-		Equipment e = null;
-		Individual individual;
-		ArrayList<Equipment> equips= new ArrayList<Equipment>();
-		for (String equipment: equipments) {
-			Individual indeq= Model.getIndividual(equipment);
-			ArrayList<String> inpInt= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
-			int i=0;
-			InterfaceInput input;
-			for (String string : inpInt) {
-				Individual ind= Model.getIndividual(string);
-				hashInputEquipment.put(ind.getLocalName(), indeq.getLocalName());
-			}
-	
-		}
-		for (String equipment: equipments) {
-			ArrayList<String> outInt= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
-			int i=0;
-			Individual ind= Model.getIndividual(equipment);
-			e = new Equipment(ind.getLocalName());
-			for (String string : outInt) {
-				individual= Model.getIndividual(string);
-				InterfaceOutput outputInt = new InterfaceOutput();
-				outputInt.setName(individual.getLocalName());
-				e.addOut(outputInt);
-				String inputcon= null;
-				if(!HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, string, HomeController.NS+"interface_binds", HomeController.NS+"Input_Interface").isEmpty()){
-					inputcon= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, string, HomeController.NS+"interface_binds", HomeController.NS+"Input_Interface").get(0);
-				}
-				if(inputcon!=null){
-					outputInt.setConnected(true);
-					ArrayList<String> binds = new ArrayList<String>();
-					binds.add(individual.getLocalName());
-					Individual indiv= Model.getIndividual(inputcon);
-					binds.add(indiv.getLocalName());
-					Individual equipmentEl = Model.getIndividual(HomeController.NS+hashInputEquipment.get(indiv.getLocalName()));
-					Equipment equip = new Equipment(equipmentEl.getLocalName());
-					e.put(binds, equip);
-				}
-				
-			}
-			equips.add(e);	
-		}
-	
-	return equips;
-}
-
-	public static ArrayList<String[]> connections= new ArrayList<String[]>();
-	public static String relation= "site_connects";
-	
 	public static ArrayList<String> getAllSitesAndConnections(){
+		connections = new ArrayList<String[]>();
 		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Sites");
-		
 		for (String site : sites) {
 			if(!HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site").isEmpty()){
 				ArrayList<String>targets=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site");
@@ -451,6 +404,7 @@ public class Provisioning {
 		
 		return sites;
 	}
+	
 	
 
 }
