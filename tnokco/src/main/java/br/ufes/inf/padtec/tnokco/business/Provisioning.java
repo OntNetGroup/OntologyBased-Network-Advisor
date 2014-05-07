@@ -390,9 +390,9 @@ public class Provisioning {
 	}
 	public static ArrayList<String> getG800FromEquipment(String equipment){
 		
-		ArrayList<String> g800s= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Transport_Function");
-		ArrayList<String> outInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
-		ArrayList<String> inpInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
+		ArrayList<String> g800s  = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Transport_Function");
+		ArrayList<String> outInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
+		ArrayList<String> inpInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
 		
 		for (String interface_out : outInt) {
 			try {

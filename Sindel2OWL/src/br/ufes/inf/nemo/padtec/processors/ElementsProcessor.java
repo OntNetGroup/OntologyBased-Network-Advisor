@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 
+import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.UnionClass;
@@ -18,9 +19,11 @@ public class ElementsProcessor {
 			String[] elems = declaration.split(":");
 			String[] vars = elems[1].split(",");
 			OntClass o_class;
+			boolean isTF = false;
 			for (String var : vars) {
 				o_class = null;
-
+				isTF = false;
+				
 				//Termination Functions
 				if(elems[0].equals("tf")){
 					o_class = model.getOntClass(ClassNS+"Termination_Function");
@@ -89,8 +92,13 @@ public class ElementsProcessor {
 					o_class = model.getOntClass(ClassNS+"Physical_Media");
 				}
 				
+				if(o_class != null){
+					isTF = true;
+				}
+				
+				
 				//Port
-				else if(elems[0].equals("input")){
+				if(elems[0].equals("input")){
 					o_class = model.getOntClass(ClassNS+"Input");
 				}else if(elems[0].equals("output")){
 					o_class = model.getOntClass(ClassNS+"Output");
@@ -145,7 +153,9 @@ public class ElementsProcessor {
 				}
 				
 				if(o_class != null){
-					o_class.createIndividual(IndNS+var);
+					Individual i = o_class.createIndividual(IndNS+var);
+					if(isTF)
+						i.addOntClass(model.getOntClass(ClassNS+"Transport_Function"));
 				}
 				Sindel2OWL.hashIndividuals.put(var,elems[0]);
 			}

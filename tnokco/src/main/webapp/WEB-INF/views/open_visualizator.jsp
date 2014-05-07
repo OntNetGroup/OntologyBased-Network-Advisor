@@ -9,7 +9,7 @@
 		out.println("strUser = '"+sites.get(0).substring(sites.get(0).indexOf("#")+1)+"'");
 %>
 function changedSiteCB(){
-	e = document.getElementById("selected_site");
+	e = document.getElementById("selected");
 	strUser = e.options[e.selectedIndex].value;
 }
 </script>
@@ -65,7 +65,7 @@ function changedSiteCB(){
 						<td><b>All G.800 Elements</b></td>
 						<td style="padding-left: 30px;">
 							<a class="btn btn-success" 
-								href="/tnokco/open_network_visualization?"> <i
+								href="/tnokco/open_network_visualization?visualization=allG800"> <i
 									class="icon-zoom-in"></i>
 							</a> 
 						</td>
@@ -87,13 +87,13 @@ function changedSiteCB(){
 												<tr>
 													<td style="border-top:0;">
 														<a class="btn btn-success" 
-															href="/tnokco/open_equipment_visualization_from_site" onclick="this.href = '/tnokco/open_equipment_visualization_from_site?selected_site='+strUser"> <i
+															href="/tnokco/open_equipment_visualization_from_site" onclick="this.href = '/tnokco/open_equipment_visualization_from_site?selected='+strUser"> <i
 																class="icon-zoom-in"></i>
 														</a>
 													</td>
 													<td style="border-top:0;">
 											<%
-												out.println("<select name=\"selected_site\" id=\"selected_site\" value=\"Select some site\" onchange=\"changedSiteCB()\">");
+												out.println("<select name=\"selected\" id=\"selected\" value=\"Select some site\" onchange=\"changedSiteCB()\">");
 												for(int i = 0; i < sites.size(); i++){
 													out.println("<option value=\""+sites.get(i).substring(sites.get(i).indexOf("#")+1)+"\"  "+((i == 0)?"selected":"")+" >"+sites.get(i).substring(sites.get(i).indexOf("#")+1)+"</option>");
 												}

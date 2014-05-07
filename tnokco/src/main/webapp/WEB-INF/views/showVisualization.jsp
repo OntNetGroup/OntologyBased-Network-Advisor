@@ -7,15 +7,24 @@
 	String hashEquipIntOut = (String) request.getSession().getAttribute("hashEquipIntOut");
 	String hashTypes = (String) request.getSession().getAttribute("hashTypes");
 	String nameSpace = (String) request.getSession().getAttribute("nameSpace");
+	Boolean canClick = (Boolean) request.getSession().getAttribute("canClick");
+	
 %>
 <script>
 		graph = {};
 		$(document).ready(function() {
-			canClickable = true;
-			targetURL = "open_equipment_visualization_from_site?selected_site=";
-			popupMessage = "Go to Site\'s components";
-
-			graph = startArbor("#viewport", 1.0);
+			<%
+				if(canClick){
+					%>
+					canClickable = true;
+					targetURL = "<%out.print(request.getSession().getAttribute("targetURL"));%>";
+					popupMessage = "<%out.print(request.getSession().getAttribute("popupMessage"));%>";
+					<%
+				}else{
+					out.print("canClickable = false;");
+				}
+			%>
+			graph = startArbor("#viewport", 0.9);
 			addNodes(graph);
 		});
 

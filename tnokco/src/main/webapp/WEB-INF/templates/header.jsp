@@ -124,7 +124,7 @@
 <!-- Sindel includes -->
 
 <script src="Assets/js/jison/sindel-parser.js"></script>
-<!-- <script src="Assets/js/jison/condel-parser.js"></script>  -->
+<script src="Assets/js/jison/condel-parser.js"></script> 
 	
 <!-- Code mirror includes - used in Sindel -->
 
@@ -138,8 +138,8 @@
 <script src="Assets/code_mirror/addon/show-hint.js"></script> 
 <script src="Assets/code_mirror/sindel_custom/sindel-hint.js"></script> 
 <script src="Assets/code_mirror/sindel_custom/sindel-highlight.js"></script> 
-<!-- <script src="Assets/code_mirror/condel_custom/condel-hint.js"></script>  -->
-<!-- <script src="Assets/code_mirror/condel_custom/condel-highlight.js"></script> -->
+<script src="Assets/code_mirror/condel_custom/condel-hint.js"></script> 
+<script src="Assets/code_mirror/condel_custom/condel-highlight.js"></script>
 
 <!-- END Syntax Highlight -->
 
