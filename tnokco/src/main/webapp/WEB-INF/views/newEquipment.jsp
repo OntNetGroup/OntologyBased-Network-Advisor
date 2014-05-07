@@ -9,11 +9,8 @@
 <script>
 	
 	$(document).ready(function () {
-		var teste = '${txtSindelCodeBr}';  
-		if(teste != ""){
-			scratchHidden = true;
-		}
 		
+		verifyIfScratchHidden();
 		hideAll();
 		hideScratch();
 		hideEquipmentType();
@@ -55,53 +52,53 @@
 				
 		});	//End load sindel file
 		
-		$('#equipTypeForm').submit(function(event) {
+// 		$('#equipTypeForm').submit(function(event) {
 			
-			event.preventDefault();
+// 			event.preventDefault();
 			
-			var json = {
-					"result" : "",
-					"ok" : true,
-					"equipmentName": $("#equipName").val()
+// 			var json = {
+// 					"result" : "",
+// 					"ok" : true,
+// 					"equipmentName": $("#equipName").val()
 					
-				};
+// 				};
 			
-			$.ajax({
-				url : $("#equipTypeForm").attr("action"),
-				data : JSON.stringify(json),
-				type : "POST",
-				contentType: "application/json; charset=utf-8",
-				dataType: "json",
+// 			$.ajax({
+// 				url : $("#equipTypeForm").attr("action"),
+// 				data : JSON.stringify(json),
+// 				type : "POST",
+// 				contentType: "application/json; charset=utf-8",
+// 				dataType: "json",
 
-				success : function(dto) {
+// 				success : function(dto) {
 
-					if(dto.ok == false)
-					{
-						var html = "<div class=\"alert alert-danger\">" +
-						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-						"<strong>" + "</strong>"+ dto.result + 
-						"</div>";
+// 					if(dto.ok == false)
+// 					{
+// 						var html = "<div class=\"alert alert-danger\">" +
+// 						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+// 						"<strong>" + "</strong>"+ dto.result + 
+// 						"</div>";
 		
-						$("#boxerro").prepend(html);
+// 						$("#boxerro").prepend(html);
 						
-					} else {
+// 					} else {
 
-						//load list instances
-						alert("Ok! Going to OKCo..");
-						window.location.href = "list";
+// 						//load list instances
+// 						alert("Ok! Going to OKCo..");
+// 						window.location.href = "list";
 
-					}
+// 					}
 
-				},
-				error:function(x,e){
+// 				},
+// 				error:function(x,e){
 					
-					alert("Erro");
-				},					
-			});
+// 					alert("Erro");
+// 				},					
+// 			});
 			
 			
-			alert("");
-		});
+			
+// 		});
 		
 		$('#sindelForm').submit(function(event) {
 			
@@ -185,6 +182,98 @@
 				$("#boxerro").prepend(html);
 			
 			}		
+		});
+		
+		$('#uploadAndRunEquipType').submit(function(event) {
+			
+			event.preventDefault();
+			var sReturn = "";
+			
+			for(k=1; k<=maxElements; k++){
+				try {				
+					//clean up hashs
+					cleanUpHashs();			
+					var arquivo = dados.OpenTextFile(document.getElementById("file"+k), 1, true);
+					var txtArea = "";
+					while(!arquivo.AtEndOfStream){
+						txtArea += arquivo.ReadAll();
+					}
+					alert(txtArea);
+					document.getElementById("code").value(txtArea);
+					
+					//Used to get the value of the CodeMirror editor
+					parser.parse(editor.getValue());
+					
+					sReturn  = printHashTypeVar(hashTypeVar);								
+					sReturn += printHashRelations(hashRelation);
+					sReturn += printHashAttribute(hashAttribute);
+	
+					//Verify warning
+					if(warning != ""){
+						
+						//Warning: mensagem
+						//alert(warning);
+						var html = "<div class=\"alert alert-danger\">" +
+							"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+							"<strong>" + "Warning! " + "</strong>"+ warning + 
+						"</div>";
+	
+						$("#boxerro").prepend(html);
+					}
+					
+					var json = {
+							"result" : sReturn,
+							"ok" : true,
+							"equipmentName": $("#equipName").val()
+							
+						};
+	
+					$.ajax({
+						url : $("#uploadAndRunEquipType").attr("action"),
+						data : JSON.stringify(json),
+						type : "POST",
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+	
+						success : function(dto) {
+	
+							if(dto.ok == false)
+							{
+								var html = "<div class=\"alert alert-danger\">" +
+								"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+								"<strong>" + "</strong>"+ dto.result + 
+								"</div>";
+				
+								$("#boxerro").prepend(html);
+								
+							} else {
+	
+								//load list instances
+								alert("Ok! Going to OKCo..");
+								window.location.href = "list";
+	
+							}
+	
+						},
+						error:function(x,e){
+							
+							alert("Erro");
+						},					
+					});
+					
+					
+				}
+				catch (e) {
+	
+					var html = "<div class=\"alert alert-danger\">" +
+						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+						"<strong>" + "</strong>"+ e.message + 
+					"</div>";
+		
+					$("#boxerro").prepend(html);
+				
+				}		
+			}
 		});
 		
         
@@ -298,6 +387,12 @@
 		equipmentTypeHidden = !equipmentTypeHidden;
 	};
 	
+	function verifyIfScratchHidden(){
+		if('${txtSindelCodeBr}' != ""){
+			scratchHidden = true;
+		}
+	};
+	
 	var iAdd = 2;
 	var maxElements = 10;
 	function hideAll(){
@@ -384,65 +479,34 @@
 			</div>
 			
 			<div class="tooltip-demo well" id="equipTypeContainer">
-				<form action="runEquipType" class="form-horizontal" enctype="multipart/form-data" method="POST" id="equipTypeForm">
-					<input id="equipName1" name="equipName1"/>
-					<input name="file1" type="file" id="file1" >
-					<input id="addFields" type="button" value="+" />
-					<input type="submit" name="submit" value="Upload" />
+				<form action="uploadAndRunEquipType" id="equipTypeForm" class="form-horizontal" method="POST">
+					<%
+					int maxElements = 10;
+					for(int i = 1; i <= maxElements; i++){
+						String attrName = "txtSindel"+i;
+						String txtSindel = (String)request.getSession().getAttribute(attrName);
+						String outTxtSindel = "";
+						if(txtSindel!=null){
+							outTxtSindel = txtSindel;
+						}
+					%>
+						<div id="div<%out.print(i);%>">
+							<input id="equipName<%out.print(i);%>" name="equipName<%out.print(i);%>"/>
+							<input name="file<%out.print(i);%>" type="file" id="file<%out.print(i);%>" >
+							<input id="txtSindel<%out.print(i);%>" name="txtSindel<%out.print(i);%>" type="hidden" value="<%out.print(outTxtSindel);%>"/>
+					<%
+							if(i == 1){
+					%>
+							<input id="addFields" type="button" value="+" />
+							<input type="submit" name="submit" value="Upload/Run" />
+					<%		
+							}
+					%>
+						</div>
+					<%
+					}
+					%>
 					
-					
-					<div id="div2">
-						<input id="equipName2" name="equipName2"/>
-						<input name="file2" type="file" id="file2">
-						
-					</div>
-					
-					<div id="div3">
-						<input id="equipName3" name="equipName3"/>
-						<input name="file3" type="file" id="file3" >
-						
-					</div>
-					
-					<div id="div4">
-						<input id="equipName4" name="equipName4"/>
-						<input name="file4" type="file" id="file4" >
-						
-					</div>
-					
-					<div id="div5">
-						<input id="equipName5" name="equipName5"/>
-						<input name="file5" type="file" id="file5" >
-						
-					</div>
-					
-					<div id="div6">
-						<input id="equipName6" name="equipName6"/>
-						<input name="file6" type="file" id="file6" >
-						
-					</div>
-					
-					<div id="div7">
-						<input id="equipName7" name="equipName7"/>
-						<input name="file7" type="file" id="file7" >
-						
-					</div>
-					
-					<div id="div8">
-						<input id="equipName8" name="equipName8"/>
-						<input name="file8" type="file" id="file8" >
-					</div>
-					
-					<div id="div9">
-						<input id="equipName9" name="equipName9"/>
-						<input name="file9" type="file" id="file9" >
-						
-					</div>
-					
-					<div id="div10">
-						<input id="equipName10" name="equipName10"/>
-						<input name="file10" type="file" id="file10" >
-						
-					</div>
 					
 				</form>
 			</div>  
@@ -488,7 +552,7 @@
 							        mode: "text/sindel",
 									extraKeys: {"Ctrl-Space": "autocomplete"}
 							      });
-								  editor.setOption("theme", "neat");
+							      editor.setOption("theme", "neat");
 							    </script>
 					<div id="res"></div>
 					<div id="res2" style="border: 2px solid black;"></div>

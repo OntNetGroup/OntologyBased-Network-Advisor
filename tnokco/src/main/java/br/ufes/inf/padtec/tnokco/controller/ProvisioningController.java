@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;
@@ -50,7 +53,7 @@ public class ProvisioningController{
 		HomeController.tmpModel = HomeController.Repository.Open(path);
 		HomeController.NS = HomeController.Repository.getNameSpace(HomeController.Model);
 		*/
-     	
+     	/*
 		if(HomeController.Model == null)
 		{
 			String error = "Error! You need to load the model first.";
@@ -58,7 +61,7 @@ public class ProvisioningController{
 			
 			return "index";
 		}
-
+		*/
 		this.cleanEquipSindel(request);
 		
 		//this.getCandidateInterfacesForConnection(null);
@@ -107,41 +110,50 @@ public class ProvisioningController{
 		return "newEquipment";			
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value="/runEquipType")
-	public @ResponseBody DtoResultAjax runEquipType(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+	@RequestMapping(method = RequestMethod.POST, value="/uploadAndRunEquipType")
+	public @ResponseBody DtoResultAjax uploadAndRunEquipType(HttpServletRequest request) {
 		
-		try{
-			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-			
-			int maxElements = 10;
-			for(int i = 1; i <= 10; i++){
-				MultipartFile file = multipartRequest.getFile("file"+i);
-				
-				if(! file.getOriginalFilename().endsWith(".sindel"))
-				{
-					throw new OKCoExceptionFileFormat("Please select owl file on the position " + i + ".");		
-				}
-				
-				InputStream in = file.getInputStream();
-				InputStreamReader r = new InputStreamReader(in);
-				BufferedReader br = new BufferedReader(r);
-				Reader readerFile = new Reader();
-	
-				String txtSindel = readerFile.readFile(br);
-				
-				
-			}
-		}  catch (IOException e) {
-			String error = "File not found.\n" + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);
-			System.out.println("File not found.");
-		} catch (OKCoExceptionFileFormat e) {
-			String error = "File format error: " + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);			
-		}
+//		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+//		try{
+//			
+// 			//MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+// 			int maxElements = 10;
+//			for(int i = 1; i <= maxElements; i++){
+//				MultipartFile file = multipartRequest.getFile("file"+i);
+//				String equipName = multipartRequest.getParameter("equipName"+i);
+//				//Object file = request.getAttribute("file"+i);
+//				//Enumeration teste = request.getAttributeNames();
+//				System.out.println();
+//				
+//				if(! file.getOriginalFilename().endsWith(".sindel"))
+//				{
+//					throw new OKCoExceptionFileFormat("Please select owl file on the position " + i + ".");		
+//				}
+//				
+//				InputStream in = file.getInputStream();
+//				InputStreamReader r = new InputStreamReader(in);
+//				BufferedReader br = new BufferedReader(r);
+//				Reader readerFile = new Reader();
+//	
+//				String txtSindel = readerFile.readFile(br);
+//				String attrName = "txtSindel"+i;
+//				request.getSession().setAttribute(attrName, txtSindel);
+//				request.getSession().setAttribute("equipName"+i, equipName);
+//				
+//			}
+//		}  catch (IOException e) {
+//			String error = "File not found.\n" + e.getMessage();
+//			multipartRequest.getSession().setAttribute("errorMensage", error);
+//			System.out.println("File not found.");
+//		} catch (OKCoExceptionFileFormat e) {
+//			String error = "File format error: " + e.getMessage();
+//			multipartRequest.getSession().setAttribute("errorMensage", error);			
+//		}
 		
 		
 		DtoResultAjax dto = new DtoResultAjax();
+		dto.ok = true;
+		dto.result = "";		
 		return dto;
 	}
 	
