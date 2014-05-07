@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <title>Ontology-based Network Advisor</title>
 <meta name="description" content="Ontology-based Network Advisor">
-	<meta name="author" content="F�bio Coradini, Pedro Paulo Barcelos, Vitcor Amorim, Freddy Brasileiro, C�ssio Reginato">
+	<meta name="author" content="Fábio Coradini, Pedro Paulo Barcelos, Vitcor Amorim, Freddy Brasileiro, Cássio Reginato">
 <!-- end: Meta -->
 
 <!-- start: Mobile Specific -->
@@ -257,10 +257,10 @@ $(document).ready(function() {
 	  	var maskHeight = $(document).height();
 		var maskWidth = "100%";//$(document).width();
 	
-		//Define largura e altura do div#maskforloading iguais �s dimens�es da tela
+		//Define largura e altura do div#maskforloading iguais ás dimensões da tela
 		$('#maskforloading').css({'width':maskWidth,'height':maskHeight});
 	
-		//efeito de transi��o
+		//efeito de transição
 		$('#maskforloading').show();
 	 }
 
@@ -268,6 +268,25 @@ $(document).ready(function() {
 
 		loading();
 	});	
+
+	$("#dialog").dialog({
+		   autoOpen: false,
+		   modal: true,
+		   buttons : {
+		        "Confirm" : function() {  
+		            window.location.href = "/tnokco/welcome";
+		        },
+		        "Cancel" : function() {
+		          $(this).dialog("close");
+		        }
+		      }
+		    });
+
+		$(".callConfirm").on("click", function(e) {
+			
+		    e.preventDefault();
+		    $("#dialog").dialog("open");
+		});
 	
 }); // End - document ready;
 
@@ -275,14 +294,17 @@ $(document).ready(function() {
 
 
 <body>
-
-	<!-- Não remova o div#mask, pois ele é necessário para preencher toda a janela -->
+	<!-- NÃ£o remova o div#mask, pois ele Ã© necessÃ¡rio para preencher toda a janela -->
 	<div id="mask"></div>
 
-	<!-- N�o remova o div#maskforloading, pois ele � necess�rio para preencher toda a janela -->
+	<!-- Não remova o div#maskforloading, pois ele é necessário para preencher toda a janela -->
 	<div id="maskforloading">
 		<img src="Assets/img/loading.gif" height="100px">
 	</div>
+
+	<div id="dialog" title="Confirmation Required">
+	  All loaded information will be lost. Do you want to continue?
+	</div>​
 
 	<!-- start: Header -->
 	<div class="navbar">
@@ -298,7 +320,7 @@ $(document).ready(function() {
 				<div class="row">
 					<a class="navbar-brand col-lg-2 col-sm-1 col-xs-12"
 						href="/tnokco/welcome">
-							<span>Ontology-based &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Network Advisor</span>
+							<span>Ontology-based Network Advisor</span>
  					</a>
 				</div>
 				<!-- start: Header Menu -->
@@ -325,7 +347,7 @@ $(document).ready(function() {
 						<li>
 							<a class="dropmenu" href="#"><i class="icon-laptop"></i><span class="hidden-sm"> Network Advisor</span> <span class="label">4</span></a>
 							<ul class="dropmenuLevel1">
-								<li><a class="submenu" href="/tnokco/welcome"><i class="icon-check"></i><span class="hidden-sm">Start Page</span></a></li>
+								<li><a class="submenu callConfirm" href="#"><i class="icon-check"></i><span class="hidden-sm">Start Page</span></a></li>
 								
 								<li>
 									<a class="dropmenu drop" href="#"><i class="icon-download"></i><span class="hidden-sm"> Add Information</span> <span class="label">3</span></a>
@@ -351,8 +373,8 @@ $(document).ready(function() {
 									<a class="dropmenu" href="#"><i class="icon-save"></i><span class="hidden-sm"> Output Results</span> <span class="label">2</span></a>
 									<ul class="dropmenuLevel2">								
 										
-										<li><a class="submenu" href="/tnokco/list"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as OWL</span></a></li>
-										<li><a class="submenu" href="/tnokco/open_visualizator"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as Condel</span></a></li>
+										<li><a class="submenu" href="/tnokco/getModel"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as OWL</span></a></li>
+										<li><a class="submenu" href="/tnokco/getCondel"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as Condel</span></a></li>
 									</ul>	
 								</li>
 								

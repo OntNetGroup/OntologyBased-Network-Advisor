@@ -66,7 +66,7 @@ public class OKCoController {
 
 		this.ListAllInstances = HomeController.ListAllInstances;
 
-		if(ListAllInstances != null) 
+		if(HomeController.Model != null) 
 		{
 			request.getSession().setAttribute("listInstances", ListAllInstances);
 			request.getSession().setAttribute("listModifedInstances", HomeController.ListModifiedInstances);

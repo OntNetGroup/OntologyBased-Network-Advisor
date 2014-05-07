@@ -1,7 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page contentType="text/rdf-xml" %>
 <%
-	ArrayList<String> txtCondelCode = (ArrayList<String>)request.getSession().getAttribute("txtCondelCode");
+	ArrayList<String> txtCondelCode = (ArrayList<String>)request.getSession().getAttribute("instructions");
 
 	if(txtCondelCode != null)
 	{

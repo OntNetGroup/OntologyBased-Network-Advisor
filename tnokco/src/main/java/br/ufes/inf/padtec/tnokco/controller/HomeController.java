@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -41,7 +43,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
 @Controller
-public class HomeController {
+public class HomeController implements ServletContextAware{
 
 	public static IFactory Factory;
 	public static IRepository Repository;
@@ -56,6 +58,9 @@ public class HomeController {
 	public static ManagerInstances ManagerInstances;	
 	public static ArrayList<Instance> ListAllInstances;
 	public static ArrayList<String> ListModifiedInstances;
+	
+	//servelet context
+	private ServletContext servletContext;
 
 	public static ArrayList<DtoDefinitionClass> ModelDefinitions;
 
@@ -82,7 +87,27 @@ public class HomeController {
 
 			//Initializing variables
 			Factory = new FactoryModel();
-			Repository = Factory.GetRepository();		
+			Repository = Factory.GetRepository();				
+			
+			//load g800
+
+			String path = servletContext.getInitParameter("PathG800owl"); 
+			
+			// Load Model
+			HomeController.Model = Repository.Open(path);
+
+			// Name space
+			HomeController.NS = Repository.getNameSpace(HomeController.Model);
+
+			HomeController.Search = new Search(HomeController.NS);
+			HomeController.FactoryInstances = new FactoryInstances(HomeController.Search);
+			HomeController.ManagerInstances = new ManagerInstances(HomeController.Search, HomeController.FactoryInstances, HomeController.Model);
+
+			//Save temporary model
+			HomeController.tmpModel = Repository.CopyModel(HomeController.Model);		
+
+			//List modified instances
+			HomeController.ListModifiedInstances = new ArrayList<String>();			
 
 			return "index";	//View to return
 			
@@ -114,7 +139,7 @@ public class HomeController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password){
 
-		if(username.equals("tnokco") && password.equals("1234"))
+		if(username.equals("advisor") && password.equals("1234"))
 		{
 			request.getSession().setAttribute("login", "true");
 			return "redirect:welcome";
@@ -133,8 +158,6 @@ public class HomeController {
 			
 			String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
 			
-			Factory = new FactoryModel();
-			Repository = Factory.GetRepository();
 			boolean reasoning = true;
 			
 			//first load reasoning
@@ -327,9 +350,6 @@ public class HomeController {
 
 		try {
 
-			Factory = new FactoryModel();
-			Repository = Factory.GetRepository();
-
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
 
@@ -356,9 +376,6 @@ public class HomeController {
 	public String uploadCondel(HttpServletRequest request){
 
 		try {
-
-			Factory = new FactoryModel();
-			Repository = Factory.GetRepository();
 
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
@@ -479,5 +496,11 @@ public class HomeController {
 		}
 
 		return dto;
+	}
+	
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+		
 	}
 }

@@ -3,7 +3,6 @@ package br.ufes.inf.padtec.tnokco.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,65 +12,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.ServletContextAware;
 
-import br.ufes.inf.nemo.okco.business.FactoryInstances;
-import br.ufes.inf.nemo.okco.business.FactoryModel;
-import br.ufes.inf.nemo.okco.business.ManagerInstances;
-import br.ufes.inf.nemo.okco.business.Search;
+
+
+import br.ufes.inf.nemo.condelOwlg805.Condel2owlG805;
+import br.ufes.inf.nemo.condelOwlg805.OwlG805toCondel;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.EnumReasoner;
-import br.ufes.inf.nemo.okco.model.IFactory;
-import br.ufes.inf.nemo.okco.model.IRepository;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-//import br.ufes.inf.padtec.tnokco.business.Code;
 
 @Controller
-public class CondelController implements ServletContextAware{
-
-	public static IFactory Factory;
-	public static IRepository Repository;
+public class CondelController{
 
 	//Condel text value
 	public static String txtCondelCode;	
-	
-	//servelet context
-	private ServletContext servletContext;
-	
-//	private ArrayList<Code> ListCodes = new ArrayList<Code>();
-	private int totalCodes = 6;
-	private int totalCreated = 0;
+
 	
 	@RequestMapping(method = RequestMethod.GET, value="/condel")
 	public String condel(HttpSession session, HttpServletRequest request) {
 
-		//load g800
+		// Select reasoner
 
-		String path = servletContext.getInitParameter("PathG800owl"); 
+		HomeController.Reasoner = HomeController.Factory.GetReasoner(EnumReasoner.HERMIT);		
 
-		// Load Model
-
-		Factory = new FactoryModel();
-		Repository = Factory.GetRepository();
-		HomeController.Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);		
-		
-		// Load Model
-		HomeController.Model = Repository.Open(path);
-
-		// Name space
-		HomeController.NS = Repository.getNameSpace(HomeController.Model);
-
-		HomeController.Search = new Search(HomeController.NS);
-		HomeController.FactoryInstances = new FactoryInstances(HomeController.Search);
-		HomeController.ManagerInstances = new ManagerInstances(HomeController.Search, HomeController.FactoryInstances, HomeController.Model);
-
-		//Save temporary model
-		HomeController.tmpModel = Repository.CopyModel(HomeController.Model);		
-
-		//List modified instances
-		HomeController.ListModifiedInstances = new ArrayList<String>();		
-
-		//Get parameter with tells the condel load from file or not
+		//Get parameter with tells the Condel load from file or not
 
 		if(txtCondelCode == "")
 		{
@@ -90,9 +54,11 @@ public class CondelController implements ServletContextAware{
 	@RequestMapping(method = RequestMethod.GET, value="/getCondel")
 	public String getCondel(HttpSession session, HttpServletRequest request) throws IOException {
 
-		if(txtCondelCode != "")
+		ArrayList<String> instructions = OwlG805toCondel.transformToCondel(HomeController.Model);
+		
+		if(instructions != null)
 		{
-			request.getSession().setAttribute("txtCondelCode", txtCondelCode);
+			request.getSession().setAttribute("instructions", instructions);
 			request.getSession().removeAttribute("loadOk");
 
 			return "getCondel";
@@ -118,6 +84,7 @@ public class CondelController implements ServletContextAware{
 		{
 			dto.ok = false;
 			dto.result = "No Condel Code to save";
+			
 		} else {
 
 			dto.ok = true;
@@ -141,14 +108,19 @@ public class CondelController implements ServletContextAware{
 		}
 
 		try {		  	      
+			
 			// Populate the model
-			//TODO FABIO!!!
 
-//			HomeController.Model = dtoCondel.model;
-//
-////			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
-//			
-//			HomeController.InfModel = dtoCondel.model;
+			String separator = "%-%-%";			
+			
+			HomeController.Model = Condel2owlG805.transformToOWL(HomeController.Model, condelCode);
+
+			//Run reasoner
+			//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+			HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+			
+			//tmp model
+			HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);
 			
 			// Update list instances
 			try {
@@ -205,12 +177,6 @@ public class CondelController implements ServletContextAware{
 		dto.result = "ok";
 
 		return dto;
-	}
-	
-	@Override
-	public void setServletContext(ServletContext servletContext) {
-		this.servletContext = servletContext;
-		
 	}
 
 }

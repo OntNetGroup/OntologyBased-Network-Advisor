@@ -25,8 +25,10 @@ public class VisualizationController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_visualizator")
 	public String open_visualizator(HttpServletRequest request) {
+		
 		if(HomeController.Model == null)
 			return "open_visualizator"; 
+		
 		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, HomeController.NS+"Site");
 
 		//session
