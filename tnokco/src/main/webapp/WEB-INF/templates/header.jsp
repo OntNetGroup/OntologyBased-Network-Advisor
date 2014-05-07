@@ -6,9 +6,9 @@
 
 <!-- start: Meta -->
 <meta charset="utf-8">
-<title>TN-OKCo</title>
-<meta name="description" content="Assessor baseado em ontologias para Gerenciamento de Redes.">
-<meta name="author" content="Fabio Coradini">
+<title>Ontology-based Network Advisor</title>
+<meta name="description" content="Ontology-based Network Advisor">
+	<meta name="author" content="Fábio Coradini, Pedro Paulo Barcelos, Vitcor Amorim, Freddy Brasileiro, Cássio Reginato">
 <!-- end: Meta -->
 
 <!-- start: Mobile Specific -->
@@ -203,6 +203,42 @@
 		top:50%;
 		left:50%;
 	}
+	
+	.container #sidebar-left {
+		width: 18.422%;  /* +4 */
+	}
+	
+	.container #content {
+		width: 81.578%; /* -4 */
+	}
+	
+	.submenu {
+		color: #fff;
+	}
+	
+	.dropmenuLevel1{
+		margin-left: 10px !important;
+	}
+	
+	.dropmenuLevel2 {
+		padding-left: 0px !important;
+	}
+	
+	.dropmenuLevel2 li {
+		margin-top: 8px !important;
+	}
+	
+	.dropmenuLevel2 li:first-child {
+		margin-top: 0 !important;
+	}	
+
+	a.navbar-brand {
+		width: 18.422%;
+	}
+	
+	a#main-menu-toggle {
+		left: 50px !important;
+	}
 
 </style>
 
@@ -262,7 +298,7 @@ $(document).ready(function() {
 				<div class="row">
 					<a class="navbar-brand col-lg-2 col-sm-1 col-xs-12"
 						href="/tnokco/welcome">
-							<img src="Assets/img/TNOKCo_branca.png" alt="TN-OKCo" width="92">
+							<span>Ontology-based &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Network Advisor</span>
  					</a>
 				</div>
 				<!-- start: Header Menu -->
@@ -281,29 +317,85 @@ $(document).ready(function() {
 			<div id="sidebar-left" class="col-lg-2 col-sm-1">
 				<br />
 				<div class="nav-collapse sidebar-nav collapse navbar-collapse bs-navbar-collapse">
+				
 					<ul class="nav nav-tabs nav-stacked main-menu">
-						<li><a href="/tnokco/welcome"><i class="icon-bar-chart"></i><span
-								class="hidden-sm">Start Page</span></a></li>
+					
+						<li><a href="/oryx" target="_blank"><i class="icon-edit"></i><span
+								class="hidden-sm"> Equipment Studio</span></a></li>
+						<li>
+							<a class="dropmenu" href="#"><i class="icon-laptop"></i><span class="hidden-sm"> Network Advisor</span> <span class="label">4</span></a>
+							<ul class="dropmenuLevel1">
+								<li><a class="submenu" href="/tnokco/welcome"><i class="icon-check"></i><span class="hidden-sm">Start Page</span></a></li>
+								
+								<li>
+									<a class="dropmenu drop" href="#"><i class="icon-download"></i><span class="hidden-sm"> Add Information</span> <span class="label">3</span></a>
+									<ul class="dropmenuLevel2">								
+										
+										<li><a class="submenu" href="/tnokco/sindel"><i class="">S</i><span class="hidden-sm"> &nbsp;&nbsp; Sindel Editor</span></a></li>
+										<li><a class="submenu" href="/tnokco/condel"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Condel Editor</span></a></li>
+										<li><a class="submenu" href="/tnokco/newEquipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipamment Instances</span></a></li>
+									</ul>	
+								</li>
+								
+								<li>
+									<a class="dropmenu" href="#"><i class="icon-lightbulb"></i><span class="hidden-sm"> Funcionalites</span> <span class="label">3</span></a>
+									<ul class="dropmenuLevel2">								
+										
+										<li><a class="submenu" href="/tnokco/list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion</span></a></li>
+										<li><a class="submenu" href="/tnokco/open_visualizator"><i class="icon-eye-open"></i><span class="hidden-sm">&nbsp;&nbsp; Visualization</span></a></li>
+										<li><a class="submenu" href="/tnokco/open_equipment_visualization"><i class="icon-play-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
+									</ul>	
+								</li>
+								
+								<li>
+									<a class="dropmenu" href="#"><i class="icon-save"></i><span class="hidden-sm"> Output Results</span> <span class="label">2</span></a>
+									<ul class="dropmenuLevel2">								
+										
+										<li><a class="submenu" href="/tnokco/list"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as OWL</span></a></li>
+										<li><a class="submenu" href="/tnokco/open_visualizator"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as Condel</span></a></li>
+									</ul>	
+								</li>
+								
+							</ul>	
+						</li>
+					
+					
+						<li><a href="/tnokco/faq" class=""><i class="icon-question-sign"></i><span
+								class="hidden-sm"> FAQ</span></a></li>
+								
+						<li><a href="#" class=""><i class="icon-exclamation-sign"></i><span
+								class="hidden-sm"> About</span></a></li>
+					
+					
+						<!-- 
 						<li><a href="/tnokco/sindel"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Sindel Editor</span></a></li>
 						<li><a href="/tnokco/condel"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Condel Editor</span></a></li>
+								
 						<li><a href="/tnokco/open_visualizator"><i class="icon-eye-open"></i><span	
 								class="hidden-sm"> Open Visualizator</span></a></li>
+								
 						<li><a href="/tnokco/list"><i class="icon-dashboard"></i><span
 								class="hidden-sm"> OKCo</span></a></li>
+								
 						<li><a href="/tnokco/getModel"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Export OWL File</span></a></li>
+								
 						<li><a href="/tnokco/getCondel"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> Export Condel File</span></a></li>
-						<li><a href="/oryx" target="_blank"><i class="icon-eye-open"></i><span
-								class="hidden-sm"> Equipment Studio</span></a></li>
+						
 						<li><a href="/tnokco/newEquipment"><i class="icon-eye-open"></i><span
 								class="hidden-sm"> New Equipments</span></a></li>
-						<li><a href="/tnokco/provisoning_visualization"><i class="icon-eye-open"></i><span
-								class="hidden-sm"> Provisioning</span></a></li>
+<<<<<<< .mine								
+						<li><a href="/tnokco/open_equipment_visualization"><i class="icon-eye-open"></i><span
+=======						<li><a href="/tnokco/provisoning_visualization"><i class="icon-eye-open"></i><span
+>>>>>>> .theirs								class="hidden-sm"> Provisioning</span></a></li>
+								
 						<li><a href="/tnokco/faq" class=""><i class="icon-eye-open"></i><span
 								class="hidden-sm"> FAQ</span></a></li>
+								
+						-->
 					</ul>
 				</div>
 			</div>
