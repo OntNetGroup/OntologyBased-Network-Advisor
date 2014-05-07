@@ -411,8 +411,9 @@ public class Provisioning {
 	}
 	public static void setRelationsG800(ArrayList<String> g800_elements){
 		ind_class= new HashMap<String, ArrayList<String>>();
+		ArrayList<String> classesFromIndividual;
 		for (String g800 : g800_elements) {
-			ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(g800, InfModel);
+			classesFromIndividual= HomeController.Search.GetClassesFrom(g800, InfModel);
 			ind_class.put(g800, classesFromIndividual);
 			ArrayList<DtoInstanceRelation> rel= HomeController.Search.GetInstanceRelations(HomeController.InfModel, g800);
 			
