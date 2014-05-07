@@ -47,14 +47,14 @@
 %>
 
 
-<h1>Welcome to TN-OKCo</h1>
+<h1>Welcome to Ontology-based Network Advisor</h1>
 
 <div class="row">
 	<div class="col-lg-12">
 		<div class="box">
 			<div class="box-header">
 				<h2>
-					<i class="icon-edit"></i> How can you use TN-OKCo?
+					<i class="icon-edit"></i> How can you use Ontology-based Network Advisor?
 				</h2>
 				<div class="box-icon">
 					<a href="#" class="btn-setting"><i class="icon-wrench"></i></a> <a
@@ -146,7 +146,7 @@
 
 						<div class="row">
 							<div class="col-lg-12">
-								<p>Description of TN-Okco:</p>
+								<p>Description of Ontology-based Network Advisor:</p>
 								<div class="tooltip-demo well">
 									<p class="muted" style="margin-bottom: 0;">Lorem ipsum
 										dolor sit amet, consectetur adipiscing elit. Ut mattis aliquam
