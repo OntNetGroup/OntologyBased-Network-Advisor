@@ -420,7 +420,7 @@ public class Provisioning {
 				String[] triple = new String[3];
 				triple[0]=g800;
 				triple[1]=dtoInstanceRelation.Property;
-				triple[1]=dtoInstanceRelation.Target;
+				triple[2]=dtoInstanceRelation.Target;
 				triples_g800.add(triple);
 			}
 			
