@@ -28,7 +28,9 @@ public class Provisioning {
 	public static ArrayList<String[]> connections; 
 	public static ArrayList<String[]> binds; 
 	public static String relation= "site_connects";
-
+	public static HashMap<String, ArrayList<String>> ind_class= new HashMap<String, ArrayList<String>>();
+	public static ArrayList<String[]> triples_g800 = new ArrayList<String[]>();
+	
 	static Provisioning instance = new Provisioning();
 
 
@@ -280,11 +282,11 @@ public class Provisioning {
 		equipments =  HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"componentOf", HomeController.NS+"Equipment");
 		return getEquipmentsConnectionsBinds();
 	}
-	
+
 	public static String nameRelation="";
 	public static ArrayList<String[]> siteConnects= new ArrayList<String[]>();
 	public static ArrayList<String> getSitesAndRelations(){
-		
+
 		nameRelation="site_connects";
 		ArrayList<String[]> siteConnects= new ArrayList<String[]>();
 		ArrayList<String> sites= HomeController.Search.GetInstancesFromClass(Model, InfModel, "Site");
@@ -297,20 +299,13 @@ public class Provisioning {
 				relation[1]=target;
 				siteConnects.add(relation);
 			}
-			
+
 		}
 		return sites;
 	}
 
-	public static ArrayList<String> getTFsFromEquipment(String equipment){
-		Individual ind = Model.getIndividual(equipment);
-		ArrayList<String> tfs= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, ind.getNameSpace(), "ComponentOf", "Transport_Function");
-		for (String string : tfs) {
-			
-		}
-		return tfs;
-	}
-	
+
+
 	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
 		equipmentsList = new ArrayList<Equipment>();
 		for (String equipment: equipments) {
@@ -362,7 +357,7 @@ public class Provisioning {
 										out_int.add(outputInt.getName());
 										out_int.add(triple.Target);
 										e.putBinds(out_int, e);
-									
+
 									}
 								}
 							}
@@ -383,7 +378,7 @@ public class Provisioning {
 
 		return true;
 	}
-	
+
 	public static ArrayList<String> getAllSitesAndConnections(){
 		connections = new ArrayList<String[]>();
 		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Site");
@@ -398,10 +393,59 @@ public class Provisioning {
 				}
 			}
 		}
-		
+
 		return sites;
 	}
-	
-	
+
+	public static ArrayList<String> getAllG800(){
+		ArrayList<String> allIndividuals= HomeController.Search.GetAllInstances(Model, InfModel);
+		for (String ind : allIndividuals) {
+			ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(ind, InfModel);
+			if((classesFromIndividual.contains("Interface") || classesFromIndividual.contains("Site") || classesFromIndividual.contains("Equipment"))){
+				allIndividuals.remove(ind);
+			}
+		}
+		setRelationsG800(allIndividuals);
+		return allIndividuals;
+	}
+	public static ArrayList<String> getG800FromEquipment(String equipment){
+		
+		ArrayList<String> g800s= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, "componentOf", "Transport_Function");
+		ArrayList<String> outInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, "componentOf", "Output_Interface");
+		ArrayList<String> inpInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, "componentOf", "Output_Interface");
+		
+		for (String interface_out : outInt) {
+			try {
+				g800s.add(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+interface_out, HomeController.NS+interface_out+"maps_output", HomeController.NS+interface_out+"Output").get(0));
+			} catch (Exception e) {				
+			}			
+		}
+		for (String interface_inp : inpInt) {
+			try {
+				g800s.add(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+interface_inp, HomeController.NS+"maps_input", HomeController.NS+"Input").get(0));
+			} catch (Exception e) {				
+			}			
+		}
+		setRelationsG800(g800s);
+		return g800s;
+	}
+	public static void setRelationsG800(ArrayList<String> g800_elements){
+		ind_class= new HashMap<String, ArrayList<String>>();
+		for (String g800 : g800_elements) {
+			ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(g800, InfModel);
+			ind_class.put(g800, classesFromIndividual);
+			ArrayList<DtoInstanceRelation> rel= HomeController.Search.GetInstanceRelations(HomeController.InfModel, g800);
+			
+			for (DtoInstanceRelation dtoInstanceRelation : rel) {
+				String[] triple = new String[3];
+				triple[0]=g800;
+				triple[1]=dtoInstanceRelation.Property;
+				triple[1]=dtoInstanceRelation.Target;
+				triples_g800.add(triple);
+			}
+			
+		}
+	}
+
 
 }
