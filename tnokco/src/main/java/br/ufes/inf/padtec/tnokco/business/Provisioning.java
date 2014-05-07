@@ -46,7 +46,6 @@ public class Provisioning {
 
 	public Provisioning(){
 
-		setHashEquipment();
 
 		HashMap<String, String> tf1= new HashMap<String, String>();
 		HashMap<String, String> hashrp= new HashMap<String, String>();
@@ -256,26 +255,7 @@ public class Provisioning {
 		values.put(tf1, hashrp);		
 	}
 
-	private void setHashEquipment() {
-		// TODO Auto-generated method stub
-		String equi;
-
-	}
-
-
-	public static ArrayList<String> getOutputPortsEquipment(String nameEquipment){
-
-		Individual ind = Model.getIndividual(nameEquipment);  
-		ArrayList<DtoInstanceRelation> rps= HomeController.Search.GetInstanceRelations(Model, HomeController.NS+nameEquipment);
-		ArrayList<String> values = new ArrayList<String>();
-
-		for (DtoInstanceRelation dtoInstanceRelation : rps) {
-			if(dtoInstanceRelation.Property.equals(HomeController.NS+"INV.componentOf")){
-				values.add(dtoInstanceRelation.Target);
-			}
-		}
-		return values;
-	}
+	
 
 	// get all equipments from specific site
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
@@ -286,7 +266,7 @@ public class Provisioning {
 	public static String nameRelation="";
 	public static ArrayList<String[]> siteConnects= new ArrayList<String[]>();
 	public static ArrayList<String> getSitesAndRelations(){
-
+		ind_class= new HashMap<String, ArrayList<String>>();
 		nameRelation="site_connects";
 		ArrayList<String[]> siteConnects= new ArrayList<String[]>();
 		ArrayList<String> sites= HomeController.Search.GetInstancesFromClass(Model, InfModel, "Site");
@@ -410,9 +390,9 @@ public class Provisioning {
 	}
 	public static ArrayList<String> getG800FromEquipment(String equipment){
 		
-		ArrayList<String> g800s= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, "componentOf", "Transport_Function");
-		ArrayList<String> outInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, "componentOf", "Output_Interface");
-		ArrayList<String> inpInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, "componentOf", "Output_Interface");
+		ArrayList<String> g800s= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Transport_Function");
+		ArrayList<String> outInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
+		ArrayList<String> inpInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
 		
 		for (String interface_out : outInt) {
 			try {
