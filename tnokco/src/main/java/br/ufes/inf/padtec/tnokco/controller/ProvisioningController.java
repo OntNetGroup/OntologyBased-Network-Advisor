@@ -44,6 +44,7 @@ public class ProvisioningController{
 	public String newEquipment(HttpSession session, HttpServletRequest request) {
 		request.getSession().setAttribute("txtSindelCode", "");
 		request.getSession().setAttribute("txtSindelCodeBr", "");
+		request.getSession().setAttribute("action", "");
 		
 		/*
 		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
@@ -111,50 +112,48 @@ public class ProvisioningController{
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value="/uploadAndRunEquipType")
-	public @ResponseBody DtoResultAjax uploadAndRunEquipType(HttpServletRequest request) {
+	public String uploadAndRunEquipType(HttpServletRequest request) {
 		
-//		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-//		try{
-//			
-// 			//MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-// 			int maxElements = 10;
-//			for(int i = 1; i <= maxElements; i++){
-//				MultipartFile file = multipartRequest.getFile("file"+i);
-//				String equipName = multipartRequest.getParameter("equipName"+i);
-//				//Object file = request.getAttribute("file"+i);
-//				//Enumeration teste = request.getAttributeNames();
-//				System.out.println();
-//				
-//				if(! file.getOriginalFilename().endsWith(".sindel"))
-//				{
-//					throw new OKCoExceptionFileFormat("Please select owl file on the position " + i + ".");		
-//				}
-//				
-//				InputStream in = file.getInputStream();
-//				InputStreamReader r = new InputStreamReader(in);
-//				BufferedReader br = new BufferedReader(r);
-//				Reader readerFile = new Reader();
-//	
-//				String txtSindel = readerFile.readFile(br);
-//				String attrName = "txtSindel"+i;
-//				request.getSession().setAttribute(attrName, txtSindel);
-//				request.getSession().setAttribute("equipName"+i, equipName);
-//				
-//			}
-//		}  catch (IOException e) {
-//			String error = "File not found.\n" + e.getMessage();
-//			multipartRequest.getSession().setAttribute("errorMensage", error);
-//			System.out.println("File not found.");
-//		} catch (OKCoExceptionFileFormat e) {
-//			String error = "File format error: " + e.getMessage();
-//			multipartRequest.getSession().setAttribute("errorMensage", error);			
-//		}
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		try{
+			//MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+ 			int maxElements = 10;
+			for(int i = 1; i <= maxElements; i++){
+				MultipartFile file = multipartRequest.getFile("file"+i);
+				//Object file = request.getAttribute("file"+i);
+				//Enumeration teste = request.getAttributeNames();
+				
+				if(file.getSize() <= 0){
+					throw new OKCoExceptionFileFormat("Select one file on the position " + i + ".");
+				}else if(! file.getOriginalFilename().endsWith(".sindel"))
+				{
+					throw new OKCoExceptionFileFormat("Please select owl file on the position " + i + ".");		
+				}
+				
+				InputStream in = file.getInputStream();
+				InputStreamReader r = new InputStreamReader(in);
+				BufferedReader br = new BufferedReader(r);
+				Reader readerFile = new Reader();
+	
+				String txtSindel = readerFile.readFile(br);
+				String equipName = multipartRequest.getParameter("equipName"+i);
+				
+				request.getSession().setAttribute("equipName"+i, equipName);
+				request.getSession().setAttribute("txtSindel"+i, txtSindel);
+				request.getSession().setAttribute("file"+i, file);
+				
+			}
+		}  catch (IOException e) {
+			String error = "File not found.\n" + e.getMessage();
+			multipartRequest.getSession().setAttribute("errorMensage", error);
+			System.out.println("File not found.");
+		} catch (OKCoExceptionFileFormat e) {
+			String error = "File format error: " + e.getMessage();
+			multipartRequest.getSession().setAttribute("errorMensage", error);			
+		}
 		
-		
-		DtoResultAjax dto = new DtoResultAjax();
-		dto.ok = true;
-		dto.result = "";		
-		return dto;
+		request.getSession().setAttribute("action", "runParser");
+		return "newEquipment";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value="/runEquipScratch")
@@ -295,7 +294,8 @@ public class ProvisioningController{
 			hash.put("INPUT", tiposB.get(0));
 			hash.put("OUTPUT", tiposA.get(0));
 			HashMap<String, String>element= Provisioning.values.get(hash);
-			System.out.println();
+			Provisioning.bindsSpecific(a,b,tiposA.get(0),tiposB.get(0));
+
 		}
 		
 		dto.ok = true;

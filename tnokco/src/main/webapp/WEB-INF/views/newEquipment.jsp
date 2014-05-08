@@ -9,11 +9,15 @@
 <script>
 	
 	$(document).ready(function () {
-		
 		verifyIfScratchHidden();
 		hideAll();
 		hideScratch();
 		hideEquipmentType();
+		
+		action = "${action}";
+		if(action == "runParser"){
+			alert("teste");
+		}
 		
 		$('#hideScratch').click(function(){
 			hideScratch();
@@ -51,54 +55,6 @@
 			});
 				
 		});	//End load sindel file
-		
-// 		$('#equipTypeForm').submit(function(event) {
-			
-// 			event.preventDefault();
-			
-// 			var json = {
-// 					"result" : "",
-// 					"ok" : true,
-// 					"equipmentName": $("#equipName").val()
-					
-// 				};
-			
-// 			$.ajax({
-// 				url : $("#equipTypeForm").attr("action"),
-// 				data : JSON.stringify(json),
-// 				type : "POST",
-// 				contentType: "application/json; charset=utf-8",
-// 				dataType: "json",
-
-// 				success : function(dto) {
-
-// 					if(dto.ok == false)
-// 					{
-// 						var html = "<div class=\"alert alert-danger\">" +
-// 						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-// 						"<strong>" + "</strong>"+ dto.result + 
-// 						"</div>";
-		
-// 						$("#boxerro").prepend(html);
-						
-// 					} else {
-
-// 						//load list instances
-// 						alert("Ok! Going to OKCo..");
-// 						window.location.href = "list";
-
-// 					}
-
-// 				},
-// 				error:function(x,e){
-					
-// 					alert("Erro");
-// 				},					
-// 			});
-			
-			
-			
-// 		});
 		
 		$('#sindelForm').submit(function(event) {
 			
@@ -184,97 +140,103 @@
 			}		
 		});
 		
-		$('#uploadAndRunEquipType').submit(function(event) {
+// 		$('#equipTypeForm').submit(function(event) {
+// 			event.preventDefault();
+// 			var sReturn = "";
 			
-			event.preventDefault();
-			var sReturn = "";
+// 			for(k=1; k<=iAdd; k++){
+				
+// 				try {				
+// 					//clean up hashs
+// 					cleanUpHashs();		
+// 					teste = window;
+// 					file = document.getElementById("file"+k).files[0];
+// 					reader = new FileReader();
+
+// 					reader.readAsText(file);
+// 					x = file.getAsBinary();
+// 					var txtArea = "";
+// 					while(!file.AtEndOfStream){
+// 						txtArea += file.ReadAll();
+// 					}
+// 					alert(txtArea);
+// 					document.getElementById("code").value(txtArea);
+					
+// 					//Used to get the value of the CodeMirror editor
+// 					parser.parse(editor.getValue());
+// 					sReturn = "";
+// 					sReturn  = printHashTypeVar(hashTypeVar);								
+// 					sReturn += printHashRelations(hashRelation);
+// 					sReturn += printHashAttribute(hashAttribute);
 			
-			for(k=1; k<=maxElements; k++){
-				try {				
-					//clean up hashs
-					cleanUpHashs();			
-					var arquivo = dados.OpenTextFile(document.getElementById("file"+k), 1, true);
-					var txtArea = "";
-					while(!arquivo.AtEndOfStream){
-						txtArea += arquivo.ReadAll();
-					}
-					alert(txtArea);
-					document.getElementById("code").value(txtArea);
-					
-					//Used to get the value of the CodeMirror editor
-					parser.parse(editor.getValue());
-					
-					sReturn  = printHashTypeVar(hashTypeVar);								
-					sReturn += printHashRelations(hashRelation);
-					sReturn += printHashAttribute(hashAttribute);
-	
-					//Verify warning
-					if(warning != ""){
+// 					//Verify warning
+// 					if(warning != ""){
 						
-						//Warning: mensagem
-						//alert(warning);
-						var html = "<div class=\"alert alert-danger\">" +
-							"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-							"<strong>" + "Warning! " + "</strong>"+ warning + 
-						"</div>";
+// 						//Warning: mensagem
+// 						//alert(warning);
+// 						var html = "<div class=\"alert alert-danger\">" +
+// 							"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+// 							"<strong>" + "Warning! " + "</strong>"+ warning + 
+// 						"</div>";
 	
-						$("#boxerro").prepend(html);
-					}
+// 						$("#boxerro").prepend(html);
+// 					}
 					
-					var json = {
-							"result" : sReturn,
-							"ok" : true,
-							"equipmentName": $("#equipName").val()
+// 					var json = {
+// 							"result" : sReturn,
+// 							"ok" : true,
+// 							"equipmentName": $("#equipName").val()
 							
-						};
+// 						};
 	
-					$.ajax({
-						url : $("#uploadAndRunEquipType").attr("action"),
-						data : JSON.stringify(json),
-						type : "POST",
-						contentType: "application/json; charset=utf-8",
-						dataType: "json",
+// 					$.ajax({
+// 						url : $("#equipTypeForm").attr("action"),
+// 						enctype : "multipart/form-data" ,
+// 						data : JSON.stringify(json),
+// 						type : "POST",
+// 						contentType: "application/json; charset=utf-8; multipart/form-data",
+// 						dataType: "json",
 	
-						success : function(dto) {
+// 						success : function(dto) {
 	
-							if(dto.ok == false)
-							{
-								var html = "<div class=\"alert alert-danger\">" +
-								"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-								"<strong>" + "</strong>"+ dto.result + 
-								"</div>";
+// 							if(dto.ok == false)
+// 							{
+// 								var html = "<div class=\"alert alert-danger\">" +
+// 								"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+// 								"<strong>" + "</strong>"+ dto.result + 
+// 								"</div>";
 				
-								$("#boxerro").prepend(html);
+// 								$("#boxerro").prepend(html);
 								
-							} else {
+// 							} else {
 	
-								//load list instances
-								alert("Ok! Going to OKCo..");
-								window.location.href = "list";
+// 								//load list instances
+// 								alert("Ok! Going to OKCo..");
+// 								window.location.href = "list";
 	
-							}
+// 							}
 	
-						},
-						error:function(x,e){
+// 						},
+// 						error:function(x,e){
 							
-							alert("Erro");
-						},					
-					});
+// 							alert("Erro");
+// 						},					
+// 					});
 					
 					
-				}
-				catch (e) {
+// 				}
+// 				catch (e) {
 	
-					var html = "<div class=\"alert alert-danger\">" +
-						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-						"<strong>" + "</strong>"+ e.message + 
-					"</div>";
+// 					var html = "<div class=\"alert alert-danger\">" +
+// 						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+// 						"<strong>" + "</strong>"+ e.message + 
+// 					"</div>";
 		
-					$("#boxerro").prepend(html);
+// 					$("#boxerro").prepend(html);
 				
-				}		
-			}
-		});
+// 				}		
+// 			}
+// 		});
 		
         
       }); // end document read
@@ -393,7 +355,7 @@
 		}
 	};
 	
-	var iAdd = 2;
+	var iAdd = 1;
 	var maxElements = 10;
 	function hideAll(){
 		for(j=2; j<=maxElements; j++){
@@ -407,45 +369,11 @@
 	}
 		
 	function addFields(){
-		//iAdd++;
-// 		var container = document.getElementById("equipTypeForm");
+		iAdd++;
 		
-// 		// Create an <input> element, set its type and name attributes
-// 		var equipName = document.createElement("input");
-// 		equipName.name = "equipName"+iAdd;
-// 		equipName.id = "equipName"+iAdd;
-// 		container.appendChild(equipName);
-		
-// 		var fileDiv = document.createElement("div");
-// 		fileDiv.className = "uploader";
-// 		fileDiv.id = "uniform-file"+iAdd;
-		
-// 		var fileText = document.createElement("input");
-// 		fileText.type = "file";
-// 		fileText.name = "file"+iAdd;
-// 		fileText.id = "file"+iAdd;
-// 		fileDiv.appendChild(fileText);
-		
-// 		var fileSpanName = document.createElement("span");
-// 		fileSpanName.className = "filename";
-// 		fileSpanName.style.cssText = "-webkit-user-select: none;";
-// 		var spanText = document.createTextNode("No file selected");
-// 		fileSpanName.appendChild(spanText);
-// 		fileDiv.appendChild(fileSpanName);
-		
-// 		var fileAct = document.createElement("span");
-// 		fileAct.className = "action";
-// 		fileAct.style.cssText = "-webkit-user-select: none;";
-// 		var actText = document.createTextNode("Choose File");
-// 		fileAct.appendChild(actText);
-// 		fileDiv.appendChild(fileAct);
-		
-		
-// 		container.appendChild(fileDiv);
-		
-		
-// 		// Append a line break 
-// 		container.appendChild(document.createElement("br"));
+		if(iAdd == maxElements){
+			document.getElementById("addFields").style.visibility = 'hidden';
+		}
 		if(iAdd > maxElements){
 			alert("MAXIMO DE 10!!!");
 			return;
@@ -453,7 +381,7 @@
 		document.getElementById("div"+iAdd).style.visibility = 'visible';
 		document.getElementById("div"+iAdd).style.height="auto";
 		
-		iAdd++;
+		
 		
 		
 	};
@@ -479,26 +407,32 @@
 			</div>
 			
 			<div class="tooltip-demo well" id="equipTypeContainer">
-				<form action="uploadAndRunEquipType" id="equipTypeForm" class="form-horizontal" method="POST">
+				<form action="uploadAndRunEquipType" id="equipTypeForm" class="form-horizontal" method="POST" enctype="multipart/form-data" >
 					<%
 					int maxElements = 10;
 					for(int i = 1; i <= maxElements; i++){
-						String attrName = "txtSindel"+i;
-						String txtSindel = (String)request.getSession().getAttribute(attrName);
+						String txtSindel = (String)request.getSession().getAttribute("txtSindel"+i);
 						String outTxtSindel = "";
 						if(txtSindel!=null){
 							outTxtSindel = txtSindel;
 						}
+						String equipName = (String)request.getSession().getAttribute("equipName"+i);
+						String outEquipName = "";
+						if(equipName!=null){
+							outEquipName = equipName;
+						}
+						
+						
 					%>
 						<div id="div<%out.print(i);%>">
-							<input id="equipName<%out.print(i);%>" name="equipName<%out.print(i);%>"/>
+							<input id="equipName<%out.print(i);%>" name="equipName<%out.print(i);%>" value="<%out.print(outEquipName);%>"/>
 							<input name="file<%out.print(i);%>" type="file" id="file<%out.print(i);%>" >
 							<input id="txtSindel<%out.print(i);%>" name="txtSindel<%out.print(i);%>" type="hidden" value="<%out.print(outTxtSindel);%>"/>
 					<%
 							if(i == 1){
 					%>
-							<input id="addFields" type="button" value="+" />
 							<input type="submit" name="submit" value="Upload/Run" />
+							<input id="addFields" type="button" value="+" />
 					<%		
 							}
 					%>
