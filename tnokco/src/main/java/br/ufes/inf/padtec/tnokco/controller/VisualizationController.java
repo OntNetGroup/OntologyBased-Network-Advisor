@@ -92,12 +92,12 @@ public class VisualizationController {
 			for(Equipment equip : list){
 				hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
 				for(InterfaceOutput outs : equip.getOutputs()){
-					valuesGraph += "graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
+					valuesGraph += "graph.addEdge(graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
 					hashTypes += "hash[\""+outs.getName()+"\"] = \"<b>"+outs.getName()+" is an individual of classes: </b><br><ul><li>Output_Interface</li></ul>\";";
 				}
 				
 				for(String in : equip.getInputs()){
-					valuesGraph += "graph.addNode(\""+in+"\", {shape:\"INT_IN_AZUL\"}),graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
+					valuesGraph += "graph.addEdge(graph.addNode(\""+in+"\", {shape:\"INT_IN_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
 					hashTypes += "hash[\""+in+"\"] = \"<b>"+in+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
 				}
 
@@ -161,14 +161,15 @@ public class VisualizationController {
 		for(Equipment equip : equips){
 			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
 			for(InterfaceOutput outs : equip.getOutputs()){
-				valuesGraph += "graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
 				hashTypes += "hash[\""+outs.getName()+"\"] = \"<b>"+outs.getName()+" is an individual of classes: </b><br><ul><li>Output_Interface</li></ul>\";";
 			}
 			
 			for(String in : equip.getInputs()){
-				valuesGraph += "graph.addNode(\""+in+"\", {shape:\"INT_IN_AZUL\"}),graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+in+"\", {shape:\"INT_IN_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
 				hashTypes += "hash[\""+in+"\"] = \"<b>"+in+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
 			}
+
 
 			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
 				valuesGraph += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}), {name:'binds:";
