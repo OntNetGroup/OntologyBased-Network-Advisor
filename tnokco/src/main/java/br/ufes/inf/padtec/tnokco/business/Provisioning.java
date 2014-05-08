@@ -11,6 +11,7 @@ import br.ufes.inf.padtec.tnokco.controller.HomeController;
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.sparql.function.library.e;
 
 
@@ -425,6 +426,27 @@ public class Provisioning {
 				triples_g800.add(triple);
 			}
 			
+		}
+	}
+
+	public static void bindsSpecific(Individual a, Individual b, String tipo_out,
+			String tipo_inp) {
+		// TODO Auto-generated method stub
+		HashMap<String, String> key = new HashMap<String, String>();
+		key.put("INPUT", tipo_inp);
+		key.put("OUTPUT", tipo_inp);
+		try{
+			HashMap<String, String> value = values.get(key);
+			ArrayList<Statement> all= new ArrayList<Statement>();
+			Individual rp= Model.createIndividual(a.getLocalName()+"rp"+b.getLocalName(),Model.getResource(HomeController.NS+key.get("RP")));
+			Individual binding= Model.createIndividual(a.getLocalName()+"rp"+b.getLocalName(),Model.getResource(key.get("RP_BINDING")));
+			ArrayList<Statement> stmts = new ArrayList<Statement>();
+			stmts.add(HomeController.Model.createStatement(binding, Model.getProperty(HomeController.NS+key.get("RP_RELATION")), rp));
+			stmts.add(HomeController.Model.createStatement(binding, Model.getProperty(HomeController.NS+key.get("RP_BINDING_REL_IN")), b));
+			stmts.add(HomeController.Model.createStatement(binding, Model.getProperty(HomeController.NS+key.get("RP_BINDING_REL_OUT")), a));
+			Model.add(stmts);
+		}catch(Exception e){
+			e = new Exception("not bound");
 		}
 	}
 
