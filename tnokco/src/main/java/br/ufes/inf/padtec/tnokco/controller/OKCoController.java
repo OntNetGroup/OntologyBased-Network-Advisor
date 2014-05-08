@@ -66,8 +66,20 @@ public class OKCoController {
 
 		this.ListAllInstances = HomeController.ListAllInstances;
 
+		
 		if(HomeController.Model != null) 
 		{
+			if(HomeController.Reasoner == null)
+			{
+				String error = "Reasoner error: Select some reasoner";
+				request.getSession().setAttribute("errorMensage", error);
+				
+				return "index";
+				
+			} else {
+				request.getSession().removeAttribute("errorMensage");
+			}
+			
 			request.getSession().setAttribute("listInstances", ListAllInstances);
 			request.getSession().setAttribute("listModifedInstances", HomeController.ListModifiedInstances);
 

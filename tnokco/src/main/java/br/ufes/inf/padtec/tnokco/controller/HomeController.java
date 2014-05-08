@@ -61,6 +61,9 @@ public class HomeController implements ServletContextAware{
 	
 	//servelet context
 	private ServletContext servletContext;
+	
+	//Control reasoner
+	public static boolean reasoningOnFirstLoad;
 
 	public static ArrayList<DtoDefinitionClass> ModelDefinitions;
 
@@ -151,40 +154,75 @@ public class HomeController implements ServletContextAware{
 		}
 	}
 
-	@RequestMapping(value = "/uploadOwl", method = RequestMethod.POST) 
+	
+	//selectReasoner
+	@RequestMapping(value = "/selectReasoner", method = RequestMethod.POST) 
 	public String uploadOwl(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner){
-
-		try {
-			
-			String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
-			
-			boolean reasoning = true;
-			
+	
+		String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
+		
+		this.reasoningOnFirstLoad = true;
+		
+		try {			
+		
 			//first load reasoning
 			if (loadReasonerFirstCheckbox != null)
 			{
 				if(loadReasonerFirstCheckbox.equals("on"))
 				{
-					reasoning = true;
+					reasoningOnFirstLoad = true;
 				}
 			} else {
 				
-				reasoning = false;
+				reasoningOnFirstLoad = false;
 			}
-
+	
 			//Select reasoner
 			if(optionsReasoner.equals("hermit"))
 			{
 				Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
-
+	
 			} else if(optionsReasoner.equals("pellet"))
 			{
 				Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
 				
 			} else {
-
+	
 				throw new OKCoExceptionReasoner("Please select a reasoner available.");
-			}			  
+			}
+		
+		} catch (OKCoExceptionReasoner e) {
+
+			String error = "Reasoner error: " + e.getMessage();
+			request.getSession().setAttribute("errorMensage", error);
+			Model = null;
+			tmpModel = null;
+			InfModel = null;
+			ListAllInstances = null;
+			ListModifiedInstances = null;
+			Reasoner = null;
+
+			return "index";
+		}
+		
+		return "index";
+	}
+	
+	@RequestMapping(value = "/uploadOwl", method = RequestMethod.POST) 
+	public String uploadOwl(HttpServletRequest request){
+
+		try {
+			
+			if(HomeController.Reasoner == null)
+			{
+				String error = "Reasoner error: Select some reasoner";
+				request.getSession().setAttribute("errorMensage", error);
+				
+				return "index";
+				
+			} else {
+				request.getSession().removeAttribute("errorMensage");
+			}
 
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
@@ -213,7 +251,7 @@ public class HomeController implements ServletContextAware{
 			//Save temporary model
 			tmpModel = Repository.CopyModel(Model);			
 			
-			if(reasoning == true)
+			if(reasoningOnFirstLoad == true)
 			{
 				//Call reasoner
 				InfModel = Reasoner.run(Model);
@@ -309,18 +347,6 @@ public class HomeController implements ServletContextAware{
 
 			return "index";
 
-		} catch (OKCoExceptionReasoner e) {
-
-			String error = "Reasoner error: " + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);
-			Model = null;
-			tmpModel = null;
-			InfModel = null;
-			ListAllInstances = null;
-			ListModifiedInstances = null;
-			Reasoner = null;
-
-			return "index";
 		}
 
 		request.getSession().removeAttribute("errorMensage");  

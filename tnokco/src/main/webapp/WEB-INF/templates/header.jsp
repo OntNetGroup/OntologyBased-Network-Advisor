@@ -355,12 +355,12 @@ $(document).ready(function() {
 										
 										<li><a class="submenu" href="/tnokco/sindel"><i class="">S</i><span class="hidden-sm"> &nbsp;&nbsp; Sindel Editor</span></a></li>
 										<li><a class="submenu" href="/tnokco/condel"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Condel Editor</span></a></li>
-										<li><a class="submenu" href="/tnokco/newEquipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipamment Instances</span></a></li>
+										<li><a class="submenu" href="/tnokco/newEquipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipmment Instances</span></a></li>
 									</ul>	
 								</li>
 								
 								<li>
-									<a class="dropmenu" href="#"><i class="icon-lightbulb"></i><span class="hidden-sm"> Funcionalites</span> <span class="label">3</span></a>
+									<a class="dropmenu" href="#"><i class="icon-lightbulb"></i><span class="hidden-sm"> Functionalites</span> <span class="label">3</span></a>
 									<ul class="dropmenuLevel2">								
 										
 										<li><a class="submenu" href="/tnokco/list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion</span></a></li>

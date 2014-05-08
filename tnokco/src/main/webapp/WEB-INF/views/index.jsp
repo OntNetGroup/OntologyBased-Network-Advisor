@@ -47,31 +47,29 @@
 %>
 
 
-<h1>Welcome to Ontology-based Network Advisor</h1>
+<h1>Welcome to the Ontology-based Network Advisor</h1>
 
 <div class="row">
 	<div class="col-lg-12">
 		<div class="box">
 			<div class="box-header">
 				<h2>
-					<i class="icon-edit"></i> How can you use Ontology-based Network Advisor?
+					<i class="icon-edit"></i>
 				</h2>
 				<div class="box-icon">
-					<a href="#" class="btn-setting"><i class="icon-wrench"></i></a> <a
+					<a
 						href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
 				</div>
 			</div>
 			<div class="box-content">
 				<div class="row">
 					<div class="col-lg-12">
-						<!--<h2>How can you use <i>TN-OKCo?</i></h2>-->
-						<p>You have three ways to use:</p>
+						
+						<h2>Reasoner settings:</h2>
 						<div class="tooltip-demo well">
-							<ol>
-								<li>
-									<form action="uploadOwl" class="form-horizontal"
+							
+									<form action="selectReasoner" class="form-horizontal"
 										enctype="multipart/form-data" method="POST">
-										<label class="control-label">Select Reasoner:</label> 
 
 										<div class="controls" style="margin-bottom:8px">
 
@@ -96,17 +94,19 @@
 												 Use reasoner in load
 										</label>
 										
-										<label class="control-label">Load Owl file:</label>
-										<div class="controls">
-											<input name="file" type="file"> <input type="submit" class="btnload"
-												name="submit" value="Upload" />
-										</div>
+										<div class="" style="margin-top: 5px; margin-left:20px">
+											 <input type="submit" class="btnload"
+												name="submit" value="Select Reasoner" />
+												</div>
+										
 									</form>
-								</li>
-
+						</div>
+						<h2>Network Input Information:</h2>
+						<div class="tooltip-demo well">
+							<ol>
 								<!-- Sindel -->
 								
-								<li style="margin-top: 10px;">Load Sindel file.
+								<li >Load Sindel file.
 									<form action="uploadSindel" class="form-horizontal"
 										enctype="multipart/form-data" method="POST">
 										<div class="controls">
@@ -115,8 +115,8 @@
 										</div>
 									</form>
 								</li>
-								<li style="margin-top: 10px;">
-									<div>Write sindel code online and run.</div>
+								<li style="margin-top: 20px;" style="margin-top: 10px;">
+									<div>Write and load a Sindel description</div>
 									<button type="button" class="btn btn-pre btn-editor-sindel">
 										<i class="icon-arrow-right"></i> Go to editor
 									</button>
@@ -125,7 +125,7 @@
 								
 								<!-- Condel -->
 								
-								<li style="margin-top: 10px;">Load Condel file.
+								<li style="margin-top: 20px;">Load Condel file.
 									<form action="uploadCondel" class="form-horizontal"
 										enctype="multipart/form-data" method="POST">
 										<div class="controls">
@@ -134,19 +134,33 @@
 										</div>
 									</form>
 								</li>
-								<li style="margin-top: 10px;">
-									<div>Write condel code online and run.</div>
+								<li style="margin-top: 20px;">
+									<div>Write and load a Condel description</div>
 									<button type="button" class="btn btn-pre btn-editor-condel">
 										<i class="icon-arrow-right"></i> Go to editor
 									</button>
 
 								</li>
+								
+								<!-- OKCo -->
+								<li style="margin-top: 20px;">
+									<form action="uploadOwl" class="form-horizontal"
+										enctype="multipart/form-data" method="POST">
+										
+										<div>Load OWL file:</div>
+										<div class="controls">
+											<input name="file" type="file"> <input type="submit" class="btnload"
+												name="submit" value="Upload" />
+										</div>
+									</form>
+								</li>
+								
 							</ol>
 						</div>
 
 						<div class="row">
 							<div class="col-lg-12">
-								<p>Description of Ontology-based Network Advisor:</p>
+								<p>Instructions:</p>
 								<div class="tooltip-demo well">
 									<p class="muted" style="margin-bottom: 0;">Lorem ipsum
 										dolor sit amet, consectetur adipiscing elit. Ut mattis aliquam

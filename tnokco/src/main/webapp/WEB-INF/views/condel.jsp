@@ -18,13 +18,13 @@
 							var maskHeight = $(document).height();
 							var maskWidth = "100%";//$(document).width();
 
-							//Define largura e altura do div#maskforloading iguais ás dimensões da tela
+							//Define largura e altura do div#maskforloading iguais Ã¡s dimensÃµes da tela
 							$('#maskforloading').css({
 								'width' : maskWidth,
 								'height' : maskHeight
 							});
 
-							//efeito de transição
+							//efeito de transiÃ§Ã£o
 							$('#maskforloading').show();
 						}
 
@@ -74,7 +74,7 @@
 
 														if (dto.ok == false) {
 															var html = "<div class=\"alert alert-danger\">"
-																	+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+																	+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 																	+ "<strong>"
 																	+ "</strong>"
 																	+ dto.result
@@ -109,7 +109,7 @@
 										$("#maskforloading").hide();
 
 										var html = "<div class=\"alert alert-danger\">"
-												+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+												+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 												+ "<strong>"
 												+ "</strong>"
 												+ e.message + "</div>";
@@ -174,7 +174,7 @@
 
 																if (dto.ok == false) {
 																	var html = "<div class=\"alert alert-danger\">"
-																			+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+																			+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 																			+ "<strong>"
 																			+ "</strong>"
 																			+ dto.result
@@ -210,7 +210,7 @@
 												$("#maskforloading").hide();
 
 												var html = "<div class=\"alert alert-danger\">"
-														+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+														+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 														+ "<strong>"
 														+ "</strong>"
 														+ e.message + "</div>";
@@ -241,7 +241,7 @@
 
 																		if (dto.ok == false) {
 																			var html = "<div class=\"alert alert-danger\">"
-																					+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+																					+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 																					+ "<strong>"
 																					+ "</strong>"
 																					+ dto.result
@@ -311,7 +311,7 @@
 
 																if (dto.ok == false) {
 																	var html = "<div class=\"alert alert-danger\">"
-																			+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+																			+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 																			+ "<strong>"
 																			+ "</strong>"
 																			+ dto.result
@@ -346,7 +346,7 @@
 												$("#maskforloading").hide();
 
 												var html = "<div class=\"alert alert-danger\">"
-														+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+														+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 														+ "<strong>"
 														+ "</strong>"
 														+ e.message + "</div>";
@@ -420,7 +420,7 @@
 						<form id="getCondelForm" style="float:left" method="POST" action="getCondelCode">
 							<input type="button" class="btn btn-pre btn-load" value="Load file" /> 
 							<input type="button" class="btn btn-pre btn-clean" value="Clean" />
-							<input type="submit" class="btn btn-pre btn-export" value="Export" />
+							<input type="submit" class="btn btn-pre btn-export" value="Save File" />
 						</form>
 						  
 						<!-- <input type="button" class="btn btn-pre btn-save" value="Save" /> --> 
@@ -465,23 +465,16 @@
 					<h2>
 						How can you use <i>Condel?</i>
 					</h2>
-					<p>Description of Condel language:</p>
+					<p>Instructions:</p>
 					<div class="tooltip-demo well">
 						<p class="muted" style="margin-bottom: 0;">
-							Tight pants next level keffiyeh <a href="#" data-rel="tooltip"
-								data-original-title="first tooltip">you probably</a> haven't
-							heard of them. Photo booth beard raw denim letterpress vegan
-							messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie
-							sustainable quinoa 8-bit american appadata-rel <a href="#"
-								data-rel="tooltip" data-original-title="Another tooltip">have
-								a</a> terry richardson vinyl chambray. Beard stumptown, cardigans
-							banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four
-							loko mcsweeney's cleanse vegan chambray. A <a href="#"
-								data-rel="tooltip" data-original-title="Another one here too">really
-								ironic</a> artisan whatever keytar, scenester farm-to-table banksy
-							Austin <a href="#" data-rel="tooltip"
-								data-original-title="The last tip!">twitter handle</a> freegan
-							cred raw denim single-origin coffee viral.
+							The Complete Network Description Language (Condel) is a network declaration Domain
+							Specific Language that can be used by the Ontology-based Network Advisor as source of input,
+							providing network declarations. It was designed to reduce information loss between the
+							network declaration and the Advisor's knowledge base.<br>
+							The Condel Editor provides syntax checking, highlight keywords, and auto-completion
+							(pressing ctrl + space).<br>
+							Once a network description is edited, press Run.
 						</p>
 					</div>
 				</div>

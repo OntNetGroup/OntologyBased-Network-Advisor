@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
+
+
 import br.ufes.inf.nemo.condelOwlg805.Condel2owlG805;
 import br.ufes.inf.nemo.condelOwlg805.OwlG805toCondel;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
@@ -31,21 +33,38 @@ public class CondelController{
 	@RequestMapping(method = RequestMethod.GET, value="/condel")
 	public String condel(HttpSession session, HttpServletRequest request) {
 
-		// Select reasoner
-
-		HomeController.Reasoner = HomeController.Factory.GetReasoner(EnumReasoner.HERMIT);		
-
 		//Get parameter with tells the Condel load from file or not
 
 		if(txtCondelCode == "")
 		{
+			if(HomeController.Reasoner == null)
+			{
+				String error = "Reasoner error: Select some reasoner";
+				request.getSession().setAttribute("errorMensage", error);
+				
+				return "index";
+				
+			} else {
+				request.getSession().removeAttribute("errorMensage");
+			}
+			
 			return "condel";	//View to return
 
 		} else {
-
+			
+			if(HomeController.Reasoner == null)
+			{
+				String error = "Reasoner error: Select some reasoner";
+				request.getSession().setAttribute("errorMensage", error);
+				
+				return "index";
+				
+			} else {
+				request.getSession().removeAttribute("errorMensage");
+			}
+			
 			//Create the sections				
 			request.getSession().setAttribute("txtCondelCode", txtCondelCode);
-//			request.getSession().setAttribute("ListCodes", ListCodes);
 			
 			return "condel";	//View to return
 		}     	
@@ -116,8 +135,17 @@ public class CondelController{
 			HomeController.Model = Condel2owlG805.transformToOWL(HomeController.Model, condelCode);
 
 			//Run reasoner
-			//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
-			HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+			if(HomeController.reasoningOnFirstLoad == true)
+			{
+				//Call reasoner
+				HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+				
+			} else {
+				
+				//Don't call reasoner
+				HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+			}
+			
 			
 			//tmp model
 			HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);

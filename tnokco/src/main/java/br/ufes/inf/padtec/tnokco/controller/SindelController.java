@@ -28,17 +28,35 @@ public class SindelController{
 	@RequestMapping(method = RequestMethod.GET, value="/sindel")
 	public String sindel(HttpSession session, HttpServletRequest request) {
 
-		// Select Reasoner Hermit
-
-		HomeController.Reasoner = HomeController.Factory.GetReasoner(EnumReasoner.HERMIT);		
-
 		//Get parameter with tells the sindel load from file or not
 
 		if(txtSindelCode == "")
 		{
+			if(HomeController.Reasoner == null)
+			{
+				String error = "Reasoner error: Select some reasoner";
+				request.getSession().setAttribute("errorMensage", error);
+				
+				return "index";
+				
+			} else {
+				request.getSession().removeAttribute("errorMensage");
+			}
+			
 			return "sindel";	//View to return
 
 		} else {
+			
+			if(HomeController.Reasoner == null)
+			{
+				String error = "Reasoner error: Select some reasoner";
+				request.getSession().setAttribute("errorMensage", error);
+				
+				return "index";
+				
+			} else {
+				request.getSession().removeAttribute("errorMensage");
+			}
 
 			//Create the sections				
 			request.getSession().setAttribute("txtSindelCode", txtSindelCode);
@@ -108,10 +126,17 @@ public class SindelController{
 			DtoResultSindel dtoSindel = so.getDtoSindel();
 
 			HomeController.Model = dtoSindel.model;
-
-			//Run reasoner
-			//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
-			HomeController.InfModel = HomeController.Repository.CopyModel(dtoSindel.model);
+			
+			if(HomeController.reasoningOnFirstLoad == true)
+			{
+				//Call reasoner
+				HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+				
+			} else {
+				
+				//Don't call reasoner
+				HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+			}
 			
 			//tmp model
 			HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);			
