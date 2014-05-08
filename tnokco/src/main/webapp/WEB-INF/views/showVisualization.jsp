@@ -24,7 +24,7 @@
 					out.print("canClickable = false;");
 				}
 			%>
-			graph = startArbor("#viewport", 0.9);
+			graph = startArbor("#viewport", 0.91);
 			addNodes(graph);
 		});
 

@@ -365,7 +365,7 @@ $(document).ready(function() {
 										
 										<li><a class="submenu" href="/tnokco/list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion</span></a></li>
 										<li><a class="submenu" href="/tnokco/open_visualizator"><i class="icon-eye-open"></i><span class="hidden-sm">&nbsp;&nbsp; Visualization</span></a></li>
-										<li><a class="submenu" href="/tnokco/open_equipment_visualization"><i class="icon-play-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
+										<li><a class="submenu" href="/tnokco/provisoning_visualization"><i class="icon-play-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
 									</ul>	
 								</li>
 								

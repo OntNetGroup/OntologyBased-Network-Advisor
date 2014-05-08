@@ -260,7 +260,7 @@ public class Provisioning {
 
 	// get all equipments from specific site
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
-		equipments =  HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"componentOf", HomeController.NS+"Equipment");
+		equipments =  HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"has_equipment", HomeController.NS+"Equipment");
 		return getEquipmentsConnectionsBinds();
 	}
 
@@ -411,7 +411,7 @@ public class Provisioning {
 		return g800s;
 	}
 	public static void setRelationsG800(ArrayList<String> g800_elements){
-		ind_class= new HashMap<String, ArrayList<String>>();
+		ind_class = new HashMap<String, ArrayList<String>>();
 		ArrayList<String> classesFromIndividual;
 		for (String g800 : g800_elements) {
 			classesFromIndividual= HomeController.Search.GetClassesFrom(g800, InfModel);

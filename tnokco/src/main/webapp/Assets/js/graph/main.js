@@ -210,10 +210,12 @@
             var dragged = particleSystem.nearest(_mouseP);
 
             if (dragged.node !== null){		
-				var r=confirm(popupMessage);
-				if (r==true){
-					window.location.href = targetURL+dragged.node.name;	
-				}				
+            	if(classHash[dragged.node.name].indexOf("put_Interface") == -1){
+	            	var r=confirm(popupMessage);
+					if (r==true){
+						window.location.href = targetURL+dragged.node.name;	
+					}
+            	}
 			}
 
             $(canvas).bind('mousemove', handler.dragged)
@@ -301,8 +303,8 @@
   })(this.jQuery);
   
   function startArbor(canvasName, friction){		
-		var sys = arbor.ParticleSystem(1300, 10000, friction) // create the system with sensible repulsion/stiffness/friction
-		sys.parameters({gravity:false}) // use center-gravity to make the graph settle nicely (ymmv)
+		var sys = arbor.ParticleSystem(7500, 470, friction) // create the system with sensible repulsion/stiffness/friction
+		sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
 		sys.renderer = Renderer(canvasName) // our newly created renderer will have its .init() method called shortly by sys...	
 		return sys;
  } 
