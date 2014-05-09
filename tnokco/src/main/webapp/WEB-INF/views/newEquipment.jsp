@@ -19,6 +19,10 @@
 			runParser();
 		}
 		
+		$('input[name=equipNameAux]').keyup(function() {
+			document.getElementById("equipName").value = this.value;
+		});
+		
 		$('#hideScratch').click(function(){
 			hideScratch();
 	    });
@@ -242,7 +246,7 @@
       }); // end document read
 	  
    // Function loading
-	function loading()
+   	function loading()
 	{
 	 	var maskHeight = $(document).height();
 		var maskWidth = "100%";//$(document).width();
@@ -324,8 +328,8 @@
   		return s;
   	};
   	
-  	var scratchHidden = false;
-	var equipmentTypeHidden = false;
+  	var scratchHidden = true;
+	var equipmentTypeHidden = true;
 	
 	function hideScratch(){
 		document.getElementById("row").style.height="auto";
@@ -557,6 +561,14 @@
 					
 				<form action="uploadSindelEquip" class="form-horizontal" enctype="multipart/form-data" method="POST">
 		 			<div class="controls">
+		 				<%
+						String equipNameAux = (String)request.getSession().getAttribute("equipNameAux");
+						String outEquipNameAux = "";
+						if(equipNameAux!=null){
+							outEquipNameAux = equipNameAux;
+						}
+						%>	
+						<input id="equipNameAux" name="equipNameAux" value="<%out.print(outEquipNameAux);%>"/>
 		 				<input name="file" type="file">
 						<input type="submit" name="submit" value="Upload" /><br>
 					</div>
@@ -571,7 +583,14 @@
 				<div style="border: 1px solid black; width: 100%;">
 					<textarea id="code" name="code" style="width: 100%;"><%if(sindelValue != null){out.println(sindelValue);}%>
 					</textarea>
-					<input id="equipName" name="equipName"/>
+					<%
+					String equipName = (String)request.getSession().getAttribute("equipName");
+					String outEquipName = "";
+					if(equipName!=null){
+						outEquipName = equipName;
+					}
+					%>	
+					<input id="equipName" name="equipName" type="hidden" value="<%out.print(outEquipName);%>"/>
 					<input type="button" class="btn btn-pre btn-clean" value="Clean" />
 					<input type="submit" class="btn btn-pre" value="Run" />
 
@@ -600,26 +619,23 @@
 
 			<div class="row">
 				<div class="col-lg-12">
-					<h2>
-						How can you use <i>Sindel?</i>
-					</h2>
-					<p>Description of Sindel language:</p>
+					<br>
+					<p>Instructions:</p>
 					<div class="tooltip-demo well">
 						<p class="muted" style="margin-bottom: 0;">
-							Tight pants next level keffiyeh <a href="#" data-rel="tooltip"
-								data-original-title="first tooltip">you probably</a> haven't
-							heard of them. Photo booth beard raw denim letterpress vegan
-							messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie
-							sustainable quinoa 8-bit american appadata-rel <a href="#"
-								data-rel="tooltip" data-original-title="Another tooltip">have
-								a</a> terry richardson vinyl chambray. Beard stumptown, cardigans
-							banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four
-							loko mcsweeney's cleanse vegan chambray. A <a href="#"
-								data-rel="tooltip" data-original-title="Another one here too">really
-								ironic</a> artisan whatever keytar, scenester farm-to-table banksy
-							Austin <a href="#" data-rel="tooltip"
-								data-original-title="The last tip!">twitter handle</a> freegan
-							cred raw denim single-origin coffee viral.
+							In this page, you can add one or more equipment to the already loaded network. There are two different ways to add the equipment: (1) adding them from already defined equipment types or (2) editing an already defined equipment type.
+ 							<br><br>
+							<b>New Equipment from Equipment Type:</b>
+							<br>
+							First, write the equipment name in the empty box and then select the equipment type from an already saved file containing an equipment type description in Sindel. You can add at most 10 equipment clicking at the + button.
+							<br>
+							Once defined the equipment names and types, press Upload/Run.
+							<br><br> 
+							<b>New Equipment from Scratch:</b>
+							<br>
+							First, write the equipment name in the empty box and then select the equipment type from an already saved file containing an equipment type description in Sindel. The equipment definition will be loaded to the editor, where you can make modifications.
+							<br>
+							Once the equipment is defined, press Run.
 						</p>
 					</div>
 				</div>

@@ -43,7 +43,9 @@ public class ProvisioningController{
 		request.getSession().setAttribute("txtSindelCode", "");
 		request.getSession().setAttribute("txtSindelCodeBr", "");
 		request.getSession().setAttribute("action", "");
-
+		request.getSession().setAttribute("equipNameAux", "");
+		request.getSession().setAttribute("equipName", "");
+		
 		for (int i = 1; i <= maxElements; i++) {
 			request.getSession().setAttribute("equipName"+i, "");
 			request.getSession().setAttribute("txtSindel"+i, "");
@@ -103,6 +105,10 @@ public class ProvisioningController{
 			request.getSession().setAttribute("txtSindelCode", txtSindel);
 			txtSindel = txtSindel.replaceAll("\n", "<br>");
 			request.getSession().setAttribute("txtSindelCodeBr", txtSindel);
+			
+			String equipNameAux = multipartRequest.getParameter("equipNameAux");
+			request.getSession().setAttribute("equipNameAux", equipNameAux);
+			request.getSession().setAttribute("equipName", equipNameAux);
 
 		}  catch (IOException e) {
 			String error = "File not found.\n" + e.getMessage();
