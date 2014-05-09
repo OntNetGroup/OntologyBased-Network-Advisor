@@ -9,8 +9,11 @@ import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
 import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.sparql.function.library.e;
 
@@ -31,7 +34,7 @@ public class Provisioning {
 	public static String relation= "site_connects";
 	public static HashMap<String, ArrayList<String>> ind_class= new HashMap<String, ArrayList<String>>();
 	public static ArrayList<String[]> triples_g800 = new ArrayList<String[]>();
-	
+
 	static Provisioning instance = new Provisioning();
 
 
@@ -256,7 +259,7 @@ public class Provisioning {
 		values.put(tf1, hashrp);		
 	}
 
-	
+
 
 	// get all equipments from specific site
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
@@ -285,72 +288,59 @@ public class Provisioning {
 		return sites;
 	}
 
-
-
-	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
-		equipmentsList = new ArrayList<Equipment>();
+	public static ArrayList<Equipment> getAllEquipmentsandConnections(){
+		Model = HomeController.Model;
+		InfModel = HomeController.InfModel;
+		HashMap<String, String> hashInputEquipment= new HashMap<String, String>();
+		//equipments = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Equipment");
+		Equipment e = null;
+		Individual individual;
+		ArrayList<Equipment> equips= new ArrayList<Equipment>();
 		for (String equipment: equipments) {
-			Individual ind= Model.getIndividual(equipment);
-			Equipment e = new Equipment(ind.getLocalName());
-			equipmentsList.add(e);
-			ArrayList<String> outInt= HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
-			ArrayList<String> inpInt= HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
+			Individual indeq= Model.getIndividual(equipment);
+			ArrayList<String> inpInt= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
 			int i=0;
 			InterfaceInput input;
 			for (String string : inpInt) {
-
-				ind= Model.getIndividual(string);
-				input = new InterfaceInput(ind.getLocalName());
-				input.setId(i);
-				i++;
-				e.addInp(input.getName());
+				Individual ind= Model.getIndividual(string);
+				hashInputEquipment.put(ind.getLocalName(), indeq.getLocalName());
 			}
-			i=0;
+
+		}
+		for (String equipment: equipments) {
+			ArrayList<String> outInt= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
+			int i=0;
+			Individual ind= Model.getIndividual(equipment);
+			e = new Equipment(ind.getLocalName());
 			for (String string : outInt) {
-				Individual individual= Model.getIndividual(string);
+				individual= Model.getIndividual(string);
 				InterfaceOutput outputInt = new InterfaceOutput();
-				//outputInt.setId(i);
 				outputInt.setName(individual.getLocalName());
 				e.addOut(outputInt);
-				String out= HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, string, HomeController.NS+"maps_output", HomeController.NS+"Mapped_TF_Output").get(0);
-				//relações de output
-				ArrayList<DtoInstanceRelation> rel= HomeController.Search.GetInstanceRelations(HomeController.InfModel, out);
-				for (DtoInstanceRelation dtoInstanceRelation : rel) {
-					Individual indiv= Model.getIndividual(dtoInstanceRelation.Target);
-					ArrayList<String> classesOut= HomeController.Search.GetClassesFrom(dtoInstanceRelation.Target, HomeController.InfModel);
-					for (String string2 : classesOut) {
-						// pega o input em questão
-						if(string2.equals(HomeController.NS+"Input")){
-							//relações do input
-							rel = HomeController.Search.GetInstanceRelations(HomeController.InfModel, dtoInstanceRelation.Target);
-							//percorre as relações do input
-							for (DtoInstanceRelation triple : rel) {
-								//pega o target do input
-								//pega as relações do target 
-								ArrayList<String> classesIntInp= HomeController.Search.GetClassesFrom(triple.Target, HomeController.InfModel);
-								for (String nameclasse : classesIntInp) {
-									if(nameclasse.equals(HomeController.NS+"Input_Interface")){
-										String eq= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, triple.Target, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0);
-										ind= Model.getIndividual(nameclasse);
-										HashMap<Equipment, InterfaceInput> hash= new HashMap<Equipment, InterfaceInput>();
-										hash.put(new Equipment(eq), new InterfaceInput(ind.getLocalName()));
-										ArrayList<String> out_int = new ArrayList<String>();
-										out_int.add(outputInt.getName());
-										out_int.add(triple.Target);
-										e.putBinds(out_int, e);
-
-									}
-								}
-							}
-						}
-					}
-
+				String inputcon= null;
+				if(!HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, string, HomeController.NS+"interface_binds", HomeController.NS+"Input_Interface").isEmpty()){
+					inputcon= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, string, HomeController.NS+"interface_binds", HomeController.NS+"Input_Interface").get(0);
 				}
-				i++;
+				if(inputcon!=null){
+					outputInt.setConnected(true);
+					ArrayList<String> binds = new ArrayList<String>();
+					binds.add(individual.getLocalName());
+					Individual indiv= Model.getIndividual(inputcon);
+					binds.add(indiv.getLocalName());
+					Individual equipmentEl = Model.getIndividual(HomeController.NS+hashInputEquipment.get(indiv.getLocalName()));
+					Equipment equip = new Equipment(equipmentEl.getLocalName());
+					e.putBinds(binds, equip);
+				}
+
 			}
+			equips.add(e); 
 		}
-		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
-		return equipmentsList;
+		return equips;
+	}
+
+
+	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
+		return getAllEquipmentsandConnections();
 
 	}
 
@@ -390,11 +380,11 @@ public class Provisioning {
 		return allIndividuals;
 	}
 	public static ArrayList<String> getG800FromEquipment(String equipment){
-		
+
 		ArrayList<String> g800s  = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Transport_Function");
 		ArrayList<String> outInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
 		ArrayList<String> inpInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
-		
+
 		for (String interface_out : outInt) {
 			try {
 				g800s.add(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+interface_out, HomeController.NS+interface_out+"maps_output", HomeController.NS+interface_out+"Output").get(0));
@@ -417,7 +407,7 @@ public class Provisioning {
 			classesFromIndividual= HomeController.Search.GetClassesFrom(g800, InfModel);
 			ind_class.put(g800, classesFromIndividual);
 			ArrayList<DtoInstanceRelation> rel= HomeController.Search.GetInstanceRelations(HomeController.InfModel, g800);
-			
+
 			for (DtoInstanceRelation dtoInstanceRelation : rel) {
 				String[] triple = new String[3];
 				triple[0]=g800;
@@ -425,7 +415,7 @@ public class Provisioning {
 				triple[2]=dtoInstanceRelation.Target;
 				triples_g800.add(triple);
 			}
-			
+
 		}
 	}
 
@@ -434,17 +424,18 @@ public class Provisioning {
 		// TODO Auto-generated method stub
 		HashMap<String, String> key = new HashMap<String, String>();
 		key.put("INPUT", tipo_inp);
-		key.put("OUTPUT", tipo_inp);
+		key.put("OUTPUT", tipo_out);
 		try{
 			HashMap<String, String> value = values.get(key);
-			ArrayList<Statement> all= new ArrayList<Statement>();
-			Individual rp= Model.createIndividual(a.getLocalName()+"rp"+b.getLocalName(),Model.getResource(HomeController.NS+key.get("RP")));
-			Individual binding= Model.createIndividual(a.getLocalName()+"rp"+b.getLocalName(),Model.getResource(key.get("RP_BINDING")));
+			OntClass ClassImage = Model.getOntClass(HomeController.NS+value.get("RP"));
+			Individual rp = Model.createIndividual(HomeController.NS+a.getLocalName()+"rp"+b.getLocalName(),ClassImage);
+			HomeController.Model=Model;
+			Individual binding= Model.createIndividual(HomeController.NS+a.getLocalName()+"binding"+b.getLocalName(),Model.getResource(HomeController.NS+value.get("RP_BINDING")));
 			ArrayList<Statement> stmts = new ArrayList<Statement>();
-			stmts.add(HomeController.Model.createStatement(binding, Model.getProperty(HomeController.NS+key.get("RP_RELATION")), rp));
-			stmts.add(HomeController.Model.createStatement(binding, Model.getProperty(HomeController.NS+key.get("RP_BINDING_REL_IN")), b));
-			stmts.add(HomeController.Model.createStatement(binding, Model.getProperty(HomeController.NS+key.get("RP_BINDING_REL_OUT")), a));
-			Model.add(stmts);
+			stmts.add(HomeController.Model.createStatement(binding, Model.getProperty(HomeController.NS+HomeController.NS+value.get("RP_RELATION")), rp));
+			stmts.add(HomeController.Model.createStatement(binding, Model.getProperty(HomeController.NS+HomeController.NS+value.get("RP_BINDING_REL_IN")), b));
+			stmts.add(HomeController.Model.createStatement(binding, Model.getProperty(HomeController.NS+HomeController.NS+value.get("RP_BINDING_REL_OUT")), a));
+			HomeController.Model.add(stmts);
 		}catch(Exception e){
 			e = new Exception("not bound");
 		}
