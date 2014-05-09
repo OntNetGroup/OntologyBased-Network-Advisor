@@ -39,12 +39,20 @@ import br.ufes.inf.padtec.tnokco.business.Reader;
 
 @Controller
 public class ProvisioningController{
+	private final int maxElements = 10;
 	
 	@RequestMapping(method = RequestMethod.GET, value="/newEquipment")
 	public String newEquipment(HttpSession session, HttpServletRequest request) {
 		request.getSession().setAttribute("txtSindelCode", "");
 		request.getSession().setAttribute("txtSindelCodeBr", "");
 		request.getSession().setAttribute("action", "");
+		
+		for (int i = 1; i <= maxElements; i++) {
+			request.getSession().setAttribute("equipName"+i, "");
+			request.getSession().setAttribute("txtSindel"+i, "");
+			request.getSession().setAttribute("file"+i, "");
+			request.getSession().setAttribute("filename"+i, "");
+		}
 		
 		/*
 		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
@@ -54,7 +62,7 @@ public class ProvisioningController{
 		HomeController.tmpModel = HomeController.Repository.Open(path);
 		HomeController.NS = HomeController.Repository.getNameSpace(HomeController.Model);
 		*/
-     	/*
+     	
 		if(HomeController.Model == null)
 		{
 			String error = "Error! You need to load the model first.";
@@ -62,7 +70,7 @@ public class ProvisioningController{
 			
 			return "index";
 		}
-		*/
+		
 		this.cleanEquipSindel(request);
 		
 		//this.getCandidateInterfacesForConnection(null);
@@ -111,13 +119,83 @@ public class ProvisioningController{
 		return "newEquipment";			
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value="/uploadAndRunEquipType")
-	public String uploadAndRunEquipType(HttpServletRequest request) {
+	@RequestMapping(method = RequestMethod.POST, value="/runEquipTypes")
+	public @ResponseBody DtoResultAjax runEquipTypes(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
+		
+		DtoResultAjax dto = new DtoResultAjax();
+		dto.ok = false;
+		dto.result = "It is necessary to inform the name of the new Equipment.";				
+		
+				
+		
+		for (int i = 0; i < dtoGet.equipments.length; i++) {
+			String individualsPrefixName = dtoGet.equipments[i][0];
+			String sindelParsedCode = dtoGet.equipments[i][1];
+			
+			if(individualsPrefixName == null){
+				return dto;
+			}else if(individualsPrefixName == ""){
+				return dto;
+			}
+			
+			try {		  	      
+				
+				// Populate the model
+				Sindel2OWL so = new Sindel2OWL(HomeController.Model, individualsPrefixName);
+				so.run(sindelParsedCode);
+				
+				HomeController.Model = so.getDtoSindel().model;
+
+				//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+				HomeController.InfModel = so.getDtoSindel().model;
+				// Update list instances
+				HomeController.UpdateLists();
+
+			} catch (InconsistentOntologyException e) {
+
+				String error = "Ontology have inconsistence: " + e.toString();
+				System.out.println(error);
+				request.getSession().setAttribute("errorMensage", error);
+				HomeController.Model = null;
+				HomeController.InfModel = null;
+				HomeController.ListAllInstances = null;
+
+				dto.ok = false;
+				dto.result = error;				
+				return dto;
+
+			} catch (OKCoExceptionInstanceFormat e) {
+
+				String error = "Entity format error: " + e.toString();
+				System.out.println(error);
+				request.getSession().setAttribute("errorMensage", error);
+				HomeController.Model = null;
+				HomeController.InfModel = null;
+				HomeController.ListAllInstances = null;
+
+				dto.ok = false;
+				dto.result = error;				
+				return dto;				
+			}
+		}
+		
+		request.getSession().removeAttribute("errorMensage");      
+
+		dto.ok = true;
+		dto.result = "ok";
+
+		this.cleanEquipSindel(request);
+		
+		return dto;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value="/uploadEquipTypes")
+	public String uploadEquipTypes(HttpServletRequest request) {
 		
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		try{
 			//MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
- 			int maxElements = 10;
+ 			
 			for(int i = 1; i <= maxElements; i++){
 				MultipartFile file = multipartRequest.getFile("file"+i);
 				//Object file = request.getAttribute("file"+i);
@@ -141,6 +219,7 @@ public class ProvisioningController{
 				request.getSession().setAttribute("equipName"+i, equipName);
 				request.getSession().setAttribute("txtSindel"+i, txtSindel);
 				request.getSession().setAttribute("file"+i, file);
+				request.getSession().setAttribute("filename"+i, file.getOriginalFilename());
 				
 			}
 		}  catch (IOException e) {

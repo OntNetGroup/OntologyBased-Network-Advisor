@@ -16,7 +16,7 @@
 		
 		action = "${action}";
 		if(action == "runParser"){
-			alert("teste");
+			runParser();
 		}
 		
 		$('#hideScratch').click(function(){
@@ -57,7 +57,7 @@
 		});	//End load sindel file
 		
 		$('#sindelForm').submit(function(event) {
-			
+			loading();
 			event.preventDefault();
 			var sReturn = "";
 			
@@ -92,7 +92,7 @@
 						"equipmentName": $("#equipName").val()
 						
 					};
-
+				
 				$.ajax({
 					url : $("#sindelForm").attr("action"),
 					data : JSON.stringify(json),
@@ -241,6 +241,19 @@
         
       }); // end document read
 	  
+   // Function loading
+	function loading()
+	{
+	 	var maskHeight = $(document).height();
+		var maskWidth = "100%";//$(document).width();
+	
+		//Define largura e altura do div#maskforloading iguais ás dimensões da tela
+		$('#maskforloading').css({'width':maskWidth,'height':maskHeight});
+		
+		//efeito de transição
+		$('#maskforloading').show();
+	};
+
       function cleanUpHashs(){
   		currentLine = 0;
   	 
@@ -309,8 +322,9 @@
   			s += "!";			
   		}		
   		return s;
-  	}
-	var scratchHidden = false;
+  	};
+  	
+  	var scratchHidden = false;
 	var equipmentTypeHidden = false;
 	
 	function hideScratch(){
@@ -357,6 +371,85 @@
 	
 	var iAdd = 1;
 	var maxElements = 10;
+	
+	function runParser(){
+		loading();
+		var equips = new Array;
+		try{
+  			for(i=1; i<=maxElements; i++){
+  			
+				var sReturn = "";
+				//clean up hashs
+				cleanUpHashs();			
+				
+				txtSindel = document.getElementById("txtSindel"+i).value;
+				equipName = document.getElementById("equipName"+i).value;
+				if(txtSindel != "" && equipName != ""){
+					//Used to get the value of the CodeMirror editor
+					parser.parse(txtSindel);
+					
+					sReturn  = printHashTypeVar(hashTypeVar);								
+					sReturn += printHashRelations(hashRelation);
+					sReturn += printHashAttribute(hashAttribute);
+					
+					document.getElementById("txtSindel"+i).value = sReturn;
+					
+					equips[i-1] = new Array;
+					equips[i-1][0] = equipName;
+					equips[i-1][1] = sReturn;
+				}			
+  			}
+		}catch (e) {
+
+			var html = "<div class=\"alert alert-danger\">" +
+				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+				"<strong>" + "</strong>"+ "On Equipment " + i + ".<br>" + e.message + 
+			"</div>";
+
+			$("#boxerro").prepend(html);
+		
+		}
+		
+		var json = {
+				"ok" : true,
+				"equipments": equips
+				
+			};
+		
+		$.ajax({
+			url : "runEquipTypes",
+			data : JSON.stringify(json),
+			type : "POST",
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+
+			success : function(dto) {
+
+				if(dto.ok == false)
+				{
+					var html = "<div class=\"alert alert-danger\">" +
+					"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+					"<strong>" + "</strong>"+ dto.result + 
+					"</div>";
+	
+					$("#boxerro").prepend(html);
+					
+				} else {
+
+					//load list instances
+					alert("Ok! Going to OKCo..");
+					window.location.href = "list";
+
+				}
+
+			},
+			error:function(x,e){
+				
+				alert("Erro");
+			},					
+		});
+  	};
+  	
 	function hideAll(){
 		for(j=2; j<=maxElements; j++){
 			document.getElementById("div"+j).style.visibility = 'hidden';
@@ -407,7 +500,7 @@
 			</div>
 			
 			<div class="tooltip-demo well" id="equipTypeContainer">
-				<form action="uploadAndRunEquipType" id="equipTypeForm" class="form-horizontal" method="POST" enctype="multipart/form-data" >
+				<form action="uploadEquipTypes" id="equipTypeForm" class="form-horizontal" method="POST" enctype="multipart/form-data" >
 					<%
 					int maxElements = 10;
 					for(int i = 1; i <= maxElements; i++){
@@ -422,11 +515,17 @@
 							outEquipName = equipName;
 						}
 						
+						String fileName = (String)request.getSession().getAttribute("filename"+i);
+						String outFileName = "";
+						if(fileName!=null){
+							outFileName = fileName;
+						}
+						
 						
 					%>
 						<div id="div<%out.print(i);%>">
 							<input id="equipName<%out.print(i);%>" name="equipName<%out.print(i);%>" value="<%out.print(outEquipName);%>"/>
-							<input name="file<%out.print(i);%>" type="file" id="file<%out.print(i);%>" >
+							<input name="file<%out.print(i);%>" type="file" id="file<%out.print(i);%>" value="<%out.print(outFileName);%>">
 							<input id="txtSindel<%out.print(i);%>" name="txtSindel<%out.print(i);%>" type="hidden" value="<%out.print(outTxtSindel);%>"/>
 					<%
 							if(i == 1){
