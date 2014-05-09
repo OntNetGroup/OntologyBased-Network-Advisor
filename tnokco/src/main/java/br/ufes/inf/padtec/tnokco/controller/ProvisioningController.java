@@ -37,48 +37,48 @@ import com.hp.hpl.jena.rdf.model.Statement;
 @Controller
 public class ProvisioningController{
 	private final int maxElements = 10;
-	
+
 	@RequestMapping(method = RequestMethod.GET, value="/newEquipment")
 	public String newEquipment(HttpSession session, HttpServletRequest request) {
 		request.getSession().setAttribute("txtSindelCode", "");
 		request.getSession().setAttribute("txtSindelCodeBr", "");
 		request.getSession().setAttribute("action", "");
-		
+
 		for (int i = 1; i <= maxElements; i++) {
 			request.getSession().setAttribute("equipName"+i, "");
 			request.getSession().setAttribute("txtSindel"+i, "");
 			request.getSession().setAttribute("file"+i, "");
 			request.getSession().setAttribute("filename"+i, "");
 		}
-		
+
 		/*
 		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
-		
+
 		// Load Model
 		HomeController.Model = HomeController.Repository.Open(path);
 		HomeController.tmpModel = HomeController.Repository.Open(path);
 		HomeController.NS = HomeController.Repository.getNameSpace(HomeController.Model);
-		*/
-     	
+		 */
+
 		if(HomeController.Model == null)
 		{
 			String error = "Error! You need to load the model first.";
 			request.getSession().setAttribute("errorMensage", error);
-			
+
 			return "index";
 		}
-		
+
 		this.cleanEquipSindel(request);
-		
+
 		//this.getCandidateInterfacesForConnection(null);
 		//this.provision(null, null);
-		
+
 		return "newEquipment";	//View to return
 	}
-	
+
 	@RequestMapping(value = "/uploadSindelEquip", method = RequestMethod.POST)
 	public String uploadSindelEquip(HttpServletRequest request){
-		
+
 		try {
 
 			HomeController.Factory = new FactoryModel();
@@ -115,32 +115,32 @@ public class ProvisioningController{
 
 		return "newEquipment";			
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value="/runEquipTypes")
 	public @ResponseBody DtoResultAjax runEquipTypes(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
-		
+
 		DtoResultAjax dto = new DtoResultAjax();
 		dto.ok = false;
 		dto.result = "It is necessary to inform the name of the new Equipment.";				
-		
-				
-		
+
+
+
 		for (int i = 0; i < dtoGet.equipments.length; i++) {
 			String individualsPrefixName = dtoGet.equipments[i][0];
 			String sindelParsedCode = dtoGet.equipments[i][1];
-			
+
 			if(individualsPrefixName == null){
 				return dto;
 			}else if(individualsPrefixName == ""){
 				return dto;
 			}
-			
+
 			try {		  	      
-				
+
 				// Populate the model
 				Sindel2OWL so = new Sindel2OWL(HomeController.Model, individualsPrefixName);
 				so.run(sindelParsedCode);
-				
+
 				HomeController.Model = so.getDtoSindel().model;
 
 				//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
@@ -175,49 +175,49 @@ public class ProvisioningController{
 				return dto;				
 			}
 		}
-		
+
 		request.getSession().removeAttribute("errorMensage");      
 
 		dto.ok = true;
 		dto.result = "ok";
 
 		this.cleanEquipSindel(request);
-		
+
 		return dto;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value="/uploadEquipTypes")
 	public String uploadEquipTypes(HttpServletRequest request) {
-		
+
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		try{
 			//MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
- 			
+
 			for(int i = 1; i <= maxElements; i++){
 				MultipartFile file = multipartRequest.getFile("file"+i);
 				//Object file = request.getAttribute("file"+i);
 				//Enumeration teste = request.getAttributeNames();
-				
+
 				if(file.getSize() <= 0){
 					throw new OKCoExceptionFileFormat("Select one file on the position " + i + ".");
 				}else if(! file.getOriginalFilename().endsWith(".sindel"))
 				{
 					throw new OKCoExceptionFileFormat("Please select owl file on the position " + i + ".");		
 				}
-				
+
 				InputStream in = file.getInputStream();
 				InputStreamReader r = new InputStreamReader(in);
 				BufferedReader br = new BufferedReader(r);
 				Reader readerFile = new Reader();
-	
+
 				String txtSindel = readerFile.readFile(br);
 				String equipName = multipartRequest.getParameter("equipName"+i);
-				
+
 				request.getSession().setAttribute("equipName"+i, equipName);
 				request.getSession().setAttribute("txtSindel"+i, txtSindel);
 				request.getSession().setAttribute("file"+i, file);
 				request.getSession().setAttribute("filename"+i, file.getOriginalFilename());
-				
+
 			}
 		}  catch (IOException e) {
 			String error = "File not found.\n" + e.getMessage();
@@ -227,34 +227,34 @@ public class ProvisioningController{
 			String error = "File format error: " + e.getMessage();
 			multipartRequest.getSession().setAttribute("errorMensage", error);			
 		}
-		
+
 		request.getSession().setAttribute("action", "runParser");
 		return "newEquipment";
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value="/runEquipScratch")
 	public @ResponseBody DtoResultAjax runEquipScratch(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
 
 		String sindelCode = dtoGet.result;
 		DtoResultAjax dto = new DtoResultAjax();
 		String individualsPrefixName = dtoGet.equipmentName;
-		
+
 		dto.ok = false;
 		dto.result = "It is necessary to inform the name of the new Equipment.";				
-		
+
 		if(individualsPrefixName == null){
 			return dto;
 		}else if(individualsPrefixName == ""){
 			return dto;
 		}		
-		
-		
+
+
 		try {		  	      
-			
+
 			// Populate the model
 			Sindel2OWL so = new Sindel2OWL(HomeController.Model, individualsPrefixName);
 			so.run(sindelCode);
-			
+
 			HomeController.Model = so.getDtoSindel().model;
 
 			//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
@@ -297,10 +297,10 @@ public class ProvisioningController{
 		dto.result = "ok";
 
 		this.cleanEquipSindel(request);
-		
+
 		return dto;
 	}
-	 
+
 	@RequestMapping(method = RequestMethod.GET, value="/cleanEquipSindel")
 	public @ResponseBody DtoResultAjax cleanEquipSindel(HttpServletRequest request) {
 
@@ -313,47 +313,47 @@ public class ProvisioningController{
 
 		return dto;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value="/provisioning")
 	public String provisioning(HttpSession session, HttpServletRequest request) {
-     	
+
 		return "provisioning";	//View to return
 	}
-	
+
 	public static DtoResultAjax binds(String outInt, String inInt,HttpServletRequest request) {
 
 		DtoResultAjax dto = new DtoResultAjax();
-		
-     	String outputNs = "";
-     	String inputNs = "";
-     	
-     	Search search = new Search(HomeController.NS);
+
+		String outputNs = "";
+		String inputNs = "";
+
+		Search search = new Search(HomeController.NS);
 		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, HomeController.NS+outInt);
-     	for (DtoInstanceRelation outIntRelation : outIntRelations) {
-     		if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
+		for (DtoInstanceRelation outIntRelation : outIntRelations) {
+			if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
 				outputNs = outIntRelation.Target;
 				outputNs = outputNs.replace(HomeController.NS, "");
 				break;
 			}
 		}		
-		
+
 		ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, HomeController.NS+inInt);
 		for (DtoInstanceRelation inIntRelation : inIntRelations) {
-     		if(inIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
+			if(inIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
 				inputNs = inIntRelation.Target;
 				inputNs = inputNs.replace(HomeController.NS, "");
 				break;
 			}
 		}
-		
+
 		//binds Interface out with in
 		Individual a = HomeController.Model.getIndividual(HomeController.NS+outInt);
 		Individual b = HomeController.Model.getIndividual(HomeController.NS+inInt);
 		ObjectProperty rel = HomeController.Model.getObjectProperty(HomeController.NS+"interface_binds");
 		Statement stmt = HomeController.Model.createStatement(a, rel, b);
 		HomeController.Model.add(stmt);
-		
-		
+
+
 		if(!outputNs.equals("") && !inputNs.equals("")){
 			a = HomeController.Model.getIndividual(HomeController.NS+outputNs);
 			b = HomeController.Model.getIndividual(HomeController.NS+inputNs);
@@ -373,19 +373,32 @@ public class ProvisioningController{
 			Provisioning.bindsSpecific(a,b,tiposA.get(0),tiposB.get(0));
 
 		}
-		
+
+		HomeController.InfModel = HomeController.Model;
+		try {
+			HomeController.UpdateLists();
+		} catch (InconsistentOntologyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OKCoExceptionInstanceFormat e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//	Individual teste = HomeController.Model.getIndividual("http://www.semanticweb.org/ontologies/2014/5/ontology.owl#sktf3_o1rpskaf1_i1");
+		//	Individual teste2 = HomeController.Model.getIndividual("macacada");
 		dto.ok = true;
 		dto.result = "ok";
 
 		return dto;
+
 	}
-	
-	
+
+
 
 	public static ArrayList<String> getCandidateInterfacesForConnection(String outIntNs){
 		//pego a primeira interface de output que eu achar, só pra simular a entrada de um argumento
 		//ou seja, esse bloco vai ser apagado
-		
+
 		//Instance outputInterface = null;
 		Instance outputInterface = null;
 		for (Instance instance : HomeController.ListAllInstances) {
@@ -397,7 +410,7 @@ public class ProvisioningController{
 					break;
 				}
 			}
-			*/
+			 */
 			String instNs = instance.name;
 			instNs = instNs.replace(instance.ns, "");
 			outIntNs = outIntNs.replace(instance.ns, "");
@@ -406,11 +419,11 @@ public class ProvisioningController{
 				break;
 			}
 		}
-		
+
 		//busco as relações dessa instância de interface
 		Search search = new Search(HomeController.NS);
 		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
-		
+
 		//pego o namespace completo da relação de maps_out
 		String outputNs = "";
 		String eqOutNs = "";
@@ -424,7 +437,7 @@ public class ProvisioningController{
 				interfaceBindsNs = outRelation.Target;
 			}
 		}
-		
+
 		Boolean outputAlreadyConnected = false;
 		if(!interfaceBindsNs.equals("")){
 			outputAlreadyConnected = true;
@@ -437,7 +450,7 @@ public class ProvisioningController{
 				break;
 			}
 		}
-		
+
 		//pego todas as instancias de interface de input
 		ArrayList<Instance> inputInterfaces = new ArrayList<Instance>(); 
 		for (Instance instance : HomeController.ListAllInstances) {
@@ -449,12 +462,12 @@ public class ProvisioningController{
 				}
 			}
 		}
-		
+
 		ArrayList<String> allowedInputInterfaces = new ArrayList<String>();
 		//percorro todas as classes do output do TPF
 		for (String outputClassName : output.ListClasses) {
 			outputClassName = outputClassName.replace(HomeController.NS, "");
-			
+
 			//percorro todas as instancias de interface de input encontradas
 			for (Instance inputInterface : inputInterfaces) {
 				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
@@ -471,7 +484,7 @@ public class ProvisioningController{
 						alreadyConnected = true;
 					}
 				}
-				
+
 				//busco a instancia do input mapeado pela interface 
 				Instance input = null;
 				for (Instance instance : HomeController.ListAllInstances) {
@@ -480,7 +493,7 @@ public class ProvisioningController{
 						break;
 					}
 				}
-				
+
 				Boolean hasAllowedRelation = false;
 				//percorro todas as classes do input
 				for(String inputClassName : input.ListClasses){
@@ -488,16 +501,16 @@ public class ProvisioningController{
 					HashMap<String, String> tf1 = new HashMap<String, String>();
 					tf1.put("INPUT", inputClassName);
 					tf1.put("OUTPUT", outputClassName);
-					
+
 					//verifica na hash do cassio se existe a combinacao entre inputClassName e outputClassName
 					HashMap<String, String> allowedRelation = Provisioning.values.get(tf1);
-					
+
 					if(allowedRelation != null){
 						hasAllowedRelation = true;
 						break;
 					}
 				}
-				
+
 				String interfaceReturn = "";
 				eqInNs = eqInNs.replace(inputInterface.ns, "");
 				inputNs = inputNs.replace(inputInterface.ns, "");
@@ -507,7 +520,7 @@ public class ProvisioningController{
 				//interfaceReturn += inputNs;
 				interfaceReturn += inputInterface.name;
 				interfaceReturn += "#";
-				
+
 				if(hasAllowedRelation && !eqInNs.equals(eqOutNs) && !outputAlreadyConnected && !alreadyConnected){
 					if(allowedInputInterfaces.contains(interfaceReturn+"false;")){
 						allowedInputInterfaces.remove(interfaceReturn+"false;");
@@ -518,15 +531,15 @@ public class ProvisioningController{
 						interfaceReturn += "false;";
 					}					
 				}
-				
-				
-				
+
+
+
 				if(!allowedInputInterfaces.contains(interfaceReturn) && !allowedInputInterfaces.contains(interfaceReturn.replace("false;", "true;"))){
 					allowedInputInterfaces.add(interfaceReturn);
 				}				
 			}
 		}
-		
+
 		return allowedInputInterfaces;
 	}
 }
