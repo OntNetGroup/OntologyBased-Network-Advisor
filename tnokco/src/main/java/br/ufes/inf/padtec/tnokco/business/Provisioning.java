@@ -370,11 +370,16 @@ public class Provisioning {
 
 	public static ArrayList<String> getAllG800(){
 		ArrayList<String> allIndividuals= HomeController.Search.GetAllInstances(Model, InfModel);
+		ArrayList<String> copy = new ArrayList<String>();
+		
 		for (String ind : allIndividuals) {
 			ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(ind, InfModel);
-			if((classesFromIndividual.contains("Interface") || classesFromIndividual.contains("Site") || classesFromIndividual.contains("Equipment"))){
-				allIndividuals.remove(ind);
+			if((classesFromIndividual.contains(HomeController.NS+"Interface") || classesFromIndividual.contains(HomeController.NS+"Site") || classesFromIndividual.contains(HomeController.NS+"Equipment"))){
+				copy.add(ind);
 			}
+		}
+		for (String string : copy) {
+			allIndividuals.remove(string);
 		}
 		setRelationsG800(allIndividuals);
 		return allIndividuals;
