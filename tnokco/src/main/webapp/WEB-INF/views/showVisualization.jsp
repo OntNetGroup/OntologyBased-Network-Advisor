@@ -1,3 +1,4 @@
+<%@page import="com.hp.hpl.jena.sparql.util.StringUtils"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@include file="../templates/header.jsp"%>
 <%
@@ -8,6 +9,7 @@
 	String hashTypes = (String) request.getSession().getAttribute("hashTypes");
 	String nameSpace = (String) request.getSession().getAttribute("nameSpace");
 	Boolean canClick = (Boolean) request.getSession().getAttribute("canClick");
+	int size = (Integer) request.getSession().getAttribute("size");
 	
 %>
 <script>
@@ -23,8 +25,12 @@
 				}else{
 					out.print("canClickable = false;");
 				}
+			if(size == 1)
+				out.println("graph = startArbor(\"#viewport\", 1.0);");
+			else
+				out.println("graph = startArbor(\"#viewport\", 0.91);");
 			%>
-			graph = startArbor("#viewport", 0.91);
+			
 			addNodes(graph);
 		});
 

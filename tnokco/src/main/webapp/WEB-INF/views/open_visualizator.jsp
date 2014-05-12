@@ -1,16 +1,23 @@
 <%@page import="java.util.ArrayList"%>
 <%@include file="../templates/header.jsp"%>
 <%
+	ArrayList<String> equipements = (ArrayList<String>) request.getSession().getAttribute("equipments");
 	ArrayList<String> sites = (ArrayList<String>) request.getSession().getAttribute("sites");
 %>
 <script>
 <% 
 	if(!sites.isEmpty())
 		out.println("strUser = '"+sites.get(0).substring(sites.get(0).indexOf("#")+1)+"'");
+	if(!equipements.isEmpty())
+	out.println("strUserEquip = '"+equipements.get(0).substring(equipements.get(0).indexOf("#")+1)+"'");
 %>
 function changedSiteCB(){
 	e = document.getElementById("selected");
 	strUser = e.options[e.selectedIndex].value;
+}
+function changedEquipmentCB(){
+	e = document.getElementById("selected_equip");
+	strUserEquip = e.options[e.selectedIndex].value;
 }
 </script>
 
@@ -109,13 +116,48 @@ function changedSiteCB(){
 					</tr>
 					<tr>
 						<td><b>G.800 elements from a specific Equipment</b></td>
+						<td>
+								<% 
+									if(equipements.isEmpty()){
+								%>
+										No equipments
+								<%
+									}else{
+										%>
+										<table style="border-collapse:collapse; border:0; margin-left:15px;">
+											<tr>
+												<td style="border-top:0;">
+													<a class="btn btn-success" 
+														href="/tnokco/open_g800_visualization_from_equip" onclick="this.href = '/tnokco/open_g800_visualization_from_equip?selected='+strUserEquip"> <i
+															class="icon-zoom-in"></i>
+													</a>
+												</td>
+												<td style="border-top:0;">
+										<%
+											out.println("<select name=\"selected_equip\" id=\"selected_equip\" value=\"Select some Equipment\" onchange=\"changedEquipmentCB()\">");
+											for(int i = 0; i < equipements.size(); i++){
+												out.println("<option value=\""+equipements.get(i).substring(equipements.get(i).indexOf("#")+1)+"\"  "+((i == 0)?"selected_equip":"")+" >"+equipements.get(i).substring(equipements.get(i).indexOf("#")+1)+"</option>");
+											}
+											out.println("</select>");
+										%>
+												</td>
+											</tr>
+										</table> 
+										<%
+									}
+								%> 
+						</td>
+					</tr>
+					<tr>
+						<td><b>All network information</b></td>
 						<td style="padding-left: 30px;">
 							<a class="btn btn-success" 
-								href="/tnokco/open_network_visualization?"> <i
-									class="icon-zoom-in"></i>
+								href="/tnokco/graphVisualizer?typeView=ALL&id=0" target="_blank"> <i
+									class="icon-zoom-in" ></i>
 							</a> 
 						</td>
 					</tr>
+					
 				</table>
 
 			</div>

@@ -107,14 +107,43 @@
 			//ctx.fillText (edge.data.name, ((pt1.x + pt2.x) / 2)-((edge.data.name.length/3)*10), ((pt1.y + pt2.y) / 2)-5);			
 			
 			//to put newline in filltext we need to put one-up-one
-			var nameSize = ctx.measureText(edge.data.name);
-			var x = ((pt1.x + pt2.x) / 2)-((edge.data.name.length/3)*2);
-			var y = ((pt1.y + pt2.y) / 2);
-			var lineHeight = nameSize.width ;
-			var lines = edge.data.name.split(",");
-			for (var i = 0; i < lines.length; ++i) {
-				ctx.fillText(lines[i], x, y-((lines.length)/2-i)*10);				
+		    var lines = new Array();
+		    var edgeArray = new Array();
+			if(edge.data.name.indexOf(",") != -1){
+				lines = edge.data.name.split(",");	
+			}else{
+				var edgesSrcTrg = particleSystem.getEdges(edge.source,edge.target);
+				var edgesTrgSrc = particleSystem.getEdges(edge.target,edge.source);
+				for(var i = 0; i < edgesSrcTrg.length; i++){
+					if($.inArray(edgesSrcTrg[i].data.name, lines) == -1){
+						lines.push(edgesSrcTrg[i].data.name);
+						edgeArray.push(edgesSrcTrg[i]);
+						particleSystem.pruneEdge(edgesSrcTrg[i]);
+					}
+				}
+				for(var i = 0; i < edgesTrgSrc.length; i++){
+					if($.inArray(edgesTrgSrc[i].data.name, lines) == -1){
+						lines.push(edgesTrgSrc[i].data.name);
+						edgeArray.push(edgesTrgSrc[i]);
+						particleSystem.pruneEdge(edgesTrgSrc[i]);
+					}
+				}
+				if(edgesSrcTrg.length == 0 && edgesTrgSrc.length == 0){
+					if($.inArray(edge.data.name, lines) == -1){
+						lines.push(edge.data.name);
+					}	
+				}
 			}
+			
+			var x = ((pt1.x + pt2.x) / 2)-((edge.data.name.length/3)*2);
+			var y = ((pt1.y + pt2.y) / 2);			
+			for (var i = 0; i < lines.length; ++i) {
+				ctx.fillText(lines[i], x, y-((lines.length)/2-i)*10);		
+			}
+			for (var i = 0; i < edgeArray.length; ++i) {
+				particleSystem.addEdge(edgeArray[i].source,edgeArray[i].target,edgeArray[i].data);		
+			}
+			
 					
           ctx.restore()
 
