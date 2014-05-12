@@ -132,9 +132,9 @@ public class VisualizationController {
 				if(!hashIndv.containsKey(stCon[0]) || !hashIndv.containsKey(stCon[2]))
 					continue;
 				valuesGraph += "graph.addEdge(graph.addNode(\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[0]))+"\"}),";
+				valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[0]))+"_AZUL\"}),";
 				valuesGraph += "graph.addNode(\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[2]))+"\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
+				valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[2]))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
 			}
 			
 			request.getSession().setAttribute("canClick", false);
@@ -216,9 +216,9 @@ public class VisualizationController {
 			if(!hashIndv.containsKey(stCon[0]) || !hashIndv.containsKey(stCon[2]))
 				continue;
 			valuesGraph += "graph.addEdge(graph.addNode(\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\", ";
-			valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[0]))+"\"}),";
+			valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[0]))+"_AZUL\"}),";
 			valuesGraph += "graph.addNode(\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\", ";
-			valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[2]))+"\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
+			valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[2]))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
 		}
 
 		//session
