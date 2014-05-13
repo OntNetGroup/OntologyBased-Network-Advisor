@@ -264,6 +264,7 @@ public class Provisioning {
 
 	// get all equipments from specific site
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
+		equipments = new ArrayList<String>();
 		equipments =  HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"has_equipment", HomeController.NS+"Equipment");
 		return getEquipmentsConnectionsBinds();
 	}
@@ -335,7 +336,7 @@ public class Provisioning {
 			}
 			equips.add(e); 
 		}
-
+		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
 		return equips;
 	}
 
