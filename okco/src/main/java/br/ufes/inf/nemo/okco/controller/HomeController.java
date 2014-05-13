@@ -142,9 +142,11 @@ public class HomeController {
 			  if(optionsReasoner.equals("hermit"))
 			  {
 				  Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
+				  
 			  } else if(optionsReasoner.equals("pellet"))
 			  {
 				  Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
+				  
 			  } else {
 				  
 				  throw new OKCoExceptionReasoner("Please select a reasoner available.");
@@ -333,6 +335,27 @@ public class HomeController {
 		} catch (OKCoExceptionInstanceFormat e) {
 			
 			throw e;
+		}
+    }
+	
+	public static void UpdateAddIntanceInLists(String instanceURI) throws InconsistentOntologyException, OKCoExceptionInstanceFormat {
+		
+		try {
+			
+	    	//Get model definitions on list of instances
+	    	
+			ArrayList<DtoDefinitionClass> intanceDefinitions = Search.GetModelDefinitionsInInstancesAndAddToList(instanceURI, Model, InfModel, ListAllInstances, ManagerInstances);
+		  	ModelDefinitions.addAll(intanceDefinitions); 
+			
+			// Organize data (Update the list of all instances)
+			
+	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, intanceDefinitions, Model, InfModel, NS);			
+			ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, InfModel, NS);				
+			
+		} catch (InconsistentOntologyException e) {
+
+			throw e;
+			
 		}
     }
 	

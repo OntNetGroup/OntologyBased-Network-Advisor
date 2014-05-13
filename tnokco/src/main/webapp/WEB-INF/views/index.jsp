@@ -25,6 +25,152 @@
 
 		}); //End load sindel file
 
+		//Chose pellet
+		$('#optionsRadios1').click(function(event) {
+
+			//Pellet
+			
+			$.ajax({
+				url : "selectReasoner" + "?reasoner=" + "pellet",
+				//data : JSON.stringify(json),
+				type : "GET",
+
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success : function(result) {
+
+					if(result == "error")
+					{
+						var html = "<div class=\"alert alert-danger\">"
+							+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+							+ "<strong>"
+							+ "</strong>"
+							+ "Error: Select avalible reasoner." 
+							+ "</div>";
+
+					$(
+							"#boxerro")
+							.prepend(
+									html);
+					}
+
+				}
+			});	
+
+		});
+
+		//Chose hermit
+		$('#optionsRadios2').click(function(event) {
+
+			$.ajax({
+				url : "selectReasoner" + "?reasoner=" + "hermit",
+				//data : JSON.stringify(json),
+				type : "GET",
+
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success : function(result) {
+
+					if(result == "error")
+					{
+						var html = "<div class=\"alert alert-danger\">"
+							+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+							+ "<strong>"
+							+ "</strong>"
+							+ "Error: Select avalible reasoner." 
+							+ "</div>";
+
+					$(
+							"#boxerro")
+							.prepend(
+									html);
+					}
+
+				}
+			});
+
+		});
+
+		//Chose load first
+		$('#loadReasonerFirstCheckbox').click(function(event) {
+			
+			if($("#loadReasonerFirstCheckbox").prop('checked'))
+			{
+				
+				//Check
+
+				$.ajax({
+					url : "loadFirst" + "?loadFirst=" + "true",
+					//data : JSON.stringify(json),
+					type : "GET",
+
+					beforeSend : function(xhr) {
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("Content-Type", "application/json");
+					},
+					success : function(result) {
+
+						if(result == "error")
+						{
+							var html = "<div class=\"alert alert-danger\">"
+								+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+								+ "<strong>"
+								+ "</strong>"
+								+ "Error: Check/Uncheck problem happens. Try again." 
+								+ "</div>";
+
+						$(
+								"#boxerro")
+								.prepend(
+										html);
+						}
+
+					}
+				});
+			}
+			
+			else {
+				
+				
+				//Uncheck
+				
+				$.ajax({
+					url : "loadFirst" + "?loadFirst=" + "false",
+					//data : JSON.stringify(json),
+					type : "GET",
+
+					beforeSend : function(xhr) {
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("Content-Type", "application/json");
+					},
+					success : function(result) {
+
+						if(result == "error")
+						{
+							var html = "<div class=\"alert alert-danger\">"
+								+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+								+ "<strong>"
+								+ "</strong>"
+								+ "Error: Check/Uncheck problem happens. Try again." 
+								+ "</div>";
+
+						$(
+								"#boxerro")
+								.prepend(
+										html);
+						}
+
+					}
+				});
+			}
+
+		});
+		
+
 	}); //end document ready
 </script>
 
@@ -67,39 +213,31 @@
 						
 						<h2>Reasoner settings:</h2>
 						<div class="tooltip-demo well">
+
+							<div class="controls" style="margin-bottom:8px">
+
+								<label class="radio"> <span class=""><input
+										type="radio" name="optionsReasoner" id="optionsRadios1"
+										value="pellet"></span> Pellet
+								</label>
+								<div style="clear: both"></div>
+								<label class="radio"> <span class="checked"><input
+										type="radio" name="optionsReasoner" id="optionsRadios2"
+										value="hermit" checked="checked"></span> Hermit
+								</label>
+								<div style="clear: both"></div>
+
+							</div>
 							
-									<form action="selectReasoner" class="form-horizontal"
-										enctype="multipart/form-data" method="POST">
-
-										<div class="controls" style="margin-bottom:8px">
-
-											<label class="radio"> <span class=""><input
-													type="radio" name="optionsReasoner" id="optionsRadios1"
-													value="pellet"></span> Pellet
-											</label>
-											<div style="clear: both"></div>
-											<label class="radio"> <span class="checked"><input
-													type="radio" name="optionsReasoner" id="optionsRadios2"
-													value="hermit" checked="checked"></span> Hermit
-											</label>
-											<div style="clear: both"></div>
-
-										</div>
+							<label
+								class="checkbox inline">
+								
+									<input type="checkbox" name="loadReasonerFirstCheckbox"
+										id="loadReasonerFirstCheckbox" />
+									 Use reasoner in load
+							</label>
 										
-										<label
-											class="checkbox inline">
-											
-												<input type="checkbox" name="loadReasonerFirstCheckbox"
-													id="loadReasonerFirstCheckbox" checked="checked" />
-												 Use reasoner in load
-										</label>
-										
-										<div class="" style="margin-top: 5px; margin-left:20px">
-											 <input type="submit" class="btnload"
-												name="submit" value="Select Reasoner" />
-												</div>
-										
-									</form>
+									
 						</div>
 						<h2>Network Input Information:</h2>
 						<div class="tooltip-demo well">
@@ -112,7 +250,9 @@
 										<div class="controls">
 											<input name="file" type="file"> <input type="submit" class="btnload"
 												name="submit" value="Upload" />
+											
 										</div>
+										
 									</form>
 								</li>
 								<li style="margin-top: 20px;" style="margin-top: 10px;">
@@ -143,6 +283,7 @@
 								</li>
 								
 								<!-- OKCo -->
+								
 								<li style="margin-top: 20px;">
 									<form action="uploadOwl" class="form-horizontal"
 										enctype="multipart/form-data" method="POST">
@@ -152,6 +293,7 @@
 											<input name="file" type="file"> <input type="submit" class="btnload"
 												name="submit" value="Upload" />
 										</div>
+										
 									</form>
 								</li>
 								

@@ -387,37 +387,7 @@ $(document).ready(function() {
 								
 						<li><a href="#" class=""><i class="icon-exclamation-sign"></i><span
 								class="hidden-sm"> About</span></a></li>
-					
-					
-						<!-- 
-						<li><a href="/tnokco/sindel"><i class="icon-eye-open"></i><span
-								class="hidden-sm"> Sindel Editor</span></a></li>
-						<li><a href="/tnokco/condel"><i class="icon-eye-open"></i><span
-								class="hidden-sm"> Condel Editor</span></a></li>
-								
-						<li><a href="/tnokco/open_visualizator"><i class="icon-eye-open"></i><span	
-								class="hidden-sm"> Open Visualizator</span></a></li>
-								
-						<li><a href="/tnokco/list"><i class="icon-dashboard"></i><span
-								class="hidden-sm"> OKCo</span></a></li>
-								
-						<li><a href="/tnokco/getModel"><i class="icon-eye-open"></i><span
-								class="hidden-sm"> Export OWL File</span></a></li>
-								
-						<li><a href="/tnokco/getCondel"><i class="icon-eye-open"></i><span
-								class="hidden-sm"> Export Condel File</span></a></li>
-						
-						<li><a href="/tnokco/newEquipment"><i class="icon-eye-open"></i><span
-								class="hidden-sm"> New Equipments</span></a></li>
-<<<<<<< .mine								
-						<li><a href="/tnokco/open_equipment_visualization"><i class="icon-eye-open"></i><span
-=======						<li><a href="/tnokco/provisoning_visualization"><i class="icon-eye-open"></i><span
->>>>>>> .theirs								class="hidden-sm"> Provisioning</span></a></li>
-								
-						<li><a href="/tnokco/faq" class=""><i class="icon-eye-open"></i><span
-								class="hidden-sm"> FAQ</span></a></li>
-								
-						-->
+
 					</ul>
 				</div>
 			</div>

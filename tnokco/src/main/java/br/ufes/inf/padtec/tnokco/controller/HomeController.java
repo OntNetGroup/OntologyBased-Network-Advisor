@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -87,10 +88,16 @@ public class HomeController implements ServletContextAware{
 		{
 			request.getSession().removeAttribute("errorMensage");
 			request.getSession().removeAttribute("loadOk");
-
+			
 			//Initializing variables
+			
 			Factory = new FactoryModel();
-			Repository = Factory.GetRepository();				
+			Repository = Factory.GetRepository();
+			
+			//Select Reasoner
+			
+			Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
+			reasoningOnFirstLoad = false;
 			
 			//load g800
 
@@ -98,6 +105,9 @@ public class HomeController implements ServletContextAware{
 			
 			// Load Model
 			HomeController.Model = Repository.Open(path);
+			
+			//Load infModel
+			HomeController.InfModel = Repository.CopyModel(HomeController.Model);
 
 			// Name space
 			HomeController.NS = Repository.getNameSpace(HomeController.Model);
@@ -111,6 +121,9 @@ public class HomeController implements ServletContextAware{
 
 			//List modified instances
 			HomeController.ListModifiedInstances = new ArrayList<String>();			
+			
+			//List All instances
+			HomeController.ListAllInstances = new ArrayList<Instance>(); 
 
 			return "index";	//View to return
 			
@@ -153,76 +166,58 @@ public class HomeController implements ServletContextAware{
 			return "login";
 		}
 	}
+	
+	/*AJAX - Select reasoner*/
+	@RequestMapping(value="/selectReasoner", method = RequestMethod.GET)
+	public @ResponseBody String selectReasoner(@RequestParam String reasoner) {    
 
-	
-	//selectReasoner
-	@RequestMapping(value = "/selectReasoner", method = RequestMethod.POST) 
-	public String uploadOwl(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner){
-	
-		String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
-		
-		this.reasoningOnFirstLoad = true;
-		
-		try {			
-		
-			//first load reasoning
-			if (loadReasonerFirstCheckbox != null)
-			{
-				if(loadReasonerFirstCheckbox.equals("on"))
-				{
-					reasoningOnFirstLoad = true;
-				}
-			} else {
-				
-				reasoningOnFirstLoad = false;
-			}
-	
-			//Select reasoner
-			if(optionsReasoner.equals("hermit"))
-			{
-				Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
-	
-			} else if(optionsReasoner.equals("pellet"))
-			{
-				Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
-				
-			} else {
-	
+		String result = "ok";
+		if(reasoner.equals("hermit"))
+		{
+			Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
+
+		} else if(reasoner.equals("pellet"))
+		{
+			Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
+			
+		} else {
+
+			try {
 				throw new OKCoExceptionReasoner("Please select a reasoner available.");
+			} catch (OKCoExceptionReasoner e) {
+				
+				result = "error";
 			}
-		
-		} catch (OKCoExceptionReasoner e) {
-
-			String error = "Reasoner error: " + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);
-			Model = null;
-			tmpModel = null;
-			InfModel = null;
-			ListAllInstances = null;
-			ListModifiedInstances = null;
-			Reasoner = null;
-
-			return "index";
 		}
-		
-		return "index";
+
+		return result;		  
+	}
+	
+	/*AJAX - Load first*/
+	@RequestMapping(value="/loadFirst", method = RequestMethod.GET)
+	public @ResponseBody String loadFirst(@RequestParam String loadFirst) {    
+
+		String result = "ok";
+		if(loadFirst.equals("true"))
+		{
+			reasoningOnFirstLoad = true;
+
+		} else if(loadFirst.equals("false"))
+		{
+			reasoningOnFirstLoad = false;
+			
+		} else {	
+			
+			result = "error";
+		}
+
+		return result;		  
 	}
 	
 	@RequestMapping(value = "/uploadOwl", method = RequestMethod.POST) 
 	public String uploadOwl(HttpServletRequest request){
 
 		try {
-			
-			if(HomeController.Reasoner == null)
-			{
-				String error = "Reasoner error: Select some reasoner";
-				request.getSession().setAttribute("errorMensage", error);
-				
-				return "index";
-				
-			} else {
-				request.getSession().removeAttribute("errorMensage");
-			}
 
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
@@ -232,6 +227,8 @@ public class HomeController implements ServletContextAware{
 				throw new OKCoExceptionFileFormat("Please select owl file.");
 			}
 
+			Repository = Factory.GetRepository();
+			
 			// Load Model
 			InputStream in = file.getInputStream();
 			Model = Repository.Open(in);
@@ -249,7 +246,8 @@ public class HomeController implements ServletContextAware{
 			ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
 
 			//Save temporary model
-			tmpModel = Repository.CopyModel(Model);			
+			tmpModel = Repository.CopyModel(HomeController.Model);
+			InfModel = Repository.CopyModel(HomeController.Model);
 			
 			if(reasoningOnFirstLoad == true)
 			{
@@ -263,7 +261,10 @@ public class HomeController implements ServletContextAware{
 			}
 
 			//List modified instances
-			ListModifiedInstances = new ArrayList<String>();		
+			ListModifiedInstances = new ArrayList<String>();
+			
+			//List All instances
+			HomeController.ListAllInstances = new ArrayList<Instance>();
 
 			// Update list instances
 			UpdateLists();
@@ -478,7 +479,7 @@ public class HomeController implements ServletContextAware{
 	    	//Get model definitions on list of instances
 	    	
 		  	ModelDefinitions = Search.GetModelDefinitionsInInstances(ListAllInstances, InfModel);
-			
+		  	
 			// Organize data (Update the list of all instances)
 			
 	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, Model, InfModel, NS);			
@@ -494,6 +495,27 @@ public class HomeController implements ServletContextAware{
 		}
 	}
 
+	public static void UpdateAddIntanceInLists(String instanceURI) throws InconsistentOntologyException, OKCoExceptionInstanceFormat {
+		
+		try {
+			
+	    	//Get model definitions on list of instances
+	    	
+			ArrayList<DtoDefinitionClass> intanceDefinitions = Search.GetModelDefinitionsInInstancesAndAddToList(instanceURI, Model, InfModel, ListAllInstances, ManagerInstances);
+		  	ModelDefinitions.addAll(intanceDefinitions); 
+			
+			// Organize data (Update the list of all instances)
+			
+	    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, intanceDefinitions, Model, InfModel, NS);			
+			ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, InfModel, NS);				
+			
+		} catch (InconsistentOntologyException e) {
+
+			throw e;
+			
+		}
+    }
+	
 	public static void UpdateListsModified()
 	{
 		// Update list instances modified

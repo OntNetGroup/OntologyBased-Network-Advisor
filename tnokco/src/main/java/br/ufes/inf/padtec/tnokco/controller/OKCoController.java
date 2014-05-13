@@ -1,7 +1,7 @@
 package br.ufes.inf.padtec.tnokco.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
-import br.inf.nemo.padtec.tnokco.TNOKCOGraphPlotting;
+import br.inf.nemo.padtec.wokco.WOKCOGraphPlotting;
 import br.ufes.inf.nemo.okco.model.DataPropertyValue;
 import br.ufes.inf.nemo.okco.model.DtoClassifyInstancePost;
+import br.ufes.inf.nemo.okco.model.DtoCommitMaxCard;
 import br.ufes.inf.nemo.okco.model.DtoCommitPost;
 import br.ufes.inf.nemo.okco.model.DtoCompleteClass;
 import br.ufes.inf.nemo.okco.model.DtoCreateDataValuePost;
@@ -65,7 +66,6 @@ public class OKCoController {
 	public String list(HttpServletRequest request) {
 
 		this.ListAllInstances = HomeController.ListAllInstances;
-
 		
 		if(HomeController.Model != null) 
 		{
@@ -77,6 +77,7 @@ public class OKCoController {
 				return "index";
 				
 			} else {
+				
 				request.getSession().removeAttribute("errorMensage");
 			}
 			
@@ -98,128 +99,22 @@ public class OKCoController {
 
 		// ----- Instance selected ----//
 
-		instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(id));
+		instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(id));		
 
-		// ----- Some relations -------- ////remove repeat values
-		ArrayList<DtoDefinitionClass> listSomeClassDefinition = new ArrayList<DtoDefinitionClass>();
-		for (DtoDefinitionClass dto : instanceSelected.ListSome) 
-		{			
-			boolean exist = false;
-			for (DtoDefinitionClass dto2 : listSomeClassDefinition) {
-				if(dto.sameAs(dto2))
-				{
-					exist = true;
-					break;
-				}
-			}
+		// ----- Remove repeat values -------- //
 
-			if(exist == false)
-			{
-				listSomeClassDefinition.add(dto);
-				dto.print();
-			}			
-		}
+		ArrayList<DtoDefinitionClass> listSomeClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
+		ArrayList<DtoDefinitionClass> listMinClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
+		ArrayList<DtoDefinitionClass> listMaxClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
+		ArrayList<DtoDefinitionClass> listExactlyClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
 
-		// ----- Min relations --------- ////remove repeat values
-		ArrayList<DtoDefinitionClass> listMinClassDefinition = new ArrayList<DtoDefinitionClass>();
-		for (DtoDefinitionClass dto : instanceSelected.ListMin) 
-		{			
-			boolean exist = false;
-			for (DtoDefinitionClass dto2 : listMinClassDefinition) {
+		// ------ Complete classes list ------//
 
-				//Doesn't compare the source
-				if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
-				{
-					exist = true;
-					break;
-				}
-			}
-
-			if(exist == false)
-			{
-				listMinClassDefinition.add(dto);
-				dto.print();
-			}			
-		}
-
-		// ----- Max relations --------- ////remove repeat values
-		ArrayList<DtoDefinitionClass> listMaxClassDefinition = new ArrayList<DtoDefinitionClass>();
-		for (DtoDefinitionClass dto : instanceSelected.ListMax) 
-		{			
-			boolean exist = false;
-			for (DtoDefinitionClass dto2 : listMaxClassDefinition) {
-
-				//Doesn't compare the source
-				if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
-				{
-					exist = true;
-					break;
-				}
-			}
-
-			if(exist == false)
-			{
-				listMaxClassDefinition.add(dto);
-				dto.print();
-			}			
-		}
-
-		// ----- Exactly relations ----- ////remove repeat values
-		ArrayList<DtoDefinitionClass> listExactlyClassDefinition = new ArrayList<DtoDefinitionClass>();
-
-		for (DtoDefinitionClass dto : instanceSelected.ListExactly) 
-		{			
-			boolean exist = false;
-			for (DtoDefinitionClass dto2 : listExactlyClassDefinition) {
-
-				//Doesn't compare the source
-				if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
-				{
-					exist = true;
-					break;
-				}
-			}
-
-			if(exist == false)
-			{
-				listExactlyClassDefinition.add(dto);
-				dto.print();
-			}			
-		}
-
+		ArrayList<String> listClassesMembersToClassify = HomeController.ManagerInstances.getClassesToClassify(instanceSelected, HomeController.InfModel);		
 
 		// ----- List relations ----- //
 
 		ArrayList<DtoInstanceRelation> instanceListRelationsFromInstance = HomeController.Search.GetInstanceRelations(HomeController.InfModel, instanceSelected.ns + instanceSelected.name); 		//Get instance relations
-
-		// ------ Complete classes list ------//
-
-		//Remove repeat
-		ArrayList<String> listClassesMembersTmpWithoutRepeat = new ArrayList<String>();
-		for (DtoCompleteClass dto : instanceSelected.ListCompleteClasses) {
-			for (String clsComplete : dto.Members) {
-				if(! listClassesMembersTmpWithoutRepeat.contains(clsComplete))
-				{
-					listClassesMembersTmpWithoutRepeat.add(clsComplete);					
-				} 
-			}
-		}
-		//Now we have all the subclasses
-
-		//Remove disjoint from class
-		ArrayList<String> listClassesMembersTmp = new ArrayList<String>();
-		for (DtoCompleteClass dto : instanceSelected.ListCompleteClasses) 
-		{
-			ArrayList<String> listDisjoint = HomeController.Search.GetDisjointClassesOf(dto.CompleteClass, HomeController.InfModel);
-			for (String clc : listClassesMembersTmpWithoutRepeat) 
-			{
-				if(! listDisjoint.contains(clc))
-				{
-					listClassesMembersTmp.add(clc);
-				}
-			}
-
-		}
 
 
 		ListCompleteClsInstaceSelected = instanceSelected.ListCompleteClasses;
@@ -228,9 +123,9 @@ public class OKCoController {
 
 		ListSpecializationProperties = instanceSelected.ListSpecializationProperties;
 
-		//Create sections
+		// ------ Create sections ------//
 
-		request.getSession().setAttribute("listClassesMembersTmp", listClassesMembersTmpWithoutRepeat);
+		request.getSession().setAttribute("listClassesMembersTmp", listClassesMembersToClassify);
 		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
 
 		request.getSession().setAttribute("listSomeClassDefinition", listSomeClassDefinition);
@@ -242,7 +137,8 @@ public class OKCoController {
 		request.getSession().setAttribute("instanceSelected", instanceSelected);		
 		request.getSession().setAttribute("listInstances", ListAllInstances);
 
-		//View to return
+		// ------  View to return ------//
+
 		return "details";
 	}
 
@@ -290,6 +186,19 @@ public class OKCoController {
 			//return view	    	
 			return "completePropertyObject";
 
+		} else if (type.equals("objectMax"))
+		{
+			//get instances with had this relation
+			ArrayList<String> listInstancesName = HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			Collections.sort(listInstancesName);
+
+			//populate the list of instances with had this relation	    	
+			ArrayList<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
+
+			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
+
+			return "completePropertyObjectMaxCard";
+
 		} else if (type.equals("data"))
 		{
 			//List auxiliary
@@ -322,7 +231,7 @@ public class OKCoController {
 		//Instance selected
 		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(idInstance));
 
-		//Search for the definition class correctly		
+		//Search for the definition class correctly
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome, Integer.parseInt(idDefinition));
 		EnumRelationTypeCompletness typeRelation = EnumRelationTypeCompletness.SOME;
 
@@ -352,6 +261,15 @@ public class OKCoController {
 
 				HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 				HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+				try {
+					HomeController.UpdateAddIntanceInLists(newInstance.ns + newInstance.name);
+				} catch (InconsistentOntologyException e) {
+					
+					e.printStackTrace();
+				} catch (OKCoExceptionInstanceFormat e) {
+					
+					e.printStackTrace();
+				}
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.MIN))
 			{
@@ -368,6 +286,16 @@ public class OKCoController {
 
 					HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 					HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+					HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+					try {
+						HomeController.UpdateAddIntanceInLists(newInstance.ns + newInstance.name);
+					} catch (InconsistentOntologyException e) {
+						
+						e.printStackTrace();
+					} catch (OKCoExceptionInstanceFormat e) {
+						
+						e.printStackTrace();
+					}
 
 					listDif.add(newInstance.ns + newInstance.name);
 					quantityInstancesTarget ++;
@@ -391,6 +319,16 @@ public class OKCoController {
 
 						HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 						HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+						HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+						try {
+							HomeController.UpdateAddIntanceInLists(newInstance.ns + newInstance.name);
+						} catch (InconsistentOntologyException e) {
+							
+							e.printStackTrace();
+						} catch (OKCoExceptionInstanceFormat e) {
+							
+							e.printStackTrace();
+						}
 
 						listDif.add(newInstance.ns + newInstance.name);
 						quantityInstancesTarget ++;
@@ -422,17 +360,7 @@ public class OKCoController {
 		HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
 
 		//Update lists
-		try {
-			HomeController.UpdateLists();
-
-		} catch (InconsistentOntologyException e) {			
-			e.printStackTrace();
-
-		} catch (OKCoExceptionInstanceFormat e) {
-
-			e.printStackTrace();
-		}
-
+		//HomeController.UpdateLists();
 
 		//Update list instances modified
 		HomeController.UpdateListsModified();
@@ -464,7 +392,6 @@ public class OKCoController {
 		return "redirect:list";
 	}
 
-
 	@RequestMapping(method = RequestMethod.GET, value="/graphVisualizer")
 	public String graphVisualizer(@RequestParam("id") String id, @RequestParam("typeView") String typeView, HttpServletRequest request) {
 
@@ -472,14 +399,7 @@ public class OKCoController {
 		int width;
 		int height;
 		String subtitle = "";
-		
-		/* Transforming the ListAllInstances in a hash */
-		HashMap<String,ArrayList<String>> hash = new HashMap<String, ArrayList<String>>();
-		for (Instance instance : HomeController.ListAllInstances) {
-			hash.put(instance.name.substring(instance.name.indexOf("#")+1), instance.ListClasses);
-		}
-		
-		GraphPlotting graphPlotting = new TNOKCOGraphPlotting(hash);
+		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
 		Instance i;
 		int num = 0;
 
@@ -498,6 +418,7 @@ public class OKCoController {
 
 			//All instances
 			valuesGraph  = graphPlotting.getArborStructureFor(HomeController.InfModel); 
+
 		} else if(id != null && num > 0){
 
 			//Get the instance
@@ -579,7 +500,7 @@ public class OKCoController {
 					if(iTarget.existInModel == false)
 					{
 						//Create instance
-						HomeController.Model = HomeController.ManagerInstances.CreateInstance(iSource.ns + iSource.name, dtoSelected.Relation, iTarget, dtoSelected.Target, HomeController.ListAllInstances,HomeController.Model);
+						HomeController.Model = HomeController.ManagerInstances.CreateInstance(iSource.ns + iSource.name, dtoSelected.Relation, iTarget, dtoSelected.Target, HomeController.ListAllInstances, HomeController.Model);
 						isCreate = true;
 
 					} else {
@@ -602,8 +523,9 @@ public class OKCoController {
 						HomeController.ListModifiedInstances.add(iTarget.ns + iTarget.name);
 					}			 
 
-					//Update lists
-					HomeController.UpdateLists();			 
+					//Update list
+					//HomeController.UpdateLists();
+					HomeController.UpdateAddIntanceInLists(iTarget.ns + iTarget.name);
 
 				} catch (Exception e) {
 
@@ -746,7 +668,54 @@ public class OKCoController {
 		return null;
 	}
 
+	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
+	public @ResponseBody String commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
 
+		try {
+			
+			String separatorValues = "%&&%";
+
+			String[] arrayValues = dto.ListInstanceDifSameIds.split(separatorValues);
+			for (String val : arrayValues) {
+
+				if(val != "")
+				{	
+					String[] parts = val.split("x");
+
+					String type = parts[0];
+					String idInsSource = parts[1];
+					String idInsTarget = parts[2];
+					
+					Instance s1 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, Integer.parseInt(idInsSource));
+					Instance s2 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, Integer.parseInt(idInsTarget));
+					
+					if(type == "dif")
+					{
+						//
+						
+					} else if (type == "same")
+					{
+						//
+						
+					} else {
+						
+						return "error";
+					}
+				
+				}
+
+			}
+			
+		} catch (Exception e) {
+			
+			return "error";
+		}
+		
+
+		return "ok";
+
+	}
+	
 	/*------ AJAX - DataProperty -----*/	
 
 	@RequestMapping(value="/removeDataValue", method = RequestMethod.GET)

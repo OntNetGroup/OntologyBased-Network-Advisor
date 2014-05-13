@@ -29,6 +29,7 @@ import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
+import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.okco.model.RelationDomainRangeList;
 
 public class Search {
@@ -100,15 +101,15 @@ public class Search {
 		
 		// Output query results 
 		//ResultSetFormatter.out(System.out, results, query);
-		
-		//System.out.println("-> " + instanceName);
+
 		while (results.hasNext()) {
 			
-			QuerySolution row = results.next();
-		    
-		    RDFNode i = row.get("i");
+			QuerySolution row = results.next();		    
+		    RDFNode i = row.get("i");		    
 		    list.add(i.toString());
 		}	
+		
+		System.out.println("1");
 
 		return list;		
 	}
@@ -126,7 +127,6 @@ public class Search {
 					if (!(AllInstances.contains(instance)))
 						AllInstances.add(instance);
 				}
-				//System.out.println("->" + className);				
 			}
 		}
 		
@@ -145,6 +145,7 @@ public class Search {
 		for (String className : AllClasses) {
 			
 			if(!(className == null)){
+				
 				ArrayList<String> InstancesFromClass = this.GetInstancesFromClass(model, infModel, className);
 				for (String instance : InstancesFromClass) {
 					
@@ -2075,6 +2076,53 @@ public class Search {
 		return resultListDefinitions;
 	}
 	
+ 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstancesAndAddToList(String instanceURI, OntModel model, InfModel InfModel, ArrayList<Instance> listAllInstances, ManagerInstances manager) {
+
+		Instance Instance = manager.getInstance(listAllInstances, instanceURI); // GET INTANCE on MODEL
+		ArrayList<DtoInstance> listInstancesDto = this.GetAllInstancesWithClass(model, InfModel);
+		for (DtoInstance dto : listInstancesDto) {
+			
+			if(dto.Uri.equals(instanceURI))
+			{				
+				String nameSpace = dto.Uri.split("#")[0] + "#";
+				String name = dto.Uri.split("#")[1];
+				
+				if (Instance == null)
+				{					
+					Instance = new Instance(nameSpace, name, dto.ClassNameList, this.GetDifferentInstancesFrom(InfModel, dto.Uri), this.GetSameInstancesFrom(InfModel, dto.Uri),true);	
+				}
+					
+			}
+			
+		}
+	
+		ArrayList<DtoDefinitionClass> resultListDefinitions = new ArrayList<DtoDefinitionClass>();
+
+		for (String cls : Instance.ListClasses) 
+		{
+			DtoDefinitionClass aux = DtoDefinitionClass.getDtoWithSource(resultListDefinitions, cls);
+			if(aux == null && ! cls.contains("Thing"))	//don't exist yet
+			{
+				ArrayList<DtoDefinitionClass> dtoSomeRelationsList = this.GetSomeRelationsOfClass(InfModel,cls);
+				ArrayList<DtoDefinitionClass> dtoMinRelationsList = this.GetMinRelationsOfClass(InfModel,cls);
+				ArrayList<DtoDefinitionClass> dtoMaxRelationsList = this.GetMaxRelationsOfClass(InfModel,cls);
+				ArrayList<DtoDefinitionClass> dtoExactlyRelationsList = this.GetExactlyRelationsOfClass(InfModel,cls);	
+				
+				resultListDefinitions.addAll(dtoSomeRelationsList);
+				resultListDefinitions.addAll(dtoMinRelationsList);
+				resultListDefinitions.addAll(dtoMaxRelationsList);
+				resultListDefinitions.addAll(dtoExactlyRelationsList);
+			}			
+			
+		}	
+		
+		//Add to list of intances
+		listAllInstances.add(Instance);
+		
+		//return
+		return resultListDefinitions;
+	}
+ 	
 	/*
 	 * Specializations search
 	 */
@@ -2363,6 +2411,7 @@ public class Search {
 		
 		return listSubProperties;
 	}
+
 
 	
 }

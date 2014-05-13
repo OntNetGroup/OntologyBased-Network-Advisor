@@ -209,7 +209,6 @@ public class OKCoController {
 
 	}
 
-
 	@RequestMapping(method = RequestMethod.GET, value="/completePropertyAuto")
 	public String completePropertyAuto(@RequestParam("idDefinition") String idDefinition, @RequestParam("idInstance") String idInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
@@ -221,7 +220,7 @@ public class OKCoController {
 		//Instance selected
 		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(idInstance));
 
-		//Search for the definition class correctly		
+		//Search for the definition class correctly
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome, Integer.parseInt(idDefinition));
 		EnumRelationTypeCompletness typeRelation = EnumRelationTypeCompletness.SOME;
 
@@ -251,6 +250,15 @@ public class OKCoController {
 
 				HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 				HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+				try {
+					HomeController.UpdateAddIntanceInLists(newInstance.ns + newInstance.name);
+				} catch (InconsistentOntologyException e) {
+					
+					e.printStackTrace();
+				} catch (OKCoExceptionInstanceFormat e) {
+					
+					e.printStackTrace();
+				}
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.MIN))
 			{
@@ -267,6 +275,16 @@ public class OKCoController {
 
 					HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 					HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+					HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+					try {
+						HomeController.UpdateAddIntanceInLists(newInstance.ns + newInstance.name);
+					} catch (InconsistentOntologyException e) {
+						
+						e.printStackTrace();
+					} catch (OKCoExceptionInstanceFormat e) {
+						
+						e.printStackTrace();
+					}
 
 					listDif.add(newInstance.ns + newInstance.name);
 					quantityInstancesTarget ++;
@@ -290,6 +308,16 @@ public class OKCoController {
 
 						HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 						HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+						HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+						try {
+							HomeController.UpdateAddIntanceInLists(newInstance.ns + newInstance.name);
+						} catch (InconsistentOntologyException e) {
+							
+							e.printStackTrace();
+						} catch (OKCoExceptionInstanceFormat e) {
+							
+							e.printStackTrace();
+						}
 
 						listDif.add(newInstance.ns + newInstance.name);
 						quantityInstancesTarget ++;
@@ -321,17 +349,7 @@ public class OKCoController {
 		HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
 
 		//Update lists
-		try {
-			HomeController.UpdateLists();
-
-		} catch (InconsistentOntologyException e) {			
-			e.printStackTrace();
-
-		} catch (OKCoExceptionInstanceFormat e) {
-
-			e.printStackTrace();
-		}
-
+		//HomeController.UpdateLists();
 
 		//Update list instances modified
 		HomeController.UpdateListsModified();
@@ -362,7 +380,6 @@ public class OKCoController {
 
 		return "redirect:list";
 	}
-
 
 	@RequestMapping(method = RequestMethod.GET, value="/graphVisualizer")
 	public String graphVisualizer(@RequestParam("id") String id, @RequestParam("typeView") String typeView, HttpServletRequest request) {
@@ -495,8 +512,9 @@ public class OKCoController {
 						HomeController.ListModifiedInstances.add(iTarget.ns + iTarget.name);
 					}			 
 
-					//Update lists
-					HomeController.UpdateLists();			 
+					//Update list
+					//HomeController.UpdateLists();
+					HomeController.UpdateAddIntanceInLists(iTarget.ns + iTarget.name);
 
 				} catch (Exception e) {
 
@@ -639,7 +657,6 @@ public class OKCoController {
 		return null;
 	}
 
-
 	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
 	public @ResponseBody String commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
 
@@ -687,6 +704,7 @@ public class OKCoController {
 		return "ok";
 
 	}
+	
 	/*------ AJAX - DataProperty -----*/	
 
 	@RequestMapping(value="/removeDataValue", method = RequestMethod.GET)
