@@ -304,8 +304,8 @@ $(document).ready(function() {
 
 	<div id="dialog" title="Confirmation Required">
 	  All loaded information will be lost. Do you want to continue?
-	</div>​
-
+	</div>
+	
 	<!-- start: Header -->
 	<div class="navbar">
 		<div class="navbar-inner">

@@ -4,7 +4,7 @@
 	xmlns:oryx="http://www.b3mn.org/oryx">
 	<defs></defs>
 	 <g>
-	  <rect  oryx:anchors="top bottom left right" rx="20" height="200" width="400" y="14" x="12" stroke-width="2" stroke="black" fill="white"/>
+	  <rect  oryx:anchors="top bottom left right" rx="20" height="200" width="400" y="14" x="12" stroke-width="2" stroke="black" fill="white" patternContentUnits="objectBoundingBox" />
       <text font-size="12" id="className" x="20" y="30" oryx:align="middle" oryx:anchors="top" stroke="black">layer</text>
 	 </g>
 </svg>

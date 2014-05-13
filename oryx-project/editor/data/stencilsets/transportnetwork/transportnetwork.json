@@ -137,6 +137,31 @@
             ]
         },
         {
+            "type": "node",
+            "id": "Equipment Module",
+            "title": "Equipment Module",
+            "groups": [],
+            "description": "",
+            "view": "node.equipmentmodule.svg",
+            "icon": "node.equipment.png",
+            "roles": [
+                "equipModule"
+            ],
+            "properties": [
+                {
+                    "id": "Name",
+                    "type": "String",
+                    "title": "Name",
+                    "value": "",
+                    "description": "",
+                    "readonly": false,
+                    "optional": true,
+                    "length": "",
+                    "refToView": "className"
+                }
+            ]
+        },
+        {
             "type": "edge",
             "id": "Binds",
             "title": "Binds",
@@ -211,17 +236,17 @@
                 }
             ]
         },
-		{
+        {
             "type": "edge",
-            "id": "PartOf",
-            "title": "PartOf",
+            "id": "Part-Whole",
+            "title": "Part-Whole",
             "groups": [],
             "description": "",
-            "view": "edge.partof.svg",
-            "icon": "edge.partof.png",
+            "view": "edge.partwhole.svg",
+            "icon": "edge.partwhole.png",
             "roles": [
                 "controlflow",
-                "partof"
+                "partwhole"
             ],
             "properties": [
                 {
@@ -264,16 +289,16 @@
         },
         {
             "type": "node",
-            "id": "Equipament",
-            "title": "Equipament",
+            "id": "Equipment",
+            "title": "Equipment",
             "groups": [
-            	"Extensions"
-            	],
+                "Extensions"
+            ],
             "description": "",
-            "view": "node.equipament.svg",
-            "icon": "node.equipament.png",
+            "view": "node.equipment.svg",
+            "icon": "node.equipment.png",
             "roles": [
-                "equipament"
+                "equipment"
             ],
             "properties": [
                 {
@@ -289,13 +314,13 @@
                 }
             ]
         },
-		{
+        {
             "type": "node",
             "id": "Site",
             "title": "Site",
             "groups": [
-            	"Extensions"
-            	],
+                "Extensions"
+            ],
             "description": "",
             "view": "node.site.svg",
             "icon": "node.layer.png",
@@ -316,13 +341,13 @@
                 }
             ]
         },
-		{
+        {
             "type": "node",
             "id": "Input Interface",
             "title": "Input Interface",
             "groups": [
-            	"Extensions"
-            	],
+                "Extensions"
+            ],
             "description": "",
             "view": "node.inputinterface.svg",
             "icon": "node.inputinterface.png",
@@ -349,8 +374,8 @@
             "id": "Output Interface",
             "title": "Output Interface",
             "groups": [
-            	"Extensions"
-            	],
+                "Extensions"
+            ],
             "description": "",
             "view": "node.outputinterface.svg",
             "icon": "node.outputinterface.png",
@@ -1085,6 +1110,32 @@
         }
     ],
     "rules": {
+        "cardinalityRules": [
+            {
+                "role": "ports",
+                "outgoingEdges": [
+                    {
+                        "role": "partwhole",
+                        "maximum": 1
+                    }
+                ]
+            },
+            {
+                "role": "interface",
+                "outgoingEdges": [
+                    {
+                        "role": "partwhole",
+                        "maximum": 1
+                    }
+                ],
+                "incomingEdges": [
+                    {
+                        "role": "partwhole",
+                        "maximum": 1
+                    }
+                ]
+            }
+        ],
         "connectionRules": [
             {
                 "role": "clients",
@@ -1195,7 +1246,7 @@
                 ]
             },
             {
-                "role": "partof",
+                "role": "partwhole",
                 "connects": [
                     {
                         "from": "ports",
@@ -1204,7 +1255,7 @@
                 ]
             },
             {
-                "role": "partof",
+                "role": "partwhole",
                 "connects": [
                     {
                         "from": "transportfunctions",
@@ -1213,20 +1264,20 @@
                 ]
             },
             {
-                "role": "partof",
+                "role": "partwhole",
                 "connects": [
                     {
-                        "from": "equipament",
+                        "from": "equipment",
                         "to": "interface"
                     }
                 ]
             },
             {
-                "role": "partof",
+                "role": "partwhole",
                 "connects": [
                     {
                         "from": "interface",
-                        "to": "equipament"
+                        "to": "equipment"
                     }
                 ]
             },
@@ -1247,7 +1298,7 @@
                         "to": "input"
                     }
                 ]
-            }          
+            }
         ],
         "containmentRules": [
             {
@@ -1258,9 +1309,10 @@
                     "referentePoints",
                     "transportEntity",
                     "layer",
-                    "equipament",
+                    "equipment",
                     "interface",
-                    "site"
+                    "site",
+                    "equipModule"
                 ]
             },
             {
@@ -1270,7 +1322,7 @@
                     "transportfunctions",
                     "referentePoints",
                     "transportEntity",
-                    "equipament",
+                    "equipment",
                     "interface",
                     "site"
                 ]
@@ -1278,7 +1330,7 @@
             {
                 "role": "site",
                 "contains": [
-                    "equipament"
+                    "equipment"
                 ]
             },
             {
@@ -1306,7 +1358,7 @@
                 ]
             },
             {
-                "role": "equipament",
+                "role": "equipment",
                 "contains": [
                     "transportfunctions"
                 ]
