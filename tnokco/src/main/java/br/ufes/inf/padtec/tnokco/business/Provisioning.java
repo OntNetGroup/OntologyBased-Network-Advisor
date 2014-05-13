@@ -9,6 +9,7 @@ import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
 import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -292,6 +293,7 @@ public class Provisioning {
 		Model = HomeController.Model;
 		InfModel = HomeController.InfModel;
 		HashMap<String, String> hashInputEquipment= new HashMap<String, String>();
+//		inferInterfaceConnections();
 		//equipments = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Equipment");
 		Equipment e = null;
 		Individual individual;
@@ -299,19 +301,17 @@ public class Provisioning {
 		for (String equipment: equipments) {
 			Individual indeq= Model.getIndividual(equipment);
 			ArrayList<String> inpInt= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
-			int i=0;
-			InterfaceInput input;
 			for (String string : inpInt) {
 				Individual ind= Model.getIndividual(string);
 				hashInputEquipment.put(ind.getLocalName(), indeq.getLocalName());
 			}
-
 		}
+		
 		for (String equipment: equipments) {
 			ArrayList<String> outInt= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
-			int i=0;
 			Individual ind= Model.getIndividual(equipment);
 			e = new Equipment(ind.getLocalName());
+
 			for (String string : outInt) {
 				individual= Model.getIndividual(string);
 				InterfaceOutput outputInt = new InterfaceOutput();
@@ -335,8 +335,11 @@ public class Provisioning {
 			}
 			equips.add(e); 
 		}
+
 		return equips;
 	}
+
+
 
 
 	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
@@ -371,7 +374,7 @@ public class Provisioning {
 	public static ArrayList<String> getAllG800(){
 		ArrayList<String> allIndividuals= HomeController.Search.GetAllInstances(Model, InfModel);
 		ArrayList<String> copy = new ArrayList<String>();
-		
+
 		for (String ind : allIndividuals) {
 			ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(ind, InfModel);
 			if((classesFromIndividual.contains(HomeController.NS+"Interface") || classesFromIndividual.contains(HomeController.NS+"Site") || classesFromIndividual.contains(HomeController.NS+"Equipment"))){
@@ -446,5 +449,43 @@ public class Provisioning {
 		}
 	}
 
+	
+	public static void inferInterfaceConnections(){
+		HashMap<String, String> int_port = new HashMap<String, String>();
+		ArrayList<String> inters = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Input_Interface");
+		for (String inter : inters) {
+			ArrayList<String> port_inp =HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, inter, HomeController.NS+"maps_input", HomeController.NS+"Input");
+			if(port_inp.size()>0){
+				int_port.put(port_inp.get(0), inter);
+			}
+		}
+		inters = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Output_Interface");
+		for (String inter : inters) {
+			ArrayList<String> port_inp =HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, inter, HomeController.NS+"maps_output", HomeController.NS+"Output");
+			if(port_inp.size()>0){
+				int_port.put(port_inp.get(0), inter);
+			}
+		}
+		
+		ArrayList<String> outs = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Output");
+		for (String out : outs) {
+			ArrayList<String> inputs  = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out, HomeController.NS+"binds", HomeController.NS+"Input");
+			if(inputs.size()>0){
+				String interfac_input= int_port.get(inputs.get(0));
+				String interfac_output= int_port.get(out);
+				Individual a = null,b=null;
+				if(interfac_input!=null)
+					a = HomeController.Model.getIndividual(interfac_input);
+				if(interfac_output!=null)
+					b = HomeController.Model.getIndividual(interfac_output);
+				ObjectProperty rel = HomeController.Model.getObjectProperty(HomeController.NS+"interface_binds");
+				if(a!=null && b!=null){
+					Statement stmt = HomeController.Model.createStatement(b, rel, a);
+					HomeController.Model.add(stmt);
+				}
+			}
+		}
+		HomeController.InfModel = HomeController.Model;
+	}
 
 }

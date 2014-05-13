@@ -294,7 +294,7 @@ public class VisualizationController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/provisoning_visualization")
 	public String provisoning_visualization(HttpServletRequest request) {
-
+		Provisioning.inferInterfaceConnections();
 		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
 
 		String arborStructure = "";
