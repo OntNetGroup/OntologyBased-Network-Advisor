@@ -480,6 +480,7 @@ public class ProvisioningController{
 				String inputNs = "";
 				String eqInNs = "";
 				Boolean alreadyConnected = false;
+				
 				//pego o NS do input mapeada pela interface de input
 				for (DtoInstanceRelation inRelation : inIntRelations) {
 					if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
@@ -491,6 +492,34 @@ public class ProvisioningController{
 					}
 				}
 
+				if(!alreadyConnected){
+					for(Instance otherOutput : HomeController.ListAllInstances){
+						for (String otherOutputClassName : otherOutput.ListClasses) {
+							otherOutputClassName = otherOutputClassName.replace(HomeController.NS, "");
+							if(otherOutputClassName.equalsIgnoreCase("Output_Interface")){
+								if(otherOutput.name.equals("soeq1_o1") && inputInterface.name.equals("soeq2_i1")){
+									System.out.println();
+								}
+								ArrayList<DtoInstanceRelation> otherOutputRelations = search.GetInstanceRelations(HomeController.InfModel, otherOutput.ns+otherOutput.name);
+								for (DtoInstanceRelation otherOutputRelation : otherOutputRelations) {
+									if(otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
+										if((inputInterface.ns+inputInterface.name).equals(otherOutputRelation.Target)){
+											alreadyConnected = true;
+											break;
+										}
+									}
+								}
+								if(alreadyConnected){
+									break;
+								}
+							}
+						}
+						if(alreadyConnected){
+							break;
+						}
+					}
+				}
+				
 				//busco a instancia do input mapeado pela interface 
 				Instance input = null;
 				for (Instance instance : HomeController.ListAllInstances) {
@@ -537,8 +566,6 @@ public class ProvisioningController{
 						interfaceReturn += "false;";
 					}					
 				}
-
-
 
 				if(!allowedInputInterfaces.contains(interfaceReturn) && !allowedInputInterfaces.contains(interfaceReturn.replace("false;", "true;"))){
 					allowedInputInterfaces.add(interfaceReturn);
