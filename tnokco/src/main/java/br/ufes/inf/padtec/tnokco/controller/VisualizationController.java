@@ -107,10 +107,9 @@ public class VisualizationController {
 					size++;
 				}
 
+				
 				for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
-					valuesGraph += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}), {name:'binds:";
-					valuesGraph += entry.getKey().get(0)+"-"+entry.getKey().get(1);
-					valuesGraph += "'});";
+					valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_OUT_AZUL\"}), {name:'interface_binds'});";
 					size++;
 				}
 				if(equip.getBinds().isEmpty()){
@@ -301,14 +300,14 @@ public class VisualizationController {
 		String hashEquipIntOut = "";
 		String hashTypes = "";
 		int size = 0;
-		int width  = 800;
-		int height = 600;
+		int width  = 1000;
+		int height = 800;
 		
 		for(Equipment equip : list){
 			hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"'] = new Array();";
 			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
 			for(InterfaceOutput outs : equip.getOutputs()){
-				hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"']['"+outs.getName()+"'] = "+outs.isConnected()+";";
+				hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"']['"+outs.getName()+"'] = \""+outs.isConnected()+"\";";
 			}
 
 			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){

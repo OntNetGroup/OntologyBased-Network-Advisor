@@ -24,6 +24,18 @@
 		    if (e.which == 27) { src = false; }  // esc   (does not work)
 		});
 		
+		function loading()
+		{
+		 	var maskHeight = $(document).height();
+			var maskWidth = "100%";//$(document).width();
+		
+			//Define largura e altura do div#maskforloading iguais ás dimensões da tela
+			$('#maskforloading').css({'width':maskWidth,'height':maskHeight});
+			
+			//efeito de transição
+			$('#maskforloading').show();
+		}
+		
 // 		$(document).keyup(function(e) {
 // 			  if (e.keyCode == 27) { 
 // 				//esc pressed
@@ -71,6 +83,7 @@
 							onclick : function(menuItem, menu) {
 								srcEquipBindsClicked = equip;
 								srcInterfaceBindsClicked = menuItem.textContent;
+								loading();
 								$.ajax({
 									url : "connect_equip_binds?equip_source="+srcEquipBindsClicked+"&interface_source="+srcInterfaceBindsClicked+"&equip_target="+trgEquipBindsClicked+"&interface_target="+trgInterfaceBindsClicked,
 									type : "GET",
@@ -104,6 +117,7 @@
 											}
 											graph.renderer.redraw();
 										}
+										$('#maskforloading').hide();
 									},
 									error:function(){
 										alert("Erro");
@@ -123,7 +137,7 @@
 								//alert("Selected " + equip + ":"+ menuItem.innerText);
 								currentSelection = true;
 								//Get Possible input interfaces
-
+								
 								$.ajax({
 									url : "get_input_interfaces_from?equip="+trgEquipBindsClicked+"&interf="+trgInterfaceBindsClicked,
 									type : "GET",
