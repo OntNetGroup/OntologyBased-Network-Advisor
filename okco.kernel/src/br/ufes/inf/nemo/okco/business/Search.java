@@ -108,8 +108,6 @@ public class Search {
 		    RDFNode i = row.get("i");		    
 		    list.add(i.toString());
 		}	
-		
-		System.out.println("1");
 
 		return list;		
 	}

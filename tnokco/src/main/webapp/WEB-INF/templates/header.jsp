@@ -363,7 +363,7 @@ $(document).ready(function() {
 									<a class="dropmenu" href="#"><i class="icon-lightbulb"></i><span class="hidden-sm"> Functionalites</span> <span class="label">3</span></a>
 									<ul class="dropmenuLevel2">								
 										
-										<li><a class="submenu" href="/tnokco/list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion</span></a></li>
+										<li><a class="submenu" href="/tnokco/list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion <br> &nbsp;&nbsp; (TN-OKCo)</span></a></li>
 										<li><a class="submenu" href="/tnokco/open_visualizator"><i class="icon-eye-open"></i><span class="hidden-sm">&nbsp;&nbsp; Visualization</span></a></li>
 										<li><a class="submenu" href="/tnokco/provisoning_visualization"><i class="icon-play-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
 									</ul>	
@@ -385,7 +385,7 @@ $(document).ready(function() {
 						<li><a href="/tnokco/faq" class=""><i class="icon-question-sign"></i><span
 								class="hidden-sm"> FAQ</span></a></li>
 								
-						<li><a href="#" class=""><i class="icon-exclamation-sign"></i><span
+						<li><a href="/tnokco/about" class=""><i class="icon-exclamation-sign"></i><span
 								class="hidden-sm"> About</span></a></li>
 
 					</ul>

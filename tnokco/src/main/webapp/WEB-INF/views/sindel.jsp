@@ -323,14 +323,12 @@
 															contentType : "application/json; charset=utf-8",
 															dataType : "json",
 
-															success : function(
-																	dto) {
+															success : function(dto) {
 
-																$(
-																		"#maskforloading")
-																		.hide();
+																$("#maskforloading").hide();
 
 																if (dto.ok == false) {
+																	
 																	var html = "<div class=\"alert alert-danger\">"
 																			+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
 																			+ "<strong>"
@@ -345,8 +343,20 @@
 
 																} else {
 
+																	var html = "<div class=\"alert alert-warning\">"
+																		+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">-</button>"
+																		+ dto.result + "<br>"
+																		+ "<strong>"
+																		+ "Go to Transport Network OWL Knowledge Completer (TN-OKCo) <a href=\"list\">Go</a>"
+																		+ "</strong>"
+																		+ "</div>";
+
+																$(
+																		"#boxerro")
+																		.prepend(
+																				html);
 																	//load list instances
-																	window.location.href = "list";
+																	//window.location.href = "list";	<---------------------------------------
 																	//window.location.href = "open_visualizator";
 
 																}

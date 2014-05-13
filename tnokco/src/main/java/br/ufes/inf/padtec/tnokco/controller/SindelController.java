@@ -110,7 +110,8 @@ public class SindelController{
 
 		String sindelCode = dtoGet.result;
 		DtoResultAjax dto = new DtoResultAjax();
-
+		DtoResultSindel dtoSindel;
+		
 		if(HomeController.Model == null)
 		{
 			dto.ok = false;
@@ -123,7 +124,7 @@ public class SindelController{
 			
 			Sindel2OWL so = new Sindel2OWL(HomeController.Model);
 			so.run(sindelCode);
-			DtoResultSindel dtoSindel = so.getDtoSindel();
+			dtoSindel = so.getDtoSindel();			
 
 			HomeController.Model = dtoSindel.model;
 			
@@ -182,7 +183,7 @@ public class SindelController{
 		request.getSession().removeAttribute("errorMensage");      
 
 		dto.ok = true;
-		dto.result = "ok";
+		dto.result = dtoSindel.warning;
 
 		return dto;
 	}

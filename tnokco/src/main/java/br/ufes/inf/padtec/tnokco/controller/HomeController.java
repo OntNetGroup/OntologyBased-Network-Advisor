@@ -151,6 +151,25 @@ public class HomeController implements ServletContextAware{
 			return "login";	//View to return
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/about")
+	public String about(HttpSession session, HttpServletRequest request) {
+
+		String login = (String)request.getSession().getAttribute("login");
+		if(login == null)
+			login = "";
+
+		if(login.equals("true"))
+		{
+			request.getSession().removeAttribute("errorMensage");
+			request.getSession().removeAttribute("loadOk");
+
+			return "about";	//View to return
+		} else {
+
+			return "login";	//View to return
+		}
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password){
