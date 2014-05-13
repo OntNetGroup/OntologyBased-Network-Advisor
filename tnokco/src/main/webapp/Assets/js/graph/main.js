@@ -284,7 +284,7 @@
 			if(classHash[nodeName] == null)
 				$('#currentNode').html("Not defined type");
 			else	
-				$('#currentNode').html(classHash[nodeName]);
+				$('#currentNode').html("<b><i>Element Inspector</i></b><br />"+classHash[nodeName]);
 		  }
         }
         $(canvas).mousedown(handler.clicked);

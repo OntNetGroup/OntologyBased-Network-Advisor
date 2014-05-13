@@ -510,6 +510,19 @@
 							if(sindelValue == null)
 												{
 													out.println("<textarea rows=\"20\" id=\"code\" name=\"code\" style=\"width: 100%; padding:5px;\">");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
+													out.println("\n");
 													out.println("</textarea>");
 												}else {
 													

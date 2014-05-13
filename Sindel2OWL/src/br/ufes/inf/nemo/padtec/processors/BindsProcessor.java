@@ -16,6 +16,7 @@ public class BindsProcessor {
 	private static List<String>  transportFunctions =  Arrays.asList("tf","so-tf","sk-tf","bi-tf","af","so-af","sk-af","bi-af","lpf","so-lpf","sk-lpf","bi-lpf","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn");
 	private static List<String>  ports =  Arrays.asList("input","output");
 	private static List<String>  interfaces =  Arrays.asList("in-int","out-int");
+	private static List<String>  referencePoints =  Arrays.asList("in-int","out-int");
 
 	private static HashMap<String, String> simpleBindsHash = new HashMap<>();
 	
@@ -60,6 +61,7 @@ public class BindsProcessor {
 			boolean isTF1 = false, isTF2 = false;//for Transport Function
 			boolean isP1 = false, isP2 = false;//for Port
 			boolean isI1 = false, isI2 = false;//for Interface
+			boolean isRP1 = false, isRP2 = false;//for Reference Point
 
 			//Create the individual vars[0] and vars[1]
 			a = model.getIndividual(IndNS+vars[0]);
@@ -71,10 +73,15 @@ public class BindsProcessor {
 			isTF1 = transportFunctions.contains(toA);
 			isP1 = ports.contains(toA);
 			isI1 = interfaces.contains(toA);
+			isRP1 = referencePoints.contains(toA);
 			
 			isTF2 = transportFunctions.contains(toB);
 			isP2 = ports.contains(toB);
 			isI2 = interfaces.contains(toB);
+			isRP2 = referencePoints.contains(toB);
+			
+			if(declaration.contains("soap1"))
+				System.out.println("stop");
 			
 			if(vars.length == 2){
 				//SimpleRelation

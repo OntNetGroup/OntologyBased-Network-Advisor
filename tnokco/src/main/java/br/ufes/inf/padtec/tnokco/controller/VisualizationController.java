@@ -69,8 +69,8 @@ public class VisualizationController {
 		String valuesGraph = "";
 		String hashTypes = "";
 		int size = 0;
-		int width  = 800;
-		int height = 600;
+		int width  = 1000;
+		int height = 800;
 		
 		if(visualization.equals("allSites")){
 			ArrayList<String> sites = Provisioning.getAllSitesAndConnections();
@@ -91,6 +91,7 @@ public class VisualizationController {
 			request.getSession().setAttribute("targetURL", "open_equipment_visualization_from_site?selected=");
 			request.getSession().setAttribute("popupMessage", "Go to Site\'s components");
 		}else if(visualization.equals("allEquipments")){
+			Provisioning.inferInterfaceConnections();
 			ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
 
 			for(Equipment equip : list){
@@ -101,15 +102,10 @@ public class VisualizationController {
 					size++;
 				}
 				
-				for(String in : equip.getInputs()){
-					valuesGraph += "graph.addEdge(graph.addNode(\""+in+"\", {shape:\"INT_IN_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
-					hashTypes += "hash[\""+in+"\"] = \"<b>"+in+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
-					size++;
-				}
-
-				
 				for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
-					valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_OUT_AZUL\"}), {name:'interface_binds'});";
+					valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'interface_binds'});";
+					hashTypes += "hash[\""+entry.getKey().get(1)+"\"] = \"<b>"+entry.getKey().get(1)+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
+					valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'componentOf'});";
 					size++;
 				}
 				if(equip.getBinds().isEmpty()){
@@ -150,8 +146,8 @@ public class VisualizationController {
 			
 		}
 
-		width  += 400 * (size / 50);
-		height += 400 * (size / 50);
+		width  += 400 * (size / 10);
+		height += 400 * (size / 10);
 		
 		//session
 		request.getSession().setAttribute("valuesGraph", valuesGraph);
@@ -171,8 +167,8 @@ public class VisualizationController {
 		String valuesGraph = "";
 		String hashTypes = "";
 		int size = 0;
-		int width  = 800;
-		int height = 600;
+		int width  = 1000;
+		int height = 800;
 		
 		for(Equipment equip : equips){
 			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
@@ -201,8 +197,8 @@ public class VisualizationController {
 			}
 		}
 
-		width  += 400 * (size / 50);
-		height += 400 * (size / 50);
+		width  += 400 * (size / 10);
+		height += 400 * (size / 10);
 		
 		//session
 		request.getSession().setAttribute("canClick", true);
@@ -226,8 +222,8 @@ public class VisualizationController {
 		String valuesGraph = "";
 		String hashTypes = "";
 		int size = 0;
-		int width  = 800;
-		int height = 600;
+		int width  = 1000;
+		int height = 800;
 		
 		for (String g800 : g800s) {
 			valuesGraph += "graph.addNode(\""+g800.substring(g800.indexOf("#")+1)+"\", {shape:\""+getG800Image(hashIndv.get(g800))+"_AZUL\"});";
@@ -250,8 +246,8 @@ public class VisualizationController {
 			size++;
 		}
 		
-		width  += 400 * (size / 50);
-		height += 400 * (size / 50);
+		width  += 400 * (size / 10);
+		height += 400 * (size / 10);
 
 		//session
 		request.getSession().setAttribute("canClick", false);
@@ -323,8 +319,8 @@ public class VisualizationController {
 			}
 		}
 
-		width  += 400 * (size / 50);
-		height += 400 * (size / 50);
+		width  += 400 * (size / 10);
+		height += 400 * (size / 10);
 		
 		//session
 		request.getSession().setAttribute("valuesGraph", arborStructure);

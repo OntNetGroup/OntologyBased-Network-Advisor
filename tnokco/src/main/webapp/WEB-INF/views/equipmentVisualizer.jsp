@@ -16,14 +16,10 @@
 
 			initHash();
 
-			graph = startArbor("#viewport", 1.0);
+			graph = startArbor("#viewport", 0.91);
 			addNodes(graph);
 		});
 
-		$(document).keypress(function(e) { 
-		    if (e.which == 27) { src = false; }  // esc   (does not work)
-		});
-		
 		function loading()
 		{
 		 	var maskHeight = $(document).height();
@@ -36,12 +32,12 @@
 			$('#maskforloading').show();
 		}
 		
-// 		$(document).keyup(function(e) {
-// 			  if (e.keyCode == 27) { 
-// 				//esc pressed
-// 				curretSelection = false;
-// 				}   
-// 			});
+		function resetSelection(){
+			for (key in hash) {
+				graph.getNode(key).data.shape = "Equip_AZUL";
+			}
+			currentSelection = false;
+		}
 		
 		function addNodes(graph) {
 			<%
@@ -92,6 +88,7 @@
 										{
 											alert("Something wrong happened.");
 										} else {
+											$("#resetSelection").prop( "disabled", true);
 											//set disable the hashs
 											hashEquipIntOut[trgEquipBindsClicked][trgInterfaceBindsClicked] = "true";
 											
@@ -142,6 +139,7 @@
 									url : "get_input_interfaces_from?equip="+trgEquipBindsClicked+"&interf="+trgInterfaceBindsClicked,
 									type : "GET",
 									success : function(result) {
+										$("#resetSelection").prop( "disabled", false);
 										var str = result;
 										var lines = str.split(";");
 										hashEquipIntIn = new Array();
@@ -201,12 +199,16 @@
 		
 		
 	</script>
-<div style="width: 1250px">
-
+	<button type="button" id="resetSelection" disabled="disabled" onclick="resetSelection();" style="margin-bottom:10px;">Reset Selection</button>
+	<br>
+<%
+		out.println("<div style=\"width:"+(width+520)+"px\">");
+	%>
 	<div style="float: left; border: 1px solid black;">
-		<canvas id="viewport" width="800" height="600"
-			style="background-color: white;"></canvas>
-
+			<%
+				out.println("<canvas id=\"viewport\" width=\""+width+"\" height=\""+height+"\" style=\"background-color:white;\"></canvas>");
+				
+			%>
 	</div>
 	<div style="float: right;">
 		<div id="currentNode">Select a node to visualize information
@@ -215,6 +217,7 @@
 		<img id="sub" src="Assets/img/subtitles/Provisoning.png"></img>
 	</div>
 </div>
+
 <script>
 			(function($) {
 				$.fn.drags = function(opt) {
