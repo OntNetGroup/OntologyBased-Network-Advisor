@@ -4,6 +4,7 @@ encoding//src/main/resources=UTF-8
 encoding//src/main/webapp/WEB-INF/templates/header.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/about.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/condel.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/faq.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/sindel.jsp=UTF-8
 encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8
