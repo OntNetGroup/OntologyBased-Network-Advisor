@@ -575,4 +575,53 @@ public class ProvisioningController{
 
 		return allowedInputInterfaces;
 	}
+	
+	public static void doAutomaticBinds(){
+		//pego todas as instancias de interface de output nao conectadas
+		ArrayList<Instance> outputInterfaces = new ArrayList<Instance>(); 
+		for (Instance instance : HomeController.ListAllInstances) {
+			for (String className : instance.ListClasses) {
+				if(className.equalsIgnoreCase(HomeController.NS+"Output_Interface")){
+					ArrayList<DtoInstanceRelation> outputInterfaceRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, instance.ns+instance.name);
+					boolean alreadyConnected = false;
+					for (DtoInstanceRelation outputInterfaceRelation : outputInterfaceRelations) {
+						if(outputInterfaceRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
+							if((instance.ns+instance.name).equals(outputInterfaceRelation.Target)){
+								alreadyConnected  = true;
+								break;
+							}
+						}
+					}
+					
+					if(!alreadyConnected){
+						outputInterfaces.add(instance);
+						break;
+					}					
+				}
+			}
+		}
+		
+		HashMap<String, String> candidatesForBinds = new HashMap<String, String>();
+		
+		for (Instance outputInterface : outputInterfaces) {
+			ArrayList<String> candidatesForConnection = getCandidateInterfacesForConnection(outputInterface.ns+outputInterface.name);
+			int noCandidates = 0;
+			String inputCandidateName = "";
+			for (String candidate : candidatesForConnection) {
+				if(candidate.contains("true")){
+					noCandidates++;
+				}
+				
+				if(noCandidates == 1){
+					inputCandidateName = candidate.split("#")[1];
+				}
+			}	
+			
+			if(noCandidates == 1){
+				candidatesForBinds.put(inputCandidateName, outputInterface.name);
+			}
+		}
+		
+		System.out.println();
+	}
 }

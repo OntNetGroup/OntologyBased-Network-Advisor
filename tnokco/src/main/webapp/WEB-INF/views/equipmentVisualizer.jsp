@@ -200,6 +200,9 @@
 		
 	</script>
 	<button type="button" id="resetSelection" disabled="disabled" onclick="resetSelection();" style="margin-bottom:10px;">Reset Selection</button>
+	<button type="button" id="doAutoBinds" onclick="doAutoBinds();" style="margin-bottom:10px;">Do Automatic Binds</button>
+	<button type="button" id="doAutoConnects" onclick="doAutoConnects();" style="margin-bottom:10px;">Do Automatic Connects</button>
+	<button type="button" id="doAutoBindsAndConnects" onclick="doAutoBindsAndConnects();" style="margin-bottom:10px;">Do Automatic Binds and Connects</button>
 	<br>
 <%
 		out.println("<div style=\"width:"+(width+520)+"px\">");
