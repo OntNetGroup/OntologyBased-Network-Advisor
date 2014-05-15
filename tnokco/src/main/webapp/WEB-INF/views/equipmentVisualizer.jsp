@@ -18,6 +18,20 @@
 
 			graph = startArbor("#viewport", 0.91);
 			addNodes(graph);
+			
+			$('#autoBinds').click(function(){
+				loading();
+		    });
+			
+			$('#autoConnects').click(function(){
+				loading();
+		    });
+			
+			$('#autoBindsAndConnects').click(function(){
+				loading();
+		    });
+			
+			
 		});
 
 		function loading()
@@ -199,10 +213,28 @@
 		
 		
 	</script>
-	<button type="button" id="resetSelection" disabled="disabled" onclick="resetSelection();" style="margin-bottom:10px;">Reset Selection</button>
-	<button type="button" id="doAutoBinds" onclick="doAutoBinds();" style="margin-bottom:10px;">Do Automatic Binds</button>
-	<button type="button" id="doAutoConnects" onclick="doAutoConnects();" style="margin-bottom:10px;">Do Automatic Connects</button>
-	<button type="button" id="doAutoBindsAndConnects" onclick="doAutoBindsAndConnects();" style="margin-bottom:10px;">Do Automatic Binds and Connects</button>
+	<table>
+		<tr>
+			<td style="padding-right: 5px;">
+				<button type="button" id="resetSelection" disabled="disabled" onclick="resetSelection();">Reset Selection</button>
+			</td>
+			<td style="padding-right: 5px;">
+				<form action="autoBinds" class="form-horizontal" method="POST" enctype="multipart/form-data" >
+					<input type="submit" id="autoBinds" name="submit" value="Automatic Binds" />
+				</form>
+			</td>
+			<td style="padding-right: 5px;">
+				<form action="autoConnects" class="form-horizontal" method="POST" enctype="multipart/form-data" >
+					<input type="submit" id="autoConnects" name="submit" value="Automatic Connects" />
+				</form>
+			</td>
+			<td>
+				<form action="autoBindsAndConnects" class="form-horizontal" method="POST" enctype="multipart/form-data" >
+					<input type="submit" id="autoBindsAndConnects" name="submit" value="Automatic Binds and Connects" />
+				</form>
+			</td>
+		</tr>
+	</table>
 	<br>
 <%
 		out.println("<div style=\"width:"+(width+520)+"px\">");

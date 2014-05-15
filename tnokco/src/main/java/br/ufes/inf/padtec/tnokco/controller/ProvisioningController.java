@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -326,7 +327,7 @@ public class ProvisioningController{
 		return "provisioning";	//View to return
 	}
 
-	public static DtoResultAjax binds(String outInt, String inInt,HttpServletRequest request) {
+	public static DtoResultAjax binds(String outInt, String inInt, HttpServletRequest request) {
 
 		DtoResultAjax dto = new DtoResultAjax();
 
@@ -576,7 +577,8 @@ public class ProvisioningController{
 		return allowedInputInterfaces;
 	}
 	
-	public static void doAutomaticBinds(){
+	@RequestMapping(value = "/autoBinds", method = RequestMethod.POST)
+	public String autoBinds(HttpServletRequest request){
 		//pego todas as instancias de interface de output nao conectadas
 		ArrayList<Instance> outputInterfaces = new ArrayList<Instance>(); 
 		for (Instance instance : HomeController.ListAllInstances) {
@@ -601,7 +603,7 @@ public class ProvisioningController{
 			}
 		}
 		
-		HashMap<String, String> candidatesForBinds = new HashMap<String, String>();
+		HashMap<String, ArrayList<String>> uniqueCandidatesForBinds = new HashMap<String, ArrayList<String>>();
 		
 		for (Instance outputInterface : outputInterfaces) {
 			ArrayList<String> candidatesForConnection = getCandidateInterfacesForConnection(outputInterface.ns+outputInterface.name);
@@ -610,18 +612,33 @@ public class ProvisioningController{
 			for (String candidate : candidatesForConnection) {
 				if(candidate.contains("true")){
 					noCandidates++;
+					inputCandidateName = candidate.split("#")[1];
 				}
 				
-				if(noCandidates == 1){
-					inputCandidateName = candidate.split("#")[1];
+				if(noCandidates > 1){
+					break;
 				}
 			}	
 			
-			if(noCandidates == 1){
-				candidatesForBinds.put(inputCandidateName, outputInterface.name);
+			if(uniqueCandidatesForBinds.containsKey(inputCandidateName)){
+				uniqueCandidatesForBinds.get(inputCandidateName).add(outputInterface.name);
+			}else if(noCandidates == 1){
+				ArrayList<String> outs = new ArrayList<String>();
+				outs.add(outputInterface.name);
+				uniqueCandidatesForBinds.put(inputCandidateName, outs);
 			}
 		}
 		
-		System.out.println();
+		for(Entry<String, ArrayList<String>> candidates : uniqueCandidatesForBinds.entrySet()) {
+			String inputInterface = candidates.getKey();
+			ArrayList<String> outs = candidates.getValue();
+			
+			if(outs.size() == 1){
+				binds(outs.get(0), inputInterface, request);
+			}
+			
+		}
+		
+		return VisualizationController.provisoning_visualization(request);
 	}
 }
