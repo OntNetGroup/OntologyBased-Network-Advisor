@@ -63,14 +63,14 @@
 							<label class="control-label">Select Reasoner:</label>
 							<div class="controls">
 
-								<label class="radio"> <span class=""><input
+								<label class="radio"> <span class="checked"><input
 										type="radio" name="optionsReasoner" id="optionsRadios1"
-										value="pellet"></span> Pellet
+										value="pellet" checked="checked"></span> Pellet
 								</label>
 								<div style="clear: both"></div>
-								<label class="radio"> <span class="checked"><input
+								<label class="radio"> <span class=""><input
 										type="radio" name="optionsReasoner" id="optionsRadios2"
-										value="hermit" checked="checked"></span> Hermit
+										value="hermit" ></span> Hermit
 								</label>
 
 							</div>

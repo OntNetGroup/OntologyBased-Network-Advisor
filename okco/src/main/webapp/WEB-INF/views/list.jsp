@@ -141,8 +141,8 @@
 							  		
 							  		out.println("<td class=\"center\">" + 
 							  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/okco/graphVisualizer?typeView=IN&id=" + i.id + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
-							  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/details?id=" + i.id + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
-						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completeInstanceAuto?idInstance="+ i.id + "\"> <i class=\"icon-edit\"></i> </a>" +
+							  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/details?id=" + i.id + "\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completeInstanceAuto?idInstance="+ i.id + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
 							  					"</td>");
 						  									  		
 						  		out.println("</tr>");

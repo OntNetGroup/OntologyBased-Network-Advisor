@@ -222,10 +222,10 @@ $(document).ready(function() {
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li><a href="/okco/welcome"><i class="icon-bar-chart"></i><span
 								class="hidden-sm"> Start Page</span></a></li>
-						<li><a href="/okco/list"><i class="icon-dashboard"></i><span
+						<li><a href="/okco/list"><i class="icon-ok-circle"></i><span
 								class="hidden-sm"> Instances</span></a></li>
-						<li><a href="/okco/getModel" class=""><i class="icon-eye-open"></i><span
-								class="hidden-sm"> Export OWL File</span></a></li>
+						<li><a href="/okco/getModel" class=""><i class="icon-save"></i><span
+								class="hidden-sm"> Save OWL File</span></a></li>
 						<li><a href="/okco/faq" class=""><i class="icon-eye-open"></i><span
 								class="hidden-sm"> FAQ</span></a></li>
 					</ul>

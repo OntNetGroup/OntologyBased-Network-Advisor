@@ -511,8 +511,8 @@
 													  		out.println("<td>" + "SOME" + "</td>");
 													  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");									  									  		
 													  		out.println("<td class=\"center\">" + 
-													  						"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
-													  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completePropertyAuto?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-edit\"></i> </a>" +
+													  						"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\"></i> </a>" + "&nbsp;" +
+													  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completePropertyAuto?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-cogs\"></i> </a>" +
 													  					"</td>");
 												  									  		
 												  		out.println("</tr>");
@@ -531,8 +531,8 @@
 													  		out.println("<td>" + "MIN " + dto.Cardinality + "</td>");
 													  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");								  		
 													  		out.println("<td class=\"center\">" + 
-													  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
-											  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completePropertyAuto?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-edit\"></i> </a>" +
+													  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\"></i> </a>" + "&nbsp;" +
+											  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completePropertyAuto?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-cogs\"></i> </a>" +
 													  					"</td>");
 												  									  		
 												  		out.println("</tr>");							  		
@@ -553,7 +553,7 @@
 												  		out.println("<td>" + "MAX " + dto.Cardinality + "</td>");
 												  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");							  		
 													  	out.println("<td class=\"center\">" + 
-													  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "objectMax" + "&propType=MAX" + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
+													  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "objectMax" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\"></i> </a>" + "&nbsp;" +
 										  								
 													  					"</td>");
 												  									  		
@@ -575,8 +575,8 @@
 												  		out.println("<td>" + "EXACTLY " + dto.Cardinality + "</td>");
 												  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");					  		
 													  	out.println("<td class=\"center\">" + 
-													  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
-										  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completePropertyAuto?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-edit\"></i> </a>" +
+													  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\"></i> </a>" + "&nbsp;" +
+										  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/okco/completePropertyAuto?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-cogs\"></i> </a>" +
 													  					"</td>");
 												  									  		
 												  		out.println("</tr>");							  		
@@ -630,7 +630,7 @@
 											  		out.println("<td>" + "SOME " + "</td>");
 											  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");								  		
 											  		out.println("<td class=\"center\">" + 
-											  				"<a class=\"btn btn-info\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "data" + "&propType=SOME" + "\"> <i class=\"icon-edit\"></i> </a>" +
+											  				"<a class=\"btn btn-info\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "data" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
 											  					"</td>");
 											  									  		
 											  		out.println("</tr>");							  		
@@ -651,7 +651,7 @@
 											  		out.println("<td>" + "MIN " + dto.Cardinality + "</td>");
 											  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");						  		
 												  	out.println("<td class=\"center\">" + 
-												  			"<a class=\"btn btn-info\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "data" + "&propType=MIN" + "\"> <i class=\"icon-edit\"></i> </a>" +
+												  			"<a class=\"btn btn-info\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "data" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
 												  					"</td>");
 											  									  		
 											  		out.println("</tr>");							  		
@@ -672,7 +672,7 @@
 											  		out.println("<td>" + "MAX " + dto.Cardinality + "</td>");
 											  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");							  		
 											  		out.println("<td class=\"center\">" + 
-											  				"<a class=\"btn btn-info\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "data" + "&propType=MAX" + "\"> <i class=\"icon-edit\"></i> </a>" +
+											  				"<a class=\"btn btn-info\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "data" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
 											  					"</td>");
 											  									  		
 											  		out.println("</tr>");							  		
@@ -693,7 +693,7 @@
 											  		out.println("<td>" + "EXACTLY " + dto.Cardinality + "</td>");
 											  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");
 												  	out.println("<td class=\"center\">" + 
-												  			"<a class=\"btn btn-info\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "data" + "&propType=EXACTLY" + "\"> <i class=\"icon-edit\"></i> </a>" +
+												  			"<a class=\"btn btn-info\" href=\"/okco/completeProperty?idInstance="+ instance.id + "&idDefinition=" + dto.id + "&type=" + "data" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
 												  					"</td>");							  									  		
 											  		out.println("</tr>");							  		
 										  		}							  		

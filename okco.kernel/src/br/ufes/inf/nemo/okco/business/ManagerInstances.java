@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.okco.business;
 
 import java.util.ArrayList;
 
+import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
@@ -646,5 +647,27 @@ public class ManagerInstances {
 			}			
 		}
 		return listClassesMembersTmp;
+	}
+
+	public OntModel setSameInstances(String i1URI, String i2URI, OntModel model)
+	{
+		Individual i1 = model.getIndividual(i1URI);
+		Individual i2 = model.getIndividual(i2URI);
+		
+		i1.setSameAs(i2);
+		i2.setSameAs(i1);
+		
+		return model;
+	}
+	
+	public OntModel setDifferentInstances(String i1URI, String i2URI, OntModel model)
+	{
+		Individual i1 = model.getIndividual(i1URI);
+		Individual i2 = model.getIndividual(i2URI);
+		
+		i1.setDifferentFrom(i2);
+		i2.setDifferentFrom(i1);
+		
+		return model;
 	}
 }

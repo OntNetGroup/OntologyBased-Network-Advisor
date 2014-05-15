@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.okco.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -658,8 +657,10 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
-	public @ResponseBody String commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
-
+	public @ResponseBody DtoResultCommit commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
+		
+		DtoResultCommit dtoResult = new DtoResultCommit();
+		
 		try {
 			
 			String separatorValues = "%&&%";
@@ -667,7 +668,7 @@ public class OKCoController {
 			String[] arrayValues = dto.ListInstanceDifSameIds.split(separatorValues);
 			for (String val : arrayValues) {
 
-				if(val != "")
+				if(val.contains("x"))
 				{	
 					String[] parts = val.split("x");
 
@@ -678,31 +679,95 @@ public class OKCoController {
 					Instance s1 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, Integer.parseInt(idInsSource));
 					Instance s2 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, Integer.parseInt(idInsTarget));
 					
-					if(type == "dif")
+					if(type.equals("dif"))
 					{
-						//
+						HomeController.Model = HomeController.ManagerInstances.setDifferentInstances(s1.ns + s1.name, s2.ns + s2.name, HomeController.Model);
 						
-					} else if (type == "same")
+					} else if (type.equals("same"))
 					{
-						//
+						HomeController.Model = HomeController.ManagerInstances.setSameInstances(s1.ns + s1.name, s2.ns + s2.name, HomeController.Model);
 						
 					} else {
 						
-						return "error";
+						dtoResult.result = "error";
+						dtoResult.ok = false;
+						return dtoResult;
 					}
-				
+					
+					HomeController.ListModifiedInstances.add(s1.ns + s1.name);
+					HomeController.ListModifiedInstances.add(s2.ns + s2.name);
 				}
 
 			}
 			
+			if(dto.runReasoner.equals("true"))
+			{
+				try {
+
+					//Run reasoner
+					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+
+					//Save temporary model
+					HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);
+
+					//Update list instances
+					HomeController.UpdateLists();
+
+					//Clean list modified instances
+					HomeController.ListModifiedInstances = new ArrayList<String>();
+
+					//Update list instances modified
+					HomeController.UpdateListsModified();
+
+				} catch (Exception e) {
+
+					//Roll back the tempModel
+					HomeController.Model = HomeController.Repository.CopyModel(HomeController.tmpModel);
+					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+
+					//Update list instances
+					try {
+						HomeController.UpdateLists();
+
+					} catch (InconsistentOntologyException e1) {
+
+						//e1.printStackTrace();
+
+					} catch (OKCoExceptionInstanceFormat e1) {
+
+						//e1.printStackTrace();
+					}
+
+					String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
+					
+					dtoResult.result = error;
+					dtoResult.ok = false;
+					return dtoResult;
+				}
+				
+			} if(dto.runReasoner.equals("false")) {
+				
+				//Update list instances modified
+				HomeController.UpdateListsModified();
+				
+			} else {
+				
+				dtoResult.result = "error";
+				dtoResult.ok = false;
+				return dtoResult;
+			}
+			
 		} catch (Exception e) {
 			
-			return "error";
+			dtoResult.result = "error";
+			dtoResult.ok = false;
+			return dtoResult;
 		}
 		
 
-		return "ok";
-
+		dtoResult.result = "ok";
+		dtoResult.ok = true;
+		return dtoResult;
 	}
 	
 	/*------ AJAX - DataProperty -----*/	
