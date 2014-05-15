@@ -9,7 +9,7 @@
 	<footer>
 	
 		<p>
-			<span style="text-align:left;float:left">&copy; 2013 <a href="#" alt="Nemo">TN-OKCo</a></span>
+			<span style="text-align:left;float:left">&copy; 2014 <a href="#" alt="Ontology-based Network Advisor">Ontology-based Network Advisor</a></span>
 			<span class="hidden-phone" style="text-align:right;float:right">
 				<!-- Developed by: <a href="#" alt="Fábio Coradini / Pedro Paulo Barcelos / Victor Amorin / Fred Brasileiro / Cássio">
 								Fábio Coradini / Pedro Paulo Barcelos / Victor Amorin / Fred Brasileiro / Cássio </a> -->

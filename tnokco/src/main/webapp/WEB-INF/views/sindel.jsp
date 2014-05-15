@@ -76,6 +76,7 @@
 																"#maskforloading")
 																.hide();
 
+														
 														if (dto.ok == false) {
 															var html = "<div class=\"alert alert-danger\">"
 																	+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
@@ -91,8 +92,8 @@
 
 														} else {
 
-															//window.location.href = "getSindel";
-															 window.open('getSindel','_blank'); 
+															window.location.href = "getSindel";
+															window.open('getSindel','_blank'); 
 															
 
 														}
@@ -101,10 +102,8 @@
 													error : function(x,
 															e) {
 
-														$(
-																"#maskforloading")
-																.hide();
-														alert("Erro");
+														$("#maskforloading").hide();
+														alert("Error");
 													},
 												});
 
@@ -343,7 +342,7 @@
 
 																} else {
 
-																	var html = "<div class=\"alert alert-warning\">"
+																	/*var html = "<div class=\"alert alert-warning\">"
 																		+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">-</button>"
 																		+ dto.result + "<br>"
 																		+ "<strong>"
@@ -351,13 +350,11 @@
 																		+ "</strong>"
 																		+ "</div>";
 
-																$(
-																		"#boxerro")
-																		.prepend(
-																				html);
+																$("#boxerro").prepend(html); */
+																
 																	//load list instances
-																	//window.location.href = "list";	<---------------------------------------
-																	//window.location.href = "open_visualizator";
+																	alert("Sindel tranformation messages:" + " " + dto.result);
+																	window.location.href = "list";
 
 																}
 
