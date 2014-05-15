@@ -96,16 +96,6 @@ public class Provisioning {
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_LPF-FEP-from");	
 		values.put(tf1, hashrp);
 
-		tf1= new HashMap<String, String>();
-		hashrp= new HashMap<String, String>();
-		tf1.put("INPUT", "Layer_Processor_Source_Input");
-		tf1.put("OUTPUT", "Termination_Source_Output");
-		hashrp.put("RP", "Source_PM-FEP");
-		hashrp.put("RP_RELATION", "is_represented_by_So_PM-FEP");
-		hashrp.put("RP_BINDING", "Source_PM-FEP_Binding");
-		hashrp.put("RP_BINDING_REL_IN", "binds_So_PM-FEP_to");
-		hashrp.put("RP_BINDING_REL_OUT", "binds_So_PM-FEP_from");	
-		values.put(tf1, hashrp);
 
 		tf1.put("INPUT", "Adaptation_Sink_Input");
 		tf1.put("OUTPUT", "Termination_Sink_Output");
@@ -151,8 +141,8 @@ public class Provisioning {
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
-		tf1.put("INPUT", "Layer_Processor_Sink_Input");
-		tf1.put("OUTPUT", "Termination_Sink_Output");
+		tf1.put("INPUT", "Physical_Media_Input");
+		tf1.put("OUTPUT", "Termination_Source_Output");
 		hashrp.put("RP", "Source_PM-FEP");
 		hashrp.put("RP_RELATION", "is_represented_by_Sk_PM-FEP");
 		hashrp.put("RP_BINDING", "Sink_PM-FEP_Binding");
@@ -290,11 +280,13 @@ public class Provisioning {
 		return sites;
 	}
 
+
+
 	public static ArrayList<Equipment> getAllEquipmentsandConnections(){
 		Model = HomeController.Model;
 		InfModel = HomeController.InfModel;
 		HashMap<String, String> hashInputEquipment= new HashMap<String, String>();
-//		inferInterfaceConnections();
+		//		inferInterfaceConnections();
 		//equipments = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Equipment");
 		Equipment e = null;
 		Individual individual;
@@ -307,7 +299,7 @@ public class Provisioning {
 				hashInputEquipment.put(ind.getLocalName(), indeq.getLocalName());
 			}
 		}
-		
+
 		for (String equipment: equipments) {
 			ArrayList<String> outInt= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
 			Individual ind= Model.getIndividual(equipment);
@@ -341,7 +333,43 @@ public class Provisioning {
 	}
 
 
-
+	public static ArrayList<String> getPossibleConnects(String eq_interface){
+		String rp = getRPFromInterface(eq_interface,0);
+		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(rp, InfModel);	
+		for (String cla : classesFromIndividual) {
+			if(cla.split("#")[1].equals("Source_PM-FEP")){
+				ArrayList<String> interfaces = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Input_interface");
+				for (String inter : interfaces) {
+					String rp_in=getRPFromInterface(inter, 1);
+					result.add(rp_in);	
+				}
+			}
+		}
+		return result;
+	}
+	
+	// type = 0 for output type =1 for input
+	public static String getRPFromInterface(String eq_interface, Integer type){
+		String value="maps_output";
+		String target="Output";
+		if(type==1){
+			value="maps_input";
+			target="Input";
+		}
+		
+		if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, value, target)!=null){
+			String port= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, value, target).get(0);
+			if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, "is_binding", "Binding")!=null){
+				String binding = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, "is_binding", "Binding").get(0);
+				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, "binding_is_represented_by", "Directly_Bound_Reference_Point")!=null){
+					String rp = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, "binding_is_represented_by", "Directly_Bound_Reference_Point").get(0);
+					return rp;
+				}
+			}
+		}
+		return null;
+	}
 
 	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
 		return getAllEquipmentsandConnections();
@@ -450,7 +478,7 @@ public class Provisioning {
 		}
 	}
 
-	
+
 	public static void inferInterfaceConnections(){
 		HashMap<String, String> int_port = new HashMap<String, String>();
 		ArrayList<String> inters = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Input_Interface");
@@ -467,7 +495,7 @@ public class Provisioning {
 				int_port.put(port_inp.get(0), inter);
 			}
 		}
-		
+
 		ArrayList<String> outs = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Output");
 		for (String out : outs) {
 			ArrayList<String> inputs  = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out, HomeController.NS+"binds", HomeController.NS+"Input");
