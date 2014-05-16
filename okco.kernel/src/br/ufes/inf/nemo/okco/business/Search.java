@@ -279,7 +279,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y ?z" +
+		" SELECT DISTINCT ?x ?y ?z" +
 		" WHERE {\n" +
 				" ?x " + "owl:equivalentClass" + " _:b0 .\n " +
 				" _:b0 " + "owl:onProperty" + " ?y .\n " +
@@ -318,7 +318,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT ?x" +
+		"\n SELECT DISTINCT ?x" +
 		" WHERE {\n" +
 				" <" + instance + "> <" + relation + "> ?x .\n " +
 				" ?x" + " rdf:type" + " <"+ imageClass + "> .\n " +
@@ -347,7 +347,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT ?x" +
+		"\n SELECT DISTINCT ?x" +
 		" WHERE {\n" +
 				" <" + instance + "> <" + relation + "> ?x .\n " +
 				" <" + relation + "> rdf:type owl:DatatypeProperty .\n " +
@@ -384,7 +384,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT *" +
+		" SELECT DISTINCT *" +
 		" WHERE {\n" +
 				"<" + property + "> " + " rdf:type " + " ?type .\n " +
 		"}";
@@ -427,7 +427,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT *" +
+		" SELECT DISTINCT *" +
 		" WHERE {\n" +
 				"<" + cls + "> " + "owl:disjointWith" + " ?classD .\n " +
 		"}";
@@ -508,7 +508,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT ?x" +
+		"\n SELECT DISTINCT ?x" +
 		" WHERE {\n" +
 				" <" + instance + "> <" + relation + "> ?x .\n " +
 				" ?x" + " rdf:type" + " <"+ imageClass + "> .\n " +
@@ -554,7 +554,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT ?x" +
+		"\n SELECT DISTINCT ?x" +
 		" WHERE {\n" +
 				" <" + instance + "> <" + relation + "> ?x .\n " +
 				" <" + relation + "> rdf:type owl:DatatypeProperty .\n " +
@@ -588,7 +588,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT ?x" +
+		"\n SELECT DISTINCT ?x" +
 		" WHERE {\n" +
 				" <" + instance + "> <" + relation + "> ?x .\n " +
 				" ?x" + " rdf:type" + " <"+ imageClass + "> .\n " +
@@ -622,7 +622,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT ?x" +
+		"\n SELECT DISTINCT ?x" +
 		" WHERE {\n" +
 				" <" + instance + "> <" + relation + "> ?x .\n " +
 			"}";
@@ -709,7 +709,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT *" +
+		" SELECT DISTINCT *" +
 		" WHERE {\n" +
 				"<" + className + "> " + "owl:disjointWith" + " ?classDisjoint .\n " +
 		"}";
@@ -751,7 +751,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT *" +
+		" SELECT DISTINCT *" +
 		" WHERE {\n" +
 				"<" + instanceName + "> " + "rdf:type" + " ?class .\n " +
 		"}";
@@ -790,7 +790,7 @@ public class Search {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX ns: <" + NS + ">" +
-				" SELECT *" +
+				" SELECT DISTINCT *" +
 				" WHERE {\n" +		
 						"?x ?r ?y ." +
 				"}";
@@ -821,7 +821,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y ?z" +
+		" SELECT DISTINCT ?x ?y ?z" +
 		" WHERE {\n" +			
 			" { " +
 				" ?x " + "owl:equivalentClass" + " ?blank .\n " +
@@ -896,7 +896,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y" +
+		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
 			"}";
@@ -948,7 +948,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?source ?relation ?cardinality ?target" +
+		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
 		" WHERE {\n" +
 			" { " +
 				"?source " + "owl:equivalentClass" + " ?blank .\n " +
@@ -1049,7 +1049,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y" +
+		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
 				//" _:b0 " + "owl:Class ?y .\n" +
@@ -1102,7 +1102,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?source ?relation ?cardinality ?target" +
+		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
 		" WHERE {\n" +
 			"{ " +
 				"?source " + "owl:equivalentClass" + " ?blank .\n " +
@@ -1202,7 +1202,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y" +
+		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
 				//" _:b0 " + "owl:Class ?y .\n" +
@@ -1255,7 +1255,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?source ?relation ?cardinality ?target" +
+		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
 		" WHERE {\n" +				
 			" { " +
 				"?source " + "owl:equivalentClass" + " ?blank .\n " +
@@ -1357,7 +1357,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y" +
+		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
 				//" _:b0 " + "owl:Class ?y .\n" +
@@ -1410,7 +1410,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y ?z" +
+		" SELECT DISTINCT ?x ?y ?z" +
 		" WHERE {\n" +			
 			" { " +
 				" ?x " + "owl:equivalentClass" + " ?blank .\n " +
@@ -1493,7 +1493,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y" +
+		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
 			"}";
@@ -1545,7 +1545,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?source ?relation ?cardinality ?target" +
+		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
 		" WHERE {\n" +
 			" { " +
 				"?source " + "owl:equivalentClass" + " ?blank .\n " +
@@ -1662,7 +1662,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y" +
+		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
 				//" _:b0 " + "owl:Class ?y .\n" +
@@ -1715,7 +1715,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?source ?relation ?cardinality ?target" +
+		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
 		" WHERE {\n" +
 			"{ " +
 				"?source " + "owl:equivalentClass" + " ?blank .\n " +
@@ -1831,7 +1831,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y" +
+		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
 				//" _:b0 " + "owl:Class ?y .\n" +
@@ -1884,7 +1884,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?source ?relation ?cardinality ?target" +
+		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
 		" WHERE {\n" +				
 			" { " +
 				"?source " + "owl:equivalentClass" + " ?blank .\n " +
@@ -2002,7 +2002,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?x ?y" +
+		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
 				//" _:b0 " + "owl:Class ?y .\n" +
@@ -2074,7 +2074,7 @@ public class Search {
 		return resultListDefinitions;
 	}
 	
- 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstancesAndAddToList(String instanceURI, OntModel model, InfModel InfModel, ArrayList<Instance> listAllInstances, ManagerInstances manager) {
+ 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(String instanceURI, OntModel model, InfModel InfModel, ArrayList<Instance> listAllInstances, ManagerInstances manager) {
 
 		Instance Instance = manager.getInstance(listAllInstances, instanceURI); // GET INTANCE on MODEL
 		ArrayList<DtoInstance> listInstancesDto = this.GetAllInstancesWithClass(model, InfModel);
@@ -2087,7 +2087,12 @@ public class Search {
 				
 				if (Instance == null)
 				{					
-					Instance = new Instance(nameSpace, name, dto.ClassNameList, this.GetDifferentInstancesFrom(InfModel, dto.Uri), this.GetSameInstancesFrom(InfModel, dto.Uri),true);	
+					Instance = new Instance(nameSpace, name, dto.ClassNameList, this.GetDifferentInstancesFrom(InfModel, dto.Uri), this.GetSameInstancesFrom(InfModel, dto.Uri),true);
+					
+				} else {
+					
+					//Update classes
+					Instance.ListClasses = dto.ClassNameList;
 				}
 					
 			}
@@ -2115,7 +2120,7 @@ public class Search {
 		}	
 		
 		//Add to list of intances
-		listAllInstances.add(Instance);
+		//listAllInstances.add(Instance);
 		
 		//return
 		return resultListDefinitions;
@@ -2135,7 +2140,7 @@ public class Search {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX ns: <" + NS + ">" +
-		" SELECT ?completeClass, DISTINCT ?member " +
+		" SELECT DISTINCT ?completeClass ?member " +
 		" WHERE {\n" +
 				"?completeClass " + "owl:equivalentClass" + " ?x .\n " +
 				"?x rdf:type owl:Class ."  +
@@ -2188,7 +2193,7 @@ public class Search {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX ns: <" + NS + ">" +
-				" SELECT ?completeClass ?member" +
+				" SELECT DISTINCT ?completeClass ?member" +
 				" WHERE {\n" +
 					"{ " +
 						"?completeClass owl:equivalentClass ?cls ." +
@@ -2240,7 +2245,7 @@ public class Search {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX ns: <" + NS + ">" +
-				" SELECT *" +
+				" SELECT DISTINCT *" +
 				" WHERE {\n" +
 					"?subProp rdfs:subPropertyOf" + "<" + property + "> ." +
 				"}";

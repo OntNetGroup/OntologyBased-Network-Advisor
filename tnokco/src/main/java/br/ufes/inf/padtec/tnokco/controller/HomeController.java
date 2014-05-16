@@ -520,7 +520,7 @@ public class HomeController implements ServletContextAware{
 			
 	    	//Get model definitions on list of instances
 	    	
-			ArrayList<DtoDefinitionClass> intanceDefinitions = Search.GetModelDefinitionsInInstancesAndAddToList(instanceURI, Model, InfModel, ListAllInstances, ManagerInstances);
+			ArrayList<DtoDefinitionClass> intanceDefinitions = Search.GetModelDefinitionsInInstances(instanceURI, Model, InfModel, ListAllInstances, ManagerInstances);
 		  	ModelDefinitions.addAll(intanceDefinitions); 
 			
 			// Organize data (Update the list of all instances)

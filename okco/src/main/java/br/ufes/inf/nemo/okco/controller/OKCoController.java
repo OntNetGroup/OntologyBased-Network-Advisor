@@ -890,7 +890,7 @@ public class OKCoController {
 			try {
 
 				//Validate and update list
-				HomeController.UpdateLists();
+				HomeController.UpdateAddIntanceInLists(instanceSelected.ns + instanceSelected.name);;
 
 				//Instance selected update
 				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .id);
@@ -969,8 +969,9 @@ public class OKCoController {
 			}
 
 			try {
+				
 				//Validate and update list
-				HomeController.UpdateLists();
+				HomeController.UpdateAddIntanceInLists(instanceSelected.ns + instanceSelected.name);
 
 				//Instance selected update
 				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .id);

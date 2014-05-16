@@ -69,7 +69,7 @@
 					if(data.ok == true)
 					{
 						//alert("sucess. Refresh the page instance and remember the id");
-						window.location.href=window.location.href;
+						location.reload(true);
 						
 					} else {
 
@@ -118,7 +118,7 @@
 
 					if(data.ok == true)
 					{
-						window.location.href=window.location.href;
+						location.reload(true);
 						//alert("sucess. Refresh the page instance and remember the id");
 						
 					} else {
@@ -345,17 +345,50 @@
 			<div class="box-content">
 			
 				<ul class="nav tab-menu nav-tabs" style="padding-right: 24px;" id="myTab">
-					<li class=""><a href="#properties">Properties</a></li>
-					<li class="active"><a href="#classes">Classes</a></li>
+					<li class=""><a href="#properties">Properties
+					
+					<%
+						if(ListSpecializationProperties.size() > 0)
+						{
+							out.println("<span class=\"notification orange\">!</span>");
+							
+						} 
+						
+					%>
+					
+					</a></li>
+					<li class="active"><a href="#classes">Classes
+					
+					<%
+						if(listClassesMembersTmp.size() > 0)
+						{
+							out.println("<span class=\"notification orange\">!</span>");
+							
+						} 
+						
+					%>
+					
+					</a></li>
 				</ul>
 				
 				<div id="myTabContent" class="tab-content">
 					
 					<div class="tab-pane" id="classes">
 						
-						<h3>Classify instance <i> <% out.println(instance.name); %></i> as:</h3>
+						<%
+						if(listClassesMembersTmp.size() > 0)
+						{
+							out.println("<h3>Classify instance <i>" +  instance.name + "</i> as:</h3>");
+							
+						} else {
+							
+							out.println("<h3>* No class specializations.</h3>");
+						}
+						
+						%>
+						
 						<form id="completeClassForm" action="classifyInstanceClasses" method="POST">
-							<div class="form-group" style="margin-top: 20px;">					
+							<div class="form-group" style="margin-top: 10px;">					
 							
 							<%	
 								int count = 0;
@@ -433,7 +466,7 @@
 								 
 								 out.println("</div>");
 								 
-								 out.println("<div id=\"MyWizard\" class=\"wizard\">");
+								 out.println("<div id=\"MyWizard\" class=\"wizard\" style=\"padding-bottom:10px; margin-bottom:10px\">");
 								 	out.println("<div class=\"actions\">");
 										 out.println("<button type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Prev relation</button>");
 										 if(ListSpecializationProperties.size() > 1)
