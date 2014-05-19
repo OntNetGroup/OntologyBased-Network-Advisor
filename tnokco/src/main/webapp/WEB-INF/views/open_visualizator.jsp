@@ -23,19 +23,11 @@ function changedEquipmentCB(){
 
 <div class="row">
 
-	<div style="padding-left: 15px; margin-bottom: 20px;">
-		<button onclick="window.location = '/tnokco/welcome';" style="float: left;"
-			type="button" class="btn btn-prev">
-			<i class="icon-arrow-left"></i> Back to list
-		</button>
-		<div style="clear: both"></div>
-	</div>
-
 	<div class="col-lg-12">
 		<div class="box">
 			<div class="box-header">
 				<h2>
-					<i class="icon-edit"></i>Instance informations
+					<i class="icon-edit"></i>Visualization Options
 				</h2>
 				<div class="box-icon">
 					<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
@@ -48,7 +40,7 @@ function changedEquipmentCB(){
 						
 							<%
 								if(sites.isEmpty()){
-									out.println("<td style=\"margin-left:15px;\">No sites");
+									out.println("<td style=\"margin-left:15px;\">No site available");
 								}else{ %>
 									<td style="padding-left: 30px;">
 										<a class="btn btn-success" 
@@ -86,7 +78,7 @@ function changedEquipmentCB(){
 									<% 
 										if(sites.isEmpty()){
 									%>
-											No sites
+											No site available
 									<%
 										}else{
 											%>
@@ -120,7 +112,7 @@ function changedEquipmentCB(){
 								<% 
 									if(equipements.isEmpty()){
 								%>
-										No equipments
+										No equipment available
 								<%
 									}else{
 										%>
@@ -164,6 +156,15 @@ function changedEquipmentCB(){
 		</div>
 	</div>
 	<!--/col-->
+
+		<div class="col-lg-12">
+			<p>Instructions:</p>
+			<div class="tooltip-demo well">
+				<p class="muted" style="margin-bottom: 0;">
+					Select the desired visualization from the six options presented above. The visualization represents the network elements and its relations.
+				</p>
+			</div>
+		</div>
 
 </div>
 <%@include file="../templates/footer.jsp"%>

@@ -263,7 +263,7 @@
 		<div class="box">
 			<div class="box-header">
 				<h2>
-					<i class="icon-edit"></i>Instance informations
+					<i class="icon-edit"></i>Visualization Options
 				</h2>
 				<div class="box-icon">
 					 <a	href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
