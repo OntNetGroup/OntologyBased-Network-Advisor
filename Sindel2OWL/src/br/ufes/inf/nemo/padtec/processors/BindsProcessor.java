@@ -16,11 +16,9 @@ public class BindsProcessor {
 	private static List<String>  transportFunctions =  Arrays.asList("tf","so-tf","sk-tf","bi-tf","af","so-af","sk-af","bi-af","lpf","so-lpf","sk-lpf","bi-lpf","matrix","uni-matrix","so-matrix","sk-matrix","bi-matrix","pm", "sn");
 	private static List<String>  ports =  Arrays.asList("input","output");
 	private static List<String>  interfaces =  Arrays.asList("in-int","out-int");
-	private static List<String>  referencePoints =  Arrays.asList("in-int","out-int");
 
 	private static HashMap<String, String> simpleBindsHash = new HashMap<>();
-	
-	
+
 	private static OntModel model; 
 	private static String ClassNS;
 	private static String IndNS;
@@ -61,28 +59,30 @@ public class BindsProcessor {
 			boolean isTF1 = false, isTF2 = false;//for Transport Function
 			boolean isP1 = false, isP2 = false;//for Port
 			boolean isI1 = false, isI2 = false;//for Interface
-			boolean isRP1 = false, isRP2 = false;//for Reference Point
 
 			//Create the individual vars[0] and vars[1]
-			a = model.getIndividual(IndNS+vars[0]);
-			b = model.getIndividual(IndNS+vars[1]);
+			if(vars.length == 2){
+				a = model.getIndividual(IndNS+vars[0]);
+				b = model.getIndividual(IndNS+vars[1]);
 
-			toA = Sindel2OWL.hashIndividuals.get(vars[0]);
-			toB = Sindel2OWL.hashIndividuals.get(vars[1]);
+				toA = Sindel2OWL.hashIndividuals.get(vars[0]);
+				toB = Sindel2OWL.hashIndividuals.get(vars[1]);
+			}else{
+				a = model.getIndividual(IndNS+vars[1]);
+				b = model.getIndividual(IndNS+vars[2]);
+
+				toA = Sindel2OWL.hashIndividuals.get(vars[1]);
+				toB = Sindel2OWL.hashIndividuals.get(vars[2]);		
+			}
 
 			isTF1 = transportFunctions.contains(toA);
 			isP1 = ports.contains(toA);
 			isI1 = interfaces.contains(toA);
-			isRP1 = referencePoints.contains(toA);
-			
+
 			isTF2 = transportFunctions.contains(toB);
 			isP2 = ports.contains(toB);
 			isI2 = interfaces.contains(toB);
-			isRP2 = referencePoints.contains(toB);
-			
-			if(declaration.contains("soap1"))
-				System.out.println("stop");
-			
+
 			if(vars.length == 2){
 				//SimpleRelation
 				if(isTF1 && isTF2){
@@ -105,7 +105,7 @@ public class BindsProcessor {
 					processSimpleRelation_InterfacexPort();
 				}
 			}else{
-				x = model.getIndividual(IndNS+vars[2]);
+				x = model.getIndividual(IndNS+vars[0]);
 				//AssignableRelation
 				if(isP1 && isP2){
 					//IF a and b are Ports 
@@ -147,7 +147,7 @@ public class BindsProcessor {
 
 	private static void processSimpleRelation_InterfacexPort() {
 		// TODO VERIFICAR!!!
-		
+
 	}
 
 	private static void processSimpleRelation_InterfacexInterface() {
@@ -199,9 +199,9 @@ public class BindsProcessor {
 		stmt = model.createStatement(b, componentOf, k);
 		model.add(stmt);
 
-//		if(simpleBindsHash.containsKey(key))
-//		String specificRelation 
-//		
+		//		if(simpleBindsHash.containsKey(key))
+		//		String specificRelation 
+		//		
 		//a binds new Port
 		rel = model.getObjectProperty(ClassNS+"binds");
 		stmt = model.createStatement(a, rel, k);
@@ -288,6 +288,10 @@ public class BindsProcessor {
 
 		rel = model.getObjectProperty(ClassNS+"binding_is_represented_by");
 		stmt = model.createStatement(k, rel, x);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.binding_is_represented_by");
+		stmt = model.createStatement(x, rel, k);
 		model.add(stmt);
 	}
 }

@@ -49,6 +49,11 @@
 			return hash;
 		}
 </script>
+	<div style="padding-left: 15px; margin-bottom:20px;">
+		<button onclick="window.history.back();" style="float:left;" type="button" class="btn btn-prev"> <i class="icon-arrow-left"></i> Go back </button>
+		<div style="clear:both"></div>
+	</div>
+
 	<%
 		out.println("<div style=\"width:"+(width+320)+"px\">");
 	%>

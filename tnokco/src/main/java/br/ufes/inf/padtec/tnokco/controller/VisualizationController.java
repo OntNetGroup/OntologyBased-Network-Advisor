@@ -143,11 +143,10 @@ public class VisualizationController {
 			}
 			
 			request.getSession().setAttribute("canClick", false);
-			
 		}
 
-		width  += 400 * (size / 10);
-		height += 400 * (size / 10);
+		width  += 400 * (size / 100);
+		height += 400 * (size / 100);
 		
 		//session
 		request.getSession().setAttribute("valuesGraph", valuesGraph);
@@ -184,11 +183,10 @@ public class VisualizationController {
 				size++;
 			}
 
-
 			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
-				valuesGraph += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}), {name:'binds:";
-				valuesGraph += entry.getKey().get(0)+"-"+entry.getKey().get(1);
-				valuesGraph += "'});";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'interface_binds'});";
+				hashTypes += "hash[\""+entry.getKey().get(1)+"\"] = \"<b>"+entry.getKey().get(1)+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'componentOf'});";
 				size++;
 			}
 			if(equip.getBinds().isEmpty()){
@@ -237,8 +235,14 @@ public class VisualizationController {
 		}
 
 		for(String[] stCon : triplas){
-			if(!hashIndv.containsKey(stCon[0]) || !hashIndv.containsKey(stCon[2]))
+			if(!hashIndv.containsKey(stCon[0]) || !hashIndv.containsKey(stCon[2])){
+				valuesGraph += "graph.addEdge(graph.addNode(\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\", ";
+				valuesGraph += "{shape:\"INT_OUT_AZUL\"}),";
+				valuesGraph += "graph.addNode(\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\", ";
+				valuesGraph += "{shape:\"INT_OUT_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
 				continue;
+			}
+				
 			valuesGraph += "graph.addEdge(graph.addNode(\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\", ";
 			valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[0]))+"_AZUL\"}),";
 			valuesGraph += "graph.addNode(\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\", ";

@@ -355,7 +355,7 @@ $(document).ready(function() {
 										
 										<li><a class="submenu" href="/tnokco/sindel"><i class="">S</i><span class="hidden-sm"> &nbsp;&nbsp; Sindel Editor</span></a></li>
 										<li><a class="submenu" href="/tnokco/condel"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Condel Editor</span></a></li>
-										<li><a class="submenu" href="/tnokco/newEquipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipmment Instances</span></a></li>
+										<li><a class="submenu" href="/tnokco/newEquipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipment Instances</span></a></li>
 									</ul>	
 								</li>
 								

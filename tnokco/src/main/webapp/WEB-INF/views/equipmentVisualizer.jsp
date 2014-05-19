@@ -157,6 +157,13 @@
 										var str = result;
 										var lines = str.split(";");
 										hashEquipIntIn = new Array();
+										
+										//Set all equipments unavailable
+										for(key in hash){
+											graph.getNode(key).data.shape = "Equip_ROXO";
+										}
+										
+										//Set the availability of each equipment
 										for(var i = 0; i < lines.length; i++){
 											if(lines[i] == "")
 												continue;
@@ -213,6 +220,7 @@
 		
 		
 	</script>
+	
 	<table>
 		<tr>
 			<td style="padding-right: 5px;">
