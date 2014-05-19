@@ -60,6 +60,7 @@
 </script>
 
 	<div class="row" style="margin-right:0px;margin-left:0px">
+	
 		<div id="boxViewAll" style="float:left">
 			<a class="btn btn-success" target="_blank" href="/okco/graphVisualizer?typeView=ALL&id=0"> <i class="icon-zoom-in"></i> </a>
 			VIEW ALL GRAPH			
