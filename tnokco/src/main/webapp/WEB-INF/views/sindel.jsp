@@ -353,7 +353,11 @@
 																$("#boxerro").prepend(html); */
 																
 																	//load list instances
-																	alert("Sindel tranformation messages:" + " " + dto.result);
+																	if(dto.result != "")
+																	{
+																		alert("Sindel tranformation messages:" + " " + dto.result);
+																	}
+																	
 																	window.location.href = "list";
 
 																}
