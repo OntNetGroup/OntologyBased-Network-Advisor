@@ -402,38 +402,25 @@ public class ProvisioningController{
 
 	}
 
-
-
 	public static ArrayList<String> getCandidateInterfacesForConnection(String outIntNs){
-		//pego a primeira interface de output que eu achar, só pra simular a entrada de um argumento
-		//ou seja, esse bloco vai ser apagado
+		//find the instance of the output interface
+		Instance outputInterface = getInstanceFromNameSpace(outIntNs);
+//		Instance outputInterface = null;
+//		for (Instance instance : HomeController.ListAllInstances) {
+//			String instNs = instance.name;
+//			instNs = instNs.replace(instance.ns, "");
+//			outIntNs = outIntNs.replace(instance.ns, "");
+//			if(instNs.equals(outIntNs)){
+//				outputInterface = instance;
+//				break;
+//			}
+//		}
 
-		//Instance outputInterface = null;
-		Instance outputInterface = null;
-		for (Instance instance : HomeController.ListAllInstances) {
-			/*
-			for (String className : instance.ListClasses) {
-				className = className.replace(HomeController.NS, "");
-				if(className.equalsIgnoreCase("Output_Interface")){
-					outputInterface = instance;
-					break;
-				}
-			}
-			 */
-			String instNs = instance.name;
-			instNs = instNs.replace(instance.ns, "");
-			outIntNs = outIntNs.replace(instance.ns, "");
-			if(instNs.equals(outIntNs)){
-				outputInterface = instance;
-				break;
-			}
-		}
-
-		//busco as relações dessa instância de interface
+		//get all relations of the output interface
 		Search search = new Search(HomeController.NS);
 		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
 
-		//pego o namespace completo da relação de maps_out
+		//get namespaces of individuals of some output interface relations
 		String outputNs = "";
 		String eqOutNs = "";
 		String interfaceBindsNs = "";
@@ -447,11 +434,13 @@ public class ProvisioningController{
 			}
 		}
 
-		Boolean outputAlreadyConnected = false;
+		//verify if the output interface is already binded
+		Boolean outputInterfaceAlreadyBinded = false;
 		if(!interfaceBindsNs.equals("")){
-			outputAlreadyConnected = true;
+			outputInterfaceAlreadyBinded = true;
 		}
-		//pego a instancia do output mapeado pela interface de output
+		
+		//get the instance of the output mapped by the output interface
 		Instance output = null;
 		for (Instance instance : HomeController.ListAllInstances) {
 			if(outputNs.equals(instance.ns+instance.name)){
@@ -460,70 +449,71 @@ public class ProvisioningController{
 			}
 		}
 
-		//pego todas as instancias de interface de input
-		ArrayList<Instance> inputInterfaces = new ArrayList<Instance>(); 
-		for (Instance instance : HomeController.ListAllInstances) {
-			for (String className : instance.ListClasses) {
-				className = className.replace(HomeController.NS, "");
-				if(className.equalsIgnoreCase("Input_Interface")){
-					inputInterfaces.add(instance);
-					break;
-				}
-			}
-		}
+		//get all input interfaces
+		ArrayList<Instance> inputInterfaces = getInstancesFromClass("Input_Interface");
+//		ArrayList<Instance> inputInterfaces = new ArrayList<Instance>(); 
+//		for (Instance instance : HomeController.ListAllInstances) {
+//			for (String className : instance.ListClasses) {
+//				className = className.replace(HomeController.NS, "");
+//				if(className.equalsIgnoreCase("Input_Interface")){
+//					inputInterfaces.add(instance);
+//					break;
+//				}
+//			}
+//		}
 
 		ArrayList<String> allowedInputInterfaces = new ArrayList<String>();
-		//percorro todas as classes do output do TPF
+		//now, the idea is compare all types of the output with all types of all inputs
 		for (String outputClassName : output.ListClasses) {
 			outputClassName = outputClassName.replace(HomeController.NS, "");
 
-			//percorro todas as instancias de interface de input encontradas
 			for (Instance inputInterface : inputInterfaces) {
 				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
 				String inputNs = "";
 				String eqInNs = "";
-				Boolean alreadyConnected = false;
+				Boolean inputInterfaceAlreadyConnected = false;
 				
-				//pego o NS do input mapeada pela interface de input
+				//get namespaces of individuals of some input interface relations
 				for (DtoInstanceRelation inRelation : inIntRelations) {
 					if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
 						inputNs = inRelation.Target;
 					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
 						eqInNs = inRelation.Target;						
 					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.interface_binds")){
-						alreadyConnected = true;
+						inputInterfaceAlreadyConnected = true;
 					}
 				}
 
-				if(!alreadyConnected){
+				//since I verify the inverse relation of interface_binds above, 
+				//it's necessary to verify if some output interface has the interface_binds relation
+				//with the actual input interface
+				//the block below it's for this purpose
+				if(!inputInterfaceAlreadyConnected){
 					for(Instance otherOutput : HomeController.ListAllInstances){
 						for (String otherOutputClassName : otherOutput.ListClasses) {
 							otherOutputClassName = otherOutputClassName.replace(HomeController.NS, "");
 							if(otherOutputClassName.equalsIgnoreCase("Output_Interface")){
-								if(otherOutput.name.equals("soeq1_o1") && inputInterface.name.equals("soeq2_i1")){
-									System.out.println();
-								}
 								ArrayList<DtoInstanceRelation> otherOutputRelations = search.GetInstanceRelations(HomeController.InfModel, otherOutput.ns+otherOutput.name);
 								for (DtoInstanceRelation otherOutputRelation : otherOutputRelations) {
 									if(otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
 										if((inputInterface.ns+inputInterface.name).equals(otherOutputRelation.Target)){
-											alreadyConnected = true;
+											inputInterfaceAlreadyConnected = true;
 											break;
 										}
 									}
 								}
-								if(alreadyConnected){
+								if(inputInterfaceAlreadyConnected){
 									break;
 								}
 							}
 						}
-						if(alreadyConnected){
+						if(inputInterfaceAlreadyConnected){
 							break;
 						}
 					}
 				}
 				
-				//busco a instancia do input mapeado pela interface 
+				//get the input mapped by the input interface 
 				Instance input = null;
 				for (Instance instance : HomeController.ListAllInstances) {
 					if(inputNs.equals(instance.ns+instance.name)){
@@ -531,16 +521,16 @@ public class ProvisioningController{
 						break;
 					}
 				}
-
+				
 				Boolean hasAllowedRelation = false;
-				//percorro todas as classes do input
+				
+				//for each input and output class names, I verify if exist a possible relation of binds
 				for(String inputClassName : input.ListClasses){
 					inputClassName = inputClassName.replace(HomeController.NS, ""); 
 					HashMap<String, String> tf1 = new HashMap<String, String>();
 					tf1.put("INPUT", inputClassName);
 					tf1.put("OUTPUT", outputClassName);
 
-					//verifica na hash do cassio se existe a combinacao entre inputClassName e outputClassName
 					HashMap<String, String> allowedRelation = Provisioning.values.get(tf1);
 
 					if(allowedRelation != null){
@@ -549,21 +539,32 @@ public class ProvisioningController{
 					}
 				}
 
+				
 				String interfaceReturn = "";
 				eqInNs = eqInNs.replace(inputInterface.ns, "");
 				inputNs = inputNs.replace(inputInterface.ns, "");
-				eqOutNs = eqOutNs.replace(inputInterface.ns, "");
+				eqOutNs = eqOutNs.replace(outputInterface.ns, "");
 				interfaceReturn += eqInNs; 
 				interfaceReturn += "#";
-				//interfaceReturn += inputNs;
 				interfaceReturn += inputInterface.name;
 				interfaceReturn += "#";
 
-				if(hasAllowedRelation && !eqInNs.equals(eqOutNs) && !outputAlreadyConnected && !alreadyConnected){
-					if(allowedInputInterfaces.contains(interfaceReturn+"false;")){
-						allowedInputInterfaces.remove(interfaceReturn+"false;");
+				//the return only can be true if:
+				// - has an allowed relation
+				// - it is a different equipment
+				// - the output interface it is not binded
+				// - the input interface it is not binded
+				if(hasAllowedRelation && !eqInNs.equals(eqOutNs) && !outputInterfaceAlreadyBinded && !inputInterfaceAlreadyConnected){
+					Boolean hasCyclicalRel = false;
+					hasCyclicalRel = hasCyclicalRelationship(outputInterface.ns, eqOutNs, inputInterface.ns, eqInNs);
+					
+					if(!hasCyclicalRel){
+						if(allowedInputInterfaces.contains(interfaceReturn+"false;")){
+							allowedInputInterfaces.remove(interfaceReturn+"false;");
+						}
+						interfaceReturn += "true;";
 					}
-					interfaceReturn += "true;";
+					
 				}else{
 					if(!allowedInputInterfaces.contains(interfaceReturn.replace("true;", "false;"))){
 						interfaceReturn += "false;";
@@ -577,6 +578,93 @@ public class ProvisioningController{
 		}
 
 		return allowedInputInterfaces;
+	}
+	
+	public static Instance getInstanceFromNameSpace(String nameSpace){
+		Instance instance = null;
+		for (Instance inst : HomeController.ListAllInstances) {
+			String instNs = inst.name;
+			instNs = instNs.replace(inst.ns, "");
+			nameSpace = nameSpace.replace(inst.ns, "");
+			if(instNs.equals(nameSpace)){
+				instance = inst;
+				break;
+			}
+		}
+		return instance;
+	}
+	
+	public static ArrayList<Instance> getInstancesFromClass(String classNameWithoutNameSpace){
+		//get all input interfaces
+		ArrayList<Instance> instances = new ArrayList<Instance>(); 
+		for (Instance instance : HomeController.ListAllInstances) {
+			for (String className : instance.ListClasses) {
+				className = className.replace(HomeController.NS, "");
+				if(className.equalsIgnoreCase(classNameWithoutNameSpace)){
+					instances.add(instance);
+					break;
+				}
+			}
+		}
+		return instances;
+	}
+	
+	public static Boolean hasCyclicalRelationship(String searchForEquipNS, String searchForEquipName, String actualEquipNS, String actualEquipName){
+		if(searchForEquipNS.equals(actualEquipNS) && searchForEquipName.equals(actualEquipName)){
+			return true;
+		}
+		
+		ArrayList<DtoInstanceRelation> equipRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, actualEquipNS+actualEquipName);
+		
+		ArrayList<String> outIntNss = new ArrayList<String>();
+		//get namespaces of individuals of some input interface relations
+		for (DtoInstanceRelation eqRelation : equipRelations) {
+			if(eqRelation.Property.equalsIgnoreCase(HomeController.NS+"componentOf.Equipment.Output_Interface") || eqRelation.Property.equalsIgnoreCase(HomeController.NS+"componentOf")){
+				Instance outIntInstance = getInstanceFromNameSpace(eqRelation.Target);
+				for (String classOutIntName : outIntInstance.ListClasses) {
+					if(classOutIntName.equals(HomeController.NS+"Output_Interface")){
+						outIntNss.add(eqRelation.Target);
+					}
+				}
+			}
+		}
+		
+		for (String oiNs : outIntNss) {
+			Instance outputInterface = getInstanceFromNameSpace(oiNs);
+			
+			ArrayList<DtoInstanceRelation> outIntRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
+			String inIntNs = "";
+			//get namespaces of individuals of some input interface relations
+			for (DtoInstanceRelation outIntRelation : outIntRelations) {
+				if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
+					inIntNs = outIntRelation.Target;
+					break;
+				}
+			}
+			//se inIntNs != null
+			if(!inIntNs.equals("")){
+				ArrayList<DtoInstanceRelation> inIntRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, inIntNs);
+				String inIntEquipNs = "";
+				//get namespaces of individuals of some input interface relations
+				for (DtoInstanceRelation inIntRelation : inIntRelations) {
+					if(inIntRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
+						inIntEquipNs = inIntRelation.Target;
+						break;
+					}
+				}
+				
+				String newActualEquipNs = inIntEquipNs.split("#")[0]+"#";
+				String newActualEquipName = inIntEquipNs.split("#")[1];
+				
+				if(hasCyclicalRelationship(searchForEquipNS, searchForEquipName, newActualEquipNs, newActualEquipName)){
+					return true;
+				}
+			}
+			
+		}
+		
+		
+		return false;
 	}
 	
 	@RequestMapping(value = "/autoBinds", method = RequestMethod.POST)
