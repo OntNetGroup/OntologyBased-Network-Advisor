@@ -95,7 +95,7 @@ public class DtoDefinitionClass {
 		System.out.println(this.Source + " -> " + this.Relation + " (" + this.PropertyType + ") - > " + this.Target + "(" + this.Cardinality + ")");
 	}
 
-	public static DtoDefinitionClass getDtoWithSource(ArrayList<DtoDefinitionClass> list, String source) {
+	public static DtoDefinitionClass getDtoWithSourceAndRelationAndTarget(ArrayList<DtoDefinitionClass> list, String source) {
 		
 		for (DtoDefinitionClass aux : list) {
 			if(source.equals(aux.Source)){

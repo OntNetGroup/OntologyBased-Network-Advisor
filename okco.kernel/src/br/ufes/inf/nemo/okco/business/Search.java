@@ -2048,13 +2048,16 @@ public class Search {
  	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(ArrayList<Instance> listAllInstances,	InfModel InfModel) {
 
 		ArrayList<DtoDefinitionClass> resultListDefinitions = new ArrayList<DtoDefinitionClass>();
+		ArrayList<DtoDefinitionClass> resultListDefinitionsAux = new ArrayList<DtoDefinitionClass>();	//get the repeat
 		
 		for (Instance instance : listAllInstances) 
 		{
 			for (String cls : instance.ListClasses) 
 			{
-				DtoDefinitionClass aux = DtoDefinitionClass.getDtoWithSource(resultListDefinitions, cls);
-				if(aux == null && ! cls.contains("Thing"))	//don't exist yet
+				//DtoDefinitionClass aux = DtoDefinitionClass.getDtoWithSourceAndRelationAndTarget(resultListDefinitions, cls);
+				
+				DtoDefinitionClass aux = null;
+				if(aux == null && ! cls.contains("Thing"))	//doesn't exist yet
 				{
 					ArrayList<DtoDefinitionClass> dtoSomeRelationsList = this.GetSomeRelationsOfClass(InfModel,cls);
 					ArrayList<DtoDefinitionClass> dtoMinRelationsList = this.GetMinRelationsOfClass(InfModel,cls);
@@ -2103,7 +2106,7 @@ public class Search {
 
 		for (String cls : Instance.ListClasses) 
 		{
-			DtoDefinitionClass aux = DtoDefinitionClass.getDtoWithSource(resultListDefinitions, cls);
+			DtoDefinitionClass aux = DtoDefinitionClass.getDtoWithSourceAndRelationAndTarget(resultListDefinitions, cls);
 			if(aux == null && ! cls.contains("Thing"))	//don't exist yet
 			{
 				ArrayList<DtoDefinitionClass> dtoSomeRelationsList = this.GetSomeRelationsOfClass(InfModel,cls);

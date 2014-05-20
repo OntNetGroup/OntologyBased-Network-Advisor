@@ -104,7 +104,6 @@ public class OKCoController {
 
 		ArrayList<DtoInstanceRelation> instanceListRelationsFromInstance = HomeController.Search.GetInstanceRelations(HomeController.InfModel, instanceSelected.ns + instanceSelected.name); 		//Get instance relations
 
-
 		ListCompleteClsInstaceSelected = instanceSelected.ListCompleteClasses;
 
 		// ------ Specialization Properties list ------//
@@ -113,14 +112,17 @@ public class OKCoController {
 
 		// ------ Create sections ------//
 
+		//Specialization
 		request.getSession().setAttribute("listClassesMembersTmp", listClassesMembersToClassify);
 		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
 
+		//Definition
 		request.getSession().setAttribute("listSomeClassDefinition", listSomeClassDefinition);
 		request.getSession().setAttribute("listMinClassDefinition", listMinClassDefinition);
 		request.getSession().setAttribute("listMaxClassDefinition", listMaxClassDefinition);
 		request.getSession().setAttribute("listExactlyClassDefinition", listExactlyClassDefinition);
 
+		//Information
 		request.getSession().setAttribute("instanceListRelations", instanceListRelationsFromInstance);
 		request.getSession().setAttribute("instanceSelected", instanceSelected);		
 		request.getSession().setAttribute("listInstances", ListAllInstances);

@@ -222,8 +222,13 @@ public class ManagerInstances {
 				
 			} else {
 				
+				//HERE/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				
 				for (String cls : instanceSelected.ListClasses)
 				{
+					//Pegar array de generalization set
+					///////////////////////////
+					
 					ArrayList<String> listSubClassesComplete = search.GetCompleteSubClasses(cls, infModel);
 					
 					if(listSubClassesComplete.size() > 0)
@@ -274,7 +279,7 @@ public class ManagerInstances {
 					
 					for (String sub : subPropertiesWithDomainAndRange) 
 					{
-						dtoP.SubProperties.add(sub);					
+						dtoP.SubProperties.add(sub);	
 					}
 					ListSpecializationProperties.add(dtoP);
 				}			
