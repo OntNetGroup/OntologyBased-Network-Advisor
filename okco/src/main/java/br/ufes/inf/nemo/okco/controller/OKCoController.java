@@ -98,7 +98,7 @@ public class OKCoController {
 
 		// ------ Complete classes list ------//
 
-		ArrayList<String> listClassesMembersToClassify = HomeController.ManagerInstances.getClassesToClassify(instanceSelected, HomeController.InfModel);		
+		//ArrayList<String> listClassesMembersToClassify = HomeController.ManagerInstances.getClassesToClassify(instanceSelected, HomeController.InfModel);		
 
 		// ----- List relations ----- //
 
@@ -113,7 +113,7 @@ public class OKCoController {
 		// ------ Create sections ------//
 
 		//Specialization
-		request.getSession().setAttribute("listClassesMembersTmp", listClassesMembersToClassify);
+		//request.getSession().setAttribute("listClassesMembersTmp", listClassesMembersToClassify);
 		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
 
 		//Definition

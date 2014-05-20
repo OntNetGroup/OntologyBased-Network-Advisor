@@ -17,7 +17,7 @@
 	ArrayList<DtoInstanceRelation> InstanceListRelations = (ArrayList<DtoInstanceRelation>)request.getSession().getAttribute("instanceListRelations");	
 	
 	ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties = (ArrayList<DtoPropertyAndSubProperties>)request.getSession().getAttribute("ListSpecializationProperties");	
-	ArrayList<String> listClassesMembersTmp = (ArrayList<String>)request.getSession().getAttribute("listClassesMembersTmp");
+	//ArrayList<String> listClassesMembersTmp = (ArrayList<String>)request.getSession().getAttribute("listClassesMembersTmp");
 	
 	ArrayList<DtoDefinitionClass> listSomeClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listSomeClassDefinition");
 	ArrayList<DtoDefinitionClass> listMinClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listMinClassDefinition");
@@ -317,7 +317,7 @@
 					<li class="active"><a href="#classes">Classes
 					
 					<%
-						if(listClassesMembersTmp.size() > 0)
+						if(instance.ListCompleteClasses.size() > 0)
 						{
 							out.println("<span class=\"notification orange\">!</span>");
 							
@@ -333,9 +333,8 @@
 					<div class="tab-pane" id="classes">
 						
 						<%
-						if(listClassesMembersTmp.size() > 0)
+						if(instance.ListCompleteClasses.size() > 0)
 						{
-							out.println("<h3>Classify instance <i>" +  instance.name + "</i> as:</h3>");
 							
 						} else {
 							
@@ -344,39 +343,44 @@
 						
 						%>
 						
-						<form id="completeClassForm" action="classifyInstanceClasses" method="POST">
-							<div class="form-group" style="margin-top: 10px;">					
-							
-							<%	
-								int count = 0;
-								if(listClassesMembersTmp.size() > 0)
+						<%	
+							int countForm = 1;
+							if(instance.ListCompleteClasses.size() > 0)
+							{
+								for (DtoCompleteClass dto : instance.ListCompleteClasses)
 								{
-										out.println("<div class=\"controls\">");								
-										for (String clsComplete : listClassesMembersTmp) 
-										{
-											count++;
-											out.println("<label class=\"checkbox inline checkboxMarc\">");
-											out.println("<div class=\"checker\" id=\"uniform-inlineCheckbox" + count  +"\"><span class=\"\"><input type=\"checkbox\" id=\"inlineCheckbox" + count + "\" value=\"option" + count + "\"></span></div> <span title=\"" + clsComplete + "\">" + clsComplete.split("#")[1]);
-											out.println("</label>");
-										}
+									out.println("<h3>Classify instance <i>" +  instance.name + "</i> from <i>" + dto.CompleteClass.split("#")[1] + "</i> as:</h3>");
+									out.println("<form id=\"completeClassForm\""+ countForm + " action=\"classifyInstanceClasses\" method=\"POST\">");
+										out.println("<div class=\"form-group\" style=\"margin-top: 10px;\">");	
+														out.println("<div class=\"controls\">");
+															int count = 0;
+															for (String member : dto.Members) 
+															{
+																count++;
+																out.println("<label class=\"checkbox inline checkboxMarc\">");
+																out.println("<div class=\"checker\" id=\"uniform-inlineCheckbox" + count  +"\">");
+																	out.println("<span class=\"\">");
+																			out.println("<input type=\"checkbox\" id=\"inlineCheckbox" + count + "\" value=\"option" + count + "\"></span></div>");
+																			out.println("<span title=\"" + member + "\">" + member.split("#")[1]);
+																out.println("</label>");
+															}
 										out.println("</div>");
-									
-									if(count > 0)
-									{
-										out.println("<div class=\"form-actions\">" +
-												"<button type=\"submit\" class=\"btn btn-primary\">Classify</button>" +
-												"</div>");
-									} else {
 										
-										out.println("<h3>* No class specializations.</h3>");		
-									}
-								
+										out.println("<div class=\"form-actions\">" +
+														"<button type=\"submit\" class=\"btn btn-primary\">Classify</button>" +
+												"</div>");
+										
+										out.println("</div>");
+										
+									out.println("</form>");
+									
+									countForm++;
+										
 								}
+							}
 							
-							%>
-								
-							</div>
-						</form>
+						
+						%>
 
 					</div>
 					<!-- /classes -->

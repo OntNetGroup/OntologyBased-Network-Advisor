@@ -222,42 +222,26 @@ public class ManagerInstances {
 				
 			} else {
 				
-				//HERE/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-				
 				for (String cls : instanceSelected.ListClasses)
 				{
-					//Pegar array de generalization set
-					///////////////////////////
+					ArrayList<DtoCompleteClass> ListCompleteClsAndSubCls = search.GetCompleteSubClasses(cls, infModel);
 					
-					ArrayList<String> listSubClassesComplete = search.GetCompleteSubClasses(cls, infModel);
+					//check if some subclass are disjoint with some super class existent
+					//---------------------------------------------------------------------------------------------------------------------
 					
-					if(listSubClassesComplete.size() > 0)
-					{
-						dto = new DtoCompleteClass();
-						dto.CompleteClass = cls;
-						for (String clsSubComplete : listSubClassesComplete) 
-						{					
-							if(!instanceSelected.ListClasses.contains(clsSubComplete))
-							{
-								boolean flag = true;
-								for (String clsCheck : instanceSelected.ListClasses) {
-									if(search.CheckIsDijointClassOf(infModel, clsSubComplete, clsCheck) == false)
-									{
-										flag = false;
-										break;
-									}
-								}
-								
-								if(flag == true)
-									dto.AddMember(clsSubComplete);
-							}
-						}
-						ListCompleteClsInstaceSelected.add(dto);
-					}
+					ListCompleteClsInstaceSelected.addAll(ListCompleteClsAndSubCls);						
 				}
 			}
 			
 			instanceSelected.ListCompleteClasses = ListCompleteClsInstaceSelected;
+			
+			for (DtoCompleteClass dto2 : ListCompleteClsInstaceSelected) {
+				System.out.println("-> " + dto2.CompleteClass);
+				for (String string : dto2.Members) {
+					System.out.println("	-" + string);	
+				}
+			}
+			
 			
 			// ------ Complete properties list ------//
 			

@@ -2186,9 +2186,9 @@ public class Search {
 		return listClasses;
 	}
 
-	public ArrayList<String> GetCompleteSubClasses(String className, InfModel infModel)
+	public ArrayList<DtoCompleteClass> GetCompleteSubClasses(String className, InfModel infModel)
 	{
-		ArrayList<String> listSubClasses = new ArrayList<String>();
+		ArrayList<DtoCompleteClass> ListCompleteClsAndSubCls = new ArrayList<DtoCompleteClass>();
 		
 		// Create a new query
 		String queryString = 
@@ -2196,24 +2196,43 @@ public class Search {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX ns: <" + NS + ">" +
-				" SELECT DISTINCT ?completeClass ?member" +
+				" SELECT DISTINCT ?x0 ?completeClass ?member" +
 				" WHERE {\n" +
 					"{ " +
+				
 						"?completeClass owl:equivalentClass ?cls ." +
-						"?cls owl:intersectionOf ?node." +
-						"?node ?r ?x ." +
-						"?x rdf:type owl:Class ." +
-						"?x owl:unionOf  ?list ." +
+						"?cls owl:intersectionOf ?nodeFather." +
+		
+						//one level
+						"?nodeFather ?r1 ?x0 ."+
+						"?x0 owl:unionOf  ?list ."+
+
+						"?list  rdf:rest*/rdf:first  ?member ." +
+						" FILTER( ?completeClass = <" + className + "> ) " +
+						
+					"} UNION {" +
+					
+						"?completeClass owl:equivalentClass ?cls ." +
+						"?cls owl:intersectionOf ?nodeFather." +
+		
+						//two levels
+						"?nodeFather ?r2 ?x1 ." +
+						"?x1 ?r1 ?x0 ." +
+						"?x0 owl:unionOf  ?list ." +
+		
 						"?list  rdf:rest*/rdf:first  ?member ." +
 						" FILTER( ?completeClass = <" + className + "> ) " +
 						
 					"} UNION {" +
 										
-						"?completeClass owl:equivalentClass ?x ." +
-						"?x rdf:type owl:Class ." +
-						"?x owl:unionOf  ?list ." +
+						"?completeClass owl:equivalentClass ?x0 ." +
+						
+						//zero levels
+						"?x0 owl:unionOf  ?list ." +
+						
 						"?list  rdf:rest*/rdf:first  ?member ." +
-						" FILTER( ?completeClass = <" + className + "> ) " +						
+						" FILTER( ?completeClass = <" + className + "> ) " +			
+						
 					"}" + 
 				"}";
 
@@ -2228,14 +2247,62 @@ public class Search {
 		// Output query results 
 		// ResultSetFormatter.out(System.out, results, query);
 		
+		RDFNode blankNodeAux = null;	//Save last blank node
+		DtoCompleteClass dto = null;
 		while (results.hasNext()) {
 
 			QuerySolution row= results.next();
+			
+			RDFNode blankNode = row.get("x0");
+			RDFNode completeClass = row.get("completeClass");
 		    RDFNode member = row.get("member");
-		    listSubClasses.add(member.toString());   
+		    
+		    if(blankNodeAux == null)
+		    {
+		    	//first case blank node
+		    	blankNodeAux = blankNode;    
+		    	
+		    	//Add here
+		    	dto = new DtoCompleteClass();
+		    	dto.CompleteClass = completeClass.toString();
+		    	dto.Members.add(member.toString());	
+		    	
+		    } else {
+		    	
+		    	if(blankNode.equals(blankNodeAux))
+		    	{
+		    		//we are in the same blank node, same generalization set
+		    		//add with not exist
+		    		if(! dto.Members.contains(member.toString()))
+		    		{
+		    			dto.AddMember(member.toString());	
+		    		}
+		    		
+		    	} else {
+		    		
+		    		//change generalization
+		    		
+		    		ListCompleteClsAndSubCls.add(dto);
+		    	
+		    		//new node
+		    		//get only the not disjoint possibilities
+		    		
+		    		dto = new DtoCompleteClass();
+		    		dto.CompleteClass = completeClass.toString();
+			    	dto.Members.add(member.toString());
+			    	
+			    	blankNodeAux = blankNode;
+		    	} 	
+		    }
 		}
 		
-		return listSubClasses;
+		//the last case
+		if(! ListCompleteClsAndSubCls.contains(dto) && dto != null)
+		{
+			ListCompleteClsAndSubCls.add(dto);
+		}
+		
+		return ListCompleteClsAndSubCls;
 	}
 	
 	public ArrayList<String> GetSubProperties(String property, InfModel infModel) {

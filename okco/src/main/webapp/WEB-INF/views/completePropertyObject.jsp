@@ -415,9 +415,15 @@
 			});
 		}
 
+		$('.btn-add').live('click', function() {		
+			$('#mask, .window').hide();
+		});
+
 		// ADD SELECTED INSTANCE
 
 		$('.btn-select-add').live('click', function() {		
+
+			$('#mask, .window').hide();
 
 			var id = instanceIdSelect;
 
@@ -748,15 +754,9 @@
 				</div>
 				<!--/col-->
 				
-				<div>
-					<%
-					//if edit -> botao value=edit
-					//else
-					
-					%>
-					
+				<div style="margin-left:12px; margin-top: -20px;">
+				<input type="submit" class="btn-select-add btn btn-pre" value="Add To Relation"  />
 				</div>
-				<input type="submit" class="btn-select-add btn btn-pre" style="margin-left:12px; margin-top: -20px;" value="Add To Relation"  />
 	
 			</div>
 			<!--/row-->
@@ -865,8 +865,8 @@
 				
 				<div style="clear:both"></div>
 				
-				<div>
-					<input style="margin-left:12px; margin-top: -20px;" type="submit" class="btn btn-pre" value="Create" />	
+				<div style="margin-left:12px; margin-top: -20px;" >
+					<input type="submit" class="btn btn-pre btn-add" value="Create" />	
 				</div>
 				
 	
@@ -885,7 +885,7 @@
 
 <!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
-
+<h1 style="font-style: italic;">Complete Object Property</h1>
 <div class="row">
 	<div class="col-lg-12">
 		<div class="box">
@@ -898,37 +898,34 @@
 				</div>
 			</div>
 			<div class="box-content">
-				<div class="page-header">
-					<div style="">
-						<div style="float: left">
-							<h1>
-								<%
-									if(propType.equals("SOME")){
-										out.println(instanceSelected.name + "<small> -> </small>" + 
-																		dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
-									} else {
-										out.println(instanceSelected.name + "<small> -> </small>" + 
-												dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + dtoDefinition.Cardinality + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
-									}
-								%>
-							</h1>
+				<div class="span12">
+					
+					<div style="span6">
+						<h2>
+							<%
+								if(propType.equals("SOME")){
+									out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
+																	dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
+								} else {
+									out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
+											dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + dtoDefinition.Cardinality + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
+								}
+							%>
+						</h2>
+					</div>
+					<div style="span6">
+						<div style="margin-left: 10px; padding: 5px; width: 100px">
+							<a href="#dialog" name="modal-create" style="padding: 15px 10px 5px 10px;"
+								class="quick-button-small"> <i class="icon-group"></i>
+								<p>Create instance</p>
+							</a>
 						</div>
-						<div style="float: left">
-							<div style="margin-left: 10px; padding: 5px;">
-								<a href="#dialog" name="modal-create" style="padding: 15px 10px 5px 10px;"
-									class="quick-button-small"> <i class="icon-group"></i>
-									<p>Create instance</p>
-								</a>
-							</div>
-							<div style="margin-left: 10px; padding: 5px;">
-								<a href="#dialog" name="modal-select" style="padding: 15px 10px 5px 10px;"
-									class="quick-button-small"> <i class="icon-group"></i>
-									<p>Select instance</p>
-								</a>
-							</div>
+						<div style="margin-left: 10px; padding: 5px; width: 100px">
+							<a href="#dialog" name="modal-select" style="padding: 15px 10px 5px 10px;"
+								class="quick-button-small"> <i class="icon-group"></i>
+								<p>Select instance</p>
+							</a>
 						</div>
-						<div style="clear: both;"></div>
-
 					</div>
 
 				</div>
@@ -999,22 +996,7 @@
 					</tbody>
 				</table>
 				
-				<div class="actions">
-					
-					<form id="commitInstanceForm" action="commitInstance" method="POST">
-						<%
-							out.println("<button onclick=\"window.location = '/okco/details?id=" + instanceSelected.id + "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
-						%>
-						
-						<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>
-						
-						<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit and Reasoner</button>
-						
-					</form>
 				
-				
-					<!-- <button type="button" class="btn btn-success btn-next" data-last="Finish">Next <i class="icon-arrow-right"></i></button> -->
-				</div>
 
 			</div>
 		</div>
@@ -1025,6 +1007,24 @@
 
 </div>
 <!--/row-->
+
+<div class="row" style="margin-left: 0px">
+					
+	<form id="commitInstanceForm" action="commitInstance" method="POST">
+		<%
+			out.println("<button onclick=\"window.location = '/okco/details?id=" + instanceSelected.id + "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
+		%>
+		
+		<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>
+		
+		<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit and Reasoner</button>
+		
+	</form>
+
+
+	<!-- <button type="button" class="btn btn-success btn-next" data-last="Finish">Next <i class="icon-arrow-right"></i></button> -->
+</div>
+				<br>
 
 <div class="row">
 	 <div class="col-lg-12">
