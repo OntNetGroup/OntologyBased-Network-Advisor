@@ -327,7 +327,7 @@ public class ProvisioningController{
 		return "provisioning";	//View to return
 	}
 
-	public static DtoResultAjax binds(String outInt, String inInt, HttpServletRequest request) {
+	public static DtoResultAjax binds(String outInt, String inInt, HttpServletRequest request, Boolean updateListsInTheEnd) {
 
 		DtoResultAjax dto = new DtoResultAjax();
 
@@ -382,17 +382,19 @@ public class ProvisioningController{
 		}
 
 		HomeController.InfModel = HomeController.Model;
-		try {
-			HomeController.UpdateLists();
-		} catch (InconsistentOntologyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OKCoExceptionInstanceFormat e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		if(updateListsInTheEnd){
+			try {
+				HomeController.UpdateLists();
+			} catch (InconsistentOntologyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (OKCoExceptionInstanceFormat e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		//	Individual teste = HomeController.Model.getIndividual("http://www.semanticweb.org/ontologies/2014/5/ontology.owl#sktf3_o1rpskaf1_i1");
-		//	Individual teste2 = HomeController.Model.getIndividual("macacada");
+		
 		dto.ok = true;
 		dto.result = "ok";
 
@@ -629,15 +631,30 @@ public class ProvisioningController{
 			}
 		}
 		
+		int bindsMade = 0;
 		for(Entry<String, ArrayList<String>> candidates : uniqueCandidatesForBinds.entrySet()) {
 			String inputInterface = candidates.getKey();
 			ArrayList<String> outs = candidates.getValue();
 			
 			if(outs.size() == 1){
-				binds(outs.get(0), inputInterface, request);
+				binds(outs.get(0), inputInterface, request, false);
+				bindsMade++;
 			}
 			
 		}
+		
+		if(bindsMade>0){
+			try {
+				HomeController.UpdateLists();
+			} catch (InconsistentOntologyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (OKCoExceptionInstanceFormat e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		
 		return VisualizationController.provisoning_visualization(request);
 	}
