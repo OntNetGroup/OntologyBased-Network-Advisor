@@ -44,7 +44,7 @@
 					if(result == "error")
 					{
 						var html = "<div class=\"alert alert-danger\">"
-							+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+							+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 							+ "<strong>"
 							+ "</strong>"
 							+ "Error: Select avalible reasoner." 
@@ -78,7 +78,7 @@
 					if(result == "error")
 					{
 						var html = "<div class=\"alert alert-danger\">"
-							+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+							+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 							+ "<strong>"
 							+ "</strong>"
 							+ "Error: Select avalible reasoner." 
@@ -117,7 +117,7 @@
 						if(result == "error")
 						{
 							var html = "<div class=\"alert alert-danger\">"
-								+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+								+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 								+ "<strong>"
 								+ "</strong>"
 								+ "Error: Check/Uncheck problem happens. Try again." 
@@ -152,7 +152,7 @@
 						if(result == "error")
 						{
 							var html = "<div class=\"alert alert-danger\">"
-								+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>"
+								+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">Ã—</button>"
 								+ "<strong>"
 								+ "</strong>"
 								+ "Error: Check/Uncheck problem happens. Try again." 
@@ -304,23 +304,39 @@
 							<div class="col-lg-12">
 								<p>Instructions:</p>
 								<div class="tooltip-demo well">
-									<p class="muted" style="margin-bottom: 0;">Lorem ipsum
-										dolor sit amet, consectetur adipiscing elit. Ut mattis aliquam
-										libero et fermentum. Donec vitae lorem quis mauris imperdiet
-										rutrum ut sed arcu. Sed et nisi libero. Nulla ultricies ut
-										nulla vitae consectetur. Nunc feugiat tellus sit amet
-										fermentum vestibulum. Maecenas volutpat, mauris et hendrerit
-										tempor, lectus augue cursus lorem, vel blandit mi ipsum ac
-										lectus. Suspendisse in mi mauris. Maecenas venenatis, libero
-										eu iaculis venenatis, ante urna tristique lectus, in hendrerit
-										sapien eros eget sapien. In eget est egestas, placerat mauris
-										sed, ullamcorper urna. Mauris a arcu felis. Maecenas dignissim
-										eleifend enim, sed ornare nunc luctus non. Sed eget ultricies
-										tortor. Nam viverra commodo lorem, ut ullamcorper ipsum
-										viverra et. Aenean viverra enim a turpis bibendum, non mattis
-										ante egestas. Donec in mauris ut dolor vestibulum porttitor
-										tristique ac dolor. Proin vel bi</p>
-								</div>
+								
+									<p class="muted" style="margin-bottom: 0;">
+									In the Start Page two settings must be provided: the reasoner settings and the Network Input Information.
+									</p>
+										<br>
+									<p class="muted" style="margin-bottom: 0;">
+										<b>Reasoner settings:</b>
+										<br>
+										The Ontology-based Network Advisor uses the OWL reasoners capabilities of classification, consistency checking and inference to 
+										support the Advisor's functionalities. Two different reasoner options are provided: <a target="_blank" href="http://clarkparsia.com/pellet/">Pellet (version 2.3.1)</a> and <a target="_blank" href="http://hermit-reasoner.com/">HermiT (version 1.3.8)</a>.
+										<br> 
+										The existence of two different options is justified by the different characteristics of these reasoners. 
+										Pellet implements a tableau-based algorithm, while HermiT implements a faster algorithm, the hypertableau calculus <a target="_blank" href="http://semantic-web-journal.org/sites/default/files/swj120.pdf">[reference]</a>. 
+										However, Pellet has an incremental reasoning, i.e., it supports incremental classification and incremental consistency check for additions and removals <a target="_blank" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.153.8799&rep=rep1&type=pdf">[reference]</a>.
+									</p>
+										<br>
+									<p class="muted" style="margin-bottom: 0;">
+										<b>Network Input Information:</b>
+										<br>
+										Network information must be provided to the Ontology-based Network Advisor. 
+										The specific functionalities of the Network Advisor will process the provided network information.
+										</br>
+										The information can be provided in five different ways: 
+										(i) by loading a file with a Sindel specification, 
+										(ii) by writing a Sindel specification, 
+										(iii) by loading a file with a Condel specification, 
+										(iv) by writing a Condel specification, or 
+										(v) by loading an OWL file with instances (be careful: this action will overwrite the application's default knowledge-base).
+										
+									</p>
+									
+									
+									</p>
 							</div>
 						</div>
 						<!-- /row -->

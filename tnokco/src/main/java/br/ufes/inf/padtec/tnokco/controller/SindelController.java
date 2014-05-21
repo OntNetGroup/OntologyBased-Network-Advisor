@@ -30,6 +30,9 @@ public class SindelController{
 
 		//Get parameter with tells the sindel load from file or not
 
+		txtSindelCode = "";
+		request.getSession().setAttribute("txtSindelCode", txtSindelCode);
+				
 		if(txtSindelCode == "")
 		{
 			if(HomeController.Reasoner == null)
