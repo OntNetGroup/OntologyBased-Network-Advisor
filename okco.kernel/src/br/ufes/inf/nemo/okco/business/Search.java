@@ -2048,7 +2048,6 @@ public class Search {
  	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(ArrayList<Instance> listAllInstances,	InfModel InfModel) {
 
 		ArrayList<DtoDefinitionClass> resultListDefinitions = new ArrayList<DtoDefinitionClass>();
-		ArrayList<DtoDefinitionClass> resultListDefinitionsAux = new ArrayList<DtoDefinitionClass>();	//get the repeat
 		
 		for (Instance instance : listAllInstances) 
 		{

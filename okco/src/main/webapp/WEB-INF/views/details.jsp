@@ -38,7 +38,9 @@
 	$(document).ready(function() {
 
 		$(".completePropertyForm").hide();
+		$(".completeClassForm").hide();
 		$("#completePropertyForm_1").show();
+		$("#completeClassForm_1").show();		
 
 		// Complete property	
 		$('.completePropertyForm').submit(function(event) {
@@ -92,7 +94,7 @@
 		}); // End - Complete Property
 
 		// Complete class	
-		$('#completeClassForm').submit(function(event) {
+		$('.completeClassForm').submit(function(event) {
 
 			var separatorValues = "%&&%";
 			
@@ -109,7 +111,7 @@
 			};
 
 			$.ajax({
-				url : $("#completeClassForm").attr("action"),
+				url : $(".completeClassForm").attr("action"),
 				data : JSON.stringify(json),
 				type : "POST",
 
@@ -172,6 +174,7 @@
 			var numForm = id.split("_")[1];
 			var numFormNext = parseInt(numForm) + 1;			
 			var next = name + "_" + numFormNext.toString();
+			alert(next);
 			$("#" + next).show();
 		}
 		
@@ -349,10 +352,10 @@
 							{
 								for (DtoCompleteClass dto : instance.ListCompleteClasses)
 								{
-									out.println("<h3>Classify instance <i>" +  instance.name + "</i> from <i>" + dto.CompleteClass.split("#")[1] + "</i> as:</h3>");
-									out.println("<form id=\"completeClassForm\""+ countForm + " action=\"classifyInstanceClasses\" method=\"POST\">");
+									out.println("<form class=\"completeClassForm\" id=\"completeClassForm_"+ countForm + "\" action=\"classifyInstanceClasses\" method=\"POST\">");
+										out.println("<h3>Classify instance <i>" +  instance.name + "</i> from <i>" + dto.CompleteClass.split("#")[1] + "</i> as:</h3>");
 										out.println("<div class=\"form-group\" style=\"margin-top: 10px;\">");	
-														out.println("<div class=\"controls\">");
+											out.println("<div class=\"controls\">");
 															int count = 0;
 															for (String member : dto.Members) 
 															{
@@ -364,13 +367,47 @@
 																			out.println("<span title=\"" + member + "\">" + member.split("#")[1]);
 																out.println("</label>");
 															}
-										out.println("</div>");
+											out.println("</div>");
 										
-										out.println("<div class=\"form-actions\">" +
-														"<button type=\"submit\" class=\"btn btn-primary\">Classify</button>" +
-												"</div>");
+											out.println("<div id=\"MyWizard\" class=\"wizard\" >");
+										 
+									 			out.println("<div class=\"actions\">");								 						 
+											 
+													 // Prev bottom
+													 
+													  if(instance.ListCompleteClasses.get(0).equals(dto))	//if first of list
+													 {
+													 	out.println("<button type=\"button\" class=\"btn btn-prev\" data-last=\"\"><i class=\"icon-arrow-left\"></i> Prev Generalization Set</button>");
+													 }
+													 else{
+														 
+														//have prev
+														out.println("<button type=\"button\" class=\"btn btn-success btn-prev\" data-last=\"\"> <i class=\"icon-arrow-left\"></i> Prev Generalization Set</button>");
+													 }												
+													 
+													 // Next bottom
+													 
+													 if(instance.ListCompleteClasses.get(instance.ListCompleteClasses.size() - 1).equals(dto))	//if last of list
+													 {
+													 	out.println("<button type=\"button\" class=\"btn btn-next\" data-last=\"\">Next Generalization Set<i class=\"icon-arrow-right\"></i></button>");
+													 }
+													 else{
+														 
+														 //have next
+														 out.println("<button type=\"button\" class=\"btn btn-success btn-next\" data-last=\"\">Next Generalization Set<i class=\"icon-arrow-right\"></i></button>"); 
+													 }
+												
+												out.println("</div>"); //action
+											
+											out.println("</div>");	// wizard
+											
+									 out.println("</div>");	//form-group		
 										
-										out.println("</div>");
+									out.println("<div class=\"form-actions\">" +
+													"<button type=\"submit\" class=\"btn btn-primary\">Classify</button>" +
+											"</div>");
+										
+										
 										
 									out.println("</form>");
 									
