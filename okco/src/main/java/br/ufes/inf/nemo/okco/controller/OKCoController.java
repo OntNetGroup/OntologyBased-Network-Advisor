@@ -113,7 +113,7 @@ public class OKCoController {
 		// ------ Create sections ------//
 
 		//Specialization
-		//request.getSession().setAttribute("listClassesMembersTmp", listClassesMembersToClassify);
+		//classes ok
 		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
 
 		//Definition

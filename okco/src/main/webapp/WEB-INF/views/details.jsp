@@ -40,7 +40,7 @@
 		$(".completePropertyForm").hide();
 		$(".completeClassForm").hide();
 		$("#completePropertyForm_1").show();
-		$("#completeClassForm_1").show();		
+		$("#completeClassForm_1").show();
 
 		// Complete property	
 		$('.completePropertyForm').submit(function(event) {
@@ -174,7 +174,6 @@
 			var numForm = id.split("_")[1];
 			var numFormNext = parseInt(numForm) + 1;			
 			var next = name + "_" + numFormNext.toString();
-			alert(next);
 			$("#" + next).show();
 		}
 		
@@ -305,7 +304,7 @@
 			<div class="box-content">
 			
 				<ul class="nav tab-menu nav-tabs" style="padding-right: 24px;" id="myTab">
-					<li class=""><a href="#properties">Properties
+					<li class="propExclamacao"><a href="#properties">Properties
 					
 					<%
 						if(ListSpecializationProperties.size() > 0)
@@ -317,7 +316,7 @@
 					%>
 					
 					</a></li>
-					<li class="active"><a href="#classes">Classes
+					<li class="active clsExclamacao"><a href="#classes">Classes
 					
 					<%
 						if(instance.ListCompleteClasses.size() > 0)
@@ -352,67 +351,74 @@
 							{
 								for (DtoCompleteClass dto : instance.ListCompleteClasses)
 								{
-									out.println("<form class=\"completeClassForm\" id=\"completeClassForm_"+ countForm + "\" action=\"classifyInstanceClasses\" method=\"POST\">");
-										out.println("<h3>Classify instance <i>" +  instance.name + "</i> from <i>" + dto.CompleteClass.split("#")[1] + "</i> as:</h3>");
-										out.println("<div class=\"form-group\" style=\"margin-top: 10px;\">");	
-											out.println("<div class=\"controls\">");
-															int count = 0;
-															for (String member : dto.Members) 
-															{
-																count++;
-																out.println("<label class=\"checkbox inline checkboxMarc\">");
-																out.println("<div class=\"checker\" id=\"uniform-inlineCheckbox" + count  +"\">");
-																	out.println("<span class=\"\">");
-																			out.println("<input type=\"checkbox\" id=\"inlineCheckbox" + count + "\" value=\"option" + count + "\"></span></div>");
-																			out.println("<span title=\"" + member + "\">" + member.split("#")[1]);
-																out.println("</label>");
-															}
-											out.println("</div>");
-										
-											out.println("<div id=\"MyWizard\" class=\"wizard\" >");
-										 
-									 			out.println("<div class=\"actions\">");								 						 
+									if(dto.Members.size()> 0)
+									{
+										out.println("<form class=\"completeClassForm\" id=\"completeClassForm_"+ countForm + "\" action=\"classifyInstanceClasses\" method=\"POST\">");
+											out.println("<h3 style=\"margin-bottom: 10px;\">Classify instance <i>" +  instance.name + "</i> from <i>" + dto.CompleteClass.split("#")[1] + "</i> as:</h3>");
+											
+												out.println("<div class=\"controls\">");
+																int count = 0;
+																for (String member : dto.Members) 
+																{
+																	count++;
+																	out.println("<label class=\"checkbox inline checkboxMarc\">");
+																	out.println("<div class=\"checker\" id=\"uniform-inlineCheckbox" + count  +"\">");
+																		out.println("<span class=\"\">");
+																				out.println("<input type=\"checkbox\" id=\"inlineCheckbox" + count + "\" value=\"option" + count + "\"></span></div>");
+																				out.println("<span title=\"" + member + "\">" + member.split("#")[1]);
+																	out.println("</label>");
+																}
+												out.println("</div>");
+											
+												out.println("<div id=\"MyWizard\" class=\"wizard\" >");
 											 
-													 // Prev bottom
-													 
-													  if(instance.ListCompleteClasses.get(0).equals(dto))	//if first of list
-													 {
-													 	out.println("<button type=\"button\" class=\"btn btn-prev\" data-last=\"\"><i class=\"icon-arrow-left\"></i> Prev Generalization Set</button>");
-													 }
-													 else{
+										 			out.println("<div class=\"actions\">");	
+										 			
+										 				 //one element
+										 				 if(instance.ListCompleteClasses.size() == 1) {	// if only one
+															 
+										 					out.println("<button type=\"button\" class=\"btn btn-prev\" data-last=\"\"><i class=\"icon-arrow-left\"></i> Prev Generalization Set</button>");
+										 					out.println("<button type=\"button\" class=\"btn btn-next\" data-last=\"\">Next Generalization Set<i class=\"icon-arrow-right\"></i></button>");
+										 					
+														 } else {
+												 
+														 	// Prev bottom
 														 
-														//have prev
-														out.println("<button type=\"button\" class=\"btn btn-success btn-prev\" data-last=\"\"> <i class=\"icon-arrow-left\"></i> Prev Generalization Set</button>");
-													 }												
-													 
-													 // Next bottom
-													 
-													 if(instance.ListCompleteClasses.get(instance.ListCompleteClasses.size() - 1).equals(dto))	//if last of list
-													 {
-													 	out.println("<button type=\"button\" class=\"btn btn-next\" data-last=\"\">Next Generalization Set<i class=\"icon-arrow-right\"></i></button>");
-													 }
-													 else{
+															  if(instance.ListCompleteClasses.get(0).equals(dto))	//if first of list
+															 {
+															 	out.println("<button type=\"button\" class=\"btn btn-prev\" data-last=\"\"><i class=\"icon-arrow-left\"></i> Prev Generalization Set</button>");
+															 }
+															 else{
+																 
+																//have prev
+																out.println("<button type=\"button\" class=\"btn btn-success btn-prev\" data-last=\"\"> <i class=\"icon-arrow-left\"></i> Prev Generalization Set</button>");
+															 }												
+															 
+															 // Next bottom
+															 
+															 if(instance.ListCompleteClasses.get(instance.ListCompleteClasses.size() - 1).equals(dto))	//if last of list
+															 {
+															 	out.println("<button type=\"button\" class=\"btn btn-next\" data-last=\"\">Next Generalization Set<i class=\"icon-arrow-right\"></i></button>");
+															 }
+															 else { //have next
+																 
+																 out.println("<button type=\"button\" class=\"btn btn-success btn-next\" data-last=\"\">Next Generalization Set<i class=\"icon-arrow-right\"></i></button>"); 
+															 }
 														 
-														 //have next
-														 out.println("<button type=\"button\" class=\"btn btn-success btn-next\" data-last=\"\">Next Generalization Set<i class=\"icon-arrow-right\"></i></button>"); 
-													 }
+														 }
+													
+													out.println("</div>"); //action
 												
-												out.println("</div>"); //action
+												out.println("</div>");	// wizard
 											
-											out.println("</div>");	// wizard
+												out.println("<div class=\"form-actions\">" +
+																"<button type=\"submit\" class=\"btn btn-primary\">Classify</button>" +
+														"</div>");									
 											
-									 out.println("</div>");	//form-group		
+										out.println("</form>");
 										
-									out.println("<div class=\"form-actions\">" +
-													"<button type=\"submit\" class=\"btn btn-primary\">Classify</button>" +
-											"</div>");
-										
-										
-										
-									out.println("</form>");
-									
-									countForm++;
-										
+										countForm++;
+									}	
 								}
 							}
 							
@@ -431,79 +437,94 @@
 								
 								for (DtoPropertyAndSubProperties dto : ListSpecializationProperties) 
 								{
-									out.println("<form id=\"completePropertyForm_"+ countDtos + "\" class=\"completePropertyForm\" action=\"classifyInstanceProperty\" method=\"POST\">");
-									
-									out.println("<div class=\"form-group\" style=\"margin-top: 20px;\">");
-									if(dto.iTargetNs.contains("^^"))
-						  			{
-										out.println("<h3>Classify relation <b>" + instance.name + " -> " + dto.Property.split("#")[1] + " -> " + dto.iTargetNs.split("\\^\\^")[0] + "</b> as:</h3>");							
-						  			}else{
-						  				out.println("<h3>Classify relation <b>" + instance.name + " -> " + dto.Property.split("#")[1] + " -> " + dto.iTargetName + "</b> as:</h3>");	
-						  			}
-									
-										out.println("<input id=\"specValue\" type=\"hidden\" value=\""+ dto.id + "\">");
+									if(dto.SubProperties.size() > 0)
+									{
+										out.println("<form id=\"completePropertyForm_"+ countDtos + "\" class=\"completePropertyForm\" action=\"classifyInstanceProperty\" method=\"POST\">");
 										
-										 if(dto.SubProperties.size() > 0)
-										 {
-											 int countSub = 0;
-											 for (String subProp: dto.SubProperties) 
+										out.println("<div class=\"form-group\" style=\"margin-top: 20px;\">");
+										if(dto.iTargetNs.contains("^^"))
+							  			{
+											out.println("<h3>Classify relation <b>" + instance.name + " -> " + dto.Property.split("#")[1] + " -> " + dto.iTargetNs.split("\\^\\^")[0] + "</b> as:</h3>");	
+											
+							  			}else{
+							  				
+							  				out.println("<h3>Classify relation <b>" + instance.name + " -> " + dto.Property.split("#")[1] + " -> " + dto.iTargetName + "</b> as:</h3>");	
+							  			}
+										
+											out.println("<input id=\"specValue\" type=\"hidden\" value=\""+ dto.id + "\">");
+											
+											 if(dto.SubProperties.size() > 0)
 											 {
-												countSub++;
-												
-												if(dto.iTargetNs.contains("^^"))
-									  			{
-													out.println("<label class=\"checkbox inline\">");
-													out.println("<div class=\"checker\" id=\"uniform-inlineCheckbox" + countSub  +"\"><span class=\"\"><input type=\"checkbox\" id=\"inlineCheckbox" + countSub + "\" value=\"option" + countSub + "\"></span></div> <span title=\"" + subProp + "\">" + subProp.split("#")[1] + " -> " + dto.iTargetNs.split("\\^\\^")[0]);
-													out.println("</label>");						
-									  			}else{
-									  				out.println("<label class=\"checkbox inline\">");
-													out.println("<div class=\"checker\" id=\"uniform-inlineCheckbox" + countSub  +"\"><span class=\"\"><input type=\"checkbox\" id=\"inlineCheckbox" + countSub + "\" value=\"option" + countSub + "\"></span></div> <span title=\"" + subProp + "\">" + subProp.split("#")[1] + " -> " + dto.iTargetName);
-													out.println("</label>");	
-									  			}
+												 int countSub = 0;
+												 for (String subProp: dto.SubProperties) 
+												 {
+													countSub++;
+													
+													if(dto.iTargetNs.contains("^^"))
+										  			{
+														out.println("<label class=\"checkbox inline\">");
+														out.println("<div class=\"checker\" id=\"uniform-inlineCheckbox" + countSub  +"\"><span class=\"\"><input type=\"checkbox\" id=\"inlineCheckbox" + countSub + "\" value=\"option" + countSub + "\"></span></div> <span title=\"" + subProp + "\">" + subProp.split("#")[1] + " -> " + dto.iTargetNs.split("\\^\\^")[0]);
+														out.println("</label>");						
+										  			}else{
+										  				out.println("<label class=\"checkbox inline\">");
+														out.println("<div class=\"checker\" id=\"uniform-inlineCheckbox" + countSub  +"\"><span class=\"\"><input type=\"checkbox\" id=\"inlineCheckbox" + countSub + "\" value=\"option" + countSub + "\"></span></div> <span title=\"" + subProp + "\">" + subProp.split("#")[1] + " -> " + dto.iTargetName);
+														out.println("</label>");	
+										  			}													 
+												 }
+											 }
+										 
+										 out.println("</div>");
+										 
+										 out.println("<div class=\"form-actions\" style=\"padding-bottom:5px; margin-bottom:0px; border-bottom:1px solid #ccc\">");
+										 out.println("<button type=\"submit\" class=\"btn btn-primary\">Classify</button>");
+										 out.println("</div>");
+										 
+										 out.println("<div id=\"MyWizard\" class=\"wizard\" >");
+										 
+										 	out.println("<div class=\"actions\">");
+										 	
+										 		if(ListSpecializationProperties.size() == 1){
+										 			
+										 			out.println("<button type=\"button\" class=\"btn btn-prev\" data-last=\"\"><i class=\"icon-arrow-left\"></i> Prev relation</button>");
+										 			out.println("<button type=\"button\" class=\"btn btn-next\" data-last=\"\">Next relation<i class=\"icon-arrow-right\"></i></button>");
+										 			
+										 		}else {
+										 			
+										 			// Prev bottom
+													 
+													  if(ListSpecializationProperties.get(0).equals(dto))	//if first of list
+													 {
+													 	out.println("<button type=\"button\" class=\"btn btn-prev\" data-last=\"\"><i class=\"icon-arrow-left\"></i> Prev relation</button>");
+													 }
+													 else{
+														 
+														//have prev
+														out.println("<button type=\"button\" class=\"btn btn-success btn-prev\" data-last=\"\"> <i class=\"icon-arrow-left\"></i> Prev relation</button>");
+													 }												
+													 
+													 // Next bottom
+													 
+													 if(ListSpecializationProperties.get(ListSpecializationProperties.size() - 1).equals(dto))	//if last of list
+													 {
+													 	out.println("<button type=\"button\" class=\"btn btn-next\" data-last=\"\">Next relation<i class=\"icon-arrow-right\"></i></button>");
+													 }
+													 else{
+														 
+														 //have next
+														 out.println("<button type=\"button\" class=\"btn btn-success btn-next\" data-last=\"\">Next relation<i class=\"icon-arrow-right\"></i></button>"); 
+													 }
+										 		}
+										 			
 												 
-											 }
-										 }
-									 
-									 out.println("</div>");
-									 
-									 out.println("<div class=\"form-actions\" style=\"padding-bottom:5px; margin-bottom:0px; border-bottom:1px solid #ccc\">");
-									 out.println("<button type=\"submit\" class=\"btn btn-primary\">Classify</button>");
-									 out.println("</div>");
-									 
-									 out.println("<div id=\"MyWizard\" class=\"wizard\" >");
-									 
-									 	out.println("<div class=\"actions\">");								 						 
-											 
-											 // Prev bottom
-											 
-											  if(ListSpecializationProperties.get(0).equals(dto))	//if first of list
-											 {
-											 	out.println("<button type=\"button\" class=\"btn btn-prev\" data-last=\"\"><i class=\"icon-arrow-left\"></i> Prev relation</button>");
-											 }
-											 else{
 												 
-												//have prev
-												out.println("<button type=\"button\" class=\"btn btn-success btn-prev\" data-last=\"\"> <i class=\"icon-arrow-left\"></i> Prev relation</button>");
-											 }												
-											 
-											 // Next bottom
-											 
-											 if(ListSpecializationProperties.get(ListSpecializationProperties.size() - 1).equals(dto))	//if last of list
-											 {
-											 	out.println("<button type=\"button\" class=\"btn btn-next\" data-last=\"\">Next relation<i class=\"icon-arrow-right\"></i></button>");
-											 }
-											 else{
-												 
-												 //have next
-												 out.println("<button type=\"button\" class=\"btn btn-success btn-next\" data-last=\"\">Next relation<i class=\"icon-arrow-right\"></i></button>"); 
-											 }
-												
-										out.println("</div>");
-									 out.println("</div>");
-									 
-									 countDtos++;
-									 
-									 out.println("</form>");
+													
+											out.println("</div>");
+										 out.println("</div>");
+										 
+										 countDtos++;
+										 
+										 out.println("</form>");
+									}
 									 
 								}
 									 

@@ -40,7 +40,7 @@
 	
 	%>
 
-<h1>Welcome to W-OKCo</h1>
+<h1 style="font-style: italic;">Welcome to W-OKCo</h1>
 
 <div class="row">
 	<div class="col-lg-12">

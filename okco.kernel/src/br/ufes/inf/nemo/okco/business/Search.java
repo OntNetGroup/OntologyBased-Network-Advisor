@@ -733,6 +733,40 @@ public class Search {
 
 	}
 
+	public ArrayList<String> GetDisjointPropertiesOf(String propertyName, InfModel infModel) {
+		
+		ArrayList<String> listDisjointProps = new ArrayList<String>();
+		
+		// Create a new query
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + NS + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +
+				"<" + propertyName + "> " + "owl:propertyDisjointWith" + " ?propDisjoint .\n " +
+		"}";
+		
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
+		ResultSet results = qe.execSelect();
+		
+		// Output query results 
+		// ResultSetFormatter.out(System.out, results, query);
+		
+		while (results.hasNext()) {
+			QuerySolution row= results.next();
+		    RDFNode prop = row.get("propDisjoint");
+		    listDisjointProps.add(prop.toString());		    		    
+		}
+		
+		return listDisjointProps;
+
+	}
+	
 	public ArrayList<String> GetClassesFrom(String instanceName, InfModel infModel) {
 		
 		ArrayList<String> listClasses = new ArrayList<String>();
@@ -2185,7 +2219,7 @@ public class Search {
 		return listClasses;
 	}
 
-	public ArrayList<DtoCompleteClass> GetCompleteSubClasses(String className, InfModel infModel)
+	public ArrayList<DtoCompleteClass> GetCompleteSubClasses(String className, ArrayList<String> listClassesOfInstance, InfModel infModel)
 	{
 		ArrayList<DtoCompleteClass> ListCompleteClsAndSubCls = new ArrayList<DtoCompleteClass>();
 		
@@ -2264,31 +2298,102 @@ public class Search {
 		    	//Add here
 		    	dto = new DtoCompleteClass();
 		    	dto.CompleteClass = completeClass.toString();
-		    	dto.Members.add(member.toString());	
+
+		    	//check if member are disjoint of listClassesOfInstance
+		    	
+    			boolean ok = true;
+    			ArrayList<String> listDisjointClassesOfMember = this.GetDisjointClassesOf(member.toString(), infModel);
+    			for (String disjointCls : listDisjointClassesOfMember) {
+    				if(listClassesOfInstance.contains(disjointCls))
+    				{
+    					//not possible specialize
+    					ok = false;
+    					break;
+    				}
+				}
+    			
+    			//check if member are in listClassesOfInstace
+    			if(listClassesOfInstance.contains(member.toString()))
+    			{
+    				// not necessary specialize
+    				ok = false;
+    			}
+    			
+    			if(ok == true)
+    			{
+    				dto.AddMember(member.toString());	
+    			}	
 		    	
 		    } else {
 		    	
 		    	if(blankNode.equals(blankNodeAux))
 		    	{
 		    		//we are in the same blank node, same generalization set
+		    		
 		    		//add with not exist
 		    		if(! dto.Members.contains(member.toString()))
 		    		{
-		    			dto.AddMember(member.toString());	
+		    			//check if member are disjoint of listClassesOfInstance
+		    			boolean ok = true;
+		    			ArrayList<String> listDisjointClassesOfMember = this.GetDisjointClassesOf(member.toString(), infModel);
+		    			for (String disjointCls : listDisjointClassesOfMember) {
+		    				if(listClassesOfInstance.contains(disjointCls))
+		    				{
+		    					//not possible specialize
+		    					ok = false;
+		    					break;
+		    				}
+						}
+		    			
+		    			//check if member are in listClassesOfInstace
+		    			if(listClassesOfInstance.contains(member.toString()))
+		    			{
+		    				// not necessary specialize
+		    				ok = false;
+		    			}
+		    			
+		    			if(ok == true)
+		    			{
+		    				dto.AddMember(member.toString());	//ADD MEMBER
+		    			}	
 		    		}
 		    		
 		    	} else {
 		    		
 		    		//change generalization
 		    		
-		    		ListCompleteClsAndSubCls.add(dto);
+		    		if(dto.Members.size() > 0)
+		    			ListCompleteClsAndSubCls.add(dto);
 		    	
 		    		//new node
 		    		//get only the not disjoint possibilities
 		    		
 		    		dto = new DtoCompleteClass();
 		    		dto.CompleteClass = completeClass.toString();
-			    	dto.Members.add(member.toString());
+		    		
+		    		//check if member are disjoint of listClassesOfInstance
+	    			boolean ok = true;
+	    			ArrayList<String> listDisjointClassesOfMember = this.GetDisjointClassesOf(member.toString(), infModel);
+	    			for (String disjointCls : listDisjointClassesOfMember) {
+	    				if(listClassesOfInstance.contains(disjointCls))
+	    				{
+	    					//not possible specialize
+	    					ok = false;
+	    					break;
+	    				}
+					}
+	    			
+	    			//check if member are in listClassesOfInstace
+	    			if(listClassesOfInstance.contains(member.toString()))
+	    			{
+	    				// not necessary specialize
+	    				ok = false;
+	    			}
+	    			
+	    			if(ok == true)
+	    			{
+	    				dto.AddMember(member.toString());	
+	    			}
 			    	
 			    	blankNodeAux = blankNode;
 		    	} 	
@@ -2298,7 +2403,8 @@ public class Search {
 		//the last case
 		if(! ListCompleteClsAndSubCls.contains(dto) && dto != null)
 		{
-			ListCompleteClsAndSubCls.add(dto);
+			if(dto.Members.size() > 0)
+				ListCompleteClsAndSubCls.add(dto);
 		}
 		
 		return ListCompleteClsAndSubCls;

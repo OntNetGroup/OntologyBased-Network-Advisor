@@ -209,7 +209,7 @@ public class ManagerInstances {
 			ArrayList<DtoCompleteClass> ListCompleteClsInstaceSelected = new ArrayList<DtoCompleteClass>();
 			DtoCompleteClass dto = null;
 			
-			if(instanceSelected.ListClasses.size() == 1 && instanceSelected.ListClasses.get(0).contains("Thing"))
+			if(instanceSelected.ListClasses.size() == 1 && instanceSelected.ListClasses.get(0).contains("Thing"))	//Case thing
 			{
 				//Case if the instance have no class selected - only Thing
 				dto = new DtoCompleteClass();
@@ -224,24 +224,12 @@ public class ManagerInstances {
 				
 				for (String cls : instanceSelected.ListClasses)
 				{
-					ArrayList<DtoCompleteClass> ListCompleteClsAndSubCls = search.GetCompleteSubClasses(cls, infModel);
-					
-					//check if some subclass are disjoint with some super class existent
-					//---------------------------------------------------------------------------------------------------------------------
-					
+					ArrayList<DtoCompleteClass> ListCompleteClsAndSubCls = search.GetCompleteSubClasses(cls, instanceSelected.ListClasses, infModel);					
 					ListCompleteClsInstaceSelected.addAll(ListCompleteClsAndSubCls);						
 				}
 			}
 			
-			instanceSelected.ListCompleteClasses = ListCompleteClsInstaceSelected;
-			
-			for (DtoCompleteClass dto2 : ListCompleteClsInstaceSelected) {
-				System.out.println("-> " + dto2.CompleteClass);
-				for (String string : dto2.Members) {
-					System.out.println("	-" + string);	
-				}
-			}
-			
+			instanceSelected.ListCompleteClasses = ListCompleteClsInstaceSelected;			
 			
 			// ------ Complete properties list ------//
 			
@@ -263,9 +251,38 @@ public class ManagerInstances {
 					
 					for (String sub : subPropertiesWithDomainAndRange) 
 					{
-						dtoP.SubProperties.add(sub);	
+						boolean ok = true;
+						
+						ArrayList<String> distointSubPropOfProp = this.search.GetDisjointPropertiesOf(sub, infModel);
+						for (String disjointrop : distointSubPropOfProp) {
+							
+							for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
+								if(dtoWithRelation.Property.equals(disjointrop)) // instance have this sub relation
+								{
+									ok = false;
+									break;
+								}
+							}
+						}
+						
+						for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
+						
+							if(dtoWithRelation.Property.equals(sub)) // instance have this sub relation
+							{
+								ok = false;
+								break;
+							}
+						}						
+						
+						
+						if(ok == true)
+						{
+							dtoP.SubProperties.add(sub);
+						}
 					}
-					ListSpecializationProperties.add(dtoP);
+					
+					if(dtoP.SubProperties.size() > 0)
+						ListSpecializationProperties.add(dtoP);
 				}			
 			}
 			
