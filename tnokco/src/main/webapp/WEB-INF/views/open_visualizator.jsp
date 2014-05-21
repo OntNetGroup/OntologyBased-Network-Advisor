@@ -144,7 +144,7 @@ function changedEquipmentCB(){
 						<td><b>All network information</b></td>
 						<td style="padding-left: 30px;">
 							<a class="btn btn-success" 
-								href="/tnokco/graphVisualizer?typeView=ALL&id=0" target="_blank"> <i
+								href="/tnokco/open_network_visualization?visualization=allElements"> <i
 									class="icon-zoom-in" ></i>
 							</a> 
 						</td>

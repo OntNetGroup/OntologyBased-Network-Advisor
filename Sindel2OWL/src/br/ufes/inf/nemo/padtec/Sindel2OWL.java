@@ -62,6 +62,11 @@ public class Sindel2OWL {
 //		model = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 //		model.add(owlReference);
 		model = owl;
+		
+		warning = new String();
+		error = new String();
+		hashIndividuals = new HashMap<String,String>();
+		hashSindelxG800 = new HashMap<String,String>();
 	}
 
 	private void intializeHashs(){

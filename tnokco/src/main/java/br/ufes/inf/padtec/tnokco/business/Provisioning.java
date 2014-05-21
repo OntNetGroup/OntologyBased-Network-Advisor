@@ -408,7 +408,7 @@ public class Provisioning {
 
 		for (String ind : allIndividuals) {
 			ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(ind, InfModel);
-			if((classesFromIndividual.contains(HomeController.NS+"Interface") || classesFromIndividual.contains(HomeController.NS+"Site") || classesFromIndividual.contains(HomeController.NS+"Equipment"))){
+			if((classesFromIndividual.contains(HomeController.NS+"Input_Interface")  || classesFromIndividual.contains(HomeController.NS+"Output_Interface") || classesFromIndividual.contains(HomeController.NS+"Site") || classesFromIndividual.contains(HomeController.NS+"Equipment"))){
 				copy.add(ind);
 			}
 		}
@@ -419,6 +419,7 @@ public class Provisioning {
 		return allIndividuals;
 	}
 	public static ArrayList<String> getG800FromEquipment(String equipment){
+		Provisioning.triples_g800 =  new ArrayList<String[]>();
 
 		ArrayList<String> g800s  = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Transport_Function");
 		ArrayList<String> outInt = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");

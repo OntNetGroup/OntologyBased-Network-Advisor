@@ -12,17 +12,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.inf.nemo.padtec.tnokco.TNOKCOGraphPlotting;
+import br.ufes.inf.nemo.okco.model.DtoInstance;
+import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
-import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.padtec.tnokco.business.Equipment;
-import br.ufes.inf.padtec.tnokco.business.InterfaceInput;
 import br.ufes.inf.padtec.tnokco.business.InterfaceOutput;
 import br.ufes.inf.padtec.tnokco.business.Provisioning;
 
 @Controller
 public class VisualizationController {
-	private HashMap<String,String> elements = new HashMap<String, String>();
+	private static HashMap<String,String> elements = new HashMap<String, String>();
 	
 	@RequestMapping(method = RequestMethod.GET, value="/open_visualizator")
 	public String open_visualizator(HttpServletRequest request) {
@@ -37,28 +36,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("sites", sites);
 		request.getSession().setAttribute("equipments", equipments);
 
-		elements.put("Termination_Function", "TF");
-		elements.put("Adaptation_Function", "AF");
-		elements.put("Matrix", "Matrix");
-		elements.put("Subnetwork", "SN");
-		elements.put("Physical_Media", "PM");
-		elements.put("Input", "Input");
-		elements.put("Output", "Output");
-		elements.put("Reference_Point", "RP");
-		elements.put("Transport_Entity", "TE");
-		elements.put("Layer_Network", "Layer");
-		elements.put("Binding", "Binding");
-		elements.put("Input_Interface", "INT_IN");
-		elements.put("Output_Interface", "INT_OUT");
-		elements.put("Forwarding", "FORWARDING");
-		elements.put("Adaptation_Sink_Process", "Process");
-		elements.put("Adaptation_Source_Process", "Process");
-		elements.put("Termination_Sink_Process", "Process");
-		elements.put("Layer_Processor_Process", "Process");
-		elements.put("Termination_Source_Process", "Process");
-		elements.put("Forwarding_Rule", "FWR_RULE");
-		elements.put("Equipment", "Equip");
-		elements.put("Site", "SITE");
+		elementsInitialize();
 		
 		return "open_visualizator";
 	}
@@ -140,6 +118,31 @@ public class VisualizationController {
 				valuesGraph += "graph.addNode(\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\", ";
 				valuesGraph += "{shape:\""+getG800Image(hashIndv.get(stCon[2]))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
 				size++;
+			}
+			
+			request.getSession().setAttribute("canClick", false);
+		}else if(visualization.equals("allElements")){
+			elementsInitialize();
+			ArrayList<DtoInstance> allInstances = HomeController.Search.GetAllInstancesWithClass(HomeController.Model, HomeController.InfModel);
+			
+			for (DtoInstance instance : allInstances) {
+				ArrayList<DtoInstanceRelation> targetList = HomeController.Search.GetInstanceRelations(HomeController.InfModel,instance.Uri);
+				
+				for (DtoInstanceRelation dtoInstanceRelation : targetList) {
+					
+					valuesGraph += "graph.addEdge(graph.addNode(\""+instance.Uri.substring(instance.Uri.indexOf("#")+1)+"\", ";
+					valuesGraph += "{shape:\""+getG800Image(instance.ClassNameList)+"_AZUL\"}),";
+					valuesGraph += "graph.addNode(\""+dtoInstanceRelation.Target.substring(dtoInstanceRelation.Target.indexOf("#")+1)+"\", ";
+					valuesGraph += "{shape:\""+getG800Image(HomeController.Search.GetClassesFrom(dtoInstanceRelation.Target, HomeController.InfModel))+"_AZUL\"}), ";
+					valuesGraph	+= "{name:'"+dtoInstanceRelation.Property.substring(dtoInstanceRelation.Property.indexOf("#")+1)+"'});";
+					size++;
+				}
+				hashTypes += "hash[\""+instance.Uri.substring(instance.Uri.indexOf("#")+1)+"\"] = \"<b>"+instance.Uri.substring(instance.Uri.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
+				for(String type : instance.ClassNameList){
+					if(type.contains("#"))
+						hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
+				}
+				hashTypes += "</ul>\";";
 			}
 			
 			request.getSession().setAttribute("canClick", false);
@@ -237,9 +240,24 @@ public class VisualizationController {
 		for(String[] stCon : triplas){
 			if(!hashIndv.containsKey(stCon[0]) || !hashIndv.containsKey(stCon[2])){
 				valuesGraph += "graph.addEdge(graph.addNode(\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\"INT_OUT_AZUL\"}),";
+				valuesGraph += "{shape:\""+getG800Image(HomeController.Search.GetClassesFrom(stCon[0], HomeController.InfModel))+"_AZUL\"}),";
 				valuesGraph += "graph.addNode(\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\"INT_OUT_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
+				valuesGraph += "{shape:\""+getG800Image(HomeController.Search.GetClassesFrom(stCon[2], HomeController.InfModel))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
+				
+				hashTypes += "hash[\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\"] = \"<b>"+stCon[0].substring(stCon[0].indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
+				for(String type : HomeController.Search.GetClassesFrom(stCon[0], HomeController.InfModel)){
+					if(type.contains("#"))
+						hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
+				}
+				hashTypes += "</ul>\";";
+				
+				hashTypes += "hash[\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\"] = \"<b>"+stCon[2].substring(stCon[2].indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
+				for(String type : HomeController.Search.GetClassesFrom(stCon[2], HomeController.InfModel)){
+					if(type.contains("#"))
+						hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
+				}
+				hashTypes += "</ul>\";";
+				
 				continue;
 			}
 				
@@ -337,4 +355,29 @@ public class VisualizationController {
 		return "equipmentVisualizer";
 	}
 
+	private static void elementsInitialize(){
+		elements.put("Termination_Function", "TF");
+		elements.put("Adaptation_Function", "AF");
+		elements.put("Matrix", "Matrix");
+		elements.put("Subnetwork", "SN");
+		elements.put("Physical_Media", "PM");
+		elements.put("Input", "Input");
+		elements.put("Output", "Output");
+		elements.put("Reference_Point", "RP");
+		elements.put("Transport_Entity", "TE");
+		elements.put("Layer_Network", "Layer");
+		elements.put("Binding", "Binding");
+		elements.put("Input_Interface", "INT_IN");
+		elements.put("Output_Interface", "INT_OUT");
+		elements.put("Forwarding", "FORWARDING");
+		elements.put("Adaptation_Sink_Process", "Process");
+		elements.put("Adaptation_Source_Process", "Process");
+		elements.put("Termination_Sink_Process", "Process");
+		elements.put("Layer_Processor_Process", "Process");
+		elements.put("Termination_Source_Process", "Process");
+		elements.put("Forwarding_Rule", "FWR_RULE");
+		elements.put("Equipment", "Equip");
+		elements.put("Site", "SITE");
+	}
+	
 }
