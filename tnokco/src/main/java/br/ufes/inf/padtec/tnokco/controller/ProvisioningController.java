@@ -554,17 +554,17 @@ public class ProvisioningController{
 				// - it is a different equipment
 				// - the output interface it is not binded
 				// - the input interface it is not binded
+				Boolean hasCyclicalRel = false;
+				
 				if(hasAllowedRelation && !eqInNs.equals(eqOutNs) && !outputInterfaceAlreadyBinded && !inputInterfaceAlreadyConnected){
-					Boolean hasCyclicalRel = false;
 					hasCyclicalRel = hasCyclicalRelationship(outputInterface.ns, eqOutNs, inputInterface.ns, eqInNs);
-					
-					if(!hasCyclicalRel){
-						if(allowedInputInterfaces.contains(interfaceReturn+"false;")){
-							allowedInputInterfaces.remove(interfaceReturn+"false;");
-						}
-						interfaceReturn += "true;";
+				}
+				
+				if(hasAllowedRelation && !eqInNs.equals(eqOutNs) && !outputInterfaceAlreadyBinded && !inputInterfaceAlreadyConnected && !hasCyclicalRel){
+					if(allowedInputInterfaces.contains(interfaceReturn+"false;")){
+						allowedInputInterfaces.remove(interfaceReturn+"false;");
 					}
-					
+					interfaceReturn += "true;";
 				}else{
 					if(!allowedInputInterfaces.contains(interfaceReturn.replace("true;", "false;"))){
 						interfaceReturn += "false;";
