@@ -256,7 +256,7 @@ public class Provisioning {
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
 		equipments = new ArrayList<String>();
 		equipments =  HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"has_equipment", HomeController.NS+"Equipment");
-		return getEquipmentsConnectionsBinds();
+		return doIt();
 	}
 
 	public static String nameRelation="";
@@ -280,9 +280,13 @@ public class Provisioning {
 		return sites;
 	}
 
-
-
 	public static ArrayList<Equipment> getAllEquipmentsandConnections(){
+		
+		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
+		return doIt();
+	}
+
+	public static ArrayList<Equipment> doIt(){
 		Model = HomeController.Model;
 		InfModel = HomeController.InfModel;
 		HashMap<String, String> hashInputEquipment= new HashMap<String, String>();
@@ -328,10 +332,10 @@ public class Provisioning {
 			}
 			equips.add(e); 
 		}
+		
 		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
 		return equips;
 	}
-
 
 	public static ArrayList<String> getPossibleConnects(String eq_interface){
 		String rp = getRPFromInterface(eq_interface,0);
@@ -361,12 +365,10 @@ public class Provisioning {
 		
 		if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, HomeController.NS+value, HomeController.NS+target).size()>0){
 			String port= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, HomeController.NS+value, HomeController.NS+target).get(0);
-			if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"is_binding", HomeController.NS+"Binding").size()>0){
-				String binding = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, "is_binding", "Binding").get(0);
-				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, "binding_is_represented_by", "Directly_Bound_Reference_Point").size()>0){
-					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, "binding_is_represented_by", "Directly_Bound_Reference_Point").size()>0){
-					return HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, "binding_is_represented_by", "Directly_Bound_Reference_Point").get(0);
-					}
+			if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.is_binding", HomeController.NS+"Binding").size()>0){
+				String binding = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.is_binding", HomeController.NS+"Binding").get(0);
+				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Directly_Bound_Reference_Point").size()>0){
+					return HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Directly_Bound_Reference_Point").get(0);					
 				}
 			}
 		}
