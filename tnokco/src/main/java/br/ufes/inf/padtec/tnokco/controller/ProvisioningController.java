@@ -28,6 +28,7 @@ import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
+import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.business.Provisioning;
 import br.ufes.inf.padtec.tnokco.business.Reader;
 
@@ -326,7 +327,7 @@ public class ProvisioningController{
 
 		return "provisioning";	//View to return
 	}
-
+	
 	public static DtoResultAjax binds(String outInt, String inInt, HttpServletRequest request, Boolean updateListsInTheEnd) {
 
 		DtoResultAjax dto = new DtoResultAjax();
@@ -364,20 +365,22 @@ public class ProvisioningController{
 		if(!outputNs.equals("") && !inputNs.equals("")){
 			a = HomeController.Model.getIndividual(HomeController.NS+outputNs);
 			b = HomeController.Model.getIndividual(HomeController.NS+inputNs);
-			ArrayList<String> tiposA=HomeController.Search.GetClassesFrom(HomeController.NS+a.getLocalName(),HomeController.Model);
-			ArrayList<String> tiposB=HomeController.Search.GetClassesFrom(HomeController.NS+b.getLocalName(),HomeController.Model);
-			tiposA.remove(HomeController.NS+"Geographical_Element");
-			tiposA.remove(HomeController.NS+"Bound_Input-Output");
-			tiposB.remove(HomeController.NS+"Geographical_Element");
-			tiposB.remove(HomeController.NS+"Bound_Input-Output");
-			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds");
-			stmt = HomeController.Model.createStatement(a, rel, b);
-			HomeController.Model.add(stmt);	
-			HashMap<String, String> hash = new HashMap<String, String>();
-			hash.put("INPUT", tiposB.get(0));
-			hash.put("OUTPUT", tiposA.get(0));
-			HashMap<String, String>element= Provisioning.values.get(hash);
-			Provisioning.bindsSpecific(a,b,tiposA.get(0),tiposB.get(0));
+//			ArrayList<String> tiposA=HomeController.Search.GetClassesFrom(HomeController.NS+a.getLocalName(),HomeController.Model);
+//			ArrayList<String> tiposB=HomeController.Search.GetClassesFrom(HomeController.NS+b.getLocalName(),HomeController.Model);
+//			tiposA.remove(HomeController.NS+"Geographical_Element");
+//			tiposA.remove(HomeController.NS+"Bound_Input-Output");
+//			tiposB.remove(HomeController.NS+"Geographical_Element");
+//			tiposB.remove(HomeController.NS+"Bound_Input-Output");
+//			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds");
+//			stmt = HomeController.Model.createStatement(a, rel, b);
+//			HomeController.Model.add(stmt);	
+//			HashMap<String, String> hash = new HashMap<String, String>();
+//			hash.put("INPUT", tiposB.get(0));
+//			hash.put("OUTPUT", tiposA.get(0));
+//			HashMap<String, String>element= Provisioning.values.get(hash);
+//			Provisioning.bindsSpecific(a,b,tiposA.get(0),tiposB.get(0));
+			//BindsProcessor.bindPorts(outputNs, inputNs);
+			BindsProcessor.bindPorts(a, b, HomeController.NS, HomeController.Model);
 
 		}
 
@@ -531,7 +534,7 @@ public class ProvisioningController{
 					tf1.put("INPUT", inputClassName);
 					tf1.put("OUTPUT", outputClassName);
 
-					HashMap<String, String> allowedRelation = Provisioning.values.get(tf1);
+					HashMap<String, String> allowedRelation = BindsProcessor.values.get(tf1);
 
 					if(allowedRelation != null){
 						hasAllowedRelation = true;
