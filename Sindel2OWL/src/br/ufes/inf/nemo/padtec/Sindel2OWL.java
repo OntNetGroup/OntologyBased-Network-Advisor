@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.padtec;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
 import br.ufes.inf.nemo.padtec.processors.AttributeProcessor;
@@ -119,6 +120,14 @@ public class Sindel2OWL {
 			}
 		}
 
+		ArrayList<ArrayList<Individual>> portsAndRPsToBindsSpecifically = BindsProcessor.getPortsAndRPsToBindsSpecifically();
+		for (ArrayList<Individual> portsAndBinds : portsAndRPsToBindsSpecifically) {
+			Individual rp = portsAndBinds.get(0);
+			Individual port1 = portsAndBinds.get(1);
+			Individual port2 = portsAndBinds.get(2);
+			
+			BindsProcessor.bindPorts(rp, port1, port2, ClassNS, model);
+		}
 	//	createDisjointness();
 		createDtoSindel();
 //		createModelImports();

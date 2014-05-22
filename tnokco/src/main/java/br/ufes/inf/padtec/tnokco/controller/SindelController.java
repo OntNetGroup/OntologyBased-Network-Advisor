@@ -28,44 +28,14 @@ public class SindelController{
 	@RequestMapping(method = RequestMethod.GET, value="/sindel")
 	public String sindel(HttpSession session, HttpServletRequest request) {
 
-		//Get parameter with tells the sindel load from file or not
-
-		txtSindelCode = "";
+		//Create the sections				
 		request.getSession().setAttribute("txtSindelCode", txtSindelCode);
+		
+		txtSindelCode = "";			
+		
+		return "sindel";	//View to return
 				
-		if(txtSindelCode == "")
-		{
-			if(HomeController.Reasoner == null)
-			{
-				String error = "Reasoner error: Select some reasoner";
-				request.getSession().setAttribute("errorMensage", error);
-				
-				return "index";
-				
-			} else {
-				request.getSession().removeAttribute("errorMensage");
-			}
-			
-			return "sindel";	//View to return
-
-		} else {
-			
-			if(HomeController.Reasoner == null)
-			{
-				String error = "Reasoner error: Select some reasoner";
-				request.getSession().setAttribute("errorMensage", error);
-				
-				return "index";
-				
-			} else {
-				request.getSession().removeAttribute("errorMensage");
-			}
-
-			//Create the sections				
-			request.getSession().setAttribute("txtSindelCode", txtSindelCode);
-			
-			return "sindel";	//View to return
-		}     	
+		     	
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/getSindel")
@@ -187,6 +157,9 @@ public class SindelController{
 
 		dto.ok = true;
 		dto.result = dtoSindel.warning;
+		
+		//clean sindel code
+		txtSindelCode = "";		
 
 		return dto;
 	}

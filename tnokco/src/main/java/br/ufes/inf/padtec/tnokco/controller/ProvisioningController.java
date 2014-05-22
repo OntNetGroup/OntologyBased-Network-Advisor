@@ -380,7 +380,7 @@ public class ProvisioningController{
 //			HashMap<String, String>element= Provisioning.values.get(hash);
 //			Provisioning.bindsSpecific(a,b,tiposA.get(0),tiposB.get(0));
 			//BindsProcessor.bindPorts(outputNs, inputNs);
-			BindsProcessor.bindPorts(a, b, HomeController.NS, HomeController.Model);
+			BindsProcessor.bindPorts(null, a, b, HomeController.NS, HomeController.Model);
 
 		}
 
@@ -406,6 +406,7 @@ public class ProvisioningController{
 	}
 
 	public static ArrayList<String> getCandidateInterfacesForConnection(String outIntNs){
+		ArrayList<String> allowedInputInterfaces = new ArrayList<String>();
 		//find the instance of the output interface
 		Instance outputInterface = getInstanceFromNameSpace(outIntNs);
 //		Instance outputInterface = null;
@@ -437,6 +438,38 @@ public class ProvisioningController{
 			}
 		}
 
+		ArrayList<Instance> inputInterfaces = getInstancesFromClass("Input_Interface");
+		
+		if(outputNs.equals("")){
+			for (Instance inputInterface : inputInterfaces) {
+				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
+				String eqInNs = "";
+				
+				//get namespaces of individuals of some input interface relations
+				for (DtoInstanceRelation inRelation : inIntRelations) {
+					if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
+						eqInNs = inRelation.Target;		
+						break;
+					}
+				}
+				
+				//if(!eqInNs.equals(eqOutNs)){
+					String interfaceReturn = "";
+					interfaceReturn += eqInNs; 
+					interfaceReturn += "#";
+					interfaceReturn += inputInterface.name;
+					interfaceReturn += "#";
+					interfaceReturn += "false";
+					
+					allowedInputInterfaces.add(interfaceReturn);
+				//}
+				
+				
+				
+			}
+			return allowedInputInterfaces;
+		}
+		
 		//verify if the output interface is already binded
 		Boolean outputInterfaceAlreadyBinded = false;
 		if(!interfaceBindsNs.equals("")){
@@ -453,7 +486,7 @@ public class ProvisioningController{
 		}
 
 		//get all input interfaces
-		ArrayList<Instance> inputInterfaces = getInstancesFromClass("Input_Interface");
+		
 //		ArrayList<Instance> inputInterfaces = new ArrayList<Instance>(); 
 //		for (Instance instance : HomeController.ListAllInstances) {
 //			for (String className : instance.ListClasses) {
@@ -465,7 +498,7 @@ public class ProvisioningController{
 //			}
 //		}
 
-		ArrayList<String> allowedInputInterfaces = new ArrayList<String>();
+		
 		//now, the idea is compare all types of the output with all types of all inputs
 		for (String outputClassName : output.ListClasses) {
 			outputClassName = outputClassName.replace(HomeController.NS, "");
@@ -516,32 +549,32 @@ public class ProvisioningController{
 					}
 				}
 				
-				//get the input mapped by the input interface 
-				Instance input = null;
-				for (Instance instance : HomeController.ListAllInstances) {
-					if(inputNs.equals(instance.ns+instance.name)){
-						input = instance;
-						break;
-					}
-				}
-				
 				Boolean hasAllowedRelation = false;
-				
-				//for each input and output class names, I verify if exist a possible relation of binds
-				for(String inputClassName : input.ListClasses){
-					inputClassName = inputClassName.replace(HomeController.NS, ""); 
-					HashMap<String, String> tf1 = new HashMap<String, String>();
-					tf1.put("INPUT", inputClassName);
-					tf1.put("OUTPUT", outputClassName);
+				if(inputNs != ""){
+					//get the input mapped by the input interface 
+					Instance input = null;
+					for (Instance instance : HomeController.ListAllInstances) {
+						if(inputNs.equals(instance.ns+instance.name)){
+							input = instance;
+							break;
+						}
+					}
+					
+					//for each input and output class names, I verify if exist a possible relation of binds
+					for(String inputClassName : input.ListClasses){
+						inputClassName = inputClassName.replace(HomeController.NS, ""); 
+						HashMap<String, String> tf1 = new HashMap<String, String>();
+						tf1.put("INPUT", inputClassName);
+						tf1.put("OUTPUT", outputClassName);
 
-					HashMap<String, String> allowedRelation = BindsProcessor.values.get(tf1);
+						HashMap<String, String> allowedRelation = BindsProcessor.values.get(tf1);
 
-					if(allowedRelation != null){
-						hasAllowedRelation = true;
-						break;
+						if(allowedRelation != null){
+							hasAllowedRelation = true;
+							break;
+						}
 					}
 				}
-
 				
 				String interfaceReturn = "";
 				eqInNs = eqInNs.replace(inputInterface.ns, "");
@@ -723,6 +756,7 @@ public class ProvisioningController{
 		}
 		
 		int bindsMade = 0;
+		String returnMessage = "Interfaces binded:<br>";
 		for(Entry<String, ArrayList<String>> candidates : uniqueCandidatesForBinds.entrySet()) {
 			String inputInterface = candidates.getKey();
 			ArrayList<String> outs = candidates.getValue();
@@ -730,6 +764,10 @@ public class ProvisioningController{
 			if(outs.size() == 1){
 				binds(outs.get(0), inputInterface, request, false);
 				bindsMade++;
+				returnMessage += inputInterface;
+				returnMessage += " -> ";
+				returnMessage += outs.get(0);
+				returnMessage += "<br>";
 			}
 			
 		}
@@ -744,8 +782,11 @@ public class ProvisioningController{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}else{
+			returnMessage = "No interfaces binded.";
 		}
 		
+		request.getSession().setAttribute("loadOk", returnMessage);
 		
 		return VisualizationController.provisoning_visualization(request);
 	}

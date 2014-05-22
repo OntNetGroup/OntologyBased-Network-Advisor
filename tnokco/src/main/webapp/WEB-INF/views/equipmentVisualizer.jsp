@@ -5,6 +5,14 @@
 	int height = (Integer) request.getSession().getAttribute("height");
 	String hashEquipIntOut = (String) request.getSession().getAttribute("hashEquipIntOut");
 	String hashTypes = (String) request.getSession().getAttribute("hashTypes");
+	
+	
+	//Get the parameters from controller
+	String error = (String) request.getSession().getAttribute(
+			"errorMensage");
+	String loadOk = (String) request.getSession()
+			.getAttribute("loadOk");
+
 %>
 <script>
 		graph = {};
@@ -221,6 +229,24 @@
 		
 	</script>
 	
+	<%
+	if (error != null && !error.equals("")) {
+		String htmlError = "<div class=\"alert alert-danger\">"
+				+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button>"
+				+ "<strong>" + "Error! " + "</strong>" + error
+				+ "</div>";
+		out.println(htmlError);
+	}
+
+	if (loadOk != null && !loadOk.equals("true")) {
+		String htmlLoad = "<div class=\"alert alert-info\">"
+				+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button>"
+				+ "<strong>Hey!</strong> " + loadOk
+				+ "</div>";
+		out.println(htmlLoad);
+	}
+%>
+
 	<table>
 		<tr>
 			<td style="padding-right: 5px;">
