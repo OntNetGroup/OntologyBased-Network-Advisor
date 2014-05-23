@@ -1,4 +1,5 @@
 import br.ufes.inf.nemo.okco.api.DtoResultInstances;
+import br.ufes.inf.nemo.okco.api.OKCo;
 import br.ufes.inf.nemo.okco.api.Instance;
 import br.ufes.inf.nemo.okco.api.InstanceClassDefinition;
 import br.ufes.inf.nemo.okco.api.InstanceRelationDefinition;

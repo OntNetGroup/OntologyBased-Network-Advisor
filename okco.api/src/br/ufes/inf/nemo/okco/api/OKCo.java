@@ -199,7 +199,7 @@ public class OKCo {
      * @param  strength String - Strength for complete file. "FULL" for completions that do not make domain assumptions over instances (the creation of new individuals or data) and "REGULAR" there are others that require assumptions (classification of individuals). 
      * @return DtoResultFile - Result operation - OWL file completed and possible errors in the process.
     */
-	public DtoResultFile completePropertyImcompleteness(String pathOwlFile, String reasonerOption, String strength)
+	public DtoResultFile completePropertyIncompleteness(String pathOwlFile, String reasonerOption, String strength)
 	{
 		DtoResultFile dtoResult = new DtoResultFile();
 		
@@ -482,7 +482,7 @@ public class OKCo {
      * @param  strength String - Strength for complete file. "FULL" for completions that do not make domain assumptions over instances (the creation of new individuals or data) and "REGULAR" there are others that require assumptions (classification of individuals).
      * @return DtoResultFile - Result operation - OWL file completed and possible errors in the process.
     */
-	public DtoResultFile completePropertyImcompleteness(ArrayList<String> setInstances, String pathOwlFile, String reasonerOption, String strength)
+	public DtoResultFile completePropertyIncompleteness(ArrayList<String> setInstances, String pathOwlFile, String reasonerOption, String strength)
 	{
 		DtoResultFile dtoResult = new DtoResultFile();
 		

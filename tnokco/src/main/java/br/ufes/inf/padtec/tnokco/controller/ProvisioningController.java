@@ -1,3 +1,4 @@
+
 package br.ufes.inf.padtec.tnokco.controller;
 
 import java.io.BufferedReader;
@@ -153,6 +154,7 @@ public class ProvisioningController{
 
 				//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 				HomeController.InfModel = so.getDtoSindel().model;
+				
 				// Update list instances
 				HomeController.UpdateLists();
 
@@ -361,10 +363,13 @@ public class ProvisioningController{
 		Statement stmt = HomeController.Model.createStatement(a, rel, b);
 		HomeController.Model.add(stmt);
 
+		ArrayList<String> listInstancesCreated = new ArrayList<String>();
 
 		if(!outputNs.equals("") && !inputNs.equals("")){
+			
 			a = HomeController.Model.getIndividual(HomeController.NS+outputNs);
 			b = HomeController.Model.getIndividual(HomeController.NS+inputNs);
+			
 //			ArrayList<String> tiposA=HomeController.Search.GetClassesFrom(HomeController.NS+a.getLocalName(),HomeController.Model);
 //			ArrayList<String> tiposB=HomeController.Search.GetClassesFrom(HomeController.NS+b.getLocalName(),HomeController.Model);
 //			tiposA.remove(HomeController.NS+"Geographical_Element");
@@ -380,22 +385,30 @@ public class ProvisioningController{
 //			HashMap<String, String>element= Provisioning.values.get(hash);
 //			Provisioning.bindsSpecific(a,b,tiposA.get(0),tiposB.get(0));
 			//BindsProcessor.bindPorts(outputNs, inputNs);
-			BindsProcessor.bindPorts(null, a, b, HomeController.NS, HomeController.Model);
+			
+			listInstancesCreated = BindsProcessor.bindPorts(null, a, b, HomeController.NS, HomeController.Model);
 
 		}
 
 		HomeController.InfModel = HomeController.Model;
 		
+		
 		if(updateListsInTheEnd){
+			
 			try {
-				HomeController.UpdateLists();
+				
+				for (String instanceUri : listInstancesCreated) {
+					HomeController.UpdateAddIntanceInLists(instanceUri);	
+				}
+				
 			} catch (InconsistentOntologyException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
+				
 			} catch (OKCoExceptionInstanceFormat e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
-			}
+			}			
 		}
 		
 		dto.ok = true;
