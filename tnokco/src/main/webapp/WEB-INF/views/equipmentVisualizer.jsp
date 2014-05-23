@@ -8,10 +8,9 @@
 	
 	
 	//Get the parameters from controller
-	String error = (String) request.getSession().getAttribute(
-			"errorMensage");
-	String loadOk = (String) request.getSession()
-			.getAttribute("loadOk");
+	String error = (String) request.getSession().getAttribute("errorMensage");
+	String loadOk = (String) request.getSession().getAttribute("loadOk");
+	request.getSession().setAttribute("loadOk", "");
 
 %>
 <script>
@@ -238,7 +237,7 @@
 		out.println(htmlError);
 	}
 
-	if (loadOk != null && !loadOk.equals("true")) {
+	if (loadOk != null && !loadOk.equals("")) {
 		String htmlLoad = "<div class=\"alert alert-info\">"
 				+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button>"
 				+ "<strong>Hey!</strong> " + loadOk

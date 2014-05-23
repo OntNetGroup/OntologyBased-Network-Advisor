@@ -311,7 +311,7 @@ public class VisualizationController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/provisoning_visualization")
 	public static String provisoning_visualization(HttpServletRequest request) {
-		request.getSession().setAttribute("loadOk", "");
+		//request.getSession().setAttribute("loadOk", "");
 		Provisioning.inferInterfaceConnections();
 		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
 
