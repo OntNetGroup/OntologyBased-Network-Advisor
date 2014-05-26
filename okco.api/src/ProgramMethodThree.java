@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 import br.ufes.inf.nemo.okco.api.DtoResultFile;
-import br.ufes.inf.nemo.okco.api.DtoResultInstances;
 import br.ufes.inf.nemo.okco.api.Instance;
 import br.ufes.inf.nemo.okco.api.InstanceClassDefinition;
 import br.ufes.inf.nemo.okco.api.InstanceRelationDefinition;
@@ -12,11 +11,11 @@ public class ProgramMethodThree {
 	public static void main(String[] args) {
 
 		String inputFileName = "C://Users//fabio_000//Desktop//OntologiasOWL//assassinato.owl";
-		ArrayList<String> setInstances = new ArrayList<>();
+		ArrayList<String> setInstances = new ArrayList<String>();
 		setInstances.add("http://www.semanticweb.org/ontologies/2013/8/ontology.owl#fabio");
 
 		OKCo o = new OKCo();
-		DtoResultFile dto = o.completePropertyImcompleteness(setInstances, inputFileName, "HERMIT", "REGULAR");
+		DtoResultFile dto = o.completePropertyIncompleteness(setInstances, inputFileName, "HERMIT", "REGULAR");
 		
 		if(dto.ListErrors.size() > 0)
 		{

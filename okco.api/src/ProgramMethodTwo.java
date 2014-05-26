@@ -1,5 +1,4 @@
 import br.ufes.inf.nemo.okco.api.DtoResultFile;
-import br.ufes.inf.nemo.okco.api.DtoResultInstances;
 import br.ufes.inf.nemo.okco.api.Instance;
 import br.ufes.inf.nemo.okco.api.InstanceClassDefinition;
 import br.ufes.inf.nemo.okco.api.InstanceRelationDefinition;
@@ -12,7 +11,7 @@ public class ProgramMethodTwo {
 		String inputFileName = "C://Users//fabio_000//Desktop//OntologiasOWL//assassinato.owl";	
 
 		OKCo o = new OKCo();
-		DtoResultFile dto = o.completePropertyImcompleteness(inputFileName, "HERMIT", "FULL");
+		DtoResultFile dto = o.completePropertyIncompleteness(inputFileName, "HERMIT", "FULL");
 		
 		if(dto.ListErrors.size() > 0)
 		{
