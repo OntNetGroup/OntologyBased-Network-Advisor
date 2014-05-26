@@ -364,7 +364,9 @@ public class ProvisioningController{
 		HomeController.Model.add(stmt);
 
 		ArrayList<String> listInstancesCreated = new ArrayList<String>();
-
+		listInstancesCreated.add(a.getNameSpace()+a.getLocalName());
+		listInstancesCreated.add(b.getNameSpace()+b.getLocalName());
+		
 		if(!outputNs.equals("") && !inputNs.equals("")){
 			
 			a = HomeController.Model.getIndividual(HomeController.NS+outputNs);
@@ -386,7 +388,7 @@ public class ProvisioningController{
 //			Provisioning.bindsSpecific(a,b,tiposA.get(0),tiposB.get(0));
 			//BindsProcessor.bindPorts(outputNs, inputNs);
 			
-			listInstancesCreated = BindsProcessor.bindPorts(null, a, b, HomeController.NS, HomeController.Model);
+			BindsProcessor.bindPorts(null, a, b, HomeController.NS, HomeController.Model, listInstancesCreated);
 
 		}
 

@@ -311,7 +311,10 @@ public class BindsProcessor {
 		
 	}
 	
-	public static void bindPorts(Individual rp, Individual port1, Individual port2, String NS, OntModel ontModel){
+	public static void bindPorts(Individual rp, Individual port1, Individual port2, String NS, OntModel ontModel, ArrayList<String> listInstancesCreated){
+		if(listInstancesCreated == null){
+			listInstancesCreated = new ArrayList<String>();
+		}
 		initValues();
 		Search search = new Search(NS); 
 		ArrayList<String> tiposA=search.GetClassesFrom(NS+port1.getLocalName(),ontModel);
@@ -327,10 +330,13 @@ public class BindsProcessor {
 		hash.put("INPUT", tiposB.get(0));
 		hash.put("OUTPUT", tiposA.get(0));
 		HashMap<String, String>element= values.get(hash);
-		bindsSpecific(rp, port1,port2,tiposA.get(0),tiposB.get(0),ontModel,NS);
+		bindsSpecific(rp, port1,port2,tiposA.get(0),tiposB.get(0),ontModel,NS, listInstancesCreated);
 	}
 	
-	public static OntModel bindsSpecific(Individual rp, Individual port1, Individual port2, String tipo_out, String tipo_inp, OntModel ontModel, String NS) {
+	public static OntModel bindsSpecific(Individual rp, Individual port1, Individual port2, String tipo_out, String tipo_inp, OntModel ontModel, String NS, ArrayList<String> listInstancesCreated) {
+		if(listInstancesCreated == null){
+			listInstancesCreated = new ArrayList<String>();
+		}
 		// TODO Auto-generated method stub
 		HashMap<String, String> key = new HashMap<String, String>();
 		tipo_inp = tipo_inp.replace(NS, "");
@@ -351,6 +357,8 @@ public class BindsProcessor {
 			stmts.add(ontModel.createStatement(binding, ontModel.getProperty(NS+value.get("RP_BINDING_REL_IN")), port2));
 			stmts.add(ontModel.createStatement(binding, ontModel.getProperty(NS+value.get("RP_BINDING_REL_OUT")), port1));
 			ontModel.add(stmts);
+			
+			listInstancesCreated.add(binding.getNameSpace()+binding.getLocalName());
 		}catch(Exception e){
 			e = new Exception("not bound");
 		}

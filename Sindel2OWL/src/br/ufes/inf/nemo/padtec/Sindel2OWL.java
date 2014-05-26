@@ -126,7 +126,12 @@ public class Sindel2OWL {
 			Individual port1 = portsAndBinds.get(1);
 			Individual port2 = portsAndBinds.get(2);
 			
-			BindsProcessor.bindPorts(rp, port1, port2, ClassNS, model);
+			ArrayList<String> listInstancesCreated = new ArrayList<String>();
+			listInstancesCreated.add(rp.getNameSpace()+rp.getLocalName());
+			listInstancesCreated.add(port1.getNameSpace()+port1.getLocalName());
+			listInstancesCreated.add(port2.getNameSpace()+port2.getLocalName());
+			
+			BindsProcessor.bindPorts(rp, port1, port2, ClassNS, model, listInstancesCreated);
 		}
 	//	createDisjointness();
 		createDtoSindel();
