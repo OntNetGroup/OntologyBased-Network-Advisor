@@ -461,10 +461,10 @@ public class BindsProcessor {
 		tf1.put("INPUT", "Physical_Media_Input");
 		tf1.put("OUTPUT", "Termination_Source_Output");
 		hashrp.put("RP", "Source_PM-FEP");
-		hashrp.put("RP_RELATION", "is_represented_by_Sk_PM-FEP");
-		hashrp.put("RP_BINDING", "Sink_PM-FEP_Binding");
-		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_PM-FEP_to");
-		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_PM-FEP_from");	
+		hashrp.put("RP_RELATION", "is_represented_by_So_PM-FEP");
+		hashrp.put("RP_BINDING", "Source_PM-FEP_Binding");
+		hashrp.put("RP_BINDING_REL_IN", "binds_So_PM-FEP_to");
+		hashrp.put("RP_BINDING_REL_OUT", "binds_So_PM-FEP_from");	
 		values.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();

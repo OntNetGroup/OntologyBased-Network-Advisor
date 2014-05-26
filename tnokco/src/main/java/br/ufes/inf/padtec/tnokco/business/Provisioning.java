@@ -53,202 +53,202 @@ public class Provisioning {
 	public Provisioning(){
 		BindsProcessor.initValues();
 
-//		HashMap<String, String> tf1= new HashMap<String, String>();
-//		HashMap<String, String> hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Adaptation_Source_Input");
-//		tf1.put("OUTPUT", "Termination_Source_Output");
-//		hashrp.put("RP", "Source_A-FEP");
-//		hashrp.put("RP_RELATION", "is_represented_by_So_A-FEP");
-//		hashrp.put("RP_BINDING", "Source_A-FEP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_So_A-FEP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_A-FEP_from");		
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Matrix_Input");
-//		tf1.put("OUTPUT", "Termination_Source_Output");
-//		hashrp.put("RP", "Source_M-FEP");
-//		hashrp.put("RP_RELATION", "is_represented_by_So_M-FEP");
-//		hashrp.put("RP_BINDING", "Source-M-FEP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_So_M-FEP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_M-FEP-from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Subnetwork_Input");
-//		tf1.put("OUTPUT", "Termination_Source_Output");
-//		hashrp.put("RP", "Source_SN-FEP");
-//		hashrp.put("RP_RELATION", "is_represented_by_So_SN-FEP");
-//		hashrp.put("RP_BINDING", "Source-SN-FEP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_So_SN-FEP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_SN-FEP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Layer_Processor_Source_Input");
-//		tf1.put("OUTPUT", "Termination_Source_Output");
-//		hashrp.put("RP", "Source_LPF-FEP");
-//		hashrp.put("RP_RELATION", "is_represented_by_So_LPF-FEP");
-//		hashrp.put("RP_BINDING", "Source_LPF-FEP Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_So_LPF-FEP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_LPF-FEP-from");	
-//		values.put(tf1, hashrp);
-//
-//
-//		tf1.put("INPUT", "Adaptation_Sink_Input");
-//		tf1.put("OUTPUT", "Termination_Sink_Output");
-//		hashrp.put("RP", "Sink_A-FEP");
-//		hashrp.put("RP_RELATION", "is_represented_by_Sk_A-FEP");
-//		hashrp.put("RP_BINDING", "Sink_A-FEP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_A-FEP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_A-FEP_from");		
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Matrix_Input");
-//		tf1.put("OUTPUT", "Termination_Sink_Output");
-//		hashrp.put("RP", "Sink_M-FEP");
-//		hashrp.put("RP_RELATION", "is_represented_by_Sk_M-FEP");
-//		hashrp.put("RP_BINDING", "Sink_M-FEP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_M-FEP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_M-FEP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Subnetwork_Input");
-//		tf1.put("OUTPUT", "Termination_Sink_Output");
-//		hashrp.put("RP", "Sink_SN-FEP");
-//		hashrp.put("RP_RELATION", "is_represented_by_Sk_SN-FEP");
-//		hashrp.put("RP_BINDING", "Sink_SN-FEP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_SN-FEP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_SN-FEP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Layer_Processor_Sink_Input");
-//		tf1.put("OUTPUT", "Termination_Sink_Output");
-//		hashrp.put("RP", "Sink_LPF-FEP");
-//		hashrp.put("RP_RELATION", "is_represented_by_Sk_LPF-FEP");
-//		hashrp.put("RP_BINDING", "Sink_LPF-FEP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_LPF-FEP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_LPF-FEP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Physical_Media_Input");
-//		tf1.put("OUTPUT", "Termination_Source_Output");
-//		hashrp.put("RP", "Source_PM-FEP");
-//		hashrp.put("RP_RELATION", "is_represented_by_Sk_PM-FEP");
-//		hashrp.put("RP_BINDING", "Sink_PM-FEP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_PM-FEP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_PM-FEP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Termination_Source_Input");
-//		tf1.put("OUTPUT", "Adaptation_Source_Output");
-//		hashrp.put("RP", "Source_AP");
-//		hashrp.put("RP_RELATION", "is_represented_by_So_AP");
-//		hashrp.put("RP_BINDING", "Source_AP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_So_AP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_AP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Termination_Sink_Input");
-//		tf1.put("OUTPUT", "Adaptation_Sink_Output");
-//		hashrp.put("RP", "Sink_AP");
-//		hashrp.put("RP_RELATION", "is_represented_by_Sk_AP");
-//		hashrp.put("RP_BINDING", "Sink_AP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_AP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_AP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Adaptation_Source_Input");
-//		tf1.put("OUTPUT", "Layer_Processor_Source_Output");
-//		hashrp.put("RP", "Source_LP-FP");
-//		hashrp.put("RP_RELATION", "is_represented_by_So_L-FP");
-//		hashrp.put("RP_BINDING", "Source_L-FP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_So_L-FP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_L-FP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Adaptation_Source_Input");
-//		tf1.put("OUTPUT", "Layer_Processor_Sink_Output");
-//		hashrp.put("RP", "Sink_LP-FP");
-//		hashrp.put("RP_RELATION", "is_represented_by_Sk_L-FP");
-//		hashrp.put("RP_BINDING", "Sink_L-FP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_L-FP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_L-FP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Adaptation_Source_Input");
-//		tf1.put("OUTPUT", "Adaptation_Source_Output");
-//		hashrp.put("RP", "Unidirectional_A-FP");
-//		hashrp.put("RP_RELATION", "is_represented_by_A-FP");
-//		hashrp.put("RP_BINDING", "A-FP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_A-FP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_A-FP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Adaptation_Source_Input");
-//		tf1.put("OUTPUT", "Subnetwork_Output");
-//		hashrp.put("RP", "Source_SN-FP");
-//		hashrp.put("RP_RELATION", "is_represented_by_So_SN-FP");
-//		hashrp.put("RP_BINDING", "Source_SN-FP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_So_SN-FP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_SN-FP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Adaptation_Sink_Input");
-//		tf1.put("OUTPUT", "Subnetwork_Output");
-//		hashrp.put("RP", "Source_SN-FP");
-//		hashrp.put("RP_RELATION", "is_represented_by_Sk_SN-FP");
-//		hashrp.put("RP_BINDING", "Sink_SN-FP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_SN-FP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_SN-FP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Adaptation_Source_Input");
-//		tf1.put("OUTPUT", "Matrix_Output");
-//		hashrp.put("RP", "Source_SN-FP");
-//		hashrp.put("RP_RELATION", "is_represented_by_So_M-FP");
-//		hashrp.put("RP_BINDING", "Source_M-FP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_So_M-FP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_M-FP_from");	
-//		values.put(tf1, hashrp);
-//
-//		tf1= new HashMap<String, String>();
-//		hashrp= new HashMap<String, String>();
-//		tf1.put("INPUT", "Adaptation_Sink_Input");
-//		tf1.put("OUTPUT", "Matrix_Output");
-//		hashrp.put("RP", "Source_M-FP");
-//		hashrp.put("RP_RELATION", "is_represented_by_Sk_M-FP");
-//		hashrp.put("RP_BINDING", "Sink_M-FP_Binding");
-//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_M-FP_to");
-//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_M-FP_from");	
-//		values.put(tf1, hashrp);		
+		//		HashMap<String, String> tf1= new HashMap<String, String>();
+		//		HashMap<String, String> hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Adaptation_Source_Input");
+		//		tf1.put("OUTPUT", "Termination_Source_Output");
+		//		hashrp.put("RP", "Source_A-FEP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_So_A-FEP");
+		//		hashrp.put("RP_BINDING", "Source_A-FEP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_So_A-FEP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_A-FEP_from");		
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Matrix_Input");
+		//		tf1.put("OUTPUT", "Termination_Source_Output");
+		//		hashrp.put("RP", "Source_M-FEP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_So_M-FEP");
+		//		hashrp.put("RP_BINDING", "Source-M-FEP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_So_M-FEP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_M-FEP-from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Subnetwork_Input");
+		//		tf1.put("OUTPUT", "Termination_Source_Output");
+		//		hashrp.put("RP", "Source_SN-FEP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_So_SN-FEP");
+		//		hashrp.put("RP_BINDING", "Source-SN-FEP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_So_SN-FEP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_SN-FEP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Layer_Processor_Source_Input");
+		//		tf1.put("OUTPUT", "Termination_Source_Output");
+		//		hashrp.put("RP", "Source_LPF-FEP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_So_LPF-FEP");
+		//		hashrp.put("RP_BINDING", "Source_LPF-FEP Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_So_LPF-FEP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_LPF-FEP-from");	
+		//		values.put(tf1, hashrp);
+		//
+		//
+		//		tf1.put("INPUT", "Adaptation_Sink_Input");
+		//		tf1.put("OUTPUT", "Termination_Sink_Output");
+		//		hashrp.put("RP", "Sink_A-FEP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_Sk_A-FEP");
+		//		hashrp.put("RP_BINDING", "Sink_A-FEP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_A-FEP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_A-FEP_from");		
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Matrix_Input");
+		//		tf1.put("OUTPUT", "Termination_Sink_Output");
+		//		hashrp.put("RP", "Sink_M-FEP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_Sk_M-FEP");
+		//		hashrp.put("RP_BINDING", "Sink_M-FEP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_M-FEP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_M-FEP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Subnetwork_Input");
+		//		tf1.put("OUTPUT", "Termination_Sink_Output");
+		//		hashrp.put("RP", "Sink_SN-FEP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_Sk_SN-FEP");
+		//		hashrp.put("RP_BINDING", "Sink_SN-FEP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_SN-FEP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_SN-FEP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Layer_Processor_Sink_Input");
+		//		tf1.put("OUTPUT", "Termination_Sink_Output");
+		//		hashrp.put("RP", "Sink_LPF-FEP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_Sk_LPF-FEP");
+		//		hashrp.put("RP_BINDING", "Sink_LPF-FEP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_LPF-FEP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_LPF-FEP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Physical_Media_Input");
+		//		tf1.put("OUTPUT", "Termination_Source_Output");
+		//		hashrp.put("RP", "Source_PM-FEP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_Sk_PM-FEP");
+		//		hashrp.put("RP_BINDING", "Sink_PM-FEP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_PM-FEP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_PM-FEP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Termination_Source_Input");
+		//		tf1.put("OUTPUT", "Adaptation_Source_Output");
+		//		hashrp.put("RP", "Source_AP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_So_AP");
+		//		hashrp.put("RP_BINDING", "Source_AP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_So_AP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_AP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Termination_Sink_Input");
+		//		tf1.put("OUTPUT", "Adaptation_Sink_Output");
+		//		hashrp.put("RP", "Sink_AP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_Sk_AP");
+		//		hashrp.put("RP_BINDING", "Sink_AP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_AP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_AP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Adaptation_Source_Input");
+		//		tf1.put("OUTPUT", "Layer_Processor_Source_Output");
+		//		hashrp.put("RP", "Source_LP-FP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_So_L-FP");
+		//		hashrp.put("RP_BINDING", "Source_L-FP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_So_L-FP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_L-FP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Adaptation_Source_Input");
+		//		tf1.put("OUTPUT", "Layer_Processor_Sink_Output");
+		//		hashrp.put("RP", "Sink_LP-FP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_Sk_L-FP");
+		//		hashrp.put("RP_BINDING", "Sink_L-FP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_L-FP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_L-FP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Adaptation_Source_Input");
+		//		tf1.put("OUTPUT", "Adaptation_Source_Output");
+		//		hashrp.put("RP", "Unidirectional_A-FP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_A-FP");
+		//		hashrp.put("RP_BINDING", "A-FP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_A-FP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_A-FP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Adaptation_Source_Input");
+		//		tf1.put("OUTPUT", "Subnetwork_Output");
+		//		hashrp.put("RP", "Source_SN-FP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_So_SN-FP");
+		//		hashrp.put("RP_BINDING", "Source_SN-FP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_So_SN-FP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_SN-FP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Adaptation_Sink_Input");
+		//		tf1.put("OUTPUT", "Subnetwork_Output");
+		//		hashrp.put("RP", "Source_SN-FP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_Sk_SN-FP");
+		//		hashrp.put("RP_BINDING", "Sink_SN-FP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_SN-FP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_SN-FP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Adaptation_Source_Input");
+		//		tf1.put("OUTPUT", "Matrix_Output");
+		//		hashrp.put("RP", "Source_SN-FP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_So_M-FP");
+		//		hashrp.put("RP_BINDING", "Source_M-FP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_So_M-FP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_So_M-FP_from");	
+		//		values.put(tf1, hashrp);
+		//
+		//		tf1= new HashMap<String, String>();
+		//		hashrp= new HashMap<String, String>();
+		//		tf1.put("INPUT", "Adaptation_Sink_Input");
+		//		tf1.put("OUTPUT", "Matrix_Output");
+		//		hashrp.put("RP", "Source_M-FP");
+		//		hashrp.put("RP_RELATION", "is_represented_by_Sk_M-FP");
+		//		hashrp.put("RP_BINDING", "Sink_M-FP_Binding");
+		//		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_M-FP_to");
+		//		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_M-FP_from");	
+		//		values.put(tf1, hashrp);		
 	}
 
 
@@ -282,7 +282,7 @@ public class Provisioning {
 	}
 
 	public static ArrayList<Equipment> getAllEquipmentsandConnections(){
-		
+
 		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
 		return doIt();
 	}
@@ -333,28 +333,38 @@ public class Provisioning {
 			}
 			equips.add(e); 
 		}
-		
+
 		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
 		return equips;
 	}
 
 	public static ArrayList<String> getPossibleConnects(String eq_interface){
-		String rp = getRPFromInterface(eq_interface,0);
-		ArrayList<String> result = new ArrayList<String>();
-		ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(rp, InfModel);	
-		if(classesFromIndividual.contains(HomeController.NS+"Source_PM-FEP")){
-				ArrayList<String> interfaces = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Input_interface");
-				for (String inter : interfaces) {
-					String rp_in=getRPFromInterface(inter, 1);
-					if(HomeController.Search.GetClassesFrom(rp_in, InfModel).contains("Sink_PM-FEP")){
-						result.add(rp_in);
+		//String rp = getRPFromInterface(eq_interface,0);
+		ArrayList<String> result= new ArrayList<String>();
+		if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, HomeController.NS+"maps_output", HomeController.NS+"Output").size()>0){
+			String port= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, HomeController.NS+"maps_output", HomeController.NS+"Output").get(0);
+			ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(port, InfModel);	
+			if(classesFromIndividual.contains(HomeController.NS+"T_So_Output_-_So_PM-FEP_Bound")){
+				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"binds_So_PM-FEP", HomeController.NS+"PM_Input_-_So_PM-FEP_Bound").size()>0){
+					String pm_input=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"binds_So_PM-FEP", HomeController.NS+"PM_Input_-_So_PM-FEP_Bound").get(0);
+					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_input, HomeController.NS+"INV.componentOf", HomeController.NS+"Single_Physical_Media").size()>0){
+						String pm=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_input, HomeController.NS+"INV.componentOf", HomeController.NS+"Single_Physical_Media").get(0);
+						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").size()>0){
+							String pm_out=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_input, HomeController.NS+"componentOf", HomeController.NS+"Single_Physical_Media").get(0);
+							if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_out, HomeController.NS+"binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").size()>0){
+								String input=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_out, HomeController.NS+"binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").get(0);
+								if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input, HomeController.NS+"INV.maps_in", HomeController.NS+"Input_Interface").size()>0){
+									result.add(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input, HomeController.NS+"INV.maps_in", HomeController.NS+"Input_Interface").get(0));
+								}
+							}
+						}
 					}
 				}
 			}
-		
+		}
 		return result;
 	}
-	
+
 	// type = 0 for output type =1 for input
 	public static String getRPFromInterface(String eq_interface, Integer type){
 		String value="maps_output";
@@ -363,7 +373,7 @@ public class Provisioning {
 			value="maps_input";
 			target="Input";
 		}
-		
+
 		if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, HomeController.NS+value, HomeController.NS+target).size()>0){
 			String port= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, eq_interface, HomeController.NS+value, HomeController.NS+target).get(0);
 			if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.is_binding", HomeController.NS+"Binding").size()>0){
@@ -522,5 +532,52 @@ public class Provisioning {
 		}
 		HomeController.InfModel = HomeController.Model;
 	}
+
+	private static String getEqofInput(String value, String pm) {
+		// TODO Auto-generated method stub
+		if(value.equals("input")){
+			if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Input").size()>0){
+				String port= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Input").get(0);
+				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_So_PM-FEP", HomeController.NS+"T_So_Output_-_So_PM-FEP_Bound").size()>0){
+					String tf_out= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_So_PM-FEP", HomeController.NS+"T_So_Output_-_So_PM-FEP_Bound").get(0);
+					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.maps_out", HomeController.NS+"Output_Interface").size()>0){
+						return(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.maps_out", HomeController.NS+"Output_Interface").get(0));
+					}
+				}
+			}}else{
+				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").size()>0){
+					String port= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").get(0);
+					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").size()>0){
+						String tf_out= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").get(0);
+						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.maps_in", HomeController.NS+"Input_Interface").size()>0){
+							return(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.maps_in", HomeController.NS+"Input_Interface").get(0));
+						}
+					}
+				}
+			}
+		return null ;
+
+
+	} 
+
+
+	public static ArrayList<String[]> getAllPhysicalMediaAndBinds(){
+
+		ArrayList<String> pms = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Physical_Media");
+		ArrayList<String[]> triples = new ArrayList<String[]>();
+		
+		for (String pm : pms) {
+			String[] triple = new String[3];
+			triple[0]= getEqofInput("input",pm); 
+			triple[2]= getEqofInput("output",pm); 	
+			triple[1]=pm;
+			triples.add(triple);
+		}
+
+		return triples;
+	}
+
+
+
 
 }
