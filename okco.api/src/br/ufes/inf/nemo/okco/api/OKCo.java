@@ -25,7 +25,7 @@ import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 
 /**Class for externals the OKCo's functionalities
  * @author Fábio Coradini
- * @version 1.0
+ /* @version 1.0
  * @since Release 01
  */
 public class OKCo {
