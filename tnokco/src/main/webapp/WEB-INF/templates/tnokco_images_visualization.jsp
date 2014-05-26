@@ -61,3 +61,6 @@
 	<img id="SN_VERDE" src="Assets/shapes/SN_VERDE.png" hidden>
 	<img id="TE_VERDE" src="Assets/shapes/TE_VERDE.png" hidden>
 	<img id="TF_VERDE" src="Assets/shapes/TF_VERDE.png" hidden>
+	
+	<img id="Equip_LARANJA" src="Assets/shapes/Equip_LARANJA.png" hidden>
+	<img id="PM_LARANJA" src="Assets/shapes/PM_LARANJA.png" hidden>

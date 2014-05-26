@@ -26,6 +26,8 @@
 			graph = startArbor("#viewport", 0.91);
 			addNodes(graph);
 			
+			initializeElements();
+			
 			$('#autoBinds').click(function(){
 				loading();
 		    });
@@ -41,6 +43,25 @@
 			
 		});
 
+		function initializeElements(){
+			var gambi = false;
+			for (var key in hashEquipIntOut) {
+				gambi = false;
+				for(var interf in hashEquipIntOut[key]){	
+					if(hashEquipIntOut[key][interf] == "true"){
+						gambi = true;
+						break;
+					}
+				}
+				if(gambi){
+					graph.getNode(key).data.shape = "Equip_LARANJA";
+				}else{
+					graph.getNode(key).data.shape = "Equip_AZUL";
+				}
+			}
+			graph.renderer.redraw();
+		}
+		
 		function loading()
 		{
 		 	var maskHeight = $(document).height();
@@ -54,9 +75,7 @@
 		}
 		
 		function resetSelection(){
-			for (key in hash) {
-				graph.getNode(key).data.shape = "Equip_AZUL";
-			}
+			initializeElements();
 			currentSelection = false;
 		}
 		

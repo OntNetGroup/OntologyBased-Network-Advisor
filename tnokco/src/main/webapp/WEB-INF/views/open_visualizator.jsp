@@ -1,8 +1,10 @@
+<%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
 <%@include file="../templates/header.jsp"%>
 <%
 	ArrayList<String> equipements = (ArrayList<String>) request.getSession().getAttribute("equipments");
 	ArrayList<String> sites = (ArrayList<String>) request.getSession().getAttribute("sites");
+	HashMap<String, ArrayList<String>> g800 = (HashMap<String, ArrayList<String>>) request.getSession().getAttribute("g800");
 %>
 <script>
 <% 
@@ -53,21 +55,31 @@ function changedEquipmentCB(){
 					</tr>
 					<tr>
 						<td><b>All Equipment</b></td>
-						<td style="padding-left: 30px;">
-							<a class="btn btn-success" 
-								href="/tnokco/open_network_visualization?visualization=allEquipments"> <i
-									class="icon-zoom-in"></i>
-							</a> 
-						</td>
+						<%
+							if(equipements.isEmpty()){
+								out.println("<td style=\"margin-left:15px;\">No Equipments available");
+							}else{ %>
+								<td style="padding-left: 30px;">
+									<a class="btn btn-success" 
+										href="/tnokco/open_network_visualization?visualization=allEquipments"> <i
+											class="icon-zoom-in"></i>
+									</a> 
+							<% }
+						%>
 					</tr>
 					<tr>
 						<td><b>All G.800 Elements</b></td>
-						<td style="padding-left: 30px;">
-							<a class="btn btn-success" 
-								href="/tnokco/open_network_visualization?visualization=allG800"> <i
-									class="icon-zoom-in"></i>
-							</a> 
-						</td>
+							<%
+								if(g800.isEmpty()){
+									out.println("<td style=\"margin-left:15px;\">No G800 elements available");
+								}else{ %>
+									<td style="padding-left: 30px;">
+										<a class="btn btn-success" 
+											href="/tnokco/open_network_visualization?visualization=allG800"> <i
+												class="icon-zoom-in"></i>
+										</a> 
+								<% }
+							%>
 					</tr>
 					<tr>
 						<td>

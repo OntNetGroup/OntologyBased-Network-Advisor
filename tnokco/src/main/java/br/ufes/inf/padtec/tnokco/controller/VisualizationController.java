@@ -32,9 +32,14 @@ public class VisualizationController {
 		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, HomeController.NS+"Site");
 		ArrayList<String> equipments = HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, HomeController.NS+"Equipment");
 
+		Provisioning.inferInterfaceConnections();
+		Provisioning.getAllG800();
+		HashMap<String, ArrayList<String>> g800List = Provisioning.ind_class;
+		
 		//session
 		request.getSession().setAttribute("sites", sites);
 		request.getSession().setAttribute("equipments", equipments);
+		request.getSession().setAttribute("g800", g800List);
 
 		elementsInitialize();
 		
@@ -137,6 +142,12 @@ public class VisualizationController {
 					valuesGraph	+= "{name:'"+dtoInstanceRelation.Property.substring(dtoInstanceRelation.Property.indexOf("#")+1)+"'});";
 					size++;
 				}
+				
+				if(targetList.isEmpty()){
+					valuesGraph += "graph.addNode(\""+instance.Uri.substring(instance.Uri.indexOf("#")+1)+"\", ";
+					valuesGraph += "{shape:\""+getG800Image(HomeController.Search.GetClassesFrom(instance.Uri, HomeController.InfModel))+"_AZUL\"});";
+				}
+				
 				hashTypes += "hash[\""+instance.Uri.substring(instance.Uri.indexOf("#")+1)+"\"] = \"<b>"+instance.Uri.substring(instance.Uri.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
 				for(String type : instance.ClassNameList){
 					if(type.contains("#"))
@@ -311,7 +322,6 @@ public class VisualizationController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/provisoning_visualization")
 	public static String provisoning_visualization(HttpServletRequest request) {
-		//request.getSession().setAttribute("loadOk", "");
 		Provisioning.inferInterfaceConnections();
 		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
 
