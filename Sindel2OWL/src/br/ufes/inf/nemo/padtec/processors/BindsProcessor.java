@@ -371,13 +371,13 @@ public class BindsProcessor {
 	public static void initValues(){
 		HashMap<String, String> tf1= new HashMap<String, String>();
 		HashMap<String, String> hashrp= new HashMap<String, String>();
-		tf1.put("INPUT", "Adaptation_Source_Input");
-		tf1.put("OUTPUT", "Termination_Source_Output");
-		hashrp.put("RP", "Source_A-FEP");
-		hashrp.put("RP_RELATION", "is_represented_by_So_A-FEP");
-		hashrp.put("RP_BINDING", "Source_A-FEP_Binding");
-		hashrp.put("RP_BINDING_REL_IN", "binds_So_A-FEP_to");
-		hashrp.put("RP_BINDING_REL_OUT", "binds_So_A-FEP_from");		
+		tf1.put("INPUT", "Adaptation_Source_Input");//the input port
+		tf1.put("OUTPUT", "Termination_Source_Output");//the output port
+		hashrp.put("RP", "Source_A-FEP");//the RP created
+		hashrp.put("RP_RELATION", "is_represented_by_So_A-FEP");//the relation between RP and binding
+		hashrp.put("RP_BINDING", "Source_A-FEP_Binding");//binding type
+		hashrp.put("RP_BINDING_REL_IN", "binds_So_A-FEP_to");//relation bind and input
+		hashrp.put("RP_BINDING_REL_OUT", "binds_So_A-FEP_from");//relation bind and output		
 		values.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
@@ -465,6 +465,17 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source_PM-FEP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_PM-FEP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_PM-FEP_from");	
+		values.put(tf1, hashrp);
+
+		tf1= new HashMap<String, String>();
+		hashrp= new HashMap<String, String>();
+		tf1.put("INPUT", "Termination_Sink_Input");
+		tf1.put("OUTPUT", "Physical_Media_Output");
+		hashrp.put("RP", "Sink_PM-FEP");
+		hashrp.put("RP_RELATION", "is_represented_by_Sk_PM-FEP");
+		hashrp.put("RP_BINDING", "Sink_PM-FEP_Binding");
+		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_PM-FEP_to");
+		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_PM-FEP_from");	
 		values.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
@@ -564,6 +575,6 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_M-FP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_M-FP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_M-FP_from");	
-		values.put(tf1, hashrp);	
+		values.put(tf1, hashrp);
 	}
 }
