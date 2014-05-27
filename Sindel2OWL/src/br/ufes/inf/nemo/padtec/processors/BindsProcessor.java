@@ -38,6 +38,10 @@ public class BindsProcessor {
 	public static ArrayList<ArrayList<Individual>> getPortsAndRPsToBindsSpecifically() {
 		return portsAndRPsToBindsSpecifically;
 	}
+	
+	public static void resetPortsAndRPsToBindsSpecifically(){
+		portsAndRPsToBindsSpecifically = new ArrayList<ArrayList<Individual>>();
+	}
 
 	private static Individual createNewIndividual(String type){
 		OntClass o_class = model.getOntClass(ClassNS+type);

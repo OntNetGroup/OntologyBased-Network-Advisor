@@ -120,6 +120,7 @@ public class Sindel2OWL {
 			}
 		}
 
+		BindsProcessor.resetPortsAndRPsToBindsSpecifically();
 		ArrayList<ArrayList<Individual>> portsAndRPsToBindsSpecifically = BindsProcessor.getPortsAndRPsToBindsSpecifically();
 		for (ArrayList<Individual> portsAndBinds : portsAndRPsToBindsSpecifically) {
 			Individual rp = portsAndBinds.get(0);
