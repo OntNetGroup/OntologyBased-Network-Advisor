@@ -454,7 +454,9 @@ public class ProvisioningController{
 		}
 
 		ArrayList<Instance> inputInterfaces = getInstancesFromClass("Input_Interface");
+		ArrayList<Instance> physicalMediaInputs = getInstancesFromClass("Physical_Media_Input");
 		
+		//if the output interface does not maps an output, it can not connects
 		if(outputNs.equals("")){
 			for (Instance inputInterface : inputInterfaces) {
 				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
@@ -517,7 +519,8 @@ public class ProvisioningController{
 		//now, the idea is compare all types of the output with all types of all inputs
 		for (String outputClassName : output.ListClasses) {
 			outputClassName = outputClassName.replace(HomeController.NS, "");
-
+			
+			//here, I look for possible connections with input interfaces
 			for (Instance inputInterface : inputInterfaces) {
 				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
 				String inputNs = "";
@@ -625,6 +628,63 @@ public class ProvisioningController{
 				if(!allowedInputInterfaces.contains(interfaceReturn) && !allowedInputInterfaces.contains(interfaceReturn.replace("false;", "true;"))){
 					allowedInputInterfaces.add(interfaceReturn);
 				}				
+			}
+			
+			//here, I look for possible connections with physical media inputs
+			for (Instance pmInput : physicalMediaInputs) {
+				ArrayList<DtoInstanceRelation> inPMRelations = search.GetInstanceRelations(HomeController.InfModel, pmInput.ns+pmInput.name);
+				String pmNs = "";
+				Boolean inputPMAlreadyConnected = false;
+				
+				//get namespaces of individuals of some input interface relations
+				for (DtoInstanceRelation inRelation : inPMRelations) {
+					if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf.Single_Physical_Media.Physical_Media_Input") || inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
+						pmNs = inRelation.Target;
+					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.binds_PM_out_interface")){
+						inputPMAlreadyConnected = true;
+					}
+				}
+				
+				Boolean hasAllowedRelation = false;
+				
+				//for each input and output class names, I verify if exist a possible relation of binds
+				for(String pmInputClassName : pmInput.ListClasses){
+					pmInputClassName = pmInputClassName.replace(HomeController.NS, ""); 
+					HashMap<String, String> tf1 = new HashMap<String, String>();
+					tf1.put("INPUT", pmInputClassName);
+					tf1.put("OUTPUT", outputClassName);
+
+					HashMap<String, String> allowedRelation = BindsProcessor.values.get(tf1);
+
+					if(allowedRelation != null){
+						hasAllowedRelation = true;
+						break;
+					}
+				}
+				
+				String interfaceReturn = "";
+				pmNs = pmNs.replace(pmInput.ns, "");
+				//inputNs = inputNs.replace(pmInput.ns, "");
+				eqOutNs = eqOutNs.replace(outputInterface.ns, "");
+				interfaceReturn += pmNs; 
+				interfaceReturn += "#";
+				interfaceReturn += pmInput.name;
+				interfaceReturn += "#";
+				
+				if(hasAllowedRelation && !pmNs.equals(eqOutNs) && !outputInterfaceAlreadyBinded && !inputPMAlreadyConnected){
+					if(allowedInputInterfaces.contains(interfaceReturn+"false;")){
+						allowedInputInterfaces.remove(interfaceReturn+"false;");
+					}
+					interfaceReturn += "true;";
+				}else{
+					if(!allowedInputInterfaces.contains(interfaceReturn.replace("true;", "false;"))){
+						interfaceReturn += "false;";
+					}					
+				}
+
+				if(!allowedInputInterfaces.contains(interfaceReturn) && !allowedInputInterfaces.contains(interfaceReturn.replace("false;", "true;"))){
+					allowedInputInterfaces.add(interfaceReturn);
+				}	
 			}
 		}
 
