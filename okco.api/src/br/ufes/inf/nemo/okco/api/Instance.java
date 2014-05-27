@@ -57,5 +57,4 @@ public class Instance {
 	{
 		this.ListImcompletenessClassDefinitions.add(instanceClassDefinition);
 	}
-	
 }

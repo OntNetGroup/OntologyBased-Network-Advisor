@@ -13,7 +13,7 @@ public class ProgramaObtemClassesRelacoes {
 	
 	public static void main(String[] args) {
 		
-		String pathOwlFile = "C://Users//fabio_000//Desktop//OntologiasOWL//G800Completa.owl";
+		String pathOwlFile = "C://Users//fabio_000//Desktop//OntologiasOWL//Unified_Transport_Networkv2.1noRules.owl";
 		
 		InputStream in = FileManager.get().open(pathOwlFile);
 		if (in == null) {
@@ -42,14 +42,16 @@ public class ProgramaObtemClassesRelacoes {
 		for (String cls : lclasses) {
 			
 			if(cls != null)
-				result1 = result1 + "'" + cls.replace(ns, "") + "' | ";
+				//result1 = result1 + "'" + cls.replace(ns, "") + "' | ";
+				result1 = result1 + "instruction.contains(\"" + cls.replace(ns, "") + "\") || ";
 		}
 		
 		for (String prop : lpropreties) {
 			
 			if(prop != null && ! prop.contains("www.w3.org"))
 			{
-				result2 = result2 + "'" + prop.replace(ns, "") + "' | ";
+				//result2 = result2 + "'" + prop.replace(ns, "") + "' | ";
+				result2 = result2 + "instruction.contains(\" " + prop.replace(ns, "") + " \") || ";
 				
 			}
 		}

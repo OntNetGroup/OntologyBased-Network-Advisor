@@ -12,10 +12,16 @@ public class SokcoClientPost {
 
 			Client client = Client.create();
 
+			String funcionality = "";
+			
+			//funcionality = "http://localhost:8081/sokco/app/listFileIncompleteness";
+			funcionality = "http://localhost:8081/sokco/app/completePropertyIncompleteness";
+			//funcionality = "http://localhost:8081/sokco/app/completePropertyIncompletenessSet";
+			
 			WebResource webResource = client
-					.resource("http://localhost:8081/sokco/app/listFileIncompleteness");
+					.resource(funcionality);
 
-			String input = "{\"pathOwlFileString\":\"C://Users//fabio_000//Desktop//OntologiasOWL//assassinato.owl\",\"reasonerOption\":\"Pellet\",\"\":\"strength\",\"setInstances\":[\"i1\",\"i2\",\"i3\"]}";
+			String input = "{\"strength\":\"FULL\",\"pathOwlFileString\":\"C://Users//fabio_000//Desktop//OntologiasOWL//assassinato.owl\",\"setInstances\":[\"http://www.semanticweb.org/ontologies/2013/8/ontology.owl#fabio\"],\"reasonerOption\":\"PELLET\"}";
 
 			ClientResponse response = webResource.type("application/json")
 					.post(ClientResponse.class, input);
