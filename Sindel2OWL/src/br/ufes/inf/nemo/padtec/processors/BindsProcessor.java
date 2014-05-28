@@ -478,8 +478,8 @@ public class BindsProcessor {
 		hashrp.put("RP", "Sink_PM-FEP");
 		hashrp.put("RP_RELATION", "is_represented_by_Sk_PM-FEP");
 		hashrp.put("RP_BINDING", "Sink_PM-FEP_Binding");
-		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_PM-FEP_to");
-		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_PM-FEP_from");	
+		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_PM-FEP_from");
+		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_PM-FEP_to");	
 		values.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
