@@ -651,8 +651,8 @@ public class Provisioning {
 			String[] triple = new String[5];
 			String[] triple_aux = new String[2];	
 			triple_aux= getTriplePM("input", pm);
-			triple[0]= triple_aux[0];
-			triple[1]= triple_aux[1];
+			triple[1]= triple_aux[0];
+			triple[0]= triple_aux[1];
 			triple[2]=pm;
 			triple_aux= getTriplePM("output", pm);
 			triple[3]= triple_aux[0];
