@@ -376,18 +376,19 @@ public class VisualizationController {
 			hashEquipIntOut += "hashEquipIntOut['"+pm[2].substring(pm[2].indexOf("#")+1)+"'] = new Array();";
 			hashTypes += "hash[\""+pm[2].substring(pm[2].indexOf("#")+1)+"\"] = \"<b>"+pm[2].substring(pm[2].indexOf("#")+1)+" is an individual of classes: </b><br><ul><li>Physical Media</li></ul>\";";
 			
-			if(pm[1] != null){
+			if(pm[0] != null){
 				arborStructure += "graph.addEdge(graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"}),graph.addNode(\""+pm[0].substring(pm[0].indexOf("#")+1)+"\", {shape:\"Equip_AZUL\"}), {name:'binds'});";
 				size++;
 			}
 			
 			if(pm[3] != null){
-				arborStructure += "graph.addEdge(graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"}),graph.addNode(\""+pm[4].substring(pm[4].indexOf("#")+1)+"\", {shape:\"Equip_AZUL\"}), {name:'binds'});";
-				hashEquipIntOut += "hashEquipIntOut['"+pm[2].substring(pm[2].indexOf("#")+1)+"']['"+pm[4]+"'] = \"true\";";
+				if(pm[4] != null)
+					arborStructure += "graph.addEdge(graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"}),graph.addNode(\""+pm[4].substring(pm[4].indexOf("#")+1)+"\", {shape:\"Equip_AZUL\"}), {name:'binds'});";
+				hashEquipIntOut += "hashEquipIntOut['"+pm[2].substring(pm[2].indexOf("#")+1)+"']['"+pm[3]+"'] = \"true\";";
 				size++;
 			}
 			
-			if(pm[1] == null && pm[3] == null){
+			if(pm[0] == null && pm[4] == null){
 				arborStructure += "graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"});";
 			}
 		}		
