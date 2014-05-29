@@ -645,6 +645,38 @@ public class ProvisioningController{
 					}
 				}
 				
+				//since I verify the inverse relation of binds_PM_out_interface above, 
+				//it's necessary to verify if some output port has the binds_PM_out_interface relation
+				//with the actual PM input
+				//the block below it's for this purpose
+				if(!inputPMAlreadyConnected){
+					for(Instance otherOutput : HomeController.ListAllInstances){
+						for (String otherOutputClassName : otherOutput.ListClasses) {
+							otherOutputClassName = otherOutputClassName.replace(HomeController.NS, "");
+							if(otherOutputClassName.equalsIgnoreCase("Output")){
+								if(otherOutput.name.equals("out_sotf3")){
+									System.out.println();
+								}
+								ArrayList<DtoInstanceRelation> otherOutputRelations = search.GetInstanceRelations(HomeController.InfModel, otherOutput.ns+otherOutput.name);
+								for (DtoInstanceRelation otherOutputRelation : otherOutputRelations) {
+									if(otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds") || otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"binds")){
+										if((pmInput.ns+pmInput.name).equals(otherOutputRelation.Target)){
+											inputPMAlreadyConnected = true;
+											break;
+										}
+									}
+								}
+								if(inputPMAlreadyConnected){
+									break;
+								}
+							}
+						}
+						if(inputPMAlreadyConnected){
+							break;
+						}
+					}
+				}
+				
 				Boolean hasAllowedRelation = false;
 				
 				//for each input and output class names, I verify if exist a possible relation of binds
@@ -776,6 +808,18 @@ public class ProvisioningController{
 		
 		
 		return false;
+	}
+	
+	@RequestMapping(value = "/autoBindsAndConnects", method = RequestMethod.POST)
+	public String autoBindsAndConnects(HttpServletRequest request){
+		autoBinds(request);
+		return autoConnects(request);
+	}
+	
+	@RequestMapping(value = "/autoConnects", method = RequestMethod.POST)
+	public String autoConnects(HttpServletRequest request){
+		return "";
+		
 	}
 	
 	@RequestMapping(value = "/autoBinds", method = RequestMethod.POST)

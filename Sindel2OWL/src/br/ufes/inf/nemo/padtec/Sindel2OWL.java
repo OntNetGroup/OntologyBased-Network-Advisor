@@ -91,6 +91,7 @@ public class Sindel2OWL {
 	
 	public void run(String sindelCode){
 		intializeHashs();
+		BindsProcessor.resetPortsAndRPsToBindsSpecifically();
 		
 		String[] s_parts;
 		s_parts = sindelCode.split("!");
@@ -120,7 +121,7 @@ public class Sindel2OWL {
 			}
 		}
 
-		BindsProcessor.resetPortsAndRPsToBindsSpecifically();
+		
 		ArrayList<ArrayList<Individual>> portsAndRPsToBindsSpecifically = BindsProcessor.getPortsAndRPsToBindsSpecifically();
 		for (ArrayList<Individual> portsAndBinds : portsAndRPsToBindsSpecifically) {
 			Individual rp = portsAndBinds.get(0);
