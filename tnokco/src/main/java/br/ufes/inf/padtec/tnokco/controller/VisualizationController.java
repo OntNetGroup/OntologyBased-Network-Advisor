@@ -21,7 +21,7 @@ import br.ufes.inf.padtec.tnokco.business.Provisioning;
 
 @Controller
 public class VisualizationController {
-	private static HashMap<String,String> elements = new HashMap<String, String>();
+	private static HashMap<String,String> elements = null;
 	
 	@RequestMapping(method = RequestMethod.GET, value="/open_visualizator")
 	public String open_visualizator(HttpServletRequest request) {
@@ -311,7 +311,7 @@ public class VisualizationController {
 		return hashEquipIntIn;
 	}
 
-	private String getG800Image(ArrayList<String> elemTypes){
+	public static String getG800Image(ArrayList<String> elemTypes){
 		for(String type: elemTypes){
 			if(elements.containsKey(type.substring(type.indexOf("#")+1)))
 				return elements.get(type.substring(type.indexOf("#")+1));
@@ -322,36 +322,76 @@ public class VisualizationController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/provisoning_visualization")
 	public static String provisoning_visualization(HttpServletRequest request) {
+		elementsInitialize();
 		Provisioning.inferInterfaceConnections();
 		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
 
 		String arborStructure = "";
 		String hashEquipIntOut = "";
 		String hashTypes = "";
+		String hashAllowed = "";
+		
 		int size = 0;
 		int width  = 1000;
 		int height = 800;
+		boolean canConnect = false;
 		
 		for(Equipment equip : list){
+			canConnect = false;
 			hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"'] = new Array();";
 			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
 			for(InterfaceOutput outs : equip.getOutputs()){
 				hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"']['"+outs.getName()+"'] = \""+outs.isConnected()+"\";";
+				if(hashAllowed.contains(equip.getName()))
+					continue;
+				ArrayList<String> possibleList = ProvisioningController.getCandidateInterfacesForConnection(outs.getName());
+				for(String possibleConnection : possibleList){
+					if(possibleConnection.contains("true")){
+						canConnect = true;
+						hashAllowed += "hashAllowed[\""+equip.getName()+"\"] = \"VERDE\";";
+						break;
+					}
+				}
 			}
 
 			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
-				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}), {name:'binds:";
+				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_"+(canConnect?"VERDE":"ROXO")+"\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+entry.getValue().getName(), HomeController.InfModel))+"_AZUL\"}), {name:'binds:";
 				arborStructure += entry.getKey().get(0)+"-"+entry.getKey().get(1);
 				arborStructure += "'});";
 				size++;
 			}
 			
 			if(equip.getBinds().isEmpty()){
-				arborStructure += "graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"});";
+				arborStructure += "graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_ROXO\"});";
 				size++;
 			}
 		}
 
+		
+		//Getting Physical medias
+		
+		ArrayList<String[]> pms = Provisioning.getAllPhysicalMediaAndBinds();
+		
+		for(String[] pm : pms){
+			hashEquipIntOut += "hashEquipIntOut['"+pm[2].substring(pm[2].indexOf("#")+1)+"'] = new Array();";
+			hashTypes += "hash[\""+pm[2].substring(pm[2].indexOf("#")+1)+"\"] = \"<b>"+pm[2].substring(pm[2].indexOf("#")+1)+" is an individual of classes: </b><br><ul><li>Physical Media</li></ul>\";";
+			
+			if(pm[1] != null){
+				arborStructure += "graph.addEdge(graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"}),graph.addNode(\""+pm[0].substring(pm[0].indexOf("#")+1)+"\", {shape:\"Equip_AZUL\"}), {name:'binds'});";
+				size++;
+			}
+			
+			if(pm[3] != null){
+				arborStructure += "graph.addEdge(graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"}),graph.addNode(\""+pm[4].substring(pm[4].indexOf("#")+1)+"\", {shape:\"Equip_AZUL\"}), {name:'binds'});";
+				hashEquipIntOut += "hashEquipIntOut['"+pm[2].substring(pm[2].indexOf("#")+1)+"']['"+pm[4]+"'] = \"true\";";
+				size++;
+			}
+			
+			if(pm[1] == null && pm[3] == null){
+				arborStructure += "graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"});";
+			}
+		}		
+		
 		width  += 400 * (size / 10);
 		height += 400 * (size / 10);
 		
@@ -361,12 +401,18 @@ public class VisualizationController {
 		request.getSession().setAttribute("height", height);
 		request.getSession().setAttribute("hashEquipIntOut", hashEquipIntOut);
 		request.getSession().setAttribute("hashTypes", hashTypes);
+		request.getSession().setAttribute("hashAllowed", hashAllowed);
 		request.getSession().setAttribute("size", size);
 
 		return "equipmentVisualizer";
 	}
 
 	private static void elementsInitialize(){
+		if(elements != null)
+			return;
+		
+		elements = new HashMap<String, String>();
+		
 		elements.put("Termination_Function", "TF");
 		elements.put("Adaptation_Function", "AF");
 		elements.put("Matrix", "Matrix");
@@ -392,3 +438,4 @@ public class VisualizationController {
 	}
 	
 }
+
