@@ -330,7 +330,7 @@ public class ProvisioningController{
 		return "provisioning";	//View to return
 	}
 	
-	public static DtoResultAjax binds(String outInt, String inInt, HttpServletRequest request, Boolean updateListsInTheEnd) {
+	public static DtoResultAjax binds(String outInt, String inInt, HttpServletRequest request, Boolean updateListsInTheEnd, ArrayList<String> listInstancesCreated) {
 
 		DtoResultAjax dto = new DtoResultAjax();
 
@@ -355,15 +355,54 @@ public class ProvisioningController{
 				break;
 			}
 		}
-
+		
+		Boolean inputIsPmInput = false;
+		if(inputNs.equals("")){
+			Instance inputOrIntInput = getInstanceFromNameSpace(HomeController.NS+inInt);
+			for (String inputOrIntInputClass : inputOrIntInput.ListClasses) {
+				if(inputOrIntInputClass.equals(HomeController.NS+"Physical_Media_Input")){
+					inputNs = inInt;
+					inputIsPmInput = true;
+					break;
+				}
+			}
+		}
+		System.out.println();
+		Boolean outputIsPmOutput = false;
+		if(outputNs.equals("")){
+			Instance outputOrIntOutput = getInstanceFromNameSpace(HomeController.NS+outputNs);
+			for (String outputOrIntOutputClass : outputOrIntOutput.ListClasses) {
+				if(outputOrIntOutputClass.equals(HomeController.NS+"Physical_Media_Output")){
+					outputNs = inInt;
+					outputIsPmOutput = true;
+					break;
+				}
+			}
+		}
+		
 		//binds Interface out with in
-		Individual a = HomeController.Model.getIndividual(HomeController.NS+outInt);
-		Individual b = HomeController.Model.getIndividual(HomeController.NS+inInt);
-		ObjectProperty rel = HomeController.Model.getObjectProperty(HomeController.NS+"interface_binds");
+		Individual a, b;
+		ObjectProperty rel = null;
+		if(inputIsPmInput && !outputIsPmOutput){
+			a = HomeController.Model.getIndividual(HomeController.NS+outInt);
+			b = HomeController.Model.getIndividual(HomeController.NS+inputNs);
+			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds_PM_out_interface");
+		}else if(!inputIsPmInput && outputIsPmOutput){
+			a = HomeController.Model.getIndividual(HomeController.NS+inInt);
+			b = HomeController.Model.getIndividual(HomeController.NS+outputNs);
+			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds_PM_in_Interface");
+		}else{
+			a = HomeController.Model.getIndividual(HomeController.NS+outInt);
+			b = HomeController.Model.getIndividual(HomeController.NS+inInt);
+			rel = HomeController.Model.getObjectProperty(HomeController.NS+"interface_binds");
+		}
+		
 		Statement stmt = HomeController.Model.createStatement(a, rel, b);
 		HomeController.Model.add(stmt);
 
-		ArrayList<String> listInstancesCreated = new ArrayList<String>();
+		if(listInstancesCreated == null){
+			listInstancesCreated = new ArrayList<String>();
+		}
 		listInstancesCreated.add(a.getNameSpace()+a.getLocalName());
 		listInstancesCreated.add(b.getNameSpace()+b.getLocalName());
 		
@@ -874,6 +913,7 @@ public class ProvisioningController{
 			}
 		}
 		
+		ArrayList<String> listInstancesCreated = new ArrayList<String>();
 		int bindsMade = 0;
 		String returnMessage = "Interfaces binded:<br>";
 		for(Entry<String, ArrayList<String>> candidates : uniqueCandidatesForBinds.entrySet()) {
@@ -881,11 +921,11 @@ public class ProvisioningController{
 			ArrayList<String> outs = candidates.getValue();
 			
 			if(outs.size() == 1){
-				binds(outs.get(0), inputInterface, request, false);
+				binds(outs.get(0), inputInterface, request, false, listInstancesCreated);
 				bindsMade++;
-				returnMessage += inputInterface;
-				returnMessage += " -> ";
 				returnMessage += outs.get(0);
+				returnMessage += " -> ";
+				returnMessage += inputInterface;
 				returnMessage += "<br>";
 			}
 			
@@ -893,7 +933,10 @@ public class ProvisioningController{
 		
 		if(bindsMade>0){
 			try {
-				HomeController.UpdateLists();
+				for (String instanceUri : listInstancesCreated) {
+					HomeController.UpdateAddIntanceInLists(instanceUri);	
+				}
+				//HomeController.UpdateLists();
 			} catch (InconsistentOntologyException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
