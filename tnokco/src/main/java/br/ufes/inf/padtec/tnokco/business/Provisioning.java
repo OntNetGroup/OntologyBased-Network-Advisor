@@ -36,9 +36,9 @@ public class Provisioning {
 	public static String relation= "site_connects";
 	public static HashMap<String, ArrayList<String>> ind_class= new HashMap<String, ArrayList<String>>();
 	public static ArrayList<String[]> triples_g800 = new ArrayList<String[]>();
-	
-	
-	
+
+
+
 	static Provisioning instance = new Provisioning();
 
 
@@ -54,7 +54,7 @@ public class Provisioning {
 
 	public Provisioning(){
 		BindsProcessor.initValues();
-		
+
 		//		HashMap<String, String> tf1= new HashMap<String, String>();
 		//		HashMap<String, String> hashrp= new HashMap<String, String>();
 		//		tf1.put("INPUT", "Adaptation_Source_Input");
@@ -351,13 +351,13 @@ public class Provisioning {
 			if(classesFromIndividual.contains(HomeController.NS+"T_So_Output_-_So_PM-FEP_Bound")){
 				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"binds_So_PM-FEP", HomeController.NS+"PM_Input_-_So_PM-FEP_Bound").size()>0){
 					String pm_input=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"binds_So_PM-FEP", HomeController.NS+"PM_Input_-_So_PM-FEP_Bound").get(0);
-					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_input, HomeController.NS+"INV.componentOf", HomeController.NS+"Single_Physical_Media").size()>0){
-						String pm=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_input, HomeController.NS+"INV.componentOf", HomeController.NS+"Single_Physical_Media").get(0);
+					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_input, HomeController.NS+"INV.componentOf", HomeController.NS+"Physical_Media").size()>0){
+						String pm=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_input, HomeController.NS+"INV.componentOf", HomeController.NS+"Physical_Media").get(0);
 						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").size()>0){
-							String pm_out=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_input, HomeController.NS+"componentOf", HomeController.NS+"Single_Physical_Media").get(0);
-							if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_out, HomeController.NS+"binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").size()>0){
-								String input=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_out, HomeController.NS+"binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").get(0);
-								if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input, HomeController.NS+"INV.maps_in", HomeController.NS+"Input_Interface").size()>0){			
+							String pm_out=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").get(0);
+							if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_out, HomeController.NS+"binds", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").size()>0){
+								String input=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm_out, HomeController.NS+"binds", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").get(0);
+								if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").size()>0){			
 									possibleConnects[0]=(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input, HomeController.NS+"INV.maps_in", HomeController.NS+"Input_Interface").get(0));
 									possibleConnects[1]="pm_connects";
 									result.add(possibleConnects);
@@ -372,33 +372,38 @@ public class Provisioning {
 					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input, HomeController.NS+"INV.componentOf", HomeController.NS+"Termination_Function").size()>0){
 						String tf=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input, HomeController.NS+"INV.componentOf", HomeController.NS+"Termination_Function").get(0);
 						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf, HomeController.NS+"componentOf", HomeController.NS+"Output").size()>0){
-							String out=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf, HomeController.NS+"componentOf", HomeController.NS+"Output").get(0);
-							if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out, HomeController.NS+"is_binding", HomeController.NS+"Binding").size()>0){
-								String binding=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out, HomeController.NS+"is_binding", HomeController.NS+"Binding").get(0);
-								if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Binding").size()>0){
-									String rp=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Binding").get(0);
-									if(HomeController.Search.GetClassesFrom(rp, InfModel).contains("Active_Source_AP") || HomeController.Search.GetClassesFrom(rp, InfModel).contains("Active_So_Path-FEP_-_Path_NC_connected")){										
-										if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, rp, HomeController.NS+"has_forwarding", HomeController.NS+"Connected_Reference_Point").size()>0){
-											String rp_sk=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, rp, HomeController.NS+"has_forwarding", HomeController.NS+"Connected_Reference_Point").get(0);
-											if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, rp_sk, HomeController.NS+"INV.binding_is_represented_by", HomeController.NS+"Binding").size()>0){
-												String binding_sk=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, rp_sk, HomeController.NS+"INV.binding_is_represented_by", HomeController.NS+"Binding").get(0);
-												if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding_sk, HomeController.NS+"INV.is_binding", HomeController.NS+"Input").size()>0){
-													String input_sk=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding_sk, HomeController.NS+"INV.is_binding", HomeController.NS+"Input").get(0);
-													if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input_sk, HomeController.NS+"INV.componentOf", HomeController.NS+"Termination_Function").size()>0){
-														String tf_sk=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input_sk, HomeController.NS+"INV.componentOf", HomeController.NS+"Termination_Function").get(0);
-														if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf, HomeController.NS+"componentOf", HomeController.NS+"Input").size()>0){
-															String inp=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf, HomeController.NS+"componentOf", HomeController.NS+"Input").get(0);
-															possibleConnects[0]=(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, inp, HomeController.NS+"INV.maps_in", HomeController.NS+"Input_Interface").get(0));
-															if(HomeController.Search.GetClassesFrom(rp_sk, InfModel).contains("Active_Sink_AP")){
-																possibleConnects[1]="trail";
-															}else{
-																possibleConnects[0]="nc";
+							ArrayList<String> outs=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf, HomeController.NS+"componentOf", HomeController.NS+"Output");
+							for (String out : outs) {
+								if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out, HomeController.NS+"is_binding", HomeController.NS+"Binding").size()>0){
+									String binding=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out, HomeController.NS+"is_binding", HomeController.NS+"Binding").get(0);
+									if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Binding").size()>0){
+										String rp=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Binding").get(0);
+										if(HomeController.Search.GetClassesFrom(rp, InfModel).contains("Active_Source_AP") || HomeController.Search.GetClassesFrom(rp, InfModel).contains("Active_So_Path-FEP_-_Path_NC_connected")){										
+											if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, rp, HomeController.NS+"has_forwarding", HomeController.NS+"Connected_Reference_Point").size()>0){
+												String rp_sk=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, rp, HomeController.NS+"has_forwarding", HomeController.NS+"Connected_Reference_Point").get(0);
+												if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, rp_sk, HomeController.NS+"INV.binding_is_represented_by", HomeController.NS+"Binding").size()>0){
+													String binding_sk=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, rp_sk, HomeController.NS+"INV.binding_is_represented_by", HomeController.NS+"Binding").get(0);
+													if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding_sk, HomeController.NS+"INV.is_binding", HomeController.NS+"Input").size()>0){
+														String input_sk=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, binding_sk, HomeController.NS+"INV.is_binding", HomeController.NS+"Input").get(0);
+														if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input_sk, HomeController.NS+"INV.componentOf", HomeController.NS+"Termination_Function").size()>0){
+															String tf_sk=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input_sk, HomeController.NS+"INV.componentOf", HomeController.NS+"Termination_Function").get(0);
+															if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf, HomeController.NS+"componentOf", HomeController.NS+"Output").size()>0){
+																String out_sk=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf, HomeController.NS+"componentOf", HomeController.NS+"Output").get(0);
+																if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_sk, HomeController.NS+"binds", HomeController.NS+"Output").size()>0){
+																	String input_sk_not_connected=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"binds", HomeController.NS+"Input").get(0);
+																	possibleConnects[0]=(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input_sk, HomeController.NS+"INV.maps_in", HomeController.NS+"Input_Interface").get(0));
+																	if(HomeController.Search.GetClassesFrom(rp_sk, InfModel).contains("Active_Sink_AP")){
+																		possibleConnects[1]="nc";
+																	}else{
+																		possibleConnects[0]="trail";
+																	}
+																}
 															}
 														}
 													}
-												}
+												}		
 											}
-										}		
+										}
 									}
 								}
 							}
@@ -410,7 +415,7 @@ public class Provisioning {
 		return result;
 	}
 
-	
+
 	public static void connects(String out_inter, String inp_interface, String type){
 		String rp=getRPFromInterface(out_inter, 0);
 		String rp_2=getRPFromInterface(inp_interface, 1);
@@ -431,9 +436,9 @@ public class Provisioning {
 			stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"Forwarding_to_Uni_Access_Transport_Entity"), HomeController.Model.getIndividual(inp_interface)));	
 			HomeController.Model.add(stmts);
 		}
-		
+
 	}
-	
+
 	// type = 0 for output type =1 for input
 	public static String getRPFromInterface(String eq_interface, Integer type){
 		String value="maps_output";
@@ -615,10 +620,10 @@ public class Provisioning {
 				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_So_PM-FEP", HomeController.NS+"T_So_Output_-_So_PM-FEP_Bound").size()>0){
 					String tf_out= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_So_PM-FEP", HomeController.NS+"T_So_Output_-_So_PM-FEP_Bound").get(0);
 					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").size()>0){
-							String out_int= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").get(0));
-							if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
-								result[1]= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
-							}
+						String out_int= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").get(0));
+						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
+							result[1]= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
+						}
 					}
 				}
 			}}else{
@@ -628,10 +633,10 @@ public class Provisioning {
 					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").size()>0){
 						String tf_in= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").get(0);
 						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").size()>0){
-								String out_int= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").get(0));
-								if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
-									result[1]= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
-								}
+							String out_int= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").get(0));
+							if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
+								result[1]= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
+							}
 						}
 					}
 				}

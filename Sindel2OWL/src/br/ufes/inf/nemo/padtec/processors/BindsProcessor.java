@@ -418,8 +418,8 @@ public class BindsProcessor {
 		values.put(tf1, hashrp);
 
 
-		tf1.put("INPUT", "Adaptation_Sink_Input");
-		tf1.put("OUTPUT", "Termination_Sink_Output");
+		tf1.put("INPUT", "Termination_Sink_Input");
+		tf1.put("OUTPUT", "Adaptation_Sink_Output");
 		hashrp.put("RP", "Sink_A-FEP");
 		hashrp.put("RP_RELATION", "is_represented_by_Sk_A-FEP");
 		hashrp.put("RP_BINDING", "Sink_A-FEP_Binding");
@@ -495,8 +495,8 @@ public class BindsProcessor {
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
-		tf1.put("INPUT", "Termination_Sink_Input");
-		tf1.put("OUTPUT", "Adaptation_Sink_Output");
+		tf1.put("INPUT", "Adaptation_Sink_Input");
+		tf1.put("OUTPUT", "Termination_Sink_Output");
 		hashrp.put("RP", "Sink_AP");
 		hashrp.put("RP_RELATION", "is_represented_by_Sk_AP");
 		hashrp.put("RP_BINDING", "Sink_AP_Binding");
