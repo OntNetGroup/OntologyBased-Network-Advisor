@@ -423,8 +423,8 @@ public class BindsProcessor {
 		hashrp.put("RP", "Sink_A-FEP");
 		hashrp.put("RP_RELATION", "is_represented_by_Sk_A-FEP");
 		hashrp.put("RP_BINDING", "Sink_A-FEP_Binding");
-		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_A-FEP_to");
-		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_A-FEP_from");		
+		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_A-FEP_from");
+		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_A-FEP_to");		
 		values.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
@@ -500,8 +500,8 @@ public class BindsProcessor {
 		hashrp.put("RP", "Sink_AP");
 		hashrp.put("RP_RELATION", "is_represented_by_Sk_AP");
 		hashrp.put("RP_BINDING", "Sink_AP_Binding");
-		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_AP_to");
-		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_AP_from");	
+		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_AP_from");
+		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_AP_to");	
 		values.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();

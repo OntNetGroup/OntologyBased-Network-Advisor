@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.mindswap.pellet.exceptions.InconsistentOntologyException;
+
 import arq.remote;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
+import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
@@ -416,7 +419,7 @@ public class Provisioning {
 	}
 
 
-	public static void connects(String out_inter, String inp_interface, String type){
+	public static void connects(String out_inter, String inp_interface, String type) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
 		String rp=getRPFromInterface(out_inter, 0);
 		String rp_2=getRPFromInterface(inp_interface, 1);
 		if(type.equals("trail")){
@@ -428,13 +431,17 @@ public class Provisioning {
 			stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"Forwarding_to_Uni_Access_Transport_Entity"), HomeController.Model.getIndividual(inp_interface)));	
 			HomeController.Model.add(stmts);
 		}else{
-			Individual forwarding = HomeController.Model.createIndividual(rp+"_fw_"+rp_2,HomeController.Model.getResource(HomeController.NS+"PM_NC_Forwarding"));
-			Individual trail = HomeController.Model.createIndividual(rp+"_ate_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Unidirectional_Path_NC"));
+			Individual forwarding = HomeController.Model.createIndividual(HomeController.NS+rp.split("#")[1]+"_fw_"+rp_2.split("#")[1],HomeController.Model.getResource(HomeController.NS+"PM_NC_Forwarding"));
+			Individual nc = HomeController.Model.createIndividual(HomeController.NS+ rp.split("#")[1]+"_ate_"+rp_2.split("#")[1],HomeController.Model.getResource(HomeController.NS+"Unidirectional_Path_NC"));
 			ArrayList<Statement> stmts = new ArrayList<Statement>();
-			stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"is_represented_by_Uni_Path_NC"), trail));
+			stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"is_represented_by_Uni_Path_NC"), nc));
 			stmts.add(HomeController.Model.createStatement(HomeController.Model.getIndividual(out_inter), HomeController.Model.getProperty(HomeController.NS+"Forwarding_from_Uni_Path_NC"), forwarding));
 			stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"Forwarding_to_Uni_Access_Transport_Entity"), HomeController.Model.getIndividual(inp_interface)));	
 			HomeController.Model.add(stmts);
+			System.out.println(forwarding.getNameSpace()+forwarding.getLocalName());
+			System.out.println(nc.getNameSpace()+nc.getLocalName());
+			HomeController.UpdateAddIntanceInLists(forwarding.getNameSpace()+forwarding.getLocalName());
+			HomeController.UpdateAddIntanceInLists(nc.getNameSpace()+nc.getLocalName());
 		}
 
 	}
