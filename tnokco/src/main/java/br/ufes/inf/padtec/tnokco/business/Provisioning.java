@@ -624,8 +624,8 @@ public class Provisioning {
 			if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Input").size()>0){
 				String port= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Input").get(0);
 				result[0]=port;
-				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_So_PM-FEP", HomeController.NS+"T_So_Output_-_So_PM-FEP_Bound").size()>0){
-					String tf_out= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_So_PM-FEP", HomeController.NS+"T_So_Output_-_So_PM-FEP_Bound").get(0);
+				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds", HomeController.NS+"Termination_Source_Output").size()>0){
+					String tf_out= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds", HomeController.NS+"Termination_Source_Output").get(0);
 					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").size()>0){
 						String out_int= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").get(0));
 						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
@@ -637,8 +637,8 @@ public class Provisioning {
 				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").size()>0){
 					String port= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").get(0);
 					result[0]=port;
-					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").size()>0){
-						String tf_in= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds_Sk_PM-FEP", HomeController.NS+"T_Sk_Input_-_Sk_PM-FEP_Bound").get(0);
+					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds", HomeController.NS+"Termination_Sink_Input").size()>0){
+						String tf_in= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds", HomeController.NS+"Termination_Sink_Input").get(0);
 						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").size()>0){
 							String out_int= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").get(0));
 							if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
