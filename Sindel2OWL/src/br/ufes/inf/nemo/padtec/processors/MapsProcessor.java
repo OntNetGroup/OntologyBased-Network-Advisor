@@ -10,7 +10,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 public class MapsProcessor {
 	public static void processMaps(OntModel model, String ClassNS, String IndNS, String maps){
 		Statement stmt;
-		ObjectProperty rel;
+		ObjectProperty rel,invRel;
 		Individual a,b;
 
 		String[] lin = maps.split(",");
@@ -22,11 +22,17 @@ public class MapsProcessor {
 			
 			String toB = Sindel2OWL.hashIndividuals.get(vars[1]);
 			
-			if(toB.equalsIgnoreCase("Input"))
+			if(toB.equalsIgnoreCase("Input")){
 				rel = model.getObjectProperty(ClassNS+"maps_input");
-			else
+				invRel = model.getObjectProperty(ClassNS+"INV.maps_input");
+			}else{
 				rel = model.getObjectProperty(ClassNS+"maps_output");
+				invRel = model.getObjectProperty(ClassNS+"INV.maps_output");
+			}
 			stmt = model.createStatement(a, rel, b);
+			model.add(stmt);
+			
+			stmt = model.createStatement(b, invRel, a);
 			model.add(stmt);
 		}
 	}
