@@ -27,6 +27,7 @@ public class BindsProcessor {
 
 	//Common used variables
 	private static ObjectProperty componentOf;
+	private static ObjectProperty invComponentOf;
 	private static Individual a,b,x,k,p,q;
 	private static Statement stmt;
 	private static ObjectProperty rel = null;
@@ -61,6 +62,7 @@ public class BindsProcessor {
 		String[] declarations = binds.split(",");
 
 		componentOf = model.getObjectProperty(ClassNS+"componentOf");
+		invComponentOf = model.getObjectProperty(ClassNS+"INV.componentOf");
 		BindsProcessor.model = model;
 		BindsProcessor.ClassNS = ClassNS;
 		BindsProcessor.IndNS = IndNS;
@@ -164,7 +166,7 @@ public class BindsProcessor {
 
 	private static void processSimpleRelation_InterfacexPort() {
 		// TODO VERIFICAR!!!
-
+		
 	}
 
 	private static void processSimpleRelation_InterfacexInterface() {
@@ -172,11 +174,19 @@ public class BindsProcessor {
 		rel = model.getObjectProperty(ClassNS+"interface_binds");
 		stmt = model.createStatement(a, rel, b);
 		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.interface_binds");
+		stmt = model.createStatement(b, rel, a);
+		model.add(stmt);
 	}
 
 	private static void processSimpleRelation_TFxTF(){
 		rel = model.getObjectProperty(ClassNS+"tf_connection");
 		stmt = model.createStatement(a, rel, b);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.tf_connection");
+		stmt = model.createStatement(b, rel, a);
 		model.add(stmt);
 	}
 
@@ -194,10 +204,17 @@ public class BindsProcessor {
 		//TF{new Port}
 		stmt = model.createStatement(a, componentOf, k);
 		model.add(stmt);
+		
+		stmt = model.createStatement(k, invComponentOf, b);
+		model.add(stmt);
 
 		//k binds a
 		rel = model.getObjectProperty(ClassNS+"binds");
 		stmt = model.createStatement(k, rel, b);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.binds");
+		stmt = model.createStatement(b, rel, k);
 		model.add(stmt);
 	}
 
@@ -215,6 +232,9 @@ public class BindsProcessor {
 		//TF{new Port}
 		stmt = model.createStatement(b, componentOf, k);
 		model.add(stmt);
+		
+		stmt = model.createStatement(k, componentOf, b);
+		model.add(stmt);
 
 		//		if(simpleBindsHash.containsKey(key))
 		//		String specificRelation 
@@ -223,12 +243,20 @@ public class BindsProcessor {
 		rel = model.getObjectProperty(ClassNS+"binds");
 		stmt = model.createStatement(a, rel, k);
 		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.binds");
+		stmt = model.createStatement(k, rel, a);
+		model.add(stmt);
 	}
 
 	private static void processSimpleRelation_PortxPort(){
 		rel = model.getObjectProperty(ClassNS+"binds");
 		stmt = model.createStatement(a, rel, b);
-		model.add(stmt);	
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.binds");
+		stmt = model.createStatement(b, rel, a);
+		model.add(stmt);
 	}
 
 	//Assignable
@@ -239,19 +267,38 @@ public class BindsProcessor {
 
 		stmt = model.createStatement(a, componentOf, p);
 		model.add(stmt);
+		
+		stmt = model.createStatement(p, invComponentOf, a);
+		model.add(stmt);
 
 		stmt = model.createStatement(b, componentOf, q);
+		model.add(stmt);
+		
+		stmt = model.createStatement(q, invComponentOf, b);
 		model.add(stmt);
 
 		rel = model.getObjectProperty(ClassNS+"is_binding");
 		stmt = model.createStatement(k, rel, p);
 		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.is_binding");
+		stmt = model.createStatement(p, rel, k);
+		model.add(stmt);
 
+		rel = model.getObjectProperty(ClassNS+"is_binding");
 		stmt = model.createStatement(k, rel, q);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.is_binding");
+		stmt = model.createStatement(q, rel, k);
 		model.add(stmt);
 
 		rel = model.getObjectProperty(ClassNS+"binding_is_represented_by");
 		stmt = model.createStatement(k, rel, x);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.binding_is_represented_by");
+		stmt = model.createStatement(x, rel, k);
 		model.add(stmt);
 	}
 
@@ -262,15 +309,31 @@ public class BindsProcessor {
 		stmt = model.createStatement(a, componentOf, q);
 		model.add(stmt);
 
+		stmt = model.createStatement(q, invComponentOf, a);
+		model.add(stmt);
+		
 		rel = model.getObjectProperty(ClassNS+"is_binding");
 		stmt = model.createStatement(k, rel, q);
 		model.add(stmt);
 
+		rel = model.getObjectProperty(ClassNS+"INV.is_binding");
+		stmt = model.createStatement(q, rel, k);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"is_binding");
 		stmt = model.createStatement(k, rel, b);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.is_binding");
+		stmt = model.createStatement(b, rel, k);
 		model.add(stmt);
 
 		rel = model.getObjectProperty(ClassNS+"binding_is_represented_by");
 		stmt = model.createStatement(k, rel, x);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.binding_is_represented_by");
+		stmt = model.createStatement(x, rel, k);
 		model.add(stmt);
 	}
 
@@ -280,16 +343,33 @@ public class BindsProcessor {
 
 		stmt = model.createStatement(b, componentOf, p);
 		model.add(stmt);
+		
+		stmt = model.createStatement(p, invComponentOf, b);
+		model.add(stmt);
 
 		rel = model.getObjectProperty(ClassNS+"is_binding");
 		stmt = model.createStatement(k, rel, a);
 		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.is_binding");
+		stmt = model.createStatement(a, rel, k);
+		model.add(stmt);
 
+		
+		rel = model.getObjectProperty(ClassNS+"is_binding");
 		stmt = model.createStatement(k, rel, p);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.is_binding");
+		stmt = model.createStatement(p, rel, k);
 		model.add(stmt);
 
 		rel = model.getObjectProperty(ClassNS+"binding_is_represented_by");
 		stmt = model.createStatement(k, rel, x);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.binding_is_represented_by");
+		stmt = model.createStatement(x, rel, k);
 		model.add(stmt);
 	}
 
@@ -299,8 +379,17 @@ public class BindsProcessor {
 		rel = model.getObjectProperty(ClassNS+"is_binding");
 		stmt = model.createStatement(k, rel, a);
 		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.is_binding");
+		stmt = model.createStatement(a, rel, k);
+		model.add(stmt);
 
+		rel = model.getObjectProperty(ClassNS+"is_binding");
 		stmt = model.createStatement(k, rel, b);
+		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"INV.is_binding");
+		stmt = model.createStatement(b, rel, k);
 		model.add(stmt);
 
 		rel = model.getObjectProperty(ClassNS+"binding_is_represented_by");

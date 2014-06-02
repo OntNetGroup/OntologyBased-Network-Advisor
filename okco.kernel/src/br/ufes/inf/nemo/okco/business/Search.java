@@ -112,6 +112,37 @@ public class Search {
 		return list;		
 	}
 	
+	public ArrayList<String[]> GetSourceAndTargetForProperty(OntModel model, String propName) {
+		
+		ArrayList<String[]> list = new ArrayList<String[]>();
+		
+		// Create a new query
+		String queryString = 
+		" SELECT *" +
+		" WHERE {\n" +		
+			" ?source <" + propName + "> ?target .\n " +	
+		"}";
+
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		
+		while (results.hasNext()) {
+			String [] tupla = new String[2];
+			QuerySolution row = results.next();		    
+		    RDFNode source = row.get("source");
+		    RDFNode target = row.get("target");
+		    
+		    tupla[0] = source.toString();
+		    tupla[1] = target.toString();
+		    list.add(tupla);
+		}	
+
+		return list;		
+	}
+			
 	public ArrayList<String> GetAllInstances(OntModel model, InfModel infModel)
 	{		
 		ArrayList<String> AllInstances = new ArrayList<String>();

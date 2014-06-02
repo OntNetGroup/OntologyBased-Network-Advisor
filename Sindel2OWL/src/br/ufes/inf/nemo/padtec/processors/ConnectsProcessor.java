@@ -74,5 +74,9 @@ public class ConnectsProcessor {
 		rel = model.getObjectProperty(ClassNS+"IT_is_represented_by");
 		stmt = model.createStatement(k, rel, x);
 		model.add(stmt);
+		
+		rel = model.getObjectProperty(ClassNS+"has_forwarding");
+		stmt = model.createStatement(a, rel, b);
+		model.add(stmt);
 	}
 }
