@@ -618,7 +618,7 @@ public class Provisioning {
 	private static String[] getTriplePM(String value, String pm) {
 		// TODO Auto-generated method stub
 
-		String[] result = new String[2];
+		String[] result = new String[3];
 
 		if(value.equals("input")){
 			if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Input").size()>0){
@@ -628,8 +628,9 @@ public class Provisioning {
 					String tf_out= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"INV.binds", HomeController.NS+"Termination_Source_Output").get(0);
 					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").size()>0){
 						String out_int= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").get(0));
+						result[1]=out_int;
 						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
-							result[1]= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
+							result[2]= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
 						}
 					}
 				}
@@ -640,9 +641,10 @@ public class Provisioning {
 					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"binds", HomeController.NS+"Termination_Sink_Input").size()>0){
 						String tf_in= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, port, HomeController.NS+"binds", HomeController.NS+"Termination_Sink_Input").get(0);
 						if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").size()>0){
-							String out_int= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").get(0));
-							if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
-								result[1]= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
+							String inp_int= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").get(0));
+							result[1]=inp_int;
+							if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, inp_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
+								result[2]= (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, inp_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
 							}
 						}
 					}
@@ -660,23 +662,28 @@ public class Provisioning {
 		ArrayList<String[]> triples = new ArrayList<String[]>();
 
 		for (String pm : pms) {
-			String[] triple = new String[5];
-			String[] triple_aux = new String[2];	
+			String[] triple = new String[7];
+			String[] triple_aux = new String[3];	
 			triple_aux= getTriplePM("input", pm);
 			if(triple_aux[0]!=null)
 				triple[1]= triple_aux[0].split("#")[1];
 			if(triple_aux[1]!=null)
 				triple[0]= triple_aux[1].split("#")[1];
-			
-			triple[2]=pm.split("#")[1];
+			if(triple_aux[2]!=null)
+				triple[2]= triple_aux[2].split("#")[1];
+				
+			triple[3]=pm.split("#")[1];
 			
 			triple_aux= getTriplePM("output", pm);
 			if(triple_aux[0]!=null){
-				triple[3]= triple_aux[0].split("#")[1];
+				triple[4]= triple_aux[0].split("#")[1];
 			}
 			if(triple_aux[1]!=null){
-				triple[4]= triple_aux[1].split("#")[1];
+				triple[5]= triple_aux[1].split("#")[1];
 			}
+			if(triple_aux[2]!=null)
+				triple[6]= triple_aux[2].split("#")[1];
+			
 			triples.add(triple);
 		}
 
