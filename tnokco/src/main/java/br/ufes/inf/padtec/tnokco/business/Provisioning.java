@@ -663,12 +663,20 @@ public class Provisioning {
 			String[] triple = new String[5];
 			String[] triple_aux = new String[2];	
 			triple_aux= getTriplePM("input", pm);
-			triple[1]= triple_aux[0].split("#")[1];
-			triple[0]= triple_aux[1].split("#")[1];
+			if(triple_aux[0].split("#")[1]!=null)
+				triple[1]= triple_aux[0].split("#")[1];
+			if(triple_aux[1].split("#")[1]!=null)
+				triple[0]= triple_aux[1].split("#")[1];
+			
 			triple[2]=pm.split("#")[1];
+			
 			triple_aux= getTriplePM("output", pm);
-			triple[3]= triple_aux[0].split("#")[1];
-			triple[4]= triple_aux[1].split("#")[1];
+			if(triple_aux[0].split("#")[1]!=null){
+				triple[3]= triple_aux[0].split("#")[1];
+			}
+			if(triple_aux[1].split("#")[1]!=null){
+				triple[4]= triple_aux[1].split("#")[1];
+			}
 			triples.add(triple);
 		}
 
