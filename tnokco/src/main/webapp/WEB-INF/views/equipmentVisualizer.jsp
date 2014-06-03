@@ -21,10 +21,20 @@
 <script>
 	graph = {};
 	hashAllowed = {};
+	hash = {};
 	
 	<%
 		out.println(hashAllowed);
 	%>
+	
+	function addNodes(graph) {
+		<%out.print(arborStructure);%>
+			}
+	
+			function getHash() {
+		<%out.print(hashTypes);%>
+			return hash;
+			}
 	
 	$(document)
 			.ready(
@@ -41,7 +51,7 @@
 				out.println("graph = startArbor(\"#viewport\", 0.91);");%>
 	addNodes(graph);
 
-						//initializeElements();
+						initializeElements();
 
 						$('#autoBinds').click(function() {
 							loading();
@@ -97,15 +107,6 @@
 	function resetSelection() {
 		initializeElements();
 		currentSelection = false;
-	}
-
-	function addNodes(graph) {
-<%out.print(arborStructure);%>
-	}
-	function getHash() {
-		hash = {};
-<%out.print(hashTypes);%>
-	return hash;
 	}
 
 	hashEquipIntIn = new Array();

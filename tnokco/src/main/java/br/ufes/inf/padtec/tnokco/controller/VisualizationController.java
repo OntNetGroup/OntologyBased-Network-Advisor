@@ -279,6 +279,8 @@ public class VisualizationController {
 			size++;
 		}
 		
+		valuesGraph += "graph.pruneNode(\""+equip+"\");";
+		
 		width  += 400 * (size / 10);
 		height += 400 * (size / 10);
 
@@ -319,6 +321,14 @@ public class VisualizationController {
 		return "dot";
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value="/connects_provisoning_visualization")
+	public static String connects_provisoning_visualization(HttpServletRequest request) {
+		
+		
+		
+		return "connectsProvisioning";
+	}
+	
 	
 	@RequestMapping(method = RequestMethod.GET, value="/provisoning_visualization")
 	public static String provisoning_visualization(HttpServletRequest request) {
@@ -355,7 +365,7 @@ public class VisualizationController {
 			}
 
 			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
-				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_"+(canConnect?"VERDE":"ROXO")+"\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+entry.getValue().getName(), HomeController.InfModel))+"_AZUL\"}), {name:'binds:";
+				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_ROXO\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+entry.getValue().getName(), HomeController.InfModel))+"_ROXO\"}), {name:'binds:";
 				arborStructure += entry.getKey().get(0)+"-"+entry.getKey().get(1);
 				arborStructure += "'});";
 				size++;
@@ -367,29 +377,37 @@ public class VisualizationController {
 			}
 		}
 
-		
 		//Getting Physical medias
 		
 		ArrayList<String[]> pms = Provisioning.getAllPhysicalMediaAndBinds();
+		/*
+		 * pm[0] = connected equipment interface (output)
+		 * pm[1] = connected pm port (input)
+		 * pm[2] = equipment
+		 * pm[3] = pm 
+		 * pm[4] = connected equipment interface (input)
+		 * pm[5] = connected pm port (output)
+		 * pm[6] = equipment
+		 * 
+		 * */
 		
 		for(String[] pm : pms){
-			hashEquipIntOut += "hashEquipIntOut['"+pm[2].substring(pm[2].indexOf("#")+1)+"'] = new Array();";
-			hashTypes += "hash[\""+pm[2].substring(pm[2].indexOf("#")+1)+"\"] = \"<b>"+pm[2].substring(pm[2].indexOf("#")+1)+" is an individual of classes: </b><br><ul><li>Physical Media</li></ul>\";";
+			hashEquipIntOut += "hashEquipIntOut['"+pm[3].substring(pm[3].indexOf("#")+1)+"'] = new Array();";
+			hashTypes += "hash[\""+pm[3].substring(pm[3].indexOf("#")+1)+"\"] = \"<b>"+pm[3].substring(pm[3].indexOf("#")+1)+" is an individual of classes: </b><br><ul><li>Physical Media</li></ul>\";";
 			
 			if(pm[0] != null){
-				arborStructure += "graph.addEdge(graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"}),graph.addNode(\""+pm[0].substring(pm[0].indexOf("#")+1)+"\", {shape:\"Equip_AZUL\"}), {name:'binds'});";
+				arborStructure += "graph.addEdge(graph.addNode(\""+pm[3].substring(pm[3].indexOf("#")+1)+"\", {shape:\"PM_ROXO\"}),graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"Equip_ROXO\"}), {name:'binds:"+pm[0].substring(pm[0].indexOf("#")+1)+"-"+pm[1].substring(pm[1].indexOf("#")+1)+"'});";
 				size++;
 			}
 			
-			if(pm[3] != null){
-				if(pm[4] != null)
-					arborStructure += "graph.addEdge(graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"}),graph.addNode(\""+pm[4].substring(pm[4].indexOf("#")+1)+"\", {shape:\"Equip_AZUL\"}), {name:'binds'});";
-				hashEquipIntOut += "hashEquipIntOut['"+pm[2].substring(pm[2].indexOf("#")+1)+"']['"+pm[3]+"'] = \"true\";";
+			if(pm[5] != null){
+				arborStructure += "graph.addEdge(graph.addNode(\""+pm[3].substring(pm[3].indexOf("#")+1)+"\", {shape:\"PM_ROXO\"}),graph.addNode(\""+pm[6].substring(pm[6].indexOf("#")+1)+"\", {shape:\"Equip_ROXO\"}), {name:'binds:"+pm[4].substring(pm[4].indexOf("#")+1)+"-"+pm[5].substring(pm[5].indexOf("#")+1)+"'});";
+				hashEquipIntOut += "hashEquipIntOut['"+pm[3].substring(pm[3].indexOf("#")+1)+"']['"+pm[5]+"'] = \"true\";";
 				size++;
 			}
 			
 			if(pm[0] == null && pm[4] == null){
-				arborStructure += "graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"PM_AZUL\"});";
+				arborStructure += "graph.addNode(\""+pm[3].substring(pm[3].indexOf("#")+1)+"\", {shape:\"PM_ROXO\"});";
 			}
 		}		
 		

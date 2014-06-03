@@ -365,8 +365,9 @@ $(document).ready(function() {
 										
 										<li><a class="submenu" href="/tnokco/list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion <br> &nbsp;&nbsp; (TN-OKCo)</span></a></li>
 										<li><a class="submenu" href="/tnokco/open_visualizator"><i class="icon-eye-open"></i><span class="hidden-sm">&nbsp;&nbsp; Visualization</span></a></li>
-										<li><a class="submenu" href="/tnokco/provisoning_visualization"><i class="icon-play-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
-									</ul>	
+										<li><a class="submenu" href="/tnokco/provisoning_visualization"><i class="">B</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Binds</span></a></li>
+										<li><a class="submenu" href="/tnokco/connects_provisoning_visualization"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Connects</span></a></li>
+									</ul>
 								</li>
 								
 								<li>
