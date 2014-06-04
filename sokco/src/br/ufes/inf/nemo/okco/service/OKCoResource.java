@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import br.ufes.inf.nemo.okco.api.DtoResultFile;
 import br.ufes.inf.nemo.okco.api.DtoResultInstances;
 import br.ufes.inf.nemo.okco.api.OKCo;
-import br.ufes.inf.nemo.service.model.SokcoObject;
+import br.ufes.inf.nemo.okco.service.model.SokcoObject;
 
 @Path("/app")
 public class OKCoResource {
@@ -48,6 +48,7 @@ public class OKCoResource {
 		
 		Gson gson = new Gson();
 		String resultJson = gson.toJson(dto);
+		
 		return Response.status(201).entity(resultJson).build();
  
 	}
@@ -62,8 +63,8 @@ public class OKCoResource {
 		
 		Gson gson = new Gson();
 		String resultJson = gson.toJson(dto);
-		return Response.status(201).entity(resultJson).build();
- 
+		
+		return Response.status(201).entity(resultJson).build(); 
 	}
 	
 	@POST

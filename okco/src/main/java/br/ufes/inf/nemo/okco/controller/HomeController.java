@@ -54,7 +54,7 @@ public class HomeController {
 	public static ArrayList<DtoDefinitionClass> ModelDefinitions;
 
 	@RequestMapping(method = RequestMethod.GET, value="/")
-	  public String index(HttpSession session, HttpServletRequest request) {
+	public String index(HttpSession session, HttpServletRequest request) {
 	     
 			request.getSession().removeAttribute("errorMensage");
 			request.getSession().removeAttribute("loadOk");
@@ -63,7 +63,7 @@ public class HomeController {
 	  }
 	
 	@RequestMapping(method = RequestMethod.GET, value="/welcome")
-	  public String welcome(HttpSession session, HttpServletRequest request) {		
+	public String welcome(HttpSession session, HttpServletRequest request) {		
 	     
 			String login = (String)request.getSession().getAttribute("login");
 			if(login == null)
@@ -82,7 +82,7 @@ public class HomeController {
 	  }
 	
 	@RequestMapping(method = RequestMethod.GET, value="/faq")
-	  public String faq(HttpSession session, HttpServletRequest request) {
+	public String faq(HttpSession session, HttpServletRequest request) {
 	     
 			String login = (String)request.getSession().getAttribute("login");
 			if(login == null)
@@ -101,7 +101,7 @@ public class HomeController {
 	  }
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	  public String login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password){
+	public String login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password){
 		
 		if(username.equals("okco") && password.equals("1234"))
 		{
@@ -116,7 +116,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	  public String upload(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner){
+	public String upload(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner){
 		
 		  try {
 			  
@@ -294,7 +294,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/getModel")
-	  public String getModel(HttpSession session, HttpServletRequest request) throws IOException {
+	public String getModel(HttpSession session, HttpServletRequest request) throws IOException {
 	     
 			if(Model != null)
 			{

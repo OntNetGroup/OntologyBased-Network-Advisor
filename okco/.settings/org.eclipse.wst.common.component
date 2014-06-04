@@ -6,9 +6,6 @@
         <dependent-module archiveName="kernel-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/okco.kernel/okco.kernel">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="GraphVisualizer-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/GraphVisualizer/GraphVisualizer">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="okco"/>
         <property name="java-output-path" value="/okco/target/classes"/>
     </wb-module>

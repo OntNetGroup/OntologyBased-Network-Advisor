@@ -1,12 +1,8 @@
-package br.inf.nemo.padtec.owl2arborjs;
+package br.ufes.inf.nemo.okco.visualizer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import br.inf.nemo.padtec.graphplotting.GraphPlotting;
-import br.inf.nemo.padtec.manager.query.QueryManager;
-import br.inf.nemo.padtec.tupla.Tupla;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
@@ -58,6 +54,7 @@ public class ArborParser {
 	}
 
 	public String getArborJsString(ResultSet results, boolean showAll) {
+		
 		ArrayList<Tupla> tuplas = this.getTuplas(results);
 
 		//set screen size
