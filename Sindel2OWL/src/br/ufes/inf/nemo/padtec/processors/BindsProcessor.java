@@ -420,10 +420,10 @@ public class BindsProcessor {
 		Statement stmt = ontModel.createStatement(port1, rel, port2);
 		ontModel.add(stmt);	
 		HashMap<String, String> hash = new HashMap<String, String>();
-		hash.put("INPUT", tiposB.get(0));
-		hash.put("OUTPUT", tiposA.get(0));
+		hash.put("OUTPUT", tiposB.get(0).replace(NS, ""));
+		hash.put("INPUT", tiposA.get(0).replace(NS, ""));
 		HashMap<String, String>element= values.get(hash);
-		bindsSpecific(rp, port1,port2,tiposA.get(0),tiposB.get(0),ontModel,NS, listInstancesCreated);
+		bindsSpecific(rp, port2,port1,tiposB.get(0),tiposA.get(0),ontModel,NS, listInstancesCreated);
 	}
 	
 	public static OntModel bindsSpecific(Individual rp, Individual port1, Individual port2, String tipo_out, String tipo_inp, OntModel ontModel, String NS, ArrayList<String> listInstancesCreated) {
