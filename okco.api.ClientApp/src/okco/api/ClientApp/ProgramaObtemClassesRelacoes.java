@@ -52,7 +52,6 @@ public class ProgramaObtemClassesRelacoes {
 			{
 				//result2 = result2 + "'" + prop.replace(ns, "") + "' | ";
 				result2 = result2 + "instruction.contains(\" " + prop.replace(ns, "") + " \") || ";
-				
 			}
 		}
 		
