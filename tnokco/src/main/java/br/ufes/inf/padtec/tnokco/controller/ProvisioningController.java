@@ -427,7 +427,7 @@ public class ProvisioningController{
 //			Provisioning.bindsSpecific(a,b,tiposA.get(0),tiposB.get(0));
 			//BindsProcessor.bindPorts(outputNs, inputNs);
 			
-			BindsProcessor.bindPorts(null, a, b, HomeController.NS, HomeController.Model, listInstancesCreated);
+			BindsProcessor.bindPorts(null, a, b, null, HomeController.NS, HomeController.Model, listInstancesCreated);
 
 		}
 
@@ -460,6 +460,7 @@ public class ProvisioningController{
 	}
 
 	public static ArrayList<String> getCandidateInterfacesForConnection(String outIntNs){
+		//getEquipmentsWithRPs(HomeController.NS);
 		ArrayList<String> allowedInputInterfaces = new ArrayList<String>();
 		//find the instance of the output interface
 		Instance outputInterface = getInstanceFromNameSpace(outIntNs);
@@ -777,16 +778,36 @@ public class ProvisioningController{
 	}
 	
 	public static ArrayList<Instance> getInstancesFromClass(String classNameWithoutNameSpace){
-		//get all input interfaces
-		ArrayList<Instance> instances = new ArrayList<Instance>(); 
+		ArrayList<String> classNamesWithoutNameSpace = new ArrayList<String>();
+		classNamesWithoutNameSpace.add(classNameWithoutNameSpace);
+		
+		ArrayList<Instance> instances = getInstancesFromClasses(classNamesWithoutNameSpace);
+		
+		return instances;
+	}
+	
+	public static ArrayList<Instance> getInstancesFromClasses(ArrayList<String> classNamesWithoutNameSpace){
+		ArrayList<Instance> instances = new ArrayList<Instance>();
 		for (Instance instance : HomeController.ListAllInstances) {
-			for (String className : instance.ListClasses) {
-				className = className.replace(HomeController.NS, "");
-				if(className.equalsIgnoreCase(classNameWithoutNameSpace)){
-					instances.add(instance);
+			for (String classNameWithoutNameSpace : classNamesWithoutNameSpace) {
+				Boolean foundInstance = false;
+				if(instance.ListClasses.contains(HomeController.NS+classNameWithoutNameSpace)){
+					if(!instances.contains(instance)){
+						instances.add(instance);
+					}
+					foundInstance  = true;
 					break;
 				}
-			}
+				if(foundInstance){
+					break;
+				}
+			}			
+//			for (String className : instance.ListClasses) {
+//				className = className.replace(HomeController.NS, "");
+//				if(className.equalsIgnoreCase(classNameWithoutNameSpace)){
+//					
+//				}
+//			}
 		}
 		return instances;
 	}
@@ -951,5 +972,33 @@ public class ProvisioningController{
 		request.getSession().setAttribute("loadOk", returnMessage);
 		
 		return VisualizationController.provisoning_visualization(request);
+	}
+	
+	public static void getEquipmentsWithRPs(String NS){
+		ArrayList<Instance> rpInstances = getInstancesFromClass("Reference_Point");
+		
+		for (Instance rp : rpInstances) {
+			ArrayList<DtoInstanceRelation> rpRelations = HomeController.Search.GetInstanceAllRelations(HomeController.InfModel, rp.ns+rp.name);
+			String binding1Ns = "";
+			String binding2Ns = "";
+			for (DtoInstanceRelation dtoInstanceRelation : rpRelations) {
+				String propertyName = dtoInstanceRelation.Property.replace(NS, "");
+				if(propertyName.equals("binding_is_represented_by")){
+					if(binding1Ns.equals("")){
+						binding1Ns = dtoInstanceRelation.Target;
+					}else{
+						binding2Ns = dtoInstanceRelation.Target;
+					}					
+				}
+			}
+			
+			if(!binding1Ns.equals("")){
+				
+			}
+			
+			System.out.println();
+		}
+		
+		System.out.println();
 	}
 }

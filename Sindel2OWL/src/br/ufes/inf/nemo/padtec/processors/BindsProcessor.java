@@ -43,6 +43,33 @@ public class BindsProcessor {
 	public static void resetPortsAndRPsToBindsSpecifically(){
 		portsAndRPsToBindsSpecifically = new ArrayList<ArrayList<Individual>>();
 	}
+	
+	public static void addPortsAndRPsToBindsSpecifically(Individual port1, Individual port2, Individual rp, Individual binding){
+		ArrayList<Individual> portsAndRp = new ArrayList<Individual>();
+		portsAndRp.add(port1);
+		portsAndRp.add(port2);
+		portsAndRp.add(rp);
+		portsAndRp.add(binding);
+		
+		if(!portsAndRPsToBindsSpecifically.contains(portsAndRp)){
+			Boolean found = false;
+			for (ArrayList<Individual> portsAndRpAux : portsAndRPsToBindsSpecifically) {
+				if(portsAndRp.get(0).toString().equals(portsAndRpAux.get(0).toString()) && portsAndRp.get(1).toString().equals(portsAndRpAux.get(1).toString()) && portsAndRpAux.get(2) == null && portsAndRpAux.get(3) == null){
+					portsAndRPsToBindsSpecifically.remove(portsAndRpAux);
+					portsAndRPsToBindsSpecifically.add(portsAndRp);
+					found = true;
+					break;
+				}else if(portsAndRp.get(0).toString().equals(portsAndRpAux.get(0).toString()) && portsAndRp.get(1).toString().equals(portsAndRpAux.get(1).toString()) && portsAndRpAux.get(2).equals(portsAndRpAux.get(2).toString()) && portsAndRpAux.get(3).equals(portsAndRpAux.get(3).toString())){
+					found = true;
+					break;
+				}
+				//portsAndRPsToBindsSpecifically.add(portsAndRp);
+			}
+			if(!found){
+				portsAndRPsToBindsSpecifically.add(portsAndRp);
+			}
+		}
+	}
 
 	private static Individual createNewIndividual(String type){
 		OntClass o_class = model.getOntClass(ClassNS+type);
@@ -111,6 +138,7 @@ public class BindsProcessor {
 				}else if(isP1 && isP2){
 					//IF a and b are Ports
 					processSimpleRelation_PortxPort();
+					addPortsAndRPsToBindsSpecifically(a, b, null, null);
 				}else if(isI1 && isI2){
 					//IF a and b are Ports
 					processSimpleRelation_InterfacexInterface();
@@ -123,12 +151,10 @@ public class BindsProcessor {
 				//AssignableRelation
 				if(isP1 && isP2){
 					//IF a and b are Ports
+					processAssignableRelation_PortxPort();
 					ArrayList<Individual> portsAndRp = new ArrayList<Individual>();
-					portsAndRp.add(x);
-					portsAndRp.add(a);
-					portsAndRp.add(b);
-					portsAndRPsToBindsSpecifically.add(portsAndRp);
-					processAssignableRelation_PortxPort();					
+					addPortsAndRPsToBindsSpecifically(a, b, x, k);
+					
 				}else if(isTF1 && isTF2){
 					//IF a and b are Transport Functions
 					processAssignableRelation_TFxTF();
@@ -375,7 +401,7 @@ public class BindsProcessor {
 
 	private static void processAssignableRelation_PortxPort(){
 		k = createNewIndividual("Binding");
-
+		
 		rel = model.getObjectProperty(ClassNS+"is_binding");
 		stmt = model.createStatement(k, rel, a);
 		model.add(stmt);
@@ -404,29 +430,45 @@ public class BindsProcessor {
 		
 	}
 	
-	public static void bindPorts(Individual rp, Individual port1, Individual port2, String NS, OntModel ontModel, ArrayList<String> listInstancesCreated){
+	public static void bindPorts(Individual rp, Individual port1, Individual port2, Individual binding, String NS, OntModel ontModel, ArrayList<String> listInstancesCreated){
 		if(listInstancesCreated == null){
 			listInstancesCreated = new ArrayList<String>();
 		}
 		initValues();
 		Search search = new Search(NS); 
-		ArrayList<String> tiposA=search.GetClassesFrom(NS+port1.getLocalName(),ontModel);
-		ArrayList<String> tiposB=search.GetClassesFrom(NS+port2.getLocalName(),ontModel);
-		tiposA.remove(NS+"Geographical_Element");
-		tiposA.remove(NS+"Bound_Input-Output");
-		tiposB.remove(NS+"Geographical_Element");
-		tiposB.remove(NS+"Bound_Input-Output");
+		ArrayList<String> tiposPort1=search.GetClassesFrom(NS+port1.getLocalName(),ontModel);
+		ArrayList<String> tiposPort2=search.GetClassesFrom(NS+port2.getLocalName(),ontModel);
+		tiposPort1.remove(NS+"Geographical_Element");
+		tiposPort1.remove(NS+"Bound_Input-Output");
+		tiposPort2.remove(NS+"Geographical_Element");
+		tiposPort2.remove(NS+"Bound_Input-Output");
+		
+		Individual outputPort;
+		Individual inputPort;
+		ArrayList<String> tiposOutputPort;
+		ArrayList<String> tiposInputPort;
+		if(tiposPort1.contains(NS+"Output")){
+			outputPort = port1;
+			tiposOutputPort = tiposPort1;
+			inputPort = port2;
+			tiposInputPort = tiposPort2;
+		}else{
+			outputPort = port2;
+			tiposOutputPort = tiposPort2;
+			inputPort = port1;
+			tiposInputPort = tiposPort1;
+		}
 		ObjectProperty rel = ontModel.getObjectProperty(NS+"binds");
-		Statement stmt = ontModel.createStatement(port1, rel, port2);
+		Statement stmt = ontModel.createStatement(outputPort, rel, inputPort);
 		ontModel.add(stmt);	
 		HashMap<String, String> hash = new HashMap<String, String>();
-		hash.put("OUTPUT", tiposB.get(0).replace(NS, ""));
-		hash.put("INPUT", tiposA.get(0).replace(NS, ""));
+		hash.put("OUTPUT", tiposOutputPort.get(0).replace(NS, ""));
+		hash.put("INPUT", tiposInputPort.get(0).replace(NS, ""));
 		HashMap<String, String>element= values.get(hash);
-		bindsSpecific(rp, port2,port1,tiposB.get(0),tiposA.get(0),ontModel,NS, listInstancesCreated);
+		bindsSpecific(rp, outputPort,inputPort,binding,tiposOutputPort.get(0),tiposInputPort.get(0),ontModel,NS, listInstancesCreated);
 	}
 	
-	public static OntModel bindsSpecific(Individual rp, Individual port1, Individual port2, String tipo_out, String tipo_inp, OntModel ontModel, String NS, ArrayList<String> listInstancesCreated) {
+	public static OntModel bindsSpecific(Individual rp, Individual outputPort, Individual inputPort, Individual binding, String tipo_out, String tipo_inp, OntModel ontModel, String NS, ArrayList<String> listInstancesCreated) {
 		if(listInstancesCreated == null){
 			listInstancesCreated = new ArrayList<String>();
 		}
@@ -439,16 +481,20 @@ public class BindsProcessor {
 		try{
 			HashMap<String, String> value = values.get(key);
 			OntClass ClassImage = ontModel.getOntClass(NS+value.get("RP"));
+			String rpName = "";
 			if(rp == null){
-				rp = ontModel.createIndividual(NS+port1.getLocalName()+"rp"+port2.getLocalName(),ClassImage);
+				rp = ontModel.createIndividual(NS+outputPort.getLocalName()+"rp"+inputPort.getLocalName(),ClassImage);
 			}
 			//Individual rp = ontModel.createIndividual(NS+port1.getLocalName()+"rp"+port2.getLocalName(),ClassImage);
 			//HomeController.Model=Model;
-			Individual binding= ontModel.createIndividual(NS+port1.getLocalName()+"binding"+port2.getLocalName(),ontModel.getResource(NS+value.get("RP_BINDING")));
+			//Individual binding = ontModel.createIndividual(NS+outputPort.getLocalName()+"_binding_"+inputPort.getLocalName(),ontModel.getResource(NS+value.get("RP_BINDING")));
+			if(binding == null){
+				binding = ontModel.createIndividual(NS+outputPort.getLocalName()+"_binding_"+inputPort.getLocalName(),ontModel.getResource(NS+value.get("RP_BINDING")));
+			}
 			ArrayList<Statement> stmts = new ArrayList<Statement>();
 			stmts.add(ontModel.createStatement(binding, ontModel.getProperty(NS+value.get("RP_RELATION")), rp));
-			stmts.add(ontModel.createStatement(binding, ontModel.getProperty(NS+value.get("RP_BINDING_REL_IN")), port2));
-			stmts.add(ontModel.createStatement(binding, ontModel.getProperty(NS+value.get("RP_BINDING_REL_OUT")), port1));
+			stmts.add(ontModel.createStatement(binding, ontModel.getProperty(NS+value.get("RP_BINDING_REL_IN")), inputPort));
+			stmts.add(ontModel.createStatement(binding, ontModel.getProperty(NS+value.get("RP_BINDING_REL_OUT")), outputPort));
 			ontModel.add(stmts);
 			
 			listInstancesCreated.add(binding.getNameSpace()+binding.getLocalName());

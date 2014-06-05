@@ -124,16 +124,17 @@ public class Sindel2OWL {
 		
 		ArrayList<ArrayList<Individual>> portsAndRPsToBindsSpecifically = BindsProcessor.getPortsAndRPsToBindsSpecifically();
 		for (ArrayList<Individual> portsAndBinds : portsAndRPsToBindsSpecifically) {
-			Individual rp = portsAndBinds.get(0);
-			Individual port1 = portsAndBinds.get(1);
-			Individual port2 = portsAndBinds.get(2);
+			Individual port1 = portsAndBinds.get(0);
+			Individual port2 = portsAndBinds.get(1);
+			Individual rp = portsAndBinds.get(2);
+			Individual binding = portsAndBinds.get(3);
 			
 			ArrayList<String> listInstancesCreated = new ArrayList<String>();
 			listInstancesCreated.add(rp.getNameSpace()+rp.getLocalName());
 			listInstancesCreated.add(port1.getNameSpace()+port1.getLocalName());
 			listInstancesCreated.add(port2.getNameSpace()+port2.getLocalName());
 			
-			BindsProcessor.bindPorts(rp, port1, port2, ClassNS, model, listInstancesCreated);
+			BindsProcessor.bindPorts(rp, port1, port2, binding, ClassNS, model, listInstancesCreated);
 		}
 	//	createDisjointness();
 		createDtoSindel();
