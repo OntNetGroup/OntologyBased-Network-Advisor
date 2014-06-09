@@ -1095,6 +1095,7 @@ public class ProvisioningController{
 				return tfNs;
 			}
 			
+			ArrayList<String> nextPorts = new ArrayList<String>(); 
 			ArrayList<DtoInstanceRelation> tfRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+tfNs);
 			String eqNs = "";
 			for (DtoInstanceRelation tfRel : tfRelations) {
@@ -1107,11 +1108,19 @@ public class ProvisioningController{
 						
 						return eqNs;
 					}
+				}else if(tfRelRelName.equals("componentOf")){
+					if(!tfRel.Target.equals(NS+bindedPortNs)){
+						ArrayList<String> tiposTf=HomeController.Search.GetClassesFrom(tfRel.Target,infModel);
+						if(tiposTf.contains(NS+"Input") || tiposTf.contains(NS+"Output")){
+							nextPorts.add(tfRel.Target);
+						}
+					}
 				}
 				
 			}
 			
-			return getNextRpFromTf(infModel, NS, tfNs, searchToTop);
+			ArrayList<String> nextRps = getNextRpsFromTf(infModel, NS, nextPorts, searchToTop);
+			System.out.println();
 			
 		}else if(!outIntNs.equals("")){
 			return getEquipmentFromInterface(infModel, NS, outIntNs);
@@ -1159,16 +1168,27 @@ public class ProvisioningController{
 		return "";
 	}
 	
-	public static String getNextRpFromTf(InfModel infModel, String NS, String tfNs, Boolean searchToTop){
-		ArrayList<DtoInstanceRelation> tfRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+tfNs);
-		
-		for (DtoInstanceRelation tfRel : tfRelations) {
-			String tfRelName = tfRel.Property.replace(NS, "");
-			if(tfRelName.equals("binding_is_represented_by")){
-				return tfRel.Target;
-			}
+	public static ArrayList<String> getNextRpsFromTf(InfModel infModel, String NS, ArrayList<String> nextPorts, Boolean searchToTop){
+		ArrayList<String> nextRps = new ArrayList<String>();
+		for (String portNs : nextPorts) {
+			portNs = portNs.replace(NS, "");
+			ArrayList<DtoInstanceRelation> portRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+portNs);
+			
+			for (DtoInstanceRelation portRel : portRelations) {
+				String portRelName = portRel.Property.replace(NS, "");
+				if(portRelName.equals("INV.is_binding")){
+					ArrayList<DtoInstanceRelation> bindingRelations = HomeController.Search.GetInstanceAllRelations(infModel, portRel.Target);
+					for (DtoInstanceRelation bindingRel : bindingRelations) {
+						String bindingRelName = bindingRel.Property.replace(NS, "");
+						if(bindingRelName.equals("binding_is_represented_by")){
+							nextRps.add(bindingRel.Target);
+						}
+					}					
+				}
+			}			
 		}
 		
-		return "";
+		
+		return nextRps;
 	}
 }
