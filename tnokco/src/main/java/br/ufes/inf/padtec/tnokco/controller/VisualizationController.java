@@ -332,7 +332,6 @@ public class VisualizationController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/provisoning_visualization")
 	public static String provisoning_visualization(HttpServletRequest request) {
-		ProvisioningController.getEquipmentsWithRPs(HomeController.InfModel, HomeController.NS, null, null);
 		elementsInitialize();
 		Provisioning.inferInterfaceConnections();
 		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
