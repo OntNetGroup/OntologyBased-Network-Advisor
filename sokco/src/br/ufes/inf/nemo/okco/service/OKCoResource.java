@@ -59,7 +59,7 @@ public class OKCoResource {
 	public Response completePropertyIncompleteness(SokcoObject obj) {
  
 		OKCo o = new OKCo();
-		DtoResultFile dto = o.completePropertyIncompleteness(obj.getPathOwlFileString(), obj.getReasonerOption(), obj.getStrength());
+		DtoResultFile dto = o.completeIncompleteness(obj.getPathOwlFileString(), obj.getReasonerOption(), obj.getStrength());
 		
 		Gson gson = new Gson();
 		String resultJson = gson.toJson(dto);
@@ -73,7 +73,7 @@ public class OKCoResource {
 	public Response completePropertyIncompletenessSet(SokcoObject obj) {
  
 		OKCo o = new OKCo();
-		DtoResultFile dto = o.completePropertyIncompleteness(obj.getSetInstances(), obj.getPathOwlFileString(), obj.getReasonerOption(), obj.getStrength());
+		DtoResultFile dto = o.completeIncompleteness(obj.getSetInstances(), obj.getPathOwlFileString(), obj.getReasonerOption(), obj.getStrength());
 		
 		Gson gson = new Gson();
 		String resultJson = gson.toJson(dto);

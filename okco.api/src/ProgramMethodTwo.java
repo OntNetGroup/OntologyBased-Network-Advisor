@@ -11,7 +11,7 @@ public class ProgramMethodTwo {
 		String inputFileName = "C://Users//fabio_000//Desktop//OntologiasOWL//assassinato.owl";	
 
 		OKCo o = new OKCo();
-		DtoResultFile dto = o.completePropertyIncompleteness(inputFileName, "HERMIT", "FULL");
+		DtoResultFile dto = o.completeIncompleteness(inputFileName, "HERMIT", "FULL");
 		
 		if(dto.ListErrors.size() > 0)
 		{

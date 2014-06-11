@@ -28,9 +28,22 @@
 							$('#maskforloading').show();
 						}
 
+						var open = 1;
+						$(".uploader").hide();
+						$(".btnUpload").hide();
 						$('.btn-load').click(function(event) {
 
-							window.location.href = "/tnokco/welcome";
+							if(open == 1)
+							{
+								$(".uploader").show();
+								$(".btnUpload").show();
+								open = 0;	
+							} else {
+								$(".uploader").hide();
+								$(".btnUpload").hide();
+								open = 1;
+							}
+							
 
 						}); //End load sindel file
 
@@ -496,7 +509,7 @@
 					%>
 
 
-					<li class="active"><a id="0" href="#">Some Code</a></li>
+					<li class="active"><a id="0" href="#">Code</a></li>
 				</ul>
 
 				<!-- ------------------- -->
@@ -535,9 +548,23 @@
 						%>
 						<!-- TEXTA AREA -->
 
+						<form action="uploadSindel" style="float:left; margin-right:5px;" class="form-horizontal" enctype="multipart/form-data" method="POST">
+						
+								<input type="button" class="btn btn-pre btn-load" value="Open file" /> 
+							
+								<div class="uploader">
+									<input name="file" type="file"><span class="filename" style="-webkit-user-select: none;">No file selected</span>
+									<span class="action" style="-webkit-user-select: none;">Choose File</span>
+									
+								</div>
+								
+								<input type="submit" class="btnUpload" name="submit" value="Upload" /> 
+								
+								
+							
+						</form>
 						
 						<form id="getSindelForm" style="float:left" method="POST" action="getSindelCode">
-							<input type="button" class="btn btn-pre btn-load" value="Open file" /> 
 							<input type="button" class="btn btn-pre btn-clean" value="Clean" />
 							<input type="submit" class="btn btn-pre btn-export" value="Save File" />
 						</form>

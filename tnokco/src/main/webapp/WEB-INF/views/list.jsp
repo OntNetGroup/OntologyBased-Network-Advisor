@@ -149,13 +149,11 @@
 							  			
 							  		}
 							  		
-							  		
-							  		
 							  		out.println("<td class=\"center\">" + 
-							  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/tnokco/graphVisualizer?typeView=OUT&id=" + i.id + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
-							  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/tnokco/details?id=" + i.id + "\"> <i class=\"icon-edit\"></i> </a>" + "&nbsp;" +
-						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/tnokco/completeInstanceAuto?idInstance="+ i.id + "\"> <i class=\"icon-edit\"></i> </a>" +
-							  					"</td>");
+						  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/tnokco/graphVisualizer?typeView=IN&id=" + i.id + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
+						  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/tnokco/details?id=" + i.id + "\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+					  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/tnokco/completeInstanceAuto?idInstance="+ i.id + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
+						  					"</td>");
 						  									  		
 						  		out.println("</tr>");
 						  		

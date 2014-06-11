@@ -15,7 +15,7 @@ public class ProgramMethodThree {
 		setInstances.add("http://www.semanticweb.org/ontologies/2013/8/ontology.owl#fabio");
 
 		OKCo o = new OKCo();
-		DtoResultFile dto = o.completePropertyIncompleteness(setInstances, inputFileName, "HERMIT", "REGULAR");
+		DtoResultFile dto = o.completeIncompleteness(setInstances, inputFileName, "HERMIT", "REGULAR");
 		
 		if(dto.ListErrors.size() > 0)
 		{

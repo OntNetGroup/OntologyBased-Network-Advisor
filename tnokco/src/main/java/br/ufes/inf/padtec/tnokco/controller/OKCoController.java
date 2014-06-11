@@ -66,21 +66,9 @@ public class OKCoController {
 	public String list(HttpServletRequest request) {
 
 		this.ListAllInstances = HomeController.ListAllInstances;
-		
-		if(HomeController.Model != null) 
+
+		if(ListAllInstances != null) 
 		{
-			if(HomeController.Reasoner == null)
-			{
-				String error = "Reasoner error: Select some reasoner";
-				request.getSession().setAttribute("errorMensage", error);
-				
-				return "index";
-				
-			} else {
-				
-				request.getSession().removeAttribute("errorMensage");
-			}
-			
 			request.getSession().setAttribute("listInstances", ListAllInstances);
 			request.getSession().setAttribute("listModifedInstances", HomeController.ListModifiedInstances);
 
@@ -110,12 +98,11 @@ public class OKCoController {
 
 		// ------ Complete classes list ------//
 
-		ArrayList<String> listClassesMembersToClassify = HomeController.ManagerInstances.getClassesToClassify(instanceSelected, HomeController.InfModel);		
+		//ArrayList<String> listClassesMembersToClassify = HomeController.ManagerInstances.getClassesToClassify(instanceSelected, HomeController.InfModel);		
 
 		// ----- List relations ----- //
 
 		ArrayList<DtoInstanceRelation> instanceListRelationsFromInstance = HomeController.Search.GetInstanceRelations(HomeController.InfModel, instanceSelected.ns + instanceSelected.name); 		//Get instance relations
-
 
 		ListCompleteClsInstaceSelected = instanceSelected.ListCompleteClasses;
 
@@ -125,14 +112,17 @@ public class OKCoController {
 
 		// ------ Create sections ------//
 
-		request.getSession().setAttribute("listClassesMembersTmp", listClassesMembersToClassify);
+		//Specialization
+		//classes ok
 		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
 
+		//Definition
 		request.getSession().setAttribute("listSomeClassDefinition", listSomeClassDefinition);
 		request.getSession().setAttribute("listMinClassDefinition", listMinClassDefinition);
 		request.getSession().setAttribute("listMaxClassDefinition", listMaxClassDefinition);
 		request.getSession().setAttribute("listExactlyClassDefinition", listExactlyClassDefinition);
 
+		//Information
 		request.getSession().setAttribute("instanceListRelations", instanceListRelationsFromInstance);
 		request.getSession().setAttribute("instanceSelected", instanceSelected);		
 		request.getSession().setAttribute("listInstances", ListAllInstances);
@@ -399,6 +389,7 @@ public class OKCoController {
 		int width;
 		int height;
 		String subtitle = "";
+		
 		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
 		Instance i;
 		int num = 0;
@@ -669,8 +660,10 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
-	public @ResponseBody String commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
-
+	public @ResponseBody DtoResultCommit commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
+		
+		DtoResultCommit dtoResult = new DtoResultCommit();
+		
 		try {
 			
 			String separatorValues = "%&&%";
@@ -678,7 +671,7 @@ public class OKCoController {
 			String[] arrayValues = dto.ListInstanceDifSameIds.split(separatorValues);
 			for (String val : arrayValues) {
 
-				if(val != "")
+				if(val.contains("x"))
 				{	
 					String[] parts = val.split("x");
 
@@ -689,31 +682,95 @@ public class OKCoController {
 					Instance s1 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, Integer.parseInt(idInsSource));
 					Instance s2 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, Integer.parseInt(idInsTarget));
 					
-					if(type == "dif")
+					if(type.equals("dif"))
 					{
-						//
+						HomeController.Model = HomeController.ManagerInstances.setDifferentInstances(s1.ns + s1.name, s2.ns + s2.name, HomeController.Model);
 						
-					} else if (type == "same")
+					} else if (type.equals("same"))
 					{
-						//
+						HomeController.Model = HomeController.ManagerInstances.setSameInstances(s1.ns + s1.name, s2.ns + s2.name, HomeController.Model);
 						
 					} else {
 						
-						return "error";
+						dtoResult.result = "error";
+						dtoResult.ok = false;
+						return dtoResult;
 					}
-				
+					
+					HomeController.ListModifiedInstances.add(s1.ns + s1.name);
+					HomeController.ListModifiedInstances.add(s2.ns + s2.name);
 				}
 
 			}
 			
+			if(dto.runReasoner.equals("true"))
+			{
+				try {
+
+					//Run reasoner
+					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+
+					//Save temporary model
+					HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);
+
+					//Update list instances
+					HomeController.UpdateLists();
+
+					//Clean list modified instances
+					HomeController.ListModifiedInstances = new ArrayList<String>();
+
+					//Update list instances modified
+					HomeController.UpdateListsModified();
+
+				} catch (Exception e) {
+
+					//Roll back the tempModel
+					HomeController.Model = HomeController.Repository.CopyModel(HomeController.tmpModel);
+					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+
+					//Update list instances
+					try {
+						HomeController.UpdateLists();
+
+					} catch (InconsistentOntologyException e1) {
+
+						//e1.printStackTrace();
+
+					} catch (OKCoExceptionInstanceFormat e1) {
+
+						//e1.printStackTrace();
+					}
+
+					String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
+					
+					dtoResult.result = error;
+					dtoResult.ok = false;
+					return dtoResult;
+				}
+				
+			} if(dto.runReasoner.equals("false")) {
+				
+				//Update list instances modified
+				HomeController.UpdateListsModified();
+				
+			} else {
+				
+				dtoResult.result = "error";
+				dtoResult.ok = false;
+				return dtoResult;
+			}
+			
 		} catch (Exception e) {
 			
-			return "error";
+			dtoResult.result = "error";
+			dtoResult.ok = false;
+			return dtoResult;
 		}
 		
 
-		return "ok";
-
+		dtoResult.result = "ok";
+		dtoResult.ok = true;
+		return dtoResult;
 	}
 	
 	/*------ AJAX - DataProperty -----*/	
@@ -836,7 +893,7 @@ public class OKCoController {
 			try {
 
 				//Validate and update list
-				HomeController.UpdateLists();
+				HomeController.UpdateAddIntanceInLists(instanceSelected.ns + instanceSelected.name);;
 
 				//Instance selected update
 				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .id);
@@ -915,8 +972,9 @@ public class OKCoController {
 			}
 
 			try {
+				
 				//Validate and update list
-				HomeController.UpdateLists();
+				HomeController.UpdateAddIntanceInLists(instanceSelected.ns + instanceSelected.name);
 
 				//Instance selected update
 				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .id);

@@ -123,7 +123,11 @@
 			
 		});
 
-		/* ---- MODAL - FIM ---- */		
+		/* ---- MODAL - FIM ---- */	
+		
+		$('.btn-add').live('click', function() {		
+			$('#mask, .window').hide();
+		});	
 
 		// Commit
 		$('#commitInstanceForm').submit(function(event) {
@@ -336,7 +340,7 @@
 				</div>
 				<!--/col-->					
 
-				<input type="submit" class="btn btn-pre" value="Add data value" />
+				<input type="submit" class="btn btn-pre btn-add" value="Add data value" />
 	
 			</div>
 			<!--/row-->
@@ -353,8 +357,7 @@
 
 <!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
-<h1>Transport Network OWL Knowledge Completer (TN-OKCo)</h1>
-
+<h1 style="font-style: italic;">Complete Data Property</h1>
 <div class="row">
 	<div class="col-lg-12">
 		<div class="box">
@@ -367,20 +370,20 @@
 				</div>
 			</div>
 			<div class="box-content">
-				<div class="page-header">
+				<div class="">
 					<div style="">
 						<div style="float: left">
-							<h1>
+							<h2>
 								<%
 									if(propType.equals("SOME")){
-										out.println(instanceSelected.name + "<small> -> </small>" + 
+										out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
 																		dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
 									} else {
-										out.println(instanceSelected.name + "<small> -> </small>" + 
+										out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
 												dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + dtoDefinition.Cardinality + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
 									}
 								%>
-							</h1>
+							</h2>
 						</div>
 						<div style="float: left">
 							<div style="margin-left: 10px; padding: 5px;">
@@ -430,19 +433,6 @@
 					</tbody>
 				</table>
 				
-				<div class="actions">
-	
-					<form id="commitInstanceForm" action="commitDataValues" method="POST">
-						<%
-							out.println("<button onclick=\"window.location = '/tnokco/details?id=" + instanceSelected.id + "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
-						%>
-						
-						<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>
-						
-						<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit and Reasoner</button>
-					</form>
-				
-				</div>
 			</div>
 		</div>
 	</div>
@@ -452,6 +442,22 @@
 
 </div>
 <!--/row-->
+
+<div class="row">
+	
+	<form id="commitInstanceForm" action="commitDataValues" method="POST">
+		<%
+			out.println("<button onclick=\"window.location = '/tnokco/details?id=" + instanceSelected.id + "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
+		%>
+		
+		<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>
+		
+		<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit and Reasoner</button>
+	</form>
+
+</div>
+
+<br/>
 
 <div class="row">
 	 <div class="col-lg-12">
