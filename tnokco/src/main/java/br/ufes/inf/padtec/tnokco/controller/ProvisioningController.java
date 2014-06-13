@@ -367,7 +367,7 @@ public class ProvisioningController{
 				}
 			}
 		}
-		System.out.println();
+//		System.out.println();
 		Boolean outputIsPmOutput = false;
 		if(outputNs.equals("")){
 			Instance outputOrIntOutput = getInstanceFromNameSpace(HomeController.NS+outputNs);

@@ -317,10 +317,11 @@ public class VisualizationController {
 
 	
 	@RequestMapping(method = RequestMethod.GET, value="/do_connects")
-	public @ResponseBody String do_connects(@RequestParam("rp_src") String rp_src,@RequestParam("rp_trg") String sp_trg, @RequestParam("type") String type, HttpServletRequest request) {
+	public @ResponseBody String do_connects(@RequestParam("rp_src") String rp_src,@RequestParam("rp_trg") String rp_trg, @RequestParam("rp_type") String rp_type, HttpServletRequest request) {
 		try {
-			Provisioning.connects(rp_src, rp_src, type);
+			Provisioning.connects(rp_src, rp_trg, rp_type);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return "false";
 		}
 		
@@ -410,7 +411,7 @@ public class VisualizationController {
 					hashTypes += "hash[\""+equip+"\"] = \"<b>"+equip+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
 				}
 				
-				hashRPEquip += "hashEquipRP['"+rp+"'] = \""+equip+"\";";
+				hashRPEquip += "hashRPEquip['"+rp+"'] = \""+equip+"\";";
 				
 				hashEquipIntOut += "hashEquipIntOut['"+equip+"'] = new Array();";
 				hashEquipIntOut += "hashEquipIntOut['"+equip+"']['"+rp+"'] = \""+situation.toString()+"\";";

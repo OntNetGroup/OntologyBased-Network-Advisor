@@ -472,7 +472,7 @@ public class BindsProcessor {
 		if(listInstancesCreated == null){
 			listInstancesCreated = new ArrayList<String>();
 		}
-		// TODO Auto-generated method stub
+
 		HashMap<String, String> key = new HashMap<String, String>();
 		tipo_inp = tipo_inp.replace(NS, "");
 		tipo_out = tipo_out.replace(NS, "");
@@ -481,7 +481,6 @@ public class BindsProcessor {
 		try{
 			HashMap<String, String> value = values.get(key);
 			OntClass ClassImage = ontModel.getOntClass(NS+value.get("RP"));
-			String rpName = "";
 			if(rp == null){
 				rp = ontModel.createIndividual(NS+outputPort.getLocalName()+"rp"+inputPort.getLocalName(),ClassImage);
 			}

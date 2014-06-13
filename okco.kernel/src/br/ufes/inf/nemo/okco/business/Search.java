@@ -2223,10 +2223,17 @@ public class Search {
 					//Update classes
 					Instance.ListClasses = dto.ClassNameList;
 				}
-					
 			}
-			
 		}
+		
+//		Para Fabio com carinho...
+//		if (Instance == null)
+//		{					
+//			String nameSpace = instanceURI.split("#")[0] + "#";
+//			String name = instanceURI.split("#")[1];
+//			Instance = new Instance(nameSpace, name, this.GetClassesFrom(instanceURI, model), this.GetDifferentInstancesFrom(InfModel, instanceURI), this.GetSameInstancesFrom(InfModel, instanceURI),true);
+//			
+//		}
 	
 		ArrayList<DtoDefinitionClass> resultListDefinitions = new ArrayList<DtoDefinitionClass>();
 
