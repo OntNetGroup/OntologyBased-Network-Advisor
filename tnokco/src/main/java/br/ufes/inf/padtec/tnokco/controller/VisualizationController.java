@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.ufes.inf.nemo.okco.model.DtoInstance;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
+import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.padtec.tnokco.business.Equipment;
 import br.ufes.inf.padtec.tnokco.business.InterfaceOutput;
 import br.ufes.inf.padtec.tnokco.business.Provisioning;
@@ -313,6 +315,35 @@ public class VisualizationController {
 		return hashEquipIntIn;
 	}
 
+	
+	@RequestMapping(method = RequestMethod.GET, value="/do_connects")
+	public @ResponseBody String do_connects(@RequestParam("rp_src") String rp_src,@RequestParam("rp_trg") String sp_trg, @RequestParam("type") String type, HttpServletRequest request) {
+		try {
+			Provisioning.connects(rp_src, rp_src, type);
+		} catch (Exception e) {
+			return "false";
+		}
+		
+		return "true";
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/get_possible_connections")
+	public @ResponseBody String get_possible_connections(@RequestParam("rp") String rp, HttpServletRequest request) {
+		/*
+		 * [0] = RP's name
+		 * [1] = Connection type
+		 * */
+		ArrayList<String[]> list = Provisioning.getPossibleConnects(rp);
+		
+		String hashEquipIntIn = "";
+
+		for(String[] line : list){
+			hashEquipIntIn += line[0].substring(line[0].indexOf("#")+1)+"#"+line[1]+";";
+		}
+		
+		return hashEquipIntIn;
+	}
+
 	public static String getG800Image(ArrayList<String> elemTypes){
 		for(String type: elemTypes){
 			if(elements.containsKey(type.substring(type.indexOf("#")+1)))
@@ -323,8 +354,82 @@ public class VisualizationController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/connects_provisoning_visualization")
 	public static String connects_provisoning_visualization(HttpServletRequest request) {
+		elementsInitialize();
+		
+		String arborStructure = "";
+		String hashEquipIntOut = "";
+		String hashTypes = "";
+		String hashAllowed = "";
+		String hashRPEquip = "";
+
+		int size = 0;
+		int width  = 1000;
+		int height = 800;
+		
+		ArrayList<String> equipsWithRps = new ArrayList<String>();
+		ArrayList<String> connectsBetweenEqsAndRps = new ArrayList<String>();
+		
+		ProvisioningController.getEquipmentsWithRPs(HomeController.InfModel, HomeController.NS, equipsWithRps, connectsBetweenEqsAndRps);
+		
+		/* *
+		  	equipsWithRps
+			[#skfep2, skeq2#skfep1, #sofep2, #sofep1, #skap3, #soap3, #skap1, soeq1#soap1, #skap2, #soap2]
+			
+			connectsBetweenEqsAndRps
+			[skeq3#skfep2, pm1#skfep2, pm1#sofep2, soeq3#sofep2, soap2#sofep1, soap3#sofep1, soeq1#sofep1, skeq2#skap3, skeq4#skap3, soeq3#soap3, skeq1#skap1, skeq2#skap1, skeq2#skap2, skeq3#skap2, soeq3#soap2]
+		 * */
+		
+		ArrayList<String> usedRPs = new ArrayList<String>();
+		
+		for (String connections : connectsBetweenEqsAndRps) {
+			String src = connections.split("#")[0];
+			String trg = connections.split("#")[1];
+			
+			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+src, HomeController.InfModel))+"_ROXO\"}),";
+			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+trg, HomeController.InfModel))+"_ROXO\"}), {name:' '});";
+			size++;
+			
+			usedRPs.add(src);
+			usedRPs.add(trg);
+			
+			hashTypes += "hash[\""+src+"\"] = \"<b>"+src+" is an individual of classes: </b><br><ul><li></li></ul>\";";
+			hashTypes += "hash[\""+trg+"\"] = \"<b>"+trg+" is an individual of classes: </b><br><ul><li></li></ul>\";";
+		}
+		
+		for (String equipWithRP : equipsWithRps) {
+			String equip = equipWithRP.split("#")[0];
+			String rp = equipWithRP.split("#")[1];
+			
+			if(!equip.isEmpty()){
+				Boolean situation;
+				if(usedRPs.contains(rp)){
+					situation = true;
+					hashAllowed += "hashAllowed[\""+equip+"\"] = \"VERDE\";";
+				}else{
+					situation = false;
+					hashTypes += "hash[\""+equip+"\"] = \"<b>"+equip+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
+				}
+				
+				hashRPEquip += "hashEquipRP['"+rp+"'] = \""+equip+"\";";
+				
+				hashEquipIntOut += "hashEquipIntOut['"+equip+"'] = new Array();";
+				hashEquipIntOut += "hashEquipIntOut['"+equip+"']['"+rp+"'] = \""+situation.toString()+"\";";
+			}
+		}
 		
 		
+		width  += 400 * (size / 10);
+		height += 400 * (size / 10);
+		
+		//session
+		request.getSession().setAttribute("valuesGraph", arborStructure);
+		request.getSession().setAttribute("width", width);
+		request.getSession().setAttribute("height", height);
+		request.getSession().setAttribute("hashEquipIntOut", hashEquipIntOut);
+		request.getSession().setAttribute("hashTypes", hashTypes);
+		request.getSession().setAttribute("hashAllowed", hashAllowed);
+		request.getSession().setAttribute("hashRPEquip", hashRPEquip);
+		request.getSession().setAttribute("size", size);
 		
 		return "connectsProvisioning";
 	}
@@ -344,10 +449,8 @@ public class VisualizationController {
 		int size = 0;
 		int width  = 1000;
 		int height = 800;
-		boolean canConnect = false;
 		
 		for(Equipment equip : list){
-			canConnect = false;
 			hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"'] = new Array();";
 			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
 			for(InterfaceOutput outs : equip.getOutputs()){
@@ -357,7 +460,6 @@ public class VisualizationController {
 				ArrayList<String> possibleList = ProvisioningController.getCandidateInterfacesForConnection(outs.getName());
 				for(String possibleConnection : possibleList){
 					if(possibleConnection.contains("true")){
-						canConnect = true;
 						hashAllowed += "hashAllowed[\""+equip.getName()+"\"] = \"VERDE\";";
 						break;
 					}

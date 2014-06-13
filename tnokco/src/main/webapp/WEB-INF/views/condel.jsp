@@ -58,12 +58,12 @@
 									try {
 
 										//Used to get the value of the CodeMirror editor
-										var result = condelParser.parse(editor.getValue());
+										condelParser.parse(editor.getValue());
 										
 										var json = {
 												
 											"ok" : true,
-											"result" : result											
+											"result" : editor.getValue()											
 										};
 
 										$
@@ -162,10 +162,10 @@
 											try {
 
 												//Used to get the value of the CodeMirror editor
-												var result = condelParser.parse(editor.getValue());
+												condelParser.parse(editor.getValue());
 
 												var json = {
-													"result" : result,
+													"result" : editor.getValue(),
 													"ok" : true,
 												};
 
@@ -295,10 +295,10 @@
 											try {
 
 												//Used to get the value of the CodeMirror editor
-												var result = condelParser.parse(editor.getValue());
+												condelParser.parse(editor.getValue());
 
 												var json = {
-													"result" : result,
+													"result" : editor.getValue(),
 													"ok" : true
 												};
 

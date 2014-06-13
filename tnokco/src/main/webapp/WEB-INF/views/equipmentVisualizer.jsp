@@ -320,13 +320,6 @@
 	<div class="tooltip-demo well">
 		<table>
 			<tr>
-				<td style="padding-right: 10px;">
-				<div class="controls" style="margin-bottom:8px">
-				<input type="radio"
-					name="connectionType" value="bind"><b>Bind</b><br> <input
-					type="radio" name="connectionType" value="connect"><b>Connect</b>
-					</div>
-				</td>
 				<td style="padding-right: 5px; padding-left: 20px;">
 					<button type="button" id="resetSelection" disabled="disabled"
 						onclick="resetSelection();">Reset Selection</button>
@@ -336,20 +329,6 @@
 						enctype="multipart/form-data">
 						<input type="submit" id="autoBinds" name="submit"
 							value="Automatic Binds" />
-					</form>
-				</td>
-				<td style="padding-right: 5px;">
-					<form action="autoConnects" class="form-horizontal" method="POST"
-						enctype="multipart/form-data">
-						<input type="submit" id="autoConnects" name="submit"
-							value="Automatic Connects" />
-					</form>
-				</td>
-				<td>
-					<form action="autoBindsAndConnects" class="form-horizontal"
-						method="POST" enctype="multipart/form-data">
-						<input type="submit" id="autoBindsAndConnects" name="submit"
-							value="Automatic Binds and Connects" />
 					</form>
 				</td>
 			</tr>
