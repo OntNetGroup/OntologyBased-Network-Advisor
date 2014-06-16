@@ -381,13 +381,21 @@ public class VisualizationController {
 		 * */
 		
 		ArrayList<String> usedRPs = new ArrayList<String>();
-		
+		ArrayList<String[]> possibleConnections;
 		for (String connections : connectsBetweenEqsAndRps) {
 			String src = connections.split("#")[0];
 			String trg = connections.split("#")[1];
 			
-			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+src, HomeController.InfModel))+"_ROXO\"}),";
-			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+trg, HomeController.InfModel))+"_ROXO\"}), {name:' '});";
+			possibleConnections = Provisioning.getPossibleConnects(src);
+			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+src, HomeController.InfModel))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
+			if(!possibleConnections.isEmpty() && !hashAllowed.contains(src))
+				hashAllowed += "hashAllowed.push(\""+src+"\");";
+			
+			possibleConnections = Provisioning.getPossibleConnects(trg);
+			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+trg, HomeController.InfModel))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
+			if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg))
+				hashAllowed += "hashAllowed.push(\""+trg+"\");";
+			
 			size++;
 			
 			usedRPs.add(src);
@@ -405,10 +413,14 @@ public class VisualizationController {
 				Boolean situation;
 				if(usedRPs.contains(rp)){
 					situation = true;
-					hashAllowed += "hashAllowed[\""+equip+"\"] = \"VERDE\";";
 				}else{
 					situation = false;
 					hashTypes += "hash[\""+equip+"\"] = \"<b>"+equip+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
+					if(!Provisioning.getPossibleConnects(rp).isEmpty() && !hashAllowed.contains(rp)){
+						arborStructure += "graph.getNode(\""+equip+"\").data.shape = graph.getNode(\""+equip+"\").data.shape.split(\"_\")[0]+\"_VERDE\";";
+						hashAllowed += "hashAllowed.push(\""+equip+"\");";
+					}
+					
 				}
 				
 				hashRPEquip += "hashRPEquip['"+rp+"'] = \""+equip+"\";";
@@ -417,6 +429,9 @@ public class VisualizationController {
 				hashEquipIntOut += "hashEquipIntOut['"+equip+"']['"+rp+"'] = \""+situation.toString()+"\";";
 			}
 		}
+		
+		
+		
 		
 		
 		width  += 400 * (size / 10);

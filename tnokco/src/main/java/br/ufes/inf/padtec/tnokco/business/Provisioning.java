@@ -460,17 +460,12 @@ public class Provisioning {
 				stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"Forwarding_to_Uni_Access_Transport_Entity"), HomeController.Model.getIndividual(HomeController.NS+rp_2)));	
 				HomeController.Model.add(stmts);
 				
-				
-				Individual i = HomeController.Model.getIndividual(HomeController.NS+rp+"_fw_"+rp_2);
-				OntClass cccc = HomeController.Model.getOntClass(HomeController.NS+"AP_Forwarding");
-				
-				
-				
+				HomeController.InfModel = HomeController.Model;
 				HomeController.UpdateAddIntanceInLists(forwarding.getNameSpace()+forwarding.getLocalName());
 				HomeController.UpdateAddIntanceInLists(nc.getNameSpace()+nc.getLocalName());
 			}
 		}
-//		HomeController.UpdateLists();
+		
 
 	}
 
