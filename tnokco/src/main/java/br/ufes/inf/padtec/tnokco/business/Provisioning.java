@@ -429,7 +429,7 @@ public class Provisioning {
 
 
 	public static void connects(String rp, String rp_2, String type) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
-
+		HomeController.InfModel = HomeController.Model;
 		if(type.equals("pm_nc")){
 			Individual forwarding = HomeController.Model.createIndividual(HomeController.NS+rp+"_fw_"+rp_2,HomeController.Model.getResource(HomeController.NS+"PM_NC_Forwarding"));
 			Individual nc = HomeController.Model.createIndividual(HomeController.NS+rp+"_ate_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Unidirectional_PM_NC"));
@@ -460,7 +460,6 @@ public class Provisioning {
 				stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"Forwarding_to_Uni_Access_Transport_Entity"), HomeController.Model.getIndividual(HomeController.NS+rp_2)));	
 				HomeController.Model.add(stmts);
 				
-				HomeController.InfModel = HomeController.Model;
 				HomeController.UpdateAddIntanceInLists(forwarding.getNameSpace()+forwarding.getLocalName());
 				HomeController.UpdateAddIntanceInLists(nc.getNameSpace()+nc.getLocalName());
 			}

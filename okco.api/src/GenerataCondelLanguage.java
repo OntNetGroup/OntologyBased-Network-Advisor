@@ -84,7 +84,7 @@ public class GenerataCondelLanguage {
 		BufferedWriter writer = null;
         try {
             //create a temporary file
-            File logFile = new File("gambiarra.txt");
+            File logFile = new File("newCondelLanguage.txt");
 
             // This will output the full path where the file will be written to...
             System.out.println(logFile.getCanonicalPath());

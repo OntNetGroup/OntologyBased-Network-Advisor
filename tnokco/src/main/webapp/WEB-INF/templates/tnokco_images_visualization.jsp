@@ -64,3 +64,4 @@
 	
 	<img id="Equip_LARANJA" src="Assets/shapes/Equip_LARANJA.png" hidden>
 	<img id="PM_LARANJA" src="Assets/shapes/PM_LARANJA.png" hidden>
+	<img id="RP_LARANJA" src="Assets/shapes/RP_LARANJA.png" hidden>
