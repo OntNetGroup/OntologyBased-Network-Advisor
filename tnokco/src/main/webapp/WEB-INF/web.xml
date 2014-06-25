@@ -4,7 +4,7 @@
 	<display-name>Archetype Created Web Application</display-name>
 	<context-param>
 		<param-name>PathG800owl</param-name>
-		<param-value>http://localhost:8080/tnokco/Assets/owl/g800.owl</param-value>
+		<param-value>http://localhost:8081/tnokco/Assets/owl/g800.owl</param-value>
 		<!-- Fabio, deixa 8080!!! Voce eh o unico 8081 ;) -->
 	</context-param>
 	<servlet>

@@ -59,15 +59,20 @@ public class HomeController {
 			request.getSession().removeAttribute("errorMensage");
 			request.getSession().removeAttribute("loadOk");
 			
-			return "login";	//View to return
+			//return "login";	//View to return
+			return "redirect:welcome";
+			
 	  }
 	
 	@RequestMapping(method = RequestMethod.GET, value="/welcome")
 	public String welcome(HttpSession session, HttpServletRequest request) {		
 	     
 			String login = (String)request.getSession().getAttribute("login");
-			if(login == null)
-				login = "";
+			
+			//no login
+			login = "true";		
+			//if(login == null)
+			//login = "";
 			
 			if(login.equals("true"))
 			{
@@ -83,10 +88,11 @@ public class HomeController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/faq")
 	public String faq(HttpSession session, HttpServletRequest request) {
-	     
+
 			String login = (String)request.getSession().getAttribute("login");
-			if(login == null)
-				login = "";
+			login = "true";
+			//if(login == null)
+			//	login = "";
 			
 			if(login.equals("true"))
 			{
@@ -96,7 +102,9 @@ public class HomeController {
 				return "faq";	//View to return
 			} else {
 				
-				return "login";	//View to return
+				//return "login";	//View to return
+				
+				return "faq";	//View to return
 			}
 	  }
 	
