@@ -345,14 +345,6 @@ public class VisualizationController {
 		return hashEquipIntIn;
 	}
 
-	public static String getG800Image(ArrayList<String> elemTypes){
-		for(String type: elemTypes){
-			if(elements.containsKey(type.substring(type.indexOf("#")+1)))
-				return elements.get(type.substring(type.indexOf("#")+1));
-		}
-		return "dot";
-	}
-
 	@RequestMapping(method = RequestMethod.GET, value="/connects_provisoning_visualization")
 	public static String connects_provisoning_visualization(HttpServletRequest request) {
 		elementsInitialize();
@@ -574,5 +566,16 @@ public class VisualizationController {
 		elements.put("Site", "SITE");
 	}
 	
+	public static String getG800Image(ArrayList<String> elemTypes){
+		for(String type: elemTypes){
+			if(type.contains("Forwarding_"))
+				continue;
+			if(elements.containsKey(type.substring(type.indexOf("#")+1))){
+				return elements.get(type.substring(type.indexOf("#")+1));
+			}
+		}
+		return "dot";
+	}
+
 }
 

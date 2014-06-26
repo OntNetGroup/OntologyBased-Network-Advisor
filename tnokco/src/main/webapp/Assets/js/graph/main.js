@@ -4,7 +4,7 @@
 //  A project template for using arbor.js
 //
 
-
+possiblePopUp = "";
 (function($){
 
   Renderer = function(canvas){
@@ -240,10 +240,12 @@
 
             if (dragged.node !== null){		
             	if(classHash[dragged.node.name].indexOf("put_Interface") == -1){
-	            	var r=confirm(popupMessage);
-					if (r==true){
-						window.location.href = targetURL+dragged.node.name;	
-					}
+            		if(possiblePopUp != "" && dragged.node.data.shape.indexOf(possiblePopUp) != -1){	
+		            	var r=confirm(popupMessage);
+						if (r==true){
+							window.location.href = targetURL+dragged.node.name;	
+						}
+            		}
             	}
 			}
 
