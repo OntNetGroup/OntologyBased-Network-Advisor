@@ -57,14 +57,6 @@
 							loading();
 						});
 
-						$('#autoConnects').click(function() {
-							loading();
-						});
-
-						$('#autoBindsAndConnects').click(function() {
-							loading();
-						});
-
 					});
 
 	function initializeElements() {
