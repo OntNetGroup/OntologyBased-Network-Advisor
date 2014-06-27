@@ -404,7 +404,7 @@ public class Provisioning {
 															if(!HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, rp,HomeController.NS+"has_forwarding", HomeController.NS+"Reference_Point").contains(rp_sink)){
 																String[] tuple = new String[2];
 																tuple[0]= rp_sink;
-																if(rp_so.equals(HomeController.NS+"Active_So_Path-FEP_-_Path_NC_connected")|| rp_so.equals(HomeController.NS+"Active_So_PM-FEP_-_PM_NC_connected")){
+																if(rp_so.equals(HomeController.NS+"Source_PM-FEP")|| rp_so.equals(HomeController.NS+"Source_Path_FEP")){
 																	tuple[1]="nc";
 																}else{
 																	tuple[1]="trail";
