@@ -314,7 +314,6 @@ public class VisualizationController {
 		}
 		return hashEquipIntIn;
 	}
-
 	
 	@RequestMapping(method = RequestMethod.GET, value="/do_connects")
 	public @ResponseBody String do_connects(@RequestParam("rp_src") String rp_src,@RequestParam("rp_trg") String rp_trg, @RequestParam("rp_type") String rp_type, HttpServletRequest request) {
@@ -441,8 +440,8 @@ public class VisualizationController {
 		
 		return "connectsProvisioning";
 	}
-	
-	
+		
+	//Binds Provisioning
 	@RequestMapping(method = RequestMethod.GET, value="/provisoning_visualization")
 	public static String provisoning_visualization(HttpServletRequest request) {
 		elementsInitialize();

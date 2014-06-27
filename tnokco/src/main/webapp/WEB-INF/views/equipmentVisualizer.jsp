@@ -41,9 +41,10 @@
 					function() {
 						canClickable = true;
 						canShowContextMenu = true;
-						targetURL = "open_equipment_elements_visualization\?equip=";
+						targetURL = "open_g800_visualization_from_equip\?selected=";
 						popupMessage = "Go to Equipment\'s components";
-
+						possiblePopUp = "Equip";
+						
 						initHash();
 <%if (size == 1)
 				out.println("graph = startArbor(\"#viewport\", 1.0);");
@@ -251,7 +252,7 @@
 												}
 											}
 											//change the first clicked node
-											graph.getNode(trgEquipBindsClicked).data.shape = graph.getNode(trgEquipBindsClicked).data.shape.split("_")[0]+"_AZUL";
+											graph.getNode(trgEquipBindsClicked).data.shape = graph.getNode(trgEquipBindsClicked).data.shape.split("_")[0]+"_LARANJA";
 											graph.renderer.redraw();
 										},
 										error : function() {
