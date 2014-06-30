@@ -358,6 +358,9 @@ public class Provisioning {
 			}
 			if(classes_from_rp.contains(HomeController.NS+"Source_PM-FEP"))
 			{
+				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+rp,HomeController.NS+"Forwarding_from_Uni_PM_NC", HomeController.NS+"AP_Forwarding").size()>0){
+					return result;
+				}
 				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input,HomeController.NS+"INV.componentOf", HomeController.NS+"Physical_Media").size()>0){
 					String pm = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input,HomeController.NS+"INV.componentOf", HomeController.NS+"Physical_Media").get(0);
 					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, pm,HomeController.NS+"componentOf", HomeController.NS+"Output").size()>0){
@@ -379,6 +382,10 @@ public class Provisioning {
 
 
 			}else{
+				if((HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+rp,HomeController.NS+"Forwarding_from_Uni_Path_NC", HomeController.NS+"Path_NC_Forwarding").size()>0)){
+					return result;
+				}
+				// || (HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+rp,HomeController.NS+"Forwarding_from_Uni_Access_Transport_Entity", HomeController.NS+"AP_Forwarding").size()>0))
 				if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input, HomeController.NS+"INV.componentOf", HomeController.NS+"Termination_Function").size()>0){
 					String tf=(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, input, HomeController.NS+"INV.componentOf", HomeController.NS+"Termination_Function")).get(0);
 					if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, tf, HomeController.NS+"componentOf", HomeController.NS+"Output").size()>0){
@@ -430,41 +437,40 @@ public class Provisioning {
 
 	public static void connects(String rp, String rp_2, String type) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
 		HomeController.InfModel = HomeController.Model;
+		ArrayList<Statement> stmts = new ArrayList<Statement>();
+		Individual forwarding;
+		Individual te;
 		if(type.equals("pm_nc")){
-			Individual forwarding = HomeController.Model.createIndividual(HomeController.NS+rp+"_fw_"+rp_2,HomeController.Model.getResource(HomeController.NS+"PM_NC_Forwarding"));
-			Individual nc = HomeController.Model.createIndividual(HomeController.NS+rp+"_ate_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Unidirectional_PM_NC"));
-			ArrayList<Statement> stmts = new ArrayList<Statement>();
-			stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"is_represented_by_Uni_Access_Transport_Entity"), nc));
+			forwarding = HomeController.Model.createIndividual(HomeController.NS+rp+"_fw_"+rp_2,HomeController.Model.getResource(HomeController.NS+"PM_NC_Forwarding"));
+			te = HomeController.Model.createIndividual(HomeController.NS+rp+"_ate_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Unidirectional_PM_NC"));
+			stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"is_represented_by_Uni_Access_Transport_Entity"), te));
 			stmts.add(HomeController.Model.createStatement(HomeController.Model.getIndividual(HomeController.NS+rp), HomeController.Model.getProperty(HomeController.NS+"Forwarding_from_Uni_PM_NC"), forwarding));
 			stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"Forwarding_to_Uni_PM_NC"), HomeController.Model.getIndividual(HomeController.NS+rp_2)));	
-			HomeController.Model.add(stmts);
-			HomeController.UpdateAddIntanceInLists(forwarding.getNameSpace()+forwarding.getLocalName());
-			HomeController.UpdateAddIntanceInLists(nc.getNameSpace()+nc.getLocalName());
+			
 		}else{
 			if(type.equals("nc")){
-				Individual forwarding = HomeController.Model.createIndividual(HomeController.NS+rp+"_fw_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Path_NC_Forwarding"));
-				Individual nc = HomeController.Model.createIndividual(HomeController.NS+rp+"_ate_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Unidirectional_Path_NC"));
-				ArrayList<Statement> stmts = new ArrayList<Statement>();
-				stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"is_represented_by_Uni_Path_NC"), nc));
+				forwarding = HomeController.Model.createIndividual(HomeController.NS+rp+"_fw_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Path_NC_Forwarding"));
+				te = HomeController.Model.createIndividual(HomeController.NS+rp+"_ate_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Unidirectional_Path_NC"));
+				stmts = new ArrayList<Statement>();
+				stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"is_represented_by_Uni_Path_NC"), te));
 				stmts.add(HomeController.Model.createStatement(HomeController.Model.getIndividual(HomeController.NS+rp), HomeController.Model.getProperty(HomeController.NS+"Forwarding_from_Uni_Path_NC"), forwarding));
 				stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"Forwarding_to_Uni_Path_NC"), HomeController.Model.getIndividual(HomeController.NS+rp_2)));	
-				HomeController.Model.add(stmts);
-				HomeController.UpdateAddIntanceInLists(forwarding.getNameSpace()+forwarding.getLocalName());
-				HomeController.UpdateAddIntanceInLists(nc.getNameSpace()+nc.getLocalName());
 			}else{
-				Individual forwarding = HomeController.Model.createIndividual(HomeController.NS+rp+"_fw_"+rp_2,HomeController.Model.getResource(HomeController.NS+"AP_Forwarding"));
-				Individual nc = HomeController.Model.createIndividual(HomeController.NS+rp+"_ate_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Unidirectional_Access_Transport_Entity"));
-				ArrayList<Statement> stmts = new ArrayList<Statement>();
-				stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"is_represented_by_Uni_Access_Transport_Entity"), nc));
+				forwarding = HomeController.Model.createIndividual(HomeController.NS+rp+"_fw_"+rp_2,HomeController.Model.getResource(HomeController.NS+"AP_Forwarding"));
+				te = HomeController.Model.createIndividual(HomeController.NS+rp+"_ate_"+rp_2,HomeController.Model.getResource(HomeController.NS+"Unidirectional_Access_Transport_Entity"));
+				stmts = new ArrayList<Statement>();
+				stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"is_represented_by_Uni_Access_Transport_Entity"), te));
 				stmts.add(HomeController.Model.createStatement(HomeController.Model.getIndividual(HomeController.NS+rp), HomeController.Model.getProperty(HomeController.NS+"Forwarding_from_Uni_Access_Transport_Entity"), forwarding));
 				stmts.add(HomeController.Model.createStatement(forwarding, HomeController.Model.getProperty(HomeController.NS+"Forwarding_to_Uni_Access_Transport_Entity"), HomeController.Model.getIndividual(HomeController.NS+rp_2)));	
-				HomeController.Model.add(stmts);
 				
-				HomeController.UpdateAddIntanceInLists(forwarding.getNameSpace()+forwarding.getLocalName());
-				HomeController.UpdateAddIntanceInLists(nc.getNameSpace()+nc.getLocalName());
 			}
+			
 		}
+		stmts.add(HomeController.Model.createStatement(HomeController.Model.getIndividual(HomeController.NS+rp), HomeController.Model.getProperty(HomeController.NS+"has_forwarding"), HomeController.Model.getIndividual(HomeController.NS+rp_2)));
+		HomeController.Model.add(stmts);
 		
+		HomeController.UpdateAddIntanceInLists(forwarding.getNameSpace()+forwarding.getLocalName());
+		HomeController.UpdateAddIntanceInLists(te.getNameSpace()+te.getLocalName());
 
 	}
 
