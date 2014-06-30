@@ -549,6 +549,8 @@ public class VisualizationController {
 		elements.put("Input", "Input");
 		elements.put("Output", "Output");
 		elements.put("Reference_Point", "RP");
+		elements.put("Forwarding_End_Point", "RP");
+		elements.put("Forwarding_Point", "RP");
 		elements.put("Transport_Entity", "TE");
 		elements.put("Layer_Network", "Layer");
 		elements.put("Binding", "Binding");
@@ -560,15 +562,13 @@ public class VisualizationController {
 		elements.put("Termination_Sink_Process", "Process");
 		elements.put("Layer_Processor_Process", "Process");
 		elements.put("Termination_Source_Process", "Process");
-		elements.put("Forwarding_Rule", "FWR_RULE");
+//		elements.put("Forwarding_Rule", "FWR_RULE");
 		elements.put("Equipment", "Equip");
 		elements.put("Site", "SITE");
 	}
 	
 	public static String getG800Image(ArrayList<String> elemTypes){
 		for(String type: elemTypes){
-			if(type.contains("Forwarding_"))
-				continue;
 			if(elements.containsKey(type.substring(type.indexOf("#")+1))){
 				return elements.get(type.substring(type.indexOf("#")+1));
 			}
