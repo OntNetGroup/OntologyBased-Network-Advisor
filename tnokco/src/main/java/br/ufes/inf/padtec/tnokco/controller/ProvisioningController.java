@@ -972,25 +972,35 @@ public class ProvisioningController{
 		return VisualizationController.provisoning_visualization(request);
 	}
 	
-	public static void getEquipmentsWithRPs(InfModel infModel, String NS, ArrayList<String> equipsWithRps, ArrayList<String> connectsBetweenEqsAndRps){
+	public static void getEquipmentsWithRPs(InfModel infModel, String NS, ArrayList<String> equipsWithRps, ArrayList<String> connectsBetweenEqsAndRps, ArrayList<String> connectsBetweenRps){
 		if(equipsWithRps == null){
 			equipsWithRps = new ArrayList<String>();
 		}
 		if(connectsBetweenEqsAndRps == null){
 			connectsBetweenEqsAndRps = new ArrayList<String>();
 		}
+		if(connectsBetweenRps == null){
+			connectsBetweenRps = new ArrayList<String>();
+		}
 		ArrayList<Instance> rpInstances = getInstancesFromClass("Reference_Point");
 		
 		for (Instance rp : rpInstances) {
 			ArrayList<DtoInstanceRelation> rpRelations = HomeController.Search.GetInstanceAllRelations(infModel, rp.ns+rp.name);
 			String bindingNs = "";
+			String hasFW = "";
 			for (DtoInstanceRelation rel : rpRelations) {
 				String propertyName = rel.Property.replace(NS, "");
 				if(propertyName.equals("INV.binding_is_represented_by")){
-					bindingNs = rel.Target;
-					break;					
+					bindingNs = rel.Target;			
+				}else if(propertyName.equals("has_forwarding")){
+					String cnct = "";
+					cnct += rp.name;
+					cnct += "#";
+					cnct += rel.Target.replace(NS, "");
+					connectsBetweenRps.add(cnct);
 				}
 			}
+			
 			ArrayList<String> equips = new ArrayList<String>();
 			if(!bindingNs.equals("")){
 				equips = getEquipmentFromBinding(infModel, NS, bindingNs);

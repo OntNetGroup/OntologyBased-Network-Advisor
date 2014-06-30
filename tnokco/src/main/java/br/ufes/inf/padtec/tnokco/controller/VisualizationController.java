@@ -360,8 +360,9 @@ public class VisualizationController {
 		
 		ArrayList<String> equipsWithRps = new ArrayList<String>();
 		ArrayList<String> connectsBetweenEqsAndRps = new ArrayList<String>();
+		ArrayList<String> connectsBetweenRps = new ArrayList<String>();
 		
-		ProvisioningController.getEquipmentsWithRPs(HomeController.InfModel, HomeController.NS, equipsWithRps, connectsBetweenEqsAndRps);
+		ProvisioningController.getEquipmentsWithRPs(HomeController.InfModel, HomeController.NS, equipsWithRps, connectsBetweenEqsAndRps, connectsBetweenRps);
 		
 		/* *
 		  	equipsWithRps
