@@ -219,9 +219,11 @@ possiblePopUp = "";
 				dragged.node.fixed = true
 				if( e.button == 2 ) { 
 					if(showContextMenu){
-						$(canvas).contextMenu(generateContextMenu(dragged.node.name, currentSelection), {
+						var ret = generateContextMenu(dragged.node.name, currentSelection);
+						$(canvas).contextMenu(ret, {
 							theme : 'vista'		
 						});
+						
 						return false;
 		    		} 
 	            }

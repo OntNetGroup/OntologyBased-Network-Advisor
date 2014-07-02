@@ -348,7 +348,7 @@ public class Provisioning {
 		InfModel = HomeController.InfModel;
 		ArrayList<String[]> result = new ArrayList<String[]>();
 		
-		ArrayList<String> classes_from_rp=HomeController.Search.GetClassesFrom(HomeController.NS+rp, Model);
+		ArrayList<String> classes_from_rp=HomeController.Search.GetClassesFrom(HomeController.NS+rp, InfModel);
 		String binding=null;
 		String input = null;
 		if(HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, HomeController.NS+rp, HomeController.NS+"INV.binding_is_represented_by", HomeController.NS+"Binding").size()>0){
@@ -467,6 +467,8 @@ public class Provisioning {
 		
 		HomeController.UpdateAddIntanceInLists(forwarding.getNameSpace()+forwarding.getLocalName());
 		HomeController.UpdateAddIntanceInLists(te.getNameSpace()+te.getLocalName());
+		
+		HomeController.InfModel = HomeController.Model;
 
 	}
 

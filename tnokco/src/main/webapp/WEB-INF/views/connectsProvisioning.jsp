@@ -216,11 +216,13 @@
 												name : edgeName
 											});
 							resetSelection();
+// 							location.reload(true);
 						}
 						$('#maskforloading').hide();
 					},
 					error : function() {
 						alert("Erro");
+// 						location.reload(true);
 					}
 				});
 	}
@@ -243,8 +245,22 @@
 			if(typeof hashRPEquip[equip] === "undefined") {
 				trgRP = equip;
 				rpType = hashEquipIntIn[equip];
-				doConnects();
-				return;
+				
+				$("#viewport").contextMenu([ {
+					"Connecting" : {
+						disabled : true
+					}
+				} ], {
+					theme : 'vista'		
+				});
+
+				setInterval(function(){doConnects();}, 1500);
+				
+				return [ {
+					"Connecting" : {
+						disabled : true
+					}
+				} ];
 			}
 			
 			equipHash = hashEquipIntIn[equip];

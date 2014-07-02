@@ -397,6 +397,8 @@ public class VisualizationController {
 			hashTypes += "hash[\""+trg+"\"] = \"<b>"+trg+" is an individual of classes: </b><br><ul><li></li></ul>\";";
 		}
 		
+		HashMap<String, String> rpXequip = new HashMap<String, String>();
+		
 		for (String equipWithRP : equipsWithRps) {
 			String equip = equipWithRP.split("#")[0];
 			String rp = equipWithRP.split("#")[1];
@@ -419,12 +421,29 @@ public class VisualizationController {
 				
 				hashEquipIntOut += "hashEquipIntOut['"+equip+"'] = new Array();";
 				hashEquipIntOut += "hashEquipIntOut['"+equip+"']['"+rp+"'] = \""+situation.toString()+"\";";
+				rpXequip.put(rp, equip);
 			}
 		}
 		
-		
-		
-		
+		for (String rpXrp : connectsBetweenRps) {
+			String srcRP = rpXrp.split("#")[0];
+			String trgRP = rpXrp.split("#")[1];
+			
+			String srcNode = srcRP;
+			String trgNode = trgRP;
+			
+			if(rpXequip.containsKey(srcRP)){ //src is inside a equip
+				srcNode = rpXequip.get(srcRP);
+			}
+			if(rpXequip.containsKey(trgRP)){ //trg is inside a equip
+				trgNode = rpXequip.get(trgRP);
+			}
+			possibleConnections = Provisioning.getPossibleConnects(srcNode);
+			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+srcNode, HomeController.InfModel))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
+			
+			possibleConnections = Provisioning.getPossibleConnects(trgNode);
+			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+getG800Image(HomeController.Search.GetClassesFrom(HomeController.NS+trgNode, HomeController.InfModel))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
+		}
 		
 		width  += 400 * (size / 10);
 		height += 400 * (size / 10);
