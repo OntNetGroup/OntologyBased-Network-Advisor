@@ -798,8 +798,19 @@
 	 <div class="col-lg-12">
 		<p>Description of page:</p>
 		<div class="tooltip-demo well">
-		  	<p class="muted" style="margin-bottom: 0;">Tight pants next level keffiyeh <a href="#" data-rel="tooltip" data-original-title="first tooltip">you probably</a> haven't heard of them. Photo booth beard raw denim letterpress vegan messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie sustainable quinoa 8-bit american appadata-rel <a href="#" data-rel="tooltip" data-original-title="Another tooltip">have a</a> terry richardson vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four loko mcsweeney's cleanse vegan chambray. A <a href="#" data-rel="tooltip" data-original-title="Another one here too">really ironic</a> artisan whatever keytar, scenester farm-to-table banksy Austin <a href="#" data-rel="tooltip" data-original-title="The last tip!">twitter handle</a> freegan cred raw denim single-origin coffee viral.
-		  	</p>
+		  	<p class="muted" style="margin-bottom: 0;">
+					This page presents all details of a selected instance.
+					<br>	
+					<br>
+					The Instance Information box presents the following information about a selected instance: name , sameAs and differentFrom relations, belonging classes, and its relations. It also presents two types of visualizations: (a) visualize all relations (object and data properties) that a selected instance has from it to other instances, (b) visualize all relations that other instances have from them to the selected instance.
+					<br>
+					<br>
+					The Specialization box has two tabs: the first one shows the Class specializations and the other one shows the Property specializations.
+					<br>
+					<br>
+					All cases of property competitions are presented in the Object properties and in the Data properties boxes. There are: (i) object and (ii) data properties minimum cardinality restriction (minCardinality), (iii) object and (iv) data properties maximum cardinality restriction (maxCardinality), (v) object and (vi) data properties exactly cardinality restriction (cardinality), (vii) object and (viii) data properties some cardinality restriction (someValuesFrom). The user can use the hand icon button to complete manually its knowledge or the gear icon button to complete automatically.
+					
+				</p>
 		</div>                                  
 	 </div>
 </div>	

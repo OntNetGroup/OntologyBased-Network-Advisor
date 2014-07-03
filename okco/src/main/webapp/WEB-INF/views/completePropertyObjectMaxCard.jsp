@@ -321,20 +321,14 @@
 		<p>Description of page:</p>
 		<div class="tooltip-demo well">
 			<p class="muted" style="margin-bottom: 0;">
-				Tight pants next level keffiyeh <a href="#" data-rel="tooltip"
-					data-original-title="first tooltip">you probably</a> haven't heard
-				of them. Photo booth beard raw denim letterpress vegan messenger bag
-				stumptown. Farm-to-table seitan, mcsweeney's fixie sustainable
-				quinoa 8-bit american appadata-rel <a href="#" data-rel="tooltip"
-					data-original-title="Another tooltip">have a</a> terry richardson
-				vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats.
-				Tofu biodiesel williamsburg marfa, four loko mcsweeney's cleanse
-				vegan chambray. A <a href="#" data-rel="tooltip"
-					data-original-title="Another one here too">really ironic</a>
-				artisan whatever keytar, scenester farm-to-table banksy Austin <a
-					href="#" data-rel="tooltip" data-original-title="The last tip!">twitter
-					handle</a> freegan cred raw denim single-origin coffee viral.
-			</p>
+					This page is used for solving incompletions of type: object property maximum cardinality.
+					<br>	
+					<br>
+					For complete a relation, the user have to classify the relation's target instances, setting if they are equal or different, according the max cardinality value.
+					<br>
+					<br>
+					When a modification is done, the user can <i>commit and reason it</i>. With this action, the ontology consistency is verified by the reasoner, which also perform its classification and impact verification over the already existent information. OKCo will then provide a new completion list to the user. Another user option is to <i>commit</i> the modification. With this option, the instance assumes the Modified state.				
+				</p>
 		</div>
 	</div>
 </div>

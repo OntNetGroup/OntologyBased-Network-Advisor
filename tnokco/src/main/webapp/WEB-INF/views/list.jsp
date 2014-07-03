@@ -174,8 +174,27 @@
 		 <div class="col-lg-12">
 			<p>Description of page:</p>
 			<div class="tooltip-demo well">
-			  	<p class="muted" style="margin-bottom: 0;">Tight pants next level keffiyeh <a href="#" data-rel="tooltip" data-original-title="first tooltip">you probably</a> haven't heard of them. Photo booth beard raw denim letterpress vegan messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie sustainable quinoa 8-bit american appadata-rel <a href="#" data-rel="tooltip" data-original-title="Another tooltip">have a</a> terry richardson vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four loko mcsweeney's cleanse vegan chambray. A <a href="#" data-rel="tooltip" data-original-title="Another one here too">really ironic</a> artisan whatever keytar, scenester farm-to-table banksy Austin <a href="#" data-rel="tooltip" data-original-title="The last tip!">twitter handle</a> freegan cred raw denim single-origin coffee viral.
-			  	</p>
+			  	<p class="muted" style="margin-bottom: 0;">
+					This page shows all instances that exists in the OWL model, as well as its states and belonging classes. The possible states are:
+					<br>
+					<ul>
+						<li>Satisfied: instances that satisfies all the related ontology axioms.</li>
+						<li>Possible Refinement: instances that satisfies all the related ontology axioms, but that can be improved.</li>
+						<li>Not Satisfied: instances that do not satisfies all the related ontology axioms.</li>
+						<li>Modified: instances changed by the user and still not verified by the reasoner.</li>
+					</ul>
+					<br>
+					There exist two ways for instance competition:
+					<br>
+					<ul>
+						<li>Manually Completion: for user competition.</li>
+						<li>Auto Competition: for machine competition.</li>
+					</ul>
+					<br>
+					All instances relations can be visualized clicking on the magnifier icon.
+					Finally, the user can run the reasoned to check consistency and apply inferences at any time by clicking on the "Run reasoner" button. In case of inconsistencies, the last consistent state of the model is returned.
+					
+				</p>
 			</div>                                  
 		 </div>
 	</div>	

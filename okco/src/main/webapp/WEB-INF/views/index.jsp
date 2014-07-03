@@ -100,21 +100,28 @@
 	<div class="col-lg-12">
 		<p>Description of OKCo:</p>
 		<div class="tooltip-demo well">
-			<p class="muted" style="margin-bottom: 0;">
-				Tight pants next level keffiyeh <a href="#" data-rel="tooltip"
-					data-original-title="first tooltip">you probably</a> haven't heard
-				of them. Photo booth beard raw denim letterpress vegan messenger bag
-				stumptown. Farm-to-table seitan, mcsweeney's fixie sustainable
-				quinoa 8-bit american appadata-rel <a href="#" data-rel="tooltip"
-					data-original-title="Another tooltip">have a</a> terry richardson
-				vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats.
-				Tofu biodiesel williamsburg marfa, four loko mcsweeney's cleanse
-				vegan chambray. A <a href="#" data-rel="tooltip"
-					data-original-title="Another one here too">really ironic</a>
-				artisan whatever keytar, scenester farm-to-table banksy Austin <a
-					href="#" data-rel="tooltip" data-original-title="The last tip!">twitter
-					handle</a> freegan cred raw denim single-origin coffee viral.
-			</p>
+			
+				<p class="muted" style="margin-bottom: 0;">
+					In the Start Page two settings must be provided: the reasoner settings and the Owl File.
+				</p>
+				<br>
+				<p class="muted" style="margin-bottom: 0;">
+					<b>Reasoner settings:</b>
+					<br>
+					The Ontology-based Network Advisor uses the OWL reasoners capabilities of classification, consistency checking and inference to 
+					support the Advisor's functionalities. Two different reasoner options are provided: <a target="_blank" href="http://clarkparsia.com/pellet/">Pellet (version 2.3.1)</a> and <a target="_blank" href="http://hermit-reasoner.com/">HermiT (version 1.3.8)</a>.
+					<br> 
+					The existence of two different options is justified by the different characteristics of these reasoners. 
+					Pellet implements a tableau-based algorithm, while HermiT implements a faster algorithm, the hypertableau calculus <a target="_blank" href="http://semantic-web-journal.org/sites/default/files/swj120.pdf">[reference]</a>. 
+					However, Pellet has an incremental reasoning, i.e., it supports incremental classification and incremental consistency check for additions and removals <a target="_blank" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.153.8799&rep=rep1&type=pdf">[reference]</a>.
+				</p>
+				<br>
+				<p class="muted" style="margin-bottom: 0;">
+					<b>Load OWL File:</b>
+					<br>
+					The OWL File can be loaded by choosing the File button and then clicking in Upload.					
+				</p>
+
 		</div>
 	</div>
 </div>
