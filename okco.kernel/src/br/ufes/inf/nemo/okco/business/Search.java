@@ -2205,9 +2205,8 @@ public class Search {
 	
  	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(String instanceURI, OntModel model, InfModel InfModel, ArrayList<Instance> listAllInstances, ManagerInstances manager) {
 
-		Instance Instance = manager.getInstance(listAllInstances, instanceURI); 					// GET INTANCE on list all instances
-		ArrayList<DtoInstance> listInstancesDto = this.GetAllInstancesWithClass(model, InfModel);	// GET INTANCE on model
-		
+		Instance Instance = manager.getInstance(listAllInstances, instanceURI); // GET INTANCE on MODEL
+		ArrayList<DtoInstance> listInstancesDto = this.GetAllInstancesWithClass(model, InfModel);
 		for (DtoInstance dto : listInstancesDto) {
 			
 			if(dto.Uri.equals(instanceURI))
@@ -2222,7 +2221,7 @@ public class Search {
 				} else {
 					
 					//Update classes
-					Instance.ListClasses.addAll(dto.ClassNameList);
+					Instance.ListClasses = dto.ClassNameList;
 				}
 			}
 		}

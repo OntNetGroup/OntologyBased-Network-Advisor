@@ -173,7 +173,8 @@
 					success : function(result) {
 						if (result == "false") {
 							alert("Something wrong happened.");
-						} else {
+						}
+						else {
 							$("#resetSelection").prop(
 									"disabled", true);
 							var src, trg;
@@ -188,16 +189,7 @@
 							else
 								trg = hashRPEquip[trgRP];
 							
-
-							//set disable the hashs
-							if(typeof hashEquipIntOut[src] !== "undefined")
-								hashEquipIntOut[src][trg] = "true";
-
-							hashAllowed.splice(hashAllowed.indexOf(src),1);								
-							
-							currentSelection = false;
-								//create a new edge
-								var edgeName = "connects";
+							var edgeName = "connects";
 								graph
 									.addEdge(
 											graph
@@ -215,14 +207,34 @@
 											{
 												name : edgeName
 											});
+							
+
+							//set disable the hashs
+							if(typeof hashEquipIntOut[src] !== "undefined")
+								hashEquipIntOut[src][trg] = "true";
+
+							hashAllowed.splice(hashAllowed.indexOf(src),1);								
+							
+							currentSelection = false;
+							
 							resetSelection();
-// 							location.reload(true);
+							
+							var possibleRPs = result.split("#");
+							
+							//Set the availability of each equipment
+							for (var i = 0; i < possibleRPs.length; i++) {
+								if (possibleRPs[i] == "")
+									continue;
+								
+								//change the graph node color
+								graph.getNode(possibleRPs[i]).data.shape = graph.getNode(possibleRPs[i]).data.shape.split("_")[0]+"_VERDE";
+							}
+							
 						}
 						$('#maskforloading').hide();
 					},
 					error : function() {
 						alert("Erro");
-// 						location.reload(true);
 					}
 				});
 	}
@@ -246,15 +258,7 @@
 				trgRP = equip;
 				rpType = hashEquipIntIn[equip];
 				
-				$("#viewport").contextMenu([ {
-					"Connecting" : {
-						disabled : true
-					}
-				} ], {
-					theme : 'vista'		
-				});
-
-				setInterval(function(){doConnects();}, 1500);
+				setTimeout(function(){doConnects();}, 1000);
 				
 				return [ {
 					"Connecting" : {
