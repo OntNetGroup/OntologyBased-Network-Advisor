@@ -345,7 +345,7 @@
 <div style="float: right;">
 	<div id="currentNode">Select a node to visualize information
 		about it.</div>
-	<br> <img id="sub" src="Assets/img/subtitles/Provisoning.png"></img>
+	<br> <img id="sub" src="Assets/img/subtitles/Subtitle_TNOKCO_Binds.png"></img>
 </div>
 </div>
 

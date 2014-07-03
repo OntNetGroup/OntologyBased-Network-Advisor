@@ -1035,7 +1035,6 @@ public class ProvisioningController{
 			
 		}
 		
-		System.out.println();
 	}
 	
 	public static ArrayList<String> getEquipmentFromBinding(InfModel infModel, String NS, String bindingName){
