@@ -1,10 +1,7 @@
 package br.ufes.inf.nemo.okco.business;
 
 import java.util.ArrayList;
-
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.InfModel;
+import java.util.List;
 
 import br.ufes.inf.nemo.okco.model.DtoCompleteClass;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
@@ -12,9 +9,13 @@ import br.ufes.inf.nemo.okco.model.DtoInstance;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoPropertyAndSubProperties;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
-import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
+import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class ManagerInstances {
 	
@@ -53,12 +54,12 @@ public class ManagerInstances {
 		
 	}
 	
-	public void UpdateInstanceAndRelations(ArrayList<Instance> listInstances, ArrayList<DtoDefinitionClass> dtoRelationsList, OntModel model, InfModel infModel, String ns)
+	public void UpdateInstanceAndRelations(ArrayList<Instance> listInstances, ArrayList<DtoDefinitionClass> dtoRelationsList, OntModel model, OntModel infModel, String ns)
 	{		
 
 		for (DtoDefinitionClass dto : dtoRelationsList)
 		{			
-			ArrayList<String> listInstancesOfDomain = this.search.GetInstancesFromClass(model, infModel, dto.Source);
+			List<String> listInstancesOfDomain = this.search.getIndividualsURI(infModel, dto.Source);
 			if(listInstancesOfDomain.size() > 0)	//Check if are need to create
 			{
 				for (String instanceName : listInstancesOfDomain)
@@ -198,7 +199,7 @@ public class ManagerInstances {
 		}	
 	}
 
-	public void UpdateInstanceSpecialization(ArrayList<Instance> listAllInstances, OntModel model,	InfModel infModel, String ns) {
+	public void UpdateInstanceSpecialization(ArrayList<Instance> listAllInstances, OntModel model,	OntModel infModel, String ns) {
 		
 		//update and check specialization class for all instances one by one		
 		
@@ -214,7 +215,7 @@ public class ManagerInstances {
 				//Case if the instance have no class selected - only Thing
 				dto = new DtoCompleteClass();
 				dto.CompleteClass = instanceSelected.ListClasses.get(0);
-				for (String subClas : search.GetClasses(model)) {
+				for (String subClas : search.getClassesURI(model)) {
 					if(subClas != null)
 						dto.AddMember(subClas);
 				}
@@ -333,7 +334,7 @@ public class ManagerInstances {
 		return list;
 	}
 
-	public ArrayList<Instance> getAllInstances(OntModel model, InfModel infModel, String ns) throws OKCoExceptionInstanceFormat {
+	public ArrayList<Instance> getAllInstances(OntModel model, OntModel infModel, String ns) throws OKCoExceptionInstanceFormat {
 		
 		//NS from model
 		
@@ -354,22 +355,22 @@ public class ManagerInstances {
 		return listInstances;
 	}
 
-	public OntModel UpdateInstanceInModel(Instance instance, OntModel model, InfModel infModel, ArrayList<Instance> ListAllInstances) {
+	public OntModel UpdateInstanceInModel(Instance instance, OntModel model, OntModel infModel, ArrayList<Instance> ListAllInstances) {
 		return this.factory.UpdateInstance(instance, model, infModel, ListAllInstances);
 	}
 	
-	public void UpdateInstanceSameAndDifferentFrom(InfModel infModel, Instance instance)
+	public void UpdateInstanceSameAndDifferentFrom(OntModel infModel, Instance instance)
 	{
 		instance.ListDiferentInstances = this.GetDifferentInstancesFrom(infModel, instance.ns + instance.name);
 		instance.ListSameInstances = this.GetSameInstancesFrom(infModel, instance.ns + instance.name);
 	}
 
-	public ArrayList<String> GetDifferentInstancesFrom(InfModel infModel, String instanceName)
+	public ArrayList<String> GetDifferentInstancesFrom(OntModel infModel, String instanceName)
 	{		
 		return search.GetDifferentInstancesFrom(infModel, instanceName);
 	}
 	
-	public ArrayList<String> GetSameInstancesFrom(InfModel infModel, String instanceName)
+	public ArrayList<String> GetSameInstancesFrom(OntModel infModel, String instanceName)
 	{
 		return this.search.GetSameInstancesFrom(infModel, instanceName);
 	}
@@ -410,7 +411,7 @@ public class ManagerInstances {
 		
 	}
 	
-	public OntModel ClassifyInstanceAuto(Instance instance, OntModel model, InfModel infModel) {
+	public OntModel ClassifyInstanceAuto(Instance instance, OntModel model, OntModel infModel) {
 		
 		/* Check the subclasses are disjoint and complete */
 		for (DtoCompleteClass dto : instance.ListCompleteClasses) 
@@ -453,7 +454,7 @@ public class ManagerInstances {
 		
 	}
 
-	public OntModel CompleteInstanceAuto(Instance instance, String modelNameSpace, OntModel model, InfModel infModel, ArrayList<Instance> ListAllInstances)
+	public OntModel CompleteInstanceAuto(Instance instance, String modelNameSpace, OntModel model, OntModel infModel, ArrayList<Instance> ListAllInstances)
 	{
 		//Classify instance classes
 		model = this.ClassifyInstanceAuto(instance, model, infModel);
@@ -464,7 +465,7 @@ public class ManagerInstances {
 			if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
 			{
 				//create the the new instance
-				String instanceName = dto.Target.split("#")[1] + "-" + (search.GetInstancesFromClass(model, infModel, dto.Target).size() + 1);
+				String instanceName = dto.Target.split("#")[1] + "-" + (search.getIndividualsURI(infModel, dto.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
@@ -626,7 +627,7 @@ public class ManagerInstances {
 		return listDefinition;
 	}
 
-	public ArrayList<String> getClassesToClassify(Instance instanceSelected, InfModel infModel) {
+	public ArrayList<String> getClassesToClassify(Instance instanceSelected, OntModel infModel) {
 
 		//Get all the subclasses without repeat
 		ArrayList<String> listClassesMembersTmpWithoutRepeat = new ArrayList<String>();

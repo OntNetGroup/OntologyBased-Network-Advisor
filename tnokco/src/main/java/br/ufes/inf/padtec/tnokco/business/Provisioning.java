@@ -2,11 +2,10 @@ package br.ufes.inf.padtec.tnokco.business;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import arq.remote;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
@@ -17,10 +16,7 @@ import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.sparql.function.library.e;
 
 
 public class Provisioning {
@@ -30,10 +26,10 @@ public class Provisioning {
 	HashMap<String, HashMap<String, String>> equipmentsReleations = new HashMap<String, HashMap<String,String>>();
 	HashMap<String, String> equipmentRP = new HashMap<String, String>();
 	HashMap<String, String> equipmentOut = new HashMap<String, String>();
-	private static ArrayList<Equipment> equipmentsList= new ArrayList<Equipment>();
+	private static List<Equipment> equipmentsList= new ArrayList<Equipment>();
 	public static OntModel Model= HomeController.Model;
-	public static InfModel InfModel = HomeController.InfModel;
-	static ArrayList<String> equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
+	public static OntModel InfModel = HomeController.InfModel;
+	static List<String> equipments = HomeController.Search.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 	public static ArrayList<String[]> connections; 
 	public static ArrayList<String[]> binds; 
 	public static String relation= "site_connects";
@@ -267,11 +263,11 @@ public class Provisioning {
 
 	public static String nameRelation="";
 	public static ArrayList<String[]> siteConnects= new ArrayList<String[]>();
-	public static ArrayList<String> getSitesAndRelations(){
+	public static List<String> getSitesAndRelations(){
 		ind_class= new HashMap<String, ArrayList<String>>();
 		nameRelation="site_connects";
 		ArrayList<String[]> siteConnects= new ArrayList<String[]>();
-		ArrayList<String> sites= HomeController.Search.GetInstancesFromClass(Model, InfModel, "Site");
+		List<String> sites= HomeController.Search.getIndividualsURI(InfModel, "Site");
 		for (String site : sites) {
 			Individual indSite = Model.getIndividual(site);
 			ArrayList<String> siteTarget= HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, indSite.getNameSpace(), "site_connects", "Site");
@@ -288,7 +284,7 @@ public class Provisioning {
 
 	public static ArrayList<Equipment> getAllEquipmentsandConnections(){
 
-		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
+		equipments = HomeController.Search.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 		return getEquipments();
 	}
 
@@ -340,7 +336,7 @@ public class Provisioning {
 			equips.add(e); 
 		}
 
-		equipments = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Equipment");
+		equipments = HomeController.Search.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 		return equips;
 	}
 
@@ -504,9 +500,9 @@ public class Provisioning {
 		return true;
 	}
 
-	public static ArrayList<String> getAllSitesAndConnections(){
+	public static List<String> getAllSitesAndConnections(){
 		connections = new ArrayList<String[]>();
-		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Site");
+		List<String> sites = HomeController.Search.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Site");
 		for (String site : sites) {
 			if(!HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site").isEmpty()){
 				ArrayList<String>targets=HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site");
@@ -522,8 +518,8 @@ public class Provisioning {
 		return sites;
 	}
 
-	public static ArrayList<String> getAllG800(){
-		ArrayList<String> allIndividuals= HomeController.Search.GetAllInstances(Model, InfModel);
+	public static List<String> getAllG800(){
+		List<String> allIndividuals= HomeController.Search.getIndividualsURI(InfModel);
 		ArrayList<String> copy = new ArrayList<String>();
 
 		for (String ind : allIndividuals) {
@@ -560,7 +556,7 @@ public class Provisioning {
 		setRelationsG800(g800s);
 		return g800s;
 	}
-	public static void setRelationsG800(ArrayList<String> g800_elements){
+	public static void setRelationsG800(List<String> g800_elements){
 
 		ind_class = new HashMap<String, ArrayList<String>>();
 		ArrayList<String> classesFromIndividual;
@@ -605,14 +601,14 @@ public class Provisioning {
 
 	public static void inferInterfaceConnections(){
 		HashMap<String, String> int_port = new HashMap<String, String>();
-		ArrayList<String> inters = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Input_Interface");
+		List<String> inters = HomeController.Search.getIndividualsURI(InfModel, HomeController.NS+"Input_Interface");
 		for (String inter : inters) {
 			ArrayList<String> port_inp =HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, inter, HomeController.NS+"maps_input", HomeController.NS+"Input");
 			if(port_inp.size()>0){
 				int_port.put(port_inp.get(0), inter);
 			}
 		}
-		inters = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Output_Interface");
+		inters = HomeController.Search.getIndividualsURI(InfModel, HomeController.NS+"Output_Interface");
 		for (String inter : inters) {
 			ArrayList<String> port_inp =HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, inter, HomeController.NS+"maps_output", HomeController.NS+"Output");
 			if(port_inp.size()>0){
@@ -620,7 +616,7 @@ public class Provisioning {
 			}
 		}
 
-		ArrayList<String> outs = HomeController.Search.GetInstancesFromClass(Model, InfModel, HomeController.NS+"Output");
+		List<String> outs = HomeController.Search.getIndividualsURI(InfModel, HomeController.NS+"Output");
 		for (String out : outs) {
 			ArrayList<String> inputs  = HomeController.Search.GetInstancesOfTargetWithRelation(InfModel, out, HomeController.NS+"binds", HomeController.NS+"Input");
 			if(inputs.size()>0){
@@ -684,7 +680,7 @@ public class Provisioning {
 
 	public static ArrayList<String[]> getAllPhysicalMediaAndBinds(){
 
-		ArrayList<String> pms = HomeController.Search.GetInstancesFromClass(Model, HomeController.InfModel, HomeController.NS+"Physical_Media");
+		List<String> pms = HomeController.Search.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Physical_Media");
 		ArrayList<String[]> triples = new ArrayList<String[]>();
 
 		for (String pm : pms) {

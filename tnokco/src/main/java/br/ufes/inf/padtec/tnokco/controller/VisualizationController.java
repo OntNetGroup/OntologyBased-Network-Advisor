@@ -2,11 +2,11 @@ package br.ufes.inf.padtec.tnokco.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.ufes.inf.nemo.okco.model.DtoInstance;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
-import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.padtec.tnokco.business.Equipment;
 import br.ufes.inf.padtec.tnokco.business.InterfaceOutput;
 import br.ufes.inf.padtec.tnokco.business.Provisioning;
@@ -31,8 +30,8 @@ public class VisualizationController {
 		if(HomeController.Model == null)
 			return "open_visualizator"; 
 
-		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, HomeController.NS+"Site");
-		ArrayList<String> equipments = HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, HomeController.NS+"Equipment");
+		List<String> sites = HomeController.Search.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Site");
+		List<String> equipments = HomeController.Search.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 
 		Provisioning.inferInterfaceConnections();
 		Provisioning.getAllG800();
@@ -58,7 +57,7 @@ public class VisualizationController {
 		int height = 800;
 
 		if(visualization.equals("allSites")){
-			ArrayList<String> sites = Provisioning.getAllSitesAndConnections();
+			List<String> sites = Provisioning.getAllSitesAndConnections();
 			ArrayList<String[]> sitesConnections = Provisioning.connections;
 			String rel = Provisioning.relation;
 
@@ -102,7 +101,7 @@ public class VisualizationController {
 			request.getSession().setAttribute("targetURL", "open_g800_visualization_from_equip?selected=");
 			request.getSession().setAttribute("popupMessage", "Go to Equipment\'s components");
 		}else if(visualization.equals("allG800")){
-			ArrayList<String> g800s = Provisioning.getAllG800();
+			List<String> g800s = Provisioning.getAllG800();
 			ArrayList<String[]> triplas = Provisioning.triples_g800;
 			HashMap<String, ArrayList<String>> hashIndv = Provisioning.ind_class;
 

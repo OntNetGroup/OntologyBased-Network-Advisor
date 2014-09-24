@@ -86,12 +86,12 @@ public class OKCo {
 		  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
 		  	
 		  	//Call reasoner
-		  	InfModel infModel;
+		  	OntModel infModel;
 		  	if(Reasoner == null)
 		  	{
 		  		infModel = model;
 		  	} else {
-		  		infModel = Reasoner.run(model);	
+		  		infModel = (OntModel) Reasoner.run(model);	
 		  	}
 		  	
 		  	//get instances
@@ -256,12 +256,12 @@ public class OKCo {
 		  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
 		  	
 		  	//Call reasoner
-		  	InfModel infModel;
+		  	OntModel infModel;
 		  	if(Reasoner == null)
 		  	{
 		  		infModel = model;
 		  	} else {
-		  		infModel = Reasoner.run(model);	
+		  		infModel = (OntModel)Reasoner.run(model);	
 		  	}
 
 		  	
@@ -299,7 +299,7 @@ public class OKCo {
 					if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
 					{
 						//create the the new instance
-						String instanceName = dto.Target.split("#")[1] + "-" + (search.GetInstancesFromClass(model, infModel, dto.Target).size() + 1);
+						String instanceName = dto.Target.split("#")[1] + "-" + (search.getIndividualsURI(infModel, dto.Target).size() + 1);
 						ArrayList<String> listSame = new ArrayList<String>();		  
 						ArrayList<String> listDif = new ArrayList<String>();
 						ArrayList<String> listClasses = new ArrayList<String>();
@@ -540,12 +540,12 @@ public class OKCo {
 		  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
 		  	
 		  	//Call reasoner
-		  	InfModel infModel;
+		  	OntModel infModel;
 		  	if(Reasoner == null)
 		  	{
 		  		infModel = model;
 		  	} else {
-		  		infModel = Reasoner.run(model);	
+		  		infModel = (OntModel)Reasoner.run(model);	
 		  	}
 		  	
 		  	/*--------------------------------------------------------------------------------------------- //
@@ -583,7 +583,7 @@ public class OKCo {
 						if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
 						{
 							//create the the new instance
-							String instanceName = dto.Target.split("#")[1] + "-" + (search.GetInstancesFromClass(model, infModel, dto.Target).size() + 1);
+							String instanceName = dto.Target.split("#")[1] + "-" + (search.getIndividualsURI(infModel, dto.Target).size() + 1);
 							ArrayList<String> listSame = new ArrayList<String>();		  
 							ArrayList<String> listDif = new ArrayList<String>();
 							ArrayList<String> listClasses = new ArrayList<String>();

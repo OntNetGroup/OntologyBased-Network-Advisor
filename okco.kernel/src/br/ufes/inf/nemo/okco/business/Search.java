@@ -1,26 +1,8 @@
 package br.ufes.inf.nemo.okco.business;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mindswap.pellet.jena.PelletReasonerFactory;
-
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
-import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 import br.ufes.inf.nemo.okco.model.DataPropertyValue;
 import br.ufes.inf.nemo.okco.model.DomainRange;
@@ -31,8 +13,26 @@ import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
-import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.okco.model.RelationDomainRangeList;
+
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import com.hp.hpl.jena.reasoner.Reasoner;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
+import com.hp.hpl.jena.util.iterator.Filter;
 
 public class Search {
 
@@ -44,131 +44,213 @@ public class Search {
 		NS = NameSpace;
 	}
 
-	/*
-	 * General search
+	/** 
+	 * Return the URI of all properties of the ontology. This method is performed using the Jena API.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @return
+	 * 
+	 * @author Guerson
 	 */
-	
-	public ArrayList<String> GetProperties(OntModel model) {
-		
-		ArrayList<String> lista = new ArrayList<String>();
-		ExtendedIterator<OntProperty> i = model.listOntProperties();
-		if( !i.hasNext() ) {
-			//System.out.print( "none" );
-		}
-		else {
-			while( i.hasNext() ) {
-				Resource val = (Resource) i.next();
-				lista.add( val.getURI() );
-			}
-		}
-		return lista;
-	}
-	
-	public ArrayList<String> GetClasses(OntModel model) {
-		
-		ArrayList<String> lista = new ArrayList<String>();
-		ExtendedIterator<OntClass> i = model.listClasses();
-		if( !i.hasNext() ) {
-			//System.out.print( "none" );
-		}
-		else {
-			while( i.hasNext() ) {
-				Resource val = (Resource) i.next();
-				lista.add( val.getURI() );
-			}
-		}
-		return lista;
-	}
-	
-	public ArrayList<String> GetInstancesFromClass(OntModel model, InfModel infModel, String className) {
-		
-		ArrayList<String> list = new ArrayList<String>();
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + NS + ">" +
-		" SELECT *" +
-		" WHERE {\n" +		
-			" ?i rdf:type <" + className + "> .\n " +	
-		"}";
-
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-
-		while (results.hasNext()) {
-			
-			QuerySolution row = results.next();		    
-		    RDFNode i = row.get("i");		    
-		    list.add(i.toString());
-		}	
-
-		return list;		
-	}
-	
-	public ArrayList<String[]> GetSourceAndTargetForProperty(OntModel model, String propName) {
-		
-		ArrayList<String[]> list = new ArrayList<String[]>();
-		
-		// Create a new query
-		String queryString = 
-		" SELECT *" +
-		" WHERE {\n" +		
-			" ?source <" + propName + "> ?target .\n " +	
-		"}";
-
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();
-		
-		while (results.hasNext()) {
-			String [] tupla = new String[2];
-			QuerySolution row = results.next();		    
-		    RDFNode source = row.get("source");
-		    RDFNode target = row.get("target");
-		    
-		    tupla[0] = source.toString();
-		    tupla[1] = target.toString();
-		    list.add(tupla);
-		}	
-
-		return list;		
-	}
-			
-	public ArrayList<String> GetAllInstances(OntModel model, InfModel infModel)
+	public List<String> getPropertiesURI(OntModel model) 
 	{		
-		ArrayList<String> AllInstances = new ArrayList<String>();
-		ArrayList<String> AllClasses = this.GetClasses(model);
-		//System.out.println("-> " + AllClasses.size());
-		for (String className : AllClasses) {
-			
-			if(!(className == null)){
-				ArrayList<String> InstancesFromClass = this.GetInstancesFromClass(model, infModel, className);
-				for (String instance : InstancesFromClass) {
-					if (!(AllInstances.contains(instance)))
-						AllInstances.add(instance);
-				}
-			}
+		List<String> lista = new ArrayList<String>();
+		ExtendedIterator<OntProperty> i = model.listOntProperties().filterKeep(new Filter<OntProperty>()				
+		{
+            @Override
+            public boolean accept(OntProperty o){
+                return o.isURIResource();
+            }
+        });
+		while(i.hasNext()) {
+			Resource val = (Resource) i.next();
+			lista.add(val.getURI());
+			DateTimeHelper.printout("OntProperty URI: "+val.getURI());
 		}
-		
-		return AllInstances;
+		return lista;
 	}
 	
-	public ArrayList<DtoInstance> GetAllInstancesWithClass(OntModel model, InfModel infModel)
+	/** 
+	 * Return all properties of the ontology. This method is performed using the Jena API.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @return
+	 * 
+	 * @author Guerson
+	 */
+	public List<OntProperty> getProperties(OntModel model)
+	{
+		ExtendedIterator<OntProperty> i = model.listOntProperties().filterKeep(new Filter<OntProperty>()				
+		{
+            @Override
+            public boolean accept(OntProperty o){
+                return o.isURIResource();
+            }
+        });
+		return i.toList();
+	}
+	
+	/** 
+	 * Return the URI of all classes of the ontology. This method is performed using the Jena API.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @return
+	 * 
+	 * @author Guerson
+	 */
+	public List<String> getClassesURI(OntModel model) 
+	{		
+		List<String> lista = new ArrayList<String>();
+		ExtendedIterator<OntClass> i = model.listClasses().filterKeep(new Filter<OntClass>()				
+		{
+            @Override
+            public boolean accept(OntClass o){
+                return o.isURIResource();
+            }
+        });		
+		while(i.hasNext()) {
+			Resource val = (Resource) i.next();			
+			lista.add(val.getURI());
+			DateTimeHelper.printout("OntClass URI: "+val.getURI());
+		}		
+		return lista;
+	}
+	
+	/** 
+	 * Return all classes of the ontology. This method is performed using the Jena API.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @return
+	 * 
+	 * @author Guerson
+	 */
+	public List<OntClass> getClasses(OntModel model) 
+	{		
+		ExtendedIterator<OntClass> i = model.listClasses().filterKeep(new Filter<OntClass>()				
+		{
+            @Override
+            public boolean accept(OntClass o){
+                return o.isURIResource();
+            }
+        });		
+		return i.toList();
+	}
+	
+	/** 
+	 * Return all individuals of the ontology. This method is performed using the Jena API.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @return
+	 * 
+	 * @author Guerson
+	 */
+	public List<Individual> getIndividuals(OntModel model) 
+	{		
+		ExtendedIterator<Individual> i = model.listIndividuals().filterKeep(new Filter<Individual>()				
+		{
+            @Override
+            public boolean accept(Individual o){
+                return o.isURIResource();
+            }
+        });		
+		return i.toList();
+	}
+	
+	/** 
+	 * Return all individuals URI of the ontology. This method is performed using the Jena API.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @return
+	 * 
+	 * @author Guerson
+	 */
+	public List<String> getIndividualsURI(OntModel model) 
+	{		
+		List<String> lista = new ArrayList<String>();
+		ExtendedIterator<Individual> i = model.listIndividuals().filterKeep(new Filter<Individual>()				
+		{
+            @Override
+            public boolean accept(Individual o){
+                return o.isURIResource();
+            }
+        });		
+		while(i.hasNext()) {
+			Resource val = (Resource) i.next();			
+			lista.add(val.getURI());
+			DateTimeHelper.printout("Individuals URI: "+val.getURI());
+		}		
+		return lista;
+	}
+	
+	/** 
+	 * Return all individuals of a given class of the ontology. This method is performed using the Jena API.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @param ontclass: jena.ontology.OntClass
+	 * @return
+	 * 
+	 * @author Guerson
+	 */
+	public List<Individual> getIndividuals(OntModel model, OntClass ontclass) 
+	{		
+		ExtendedIterator<Individual> i = model.listIndividuals(ontclass).filterKeep(new Filter<Individual>()				
+		{
+            @Override
+            public boolean accept(Individual o){
+                return o.isURIResource();
+            }
+        });
+		return i.toList();
+	}
+	
+	/** 
+	 * Return the URI of all individuals of a given class of the ontology. This method is performed using the Jena API.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @param ontclass: jena.ontology.OntClass
+	 * @return
+	 * 
+	 * @author Guerson
+	 */
+	public List<String> getIndividualsURI(OntModel model, OntClass ontclass) 
+	{		
+		List<String> lista = new ArrayList<String>();
+		ExtendedIterator<Individual> i = model.listIndividuals(ontclass).filterKeep(new Filter<Individual>()				
+		{
+            @Override
+            public boolean accept(Individual o){
+                return o.isURIResource();
+            }
+        });	
+		while(i.hasNext()) {
+			Resource val = (Resource) i.next();			
+			lista.add(val.getURI());
+			DateTimeHelper.printout("Individual URI: "+val.getURI()+ " - OntClass URI: "+ontclass.getURI());
+		}		
+		return lista;
+	}
+
+	/** 
+	 * Return the URI of all individuals of a given class URI of the ontology. This method is performed using the Jena API.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @param classURI: OntClass URI
+	 * @return
+	 * 
+	 * @author Guerson
+	 */
+	public List<String> getIndividualsURI(OntModel model, String classURI) 
+	{
+		OntClass ontclass = model.getOntClass(classURI);
+		if(ontclass!=null) return getIndividualsURI(model,ontclass); 
+		else return new ArrayList<String>();		
+	}
+	
+	public ArrayList<DtoInstance> GetAllInstancesWithClass(OntModel model, OntModel infModel)
 	{		
 		ArrayList<DtoInstance> AllInstances = new ArrayList<DtoInstance>();
 		
-		ArrayList<String> AllClasses = this.GetClasses(model);
+		List<String> AllClasses = this.getClassesURI(model);
 		AllClasses.add("http://www.w3.org/2002/07/owl#Thing");
 		
 		DtoInstance dto = null;
@@ -177,7 +259,7 @@ public class Search {
 			
 			if(!(className == null)){
 				
-				ArrayList<String> InstancesFromClass = this.GetInstancesFromClass(model, infModel, className);
+				List<String> InstancesFromClass = this.getIndividualsURI(infModel, className);
 				for (String instance : InstancesFromClass) {
 					
 					dto = DtoInstance.getInstance(instance, AllInstances);
@@ -206,7 +288,7 @@ public class Search {
 	 * Class/Instance search
 	 */
 	
-	public ArrayList<String> GetDifferentInstancesFrom(InfModel infModel, String instanceName)
+	public ArrayList<String> GetDifferentInstancesFrom(OntModel infModel, String instanceName)
 	{		
 		ArrayList<String> list = new ArrayList<String>();
 		
@@ -250,7 +332,7 @@ public class Search {
 		return list;
 	}
 	
-	public ArrayList<String> GetSameInstancesFrom(InfModel infModel, String instanceName)
+	public ArrayList<String> GetSameInstancesFrom(OntModel infModel, String instanceName)
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		
@@ -341,7 +423,7 @@ public class Search {
 		return lista;
 	}
 
-	public boolean CheckExistInstanceTarget(InfModel infModel, String instance, String relation, String imageClass) {
+	public boolean CheckExistInstanceTarget(OntModel infModel, String instance, String relation, String imageClass) {
 
 		Boolean result = false;
 
@@ -407,7 +489,7 @@ public class Search {
 		return result;
 	}
 	
-	public EnumPropertyType GetPropertyType(InfModel infModel, String property)
+	public EnumPropertyType GetPropertyType(OntModel infModel, String property)
 	{
 		/* Return the type of property */
 		
@@ -450,7 +532,7 @@ public class Search {
 		return null;
 	}
 	
- 	public boolean CheckIsDijointClassOf(InfModel infModel, String cls, String clsToCheck)
+ 	public boolean CheckIsDijointClassOf(OntModel infModel, String cls, String clsToCheck)
 	{
 		/* Return true if cls is disjoint of clsToCheck */
 		
@@ -489,7 +571,7 @@ public class Search {
 		return true;
 	}
 	
-	private boolean CheckIsDisjointDomainWith(RelationDomainRangeList elem, ArrayList<String> listClsSourceInstance, InfModel infModel) {
+	private boolean CheckIsDisjointDomainWith(RelationDomainRangeList elem, ArrayList<String> listClsSourceInstance, OntModel infModel) {
 
 		/* Return true if the elem have the domain classes disjoint of all classes in listClsSourceInstance at same time */
 		
@@ -509,7 +591,7 @@ public class Search {
 		return ok;
 	}
 
-	private boolean CheckIsDisjointTargetWith(RelationDomainRangeList elem, ArrayList<String> listClsTargetInstance, InfModel infModel) {
+	private boolean CheckIsDisjointTargetWith(RelationDomainRangeList elem, ArrayList<String> listClsTargetInstance, OntModel infModel) {
 		
 		/* Return true if the elem have the target classes disjoint of all classes in listClsTargetInstance at same time */
 		
@@ -530,7 +612,7 @@ public class Search {
 		return ok;
 	}
 	
-	public int CheckExistInstancesTargetCardinality(InfModel infModel, String instance, String relation, String imageClass, String cardinality) {
+	public int CheckExistInstancesTargetCardinality(OntModel infModel, String instance, String relation, String imageClass, String cardinality) {
 		
 		int result = 0;
 		ArrayList<String> listValues = new ArrayList<String>();
@@ -612,7 +694,7 @@ public class Search {
 		return result;
 	}
 
-	public ArrayList<String> GetInstancesOfTargetWithRelation(InfModel infModel, String instance, String relation, String imageClass) {
+	public ArrayList<String> GetInstancesOfTargetWithRelation(OntModel infModel, String instance, String relation, String imageClass) {
 		
 		ArrayList<String> list = new ArrayList<String>();
 		
@@ -645,7 +727,7 @@ public class Search {
 		return list;
 	}
 	
-	public ArrayList<DataPropertyValue> GetDataValuesOfTargetWithRelation(InfModel infModel, String instance, String relation, String imageClass) {
+	public ArrayList<DataPropertyValue> GetDataValuesOfTargetWithRelation(OntModel infModel, String instance, String relation, String imageClass) {
 		
 		ArrayList<DataPropertyValue> list = new ArrayList<DataPropertyValue>();
 		DataPropertyValue data = null;
@@ -686,7 +768,7 @@ public class Search {
 		return list;
 	}
 	
-	public ArrayList<DtoInstanceRelation> GetInstanceAllRelations(InfModel infModel, String individualUri){
+	public ArrayList<DtoInstanceRelation> GetInstanceAllRelations(OntModel infModel, String individualUri){
 		ArrayList<DtoInstanceRelation> listIndividualRelations = this.GetInstanceRelations(infModel, individualUri);
 		
 		// Create a new query
@@ -746,7 +828,7 @@ public class Search {
 		return listIndividualRelations;
 	}
 	
-	public ArrayList<DtoInstanceRelation> GetInstanceRelations(InfModel infModel, String individualUri)
+	public ArrayList<DtoInstanceRelation> GetInstanceRelations(OntModel infModel, String individualUri)
 	{
 		ArrayList<DtoInstanceRelation> listIndividualRelations = new ArrayList<DtoInstanceRelation>();
 		
@@ -792,7 +874,7 @@ public class Search {
 		return listIndividualRelations;
 	}
 	
-	public ArrayList<String> GetDisjointClassesOf(String className, InfModel infModel) {
+	public ArrayList<String> GetDisjointClassesOf(String className, OntModel infModel) {
 		
 		ArrayList<String> listDisjointClasses = new ArrayList<String>();
 		
@@ -826,7 +908,7 @@ public class Search {
 
 	}
 
-	public ArrayList<String> GetDisjointPropertiesOf(String propertyName, InfModel infModel) {
+	public ArrayList<String> GetDisjointPropertiesOf(String propertyName, OntModel infModel) {
 		
 		ArrayList<String> listDisjointProps = new ArrayList<String>();
 		
@@ -860,7 +942,7 @@ public class Search {
 
 	}
 	
-	public ArrayList<String> GetClassesFrom(String instanceName, InfModel infModel) {
+	public ArrayList<String> GetClassesFrom(String instanceName, OntModel infModel) {
 		
 		ArrayList<String> listClasses = new ArrayList<String>();
 		
@@ -910,7 +992,7 @@ public class Search {
 		// create Pellet reasoner
 		Reasoner r = PelletReasonerFactory.theInstance().create();		
 		// create an inferencing model using the raw model
-		InfModel infModel = ModelFactory.createInfModel(r, model);
+		OntModel infModel = (OntModel)ModelFactory.createInfModel(r, model);
 		
 		String queryString = 
 				"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -938,7 +1020,7 @@ public class Search {
 	 * Relations search
 	 */
 	
-	public ArrayList<DtoDefinitionClass> GetSomeRelations(InfModel infModel) {
+	public ArrayList<DtoDefinitionClass> GetSomeRelations(OntModel infModel) {
 		
 		ArrayList<DtoDefinitionClass> dtoSomeList = new ArrayList<DtoDefinitionClass>();
 		
@@ -1065,7 +1147,7 @@ public class Search {
 		return dtoSomeList;
 	}
 	
-	public ArrayList<DtoDefinitionClass> GetMinRelations(InfModel infModel) {
+	public ArrayList<DtoDefinitionClass> GetMinRelations(OntModel infModel) {
 
 		ArrayList<DtoDefinitionClass> dtoMinList = new ArrayList<DtoDefinitionClass>();		
 		
@@ -1219,7 +1301,7 @@ public class Search {
 		return dtoMinList;
 	}
 
-	public ArrayList<DtoDefinitionClass> GetMaxRelations(InfModel infModel) {
+	public ArrayList<DtoDefinitionClass> GetMaxRelations(OntModel infModel) {
 
 		ArrayList<DtoDefinitionClass> dtoMaxList = new ArrayList<DtoDefinitionClass>();
 		
@@ -1372,7 +1454,7 @@ public class Search {
 		return dtoMaxList;
 	}
 	
-	public ArrayList<DtoDefinitionClass> GetExactlyRelations(InfModel infModel) {
+	public ArrayList<DtoDefinitionClass> GetExactlyRelations(OntModel infModel) {
 
 		ArrayList<DtoDefinitionClass> dtoExactlyList = new ArrayList<DtoDefinitionClass>();
 		
@@ -1527,7 +1609,7 @@ public class Search {
 		return dtoExactlyList;
 	}
 
-	public ArrayList<DtoDefinitionClass> GetSomeRelationsOfClass(InfModel infModel, String clsuri) {
+	public ArrayList<DtoDefinitionClass> GetSomeRelationsOfClass(OntModel infModel, String clsuri) {
 		
 		ArrayList<DtoDefinitionClass> dtoSomeList = new ArrayList<DtoDefinitionClass>();
 		
@@ -1662,7 +1744,7 @@ public class Search {
 		return dtoSomeList;
 	}
 	
-	public ArrayList<DtoDefinitionClass> GetMinRelationsOfClass(InfModel infModel, String clsuri) {
+	public ArrayList<DtoDefinitionClass> GetMinRelationsOfClass(OntModel infModel, String clsuri) {
 
 		ArrayList<DtoDefinitionClass> dtoMinList = new ArrayList<DtoDefinitionClass>();		
 		
@@ -1832,7 +1914,7 @@ public class Search {
 		return dtoMinList;
 	}
 
-	public ArrayList<DtoDefinitionClass> GetMaxRelationsOfClass(InfModel infModel, String clsuri) {
+	public ArrayList<DtoDefinitionClass> GetMaxRelationsOfClass(OntModel infModel, String clsuri) {
 
 		ArrayList<DtoDefinitionClass> dtoMaxList = new ArrayList<DtoDefinitionClass>();
 		
@@ -2001,7 +2083,7 @@ public class Search {
 		return dtoMaxList;
 	}
 	
- 	public ArrayList<DtoDefinitionClass> GetExactlyRelationsOfClass(InfModel infModel, String clsuri) {
+ 	public ArrayList<DtoDefinitionClass> GetExactlyRelationsOfClass(OntModel infModel, String clsuri) {
 
 		ArrayList<DtoDefinitionClass> dtoExactlyList = new ArrayList<DtoDefinitionClass>();
 		
@@ -2172,7 +2254,7 @@ public class Search {
 		return dtoExactlyList;
 	}
 
- 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(ArrayList<Instance> listAllInstances,	InfModel InfModel) {
+ 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(ArrayList<Instance> listAllInstances,	OntModel InfModel) {
 
 		ArrayList<DtoDefinitionClass> resultListDefinitions = new ArrayList<DtoDefinitionClass>();
 		
@@ -2203,7 +2285,7 @@ public class Search {
 		return resultListDefinitions;
 	}
 	
- 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(String instanceURI, OntModel model, InfModel InfModel, ArrayList<Instance> listAllInstances, ManagerInstances manager) {
+ 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(String instanceURI, OntModel model, OntModel InfModel, ArrayList<Instance> listAllInstances, ManagerInstances manager) {
 
 		Instance Instance = manager.getInstance(listAllInstances, instanceURI); // GET INTANCE on MODEL
 		ArrayList<DtoInstance> listInstancesDto = this.GetAllInstancesWithClass(model, InfModel);
@@ -2257,7 +2339,7 @@ public class Search {
 	 * Specializations search
 	 */
 	
-	public ArrayList<DtoCompleteClass> GetCompleteClasses(String cls, InfModel infModel)
+	public ArrayList<DtoCompleteClass> GetCompleteClasses(String cls, OntModel infModel)
 	{
 		ArrayList<DtoCompleteClass> listClasses = new ArrayList<DtoCompleteClass>();
 		
@@ -2310,7 +2392,7 @@ public class Search {
 		return listClasses;
 	}
 
-	public ArrayList<DtoCompleteClass> GetCompleteSubClasses(String className, ArrayList<String> listClassesOfInstance, InfModel infModel)
+	public ArrayList<DtoCompleteClass> GetCompleteSubClasses(String className, ArrayList<String> listClassesOfInstance, OntModel infModel)
 	{
 		ArrayList<DtoCompleteClass> ListCompleteClsAndSubCls = new ArrayList<DtoCompleteClass>();
 		
@@ -2501,7 +2583,7 @@ public class Search {
 		return ListCompleteClsAndSubCls;
 	}
 	
-	public ArrayList<String> GetSubProperties(String property, InfModel infModel) {
+	public ArrayList<String> GetSubProperties(String property, OntModel infModel) {
 		
 		ArrayList<String> listSubProperties = new ArrayList<String>();
 		
@@ -2538,7 +2620,7 @@ public class Search {
 		return listSubProperties;
 	}
 
-	public ArrayList<DomainRange> GetDomainRangeFromProperty(String property, InfModel infModel)
+	public ArrayList<DomainRange> GetDomainRangeFromProperty(String property, OntModel infModel)
 	{
 		//List auxiliary for take the sub-properties and his relations
 		ArrayList<DomainRange> list = new ArrayList<DomainRange>();
@@ -2578,7 +2660,7 @@ public class Search {
 		return list;
 	}
 	
-	public ArrayList<RelationDomainRangeList> GetSubPropertiesWithDomaninAndRange(String property, InfModel infModel)
+	public ArrayList<RelationDomainRangeList> GetSubPropertiesWithDomaninAndRange(String property, OntModel infModel)
 	{
 		//List auxiliary for take the sub-properties and his relations
 		ArrayList<RelationDomainRangeList> listMediation = new ArrayList<RelationDomainRangeList>();
@@ -2633,7 +2715,7 @@ public class Search {
 		return listMediation;
 	}
 	
-	public ArrayList<String> GetSubPropertiesWithDomaninAndRange(String instanceSource,	String property, String instanceTarget, ArrayList<DtoInstanceRelation> instanceListRelations, InfModel infModel) {
+	public ArrayList<String> GetSubPropertiesWithDomaninAndRange(String instanceSource,	String property, String instanceTarget, ArrayList<DtoInstanceRelation> instanceListRelations, OntModel infModel) {
 		
 		/* Get properties with domains from instanceSource class and Range from instanceTarget class */
 		ArrayList<String> listSubProperties = new ArrayList<String>();

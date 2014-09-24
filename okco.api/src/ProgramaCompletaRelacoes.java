@@ -66,12 +66,12 @@ public class ProgramaCompletaRelacoes {
 	  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
 	  	
 	  	//Call reasoner
-	  	InfModel infModel;
+	  	OntModel infModel;
 	  	if(Reasoner == null)
 	  	{
 	  		infModel = model;
 	  	} else {
-	  		infModel = Reasoner.run(model);	
+	  		infModel = (OntModel) Reasoner.run(model);	
 	  	}
 	  	
 	  	// --------------------------------------- AQUI ---------------------------------- //

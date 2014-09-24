@@ -33,6 +33,8 @@ import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 
+import com.hp.hpl.jena.ontology.OntModel;
+
 @Controller
 //@RequestMapping("/instance")
 public class OKCoController {
@@ -243,7 +245,7 @@ public class OKCoController {
 			if(typeRelation.equals(EnumRelationTypeCompletness.SOME))
 			{
 				//create the the new instance
-				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, dtoSelected.Target).size() + 1);
+				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (HomeController.Search.getIndividualsURI(HomeController.InfModel, dtoSelected.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
@@ -504,7 +506,7 @@ public class OKCoController {
 					if(dtoCommit.commitReasoner.equals("true"))
 					{
 						//Update InfModel calling reasoner
-						HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+						HomeController.InfModel = (OntModel)HomeController.Reasoner.run(HomeController.Model);
 
 					} else {
 						//Update InfModel without calling reasoner
@@ -561,7 +563,7 @@ public class OKCoController {
 		try {
 
 			//Run reasoner
-			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+			HomeController.InfModel = (OntModel)HomeController.Reasoner.run(HomeController.Model);
 
 			//Save temporary model
 			HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);
@@ -579,7 +581,7 @@ public class OKCoController {
 
 			//Roll back the tempModel
 			HomeController.Model = HomeController.Repository.CopyModel(HomeController.tmpModel);
-			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+			HomeController.InfModel = (OntModel)HomeController.Reasoner.run(HomeController.Model);
 
 			//Update list instances
 			try {
@@ -708,7 +710,7 @@ public class OKCoController {
 				try {
 
 					//Run reasoner
-					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+					HomeController.InfModel = (OntModel)HomeController.Reasoner.run(HomeController.Model);
 
 					//Save temporary model
 					HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);
@@ -726,7 +728,7 @@ public class OKCoController {
 
 					//Roll back the tempModel
 					HomeController.Model = HomeController.Repository.CopyModel(HomeController.tmpModel);
-					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+					HomeController.InfModel = (OntModel)HomeController.Reasoner.run(HomeController.Model);
 
 					//Update list instances
 					try {
@@ -820,7 +822,7 @@ public class OKCoController {
 					if(dtoCommit.commitReasoner.equals("true"))
 					{
 						//Update InfModel calling reasoner
-						HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
+						HomeController.InfModel = (OntModel)HomeController.Reasoner.run(HomeController.Model);
 
 					} else {
 						//Update InfModel without calling reasoner

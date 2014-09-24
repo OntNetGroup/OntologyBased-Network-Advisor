@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import br.ufes.inf.nemo.okco.business.FactoryInstances;
 import br.ufes.inf.nemo.okco.business.FactoryModel;
 import br.ufes.inf.nemo.okco.business.ManagerInstances;
+import br.ufes.inf.nemo.okco.business.Repository;
 import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.DtoResultCommit;
@@ -42,7 +43,7 @@ public class HomeController {
 	public static IReasoner Reasoner;
 	public static OntModel Model;
 	public static OntModel tmpModel;	
-	public static InfModel InfModel;
+	public static OntModel InfModel;
 
 	public static Search Search;
 	public static String NS;
@@ -123,19 +124,21 @@ public class HomeController {
 		}
 	}
 	
+	/** 
+	 * Upload OWL file with a particular reasoner.
+	 * This method is executed from the button "Upload" in the Ocko web service.
+	 */
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String upload(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner){
-		
-		  try {
+	public String upload(HttpServletRequest request, @RequestParam("optionsReasoner") String optionsReasoner)
+	{		
+		try {			  
+			 Factory = new FactoryModel();
+			 Repository = Factory.GetRepository();	 //new Repository();		  
+			 String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
+			 boolean reasoning = true;
 			  
-			  Factory = new FactoryModel();
-			  Repository = Factory.GetRepository();
-			  
-			  String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
-			  boolean reasoning = true;
-			  
-			  //first load reasoning
-			  if (loadReasonerFirstCheckbox != null)
+			 //first load reasoning
+			 if (loadReasonerFirstCheckbox != null)
 				{
 					if(loadReasonerFirstCheckbox.equals("on"))
 					{
@@ -167,7 +170,7 @@ public class HomeController {
 			  {
 				  throw new OKCoExceptionFileFormat("Please select owl file.");
 			  }
-				 
+				 			
 			  // Load Model
 			  InputStream in = file.getInputStream();
 			  Model = Repository.Open(in);
@@ -190,7 +193,7 @@ public class HomeController {
 			 if(reasoning == true)
 			 {
 				//Call reasoner
-				InfModel = Reasoner.run(Model);
+				InfModel = (OntModel)Reasoner.run(Model);
 				
 			 } else {
 				
