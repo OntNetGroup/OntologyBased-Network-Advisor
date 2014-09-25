@@ -1,11 +1,11 @@
 import java.io.InputStream;
-import java.util.List;
-
-import br.ufes.inf.nemo.okco.business.Search;
+import java.util.ArrayList;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.FileManager;
+
+import br.ufes.inf.nemo.okco.business.Search;
 
 public class ProgramaObtemClassesRelacoes {
 	
@@ -31,8 +31,8 @@ public class ProgramaObtemClassesRelacoes {
 		
 		Search search = new Search(ns);
 		
-		List<String> lclasses = search.getClassesURI(model);
-		List<String> lpropreties = search.getPropertiesURI(model);
+		ArrayList<String> lclasses = search.GetClasses(model);
+		ArrayList<String> lpropreties = search.GetProperties(model);
 		
 		String result1 = "";
 		String result2 = "";

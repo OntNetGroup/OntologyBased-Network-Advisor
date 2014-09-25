@@ -50,7 +50,7 @@ public class HomeController implements ServletContextAware{
 	public static IReasoner Reasoner;
 	public static OntModel Model;
 	public static OntModel tmpModel;	
-	public static OntModel InfModel;
+	public static InfModel InfModel;
 
 	public static Search Search;
 	public static String NS;
@@ -270,7 +270,7 @@ public class HomeController implements ServletContextAware{
 			if(reasoningOnFirstLoad == true)
 			{
 				//Call reasoner
-				InfModel = (OntModel) Reasoner.run(Model);
+				InfModel = Reasoner.run(Model);
 				
 			} else {
 				

@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.okco.business;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.Instance;
@@ -67,7 +66,7 @@ public class FactoryInstances {
 		return model;
 	}
 	
-	public OntModel UpdateInstance(Instance instance, OntModel model, OntModel infModel, ArrayList<Instance> ListAllInstances)
+	public OntModel UpdateInstance(Instance instance, OntModel model, InfModel infModel, ArrayList<Instance> ListAllInstances)
 	{
 		ManagerInstances manager = new ManagerInstances(this.Search, null, null);
 		
@@ -194,7 +193,7 @@ public class FactoryInstances {
 	/* Old functions */
 	
 
-	public OntModel CreateIndividualsForSomeRelations(ArrayList<DtoDefinitionClass> dtoSomeList, OntModel model, OntModel infModel) {
+	public OntModel CreateIndividualsForSomeRelations(ArrayList<DtoDefinitionClass> dtoSomeList, OntModel model, InfModel infModel) {
 
 		//This one is use to capture all DtoDefinitionResult with new instance created
 		ArrayList<DtoDefinitionClass> dtoSomeListNew = new ArrayList<DtoDefinitionClass>();
@@ -202,7 +201,7 @@ public class FactoryInstances {
 		for (DtoDefinitionClass dtoResult : dtoSomeList) {
 
 			// List instances from Class Source
-			List<String> listInstances = this.Search.getIndividualsURI(infModel, dtoResult.Source);
+			ArrayList<String> listInstances = this.Search.GetInstancesFromClass(model, infModel, dtoResult.Source);
 			System.out.println("-> " + dtoResult.Source.toString() + " - n individuos - " + listInstances.size());
 			
 			if(listInstances.size() > 0)	//Exist instances
@@ -233,7 +232,7 @@ public class FactoryInstances {
 						Property relation = model.getProperty(dtoResult.Relation);				
 						
 						//Create individual
-						String instanceName = dtoResult.Target + "-" + (this.Search.getIndividualsURI(infModel, dtoResult.Target).size() + 1);
+						String instanceName = dtoResult.Target + "-" + (this.Search.GetInstancesFromClass(model, infModel, dtoResult.Target).size() + 1);
 						Individual newInstance = ClassImage.createIndividual(instanceName);
 						
 						//Add relation
@@ -259,7 +258,7 @@ public class FactoryInstances {
 		return model;
 	}
 
-	public OntModel CreateIndividualsForMinRestriction(ArrayList<DtoDefinitionClass> dtoMinRelationsList, OntModel model, OntModel infModel) {
+	public OntModel CreateIndividualsForMinRestriction(ArrayList<DtoDefinitionClass> dtoMinRelationsList, OntModel model, InfModel infModel) {
 
 		//This one is use to capture all DtoTripleResult with new instance created
 		ArrayList<DtoDefinitionClass> dtoMinListNew = new ArrayList<DtoDefinitionClass>();
@@ -267,7 +266,7 @@ public class FactoryInstances {
 		for (DtoDefinitionClass dtoTripleResult : dtoMinRelationsList) {
 			
 			// List instances from Class Source
-			List<String> listInstances = this.Search.getIndividualsURI(infModel, dtoTripleResult.Source);
+			ArrayList<String> listInstances = this.Search.GetInstancesFromClass(model, infModel, dtoTripleResult.Source);
 			System.out.println("-> " + dtoTripleResult.Source.toString() + " - n individuos - " + listInstances.size());
 			
 			if(listInstances.size() > 0)	//Exist instances
@@ -298,7 +297,7 @@ public class FactoryInstances {
 							Property relation = model.getProperty(dtoTripleResult.Relation);				
 							
 							//Create individual
-							String instanceName = dtoTripleResult.Target + "-" + (this.Search.getIndividualsURI(infModel, dtoTripleResult.Target).size() + 1);
+							String instanceName = dtoTripleResult.Target + "-" + (this.Search.GetInstancesFromClass(model, infModel, dtoTripleResult.Target).size() + 1);
 							Individual newInstance = ClassImage.createIndividual(instanceName);
 							
 							//Add relation
@@ -318,7 +317,7 @@ public class FactoryInstances {
 		return model;
 	}	
 
-	public OntModel CreateIndividualsForExactlyRestriction(ArrayList<DtoDefinitionClass> dtoExactlyRelationsList, OntModel model, OntModel infModel)
+	public OntModel CreateIndividualsForExactlyRestriction(ArrayList<DtoDefinitionClass> dtoExactlyRelationsList, OntModel model, InfModel infModel)
 	{
 		//This one is use to capture all DtoTripleResult with new instance created
 		ArrayList<DtoDefinitionClass> dtoExactlyListNew = new ArrayList<DtoDefinitionClass>();
@@ -326,7 +325,7 @@ public class FactoryInstances {
 		for (DtoDefinitionClass dtoTripleResult : dtoExactlyRelationsList) {
 			
 			// List instances from Class Source
-			List<String> listInstances = this.Search.getIndividualsURI(infModel, dtoTripleResult.Source);
+			ArrayList<String> listInstances = this.Search.GetInstancesFromClass(model, infModel, dtoTripleResult.Source);
 			System.out.println("-> " + dtoTripleResult.Source.toString() + " - n individuos - " + listInstances.size());
 			
 			if(listInstances.size() > 0)	//Exist instances
@@ -358,7 +357,7 @@ public class FactoryInstances {
 							Property relation = model.getProperty(dtoTripleResult.Relation);				
 							
 							//Create individual
-							String instanceName = dtoTripleResult.Target + "-" + (this.Search.getIndividualsURI(infModel, dtoTripleResult.Target).size() + 1);
+							String instanceName = dtoTripleResult.Target + "-" + (this.Search.GetInstancesFromClass(model, infModel, dtoTripleResult.Target).size() + 1);
 							Individual newInstance = ClassImage.createIndividual(instanceName);
 							
 							//Add relation

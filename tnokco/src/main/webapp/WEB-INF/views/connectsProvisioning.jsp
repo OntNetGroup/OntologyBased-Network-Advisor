@@ -358,13 +358,13 @@
 					<button type="button" id="resetSelection" disabled="disabled"
 						onclick="resetSelection();">Reset Selection</button>
 				</td>
-<!-- 				<td style="padding-right: 5px;"> -->
-<!-- 					<form action="autoConnects" class="form-horizontal" method="POST" -->
-<!-- 						enctype="multipart/form-data"> -->
-<!-- 						<input type="submit" id="autoConnects" name="submit" -->
-<!-- 							value="Automatic Connects" /> -->
-<!-- 					</form> -->
-<!-- 				</td> -->
+				<td style="padding-right: 5px;">
+					<form action="autoConnects" class="form-horizontal" method="POST"
+						enctype="multipart/form-data">
+						<input type="submit" id="autoConnects" name="submit"
+							value="Automatic Connects" />
+					</form>
+				</td>
 			</tr>
 		</table>
 		<div style="clear: both"></div>

@@ -13,21 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hp.hpl.jena.ontology.ObjectProperty;
+import com.hp.hpl.jena.rdf.model.Statement;
+
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
-
-import com.hp.hpl.jena.graph.query.Query;
-import com.hp.hpl.jena.ontology.ObjectProperty;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Statement;
 //import br.ufes.inf.padtec.tnokco.business.Code;
 
 @Controller
@@ -89,37 +81,6 @@ public class SindelController{
 		return dto;
 	}
 
-	public ArrayList<String[]> GetSourceAndTargetForProperty(OntModel model, String propName) 
-	{	
-		ArrayList<String[]> list = new ArrayList<String[]>();
-		// Create a new query
-		String queryString = 
-		" SELECT *" +
-		" WHERE {\n" +		
-			" ?source <" + propName + "> ?target .\n " +	
-		"}";
-
-		com.hp.hpl.jena.query.Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();
-		
-		while (results.hasNext()) {
-			String [] tupla = new String[2];
-			QuerySolution row = results.next();		    
-		    RDFNode source = row.get("source");
-		    RDFNode target = row.get("target");
-		    
-		    tupla[0] = source.toString();
-		    tupla[1] = target.toString();
-		    list.add(tupla);
-		    System.out.println("Tupla: "+list);
-		}	
-
-		return list;		
-	}
-	
 	@RequestMapping(method = RequestMethod.POST, value="/runSindel")
 	public @ResponseBody DtoResultAjax runSindel(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
 
@@ -148,7 +109,7 @@ public class SindelController{
 			 * Set specific types for connects relations
 			 * */
 			
-			ArrayList<String[]> list = GetSourceAndTargetForProperty(HomeController.Model, HomeController.NS+"has_forwarding");
+			ArrayList<String[]> list = HomeController.Search.GetSourceAndTargetForProperty(HomeController.Model, HomeController.NS+"has_forwarding");
 			String specificRelation = null;
 			
 			for(String[] st : list){
@@ -175,7 +136,7 @@ public class SindelController{
 			if(HomeController.reasoningOnFirstLoad == true)
 			{
 				//Call reasoner
-				HomeController.InfModel = (OntModel)HomeController.Reasoner.run(HomeController.Model);
+				HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 				
 			} else {
 				

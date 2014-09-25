@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+
+
+
 import br.ufes.inf.nemo.condelOwlg805.Condel2owlG805;
 import br.ufes.inf.nemo.condelOwlg805.OwlG805toCondel;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
+import br.ufes.inf.nemo.okco.model.EnumReasoner;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-
-import com.hp.hpl.jena.ontology.OntModel;
 
 @Controller
 public class CondelController{
@@ -135,7 +138,7 @@ public class CondelController{
 			if(HomeController.reasoningOnFirstLoad == true)
 			{
 				//Call reasoner
-				HomeController.InfModel = (OntModel)HomeController.Reasoner.run(HomeController.Model);
+				HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 				
 			} else {
 				

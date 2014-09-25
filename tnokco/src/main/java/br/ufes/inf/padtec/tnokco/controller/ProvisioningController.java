@@ -34,7 +34,6 @@ import br.ufes.inf.padtec.tnokco.business.Reader;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;
-import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Statement;
 
@@ -973,7 +972,7 @@ public class ProvisioningController{
 		return VisualizationController.provisoning_visualization(request);
 	}
 	
-	public static void getEquipmentsWithRPs(OntModel infModel, String NS, ArrayList<String> equipsWithRps, ArrayList<String> connectsBetweenEqsAndRps, ArrayList<String> connectsBetweenRps){
+	public static void getEquipmentsWithRPs(InfModel infModel, String NS, ArrayList<String> equipsWithRps, ArrayList<String> connectsBetweenEqsAndRps, ArrayList<String> connectsBetweenRps){
 		if(equipsWithRps == null){
 			equipsWithRps = new ArrayList<String>();
 		}
@@ -1038,7 +1037,7 @@ public class ProvisioningController{
 		
 	}
 	
-	public static ArrayList<String> getEquipmentFromBinding(OntModel infModel, String NS, String bindingName){
+	public static ArrayList<String> getEquipmentFromBinding(InfModel infModel, String NS, String bindingName){
 		bindingName = bindingName.replace(NS, "");
 		ArrayList<DtoInstanceRelation> bindingRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+bindingName);
 		
@@ -1080,7 +1079,7 @@ public class ProvisioningController{
 		return equips;
 	}
 	
-	public static ArrayList<String> getEquipmentFromPort(OntModel infModel, String NS, String bindedPortNs, Boolean searchToTop){
+	public static ArrayList<String> getEquipmentFromPort(InfModel infModel, String NS, String bindedPortNs, Boolean searchToTop){
 		ArrayList<String> ret = new ArrayList<String>();
 		bindedPortNs = bindedPortNs.replace(NS, "");
 		
@@ -1150,7 +1149,7 @@ public class ProvisioningController{
 		return ret;
 	}
 	
-	public static Boolean searchEquipmentFromPortToTop(OntModel infModel, String NS, String portNs){
+	public static Boolean searchEquipmentFromPortToTop(InfModel infModel, String NS, String portNs){
 		portNs = portNs.replace(NS, "");
 		ArrayList<String> tiposPort=HomeController.Search.GetClassesFrom(NS+portNs,infModel);
 		if(tiposPort.contains(NS+"Output")){
@@ -1159,7 +1158,7 @@ public class ProvisioningController{
 		return false;
 	}
 	
-	public static String getEquipmentFromInterface(OntModel infModel, String NS, String interfaceNs){
+	public static String getEquipmentFromInterface(InfModel infModel, String NS, String interfaceNs){
 		interfaceNs = interfaceNs.replace(NS, "");
 		ArrayList<DtoInstanceRelation> portRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+interfaceNs);
 		
@@ -1173,7 +1172,7 @@ public class ProvisioningController{
 		return "";
 	}
 	
-	public static String getRPFromBinding(OntModel infModel, String NS, String bindingNs){
+	public static String getRPFromBinding(InfModel infModel, String NS, String bindingNs){
 		bindingNs = bindingNs.replace(NS, "");
 		ArrayList<DtoInstanceRelation> bindingRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+bindingNs);
 		
@@ -1187,7 +1186,7 @@ public class ProvisioningController{
 		return "";
 	}
 	
-	public static ArrayList<String> getNextRpsFromTf(OntModel infModel, String NS, String actualPort, ArrayList<String> nextPorts, Boolean searchToTop){
+	public static ArrayList<String> getNextRpsFromTf(InfModel infModel, String NS, String actualPort, ArrayList<String> nextPorts, Boolean searchToTop){
 		ArrayList<String> nextRps = new ArrayList<String>();
 		for (String portNs : nextPorts) {
 			portNs = portNs.replace(NS, "");

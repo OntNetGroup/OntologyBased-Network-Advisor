@@ -27,7 +27,7 @@ public class ManagerRelations {
 		this.manager = manager;
 	}
 	
-	public OntModel EnforceSubRelation(OntModel model, OntModel infModel, String NS)
+	public OntModel EnforceSubRelation(OntModel model, InfModel infModel, String NS)
 	{			
 		ArrayList<Instance> ListAllInstances;
 		try {
