@@ -214,7 +214,7 @@ public class ManagerInstances {
 				//Case if the instance have no class selected - only Thing
 				dto = new DtoCompleteClass();
 				dto.CompleteClass = instanceSelected.ListClasses.get(0);
-				for (String subClas : search.GetClasses(model)) {
+				for (String subClas : OntModelUtil.getClassesURI(model)) {
 					if(subClas != null)
 						dto.AddMember(subClas);
 				}

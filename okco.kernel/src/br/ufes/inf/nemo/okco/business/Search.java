@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.okco.business;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
@@ -48,38 +49,39 @@ public class Search {
 	 * General search
 	 */
 	
-	public ArrayList<String> GetProperties(OntModel model) {
-		
-		ArrayList<String> lista = new ArrayList<String>();
-		ExtendedIterator<OntProperty> i = model.listOntProperties();
-		if( !i.hasNext() ) {
-			//System.out.print( "none" );
-		}
-		else {
-			while( i.hasNext() ) {
-				Resource val = (Resource) i.next();
-				lista.add( val.getURI() );
-			}
-		}
-		return lista;
-	}
+//	public ArrayList<String> GetProperties(OntModel model) {
+//		
+//		ArrayList<String> lista = new ArrayList<String>();
+//		ExtendedIterator<OntProperty> i = model.listOntProperties();
+//		if( !i.hasNext() ) {
+//			//System.out.print( "none" );
+//		}
+//		else {
+//			while( i.hasNext() ) {
+//				Resource val = (Resource) i.next();
+//				lista.add( val.getURI() );
+//			}
+//		}
+//		return lista;
+//	}
 	
-	public ArrayList<String> GetClasses(OntModel model) {
-		
-		ArrayList<String> lista = new ArrayList<String>();
-		ExtendedIterator<OntClass> i = model.listClasses();
-		if( !i.hasNext() ) {
-			//System.out.print( "none" );
-		}
-		else {
-			while( i.hasNext() ) {
-				Resource val = (Resource) i.next();
-				lista.add( val.getURI() );
-			}
-		}
-		return lista;
-	}
+//	public ArrayList<String> GetClasses(OntModel model) {
+//		
+//		ArrayList<String> lista = new ArrayList<String>();
+//		ExtendedIterator<OntClass> i = model.listClasses();
+//		if( !i.hasNext() ) {
+//			//System.out.print( "none" );
+//		}
+//		else {
+//			while( i.hasNext() ) {
+//				Resource val = (Resource) i.next();
+//				lista.add( val.getURI() );
+//			}
+//		}
+//		return lista;
+//	}
 	
+	//TODO: Colocar no InfMOdelUtil e ver se da para fazer sem o sparcol
 	public ArrayList<String> GetInstancesFromClass(OntModel model, InfModel infModel, String className) {
 		
 		ArrayList<String> list = new ArrayList<String>();
@@ -148,7 +150,7 @@ public class Search {
 	public ArrayList<String> GetAllInstances(OntModel model, InfModel infModel)
 	{		
 		ArrayList<String> AllInstances = new ArrayList<String>();
-		ArrayList<String> AllClasses = this.GetClasses(model);
+		List<String> AllClasses = OntModelUtil.getClassesURI(model);
 		//System.out.println("-> " + AllClasses.size());
 		for (String className : AllClasses) {
 			
@@ -168,7 +170,7 @@ public class Search {
 	{		
 		ArrayList<DtoInstance> AllInstances = new ArrayList<DtoInstance>();
 		
-		ArrayList<String> AllClasses = this.GetClasses(model);
+		List<String> AllClasses = OntModelUtil.getClassesURI(model);
 		AllClasses.add("http://www.w3.org/2002/07/owl#Thing");
 		
 		DtoInstance dto = null;
