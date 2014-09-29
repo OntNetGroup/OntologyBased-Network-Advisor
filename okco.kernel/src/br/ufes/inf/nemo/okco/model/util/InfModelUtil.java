@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.business;
+package br.ufes.inf.nemo.okco.model.util;
 
 import java.util.ArrayList;
 import java.util.List;

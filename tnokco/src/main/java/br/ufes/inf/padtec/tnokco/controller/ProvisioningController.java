@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.ufes.inf.nemo.okco.business.RepositoryImpl;
-import br.ufes.inf.nemo.okco.business.Search;
+import br.ufes.inf.nemo.okco.Search;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+import br.ufes.inf.nemo.okco.model.repository.RepositoryImpl;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.business.Reader;

@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.business;
+package br.ufes.inf.nemo.okco.model.inference;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;

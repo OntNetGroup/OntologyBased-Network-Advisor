@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.business;
+package br.ufes.inf.nemo.okco.model.inference;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

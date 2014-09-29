@@ -6,17 +6,17 @@ import java.util.ArrayList;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import br.ufes.inf.nemo.okco.business.FactoryInstances;
-import br.ufes.inf.nemo.okco.business.HermitReasonerImpl;
-import br.ufes.inf.nemo.okco.business.InfModelUtil;
-import br.ufes.inf.nemo.okco.business.ManagerInstances;
-import br.ufes.inf.nemo.okco.business.OntologyReasoner;
-import br.ufes.inf.nemo.okco.business.PelletReasonerImpl;
-import br.ufes.inf.nemo.okco.business.Search;
+import br.ufes.inf.nemo.okco.FactoryInstances;
+import br.ufes.inf.nemo.okco.ManagerInstances;
+import br.ufes.inf.nemo.okco.Search;
 import br.ufes.inf.nemo.okco.model.DtoCompleteClass;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+import br.ufes.inf.nemo.okco.model.inference.HermitReasonerImpl;
+import br.ufes.inf.nemo.okco.model.inference.OntologyReasoner;
+import br.ufes.inf.nemo.okco.model.inference.PelletReasonerImpl;
+import br.ufes.inf.nemo.okco.model.util.InfModelUtil;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;

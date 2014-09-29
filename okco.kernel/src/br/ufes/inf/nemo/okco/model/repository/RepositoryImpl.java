@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.business;
+package br.ufes.inf.nemo.okco.model.repository;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

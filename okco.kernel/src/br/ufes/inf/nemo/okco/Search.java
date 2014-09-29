@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.business;
+package br.ufes.inf.nemo.okco;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +14,8 @@ import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.RelationDomainRangeList;
+import br.ufes.inf.nemo.okco.model.util.InfModelUtil;
+import br.ufes.inf.nemo.okco.model.util.OntModelUtil;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;

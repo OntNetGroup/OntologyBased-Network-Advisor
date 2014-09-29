@@ -6,8 +6,8 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.FileManager;
 
-import br.ufes.inf.nemo.okco.business.OntModelUtil;
-import br.ufes.inf.nemo.okco.business.Search;
+import br.ufes.inf.nemo.okco.Search;
+import br.ufes.inf.nemo.okco.model.util.OntModelUtil;
 
 public class ProgramaObtemClassesRelacoes {
 	

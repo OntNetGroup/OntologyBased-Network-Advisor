@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.business;
+package br.ufes.inf.nemo.okco.model.inference;
 
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 

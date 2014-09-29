@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import br.ufes.inf.nemo.okco.business.InfModelUtil;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+import br.ufes.inf.nemo.okco.model.util.InfModelUtil;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 

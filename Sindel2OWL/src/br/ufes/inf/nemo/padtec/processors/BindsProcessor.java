@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import br.ufes.inf.nemo.okco.business.Search;
+import br.ufes.inf.nemo.okco.Search;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 
 import com.hp.hpl.jena.ontology.Individual;

@@ -2,8 +2,8 @@
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.okco.business.ManagerInstances;
-import br.ufes.inf.nemo.okco.business.Search;
+import br.ufes.inf.nemo.okco.ManagerInstances;
+import br.ufes.inf.nemo.okco.Search;
 import br.ufes.inf.nemo.okco.model.DomainRange;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.DtoInstance;

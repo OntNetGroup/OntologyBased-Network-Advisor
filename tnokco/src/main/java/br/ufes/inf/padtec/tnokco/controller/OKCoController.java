@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
 import br.inf.nemo.padtec.wokco.WOKCOGraphPlotting;
-import br.ufes.inf.nemo.okco.business.InfModelUtil;
 import br.ufes.inf.nemo.okco.model.DataPropertyValue;
 import br.ufes.inf.nemo.okco.model.DtoClassifyInstancePost;
 import br.ufes.inf.nemo.okco.model.DtoCommitMaxCard;
@@ -34,6 +33,7 @@ import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+import br.ufes.inf.nemo.okco.model.util.InfModelUtil;
 
 @Controller
 //@RequestMapping("/instance")
