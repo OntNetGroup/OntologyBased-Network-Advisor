@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.okco.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.ufes.inf.nemo.okco.business.InfModelUtil;
 import br.ufes.inf.nemo.okco.model.DataPropertyValue;
 import br.ufes.inf.nemo.okco.model.DtoClassifyInstancePost;
 import br.ufes.inf.nemo.okco.model.DtoCommitMaxCard;
@@ -163,10 +165,10 @@ public class OKCoController {
 			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(ListAllInstances);
 
 			//get instances with had this relation
-			ArrayList<String> listInstancesName = HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelUtil.getIndividualsURIInRelationRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 			//populate the list of instances with had this relation	    	
-			ArrayList<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
+			List<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
 
 			//Create others sections
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
@@ -179,11 +181,11 @@ public class OKCoController {
 		} else if (type.equals("objectMax"))
 		{
 			//get instances with had this relation
-			ArrayList<String> listInstancesName = HomeController.Search.GetInstancesOfTargetWithRelation(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelUtil.getIndividualsURIInRelationRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
-			ArrayList<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
+			List<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
 
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
 
@@ -243,7 +245,7 @@ public class OKCoController {
 			if(typeRelation.equals(EnumRelationTypeCompletness.SOME))
 			{
 				//create the the new instance
-				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, dtoSelected.Target).size() + 1);
+				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (InfModelUtil.getIndividualsURI(HomeController.InfModel, dtoSelected.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
@@ -347,7 +349,7 @@ public class OKCoController {
 		HomeController.ListModifiedInstances.add(instance.ns + instance.name);
 
 		//Update InfModel without calling reasoner
-		HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+		HomeController.InfModel = HomeController.Repository.clone(HomeController.Model);
 
 		//Update lists
 		//HomeController.UpdateLists();
@@ -507,7 +509,7 @@ public class OKCoController {
 
 					} else {
 						//Update InfModel without calling reasoner
-						HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+						HomeController.InfModel = HomeController.Repository.clone(HomeController.Model);
 
 						//Add on list modified instances
 						HomeController.ListModifiedInstances.add(iTarget.ns + iTarget.name);
@@ -563,7 +565,7 @@ public class OKCoController {
 			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 
 			//Save temporary model
-			HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);
+			HomeController.tmpModel = HomeController.Repository.clone(HomeController.Model);
 
 			//Update list instances
 			HomeController.UpdateLists();
@@ -577,7 +579,7 @@ public class OKCoController {
 		} catch (Exception e) {
 
 			//Roll back the tempModel
-			HomeController.Model = HomeController.Repository.CopyModel(HomeController.tmpModel);
+			HomeController.Model = HomeController.Repository.clone(HomeController.tmpModel);
 			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 
 			//Update list instances
@@ -710,7 +712,7 @@ public class OKCoController {
 					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 
 					//Save temporary model
-					HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);
+					HomeController.tmpModel = HomeController.Repository.clone(HomeController.Model);
 
 					//Update list instances
 					HomeController.UpdateLists();
@@ -724,7 +726,7 @@ public class OKCoController {
 				} catch (Exception e) {
 
 					//Roll back the tempModel
-					HomeController.Model = HomeController.Repository.CopyModel(HomeController.tmpModel);
+					HomeController.Model = HomeController.Repository.clone(HomeController.tmpModel);
 					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 
 					//Update list instances
@@ -823,7 +825,7 @@ public class OKCoController {
 
 					} else {
 						//Update InfModel without calling reasoner
-						HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+						HomeController.InfModel = HomeController.Repository.clone(HomeController.Model);
 
 						//Add on list modified instances
 						HomeController.ListModifiedInstances.add(iSource.ns + iSource.name);

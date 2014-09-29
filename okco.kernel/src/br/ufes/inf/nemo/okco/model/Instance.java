@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.okco.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Instance implements Serializable {
 
@@ -12,9 +13,9 @@ public class Instance implements Serializable {
 	public int id;
 	public String ns;
 	public String name;
-	public ArrayList<String> ListClasses;
-	public ArrayList<String> ListSameInstances;
-	public ArrayList<String> ListDiferentInstances;
+	public List<String> ListClasses;
+	public List<String> ListSameInstances;
+	public List<String> ListDiferentInstances;
 	public boolean existInModel;	//
 	public boolean isModified;		// Check is modified and not run the reasoner for him
 	
@@ -27,7 +28,7 @@ public class Instance implements Serializable {
 	public ArrayList<DtoCompleteClass> ListCompleteClasses;
 	public ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties;
 	
-	public Instance(String ns, String name, ArrayList<String> listClasses, ArrayList<String> listDifferent, ArrayList<String> listSame, Boolean existInModel)
+	public Instance(String ns, String name, List<String> listClasses, List<String> listDifferent, List<String> listSame, Boolean existInModel)
 	{
 		count++;
 		this.id = count;

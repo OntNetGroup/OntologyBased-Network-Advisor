@@ -4,25 +4,6 @@ import java.util.List;
 
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
-import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
-
 import br.ufes.inf.nemo.okco.model.DataPropertyValue;
 import br.ufes.inf.nemo.okco.model.DomainRange;
 import br.ufes.inf.nemo.okco.model.DtoCompleteClass;
@@ -32,8 +13,24 @@ import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
-import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.okco.model.RelationDomainRangeList;
+
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import com.hp.hpl.jena.reasoner.Reasoner;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 public class Search {
 
@@ -44,118 +41,16 @@ public class Search {
 	{
 		NS = NameSpace;
 	}
-
-	/*
-	 * General search
-	 */
 	
-//	public ArrayList<String> GetProperties(OntModel model) {
-//		
-//		ArrayList<String> lista = new ArrayList<String>();
-//		ExtendedIterator<OntProperty> i = model.listOntProperties();
-//		if( !i.hasNext() ) {
-//			//System.out.print( "none" );
-//		}
-//		else {
-//			while( i.hasNext() ) {
-//				Resource val = (Resource) i.next();
-//				lista.add( val.getURI() );
-//			}
-//		}
-//		return lista;
-//	}
-	
-//	public ArrayList<String> GetClasses(OntModel model) {
-//		
-//		ArrayList<String> lista = new ArrayList<String>();
-//		ExtendedIterator<OntClass> i = model.listClasses();
-//		if( !i.hasNext() ) {
-//			//System.out.print( "none" );
-//		}
-//		else {
-//			while( i.hasNext() ) {
-//				Resource val = (Resource) i.next();
-//				lista.add( val.getURI() );
-//			}
-//		}
-//		return lista;
-//	}
-	
-	//TODO: Colocar no InfMOdelUtil e ver se da para fazer sem o sparcol
-	public ArrayList<String> GetInstancesFromClass(OntModel model, InfModel infModel, String className) {
-		
-		ArrayList<String> list = new ArrayList<String>();
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + NS + ">" +
-		" SELECT *" +
-		" WHERE {\n" +		
-			" ?i rdf:type <" + className + "> .\n " +	
-		"}";
-
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-
-		while (results.hasNext()) {
-			
-			QuerySolution row = results.next();		    
-		    RDFNode i = row.get("i");		    
-		    list.add(i.toString());
-		}	
-
-		return list;		
-	}
-	
-	public ArrayList<String[]> GetSourceAndTargetForProperty(OntModel model, String propName) {
-		
-		ArrayList<String[]> list = new ArrayList<String[]>();
-		
-		// Create a new query
-		String queryString = 
-		" SELECT *" +
-		" WHERE {\n" +		
-			" ?source <" + propName + "> ?target .\n " +	
-		"}";
-
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();
-		
-		while (results.hasNext()) {
-			String [] tupla = new String[2];
-			QuerySolution row = results.next();		    
-		    RDFNode source = row.get("source");
-		    RDFNode target = row.get("target");
-		    
-		    tupla[0] = source.toString();
-		    tupla[1] = target.toString();
-		    list.add(tupla);
-		}	
-
-		return list;		
-	}
-			
 	public ArrayList<String> GetAllInstances(OntModel model, InfModel infModel)
-	{		
+	{
 		ArrayList<String> AllInstances = new ArrayList<String>();
 		List<String> AllClasses = OntModelUtil.getClassesURI(model);
 		//System.out.println("-> " + AllClasses.size());
 		for (String className : AllClasses) {
 			
 			if(!(className == null)){
-				ArrayList<String> InstancesFromClass = this.GetInstancesFromClass(model, infModel, className);
+				List<String> InstancesFromClass = InfModelUtil.getIndividualsURI(infModel, className);
 				for (String instance : InstancesFromClass) {
 					if (!(AllInstances.contains(instance)))
 						AllInstances.add(instance);
@@ -179,7 +74,7 @@ public class Search {
 			
 			if(!(className == null)){
 				
-				ArrayList<String> InstancesFromClass = this.GetInstancesFromClass(model, infModel, className);
+				List<String> InstancesFromClass = InfModelUtil.getIndividualsURI(infModel, className);
 				for (String instance : InstancesFromClass) {
 					
 					dto = DtoInstance.getInstance(instance, AllInstances);
@@ -202,97 +97,7 @@ public class Search {
 		
 		return AllInstances;
 	}
-
-	
-	/*
-	 * Class/Instance search
-	 */
-	
-	public ArrayList<String> GetDifferentInstancesFrom(InfModel infModel, String instanceName)
-	{		
-		ArrayList<String> list = new ArrayList<String>();
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + NS + ">" +
-		" SELECT DISTINCT ?y " +
-		" WHERE {\n" +		
-			"{ " + 
-				"<" + instanceName + "> owl:differentFrom" + " ?y .\n " +
-			"} UNION { " +
-				" ?y owl:differentFrom <" + instanceName + "> .\n " +
-			" } " +
-		"}";
-
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-		
-		//System.out.println("-> " + instanceName);
-		while (results.hasNext()) {
-			QuerySolution row = results.next();
-		    
-		    RDFNode rdfY = row.get("y");
-		    if(! instanceName.equals(rdfY.toString()))
-		    {
-		    	list.add(rdfY.toString());
-		    	//System.out.println("-------> " + rdfY.toString());
-		    }
-		}	
-		//System.out.println("");
-
-		return list;
-	}
-	
-	public ArrayList<String> GetSameInstancesFrom(InfModel infModel, String instanceName)
-	{
-		ArrayList<String> list = new ArrayList<String>();
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + NS + ">" +
-		" SELECT DISTINCT ?y" +
-		" WHERE {\n" +		
-			"{ " + 
-				"<" + instanceName + "> owl:sameAs" + " ?y .\n " +
-			"} UNION { " +
-				" ?y owl:sameAs <" + instanceName + "> .\n " +
-			" } " +
-		"}";
-
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-		
-		while (results.hasNext()) {
-			QuerySolution row = results.next();
-		    
-		    RDFNode rdfY = row.get("y");
-		    if(! instanceName.equals(rdfY.toString()))
-		    {
-		    	list.add(rdfY.toString());
-		    }
-		}		
-
-		return list;
-	}
-	
+			
 	public ArrayList<String> GetPropertiesFromClass(OntModel model,String className) {
 		
 		ArrayList<String> lista = new ArrayList<String>();
@@ -342,72 +147,6 @@ public class Search {
 		//}		
 		return lista;
 	}
-
-	public boolean CheckExistInstanceTarget(InfModel infModel, String instance, String relation, String imageClass) {
-
-		Boolean result = false;
-
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT DISTINCT ?x" +
-		" WHERE {\n" +
-				" <" + instance + "> <" + relation + "> ?x .\n " +
-				" ?x" + " rdf:type" + " <"+ imageClass + "> .\n " +
-			"}";
-
-		//System.out.println(queryString + "\n");
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-		
-		while (results.hasNext()) {
-			QuerySolution row = results.next();
-		    RDFNode rdfInstance = row.get("x");
-		    result = true;
-		}
-		
-		// Check Data Property
-		
-		queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT DISTINCT ?x" +
-		" WHERE {\n" +
-				" <" + instance + "> <" + relation + "> ?x .\n " +
-				" <" + relation + "> rdf:type owl:DatatypeProperty .\n " +
-			"}";
-
-		query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe2 = QueryExecutionFactory.create(query, infModel);
-		ResultSet results2 = qe2.execSelect();
-		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-		
-		while (results2.hasNext()) {
-			QuerySolution row = results2.next();
-		    RDFNode rdfInstance = row.get("x");
-		    if(rdfInstance.toString().contains(imageClass))
-		    {
-		    	result = true;
-		    }
-		}	
-
-		return result;
-	}
 	
 	public EnumPropertyType GetPropertyType(InfModel infModel, String property)
 	{
@@ -425,7 +164,7 @@ public class Search {
 		"}";
 		
 		Query query = QueryFactory.create(queryString); 
-		
+
 		// Execute the query and obtain results
 		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
 		ResultSet results = qe.execSelect();
@@ -532,119 +271,35 @@ public class Search {
 		return ok;
 	}
 	
-	public int CheckExistInstancesTargetCardinality(InfModel infModel, String instance, String relation, String imageClass, String cardinality) {
-		
+	public int CheckExistInstancesTargetCardinality(InfModel infModel, String instance, String relation, String imageClass, String cardinality) 
+	{		
 		int result = 0;
-		ArrayList<String> listValues = new ArrayList<String>();
-
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT DISTINCT ?x" +
-		" WHERE {\n" +
-				" <" + instance + "> <" + relation + "> ?x .\n " +
-				" ?x" + " rdf:type" + " <"+ imageClass + "> .\n " +
-			"}";
-
-		Query query = QueryFactory.create(queryString); 
 		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
+		List<String> listValues = InfModelUtil.getIndividualsURIInRelationRange(infModel, instance, relation, imageClass);
 		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
+		ArrayList<String> uniqueListValues = new ArrayList<String>();
+		uniqueListValues.addAll(listValues);
 		
-		while (results.hasNext()) {
-			QuerySolution row = results.next();
-		    RDFNode rdfInstance = row.get("x");
-		    listValues.add(rdfInstance.toString());
-		}
-		
-		ArrayList<String> listValuesAux = new ArrayList<String>(listValues);
-
 		for (String value : listValues) {
 			
-			if(listValuesAux.contains(value))
+			if(uniqueListValues.contains(value))
 			{
-				ArrayList<String> sameInstances = this.GetSameInstancesFrom(infModel, value);
+				List<String> sameInstances = InfModelUtil.getIndividualsURISameAs(infModel, value);
 				for (String sameIns : sameInstances) {
-					if(listValuesAux.contains(sameIns))
+					if(uniqueListValues.contains(sameIns))
 					{
-						listValuesAux.remove(sameIns);
+						uniqueListValues.remove(sameIns);
 					}
 				}	
 			}			
-		}
+		}		
+		result = uniqueListValues.size();
 		
-		result = listValuesAux.size();
-		
-		// Check Data Property
-		
-		queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT DISTINCT ?x" +
-		" WHERE {\n" +
-				" <" + instance + "> <" + relation + "> ?x .\n " +
-				" <" + relation + "> rdf:type owl:DatatypeProperty .\n " +
-			"}";
-
-		query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe2 = QueryExecutionFactory.create(query, infModel);
-		ResultSet results2 = qe2.execSelect();
-		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-		
-		while (results2.hasNext()) {
-			QuerySolution row = results2.next();
-			RDFNode rdfInstance = row.get("x");
-			if(rdfInstance.toString().contains(imageClass))
-				result++;
-		}
+		// check datatype properties
+		List<String> dataTypeValues = InfModelUtil.getIndividualsURIInDataTypeRelationRange(infModel, instance, relation, imageClass);
+		result += dataTypeValues.size();
 		
 		return result;
-	}
-
-	public ArrayList<String> GetInstancesOfTargetWithRelation(InfModel infModel, String instance, String relation, String imageClass) {
-		
-		ArrayList<String> list = new ArrayList<String>();
-		
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <"+ NS + ">" +
-		"\n SELECT DISTINCT ?x" +
-		" WHERE {\n" +
-				" <" + instance + "> <" + relation + "> ?x .\n " +
-				" ?x" + " rdf:type" + " <"+ imageClass + "> .\n " +
-			"}";
-
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-		
-		while (results.hasNext()) {
-			QuerySolution row = results.next();
-		    RDFNode rdfInstance = row.get("x");
-		    list.add(rdfInstance.toString());	    
-		}			
-
-		return list;
 	}
 	
 	public ArrayList<DataPropertyValue> GetDataValuesOfTargetWithRelation(InfModel infModel, String instance, String relation, String imageClass) {
@@ -2218,7 +1873,7 @@ public class Search {
 				
 				if (Instance == null)
 				{					
-					Instance = new Instance(nameSpace, name, dto.ClassNameList, this.GetDifferentInstancesFrom(InfModel, dto.Uri), this.GetSameInstancesFrom(InfModel, dto.Uri),true);
+					Instance = new Instance(nameSpace, name, dto.ClassNameList, InfModelUtil.getIndividualsURIDifferentFrom(InfModel, dto.Uri), InfModelUtil.getIndividualsURISameAs(InfModel, dto.Uri),true);
 					
 				} else {
 					
@@ -2312,9 +1967,9 @@ public class Search {
 		return listClasses;
 	}
 
-	public ArrayList<DtoCompleteClass> GetCompleteSubClasses(String className, ArrayList<String> listClassesOfInstance, InfModel infModel)
+	public List<DtoCompleteClass> GetCompleteSubClasses(String className, List<String> listClassesOfInstance, InfModel infModel)
 	{
-		ArrayList<DtoCompleteClass> ListCompleteClsAndSubCls = new ArrayList<DtoCompleteClass>();
+		List<DtoCompleteClass> ListCompleteClsAndSubCls = new ArrayList<DtoCompleteClass>();
 		
 		// Create a new query
 		String queryString = 

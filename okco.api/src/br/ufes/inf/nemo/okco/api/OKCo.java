@@ -6,21 +6,22 @@ import java.util.ArrayList;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.util.FileManager;
-
 import br.ufes.inf.nemo.okco.business.FactoryInstances;
-import br.ufes.inf.nemo.okco.business.FactoryModel;
+import br.ufes.inf.nemo.okco.business.HermitReasonerImpl;
+import br.ufes.inf.nemo.okco.business.InfModelUtil;
 import br.ufes.inf.nemo.okco.business.ManagerInstances;
+import br.ufes.inf.nemo.okco.business.OntologyReasoner;
+import br.ufes.inf.nemo.okco.business.PelletReasonerImpl;
 import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoCompleteClass;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
-import br.ufes.inf.nemo.okco.model.EnumReasoner;
-import br.ufes.inf.nemo.okco.model.IReasoner;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.util.FileManager;
 
 
 /**Class for externals the OKCo's functionalities
@@ -40,18 +41,17 @@ public class OKCo {
 	{
 		DtoResultInstances dtoResult = new DtoResultInstances();
 		try {
-			
-			FactoryModel factory = new FactoryModel();
-			IReasoner Reasoner;
+						
+			OntologyReasoner Reasoner;
 			
 			//Select reasoner
 			if(reasonerOption.equals("HERMIT"))
 			{
-				Reasoner = factory.GetReasoner(EnumReasoner.HERMIT);
+				Reasoner = new HermitReasonerImpl();
 				  
 			} else if(reasonerOption.equals("PELLET")) {
 				
-				Reasoner = factory.GetReasoner(EnumReasoner.PELLET);
+				Reasoner = new PelletReasonerImpl();
 				
 			} else if(reasonerOption.equals("NONE")) {
 				
@@ -205,17 +205,16 @@ public class OKCo {
 		
 		try {
 			
-			FactoryModel factory = new FactoryModel();
-			IReasoner Reasoner;
+			OntologyReasoner Reasoner;
 			
 			//Select reasoner
 			if(reasonerOption.equals("HERMIT"))
 			{
-				Reasoner = factory.GetReasoner(EnumReasoner.HERMIT);
+				Reasoner = new HermitReasonerImpl();
 				  
 			} else if(reasonerOption.equals("PELLET")) {
 				
-				Reasoner = factory.GetReasoner(EnumReasoner.PELLET);
+				Reasoner = new PelletReasonerImpl();
 				
 			} else if(reasonerOption.equals("NONE")) {
 				
@@ -299,7 +298,7 @@ public class OKCo {
 					if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
 					{
 						//create the the new instance
-						String instanceName = dto.Target.split("#")[1] + "-" + (search.GetInstancesFromClass(model, infModel, dto.Target).size() + 1);
+						String instanceName = dto.Target.split("#")[1] + "-" + (InfModelUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
 						ArrayList<String> listSame = new ArrayList<String>();		  
 						ArrayList<String> listDif = new ArrayList<String>();
 						ArrayList<String> listClasses = new ArrayList<String>();
@@ -488,17 +487,16 @@ public class OKCo {
 		
 		try {
 			
-			FactoryModel factory = new FactoryModel();
-			IReasoner Reasoner;
+			OntologyReasoner Reasoner;
 			
 			//Select reasoner
 			if(reasonerOption.equals("HERMIT"))
 			{
-				Reasoner = factory.GetReasoner(EnumReasoner.HERMIT);
+				Reasoner = new HermitReasonerImpl();
 				  
 			} else if(reasonerOption.equals("PELLET")) {
 				
-				Reasoner = factory.GetReasoner(EnumReasoner.PELLET);
+				Reasoner = new PelletReasonerImpl();
 				
 			} else if(reasonerOption.equals("NONE")) {
 				
@@ -583,7 +581,7 @@ public class OKCo {
 						if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
 						{
 							//create the the new instance
-							String instanceName = dto.Target.split("#")[1] + "-" + (search.GetInstancesFromClass(model, infModel, dto.Target).size() + 1);
+							String instanceName = dto.Target.split("#")[1] + "-" + (InfModelUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
 							ArrayList<String> listSame = new ArrayList<String>();		  
 							ArrayList<String> listDif = new ArrayList<String>();
 							ArrayList<String> listClasses = new ArrayList<String>();

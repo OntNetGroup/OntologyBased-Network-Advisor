@@ -143,12 +143,12 @@ public class CondelController{
 			} else {
 				
 				//Don't call reasoner
-				HomeController.InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+				HomeController.InfModel = HomeController.Repository.clone(HomeController.Model);
 			}
 			
 			
 			//tmp model
-			HomeController.tmpModel = HomeController.Repository.CopyModel(HomeController.Model);
+			HomeController.tmpModel = HomeController.Repository.clone(HomeController.Model);
 			
 			// Update list instances
 			try {

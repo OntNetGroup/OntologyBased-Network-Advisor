@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.ufes.inf.nemo.okco.business.FactoryModel;
+import br.ufes.inf.nemo.okco.business.RepositoryImpl;
 import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
@@ -85,9 +85,8 @@ public class ProvisioningController{
 	public String uploadSindelEquip(HttpServletRequest request){
 
 		try {
-
-			HomeController.Factory = new FactoryModel();
-			HomeController.Repository = HomeController.Factory.GetRepository();
+			
+			HomeController.Repository = new RepositoryImpl();
 
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");

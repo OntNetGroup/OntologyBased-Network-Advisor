@@ -7,6 +7,13 @@ import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.util.iterator.Filter;
@@ -19,7 +26,7 @@ public class OntModelUtil {
 	 * @param model: jena.ontology.OntModel 
 	 * @return
 	 * 
-	 * @author Guerson
+	 * @author John Guerson
 	 */
 	static public List<String> getPropertiesURI(OntModel model) 
 	{		
@@ -34,7 +41,7 @@ public class OntModelUtil {
 		while(i.hasNext()) {
 			Resource val = (Resource) i.next();
 			lista.add(val.getURI());
-			DateTimeHelper.printout("OntProperty URI: "+val.getURI());
+			//DateTimeHelper.printout("OntProperty URI: "+val.getURI());
 		}
 		return lista;
 	}
@@ -45,7 +52,7 @@ public class OntModelUtil {
 	 * @param model: jena.ontology.OntModel 
 	 * @return
 	 * 
-	 * @author Guerson
+	 * @author John Guerson
 	 */
 	static public List<OntProperty> getProperties(OntModel model)
 	{
@@ -65,7 +72,7 @@ public class OntModelUtil {
 	 * @param model: jena.ontology.OntModel 
 	 * @return
 	 * 
-	 * @author Guerson
+	 * @author John Guerson
 	 */
 	static public List<String> getClassesURI(OntModel model) 
 	{		
@@ -91,7 +98,7 @@ public class OntModelUtil {
 	 * @param model: jena.ontology.OntModel 
 	 * @return
 	 * 
-	 * @author Guerson
+	 * @author John Guerson
 	 */
 	static public List<OntClass> getClasses(OntModel model) 
 	{		
@@ -111,7 +118,7 @@ public class OntModelUtil {
 	 * @param model: jena.ontology.OntModel 
 	 * @return
 	 * 
-	 * @author Guerson
+	 * @author John Guerson
 	 */
 	static public List<Individual> getIndividuals(OntModel model) 
 	{		
@@ -131,7 +138,7 @@ public class OntModelUtil {
 	 * @param model: jena.ontology.OntModel 
 	 * @return
 	 * 
-	 * @author Guerson
+	 * @author John Guerson
 	 */
 	static public List<String> getIndividualsURI(OntModel model) 
 	{		
@@ -158,7 +165,7 @@ public class OntModelUtil {
 	 * @param ontclass: jena.ontology.OntClass
 	 * @return
 	 * 
-	 * @author Guerson
+	 * @author John Guerson
 	 */
 	static public List<Individual> getIndividuals(OntModel model, OntClass ontclass) 
 	{		
@@ -180,7 +187,7 @@ public class OntModelUtil {
 	 * @param ontclass: jena.ontology.OntClass
 	 * @return
 	 * 
-	 * @author Guerson
+	 * @author John Guerson
 	 */
 	static public List<String> getIndividualsURI(OntModel model, OntClass ontclass) 
 	{		
@@ -207,13 +214,47 @@ public class OntModelUtil {
 	 * @param classURI: OntClass URI
 	 * @return
 	 * 
-	 * @author Guerson
+	 * @author John Guerson
 	 */
 	static public List<String> getIndividualsURI(OntModel model, String classURI) 
 	{
 		OntClass ontclass = model.getOntClass(classURI);
 		if(ontclass!=null) return getIndividualsURI(model,ontclass); 
 		else return new ArrayList<String>();		
+	}
+	
+	/**
+	 * Return the source and the target of this property in the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.OntModel 
+	 * @param propertyURI: OntProperty URI
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String[]> getDomainAndRangeURI(OntModel model, String propertyURI) 
+	{		
+		List<String[]> list = new ArrayList<String[]>();		
+		String queryString = 
+		" SELECT *" +
+		" WHERE {\n" +		
+			" ?source <" + propertyURI + "> ?target .\n " +	
+		"}";
+		Query query = QueryFactory.create(queryString);
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		while (results.hasNext()) 
+		{
+			String [] tupla = new String[2];
+			QuerySolution row = results.next();		    
+		    RDFNode source = row.get("source");
+		    RDFNode target = row.get("target");		    
+		    tupla[0] = source.toString();
+		    tupla[1] = target.toString();
+		    //DateTimeHelper.printout("Domain: "+source.toString()+" - Range: "+target.toString()+" - OntProperty URI: "+propertyURI);
+		    list.add(tupla);
+		}
+		return list;		
 	}
 
 }

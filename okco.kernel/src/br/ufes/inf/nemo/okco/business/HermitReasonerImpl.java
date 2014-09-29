@@ -35,16 +35,18 @@ import org.semanticweb.owlapi.util.InferredSubObjectPropertyAxiomGenerator;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
-import br.ufes.inf.nemo.okco.model.IReasoner;
+public class HermitReasonerImpl implements OntologyReasoner {
 
-public class HermitReasoner implements IReasoner {
-
-	public InfModel run(OntModel modelCame) {
-		
+	/** 
+	 * Runs the inference using Pellet
+	 * 
+	 * @author John Guerson
+	 */
+	public InfModel run(OntModel modelCame) 
+	{		
 		long antes = System.currentTimeMillis();  
 
 		//Converting output stream from model to input stream		
-		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
         modelCame.write(out, "RDF/XML");        
         InputStream in = new ByteArrayInputStream(out.toByteArray());
@@ -54,45 +56,39 @@ public class HermitReasoner implements IReasoner {
 		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 		OWLOntology o = null;
 		try {
-			o = m.loadOntologyFromOntologyDocument(in);
-			
-		} catch (OWLOntologyCreationException e) {
-
+			o = m.loadOntologyFromOntologyDocument(in);			
+		} catch (OWLOntologyCreationException e){
 			e.printStackTrace();
 		}
 		
-		//Hermit Configuration
-		
+		//Hermit Configuration		
 		Configuration config = new Configuration();
 		ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
 		config.reasonerProgressMonitor = progressMonitor;		
 		
-		//Create Hermit
-        
+		//Create Hermit        
 		OWLReasoner hermit = new Reasoner.ReasonerFactory().createReasoner(o, config);
 				
-		//Used to read in OntModel
-		
+		//Used to read in OntModel		
 		OntModel model = modelCame;		
 		//model.read(in,null);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        model.write(baos, "RDF/XML");        
+        model.write(baos, "RDF/XML");
         
         InputStream bais = new ByteArrayInputStream(baos.toByteArray());
         BufferedReader in2 = new BufferedReader(new InputStreamReader(bais));
         try {
-			while ((in2.readLine()) != null) {
+			while ((in2.readLine()) != null) 
+			{
 			    //  System.out.println(line);
 			}
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
         
         try {
 			m.loadOntologyFromOntologyDocument(bais);
-		} catch (OWLOntologyCreationException e) {
-			// TODO Auto-generated catch block
+		} catch (OWLOntologyCreationException e) {			
 			e.printStackTrace();
 		}
         
@@ -118,7 +114,6 @@ public class HermitReasoner implements IReasoner {
         try {
 			m.saveOntology(o, new RDFXMLOntologyFormat(), baos2);
 		} catch (OWLOntologyStorageException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}    
     	
@@ -126,9 +121,8 @@ public class HermitReasoner implements IReasoner {
 		model.read(bais, null);
 		
 		long tempo = System.currentTimeMillis() - antes;
-        System.out.printf("O programa reasoner hermit executou em %d milissegundos.%n", tempo);  
-
+        //DateTimeHelper.printout("Hermit executed in "+tempo+" miliseconds.");
+		System.out.printf("Hermit executed in %d miliseconds.%n", tempo);
 		return model;
 	}
-
 }

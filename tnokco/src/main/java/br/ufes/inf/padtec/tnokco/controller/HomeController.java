@@ -21,17 +21,19 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.ufes.inf.nemo.okco.business.FactoryModel;
-import br.ufes.inf.nemo.okco.business.Search;
-import br.ufes.inf.nemo.okco.business.ManagerInstances;
 import br.ufes.inf.nemo.okco.business.FactoryInstances;
+import br.ufes.inf.nemo.okco.business.HermitReasonerImpl;
+import br.ufes.inf.nemo.okco.business.ManagerInstances;
+import br.ufes.inf.nemo.okco.business.OntologyReasoner;
+import br.ufes.inf.nemo.okco.business.PelletReasonerImpl;
+import br.ufes.inf.nemo.okco.business.Repository;
+import br.ufes.inf.nemo.okco.business.RepositoryImpl;
+import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
-import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.DtoResultCommit;
 import br.ufes.inf.nemo.okco.model.EnumReasoner;
 import br.ufes.inf.nemo.okco.model.IFactory;
-import br.ufes.inf.nemo.okco.model.IReasoner;
-import br.ufes.inf.nemo.okco.model.IRepository;
+import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionNS;
@@ -44,10 +46,9 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 @Controller
 public class HomeController implements ServletContextAware{
-
-	public static IFactory Factory;
-	public static IRepository Repository;
-	public static IReasoner Reasoner;
+	
+	public static Repository Repository;
+	public static OntologyReasoner Reasoner;
 	public static OntModel Model;
 	public static OntModel tmpModel;	
 	public static InfModel InfModel;
@@ -90,12 +91,11 @@ public class HomeController implements ServletContextAware{
 			
 			//Initializing variables
 			
-			Factory = new FactoryModel();
-			Repository = Factory.GetRepository();
+			Repository = new RepositoryImpl();
 			
 			//Select Reasoner
 			
-			Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
+			Reasoner = new HermitReasonerImpl();
 			reasoningOnFirstLoad = false;
 			
 			//load g800
@@ -103,10 +103,11 @@ public class HomeController implements ServletContextAware{
 			String path = servletContext.getInitParameter("PathG800owl"); 
 			
 			// Load Model
-			HomeController.Model = Repository.Open(path);
+			Repository.readBaseOntModel(path);
+			HomeController.Model = Repository.getBaseOntModel();
 			
 			//Load infModel
-			HomeController.InfModel = Repository.CopyModel(HomeController.Model);
+			HomeController.InfModel = Repository.clone(HomeController.Model);
 
 			// Name space
 			HomeController.NS = Repository.getNameSpace(HomeController.Model);
@@ -116,7 +117,7 @@ public class HomeController implements ServletContextAware{
 			HomeController.ManagerInstances = new ManagerInstances(HomeController.Search, HomeController.FactoryInstances, HomeController.Model);
 
 			//Save temporary model
-			HomeController.tmpModel = Repository.CopyModel(HomeController.Model);		
+			HomeController.tmpModel = Repository.clone(HomeController.Model);		
 
 			//List modified instances
 			HomeController.ListModifiedInstances = new ArrayList<String>();			
@@ -192,11 +193,11 @@ public class HomeController implements ServletContextAware{
 		String result = "ok";
 		if(reasoner.equals("hermit"))
 		{
-			Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
+			Reasoner = new HermitReasonerImpl();
 
 		} else if(reasoner.equals("pellet"))
 		{
-			Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
+			Reasoner = new PelletReasonerImpl();
 			
 		} else {
 
@@ -245,12 +246,13 @@ public class HomeController implements ServletContextAware{
 				throw new OKCoExceptionFileFormat("Please select owl file.");
 			}
 
-			Repository = Factory.GetRepository();
+			Repository = new RepositoryImpl();
 			
 			// Load Model
 			InputStream in = file.getInputStream();
-			Model = Repository.Open(in);
-
+			Repository.readBaseOntModel(in);
+			Model = Repository.getBaseOntModel();
+			
 			// Name space
 			NS = Repository.getNameSpace(Model);
 
@@ -264,8 +266,8 @@ public class HomeController implements ServletContextAware{
 			ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
 
 			//Save temporary model
-			tmpModel = Repository.CopyModel(HomeController.Model);
-			InfModel = Repository.CopyModel(HomeController.Model);
+			tmpModel = Repository.clone(HomeController.Model);
+			InfModel = Repository.clone(HomeController.Model);
 			
 			if(reasoningOnFirstLoad == true)
 			{
@@ -275,7 +277,7 @@ public class HomeController implements ServletContextAware{
 			} else {
 				
 				//Don't call reasoner
-				InfModel = Repository.CopyModel(Model);
+				InfModel = Repository.clone(Model);
 			}
 
 			//List modified instances
@@ -294,8 +296,8 @@ public class HomeController implements ServletContextAware{
 
 			//Roll back the last valid model
 
-			Model = HomeController.Repository.CopyModel(HomeController.tmpModel);
-			InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+			Model = HomeController.Repository.clone(HomeController.tmpModel);
+			InfModel = HomeController.Repository.clone(HomeController.Model);
 
 			try {
 
@@ -378,7 +380,7 @@ public class HomeController implements ServletContextAware{
 		if(Model != null)
 		{
 			request.getSession().removeAttribute("loadOk");
-			request.getSession().setAttribute("model", Repository.getModelString(Model));
+			request.getSession().setAttribute("model", Repository.getBaseOntModelAsString());
 
 			return "model";
 
@@ -555,7 +557,7 @@ public class HomeController implements ServletContextAware{
 		if(Model != null)
 		{
 			dto.ok = true;
-			Repository.Save(Model, "");
+			Repository.saveBaseOntModel("");
 
 		} else {
 			dto.ok = false;

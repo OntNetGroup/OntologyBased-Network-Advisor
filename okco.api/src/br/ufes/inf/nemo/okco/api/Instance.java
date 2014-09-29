@@ -1,18 +1,19 @@
 package br.ufes.inf.nemo.okco.api;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Instance {
 	
 	public String Namespace;
 	public String Name;
-	public ArrayList<String> ListClassesBelong;
-	public ArrayList<String> ListSameInstances;
-	public ArrayList<String> ListDiferentInstances;
-	public ArrayList<InstanceRelationDefinition> ListImcompletenessRelationDefinitions;
-	public ArrayList<InstanceClassDefinition> ListImcompletenessClassDefinitions;
+	public List<String> ListClassesBelong;
+	public List<String> ListSameInstances;
+	public List<String> ListDiferentInstances;
+	public List<InstanceRelationDefinition> ListImcompletenessRelationDefinitions;
+	public List<InstanceClassDefinition> ListImcompletenessClassDefinitions;
 	
-	public Instance(String ns, String name, ArrayList<String> listClasses, ArrayList<String> listDifferent, ArrayList<String> listSame, ArrayList<InstanceRelationDefinition> ListImcompletenessRelationDefinitions, ArrayList<InstanceClassDefinition> ListImcompletenessClassDefinitions)
+	public Instance(String ns, String name, List<String> listClasses, List<String> listDifferent, List<String> listSame, List<InstanceRelationDefinition> ListImcompletenessRelationDefinitions, List<InstanceClassDefinition> ListImcompletenessClassDefinitions)
 	{
 		
 		this.Namespace = ns;

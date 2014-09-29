@@ -16,15 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.ufes.inf.nemo.okco.business.FactoryInstances;
-import br.ufes.inf.nemo.okco.business.FactoryModel;
+import br.ufes.inf.nemo.okco.business.HermitReasonerImpl;
 import br.ufes.inf.nemo.okco.business.ManagerInstances;
+import br.ufes.inf.nemo.okco.business.OntologyReasoner;
+import br.ufes.inf.nemo.okco.business.PelletReasonerImpl;
+import br.ufes.inf.nemo.okco.business.Repository;
+import br.ufes.inf.nemo.okco.business.RepositoryImpl;
 import br.ufes.inf.nemo.okco.business.Search;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.DtoResultCommit;
-import br.ufes.inf.nemo.okco.model.EnumReasoner;
 import br.ufes.inf.nemo.okco.model.IFactory;
-import br.ufes.inf.nemo.okco.model.IReasoner;
-import br.ufes.inf.nemo.okco.model.IRepository;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
@@ -37,9 +38,9 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 @Controller
 public class HomeController {
 	
-	public static IFactory Factory;
-	public static IRepository Repository;
-	public static IReasoner Reasoner;
+	//public static IFactory Factory;
+	public static Repository Repository;
+	public static OntologyReasoner Reasoner;
 	public static OntModel Model;
 	public static OntModel tmpModel;	
 	public static InfModel InfModel;
@@ -128,8 +129,7 @@ public class HomeController {
 		
 		  try {
 			  
-			  Factory = new FactoryModel();
-			  Repository = Factory.GetRepository();
+			  Repository = new RepositoryImpl();
 			  
 			  String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
 			  boolean reasoning = true;
@@ -149,11 +149,11 @@ public class HomeController {
 			  //Select reasoner
 			  if(optionsReasoner.equals("hermit"))
 			  {
-				  Reasoner = Factory.GetReasoner(EnumReasoner.HERMIT);
+				  Reasoner = new HermitReasonerImpl();
 				  
 			  } else if(optionsReasoner.equals("pellet"))
 			  {
-				  Reasoner = Factory.GetReasoner(EnumReasoner.PELLET);
+				  Reasoner = new PelletReasonerImpl();
 				  
 			  } else {
 				  
@@ -170,7 +170,8 @@ public class HomeController {
 				 
 			  // Load Model
 			  InputStream in = file.getInputStream();
-			  Model = Repository.Open(in);
+			  Repository.readBaseOntModel(in);
+			  Model = Repository.getBaseOntModel();
 			  
 			  // Name space
 			  NS = Repository.getNameSpace(Model);
@@ -185,7 +186,7 @@ public class HomeController {
 		  	  ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
 		  	  
 			 //Save temporary model
-			 tmpModel = Repository.CopyModel(Model);			
+			 tmpModel = Repository.clone(Model);			
 			
 			 if(reasoning == true)
 			 {
@@ -195,7 +196,7 @@ public class HomeController {
 			 } else {
 				
 				//Don't call reasoner
-				InfModel = Repository.CopyModel(Model);
+				InfModel = Repository.clone(Model);
 			 }
 		  	  
 		  	 //List modified instances
@@ -211,8 +212,8 @@ public class HomeController {
 			
 			//Roll back the last valid model
 			
-			Model = HomeController.Repository.CopyModel(HomeController.tmpModel);
-			InfModel = HomeController.Repository.CopyModel(HomeController.Model);
+			Model = HomeController.Repository.clone(HomeController.tmpModel);
+			InfModel = HomeController.Repository.clone(HomeController.Model);
 
 			try {
 				
@@ -307,7 +308,7 @@ public class HomeController {
 			if(Model != null)
 			{
 				request.getSession().removeAttribute("loadOk");
-				request.getSession().setAttribute("model", Repository.getModelString(Model));
+				request.getSession().setAttribute("model", Repository.getBaseOntModelAsString());
 
 				return "model";
 				
@@ -388,7 +389,7 @@ public class HomeController {
 		if(Model != null)
 		{
 			dto.ok = true;
-			Repository.Save(Model, "");
+			Repository.saveBaseOntModel("");
 			
 		} else {
 			dto.ok = false;

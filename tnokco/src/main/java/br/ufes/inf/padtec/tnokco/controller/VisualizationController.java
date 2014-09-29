@@ -2,21 +2,21 @@ package br.ufes.inf.padtec.tnokco.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.ufes.inf.nemo.okco.business.InfModelUtil;
 import br.ufes.inf.nemo.okco.model.DtoInstance;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
-import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.padtec.tnokco.business.Equipment;
 import br.ufes.inf.padtec.tnokco.business.InterfaceOutput;
 import br.ufes.inf.padtec.tnokco.business.Provisioning;
@@ -31,12 +31,12 @@ public class VisualizationController {
 		if(HomeController.Model == null)
 			return "open_visualizator"; 
 
-		ArrayList<String> sites = HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, HomeController.NS+"Site");
-		ArrayList<String> equipments = HomeController.Search.GetInstancesFromClass(HomeController.Model, HomeController.InfModel, HomeController.NS+"Equipment");
+		List<String> sites = InfModelUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Site");
+		List<String> equipments = InfModelUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 
 		Provisioning.inferInterfaceConnections();
 		Provisioning.getAllG800();
-		HashMap<String, ArrayList<String>> g800List = Provisioning.ind_class;
+		HashMap<String, List<String>> g800List = Provisioning.ind_class;
 
 		//session
 		request.getSession().setAttribute("sites", sites);
@@ -58,7 +58,7 @@ public class VisualizationController {
 		int height = 800;
 
 		if(visualization.equals("allSites")){
-			ArrayList<String> sites = Provisioning.getAllSitesAndConnections();
+			List<String> sites = Provisioning.getAllSitesAndConnections();
 			ArrayList<String[]> sitesConnections = Provisioning.connections;
 			String rel = Provisioning.relation;
 
@@ -104,7 +104,7 @@ public class VisualizationController {
 		}else if(visualization.equals("allG800")){
 			ArrayList<String> g800s = Provisioning.getAllG800();
 			ArrayList<String[]> triplas = Provisioning.triples_g800;
-			HashMap<String, ArrayList<String>> hashIndv = Provisioning.ind_class;
+			HashMap<String, List<String>> hashIndv = Provisioning.ind_class;
 
 			for (String g800 : g800s) {
 				valuesGraph += "graph.addNode(\""+g800.substring(g800.indexOf("#")+1)+"\", {shape:\""+getG800Image(hashIndv.get(g800))+"_AZUL\"});";
@@ -229,9 +229,9 @@ public class VisualizationController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_g800_visualization_from_equip")
 	public String open_g800_visualization_from_equip(@RequestParam("selected") String equip, HttpServletRequest request) {
-		ArrayList<String> g800s = Provisioning.getG800FromEquipment(equip);
+		List<String> g800s = Provisioning.getG800FromEquipment(equip);
 		ArrayList<String[]> triplas = Provisioning.triples_g800;
-		HashMap<String, ArrayList<String>> hashIndv = Provisioning.ind_class;
+		HashMap<String, List<String>> hashIndv = Provisioning.ind_class;
 
 		String valuesGraph = "";
 		String hashTypes = "";
@@ -636,7 +636,7 @@ public class VisualizationController {
 		elements.put("Site", "SITE");
 	}
 
-	public static String getG800Image(ArrayList<String> elemTypes){
+	public static String getG800Image(List<String> elemTypes){
 		for(String type: elemTypes){
 			if(elements.containsKey(type.substring(type.indexOf("#")+1))){
 				return elements.get(type.substring(type.indexOf("#")+1));

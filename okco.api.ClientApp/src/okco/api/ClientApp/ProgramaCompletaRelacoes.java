@@ -6,11 +6,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import br.ufes.inf.nemo.okco.business.FactoryInstances;
-import br.ufes.inf.nemo.okco.business.FactoryModel;
+import br.ufes.inf.nemo.okco.business.HermitReasonerImpl;
 import br.ufes.inf.nemo.okco.business.ManagerInstances;
+import br.ufes.inf.nemo.okco.business.OntologyReasoner;
+import br.ufes.inf.nemo.okco.business.PelletReasonerImpl;
 import br.ufes.inf.nemo.okco.business.Search;
-import br.ufes.inf.nemo.okco.model.EnumReasoner;
-import br.ufes.inf.nemo.okco.model.IReasoner;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -21,9 +21,8 @@ import com.hp.hpl.jena.util.FileManager;
 public class ProgramaCompletaRelacoes {
 
 	public static void main(String[] args) {
-
-		FactoryModel factory = new FactoryModel();
-		IReasoner Reasoner = null;
+		
+		OntologyReasoner Reasoner = null;
 		String reasonerOption = "PELLET";
 		
 		String pathOwlFile = "C://Users//fabio_000//Desktop//OntologiasOWL//subProperty.owl";
@@ -32,11 +31,11 @@ public class ProgramaCompletaRelacoes {
 		//Select reasoner
 		if(reasonerOption.equals("HERMIT"))
 		{
-			Reasoner = factory.GetReasoner(EnumReasoner.HERMIT);
+			Reasoner = new HermitReasonerImpl();
 			  
 		} else if(reasonerOption.equals("PELLET")) {
 			
-			Reasoner = factory.GetReasoner(EnumReasoner.PELLET);
+			Reasoner = new PelletReasonerImpl();
 			
 		} else if(reasonerOption.equals("NONE")) {
 			

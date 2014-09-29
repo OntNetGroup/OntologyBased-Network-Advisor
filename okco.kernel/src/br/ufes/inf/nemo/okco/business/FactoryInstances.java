@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.okco.business;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.Instance;
@@ -201,7 +202,7 @@ public class FactoryInstances {
 		for (DtoDefinitionClass dtoResult : dtoSomeList) {
 
 			// List instances from Class Source
-			ArrayList<String> listInstances = this.Search.GetInstancesFromClass(model, infModel, dtoResult.Source);
+			List<String> listInstances = InfModelUtil.getIndividualsURI(infModel, dtoResult.Source);
 			System.out.println("-> " + dtoResult.Source.toString() + " - n individuos - " + listInstances.size());
 			
 			if(listInstances.size() > 0)	//Exist instances
@@ -213,7 +214,7 @@ public class FactoryInstances {
 					
 					//Here we check the instance and launch the reasoner
 					System.out.println("-- REASONER ");
-					boolean existInstanceTarget = this.Search.CheckExistInstanceTarget(model, instance, dtoResult.Relation, dtoResult.Target);
+					boolean existInstanceTarget = InfModelUtil.existsIndividualsInRelationRange(model, instance, dtoResult.Relation, dtoResult.Target);
 					if(existInstanceTarget)
 					{
 						//Do nothing
@@ -232,7 +233,7 @@ public class FactoryInstances {
 						Property relation = model.getProperty(dtoResult.Relation);				
 						
 						//Create individual
-						String instanceName = dtoResult.Target + "-" + (this.Search.GetInstancesFromClass(model, infModel, dtoResult.Target).size() + 1);
+						String instanceName = dtoResult.Target + "-" + (InfModelUtil.getIndividualsURI(infModel, dtoResult.Target).size() + 1);
 						Individual newInstance = ClassImage.createIndividual(instanceName);
 						
 						//Add relation
@@ -266,7 +267,7 @@ public class FactoryInstances {
 		for (DtoDefinitionClass dtoTripleResult : dtoMinRelationsList) {
 			
 			// List instances from Class Source
-			ArrayList<String> listInstances = this.Search.GetInstancesFromClass(model, infModel, dtoTripleResult.Source);
+			List<String> listInstances = InfModelUtil.getIndividualsURI(infModel, dtoTripleResult.Source);
 			System.out.println("-> " + dtoTripleResult.Source.toString() + " - n individuos - " + listInstances.size());
 			
 			if(listInstances.size() > 0)	//Exist instances
@@ -297,7 +298,7 @@ public class FactoryInstances {
 							Property relation = model.getProperty(dtoTripleResult.Relation);				
 							
 							//Create individual
-							String instanceName = dtoTripleResult.Target + "-" + (this.Search.GetInstancesFromClass(model, infModel, dtoTripleResult.Target).size() + 1);
+							String instanceName = dtoTripleResult.Target + "-" + (InfModelUtil.getIndividualsURI(infModel, dtoTripleResult.Target).size() + 1);
 							Individual newInstance = ClassImage.createIndividual(instanceName);
 							
 							//Add relation
@@ -325,7 +326,7 @@ public class FactoryInstances {
 		for (DtoDefinitionClass dtoTripleResult : dtoExactlyRelationsList) {
 			
 			// List instances from Class Source
-			ArrayList<String> listInstances = this.Search.GetInstancesFromClass(model, infModel, dtoTripleResult.Source);
+			List<String> listInstances = InfModelUtil.getIndividualsURI(infModel, dtoTripleResult.Source);
 			System.out.println("-> " + dtoTripleResult.Source.toString() + " - n individuos - " + listInstances.size());
 			
 			if(listInstances.size() > 0)	//Exist instances
@@ -357,7 +358,7 @@ public class FactoryInstances {
 							Property relation = model.getProperty(dtoTripleResult.Relation);				
 							
 							//Create individual
-							String instanceName = dtoTripleResult.Target + "-" + (this.Search.GetInstancesFromClass(model, infModel, dtoTripleResult.Target).size() + 1);
+							String instanceName = dtoTripleResult.Target + "-" + (InfModelUtil.getIndividualsURI(infModel, dtoTripleResult.Target).size() + 1);
 							Individual newInstance = ClassImage.createIndividual(instanceName);
 							
 							//Add relation

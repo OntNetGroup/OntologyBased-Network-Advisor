@@ -1,9 +1,12 @@
 package br.ufes.inf.nemo.okco.model;
 
+import br.ufes.inf.nemo.okco.business.OntologyReasoner;
+import br.ufes.inf.nemo.okco.business.Repository;
+
 public interface IFactory {
 	
-	public IRepository GetRepository();
+	public Repository GetRepository();
 
-	public IReasoner GetReasoner(EnumReasoner reasoner);
+	public OntologyReasoner GetReasoner(EnumReasoner reasoner);
 
 }
