@@ -41,55 +41,55 @@ public class Search {
 		
 	}
 				
-	public ArrayList<String> GetPropertiesFromClass(OntModel model,String className) {
-		
-		ArrayList<String> lista = new ArrayList<String>();
-
-		ExtendedIterator<OntClass> i = model.listClasses();
-		if( !i.hasNext() ) {
-			//System.out.print( "none" );
-		}
-		else {
-			while( i.hasNext() ) {
-				Resource val = (Resource) i.next();
-				//System.out.println( val.getURI());
-			}
-		}
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT ?x ?y ?z" +
-		" WHERE {\n" +
-				" ?x " + "owl:equivalentClass" + " _:b0 .\n " +
-				" _:b0 " + "owl:onProperty" + " ?y .\n " +
-				" _:b0 " + "owl:someValuesFrom ?z . " +
-				
-				//" _:b rdf:type ?tipoX ." +
-				//" ?tipoX rdfs:subClassOf owl:Thing . " +
-				//"?r owl:onProperty ?p . " +
-				
-			"}";
-
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		ResultSetFormatter.out(System.out, results, query);
-		
-		//while (results.hasNext()) {
-		//	QuerySolution row= results.next();
-		    //RDFNode rdfConcept = row.get("rec");
-		    
-		//}		
-		return lista;
-	}
+//	public ArrayList<String> GetPropertiesFromClass(OntModel model,String className) {
+//		
+//		ArrayList<String> lista = new ArrayList<String>();
+//
+//		ExtendedIterator<OntClass> i = model.listClasses();
+//		if( !i.hasNext() ) {
+//			//System.out.print( "none" );
+//		}
+//		else {
+//			while( i.hasNext() ) {
+//				Resource val = (Resource) i.next();
+//				//System.out.println( val.getURI());
+//			}
+//		}
+//		
+//		// Create a new query
+//		String queryString = 
+//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+//		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+//		" SELECT DISTINCT ?x ?y ?z" +
+//		" WHERE {\n" +
+//				" ?x " + "owl:equivalentClass" + " _:b0 .\n " +
+//				" _:b0 " + "owl:onProperty" + " ?y .\n " +
+//				" _:b0 " + "owl:someValuesFrom ?z . " +
+//				
+//				//" _:b rdf:type ?tipoX ." +
+//				//" ?tipoX rdfs:subClassOf owl:Thing . " +
+//				//"?r owl:onProperty ?p . " +
+//				
+//			"}";
+//
+//		Query query = QueryFactory.create(queryString); 
+//		
+//		// Execute the query and obtain results
+//		QueryExecution qe = QueryExecutionFactory.create(query, model);
+//		ResultSet results = qe.execSelect();
+//		
+//		// Output query results 
+//		ResultSetFormatter.out(System.out, results, query);
+//		
+//		//while (results.hasNext()) {
+//		//	QuerySolution row= results.next();
+//		    //RDFNode rdfConcept = row.get("rec");
+//		    
+//		//}		
+//		return lista;
+//	}
 	
 	public EnumPropertyType GetPropertyType(InfModel infModel, String property)
 	{
