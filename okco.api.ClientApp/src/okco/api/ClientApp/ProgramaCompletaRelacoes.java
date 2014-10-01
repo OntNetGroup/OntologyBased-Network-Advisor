@@ -62,7 +62,7 @@ public class ProgramaCompletaRelacoes {
 			System.out.println("Namespace não definido");
 		}
 		
-		Search search = new Search(ns);
+		Search search = new Search();
 	  	FactoryInstances factoryInstance = new FactoryInstances(search);
 	  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
 	  	

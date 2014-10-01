@@ -15,7 +15,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.FileManager;
 
-public class RepositoryImpl implements Repository {
+public class BaseModelRepositoryImpl implements BaseModelRepository {
 
 	/** Base ontology model */
 	private OntModel baseOntModel;
@@ -24,7 +24,7 @@ public class RepositoryImpl implements Repository {
 	private String baseNameSpace;
 	
 	/** Constructor */
-	public RepositoryImpl()
+	public BaseModelRepositoryImpl()
 	{
 		baseOntModel = ModelFactory.createOntologyModel();
 		baseNameSpace = baseOntModel.getNsPrefixURI("");	
@@ -46,8 +46,6 @@ public class RepositoryImpl implements Repository {
 	
 	/**
 	 * Get he base OntModel of this repository
-	 * 
-	 * @param inputFileName: String
 	 * 
 	 * @author John Guerson
 	 */
@@ -90,14 +88,11 @@ public class RepositoryImpl implements Repository {
 	/** 
 	 * Get the default name space of the base ontology model.
 	 * 
-	 * @param model: OntModel
-	 * 
 	 * @author John Guerson
 	 */
-	public String getNameSpace(OntModel model)
+	public String getNameSpace()
 	{
-		//Get the base namespace
-		baseNameSpace = model.getNsPrefixURI("");		
+		baseNameSpace = baseOntModel.getNsPrefixURI("");;
 		return baseNameSpace;
 	}
 

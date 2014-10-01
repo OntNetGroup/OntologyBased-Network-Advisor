@@ -31,7 +31,7 @@ import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-import br.ufes.inf.nemo.okco.model.util.InfModelUtil;
+import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
 import br.ufes.inf.nemo.okco.visualizer.GraphPlotting;
 import br.ufes.inf.nemo.okco.visualizer.WOKCOGraphPlotting;
 
@@ -165,7 +165,7 @@ public class OKCoController {
 			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(ListAllInstances);
 
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelUtil.getIndividualsURIInRelationRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIInRelationRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 			//populate the list of instances with had this relation	    	
 			List<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
@@ -181,7 +181,7 @@ public class OKCoController {
 		} else if (type.equals("objectMax"))
 		{
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelUtil.getIndividualsURIInRelationRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIInRelationRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
@@ -245,7 +245,7 @@ public class OKCoController {
 			if(typeRelation.equals(EnumRelationTypeCompletness.SOME))
 			{
 				//create the the new instance
-				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (InfModelUtil.getIndividualsURI(HomeController.InfModel, dtoSelected.Target).size() + 1);
+				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(HomeController.InfModel, dtoSelected.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();

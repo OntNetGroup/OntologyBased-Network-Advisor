@@ -16,7 +16,7 @@ import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.okco.model.inference.HermitReasonerImpl;
 import br.ufes.inf.nemo.okco.model.inference.OntologyReasoner;
 import br.ufes.inf.nemo.okco.model.inference.PelletReasonerImpl;
-import br.ufes.inf.nemo.okco.model.util.InfModelUtil;
+import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -81,7 +81,7 @@ public class OKCo {
 				return dtoResult;
 			}
 			
-			Search search = new Search(ns);
+			Search search = new Search();
 		  	FactoryInstances factoryInstance = new FactoryInstances(search);
 		  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
 		  	
@@ -250,7 +250,7 @@ public class OKCo {
 				return dtoResult;
 			}
 			
-			Search search = new Search(ns);
+			Search search = new Search();
 		  	FactoryInstances factoryInstance = new FactoryInstances(search);
 		  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
 		  	
@@ -298,7 +298,7 @@ public class OKCo {
 					if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
 					{
 						//create the the new instance
-						String instanceName = dto.Target.split("#")[1] + "-" + (InfModelUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
+						String instanceName = dto.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
 						ArrayList<String> listSame = new ArrayList<String>();		  
 						ArrayList<String> listDif = new ArrayList<String>();
 						ArrayList<String> listClasses = new ArrayList<String>();
@@ -533,7 +533,7 @@ public class OKCo {
 				return dtoResult;
 			}
 			
-			Search search = new Search(ns);
+			Search search = new Search();
 		  	FactoryInstances factoryInstance = new FactoryInstances(search);
 		  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
 		  	
@@ -581,7 +581,7 @@ public class OKCo {
 						if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
 						{
 							//create the the new instance
-							String instanceName = dto.Target.split("#")[1] + "-" + (InfModelUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
+							String instanceName = dto.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
 							ArrayList<String> listSame = new ArrayList<String>();		  
 							ArrayList<String> listDif = new ArrayList<String>();
 							ArrayList<String> listClasses = new ArrayList<String>();

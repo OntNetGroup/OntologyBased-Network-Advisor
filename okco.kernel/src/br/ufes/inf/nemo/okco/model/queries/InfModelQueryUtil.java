@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.model.util;
+package br.ufes.inf.nemo.okco.model.queries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,149 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
-public class InfModelUtil {
-
+public class InfModelQueryUtil {
+	
+	/** 
+	 * Return the URI of all classes of the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getClassesURI(InfModel model) 
+	{		
+		System.out.println("Executing getClassesURI(model)");
+		List<String> result = new ArrayList<String>();				
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT *" +
+		" WHERE {\n" +		
+			" ?i rdf:type owl:Class .\n " +	
+		    " FILTER(?i NOT IN (owl:Thing,owl:Nothing)) .\n"+
+		"}";
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		// ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();		    
+		    RDFNode i = row.get("i");	
+		    if(isValidURI(i.toString()))
+		    {
+		    	System.out.println("Class URI: "+i.toString()); 
+		    	result.add(i.toString()); 
+		    }
+		}
+		return result;
+	}
+	
+	/** 
+	 * Return the URI of all classes of this specific individual in the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param individualURI: Individual URI
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getClassesURI(InfModel model, String individualURI) 
+	{		
+		System.out.println("Executing getClassesURI(model, individualURI)");
+		List<String> result = new ArrayList<String>();				
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT *" +
+		" WHERE {\n" +		
+			" <"+individualURI+"> rdf:type ?i .\n " +
+			" ?i rdf:type owl:Class .\n" +
+			" FILTER(?i NOT IN (owl:Thing,owl:Nothing)) .\n"+
+		"}";
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		// ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();		    
+		    RDFNode i = row.get("i");
+		    if(isValidURI(i.toString())) {
+		    	System.out.println("Class URI: "+i.toString()+" - IndividualURI: "+individualURI); 
+		    	result.add(i.toString()); 		    
+		    }
+		}
+		return result;
+	}
+	
 	/**
-	 * Return all individuals URI of a given class URI of the ontology. This method is performed using SPARQL query.
+	 * Check if a URI is valid.
+	 * 
+	 * @author John Guerson
+	 */
+	static public boolean isValidURI(String uri)
+	{
+		return uri.contains("http");
+	}
+	
+	/** 
+	 * Return all individuals URI of the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getIndividualsURI(InfModel model) 
+	{		
+		System.out.println("Executing getIndividualsURI(model)");
+		List<String> result = new ArrayList<String>();
+		//TODO: Implement this method			
+		return result;
+	}
+	
+	/** 
+	 * Return the URI of all properties of the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getPropertiesURI(InfModel model) 
+	{		
+		List<String> result = new ArrayList<String>();
+		//TODO: Implement this method
+		return result;
+	}
+	
+	/** 
+	 * Return all individuals URI of all the classes of the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getIndividualsURIFromAllClasses(InfModel infModel)
+	{	
+		List<String> individuals = new ArrayList<String>();		
+		List<String> classes = InfModelQueryUtil.getClassesURI(infModel);		
+		for (String classURI : classes) 
+		{			
+			if(classURI != null)
+			{
+				for(String i: InfModelQueryUtil.getIndividualsURI(infModel, classURI)){				
+					if(!individuals.contains(i)) individuals.add(i);
+				}
+			}
+		}		
+		return individuals;
+	}
+	
+	/**
+	 * Return all individuals URI of a given class URI of the ontology. This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel
 	 * @param className: class URI
@@ -24,6 +163,7 @@ public class InfModelUtil {
 	 */
 	static public List<String> getIndividualsURI(InfModel model, String classURI) 
 	{	
+		System.out.println("Executing getIndividualsURI(model, classURI)");
 		List<String> list = new ArrayList<String>();		
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -42,8 +182,8 @@ public class InfModelUtil {
 		{			
 			QuerySolution row = results.next();		    
 		    RDFNode i = row.get("i");		    
-		    list.add(i.toString());		    
-		    //DateTimeHelper.printout("Individual URI: "+i.toString());
+		    list.add(i.toString());	
+		    System.out.println("Individual URI: "+i.toString()+" - Class URI: "+classURI);
 		}
 		return list;		
 	}
@@ -59,6 +199,7 @@ public class InfModelUtil {
 	 */	
 	static public List<String> getIndividualsURIDifferentFrom(InfModel model, String individualURI)
 	{		
+		System.out.println("Executing getIndividualsURIDifferentFrom(model, individualURI)");
 		List<String> list = new ArrayList<String>();
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -84,7 +225,7 @@ public class InfModelUtil {
 		    if(! individualURI.equals(rdfY.toString()))
 		    {
 		    	list.add(rdfY.toString());
-				//DateTimeHelper.printout("Different Individual URI: "+rdfY.toString()+" - From: "+individualURI);
+				System.out.println("Different Individual URI: "+rdfY.toString()+" - From: "+individualURI);
 		    }
 		}	
 		return list;
@@ -101,6 +242,7 @@ public class InfModelUtil {
 	 */	
 	static public List<String> getIndividualsURISameAs(InfModel model, String individualURI)
 	{
+		System.out.println("Executing getIndividualsURISameAs(model, individualURI)");
 		List<String> list = new ArrayList<String>();
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -126,11 +268,15 @@ public class InfModelUtil {
 		    if(! individualURI.equals(rdfY.toString()))
 		    {
 		    	list.add(rdfY.toString());
-				//DateTimeHelper.printout("Same Individual URI: "+rdfY.toString()+" - From: "+individualURI);
+				System.out.println("Same Individual URI: "+rdfY.toString()+" - From: "+individualURI);
 		    }
 		}		
 		return list;
 	}
+		
+	//======================================================================
+	//These methods below are quite weird. We will try to re-make them all
+	//======================================================================
 	
 	/**
 	 * Return all the individuals URI that are instance of rangeClassURI and is related to the given individualURI via relationURI.
@@ -145,6 +291,7 @@ public class InfModelUtil {
 	 */
 	static public List<String> getIndividualsURIInRelationRange(InfModel model, String individualURI, String relationURI, String rangeClassURI) 
 	{		
+		System.out.println("Executing getIndividualsURIInRelationRange()");
 		List<String> list = new ArrayList<String>();		
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -165,7 +312,7 @@ public class InfModelUtil {
 			QuerySolution row = results.next();
 		    RDFNode rdfInstance = row.get("x");
 		    list.add(rdfInstance.toString());
-			//DateTimeHelper.printout("Individual URI: "+rdfInstance.toString()+" - From Relation Range: "+relationURI);
+			System.out.println("Individual URI: "+rdfInstance.toString()+" - From Relation Range: "+relationURI);
 		}
 		return list;
 	}
@@ -183,6 +330,7 @@ public class InfModelUtil {
 	 */
 	static public List<String> getIndividualsURIInDataTypeRelationRange(InfModel model, String individualURI, String relationURI, String rangeClassURI)
 	{
+		System.out.println("Executing getIndividualsURIInDataTypeRelationRange()");
 		List<String> list = new ArrayList<String>();	
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -205,7 +353,7 @@ public class InfModelUtil {
 		    if(rdfInstance.toString().contains(rangeClassURI))
 		    {
 		    	 list.add(rdfInstance.toString());
-				//DateTimeHelper.printout("Individual URI: "+rdfInstance.toString()+" - From DataType Range: "+datatypePropertyURI);		    	 
+				System.out.println("Individual URI: "+rdfInstance.toString()+" - From DataType Range: "+relationURI);		    	 
 		    }
 		}
 		return list;
@@ -224,10 +372,10 @@ public class InfModelUtil {
 	 */
 	static public boolean existsIndividualsInRelationRange(InfModel model, String individualURI, String relationURI, String rangeClassURI) 
 	{				
-		List<String> individualList = InfModelUtil.getIndividualsURIInRelationRange(model, individualURI, relationURI, rangeClassURI);
+		List<String> individualList = InfModelQueryUtil.getIndividualsURIInRelationRange(model, individualURI, relationURI, rangeClassURI);
 		if(individualList.size()>0) { return true; }						
 		// check data property
-		individualList = InfModelUtil.getIndividualsURIInDataTypeRelationRange(model, individualURI, relationURI, rangeClassURI);
+		individualList = InfModelQueryUtil.getIndividualsURIInDataTypeRelationRange(model, individualURI, relationURI, rangeClassURI);
 		if(individualList.size()>0) { return true; }	
 		return false;
 	}

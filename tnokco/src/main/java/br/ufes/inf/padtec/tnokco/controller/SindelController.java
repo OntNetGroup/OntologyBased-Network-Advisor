@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-import br.ufes.inf.nemo.okco.model.util.OntModelUtil;
+import br.ufes.inf.nemo.okco.model.queries.OntModelQueryUtil;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
 //import br.ufes.inf.padtec.tnokco.business.Code;
+
 
 
 
@@ -113,7 +114,7 @@ public class SindelController{
 			 * Set specific types for connects relations
 			 * */
 			
-			List<String[]> list = OntModelUtil.getDomainAndRangeURI(HomeController.Model, HomeController.NS+"has_forwarding");
+			List<String[]> list = OntModelQueryUtil.getDomainAndRangeURI(HomeController.Model, HomeController.NS+"has_forwarding");
 			String specificRelation = null;
 			
 			for(String[] st : list){

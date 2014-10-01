@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.model.util;
+package br.ufes.inf.nemo.okco.model.queries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.util.iterator.Filter;
 
-public class OntModelUtil {
+public class OntModelQueryUtil {
 	
 	/** 
 	 * Return the URI of all properties of the ontology. This method is performed using the Jena API.

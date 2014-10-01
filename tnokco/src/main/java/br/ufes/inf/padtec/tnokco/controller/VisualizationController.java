@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.ufes.inf.nemo.okco.model.DtoInstance;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
-import br.ufes.inf.nemo.okco.model.util.InfModelUtil;
+import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
 import br.ufes.inf.padtec.tnokco.business.Equipment;
 import br.ufes.inf.padtec.tnokco.business.InterfaceOutput;
 import br.ufes.inf.padtec.tnokco.business.Provisioning;
@@ -31,8 +30,8 @@ public class VisualizationController {
 		if(HomeController.Model == null)
 			return "open_visualizator"; 
 
-		List<String> sites = InfModelUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Site");
-		List<String> equipments = InfModelUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
+		List<String> sites = InfModelQueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Site");
+		List<String> equipments = InfModelQueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 
 		Provisioning.inferInterfaceConnections();
 		Provisioning.getAllG800();
@@ -102,7 +101,7 @@ public class VisualizationController {
 			request.getSession().setAttribute("targetURL", "open_g800_visualization_from_equip?selected=");
 			request.getSession().setAttribute("popupMessage", "Go to Equipment\'s components");
 		}else if(visualization.equals("allG800")){
-			ArrayList<String> g800s = Provisioning.getAllG800();
+			List<String> g800s = Provisioning.getAllG800();
 			ArrayList<String[]> triplas = Provisioning.triples_g800;
 			HashMap<String, List<String>> hashIndv = Provisioning.ind_class;
 
@@ -130,15 +129,16 @@ public class VisualizationController {
 			request.getSession().setAttribute("canClick", false);
 		}else if(visualization.equals("allElements")){
 			elementsInitialize();
-			ArrayList<DtoInstance> allInstances = HomeController.Search.GetAllInstancesWithClass(HomeController.Model, HomeController.InfModel);
+			List<String> allInstances =InfModelQueryUtil.getIndividualsURIFromAllClasses(HomeController.InfModel);
+			System.out.println(allInstances);
+			for (String instance : allInstances) {
+				ArrayList<DtoInstanceRelation> targetList = HomeController.Search.GetInstanceRelations(HomeController.InfModel,instance);
 
-			for (DtoInstance instance : allInstances) {
-				ArrayList<DtoInstanceRelation> targetList = HomeController.Search.GetInstanceRelations(HomeController.InfModel,instance.Uri);
-
+				List<String> classes = InfModelQueryUtil.getClassesURI(HomeController.InfModel,instance);
 				for (DtoInstanceRelation dtoInstanceRelation : targetList) {
 
-					valuesGraph += "graph.addEdge(graph.addNode(\""+instance.Uri.substring(instance.Uri.indexOf("#")+1)+"\", ";
-					valuesGraph += "{shape:\""+getG800Image(instance.ClassNameList)+"_AZUL\"}),";
+					valuesGraph += "graph.addEdge(graph.addNode(\""+instance.substring(instance.indexOf("#")+1)+"\", ";
+					valuesGraph += "{shape:\""+getG800Image(classes)+"_AZUL\"}),";
 					valuesGraph += "graph.addNode(\""+dtoInstanceRelation.Target.substring(dtoInstanceRelation.Target.indexOf("#")+1)+"\", ";
 					valuesGraph += "{shape:\""+getG800Image(HomeController.Search.GetClassesFrom(dtoInstanceRelation.Target, HomeController.InfModel))+"_AZUL\"}), ";
 					valuesGraph	+= "{name:'"+dtoInstanceRelation.Property.substring(dtoInstanceRelation.Property.indexOf("#")+1)+"'});";
@@ -146,12 +146,12 @@ public class VisualizationController {
 				}
 
 				if(targetList.isEmpty()){
-					valuesGraph += "graph.addNode(\""+instance.Uri.substring(instance.Uri.indexOf("#")+1)+"\", ";
-					valuesGraph += "{shape:\""+getG800Image(HomeController.Search.GetClassesFrom(instance.Uri, HomeController.InfModel))+"_AZUL\"});";
+					valuesGraph += "graph.addNode(\""+instance.substring(instance.indexOf("#")+1)+"\", ";
+					valuesGraph += "{shape:\""+getG800Image(HomeController.Search.GetClassesFrom(instance, HomeController.InfModel))+"_AZUL\"});";
 				}
 
-				hashTypes += "hash[\""+instance.Uri.substring(instance.Uri.indexOf("#")+1)+"\"] = \"<b>"+instance.Uri.substring(instance.Uri.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
-				for(String type : instance.ClassNameList){
+				hashTypes += "hash[\""+instance.substring(instance.indexOf("#")+1)+"\"] = \"<b>"+instance.substring(instance.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
+				for(String type : classes){
 					if(type.contains("#"))
 						hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 				}

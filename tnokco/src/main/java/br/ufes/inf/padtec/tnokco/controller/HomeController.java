@@ -36,8 +36,8 @@ import br.ufes.inf.nemo.okco.model.OKCoExceptionReasoner;
 import br.ufes.inf.nemo.okco.model.inference.HermitReasonerImpl;
 import br.ufes.inf.nemo.okco.model.inference.OntologyReasoner;
 import br.ufes.inf.nemo.okco.model.inference.PelletReasonerImpl;
-import br.ufes.inf.nemo.okco.model.repository.Repository;
-import br.ufes.inf.nemo.okco.model.repository.RepositoryImpl;
+import br.ufes.inf.nemo.okco.model.repository.BaseModelRepository;
+import br.ufes.inf.nemo.okco.model.repository.BaseModelRepositoryImpl;
 import br.ufes.inf.padtec.tnokco.business.ManagerRelations;
 import br.ufes.inf.padtec.tnokco.business.Reader;
 
@@ -47,7 +47,7 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 @Controller
 public class HomeController implements ServletContextAware{
 	
-	public static Repository Repository;
+	public static BaseModelRepository Repository;
 	public static OntologyReasoner Reasoner;
 	public static OntModel Model;
 	public static OntModel tmpModel;	
@@ -91,7 +91,7 @@ public class HomeController implements ServletContextAware{
 			
 			//Initializing variables
 			
-			Repository = new RepositoryImpl();
+			Repository = new BaseModelRepositoryImpl();
 			
 			//Select Reasoner
 			
@@ -110,9 +110,9 @@ public class HomeController implements ServletContextAware{
 			HomeController.InfModel = Repository.clone(HomeController.Model);
 
 			// Name space
-			HomeController.NS = Repository.getNameSpace(HomeController.Model);
+			HomeController.NS = Repository.getNameSpace();
 
-			HomeController.Search = new Search(HomeController.NS);
+			HomeController.Search = new Search();
 			HomeController.FactoryInstances = new FactoryInstances(HomeController.Search);
 			HomeController.ManagerInstances = new ManagerInstances(HomeController.Search, HomeController.FactoryInstances, HomeController.Model);
 
@@ -246,7 +246,7 @@ public class HomeController implements ServletContextAware{
 				throw new OKCoExceptionFileFormat("Please select owl file.");
 			}
 
-			Repository = new RepositoryImpl();
+			Repository = new BaseModelRepositoryImpl();
 			
 			// Load Model
 			InputStream in = file.getInputStream();
@@ -254,14 +254,14 @@ public class HomeController implements ServletContextAware{
 			Model = Repository.getBaseOntModel();
 			
 			// Name space
-			NS = Repository.getNameSpace(Model);
+			NS = Repository.getNameSpace();
 
 			if(NS == null)
 			{
 				throw new OKCoExceptionNS("Please select owl file with defined namespace.");
 			}
 
-			Search = new Search(NS);
+			Search = new Search();
 			FactoryInstances = new FactoryInstances(Search);
 			ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
 

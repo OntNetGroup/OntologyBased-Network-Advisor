@@ -435,7 +435,7 @@ public class BindsProcessor {
 			listInstancesCreated = new ArrayList<String>();
 		}
 		initValues();
-		Search search = new Search(NS); 
+		Search search = new Search(); 
 		ArrayList<String> tiposPort1=search.GetClassesFrom(NS+port1.getLocalName(),ontModel);
 		ArrayList<String> tiposPort2=search.GetClassesFrom(NS+port2.getLocalName(),ontModel);
 		tiposPort1.remove(NS+"Geographical_Element");

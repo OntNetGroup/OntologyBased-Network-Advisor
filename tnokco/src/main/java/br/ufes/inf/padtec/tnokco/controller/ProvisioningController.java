@@ -27,7 +27,7 @@ import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-import br.ufes.inf.nemo.okco.model.repository.RepositoryImpl;
+import br.ufes.inf.nemo.okco.model.repository.BaseModelRepositoryImpl;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.business.Reader;
@@ -86,7 +86,7 @@ public class ProvisioningController{
 
 		try {
 			
-			HomeController.Repository = new RepositoryImpl();
+			HomeController.Repository = new BaseModelRepositoryImpl();
 
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
@@ -336,7 +336,7 @@ public class ProvisioningController{
 		String outputNs = "";
 		String inputNs = "";
 
-		Search search = new Search(HomeController.NS);
+		Search search = new Search();
 		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, HomeController.NS+outInt);
 		for (DtoInstanceRelation outIntRelation : outIntRelations) {
 			if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
@@ -475,7 +475,7 @@ public class ProvisioningController{
 //		}
 
 		//get all relations of the output interface
-		Search search = new Search(HomeController.NS);
+		Search search = new Search();
 		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
 
 		//get namespaces of individuals of some output interface relations

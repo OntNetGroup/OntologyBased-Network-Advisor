@@ -10,7 +10,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.FileManager;
 
 import br.ufes.inf.nemo.okco.Search;
-import br.ufes.inf.nemo.okco.model.util.OntModelUtil;
+import br.ufes.inf.nemo.okco.model.queries.OntModelQueryUtil;
 
 /*
  * With the gambiarra.txt 
@@ -40,10 +40,10 @@ public class GenerataCondelLanguage {
 			System.out.println("Namespace não definido");
 		}
 		
-		Search search = new Search(ns);
+		Search search = new Search();
 		
-		List<String> lclasses = OntModelUtil.getClassesURI(model);
-		List<String> lpropreties = OntModelUtil.getPropertiesURI(model);
+		List<String> lclasses = OntModelQueryUtil.getClassesURI(model);
+		List<String> lpropreties = OntModelQueryUtil.getPropertiesURI(model);
 		
 		String ituClassesAndRelations = "/* ITU CLASSES */";
 		String bottomString = "";

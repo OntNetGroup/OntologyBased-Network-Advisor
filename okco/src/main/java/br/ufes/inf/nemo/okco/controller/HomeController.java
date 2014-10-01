@@ -20,7 +20,6 @@ import br.ufes.inf.nemo.okco.ManagerInstances;
 import br.ufes.inf.nemo.okco.Search;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
 import br.ufes.inf.nemo.okco.model.DtoResultCommit;
-import br.ufes.inf.nemo.okco.model.IFactory;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
@@ -29,8 +28,8 @@ import br.ufes.inf.nemo.okco.model.OKCoExceptionReasoner;
 import br.ufes.inf.nemo.okco.model.inference.HermitReasonerImpl;
 import br.ufes.inf.nemo.okco.model.inference.OntologyReasoner;
 import br.ufes.inf.nemo.okco.model.inference.PelletReasonerImpl;
-import br.ufes.inf.nemo.okco.model.repository.Repository;
-import br.ufes.inf.nemo.okco.model.repository.RepositoryImpl;
+import br.ufes.inf.nemo.okco.model.repository.BaseModelRepository;
+import br.ufes.inf.nemo.okco.model.repository.BaseModelRepositoryImpl;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -39,7 +38,7 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 public class HomeController {
 	
 	//public static IFactory Factory;
-	public static Repository Repository;
+	public static BaseModelRepository Repository;
 	public static OntologyReasoner Reasoner;
 	public static OntModel Model;
 	public static OntModel tmpModel;	
@@ -129,7 +128,7 @@ public class HomeController {
 		
 		  try {
 			  
-			  Repository = new RepositoryImpl();
+			  Repository = new BaseModelRepositoryImpl();
 			  
 			  String loadReasonerFirstCheckbox = request.getParameter("loadReasonerFirstCheckbox");
 			  boolean reasoning = true;
@@ -174,14 +173,13 @@ public class HomeController {
 			  Model = Repository.getBaseOntModel();
 			  
 			  // Name space
-			  NS = Repository.getNameSpace(Model);
-			  
+			  NS = Repository.getNameSpace();			  
 			  if(NS == null)
 			  {
 				  throw new OKCoExceptionNS("Please select owl file with defined namespace.");
 			  }
 			  
-			  Search = new Search(NS);
+			  Search = new Search();
 		  	  FactoryInstances = new FactoryInstances(Search);
 		  	  ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
 		  	  

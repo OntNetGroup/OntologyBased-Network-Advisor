@@ -5,15 +5,14 @@ import java.util.List;
 
 import br.ufes.inf.nemo.okco.model.DtoCompleteClass;
 import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
-import br.ufes.inf.nemo.okco.model.DtoInstance;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
 import br.ufes.inf.nemo.okco.model.DtoPropertyAndSubProperties;
 import br.ufes.inf.nemo.okco.model.EnumPropertyType;
 import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-import br.ufes.inf.nemo.okco.model.util.InfModelUtil;
-import br.ufes.inf.nemo.okco.model.util.OntModelUtil;
+import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
+import br.ufes.inf.nemo.okco.model.queries.OntModelQueryUtil;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -61,7 +60,7 @@ public class ManagerInstances {
 
 		for (DtoDefinitionClass dto : dtoRelationsList)
 		{			
-			List<String> listInstancesOfDomain =InfModelUtil.getIndividualsURI(infModel, dto.Source);
+			List<String> listInstancesOfDomain =InfModelQueryUtil.getIndividualsURI(infModel, dto.Source);
 			if(listInstancesOfDomain.size() > 0)	//Check if are need to create
 			{
 				for (String instanceName : listInstancesOfDomain)
@@ -70,7 +69,7 @@ public class ManagerInstances {
 					
 					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.SOME))
 					{
-						boolean existInstanceTarget = InfModelUtil.existsIndividualsInRelationRange(infModel, instanceName, dto.Relation, dto.Target);
+						boolean existInstanceTarget = InfModelQueryUtil.existsIndividualsInRelationRange(infModel, instanceName, dto.Relation, dto.Target);
 						if(existInstanceTarget)
 						{
 							//Do nothing
@@ -83,7 +82,7 @@ public class ManagerInstances {
 							{
 								ArrayList<String> listClasses = new ArrayList<String>();
 								listClasses.add(dto.Source);
-								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelUtil.getIndividualsURISameAs(infModel, instanceName), true);
+								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName), true);
 								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListSome);
 								if(!existDto)
 								{
@@ -114,7 +113,7 @@ public class ManagerInstances {
 							{
 								ArrayList<String> listClasses = new ArrayList<String>();
 								listClasses.add(dto.Source);
-								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelUtil.getIndividualsURISameAs(infModel, instanceName),true);
+								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName),true);
 								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListMin);
 								if(!existDto)
 								{
@@ -145,7 +144,7 @@ public class ManagerInstances {
 							{
 								ArrayList<String> listClasses = new ArrayList<String>();
 								listClasses.add(dto.Source);
-								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelUtil.getIndividualsURISameAs(infModel, instanceName),true);
+								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName),true);
 								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListMax);
 								if(!existDto)
 								{
@@ -176,7 +175,7 @@ public class ManagerInstances {
 							{
 								ArrayList<String> listClasses = new ArrayList<String>();
 								listClasses.add(dto.Source);
-								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelUtil.getIndividualsURISameAs(infModel, instanceName),true);
+								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName),true);
 								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListExactly);
 								if(!existDto)
 								{
@@ -217,7 +216,7 @@ public class ManagerInstances {
 				//Case if the instance have no class selected - only Thing
 				dto = new DtoCompleteClass();
 				dto.CompleteClass = instanceSelected.ListClasses.get(0);
-				for (String subClas : OntModelUtil.getClassesURI(model)) {
+				for (String subClas : OntModelQueryUtil.getClassesURI(model)) {
 					if(subClas != null)
 						dto.AddMember(subClas);
 				}
@@ -341,17 +340,17 @@ public class ManagerInstances {
 		//NS from model
 		
 		ArrayList<Instance> listInstances = new ArrayList<Instance>();
-		ArrayList<DtoInstance> listInstancesDto = this.search.GetAllInstancesWithClass(model, infModel);
-    	for (DtoInstance dto : listInstancesDto) {
+		List<String> listInstancesDto = InfModelQueryUtil.getIndividualsURIFromAllClasses(infModel);
+    	for (String dto : listInstancesDto) {
     		
-    		if(! dto.Uri.contains("#"))
+    		if(! dto.contains("#"))
     		{
     			//nonstandard NS
-    			throw new OKCoExceptionInstanceFormat("Entity namespace problem. The " + dto.Uri +" have to followed by \"#\".");
+    			throw new OKCoExceptionInstanceFormat("Entity namespace problem. The " + dto +" have to followed by \"#\".");
     		}
-    		String nameSpace = dto.Uri.split("#")[0] + "#";
-    		String name = dto.Uri.split("#")[1];
-    		listInstances.add(new Instance(nameSpace, name, dto.ClassNameList, InfModelUtil.getIndividualsURIDifferentFrom(infModel, dto.Uri), InfModelUtil.getIndividualsURISameAs(infModel, dto.Uri),true));
+    		String nameSpace = dto.split("#")[0] + "#";
+    		String name = dto.split("#")[1];
+    		listInstances.add(new Instance(nameSpace, name, InfModelQueryUtil.getClassesURI(infModel, dto), InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, dto), InfModelQueryUtil.getIndividualsURISameAs(infModel, dto),true));
 		}
 		
 		return listInstances;
@@ -369,12 +368,12 @@ public class ManagerInstances {
 
 	public List<String> GetDifferentInstancesFrom(InfModel infModel, String instanceName)
 	{		
-		return InfModelUtil.getIndividualsURIDifferentFrom(infModel, instanceName);
+		return InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName);
 	}
 	
 	public List<String> GetSameInstancesFrom(InfModel infModel, String instanceName)
 	{
-		return InfModelUtil.getIndividualsURISameAs(infModel, instanceName);
+		return InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName);
 	}
 
 	public OntModel CreateTargetDataProperty(String instanceURI, String relation, String value, String TargetClass, OntModel model) {
@@ -467,7 +466,7 @@ public class ManagerInstances {
 			if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
 			{
 				//create the the new instance
-				String instanceName = dto.Target.split("#")[1] + "-" + (InfModelUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
+				String instanceName = dto.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
