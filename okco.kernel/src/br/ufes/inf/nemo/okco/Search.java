@@ -32,7 +32,8 @@ import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
-public class Search {
+public class Search 
+{
 
 	public final  String w3String = "http://www.w3.org/";
 	
@@ -116,7 +117,8 @@ public class Search {
 		//System.out.println(queryString);
 		//ResultSetFormatter.out(System.out, results, query);
 		
-		while (results.hasNext()) {
+		while (results.hasNext()) 
+		{
 			
 			QuerySolution row= results.next();
 		    RDFNode t = row.get("type");
@@ -136,7 +138,7 @@ public class Search {
 	
  	public boolean CheckIsDijointClassOf(InfModel infModel, String cls, String clsToCheck)
 	{
-		/* Return true if cls is disjoint of clsToCheck */
+		/* Return true if class is disjoint of clsToCheck */
 		
 		// Create a new query
 		String queryString = 
@@ -158,8 +160,8 @@ public class Search {
 		// Output query results 
 		// ResultSetFormatter.out(System.out, results, query);
 		
-		while (results.hasNext()) {
-			
+		while (results.hasNext())
+		{
 			QuerySolution row= results.next();
 		    RDFNode classD = row.get("classD");
 		    String strClassD = classD.toString();		    
@@ -169,7 +171,6 @@ public class Search {
 		    	return false;
 		    }		    	    		    
 		}
-		
 		return true;
 	}
 	
@@ -178,13 +179,17 @@ public class Search {
 		/* Return true if the elem have the domain classes disjoint of all classes in listClsSourceInstance at same time */
 		
 		boolean ok = true;
-		for (DomainRange aux : elem.listDomainRange) {
+		for (DomainRange aux : elem.listDomainRange) 
+		{
 						
-			for (String clsToCheck : listClsSourceInstance) {
+			for (String clsToCheck : listClsSourceInstance)
+			{
 				if(this.CheckIsDijointClassOf(infModel, aux.Domain, clsToCheck))
 				{
 					ok = true;
-				} else {
+				} 
+				else 
+				{
 					ok = false; // have one disjoint case
 				}
 			}			
@@ -193,18 +198,23 @@ public class Search {
 		return ok;
 	}
 
-	private boolean CheckIsDisjointTargetWith(RelationDomainRangeList elem, ArrayList<String> listClsTargetInstance, InfModel infModel) {
+	private boolean CheckIsDisjointTargetWith(RelationDomainRangeList elem, ArrayList<String> listClsTargetInstance, InfModel infModel) 
+	{
 		
 		/* Return true if the elem have the target classes disjoint of all classes in listClsTargetInstance at same time */
 		
 		boolean ok = true;
-		for (DomainRange aux : elem.listDomainRange) {
+		for (DomainRange aux : elem.listDomainRange)
+		{
 						
-			for (String clsToCheck : listClsTargetInstance) {
+			for (String clsToCheck : listClsTargetInstance)
+			{
 				if(this.CheckIsDijointClassOf(infModel, aux.Range, clsToCheck))
 				{
 					ok = true;
-				} else {
+				}
+				else 
+				{
 					ok = false; // have one disjoint case
 					break;
 				}
@@ -223,12 +233,14 @@ public class Search {
 		ArrayList<String> uniqueListValues = new ArrayList<String>();
 		uniqueListValues.addAll(listValues);
 		
-		for (String value : listValues) {
+		for (String value : listValues)
+		{
 			
 			if(uniqueListValues.contains(value))
 			{
 				List<String> sameInstances = InfModelQueryUtil.getIndividualsURISameAs(infModel, value);
-				for (String sameIns : sameInstances) {
+				for (String sameIns : sameInstances)
+				{
 					if(uniqueListValues.contains(sameIns))
 					{
 						uniqueListValues.remove(sameIns);
@@ -245,7 +257,8 @@ public class Search {
 		return result;
 	}
 	
-	public ArrayList<DataPropertyValue> GetDataValuesOfTargetWithRelation(InfModel infModel, String instance, String relation, String imageClass) {
+	public ArrayList<DataPropertyValue> GetDataValuesOfTargetWithRelation(InfModel infModel, String instance, String relation, String imageClass) 
+	{
 		
 		ArrayList<DataPropertyValue> list = new ArrayList<DataPropertyValue>();
 		DataPropertyValue data = null;
@@ -2202,7 +2215,8 @@ public class Search {
 		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
 		ResultSet results = qe.execSelect();		
 		
-		while (results.hasNext()) {
+		while (results.hasNext()) 
+		{
 
 			QuerySolution row= results.next();
 			
@@ -2223,13 +2237,12 @@ public class Search {
 		    			elem.Relation = subProp;
 		    			elem.listDomainRange.add(new DomainRange(domainClsSubProp, rangeClsSubProp));
 		    			listMediation.add(elem);
-		    		} else {
+		    		} else 
+		    		{
 		    			elem.listDomainRange.add(new DomainRange(domainClsSubProp, rangeClsSubProp));
 		    		}
 		    }
-		    
 		}
-		
 		return listMediation;
 	}
 	

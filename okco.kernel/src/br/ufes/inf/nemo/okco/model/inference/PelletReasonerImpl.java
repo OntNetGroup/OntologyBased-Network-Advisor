@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.okco.model.inference;
 
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
+import br.ufes.inf.nemo.okco.DateTimeHelper;
+
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -20,7 +22,7 @@ public class PelletReasonerImpl implements OntologyReasoner {
 		long antes = System.currentTimeMillis();  
 	  	InfModel infModel = ModelFactory.createInfModel(r, model);	  	  
         long tempo = System.currentTimeMillis() - antes;
-        //DateTimeHelper.printout("Pellet executed in %d miliseconds.%n", tempo);
+        DateTimeHelper.printout("Pellet executed in " + tempo +" miliseconds.");
         System.out.printf("Pellet executed in %d miliseconds.%n", tempo);	  	
 		return infModel;
 	}

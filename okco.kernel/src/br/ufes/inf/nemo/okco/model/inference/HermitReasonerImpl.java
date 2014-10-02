@@ -32,6 +32,8 @@ import org.semanticweb.owlapi.util.InferredSubClassAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredSubDataPropertyAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredSubObjectPropertyAxiomGenerator;
 
+import br.ufes.inf.nemo.okco.DateTimeHelper;
+
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
@@ -121,7 +123,7 @@ public class HermitReasonerImpl implements OntologyReasoner {
 		model.read(bais, null);
 		
 		long tempo = System.currentTimeMillis() - antes;
-        //DateTimeHelper.printout("Hermit executed in "+tempo+" miliseconds.");
+        DateTimeHelper.printout("Hermit executed in "+tempo+" miliseconds.");
 		System.out.printf("Hermit executed in %d miliseconds.%n", tempo);
 		return model;
 	}
