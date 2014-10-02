@@ -255,7 +255,7 @@ public class ManagerInstances {
 					{
 						boolean ok = true;
 						
-						ArrayList<String> distointSubPropOfProp = this.search.GetDisjointPropertiesOf(sub, infModel);
+						List<String> distointSubPropOfProp = InfModelQueryUtil.getPropertiesURIDisjointWith(infModel,sub);
 						for (String disjointrop : distointSubPropOfProp) {
 							
 							for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
@@ -424,7 +424,7 @@ public class ManagerInstances {
 				{
 					if(! subCls.equals(subCls2))
 					{
-						boolean result = this.search.CheckIsDijointClassOf(infModel, subCls, subCls2); /* Return true if subCls is disjoint of subCls2 */
+						boolean result = InfModelQueryUtil.isClassesURIDisjoint(infModel, subCls, subCls2); /* Return true if subCls is disjoint of subCls2 */
 						if(result == true)
 						{
 							//Not disjoint
@@ -645,7 +645,7 @@ public class ManagerInstances {
 		ArrayList<String> listClassesMembersTmp = new ArrayList<String>();
 		for (DtoCompleteClass dto : instanceSelected.ListCompleteClasses) 
 		{
-			ArrayList<String> listDisjoint = search.GetDisjointClassesOf(dto.CompleteClass, infModel);
+			List<String> listDisjoint = InfModelQueryUtil.getClassesURIDisjointWith(infModel,dto.CompleteClass);
 			for (String clc : listClassesMembersTmpWithoutRepeat) 
 			{
 				if(! listDisjoint.contains(clc))

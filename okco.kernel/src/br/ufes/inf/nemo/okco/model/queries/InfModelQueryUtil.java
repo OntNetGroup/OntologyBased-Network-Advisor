@@ -63,7 +63,14 @@ public class InfModelQueryUtil {
 	static public List<String> getClassesURI(InfModel model, String individualURI) 
 	{		
 		System.out.println("Executing getClassesURI(model, individualURI)");
-		List<String> result = new ArrayList<String>();				
+		List<String> result = new ArrayList<String>();	
+		//check if the individual is a data value
+		if(individualURI.contains("http://www.w3.org/"))
+		{
+			String type = individualURI.split("\\^\\^")[1];
+			result.add(type);
+			return result;
+		}
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
@@ -92,6 +99,79 @@ public class InfModelQueryUtil {
 	}
 	
 	/**
+	 * Check if a class is disjoint from another. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param classURI: Class URI
+	 * @param checingClassURI: Class URI to be checked
+	 * 
+	 * @author John Guerson
+	 */
+	static public boolean isClassesURIDisjoint(InfModel model, String classURI, String checkingClassURI)
+	{
+		System.out.println("Executing isClassesURIDisjoint(model, classURI, checkingClassURI)");
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +
+				"<" + classURI + "> " + "owl:disjointWith" + " ?classD .\n " +
+		"}";		
+		Query query = QueryFactory.create(queryString);		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		// ResultSetFormatter.out(System.out, results, query);		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row= results.next();
+		    RDFNode classD = row.get("classD");
+		    String strClassD = classD.toString();		    
+		    if(checkingClassURI.equals(strClassD)) {
+		    	System.out.println("Is Disjoint - Class URI : "+classURI+" - IndividualURI: "+checkingClassURI);
+		    	return true; 
+		    }		    	    		    
+		}		
+		return false;
+	}
+	
+	/**
+	 * Return all the disjoint classes URI with this particular class in the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param classURI: Class URI
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getClassesURIDisjointWith(InfModel model,String classURI) 
+	{		
+		System.out.println("Executing getClassesURIDisjointWith(model, classURI)");
+		ArrayList<String> result = new ArrayList<String>();		
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +
+				"<" + classURI + "> " + "owl:disjointWith" + " ?classDisjoint .\n " +
+		"}";		
+		Query query = QueryFactory.create(queryString);		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		// ResultSetFormatter.out(System.out, results, query);		
+		while (results.hasNext()) 
+		{
+			QuerySolution row= results.next();
+		    RDFNode completeClass = row.get("classDisjoint");
+		    result.add(completeClass.toString());		    	
+		    System.out.println("Class URI Disjoint: "+completeClass.toString()+" - From Class URI: "+classURI);
+		}		
+		return result;
+	}
+
+	/**
 	 * Check if a URI is valid.
 	 * 
 	 * @author John Guerson
@@ -102,29 +182,29 @@ public class InfModelQueryUtil {
 	}
 			
 	/** 
-	 * Return the URI of all datatype relations that this individual is linked to, in the ontology. This method is performed using SPARQL.
+	 * Return the URI of all datatype properties that this individual is linked to, in the ontology. This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
 	 * @param individualURI: Individual URI
 	 * 
 	 * @author John Guerson
 	 */
-	static public List<String> getDatatypeRelationsURI(InfModel infModel, String individualURI)
+	static public List<String> getDatatypePropertiesURI(InfModel model, String individualURI)
 	{
-		System.out.println("Executing getDatatypeRelationsURI(model, individualURI)");
+		System.out.println("Executing getDatatypePropertiesURI(model, individualURI)");
 		ArrayList<String> result = new ArrayList<String>();		
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +		
 			"<" + individualURI + ">" + " ?property" + " ?target .\n " +
 			" ?property " + " rdf:type" + " owl:DatatypeProperty .\n " +
 		"}";
 		Query query = QueryFactory.create(queryString);		
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();
 		//ResultSetFormatter.out(System.out, results, query);
 		while (results.hasNext())	
@@ -132,7 +212,7 @@ public class InfModelQueryUtil {
 			QuerySolution row= results.next();
 		    RDFNode property = row.get("property");	
 		    if(isValidURI(property.toString())){
-		    	System.out.println("Datatype Relation URI: "+property.toString()+" - IndividualURI: "+individualURI); 
+		    	System.out.println("Datatype Property URI: "+property.toString()+" - IndividualURI: "+individualURI); 
 		    	result.add(property.toString());
 		    }
 		}		
@@ -140,29 +220,29 @@ public class InfModelQueryUtil {
 	}
 	
 	/** 
-	 * Return the URI of all object relations that this individual is linked to, in the ontology. This method is performed using SPARQL.
+	 * Return the URI of all object properties that this individual is linked to, in the ontology. This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
 	 * @param individualURI: Individual URI
 	 * 
 	 * @author John Guerson
 	 */
-	static public List<String> getObjectRelationsURI(InfModel infModel, String individualURI)
+	static public List<String> getObjectPropertiesURI(InfModel model, String individualURI)
 	{
-		System.out.println("Executing getObjectRelationsURI(model, individualURI)");
+		System.out.println("Executing getObjectPropertiesURI(model, individualURI)");
 		ArrayList<String> result = new ArrayList<String>();		
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +		
 			"<" + individualURI + ">" + " ?property" + " ?target .\n " +
 			" ?property " + " rdf:type" + " owl:ObjectProperty .\n " +
 		"}";
 		Query query = QueryFactory.create(queryString);		
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();
 		//ResultSetFormatter.out(System.out, results, query);
 		while (results.hasNext())	
@@ -170,7 +250,7 @@ public class InfModelQueryUtil {
 			QuerySolution row= results.next();
 		    RDFNode property = row.get("property");	
 		    if(isValidURI(property.toString())){
-		    	System.out.println("Object Relation URI: "+property.toString()+" - IndividualURI: "+individualURI); 
+		    	System.out.println("Object Property URI: "+property.toString()+" - IndividualURI: "+individualURI); 
 		    	result.add(property.toString());
 		    }
 		}		
@@ -178,22 +258,22 @@ public class InfModelQueryUtil {
 	}
 	
 	/** 
-	 * Return the URI of all relations (both object and datatype relations) that this individual is linked to, in the ontology. This method is performed using SPARQL.
+	 * Return the URI of all properties (both object and datatype properties) that this individual is linked to, in the ontology. This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
 	 * @param individualURI: Individual URI
 	 * 
 	 * @author John Guerson
 	 */
-	public List<String> getRelationsURI(InfModel infModel, String individualURI)
+	static public List<String> getPropertiesURI(InfModel model, String individualURI)
 	{
-		System.out.println("Executing getRelationsURI(model, individualURI)");
+		System.out.println("Executing getPropertiesURI(model, individualURI)");
 		ArrayList<String> result = new ArrayList<String>();		
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +		
 			"{ " + "<" + individualURI + ">" + " ?property" + " ?target .\n " +
@@ -204,7 +284,7 @@ public class InfModelQueryUtil {
 			"}" +
 		"}";
 		Query query = QueryFactory.create(queryString);
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect(); 
 		//ResultSetFormatter.out(System.out, results, query);
 		while (results.hasNext()) 
@@ -212,13 +292,86 @@ public class InfModelQueryUtil {
 			QuerySolution row= results.next();
 		    RDFNode property = row.get("property");
 		    if(isValidURI(property.toString())){
-		    	System.out.println("Relation URI: "+property.toString()+" - IndividualURI: "+individualURI); 
+		    	System.out.println("Property URI: "+property.toString()+" - IndividualURI: "+individualURI); 
 		    	result.add(property.toString());
 		    } 		    		    
 		}		
 		return result;
 	}
 	
+	/** 
+	 * Return the URI of all properties that are disjoint with this property URI in the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param propertyURI: Property URI
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getPropertiesURIDisjointWith(InfModel model, String propertyURI) 
+	{
+		System.out.println("Executing getPropertiesURIDisjointWith(model, propertyURI)");
+		ArrayList<String> result = new ArrayList<String>();
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +
+				"<" + propertyURI + "> " + "owl:propertyDisjointWith" + " ?propDisjoint .\n " +
+		"}";		
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		// ResultSetFormatter.out(System.out, results, query);		
+		while (results.hasNext()) 
+		{
+			QuerySolution row= results.next();
+		    RDFNode prop = row.get("propDisjoint");
+		    result.add(prop.toString());
+		    System.out.println("Property URI Disjoint: "+prop.toString()+" - From Property URI: "+propertyURI);
+		}		
+		return result;
+	}
+	
+	/** 
+	 * Return the URI of all sub-properties of this property URI in the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param propertyURI: Property URI
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getSubPropertiesURIOf(InfModel model, String propertyURI)
+	{
+		System.out.println("Executing getSubPropertiesURIOf(model, propertyURI)");
+		ArrayList<String> result = new ArrayList<String>();
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +
+			"?subProp rdfs:subPropertyOf" + "<" + propertyURI + "> ." +
+		"}";		
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		// ResultSetFormatter.out(System.out, results, query);		
+		while (results.hasNext()) 
+		{
+			QuerySolution row= results.next();
+		    RDFNode subProp = row.get("subProp");
+		    if(subProp.toString().contains(model.getNsPrefixURI("")) && (!subProp.toString().equals(propertyURI)))
+		    {
+		    	result.add(subProp.toString());
+		    	System.out.println("SubProperty URI: "+subProp.toString()+" - Of Property URI: "+propertyURI);
+		    }
+		}		
+		return result;
+	}
+
 	/** 
 	 * Return all individuals URI of all the classes of the ontology. This method is performed using SPARQL.
 	 * 
@@ -362,7 +515,87 @@ public class InfModelQueryUtil {
 		}		
 		return list;
 	}
-		
+	
+	/**
+	 * Return all the individuals URI that are in the range of the given propertyURI, connected to the individualURI.
+	 * This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param individualURI: Individual URI
+	 * @param propertyURI: Property URI
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getIndividualsURIAtPropertyRange(InfModel model, String individualURI, String propertyURI)
+	{
+		System.out.println("Executing getIndividualsURIInRange(model, individualURI, propertyURI)");
+		ArrayList<String> result = new ArrayList<String>();		
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +		
+			"<" + individualURI + ">" + "<"+propertyURI+">"+ " ?target .\n "+			
+		"}";
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
+		{			
+			QuerySolution row= results.next();
+		    RDFNode property = row.get("target");
+		    if(isValidURI(property.toString()))
+		    {
+		    	System.out.println("Individual URI In Range: "+property.toString()+" - From PropertyURI: "+propertyURI); 
+		    	result.add(property.toString());
+		    } 		    		    
+		}		
+		return result;
+	}
+	
+	/**
+	 * Return all the individuals URI that are in the range of the given propertyURI as instance of rangeClassURI and connected to the individualURI.
+	 * This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param individualURI: Individual URI
+	 * @param propertyURI: Property URI
+	 * @param rangeClassURI: Rande Class URI
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getIndividualsURIAtPropertyRange(InfModel model, String individualURI, String propertyURI, String rangeClassURI)
+	{
+		System.out.println("Executing getIndividualsURIInRange(model, individualURI, propertyURI, rangeClassURI)");
+		ArrayList<String> result = new ArrayList<String>();		
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +		
+			"<" + individualURI + ">" + "<"+propertyURI+">"+ " ?target .\n "+			
+		"}";
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
+		{			
+			QuerySolution row= results.next();
+		    RDFNode property = row.get("target");
+		    if(isValidURI(property.toString()))
+		    {
+		    	System.out.println("Individual URI In Range: "+property.toString()+" - From PropertyURI: "+propertyURI); 
+		    	result.add(property.toString());
+		    } 		    		    
+		}		
+		return result;
+	}
 	//======================================================================
 	//These methods below are quite weird. We will try to fix them
 	//======================================================================

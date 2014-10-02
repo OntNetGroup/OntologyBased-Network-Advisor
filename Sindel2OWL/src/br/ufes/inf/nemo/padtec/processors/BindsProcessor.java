@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.ufes.inf.nemo.okco.Search;
+import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 
 import com.hp.hpl.jena.ontology.Individual;
@@ -436,8 +437,8 @@ public class BindsProcessor {
 		}
 		initValues();
 		Search search = new Search(); 
-		ArrayList<String> tiposPort1=search.GetClassesFrom(NS+port1.getLocalName(),ontModel);
-		ArrayList<String> tiposPort2=search.GetClassesFrom(NS+port2.getLocalName(),ontModel);
+		List<String> tiposPort1=InfModelQueryUtil.getClassesURI(ontModel,NS+port1.getLocalName());
+		List<String> tiposPort2=InfModelQueryUtil.getClassesURI(ontModel,NS+port2.getLocalName());
 		tiposPort1.remove(NS+"Geographical_Element");
 		tiposPort1.remove(NS+"Bound_Input-Output");
 		tiposPort2.remove(NS+"Geographical_Element");
@@ -445,8 +446,8 @@ public class BindsProcessor {
 		
 		Individual outputPort;
 		Individual inputPort;
-		ArrayList<String> tiposOutputPort;
-		ArrayList<String> tiposInputPort;
+		List<String> tiposOutputPort;
+		List<String> tiposInputPort;
 		if(tiposPort1.contains(NS+"Output")){
 			outputPort = port1;
 			tiposOutputPort = tiposPort1;

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,9 +28,11 @@ import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionFileFormat;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
 import br.ufes.inf.nemo.okco.model.repository.BaseModelRepositoryImpl;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
+import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
 import br.ufes.inf.padtec.tnokco.business.Reader;
 
 import com.hp.hpl.jena.ontology.Individual;
@@ -337,7 +340,7 @@ public class ProvisioningController{
 		String inputNs = "";
 
 		Search search = new Search();
-		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, HomeController.NS+outInt);
+		ArrayList<DtoInstanceRelation> outIntRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, HomeController.NS+outInt);
 		for (DtoInstanceRelation outIntRelation : outIntRelations) {
 			if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
 				outputNs = outIntRelation.Target;
@@ -984,7 +987,7 @@ public class ProvisioningController{
 		ArrayList<Instance> rpInstances = getInstancesFromClass("Reference_Point");
 		
 		for (Instance rp : rpInstances) {
-			ArrayList<DtoInstanceRelation> rpRelations = HomeController.Search.GetInstanceAllRelations(infModel, rp.ns+rp.name);
+			ArrayList<DtoInstanceRelation> rpRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, rp.ns+rp.name);
 			String bindingNs = "";
 			String hasFW = "";
 			for (DtoInstanceRelation rel : rpRelations) {
@@ -1038,7 +1041,7 @@ public class ProvisioningController{
 	
 	public static ArrayList<String> getEquipmentFromBinding(InfModel infModel, String NS, String bindingName){
 		bindingName = bindingName.replace(NS, "");
-		ArrayList<DtoInstanceRelation> bindingRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+bindingName);
+		ArrayList<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindingName);
 		
 		String bindedPort1Ns="";
 		String bindedPort2Ns="";
@@ -1082,7 +1085,7 @@ public class ProvisioningController{
 		ArrayList<String> ret = new ArrayList<String>();
 		bindedPortNs = bindedPortNs.replace(NS, "");
 		
-		ArrayList<DtoInstanceRelation> portRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+bindedPortNs);
+		ArrayList<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindedPortNs);
 		String outIntNs = "";
 		String inIntNs = "";
 		String tfNs = "";
@@ -1099,7 +1102,7 @@ public class ProvisioningController{
 		
 		if(!tfNs.equals("") && outIntNs.equals("") && inIntNs.equals("")){
 			tfNs = tfNs.replace(NS, "");
-			ArrayList<String> tiposPm=HomeController.Search.GetClassesFrom(NS+tfNs,infModel);
+			List<String> tiposPm=InfModelQueryUtil.getClassesURI(infModel,NS+tfNs);
 			if(tiposPm.contains(NS+"Physical_Media")){
 				ret.add(tfNs);
 				return ret;
@@ -1107,14 +1110,14 @@ public class ProvisioningController{
 			}
 			
 			ArrayList<String> nextPorts = new ArrayList<String>(); 
-			ArrayList<DtoInstanceRelation> tfRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+tfNs);
+			ArrayList<DtoInstanceRelation> tfRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+tfNs);
 			String eqNs = "";
 			for (DtoInstanceRelation tfRel : tfRelations) {
 				String tfRelRelName = tfRel.Property.replace(NS, "");
 				if(tfRelRelName.equals("INV.componentOf")){
 					eqNs = tfRel.Target;
 					eqNs = eqNs.replace(NS, "");
-					ArrayList<String> tiposEq=HomeController.Search.GetClassesFrom(NS+eqNs,infModel);
+					List<String> tiposEq=InfModelQueryUtil.getClassesURI(infModel,NS+eqNs);
 					if(tiposEq.contains(NS+"Equipment")){
 						ret.add(eqNs);
 						return ret;
@@ -1122,7 +1125,7 @@ public class ProvisioningController{
 					}
 				}else if(tfRelRelName.equals("componentOf")){
 					if(!tfRel.Target.equals(NS+bindedPortNs)){
-						ArrayList<String> tiposTf=HomeController.Search.GetClassesFrom(tfRel.Target,infModel);
+						List<String> tiposTf=InfModelQueryUtil.getClassesURI(infModel,tfRel.Target);
 						if(tiposTf.contains(NS+"Input") || tiposTf.contains(NS+"Output")){
 							nextPorts.add(tfRel.Target);
 						}
@@ -1150,7 +1153,7 @@ public class ProvisioningController{
 	
 	public static Boolean searchEquipmentFromPortToTop(InfModel infModel, String NS, String portNs){
 		portNs = portNs.replace(NS, "");
-		ArrayList<String> tiposPort=HomeController.Search.GetClassesFrom(NS+portNs,infModel);
+		List<String> tiposPort=InfModelQueryUtil.getClassesURI(infModel,NS+portNs);
 		if(tiposPort.contains(NS+"Output")){
 			return true;
 		}
@@ -1159,7 +1162,7 @@ public class ProvisioningController{
 	
 	public static String getEquipmentFromInterface(InfModel infModel, String NS, String interfaceNs){
 		interfaceNs = interfaceNs.replace(NS, "");
-		ArrayList<DtoInstanceRelation> portRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+interfaceNs);
+		ArrayList<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+interfaceNs);
 		
 		for (DtoInstanceRelation intRel : portRelations) {
 			String intRelName = intRel.Property.replace(NS, "");
@@ -1173,7 +1176,7 @@ public class ProvisioningController{
 	
 	public static String getRPFromBinding(InfModel infModel, String NS, String bindingNs){
 		bindingNs = bindingNs.replace(NS, "");
-		ArrayList<DtoInstanceRelation> bindingRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+bindingNs);
+		ArrayList<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindingNs);
 		
 		for (DtoInstanceRelation bindingRel : bindingRelations) {
 			String intRelName = bindingRel.Property.replace(NS, "");
@@ -1190,16 +1193,16 @@ public class ProvisioningController{
 		for (String portNs : nextPorts) {
 			portNs = portNs.replace(NS, "");
 			
-			ArrayList<String> nextPortClasses = HomeController.Search.GetClassesFrom(NS+portNs, infModel);
-			ArrayList<String> actualPortClasses = HomeController.Search.GetClassesFrom(NS+actualPort, infModel);
+			List<String> nextPortClasses = InfModelQueryUtil.getClassesURI(infModel,NS+portNs);
+			List<String> actualPortClasses = InfModelQueryUtil.getClassesURI(infModel,NS+actualPort);
 			
 			if((nextPortClasses.contains(NS+"Output") && actualPortClasses.contains(NS+"Input")) || (nextPortClasses.contains(NS+"Input") && actualPortClasses.contains(NS+"Output"))){
-				ArrayList<DtoInstanceRelation> portRelations = HomeController.Search.GetInstanceAllRelations(infModel, NS+portNs);
+				ArrayList<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+portNs);
 				
 				for (DtoInstanceRelation portRel : portRelations) {
 					String portRelName = portRel.Property.replace(NS, "");
 					if(portRelName.equals("INV.is_binding")){
-						ArrayList<DtoInstanceRelation> bindingRelations = HomeController.Search.GetInstanceAllRelations(infModel, portRel.Target);
+						ArrayList<DtoInstanceRelation> bindingRelations =ApplicationQueryUtil.GetInstanceAllRelations(infModel, portRel.Target);
 						for (DtoInstanceRelation bindingRel : bindingRelations) {
 							String bindingRelName = bindingRel.Property.replace(NS, "");
 							if(bindingRelName.equals("binding_is_represented_by")){

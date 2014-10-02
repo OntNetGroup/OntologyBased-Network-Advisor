@@ -1,17 +1,16 @@
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.ufes.inf.nemo.okco.ManagerInstances;
 import br.ufes.inf.nemo.okco.Search;
 import br.ufes.inf.nemo.okco.model.DomainRange;
-import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
-import br.ufes.inf.nemo.okco.model.DtoInstance;
 import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
-import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
 import br.ufes.inf.nemo.okco.model.Instance;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.okco.model.RelationDomainRangeList;
+import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -36,7 +35,7 @@ public class ManagerRelations {
 			ListAllInstances = manager.getAllInstances(model, infModel, NS);			
 			for (Instance instance : ListAllInstances) 
 			{				
-				ArrayList<String> sourceInstanceClasses = search.GetClassesFrom(instance.ns + instance.name, infModel);
+				List<String> sourceInstanceClasses = InfModelQueryUtil.getClassesURI(infModel,instance.ns + instance.name);
 				
 				//Relations from instance
 				ArrayList<DtoInstanceRelation> dtoInstanceRelations = search.GetInstanceRelations(infModel, instance.ns + instance.name);
@@ -44,7 +43,7 @@ public class ManagerRelations {
 				{					
 					String property = instanceRelation.Property;
 					String targetInstance = instanceRelation.Target;
-					ArrayList<String> targetInstanceClasses = search.GetClassesFrom(targetInstance, infModel);
+					List<String> targetInstanceClasses = InfModelQueryUtil.getClassesURI(infModel,targetInstance);
 					
 					//Get domain-range from property
 					ArrayList<DomainRange> propDomainRangeList = search.GetDomainRangeFromProperty(property, infModel);

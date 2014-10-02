@@ -136,45 +136,45 @@ public class Search
 		return null;
 	}
 	
- 	public boolean CheckIsDijointClassOf(InfModel infModel, String cls, String clsToCheck)
-	{
-		/* Return true if class is disjoint of clsToCheck */
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-				"<" + cls + "> " + "owl:disjointWith" + " ?classD .\n " +
-		"}";
-		
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		// ResultSetFormatter.out(System.out, results, query);
-		
-		while (results.hasNext())
-		{
-			QuerySolution row= results.next();
-		    RDFNode classD = row.get("classD");
-		    String strClassD = classD.toString();		    
-		    if(clsToCheck.equals(strClassD))
-		    {
-		    	//is not disjoint
-		    	return false;
-		    }		    	    		    
-		}
-		return true;
-	}
+// 	public boolean CheckIsDijointClassOf(InfModel infModel, String cls, String clsToCheck)
+//	{
+//		/* Return true if class is disjoint of clsToCheck */
+//		
+//		// Create a new query
+//		String queryString = 
+//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+//		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
+//		" SELECT DISTINCT *" +
+//		" WHERE {\n" +
+//				"<" + cls + "> " + "owl:disjointWith" + " ?classD .\n " +
+//		"}";
+//		
+//		Query query = QueryFactory.create(queryString); 
+//		
+//		// Execute the query and obtain results
+//		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
+//		ResultSet results = qe.execSelect();
+//		
+//		// Output query results 
+//		// ResultSetFormatter.out(System.out, results, query);
+//		
+//		while (results.hasNext())
+//		{
+//			QuerySolution row= results.next();
+//		    RDFNode classD = row.get("classD");
+//		    String strClassD = classD.toString();		    
+//		    if(clsToCheck.equals(strClassD))
+//		    {
+//		    	//is not disjoint
+//		    	return false;
+//		    }		    	    		    
+//		}
+//		return true;
+//	}
 	
-	private boolean CheckIsDisjointDomainWith(RelationDomainRangeList elem, ArrayList<String> listClsSourceInstance, InfModel infModel) {
+	private boolean CheckIsDisjointDomainWith(RelationDomainRangeList elem, List<String> listClsSourceInstance, InfModel infModel) {
 
 		/* Return true if the elem have the domain classes disjoint of all classes in listClsSourceInstance at same time */
 		
@@ -184,7 +184,7 @@ public class Search
 						
 			for (String clsToCheck : listClsSourceInstance)
 			{
-				if(this.CheckIsDijointClassOf(infModel, aux.Domain, clsToCheck))
+				if(InfModelQueryUtil.isClassesURIDisjoint(infModel, aux.Domain, clsToCheck))
 				{
 					ok = true;
 				} 
@@ -198,7 +198,7 @@ public class Search
 		return ok;
 	}
 
-	private boolean CheckIsDisjointTargetWith(RelationDomainRangeList elem, ArrayList<String> listClsTargetInstance, InfModel infModel) 
+	private boolean CheckIsDisjointTargetWith(RelationDomainRangeList elem, List<String> listClsTargetInstance, InfModel infModel) 
 	{
 		
 		/* Return true if the elem have the target classes disjoint of all classes in listClsTargetInstance at same time */
@@ -209,7 +209,7 @@ public class Search
 						
 			for (String clsToCheck : listClsTargetInstance)
 			{
-				if(this.CheckIsDijointClassOf(infModel, aux.Range, clsToCheck))
+				if(InfModelQueryUtil.isClassesURIDisjoint(infModel, aux.Range, clsToCheck))
 				{
 					ok = true;
 				}
@@ -299,66 +299,6 @@ public class Search
 		return list;
 	}
 	
-	public ArrayList<DtoInstanceRelation> GetInstanceAllRelations(InfModel infModel, String individualUri){
-		ArrayList<DtoInstanceRelation> listIndividualRelations = this.GetInstanceRelations(infModel, individualUri);
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +		
-			"{ " + " ?domain " + " ?property " + "<" + individualUri + ">" + " .\n " +
-				" ?property " + " rdf:type" + " owl:ObjectProperty .\n " +
-			"} " +
-		"}";
-
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-		DtoInstanceRelation dtoItem = null;
-		
-		while (results.hasNext()) {
-			
-			QuerySolution row= results.next();
-		    ResourceImpl property = (ResourceImpl) row.get("property");
-		    String propertyUri = property.getURI();
-		    
-		    propertyUri = propertyUri.replace(property.getNameSpace(), "");
-		    
-		    if(propertyUri.startsWith("INV.")){
-		    	propertyUri.replaceFirst("INV.", "");
-		    }else{
-		    	propertyUri = "INV." + propertyUri;
-		    }
-		    
-		    propertyUri = property.getNameSpace() + propertyUri;
-		    
-		    ///////////////PAREI AQUI
-		    RDFNode domain = row.get("domain"); 
-		    
-		    dtoItem = new DtoInstanceRelation();
-		    //dtoItem.Property = property.toString();
-		    dtoItem.Property = propertyUri;
-		    
-		    //since I change the relation name (including or removing the "INV." prefix), the domain result changes to target
-		    dtoItem.Target = domain.toString();
-		    
-		    if(!listIndividualRelations.contains(dtoItem)){
-		    	listIndividualRelations.add(dtoItem);
-		    }					    		    		    
-		}
-		
-		return listIndividualRelations;
-	}
-	
 	public ArrayList<DtoInstanceRelation> GetInstanceRelations(InfModel infModel, String individualUri)
 	{
 		ArrayList<DtoInstanceRelation> listIndividualRelations = new ArrayList<DtoInstanceRelation>();
@@ -404,149 +344,7 @@ public class Search
 		
 		return listIndividualRelations;
 	}
-	
-	public ArrayList<String> GetDisjointClassesOf(String className, InfModel infModel) {
 		
-		ArrayList<String> listDisjointClasses = new ArrayList<String>();
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-				"<" + className + "> " + "owl:disjointWith" + " ?classDisjoint .\n " +
-		"}";
-		
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		// ResultSetFormatter.out(System.out, results, query);
-		
-		while (results.hasNext()) {
-			QuerySolution row= results.next();
-		    RDFNode completeClass = row.get("classDisjoint");
-		    listDisjointClasses.add(completeClass.toString());		    		    
-		}
-		
-		return listDisjointClasses;
-
-	}
-
-	public ArrayList<String> GetDisjointPropertiesOf(String propertyName, InfModel infModel) {
-		
-		ArrayList<String> listDisjointProps = new ArrayList<String>();
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-				"<" + propertyName + "> " + "owl:propertyDisjointWith" + " ?propDisjoint .\n " +
-		"}";
-		
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		// ResultSetFormatter.out(System.out, results, query);
-		
-		while (results.hasNext()) {
-			QuerySolution row= results.next();
-		    RDFNode prop = row.get("propDisjoint");
-		    listDisjointProps.add(prop.toString());		    		    
-		}
-		
-		return listDisjointProps;
-
-	}
-	
-	public ArrayList<String> GetClassesFrom(String instanceName, InfModel infModel) {
-		
-		ArrayList<String> listClasses = new ArrayList<String>();
-		
-		//check if instance is a data value
-		if(instanceName.contains("http://www.w3.org/"))
-		{
-			String type = instanceName.split("\\^\\^")[1];
-			listClasses.add(type);
-			return listClasses;
-		}
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-				"<" + instanceName + "> " + "rdf:type" + " ?class .\n " +
-		"}";
-		
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		// ResultSetFormatter.out(System.out, results, query);
-		
-		while (results.hasNext()) {
-			QuerySolution row= results.next();
-		    RDFNode cls = row.get("class");
-		    if(!cls.toString().contains(w3String))
-		    {
-		    	listClasses.add(cls.toString());	
-		    }		    	    		    
-		}
-		
-		return listClasses;
-
-	}
-
-	public void QueryExample(OntModel model) {
-
-		// create Pellet reasoner
-		Reasoner r = PelletReasonerFactory.theInstance().create();		
-		// create an inferencing model using the raw model
-		InfModel infModel = ModelFactory.createInfModel(r, model);
-		
-		String queryString = 
-				"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-				"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-				" SELECT DISTINCT *" +
-				" WHERE {\n" +		
-						"?x ?r ?y ." +
-				"}";
-
-		System.out.println(queryString);
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		ResultSetFormatter.out(System.out, results, query);
-	}
-
-	
 	/*
 	 * Relations search
 	 */
@@ -2006,7 +1804,7 @@ public class Search
 		    	//check if member are disjoint of listClassesOfInstance
 		    	
     			boolean ok = true;
-    			ArrayList<String> listDisjointClassesOfMember = this.GetDisjointClassesOf(member.toString(), infModel);
+    			List<String> listDisjointClassesOfMember = InfModelQueryUtil.getClassesURIDisjointWith(infModel,member.toString());
     			for (String disjointCls : listDisjointClassesOfMember) {
     				if(listClassesOfInstance.contains(disjointCls))
     				{
@@ -2039,7 +1837,7 @@ public class Search
 		    		{
 		    			//check if member are disjoint of listClassesOfInstance
 		    			boolean ok = true;
-		    			ArrayList<String> listDisjointClassesOfMember = this.GetDisjointClassesOf(member.toString(), infModel);
+		    			List<String> listDisjointClassesOfMember = InfModelQueryUtil.getClassesURIDisjointWith(infModel,member.toString());
 		    			for (String disjointCls : listDisjointClassesOfMember) {
 		    				if(listClassesOfInstance.contains(disjointCls))
 		    				{
@@ -2077,7 +1875,7 @@ public class Search
 		    		
 		    		//check if member are disjoint of listClassesOfInstance
 	    			boolean ok = true;
-	    			ArrayList<String> listDisjointClassesOfMember = this.GetDisjointClassesOf(member.toString(), infModel);
+	    			List<String> listDisjointClassesOfMember = InfModelQueryUtil.getClassesURIDisjointWith(infModel,member.toString());
 	    			for (String disjointCls : listDisjointClassesOfMember) {
 	    				if(listClassesOfInstance.contains(disjointCls))
 	    				{
@@ -2114,43 +1912,6 @@ public class Search
 		return ListCompleteClsAndSubCls;
 	}
 	
-	public ArrayList<String> GetSubProperties(String property, InfModel infModel) {
-		
-		ArrayList<String> listSubProperties = new ArrayList<String>();
-		
-		// Create a new query
-		String queryString = 
-				"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-				"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-				" SELECT DISTINCT *" +
-				" WHERE {\n" +
-					"?subProp rdfs:subPropertyOf" + "<" + property + "> ." +
-				"}";
-		
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		// ResultSetFormatter.out(System.out, results, query);
-		
-		while (results.hasNext()) {
-
-			QuerySolution row= results.next();
-		    RDFNode subProp = row.get("subProp");
-		    if(subProp.toString().contains(infModel.getNsPrefixURI("")) && (!subProp.toString().equals(property)))
-		    {
-		    	listSubProperties.add(subProp.toString());
-		    }
-		}
-		
-		return listSubProperties;
-	}
-
 	public ArrayList<DomainRange> GetDomainRangeFromProperty(String property, InfModel infModel)
 	{
 		//List auxiliary for take the sub-properties and his relations
@@ -2255,8 +2016,8 @@ public class Search
 		ArrayList<RelationDomainRangeList> listMediation = new ArrayList<RelationDomainRangeList>();
 		
 		//Get classes from instances
-		ArrayList<String> listClsSourceInstance = this.GetClassesFrom(instanceSource, infModel);
-		ArrayList<String> listClsTargetInstance = this.GetClassesFrom(instanceTarget, infModel);		
+		List<String> listClsSourceInstance = InfModelQueryUtil.getClassesURI(infModel,instanceSource);
+		List<String> listClsTargetInstance = InfModelQueryUtil.getClassesURI(infModel,instanceTarget);		
 		
 		//Get sub-properties from property and yours domain and range
 		listMediation = this.GetSubPropertiesWithDomaninAndRange(property, infModel);

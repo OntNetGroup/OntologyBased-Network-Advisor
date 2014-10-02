@@ -1,7 +1,6 @@
 package br.ufes.inf.padtec.tnokco.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.ufes.inf.nemo.okco.model.DtoResultAjax;
 import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
+import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
 import br.ufes.inf.nemo.okco.model.queries.OntModelQueryUtil;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
 //import br.ufes.inf.padtec.tnokco.business.Code;
-
-
-
 
 import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.rdf.model.Statement;
@@ -120,8 +117,8 @@ public class SindelController{
 			for(String[] st : list){
 				specificRelation = null;
 				
-				ArrayList<String> st0Types = HomeController.Search.GetClassesFrom(st[0], HomeController.Model);
-				ArrayList<String> st1Types = HomeController.Search.GetClassesFrom(st[1], HomeController.Model);
+				List<String> st0Types = InfModelQueryUtil.getClassesURI(HomeController.Model,st[0]);
+				List<String> st1Types = InfModelQueryUtil.getClassesURI(HomeController.Model,st[1]);
 				
 				if(st0Types.contains(HomeController.NS+"Source_AP") && (st1Types.contains(HomeController.NS+"Sink_AP"))){
 					specificRelation = "Forwarding_Unidirectional_Access_Transport_Entity";

@@ -343,7 +343,7 @@ public class Provisioning {
 		InfModel = HomeController.InfModel;
 		ArrayList<String[]> result = new ArrayList<String[]>();
 		
-		ArrayList<String> classes_from_rp=HomeController.Search.GetClassesFrom(HomeController.NS+rp, InfModel);
+		List<String> classes_from_rp=InfModelQueryUtil.getClassesURI(InfModel,HomeController.NS+rp);
 		String binding=null;
 		String input = null;
 		if(InfModelQueryUtil.getIndividualsURIInRelationRange(InfModel, HomeController.NS+rp, HomeController.NS+"INV.binding_is_represented_by", HomeController.NS+"Binding").size()>0){
@@ -522,7 +522,7 @@ public class Provisioning {
 		ArrayList<String> copy = new ArrayList<String>();
 
 		for (String ind : allIndividuals) {
-			ArrayList<String> classesFromIndividual= HomeController.Search.GetClassesFrom(ind, InfModel);
+			List<String> classesFromIndividual= InfModelQueryUtil.getClassesURI(InfModel,ind);
 			if((classesFromIndividual.contains(HomeController.NS+"Input_Interface")  || classesFromIndividual.contains(HomeController.NS+"Output_Interface") || classesFromIndividual.contains(HomeController.NS+"Site") || classesFromIndividual.contains(HomeController.NS+"Equipment"))){
 				copy.add(ind);
 			}
@@ -560,7 +560,7 @@ public class Provisioning {
 		ind_class = new HashMap<String, List<String>>();
 		List<String> classesFromIndividual;
 		for (String g800 : g800_elements) {
-			classesFromIndividual= HomeController.Search.GetClassesFrom(g800, InfModel);
+			classesFromIndividual= InfModelQueryUtil.getClassesURI(InfModel,g800);
 			ind_class.put(g800, classesFromIndividual);
 			ArrayList<DtoInstanceRelation> rel= HomeController.Search.GetInstanceRelations(HomeController.InfModel, g800);
 
