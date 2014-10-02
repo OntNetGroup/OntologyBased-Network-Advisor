@@ -549,7 +549,7 @@ public class InfModelQueryUtil {
 		    RDFNode property = row.get("target");
 		    if(isValidURI(property.toString()))
 		    {
-		    	System.out.println("Individual URI In Range: "+property.toString()+" - From PropertyURI: "+propertyURI); 
+		    	System.out.println("Individual URI at Range: "+property.toString()+" - From PropertyURI: "+propertyURI); 
 		    	result.add(property.toString());
 		    } 		    		    
 		}		
@@ -569,7 +569,7 @@ public class InfModelQueryUtil {
 	 */
 	static public List<String> getIndividualsURIAtPropertyRange(InfModel model, String individualURI, String propertyURI, String rangeClassURI)
 	{
-		System.out.println("Executing getIndividualsURIInRange(model, individualURI, propertyURI, rangeClassURI)");
+		System.out.println("Executing getIndividualsURIAtPropertyRange(model, individualURI, propertyURI, rangeClassURI)");
 		ArrayList<String> result = new ArrayList<String>();		
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -578,7 +578,8 @@ public class InfModelQueryUtil {
 		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +		
-			"<" + individualURI + ">" + "<"+propertyURI+">"+ " ?target .\n "+			
+			"<" + individualURI + ">" + "<"+propertyURI+">"+ " ?target .\n "+
+			" ?target" + " rdf:type" + " <"+ rangeClassURI + "> .\n " +
 		"}";
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -590,12 +591,13 @@ public class InfModelQueryUtil {
 		    RDFNode property = row.get("target");
 		    if(isValidURI(property.toString()))
 		    {
-		    	System.out.println("Individual URI In Range: "+property.toString()+" - From PropertyURI: "+propertyURI); 
+		    	System.out.println("Individual URI at Range: "+property.toString()+" - From PropertyURI: "+propertyURI); 
 		    	result.add(property.toString());
 		    } 		    		    
 		}		
 		return result;
 	}
+	
 	//======================================================================
 	//These methods below are quite weird. We will try to fix them
 	//======================================================================

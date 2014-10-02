@@ -197,8 +197,16 @@ public class OKCoController {
 			listNewDataValuesRelation = new ArrayList<DataPropertyValue>();
 
 			//Get values with this data property
-			ArrayList<DataPropertyValue> listValuesInRelation = HomeController.Search.GetDataValuesOfTargetWithRelation(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
-
+			List<DataPropertyValue> listValuesInRelation = new ArrayList<DataPropertyValue>();
+			List<String> individualsList = InfModelQueryUtil.getIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			for(String individualURI: individualsList){
+				DataPropertyValue data = new DataPropertyValue();
+				data.value = individualURI.split("\\^\\^")[0];
+				data.classValue = dtoSelected.Target;
+				data.existInModel = true;
+				listValuesInRelation.add(data);
+			}
+			
 			//Create others sections
 			request.getSession().setAttribute("listValuesInRelation", listValuesInRelation);
 
