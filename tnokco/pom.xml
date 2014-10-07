@@ -113,11 +113,6 @@
 		</dependency>
 
 		<!-- OKCo kernel -->
-		<dependency>
-			<groupId>br.ufes.inf.nemo.okco</groupId>
-			<artifactId>kernel</artifactId>
-			<version>0.0.1</version>
-		</dependency>
 
 		<!-- Sindel2Owl -->
 		<dependency>
@@ -142,6 +137,16 @@
 			<version>0.0.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>br.com.padtec</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>br.com.padtec</groupId>
+			<artifactId>okco</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

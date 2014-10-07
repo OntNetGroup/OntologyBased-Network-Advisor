@@ -1,11 +1,11 @@
 <%@ page import="br.ufes.inf.padtec.tnokco.controller.HomeController"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="br.ufes.inf.nemo.okco.model.Instance"%>
-<%@ page import="br.ufes.inf.nemo.okco.model.DtoCompleteClass"%>
-<%@ page import="br.ufes.inf.nemo.okco.model.EnumPropertyType"%>
-<%@ page import="br.ufes.inf.nemo.okco.model.DtoPropertyAndSubProperties"%>
-<%@ page import="br.ufes.inf.nemo.okco.model.DtoDefinitionClass"%>
-<%@ page import="br.ufes.inf.nemo.okco.model.DtoInstanceRelation"%>
+<%@ page import="br.com.padtec.okco.domain.Instance"%>
+<%@ page import="br.com.padtec.okco.domain.DtoCompleteClass"%>
+<%@ page import="br.com.padtec.okco.domain.EnumPropertyType"%>
+<%@ page import="br.com.padtec.okco.domain.DtoPropertyAndSubProperties"%>
+<%@ page import="br.com.padtec.okco.domain.DtoDefinitionClass"%>
+<%@ page import="br.com.padtec.okco.domain.DtoInstanceRelation"%>
 <%@ page import="java.util.ArrayList"%>
 
 

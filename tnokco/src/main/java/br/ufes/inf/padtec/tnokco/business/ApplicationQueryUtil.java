@@ -2,8 +2,8 @@ package br.ufes.inf.padtec.tnokco.business;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.okco.controller.HomeController;
-import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
+import br.com.padtec.okco.controller.HomeController;
+import br.com.padtec.okco.domain.DtoInstanceRelation;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;

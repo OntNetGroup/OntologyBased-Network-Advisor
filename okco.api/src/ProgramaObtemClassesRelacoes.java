@@ -1,13 +1,12 @@
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
+
+import br.com.padtec.common.queries.OntModelQueryUtil;
+import br.com.padtec.okco.domain.Search;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.FileManager;
-
-import br.ufes.inf.nemo.okco.Search;
-import br.ufes.inf.nemo.okco.model.queries.OntModelQueryUtil;
 
 public class ProgramaObtemClassesRelacoes {
 	

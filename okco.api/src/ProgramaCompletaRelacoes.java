@@ -3,12 +3,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import br.ufes.inf.nemo.okco.FactoryInstances;
-import br.ufes.inf.nemo.okco.ManagerInstances;
-import br.ufes.inf.nemo.okco.Search;
-import br.ufes.inf.nemo.okco.model.inference.HermitReasonerImpl;
-import br.ufes.inf.nemo.okco.model.inference.OntologyReasoner;
-import br.ufes.inf.nemo.okco.model.inference.PelletReasonerImpl;
+import br.com.padtec.okco.domain.FactoryInstances;
+import br.com.padtec.okco.domain.HermitReasonerImpl;
+import br.com.padtec.okco.domain.ManagerInstances;
+import br.com.padtec.okco.domain.OntologyReasoner;
+import br.com.padtec.okco.domain.PelletReasonerImpl;
+import br.com.padtec.okco.domain.Search;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;

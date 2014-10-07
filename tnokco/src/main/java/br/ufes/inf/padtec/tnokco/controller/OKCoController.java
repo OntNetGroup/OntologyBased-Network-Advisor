@@ -14,26 +14,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.okco.domain.DataPropertyValue;
+import br.com.padtec.okco.domain.DtoClassifyInstancePost;
+import br.com.padtec.okco.domain.DtoCommitMaxCard;
+import br.com.padtec.okco.domain.DtoCommitPost;
+import br.com.padtec.okco.domain.DtoCompleteClass;
+import br.com.padtec.okco.domain.DtoCreateDataValuePost;
+import br.com.padtec.okco.domain.DtoCreateInstancePost;
+import br.com.padtec.okco.domain.DtoDefinitionClass;
+import br.com.padtec.okco.domain.DtoGetPrevNextSpecProperty;
+import br.com.padtec.okco.domain.DtoInstanceRelation;
+import br.com.padtec.okco.domain.DtoPropertyAndSubProperties;
+import br.com.padtec.okco.domain.DtoResultCommit;
+import br.com.padtec.okco.domain.DtoViewSelectInstance;
+import br.com.padtec.okco.domain.EnumPropertyType;
+import br.com.padtec.okco.domain.EnumRelationTypeCompletness;
+import br.com.padtec.okco.domain.Instance;
+import br.com.padtec.okco.domain.OKCoExceptionInstanceFormat;
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
 import br.inf.nemo.padtec.wokco.WOKCOGraphPlotting;
-import br.ufes.inf.nemo.okco.model.DataPropertyValue;
-import br.ufes.inf.nemo.okco.model.DtoClassifyInstancePost;
-import br.ufes.inf.nemo.okco.model.DtoCommitMaxCard;
-import br.ufes.inf.nemo.okco.model.DtoCommitPost;
-import br.ufes.inf.nemo.okco.model.DtoCompleteClass;
-import br.ufes.inf.nemo.okco.model.DtoCreateDataValuePost;
-import br.ufes.inf.nemo.okco.model.DtoCreateInstancePost;
-import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
-import br.ufes.inf.nemo.okco.model.DtoGetPrevNextSpecProperty;
-import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
-import br.ufes.inf.nemo.okco.model.DtoPropertyAndSubProperties;
-import br.ufes.inf.nemo.okco.model.DtoResultCommit;
-import br.ufes.inf.nemo.okco.model.DtoViewSelectInstance;
-import br.ufes.inf.nemo.okco.model.EnumPropertyType;
-import br.ufes.inf.nemo.okco.model.EnumRelationTypeCompletness;
-import br.ufes.inf.nemo.okco.model.Instance;
-import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
 
 @Controller
 //@RequestMapping("/instance")

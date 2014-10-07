@@ -1,5 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="br.ufes.inf.nemo.okco.model.Instance" %>
+<%@ page import="br.com.padtec.okco.domain.Instance" %>
 <%@ page import="java.util.ArrayList" %>
 
 

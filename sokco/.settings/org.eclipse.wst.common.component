@@ -6,7 +6,7 @@
         <dependent-module archiveName="okco.api-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/okco.api/okco.api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="kernel-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/okco.kernel/okco.kernel">
+        <dependent-module archiveName="common-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.common/br.com.padtec.common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="sokco"/>

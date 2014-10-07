@@ -5,9 +5,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/String"/>
-        <dependent-module archiveName="kernel-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/okco.kernel/okco.kernel">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <dependent-module archiveName="Sindel2OWL-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Sindel2OWL/Sindel2OWL">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -15,6 +13,9 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="GraphVisualizer-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/GraphVisualizer/GraphVisualizer">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="common-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.common/br.com.padtec.common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/tnokco/target/classes"/>

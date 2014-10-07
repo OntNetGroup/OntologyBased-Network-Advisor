@@ -33,8 +33,5 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/GraphVisualizer"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/okco"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Sindel2OWL"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

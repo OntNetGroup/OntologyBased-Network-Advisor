@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import br.ufes.inf.nemo.okco.Search;
-import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.okco.domain.Search;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 
 import com.hp.hpl.jena.ontology.Individual;

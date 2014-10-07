@@ -6,17 +6,17 @@ import java.util.ArrayList;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import br.ufes.inf.nemo.okco.FactoryInstances;
-import br.ufes.inf.nemo.okco.ManagerInstances;
-import br.ufes.inf.nemo.okco.Search;
-import br.ufes.inf.nemo.okco.model.DtoCompleteClass;
-import br.ufes.inf.nemo.okco.model.DtoDefinitionClass;
-import br.ufes.inf.nemo.okco.model.EnumPropertyType;
-import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-import br.ufes.inf.nemo.okco.model.inference.HermitReasonerImpl;
-import br.ufes.inf.nemo.okco.model.inference.OntologyReasoner;
-import br.ufes.inf.nemo.okco.model.inference.PelletReasonerImpl;
-import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.okco.domain.DtoCompleteClass;
+import br.com.padtec.okco.domain.DtoDefinitionClass;
+import br.com.padtec.okco.domain.EnumPropertyType;
+import br.com.padtec.okco.domain.FactoryInstances;
+import br.com.padtec.okco.domain.HermitReasonerImpl;
+import br.com.padtec.okco.domain.ManagerInstances;
+import br.com.padtec.okco.domain.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.domain.OntologyReasoner;
+import br.com.padtec.okco.domain.PelletReasonerImpl;
+import br.com.padtec.okco.domain.Search;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -96,7 +96,7 @@ public class OKCo {
 		  	
 		  	//get instances
 		  	
-		  	ArrayList<br.ufes.inf.nemo.okco.model.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+		  	ArrayList<br.com.padtec.okco.domain.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
 	  	  
 		  	// Gets definitions on model
 		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
@@ -108,7 +108,7 @@ public class OKCo {
 			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			//build the return instances
-			for (br.ufes.inf.nemo.okco.model.Instance i : ListAllInstances) 
+			for (br.com.padtec.okco.domain.Instance i : ListAllInstances) 
 			{
 				//build list incompleteness relations
 				ArrayList<InstanceRelationDefinition> ListImcompletenessRelationDefinitions = new ArrayList<InstanceRelationDefinition>();
@@ -268,7 +268,7 @@ public class OKCo {
 												Update List instances
 			//--------------------------------------------------------------------------------------------- */
 		  	
-		  	ArrayList<br.ufes.inf.nemo.okco.model.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+		  	ArrayList<br.com.padtec.okco.domain.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
 	  	  
 		  	// Gets definitions on model
 		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
@@ -285,7 +285,7 @@ public class OKCo {
 			
 			//Complete the selected instances
 			
-			for (br.ufes.inf.nemo.okco.model.Instance instance : ListAllInstances) 
+			for (br.com.padtec.okco.domain.Instance instance : ListAllInstances) 
 			{
 				if(strength.equals("FULL"))
 				{
@@ -302,7 +302,7 @@ public class OKCo {
 						ArrayList<String> listSame = new ArrayList<String>();		  
 						ArrayList<String> listDif = new ArrayList<String>();
 						ArrayList<String> listClasses = new ArrayList<String>();
-						br.ufes.inf.nemo.okco.model.Instance newInstance = new br.ufes.inf.nemo.okco.model.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+						br.com.padtec.okco.domain.Instance newInstance = new br.com.padtec.okco.domain.Instance(ns, instanceName, listClasses, listDif, listSame, false);
 						
 						model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);
 					}
@@ -320,7 +320,7 @@ public class OKCo {
 							String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 							ArrayList<String> listSame = new ArrayList<String>();		  
 							ArrayList<String> listClasses = new ArrayList<String>();
-							br.ufes.inf.nemo.okco.model.Instance newInstance = new br.ufes.inf.nemo.okco.model.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+							br.com.padtec.okco.domain.Instance newInstance = new br.com.padtec.okco.domain.Instance(ns, instanceName, listClasses, listDif, listSame, false);
 							
 							model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);				
 							listDif.add(newInstance.ns + newInstance.name);
@@ -345,7 +345,7 @@ public class OKCo {
 								String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 								ArrayList<String> listSame = new ArrayList<String>();		  
 								ArrayList<String> listClasses = new ArrayList<String>();
-								br.ufes.inf.nemo.okco.model.Instance newInstance = new br.ufes.inf.nemo.okco.model.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+								br.com.padtec.okco.domain.Instance newInstance = new br.com.padtec.okco.domain.Instance(ns, instanceName, listClasses, listDif, listSame, false);
 								
 								model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);				
 								listDif.add(newInstance.ns + newInstance.name);
@@ -380,7 +380,7 @@ public class OKCo {
 											Build the return instances
 			//--------------------------------------------------------------------------------------------- */
 			
-			for (br.ufes.inf.nemo.okco.model.Instance i : ListAllInstances) 
+			for (br.com.padtec.okco.domain.Instance i : ListAllInstances) 
 			{
 				//build list incompleteness relations
 				ArrayList<InstanceRelationDefinition> ListImcompletenessRelationDefinitions = new ArrayList<InstanceRelationDefinition>();
@@ -550,7 +550,7 @@ public class OKCo {
 												Update List instances
 			//--------------------------------------------------------------------------------------------- */
 		  	
-		  	ArrayList<br.ufes.inf.nemo.okco.model.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+		  	ArrayList<br.com.padtec.okco.domain.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
 		  	  
 		  	// Gets definitions on model
 		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
@@ -566,7 +566,7 @@ public class OKCo {
 			
 			//Complete the selected instances
 			
-			for (br.ufes.inf.nemo.okco.model.Instance instance : ListAllInstances) 
+			for (br.com.padtec.okco.domain.Instance instance : ListAllInstances) 
 			{
 				if(setInstances.contains(instance.ns + instance.name))
 				{
@@ -585,7 +585,7 @@ public class OKCo {
 							ArrayList<String> listSame = new ArrayList<String>();		  
 							ArrayList<String> listDif = new ArrayList<String>();
 							ArrayList<String> listClasses = new ArrayList<String>();
-							br.ufes.inf.nemo.okco.model.Instance newInstance = new br.ufes.inf.nemo.okco.model.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+							br.com.padtec.okco.domain.Instance newInstance = new br.com.padtec.okco.domain.Instance(ns, instanceName, listClasses, listDif, listSame, false);
 							
 							model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);
 						}
@@ -603,7 +603,7 @@ public class OKCo {
 								String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 								ArrayList<String> listSame = new ArrayList<String>();		  
 								ArrayList<String> listClasses = new ArrayList<String>();
-								br.ufes.inf.nemo.okco.model.Instance newInstance = new br.ufes.inf.nemo.okco.model.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+								br.com.padtec.okco.domain.Instance newInstance = new br.com.padtec.okco.domain.Instance(ns, instanceName, listClasses, listDif, listSame, false);
 								
 								model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);				
 								listDif.add(newInstance.ns + newInstance.name);
@@ -628,7 +628,7 @@ public class OKCo {
 									String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 									ArrayList<String> listSame = new ArrayList<String>();		  
 									ArrayList<String> listClasses = new ArrayList<String>();
-									br.ufes.inf.nemo.okco.model.Instance newInstance = new br.ufes.inf.nemo.okco.model.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+									br.com.padtec.okco.domain.Instance newInstance = new br.com.padtec.okco.domain.Instance(ns, instanceName, listClasses, listDif, listSame, false);
 									
 									model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);				
 									listDif.add(newInstance.ns + newInstance.name);
@@ -664,7 +664,7 @@ public class OKCo {
 											Build the return instances
 			//--------------------------------------------------------------------------------------------- */
 			
-			for (br.ufes.inf.nemo.okco.model.Instance i : ListAllInstances) 
+			for (br.com.padtec.okco.domain.Instance i : ListAllInstances) 
 			{
 				if(setInstances.contains(i.ns + i.name))
 				{

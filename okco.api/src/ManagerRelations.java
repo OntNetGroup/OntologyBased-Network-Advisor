@@ -3,14 +3,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufes.inf.nemo.okco.ManagerInstances;
-import br.ufes.inf.nemo.okco.Search;
-import br.ufes.inf.nemo.okco.model.DomainRange;
-import br.ufes.inf.nemo.okco.model.DtoInstanceRelation;
-import br.ufes.inf.nemo.okco.model.Instance;
-import br.ufes.inf.nemo.okco.model.OKCoExceptionInstanceFormat;
-import br.ufes.inf.nemo.okco.model.RelationDomainRangeList;
-import br.ufes.inf.nemo.okco.model.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.okco.domain.DomainRange;
+import br.com.padtec.okco.domain.DtoInstanceRelation;
+import br.com.padtec.okco.domain.Instance;
+import br.com.padtec.okco.domain.ManagerInstances;
+import br.com.padtec.okco.domain.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.domain.RelationDomainRangeList;
+import br.com.padtec.okco.domain.Search;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
