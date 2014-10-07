@@ -1,4 +1,4 @@
-package br.com.padtec.okco.domain;
+package br.com.padtec.okco.domain.exceptions;
 
 public class OKCoExceptionFileFormat extends OKCoException {
 

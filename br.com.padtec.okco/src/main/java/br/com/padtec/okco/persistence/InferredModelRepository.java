@@ -1,5 +1,10 @@
 package br.com.padtec.okco.persistence;
 
-public interface InferredModelRepository {
+import com.hp.hpl.jena.rdf.model.InfModel;
 
+public interface InferredModelRepository {
+	
+	public abstract String getNameSpace();
+	public abstract InfModel getInferredOntModel();
+	
 }

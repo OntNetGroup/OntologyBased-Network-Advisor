@@ -5,6 +5,9 @@ import java.util.List;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.common.queries.OntModelQueryUtil;
+import br.com.padtec.common.queries.OntPropertyEnum;
+import br.com.padtec.okco.application.AppLoader;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -230,7 +233,16 @@ public class ManagerInstances {
 			ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties = new ArrayList<DtoPropertyAndSubProperties>();
 			DtoPropertyAndSubProperties dtoP = null;
 			
-			ArrayList<DtoInstanceRelation> instanceListRelations = search.GetInstanceRelations(infModel, instanceSelected.ns + instanceSelected.name); 		//Get instance relations
+			//Get instance relations
+			List<DtoInstanceRelation> instanceListRelations = new ArrayList<DtoInstanceRelation>();
+			List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, instanceSelected.ns + instanceSelected.name);
+			for(String propertyURI: propertiesURIList){
+				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
+			    dtoItem.Property = propertyURI;
+			    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+			    instanceListRelations.add(dtoItem);
+			}
+			
 			for (DtoInstanceRelation dtoInstanceRelation : instanceListRelations) 
 			{			
 				ArrayList<String> subPropertiesWithDomainAndRange = search.GetSubPropertiesWithDomaninAndRange(instanceSelected.ns + instanceSelected.name, dtoInstanceRelation.Property, dtoInstanceRelation.Target, instanceListRelations, infModel);
@@ -241,7 +253,7 @@ public class ManagerInstances {
 					dtoP.Property = dtoInstanceRelation.Property;
 					dtoP.iTargetNs = dtoInstanceRelation.Target.split("#")[0] + "#";
 					dtoP.iTargetName = dtoInstanceRelation.Target.split("#")[1];
-					dtoP.propertyType = search.GetPropertyType(infModel, dtoInstanceRelation.Property);
+					dtoP.propertyType = InfModelQueryUtil.getPropertyURIType(infModel, dtoInstanceRelation.Property);
 					
 					for (String sub : subPropertiesWithDomainAndRange) 
 					{
@@ -455,7 +467,7 @@ public class ManagerInstances {
 		//complete relations
 		for (DtoDefinitionClass dto : instance.ListSome) 
 		{
-			if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 			{
 				//create the the new instance
 				String instanceName = dto.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
@@ -469,7 +481,7 @@ public class ManagerInstances {
 		}
 		for (DtoDefinitionClass dto : instance.ListMin) 
 		{
-			if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 			{
 				int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
 				
@@ -491,7 +503,7 @@ public class ManagerInstances {
 		}
 		for (DtoDefinitionClass dto : instance.ListExactly) 
 		{
-			if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 			{
 				int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
 				

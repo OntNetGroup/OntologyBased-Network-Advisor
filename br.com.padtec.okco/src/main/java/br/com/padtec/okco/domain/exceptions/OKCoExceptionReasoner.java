@@ -1,15 +1,11 @@
-package br.com.padtec.okco.domain;
+package br.com.padtec.okco.domain.exceptions;
 
 public class OKCoExceptionReasoner extends OKCoException {
 
 	public OKCoExceptionReasoner(String message) {
-		super(message);
-		// TODO Auto-generated constructor stub
+		super(message);		
 	}
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 }

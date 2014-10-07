@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.DtoResultAjax;
+import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
 import br.ufes.inf.padtec.tnokco.business.Equipment;
 import br.ufes.inf.padtec.tnokco.business.InterfaceOutput;
 import br.ufes.inf.padtec.tnokco.business.Provisioning;
@@ -132,7 +133,7 @@ public class VisualizationController {
 			List<String> allInstances =InfModelQueryUtil.getIndividualsURIFromAllClasses(HomeController.InfModel);
 			System.out.println(allInstances);
 			for (String instance : allInstances) {
-				ArrayList<DtoInstanceRelation> targetList = HomeController.Search.GetInstanceRelations(HomeController.InfModel,instance);
+				List<DtoInstanceRelation> targetList = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel,instance);
 
 				List<String> classes = InfModelQueryUtil.getClassesURI(HomeController.InfModel,instance);
 				for (DtoInstanceRelation dtoInstanceRelation : targetList) {

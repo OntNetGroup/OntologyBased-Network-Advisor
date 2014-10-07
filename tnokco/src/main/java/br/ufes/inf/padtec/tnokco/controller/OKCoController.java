@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.OntPropertyEnum;
+import br.com.padtec.okco.application.AppLoader;
 import br.com.padtec.okco.domain.DataPropertyValue;
 import br.com.padtec.okco.domain.DtoClassifyInstancePost;
 import br.com.padtec.okco.domain.DtoCommitMaxCard;
@@ -28,10 +30,9 @@ import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.DtoPropertyAndSubProperties;
 import br.com.padtec.okco.domain.DtoResultCommit;
 import br.com.padtec.okco.domain.DtoViewSelectInstance;
-import br.com.padtec.okco.domain.EnumPropertyType;
 import br.com.padtec.okco.domain.EnumRelationTypeCompletness;
 import br.com.padtec.okco.domain.Instance;
-import br.com.padtec.okco.domain.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
 import br.inf.nemo.padtec.wokco.WOKCOGraphPlotting;
 
@@ -104,8 +105,16 @@ public class OKCoController {
 
 		// ----- List relations ----- //
 
-		ArrayList<DtoInstanceRelation> instanceListRelationsFromInstance = HomeController.Search.GetInstanceRelations(HomeController.InfModel, instanceSelected.ns + instanceSelected.name); 		//Get instance relations
-
+		
+		List<DtoInstanceRelation> instanceListRelationsFromInstance = new ArrayList<DtoInstanceRelation>();
+		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, instanceSelected.ns + instanceSelected.name);
+		for(String propertyURI: propertiesURIList){
+			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
+		    dtoItem.Property = propertyURI;
+		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+		    instanceListRelationsFromInstance.add(dtoItem);
+		}
+		
 		ListCompleteClsInstaceSelected = instanceSelected.ListCompleteClasses;
 
 		// ------ Specialization Properties list ------//
@@ -966,7 +975,7 @@ public class OKCoController {
 
 				try {
 
-					if(dtoSpec.propertyType.equals(EnumPropertyType.DATA_PROPERTY))
+					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 						//Case data property
 						HomeController.Model = HomeController.ManagerInstances.CreateTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, HomeController.Model);
 					else
@@ -997,7 +1006,7 @@ public class OKCoController {
 				//Remove all created
 				for (String subRelAux : listRelations) {
 
-					if(dtoSpec.propertyType.equals(EnumPropertyType.DATA_PROPERTY))
+					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 						//Case data property
 						HomeController.Model = HomeController.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, HomeController.Model);
 					else

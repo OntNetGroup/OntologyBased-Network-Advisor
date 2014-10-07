@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.okco.domain.DtoCompleteClass;
 import br.com.padtec.okco.domain.DtoDefinitionClass;
-import br.com.padtec.okco.domain.EnumPropertyType;
 import br.com.padtec.okco.domain.FactoryInstances;
 import br.com.padtec.okco.domain.HermitReasonerImpl;
 import br.com.padtec.okco.domain.ManagerInstances;
-import br.com.padtec.okco.domain.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.domain.OntologyReasoner;
 import br.com.padtec.okco.domain.PelletReasonerImpl;
 import br.com.padtec.okco.domain.Search;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -295,7 +295,7 @@ public class OKCo {
 				
 				for (DtoDefinitionClass dto : instance.ListSome) 
 				{
-					if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+					if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 					{
 						//create the the new instance
 						String instanceName = dto.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
@@ -309,7 +309,7 @@ public class OKCo {
 				}
 				for (DtoDefinitionClass dto : instance.ListMin) 
 				{
-					if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+					if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 					{
 						int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
 						
@@ -331,7 +331,7 @@ public class OKCo {
 				}
 				for (DtoDefinitionClass dto : instance.ListExactly) 
 				{
-					if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+					if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 					{
 						int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
 						
@@ -578,7 +578,7 @@ public class OKCo {
 					
 					for (DtoDefinitionClass dto : instance.ListSome) 
 					{
-						if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+						if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 						{
 							//create the the new instance
 							String instanceName = dto.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
@@ -592,7 +592,7 @@ public class OKCo {
 					}
 					for (DtoDefinitionClass dto : instance.ListMin) 
 					{
-						if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+						if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 						{
 							int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
 							
@@ -614,7 +614,7 @@ public class OKCo {
 					}
 					for (DtoDefinitionClass dto : instance.ListExactly) 
 					{
-						if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+						if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 						{
 							int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
 							

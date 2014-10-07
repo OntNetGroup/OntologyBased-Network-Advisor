@@ -7,8 +7,9 @@ import java.util.List;
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.okco.application.AppLoader;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
-import br.com.padtec.okco.domain.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
@@ -562,8 +563,17 @@ public class Provisioning {
 		for (String g800 : g800_elements) {
 			classesFromIndividual= InfModelQueryUtil.getClassesURI(InfModel,g800);
 			ind_class.put(g800, classesFromIndividual);
-			ArrayList<DtoInstanceRelation> rel= HomeController.Search.GetInstanceRelations(HomeController.InfModel, g800);
-
+			
+			// Get instance relations
+			List<DtoInstanceRelation> rel = new ArrayList<DtoInstanceRelation>();
+			List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, g800);
+			for(String propertyURI: propertiesURIList){
+				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
+			    dtoItem.Property = propertyURI;
+			    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+			    rel.add(dtoItem);
+			}
+			
 			for (DtoInstanceRelation dtoInstanceRelation : rel) {
 				String[] triple = new String[3];
 				triple[0]=g800;

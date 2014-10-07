@@ -19,155 +19,6 @@ public class Search
 
 	public final  String w3String = "http://www.w3.org/";
 	
-	public Search()
-	{
-		
-	}
-				
-//	public ArrayList<String> GetPropertiesFromClass(OntModel model,String className) {
-//		
-//		ArrayList<String> lista = new ArrayList<String>();
-//
-//		ExtendedIterator<OntClass> i = model.listClasses();
-//		if( !i.hasNext() ) {
-//			//System.out.print( "none" );
-//		}
-//		else {
-//			while( i.hasNext() ) {
-//				Resource val = (Resource) i.next();
-//				//System.out.println( val.getURI());
-//			}
-//		}
-//		
-//		// Create a new query
-//		String queryString = 
-//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-//		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-//		" SELECT DISTINCT ?x ?y ?z" +
-//		" WHERE {\n" +
-//				" ?x " + "owl:equivalentClass" + " _:b0 .\n " +
-//				" _:b0 " + "owl:onProperty" + " ?y .\n " +
-//				" _:b0 " + "owl:someValuesFrom ?z . " +
-//				
-//				//" _:b rdf:type ?tipoX ." +
-//				//" ?tipoX rdfs:subClassOf owl:Thing . " +
-//				//"?r owl:onProperty ?p . " +
-//				
-//			"}";
-//
-//		Query query = QueryFactory.create(queryString); 
-//		
-//		// Execute the query and obtain results
-//		QueryExecution qe = QueryExecutionFactory.create(query, model);
-//		ResultSet results = qe.execSelect();
-//		
-//		// Output query results 
-//		ResultSetFormatter.out(System.out, results, query);
-//		
-//		//while (results.hasNext()) {
-//		//	QuerySolution row= results.next();
-//		    //RDFNode rdfConcept = row.get("rec");
-//		    
-//		//}		
-//		return lista;
-//	}
-	
-	public EnumPropertyType GetPropertyType(InfModel infModel, String property)
-	{
-		/* Return the type of property */
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-				"<" + property + "> " + " rdf:type " + " ?type .\n " +
-		"}";
-		
-		Query query = QueryFactory.create(queryString); 
-
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		//System.out.println(queryString);
-		//ResultSetFormatter.out(System.out, results, query);
-		
-		while (results.hasNext()) 
-		{
-			
-			QuerySolution row= results.next();
-		    RDFNode t = row.get("type");
-		    String type = t.toString();		    
-		    if(type.contains("DatatypeProperty"))
-		    {
-		    	return EnumPropertyType.DATA_PROPERTY;
-		    }
-		    if(type.contains("ObjectProperty"))
-		    {
-		    	return EnumPropertyType.OBJECT_PROPERTY;
-		    }
-		}
-		
-		return null;
-	}
-		
-	private boolean CheckIsDisjointDomainWith(RelationDomainRangeList elem, List<String> listClsSourceInstance, InfModel infModel) {
-
-		/* Return true if the elem have the domain classes disjoint of all classes in listClsSourceInstance at same time */
-		
-		boolean ok = true;
-		for (DomainRange aux : elem.listDomainRange) 
-		{
-						
-			for (String clsToCheck : listClsSourceInstance)
-			{
-				if(InfModelQueryUtil.isClassesURIDisjoint(infModel, aux.Domain, clsToCheck))
-				{
-					ok = true;
-				} 
-				else 
-				{
-					ok = false; // have one disjoint case
-				}
-			}			
-		}
-
-		return ok;
-	}
-
-	private boolean CheckIsDisjointTargetWith(RelationDomainRangeList elem, List<String> listClsTargetInstance, InfModel infModel) 
-	{
-		
-		/* Return true if the elem have the target classes disjoint of all classes in listClsTargetInstance at same time */
-		
-		boolean ok = true;
-		for (DomainRange aux : elem.listDomainRange)
-		{
-						
-			for (String clsToCheck : listClsTargetInstance)
-			{
-				if(InfModelQueryUtil.isClassesURIDisjoint(infModel, aux.Range, clsToCheck))
-				{
-					ok = true;
-				}
-				else 
-				{
-					ok = false; // have one disjoint case
-					break;
-				}
-			}			
-		}
-
-		return ok;
-	}
-	
 	public int CheckExistInstancesTargetCardinality(InfModel infModel, String instance, String relation, String imageClass, String cardinality) 
 	{		
 		int result = 0;
@@ -200,646 +51,53 @@ public class Search
 		
 		return result;
 	}
-	
-	public ArrayList<DtoInstanceRelation> GetInstanceRelations(InfModel infModel, String individualUri)
-	{
-		ArrayList<DtoInstanceRelation> listIndividualRelations = new ArrayList<DtoInstanceRelation>();
 		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +		
-			"{ " + "<" + individualUri + ">" + " ?property" + " ?target .\n " +
-				" ?property " + " rdf:type" + " owl:ObjectProperty .\n " +
-			"} UNION { " +
-				"<" + individualUri + ">" + " ?property" + " ?target .\n " +
-				" ?property " + " rdf:type" + " owl:DatatypeProperty.\n " +		
-			"}" +
-		"}";
-
-		Query query = QueryFactory.create(queryString); 
+	public ArrayList<String> GetSubPropertiesWithDomaninAndRange(String instanceSource,	String property, String instanceTarget, List<DtoInstanceRelation> instanceListRelations, InfModel infModel) {
 		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
+		/* Get properties with domains from instanceSource class and Range from instanceTarget class */
+		ArrayList<String> listSubProperties = new ArrayList<String>();
 		
-		// Output query results 
-		//ResultSetFormatter.out(System.out, results, query);
-		DtoInstanceRelation dtoItem = null;
+		//List auxiliary for take the sub-properties and his relations
+		//ArrayList<RelationDomainRangeList> listMediation = new ArrayList<RelationDomainRangeList>();
 		
-		while (results.hasNext()) {
+		//Get classes from instances
+		List<String> listClsSourceInstance = InfModelQueryUtil.getClassesURI(infModel,instanceSource);
+		List<String> listClsTargetInstance = InfModelQueryUtil.getClassesURI(infModel,instanceTarget);		
+		
+		//Get sub-properties from property and yours domain and range
+		List<String> subproperties = InfModelQueryUtil.getSubPropertiesURI(infModel, property, true, true);
+		
+		//Select relations
+		for (String elem : subproperties) 
+	    {
+			boolean disjointDomain = InfModelQueryUtil.isDomainDisjointWithAll(infModel,elem, listClsSourceInstance);
+			boolean disjointTarget = InfModelQueryUtil.isRangeDisjointWithAll(infModel,elem, listClsTargetInstance);			
 			
-			QuerySolution row= results.next();
-		    RDFNode property = row.get("property");
-		    RDFNode target = row.get("target"); 
-		    
-		    dtoItem = new DtoInstanceRelation();
-		    dtoItem.Property = property.toString();
-		    dtoItem.Target = target.toString();
-		    
-			listIndividualRelations.add(dtoItem);		    		    		    
-		}
-		
-		return listIndividualRelations;
+			if(disjointDomain == true && disjointTarget == true)
+	    	{
+				boolean flag = true;
+				
+				//Check the sub-property already exist in all relations
+				for (DtoInstanceRelation dto : instanceListRelations) {
+					if(dto.Property.equals(elem))
+					{
+						//if is, doesn't add in list
+						flag = false;
+						break;
+					}
+				}				
+				
+				if (flag == true)
+				{
+					//if target and domain are disjoint
+					listSubProperties.add(elem);
+				}
+	    	}
+	    }
+		return listSubProperties;
 	}
-		
-	/*
-	 * Relations search
-	 */
-	
-//	public ArrayList<DtoDefinitionClass> GetSomeRelations(InfModel infModel) {
-//		
-//		ArrayList<DtoDefinitionClass> dtoSomeList = new ArrayList<DtoDefinitionClass>();
-//		
-//		// Create a new query -- EQUIVALENT CLASS
-//		String queryString = 
-//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-//		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-//		" SELECT DISTINCT ?x ?y ?z" +
-//		" WHERE {\n" +			
-//			" { " +
-//				" ?x " + "owl:equivalentClass" + " ?blank .\n " +
-//				" ?blank rdf:type owl:Class .\n"  +
-//				" ?blank owl:intersectionOf  ?list  .\n" +
-//				" ?list  rdf:rest*/rdf:first  ?member . \n"  +			
-//				" ?member " + "owl:someValuesFrom" + " ?z .\n " +
-//				" ?member " + "owl:onProperty ?y .\n" +	
-//			"} UNION {\n" +		
-//				" ?x " + "owl:equivalentClass" + " _:b0 .\n " +				
-//				" _:b0 " + "owl:someValuesFrom" + " ?z .\n " +
-//				" _:b0 " + "owl:onProperty ?y .\n" +
-//			" }\n" +	
-//				
-//			"UNION { " +
-//				" ?x " + "rdfs:subClassOf" + " ?blank .\n " +
-//				" ?blank rdf:type owl:Class .\n"  +
-//				" ?blank owl:intersectionOf  ?list  .\n" +
-//				" ?list  rdf:rest*/rdf:first  ?member . \n"  +			
-//				" ?member " + "owl:someValuesFrom" + " ?z .\n " +
-//				" ?member " + "owl:onProperty ?y .\n" +	
-//			"} UNION {\n" +		
-//				" ?x " + "rdfs:subClassOf" + " _:b1 .\n " +				
-//				" _:b1 " + "owl:someValuesFrom" + " ?z .\n " +
-//				" _:b1 " + "owl:onProperty ?y .\n" +
-//			" }\n" +			
-//		
-//		"}";
-//		
-//		Query query = QueryFactory.create(queryString); 
-//		
-//		// Execute the query and obtain results
-//		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-//		ResultSet results = qe.execSelect();
-//		
-//		// Output query results 
-//		//ResultSetFormatter.out(System.out, results, query);
-//		
-//		DtoDefinitionClass itemList = null;
-//		while (results.hasNext()) {
-//			QuerySolution row= results.next();
-//		    RDFNode Source = row.get("x");
-//		    RDFNode Relation = row.get("y");
-//		    RDFNode Target = row.get("z");
-//		    
-//		    // jump the blank node if he exist
-//		    //if(! Target.toString().contains("#")){
-//		    //	continue;
-//		    //}
-//		    
-//		    //jump the blank nodes - Check blank node and signal '-'
-//		    String TargetStr = Target.toString();
-//		    String SourceStr = Source.toString();
-//		    if ( Character.isDigit(TargetStr.charAt(0)) || TargetStr.startsWith("-") || Character.isDigit(SourceStr.charAt(0)) || SourceStr.startsWith("-")) 
-//		    {
-//		        continue;
-//		    }
-//		    
-//			itemList = new DtoDefinitionClass();
-//			itemList.Source = Source.toString();
-//			itemList.Relation = Relation.toString();
-//			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
-//			itemList.TypeCompletness = EnumRelationTypeCompletness.SOME;
-//			itemList.Target = Target.toString();
-//			dtoSomeList.add(itemList);
-//		}
-//				
-//		// Create a new query -- SUB CLASS OF DE CLASSE DEFINIDA
-//		
-//		queryString = 
-//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-//		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-//		" SELECT DISTINCT ?x ?y" +
-//		" WHERE {\n" +
-//				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
-//			"}";
-//
-//		query = QueryFactory.create(queryString); 
-//		
-//		// Execute the query and obtain results
-//		qe = QueryExecutionFactory.create(query, infModel);
-//		results = qe.execSelect();
-//		
-//		// Output query results 
-//		// ResultSetFormatter.out(System.out, results, query);
-//		
-//		while (results.hasNext()) {
-//			
-//			QuerySolution row= results.next();
-//		    RDFNode Class = row.get("x");
-//		    RDFNode SuperClass = row.get("y");
-//		    
-//		    if(!Class.toString().contains(w3String) && !SuperClass.toString().contains(w3String) && Class.toString() != SuperClass.toString())
-//		    {		    	
-//		    	ArrayList<DtoDefinitionClass> dtoListWithSource = DtoDefinitionClass.getDtosWithSource(dtoSomeList, SuperClass.toString());
-//		    	if(dtoListWithSource != null)
-//		    	{
-//		    		for (DtoDefinitionClass dto : dtoListWithSource) {
-//			    		itemList = new DtoDefinitionClass();
-//						itemList.Source = Class.toString();
-//						itemList.Relation = dto.Relation;
-//						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
-//						itemList.TypeCompletness = EnumRelationTypeCompletness.SOME;
-//						itemList.Target = dto.Target;
-//						itemList.Cardinality = dto.Cardinality;
-//						dtoSomeList.add(itemList);
-//					}
-//		    	}
-//		    }
-//		}
-//
-//		return dtoSomeList;
-//	}
-	
-//	public ArrayList<DtoDefinitionClass> GetMinRelations(InfModel infModel) {
-//
-//		ArrayList<DtoDefinitionClass> dtoMinList = new ArrayList<DtoDefinitionClass>();		
-//		
-//		// Create a new query
-//		String queryString = 
-//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-//		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-//		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
-//		" WHERE {\n" +
-//			" { " +
-//				"?source " + "owl:equivalentClass" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list  ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:minQualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onClass ?target" +			
-//			"} UNION {" +		
-//				"?source " + "owl:equivalentClass" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:minQualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onDataRange ?target" +
-//			"} UNION {" +	
-//				" ?source " + "owl:equivalentClass" + " _:b0 .\n " +				
-//				" _:b0 " + "owl:minQualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b0 " + "owl:onProperty ?relation .\n" +
-//				" _:b0 " + "owl:onClass ?target" +	
-//			" } UNION { " +
-//				" ?source " + "owl:equivalentClass" + " _:b1 .\n " +				
-//				" _:b1 " + "owl:minQualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b1 " + "owl:onProperty ?relation .\n" +
-//				" _:b1 " + "owl:onDataRange ?target" +
-//			"}" +
-//				
-//			" UNION { " +
-//				"?source " + "rdfs:subClassOf" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list  ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:minQualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onClass ?target" +			
-//			"} UNION {" +		
-//				"?source " + "rdfs:subClassOf" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:minQualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onDataRange ?target" +
-//			"} UNION {" +	
-//				" ?source " + "rdfs:subClassOf" + " _:b2 .\n " +				
-//				" _:b2 " + "owl:minQualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b2 " + "owl:onProperty ?relation .\n" +
-//				" _:b2 " + "owl:onClass ?target" +	
-//			" } UNION { " +
-//				" ?source " + "rdfs:subClassOf" + " _:b3 .\n " +				
-//				" _:b3 " + "owl:minQualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b3 " + "owl:onProperty ?relation .\n" +
-//				" _:b3 " + "owl:onDataRange ?target" +
-//			"}" +				
-//			
-//		"}";
-//
-//		Query query = QueryFactory.create(queryString); 
-//		
-//		// Execute the query and obtain results
-//		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-//		ResultSet results = qe.execSelect();
-//		
-//		// Output query results 
-//		//ResultSetFormatter.out(System.out, results, query);
-//		
-//		DtoDefinitionClass itemList = null;
-//		
-//		while (results.hasNext()) {
-//			QuerySolution row= results.next();
-//		    RDFNode Source = row.get("source");
-//		    RDFNode Relation = row.get("relation");
-//		    RDFNode Cardinality = row.get("cardinality");
-//		    RDFNode Target = row.get("target");
-//		    
-//		    //jump the blank nodes - Check blank node and signal '-'
-//		    String sourceStr = Source.toString();
-//		    if ( Character.isDigit(sourceStr.charAt(0)) || sourceStr.startsWith("-")) //
-//		    {
-//		        continue;
-//		    }
-//		    
-//			itemList = new DtoDefinitionClass();
-//			itemList.Source = Source.toString();
-//			itemList.Relation = Relation.toString();
-//			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
-//			itemList.TypeCompletness = EnumRelationTypeCompletness.MIN;
-//			itemList.Target = Target.toString();
-//			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
-//			dtoMinList.add(itemList);
-//		}
-//		
-//		// Create a new query -- SUB CLASS OF -- DEFINED CLASS
-//		queryString = 
-//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-//		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-//		" SELECT DISTINCT ?x ?y" +
-//		" WHERE {\n" +
-//				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
-//				//" _:b0 " + "owl:Class ?y .\n" +
-//			"}";
-//
-//		query = QueryFactory.create(queryString); 
-//		
-//		// Execute the query and obtain results
-//		qe = QueryExecutionFactory.create(query, infModel);
-//		results = qe.execSelect();
-//		
-//		// Output query results 
-//		//ResultSetFormatter.out(System.out, results, query);
-//		
-//		while (results.hasNext()) {
-//			
-//			QuerySolution row= results.next();
-//		    RDFNode Class = row.get("x");
-//		    RDFNode SuperClass = row.get("y");
-//		    
-//		    if(!Class.toString().contains(w3String) && !SuperClass.toString().contains(w3String) && Class.toString() != SuperClass.toString())
-//		    {		    	
-//		    	ArrayList<DtoDefinitionClass> dtoListWithSource = DtoDefinitionClass.getDtosWithSource(dtoMinList, SuperClass.toString());
-//		    	if(dtoListWithSource != null)
-//		    	{
-//		    		for (DtoDefinitionClass dto : dtoListWithSource) {
-//			    		itemList = new DtoDefinitionClass();
-//						itemList.Source = Class.toString();
-//						itemList.Relation = dto.Relation;
-//						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
-//						itemList.TypeCompletness = EnumRelationTypeCompletness.MIN;
-//						itemList.Target = dto.Target;
-//						itemList.Cardinality = dto.Cardinality;
-//						dtoMinList.add(itemList);
-//					}
-//		    	}
-//		    }
-//		}
-//		
-//		return dtoMinList;
-//	}
 
-//	public ArrayList<DtoDefinitionClass> GetMaxRelations(InfModel infModel) {
-//
-//		ArrayList<DtoDefinitionClass> dtoMaxList = new ArrayList<DtoDefinitionClass>();
-//		
-//		// Create a new query
-//		String queryString = 
-//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-//		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-//		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
-//		" WHERE {\n" +
-//			"{ " +
-//				"?source " + "owl:equivalentClass" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:maxQualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onClass ?target" +			
-//			"} UNION {" +		
-//				"?source " + "owl:equivalentClass" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:maxQualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onDataRange ?target" +
-//			"} UNION {" +		
-//				" ?source " + "owl:equivalentClass" + " _:b0 .\n " +				
-//				" _:b0 " + "owl:maxQualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b0 " + "owl:onProperty ?relation .\n" +
-//				" _:b0 " + "owl:onClass ?target" +	
-//			" } UNION { " +
-//				" ?source " + "owl:equivalentClass" + " _:b1 .\n " +				
-//				" _:b1 " + "owl:maxQualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b1 " + "owl:onProperty ?relation .\n" +
-//				" _:b1 " + "owl:onDataRange ?target" +
-//			"}" +
-//				
-//			" UNION { " +
-//				"?source " + "rdfs:subClassOf" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:maxQualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onClass ?target" +			
-//			"} UNION {" +		
-//				"?source " + "rdfs:subClassOf" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:maxQualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onDataRange ?target" +
-//			"} UNION {" +		
-//				" ?source " + "rdfs:subClassOf" + " _:b2 .\n " +				
-//				" _:b2 " + "owl:maxQualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b2 " + "owl:onProperty ?relation .\n" +
-//				" _:b2 " + "owl:onClass ?target" +	
-//			" } UNION { " +
-//				" ?source " + "rdfs:subClassOf" + " _:b3 .\n " +				
-//				" _:b3 " + "owl:maxQualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b3 " + "owl:onProperty ?relation .\n" +
-//				" _:b3 " + "owl:onDataRange ?target" +
-//			"}" +			
-//		"}";
-//
-//		Query query = QueryFactory.create(queryString); 
-//		
-//		// Execute the query and obtain results
-//		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-//		ResultSet results = qe.execSelect();
-//		
-//		// Output query results 
-//		// ResultSetFormatter.out(System.out, results, query);
-//		
-//		DtoDefinitionClass itemList = null;
-//		
-//		while (results.hasNext()) {
-//			
-//			QuerySolution row= results.next();
-//		    RDFNode Source = row.get("source");
-//		    RDFNode Relation = row.get("relation");
-//		    RDFNode Cardinality = row.get("cardinality");
-//		    RDFNode Target = row.get("target");
-//		    
-//		    String sourceStr = Source.toString();
-//		    if ( Character.isDigit(sourceStr.charAt(0)) || sourceStr.startsWith("-")) //Check blank node and signal '-'
-//		    {
-//		        continue;
-//		    }
-//		    
-//			itemList = new DtoDefinitionClass();
-//			itemList.Source = Source.toString();
-//			itemList.Relation = Relation.toString();
-//			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
-//			itemList.TypeCompletness = EnumRelationTypeCompletness.MAX;
-//			itemList.Target = Target.toString();
-//			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
-//			dtoMaxList.add(itemList);
-//		}
-//		
-//		// Create a new query -- SUB CLASS OF -- DEFINED CLASS
-//		queryString = 
-//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-//		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-//		" SELECT DISTINCT ?x ?y" +
-//		" WHERE {\n" +
-//				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
-//				//" _:b0 " + "owl:Class ?y .\n" +
-//			"}";
-//
-//		query = QueryFactory.create(queryString); 
-//		
-//		// Execute the query and obtain results
-//		qe = QueryExecutionFactory.create(query, infModel);
-//		results = qe.execSelect();
-//		
-//		// Output query results 
-//		//ResultSetFormatter.out(System.out, results, query);
-//		
-//		while (results.hasNext()) {
-//			
-//			QuerySolution row= results.next();
-//		    RDFNode Class = row.get("x");
-//		    RDFNode SuperClass = row.get("y");
-//		    
-//		    if(!Class.toString().contains(w3String) && !SuperClass.toString().contains(w3String) && Class.toString() != SuperClass.toString())
-//		    {		    	
-//		    	ArrayList<DtoDefinitionClass> dtoListWithSource = DtoDefinitionClass.getDtosWithSource(dtoMaxList, SuperClass.toString());
-//		    	if(dtoListWithSource != null)
-//		    	{
-//		    		for (DtoDefinitionClass dto : dtoListWithSource) {
-//			    		itemList = new DtoDefinitionClass();
-//						itemList.Source = Class.toString();
-//						itemList.Relation = dto.Relation;
-//						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
-//						itemList.TypeCompletness = EnumRelationTypeCompletness.MAX;
-//						itemList.Target = dto.Target;
-//						itemList.Cardinality = dto.Cardinality;
-//						dtoMaxList.add(itemList);
-//					}
-//		    	}
-//		    }
-//		}
-//		
-//		return dtoMaxList;
-//	}
 	
-//	public ArrayList<DtoDefinitionClass> GetExactlyRelations(InfModel infModel) {
-//
-//		ArrayList<DtoDefinitionClass> dtoExactlyList = new ArrayList<DtoDefinitionClass>();
-//		
-//		// Create a new query
-//		String queryString = 
-//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-//		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-//		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
-//		" WHERE {\n" +				
-//			" { " +
-//				"?source " + "owl:equivalentClass" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:qualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onClass ?target" +			
-//			"} UNION {" +		
-//				"?source " + "owl:equivalentClass" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:qualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onDataRange ?target" +
-//			"} UNION {" +	
-//				" ?source " + "owl:equivalentClass" + " _:b0 .\n " +				
-//				" _:b0 " + "owl:qualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b0 " + "owl:onProperty ?relation .\n" +
-//				" _:b0 " + "owl:onClass ?target" +	
-//			" } UNION { " +
-//				" ?source " + "owl:equivalentClass" + " _:b1 .\n " +				
-//				" _:b1 " + "owl:qualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b1 " + "owl:onProperty ?relation .\n" +
-//				" _:b1 " + "owl:onDataRange ?target" +
-//			"}" +
-//				
-//			" UNION { " +
-//				"?source " + "rdfs:subClassOf" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:qualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onClass ?target" +			
-//			"} UNION {" +		
-//				"?source " + "rdfs:subClassOf" + " ?blank .\n " +
-//				"?blank rdf:type owl:Class ."  +
-//				"?blank owl:intersectionOf  ?list     ." +
-//				"?list  rdf:rest*/rdf:first  ?member ."  +			
-//				" ?member " + "owl:qualifiedCardinality" + " ?cardinality .\n " +
-//				" ?member " + "owl:onProperty ?relation .\n" +
-//				" ?member " + "owl:onDataRange ?target" +
-//			"} UNION {" +	
-//				" ?source " + "rdfs:subClassOf" + " _:b2 .\n " +				
-//				" _:b2 " + "owl:qualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b2 " + "owl:onProperty ?relation .\n" +
-//				" _:b2 " + "owl:onClass ?target" +	
-//			" } UNION { " +
-//				" ?source " + "rdfs:subClassOf" + " _:b3 .\n " +				
-//				" _:b3 " + "owl:qualifiedCardinality" + " ?cardinality .\n " +
-//				" _:b3 " + "owl:onProperty ?relation .\n" +
-//				" _:b3 " + "owl:onDataRange ?target" +
-//			"}" +
-//		"}";
-//
-//		Query query = QueryFactory.create(queryString); 
-//		
-//		// Execute the query and obtain results
-//		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-//		ResultSet results = qe.execSelect();
-//		
-//		// Output query results 
-//		//ResultSetFormatter.out(System.out, results, query);
-//		
-//		DtoDefinitionClass itemList = null;
-//		
-//		while (results.hasNext()) {
-//			
-//			QuerySolution row= results.next();
-//		    RDFNode Source = row.get("source");
-//		    RDFNode Relation = row.get("relation");
-//		    RDFNode Cardinality = row.get("cardinality");
-//		    RDFNode Target = row.get("target");
-//		    
-//		    //jump the blank nodes - Check blank node and signal '-'
-//		    String sourceStr = Source.toString();
-//		    if ( Character.isDigit(sourceStr.charAt(0)) || sourceStr.startsWith("-")) //
-//		    {
-//		        continue;
-//		    }
-//		    
-//			itemList = new DtoDefinitionClass();
-//			itemList.Source = Source.toString();
-//			itemList.Relation = Relation.toString();
-//			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
-//			itemList.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
-//			itemList.Target = Target.toString();
-//			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
-//			dtoExactlyList.add(itemList);
-//		}
-//		
-//		// Create a new query -- SUB CLASS OF -- DEFINED CLASS
-//		
-//		queryString = 
-//		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-//		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-//		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-//		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-//		" SELECT DISTINCT ?x ?y" +
-//		" WHERE {\n" +
-//				" ?x " + "rdfs:subClassOf" + " ?y .\n " +
-//				//" _:b0 " + "owl:Class ?y .\n" +
-//			"}";
-//
-//		query = QueryFactory.create(queryString); 
-//		
-//		// Execute the query and obtain results
-//		qe = QueryExecutionFactory.create(query, infModel);
-//		results = qe.execSelect();
-//		
-//		// Output query results 
-//		//ResultSetFormatter.out(System.out, results, query);
-//		
-//		while (results.hasNext()) {
-//			
-//			QuerySolution row= results.next();
-//		    RDFNode Class = row.get("x");
-//		    RDFNode SuperClass = row.get("y");
-//		    
-//		    if(!Class.toString().contains(w3String) && !SuperClass.toString().contains(w3String) && Class.toString() != SuperClass.toString())
-//		    {		    	
-//		    	ArrayList<DtoDefinitionClass> dtoListWithSource = DtoDefinitionClass.getDtosWithSource(dtoExactlyList, SuperClass.toString());
-//		    	if(dtoListWithSource != null)
-//		    	{
-//		    		for (DtoDefinitionClass dto : dtoListWithSource) {
-//			    		itemList = new DtoDefinitionClass();
-//						itemList.Source = Class.toString();
-//						itemList.Relation = dto.Relation;
-//						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
-//						itemList.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
-//						itemList.Target = dto.Target;
-//						itemList.Cardinality = dto.Cardinality;
-//						dtoExactlyList.add(itemList);
-//					}
-//		    	}
-//		    }
-//		}
-//		
-//		return dtoExactlyList;
-//	}
-
 	public ArrayList<DtoDefinitionClass> GetSomeRelationsOfClass(InfModel infModel, String clsuri) {
 		
 		ArrayList<DtoDefinitionClass> dtoSomeList = new ArrayList<DtoDefinitionClass>();
@@ -920,7 +178,7 @@ public class Search
 			itemList = new DtoDefinitionClass();
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
-			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.PropertyType = InfModelQueryUtil.getPropertyURIType(infModel, Relation.toString());
 			itemList.TypeCompletness = EnumRelationTypeCompletness.SOME;
 			itemList.Target = Target.toString();
 			dtoSomeList.add(itemList);
@@ -962,7 +220,7 @@ public class Search
 			    		itemList = new DtoDefinitionClass();
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
-						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.PropertyType = InfModelQueryUtil.getPropertyURIType(infModel, dto.Relation);
 						itemList.TypeCompletness = EnumRelationTypeCompletness.SOME;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
@@ -1089,7 +347,7 @@ public class Search
 			itemList = new DtoDefinitionClass();
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
-			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.PropertyType = InfModelQueryUtil.getPropertyURIType(infModel, Relation.toString());
 			itemList.TypeCompletness = EnumRelationTypeCompletness.MIN;
 			itemList.Target = Target.toString();
 			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
@@ -1132,7 +390,7 @@ public class Search
 			    		itemList = new DtoDefinitionClass();
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
-						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.PropertyType = InfModelQueryUtil.getPropertyURIType(infModel, dto.Relation);
 						itemList.TypeCompletness = EnumRelationTypeCompletness.MIN;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
@@ -1258,7 +516,7 @@ public class Search
 			itemList = new DtoDefinitionClass();
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
-			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.PropertyType = InfModelQueryUtil.getPropertyURIType(infModel, Relation.toString());
 			itemList.TypeCompletness = EnumRelationTypeCompletness.MAX;
 			itemList.Target = Target.toString();
 			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
@@ -1301,7 +559,7 @@ public class Search
 			    		itemList = new DtoDefinitionClass();
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
-						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.PropertyType = InfModelQueryUtil.getPropertyURIType(infModel, dto.Relation);
 						itemList.TypeCompletness = EnumRelationTypeCompletness.MAX;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
@@ -1428,7 +686,7 @@ public class Search
 			itemList = new DtoDefinitionClass();
 			itemList.Source = Source.toString();
 			itemList.Relation = Relation.toString();
-			itemList.PropertyType = this.GetPropertyType(infModel, Relation.toString());
+			itemList.PropertyType = InfModelQueryUtil.getPropertyURIType(infModel, Relation.toString());
 			itemList.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
 			itemList.Target = Target.toString();
 			itemList.Cardinality = Cardinality.toString().split("\\^")[0];
@@ -1472,7 +730,7 @@ public class Search
 			    		itemList = new DtoDefinitionClass();
 						itemList.Source = Class.toString();
 						itemList.Relation = dto.Relation;
-						itemList.PropertyType = this.GetPropertyType(infModel, dto.Relation);
+						itemList.PropertyType = InfModelQueryUtil.getPropertyURIType(infModel, dto.Relation);
 						itemList.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
 						itemList.Target = dto.Target;
 						itemList.Cardinality = dto.Cardinality;
@@ -1813,150 +1071,5 @@ public class Search
 		
 		return ListCompleteClsAndSubCls;
 	}
-	
-	public ArrayList<DomainRange> GetDomainRangeFromProperty(String property, InfModel infModel)
-	{
-		//List auxiliary for take the sub-properties and his relations
-		ArrayList<DomainRange> list = new ArrayList<DomainRange>();
-				
-		// Create a new query
-		String queryString = 
-				"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-				"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-				" SELECT DISTINCT *" +
-				" WHERE {\n" +
-					"<" + property + "> rdfs:domain ?domainSubProp ." +
-					"<" + property + "> rdfs:range ?rangeSubProp ." +					
-				"}";
-		
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();		
-		
-		while (results.hasNext()) {
-
-			QuerySolution row= results.next();
-			
-		    RDFNode domainNode = row.get("domainSubProp");
-		    RDFNode rangeNode = row.get("rangeSubProp");
-		    
-		    String domainClsSubProp = domainNode.toString();
-		    String rangeClsSubProp = rangeNode.toString();
-		    
-	    	DomainRange dr = new DomainRange(domainClsSubProp, rangeClsSubProp);
-	    	list.add(dr);		    
-		}
-		
-		return list;
-	}
-	
-	public ArrayList<RelationDomainRangeList> GetSubPropertiesWithDomaninAndRange(String property, InfModel infModel)
-	{
-		//List auxiliary for take the sub-properties and his relations
-		ArrayList<RelationDomainRangeList> listMediation = new ArrayList<RelationDomainRangeList>();
-				
-		// Create a new query
-		String queryString = 
-				"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-				"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-				" SELECT DISTINCT *" +
-				" WHERE {\n" +
-					"?subProp rdfs:subPropertyOf" + "<" + property + "> ." +
-					"?subProp rdfs:domain ?domainSubProp ." +
-					"?subProp rdfs:range ?rangeSubProp ." +					
-				"}";
-		
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();		
-		
-		while (results.hasNext()) 
-		{
-
-			QuerySolution row= results.next();
-			
-		    RDFNode subPropNode = row.get("subProp");
-		    RDFNode domainNode = row.get("domainSubProp");
-		    RDFNode rangeNode = row.get("rangeSubProp");
-		    
-		    String subProp = subPropNode.toString();
-		    String domainClsSubProp = domainNode.toString();
-		    String rangeClsSubProp = rangeNode.toString();
-		    
-		    if(!subProp.contains(w3String) && (!subProp.equals(property)))
-		    {    	
-		    		RelationDomainRangeList elem = RelationDomainRangeList.getElement(listMediation, subProp);
-		    		if (elem == null)
-		    		{
-		    			elem = new RelationDomainRangeList();
-		    			elem.Relation = subProp;
-		    			elem.listDomainRange.add(new DomainRange(domainClsSubProp, rangeClsSubProp));
-		    			listMediation.add(elem);
-		    		} else 
-		    		{
-		    			elem.listDomainRange.add(new DomainRange(domainClsSubProp, rangeClsSubProp));
-		    		}
-		    }
-		}
-		return listMediation;
-	}
-	
-	public ArrayList<String> GetSubPropertiesWithDomaninAndRange(String instanceSource,	String property, String instanceTarget, ArrayList<DtoInstanceRelation> instanceListRelations, InfModel infModel) {
-		
-		/* Get properties with domains from instanceSource class and Range from instanceTarget class */
-		ArrayList<String> listSubProperties = new ArrayList<String>();
-		
-		//List auxiliary for take the sub-properties and his relations
-		ArrayList<RelationDomainRangeList> listMediation = new ArrayList<RelationDomainRangeList>();
-		
-		//Get classes from instances
-		List<String> listClsSourceInstance = InfModelQueryUtil.getClassesURI(infModel,instanceSource);
-		List<String> listClsTargetInstance = InfModelQueryUtil.getClassesURI(infModel,instanceTarget);		
-		
-		//Get sub-properties from property and yours domain and range
-		listMediation = this.GetSubPropertiesWithDomaninAndRange(property, infModel);
-		
-		//Select relations
-		for (RelationDomainRangeList elem : listMediation) 
-	    {
-			boolean disjointDomain = this.CheckIsDisjointDomainWith(elem, listClsSourceInstance, infModel);
-			boolean disjointTarget = this.CheckIsDisjointTargetWith(elem, listClsTargetInstance, infModel);			
-			
-			if(disjointDomain == true && disjointTarget == true)
-	    	{
-				boolean flag = true;
-				
-				//Check the sub-property already exist in all relations
-				for (DtoInstanceRelation dto : instanceListRelations) {
-					if(dto.Property.equals(elem.Relation))
-					{
-						//if is, doesn't add in list
-						flag = false;
-						break;
-					}
-				}				
-				
-				if (flag == true)
-				{
-					//if target and domain are disjoint
-					listSubProperties.add(elem.Relation);
-				}
-	    	}
-	    }
-		
-		
-		
-		return listSubProperties;
-	}
-
-
 	
 }

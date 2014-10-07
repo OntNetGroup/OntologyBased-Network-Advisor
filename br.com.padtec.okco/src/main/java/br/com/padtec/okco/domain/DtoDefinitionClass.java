@@ -2,6 +2,8 @@ package br.com.padtec.okco.domain;
 
 import java.util.ArrayList;
 
+import br.com.padtec.common.queries.OntPropertyEnum;
+
 public class DtoDefinitionClass {
 	
 	/*
@@ -19,7 +21,7 @@ public class DtoDefinitionClass {
 	public int id;
 	public String Source;
 	public String Relation;
-	public EnumPropertyType PropertyType;				//object or data
+	public OntPropertyEnum PropertyType;				//object or data
 	public EnumRelationTypeCompletness TypeCompletness;	//some,min,max...
 	public String Target;
 	public String Cardinality;					// just in cases we need cardinality (max, min, exactly)

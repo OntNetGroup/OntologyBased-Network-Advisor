@@ -27,13 +27,13 @@ import br.com.padtec.okco.domain.FactoryInstances;
 import br.com.padtec.okco.domain.HermitReasonerImpl;
 import br.com.padtec.okco.domain.Instance;
 import br.com.padtec.okco.domain.ManagerInstances;
-import br.com.padtec.okco.domain.OKCoExceptionFileFormat;
-import br.com.padtec.okco.domain.OKCoExceptionInstanceFormat;
-import br.com.padtec.okco.domain.OKCoExceptionNS;
-import br.com.padtec.okco.domain.OKCoExceptionReasoner;
 import br.com.padtec.okco.domain.OntologyReasoner;
 import br.com.padtec.okco.domain.PelletReasonerImpl;
 import br.com.padtec.okco.domain.Search;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionFileFormat;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionNameSpace;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionReasoner;
 import br.com.padtec.okco.persistence.BaseModelRepository;
 import br.com.padtec.okco.persistence.BaseModelRepositoryImpl;
 import br.ufes.inf.padtec.tnokco.business.ManagerRelations;
@@ -256,7 +256,7 @@ public class HomeController implements ServletContextAware{
 
 			if(NS == null)
 			{
-				throw new OKCoExceptionNS("Please select owl file with defined namespace.");
+				throw new OKCoExceptionNameSpace("Please select owl file with defined namespace.");
 			}
 
 			Search = new Search();
@@ -353,7 +353,7 @@ public class HomeController implements ServletContextAware{
 
 			return "index";
 
-		} catch (OKCoExceptionNS e) {
+		} catch (OKCoExceptionNameSpace e) {
 
 			String error = "File namespace error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);

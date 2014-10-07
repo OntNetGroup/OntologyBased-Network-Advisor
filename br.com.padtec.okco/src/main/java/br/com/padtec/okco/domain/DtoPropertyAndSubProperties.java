@@ -2,6 +2,8 @@ package br.com.padtec.okco.domain;
 
 import java.util.ArrayList;
 
+import br.com.padtec.common.queries.OntPropertyEnum;
+
 public class DtoPropertyAndSubProperties {
 	
 	private static int count = 0;	//Count the number of instances
@@ -9,7 +11,7 @@ public class DtoPropertyAndSubProperties {
 	public ArrayList<String> SubProperties;
 	public String iTargetNs;
 	public String iTargetName;
-	public EnumPropertyType propertyType;
+	public OntPropertyEnum propertyType;
 	public int id;
 	
 	public DtoPropertyAndSubProperties()

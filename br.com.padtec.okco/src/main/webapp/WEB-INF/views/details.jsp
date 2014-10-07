@@ -1,4 +1,4 @@
-<%@ page import="br.com.padtec.okco.controller.HomeController"%>
+<%@ page import="br.com.padtec.okco.application.AppLoader"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="br.com.padtec.okco.domain.Instance"%>
 <%@ page import="br.com.padtec.okco.domain.DtoCompleteClass"%>
@@ -23,7 +23,6 @@
 	ArrayList<DtoDefinitionClass> listMinClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listMinClassDefinition");
 	ArrayList<DtoDefinitionClass> listMaxClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listMaxClassDefinition");
 	ArrayList<DtoDefinitionClass> listExactlyClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listExactlyClassDefinition");
-	
 %>
 
 <%@include file="../templates/header.jsp"%>
@@ -219,10 +218,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListSameInstances)
-								{
-									Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, iName);
-									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
-								}
+													{
+														Instance i = AppLoader.ManagerInstances.getInstance(ListAllInstances, iName);
+														out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
+													}
 							%>
 							</ul>
 						</td>
@@ -234,10 +233,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListDiferentInstances)
-								{
-									Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, iName);
-									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
-								}
+													{
+														Instance i = AppLoader.ManagerInstances.getInstance(ListAllInstances, iName);
+														out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
+													}
 							%>
 							</ul>
 						</td>

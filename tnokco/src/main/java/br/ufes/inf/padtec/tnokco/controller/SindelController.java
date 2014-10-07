@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.common.queries.OntModelQueryUtil;
 import br.com.padtec.okco.domain.DtoResultAjax;
-import br.com.padtec.okco.domain.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
 //import br.ufes.inf.padtec.tnokco.business.Code;
+
 
 import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.rdf.model.Statement;

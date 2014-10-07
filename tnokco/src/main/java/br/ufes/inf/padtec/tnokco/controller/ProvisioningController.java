@@ -26,9 +26,9 @@ import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.DtoResultAjax;
 import br.com.padtec.okco.domain.Instance;
-import br.com.padtec.okco.domain.OKCoExceptionFileFormat;
-import br.com.padtec.okco.domain.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.domain.Search;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionFileFormat;
+import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.persistence.BaseModelRepositoryImpl;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
@@ -340,7 +340,7 @@ public class ProvisioningController{
 		String inputNs = "";
 
 		Search search = new Search();
-		ArrayList<DtoInstanceRelation> outIntRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, HomeController.NS+outInt);
+		List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, HomeController.NS+outInt);
 		for (DtoInstanceRelation outIntRelation : outIntRelations) {
 			if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
 				outputNs = outIntRelation.Target;
@@ -349,7 +349,7 @@ public class ProvisioningController{
 			}
 		}		
 
-		ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, HomeController.NS+inInt);
+		List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, HomeController.NS+inInt);
 		for (DtoInstanceRelation inIntRelation : inIntRelations) {
 			if(inIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
 				inputNs = inIntRelation.Target;
@@ -479,7 +479,7 @@ public class ProvisioningController{
 
 		//get all relations of the output interface
 		Search search = new Search();
-		ArrayList<DtoInstanceRelation> outIntRelations = search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
+		List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
 
 		//get namespaces of individuals of some output interface relations
 		String outputNs = "";
@@ -501,7 +501,7 @@ public class ProvisioningController{
 		//if the output interface does not maps an output, it can not connects
 		if(outputNs.equals("")){
 			for (Instance inputInterface : inputInterfaces) {
-				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
+				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
 				String eqInNs = "";
 				
 				//get namespaces of individuals of some input interface relations
@@ -564,7 +564,7 @@ public class ProvisioningController{
 			
 			//here, I look for possible connections with input interfaces
 			for (Instance inputInterface : inputInterfaces) {
-				ArrayList<DtoInstanceRelation> inIntRelations = search.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
+				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
 				String inputNs = "";
 				String eqInNs = "";
 				Boolean inputInterfaceAlreadyConnected = false;
@@ -589,7 +589,7 @@ public class ProvisioningController{
 						for (String otherOutputClassName : otherOutput.ListClasses) {
 							otherOutputClassName = otherOutputClassName.replace(HomeController.NS, "");
 							if(otherOutputClassName.equalsIgnoreCase("Output_Interface")){
-								ArrayList<DtoInstanceRelation> otherOutputRelations = search.GetInstanceRelations(HomeController.InfModel, otherOutput.ns+otherOutput.name);
+								List<DtoInstanceRelation> otherOutputRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, otherOutput.ns+otherOutput.name);
 								for (DtoInstanceRelation otherOutputRelation : otherOutputRelations) {
 									if(otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
 										if((inputInterface.ns+inputInterface.name).equals(otherOutputRelation.Target)){
@@ -674,7 +674,7 @@ public class ProvisioningController{
 			
 			//here, I look for possible connections with physical media inputs
 			for (Instance pmInput : physicalMediaInputs) {
-				ArrayList<DtoInstanceRelation> inPMRelations = search.GetInstanceRelations(HomeController.InfModel, pmInput.ns+pmInput.name);
+				List<DtoInstanceRelation> inPMRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, pmInput.ns+pmInput.name);
 				String pmNs = "";
 				Boolean inputPMAlreadyConnected = false;
 				
@@ -699,7 +699,7 @@ public class ProvisioningController{
 								if(otherOutput.name.equals("out_sotf3")){
 									System.out.println();
 								}
-								ArrayList<DtoInstanceRelation> otherOutputRelations = search.GetInstanceRelations(HomeController.InfModel, otherOutput.ns+otherOutput.name);
+								List<DtoInstanceRelation> otherOutputRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, otherOutput.ns+otherOutput.name);
 								for (DtoInstanceRelation otherOutputRelation : otherOutputRelations) {
 									if(otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds") || otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"binds")){
 										if((pmInput.ns+pmInput.name).equals(otherOutputRelation.Target)){
@@ -819,7 +819,7 @@ public class ProvisioningController{
 			return true;
 		}
 		
-		ArrayList<DtoInstanceRelation> equipRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, actualEquipNS+actualEquipName);
+		List<DtoInstanceRelation> equipRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, actualEquipNS+actualEquipName);
 		
 		ArrayList<String> outIntNss = new ArrayList<String>();
 		//get namespaces of individuals of some input interface relations
@@ -837,7 +837,7 @@ public class ProvisioningController{
 		for (String oiNs : outIntNss) {
 			Instance outputInterface = getInstanceFromNameSpace(oiNs);
 			
-			ArrayList<DtoInstanceRelation> outIntRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
+			List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
 			String inIntNs = "";
 			//get namespaces of individuals of some input interface relations
 			for (DtoInstanceRelation outIntRelation : outIntRelations) {
@@ -848,7 +848,7 @@ public class ProvisioningController{
 			}
 			//se inIntNs != null
 			if(!inIntNs.equals("")){
-				ArrayList<DtoInstanceRelation> inIntRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, inIntNs);
+				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, inIntNs);
 				String inIntEquipNs = "";
 				//get namespaces of individuals of some input interface relations
 				for (DtoInstanceRelation inIntRelation : inIntRelations) {
@@ -891,7 +891,7 @@ public class ProvisioningController{
 		for (Instance instance : HomeController.ListAllInstances) {
 			for (String className : instance.ListClasses) {
 				if(className.equalsIgnoreCase(HomeController.NS+"Output_Interface")){
-					ArrayList<DtoInstanceRelation> outputInterfaceRelations = HomeController.Search.GetInstanceRelations(HomeController.InfModel, instance.ns+instance.name);
+					List<DtoInstanceRelation> outputInterfaceRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, instance.ns+instance.name);
 					boolean alreadyConnected = false;
 					for (DtoInstanceRelation outputInterfaceRelation : outputInterfaceRelations) {
 						if(outputInterfaceRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
@@ -987,7 +987,7 @@ public class ProvisioningController{
 		ArrayList<Instance> rpInstances = getInstancesFromClass("Reference_Point");
 		
 		for (Instance rp : rpInstances) {
-			ArrayList<DtoInstanceRelation> rpRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, rp.ns+rp.name);
+			List<DtoInstanceRelation> rpRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, rp.ns+rp.name);
 			String bindingNs = "";
 			String hasFW = "";
 			for (DtoInstanceRelation rel : rpRelations) {
@@ -1041,7 +1041,7 @@ public class ProvisioningController{
 	
 	public static ArrayList<String> getEquipmentFromBinding(InfModel infModel, String NS, String bindingName){
 		bindingName = bindingName.replace(NS, "");
-		ArrayList<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindingName);
+		List<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindingName);
 		
 		String bindedPort1Ns="";
 		String bindedPort2Ns="";
@@ -1085,7 +1085,7 @@ public class ProvisioningController{
 		ArrayList<String> ret = new ArrayList<String>();
 		bindedPortNs = bindedPortNs.replace(NS, "");
 		
-		ArrayList<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindedPortNs);
+		List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindedPortNs);
 		String outIntNs = "";
 		String inIntNs = "";
 		String tfNs = "";
@@ -1110,7 +1110,7 @@ public class ProvisioningController{
 			}
 			
 			ArrayList<String> nextPorts = new ArrayList<String>(); 
-			ArrayList<DtoInstanceRelation> tfRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+tfNs);
+			List<DtoInstanceRelation> tfRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+tfNs);
 			String eqNs = "";
 			for (DtoInstanceRelation tfRel : tfRelations) {
 				String tfRelRelName = tfRel.Property.replace(NS, "");
@@ -1162,7 +1162,7 @@ public class ProvisioningController{
 	
 	public static String getEquipmentFromInterface(InfModel infModel, String NS, String interfaceNs){
 		interfaceNs = interfaceNs.replace(NS, "");
-		ArrayList<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+interfaceNs);
+		List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+interfaceNs);
 		
 		for (DtoInstanceRelation intRel : portRelations) {
 			String intRelName = intRel.Property.replace(NS, "");
@@ -1176,7 +1176,7 @@ public class ProvisioningController{
 	
 	public static String getRPFromBinding(InfModel infModel, String NS, String bindingNs){
 		bindingNs = bindingNs.replace(NS, "");
-		ArrayList<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindingNs);
+		List<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindingNs);
 		
 		for (DtoInstanceRelation bindingRel : bindingRelations) {
 			String intRelName = bindingRel.Property.replace(NS, "");
@@ -1197,12 +1197,12 @@ public class ProvisioningController{
 			List<String> actualPortClasses = InfModelQueryUtil.getClassesURI(infModel,NS+actualPort);
 			
 			if((nextPortClasses.contains(NS+"Output") && actualPortClasses.contains(NS+"Input")) || (nextPortClasses.contains(NS+"Input") && actualPortClasses.contains(NS+"Output"))){
-				ArrayList<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+portNs);
+				List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+portNs);
 				
 				for (DtoInstanceRelation portRel : portRelations) {
 					String portRelName = portRel.Property.replace(NS, "");
 					if(portRelName.equals("INV.is_binding")){
-						ArrayList<DtoInstanceRelation> bindingRelations =ApplicationQueryUtil.GetInstanceAllRelations(infModel, portRel.Target);
+						List<DtoInstanceRelation> bindingRelations =ApplicationQueryUtil.GetInstanceAllRelations(infModel, portRel.Target);
 						for (DtoInstanceRelation bindingRel : bindingRelations) {
 							String bindingRelName = bindingRel.Property.replace(NS, "");
 							if(bindingRelName.equals("binding_is_represented_by")){
