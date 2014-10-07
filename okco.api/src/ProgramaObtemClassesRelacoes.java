@@ -1,7 +1,7 @@
 import java.io.InputStream;
 import java.util.List;
 
-import br.com.padtec.common.queries.OntModelQueryUtil;
+import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.okco.domain.Search;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -32,8 +32,8 @@ public class ProgramaObtemClassesRelacoes {
 		
 		Search search = new Search();
 		
-		List<String> lclasses = OntModelQueryUtil.getClassesURI(model);
-		List<String> lpropreties = OntModelQueryUtil.getPropertiesURI(model);
+		List<String> lclasses = OntModelAPI.getClassesURI(model);
+		List<String> lpropreties = OntModelAPI.getPropertiesURI(model);
 		
 		String result1 = "";
 		String result2 = "";

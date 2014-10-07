@@ -14,13 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
-import br.com.padtec.common.queries.OntModelQueryUtil;
+import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.okco.domain.DtoResultAjax;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
 //import br.ufes.inf.padtec.tnokco.business.Code;
 
+
+import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
 
 import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.rdf.model.Statement;
@@ -112,7 +114,7 @@ public class SindelController{
 			 * Set specific types for connects relations
 			 * */
 			
-			List<String[]> list = OntModelQueryUtil.getDomainAndRangeURI(HomeController.Model, HomeController.NS+"has_forwarding");
+			List<String[]> list = ApplicationQueryUtil.getDomainAndRangeURI(HomeController.Model, HomeController.NS+"has_forwarding");
 			String specificRelation = null;
 			
 			for(String[] st : list){

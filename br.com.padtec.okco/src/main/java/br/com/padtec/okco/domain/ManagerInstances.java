@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
-import br.com.padtec.common.queries.OntModelQueryUtil;
+import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.okco.application.AppLoader;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
@@ -211,7 +211,7 @@ public class ManagerInstances {
 				//Case if the instance have no class selected - only Thing
 				dto = new DtoCompleteClass();
 				dto.CompleteClass = instanceSelected.ListClasses.get(0);
-				for (String subClas : OntModelQueryUtil.getClassesURI(model)) {
+				for (String subClas : OntModelAPI.getClassesURI(model)) {
 					if(subClas != null)
 						dto.AddMember(subClas);
 				}

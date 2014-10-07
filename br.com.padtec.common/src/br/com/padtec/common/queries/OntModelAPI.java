@@ -7,18 +7,11 @@ import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.util.iterator.Filter;
 
-public class OntModelQueryUtil {
+public class OntModelAPI {
 	
 	/** 
 	 * Return the URI of all properties of the ontology. This method is performed using the Jena API.
@@ -221,40 +214,5 @@ public class OntModelQueryUtil {
 		OntClass ontclass = model.getOntClass(classURI);
 		if(ontclass!=null) return getIndividualsURI(model,ontclass); 
 		else return new ArrayList<String>();		
-	}
-	
-	/**
-	 * Return the source and the target of this property in the ontology. This method is performed using SPARQL.
-	 * 
-	 * @param model: jena.ontology.OntModel 
-	 * @param propertyURI: OntProperty URI
-	 * 
-	 * @author John Guerson
-	 */
-	static public List<String[]> getDomainAndRangeURI(OntModel model, String propertyURI) 
-	{		
-		List<String[]> list = new ArrayList<String[]>();		
-		String queryString = 
-		" SELECT *" +
-		" WHERE {\n" +		
-			" ?source <" + propertyURI + "> ?target .\n " +	
-		"}";
-		Query query = QueryFactory.create(queryString);
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();
-		while (results.hasNext()) 
-		{
-			String [] tupla = new String[2];
-			QuerySolution row = results.next();		    
-		    RDFNode source = row.get("source");
-		    RDFNode target = row.get("target");		    
-		    tupla[0] = source.toString();
-		    tupla[1] = target.toString();
-		    //DateTimeHelper.printout("Domain: "+source.toString()+" - Range: "+target.toString()+" - OntProperty URI: "+propertyURI);
-		    list.add(tupla);
-		}
-		return list;		
-	}
-
+	}	
 }

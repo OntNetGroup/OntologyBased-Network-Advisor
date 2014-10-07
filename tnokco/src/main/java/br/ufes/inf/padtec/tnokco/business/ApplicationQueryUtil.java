@@ -7,6 +7,7 @@ import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.okco.application.AppLoader;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
 
+import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -63,6 +64,32 @@ public class ApplicationQueryUtil {
 		}
 		
 		return listIndividualRelations;
+	}
+	
+	static public List<String[]> getDomainAndRangeURI(OntModel model, String propertyURI) 
+	{		
+		List<String[]> list = new ArrayList<String[]>();		
+		String queryString = 
+		" SELECT *" +
+		" WHERE {\n" +		
+			" ?source <" + propertyURI + "> ?target .\n " +	
+		"}";
+		Query query = QueryFactory.create(queryString);
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		while (results.hasNext()) 
+		{
+			String [] tupla = new String[2];
+			QuerySolution row = results.next();		    
+		    RDFNode source = row.get("source");
+		    RDFNode target = row.get("target");		    
+		    tupla[0] = source.toString();
+		    tupla[1] = target.toString();
+		    //DateTimeHelper.printout("Domain: "+source.toString()+" - Range: "+target.toString()+" - OntProperty URI: "+propertyURI);
+		    list.add(tupla);
+		}
+		return list;		
 	}
 	
 	static public List<DtoInstanceRelation> GetInstanceAllRelations(InfModel infModel, String individualUri)
