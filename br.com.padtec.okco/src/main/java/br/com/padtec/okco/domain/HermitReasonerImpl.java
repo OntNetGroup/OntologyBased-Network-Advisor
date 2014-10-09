@@ -120,8 +120,7 @@ public class HermitReasonerImpl implements OntologyReasoner {
     	bais = new ByteArrayInputStream(baos2.toByteArray());
 		model.read(bais, null);
 		
-		long tempo = System.currentTimeMillis() - antes;
-        DateTimeHelper.printout("Hermit executed in "+tempo+" miliseconds.");
+		long tempo = System.currentTimeMillis() - antes;        
 		System.out.printf("Hermit executed in %d miliseconds.%n", tempo);
 		return model;
 	}

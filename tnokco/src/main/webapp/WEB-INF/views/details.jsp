@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="br.com.padtec.okco.domain.Instance"%>
 <%@ page import="br.com.padtec.okco.domain.DtoCompleteClass"%>
-<%@ page import="br.com.padtec.okco.domain.EnumPropertyType"%>
+<%@ page import="br.com.padtec.common.queries.OntPropertyEnum"%>
 <%@ page import="br.com.padtec.okco.domain.DtoPropertyAndSubProperties"%>
 <%@ page import="br.com.padtec.okco.domain.DtoDefinitionClass"%>
 <%@ page import="br.com.padtec.okco.domain.DtoInstanceRelation"%>
@@ -583,7 +583,7 @@
 						<%
 							for (DtoDefinitionClass dto : listSomeClassDefinition) {
 															  		
-											  		if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+											  		if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 											  		{
 											  		
 												  		out.println("<tr>");
@@ -604,7 +604,7 @@
 											  	
 												for (DtoDefinitionClass dto : listMinClassDefinition) {
 											  		
-													if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+													if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 											  		{
 											  		
 												  		out.println("<tr>");
@@ -625,7 +625,7 @@
 												
 												for (DtoDefinitionClass dto : listMaxClassDefinition) {
 											  		
-													if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+													if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 											  		{
 											  		
 												  		out.println("<tr>");
@@ -647,7 +647,7 @@
 											  	
 												for (DtoDefinitionClass dto : listExactlyClassDefinition) {
 											  		
-													if(dto.PropertyType.equals(EnumPropertyType.OBJECT_PROPERTY))
+													if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 											  		{
 											  		
 												  		out.println("<tr>");
@@ -702,7 +702,7 @@
 						<%
 							for (DtoDefinitionClass dto : listSomeClassDefinition) {
 															  		
-										  		if(dto.PropertyType.equals(EnumPropertyType.DATA_PROPERTY))
+										  		if(dto.PropertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 										  		{
 										  		
 											  		out.println("<tr>");
@@ -723,7 +723,7 @@
 										  	
 											for (DtoDefinitionClass dto : listMinClassDefinition) {
 										  		
-												if(dto.PropertyType.equals(EnumPropertyType.DATA_PROPERTY))
+												if(dto.PropertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 										  		{
 										  		
 											  		out.println("<tr>");
@@ -744,7 +744,7 @@
 											
 											for (DtoDefinitionClass dto : listMaxClassDefinition) {
 										  		
-												if(dto.PropertyType.equals(EnumPropertyType.DATA_PROPERTY))
+												if(dto.PropertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 										  		{
 										  		
 											  		out.println("<tr>");
@@ -765,7 +765,7 @@
 										  	
 											for (DtoDefinitionClass dto : listExactlyClassDefinition) {
 										  		
-												if(dto.PropertyType.equals(EnumPropertyType.DATA_PROPERTY))
+												if(dto.PropertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 										  		{
 										  		
 											  		out.println("<tr>");

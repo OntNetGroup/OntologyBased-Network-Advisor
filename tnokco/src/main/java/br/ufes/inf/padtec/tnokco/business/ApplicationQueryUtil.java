@@ -69,7 +69,7 @@ public class ApplicationQueryUtil {
 	static public List<String[]> getDomainAndRangeURI(OntModel model, String propertyURI) 
 	{		
 		List<String[]> list = new ArrayList<String[]>();		
-		String queryString = 
+		String queryString =		
 		" SELECT *" +
 		" WHERE {\n" +		
 			" ?source <" + propertyURI + "> ?target .\n " +	

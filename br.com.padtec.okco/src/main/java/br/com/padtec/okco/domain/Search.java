@@ -15,91 +15,10 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class Search 
-{
-
-	public final  String w3String = "http://www.w3.org/";
-	
-	public int CheckExistInstancesTargetCardinality(InfModel infModel, String instance, String relation, String imageClass, String cardinality) 
-	{		
-		int result = 0;
-		
-		List<String> listValues = InfModelQueryUtil.getIndividualsURIInRelationRange(infModel, instance, relation, imageClass);
-		
-		ArrayList<String> uniqueListValues = new ArrayList<String>();
-		uniqueListValues.addAll(listValues);
-		
-		for (String value : listValues)
-		{
-			
-			if(uniqueListValues.contains(value))
-			{
-				List<String> sameInstances = InfModelQueryUtil.getIndividualsURISameAs(infModel, value);
-				for (String sameIns : sameInstances)
-				{
-					if(uniqueListValues.contains(sameIns))
-					{
-						uniqueListValues.remove(sameIns);
-					}
-				}	
-			}			
-		}		
-		result = uniqueListValues.size();
-		
-		// check datatype properties
-		List<String> dataTypeValues = InfModelQueryUtil.getIndividualsURIInDataTypeRelationRange(infModel, instance, relation, imageClass);
-		result += dataTypeValues.size();
-		
-		return result;
-	}
-		
-	public ArrayList<String> GetSubPropertiesWithDomaninAndRange(String instanceSource,	String property, String instanceTarget, List<DtoInstanceRelation> instanceListRelations, InfModel infModel) {
-		
-		/* Get properties with domains from instanceSource class and Range from instanceTarget class */
-		ArrayList<String> listSubProperties = new ArrayList<String>();
-		
-		//List auxiliary for take the sub-properties and his relations
-		//ArrayList<RelationDomainRangeList> listMediation = new ArrayList<RelationDomainRangeList>();
-		
-		//Get classes from instances
-		List<String> listClsSourceInstance = InfModelQueryUtil.getClassesURI(infModel,instanceSource);
-		List<String> listClsTargetInstance = InfModelQueryUtil.getClassesURI(infModel,instanceTarget);		
-		
-		//Get sub-properties from property and yours domain and range
-		List<String> subproperties = InfModelQueryUtil.getSubPropertiesURI(infModel, property, true, true);
-		
-		//Select relations
-		for (String elem : subproperties) 
-	    {
-			boolean disjointDomain = InfModelQueryUtil.isDomainDisjointWithAll(infModel,elem, listClsSourceInstance);
-			boolean disjointTarget = InfModelQueryUtil.isRangeDisjointWithAll(infModel,elem, listClsTargetInstance);			
-			
-			if(disjointDomain == true && disjointTarget == true)
-	    	{
-				boolean flag = true;
-				
-				//Check the sub-property already exist in all relations
-				for (DtoInstanceRelation dto : instanceListRelations) {
-					if(dto.Property.equals(elem))
-					{
-						//if is, doesn't add in list
-						flag = false;
-						break;
-					}
-				}				
-				
-				if (flag == true)
-				{
-					//if target and domain are disjoint
-					listSubProperties.add(elem);
-				}
-	    	}
-	    }
-		return listSubProperties;
-	}
-
+{	
 	
 	public ArrayList<DtoDefinitionClass> GetSomeRelationsOfClass(InfModel infModel, String clsuri) {
-		
+		System.out.println("\nExecuting GetSomeRelationsOfClass()...");
 		ArrayList<DtoDefinitionClass> dtoSomeList = new ArrayList<DtoDefinitionClass>();
 		
 		// Create a new query -- EQUIVALENT CLASS
@@ -211,7 +130,7 @@ public class Search
 		    RDFNode Class = row.get("x");
 		    RDFNode SuperClass = row.get("y");
 		    
-		    if(!Class.toString().contains(w3String) && !SuperClass.toString().contains(w3String) && Class.toString() != SuperClass.toString())
+		    if(!Class.toString().contains(InfModelQueryUtil.w3URI) && !SuperClass.toString().contains(InfModelQueryUtil.w3URI) && Class.toString() != SuperClass.toString())
 		    {		    	
 		    	ArrayList<DtoDefinitionClass> dtoListWithSource = DtoDefinitionClass.getDtosWithSource(dtoSomeList, SuperClass.toString());
 		    	if(dtoListWithSource != null)
@@ -234,7 +153,7 @@ public class Search
 	}
 	
 	public ArrayList<DtoDefinitionClass> GetMinRelationsOfClass(InfModel infModel, String clsuri) {
-
+		System.out.println("\nExecuting GetMinRelationsOfClass()...");
 		ArrayList<DtoDefinitionClass> dtoMinList = new ArrayList<DtoDefinitionClass>();		
 		
 		// Create a new query
@@ -381,7 +300,7 @@ public class Search
 		    RDFNode Class = row.get("x");
 		    RDFNode SuperClass = row.get("y");
 		    
-		    if(!Class.toString().contains(w3String) && !SuperClass.toString().contains(w3String) && Class.toString() != SuperClass.toString())
+		    if(!Class.toString().contains(InfModelQueryUtil.w3URI) && !SuperClass.toString().contains(InfModelQueryUtil.w3URI) && Class.toString() != SuperClass.toString())
 		    {		    	
 		    	ArrayList<DtoDefinitionClass> dtoListWithSource = DtoDefinitionClass.getDtosWithSource(dtoMinList, SuperClass.toString());
 		    	if(dtoListWithSource != null)
@@ -405,6 +324,7 @@ public class Search
 
 	public ArrayList<DtoDefinitionClass> GetMaxRelationsOfClass(InfModel infModel, String clsuri) {
 
+		System.out.println("\nExecuting GetMaxRelationsOfClass()...");
 		ArrayList<DtoDefinitionClass> dtoMaxList = new ArrayList<DtoDefinitionClass>();
 		
 		// Create a new query
@@ -550,7 +470,7 @@ public class Search
 		    RDFNode Class = row.get("x");
 		    RDFNode SuperClass = row.get("y");
 		    
-		    if(!Class.toString().contains(w3String) && !SuperClass.toString().contains(w3String) && Class.toString() != SuperClass.toString())
+		    if(!Class.toString().contains(InfModelQueryUtil.w3URI) && !SuperClass.toString().contains(InfModelQueryUtil.w3URI) && Class.toString() != SuperClass.toString())
 		    {		    	
 		    	ArrayList<DtoDefinitionClass> dtoListWithSource = DtoDefinitionClass.getDtosWithSource(dtoMaxList, SuperClass.toString());
 		    	if(dtoListWithSource != null)
@@ -574,6 +494,7 @@ public class Search
 	
  	public ArrayList<DtoDefinitionClass> GetExactlyRelationsOfClass(InfModel infModel, String clsuri) {
 
+ 		System.out.println("\nExecuting GetExactlyRelationsOfClass()...");
 		ArrayList<DtoDefinitionClass> dtoExactlyList = new ArrayList<DtoDefinitionClass>();
 		
 		// Create a new query
@@ -721,7 +642,7 @@ public class Search
 		    RDFNode Class = row.get("x");
 		    RDFNode SuperClass = row.get("y");
 		    
-		    if(!Class.toString().contains(w3String) && !SuperClass.toString().contains(w3String) && Class.toString() != SuperClass.toString())
+		    if(!Class.toString().contains(InfModelQueryUtil.w3URI) && !SuperClass.toString().contains(InfModelQueryUtil.w3URI) && Class.toString() != SuperClass.toString())
 		    {		    	
 		    	ArrayList<DtoDefinitionClass> dtoListWithSource = DtoDefinitionClass.getDtosWithSource(dtoExactlyList, SuperClass.toString());
 		    	if(dtoListWithSource != null)
@@ -828,61 +749,9 @@ public class Search
 	 * Specializations search
 	 */
 	
-	public ArrayList<DtoCompleteClass> GetCompleteClasses(String cls, InfModel infModel)
-	{
-		ArrayList<DtoCompleteClass> listClasses = new ArrayList<DtoCompleteClass>();
-		
-		// Create a new query
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT ?completeClass ?member " +
-		" WHERE {\n" +
-				"?completeClass " + "owl:equivalentClass" + " ?x .\n " +
-				"?x rdf:type owl:Class ."  +
-				"?x owl:unionOf  ?list     ." +
-        		"?list  rdf:rest*/rdf:first  ?member ."  +
-		"}";
-
-		/* The result is order by completClass */
-		
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
-		ResultSet results = qe.execSelect();
-		
-		// Output query results 
-		// ResultSetFormatter.out(System.out, results, query);
-		
-		DtoCompleteClass itemList = null;
-		
-		while (results.hasNext()) {
-
-			QuerySolution row= results.next();
-		    RDFNode completeClass = row.get("completeClass");
-		    RDFNode member = row.get("member");
-		    
-		    itemList = DtoCompleteClass.GetDtoCompleteClass(listClasses, completeClass.toString());
-		    if(itemList == null)
-		    {
-		    	//New Class
-		    	itemList = new DtoCompleteClass();
-		    	itemList.CompleteClass = completeClass.toString();
-		    	itemList.AddMember(member.toString());	
-		    	listClasses.add(itemList);
-		    } else {
-		    	itemList.AddMember(member.toString());
-		    }		    
-		}
-		
-		return listClasses;
-	}
-
 	public List<DtoCompleteClass> GetCompleteSubClasses(String className, List<String> listClassesOfInstance, InfModel infModel)
 	{
+		System.out.println("\nExecuting GetCompleteSubClasses()...");
 		List<DtoCompleteClass> ListCompleteClsAndSubCls = new ArrayList<DtoCompleteClass>();
 		
 		// Create a new query

@@ -64,7 +64,7 @@ public class ManagerInstances {
 					
 					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.SOME))
 					{
-						boolean existInstanceTarget = InfModelQueryUtil.existsIndividualsInRelationRange(infModel, instanceName, dto.Relation, dto.Target);
+						boolean existInstanceTarget = InfModelQueryUtil.existsIndividualsAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if(existInstanceTarget)
 						{
 							//Do nothing
@@ -100,7 +100,7 @@ public class ManagerInstances {
 					
 					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.MIN))
 					{
-						int quantityInstancesTarget = this.search.CheckExistInstancesTargetCardinality(infModel, instanceName, dto.Relation, dto.Target, dto.Cardinality);
+						int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if (quantityInstancesTarget < Integer.parseInt(dto.Cardinality))	//Min restriction
 						{
 							Instance instance = this.getInstance(listInstances, instanceName);
@@ -131,7 +131,7 @@ public class ManagerInstances {
 					
 					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.MAX))
 					{
-						int quantityInstancesTarget = this.search.CheckExistInstancesTargetCardinality(infModel, instanceName, dto.Relation, dto.Target, dto.Cardinality);
+						int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if (quantityInstancesTarget > Integer.parseInt(dto.Cardinality))	//Max restriction
 						{
 							Instance instance = this.getInstance(listInstances, instanceName);
@@ -162,7 +162,7 @@ public class ManagerInstances {
 					
 					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.EXACTLY))
 					{
-						int quantityInstancesTarget = this.search.CheckExistInstancesTargetCardinality(infModel, instanceName, dto.Relation, dto.Target, dto.Cardinality);
+						int quantityInstancesTarget =InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if (quantityInstancesTarget != Integer.parseInt(dto.Cardinality))	//Exactly restriction
 						{
 							Instance instance = this.getInstance(listInstances, instanceName);
@@ -245,7 +245,7 @@ public class ManagerInstances {
 			
 			for (DtoInstanceRelation dtoInstanceRelation : instanceListRelations) 
 			{			
-				ArrayList<String> subPropertiesWithDomainAndRange = search.GetSubPropertiesWithDomaninAndRange(instanceSelected.ns + instanceSelected.name, dtoInstanceRelation.Property, dtoInstanceRelation.Target, instanceListRelations, infModel);
+				List<String> subPropertiesWithDomainAndRange = InfModelQueryUtil.getSubPropertiesURIExcluding(infModel,instanceSelected.ns + instanceSelected.name, dtoInstanceRelation.Property, dtoInstanceRelation.Target, propertiesURIList);
 
 				if(subPropertiesWithDomainAndRange.size() > 0)
 				{
@@ -483,7 +483,7 @@ public class ManagerInstances {
 		{
 			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 			{
-				int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
+				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
 				
 				ArrayList<String> listDif = new ArrayList<String>();
 				while(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))
@@ -505,7 +505,7 @@ public class ManagerInstances {
 		{
 			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 			{
-				int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
+				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
 				
 				// Case 1 - same as min
 				if(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))

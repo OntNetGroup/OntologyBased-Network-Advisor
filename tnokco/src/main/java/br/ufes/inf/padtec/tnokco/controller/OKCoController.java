@@ -174,7 +174,7 @@ public class OKCoController {
 			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(ListAllInstances);
 
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIInRelationRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 			//populate the list of instances with had this relation	    	
 			List<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
@@ -190,7 +190,7 @@ public class OKCoController {
 		} else if (type.equals("objectMax"))
 		{
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIInRelationRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
@@ -207,7 +207,7 @@ public class OKCoController {
 
 			//Get values with this data property
 			List<DataPropertyValue> listValuesInRelation = new ArrayList<DataPropertyValue>();
-			List<String> individualsList = InfModelQueryUtil.getIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> individualsList = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			for(String individualURI: individualsList){
 				DataPropertyValue data = new DataPropertyValue();
 				data.value = individualURI.split("\\^\\^")[0];
@@ -282,7 +282,7 @@ public class OKCoController {
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.MIN))
 			{
-				int quantityInstancesTarget = HomeController.Search.CheckExistInstancesTargetCardinality(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target, dtoSelected.Cardinality);
+				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 				ArrayList<String> listDif = new ArrayList<String>();
 				while(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))
@@ -312,7 +312,7 @@ public class OKCoController {
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.EXACTLY))
 			{
-				int quantityInstancesTarget = HomeController.Search.CheckExistInstancesTargetCardinality(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target, dtoSelected.Cardinality);				
+				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);				
 
 				// Case 1 - same as min relation
 				if(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))

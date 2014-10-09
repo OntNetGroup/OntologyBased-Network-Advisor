@@ -1,6 +1,6 @@
 package br.com.padtec.okco.domain;
 
-import org.mindswap.pellet.jena.PelletReasonerFactory;
+import org.mindswap.pellet.jena.PelletReasoner;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -16,11 +16,10 @@ public class PelletReasonerImpl implements OntologyReasoner {
 	 */
 	public InfModel run(OntModel model) 
 	{		
-		Reasoner r = PelletReasonerFactory.theInstance().create();		
+		Reasoner r = new PelletReasoner();		
 		long antes = System.currentTimeMillis();  
 	  	InfModel infModel = ModelFactory.createInfModel(r, model);	  	  
-        long tempo = System.currentTimeMillis() - antes;
-        DateTimeHelper.printout("Pellet executed in " + tempo +" miliseconds.");
+        long tempo = System.currentTimeMillis() - antes;        
         System.out.printf("Pellet executed in %d miliseconds.%n", tempo);	  	
 		return infModel;
 	}

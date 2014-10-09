@@ -311,7 +311,7 @@ public class OKCo {
 				{
 					if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 					{
-						int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
+						int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
 						
 						ArrayList<String> listDif = new ArrayList<String>();
 						while(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))
@@ -333,7 +333,7 @@ public class OKCo {
 				{
 					if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 					{
-						int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
+						int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
 						
 						// Case 1 - same as min
 						if(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))
@@ -594,7 +594,7 @@ public class OKCo {
 					{
 						if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 						{
-							int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
+							int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
 							
 							ArrayList<String> listDif = new ArrayList<String>();
 							while(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))
@@ -616,7 +616,7 @@ public class OKCo {
 					{
 						if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 						{
-							int quantityInstancesTarget = search.CheckExistInstancesTargetCardinality(infModel, instance.ns + instance.name, dto.Relation, dto.Target, dto.Cardinality);
+							int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
 							
 							// Case 1 - same as min
 							if(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))

@@ -34,7 +34,6 @@ public class OntModelAPI {
 		while(i.hasNext()) {
 			Resource val = (Resource) i.next();
 			lista.add(val.getURI());
-			//DateTimeHelper.printout("OntProperty URI: "+val.getURI());
 		}
 		return lista;
 	}
@@ -79,8 +78,7 @@ public class OntModelAPI {
         });		
 		while(i.hasNext()) {
 			Resource val = (Resource) i.next();			
-			lista.add(val.getURI());
-			//DateTimeHelper.printout("OntClass URI: "+val.getURI());
+			lista.add(val.getURI());		
 		}		
 		return lista;
 	}
@@ -146,7 +144,6 @@ public class OntModelAPI {
 		while(i.hasNext()) {
 			Resource val = (Resource) i.next();			
 			lista.add(val.getURI());
-			//DateTimeHelper.printout("Individuals URI: "+val.getURI());
 		}		
 		return lista;
 	}
@@ -194,8 +191,7 @@ public class OntModelAPI {
         });	
 		while(i.hasNext()) {
 			Resource val = (Resource) i.next();			
-			lista.add(val.getURI());
-			//DateTimeHelper.printout("Individual URI: "+val.getURI()+ " - OntClass URI: "+ontclass.getURI());
+			lista.add(val.getURI());			
 		}		
 		return lista;
 	}
