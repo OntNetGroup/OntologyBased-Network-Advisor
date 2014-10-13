@@ -61,8 +61,8 @@ public class ProgramaCompletaRelacoes {
 		}
 		
 		Search search = new Search();
-	  	FactoryInstances factoryInstance = new FactoryInstances(search);
-	  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
+	  	FactoryInstances factoryInstance = new FactoryInstances();
+	  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance, model);
 	  	
 	  	//Call reasoner
 	  	InfModel infModel;

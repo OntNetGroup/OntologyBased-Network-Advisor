@@ -111,8 +111,8 @@ public class HomeController implements ServletContextAware{
 			HomeController.NS = Repository.getNameSpace();
 
 			HomeController.Search = new Search();
-			HomeController.FactoryInstances = new FactoryInstances(HomeController.Search);
-			HomeController.ManagerInstances = new ManagerInstances(HomeController.Search, HomeController.FactoryInstances, HomeController.Model);
+			HomeController.FactoryInstances = new FactoryInstances();
+			HomeController.ManagerInstances = new ManagerInstances(HomeController.FactoryInstances, HomeController.Model);
 
 			//Save temporary model
 			HomeController.tmpModel = Repository.clone(HomeController.Model);		
@@ -260,8 +260,8 @@ public class HomeController implements ServletContextAware{
 			}
 
 			Search = new Search();
-			FactoryInstances = new FactoryInstances(Search);
-			ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
+			FactoryInstances = new FactoryInstances();
+			ManagerInstances = new ManagerInstances(FactoryInstances, Model);
 
 			//Save temporary model
 			tmpModel = Repository.clone(HomeController.Model);
@@ -456,7 +456,7 @@ public class HomeController implements ServletContextAware{
 			request.getSession().removeAttribute("errorMensage");
 			request.getSession().removeAttribute("loadOk");
 			
-			ManagerRelations mRelations = new ManagerRelations(HomeController.Search, HomeController.ManagerInstances);
+			ManagerRelations mRelations = new ManagerRelations(HomeController.ManagerInstances);
 		  	HomeController.Model = mRelations.EnforceSubRelation(HomeController.Model, HomeController.InfModel, HomeController.NS);
 		  	
 		  	//Update list instances
@@ -492,7 +492,7 @@ public class HomeController implements ServletContextAware{
 
 			//Refresh list of instances
 	    	
-	    	ListAllInstances = ManagerInstances.getAllInstances(Model, InfModel, NS);
+	    	ListAllInstances = ManagerInstances.getAllInstances(InfModel);
 	    	
 	    	//Get model definitions on list of instances
 	    	

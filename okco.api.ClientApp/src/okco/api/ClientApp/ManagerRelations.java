@@ -8,7 +8,6 @@ import br.com.padtec.okco.application.AppLoader;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.Instance;
 import br.com.padtec.okco.domain.ManagerInstances;
-import br.com.padtec.okco.domain.Search;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -16,12 +15,10 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class ManagerRelations {
 	
-	private Search search;
 	private ManagerInstances manager;
 	
-	public ManagerRelations(Search search, ManagerInstances manager)
-	{
-		this.search = search;
+	public ManagerRelations(ManagerInstances manager)
+	{	
 		this.manager = manager;
 	}
 	
@@ -31,7 +28,7 @@ public class ManagerRelations {
 		try {
 			
 			// Get all instances			
-			ListAllInstances = manager.getAllInstances(model, infModel, NS);			
+			ListAllInstances = manager.getAllInstances(infModel);			
 			for (Instance instance : ListAllInstances) 
 			{				
 				List<String> sourceInstanceClasses = InfModelQueryUtil.getClassesURI(infModel,instance.ns + instance.name);

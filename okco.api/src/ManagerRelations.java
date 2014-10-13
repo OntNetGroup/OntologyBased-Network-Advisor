@@ -31,7 +31,7 @@ public class ManagerRelations {
 		try {
 			
 			// Get all instances			
-			ListAllInstances = manager.getAllInstances(model, infModel, NS);			
+			ListAllInstances = manager.getAllInstances(infModel);			
 			for (Instance instance : ListAllInstances) 
 			{				
 				List<String> sourceInstanceClasses = InfModelQueryUtil.getClassesURI(infModel,instance.ns + instance.name);

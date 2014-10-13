@@ -34,12 +34,12 @@ public class AppLoader {
 	
 	public static Search Search;
 	public static FactoryInstances FactoryInstances;
-	public static ManagerInstances ManagerInstances;		
-	public static ArrayList<DtoDefinitionClass> ModelDefinitions;
+	public static ManagerInstances ManagerInstances;	
 		
 	public static ArrayList<Instance> ListAllInstances;
 	public static ArrayList<String> ListModifiedInstances;
-		
+	public static ArrayList<DtoDefinitionClass> ModelDefinitions;
+	
 	public static void uploadBaseModel(InputStream in, String useReasoner, String optReasoner)
 	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
 	{
@@ -63,8 +63,8 @@ public class AppLoader {
 		 tmpModel = baseRepository.clone(Model);
 		 
 		 Search = new Search();
-		 FactoryInstances = new FactoryInstances(Search);
-		 ManagerInstances = new ManagerInstances(Search, FactoryInstances, Model);
+		 FactoryInstances = new FactoryInstances();
+		 ManagerInstances = new ManagerInstances(FactoryInstances, Model);
 		 			
 		 if(reasoning == true) InfModel = reasoner.run(Model);				
 		 else InfModel = baseRepository.clone(Model);			 
@@ -120,14 +120,16 @@ public class AppLoader {
 	
 	public static void updateLists() throws InconsistentOntologyException, OKCoExceptionInstanceFormat 
 	{	
+		System.out.println("Updating Lists()...");
     	// Refresh list of instances	    	
-    	ListAllInstances = ManagerInstances.getAllInstances(Model, InfModel, baseRepository.getNameSpace());	    	
+    	ListAllInstances = ManagerInstances.getAllInstances(InfModel);	    	
     	//Get model definitions on list of instances	    	
 	  	ModelDefinitions = Search.GetModelDefinitionsInInstances(ListAllInstances, InfModel);			
 		// Organize data (Update the list of all instances)			
     	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, Model, InfModel, baseRepository.getNameSpace());			
 		ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, InfModel, baseRepository.getNameSpace());			
     }
+	
 	
 	public static void updateAddingToLists(String instanceURI) throws InconsistentOntologyException, OKCoExceptionInstanceFormat
 	{							

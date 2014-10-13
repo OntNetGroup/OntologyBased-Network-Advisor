@@ -82,8 +82,8 @@ public class OKCo {
 			}
 			
 			Search search = new Search();
-		  	FactoryInstances factoryInstance = new FactoryInstances(search);
-		  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
+		  	FactoryInstances factoryInstance = new FactoryInstances();
+		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance, model);
 		  	
 		  	//Call reasoner
 		  	InfModel infModel;
@@ -96,7 +96,7 @@ public class OKCo {
 		  	
 		  	//get instances
 		  	
-		  	ArrayList<br.com.padtec.okco.domain.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+		  	ArrayList<br.com.padtec.okco.domain.Instance> ListAllInstances = managerInstances.getAllInstances(infModel);
 	  	  
 		  	// Gets definitions on model
 		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
@@ -251,8 +251,8 @@ public class OKCo {
 			}
 			
 			Search search = new Search();
-		  	FactoryInstances factoryInstance = new FactoryInstances(search);
-		  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
+		  	FactoryInstances factoryInstance = new FactoryInstances();
+		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance, model);
 		  	
 		  	//Call reasoner
 		  	InfModel infModel;
@@ -268,7 +268,7 @@ public class OKCo {
 												Update List instances
 			//--------------------------------------------------------------------------------------------- */
 		  	
-		  	ArrayList<br.com.padtec.okco.domain.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+		  	ArrayList<br.com.padtec.okco.domain.Instance> ListAllInstances = managerInstances.getAllInstances(infModel);
 	  	  
 		  	// Gets definitions on model
 		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
@@ -366,7 +366,7 @@ public class OKCo {
 											Update List instances
 			//--------------------------------------------------------------------------------------------- */
 
-			ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+			ListAllInstances = managerInstances.getAllInstances(infModel);
 		  	  
 		  	// Gets definitions on model
 		  	ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);		
@@ -534,8 +534,8 @@ public class OKCo {
 			}
 			
 			Search search = new Search();
-		  	FactoryInstances factoryInstance = new FactoryInstances(search);
-		  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
+		  	FactoryInstances factoryInstance = new FactoryInstances();
+		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance, model);
 		  	
 		  	//Call reasoner
 		  	InfModel infModel;
@@ -550,7 +550,7 @@ public class OKCo {
 												Update List instances
 			//--------------------------------------------------------------------------------------------- */
 		  	
-		  	ArrayList<br.com.padtec.okco.domain.Instance> ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+		  	ArrayList<br.com.padtec.okco.domain.Instance> ListAllInstances = managerInstances.getAllInstances(infModel);
 		  	  
 		  	// Gets definitions on model
 		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
@@ -650,7 +650,7 @@ public class OKCo {
 											Update List instances
 			//--------------------------------------------------------------------------------------------- */
 
-			ListAllInstances = managerInstances.getAllInstances(model, infModel, ns);
+			ListAllInstances = managerInstances.getAllInstances(infModel);
 		  	  
 		  	// Gets definitions on model
 		  	ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			

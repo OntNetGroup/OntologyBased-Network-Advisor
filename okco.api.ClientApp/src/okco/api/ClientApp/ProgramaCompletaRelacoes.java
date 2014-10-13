@@ -63,8 +63,8 @@ public class ProgramaCompletaRelacoes {
 		}
 		
 		Search search = new Search();
-	  	FactoryInstances factoryInstance = new FactoryInstances(search);
-	  	ManagerInstances managerInstances = new ManagerInstances(search, factoryInstance, model);
+	  	FactoryInstances factoryInstance = new FactoryInstances();
+	  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance, model);
 	  	
 	  	//Call reasoner
 	  	InfModel infModel;
@@ -77,7 +77,7 @@ public class ProgramaCompletaRelacoes {
 	  	
 	  	// --------------------------------------- AQUI ---------------------------------- //
 	  	
-	  	ManagerRelations mRelations = new ManagerRelations(search, managerInstances);
+	  	ManagerRelations mRelations = new ManagerRelations(managerInstances);
 	  	model = mRelations.EnforceSubRelation(model, infModel, ns);
 	  	
 	  	// --------------------------------------- AQUI ---------------------------------- //

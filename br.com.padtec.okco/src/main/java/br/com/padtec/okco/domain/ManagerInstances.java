@@ -1,6 +1,7 @@
 package br.com.padtec.okco.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
@@ -14,13 +15,11 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class ManagerInstances {
-	
-	private Search search;
+		
 	private FactoryInstances factory;
 
-	public ManagerInstances(Search search, FactoryInstances factory, OntModel model)
-	{
-		this.search = search;
+	public ManagerInstances(FactoryInstances factory, OntModel model)
+	{		
 		this.factory = factory;
 	}
 
@@ -52,7 +51,7 @@ public class ManagerInstances {
 	
 	public void UpdateInstanceAndRelations(ArrayList<Instance> listInstances, ArrayList<DtoDefinitionClass> dtoRelationsList, OntModel model, InfModel infModel, String ns)
 	{		
-
+		System.out.println("\nManager Instances: updating instance and relations()...");
 		for (DtoDefinitionClass dto : dtoRelationsList)
 		{			
 			List<String> listInstancesOfDomain =InfModelQueryUtil.getIndividualsURI(infModel, dto.Source);
@@ -196,7 +195,7 @@ public class ManagerInstances {
 	}
 
 	public void UpdateInstanceSpecialization(ArrayList<Instance> listAllInstances, OntModel model,	InfModel infModel, String ns) {
-		
+		System.out.println("\nManager Instances: updating instance specialization()...");
 		//update and check specialization class for all instances one by one		
 		
 		for (Instance instanceSelected : listAllInstances) 
@@ -220,9 +219,14 @@ public class ManagerInstances {
 			} else {
 				
 				for (String cls : instanceSelected.ListClasses)
-				{
-					List<DtoCompleteClass> ListCompleteClsAndSubCls = search.GetCompleteSubClasses(cls, instanceSelected.ListClasses, infModel);					
-					ListCompleteClsInstaceSelected.addAll(ListCompleteClsAndSubCls);						
+				{					
+					HashMap<String,List<String>> map = InfModelQueryUtil.getCompleteClassesURI(cls, instanceSelected.ListClasses, infModel);
+					for(String completeClassURI: map.keySet()){
+						DtoCompleteClass dtoCompleteClass = new DtoCompleteClass();
+						dtoCompleteClass.setCompleteClass(completeClassURI);
+						dtoCompleteClass.addAllMember(map.get(completeClassURI));
+						ListCompleteClsInstaceSelected.add(dtoCompleteClass);
+					}											
 				}
 			}
 			
@@ -339,8 +343,8 @@ public class ManagerInstances {
 		return list;
 	}
 
-	public ArrayList<Instance> getAllInstances(OntModel model, InfModel infModel, String ns) throws OKCoExceptionInstanceFormat {
-		
+	public ArrayList<Instance> getAllInstances(InfModel infModel) throws OKCoExceptionInstanceFormat {
+		System.out.println("\nManager Instances: Getting all isntances()...");
 		//NS from model
 		
 		ArrayList<Instance> listInstances = new ArrayList<Instance>();

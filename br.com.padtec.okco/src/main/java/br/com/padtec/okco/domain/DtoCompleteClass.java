@@ -1,6 +1,7 @@
 package br.com.padtec.okco.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DtoCompleteClass {
 
@@ -12,6 +13,15 @@ public class DtoCompleteClass {
 		this.Members = new ArrayList<String>();
 	}
 	
+	public void setCompleteClass(String classURI)
+	{
+		CompleteClass = classURI;
+	}
+	
+	public void addAllMember(List<String> members)
+	{
+		Members.addAll(members);
+	}
 	public static DtoCompleteClass GetDtoCompleteClass(ArrayList<DtoCompleteClass> list, String completeClass)
 	{
 		
