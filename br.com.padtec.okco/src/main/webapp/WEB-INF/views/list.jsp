@@ -1,12 +1,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="br.com.padtec.okco.domain.Instance" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 
 
 <% 
 	// Get the parameters from controller
 	
-	ArrayList<Instance> ListAllInstances = (ArrayList<Instance>)request.getSession().getAttribute("listInstances");
+	List<Instance> ListAllInstances = (List<Instance>)request.getSession().getAttribute("listInstances");
 %>
 
 <%@include file="../templates/header.jsp" %>

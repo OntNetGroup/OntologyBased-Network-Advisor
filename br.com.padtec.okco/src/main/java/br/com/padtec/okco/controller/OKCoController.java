@@ -78,9 +78,11 @@ public class OKCoController {
 	@RequestMapping(method = RequestMethod.GET, value="/details")
 	public String details(@RequestParam("id") String id, HttpServletRequest request) {
 
+		int value = Integer.parseInt(id);
+		
 		// ----- Instance selected ----//
 
-		instanceSelected = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(id));		
+		instanceSelected = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, value);		
 
 		// ----- Remove repeat values -------- //
 
@@ -370,7 +372,7 @@ public class OKCoController {
 
 		//Instance selected
 		Instance instance = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(idInstance));
-
+		System.out.println("Complete Instance: "+instance.ns+instance.name);
 		AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CompleteInstanceAuto(instance, AppLoader.baseRepository.getNameSpace(), AppLoader.getBaseModel(), AppLoader.getInferredModel(), AppLoader.ListAllInstances));
 
 		AppLoader.ListModifiedInstances.add(instance.ns + instance.name);
