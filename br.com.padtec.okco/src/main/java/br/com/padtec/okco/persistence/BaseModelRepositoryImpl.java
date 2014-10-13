@@ -1,7 +1,5 @@
 package br.com.padtec.okco.persistence;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,6 +8,8 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 
 import javax.swing.JFileChooser;
+
+import br.com.padtec.common.queries.OntModelAPI;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -55,6 +55,17 @@ public class BaseModelRepositoryImpl implements BaseModelRepository {
 	}
 	
 	/**
+	 * Set he base OntModel of this repository
+	 * 
+	 * @author John Guerson
+	 */
+	public void setBaseOntModel(OntModel ontModel)
+	{
+		baseOntModel = ontModel;
+		baseNameSpace = baseOntModel.getNsPrefixURI("");
+	}
+	
+	/**
 	 * Read the base OntModel of this repository from a input stream.
 	 * 
 	 * @param in: InputStream 
@@ -68,20 +79,16 @@ public class BaseModelRepositoryImpl implements BaseModelRepository {
 	}
 	
 	/**
-	 * Clone the base OntModel passed as argument and replace the existing base model in the repository for the new cloned one. 
+	 * Clone the ontModel passed as argument and replace the existing base model in the repository for the new cloned one. 
 	 * 
 	 * @param model: OntModel 
 	 * 
 	 * @author John Guerson
 	 */
-	public OntModel clone(OntModel model)
+	public OntModel cloneReplacing(OntModel model)
 	{
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		model.write(out, "RDF/XML");
-        InputStream in = new ByteArrayInputStream(out.toByteArray());
-        OntModel newModel = ModelFactory.createOntologyModel();
-        newModel.read(in,null);
-        //baseOntModel = newModel;
+		OntModel newModel = OntModelAPI.clone(model);
+        baseOntModel = newModel;
         return newModel;
 	}
 
@@ -157,5 +164,16 @@ public class BaseModelRepositoryImpl implements BaseModelRepository {
 		baseOntModel.write(out, syntax);
 		String result = out.toString();		
 		return result;
+	}
+	
+	/**
+	 * Erases the repository.
+	 * 
+	 * @author John Guerson
+	 */
+	public void clear()
+	{
+		baseNameSpace="";
+		baseOntModel=null;
 	}
 }

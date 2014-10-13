@@ -85,6 +85,9 @@ public class LoaderController {
 			 if(!file.getOriginalFilename().endsWith(".owl")) throw new OKCoExceptionFileFormat("Please select owl file.");
 			 InputStream in = file.getInputStream();			  
 			 
+			 /** ==================================================
+			  *  Performs the upload 
+			  *  =================================================== */
 			 AppLoader.uploadBaseModel(in, useReasoner, optReasoner);
 			  
 		}catch (InconsistentOntologyException e){
@@ -125,6 +128,9 @@ public class LoaderController {
 	@RequestMapping(method = RequestMethod.GET, value="/getModel")
 	public String getModel(HttpSession session, HttpServletRequest request) throws IOException 
 	{	     
+		/** ==================================================
+		*  Get the base model uplodaded as String text 
+		*  =================================================== */
 		if(AppLoader.isBaseModelUploaded())
 		{
 			request.getSession().removeAttribute("loadOk");
@@ -142,7 +148,12 @@ public class LoaderController {
 	public DtoResultCommit save(HttpServletRequest request)
 	{
 		DtoResultCommit dto = new DtoResultCommit();
-		dto.ok = AppLoader.saveBaseModel();		
+		
+		/** ==================================================
+		*  Saves the base model uploaded
+		*  =================================================== */
+		dto.ok = AppLoader.saveBaseModel();
+		
 		return dto;
 	}	
 }

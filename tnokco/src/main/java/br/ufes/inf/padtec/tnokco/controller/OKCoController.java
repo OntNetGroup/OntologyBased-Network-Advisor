@@ -107,11 +107,11 @@ public class OKCoController {
 
 		
 		List<DtoInstanceRelation> instanceListRelationsFromInstance = new ArrayList<DtoInstanceRelation>();
-		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, instanceSelected.ns + instanceSelected.name);
+		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(HomeController.InfModel, instanceSelected.ns + instanceSelected.name);
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;
-		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(HomeController.InfModel, propertyURI).get(0);
 		    instanceListRelationsFromInstance.add(dtoItem);
 		}
 		
@@ -366,7 +366,7 @@ public class OKCoController {
 		HomeController.ListModifiedInstances.add(instance.ns + instance.name);
 
 		//Update InfModel without calling reasoner
-		HomeController.InfModel = HomeController.Repository.clone(HomeController.Model);
+		HomeController.InfModel = HomeController.Repository.cloneReplacing(HomeController.Model);
 
 		//Update lists
 		//HomeController.UpdateLists();
@@ -527,7 +527,7 @@ public class OKCoController {
 
 					} else {
 						//Update InfModel without calling reasoner
-						HomeController.InfModel = HomeController.Repository.clone(HomeController.Model);
+						HomeController.InfModel = HomeController.Repository.cloneReplacing(HomeController.Model);
 
 						//Add on list modified instances
 						HomeController.ListModifiedInstances.add(iTarget.ns + iTarget.name);
@@ -583,7 +583,7 @@ public class OKCoController {
 			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 
 			//Save temporary model
-			HomeController.tmpModel = HomeController.Repository.clone(HomeController.Model);
+			HomeController.tmpModel = HomeController.Repository.cloneReplacing(HomeController.Model);
 
 			//Update list instances
 			HomeController.UpdateLists();
@@ -597,7 +597,7 @@ public class OKCoController {
 		} catch (Exception e) {
 
 			//Roll back the tempModel
-			HomeController.Model = HomeController.Repository.clone(HomeController.tmpModel);
+			HomeController.Model = HomeController.Repository.cloneReplacing(HomeController.tmpModel);
 			HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 
 			//Update list instances
@@ -730,7 +730,7 @@ public class OKCoController {
 					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 
 					//Save temporary model
-					HomeController.tmpModel = HomeController.Repository.clone(HomeController.Model);
+					HomeController.tmpModel = HomeController.Repository.cloneReplacing(HomeController.Model);
 
 					//Update list instances
 					HomeController.UpdateLists();
@@ -744,7 +744,7 @@ public class OKCoController {
 				} catch (Exception e) {
 
 					//Roll back the tempModel
-					HomeController.Model = HomeController.Repository.clone(HomeController.tmpModel);
+					HomeController.Model = HomeController.Repository.cloneReplacing(HomeController.tmpModel);
 					HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
 
 					//Update list instances
@@ -843,7 +843,7 @@ public class OKCoController {
 
 					} else {
 						//Update InfModel without calling reasoner
-						HomeController.InfModel = HomeController.Repository.clone(HomeController.Model);
+						HomeController.InfModel = HomeController.Repository.cloneReplacing(HomeController.Model);
 
 						//Add on list modified instances
 						HomeController.ListModifiedInstances.add(iSource.ns + iSource.name);

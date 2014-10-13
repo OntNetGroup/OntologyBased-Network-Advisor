@@ -1,5 +1,8 @@
 package br.com.padtec.common.queries;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +10,7 @@ import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.util.iterator.Filter;
@@ -211,4 +215,21 @@ public class OntModelAPI {
 		if(ontclass!=null) return getIndividualsURI(model,ontclass); 
 		else return new ArrayList<String>();		
 	}	
+	
+	/**
+	 * Clone the base OntModel passed as argument. 
+	 * 
+	 * @param model: OntModel 
+	 * 
+	 * @author John Guerson
+	 */
+	static public OntModel clone(OntModel model)
+	{
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		model.write(out, "RDF/XML");
+        InputStream in = new ByteArrayInputStream(out.toByteArray());
+        OntModel newModel = ModelFactory.createOntologyModel();
+        newModel.read(in,null);        
+        return newModel;
+	}
 }

@@ -38,11 +38,11 @@ public class ManagerRelations {
 				
 				//Get instance relations
 				List<DtoInstanceRelation> dtoInstanceRelations = new ArrayList<DtoInstanceRelation>();
-				List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, instance.ns + instance.name);
+				List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.getInferredModel(), instance.ns + instance.name);
 				for(String propertyURI: propertiesURIList){
 					DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 				    dtoItem.Property = propertyURI;
-				    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+				    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.getInferredModel(), propertyURI).get(0);
 				    dtoInstanceRelations.add(dtoItem);
 				}
 

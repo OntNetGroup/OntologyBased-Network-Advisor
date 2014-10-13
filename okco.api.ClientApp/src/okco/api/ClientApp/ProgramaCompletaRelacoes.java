@@ -6,11 +6,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import br.com.padtec.okco.domain.FactoryInstances;
-import br.com.padtec.okco.domain.HermitReasonerImpl;
 import br.com.padtec.okco.domain.ManagerInstances;
-import br.com.padtec.okco.domain.OntologyReasoner;
-import br.com.padtec.okco.domain.PelletReasonerImpl;
 import br.com.padtec.okco.domain.Search;
+import br.com.padtec.okco.persistence.HermitReasonerImpl;
+import br.com.padtec.okco.persistence.OntologyReasoner;
+import br.com.padtec.okco.persistence.PelletReasonerImpl;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -64,7 +64,7 @@ public class ProgramaCompletaRelacoes {
 		
 		Search search = new Search();
 	  	FactoryInstances factoryInstance = new FactoryInstances();
-	  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance, model);
+	  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance);
 	  	
 	  	//Call reasoner
 	  	InfModel infModel;

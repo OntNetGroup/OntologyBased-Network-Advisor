@@ -24,11 +24,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import br.com.padtec.okco.domain.DtoDefinitionClass;
 import br.com.padtec.okco.domain.DtoResultCommit;
 import br.com.padtec.okco.domain.FactoryInstances;
-import br.com.padtec.okco.domain.HermitReasonerImpl;
 import br.com.padtec.okco.domain.Instance;
 import br.com.padtec.okco.domain.ManagerInstances;
-import br.com.padtec.okco.domain.OntologyReasoner;
-import br.com.padtec.okco.domain.PelletReasonerImpl;
 import br.com.padtec.okco.domain.Search;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionFileFormat;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
@@ -36,6 +33,9 @@ import br.com.padtec.okco.domain.exceptions.OKCoExceptionNameSpace;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionReasoner;
 import br.com.padtec.okco.persistence.BaseModelRepository;
 import br.com.padtec.okco.persistence.BaseModelRepositoryImpl;
+import br.com.padtec.okco.persistence.HermitReasonerImpl;
+import br.com.padtec.okco.persistence.OntologyReasoner;
+import br.com.padtec.okco.persistence.PelletReasonerImpl;
 import br.ufes.inf.padtec.tnokco.business.ManagerRelations;
 import br.ufes.inf.padtec.tnokco.business.Reader;
 
@@ -105,17 +105,17 @@ public class HomeController implements ServletContextAware{
 			HomeController.Model = Repository.getBaseOntModel();
 			
 			//Load infModel
-			HomeController.InfModel = Repository.clone(HomeController.Model);
+			HomeController.InfModel = Repository.cloneReplacing(HomeController.Model);
 
 			// Name space
 			HomeController.NS = Repository.getNameSpace();
 
 			HomeController.Search = new Search();
 			HomeController.FactoryInstances = new FactoryInstances();
-			HomeController.ManagerInstances = new ManagerInstances(HomeController.FactoryInstances, HomeController.Model);
+			HomeController.ManagerInstances = new ManagerInstances(HomeController.FactoryInstances);
 
 			//Save temporary model
-			HomeController.tmpModel = Repository.clone(HomeController.Model);		
+			HomeController.tmpModel = Repository.cloneReplacing(HomeController.Model);		
 
 			//List modified instances
 			HomeController.ListModifiedInstances = new ArrayList<String>();			
@@ -261,11 +261,11 @@ public class HomeController implements ServletContextAware{
 
 			Search = new Search();
 			FactoryInstances = new FactoryInstances();
-			ManagerInstances = new ManagerInstances(FactoryInstances, Model);
+			ManagerInstances = new ManagerInstances(FactoryInstances);
 
 			//Save temporary model
-			tmpModel = Repository.clone(HomeController.Model);
-			InfModel = Repository.clone(HomeController.Model);
+			tmpModel = Repository.cloneReplacing(HomeController.Model);
+			InfModel = Repository.cloneReplacing(HomeController.Model);
 			
 			if(reasoningOnFirstLoad == true)
 			{
@@ -275,7 +275,7 @@ public class HomeController implements ServletContextAware{
 			} else {
 				
 				//Don't call reasoner
-				InfModel = Repository.clone(Model);
+				InfModel = Repository.cloneReplacing(Model);
 			}
 
 			//List modified instances
@@ -294,8 +294,8 @@ public class HomeController implements ServletContextAware{
 
 			//Roll back the last valid model
 
-			Model = HomeController.Repository.clone(HomeController.tmpModel);
-			InfModel = HomeController.Repository.clone(HomeController.Model);
+			Model = HomeController.Repository.cloneReplacing(HomeController.tmpModel);
+			InfModel = HomeController.Repository.cloneReplacing(HomeController.Model);
 
 			try {
 

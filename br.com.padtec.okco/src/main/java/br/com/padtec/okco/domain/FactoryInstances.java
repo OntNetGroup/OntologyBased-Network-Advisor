@@ -2,6 +2,8 @@ package br.com.padtec.okco.domain;
 
 import java.util.ArrayList;
 
+import br.com.padtec.common.queries.InfModelQueryUtil;
+
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -11,16 +13,10 @@ import com.hp.hpl.jena.rdf.model.Property;
 
 public class FactoryInstances {
 
-	
-	
-	public FactoryInstances()
-	{
-		
-	}
 
 	public OntModel CreateInstance(String instanceSource, String Relation, Instance instanceNew, String TargetClass, ArrayList<Instance> ListAllInstances, OntModel model)
 	{
-		ManagerInstances manager = new ManagerInstances(null, null);	
+		ManagerInstances manager = new ManagerInstances(null);	
 		
 		//Get instance, class, property
 		Individual indInstance = model.getIndividual(instanceSource);
@@ -65,20 +61,20 @@ public class FactoryInstances {
 	
 	public OntModel UpdateInstance(Instance instance, OntModel model, InfModel infModel, ArrayList<Instance> ListAllInstances)
 	{
-		ManagerInstances manager = new ManagerInstances(null, null);
+		ManagerInstances manager = new ManagerInstances(null);
 		
 		//Get instance, class, property
 		Individual indInstance = model.getIndividual(instance.ns + instance.name);
 		
 		//Remove the different
-		for (String s : manager.GetDifferentInstancesFrom(infModel, instance.ns + instance.name)) 
+		for (String s : InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instance.ns + instance.name)) 
 		{
 			Individual i = model.getIndividual(s);
 			indInstance.removeDifferentFrom(i);
 		}
 		
 		//Remove the same
-		for (String s : manager.GetSameInstancesFrom(infModel, instance.ns + instance.name)) 
+		for (String s : InfModelQueryUtil.getIndividualsURISameAs(infModel,instance.ns + instance.name)) 
 		{
 			Individual i = model.getIndividual(s);
 			indInstance.removeSameAs(i);

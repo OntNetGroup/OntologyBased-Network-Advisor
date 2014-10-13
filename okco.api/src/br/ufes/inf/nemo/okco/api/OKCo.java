@@ -11,12 +11,12 @@ import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.okco.domain.DtoCompleteClass;
 import br.com.padtec.okco.domain.DtoDefinitionClass;
 import br.com.padtec.okco.domain.FactoryInstances;
-import br.com.padtec.okco.domain.HermitReasonerImpl;
 import br.com.padtec.okco.domain.ManagerInstances;
-import br.com.padtec.okco.domain.OntologyReasoner;
-import br.com.padtec.okco.domain.PelletReasonerImpl;
 import br.com.padtec.okco.domain.Search;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.persistence.HermitReasonerImpl;
+import br.com.padtec.okco.persistence.OntologyReasoner;
+import br.com.padtec.okco.persistence.PelletReasonerImpl;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -83,7 +83,7 @@ public class OKCo {
 			
 			Search search = new Search();
 		  	FactoryInstances factoryInstance = new FactoryInstances();
-		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance, model);
+		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance);
 		  	
 		  	//Call reasoner
 		  	InfModel infModel;
@@ -252,7 +252,7 @@ public class OKCo {
 			
 			Search search = new Search();
 		  	FactoryInstances factoryInstance = new FactoryInstances();
-		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance, model);
+		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance);
 		  	
 		  	//Call reasoner
 		  	InfModel infModel;
@@ -535,7 +535,7 @@ public class OKCo {
 			
 			Search search = new Search();
 		  	FactoryInstances factoryInstance = new FactoryInstances();
-		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance, model);
+		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance);
 		  	
 		  	//Call reasoner
 		  	InfModel infModel;

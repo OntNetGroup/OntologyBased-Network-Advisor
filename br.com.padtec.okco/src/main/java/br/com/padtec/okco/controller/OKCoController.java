@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.okco.application.AppLoader;
 import br.com.padtec.okco.domain.DataPropertyValue;
@@ -94,11 +95,11 @@ public class OKCoController {
 
 		// ----- List relations ----- //
 		List<DtoInstanceRelation> instanceRelationsList = new ArrayList<DtoInstanceRelation>();
-		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, instanceSelected.ns + instanceSelected.name);
+		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.getInferredModel(), instanceSelected.ns + instanceSelected.name);
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;
-		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.getInferredModel(), propertyURI).get(0);
 		    instanceRelationsList.add(dtoItem);
 		}
 		
@@ -161,7 +162,7 @@ public class OKCoController {
 			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(AppLoader.ListAllInstances);
 
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(AppLoader.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 			//populate the list of instances with had this relation	    	
 			List<Instance> listInstancesInRelation = AppLoader.ManagerInstances.getIntersectionOf(AppLoader.ListAllInstances, listInstancesName);
@@ -177,7 +178,7 @@ public class OKCoController {
 		} else if (type.equals("objectMax"))
 		{
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(AppLoader.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
@@ -194,7 +195,7 @@ public class OKCoController {
 
 			//Get values with this data property
 			List<DataPropertyValue> listValuesInRelation = new ArrayList<DataPropertyValue>();
-			List<String> individualsList = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(AppLoader.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> individualsList = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			for(String individualURI: individualsList){
 				DataPropertyValue data = new DataPropertyValue();
 				data.value = individualURI.split("\\^\\^")[0];
@@ -249,13 +250,13 @@ public class OKCoController {
 			if(typeRelation.equals(EnumRelationTypeCompletness.SOME))
 			{
 				//create the the new instance
-				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(AppLoader.InfModel, dtoSelected.Target).size() + 1);
+				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(AppLoader.getInferredModel(), dtoSelected.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
 				Instance newInstance = new Instance(AppLoader.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
-				AppLoader.Model = AppLoader.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, AppLoader.Model, AppLoader.InfModel, AppLoader.ListAllInstances);
+				AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, AppLoader.getBaseModel(), AppLoader.getInferredModel(), AppLoader.ListAllInstances));
 				AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 				try {
 					AppLoader.updateAddingToLists(newInstance.ns + newInstance.name);
@@ -269,7 +270,7 @@ public class OKCoController {
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.MIN))
 			{
-				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(AppLoader.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 				ArrayList<String> listDif = new ArrayList<String>();
 				while(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))
@@ -280,7 +281,7 @@ public class OKCoController {
 					ArrayList<String> listClasses = new ArrayList<String>();
 					Instance newInstance = new Instance(AppLoader.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
-					AppLoader.Model = AppLoader.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, AppLoader.Model, AppLoader.InfModel, AppLoader.ListAllInstances);
+					AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, AppLoader.getBaseModel(), AppLoader.getInferredModel(), AppLoader.ListAllInstances));
 					AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 					AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 					try {
@@ -299,7 +300,7 @@ public class OKCoController {
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.EXACTLY))
 			{
-				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(AppLoader.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);				
+				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);				
 
 				// Case 1 - same as min relation
 				if(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))
@@ -313,7 +314,7 @@ public class OKCoController {
 						ArrayList<String> listClasses = new ArrayList<String>();
 						Instance newInstance = new Instance(AppLoader.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
-						AppLoader.Model = AppLoader.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, AppLoader.Model, AppLoader.InfModel, AppLoader.ListAllInstances);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, AppLoader.getBaseModel(), AppLoader.getInferredModel(), AppLoader.ListAllInstances));
 						AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 						AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 						try {
@@ -353,7 +354,7 @@ public class OKCoController {
 		AppLoader.ListModifiedInstances.add(instance.ns + instance.name);
 
 		//Update InfModel without calling reasoner
-		AppLoader.InfModel = AppLoader.baseRepository.clone(AppLoader.Model);
+		AppLoader.inferredRepository.setInferredModel(OntModelAPI.clone(AppLoader.baseRepository.getBaseOntModel()));
 
 		//Update lists
 		//HomeController.UpdateLists();
@@ -370,7 +371,7 @@ public class OKCoController {
 		//Instance selected
 		Instance instance = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(idInstance));
 
-		AppLoader.Model = AppLoader.ManagerInstances.CompleteInstanceAuto(instance, AppLoader.baseRepository.getNameSpace(), AppLoader.Model, AppLoader.InfModel, AppLoader.ListAllInstances);
+		AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CompleteInstanceAuto(instance, AppLoader.baseRepository.getNameSpace(), AppLoader.getBaseModel(), AppLoader.getInferredModel(), AppLoader.ListAllInstances));
 
 		AppLoader.ListModifiedInstances.add(instance.ns + instance.name);
 
@@ -413,7 +414,7 @@ public class OKCoController {
 		{
 
 			//All instances
-			valuesGraph  = graphPlotting.getArborStructureFor(AppLoader.InfModel); 
+			valuesGraph  = graphPlotting.getArborStructureFor(AppLoader.getInferredModel()); 
 
 		} else if(id != null && num > 0){
 
@@ -423,12 +424,12 @@ public class OKCoController {
 			if(typeView.equals("IN"))			//in on instance
 			{				
 				//Get the values
-				valuesGraph  = graphPlotting.getArborStructureComingInOf(AppLoader.InfModel, i.ns + i.name);
+				valuesGraph  = graphPlotting.getArborStructureComingInOf(AppLoader.getInferredModel(), i.ns + i.name);
 
 			} else if(typeView.equals("OUT")) {	//out from instance
 
 				//Get the values
-				valuesGraph  = graphPlotting.getArborStructureComingOutOf(AppLoader.InfModel, i.ns + i.name);	
+				valuesGraph  = graphPlotting.getArborStructureComingOutOf(AppLoader.getInferredModel(), i.ns + i.name);	
 			}			
 		}	
 
@@ -496,24 +497,24 @@ public class OKCoController {
 					if(iTarget.existInModel == false)
 					{
 						//Create instance
-						AppLoader.Model = AppLoader.ManagerInstances.CreateInstance(iSource.ns + iSource.name, dtoSelected.Relation, iTarget, dtoSelected.Target, AppLoader.ListAllInstances, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateInstance(iSource.ns + iSource.name, dtoSelected.Relation, iTarget, dtoSelected.Target, AppLoader.ListAllInstances, AppLoader.getBaseModel()));
 						isCreate = true;
 
 					} else {
 
 						//Selected instance
-						AppLoader.Model = AppLoader.ManagerInstances.CreateRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, AppLoader.getBaseModel()));
 						isUpdate = true;
 					}
 
 					if(dtoCommit.commitReasoner.equals("true"))
 					{
 						//Update InfModel calling reasoner
-						AppLoader.InfModel = AppLoader.reasoner.run(AppLoader.Model);
+						AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
 
 					} else {
 						//Update InfModel without calling reasoner
-						AppLoader.InfModel = AppLoader.baseRepository.clone(AppLoader.Model);
+						AppLoader.inferredRepository.setInferredModel(AppLoader.baseRepository.cloneReplacing(AppLoader.getBaseModel()));
 
 						//Add on list modified instances
 						AppLoader.ListModifiedInstances.add(iTarget.ns + iTarget.name);
@@ -526,10 +527,10 @@ public class OKCoController {
 				} catch (Exception e) {
 
 					if(isCreate == true)
-						AppLoader.Model = AppLoader.ManagerInstances.DeleteInstance(iTarget, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteInstance(iTarget, AppLoader.getBaseModel()));
 
 					if(isUpdate == true)
-						AppLoader.Model = AppLoader.ManagerInstances.DeleteRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, AppLoader.getBaseModel()));
 
 					dto.result = e.getMessage();
 					dto.ok = false;
@@ -566,10 +567,10 @@ public class OKCoController {
 		try {
 
 			//Run reasoner
-			AppLoader.InfModel = AppLoader.reasoner.run(AppLoader.Model);
+			AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
 
 			//Save temporary model
-			AppLoader.tmpModel = AppLoader.baseRepository.clone(AppLoader.Model);
+			AppLoader.tempModel = AppLoader.baseRepository.cloneReplacing(AppLoader.getBaseModel());
 
 			//Update list instances
 			AppLoader.updateLists();
@@ -583,8 +584,8 @@ public class OKCoController {
 		} catch (Exception e) {
 
 			//Roll back the tempModel
-			AppLoader.Model = AppLoader.baseRepository.clone(AppLoader.tmpModel);
-			AppLoader.InfModel = AppLoader.reasoner.run(AppLoader.Model);
+			AppLoader.baseRepository.setBaseOntModel(AppLoader.baseRepository.cloneReplacing(AppLoader.tempModel));
+			AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
 
 			//Update list instances
 			try {
@@ -689,11 +690,11 @@ public class OKCoController {
 					
 					if(type.equals("dif"))
 					{
-						AppLoader.Model = AppLoader.ManagerInstances.setDifferentInstances(s1.ns + s1.name, s2.ns + s2.name, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.setDifferentInstances(s1.ns + s1.name, s2.ns + s2.name, AppLoader.getBaseModel()));
 						
 					} else if (type.equals("same"))
 					{
-						AppLoader.Model = AppLoader.ManagerInstances.setSameInstances(s1.ns + s1.name, s2.ns + s2.name, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.setSameInstances(s1.ns + s1.name, s2.ns + s2.name, AppLoader.getBaseModel()));
 						
 					} else {
 						
@@ -713,10 +714,10 @@ public class OKCoController {
 				try {
 
 					//Run reasoner
-					AppLoader.InfModel = AppLoader.reasoner.run(AppLoader.Model);
+					AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
 
 					//Save temporary model
-					AppLoader.tmpModel = AppLoader.baseRepository.clone(AppLoader.Model);
+					AppLoader.tempModel = AppLoader.baseRepository.cloneReplacing(AppLoader.getBaseModel());
 
 					//Update list instances
 					AppLoader.updateLists();
@@ -730,8 +731,8 @@ public class OKCoController {
 				} catch (Exception e) {
 
 					//Roll back the tempModel
-					AppLoader.Model = AppLoader.baseRepository.clone(AppLoader.tmpModel);
-					AppLoader.InfModel = AppLoader.reasoner.run(AppLoader.Model);
+					AppLoader.baseRepository.setBaseOntModel(AppLoader.baseRepository.cloneReplacing(AppLoader.tempModel));
+					AppLoader.inferredRepository.setInferredModel( AppLoader.reasoner.run(AppLoader.getBaseModel()));
 
 					//Update list instances
 					try {
@@ -818,18 +819,18 @@ public class OKCoController {
 					if(dataTarget.existInModel == false)
 					{
 						//Create data value
-						AppLoader.Model = AppLoader.ManagerInstances.CreateTargetDataProperty(iSource.ns + iSource.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateTargetDataProperty(iSource.ns + iSource.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, AppLoader.getBaseModel()));
 						dataTarget.existInModel = true;
 					}
 
 					if(dtoCommit.commitReasoner.equals("true"))
 					{
 						//Update InfModel calling reasoner
-						AppLoader.InfModel = AppLoader.reasoner.run(AppLoader.Model);
+						AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
 
 					} else {
 						//Update InfModel without calling reasoner
-						AppLoader.InfModel = AppLoader.baseRepository.clone(AppLoader.Model);
+						AppLoader.inferredRepository.setInferredModel(AppLoader.baseRepository.cloneReplacing(AppLoader.getBaseModel()));
 
 						//Add on list modified instances
 						AppLoader.ListModifiedInstances.add(iSource.ns + iSource.name);
@@ -840,7 +841,7 @@ public class OKCoController {
 
 				} catch (Exception e) {
 
-					AppLoader.Model = AppLoader.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, AppLoader.Model);
+					AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, AppLoader.getBaseModel()));
 
 					dto.result = e.getMessage();
 					dto.ok = false;
@@ -885,7 +886,7 @@ public class OKCoController {
 
 				try {
 
-					AppLoader.Model = AppLoader.ManagerInstances.AddInstanceToClass(instanceSelected.ns + instanceSelected.name, cls, AppLoader.Model);
+					AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.AddInstanceToClass(instanceSelected.ns + instanceSelected.name, cls, AppLoader.getBaseModel()));
 
 				} catch (Exception e) {
 
@@ -910,7 +911,7 @@ public class OKCoController {
 
 				//Remove all created
 				for (String clsAux : listCls) {
-					AppLoader.Model = AppLoader.ManagerInstances.RemoveInstanceOnClass(instanceSelected.ns + instanceSelected.name, clsAux, AppLoader.Model);
+					AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.RemoveInstanceOnClass(instanceSelected.ns + instanceSelected.name, clsAux, AppLoader.getBaseModel()));
 				}
 
 				//Validate and update list and infModel
@@ -963,10 +964,10 @@ public class OKCoController {
 
 					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 						//Case data property
-						AppLoader.Model = AppLoader.ManagerInstances.CreateTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, AppLoader.getBaseModel()));
 					else
 						//Case object property
-						AppLoader.Model = AppLoader.ManagerInstances.CreateRelationProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateRelationProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName, AppLoader.getBaseModel()));
 
 				} catch (Exception e) {
 
@@ -994,10 +995,10 @@ public class OKCoController {
 
 					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 						//Case data property
-						AppLoader.Model = AppLoader.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, AppLoader.getBaseModel()));
 					else
 						//Case object property
-						AppLoader.Model = AppLoader.ManagerInstances.DeleteRelationProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs + dtoSpec.iTargetName, AppLoader.Model);
+						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteRelationProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs + dtoSpec.iTargetName, AppLoader.getBaseModel()));
 				}
 
 				//Validate and update list and infModel

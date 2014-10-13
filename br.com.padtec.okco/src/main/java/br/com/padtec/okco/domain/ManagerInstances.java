@@ -18,7 +18,7 @@ public class ManagerInstances {
 		
 	private FactoryInstances factory;
 
-	public ManagerInstances(FactoryInstances factory, OntModel model)
+	public ManagerInstances(FactoryInstances factory)
 	{		
 		this.factory = factory;
 	}
@@ -195,6 +195,7 @@ public class ManagerInstances {
 	}
 
 	public void UpdateInstanceSpecialization(ArrayList<Instance> listAllInstances, OntModel model,	InfModel infModel, String ns) {
+		
 		System.out.println("\nManager Instances: updating instance specialization()...");
 		//update and check specialization class for all instances one by one		
 		
@@ -239,11 +240,11 @@ public class ManagerInstances {
 			
 			//Get instance relations
 			List<DtoInstanceRelation> instanceListRelations = new ArrayList<DtoInstanceRelation>();
-			List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, instanceSelected.ns + instanceSelected.name);
+			List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.getInferredModel(), instanceSelected.ns + instanceSelected.name);
 			for(String propertyURI: propertiesURIList){
 				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 			    dtoItem.Property = propertyURI;
-			    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+			    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.getInferredModel(), propertyURI).get(0);
 			    instanceListRelations.add(dtoItem);
 			}
 			
@@ -370,20 +371,10 @@ public class ManagerInstances {
 	
 	public void UpdateInstanceSameAndDifferentFrom(InfModel infModel, Instance instance)
 	{
-		instance.ListDiferentInstances = this.GetDifferentInstancesFrom(infModel, instance.ns + instance.name);
-		instance.ListSameInstances = this.GetSameInstancesFrom(infModel, instance.ns + instance.name);
-	}
-
-	public List<String> GetDifferentInstancesFrom(InfModel infModel, String instanceName)
-	{		
-		return InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName);
+		instance.ListDiferentInstances = InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instance.ns + instance.name);
+		instance.ListSameInstances = InfModelQueryUtil.getIndividualsURISameAs(infModel, instance.ns + instance.name);
 	}
 	
-	public List<String> GetSameInstancesFrom(InfModel infModel, String instanceName)
-	{
-		return InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName);
-	}
-
 	public OntModel CreateTargetDataProperty(String instanceURI, String relation, String value, String TargetClass, OntModel model) {
 		
 		return this.factory.CreateTargetDataProperty(instanceURI, relation, value, TargetClass, model);

@@ -11,6 +11,7 @@ import br.com.padtec.okco.domain.Instance;
 import br.com.padtec.okco.domain.ManagerInstances;
 import br.com.padtec.okco.domain.Search;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
+import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -37,11 +38,11 @@ public class ManagerRelations {
 				
 				//Relations from instance
 				List<DtoInstanceRelation> dtoInstanceRelations = new ArrayList<DtoInstanceRelation>();
-				List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, instance.ns + instance.name);
+				List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(HomeController.InfModel, instance.ns + instance.name);
 				for(String propertyURI: propertiesURIList){
 					DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 				    dtoItem.Property = propertyURI;
-				    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+				    dtoItem.Target = InfModelQueryUtil.getRangeURIs(HomeController.InfModel, propertyURI).get(0);
 				    dtoInstanceRelations.add(dtoItem);
 				}
 				

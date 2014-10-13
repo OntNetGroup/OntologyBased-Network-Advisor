@@ -146,11 +146,11 @@ public class SindelController{
 			} else {
 				
 				//Don't call reasoner
-				HomeController.InfModel = HomeController.Repository.clone(HomeController.Model);
+				HomeController.InfModel = HomeController.Repository.cloneReplacing(HomeController.Model);
 			}
 			
 			//tmp model
-			HomeController.tmpModel = HomeController.Repository.clone(HomeController.Model);			
+			HomeController.tmpModel = HomeController.Repository.cloneReplacing(HomeController.Model);			
 			
 			// Update list instances
 			try {

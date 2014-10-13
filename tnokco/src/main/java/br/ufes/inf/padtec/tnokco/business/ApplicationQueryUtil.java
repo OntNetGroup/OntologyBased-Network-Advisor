@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.okco.application.AppLoader;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
+import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.query.Query;
@@ -95,11 +96,11 @@ public class ApplicationQueryUtil {
 	static public List<DtoInstanceRelation> GetInstanceAllRelations(InfModel infModel, String individualUri)
 	{
 		List<DtoInstanceRelation> listIndividualRelations = new ArrayList<DtoInstanceRelation>();
-		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, individualUri);
+		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(HomeController.InfModel, individualUri);
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;
-		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(HomeController.InfModel, propertyURI).get(0);
 		    listIndividualRelations.add(dtoItem);
 		}
 		

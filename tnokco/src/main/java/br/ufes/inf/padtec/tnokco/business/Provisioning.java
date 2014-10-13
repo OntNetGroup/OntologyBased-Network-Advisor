@@ -566,11 +566,11 @@ public class Provisioning {
 			
 			// Get instance relations
 			List<DtoInstanceRelation> rel = new ArrayList<DtoInstanceRelation>();
-			List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.InfModel, g800);
+			List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(HomeController.InfModel, g800);
 			for(String propertyURI: propertiesURIList){
 				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 			    dtoItem.Property = propertyURI;
-			    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.InfModel, propertyURI).get(0);
+			    dtoItem.Target = InfModelQueryUtil.getRangeURIs(HomeController.InfModel, propertyURI).get(0);
 			    rel.add(dtoItem);
 			}
 			
