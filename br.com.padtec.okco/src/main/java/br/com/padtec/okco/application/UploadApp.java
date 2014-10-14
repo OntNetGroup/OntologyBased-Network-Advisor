@@ -26,7 +26,7 @@ import br.com.padtec.okco.persistence.PelletReasonerImpl;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
-public class AppLoader {
+public class UploadApp {
 
 	/** Reasoner */
 	public static OntologyReasoner reasoner;
@@ -45,11 +45,11 @@ public class AppLoader {
 	public static FactoryInstances FactoryInstances;
 	public static ManagerInstances ManagerInstances;		
 	public static ArrayList<Instance> ListAllInstances;
-	public static ArrayList<String> ListModifiedInstances;
+	
 	public static ArrayList<DtoDefinitionClass> ModelDefinitions;
 	
 	/**
-	 * Upload the base model ontology in OWL. The user might opt for using the reasoner at the uploading.
+	 * Upload the base model ontology in OWL. The user might opt for not using the reasoner at the upload.
 	 * 
 	 * @param in: OWL Input Stream
 	 * @param useReasoner: Use the reasoner at the uploading 
@@ -66,12 +66,15 @@ public class AppLoader {
 	public static void uploadBaseModel(InputStream in, String useReasoner, String optReasoner)
 	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
 	{		
+		/** Upload the base model to a base repository */
 		baseRepository = new BaseModelRepositoryImpl();		 
 		baseRepository.readBaseOntModel(in);		 		 			  
 		if(baseRepository.getNameSpace() == null) throw new OKCoExceptionNameSpace("Please select owl file with defined namespace.");
 		
+		/** Keep a temporary model for rollbacking the base model */
 		tempModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 		
+		/** Run the inference if required, otherwise the inferred model is a clone of the base model */
 		if(useReasoner!=null && useReasoner.equals("on"))
 		{	 
 			 if(optReasoner.equals("hermit")) reasoner = new HermitReasonerImpl();				  
@@ -84,28 +87,26 @@ public class AppLoader {
 			 InfModel  inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 			 inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}		 
-		 
+		
+		//Check the validity of these lines...
 		Search = new Search();
 		FactoryInstances = new FactoryInstances();
-		ManagerInstances = new ManagerInstances(FactoryInstances);
-		  	  
-	  	ListModifiedInstances = new ArrayList<String>();
-
+		ManagerInstances = new ManagerInstances(FactoryInstances);	  	
 		updateLists();		
 	}
-	
-	public static BaseModelRepository getBaseRepository() { return baseRepository; }
-	
-	public static OntModel getBaseModel() { return baseRepository.getBaseOntModel(); }
-	
-	public static InferredModelRepository getInferredRepository() { return inferredRepository; }
-	
-	public static InfModel getInferredModel() { return inferredRepository.getInferredOntModel(); }
-	
-	public static boolean isBaseModelUploaded() { return baseRepository.getBaseOntModel()!=null; }
-	
+		
+	public static BaseModelRepository getBaseRepository() { return baseRepository; }	
+	public static OntModel getBaseModel() { return baseRepository.getBaseOntModel(); }	
+	public static InferredModelRepository getInferredRepository() { return inferredRepository; }	
+	public static InfModel getInferredModel() { return inferredRepository.getInferredOntModel(); }	
+	public static boolean isBaseModelUploaded() { return baseRepository.getBaseOntModel()!=null; }	
 	public static String getBaseModelAsString() { return baseRepository.getBaseOntModelAsString(); }
 	
+	/**
+	 * Save Base Model to a file.
+	 * 
+	 * @author John Guerson
+	 */
 	public static boolean saveBaseModel()
 	{		
 		if(baseRepository.getBaseOntModel() != null)
@@ -117,16 +118,26 @@ public class AppLoader {
 		}
 	}
 	
+	/**
+	 * Clear all the repositories (base model, inferred model and temporary model).
+	 * As well as the resoner choice.
+	 * 
+	 * @author John Guerson
+	 */
 	public static void clear()
 	{		
 		baseRepository.clear();
 		inferredRepository.clear();
 		tempModel = null;		
-		ListAllInstances = null;
-		ListModifiedInstances = null;
+		ListAllInstances = null;		
 		reasoner = null;
 	}
 	
+	/**
+	 * Rollback to a valid model, which is stored in the temporary model
+	 * 
+	 * @author John Guerson
+	 */
 	public static void rollBack()
 	{				
 		baseRepository.cloneReplacing(tempModel);
@@ -140,6 +151,7 @@ public class AppLoader {
 		}			
 	}
 	
+	//Check the validity of this method
 	public static void updateLists() throws InconsistentOntologyException, OKCoExceptionInstanceFormat 
 	{	
 		System.out.println("Updating Lists()...");
@@ -154,7 +166,7 @@ public class AppLoader {
 		ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, inferredModel, baseRepository.getNameSpace());			
     }
 	
-	
+	//Check the validity of this method
 	public static void updateAddingToLists(String instanceURI) throws InconsistentOntologyException, OKCoExceptionInstanceFormat
 	{							
 		System.out.println("Updating and Adding to Lists()...");
@@ -168,12 +180,4 @@ public class AppLoader {
 		ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, inferredModel, baseRepository.getNameSpace());			
 	}
 	
-	public static void updateModifiedList()
-	{
-		for (Instance i : ListAllInstances) 
-		{
-			String s = i.ns + i.name;
-			if (ListModifiedInstances.contains(s)) i.setModified(true);			
-		}
-	}
 }

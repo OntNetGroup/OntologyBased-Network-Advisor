@@ -7,7 +7,7 @@ import java.util.List;
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
-import br.com.padtec.okco.application.AppLoader;
+import br.com.padtec.okco.application.UploadApp;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;

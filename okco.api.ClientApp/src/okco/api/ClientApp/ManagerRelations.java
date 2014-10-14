@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
-import br.com.padtec.okco.application.AppLoader;
+import br.com.padtec.okco.application.UploadApp;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.Instance;
 import br.com.padtec.okco.domain.ManagerInstances;
@@ -35,11 +35,11 @@ public class ManagerRelations {
 				
 				//Relations from instance
 				List<DtoInstanceRelation> dtoInstanceRelations = new ArrayList<DtoInstanceRelation>();
-				List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.getInferredModel(), instance.ns + instance.name);
+				List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(UploadApp.getInferredModel(), instance.ns + instance.name);
 				for(String propertyURI: propertiesURIList){
 					DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 				    dtoItem.Property = propertyURI;
-				    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.getInferredModel(), propertyURI).get(0);
+				    dtoItem.Target = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI).get(0);
 				    dtoInstanceRelations.add(dtoItem);
 				}
 

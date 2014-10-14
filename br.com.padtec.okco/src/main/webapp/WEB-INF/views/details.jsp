@@ -1,4 +1,4 @@
-<%@ page import="br.com.padtec.okco.application.AppLoader"%>
+<%@ page import="br.com.padtec.okco.application.UploadApp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="br.com.padtec.okco.domain.Instance"%>
 <%@ page import="br.com.padtec.okco.domain.DtoCompleteClass"%>
@@ -218,10 +218,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListSameInstances)
-													{
-														Instance i = AppLoader.ManagerInstances.getInstance(ListAllInstances, iName);
-														out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
-													}
+																		{
+																			Instance i = UploadApp.ManagerInstances.getInstance(ListAllInstances, iName);
+																			out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
+																		}
 							%>
 							</ul>
 						</td>
@@ -233,10 +233,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListDiferentInstances)
-													{
-														Instance i = AppLoader.ManagerInstances.getInstance(ListAllInstances, iName);
-														out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
-													}
+																		{
+																			Instance i = UploadApp.ManagerInstances.getInstance(ListAllInstances, iName);
+																			out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
+																		}
 							%>
 							</ul>
 						</td>

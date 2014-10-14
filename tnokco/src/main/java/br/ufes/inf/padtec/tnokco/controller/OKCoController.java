@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.common.queries.OntPropertyEnum;
-import br.com.padtec.okco.application.AppLoader;
+import br.com.padtec.okco.application.UploadApp;
+import br.com.padtec.okco.controller.DtoResult;
 import br.com.padtec.okco.domain.DataPropertyValue;
 import br.com.padtec.okco.domain.DtoClassifyInstancePost;
 import br.com.padtec.okco.domain.DtoCommitMaxCard;
@@ -28,7 +29,6 @@ import br.com.padtec.okco.domain.DtoDefinitionClass;
 import br.com.padtec.okco.domain.DtoGetPrevNextSpecProperty;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.DtoPropertyAndSubProperties;
-import br.com.padtec.okco.domain.DtoResultCommit;
 import br.com.padtec.okco.domain.DtoViewSelectInstance;
 import br.com.padtec.okco.domain.EnumRelationTypeCompletness;
 import br.com.padtec.okco.domain.Instance;
@@ -495,11 +495,11 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/commitInstance", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit commitInstance(@RequestBody final DtoCommitPost dtoCommit) {    
+	public @ResponseBody DtoResult commitInstance(@RequestBody final DtoCommitPost dtoCommit) {    
 
 		boolean isCreate = false;
 		boolean isUpdate = false;
-		DtoResultCommit dto = new DtoResultCommit();
+		DtoResult dto = new DtoResult();
 		if(listNewInstancesRelation.size() != 0)
 		{
 			Instance iSource = instanceSelected;
@@ -545,8 +545,8 @@ public class OKCoController {
 					if(isUpdate == true)
 						HomeController.Model = HomeController.ManagerInstances.DeleteRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, HomeController.Model);
 
-					dto.result = e.getMessage();
-					dto.ok = false;
+					dto.setMessage(e.getMessage());
+					dto.setIsSucceed(false);
 					return dto;
 				}
 
@@ -563,20 +563,20 @@ public class OKCoController {
 			//Update list instances modified
 			HomeController.UpdateListsModified();
 
-			dto.ok = true;
-			dto.result = "ok";
+			dto.setIsSucceed(true);
+			dto.setMessage("ok");
 			return dto;
 		}
 
-		dto.ok = true;
-		dto.result = "nothing";
+		dto.setIsSucceed(true);
+		dto.setMessage("nothing");
 		return dto;
 	}
 
 	@RequestMapping(value="/runReasoner", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit runReasoner() {    
+	public @ResponseBody DtoResult runReasoner() {    
 
-		DtoResultCommit dto = new DtoResultCommit();
+		DtoResult dto = new DtoResult();
 		try {
 
 			//Run reasoner
@@ -615,13 +615,13 @@ public class OKCoController {
 
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 
-			dto.result = error;
-			dto.ok = false;
+			dto.setMessage(error);
+			dto.setIsSucceed(false);
 			return dto;
 		}
 
-		dto.ok = true;
-		dto.result = "ok";
+		dto.setIsSucceed(true);
+		dto.setMessage("ok");
 		return dto;
 	}
 
@@ -679,9 +679,9 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
+	public @ResponseBody DtoResult commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
 		
-		DtoResultCommit dtoResult = new DtoResultCommit();
+		DtoResult dtoResult = new DtoResult();
 		
 		try {
 			
@@ -711,8 +711,8 @@ public class OKCoController {
 						
 					} else {
 						
-						dtoResult.result = "error";
-						dtoResult.ok = false;
+						dtoResult.setMessage("error");
+						dtoResult.setIsSucceed(false);
 						return dtoResult;
 					}
 					
@@ -762,8 +762,8 @@ public class OKCoController {
 
 					String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 					
-					dtoResult.result = error;
-					dtoResult.ok = false;
+					dtoResult.setMessage(error);
+					dtoResult.setIsSucceed(false);
 					return dtoResult;
 				}
 				
@@ -774,21 +774,21 @@ public class OKCoController {
 				
 			} else {
 				
-				dtoResult.result = "error";
-				dtoResult.ok = false;
+				dtoResult.setMessage("error");
+				dtoResult.setIsSucceed(false);
 				return dtoResult;
 			}
 			
 		} catch (Exception e) {
 			
-			dtoResult.result = "error";
-			dtoResult.ok = false;
+			dtoResult.setMessage("error");
+			dtoResult.setIsSucceed(false);
 			return dtoResult;
 		}
 		
 
-		dtoResult.result = "ok";
-		dtoResult.ok = true;
+		dtoResult.setMessage("ok");
+		dtoResult.setIsSucceed(true);
 		return dtoResult;
 	}
 	
@@ -819,9 +819,9 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/commitDataValues", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit commitDataValues(@RequestBody final DtoCommitPost dtoCommit) {    
+	public @ResponseBody DtoResult commitDataValues(@RequestBody final DtoCommitPost dtoCommit) {    
 
-		DtoResultCommit dto = new DtoResultCommit();
+		DtoResult dto = new DtoResult();
 		if(listNewDataValuesRelation.size() != 0)
 		{
 			Instance iSource = instanceSelected;
@@ -856,8 +856,8 @@ public class OKCoController {
 
 					HomeController.Model = HomeController.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, HomeController.Model);
 
-					dto.result = e.getMessage();
-					dto.ok = false;
+					dto.setMessage(e.getMessage());
+					dto.setIsSucceed(false);
 					return dto;
 				}
 			} //end for
@@ -865,13 +865,13 @@ public class OKCoController {
 			//Update list instances modified
 			HomeController.UpdateListsModified();
 
-			dto.ok = true;
-			dto.result = "ok";
+			dto.setIsSucceed(true);
+			dto.setMessage("ok");
 			return dto;
 		} //end if
 
-		dto.ok = true;
-		dto.result = "nothing";
+		dto.setIsSucceed(true);
+		dto.setMessage("nothing");
 		return dto;
 	}
 
@@ -879,9 +879,9 @@ public class OKCoController {
 	/*------ AJAX - Specializations -----*/	
 
 	@RequestMapping(value="/classifyInstanceClasses", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit classifyInstanceClasses(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{    
+	public @ResponseBody DtoResult classifyInstanceClasses(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{    
 
-		DtoResultCommit dtoResult = new DtoResultCommit();
+		DtoResult dtoResult = new DtoResult();
 		String separatorValues = "%&&%";
 
 		/* 0 -> arrayCls */
@@ -903,8 +903,8 @@ public class OKCoController {
 
 				} catch (Exception e) {
 
-					dtoResult.result = e.getMessage();
-					dtoResult.ok = false;
+					dtoResult.setMessage(e.getMessage());
+					dtoResult.setIsSucceed(false);
 					return dtoResult;
 				}
 			}
@@ -919,8 +919,8 @@ public class OKCoController {
 
 			} catch (Exception e) {
 
-				dtoResult.result = e.getMessage();
-				dtoResult.ok = false;
+				dtoResult.setMessage(e.getMessage());
+				dtoResult.setIsSucceed(false);
 
 				//Remove all created
 				for (String clsAux : listCls) {
@@ -942,22 +942,22 @@ public class OKCoController {
 			//Update list instances modified
 			HomeController.UpdateListsModified();
 
-			dtoResult.ok = true;
-			dtoResult.result = "ok";
+			dtoResult.setIsSucceed(true);
+			dtoResult.setMessage("ok");
 			return dtoResult;
 		}
 
-		dtoResult.ok = true;
-		dtoResult.result = "nothing";
+		dtoResult.setIsSucceed(true);
+		dtoResult.setMessage("nothing");
 		return dtoResult;		  
 	}
 
 	@RequestMapping(value="/classifyInstanceProperty", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit classifyInstanceProperty(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
+	public @ResponseBody DtoResult classifyInstanceProperty(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
 
 		DtoPropertyAndSubProperties dtoSpec = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, Integer.parseInt(dto.id));
 
-		DtoResultCommit dtoResult = new DtoResultCommit();
+		DtoResult dtoResult = new DtoResult();
 		String separatorValues = "%&&%";
 
 		/* 0 -> arrayCls */
@@ -984,8 +984,8 @@ public class OKCoController {
 
 				} catch (Exception e) {
 
-					dtoResult.result = e.getMessage();
-					dtoResult.ok = false;
+					dtoResult.setMessage(e.getMessage());
+					dtoResult.setIsSucceed(false);
 					return dtoResult;
 				}
 			}
@@ -1000,8 +1000,8 @@ public class OKCoController {
 
 			} catch (Exception e) {
 
-				dtoResult.result = e.getMessage();
-				dtoResult.ok = false;
+				dtoResult.setMessage(e.getMessage());
+				dtoResult.setIsSucceed(false);
 
 				//Remove all created
 				for (String subRelAux : listRelations) {
@@ -1029,13 +1029,13 @@ public class OKCoController {
 			//Update list instances modified
 			HomeController.UpdateListsModified();
 
-			dtoResult.ok = true;
-			dtoResult.result = "ok";
+			dtoResult.setIsSucceed(true);
+			dtoResult.setMessage("ok");
 			return dtoResult;
 		}
 
-		dtoResult.ok = true;
-		dtoResult.result = "nothing";
+		dtoResult.setIsSucceed(true);
+		dtoResult.setMessage("nothing");
 		return dtoResult;		  
 	}
 

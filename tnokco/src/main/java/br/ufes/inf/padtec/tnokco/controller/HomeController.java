@@ -21,8 +21,8 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import br.com.padtec.okco.controller.DtoResult;
 import br.com.padtec.okco.domain.DtoDefinitionClass;
-import br.com.padtec.okco.domain.DtoResultCommit;
 import br.com.padtec.okco.domain.FactoryInstances;
 import br.com.padtec.okco.domain.Instance;
 import br.com.padtec.okco.domain.ManagerInstances;
@@ -549,16 +549,16 @@ public class HomeController implements ServletContextAware{
 
 	/* AJAX */
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
-	public DtoResultCommit save(HttpServletRequest request)
+	public DtoResult save(HttpServletRequest request)
 	{
-		DtoResultCommit dto = new DtoResultCommit();
+		DtoResult dto = new DtoResult();
 		if(Model != null)
 		{
-			dto.ok = true;
+			dto.setIsSucceed(true);
 			Repository.saveBaseOntModel("");
 
 		} else {
-			dto.ok = false;
+			dto.setIsSucceed(false);
 		}
 
 		return dto;

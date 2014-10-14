@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.queries.OntPropertyEnum;
-import br.com.padtec.okco.application.AppLoader;
+import br.com.padtec.okco.application.CompleterApp;
+import br.com.padtec.okco.application.UploadApp;
 import br.com.padtec.okco.domain.DataPropertyValue;
 import br.com.padtec.okco.domain.DtoClassifyInstancePost;
 import br.com.padtec.okco.domain.DtoCommitMaxCard;
@@ -29,7 +30,6 @@ import br.com.padtec.okco.domain.DtoDefinitionClass;
 import br.com.padtec.okco.domain.DtoGetPrevNextSpecProperty;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.DtoPropertyAndSubProperties;
-import br.com.padtec.okco.domain.DtoResultCommit;
 import br.com.padtec.okco.domain.DtoViewSelectInstance;
 import br.com.padtec.okco.domain.EnumRelationTypeCompletness;
 import br.com.padtec.okco.domain.Instance;
@@ -61,20 +61,6 @@ public class OKCoController {
 	//Specialization - Property and subProperties
 	ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties;  
 
-	@RequestMapping(method = RequestMethod.GET, value="/list")
-	public String list(HttpServletRequest request) 
-	{
-		if(AppLoader.ListAllInstances != null) 
-		{
-			request.getSession().setAttribute("listInstances", AppLoader.ListAllInstances);
-			request.getSession().setAttribute("listModifedInstances", AppLoader.ListModifiedInstances);
-			return "list";
-		} else{
-			request.getSession().setAttribute("loadOk", "false");
-			return "index";
-		}
-	}
-
 	@RequestMapping(method = RequestMethod.GET, value="/details")
 	public String details(@RequestParam("id") String id, HttpServletRequest request) {
 
@@ -82,14 +68,14 @@ public class OKCoController {
 		
 		// ----- Instance selected ----//
 
-		instanceSelected = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, value);		
+		instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, value);		
 
 		// ----- Remove repeat values -------- //
 
-		ArrayList<DtoDefinitionClass> listSomeClassDefinition = AppLoader.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
-		ArrayList<DtoDefinitionClass> listMinClassDefinition = AppLoader.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
-		ArrayList<DtoDefinitionClass> listMaxClassDefinition = AppLoader.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
-		ArrayList<DtoDefinitionClass> listExactlyClassDefinition = AppLoader.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
+		ArrayList<DtoDefinitionClass> listSomeClassDefinition = UploadApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
+		ArrayList<DtoDefinitionClass> listMinClassDefinition = UploadApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
+		ArrayList<DtoDefinitionClass> listMaxClassDefinition = UploadApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
+		ArrayList<DtoDefinitionClass> listExactlyClassDefinition = UploadApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
 
 		// ------ Complete classes list ------//
 
@@ -97,11 +83,11 @@ public class OKCoController {
 
 		// ----- List relations ----- //
 		List<DtoInstanceRelation> instanceRelationsList = new ArrayList<DtoInstanceRelation>();
-		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(AppLoader.getInferredModel(), instanceSelected.ns + instanceSelected.name);
+		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(UploadApp.getInferredModel(), instanceSelected.ns + instanceSelected.name);
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;
-		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(AppLoader.getInferredModel(), propertyURI).get(0);
+		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI).get(0);
 		    instanceRelationsList.add(dtoItem);
 		}
 		
@@ -126,7 +112,7 @@ public class OKCoController {
 		//Information
 		request.getSession().setAttribute("instanceListRelations", instanceRelationsList);
 		request.getSession().setAttribute("instanceSelected", instanceSelected);		
-		request.getSession().setAttribute("listInstances", AppLoader.ListAllInstances);
+		request.getSession().setAttribute("listInstances", UploadApp.ListAllInstances);
 
 		// ------  View to return ------//
 
@@ -137,7 +123,7 @@ public class OKCoController {
 	public String completeProperty(@RequestParam("idDefinition") String idDefinition, @RequestParam("idInstance") String idInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInstance));
 
 		//Search for the definition class correctly
 
@@ -161,18 +147,18 @@ public class OKCoController {
 			listNewInstancesRelation = new ArrayList<Instance>();
 
 			//Get all instances except the instance selected for Same/Different list		
-			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(AppLoader.ListAllInstances);
+			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(UploadApp.ListAllInstances);
 
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 			//populate the list of instances with had this relation	    	
-			List<Instance> listInstancesInRelation = AppLoader.ManagerInstances.getIntersectionOf(AppLoader.ListAllInstances, listInstancesName);
+			List<Instance> listInstancesInRelation = UploadApp.ManagerInstances.getIntersectionOf(UploadApp.ListAllInstances, listInstancesName);
 
 			//Create others sections
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
 			request.getSession().setAttribute("listInstancesSameDifferent", listInstancesSameDifferent);
-			request.getSession().setAttribute("listInstances", AppLoader.ListAllInstances);
+			request.getSession().setAttribute("listInstances", UploadApp.ListAllInstances);
 
 			//return view	    	
 			return "completePropertyObject";
@@ -180,11 +166,11 @@ public class OKCoController {
 		} else if (type.equals("objectMax"))
 		{
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
-			List<Instance> listInstancesInRelation = AppLoader.ManagerInstances.getIntersectionOf(AppLoader.ListAllInstances, listInstancesName);
+			List<Instance> listInstancesInRelation = UploadApp.ManagerInstances.getIntersectionOf(UploadApp.ListAllInstances, listInstancesName);
 
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
 
@@ -197,7 +183,7 @@ public class OKCoController {
 
 			//Get values with this data property
 			List<DataPropertyValue> listValuesInRelation = new ArrayList<DataPropertyValue>();
-			List<String> individualsList = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> individualsList = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			for(String individualURI: individualsList){
 				DataPropertyValue data = new DataPropertyValue();
 				data.value = individualURI.split("\\^\\^")[0];
@@ -228,7 +214,7 @@ public class OKCoController {
 		 * */
 
 		//Instance selected
-		Instance instance = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInstance));
 
 		//Search for the definition class correctly
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome, Integer.parseInt(idDefinition));
@@ -252,16 +238,16 @@ public class OKCoController {
 			if(typeRelation.equals(EnumRelationTypeCompletness.SOME))
 			{
 				//create the the new instance
-				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(AppLoader.getInferredModel(), dtoSelected.Target).size() + 1);
+				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(UploadApp.getInferredModel(), dtoSelected.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
-				Instance newInstance = new Instance(AppLoader.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
+				Instance newInstance = new Instance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
-				AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, AppLoader.getBaseModel(), AppLoader.getInferredModel(), AppLoader.ListAllInstances));
-				AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+				UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), UploadApp.ListAllInstances));
+				CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 				try {
-					AppLoader.updateAddingToLists(newInstance.ns + newInstance.name);
+					UploadApp.updateAddingToLists(newInstance.ns + newInstance.name);
 				} catch (InconsistentOntologyException e) {
 					
 					e.printStackTrace();
@@ -272,7 +258,7 @@ public class OKCoController {
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.MIN))
 			{
-				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 				ArrayList<String> listDif = new ArrayList<String>();
 				while(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))
@@ -281,13 +267,13 @@ public class OKCoController {
 					String instanceName = dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 					ArrayList<String> listSame = new ArrayList<String>();		  
 					ArrayList<String> listClasses = new ArrayList<String>();
-					Instance newInstance = new Instance(AppLoader.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
+					Instance newInstance = new Instance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
-					AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, AppLoader.getBaseModel(), AppLoader.getInferredModel(), AppLoader.ListAllInstances));
-					AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
-					AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+					UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), UploadApp.ListAllInstances));
+					CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+					CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 					try {
-						AppLoader.updateAddingToLists(newInstance.ns + newInstance.name);
+						UploadApp.updateAddingToLists(newInstance.ns + newInstance.name);
 					} catch (InconsistentOntologyException e) {
 						
 						e.printStackTrace();
@@ -302,7 +288,7 @@ public class OKCoController {
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.EXACTLY))
 			{
-				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(AppLoader.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);				
+				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);				
 
 				// Case 1 - same as min relation
 				if(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))
@@ -314,13 +300,13 @@ public class OKCoController {
 						String instanceName = dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 						ArrayList<String> listSame = new ArrayList<String>();
 						ArrayList<String> listClasses = new ArrayList<String>();
-						Instance newInstance = new Instance(AppLoader.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
+						Instance newInstance = new Instance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, AppLoader.getBaseModel(), AppLoader.getInferredModel(), AppLoader.ListAllInstances));
-						AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
-						AppLoader.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), UploadApp.ListAllInstances));
+						CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
+						CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 						try {
-							AppLoader.updateAddingToLists(newInstance.ns + newInstance.name);
+							UploadApp.updateAddingToLists(newInstance.ns + newInstance.name);
 						} catch (InconsistentOntologyException e) {
 							
 							e.printStackTrace();
@@ -353,16 +339,16 @@ public class OKCoController {
 		}
 
 		//Add on list modified instances
-		AppLoader.ListModifiedInstances.add(instance.ns + instance.name);
+		CompleterApp.ListModifiedInstances.add(instance.ns + instance.name);
 
 		//Update InfModel without calling reasoner
-		AppLoader.inferredRepository.setInferredModel(OntModelAPI.clone(AppLoader.baseRepository.getBaseOntModel()));
+		UploadApp.inferredRepository.setInferredModel(OntModelAPI.clone(UploadApp.baseRepository.getBaseOntModel()));
 
 		//Update lists
 		//HomeController.UpdateLists();
 
 		//Update list instances modified
-		AppLoader.updateModifiedList();
+		CompleterApp.updateModifiedList();
 
 		return "redirect:list";
 	}
@@ -371,14 +357,14 @@ public class OKCoController {
 	public String completeInstanceAuto(@RequestParam("idInstance") String idInstance, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInstance));
 		System.out.println("Complete Instance: "+instance.ns+instance.name);
-		AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CompleteInstanceAuto(instance, AppLoader.baseRepository.getNameSpace(), AppLoader.getBaseModel(), AppLoader.getInferredModel(), AppLoader.ListAllInstances));
+		UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CompleteInstanceAuto(instance, UploadApp.baseRepository.getNameSpace(), UploadApp.getBaseModel(), UploadApp.getInferredModel(), UploadApp.ListAllInstances));
 
-		AppLoader.ListModifiedInstances.add(instance.ns + instance.name);
+		CompleterApp.ListModifiedInstances.add(instance.ns + instance.name);
 
 		try {
-			AppLoader.updateLists();
+			UploadApp.updateLists();
 		} catch (InconsistentOntologyException e) {
 			e.printStackTrace();
 		} catch (OKCoExceptionInstanceFormat e) {
@@ -386,7 +372,7 @@ public class OKCoController {
 		}
 
 		//Update list instances modified
-		AppLoader.updateModifiedList();
+		CompleterApp.updateModifiedList();
 
 		return "redirect:list";
 	}
@@ -416,22 +402,22 @@ public class OKCoController {
 		{
 
 			//All instances
-			valuesGraph  = graphPlotting.getArborStructureFor(AppLoader.getInferredModel()); 
+			valuesGraph  = graphPlotting.getArborStructureFor(UploadApp.getInferredModel()); 
 
 		} else if(id != null && num > 0){
 
 			//Get the instance
-			i = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(id));
+			i = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(id));
 
 			if(typeView.equals("IN"))			//in on instance
 			{				
 				//Get the values
-				valuesGraph  = graphPlotting.getArborStructureComingInOf(AppLoader.getInferredModel(), i.ns + i.name);
+				valuesGraph  = graphPlotting.getArborStructureComingInOf(UploadApp.getInferredModel(), i.ns + i.name);
 
 			} else if(typeView.equals("OUT")) {	//out from instance
 
 				//Get the values
-				valuesGraph  = graphPlotting.getArborStructureComingOutOf(AppLoader.getInferredModel(), i.ns + i.name);	
+				valuesGraph  = graphPlotting.getArborStructureComingOutOf(UploadApp.getInferredModel(), i.ns + i.name);	
 			}			
 		}	
 
@@ -477,18 +463,18 @@ public class OKCoController {
 				listDif.add(s);			
 		}
 
-		Instance i = new Instance(AppLoader.baseRepository.getNameSpace(), name, new ArrayList<String>(), listDif, listSame, false);
+		Instance i = new Instance(UploadApp.baseRepository.getNameSpace(), name, new ArrayList<String>(), listDif, listSame, false);
 
 		listNewInstancesRelation.add(i);
 		return i;
 	}
 
 	@RequestMapping(value="/commitInstance", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit commitInstance(@RequestBody final DtoCommitPost dtoCommit) {    
+	public @ResponseBody DtoResult commitInstance(@RequestBody final DtoCommitPost dtoCommit) {    
 
 		boolean isCreate = false;
 		boolean isUpdate = false;
-		DtoResultCommit dto = new DtoResultCommit();
+		DtoResult dto = new DtoResult();
 		if(listNewInstancesRelation.size() != 0)
 		{
 			Instance iSource = instanceSelected;
@@ -499,43 +485,43 @@ public class OKCoController {
 					if(iTarget.existInModel == false)
 					{
 						//Create instance
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateInstance(iSource.ns + iSource.name, dtoSelected.Relation, iTarget, dtoSelected.Target, AppLoader.ListAllInstances, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateInstance(iSource.ns + iSource.name, dtoSelected.Relation, iTarget, dtoSelected.Target, UploadApp.ListAllInstances, UploadApp.getBaseModel()));
 						isCreate = true;
 
 					} else {
 
 						//Selected instance
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, UploadApp.getBaseModel()));
 						isUpdate = true;
 					}
 
 					if(dtoCommit.commitReasoner.equals("true"))
 					{
 						//Update InfModel calling reasoner
-						AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
+						UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
 
 					} else {
 						//Update InfModel without calling reasoner
-						AppLoader.inferredRepository.setInferredModel(AppLoader.baseRepository.cloneReplacing(AppLoader.getBaseModel()));
+						UploadApp.inferredRepository.setInferredModel(UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel()));
 
 						//Add on list modified instances
-						AppLoader.ListModifiedInstances.add(iTarget.ns + iTarget.name);
+						CompleterApp.ListModifiedInstances.add(iTarget.ns + iTarget.name);
 					}			 
 
 					//Update list
 					//HomeController.UpdateLists();
-					AppLoader.updateAddingToLists(iTarget.ns + iTarget.name);
+					UploadApp.updateAddingToLists(iTarget.ns + iTarget.name);
 
 				} catch (Exception e) {
 
 					if(isCreate == true)
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteInstance(iTarget, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteInstance(iTarget, UploadApp.getBaseModel()));
 
 					if(isUpdate == true)
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, UploadApp.getBaseModel()));
 
-					dto.result = e.getMessage();
-					dto.ok = false;
+					dto.setMessage(e.getMessage());
+					dto.setIsSucceed(false);
 					return dto;
 				}
 
@@ -546,52 +532,52 @@ public class OKCoController {
 
 			} else {
 				//Add on list modified instances
-				AppLoader.ListModifiedInstances.add(iSource.ns + iSource.name);			
+				CompleterApp.ListModifiedInstances.add(iSource.ns + iSource.name);			
 			}
 
 			//Update list instances modified
-			AppLoader.updateModifiedList();
+			CompleterApp.updateModifiedList();
 
-			dto.ok = true;
-			dto.result = "ok";
+			dto.setIsSucceed(true);
+			dto.setMessage("ok");
 			return dto;
 		}
 
-		dto.ok = true;
-		dto.result = "nothing";
+		dto.setIsSucceed(true);
+		dto.setMessage("nothing");
 		return dto;
 	}
 
 	@RequestMapping(value="/runReasoner", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit runReasoner() {    
+	public @ResponseBody DtoResult runReasoner() {    
 
-		DtoResultCommit dto = new DtoResultCommit();
+		DtoResult dto = new DtoResult();
 		try {
 
 			//Run reasoner
-			AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
+			UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
 
 			//Save temporary model
-			AppLoader.tempModel = AppLoader.baseRepository.cloneReplacing(AppLoader.getBaseModel());
+			UploadApp.tempModel = UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel());
 
 			//Update list instances
-			AppLoader.updateLists();
+			UploadApp.updateLists();
 
 			//Clean list modified instances
-			AppLoader.ListModifiedInstances = new ArrayList<String>();
+			CompleterApp.ListModifiedInstances = new ArrayList<String>();
 
 			//Update list instances modified
-			AppLoader.updateModifiedList();
+			CompleterApp.updateModifiedList();
 
 		} catch (Exception e) {
 
 			//Roll back the tempModel
-			AppLoader.baseRepository.setBaseOntModel(AppLoader.baseRepository.cloneReplacing(AppLoader.tempModel));
-			AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
+			UploadApp.baseRepository.setBaseOntModel(UploadApp.baseRepository.cloneReplacing(UploadApp.tempModel));
+			UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
 
 			//Update list instances
 			try {
-				AppLoader.updateLists();
+				UploadApp.updateLists();
 
 			} catch (InconsistentOntologyException e1) {
 
@@ -604,13 +590,13 @@ public class OKCoController {
 
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 
-			dto.result = error;
-			dto.ok = false;
+			dto.setMessage(error);
+			dto.setIsSucceed(false);
 			return dto;
 		}
 
-		dto.ok = true;
-		dto.result = "ok";
+		dto.setIsSucceed(true);
+		dto.setMessage("ok");
 		return dto;
 	}
 
@@ -631,7 +617,7 @@ public class OKCoController {
 
 		if(id != null)
 		{
-			Instance i = AppLoader.ManagerInstances.getInstance(listNewInstancesRelation, Integer.parseInt(id));
+			Instance i = UploadApp.ManagerInstances.getInstance(listNewInstancesRelation, Integer.parseInt(id));
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, listNewInstancesRelation);
 			return dto;
 		}
@@ -644,8 +630,8 @@ public class OKCoController {
 
 		if(id != null)
 		{
-			Instance i = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(id));
-			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, AppLoader.ListAllInstances);
+			Instance i = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(id));
+			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, UploadApp.ListAllInstances);
 			return dto;
 		}
 
@@ -659,7 +645,7 @@ public class OKCoController {
 
 		if(id != null)
 		{
-			Instance i = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(id));
+			Instance i = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(id));
 			listNewInstancesRelation.add(i);
 			return i;
 		}
@@ -668,9 +654,9 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
+	public @ResponseBody DtoResult commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
 		
-		DtoResultCommit dtoResult = new DtoResultCommit();
+		DtoResult dtoResult = new DtoResult();
 		
 		try {
 			
@@ -687,26 +673,26 @@ public class OKCoController {
 					String idInsSource = parts[1];
 					String idInsTarget = parts[2];
 					
-					Instance s1 = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(idInsSource));
-					Instance s2 = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, Integer.parseInt(idInsTarget));
+					Instance s1 = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInsSource));
+					Instance s2 = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInsTarget));
 					
 					if(type.equals("dif"))
 					{
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.setDifferentInstances(s1.ns + s1.name, s2.ns + s2.name, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.setDifferentInstances(s1.ns + s1.name, s2.ns + s2.name, UploadApp.getBaseModel()));
 						
 					} else if (type.equals("same"))
 					{
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.setSameInstances(s1.ns + s1.name, s2.ns + s2.name, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.setSameInstances(s1.ns + s1.name, s2.ns + s2.name, UploadApp.getBaseModel()));
 						
 					} else {
 						
-						dtoResult.result = "error";
-						dtoResult.ok = false;
+						dtoResult.setMessage("error");
+						dtoResult.setIsSucceed(false);
 						return dtoResult;
 					}
 					
-					AppLoader.ListModifiedInstances.add(s1.ns + s1.name);
-					AppLoader.ListModifiedInstances.add(s2.ns + s2.name);
+					CompleterApp.ListModifiedInstances.add(s1.ns + s1.name);
+					CompleterApp.ListModifiedInstances.add(s2.ns + s2.name);
 				}
 
 			}
@@ -716,29 +702,29 @@ public class OKCoController {
 				try {
 
 					//Run reasoner
-					AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
+					UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
 
 					//Save temporary model
-					AppLoader.tempModel = AppLoader.baseRepository.cloneReplacing(AppLoader.getBaseModel());
+					UploadApp.tempModel = UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel());
 
 					//Update list instances
-					AppLoader.updateLists();
+					UploadApp.updateLists();
 
 					//Clean list modified instances
-					AppLoader.ListModifiedInstances = new ArrayList<String>();
+					CompleterApp.ListModifiedInstances = new ArrayList<String>();
 
 					//Update list instances modified
-					AppLoader.updateModifiedList();
+					CompleterApp.updateModifiedList();
 
 				} catch (Exception e) {
 
 					//Roll back the tempModel
-					AppLoader.baseRepository.setBaseOntModel(AppLoader.baseRepository.cloneReplacing(AppLoader.tempModel));
-					AppLoader.inferredRepository.setInferredModel( AppLoader.reasoner.run(AppLoader.getBaseModel()));
+					UploadApp.baseRepository.setBaseOntModel(UploadApp.baseRepository.cloneReplacing(UploadApp.tempModel));
+					UploadApp.inferredRepository.setInferredModel( UploadApp.reasoner.run(UploadApp.getBaseModel()));
 
 					//Update list instances
 					try {
-						AppLoader.updateLists();
+						UploadApp.updateLists();
 
 					} catch (InconsistentOntologyException e1) {
 
@@ -751,33 +737,33 @@ public class OKCoController {
 
 					String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 					
-					dtoResult.result = error;
-					dtoResult.ok = false;
+					dtoResult.setMessage(error);
+					dtoResult.setIsSucceed(false);
 					return dtoResult;
 				}
 				
 			} if(dto.runReasoner.equals("false")) {
 				
 				//Update list instances modified
-				AppLoader.updateModifiedList();
+				CompleterApp.updateModifiedList();
 				
 			} else {
 				
-				dtoResult.result = "error";
-				dtoResult.ok = false;
+				dtoResult.setMessage("error");
+				dtoResult.setIsSucceed(false);
 				return dtoResult;
 			}
 			
 		} catch (Exception e) {
 			
-			dtoResult.result = "error";
-			dtoResult.ok = false;
+			dtoResult.setMessage("error");
+			dtoResult.setIsSucceed(false);
 			return dtoResult;
 		}
 		
 
-		dtoResult.result = "ok";
-		dtoResult.ok = true;
+		dtoResult.setMessage("ok");
+		dtoResult.setIsSucceed(true);
 		return dtoResult;
 	}
 	
@@ -808,9 +794,9 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/commitDataValues", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit commitDataValues(@RequestBody final DtoCommitPost dtoCommit) {    
+	public @ResponseBody DtoResult commitDataValues(@RequestBody final DtoCommitPost dtoCommit) {    
 
-		DtoResultCommit dto = new DtoResultCommit();
+		DtoResult dto = new DtoResult();
 		if(listNewDataValuesRelation.size() != 0)
 		{
 			Instance iSource = instanceSelected;
@@ -821,46 +807,46 @@ public class OKCoController {
 					if(dataTarget.existInModel == false)
 					{
 						//Create data value
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateTargetDataProperty(iSource.ns + iSource.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateTargetDataProperty(iSource.ns + iSource.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, UploadApp.getBaseModel()));
 						dataTarget.existInModel = true;
 					}
 
 					if(dtoCommit.commitReasoner.equals("true"))
 					{
 						//Update InfModel calling reasoner
-						AppLoader.inferredRepository.setInferredModel(AppLoader.reasoner.run(AppLoader.getBaseModel()));
+						UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
 
 					} else {
 						//Update InfModel without calling reasoner
-						AppLoader.inferredRepository.setInferredModel(AppLoader.baseRepository.cloneReplacing(AppLoader.getBaseModel()));
+						UploadApp.inferredRepository.setInferredModel(UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel()));
 
 						//Add on list modified instances
-						AppLoader.ListModifiedInstances.add(iSource.ns + iSource.name);
+						CompleterApp.ListModifiedInstances.add(iSource.ns + iSource.name);
 					}						 
 
 					//Update list instances
-					AppLoader.updateLists();
+					UploadApp.updateLists();
 
 				} catch (Exception e) {
 
-					AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, AppLoader.getBaseModel()));
+					UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, UploadApp.getBaseModel()));
 
-					dto.result = e.getMessage();
-					dto.ok = false;
+					dto.setMessage(e.getMessage());
+					dto.setIsSucceed(false);
 					return dto;
 				}
 			} //end for
 
 			//Update list instances modified
-			AppLoader.updateModifiedList();
+			CompleterApp.updateModifiedList();
 
-			dto.ok = true;
-			dto.result = "ok";
+			dto.setIsSucceed(true);
+			dto.setMessage("ok");
 			return dto;
 		} //end if
 
-		dto.ok = true;
-		dto.result = "nothing";
+		dto.setIsSucceed(true);
+		dto.setMessage("nothing");
 		return dto;
 	}
 
@@ -868,9 +854,9 @@ public class OKCoController {
 	/*------ AJAX - Specializations -----*/	
 
 	@RequestMapping(value="/classifyInstanceClasses", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit classifyInstanceClasses(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{    
+	public @ResponseBody DtoResult classifyInstanceClasses(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{    
 
-		DtoResultCommit dtoResult = new DtoResultCommit();
+		DtoResult dtoResult = new DtoResult();
 		String separatorValues = "%&&%";
 
 		/* 0 -> arrayCls */
@@ -888,12 +874,12 @@ public class OKCoController {
 
 				try {
 
-					AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.AddInstanceToClass(instanceSelected.ns + instanceSelected.name, cls, AppLoader.getBaseModel()));
+					UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.AddInstanceToClass(instanceSelected.ns + instanceSelected.name, cls, UploadApp.getBaseModel()));
 
 				} catch (Exception e) {
 
-					dtoResult.result = e.getMessage();
-					dtoResult.ok = false;
+					dtoResult.setMessage(e.getMessage());
+					dtoResult.setIsSucceed(false);
 					return dtoResult;
 				}
 			}
@@ -901,52 +887,52 @@ public class OKCoController {
 			try {
 
 				//Validate and update list
-				AppLoader.updateAddingToLists(instanceSelected.ns + instanceSelected.name);;
+				UploadApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);;
 
 				//Instance selected update
-				instanceSelected = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, instanceSelected .id);
+				instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, instanceSelected .id);
 
 			} catch (Exception e) {
 
-				dtoResult.result = e.getMessage();
-				dtoResult.ok = false;
+				dtoResult.setMessage(e.getMessage());
+				dtoResult.setIsSucceed(false);
 
 				//Remove all created
 				for (String clsAux : listCls) {
-					AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.RemoveInstanceOnClass(instanceSelected.ns + instanceSelected.name, clsAux, AppLoader.getBaseModel()));
+					UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.RemoveInstanceOnClass(instanceSelected.ns + instanceSelected.name, clsAux, UploadApp.getBaseModel()));
 				}
 
 				//Validate and update list and infModel
-				AppLoader.updateLists();
+				UploadApp.updateLists();
 
 				//Instance selected update
-				instanceSelected = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, instanceSelected .id);
+				instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, instanceSelected .id);
 
 				return dtoResult;
 			}	
 
 			//Add on list modified instances
-			AppLoader.ListModifiedInstances.add(instanceSelected.ns + instanceSelected.name);
+			CompleterApp.ListModifiedInstances.add(instanceSelected.ns + instanceSelected.name);
 
 			//Update list instances modified
-			AppLoader.updateModifiedList();
+			CompleterApp.updateModifiedList();
 
-			dtoResult.ok = true;
-			dtoResult.result = "ok";
+			dtoResult.setIsSucceed(true);
+			dtoResult.setMessage("ok");
 			return dtoResult;
 		}
 
-		dtoResult.ok = true;
-		dtoResult.result = "nothing";
+		dtoResult.setIsSucceed(true);
+		dtoResult.setMessage("nothing");
 		return dtoResult;		  
 	}
 
 	@RequestMapping(value="/classifyInstanceProperty", method = RequestMethod.POST)
-	public @ResponseBody DtoResultCommit classifyInstanceProperty(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
+	public @ResponseBody DtoResult classifyInstanceProperty(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
 
 		DtoPropertyAndSubProperties dtoSpec = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, Integer.parseInt(dto.id));
 
-		DtoResultCommit dtoResult = new DtoResultCommit();
+		DtoResult dtoResult = new DtoResult();
 		String separatorValues = "%&&%";
 
 		/* 0 -> arrayCls */
@@ -966,15 +952,15 @@ public class OKCoController {
 
 					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 						//Case data property
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, UploadApp.getBaseModel()));
 					else
 						//Case object property
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.CreateRelationProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateRelationProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName, UploadApp.getBaseModel()));
 
 				} catch (Exception e) {
 
-					dtoResult.result = e.getMessage();
-					dtoResult.ok = false;
+					dtoResult.setMessage(e.getMessage());
+					dtoResult.setIsSucceed(false);
 					return dtoResult;
 				}
 			}
@@ -982,49 +968,49 @@ public class OKCoController {
 			try {
 				
 				//Validate and update list
-				AppLoader.updateAddingToLists(instanceSelected.ns + instanceSelected.name);
+				UploadApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);
 
 				//Instance selected update
-				instanceSelected = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, instanceSelected .id);
+				instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, instanceSelected .id);
 
 			} catch (Exception e) {
 
-				dtoResult.result = e.getMessage();
-				dtoResult.ok = false;
+				dtoResult.setMessage(e.getMessage());
+				dtoResult.setIsSucceed(false);
 
 				//Remove all created
 				for (String subRelAux : listRelations) {
 
 					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 						//Case data property
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, UploadApp.getBaseModel()));
 					else
 						//Case object property
-						AppLoader.baseRepository.setBaseOntModel(AppLoader.ManagerInstances.DeleteRelationProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs + dtoSpec.iTargetName, AppLoader.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteRelationProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs + dtoSpec.iTargetName, UploadApp.getBaseModel()));
 				}
 
 				//Validate and update list and infModel
-				AppLoader.updateLists();
+				UploadApp.updateLists();
 
 				//Instance selected update
-				instanceSelected = AppLoader.ManagerInstances.getInstance(AppLoader.ListAllInstances, instanceSelected .id);
+				instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, instanceSelected .id);
 
 				return dtoResult;
 			}			  
 
 			//Add on list modified instances
-			AppLoader.ListModifiedInstances.add(instanceSelected.ns + instanceSelected.name);
+			CompleterApp.ListModifiedInstances.add(instanceSelected.ns + instanceSelected.name);
 
 			//Update list instances modified
-			AppLoader.updateModifiedList();
+			CompleterApp.updateModifiedList();
 
-			dtoResult.ok = true;
-			dtoResult.result = "ok";
+			dtoResult.setIsSucceed(true);
+			dtoResult.setMessage("ok");
 			return dtoResult;
 		}
 
-		dtoResult.ok = true;
-		dtoResult.result = "nothing";
+		dtoResult.setIsSucceed(true);
+		dtoResult.setMessage("nothing");
 		return dtoResult;		  
 	}
 

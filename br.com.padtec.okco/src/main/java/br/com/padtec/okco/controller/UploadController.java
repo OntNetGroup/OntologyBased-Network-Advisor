@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.com.padtec.okco.application.AppLoader;
-import br.com.padtec.okco.domain.DtoResultCommit;
+import br.com.padtec.okco.application.UploadApp;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionFileFormat;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionNameSpace;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionReasoner;
 
 @Controller
-public class LoaderController {
+public class UploadController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/")
 	public String index(HttpSession session, HttpServletRequest request) 
@@ -88,53 +87,53 @@ public class LoaderController {
 			 /** ==================================================
 			  *  Performs the upload 
 			  *  =================================================== */
-			 AppLoader.uploadBaseModel(in, useReasoner, optReasoner);
+			 UploadApp.uploadBaseModel(in, useReasoner, optReasoner);
 			  
 		}catch (InconsistentOntologyException e){
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 			request.getSession().setAttribute("errorMensage", error);			
-			AppLoader.rollBack();			
+			UploadApp.rollBack();			
 			return "index";			
 		}catch (OKCoExceptionInstanceFormat e){			
 			String error = "Entity format error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			AppLoader.clear();			
+			UploadApp.clear();			
 			return "index";			
 		}catch (OKCoExceptionFileFormat e){			
 			String error = "File format error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			AppLoader.clear();			
+			UploadApp.clear();			
 			return "index";			
 		}catch (IOException e){
 			String error = "File not found.";
 			request.getSession().setAttribute("errorMensage", error);
-			AppLoader.clear();			
+			UploadApp.clear();			
 			return "index";			
 		}catch (OKCoExceptionNameSpace e){			
 			String error = "File namespace error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			AppLoader.clear();			
+			UploadApp.clear();			
 			return "index";			
 		}catch (OKCoExceptionReasoner e){
 			String error = "Reasoner error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			AppLoader.clear();			
+			UploadApp.clear();			
 			return "index";
 		}		 
 		request.getSession().removeAttribute("errorMensage");  
 		return "redirect:list";
 	}
-	
+		
 	@RequestMapping(method = RequestMethod.GET, value="/getModel")
 	public String getModel(HttpSession session, HttpServletRequest request) throws IOException 
 	{	     
 		/** ==================================================
-		*  Get the base model uplodaded as String text 
+		*  Get the base model which was uploaded as a string text 
 		*  =================================================== */
-		if(AppLoader.isBaseModelUploaded())
+		if(UploadApp.isBaseModelUploaded())
 		{
 			request.getSession().removeAttribute("loadOk");
-			request.getSession().setAttribute("model", AppLoader.getBaseModelAsString());
+			request.getSession().setAttribute("model", UploadApp.getBaseModelAsString());
 			return "model";
 		}else{				
 			request.getSession().removeAttribute("model");
@@ -145,14 +144,14 @@ public class LoaderController {
 
 	/* AJAX */
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
-	public DtoResultCommit save(HttpServletRequest request)
+	public DtoResult save(HttpServletRequest request)
 	{
-		DtoResultCommit dto = new DtoResultCommit();
+		DtoResult dto = new DtoResult();
 		
 		/** ==================================================
-		*  Saves the base model uploaded
+		*  Saves the base model which was uploaded
 		*  =================================================== */
-		dto.ok = AppLoader.saveBaseModel();
+		dto.setIsSucceed(UploadApp.saveBaseModel());
 		
 		return dto;
 	}	

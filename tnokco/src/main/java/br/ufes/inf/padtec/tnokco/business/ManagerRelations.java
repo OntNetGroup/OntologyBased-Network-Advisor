@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
-import br.com.padtec.okco.application.AppLoader;
+import br.com.padtec.okco.application.UploadApp;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.Instance;
 import br.com.padtec.okco.domain.ManagerInstances;
