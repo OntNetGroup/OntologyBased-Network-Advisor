@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
-import br.com.padtec.okco.domain.DtoResultAjax;
 import br.com.padtec.okco.domain.Instance;
 import br.com.padtec.okco.domain.Search;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionFileFormat;
@@ -33,6 +32,7 @@ import br.com.padtec.okco.persistence.BaseModelRepositoryImpl;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
+import br.ufes.inf.padtec.tnokco.business.DtoResultAjax;
 import br.ufes.inf.padtec.tnokco.business.Reader;
 
 import com.hp.hpl.jena.ontology.Individual;

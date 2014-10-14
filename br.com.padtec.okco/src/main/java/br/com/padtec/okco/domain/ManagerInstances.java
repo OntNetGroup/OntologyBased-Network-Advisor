@@ -23,7 +23,7 @@ public class ManagerInstances {
 		this.factory = factory;
 	}
 
-	public OntModel CreateInstance(String instanceSource, String Relation, Instance instanceNew, String TargetClass, ArrayList<Instance> ListAllInstances, OntModel model)
+	public OntModel CreateInstance(String instanceSource, String Relation, Instance instanceNew, String TargetClass, List<Instance> ListAllInstances, OntModel model)
 	{
 		return factory.CreateInstance(instanceSource, Relation, instanceNew, TargetClass, ListAllInstances, model);
 	}
@@ -49,7 +49,7 @@ public class ManagerInstances {
 		
 	}
 	
-	public void UpdateInstanceAndRelations(ArrayList<Instance> listInstances, ArrayList<DtoDefinitionClass> dtoRelationsList, OntModel model, InfModel infModel, String ns)
+	public void UpdateInstanceAndRelations(List<Instance> listInstances, List<DtoDefinitionClass> dtoRelationsList, OntModel model, InfModel infModel, String ns)
 	{		
 		System.out.println("\nManager Instances: updating instance and relations()...");
 		for (DtoDefinitionClass dto : dtoRelationsList)
@@ -194,7 +194,7 @@ public class ManagerInstances {
 		}	
 	}
 
-	public void UpdateInstanceSpecialization(ArrayList<Instance> listAllInstances, OntModel model,	InfModel infModel, String ns) {
+	public void UpdateInstanceSpecialization(List<Instance> listAllInstances, OntModel model,	InfModel infModel, String ns) {
 		
 		System.out.println("\nManager Instances: updating instance specialization()...");
 		//update and check specialization class for all instances one by one		
@@ -243,8 +243,10 @@ public class ManagerInstances {
 			List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(UploadApp.getInferredModel(), instanceSelected.ns + instanceSelected.name);
 			for(String propertyURI: propertiesURIList){
 				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
-			    dtoItem.Property = propertyURI;
-			    dtoItem.Target = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI).get(0);
+			    dtoItem.Property = propertyURI;			      
+			    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);;
+			    if (ranges!=null && ranges.size()>0) dtoItem.Target = ranges.get(0);
+			    else dtoItem.Target = "";
 			    instanceListRelations.add(dtoItem);
 			}
 			
@@ -302,7 +304,7 @@ public class ManagerInstances {
 		
 	}
 	
-	public Instance getInstance(ArrayList<Instance> listInstances, String instanceName) {		
+	public Instance getInstance(List<Instance> listInstances, String instanceName) {		
 		
 		for (Instance instance : listInstances) {
 			if((instance.ns + instance.name).equals(instanceName))
@@ -314,7 +316,7 @@ public class ManagerInstances {
 		return null;
 	}
 	
-	public Instance getInstance(ArrayList<Instance> listInstances, int id) {
+	public Instance getInstance(List<Instance> listInstances, int id) {
 		
 		for (Instance instance : listInstances) {
 			if(instance.id == id)
@@ -405,7 +407,7 @@ public class ManagerInstances {
 		return this.factory.RemoveInstanceOnClass(instanceUri, cls, model);
 	}
 	
-	public OntModel CreateInstanceAuto(String instanceSource, DtoDefinitionClass dtoSelected, Instance newInstance, OntModel model, InfModel infModel, ArrayList<Instance> ListAllInstances) {
+	public OntModel CreateInstanceAuto(String instanceSource, DtoDefinitionClass dtoSelected, Instance newInstance, OntModel model, InfModel infModel, List<Instance> ListAllInstances) {
 		
 		return this.CreateInstance(instanceSource, dtoSelected.Relation, newInstance, dtoSelected.Target, ListAllInstances, model);
 		
@@ -454,7 +456,7 @@ public class ManagerInstances {
 		
 	}
 
-	public OntModel CompleteInstanceAuto(Instance instance, String modelNameSpace, OntModel model, InfModel infModel, ArrayList<Instance> ListAllInstances)
+	public OntModel CompleteInstanceAuto(Instance instance, String modelNameSpace, OntModel model, InfModel infModel, List<Instance> ListAllInstances)
 	{
 		//Classify instance classes
 		model = this.ClassifyInstanceAuto(instance, model, infModel);

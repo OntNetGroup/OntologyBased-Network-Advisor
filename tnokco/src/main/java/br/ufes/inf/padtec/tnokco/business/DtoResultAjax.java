@@ -1,4 +1,4 @@
-package br.com.padtec.okco.domain;
+package br.ufes.inf.padtec.tnokco.business;
 
 public class DtoResultAjax {
 	

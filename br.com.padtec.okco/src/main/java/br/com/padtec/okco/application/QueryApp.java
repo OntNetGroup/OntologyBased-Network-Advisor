@@ -11,6 +11,15 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class QueryApp {
 
+	/** 
+	 * Return the list of all individuals from the ontology.
+	 * It returns also all the classes of an individual as well as all the other individuals different and the same as this one.
+	 *  
+	 * @return
+	 * @throws OKCoNameSpaceException
+	 * 
+	 * @author John Guerson
+	 */
 	static public List<Instance> getIndividuals() throws OKCoNameSpaceException 
 	{
 		List<Instance> result = new ArrayList<Instance>();
@@ -24,7 +33,7 @@ public class QueryApp {
     		List<String> sameAsURIList = InfModelQueryUtil.getIndividualsURISameAs(model, indivURI);
     		String nameSpace = indivURI.split("#")[0] + "#";
     		String name = indivURI.split("#")[1];
-    		result.add(new Instance(nameSpace, name, classesURIList, diffURIList, sameAsURIList,true));
+    		result.add(new Instance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true));
 		}		
 		return result;
 	}

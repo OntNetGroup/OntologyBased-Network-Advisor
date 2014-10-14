@@ -1,6 +1,7 @@
 package br.com.padtec.okco.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
 
@@ -14,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 public class FactoryInstances {
 
 
-	public OntModel CreateInstance(String instanceSource, String Relation, Instance instanceNew, String TargetClass, ArrayList<Instance> ListAllInstances, OntModel model)
+	public OntModel CreateInstance(String instanceSource, String Relation, Instance instanceNew, String TargetClass, List<Instance> ListAllInstances, OntModel model)
 	{
 		ManagerInstances manager = new ManagerInstances(null);	
 		

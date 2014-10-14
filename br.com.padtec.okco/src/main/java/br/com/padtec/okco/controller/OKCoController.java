@@ -68,14 +68,14 @@ public class OKCoController {
 		
 		// ----- Instance selected ----//
 
-		instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, value);		
+		instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, value);		
 
 		// ----- Remove repeat values -------- //
 
-		ArrayList<DtoDefinitionClass> listSomeClassDefinition = UploadApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
-		ArrayList<DtoDefinitionClass> listMinClassDefinition = UploadApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
-		ArrayList<DtoDefinitionClass> listMaxClassDefinition = UploadApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
-		ArrayList<DtoDefinitionClass> listExactlyClassDefinition = UploadApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
+		ArrayList<DtoDefinitionClass> listSomeClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
+		ArrayList<DtoDefinitionClass> listMinClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
+		ArrayList<DtoDefinitionClass> listMaxClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
+		ArrayList<DtoDefinitionClass> listExactlyClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
 
 		// ------ Complete classes list ------//
 
@@ -112,7 +112,7 @@ public class OKCoController {
 		//Information
 		request.getSession().setAttribute("instanceListRelations", instanceRelationsList);
 		request.getSession().setAttribute("instanceSelected", instanceSelected);		
-		request.getSession().setAttribute("listInstances", UploadApp.ListAllInstances);
+		request.getSession().setAttribute("listInstances", CompleterApp.ListAllInstances);
 
 		// ------  View to return ------//
 
@@ -123,7 +123,7 @@ public class OKCoController {
 	public String completeProperty(@RequestParam("idDefinition") String idDefinition, @RequestParam("idInstance") String idInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInstance));
 
 		//Search for the definition class correctly
 
@@ -147,18 +147,18 @@ public class OKCoController {
 			listNewInstancesRelation = new ArrayList<Instance>();
 
 			//Get all instances except the instance selected for Same/Different list		
-			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(UploadApp.ListAllInstances);
+			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(CompleterApp.ListAllInstances);
 
 			//get instances with had this relation
 			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 			//populate the list of instances with had this relation	    	
-			List<Instance> listInstancesInRelation = UploadApp.ManagerInstances.getIntersectionOf(UploadApp.ListAllInstances, listInstancesName);
+			List<Instance> listInstancesInRelation = CompleterApp.ManagerInstances.getIntersectionOf(CompleterApp.ListAllInstances, listInstancesName);
 
 			//Create others sections
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
 			request.getSession().setAttribute("listInstancesSameDifferent", listInstancesSameDifferent);
-			request.getSession().setAttribute("listInstances", UploadApp.ListAllInstances);
+			request.getSession().setAttribute("listInstances", CompleterApp.ListAllInstances);
 
 			//return view	    	
 			return "completePropertyObject";
@@ -170,7 +170,7 @@ public class OKCoController {
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
-			List<Instance> listInstancesInRelation = UploadApp.ManagerInstances.getIntersectionOf(UploadApp.ListAllInstances, listInstancesName);
+			List<Instance> listInstancesInRelation = CompleterApp.ManagerInstances.getIntersectionOf(CompleterApp.ListAllInstances, listInstancesName);
 
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
 
@@ -214,7 +214,7 @@ public class OKCoController {
 		 * */
 
 		//Instance selected
-		Instance instance = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInstance));
 
 		//Search for the definition class correctly
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome, Integer.parseInt(idDefinition));
@@ -244,10 +244,10 @@ public class OKCoController {
 				ArrayList<String> listClasses = new ArrayList<String>();
 				Instance newInstance = new Instance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
-				UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), UploadApp.ListAllInstances));
+				UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
 				CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 				try {
-					UploadApp.updateAddingToLists(newInstance.ns + newInstance.name);
+					CompleterApp.updateAddingToLists(newInstance.ns + newInstance.name);
 				} catch (InconsistentOntologyException e) {
 					
 					e.printStackTrace();
@@ -269,11 +269,11 @@ public class OKCoController {
 					ArrayList<String> listClasses = new ArrayList<String>();
 					Instance newInstance = new Instance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
-					UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), UploadApp.ListAllInstances));
+					UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
 					CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 					CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 					try {
-						UploadApp.updateAddingToLists(newInstance.ns + newInstance.name);
+						CompleterApp.updateAddingToLists(newInstance.ns + newInstance.name);
 					} catch (InconsistentOntologyException e) {
 						
 						e.printStackTrace();
@@ -302,11 +302,11 @@ public class OKCoController {
 						ArrayList<String> listClasses = new ArrayList<String>();
 						Instance newInstance = new Instance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), UploadApp.ListAllInstances));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
 						CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 						CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
 						try {
-							UploadApp.updateAddingToLists(newInstance.ns + newInstance.name);
+							CompleterApp.updateAddingToLists(newInstance.ns + newInstance.name);
 						} catch (InconsistentOntologyException e) {
 							
 							e.printStackTrace();
@@ -357,20 +357,22 @@ public class OKCoController {
 	public String completeInstanceAuto(@RequestParam("idInstance") String idInstance, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInstance));
+		for(Instance i: CompleterApp.ListAllInstances){
+			i.print();
+		}
+		System.out.println("Complete Instance ID="+idInstance);
 		System.out.println("Complete Instance: "+instance.ns+instance.name);
-		UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CompleteInstanceAuto(instance, UploadApp.baseRepository.getNameSpace(), UploadApp.getBaseModel(), UploadApp.getInferredModel(), UploadApp.ListAllInstances));
+		UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CompleteInstanceAuto(instance, UploadApp.baseRepository.getNameSpace(), UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
 
 		CompleterApp.ListModifiedInstances.add(instance.ns + instance.name);
 
 		try {
-			UploadApp.updateLists();
+			CompleterApp.updateLists();
 		} catch (InconsistentOntologyException e) {
 			e.printStackTrace();
-		} catch (OKCoExceptionInstanceFormat e) {
-			e.printStackTrace();
-		}
-
+		} 
+		
 		//Update list instances modified
 		CompleterApp.updateModifiedList();
 
@@ -407,7 +409,7 @@ public class OKCoController {
 		} else if(id != null && num > 0){
 
 			//Get the instance
-			i = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(id));
+			i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(id));
 
 			if(typeView.equals("IN"))			//in on instance
 			{				
@@ -485,13 +487,13 @@ public class OKCoController {
 					if(iTarget.existInModel == false)
 					{
 						//Create instance
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateInstance(iSource.ns + iSource.name, dtoSelected.Relation, iTarget, dtoSelected.Target, UploadApp.ListAllInstances, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateInstance(iSource.ns + iSource.name, dtoSelected.Relation, iTarget, dtoSelected.Target, CompleterApp.ListAllInstances, UploadApp.getBaseModel()));
 						isCreate = true;
 
 					} else {
 
 						//Selected instance
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, UploadApp.getBaseModel()));
 						isUpdate = true;
 					}
 
@@ -510,15 +512,15 @@ public class OKCoController {
 
 					//Update list
 					//HomeController.UpdateLists();
-					UploadApp.updateAddingToLists(iTarget.ns + iTarget.name);
+					CompleterApp.updateAddingToLists(iTarget.ns + iTarget.name);
 
 				} catch (Exception e) {
 
 					if(isCreate == true)
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteInstance(iTarget, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.DeleteInstance(iTarget, UploadApp.getBaseModel()));
 
 					if(isUpdate == true)
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.DeleteRelationProperty(iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name, UploadApp.getBaseModel()));
 
 					dto.setMessage(e.getMessage());
 					dto.setIsSucceed(false);
@@ -561,7 +563,7 @@ public class OKCoController {
 			UploadApp.tempModel = UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel());
 
 			//Update list instances
-			UploadApp.updateLists();
+			CompleterApp.updateLists();
 
 			//Clean list modified instances
 			CompleterApp.ListModifiedInstances = new ArrayList<String>();
@@ -577,15 +579,12 @@ public class OKCoController {
 
 			//Update list instances
 			try {
-				UploadApp.updateLists();
+				CompleterApp.updateLists();
 
 			} catch (InconsistentOntologyException e1) {
 
 				//e1.printStackTrace();
 
-			} catch (OKCoExceptionInstanceFormat e1) {
-
-				//e1.printStackTrace();
 			}
 
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
@@ -617,7 +616,7 @@ public class OKCoController {
 
 		if(id != null)
 		{
-			Instance i = UploadApp.ManagerInstances.getInstance(listNewInstancesRelation, Integer.parseInt(id));
+			Instance i = CompleterApp.ManagerInstances.getInstance(listNewInstancesRelation, Integer.parseInt(id));
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, listNewInstancesRelation);
 			return dto;
 		}
@@ -630,8 +629,8 @@ public class OKCoController {
 
 		if(id != null)
 		{
-			Instance i = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(id));
-			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, UploadApp.ListAllInstances);
+			Instance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(id));
+			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, CompleterApp.ListAllInstances);
 			return dto;
 		}
 
@@ -645,7 +644,7 @@ public class OKCoController {
 
 		if(id != null)
 		{
-			Instance i = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(id));
+			Instance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(id));
 			listNewInstancesRelation.add(i);
 			return i;
 		}
@@ -673,16 +672,16 @@ public class OKCoController {
 					String idInsSource = parts[1];
 					String idInsTarget = parts[2];
 					
-					Instance s1 = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInsSource));
-					Instance s2 = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, Integer.parseInt(idInsTarget));
+					Instance s1 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInsSource));
+					Instance s2 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInsTarget));
 					
 					if(type.equals("dif"))
 					{
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.setDifferentInstances(s1.ns + s1.name, s2.ns + s2.name, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.setDifferentInstances(s1.ns + s1.name, s2.ns + s2.name, UploadApp.getBaseModel()));
 						
 					} else if (type.equals("same"))
 					{
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.setSameInstances(s1.ns + s1.name, s2.ns + s2.name, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.setSameInstances(s1.ns + s1.name, s2.ns + s2.name, UploadApp.getBaseModel()));
 						
 					} else {
 						
@@ -708,7 +707,7 @@ public class OKCoController {
 					UploadApp.tempModel = UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel());
 
 					//Update list instances
-					UploadApp.updateLists();
+					CompleterApp.updateLists();
 
 					//Clean list modified instances
 					CompleterApp.ListModifiedInstances = new ArrayList<String>();
@@ -724,16 +723,13 @@ public class OKCoController {
 
 					//Update list instances
 					try {
-						UploadApp.updateLists();
+						CompleterApp.updateLists();
 
 					} catch (InconsistentOntologyException e1) {
 
 						//e1.printStackTrace();
 
-					} catch (OKCoExceptionInstanceFormat e1) {
-
-						//e1.printStackTrace();
-					}
+					} 
 
 					String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 					
@@ -807,7 +803,7 @@ public class OKCoController {
 					if(dataTarget.existInModel == false)
 					{
 						//Create data value
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateTargetDataProperty(iSource.ns + iSource.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateTargetDataProperty(iSource.ns + iSource.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, UploadApp.getBaseModel()));
 						dataTarget.existInModel = true;
 					}
 
@@ -825,11 +821,11 @@ public class OKCoController {
 					}						 
 
 					//Update list instances
-					UploadApp.updateLists();
+					CompleterApp.updateLists();
 
 				} catch (Exception e) {
 
-					UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, UploadApp.getBaseModel()));
+					UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, dtoSelected.Relation, dataTarget.value, dtoSelected.Target, UploadApp.getBaseModel()));
 
 					dto.setMessage(e.getMessage());
 					dto.setIsSucceed(false);
@@ -874,7 +870,7 @@ public class OKCoController {
 
 				try {
 
-					UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.AddInstanceToClass(instanceSelected.ns + instanceSelected.name, cls, UploadApp.getBaseModel()));
+					UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.AddInstanceToClass(instanceSelected.ns + instanceSelected.name, cls, UploadApp.getBaseModel()));
 
 				} catch (Exception e) {
 
@@ -887,10 +883,10 @@ public class OKCoController {
 			try {
 
 				//Validate and update list
-				UploadApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);;
+				CompleterApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);;
 
 				//Instance selected update
-				instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, instanceSelected .id);
+				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .id);
 
 			} catch (Exception e) {
 
@@ -899,14 +895,14 @@ public class OKCoController {
 
 				//Remove all created
 				for (String clsAux : listCls) {
-					UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.RemoveInstanceOnClass(instanceSelected.ns + instanceSelected.name, clsAux, UploadApp.getBaseModel()));
+					UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.RemoveInstanceOnClass(instanceSelected.ns + instanceSelected.name, clsAux, UploadApp.getBaseModel()));
 				}
 
 				//Validate and update list and infModel
-				UploadApp.updateLists();
+				CompleterApp.updateLists();
 
 				//Instance selected update
-				instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, instanceSelected .id);
+				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .id);
 
 				return dtoResult;
 			}	
@@ -952,10 +948,10 @@ public class OKCoController {
 
 					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 						//Case data property
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, UploadApp.getBaseModel()));
 					else
 						//Case object property
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.CreateRelationProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateRelationProperty(instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName, UploadApp.getBaseModel()));
 
 				} catch (Exception e) {
 
@@ -968,10 +964,10 @@ public class OKCoController {
 			try {
 				
 				//Validate and update list
-				UploadApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);
+				CompleterApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);
 
 				//Instance selected update
-				instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, instanceSelected .id);
+				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .id);
 
 			} catch (Exception e) {
 
@@ -983,17 +979,17 @@ public class OKCoController {
 
 					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 						//Case data property
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.DeleteTargetDataProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[0], dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName, UploadApp.getBaseModel()));
 					else
 						//Case object property
-						UploadApp.baseRepository.setBaseOntModel(UploadApp.ManagerInstances.DeleteRelationProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs + dtoSpec.iTargetName, UploadApp.getBaseModel()));
+						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.DeleteRelationProperty(instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs + dtoSpec.iTargetName, UploadApp.getBaseModel()));
 				}
 
 				//Validate and update list and infModel
-				UploadApp.updateLists();
+				CompleterApp.updateLists();
 
 				//Instance selected update
-				instanceSelected = UploadApp.ManagerInstances.getInstance(UploadApp.ListAllInstances, instanceSelected .id);
+				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .id);
 
 				return dtoResult;
 			}			  

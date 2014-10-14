@@ -2,16 +2,10 @@ package br.com.padtec.okco.application;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
 import br.com.padtec.common.queries.OntModelAPI;
-import br.com.padtec.okco.domain.DtoDefinitionClass;
-import br.com.padtec.okco.domain.FactoryInstances;
-import br.com.padtec.okco.domain.Instance;
-import br.com.padtec.okco.domain.ManagerInstances;
-import br.com.padtec.okco.domain.Search;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionNameSpace;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionReasoner;
@@ -39,14 +33,6 @@ public class UploadApp {
 	
 	/** Temporary Model used to rool back */
 	public static OntModel tempModel;
-		
-	// Checking the validity of these ones...
-	public static Search Search;
-	public static FactoryInstances FactoryInstances;
-	public static ManagerInstances ManagerInstances;		
-	public static ArrayList<Instance> ListAllInstances;
-	
-	public static ArrayList<DtoDefinitionClass> ModelDefinitions;
 	
 	/**
 	 * Upload the base model ontology in OWL. The user might opt for not using the reasoner at the upload.
@@ -86,13 +72,10 @@ public class UploadApp {
 		}else{
 			 InfModel  inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 			 inferredRepository = new InferredModelRepositoryImpl(inferredModel);
-		}		 
+		}
 		
-		//Check the validity of these lines...
-		Search = new Search();
-		FactoryInstances = new FactoryInstances();
-		ManagerInstances = new ManagerInstances(FactoryInstances);	  	
-		updateLists();		
+		/** Fulfill the lists with data from the base ontology */
+		CompleterApp.updateLists();
 	}
 		
 	public static BaseModelRepository getBaseRepository() { return baseRepository; }	
@@ -128,8 +111,7 @@ public class UploadApp {
 	{		
 		baseRepository.clear();
 		inferredRepository.clear();
-		tempModel = null;		
-		ListAllInstances = null;		
+		tempModel = null;				
 		reasoner = null;
 	}
 	
@@ -143,41 +125,9 @@ public class UploadApp {
 		baseRepository.cloneReplacing(tempModel);
 		inferredRepository.cloneReplacing(tempModel);
 		try {			
-			updateLists();			
+			CompleterApp.updateLists();			
 		} catch (InconsistentOntologyException e1) {			
 			e1.printStackTrace();			
-		} catch (OKCoExceptionInstanceFormat e1) {			
-			e1.printStackTrace();
 		}			
-	}
-	
-	//Check the validity of this method
-	public static void updateLists() throws InconsistentOntologyException, OKCoExceptionInstanceFormat 
-	{	
-		System.out.println("Updating Lists()...");
-		InfModel inferredModel = inferredRepository.getInferredOntModel();
-		OntModel Model = baseRepository.getBaseOntModel();
-    	// Refresh list of instances	    	
-    	ListAllInstances = ManagerInstances.getAllInstances(inferredModel);	    	
-    	//Get model definitions on list of instances	    	
-	  	ModelDefinitions = Search.GetModelDefinitionsInInstances(ListAllInstances, inferredModel);			
-		// Organize data (Update the list of all instances)			
-    	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, Model, inferredModel, baseRepository.getNameSpace());			
-		ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, inferredModel, baseRepository.getNameSpace());			
-    }
-	
-	//Check the validity of this method
-	public static void updateAddingToLists(String instanceURI) throws InconsistentOntologyException, OKCoExceptionInstanceFormat
-	{							
-		System.out.println("Updating and Adding to Lists()...");
-		InfModel inferredModel = inferredRepository.getInferredOntModel();
-		OntModel Model = baseRepository.getBaseOntModel();
-	    //Get model definitions on list of instances	    	
-		ArrayList<DtoDefinitionClass> intanceDefinitions = Search.GetModelDefinitionsInInstances(instanceURI, Model, inferredModel, ListAllInstances, ManagerInstances);
-		ModelDefinitions.addAll(intanceDefinitions);			
-		// Organize data (Update the list of all instances)			
-	    ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, intanceDefinitions, Model, inferredModel, baseRepository.getNameSpace());			
-		ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, inferredModel, baseRepository.getNameSpace());			
-	}
-	
+	}	
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import br.com.padtec.okco.application.CompleterApp;
 import br.com.padtec.okco.application.UploadApp;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionFileFormat;
 import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
@@ -74,6 +75,12 @@ public class UploadController {
 		}
 	}
 	
+	public void clearAllApps()
+	{
+		UploadApp.clear(); 
+		CompleterApp.clear();	
+	}
+	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String upload(HttpServletRequest request, @RequestParam("optionsReasoner") String optReasoner)
 	{		
@@ -97,27 +104,27 @@ public class UploadController {
 		}catch (OKCoExceptionInstanceFormat e){			
 			String error = "Entity format error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			UploadApp.clear();			
+			clearAllApps();		
 			return "index";			
 		}catch (OKCoExceptionFileFormat e){			
 			String error = "File format error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			UploadApp.clear();			
+			clearAllApps();			
 			return "index";			
 		}catch (IOException e){
 			String error = "File not found.";
 			request.getSession().setAttribute("errorMensage", error);
-			UploadApp.clear();			
+			clearAllApps();			
 			return "index";			
 		}catch (OKCoExceptionNameSpace e){			
 			String error = "File namespace error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			UploadApp.clear();			
+			clearAllApps();			
 			return "index";			
 		}catch (OKCoExceptionReasoner e){
 			String error = "Reasoner error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			UploadApp.clear();			
+			clearAllApps();			
 			return "index";
 		}		 
 		request.getSession().removeAttribute("errorMensage");  

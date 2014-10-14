@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.okco.domain.DtoInstanceRelation;
-import br.com.padtec.okco.domain.DtoResultAjax;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
+import br.ufes.inf.padtec.tnokco.business.DtoResultAjax;
 import br.ufes.inf.padtec.tnokco.business.Equipment;
 import br.ufes.inf.padtec.tnokco.business.InterfaceOutput;
 import br.ufes.inf.padtec.tnokco.business.Provisioning;

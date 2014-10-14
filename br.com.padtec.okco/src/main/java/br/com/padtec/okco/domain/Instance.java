@@ -62,6 +62,7 @@ public class Instance implements Serializable {
 	{
 		System.out.println("\n-------------------------------------");
 		System.out.println("- Instance name: " + this.ns + this.name);
+		System.out.println("Identifier: "+id);
 		System.out.println("- ListOfSome: ");
 		for (DtoDefinitionClass dto : ListSome) {
 			System.out.println("      - " + dto.Relation + " -> " + dto.Target + " (" + dto.Cardinality + ")");

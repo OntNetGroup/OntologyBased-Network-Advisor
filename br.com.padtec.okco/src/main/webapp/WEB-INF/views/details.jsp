@@ -1,4 +1,5 @@
 <%@ page import="br.com.padtec.okco.application.UploadApp"%>
+<%@ page import="br.com.padtec.okco.application.CompleterApp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="br.com.padtec.okco.domain.Instance"%>
 <%@ page import="br.com.padtec.okco.domain.DtoCompleteClass"%>
@@ -219,7 +220,7 @@
 							<%
 								for(String iName: instance.ListSameInstances)
 																		{
-																			Instance i = UploadApp.ManagerInstances.getInstance(ListAllInstances, iName);
+																			Instance i = CompleterApp.ManagerInstances.getInstance(ListAllInstances, iName);
 																			out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
 																		}
 							%>
@@ -234,7 +235,7 @@
 							<%
 								for(String iName: instance.ListDiferentInstances)
 																		{
-																			Instance i = UploadApp.ManagerInstances.getInstance(ListAllInstances, iName);
+																			Instance i = CompleterApp.ManagerInstances.getInstance(ListAllInstances, iName);
 																			out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\">" + i.name + "</a> </li>");
 																		}
 							%>

@@ -9,7 +9,7 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class Search 
 {	 	
- 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(ArrayList<Instance> listAllInstances,	InfModel InfModel) {
+ 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(List<Instance> listAllInstances,	InfModel InfModel) {
 
  		System.out.println("\nSearch: Getting model definitions in instances()...");
 		ArrayList<DtoDefinitionClass> resultListDefinitions = new ArrayList<DtoDefinitionClass>();
@@ -83,7 +83,7 @@ public class Search
 		return resultListDefinitions;
 	}
 	
- 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(String instanceURI, OntModel model, InfModel InfModel, ArrayList<Instance> listAllInstances, ManagerInstances manager) {
+ 	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(String instanceURI, OntModel model, InfModel InfModel, List<Instance> listAllInstances, ManagerInstances manager) {
 
 		Instance Instance = manager.getInstance(listAllInstances, instanceURI); // GET INTANCE on MODEL
 		List<String> listInstancesDto = InfModelQueryUtil.getIndividualsURIFromAllClasses(InfModel);		

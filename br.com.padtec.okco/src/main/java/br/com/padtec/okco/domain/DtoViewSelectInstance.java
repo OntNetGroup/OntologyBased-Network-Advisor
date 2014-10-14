@@ -1,6 +1,7 @@
 package br.com.padtec.okco.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DtoViewSelectInstance {
 	
@@ -8,7 +9,7 @@ public class DtoViewSelectInstance {
 	public ArrayList<TupleInstanceExist > listSameShow;
 	public ArrayList<TupleInstanceExist > listDifferentShow;
 	
-	public DtoViewSelectInstance(Instance i, ArrayList<Instance> listAllInstances)
+	public DtoViewSelectInstance(Instance i, List<Instance> listAllInstances)
 	{
 		this.instance = i;
 		this.listDifferentShow = new ArrayList<TupleInstanceExist>();
