@@ -61,6 +61,23 @@ public class OKCoController {
 	//Specialization - Property and subProperties
 	ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties;  
 
+	@RequestMapping(method = RequestMethod.GET, value="/list")
+	public String list(HttpServletRequest request) 
+	{		
+		List<Instance> individuals = CompleterApp.ListAllInstances;				
+		List<String> modified = CompleterApp.ListModifiedInstances;
+		
+		if(individuals != null) 
+		{
+			request.getSession().setAttribute("listInstances", individuals);
+			request.getSession().setAttribute("listModifedInstances", modified);
+			return "list";
+		} else{
+			request.getSession().setAttribute("loadOk", "false");
+			return "index";
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value="/details")
 	public String details(@RequestParam("id") String id, HttpServletRequest request) {
 
