@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.okco.domain.DtoInstanceRelation;
 import br.com.padtec.okco.domain.Instance;
 import br.com.padtec.okco.domain.exceptions.OKCoNameSpaceException;
 
@@ -38,6 +39,15 @@ public class QueryApp {
 		return result;
 	}
 	
+	/** 
+	 * Return the a particular individual from the ontology.
+	 * It returns also all the classes of an individual as well as all the other individuals different and the same as this one.
+	 *  
+	 * @return
+	 * @throws OKCoNameSpaceException
+	 * 
+	 * @author John Guerson
+	 */
 	static public Instance getIndividual(String individualURI)
 	{
 		InfModel model = UploadApp.getInferredModel();
@@ -48,5 +58,27 @@ public class QueryApp {
 		String nameSpace =  individualURI.split("#")[0] + "#";
 		String name =  individualURI.split("#")[1];
 		return new Instance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true);
-	}	
+	}
+	
+	/** 
+	 * Return all the relations of a particular individual from the ontology.
+	 * It returns also the first range class of the relations.
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<DtoInstanceRelation> getRelations(String individualURI)
+	{
+		List<DtoInstanceRelation> result = new ArrayList<DtoInstanceRelation>();
+		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(UploadApp.getInferredModel(), individualURI);
+		for(String propertyURI: propertiesURIList)
+		{
+			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
+		    dtoItem.Property = propertyURI;
+		    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+		    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
+		    else dtoItem.Target = "";
+		    result.add(dtoItem);
+		}
+		return result;
+	}
 }

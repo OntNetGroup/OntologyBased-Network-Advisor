@@ -20,6 +20,7 @@ import br.com.padtec.common.queries.InfModelQueryUtil;
 import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.okco.application.CompleterApp;
+import br.com.padtec.okco.application.QueryApp;
 import br.com.padtec.okco.application.UploadApp;
 import br.com.padtec.okco.domain.DataPropertyValue;
 import br.com.padtec.okco.domain.DtoClassifyInstancePost;
@@ -65,7 +66,7 @@ public class OKCoController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/list")
 	public String list(HttpServletRequest request) 
-	{		
+	{
 		List<Instance> allIndividuals = CompleterApp.ListAllInstances;				
 		List<String> modifiedIndividuals = CompleterApp.ListModifiedInstances;
 		
@@ -91,67 +92,35 @@ public class OKCoController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/details")
-	public String details(@RequestParam("uri") String uri, HttpServletRequest request) {
-				
+	public String details(@RequestParam("uri") String uri, HttpServletRequest request) 
+	{
 		uri = decodeURI(uri);
 		
-		// ----- Instance selected ----//
-		instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);		
-		
-		// ----- Remove repeat values -------- //
-
-		ArrayList<DtoDefinitionClass> listSomeClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
-		ArrayList<DtoDefinitionClass> listMinClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
-		ArrayList<DtoDefinitionClass> listMaxClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
-		ArrayList<DtoDefinitionClass> listExactlyClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
-
-		// ------ Complete classes list ------//
-
-		//ArrayList<String> listClassesMembersToClassify = HomeController.ManagerInstances.getClassesToClassify(instanceSelected, HomeController.InfModel);		
-
-		// ----- List relations ----- //
-		List<DtoInstanceRelation> instanceRelationsList = new ArrayList<DtoInstanceRelation>();
-		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(UploadApp.getInferredModel(), instanceSelected.ns + instanceSelected.name);
-		for(String propertyURI: propertiesURIList){
-			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
-		    dtoItem.Property = propertyURI;
-		    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
-		    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
-		    else dtoItem.Target = "";
-		    instanceRelationsList.add(dtoItem);
-		}
-		
+		List<Instance> listAllInstances = CompleterApp.ListAllInstances;
+		instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);
 		ListCompleteClsInstaceSelected = instanceSelected.ListCompleteClasses;
-
-		// ------ Specialization Properties list ------//
-
-		ListSpecializationProperties = instanceSelected.ListSpecializationProperties;
-
-		// ------ Create sections ------//
-
-		//Specialization
-		//classes ok
+		ListSpecializationProperties = instanceSelected.ListSpecializationProperties;		
+		List<DtoDefinitionClass> listSomeClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
+		List<DtoDefinitionClass> listMinClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
+		List<DtoDefinitionClass> listMaxClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
+		List<DtoDefinitionClass> listExactlyClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
+		List<DtoInstanceRelation> instanceRelationsList = QueryApp.getRelations(instanceSelected.ns + instanceSelected.name);		
+		
+		request.getSession().setAttribute("listInstances", listAllInstances);
+		request.getSession().setAttribute("instanceSelected", instanceSelected);
 		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
-
-		//Definition
 		request.getSession().setAttribute("listSomeClassDefinition", listSomeClassDefinition);
 		request.getSession().setAttribute("listMinClassDefinition", listMinClassDefinition);
 		request.getSession().setAttribute("listMaxClassDefinition", listMaxClassDefinition);
 		request.getSession().setAttribute("listExactlyClassDefinition", listExactlyClassDefinition);
-
-		//Information
-		request.getSession().setAttribute("instanceListRelations", instanceRelationsList);
-		request.getSession().setAttribute("instanceSelected", instanceSelected);		
-		request.getSession().setAttribute("listInstances", CompleterApp.ListAllInstances);
-
-		// ------  View to return ------//
-
+		request.getSession().setAttribute("instanceListRelations", instanceRelationsList);		
 		return "details";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
-	public String completeProperty(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
-
+	public String completeProperty(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) 
+	{
+		List<Instance> listAllInstances = CompleterApp.ListAllInstances;
 		//Instance selected
 		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
 
@@ -175,22 +144,16 @@ public class OKCoController {
 		{
 			//List auxiliary
 			listNewInstancesRelation = new ArrayList<Instance>();
-
 			//Get all instances except the instance selected for Same/Different list		
 			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(CompleterApp.ListAllInstances);
-
 			//get instances with had this relation
 			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
-
 			//populate the list of instances with had this relation	    	
 			List<Instance> listInstancesInRelation = CompleterApp.ManagerInstances.getIntersectionOf(CompleterApp.ListAllInstances, listInstancesName);
 
-			//Create others sections
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
 			request.getSession().setAttribute("listInstancesSameDifferent", listInstancesSameDifferent);
-			request.getSession().setAttribute("listInstances", CompleterApp.ListAllInstances);
-
-			//return view	    	
+			request.getSession().setAttribute("listInstances", listAllInstances);
 			return "completePropertyObject";
 
 		} else if (type.equals("objectMax"))
@@ -203,7 +166,6 @@ public class OKCoController {
 			List<Instance> listInstancesInRelation = CompleterApp.ManagerInstances.getIntersectionOf(CompleterApp.ListAllInstances, listInstancesName);
 
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
-
 			return "completePropertyObjectMaxCard";
 
 		} else if (type.equals("data"))
@@ -222,10 +184,7 @@ public class OKCoController {
 				listValuesInRelation.add(data);
 			}
 
-			//Create others sections
 			request.getSession().setAttribute("listValuesInRelation", listValuesInRelation);
-
-			//return view
 			return "completePropertyData";
 
 		} else {
