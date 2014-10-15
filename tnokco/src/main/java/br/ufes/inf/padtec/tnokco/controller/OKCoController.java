@@ -111,7 +111,9 @@ public class OKCoController {
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;
-		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(HomeController.InfModel, propertyURI).get(0);
+		    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+		    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
+		    else dtoItem.Target = "";
 		    instanceListRelationsFromInstance.add(dtoItem);
 		}
 		
@@ -144,20 +146,20 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
-	public String completeProperty(@RequestParam("idDefinition") String idDefinition, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
+	public String completeProperty(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
 		//Instance selected
 		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
 
-		dtoSelected = DtoDefinitionClass.get(instance.ListSome, Integer.parseInt(idDefinition));
+		dtoSelected = DtoDefinitionClass.get(instance.ListSome, uriProperty);
 		if(dtoSelected == null)
-			dtoSelected = DtoDefinitionClass.get(instance.ListMin, Integer.parseInt(idDefinition));
+			dtoSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
 		if(dtoSelected == null)
-			dtoSelected = DtoDefinitionClass.get(instance.ListMax, Integer.parseInt(idDefinition));
+			dtoSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
 		if(dtoSelected == null)
-			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, Integer.parseInt(idDefinition));
+			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
 
 		//Create the sections
 
@@ -230,7 +232,7 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completePropertyAuto")
-	public String completePropertyAuto(@RequestParam("idDefinition") String idDefinition, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
+	public String completePropertyAuto(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
 		/*
 		 * ATTENTION: This function works only with object properties: min, exactly and some properties
@@ -241,19 +243,19 @@ public class OKCoController {
 		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
-		dtoSelected = DtoDefinitionClass.get(instance.ListSome, Integer.parseInt(idDefinition));
+		dtoSelected = DtoDefinitionClass.get(instance.ListSome,uriProperty);
 		EnumRelationTypeCompletness typeRelation = EnumRelationTypeCompletness.SOME;
 
 		if(dtoSelected == null){
-			dtoSelected = DtoDefinitionClass.get(instance.ListMin, Integer.parseInt(idDefinition));
+			dtoSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
 			typeRelation = EnumRelationTypeCompletness.MIN;
 		}
 		if(dtoSelected == null){
-			dtoSelected = DtoDefinitionClass.get(instance.ListMax, Integer.parseInt(idDefinition));
+			dtoSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
 			typeRelation = EnumRelationTypeCompletness.MAX;
 		}
 		if(dtoSelected == null){
-			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, Integer.parseInt(idDefinition));
+			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
 			typeRelation = EnumRelationTypeCompletness.EXACTLY;
 		}		
 
@@ -955,7 +957,7 @@ public class OKCoController {
 	@RequestMapping(value="/classifyInstanceProperty", method = RequestMethod.POST)
 	public @ResponseBody DtoResult classifyInstanceProperty(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
 
-		DtoPropertyAndSubProperties dtoSpec = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, Integer.parseInt(dto.id));
+		DtoPropertyAndSubProperties dtoSpec = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, dto.arraySubProp);
 
 		DtoResult dtoResult = new DtoResult();
 		String separatorValues = "%&&%";
@@ -1040,11 +1042,11 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/selectSpecializationProp", method = RequestMethod.GET)
-	public @ResponseBody DtoGetPrevNextSpecProperty selectSpecializationProp(@RequestParam String id) {    
+	public @ResponseBody DtoGetPrevNextSpecProperty selectSpecializationProp(@RequestParam String uriProperty) {    
 
-		if(id != null)
+		if(uriProperty != null)
 		{
-			DtoPropertyAndSubProperties dto = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, Integer.parseInt(id));
+			DtoPropertyAndSubProperties dto = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, uriProperty);
 			if(dto == null){
 
 				return null;
@@ -1053,8 +1055,8 @@ public class OKCoController {
 
 				boolean haveNext = false;
 				boolean havePrev = false;
-				DtoPropertyAndSubProperties dtoNext = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, Integer.parseInt(id) + 1);
-				DtoPropertyAndSubProperties dtoPrev= DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, Integer.parseInt(id) - 1);
+				DtoPropertyAndSubProperties dtoNext = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, ListSpecializationProperties.get(ListSpecializationProperties.indexOf(dto)+1).Property);
+				DtoPropertyAndSubProperties dtoPrev= DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, ListSpecializationProperties.get(ListSpecializationProperties.indexOf(dto)-1).Property);
 				if(dtoNext != null)
 					haveNext = true;
 				if(dtoPrev != null)

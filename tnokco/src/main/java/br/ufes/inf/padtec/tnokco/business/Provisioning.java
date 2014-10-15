@@ -570,7 +570,9 @@ public class Provisioning {
 			for(String propertyURI: propertiesURIList){
 				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 			    dtoItem.Property = propertyURI;
-			    dtoItem.Target = InfModelQueryUtil.getRangeURIs(HomeController.InfModel, propertyURI).get(0);
+			    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+			    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
+			    else dtoItem.Target = "";
 			    rel.add(dtoItem);
 			}
 			

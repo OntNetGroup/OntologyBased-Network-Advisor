@@ -38,4 +38,15 @@ public class QueryApp {
 		return result;
 	}
 	
+	static public Instance getIndividual(String individualURI)
+	{
+		InfModel model = UploadApp.getInferredModel();
+		if(!individualURI.contains("#")){ throw new OKCoNameSpaceException("Entity namespace problem. The " + individualURI +" have to followed by \"#\"."); }
+		List<String> classesURIList = InfModelQueryUtil.getClassesURI(model, individualURI);
+		List<String> diffURIList = InfModelQueryUtil.getIndividualsURIDifferentFrom(model, individualURI);
+		List<String> sameAsURIList = InfModelQueryUtil.getIndividualsURISameAs(model, individualURI);
+		String nameSpace =  individualURI.split("#")[0] + "#";
+		String name =  individualURI.split("#")[1];
+		return new Instance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true);
+	}	
 }

@@ -242,7 +242,7 @@
 						  "<td title=\"" + data.classValue + "\">" + data.classValue + "</td>" +
 						  "<td class=\"center\">" + 
 		  						"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
-		  						"<a class=\"btn btn-danger btn-exclude\" name=\""+ data.id + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +	
+		  						"<a class=\"btn btn-danger btn-exclude\" name=\""+ data.classValue + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +	
 		  			 	  "</td>" +
 					  "</tr>";
 					

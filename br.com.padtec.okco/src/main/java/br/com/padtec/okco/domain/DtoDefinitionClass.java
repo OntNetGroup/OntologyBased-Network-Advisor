@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import br.com.padtec.common.queries.OntPropertyEnum;
 
-public class DtoDefinitionClass {
+public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 	
 	/*
 	 * Used in:
@@ -16,9 +16,6 @@ public class DtoDefinitionClass {
 	 * 
 	 * */
 	
-	private static int count = 0;	//Count the number of instances
-	
-	public int id;
 	public String Source;
 	public String Relation;
 	public OntPropertyEnum PropertyType;				//object or data
@@ -29,8 +26,6 @@ public class DtoDefinitionClass {
 	
 	public DtoDefinitionClass()
 	{
-		count++;
-		this.id = count;
 		this.Source = "";
 		this.Relation = "";
 		this.Target = "";
@@ -58,10 +53,10 @@ public class DtoDefinitionClass {
 	
 	}	
 
-	public static DtoDefinitionClass get(ArrayList<DtoDefinitionClass> list, int id)
+	public static DtoDefinitionClass get(ArrayList<DtoDefinitionClass> list, String uriRelation)
 	{		
 		for (DtoDefinitionClass aux : list) {	
-			if(aux.id == id)
+			if(aux.Relation.equals(uriRelation))
 			{
 				return aux;
 			} 
@@ -107,6 +102,16 @@ public class DtoDefinitionClass {
 		}
 		
 		return null;
+	}
+
+	public int compareTo(DtoDefinitionClass arg0) 
+	{
+		if(this.Source == arg0.Source && this.Relation == arg0.Relation && this.Target == arg0.Target && this.Cardinality.equals(arg0.Cardinality) && this.PropertyType.equals(arg0.PropertyType))
+		{
+			return 0;
+		} else {
+			return this.Relation.compareTo(arg0.Relation);
+		}		
 	}	
 	
 	

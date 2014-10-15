@@ -531,7 +531,7 @@ public class ManagerInstances {
 		if(type.equals(EnumRelationTypeCompletness.SOME))
 		{
 			for (DtoDefinitionClass dto : instanceSelected.ListSome) 
-			{			
+			{				
 				boolean exist = false;
 				for (DtoDefinitionClass dto2 : listDefinition) {
 					if(dto.sameAs(dto2))
