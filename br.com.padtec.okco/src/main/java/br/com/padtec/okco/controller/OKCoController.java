@@ -1,5 +1,7 @@
 package br.com.padtec.okco.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -78,15 +80,24 @@ public class OKCoController {
 		}
 	}
 	
+	private String decodeURI(String uri)
+	{
+		try {
+			uri = URLDecoder.decode(uri,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return uri;
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value="/details")
-	public String details(@RequestParam("id") String id, HttpServletRequest request) {
-
-		int value = Integer.parseInt(id);
+	public String details(@RequestParam("uri") String uri, HttpServletRequest request) {
+				
+		uri = decodeURI(uri);
 		
 		// ----- Instance selected ----//
-
-		instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, value);		
-
+		instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);		
+		instanceSelected.print();
 		// ----- Remove repeat values -------- //
 
 		ArrayList<DtoDefinitionClass> listSomeClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
@@ -137,10 +148,10 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
-	public String completeProperty(@RequestParam("idDefinition") String idDefinition, @RequestParam("idInstance") String idInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
+	public String completeProperty(@RequestParam("idDefinition") String idDefinition, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
 
@@ -223,7 +234,7 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completePropertyAuto")
-	public String completePropertyAuto(@RequestParam("idDefinition") String idDefinition, @RequestParam("idInstance") String idInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
+	public String completePropertyAuto(@RequestParam("idDefinition") String idDefinition, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
 		/*
 		 * ATTENTION: This function works only with object properties: min, exactly and some properties
@@ -231,7 +242,7 @@ public class OKCoController {
 		 * */
 
 		//Instance selected
-		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome, Integer.parseInt(idDefinition));
@@ -371,15 +382,14 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completeInstanceAuto")
-	public String completeInstanceAuto(@RequestParam("idInstance") String idInstance, HttpServletRequest request) {
+	public String completeInstanceAuto(@RequestParam("uriInstance") String uriInstance, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
 		for(Instance i: CompleterApp.ListAllInstances){
 			i.print();
 		}
-		System.out.println("Complete Instance ID="+idInstance);
-		System.out.println("Complete Instance: "+instance.ns+instance.name);
+		System.out.println("Complete Instance ID="+uriInstance);		
 		UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CompleteInstanceAuto(instance, UploadApp.baseRepository.getNameSpace(), UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
 
 		CompleterApp.ListModifiedInstances.add(instance.ns + instance.name);
@@ -387,6 +397,8 @@ public class OKCoController {
 		try {
 			CompleterApp.updateLists();
 		} catch (InconsistentOntologyException e) {
+			e.printStackTrace();
+		} catch (OKCoExceptionInstanceFormat e) {
 			e.printStackTrace();
 		} 
 		
@@ -397,7 +409,7 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/graphVisualizer")
-	public String graphVisualizer(@RequestParam("id") String id, @RequestParam("typeView") String typeView, HttpServletRequest request) {
+	public String graphVisualizer(@RequestParam("uri") String uri, @RequestParam("typeView") String typeView, HttpServletRequest request) {
 
 		String valuesGraph = "";
 		int width;
@@ -405,17 +417,7 @@ public class OKCoController {
 		String subtitle = "";
 		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
 		Instance i;
-		int num = 0;
-
-		try  
-		{  
-			num = Integer.parseInt(id);  
-		}  
-		catch(NumberFormatException nfe)  
-		{  
-			typeView = "ALL";
-		}
-
+		
 		//TypeView -> ALL/IN/OUT
 		if(typeView.equals("ALL"))
 		{
@@ -423,10 +425,10 @@ public class OKCoController {
 			//All instances
 			valuesGraph  = graphPlotting.getArborStructureFor(UploadApp.getInferredModel()); 
 
-		} else if(id != null && num > 0){
+		} else if(uri != null){
 
 			//Get the instance
-			i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(id));
+			i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);
 
 			if(typeView.equals("IN"))			//in on instance
 			{				
@@ -600,8 +602,11 @@ public class OKCoController {
 
 			} catch (InconsistentOntologyException e1) {
 
-				//e1.printStackTrace();
+				e1.printStackTrace();
 
+			} catch (OKCoExceptionInstanceFormat e1) {
+				
+				e1.printStackTrace();
 			}
 
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
@@ -617,23 +622,23 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/removeInstance", method = RequestMethod.GET)
-	public @ResponseBody String removeInstance(@RequestParam String id) {    
+	public @ResponseBody String removeInstance(@RequestParam String uri) {    
 
-		if(id != null)
+		if(uri != null)
 		{
-			Instance.removeFromList(listNewInstancesRelation, id);
-			return id;
+			Instance.removeFromList(listNewInstancesRelation, uri);
+			return uri;
 		}
 
 		return null;		  
 	}
 
 	@RequestMapping(value="/editInstance", method = RequestMethod.GET)
-	public @ResponseBody DtoViewSelectInstance editInstance(@RequestParam String id) {    
+	public @ResponseBody DtoViewSelectInstance editInstance(@RequestParam String uri) {    
 
-		if(id != null)
+		if(uri!=null)
 		{
-			Instance i = CompleterApp.ManagerInstances.getInstance(listNewInstancesRelation, Integer.parseInt(id));
+			Instance i = CompleterApp.ManagerInstances.getInstance(listNewInstancesRelation, uri);
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, listNewInstancesRelation);
 			return dto;
 		}
@@ -642,11 +647,11 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/selectInstance", method = RequestMethod.GET)
-	public @ResponseBody DtoViewSelectInstance selectInstance(@RequestParam String id) {    
+	public @ResponseBody DtoViewSelectInstance selectInstance(@RequestParam String uri) {    
 
-		if(id != null)
+		if(uri != null)
 		{
-			Instance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(id));
+			Instance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, CompleterApp.ListAllInstances);
 			return dto;
 		}
@@ -655,13 +660,13 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/selectInstanceAdd", method = RequestMethod.GET)
-	public @ResponseBody Instance selectInstanceAdd(@RequestParam String id) { 
+	public @ResponseBody Instance selectInstanceAdd(@RequestParam String uri) { 
 
 		//Add in listNewInstancesRelation
 
-		if(id != null)
+		if(uri != null)
 		{
-			Instance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(id));
+			Instance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);
 			listNewInstancesRelation.add(i);
 			return i;
 		}
@@ -686,11 +691,11 @@ public class OKCoController {
 					String[] parts = val.split("x");
 
 					String type = parts[0];
-					String idInsSource = parts[1];
-					String idInsTarget = parts[2];
+					String uriSource = parts[1];
+					String uriTarget = parts[2];
 					
-					Instance s1 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInsSource));
-					Instance s2 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, Integer.parseInt(idInsTarget));
+					Instance s1 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriSource);
+					Instance s2 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriTarget);
 					
 					if(type.equals("dif"))
 					{
@@ -903,7 +908,7 @@ public class OKCoController {
 				CompleterApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);;
 
 				//Instance selected update
-				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .id);
+				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .uri);
 
 			} catch (Exception e) {
 
@@ -919,7 +924,7 @@ public class OKCoController {
 				CompleterApp.updateLists();
 
 				//Instance selected update
-				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .id);
+				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .uri);
 
 				return dtoResult;
 			}	
@@ -984,7 +989,7 @@ public class OKCoController {
 				CompleterApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);
 
 				//Instance selected update
-				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .id);
+				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .uri);
 
 			} catch (Exception e) {
 
@@ -1006,7 +1011,7 @@ public class OKCoController {
 				CompleterApp.updateLists();
 
 				//Instance selected update
-				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .id);
+				instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, instanceSelected .uri);
 
 				return dtoResult;
 			}			  

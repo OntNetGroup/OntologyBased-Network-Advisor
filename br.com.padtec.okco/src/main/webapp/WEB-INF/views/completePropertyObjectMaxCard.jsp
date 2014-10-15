@@ -245,7 +245,7 @@
 							<%
 								for (Instance i : ListInstancesInRelation) {
 
-									out.println("<td id=\"y-" + i.id + "\">" + i.name + "</td>");
+									out.println("<td id=\"y-" + i.uri + "\">" + i.name + "</td>");
 								}
 							%>
 						</tr>
@@ -256,7 +256,7 @@
 							for (Instance i : ListInstancesInRelation) {
 								out.println("<tr>");
 
-								out.println("<td id=\"" + i.id + "\">" + i.name + "</td>");
+								out.println("<td id=\"" + i.uri + "\">" + i.name + "</td>");
 
 								for (Instance i2 : ListInstancesInRelation) {
 									if (i2.name.equals(i.name)) {
@@ -265,7 +265,7 @@
 									} else {
 
 										out.println("<td style=\"text-align:center\" id=\""
-												+ i.id + "x" + i2.id + "\">");
+												+ i.uri + "x" + i2.uri + "\">");
 
 										out.println("<select class=\"selectSameDif\">");
 										out.println("<option value=\"none\">-</option>");
@@ -289,8 +289,8 @@
 
 					<form id="commitInstanceForm" action="commitMaxCard" method="POST">
 						<%
-							out.println("<button onclick=\"window.location = '/br.com.padtec.okco/details?id="
-									+ instanceSelected.id
+							out.println("<button onclick=\"window.location = '/br.com.padtec.okco/details?uri="
+									+ instanceSelected.uriEncoded
 									+ "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
 						%>
 

@@ -1,6 +1,8 @@
 package br.com.padtec.okco.domain;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +10,10 @@ public class Instance implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static int count = 0;	//Count the number of instances
-	
-	public int id;
 	public String ns;
 	public String name;
+	public String uri;
+	public String uriEncoded;
 	public List<String> ListClasses;
 	public List<String> ListSameInstances;
 	public List<String> ListDiferentInstances;
@@ -30,10 +31,14 @@ public class Instance implements Serializable {
 	
 	public Instance(String ns, String name, List<String> listClasses, List<String> listDifferent, List<String> listSame, Boolean existInModel)
 	{
-		count++;
-		this.id = count;
 		this.ns = ns;
 		this.name = name;
+		this.uri = ns+name;
+		try {
+			this.uriEncoded = URLEncoder.encode(this.uri, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		this.ListClasses = listClasses;
 		this.ListCompleteClasses = new ArrayList<DtoCompleteClass>();
 		this.ListSpecializationProperties = new ArrayList<DtoPropertyAndSubProperties>();
@@ -62,7 +67,7 @@ public class Instance implements Serializable {
 	{
 		System.out.println("\n-------------------------------------");
 		System.out.println("- Instance name: " + this.ns + this.name);
-		System.out.println("Identifier: "+id);
+		System.out.println("Identifier: "+uri);
 		System.out.println("- ListOfSome: ");
 		for (DtoDefinitionClass dto : ListSome) {
 			System.out.println("      - " + dto.Relation + " -> " + dto.Target + " (" + dto.Cardinality + ")");
@@ -153,11 +158,11 @@ public class Instance implements Serializable {
  		
  	}
 
-	public static void removeFromList(ArrayList<Instance> listNewInstances,	String id) {
+	public static void removeFromList(ArrayList<Instance> listNewInstances,	String uri) {
 
 		for (Instance instance : listNewInstances) {
 			
-			if(instance.id == Integer.parseInt(id))
+			if(instance.uri.equals(uri))
 			{
 				listNewInstances.remove(instance);
 				break;

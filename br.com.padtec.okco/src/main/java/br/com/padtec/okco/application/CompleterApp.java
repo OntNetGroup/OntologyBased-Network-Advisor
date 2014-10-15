@@ -41,13 +41,13 @@ public class CompleterApp {
 	}
 	
 	//Check the validity of this method
-	public static void updateLists() throws InconsistentOntologyException 
+	public static void updateLists() throws InconsistentOntologyException, OKCoExceptionInstanceFormat 
 	{	
 		System.out.println("Updating Lists()...");
 		InfModel inferredModel = UploadApp.getInferredModel();
 		OntModel Model = UploadApp.getBaseModel();
     	// Refresh list of instances
-    	ListAllInstances = QueryApp.getIndividuals();
+    	ListAllInstances = ManagerInstances.getAllInstances(inferredModel);
     	//Get model definitions on list of instances	    	
 	  	ModelDefinitions = Search.GetModelDefinitionsInInstances(ListAllInstances, inferredModel);			
 		// Organize data (Update the list of all instances)			

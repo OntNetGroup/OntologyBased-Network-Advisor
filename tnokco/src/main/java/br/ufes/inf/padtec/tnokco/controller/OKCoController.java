@@ -86,11 +86,11 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/details")
-	public String details(@RequestParam("id") String id, HttpServletRequest request) {
+	public String details(@RequestParam("uri") String uri, HttpServletRequest request) {
 
 		// ----- Instance selected ----//
 
-		instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(id));		
+		instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, uri);		
 
 		// ----- Remove repeat values -------- //
 
@@ -144,10 +144,10 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
-	public String completeProperty(@RequestParam("idDefinition") String idDefinition, @RequestParam("idInstance") String idInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
+	public String completeProperty(@RequestParam("idDefinition") String idDefinition, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
 
@@ -230,7 +230,7 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completePropertyAuto")
-	public String completePropertyAuto(@RequestParam("idDefinition") String idDefinition, @RequestParam("idInstance") String idInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
+	public String completePropertyAuto(@RequestParam("idDefinition") String idDefinition, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
 		/*
 		 * ATTENTION: This function works only with object properties: min, exactly and some properties
@@ -238,7 +238,7 @@ public class OKCoController {
 		 * */
 
 		//Instance selected
-		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome, Integer.parseInt(idDefinition));
@@ -378,10 +378,10 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completeInstanceAuto")
-	public String completeInstanceAuto(@RequestParam("idInstance") String idInstance, HttpServletRequest request) {
+	public String completeInstanceAuto(@RequestParam("uriInstance") String uriInstance, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(idInstance));
+		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 
 		HomeController.Model = HomeController.ManagerInstances.CompleteInstanceAuto(instance, HomeController.NS, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 
@@ -402,7 +402,7 @@ public class OKCoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/graphVisualizer")
-	public String graphVisualizer(@RequestParam("id") String id, @RequestParam("typeView") String typeView, HttpServletRequest request) {
+	public String graphVisualizer(@RequestParam("uri") String uri, @RequestParam("typeView") String typeView, HttpServletRequest request) {
 
 		String valuesGraph = "";
 		int width;
@@ -415,7 +415,7 @@ public class OKCoController {
 
 		try  
 		{  
-			num = Integer.parseInt(id);  
+			num = Integer.parseInt(uri);  
 		}  
 		catch(NumberFormatException nfe)  
 		{  
@@ -429,10 +429,10 @@ public class OKCoController {
 			//All instances
 			valuesGraph  = graphPlotting.getArborStructureFor(HomeController.InfModel); 
 
-		} else if(id != null && num > 0){
+		} else if(uri != null && num > 0){
 
 			//Get the instance
-			i = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(id));
+			i = HomeController.ManagerInstances.getInstance(ListAllInstances, uri);
 
 			if(typeView.equals("IN"))			//in on instance
 			{				
@@ -626,23 +626,23 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/removeInstance", method = RequestMethod.GET)
-	public @ResponseBody String removeInstance(@RequestParam String id) {    
+	public @ResponseBody String removeInstance(@RequestParam String uri) {    
 
-		if(id != null)
+		if(uri != null)
 		{
-			Instance.removeFromList(listNewInstancesRelation, id);
-			return id;
+			Instance.removeFromList(listNewInstancesRelation, uri);
+			return uri;
 		}
 
 		return null;		  
 	}
 
 	@RequestMapping(value="/editInstance", method = RequestMethod.GET)
-	public @ResponseBody DtoViewSelectInstance editInstance(@RequestParam String id) {    
+	public @ResponseBody DtoViewSelectInstance editInstance(@RequestParam String uriInstance) {    
 
-		if(id != null)
+		if(uriInstance != null)
 		{
-			Instance i = HomeController.ManagerInstances.getInstance(listNewInstancesRelation, Integer.parseInt(id));
+			Instance i = HomeController.ManagerInstances.getInstance(listNewInstancesRelation, uriInstance);
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, listNewInstancesRelation);
 			return dto;
 		}
@@ -651,11 +651,11 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/selectInstance", method = RequestMethod.GET)
-	public @ResponseBody DtoViewSelectInstance selectInstance(@RequestParam String id) {    
+	public @ResponseBody DtoViewSelectInstance selectInstance(@RequestParam String uriInstance) {    
 
-		if(id != null)
+		if(uriInstance != null)
 		{
-			Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(id));
+			Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, ListAllInstances);
 			return dto;
 		}
@@ -664,13 +664,13 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/selectInstanceAdd", method = RequestMethod.GET)
-	public @ResponseBody Instance selectInstanceAdd(@RequestParam String id) { 
+	public @ResponseBody Instance selectInstanceAdd(@RequestParam String uriInstance) { 
 
 		//Add in listNewInstancesRelation
 
-		if(id != null)
+		if(uriInstance != null)
 		{
-			Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, Integer.parseInt(id));
+			Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 			listNewInstancesRelation.add(i);
 			return i;
 		}
@@ -695,11 +695,11 @@ public class OKCoController {
 					String[] parts = val.split("x");
 
 					String type = parts[0];
-					String idInsSource = parts[1];
-					String idInsTarget = parts[2];
+					String uriSource = parts[1];
+					String uriTarget = parts[2];
 					
-					Instance s1 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, Integer.parseInt(idInsSource));
-					Instance s2 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, Integer.parseInt(idInsTarget));
+					Instance s1 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, uriSource);
+					Instance s2 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, uriTarget);
 					
 					if(type.equals("dif"))
 					{
@@ -795,12 +795,12 @@ public class OKCoController {
 	/*------ AJAX - DataProperty -----*/	
 
 	@RequestMapping(value="/removeDataValue", method = RequestMethod.GET)
-	public @ResponseBody String removeDataValue(@RequestParam String id) {    
+	public @ResponseBody String removeDataValue(@RequestParam String uri) {    
 
-		if(id != null)
+		if(uri != null)
 		{
-			DataPropertyValue.removeFromList(listNewDataValuesRelation, id);
-			return id;
+			DataPropertyValue.removeFromList(listNewDataValuesRelation, uri);
+			return uri;
 		}
 
 		return null;		  
@@ -915,7 +915,7 @@ public class OKCoController {
 				HomeController.UpdateAddIntanceInLists(instanceSelected.ns + instanceSelected.name);;
 
 				//Instance selected update
-				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .id);
+				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .uri);
 
 			} catch (Exception e) {
 
@@ -931,7 +931,7 @@ public class OKCoController {
 				HomeController.UpdateLists();
 
 				//Instance selected update
-				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .id);
+				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .uri);
 
 				return dtoResult;
 			}	
@@ -996,7 +996,7 @@ public class OKCoController {
 				HomeController.UpdateAddIntanceInLists(instanceSelected.ns + instanceSelected.name);
 
 				//Instance selected update
-				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .id);
+				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .uri);
 
 			} catch (Exception e) {
 
@@ -1018,7 +1018,7 @@ public class OKCoController {
 				HomeController.UpdateLists();
 
 				//Instance selected update
-				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .id);
+				instanceSelected = HomeController.ManagerInstances.getInstance(ListAllInstances, instanceSelected .uri);
 
 				return dtoResult;
 			}			  

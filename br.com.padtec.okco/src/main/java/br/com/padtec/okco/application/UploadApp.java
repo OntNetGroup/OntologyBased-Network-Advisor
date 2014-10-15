@@ -128,6 +128,8 @@ public class UploadApp {
 			CompleterApp.updateLists();			
 		} catch (InconsistentOntologyException e1) {			
 			e1.printStackTrace();			
+		} catch (OKCoExceptionInstanceFormat e) {			
+			e.printStackTrace();
 		}			
 	}	
 }

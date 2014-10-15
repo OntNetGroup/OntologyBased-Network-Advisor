@@ -447,7 +447,7 @@
 	
 	<form id="commitInstanceForm" action="commitDataValues" method="POST">
 		<%
-			out.println("<button onclick=\"window.location = '/tnokco/details?id=" + instanceSelected.id + "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
+			out.println("<button onclick=\"window.location = '/tnokco/details?id=" + instanceSelected.uriEncoded + "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
 		%>
 		
 		<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>

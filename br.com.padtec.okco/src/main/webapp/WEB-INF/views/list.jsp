@@ -141,9 +141,9 @@
 							  		
 							  		
 							  		out.println("<td class=\"center\">" + 
-							  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&id=" + i.id + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
-							  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/details?id=" + i.id + "\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
-						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completeInstanceAuto?idInstance="+ i.id + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
+							  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
+							  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completeInstanceAuto?uriInstance="+ i.uriEncoded + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
 							  					"</td>");
 						  									  		
 						  		out.println("</tr>");

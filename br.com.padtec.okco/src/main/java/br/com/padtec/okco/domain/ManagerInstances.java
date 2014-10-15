@@ -307,6 +307,8 @@ public class ManagerInstances {
 	public Instance getInstance(List<Instance> listInstances, String instanceName) {		
 		
 		for (Instance instance : listInstances) {
+			System.out.println("Comparing: "+instance.ns + instance.name);
+			System.out.println("With: "+instanceName);
 			if((instance.ns + instance.name).equals(instanceName))
 			{
 				return instance;
@@ -315,19 +317,7 @@ public class ManagerInstances {
 		
 		return null;
 	}
-	
-	public Instance getInstance(List<Instance> listInstances, int id) {
 		
-		for (Instance instance : listInstances) {
-			if(instance.id == id)
-			{
-				return instance;
-			}
-		}
-		
-		return null;
-	}
-	
 	public List<Instance> getIntersectionOf(List<Instance> listAllInstances, List<String> listInstancesName) {
 
 		List<Instance> list = new ArrayList<Instance>();
