@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.padtec.common.queries.InfModelQueryUtil;
-import br.com.padtec.okco.domain.Search;
+import br.com.padtec.common.util.Search;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 
 import com.hp.hpl.jena.ontology.Individual;

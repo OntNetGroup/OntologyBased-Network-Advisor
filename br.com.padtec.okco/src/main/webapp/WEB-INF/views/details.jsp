@@ -1,13 +1,13 @@
 <%@page import="java.net.URLEncoder"%>
-<%@ page import="br.com.padtec.okco.application.UploadApp"%>
-<%@ page import="br.com.padtec.okco.application.CompleterApp"%>
+<%@ page import="br.com.padtec.common.util.UploadApp"%>
+<%@ page import="br.com.padtec.common.util.CompleterApp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="br.com.padtec.okco.domain.Instance"%>
-<%@ page import="br.com.padtec.okco.domain.DtoCompleteClass"%>
+<%@ page import="br.com.padtec.common.util.Instance"%>
+<%@ page import="br.com.padtec.common.dto.DtoCompleteClass"%>
 <%@ page import="br.com.padtec.common.queries.OntPropertyEnum"%>
-<%@ page import="br.com.padtec.okco.domain.DtoPropertyAndSubProperties"%>
-<%@ page import="br.com.padtec.okco.domain.DtoDefinitionClass"%>
-<%@ page import="br.com.padtec.okco.domain.DtoInstanceRelation"%>
+<%@ page import="br.com.padtec.common.dto.DtoPropertyAndSubProperties"%>
+<%@ page import="br.com.padtec.common.dto.DtoDefinitionClass"%>
+<%@ page import="br.com.padtec.common.dto.DtoInstanceRelation"%>
 <%@ page import="java.util.ArrayList"%>
 
 

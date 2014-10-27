@@ -1,6 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="br.com.padtec.okco.domain.Instance"%>
-<%@ page import="br.com.padtec.okco.domain.DtoDefinitionClass"%>
+<%@ page import="br.com.padtec.common.util.Instance"%>
+<%@ page import="br.com.padtec.common.dto.DtoDefinitionClass"%>
 <%@ page import="java.util.ArrayList"%>
 
 <%	

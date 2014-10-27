@@ -3,6 +3,8 @@
 	<name>tnokco</name>
 	<comment></comment>
 	<projects>
+		<project>br.com.padtec.common</project>
+		<project>br.com.padtec.okco</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

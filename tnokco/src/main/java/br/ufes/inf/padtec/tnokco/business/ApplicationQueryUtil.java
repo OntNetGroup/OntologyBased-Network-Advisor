@@ -3,9 +3,9 @@ package br.ufes.inf.padtec.tnokco.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.InfModelQueryUtil;
-import br.com.padtec.okco.application.UploadApp;
-import br.com.padtec.okco.domain.DtoInstanceRelation;
+import br.com.padtec.common.util.UploadApp;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
 import com.hp.hpl.jena.ontology.OntModel;

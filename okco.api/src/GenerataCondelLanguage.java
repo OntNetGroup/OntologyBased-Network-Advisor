@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import br.com.padtec.common.queries.OntModelAPI;
-import br.com.padtec.okco.domain.Search;
+import br.com.padtec.common.util.Search;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;

@@ -3,12 +3,12 @@ package okco.api.ClientApp;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.padtec.common.dto.DtoInstanceRelation;
+import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.queries.InfModelQueryUtil;
-import br.com.padtec.okco.application.UploadApp;
-import br.com.padtec.okco.domain.DtoInstanceRelation;
-import br.com.padtec.okco.domain.Instance;
-import br.com.padtec.okco.domain.ManagerInstances;
-import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
+import br.com.padtec.common.util.Instance;
+import br.com.padtec.common.util.ManagerInstances;
+import br.com.padtec.common.util.UploadApp;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;

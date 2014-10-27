@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.com.padtec.okco.application.CompleterApp;
-import br.com.padtec.okco.application.UploadApp;
-import br.com.padtec.okco.domain.exceptions.OKCoExceptionFileFormat;
-import br.com.padtec.okco.domain.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.okco.domain.exceptions.OKCoExceptionNameSpace;
-import br.com.padtec.okco.domain.exceptions.OKCoExceptionReasoner;
+import br.com.padtec.common.exceptions.OKCoExceptionFileFormat;
+import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
+import br.com.padtec.common.exceptions.OKCoExceptionNameSpace;
+import br.com.padtec.common.exceptions.OKCoExceptionReasoner;
+import br.com.padtec.common.util.CompleterApp;
+import br.com.padtec.common.util.DtoResult;
+import br.com.padtec.common.util.UploadApp;
 
 @Controller
 public class UploadController {

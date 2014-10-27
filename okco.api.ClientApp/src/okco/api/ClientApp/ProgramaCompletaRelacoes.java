@@ -5,12 +5,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import br.com.padtec.okco.domain.FactoryInstances;
-import br.com.padtec.okco.domain.ManagerInstances;
-import br.com.padtec.okco.domain.Search;
-import br.com.padtec.okco.persistence.HermitReasonerImpl;
-import br.com.padtec.okco.persistence.OntologyReasoner;
-import br.com.padtec.okco.persistence.PelletReasonerImpl;
+import br.com.padtec.common.persistence.HermitReasonerImpl;
+import br.com.padtec.common.persistence.OntologyReasoner;
+import br.com.padtec.common.persistence.PelletReasonerImpl;
+import br.com.padtec.common.util.FactoryInstances;
+import br.com.padtec.common.util.ManagerInstances;
+import br.com.padtec.common.util.Search;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
