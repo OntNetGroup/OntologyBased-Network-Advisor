@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -1785,4 +1786,51 @@ public class InfModelQueryUtil {
 		}		
 		return result;
 	}
+	
+
+	/* @author: Jordana Salamon
+	 * @param: individual, list of relations from individual, model
+	 */
+	static public ArrayList<String> query_EndOfGraph(String individuo, ArrayList<String> Relacoes, InfModel model){
+		// Create a new query
+  		String var1 = null;
+		String queryString = 
+		 "PREFIX ont: <" + model.getNsPrefixURI("") + "> "
+		+ "SELECT ?var" + Relacoes.size()
+		+ " WHERE { ";
+		if(Relacoes.size() == 1){
+			var1 = "var"+Relacoes.size();
+			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 + " }";
+		}
+		else {
+			var1 = "var";
+			int cont=1;
+			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 +cont + ".";
+			for (int i = 1; i< Relacoes.size(); i++) {
+				String var2 = "var";
+				int cont2=cont+1;
+				queryString = queryString + "?" + var1 + cont  + " ont:" + Relacoes.get(i) + " ?" + var2 + cont2 + " .";
+				cont++;
+			}
+			queryString = queryString + " }";
+		}
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		ArrayList<String> list = new ArrayList<String>();
+
+		//ResultSetFormatter.out(System.out, results, query);
+		
+		while (results.hasNext()) {
+			QuerySolution row = results.next();
+		    
+		    RDFNode rdfY = row.get("var"+Relacoes.size());
+	    	list.add(rdfY.toString());
+		}
+		return list;
+	}
+	
+	
 }
