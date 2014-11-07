@@ -10,7 +10,7 @@ public class Main {
 		
 		SparqlQueries sparqlQueries = new SparqlQueries("http://www.semanticweb.org/ontologies/2014/5/ontology.owl/");
 		
-		ArrayList<IndividualInstance> instances = sparqlQueries.getAllIndividualInstances(false, false, false);
+		ArrayList<IndividualInstance> instances = sparqlQueries.getAllIndividualInstances(true, true, true);
 		
 		System.out.println(instances);
 	}
