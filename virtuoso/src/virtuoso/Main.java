@@ -1,20 +1,18 @@
 package virtuoso;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import instances.IndividualInstance;
+
+import java.util.ArrayList;
 
 public class Main {
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		SparqlQueries sparqlQueries = new SparqlQueries("http://www.semanticweb.org/fredd_000/ontologies/2014/9/untitled-ontology-225");
+	public static void main(String[] args) throws Exception  {
 		
-		ResultSet results = sparqlQueries.getAllTypesOfAnIndividual("c");
-		while (results.next()) {
-			String type = results.getString("type");
-			//className = className.replace(SparqlQueries.g800UriHashTag, "");
-			System.out.println(type);
-		}
-
+		SparqlQueries sparqlQueries = new SparqlQueries("http://www.semanticweb.org/ontologies/2014/5/ontology.owl/");
+		
+		ArrayList<IndividualInstance> instances = sparqlQueries.getAllIndividualInstances(false, false, false);
+		
+		System.out.println(instances);
 	}
 
 }
