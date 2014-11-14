@@ -1,14 +1,20 @@
 package virtuoso;
 
 import instances.IndividualInstance;
+import instances.ObjectPropertyInstance;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
-public class SparqlQueries {
+import virtuoso.jena.driver.VirtGraph;
+import virtuoso.jena.driver.VirtuosoUpdateFactory;
+import virtuoso.jena.driver.VirtuosoUpdateRequest;
+
+public class KAO {
 	Connection connection;
 	Statement st;
 	
@@ -17,8 +23,11 @@ public class SparqlQueries {
 	public final String defineInference;
 	public final String prefixes;
 	
+	public final String rdfs = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+	public final String owl = "http://www.w3.org/2002/07/owl#";
 	
-	public SparqlQueries(String ontologyUri) throws ClassNotFoundException, SQLException {
+	
+	public KAO(String ontologyUri) throws ClassNotFoundException, SQLException {
 		this.ontologyUri = ontologyUri;
 		this.ontologyUriHashTag = this.ontologyUri + "#";
 		
@@ -27,9 +36,9 @@ public class SparqlQueries {
 				+ "\n";
 		
 		this.prefixes = 	""
-				+ "PREFIX rdfs: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ "PREFIX rdfs: <" + this.rdfs + ">"
 				+ "\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>"
+				+ "PREFIX owl: <" + owl + ">"
 				+ "\n"
 				+ "PREFIX myOntology: <" + ontologyUriHashTag + ">"
 				+ "\n";
@@ -94,6 +103,7 @@ public class SparqlQueries {
 				+ defineInference
 				+ prefixes
 				+ "SELECT * \n"
+				+ "FROM <" + this.ontologyUri + ">"
 				+ "WHERE \n"
 				+ "{ \n"
 				+ "\t?individualIri rdfs:type owl:NamedIndividual\n"
@@ -135,6 +145,79 @@ public class SparqlQueries {
 		
 		return individualInstanceList;
 		
+	}
+	
+	public void insertInstance(IndividualInstance individual) throws Exception{
+		/*			STEP 1			*/
+		VirtGraph set = new VirtGraph (ConnectionFactory.getVirtuosourl(), "dba", "dba");
+		
+		String insertStr = "";
+		insertStr += "INSERT INTO GRAPH <" + this.ontologyUri + ">\n";
+		insertStr += "{ ";
+		
+		insertStr += "\n";
+		insertStr += "<" + individual.getIri() + "> ";
+		insertStr += "<" + this.rdfs + "type> <" + owl + "NamedIndividual> . ";
+		
+		for (Entry<String, String> classEntry : individual.getClasses(this).entrySet()) {
+			insertStr += "\n";
+			insertStr += "<" + individual.getIri() + "> ";
+			insertStr += "<" + this.rdfs + "type> ";
+			insertStr += "<" + this.ontologyUri + "#" + classEntry.getValue() + "> . ";			
+		}
+		
+		for (Entry<MyKey, ObjectPropertyInstance> opEntry : individual.getObjectProperties(this).entrySet()) {
+			insertStr += "\n";
+			insertStr += "<" + opEntry.getValue().getSource().getIri() + "> ";
+			insertStr += "<" + opEntry.getValue().getIri() + "> ";
+			insertStr += "<" + opEntry.getValue().getTarget().getIri() + "> . ";
+		}
+		
+//		for (DataPropertyInstance dp : individual.getDataProperties(this)) {
+//			insertStr += "\n";
+//			insertStr += "<" + individual.getIri() + "> ";
+//			insertStr += "<" + dp.getIri() + "> ";
+//			insertStr += "<" + dp.getTarget().getIri() + "> . ";
+//		}
+		
+		insertStr += "\n";
+		insertStr += "}";
+		
+		System.out.println("\n" + insertStr);
+        
+        VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(insertStr, set);
+        vur.exec();    
+	}
+	
+	public ArrayList<String> getAllInverseOf(String opIri) throws SQLException {
+		ArrayList<String> ioList = new ArrayList<String>();
+		
+		String sparql = ""
+				+ "sparql\n"
+				+ defineInference
+				+ prefixes
+				+ "SELECT * \n"
+				+ "FROM <" + this.ontologyUri + ">\n"
+				+ "WHERE \n"
+				+ "{ \n"
+				+ "\t{\n"
+				+ "\t\t<" + opIri + "> <" + owl + "inverseOf> ?inverse\n"
+				+ "\t}\n" 
+				+ "\tUNION\n"
+				+ "\t{\n"
+				+ "\t\t?inverse <" + owl + "inverseOf> <" + opIri + ">\n"
+				+ "\t}\n"
+				+ "}";
+		
+		ResultSet results = this.st.executeQuery(sparql);
+		
+		while(results.next()){
+			String inverseIri = results.getString("inverse");
+			
+			ioList.add(inverseIri);
+		}
+		
+		return ioList; 
 	}
 	
 }

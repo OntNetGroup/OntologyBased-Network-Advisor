@@ -3,18 +3,27 @@ package instances;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import virtuoso.SparqlQueries;
+import virtuoso.KAO;
+import virtuoso.MyKey;
 
 public class IndividualInstance {
 	private String ns;
 	private String name;
 	private String iri;
-	private List<String> ListClasses;
-	private List<ObjectPropertyInstance> objectProperiesAsSource;
-	private List<ObjectPropertyInstance> objectProperiesAsTarget;
-	private List<DataPropertyInstance> dataProperties;
+	private Map<String,String> classes;
+	private Map<MyKey,ObjectPropertyInstance> objectPropertiesAsSource;
+	private Map<MyKey,ObjectPropertyInstance> objectPropertiesAsTarget;
+	private Map<MyKey,DataPropertyInstance> dataProperties;
+	
+	
+	@SuppressWarnings("unused")
+	private IndividualInstance() {
+		
+	}
 	
 	public IndividualInstance(String iriString) throws Exception {
 		this.iri = iriString;
@@ -29,8 +38,8 @@ public class IndividualInstance {
 		this.name = splittedIri[1];
 	}
 
-	public void searchForClasses(SparqlQueries sparqlQueries) throws SQLException{
-		ResultSet individualClassesResSet = sparqlQueries.getAllIndividualInstanceClasses(this.iri);
+	public void searchForClasses(KAO kao) throws SQLException{
+		ResultSet individualClassesResSet = kao.getAllIndividualInstanceClasses(this.iri);
 		while(individualClassesResSet.next()){
 			String individualClass = individualClassesResSet.getString("class");
 			
@@ -38,35 +47,31 @@ public class IndividualInstance {
 		}
 	}
 	
-	public void searchForObjectPropertiesAsSource(SparqlQueries sparqlQueries) throws Exception{
-		ResultSet indInstObjPropAsSourceResSet = sparqlQueries.getAllIndividualInstanceObjPropAsSource(this.iri);
+	public void searchForObjectPropertiesAsSource(KAO kao) throws Exception{
+		ResultSet indInstObjPropAsSourceResSet = kao.getAllIndividualInstanceObjPropAsSource(this.iri);
 		while(indInstObjPropAsSourceResSet.next()){
 			String targetStr = indInstObjPropAsSourceResSet.getString("target");
 			String opStr = indInstObjPropAsSourceResSet.getString("objProp");
 			
 			IndividualInstance target = new IndividualInstance(targetStr);
 			
-			ObjectPropertyInstance op = new ObjectPropertyInstance(opStr, this, target);
-			
-			this.addObjectProperiesAsSource(op);
+			this.addObjectPropertiesAsSource(kao, opStr, target, false);
 		}
 	}
 	
-	public void searchForObjectPropertiesAsTarget(SparqlQueries sparqlQueries) throws Exception{
-		ResultSet indInstObjPropAsTargetResSet = sparqlQueries.getAllIndividualInstanceObjPropAsTarget(this.iri);
+	public void searchForObjectPropertiesAsTarget(KAO kao) throws Exception{
+		ResultSet indInstObjPropAsTargetResSet = kao.getAllIndividualInstanceObjPropAsTarget(this.iri);
 		while(indInstObjPropAsTargetResSet.next()){
 			String sourceStr = indInstObjPropAsTargetResSet.getString("source");
 			String opStr = indInstObjPropAsTargetResSet.getString("objProp");
 			
 			IndividualInstance source = new IndividualInstance(sourceStr);
 			
-			ObjectPropertyInstance op = new ObjectPropertyInstance(opStr, source, this);
-			
-			this.addObjectProperiesAsTarget(op);
+			this.addObjectPropertiesAsTarget(kao, source, opStr);
 		}
 	}
 	
-	public void searchForDataProperties(SparqlQueries sparqlQueries){
+	public void searchForDataProperties(KAO kao){
 		
 	}
 	
@@ -94,66 +99,90 @@ public class IndividualInstance {
 		this.iri = iri;
 	}
 
-	public List<String> getListClasses(SparqlQueries sparqlQueries) throws SQLException {
-		if(this.ListClasses == null){
-			this.searchForClasses(sparqlQueries);
+	public Map<String,String> getClasses(KAO kao) throws SQLException {
+		if(this.classes == null){
+			this.searchForClasses(kao);
 		}
-		return this.ListClasses;
+		return this.classes;
 	}
 
 	public void addListClasses(String classIriStr) {
-		if(this.ListClasses == null){
-			this.ListClasses = new ArrayList<String>();
+		if(this.classes == null){
+			this.classes = new HashMap<String,String>();
 		}
 		String[] splittedIri = classIriStr.split("#");
 		if(splittedIri.length == 2){
-			this.ListClasses.add(splittedIri[1]);
+			if(!this.classes.containsKey(splittedIri[1])){
+				this.classes.put(splittedIri[1], splittedIri[1]);
+			}			
 		}		
 	}
 
-	public void addObjectProperiesAsSource(ObjectPropertyInstance opInstance) {
-		if(this.objectProperiesAsSource == null){
-			this.objectProperiesAsSource = new ArrayList<ObjectPropertyInstance>();
-		}		
+	public Map<MyKey,ObjectPropertyInstance> getObjectPropertiesAsTarget(KAO kao) throws Exception {
+		if(this.objectPropertiesAsTarget == null){
+			this.searchForObjectPropertiesAsTarget(kao);
+		}
+		return this.objectPropertiesAsTarget;
+	}
+
+	public Map<MyKey,ObjectPropertyInstance> getObjectPropertiesAsSource(KAO kao) throws Exception {
+		if(this.objectPropertiesAsSource == null){
+			this.searchForObjectPropertiesAsSource(kao);
+		}
+		return this.objectPropertiesAsSource;
+	}
+	
+	public Map<MyKey,ObjectPropertyInstance> getObjectProperties(KAO kao) throws Exception{
+		Map<MyKey,ObjectPropertyInstance> objectProperties = new HashMap<MyKey,ObjectPropertyInstance>();
 		
-		this.objectProperiesAsSource.add(opInstance);
-	}
-
-	public List<ObjectPropertyInstance> getObjectProperiesAsTarget(SparqlQueries sparqlQueries) throws Exception {
-		if(this.objectProperiesAsTarget == null){
-			this.searchForObjectPropertiesAsTarget(sparqlQueries);
+		this.getObjectPropertiesAsSource(kao);
+		this.getObjectPropertiesAsTarget(kao);
+		
+		if(this.objectPropertiesAsSource != null){
+			objectProperties.putAll(this.objectPropertiesAsSource);
 		}
-		return this.objectProperiesAsTarget;
-	}
-
-	public List<ObjectPropertyInstance> getObjectProperiesAsSource(SparqlQueries sparqlQueries) throws Exception {
-		if(this.objectProperiesAsSource == null){
-			this.searchForObjectPropertiesAsSource(sparqlQueries);
+		if(this.objectPropertiesAsTarget != null){
+			objectProperties.putAll(this.objectPropertiesAsTarget);
 		}
-		return this.objectProperiesAsSource;
+		return objectProperties;
 	}
 
-	public void addObjectProperiesAsTarget(ObjectPropertyInstance opInstance) {
-		if(this.objectProperiesAsTarget == null){
-			this.objectProperiesAsTarget = new ArrayList<ObjectPropertyInstance>();
+	public void addObjectPropertiesAsSource(KAO kao, String opIri, IndividualInstance target, Boolean getInverseOf) throws Exception {
+		ObjectPropertyInstance op = new ObjectPropertyInstance(this, opIri, target);
+		if(this.objectPropertiesAsSource == null){
+			this.objectPropertiesAsSource = new HashMap<MyKey,ObjectPropertyInstance>();
 		}		
-		this.objectProperiesAsTarget.add(opInstance);
+		MyKey key = new MyKey(this.getIri(), opIri, target.getIri());
+		if(!this.objectPropertiesAsSource.containsKey(key)){
+			this.objectPropertiesAsSource.put(key, op);
+		}
+		
+		if(getInverseOf){
+			ArrayList<String> inverses = kao.getAllInverseOf(opIri);
+			for (String invIri : inverses) {
+				this.addObjectPropertiesAsTarget(kao, target, invIri);
+			}
+		}
 	}
 
-	public List<DataPropertyInstance> getDataProperties(SparqlQueries sparqlQueries) {
+	public void addObjectPropertiesAsTarget(KAO kao, IndividualInstance source, String opIri) throws Exception {
+		ObjectPropertyInstance op = new ObjectPropertyInstance(source, opIri, this);
+		if(this.objectPropertiesAsTarget == null){
+			this.objectPropertiesAsTarget = new HashMap<MyKey,ObjectPropertyInstance>();
+		}		
+		MyKey key = new MyKey(source.getIri(), opIri, this.getIri());
+		if(!this.objectPropertiesAsTarget.containsKey(key)){
+			this.objectPropertiesAsTarget.put(key, op);
+		}		
+	}
+	
+	public Map<MyKey,DataPropertyInstance> getDataProperties(KAO kao) {
 		if(this.dataProperties == null){
-			this.searchForDataProperties(sparqlQueries);
+			this.searchForDataProperties(kao);
 		}
 		return this.dataProperties;
 	}
 
-	public void addDataProperties(DataPropertyInstance dpInstance) {
-		if(this.dataProperties == null){
-			this.dataProperties = new ArrayList<DataPropertyInstance>();
-		}
-		this.dataProperties.add(dpInstance);
-	}
-	
 	@Override
 	public String toString() {
 		String out = "";
@@ -161,9 +190,10 @@ public class IndividualInstance {
 		out += 	this.name;
 		out += "\n\tClasses: ";
 		out += "\n\t\t";
-		if(this.ListClasses != null){
-			for (String className : this.ListClasses) {
-				out += className + ", ";
+		if(this.classes != null){
+			for(Entry<String, String> className : this.classes.entrySet()) {
+			//for (String className : this.classes) {
+				out += className.getKey() + ", ";
 			}
 		}
 		int i = out.lastIndexOf(",");
@@ -172,20 +202,20 @@ public class IndividualInstance {
 		}
 		out = out.substring(0, i);
 		out += "\n\tObject Properties: ";
-		if(this.objectProperiesAsSource != null){
-			for (ObjectPropertyInstance op : this.objectProperiesAsSource) {
-				out += "\n\t\t" + op;
+		if(this.objectPropertiesAsSource != null){
+			for (Entry<MyKey, ObjectPropertyInstance> op : this.objectPropertiesAsSource.entrySet()) {
+				out += "\n\t\t" + op.getValue();
 			}
 		}
-		if(this.objectProperiesAsTarget != null){
-			for (ObjectPropertyInstance op : this.objectProperiesAsTarget) {
-				out += "\n\t\t" + op;
+		if(this.objectPropertiesAsTarget != null){
+			for (Entry<MyKey, ObjectPropertyInstance> op : this.objectPropertiesAsTarget.entrySet()) {
+				out += "\n\t\t" + op.getValue();
 			}
 		}
 		out += "\n\tData Properties: ";
 		if(this.dataProperties != null){
-			for (DataPropertyInstance dp : this.dataProperties) {
-				out += "\n\t\t" + dp;
+			for (Entry<MyKey, DataPropertyInstance> dp : this.dataProperties.entrySet()) {
+				out += "\n\t\t" + dp.getValue();
 			}
 		}
 		out += "\n";

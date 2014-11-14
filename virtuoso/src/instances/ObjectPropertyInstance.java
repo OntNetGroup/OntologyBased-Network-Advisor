@@ -1,10 +1,10 @@
 package instances;
 
 public class ObjectPropertyInstance {
-	String ns, name, iri;
-	IndividualInstance source, target;
+	private String ns, name, iri;
+	private IndividualInstance source, target;
 	
-	public ObjectPropertyInstance(String iri, IndividualInstance source, IndividualInstance target) throws Exception {
+	public ObjectPropertyInstance(IndividualInstance source, String iri, IndividualInstance target) throws Exception {
 		this.iri = iri;
 		
 		String[] splittedIri = iri.split("#");
@@ -19,6 +19,46 @@ public class ObjectPropertyInstance {
 		this.target = target;
 	}
 	
+	public String getNs() {
+		return ns;
+	}
+
+	public void setNs(String ns) {
+		this.ns = ns;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getIri() {
+		return iri;
+	}
+
+	public void setIri(String iri) {
+		this.iri = iri;
+	}
+
+	public IndividualInstance getSource() {
+		return source;
+	}
+
+	public void setSource(IndividualInstance source) {
+		this.source = source;
+	}
+
+	public IndividualInstance getTarget() {
+		return target;
+	}
+
+	public void setTarget(IndividualInstance target) {
+		this.target = target;
+	}
+
 	@Override
 	public String toString() {
 		return this.source.getName() + " -> " + this.name + " -> " + this.target.getName();
