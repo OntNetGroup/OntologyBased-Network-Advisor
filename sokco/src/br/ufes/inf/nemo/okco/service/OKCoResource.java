@@ -12,9 +12,10 @@ import javax.ws.rs.Consumes;
 
 import com.google.gson.Gson;
 
-import br.ufes.inf.nemo.okco.api.DtoResultFile;
-import br.ufes.inf.nemo.okco.api.DtoResultInstances;
-import br.ufes.inf.nemo.okco.api.OKCo;
+import br.com.padtec.common.okco.features.OKCoFeatures;
+import br.com.padtec.common.okco.features.OKCoResult;
+import br.com.padtec.common.okco.features.OKCoResultFromFile;
+
 import br.ufes.inf.nemo.okco.service.model.SokcoObject;
 
 @Path("/app")
@@ -43,8 +44,8 @@ public class OKCoResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response listFileIncompleteness(SokcoObject obj) {
  
-		OKCo o = new OKCo();
-		DtoResultInstances dto = o.listFileIncompleteness(obj.getPathOwlFileString(), obj.getReasonerOption());
+		OKCoFeatures o = new OKCoFeatures();
+		OKCoResult dto = o.listFileIncompleteness(obj.getPathOwlFileString(), obj.getReasonerOption());
 		
 		Gson gson = new Gson();
 		String resultJson = gson.toJson(dto);
@@ -58,8 +59,8 @@ public class OKCoResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response completePropertyIncompleteness(SokcoObject obj) {
  
-		OKCo o = new OKCo();
-		DtoResultFile dto = o.completeIncompleteness(obj.getPathOwlFileString(), obj.getReasonerOption(), obj.getStrength());
+		OKCoFeatures o = new OKCoFeatures();
+		OKCoResultFromFile dto = o.completeIncompleteness(obj.getPathOwlFileString(), obj.getReasonerOption(), obj.getStrength());
 		
 		Gson gson = new Gson();
 		String resultJson = gson.toJson(dto);
@@ -72,8 +73,8 @@ public class OKCoResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response completePropertyIncompletenessSet(SokcoObject obj) {
  
-		OKCo o = new OKCo();
-		DtoResultFile dto = o.completeIncompleteness(obj.getSetInstances(), obj.getPathOwlFileString(), obj.getReasonerOption(), obj.getStrength());
+		OKCoFeatures o = new OKCoFeatures();
+		OKCoResultFromFile dto = o.completeIncompleteness(obj.getSetInstances(), obj.getPathOwlFileString(), obj.getReasonerOption(), obj.getStrength());
 		
 		Gson gson = new Gson();
 		String resultJson = gson.toJson(dto);

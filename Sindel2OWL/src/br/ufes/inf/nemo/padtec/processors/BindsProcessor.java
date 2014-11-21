@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.Search;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 
@@ -437,8 +437,8 @@ public class BindsProcessor {
 		}
 		initValues();
 		Search search = new Search(); 
-		List<String> tiposPort1=InfModelQueryUtil.getClassesURI(ontModel,NS+port1.getLocalName());
-		List<String> tiposPort2=InfModelQueryUtil.getClassesURI(ontModel,NS+port2.getLocalName());
+		List<String> tiposPort1=QueryUtil.getClassesURI(ontModel,NS+port1.getLocalName());
+		List<String> tiposPort2=QueryUtil.getClassesURI(ontModel,NS+port2.getLocalName());
 		tiposPort1.remove(NS+"Geographical_Element");
 		tiposPort1.remove(NS+"Bound_Input-Output");
 		tiposPort2.remove(NS+"Geographical_Element");

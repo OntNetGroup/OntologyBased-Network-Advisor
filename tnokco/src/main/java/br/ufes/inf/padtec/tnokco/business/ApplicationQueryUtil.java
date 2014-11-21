@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.padtec.common.dto.DtoInstanceRelation;
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.UploadApp;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
@@ -96,11 +96,11 @@ public class ApplicationQueryUtil {
 	static public List<DtoInstanceRelation> GetInstanceAllRelations(InfModel infModel, String individualUri)
 	{
 		List<DtoInstanceRelation> listIndividualRelations = new ArrayList<DtoInstanceRelation>();
-		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(HomeController.InfModel, individualUri);
+		List<String> propertiesURIList = QueryUtil.getPropertiesURI(HomeController.InfModel, individualUri);
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;
-		    dtoItem.Target = InfModelQueryUtil.getRangeURIs(HomeController.InfModel, propertyURI).get(0);
+		    dtoItem.Target = QueryUtil.getRangeURIs(HomeController.InfModel, propertyURI).get(0);
 		    listIndividualRelations.add(dtoItem);
 		}
 		

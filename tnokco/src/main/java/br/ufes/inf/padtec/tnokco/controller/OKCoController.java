@@ -25,12 +25,12 @@ import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoGetPrevNextSpecProperty;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
+import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.dto.EnumRelationTypeCompletness;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.queries.OntPropertyEnum;
-import br.com.padtec.common.util.DtoResult;
 import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.util.UploadApp;
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
@@ -107,11 +107,11 @@ public class OKCoController {
 
 		
 		List<DtoInstanceRelation> instanceListRelationsFromInstance = new ArrayList<DtoInstanceRelation>();
-		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(HomeController.InfModel, instanceSelected.ns + instanceSelected.name);
+		List<String> propertiesURIList = QueryUtil.getPropertiesURI(HomeController.InfModel, instanceSelected.ns + instanceSelected.name);
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;
-		    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+		    List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
 		    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
 		    else dtoItem.Target = "";
 		    instanceListRelationsFromInstance.add(dtoItem);
@@ -176,7 +176,7 @@ public class OKCoController {
 			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(ListAllInstances);
 
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 			//populate the list of instances with had this relation	    	
 			List<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
@@ -192,7 +192,7 @@ public class OKCoController {
 		} else if (type.equals("objectMax"))
 		{
 			//get instances with had this relation
-			List<String> listInstancesName = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
@@ -209,7 +209,7 @@ public class OKCoController {
 
 			//Get values with this data property
 			List<DataPropertyValue> listValuesInRelation = new ArrayList<DataPropertyValue>();
-			List<String> individualsList = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> individualsList = QueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			for(String individualURI: individualsList){
 				DataPropertyValue data = new DataPropertyValue();
 				data.value = individualURI.split("\\^\\^")[0];
@@ -264,7 +264,7 @@ public class OKCoController {
 			if(typeRelation.equals(EnumRelationTypeCompletness.SOME))
 			{
 				//create the the new instance
-				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI( HomeController.InfModel, dtoSelected.Target).size() + 1);
+				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (QueryUtil.getIndividualsURI( HomeController.InfModel, dtoSelected.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
@@ -284,7 +284,7 @@ public class OKCoController {
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.MIN))
 			{
-				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 				ArrayList<String> listDif = new ArrayList<String>();
 				while(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))
@@ -314,7 +314,7 @@ public class OKCoController {
 
 			} else if(typeRelation.equals(EnumRelationTypeCompletness.EXACTLY))
 			{
-				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);				
+				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);				
 
 				// Case 1 - same as min relation
 				if(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))

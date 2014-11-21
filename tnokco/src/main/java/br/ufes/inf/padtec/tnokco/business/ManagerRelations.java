@@ -6,7 +6,7 @@ import java.util.List;
 
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.util.ManagerInstances;
 import br.com.padtec.common.util.Search;
@@ -34,15 +34,15 @@ public class ManagerRelations {
 			ListAllInstances = manager.getAllInstances(infModel);			
 			for (Instance instance : ListAllInstances) 
 			{				
-				List<String> sourceInstanceClasses = InfModelQueryUtil.getClassesURI(infModel,instance.ns + instance.name);
+				List<String> sourceInstanceClasses = QueryUtil.getClassesURI(infModel,instance.ns + instance.name);
 				
 				//Relations from instance
 				List<DtoInstanceRelation> dtoInstanceRelations = new ArrayList<DtoInstanceRelation>();
-				List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(HomeController.InfModel, instance.ns + instance.name);
+				List<String> propertiesURIList = QueryUtil.getPropertiesURI(HomeController.InfModel, instance.ns + instance.name);
 				for(String propertyURI: propertiesURIList){
 					DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 				    dtoItem.Property = propertyURI;
-				    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+				    List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
 				    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
 				    else dtoItem.Target = "";
 				    dtoInstanceRelations.add(dtoItem);
@@ -52,26 +52,26 @@ public class ManagerRelations {
 				{					
 					String property = instanceRelation.Property;
 					String targetInstance = instanceRelation.Target;
-					List<String> targetInstanceClasses =  InfModelQueryUtil.getClassesURI(infModel,targetInstance);
+					List<String> targetInstanceClasses =  QueryUtil.getClassesURI(infModel,targetInstance);
 					
 					//Get domain-range from property
-					List<String> domainList = InfModelQueryUtil.getDomainURIs(infModel, property);
-					List<String> rangeList = InfModelQueryUtil.getRangeURIs(infModel, property);
+					List<String> domainList = QueryUtil.getDomainURIs(infModel, property);
+					List<String> rangeList = QueryUtil.getRangeURIs(infModel, property);
 										
 					//List auxiliary for take the sub-properties with domain and range
-					List<String> subproperties = InfModelQueryUtil.getSubPropertiesURI(infModel, property, true, true);
+					List<String> subproperties = QueryUtil.getSubPropertiesURI(infModel, property, true, true);
 					for (String subproperty : subproperties) 
 					{				
 						boolean existInDomainsSource = false;
 						boolean existInRangeTarget = false;
-						List<String> domainSubPropertyList = InfModelQueryUtil.getDomainURIs(infModel, subproperty);
+						List<String> domainSubPropertyList = QueryUtil.getDomainURIs(infModel, subproperty);
 						for(String domain: domainSubPropertyList){
 							if(sourceInstanceClasses.contains(domain) && ! (domainList.contains(domain)))
 							{
 								existInDomainsSource = true;	
 							}
 						}
-						List<String> rangeSubPropertyList = InfModelQueryUtil.getRangeURIs(infModel, subproperty);
+						List<String> rangeSubPropertyList = QueryUtil.getRangeURIs(infModel, subproperty);
 						for(String range: rangeSubPropertyList){							
 							if(targetInstanceClasses.contains(range) && ! (rangeList.contains(range))) 
 							{

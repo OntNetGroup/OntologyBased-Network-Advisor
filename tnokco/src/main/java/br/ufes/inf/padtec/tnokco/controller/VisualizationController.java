@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.dto.DtoInstanceRelation;
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
 import br.ufes.inf.padtec.tnokco.business.DtoResultAjax;
 import br.ufes.inf.padtec.tnokco.business.Equipment;
@@ -31,8 +31,8 @@ public class VisualizationController {
 		if(HomeController.Model == null)
 			return "open_visualizator"; 
 
-		List<String> sites = InfModelQueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Site");
-		List<String> equipments = InfModelQueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
+		List<String> sites = QueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Site");
+		List<String> equipments = QueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 
 		Provisioning.inferInterfaceConnections();
 		Provisioning.getAllG800();
@@ -130,25 +130,25 @@ public class VisualizationController {
 			request.getSession().setAttribute("canClick", false);
 		}else if(visualization.equals("allElements")){
 			elementsInitialize();
-			List<String> allInstances =InfModelQueryUtil.getIndividualsURIFromAllClasses(HomeController.InfModel);
+			List<String> allInstances =QueryUtil.getIndividualsURIFromAllClasses(HomeController.InfModel);
 			System.out.println(allInstances);
 			for (String instance : allInstances) {
 				List<DtoInstanceRelation> targetList = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel,instance);
 
-				List<String> classes = InfModelQueryUtil.getClassesURI(HomeController.InfModel,instance);
+				List<String> classes = QueryUtil.getClassesURI(HomeController.InfModel,instance);
 				for (DtoInstanceRelation dtoInstanceRelation : targetList) {
 
 					valuesGraph += "graph.addEdge(graph.addNode(\""+instance.substring(instance.indexOf("#")+1)+"\", ";
 					valuesGraph += "{shape:\""+getG800Image(classes)+"_AZUL\"}),";
 					valuesGraph += "graph.addNode(\""+dtoInstanceRelation.Target.substring(dtoInstanceRelation.Target.indexOf("#")+1)+"\", ";
-					valuesGraph += "{shape:\""+getG800Image(InfModelQueryUtil.getClassesURI(HomeController.InfModel,dtoInstanceRelation.Target))+"_AZUL\"}), ";
+					valuesGraph += "{shape:\""+getG800Image(QueryUtil.getClassesURI(HomeController.InfModel,dtoInstanceRelation.Target))+"_AZUL\"}), ";
 					valuesGraph	+= "{name:'"+dtoInstanceRelation.Property.substring(dtoInstanceRelation.Property.indexOf("#")+1)+"'});";
 					size++;
 				}
 
 				if(targetList.isEmpty()){
 					valuesGraph += "graph.addNode(\""+instance.substring(instance.indexOf("#")+1)+"\", ";
-					valuesGraph += "{shape:\""+getG800Image(InfModelQueryUtil.getClassesURI(HomeController.InfModel,instance))+"_AZUL\"});";
+					valuesGraph += "{shape:\""+getG800Image(QueryUtil.getClassesURI(HomeController.InfModel,instance))+"_AZUL\"});";
 				}
 
 				hashTypes += "hash[\""+instance.substring(instance.indexOf("#")+1)+"\"] = \"<b>"+instance.substring(instance.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
@@ -254,19 +254,19 @@ public class VisualizationController {
 		for(String[] stCon : triplas){
 			if(!hashIndv.containsKey(stCon[0]) || !hashIndv.containsKey(stCon[2])){
 				valuesGraph += "graph.addEdge(graph.addNode(\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+getG800Image(InfModelQueryUtil.getClassesURI(HomeController.InfModel,stCon[0]))+"_AZUL\"}),";
+				valuesGraph += "{shape:\""+getG800Image(QueryUtil.getClassesURI(HomeController.InfModel,stCon[0]))+"_AZUL\"}),";
 				valuesGraph += "graph.addNode(\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+getG800Image(InfModelQueryUtil.getClassesURI(HomeController.InfModel,stCon[2]))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
+				valuesGraph += "{shape:\""+getG800Image(QueryUtil.getClassesURI(HomeController.InfModel,stCon[2]))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
 
 				hashTypes += "hash[\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\"] = \"<b>"+stCon[0].substring(stCon[0].indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
-				for(String type : InfModelQueryUtil.getClassesURI(HomeController.InfModel,stCon[0])){
+				for(String type : QueryUtil.getClassesURI(HomeController.InfModel,stCon[0])){
 					if(type.contains("#"))
 						hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 				}
 				hashTypes += "</ul>\";";
 
 				hashTypes += "hash[\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\"] = \"<b>"+stCon[2].substring(stCon[2].indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
-				for(String type : InfModelQueryUtil.getClassesURI(HomeController.InfModel,stCon[2])){
+				for(String type : QueryUtil.getClassesURI(HomeController.InfModel,stCon[2])){
 					if(type.contains("#"))
 						hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 				}
@@ -417,12 +417,12 @@ public class VisualizationController {
 			String trg = connections.split("#")[1];
 
 			possibleConnections = Provisioning.getPossibleConnects(src);
-			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+getG800Image(InfModelQueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+src))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
+			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+src))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(src))
 				hashAllowed += "hashAllowed.push(\""+src+"\");";
 
 			possibleConnections = Provisioning.getPossibleConnects(trg);
-			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+getG800Image(InfModelQueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+trg))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
+			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+trg))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg))
 				hashAllowed += "hashAllowed.push(\""+trg+"\");";
 
@@ -432,14 +432,14 @@ public class VisualizationController {
 			usedRPs.add(trg);
 
 			hashTypes += "hash[\""+src+"\"] = \"<b>"+src+" is an individual of classes: </b><br><ul>";
-			for(String type : InfModelQueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+src)){
+			for(String type : QueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+src)){
 				if(type.contains("#"))
 					hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 			}
 			hashTypes += "</ul>\";";
 
 			hashTypes += "hash[\""+trg+"\"] = \"<b>"+trg+" is an individual of classes: </b><br><ul>";
-			for(String type : InfModelQueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+trg)){
+			for(String type : QueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+trg)){
 				if(type.contains("#"))
 					hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 			}
@@ -489,10 +489,10 @@ public class VisualizationController {
 				trgNode = rpXequip.get(trgRP);
 			}
 			possibleConnections = Provisioning.getPossibleConnects(srcNode);
-			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+getG800Image(InfModelQueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+srcNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
+			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+srcNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 
 			possibleConnections = Provisioning.getPossibleConnects(trgNode);
-			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+getG800Image(InfModelQueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+trgNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
+			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+trgNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
 		}
 
 		width  += 400 * (size / 10);
@@ -544,7 +544,7 @@ public class VisualizationController {
 			}
 
 			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
-				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_ROXO\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+getG800Image(InfModelQueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+entry.getValue().getName()))+"_ROXO\"}), {name:'binds:";
+				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_ROXO\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(HomeController.InfModel,HomeController.NS+entry.getValue().getName()))+"_ROXO\"}), {name:'binds:";
 				arborStructure += entry.getKey().get(0)+"-"+entry.getKey().get(1);
 				arborStructure += "'});";
 				size++;

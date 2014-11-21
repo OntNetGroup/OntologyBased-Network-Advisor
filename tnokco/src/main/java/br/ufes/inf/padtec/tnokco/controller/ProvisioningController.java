@@ -26,7 +26,7 @@ import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoExceptionFileFormat;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.persistence.BaseModelRepositoryImpl;
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.util.Search;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
@@ -1102,7 +1102,7 @@ public class ProvisioningController{
 		
 		if(!tfNs.equals("") && outIntNs.equals("") && inIntNs.equals("")){
 			tfNs = tfNs.replace(NS, "");
-			List<String> tiposPm=InfModelQueryUtil.getClassesURI(infModel,NS+tfNs);
+			List<String> tiposPm=QueryUtil.getClassesURI(infModel,NS+tfNs);
 			if(tiposPm.contains(NS+"Physical_Media")){
 				ret.add(tfNs);
 				return ret;
@@ -1117,7 +1117,7 @@ public class ProvisioningController{
 				if(tfRelRelName.equals("INV.componentOf")){
 					eqNs = tfRel.Target;
 					eqNs = eqNs.replace(NS, "");
-					List<String> tiposEq=InfModelQueryUtil.getClassesURI(infModel,NS+eqNs);
+					List<String> tiposEq=QueryUtil.getClassesURI(infModel,NS+eqNs);
 					if(tiposEq.contains(NS+"Equipment")){
 						ret.add(eqNs);
 						return ret;
@@ -1125,7 +1125,7 @@ public class ProvisioningController{
 					}
 				}else if(tfRelRelName.equals("componentOf")){
 					if(!tfRel.Target.equals(NS+bindedPortNs)){
-						List<String> tiposTf=InfModelQueryUtil.getClassesURI(infModel,tfRel.Target);
+						List<String> tiposTf=QueryUtil.getClassesURI(infModel,tfRel.Target);
 						if(tiposTf.contains(NS+"Input") || tiposTf.contains(NS+"Output")){
 							nextPorts.add(tfRel.Target);
 						}
@@ -1153,7 +1153,7 @@ public class ProvisioningController{
 	
 	public static Boolean searchEquipmentFromPortToTop(InfModel infModel, String NS, String portNs){
 		portNs = portNs.replace(NS, "");
-		List<String> tiposPort=InfModelQueryUtil.getClassesURI(infModel,NS+portNs);
+		List<String> tiposPort=QueryUtil.getClassesURI(infModel,NS+portNs);
 		if(tiposPort.contains(NS+"Output")){
 			return true;
 		}
@@ -1193,8 +1193,8 @@ public class ProvisioningController{
 		for (String portNs : nextPorts) {
 			portNs = portNs.replace(NS, "");
 			
-			List<String> nextPortClasses = InfModelQueryUtil.getClassesURI(infModel,NS+portNs);
-			List<String> actualPortClasses = InfModelQueryUtil.getClassesURI(infModel,NS+actualPort);
+			List<String> nextPortClasses = QueryUtil.getClassesURI(infModel,NS+portNs);
+			List<String> actualPortClasses = QueryUtil.getClassesURI(infModel,NS+actualPort);
 			
 			if((nextPortClasses.contains(NS+"Output") && actualPortClasses.contains(NS+"Input")) || (nextPortClasses.contains(NS+"Input") && actualPortClasses.contains(NS+"Output"))){
 				List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+portNs);

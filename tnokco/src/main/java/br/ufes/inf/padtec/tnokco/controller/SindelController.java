@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.queries.OntModelAPI;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
@@ -120,8 +120,8 @@ public class SindelController{
 			for(String[] st : list){
 				specificRelation = null;
 				
-				List<String> st0Types = InfModelQueryUtil.getClassesURI(HomeController.Model,st[0]);
-				List<String> st1Types = InfModelQueryUtil.getClassesURI(HomeController.Model,st[1]);
+				List<String> st0Types = QueryUtil.getClassesURI(HomeController.Model,st[0]);
+				List<String> st1Types = QueryUtil.getClassesURI(HomeController.Model,st[1]);
 				
 				if(st0Types.contains(HomeController.NS+"Source_AP") && (st1Types.contains(HomeController.NS+"Sink_AP"))){
 					specificRelation = "Forwarding_Unidirectional_Access_Transport_Entity";

@@ -8,7 +8,7 @@ import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.UploadApp;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
@@ -31,7 +31,7 @@ public class Provisioning {
 	private static ArrayList<Equipment> equipmentsList= new ArrayList<Equipment>();
 	public static OntModel Model= HomeController.Model;
 	public static InfModel InfModel = HomeController.InfModel;
-	static List<String> equipments = InfModelQueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
+	static List<String> equipments = QueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 	public static ArrayList<String[]> connections; 
 	public static ArrayList<String[]> binds; 
 	public static String relation= "site_connects";
@@ -257,7 +257,7 @@ public class Provisioning {
 	// get all equipments from specific site
 	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
 		equipments = new ArrayList<String>();
-		equipments =  InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, site, HomeController.NS+"has_equipment", HomeController.NS+"Equipment");
+		equipments =  QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, site, HomeController.NS+"has_equipment", HomeController.NS+"Equipment");
 		return getEquipments();
 	}
 
@@ -267,10 +267,10 @@ public class Provisioning {
 		ind_class= new HashMap<String, List<String>>();
 		nameRelation="site_connects";
 		ArrayList<String[]> siteConnects= new ArrayList<String[]>();
-		List<String> sites= InfModelQueryUtil.getIndividualsURI(InfModel, "Site");
+		List<String> sites= QueryUtil.getIndividualsURI(InfModel, "Site");
 		for (String site : sites) {
 			Individual indSite = Model.getIndividual(site);
-			List<String> siteTarget= InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, indSite.getNameSpace(), "site_connects", "Site");
+			List<String> siteTarget= QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, indSite.getNameSpace(), "site_connects", "Site");
 			for (String target : siteTarget) {
 				String[] relation= new String[2];
 				relation[0]=site;
@@ -284,7 +284,7 @@ public class Provisioning {
 
 	public static ArrayList<Equipment> getAllEquipmentsandConnections(){
 
-		equipments = InfModelQueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
+		equipments = QueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 		return getEquipments();
 	}
 
@@ -299,7 +299,7 @@ public class Provisioning {
 		ArrayList<Equipment> equips= new ArrayList<Equipment>();
 		for (String equipment: equipments) {
 			Individual indeq= Model.getIndividual(equipment);
-			List<String> inpInt= InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
+			List<String> inpInt= QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
 			for (String string : inpInt) {
 				Individual ind= Model.getIndividual(string);
 				hashInputEquipment.put(ind.getLocalName(), indeq.getLocalName());
@@ -308,7 +308,7 @@ public class Provisioning {
 
 
 		for (String equipment: equipments) {
-			List<String> outInts= InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
+			List<String> outInts= QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
 			Individual ind= Model.getIndividual(equipment);
 			e = new Equipment(ind.getLocalName());
 
@@ -318,8 +318,8 @@ public class Provisioning {
 				outputInt.setName(individual.getLocalName());
 				e.addOut(outputInt);
 				String inputcon= null;
-				if(!InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out_int, HomeController.NS+"interface_binds", HomeController.NS+"Input_Interface").isEmpty()){
-					inputcon= InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out_int, HomeController.NS+"interface_binds", HomeController.NS+"Input_Interface").get(0);
+				if(!QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out_int, HomeController.NS+"interface_binds", HomeController.NS+"Input_Interface").isEmpty()){
+					inputcon= QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out_int, HomeController.NS+"interface_binds", HomeController.NS+"Input_Interface").get(0);
 				}
 				if(inputcon!=null){
 					outputInt.setConnected(true);
@@ -336,7 +336,7 @@ public class Provisioning {
 			equips.add(e); 
 		}
 
-		equipments = InfModelQueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
+		equipments = QueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Equipment");
 		return equips;
 	}
 
@@ -344,7 +344,7 @@ public class Provisioning {
 		InfModel = HomeController.InfModel;
 		ArrayList<String[]> result = new ArrayList<String[]>();
 		
-		List<String> classes_from_rp=InfModelQueryUtil.getClassesURI(InfModel,HomeController.NS+rp);
+		List<String> classes_from_rp=QueryUtil.getClassesURI(InfModel,HomeController.NS+rp);
 		//String binding=null;
 		//String input = null;
 		
@@ -358,9 +358,9 @@ public class Provisioning {
 			relations.add("componentOf");
 			relations.add("INV.is_binding");
 			relations.add("binding_is_represented_by");
-			rp_sink = InfModelQueryUtil.query_EndOfGraph(rp, relations, InfModel);
+			rp_sink = QueryUtil.query_EndOfGraph(rp, relations, InfModel);
 			for(int i = 0; i < rp_sink.size(); i++){
-				if(!InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+rp,HomeController.NS+"has_forwarding", HomeController.NS+"Reference_Point").contains(rp_sink.get(i))){
+				if(!QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+rp,HomeController.NS+"has_forwarding", HomeController.NS+"Reference_Point").contains(rp_sink.get(i))){
 					String[] tuple = new String[2];
 					tuple[0] =rp_sink.get(i);
 					tuple[1] = "pm_nc";
@@ -375,7 +375,7 @@ public class Provisioning {
 			relations.add("componentOf");
 			relations.add("INV.is_binding");
 			relations.add("binding_is_represented_by");
-			rp_so = InfModelQueryUtil.query_EndOfGraph(rp, relations, InfModel);
+			rp_so = QueryUtil.query_EndOfGraph(rp, relations, InfModel);
 			relations.add("has_forwarding");
 			relations.add("INV.binding_is_represented_by");
 			relations.add("is_binding");
@@ -383,9 +383,9 @@ public class Provisioning {
 			relations.add("componentOf");
 			relations.add("INV.is_binding");
 			relations.add("binding_is_represented_by");
-			rp_sink = InfModelQueryUtil.query_EndOfGraph(rp, relations, InfModel);
+			rp_sink = QueryUtil.query_EndOfGraph(rp, relations, InfModel);
 			for(int i = 0; i < rp_sink.size(); i++){
-				if(!InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+rp,HomeController.NS+"has_forwarding", HomeController.NS+"Reference_Point").contains(rp_sink.get(i))){
+				if(!QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+rp,HomeController.NS+"has_forwarding", HomeController.NS+"Reference_Point").contains(rp_sink.get(i))){
 					String[] tuple = new String[2];
 					tuple[0]= rp_sink.get(i);
 					for(int j = 0; j < rp_so.size(); j++){
@@ -455,12 +455,12 @@ public class Provisioning {
 			target="Input";
 		}
 
-		if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, eq_interface, HomeController.NS+value, HomeController.NS+target).size()>0){
-			String port= InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, eq_interface, HomeController.NS+value, HomeController.NS+target).get(0);
-			if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"INV.is_binding", HomeController.NS+"Binding").size()>0){
-				String binding = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"INV.is_binding", HomeController.NS+"Binding").get(0);
-				if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Directly_Bound_Reference_Point").size()>0){
-					return InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Directly_Bound_Reference_Point").get(0);					
+		if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, eq_interface, HomeController.NS+value, HomeController.NS+target).size()>0){
+			String port= QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, eq_interface, HomeController.NS+value, HomeController.NS+target).get(0);
+			if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"INV.is_binding", HomeController.NS+"Binding").size()>0){
+				String binding = QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"INV.is_binding", HomeController.NS+"Binding").get(0);
+				if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Directly_Bound_Reference_Point").size()>0){
+					return QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, binding, HomeController.NS+"binding_is_represented_by", HomeController.NS+"Directly_Bound_Reference_Point").get(0);					
 				}
 			}
 		}
@@ -480,10 +480,10 @@ public class Provisioning {
 
 	public static List<String> getAllSitesAndConnections(){
 		connections = new ArrayList<String[]>();
-		List<String> sites = InfModelQueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Site");
+		List<String> sites = QueryUtil.getIndividualsURI(HomeController.InfModel, HomeController.NS+"Site");
 		for (String site : sites) {
-			if(!InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site").isEmpty()){
-				List<String>targets=InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site");
+			if(!QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site").isEmpty()){
+				List<String>targets=QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, site, HomeController.NS+"site_connects", HomeController.NS+"Site");
 				for (String target : targets) {
 					String[] connection = new String[2];
 					connection[0]=site;
@@ -497,11 +497,11 @@ public class Provisioning {
 	}
 
 	public static List<String> getAllG800(){
-		List<String> allIndividuals=InfModelQueryUtil.getIndividualsURIFromAllClasses(InfModel);
+		List<String> allIndividuals=QueryUtil.getIndividualsURIFromAllClasses(InfModel);
 		ArrayList<String> copy = new ArrayList<String>();
 
 		for (String ind : allIndividuals) {
-			List<String> classesFromIndividual= InfModelQueryUtil.getClassesURI(InfModel,ind);
+			List<String> classesFromIndividual= QueryUtil.getClassesURI(InfModel,ind);
 			if((classesFromIndividual.contains(HomeController.NS+"Input_Interface")  || classesFromIndividual.contains(HomeController.NS+"Output_Interface") || classesFromIndividual.contains(HomeController.NS+"Site") || classesFromIndividual.contains(HomeController.NS+"Equipment"))){
 				copy.add(ind);
 			}
@@ -515,19 +515,19 @@ public class Provisioning {
 	public static List<String> getG800FromEquipment(String equipment){
 		Provisioning.triples_g800 =  new ArrayList<String[]>();
 
-		List<String> g800s  = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Transport_Function");
-		List<String> outInt = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
-		List<String> inpInt = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
+		List<String> g800s  = QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Transport_Function");
+		List<String> outInt = QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Output_Interface");
+		List<String> inpInt = QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+equipment, HomeController.NS+"componentOf", HomeController.NS+"Input_Interface");
 
 		for (String interface_out : outInt) {
 			try {
-				g800s.add(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+interface_out, HomeController.NS+interface_out+"maps_output", HomeController.NS+interface_out+"Output").get(0));
+				g800s.add(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+interface_out, HomeController.NS+interface_out+"maps_output", HomeController.NS+interface_out+"Output").get(0));
 			} catch (Exception e) {				
 			}			
 		}
 		for (String interface_inp : inpInt) {
 			try {
-				g800s.add(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+interface_inp, HomeController.NS+"maps_input", HomeController.NS+"Input").get(0));
+				g800s.add(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+interface_inp, HomeController.NS+"maps_input", HomeController.NS+"Input").get(0));
 			} catch (Exception e) {				
 			}			
 		}
@@ -539,16 +539,16 @@ public class Provisioning {
 		ind_class = new HashMap<String, List<String>>();
 		List<String> classesFromIndividual;
 		for (String g800 : g800_elements) {
-			classesFromIndividual= InfModelQueryUtil.getClassesURI(InfModel,g800);
+			classesFromIndividual= QueryUtil.getClassesURI(InfModel,g800);
 			ind_class.put(g800, classesFromIndividual);
 			
 			// Get instance relations
 			List<DtoInstanceRelation> rel = new ArrayList<DtoInstanceRelation>();
-			List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(HomeController.InfModel, g800);
+			List<String> propertiesURIList = QueryUtil.getPropertiesURI(HomeController.InfModel, g800);
 			for(String propertyURI: propertiesURIList){
 				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 			    dtoItem.Property = propertyURI;
-			    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+			    List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
 			    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
 			    else dtoItem.Target = "";
 			    rel.add(dtoItem);
@@ -590,24 +590,24 @@ public class Provisioning {
 
 	public static void inferInterfaceConnections(){
 		HashMap<String, String> int_port = new HashMap<String, String>();
-		List<String> inters = InfModelQueryUtil.getIndividualsURI(InfModel, HomeController.NS+"Input_Interface");
+		List<String> inters = QueryUtil.getIndividualsURI(InfModel, HomeController.NS+"Input_Interface");
 		for (String inter : inters) {
-			List<String> port_inp =InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inter, HomeController.NS+"maps_input", HomeController.NS+"Input");
+			List<String> port_inp =QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inter, HomeController.NS+"maps_input", HomeController.NS+"Input");
 			if(port_inp.size()>0){
 				int_port.put(port_inp.get(0), inter);
 			}
 		}
-		inters = InfModelQueryUtil.getIndividualsURI(InfModel, HomeController.NS+"Output_Interface");
+		inters = QueryUtil.getIndividualsURI(InfModel, HomeController.NS+"Output_Interface");
 		for (String inter : inters) {
-			List<String> port_inp =InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inter, HomeController.NS+"maps_output", HomeController.NS+"Output");
+			List<String> port_inp =QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inter, HomeController.NS+"maps_output", HomeController.NS+"Output");
 			if(port_inp.size()>0){
 				int_port.put(port_inp.get(0), inter);
 			}
 		}
 
-		List<String> outs = InfModelQueryUtil.getIndividualsURI(InfModel, HomeController.NS+"Output");
+		List<String> outs = QueryUtil.getIndividualsURI(InfModel, HomeController.NS+"Output");
 		for (String out : outs) {
-			List<String> inputs  = InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out, HomeController.NS+"binds", HomeController.NS+"Input");
+			List<String> inputs  = QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out, HomeController.NS+"binds", HomeController.NS+"Input");
 			if(inputs.size()>0){
 				String interfac_input= int_port.get(inputs.get(0));
 				String interfac_output= int_port.get(out);
@@ -632,30 +632,30 @@ public class Provisioning {
 		String[] result = new String[3];
 
 		if(value.equals("input")){
-			if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Input").size()>0){
-				String port= InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Input").get(0);
+			if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Input").size()>0){
+				String port= QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Input").get(0);
 				result[0]=port;
-				if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"INV.binds", HomeController.NS+"Termination_Source_Output").size()>0){
-					String tf_out= InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"INV.binds", HomeController.NS+"Termination_Source_Output").get(0);
-					if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").size()>0){
-						String out_int= (InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").get(0));
+				if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"INV.binds", HomeController.NS+"Termination_Source_Output").size()>0){
+					String tf_out= QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"INV.binds", HomeController.NS+"Termination_Source_Output").get(0);
+					if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").size()>0){
+						String out_int= (QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, tf_out, HomeController.NS+"INV.maps_output", HomeController.NS+"Output_Interface").get(0));
 						result[1]=out_int;
-						if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
-							result[2]= (InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
+						if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
+							result[2]= (QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
 						}
 					}
 				}
 			}}else{
-				if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").size()>0){
-					String port= InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").get(0);
+				if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").size()>0){
+					String port= QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, pm, HomeController.NS+"componentOf", HomeController.NS+"Physical_Media_Output").get(0);
 					result[0]=port;
-					if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"binds", HomeController.NS+"Termination_Sink_Input").size()>0){
-						String tf_in= InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"binds", HomeController.NS+"Termination_Sink_Input").get(0);
-						if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").size()>0){
-							String inp_int= (InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").get(0));
+					if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"binds", HomeController.NS+"Termination_Sink_Input").size()>0){
+						String tf_in= QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, port, HomeController.NS+"binds", HomeController.NS+"Termination_Sink_Input").get(0);
+						if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").size()>0){
+							String inp_int= (QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, tf_in, HomeController.NS+"INV.maps_input", HomeController.NS+"Input_Interface").get(0));
 							result[1]=inp_int;
-							if(InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inp_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
-								result[2]= (InfModelQueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inp_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
+							if(QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inp_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").size()>0){
+								result[2]= (QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inp_int, HomeController.NS+"INV.componentOf", HomeController.NS+"Equipment").get(0));
 							}
 						}
 					}
@@ -669,7 +669,7 @@ public class Provisioning {
 
 	public static ArrayList<String[]> getAllPhysicalMediaAndBinds(){
 
-		List<String> pms = InfModelQueryUtil.getIndividualsURI( HomeController.InfModel, HomeController.NS+"Physical_Media");
+		List<String> pms = QueryUtil.getIndividualsURI( HomeController.InfModel, HomeController.NS+"Physical_Media");
 		ArrayList<String[]> triples = new ArrayList<String[]>();
 
 		for (String pm : pms) {

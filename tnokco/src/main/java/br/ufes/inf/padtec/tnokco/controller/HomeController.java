@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.padtec.common.dto.DtoDefinitionClass;
+import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.exceptions.OKCoExceptionFileFormat;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.exceptions.OKCoExceptionNameSpace;
@@ -31,7 +32,6 @@ import br.com.padtec.common.persistence.BaseModelRepositoryImpl;
 import br.com.padtec.common.persistence.HermitReasonerImpl;
 import br.com.padtec.common.persistence.OntologyReasoner;
 import br.com.padtec.common.persistence.PelletReasonerImpl;
-import br.com.padtec.common.util.DtoResult;
 import br.com.padtec.common.util.FactoryInstances;
 import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.util.ManagerInstances;

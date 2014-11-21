@@ -21,9 +21,9 @@
 
 		<!-- OKCo api -->
 		<dependency>
-			  <groupId>okco.api</groupId>
-			  <artifactId>okco.api</artifactId>
-			  <version>0.0.1</version>
+			<groupId>br.com.padtec</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 		
 		<dependency>
