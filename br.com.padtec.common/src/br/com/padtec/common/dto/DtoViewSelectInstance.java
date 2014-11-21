@@ -3,16 +3,15 @@ package br.com.padtec.common.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.dto.TupleInstanceExist;
 
 public class DtoViewSelectInstance {
 	
-	public Instance instance;
+	public DtoInstance instance;
 	public ArrayList<TupleInstanceExist > listSameShow;
 	public ArrayList<TupleInstanceExist > listDifferentShow;
 	
-	public DtoViewSelectInstance(Instance i, List<Instance> listAllInstances)
+	public DtoViewSelectInstance(DtoInstance i, List<DtoInstance> listAllInstances)
 	{
 		this.instance = i;
 		this.listDifferentShow = new ArrayList<TupleInstanceExist>();
@@ -21,7 +20,7 @@ public class DtoViewSelectInstance {
 		String uri = i.ns + i.name;
 		
 		//Create all instances using - false
-		for (Instance instance : listAllInstances) 
+		for (DtoInstance instance : listAllInstances) 
 		{	
 			if(!(uri.equals(instance.ns + instance.name)))
 			{

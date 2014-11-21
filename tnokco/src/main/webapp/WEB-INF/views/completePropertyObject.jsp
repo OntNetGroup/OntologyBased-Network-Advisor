@@ -1,15 +1,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="br.com.padtec.common.util.Instance"%>
+<%@ page import="br.com.padtec.common.dto.DtoInstance"%>
 <%@ page import="br.com.padtec.common.dto.DtoDefinitionClass"%>
 <%@ page import="java.util.ArrayList"%>
 
-<%	
-	ArrayList<Instance> ListAllInstances = (ArrayList<Instance>)request.getSession().getAttribute("listInstances");
-	ArrayList<Instance> ListInstancesInRelation = (ArrayList<Instance>)request.getSession().getAttribute("listInstancesInRelation");
-	ArrayList<Instance> ListInstancesSameDifferent = (ArrayList<Instance>)request.getSession().getAttribute("listInstancesSameDifferent");
+<%
+	ArrayList<DtoInstance> ListAllInstances = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstances");
+	ArrayList<DtoInstance> ListInstancesInRelation = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstancesInRelation");
+	ArrayList<DtoInstance> ListInstancesSameDifferent = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstancesSameDifferent");
 	DtoDefinitionClass dtoDefinition = (DtoDefinitionClass)request.getSession().getAttribute("definitionSelected");
 	String propType = request.getSession().getAttribute("propType").toString();
-	Instance instanceSelected = (Instance)request.getSession().getAttribute("instanceSelected");
+	DtoInstance instanceSelected = (DtoInstance)request.getSession().getAttribute("instanceSelected");
 %>
 
 <%@include file="../templates/header.jsp"%>
@@ -684,13 +684,13 @@
 										  	<select id="selectError0" class="form-control" data-rel="chosen">
 										  		<option title="0">(Choose)</option>		
 												<%
-												for (Instance i : ListAllInstances) 
-												{
-													//Unchecked
-													
-													out.println("<option title=\"" + i.uriEncoded + "\">" + i.name + "</option>");									
-												}
-												%>
+															for (DtoInstance i : ListAllInstances) 
+																								{
+																									//Unchecked
+																									
+																									out.println("<option title=\"" + i.uriEncoded + "\">" + i.name + "</option>");									
+																								}
+														%>
 										  	</select>
 										</div>
 								</div>		
@@ -807,17 +807,17 @@
 							<div class="todo">
 								<ul class="todo-list same" style="overflow: auto; height: 190px;">
 									<%
-									for (Instance i : ListInstancesSameDifferent) 
-									{
-										//Unchecked
-										
-										out.println("<li>" +
-												"<span class=\"todo-actions todo-actions-same\">" +  
-														"<a id=\"same\" href=\"#\"> <i	class=\"icon-check-empty\"></i></a>" +
-												"</span>" +
-												"<span title=\"" + i.ns + i.name + "\" class=\"desc\">" + i.name + "</span>" + 
-											"</li>");									
-									}
+										for (DtoInstance i : ListInstancesSameDifferent) 
+																{
+																	//Unchecked
+																	
+																	out.println("<li>" +
+																			"<span class=\"todo-actions todo-actions-same\">" +  
+																					"<a id=\"same\" href=\"#\"> <i	class=\"icon-check-empty\"></i></a>" +
+																			"</span>" +
+																			"<span title=\"" + i.ns + i.name + "\" class=\"desc\">" + i.name + "</span>" + 
+																		"</li>");									
+																}
 									%>
 								</ul>
 							</div>
@@ -842,17 +842,17 @@
 							<div class="todo">
 								<ul class="todo-list different" style="overflow: auto; height: 190px;">
 									<%
-									for (Instance i : ListInstancesSameDifferent) 
-									{
-										//Unchecked
-										
-										out.println("<li>" +
-												"<span class=\"todo-actions todo-actions-same\">" +  
-														"<a id=\"dif\" href=\"#\"> <i	class=\"icon-check-empty\"></i></a>" +
-												"</span>" +
-												"<span title=\"" + i.ns + i.name + "\" class=\"desc\">" + i.name + "</span>" + 
-											"</li>");									
-									}
+										for (DtoInstance i : ListInstancesSameDifferent) 
+																{
+																	//Unchecked
+																	
+																	out.println("<li>" +
+																			"<span class=\"todo-actions todo-actions-same\">" +  
+																					"<a id=\"dif\" href=\"#\"> <i	class=\"icon-check-empty\"></i></a>" +
+																			"</span>" +
+																			"<span title=\"" + i.ns + i.name + "\" class=\"desc\">" + i.name + "</span>" + 
+																		"</li>");									
+																}
 									%>
 									
 								</ul>
@@ -904,12 +904,12 @@
 						<h2>
 							<%
 								if(propType.equals("SOME")){
-									out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
-																	dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
-								} else {
-									out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
-											dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + dtoDefinition.Cardinality + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
-								}
+														out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
+																						dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
+													} else {
+														out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
+																dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + dtoDefinition.Cardinality + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
+													}
 							%>
 						</h2>
 					</div>
@@ -945,52 +945,52 @@
 
 						<%
 							if(ListInstancesInRelation.size() == 0)
-					  		{
-					  			out.println("<tr>");
-					  			out.println("<td></td>");
-					  			out.println("<td></td>");
-					  			out.println("<td></td>");
-					  			out.println("<td></td>");
-					  			out.println("</tr>");
-					  		}
-						  	for (Instance i : ListInstancesInRelation) {
-						  		
-						  		out.println("<tr>");
-						  		
-							  		out.println("<td title=\"" + i.ns + i.name + "\">" + i.name + "</td>");
-							  		out.println("<td class=\"center\">");
-							  			out.println("<ul>");
-								  		for(String c : i.ListSameInstances)
-								  		{
-								  			out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
-								  		}
-							  			out.println("</ul>");
-							  		out.println("</td>");
-							  		out.println("<td class=\"center\">");
-							  			out.println("<ul>");
-								  		for(String c : i.ListDiferentInstances)
-								  		{
-								  			out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
-								  		}
-							  			out.println("</ul>");
-						  			out.println("</td>");
-							  		if(i.existInModel == true)
-							  		{
-							  			out.println("<td class=\"center\">	<i>No actions</i> </td>");
-	
-							  		} else {
-							  			
-							  			out.println("<td class=\"center\">" + 
-							  					//"<a class=\"btn btn-success\" href=\"#\"> <i class=\"icon-zoom-in\"></i> </a> " + 
-							  					"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
-							  					"<a class=\"btn btn-danger\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +
-							  					"</td>");
-							  		}
-						  									  		
-						  		out.println("</tr>");
-						  		
-								
-							}
+									  		{
+									  			out.println("<tr>");
+									  			out.println("<td></td>");
+									  			out.println("<td></td>");
+									  			out.println("<td></td>");
+									  			out.println("<td></td>");
+									  			out.println("</tr>");
+									  		}
+										  	for (DtoInstance i : ListInstancesInRelation) {
+										  		
+										  		out.println("<tr>");
+										  		
+											  		out.println("<td title=\"" + i.ns + i.name + "\">" + i.name + "</td>");
+											  		out.println("<td class=\"center\">");
+											  			out.println("<ul>");
+												  		for(String c : i.ListSameInstances)
+												  		{
+												  			out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
+												  		}
+											  			out.println("</ul>");
+											  		out.println("</td>");
+											  		out.println("<td class=\"center\">");
+											  			out.println("<ul>");
+												  		for(String c : i.ListDiferentInstances)
+												  		{
+												  			out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
+												  		}
+											  			out.println("</ul>");
+										  			out.println("</td>");
+											  		if(i.existInModel == true)
+											  		{
+											  			out.println("<td class=\"center\">	<i>No actions</i> </td>");
+							
+											  		} else {
+											  			
+											  			out.println("<td class=\"center\">" + 
+											  					//"<a class=\"btn btn-success\" href=\"#\"> <i class=\"icon-zoom-in\"></i> </a> " + 
+											  					"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
+											  					"<a class=\"btn btn-danger\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +
+											  					"</td>");
+											  		}
+										  									  		
+										  		out.println("</tr>");
+										  		
+												
+											}
 						%>
 
 					</tbody>

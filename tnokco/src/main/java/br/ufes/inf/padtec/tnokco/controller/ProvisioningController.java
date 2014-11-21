@@ -22,13 +22,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoExceptionFileFormat;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.persistence.BaseModelRepositoryImpl;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.common.util.Instance;
-import br.com.padtec.common.util.Search;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
@@ -338,8 +337,7 @@ public class ProvisioningController{
 
 		String outputNs = "";
 		String inputNs = "";
-
-		Search search = new Search();
+		
 		List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, HomeController.NS+outInt);
 		for (DtoInstanceRelation outIntRelation : outIntRelations) {
 			if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
@@ -360,7 +358,7 @@ public class ProvisioningController{
 		
 		Boolean inputIsPmInput = false;
 		if(inputNs.equals("")){
-			Instance inputOrIntInput = getInstanceFromNameSpace(HomeController.NS+inInt);
+			DtoInstance inputOrIntInput = getInstanceFromNameSpace(HomeController.NS+inInt);
 			for (String inputOrIntInputClass : inputOrIntInput.ListClasses) {
 				if(inputOrIntInputClass.equals(HomeController.NS+"Physical_Media_Input")){
 					inputNs = inInt;
@@ -372,7 +370,7 @@ public class ProvisioningController{
 //		System.out.println();
 		Boolean outputIsPmOutput = false;
 		if(outputNs.equals("")){
-			Instance outputOrIntOutput = getInstanceFromNameSpace(HomeController.NS+outputNs);
+			DtoInstance outputOrIntOutput = getInstanceFromNameSpace(HomeController.NS+outputNs);
 			for (String outputOrIntOutputClass : outputOrIntOutput.ListClasses) {
 				if(outputOrIntOutputClass.equals(HomeController.NS+"Physical_Media_Output")){
 					outputNs = inInt;
@@ -465,7 +463,7 @@ public class ProvisioningController{
 		
 		ArrayList<String> allowedInputInterfaces = new ArrayList<String>();
 		//find the instance of the output interface
-		Instance outputInterface = getInstanceFromNameSpace(outIntNs);
+		DtoInstance outputInterface = getInstanceFromNameSpace(outIntNs);
 //		Instance outputInterface = null;
 //		for (Instance instance : HomeController.ListAllInstances) {
 //			String instNs = instance.name;
@@ -478,7 +476,7 @@ public class ProvisioningController{
 //		}
 
 		//get all relations of the output interface
-		Search search = new Search();
+		
 		List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
 
 		//get namespaces of individuals of some output interface relations
@@ -495,12 +493,12 @@ public class ProvisioningController{
 			}
 		}
 
-		ArrayList<Instance> inputInterfaces = getInstancesFromClass("Input_Interface");
-		ArrayList<Instance> physicalMediaInputs = getInstancesFromClass("Physical_Media_Input");
+		ArrayList<DtoInstance> inputInterfaces = getInstancesFromClass("Input_Interface");
+		ArrayList<DtoInstance> physicalMediaInputs = getInstancesFromClass("Physical_Media_Input");
 		
 		//if the output interface does not maps an output, it can not connects
 		if(outputNs.equals("")){
-			for (Instance inputInterface : inputInterfaces) {
+			for (DtoInstance inputInterface : inputInterfaces) {
 				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
 				String eqInNs = "";
 				
@@ -536,8 +534,8 @@ public class ProvisioningController{
 		}
 		
 		//get the instance of the output mapped by the output interface
-		Instance output = null;
-		for (Instance instance : HomeController.ListAllInstances) {
+		DtoInstance output = null;
+		for (DtoInstance instance : HomeController.ListAllInstances) {
 			if(outputNs.equals(instance.ns+instance.name)){
 				output = instance;
 				break;
@@ -563,7 +561,7 @@ public class ProvisioningController{
 			outputClassName = outputClassName.replace(HomeController.NS, "");
 			
 			//here, I look for possible connections with input interfaces
-			for (Instance inputInterface : inputInterfaces) {
+			for (DtoInstance inputInterface : inputInterfaces) {
 				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
 				String inputNs = "";
 				String eqInNs = "";
@@ -585,7 +583,7 @@ public class ProvisioningController{
 				//with the actual input interface
 				//the block below it's for this purpose
 				if(!inputInterfaceAlreadyConnected){
-					for(Instance otherOutput : HomeController.ListAllInstances){
+					for(DtoInstance otherOutput : HomeController.ListAllInstances){
 						for (String otherOutputClassName : otherOutput.ListClasses) {
 							otherOutputClassName = otherOutputClassName.replace(HomeController.NS, "");
 							if(otherOutputClassName.equalsIgnoreCase("Output_Interface")){
@@ -612,8 +610,8 @@ public class ProvisioningController{
 				Boolean hasAllowedRelation = false;
 				if(inputNs != ""){
 					//get the input mapped by the input interface 
-					Instance input = null;
-					for (Instance instance : HomeController.ListAllInstances) {
+					DtoInstance input = null;
+					for (DtoInstance instance : HomeController.ListAllInstances) {
 						if(inputNs.equals(instance.ns+instance.name)){
 							input = instance;
 							break;
@@ -673,7 +671,7 @@ public class ProvisioningController{
 			}
 			
 			//here, I look for possible connections with physical media inputs
-			for (Instance pmInput : physicalMediaInputs) {
+			for (DtoInstance pmInput : physicalMediaInputs) {
 				List<DtoInstanceRelation> inPMRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, pmInput.ns+pmInput.name);
 				String pmNs = "";
 				Boolean inputPMAlreadyConnected = false;
@@ -692,7 +690,7 @@ public class ProvisioningController{
 				//with the actual PM input
 				//the block below it's for this purpose
 				if(!inputPMAlreadyConnected){
-					for(Instance otherOutput : HomeController.ListAllInstances){
+					for(DtoInstance otherOutput : HomeController.ListAllInstances){
 						for (String otherOutputClassName : otherOutput.ListClasses) {
 							otherOutputClassName = otherOutputClassName.replace(HomeController.NS, "");
 							if(otherOutputClassName.equalsIgnoreCase("Output")){
@@ -765,9 +763,9 @@ public class ProvisioningController{
 		return allowedInputInterfaces;
 	}
 	
-	public static Instance getInstanceFromNameSpace(String nameSpace){
-		Instance instance = null;
-		for (Instance inst : HomeController.ListAllInstances) {
+	public static DtoInstance getInstanceFromNameSpace(String nameSpace){
+		DtoInstance instance = null;
+		for (DtoInstance inst : HomeController.ListAllInstances) {
 			String instNs = inst.name;
 			instNs = instNs.replace(inst.ns, "");
 			nameSpace = nameSpace.replace(inst.ns, "");
@@ -779,18 +777,18 @@ public class ProvisioningController{
 		return instance;
 	}
 	
-	public static ArrayList<Instance> getInstancesFromClass(String classNameWithoutNameSpace){
+	public static ArrayList<DtoInstance> getInstancesFromClass(String classNameWithoutNameSpace){
 		ArrayList<String> classNamesWithoutNameSpace = new ArrayList<String>();
 		classNamesWithoutNameSpace.add(classNameWithoutNameSpace);
 		
-		ArrayList<Instance> instances = getInstancesFromClasses(classNamesWithoutNameSpace);
+		ArrayList<DtoInstance> instances = getInstancesFromClasses(classNamesWithoutNameSpace);
 		
 		return instances;
 	}
 	
-	public static ArrayList<Instance> getInstancesFromClasses(ArrayList<String> classNamesWithoutNameSpace){
-		ArrayList<Instance> instances = new ArrayList<Instance>();
-		for (Instance instance : HomeController.ListAllInstances) {
+	public static ArrayList<DtoInstance> getInstancesFromClasses(ArrayList<String> classNamesWithoutNameSpace){
+		ArrayList<DtoInstance> instances = new ArrayList<DtoInstance>();
+		for (DtoInstance instance : HomeController.ListAllInstances) {
 			for (String classNameWithoutNameSpace : classNamesWithoutNameSpace) {
 				Boolean foundInstance = false;
 				if(instance.ListClasses.contains(HomeController.NS+classNameWithoutNameSpace)){
@@ -825,7 +823,7 @@ public class ProvisioningController{
 		//get namespaces of individuals of some input interface relations
 		for (DtoInstanceRelation eqRelation : equipRelations) {
 			if(eqRelation.Property.equalsIgnoreCase(HomeController.NS+"componentOf.Equipment.Output_Interface") || eqRelation.Property.equalsIgnoreCase(HomeController.NS+"componentOf")){
-				Instance outIntInstance = getInstanceFromNameSpace(eqRelation.Target);
+				DtoInstance outIntInstance = getInstanceFromNameSpace(eqRelation.Target);
 				for (String classOutIntName : outIntInstance.ListClasses) {
 					if(classOutIntName.equals(HomeController.NS+"Output_Interface")){
 						outIntNss.add(eqRelation.Target);
@@ -835,7 +833,7 @@ public class ProvisioningController{
 		}
 		
 		for (String oiNs : outIntNss) {
-			Instance outputInterface = getInstanceFromNameSpace(oiNs);
+			DtoInstance outputInterface = getInstanceFromNameSpace(oiNs);
 			
 			List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
 			String inIntNs = "";
@@ -887,8 +885,8 @@ public class ProvisioningController{
 	@RequestMapping(value = "/autoBinds", method = RequestMethod.POST)
 	public String autoBinds(HttpServletRequest request){
 		//pego todas as instancias de interface de output nao conectadas
-		ArrayList<Instance> outputInterfaces = new ArrayList<Instance>(); 
-		for (Instance instance : HomeController.ListAllInstances) {
+		ArrayList<DtoInstance> outputInterfaces = new ArrayList<DtoInstance>(); 
+		for (DtoInstance instance : HomeController.ListAllInstances) {
 			for (String className : instance.ListClasses) {
 				if(className.equalsIgnoreCase(HomeController.NS+"Output_Interface")){
 					List<DtoInstanceRelation> outputInterfaceRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, instance.ns+instance.name);
@@ -912,7 +910,7 @@ public class ProvisioningController{
 		
 		HashMap<String, ArrayList<String>> uniqueCandidatesForBinds = new HashMap<String, ArrayList<String>>();
 		
-		for (Instance outputInterface : outputInterfaces) {
+		for (DtoInstance outputInterface : outputInterfaces) {
 			ArrayList<String> candidatesForConnection = getCandidateInterfacesForConnection(outputInterface.ns+outputInterface.name);
 			int noCandidates = 0;
 			String inputCandidateName = "";
@@ -984,9 +982,9 @@ public class ProvisioningController{
 		if(connectsBetweenRps == null){
 			connectsBetweenRps = new ArrayList<String>();
 		}
-		ArrayList<Instance> rpInstances = getInstancesFromClass("Reference_Point");
+		ArrayList<DtoInstance> rpInstances = getInstancesFromClass("Reference_Point");
 		
-		for (Instance rp : rpInstances) {
+		for (DtoInstance rp : rpInstances) {
 			List<DtoInstanceRelation> rpRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, rp.ns+rp.name);
 			String bindingNs = "";
 			String hasFW = "";

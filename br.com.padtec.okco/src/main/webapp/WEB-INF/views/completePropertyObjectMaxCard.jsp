@@ -1,5 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="br.com.padtec.common.util.Instance"%>
+<%@ page import="br.com.padtec.common.dto.DtoInstance"%>
 <%@ page import="br.com.padtec.common.dto.DataPropertyValue"%>
 <%@ page import="br.com.padtec.common.dto.DtoDefinitionClass"%>
 <%@ page import="java.util.ArrayList"%>
@@ -8,9 +8,9 @@
 <%
 	// Get the parameters from controller
 	
-	ArrayList<Instance> ListInstancesInRelation = (ArrayList<Instance>)request.getSession().getAttribute("listInstancesInRelation");
+	ArrayList<DtoInstance> ListInstancesInRelation = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstancesInRelation");
 	DtoDefinitionClass dtoDefinition = (DtoDefinitionClass)request.getSession().getAttribute("definitionSelected");
-	Instance instanceSelected = (Instance)request.getSession().getAttribute("instanceSelected");
+	DtoInstance instanceSelected = (DtoInstance)request.getSession().getAttribute("instanceSelected");
 	String propType = request.getSession().getAttribute("propType").toString();
 %>
 
@@ -168,17 +168,17 @@
 						<h2>
 							<%
 								if (propType.equals("SOME")) {
-									out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>"
-											+ dtoDefinition.Relation.split("#")[1]
-											+ "<small> -> </small>" + propType + " " + " [?] "
-											+ "(" + dtoDefinition.Target.split("#")[1] + ")");
-								} else {
-									out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>"
-											+ dtoDefinition.Relation.split("#")[1]
-											+ "<small> -> </small>" + propType + " "
-											+ dtoDefinition.Cardinality + " [?] " + "("
-											+ dtoDefinition.Target.split("#")[1] + ")");
-								}
+														out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>"
+																+ dtoDefinition.Relation.split("#")[1]
+																+ "<small> -> </small>" + propType + " " + " [?] "
+																+ "(" + dtoDefinition.Target.split("#")[1] + ")");
+													} else {
+														out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>"
+																+ dtoDefinition.Relation.split("#")[1]
+																+ "<small> -> </small>" + propType + " "
+																+ dtoDefinition.Cardinality + " [?] " + "("
+																+ dtoDefinition.Target.split("#")[1] + ")");
+													}
 							%>
 						</h2>
 					</div>
@@ -201,41 +201,41 @@
 
 						<%
 							if (ListInstancesInRelation.size() == 0) {
-								out.println("<tr>");
-								out.println("<td></td>");
-								out.println("<td></td>");
-								out.println("<td></td>");
-								out.println("</tr>");
-							}
-							for (Instance i : ListInstancesInRelation) {
+												out.println("<tr>");
+												out.println("<td></td>");
+												out.println("<td></td>");
+												out.println("<td></td>");
+												out.println("</tr>");
+											}
+											for (DtoInstance i : ListInstancesInRelation) {
 
-								out.println("<tr>");
+												out.println("<tr>");
 
-								out.println("<td title=\"" + instanceSelected.ns
-										+ instanceSelected.name + "\">" + instanceSelected.name
-										+ "</td>");
-								out.println("<td class=\"center\"> "
-										+ dtoDefinition.Relation.split("#")[1]);
+												out.println("<td title=\"" + instanceSelected.ns
+														+ instanceSelected.name + "\">" + instanceSelected.name
+														+ "</td>");
+												out.println("<td class=\"center\"> "
+														+ dtoDefinition.Relation.split("#")[1]);
 
-								out.println("</td>");
-								out.println("<td title=\"" + i.ns + i.name + "\">" + i.name
-										+ "</td>");
+												out.println("</td>");
+												out.println("<td title=\"" + i.ns + i.name + "\">" + i.name
+														+ "</td>");
 
-								out.println("</td>");
+												out.println("</td>");
 
-								out.println("</tr>");
+												out.println("</tr>");
 
-							}
+											}
 						%>
 
 					</tbody>
 				</table>
 
 				<h2>Select  
-						<% 
-							int value = (ListInstancesInRelation.size() - Integer.parseInt(dtoDefinition.Cardinality));
-							out.println("<b> <span class=\"totalToSelect\">" + value + "</span> </b> Same and Different instances: <input id=\"refresh\" type=\"button\" onClick=\"#\" value=\"Refresh Selection\">");
-						%>
+						<%
+					int value = (ListInstancesInRelation.size() - Integer.parseInt(dtoDefinition.Cardinality));
+									out.println("<b> <span class=\"totalToSelect\">" + value + "</span> </b> Same and Different instances: <input id=\"refresh\" type=\"button\" onClick=\"#\" value=\"Refresh Selection\">");
+				%>
 						</h2>
 
 				<table id="table-instances" class="table table-bordered">
@@ -243,43 +243,43 @@
 						<tr>
 							<td style="text-align: center">x</td>
 							<%
-								for (Instance i : ListInstancesInRelation) {
+								for (DtoInstance i : ListInstancesInRelation) {
 
-									out.println("<td id=\"y-" + i.uri + "\">" + i.name + "</td>");
-								}
+														out.println("<td id=\"y-" + i.uri + "\">" + i.name + "</td>");
+													}
 							%>
 						</tr>
 					</thead>
 					<tbody>
 
 						<%
-							for (Instance i : ListInstancesInRelation) {
-								out.println("<tr>");
+							for (DtoInstance i : ListInstancesInRelation) {
+												out.println("<tr>");
 
-								out.println("<td id=\"" + i.uri + "\">" + i.name + "</td>");
+												out.println("<td id=\"" + i.uri + "\">" + i.name + "</td>");
 
-								for (Instance i2 : ListInstancesInRelation) {
-									if (i2.name.equals(i.name)) {
-										out.println("<td style=\"text-align:center\">x</td>");
+												for (DtoInstance i2 : ListInstancesInRelation) {
+													if (i2.name.equals(i.name)) {
+														out.println("<td style=\"text-align:center\">x</td>");
 
-									} else {
+													} else {
 
-										out.println("<td style=\"text-align:center\" id=\""
-												+ i.uri + "x" + i2.uri + "\">");
+														out.println("<td style=\"text-align:center\" id=\""
+																+ i.uri + "x" + i2.uri + "\">");
 
-										out.println("<select class=\"selectSameDif\">");
-										out.println("<option value=\"none\">-</option>");
-										out.println("<option value=\"same\">Same</option>");
-										out.println("<option value=\"dif\">Different</option>");
-										out.println("</select>");
+														out.println("<select class=\"selectSameDif\">");
+														out.println("<option value=\"none\">-</option>");
+														out.println("<option value=\"same\">Same</option>");
+														out.println("<option value=\"dif\">Different</option>");
+														out.println("</select>");
 
-										out.println("</td>");
-									}
-								}
+														out.println("</td>");
+													}
+												}
 
-								out.println("</tr>");
+												out.println("</tr>");
 
-							}
+											}
 						%>
 
 					</tbody>

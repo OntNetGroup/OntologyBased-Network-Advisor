@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.persistence.HermitReasonerImpl;
@@ -13,7 +14,6 @@ import br.com.padtec.common.persistence.OntologyReasoner;
 import br.com.padtec.common.persistence.PelletReasonerImpl;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.FactoryInstances;
-import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.util.ManagerInstances;
 import br.com.padtec.common.util.UploadApp;
 
@@ -107,12 +107,12 @@ class ManagerRelations {
 	
 	OntModel EnforceSubRelation(OntModel model, InfModel infModel, String NS)
 	{			
-		ArrayList<Instance> ListAllInstances;
+		ArrayList<DtoInstance> ListAllInstances;
 		try {
 			
 			// Get all instances			
 			ListAllInstances = manager.getAllInstances(infModel);			
-			for (Instance instance : ListAllInstances) 
+			for (DtoInstance instance : ListAllInstances) 
 			{				
 				List<String> sourceInstanceClasses = QueryUtil.getClassesURI(infModel,instance.ns + instance.name);
 				

@@ -3,9 +3,9 @@ package br.com.padtec.common.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.ManagerInstances;
-import br.com.padtec.common.util.Instance;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
@@ -18,7 +18,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 public class FactoryInstances {
 
 
-	public OntModel CreateInstance(String instanceSource, String Relation, Instance instanceNew, String TargetClass, List<Instance> ListAllInstances, OntModel model)
+	public OntModel CreateInstance(String instanceSource, String Relation, DtoInstance instanceNew, String TargetClass, List<DtoInstance> ListAllInstances, OntModel model)
 	{
 		ManagerInstances manager = new ManagerInstances(null);	
 		
@@ -33,7 +33,7 @@ public class FactoryInstances {
 		//Add same and different
 		for (String s : instanceNew.ListDiferentInstances) 
 		{
-			Instance ins = manager.getInstance(ListAllInstances, s);
+			DtoInstance ins = manager.getInstance(ListAllInstances, s);
 			if(!(ins == null))
 			{
 				Individual i = model.getIndividual(s);
@@ -43,7 +43,7 @@ public class FactoryInstances {
 		
 		for (String s : instanceNew.ListSameInstances) 
 		{
-			Instance ins = manager.getInstance(ListAllInstances, s);
+			DtoInstance ins = manager.getInstance(ListAllInstances, s);
 			if(!(ins == null))
 			{
 				Individual i = model.getIndividual(s);
@@ -64,7 +64,7 @@ public class FactoryInstances {
 	}
 	
 	
-	public OntModel UpdateInstance(Instance instance, OntModel model, InfModel infModel, ArrayList<Instance> ListAllInstances)
+	public OntModel UpdateInstance(DtoInstance instance, OntModel model, InfModel infModel, ArrayList<DtoInstance> ListAllInstances)
 	{
 		ManagerInstances manager = new ManagerInstances(null);
 		
@@ -88,7 +88,7 @@ public class FactoryInstances {
 		//Add different
 		for (String s : instance.ListDiferentInstances) 
 		{
-			Instance ins = manager.getInstance(ListAllInstances, s);
+			DtoInstance ins = manager.getInstance(ListAllInstances, s);
 			if(!(ins == null))
 			{
 				Individual i = model.getIndividual(s);
@@ -99,7 +99,7 @@ public class FactoryInstances {
 		//Add same
 		for (String s : instance.ListSameInstances) 
 		{
-			Instance ins = manager.getInstance(ListAllInstances, s);
+			DtoInstance ins = manager.getInstance(ListAllInstances, s);
 			if(!(ins == null))
 			{
 				Individual i = model.getIndividual(s);
@@ -110,7 +110,7 @@ public class FactoryInstances {
 		return model;
 	}
 	
-	public OntModel DeleteInstance(Instance instance, OntModel model) {
+	public OntModel DeleteInstance(DtoInstance instance, OntModel model) {
 
 		Individual ind = model.getIndividual(instance.ns + instance.name);
 		ind.remove();	// remove every statement that mentions this resource as a subject or object of a statement.		

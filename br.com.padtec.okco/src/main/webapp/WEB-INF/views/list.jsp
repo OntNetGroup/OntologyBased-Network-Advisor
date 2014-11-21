@@ -1,12 +1,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="br.com.padtec.common.util.Instance" %>
+<%@ page import="br.com.padtec.common.dto.DtoInstance" %>
 <%@ page import="java.util.List" %>
 
 
-<% 
+<%
 	// Get the parameters from controller
 	
-	List<Instance> ListAllInstances = (List<Instance>)request.getSession().getAttribute("listInstances");
+	List<DtoInstance> ListAllInstances = (List<DtoInstance>)request.getSession().getAttribute("listInstances");
 %>
 
 <%@include file="../templates/header.jsp" %>
@@ -99,59 +99,58 @@
 					  <tbody>
 					  
 					  	<%
-					  		String listClass = "";
-						  	for (Instance i : ListAllInstances) {
-						  		
-						  		out.println("<tr>");
-						  		
-							  		out.println("<td title=\"" + i.ns + i.name + "\">" + i.name + "</td>");
-							  		out.println("<td class=\"center\">");
-							  			out.println("<ul>");
-								  		for(String c : i.ListClasses)
-								  		{
-								  			out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
-								  		}
-							  			out.println("</ul>");
-							  		out.println("</td>");
-							  		
-							  		if( i.isModified == true )
-							  		{
-							  			out.println("<td class=\"center\">	<span class=\"label label-important\" style=\"background:#67c2ef\">Modified</span> </td>");
-							  			
-							  		} else {
-							  			
-							  			if(i.haveKnwologeToComplete() == true)
-								  		{
-								  			out.println("<td class=\"center\">	<span class=\"label label-important\">Not Satisfied</span> </td>");
+					  					  		String listClass = "";
+					  					  					  	for (DtoInstance i : ListAllInstances) {
+					  					  					  		
+					  					  					  		out.println("<tr>");
+					  					  					  		
+					  					  						  		out.println("<td title=\"" + i.ns + i.name + "\">" + i.name + "</td>");
+					  					  						  		out.println("<td class=\"center\">");
+					  					  						  			out.println("<ul>");
+					  					  							  		for(String c : i.ListClasses)
+					  					  							  		{
+					  					  							  			out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
+					  					  							  		}
+					  					  						  			out.println("</ul>");
+					  					  						  		out.println("</td>");
+					  					  						  		
+					  					  						  		if( i.isModified == true )
+					  					  						  		{
+					  					  						  			out.println("<td class=\"center\">	<span class=\"label label-important\" style=\"background:#67c2ef\">Modified</span> </td>");
+					  					  						  			
+					  					  						  		} else {
+					  					  						  			
+					  					  						  			if(i.haveKnwologeToComplete() == true)
+					  					  							  		{
+					  					  							  			out.println("<td class=\"center\">	<span class=\"label label-important\">Not Satisfied</span> </td>");
 
-								  		} else {
-								  			
-								  			if(i.is_Semi_Complete() == true)
-								  			{
-								  				out.println("<td class=\"center\">	<span class=\"label label-warning\">Possible Refinements</span> </td>");
-								  				
-								  			} else {
-								  				
-								  				out.println("<td class=\"center\">	<span class=\"label label-success\">Satisfied</span> </td>");
-								  			}
-								  		}
-							  			
-							  		}
-							  		
-							  		
-							  		
-							  		out.println("<td class=\"center\">" + 
-							  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
-							  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
-						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completeInstanceAuto?uriInstance="+ i.uriEncoded + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
-							  					"</td>");
-						  									  		
-						  		out.println("</tr>");
-						  		
-								
-							}
-					  	
-					  	%>
+					  					  							  		} else {
+					  					  							  			
+					  					  							  			if(i.is_Semi_Complete() == true)
+					  					  							  			{
+					  					  							  				out.println("<td class=\"center\">	<span class=\"label label-warning\">Possible Refinements</span> </td>");
+					  					  							  				
+					  					  							  			} else {
+					  					  							  				
+					  					  							  				out.println("<td class=\"center\">	<span class=\"label label-success\">Satisfied</span> </td>");
+					  					  							  			}
+					  					  							  		}
+					  					  						  			
+					  					  						  		}
+					  					  						  		
+					  					  						  		
+					  					  						  		
+					  					  						  		out.println("<td class=\"center\">" + 
+					  					  						  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
+					  					  						  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+					  					  					  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completeInstanceAuto?uriInstance="+ i.uriEncoded + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
+					  					  						  					"</td>");
+					  					  					  									  		
+					  					  					  		out.println("</tr>");
+					  					  					  		
+					  					  							
+					  					  						}
+					  					  	%>
 						
 					  </tbody>
 				  </table>            

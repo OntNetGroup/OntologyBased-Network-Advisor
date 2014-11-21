@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.common.util.Search;
 import br.ufes.inf.nemo.padtec.Sindel2OWL;
 
 import com.hp.hpl.jena.ontology.Individual;
@@ -436,7 +435,6 @@ public class BindsProcessor {
 			listInstancesCreated = new ArrayList<String>();
 		}
 		initValues();
-		Search search = new Search(); 
 		List<String> tiposPort1=QueryUtil.getClassesURI(ontModel,NS+port1.getLocalName());
 		List<String> tiposPort2=QueryUtil.getClassesURI(ontModel,NS+port2.getLocalName());
 		tiposPort1.remove(NS+"Geographical_Element");

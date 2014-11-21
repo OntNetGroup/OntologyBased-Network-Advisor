@@ -9,15 +9,15 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
 import br.com.padtec.common.dto.DtoDefinitionClass;
+import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 
 
 public class CompleterApp {
-
-	public static Search Search= new Search();;
+	
 	public static FactoryInstances FactoryInstances = new FactoryInstances();;
 	public static ManagerInstances ManagerInstances= new ManagerInstances(FactoryInstances);		
-	public static List<Instance> ListAllInstances;	
+	public static List<DtoInstance> ListAllInstances;	
 	public static List<DtoDefinitionClass> ModelDefinitions;
 	public static List<String> ListModifiedInstances = new ArrayList<String>();
 	
@@ -29,7 +29,7 @@ public class CompleterApp {
 		
 	public static void updateModifiedList()
 	{
-		for (Instance i : ListAllInstances) 
+		for (DtoInstance i : ListAllInstances) 
 		{
 			String s = i.ns + i.name;
 			if (ListModifiedInstances.contains(s)) i.setModified(true);			
@@ -45,7 +45,7 @@ public class CompleterApp {
     	// Refresh list of instances
     	ListAllInstances = ManagerInstances.getAllInstances(inferredModel);
     	//Get model definitions on list of instances	    	
-	  	ModelDefinitions = Search.GetModelDefinitionsInInstances(ListAllInstances, inferredModel);			
+	  	ModelDefinitions = DtoQueryUtil.getClassDefinitionsFromInstances(ListAllInstances);			
 		// Organize data (Update the list of all instances)			
     	ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, Model, inferredModel, UploadApp.getBaseRepository().getNameSpace());			
 		ManagerInstances.UpdateInstanceSpecialization(ListAllInstances, Model, inferredModel, UploadApp.getBaseRepository().getNameSpace());			
@@ -58,7 +58,7 @@ public class CompleterApp {
 		InfModel inferredModel = UploadApp.getInferredModel();
 		OntModel Model = UploadApp.getBaseModel();
 	    //Get model definitions on list of instances	    	
-		ArrayList<DtoDefinitionClass> intanceDefinitions = Search.GetModelDefinitionsInInstances(instanceURI, Model, inferredModel, ListAllInstances, ManagerInstances);
+		List<DtoDefinitionClass> intanceDefinitions = DtoQueryUtil.getClassDefinitionsFromInstance(instanceURI);
 		ModelDefinitions.addAll(intanceDefinitions);			
 		// Organize data (Update the list of all instances)			
 		    ManagerInstances.UpdateInstanceAndRelations(ListAllInstances, intanceDefinitions, Model, inferredModel, UploadApp.getBaseRepository().getNameSpace());			

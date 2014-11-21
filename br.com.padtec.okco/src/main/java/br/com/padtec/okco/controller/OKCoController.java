@@ -25,6 +25,7 @@ import br.com.padtec.common.dto.DtoCreateDataValuePost;
 import br.com.padtec.common.dto.DtoCreateInstancePost;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoGetPrevNextSpecProperty;
+import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
@@ -35,9 +36,8 @@ import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.common.util.CompleterApp;
-import br.com.padtec.common.util.Instance;
+import br.com.padtec.common.util.DtoQueryUtil;
 import br.com.padtec.common.util.UploadApp;
-import br.com.padtec.okco.application.QueryApp;
 import br.com.padtec.okco.util.GraphPlotting;
 import br.com.padtec.okco.util.WOKCOGraphPlotting;
 
@@ -48,7 +48,7 @@ public class OKCoController {
 	// Save the new instances before commit in views (completePropertyObject and completePropertyData)
 
 	//Instances to add in relation
-	ArrayList<Instance> listNewInstancesRelation;
+	ArrayList<DtoInstance> listNewInstancesRelation;
 
 	//DataValues to add in relation
 	ArrayList<DataPropertyValue> listNewDataValuesRelation;
@@ -57,7 +57,7 @@ public class OKCoController {
 	DtoDefinitionClass dtoSelected;
 
 	//Instance selected
-	Instance instanceSelected;
+	DtoInstance instanceSelected;
 
 	//Specialization - Complete classes for instance class
 	ArrayList<DtoCompleteClass> ListCompleteClsInstaceSelected;
@@ -68,7 +68,7 @@ public class OKCoController {
 	@RequestMapping(method = RequestMethod.GET, value="/list")
 	public String list(HttpServletRequest request) 
 	{
-		List<Instance> allIndividuals = CompleterApp.ListAllInstances;				
+		List<DtoInstance> allIndividuals = CompleterApp.ListAllInstances;				
 		List<String> modifiedIndividuals = CompleterApp.ListModifiedInstances;
 		
 		if(allIndividuals != null) 
@@ -97,7 +97,7 @@ public class OKCoController {
 	{
 		uri = decodeURI(uri);
 		
-		List<Instance> listAllInstances = CompleterApp.ListAllInstances;
+		List<DtoInstance> listAllInstances = CompleterApp.ListAllInstances;
 		instanceSelected = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);
 		ListCompleteClsInstaceSelected = instanceSelected.ListCompleteClasses;
 		ListSpecializationProperties = instanceSelected.ListSpecializationProperties;		
@@ -105,7 +105,7 @@ public class OKCoController {
 		List<DtoDefinitionClass> listMinClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
 		List<DtoDefinitionClass> listMaxClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
 		List<DtoDefinitionClass> listExactlyClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
-		List<DtoInstanceRelation> instanceRelationsList = QueryApp.getRelations(instanceSelected.ns + instanceSelected.name);		
+		List<DtoInstanceRelation> instanceRelationsList = DtoQueryUtil.getRelations(instanceSelected.ns + instanceSelected.name);		
 		
 		request.getSession().setAttribute("listInstances", listAllInstances);
 		request.getSession().setAttribute("instanceSelected", instanceSelected);
@@ -121,9 +121,9 @@ public class OKCoController {
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
 	public String completeProperty(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) 
 	{
-		List<Instance> listAllInstances = CompleterApp.ListAllInstances;
+		List<DtoInstance> listAllInstances = CompleterApp.ListAllInstances;
 		//Instance selected
-		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
+		DtoInstance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
 
@@ -144,13 +144,13 @@ public class OKCoController {
 		if(type.equals("object"))
 		{
 			//List auxiliary
-			listNewInstancesRelation = new ArrayList<Instance>();
+			listNewInstancesRelation = new ArrayList<DtoInstance>();
 			//Get all instances except the instance selected for Same/Different list		
-			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(CompleterApp.ListAllInstances);
+			ArrayList<DtoInstance> listInstancesSameDifferent = new ArrayList<DtoInstance>(CompleterApp.ListAllInstances);
 			//get instances with had this relation
 			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 			//populate the list of instances with had this relation	    	
-			List<Instance> listInstancesInRelation = CompleterApp.ManagerInstances.getIntersectionOf(CompleterApp.ListAllInstances, listInstancesName);
+			List<DtoInstance> listInstancesInRelation = CompleterApp.ManagerInstances.getIntersectionOf(CompleterApp.ListAllInstances, listInstancesName);
 
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
 			request.getSession().setAttribute("listInstancesSameDifferent", listInstancesSameDifferent);
@@ -164,7 +164,7 @@ public class OKCoController {
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
-			List<Instance> listInstancesInRelation = CompleterApp.ManagerInstances.getIntersectionOf(CompleterApp.ListAllInstances, listInstancesName);
+			List<DtoInstance> listInstancesInRelation = CompleterApp.ManagerInstances.getIntersectionOf(CompleterApp.ListAllInstances, listInstancesName);
 
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
 			return "completePropertyObjectMaxCard";
@@ -204,7 +204,7 @@ public class OKCoController {
 		 * */
 
 		//Instance selected
-		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
+		DtoInstance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome, uriProperty);
@@ -232,7 +232,7 @@ public class OKCoController {
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
-				Instance newInstance = new Instance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
+				DtoInstance newInstance = new DtoInstance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
 				UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
 				CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
@@ -257,7 +257,7 @@ public class OKCoController {
 					String instanceName = dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 					ArrayList<String> listSame = new ArrayList<String>();		  
 					ArrayList<String> listClasses = new ArrayList<String>();
-					Instance newInstance = new Instance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
+					DtoInstance newInstance = new DtoInstance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
 					UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
 					CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
@@ -290,7 +290,7 @@ public class OKCoController {
 						String instanceName = dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 						ArrayList<String> listSame = new ArrayList<String>();
 						ArrayList<String> listClasses = new ArrayList<String>();
-						Instance newInstance = new Instance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
+						DtoInstance newInstance = new DtoInstance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
 						UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
 						CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
@@ -347,8 +347,8 @@ public class OKCoController {
 	public String completeInstanceAuto(@RequestParam("uriInstance") String uriInstance, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
-		for(Instance i: CompleterApp.ListAllInstances){
+		DtoInstance instance = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriInstance);
+		for(DtoInstance i: CompleterApp.ListAllInstances){
 			i.print();
 		}
 		System.out.println("Complete Instance ID="+uriInstance);		
@@ -378,7 +378,7 @@ public class OKCoController {
 		int height;
 		String subtitle = "";
 		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
-		Instance i;
+		DtoInstance i;
 		
 		//TypeView -> ALL/IN/OUT
 		if(typeView.equals("ALL"))
@@ -422,7 +422,7 @@ public class OKCoController {
 	/*------ AJAX - ObjectProperty -----*/	
 
 	@RequestMapping(value="/createInstance", method = RequestMethod.POST)
-	public @ResponseBody Instance createInstance(@RequestBody final DtoCreateInstancePost dto){    
+	public @ResponseBody DtoInstance createInstance(@RequestBody final DtoCreateInstancePost dto){    
 
 		String separatorValues = "%&&%";
 
@@ -446,7 +446,7 @@ public class OKCoController {
 				listDif.add(s);			
 		}
 
-		Instance i = new Instance(UploadApp.baseRepository.getNameSpace(), name, new ArrayList<String>(), listDif, listSame, false);
+		DtoInstance i = new DtoInstance(UploadApp.baseRepository.getNameSpace(), name, new ArrayList<String>(), listDif, listSame, false);
 
 		listNewInstancesRelation.add(i);
 		return i;
@@ -460,8 +460,8 @@ public class OKCoController {
 		DtoResult dto = new DtoResult();
 		if(listNewInstancesRelation.size() != 0)
 		{
-			Instance iSource = instanceSelected;
-			for (Instance iTarget : listNewInstancesRelation) 
+			DtoInstance iSource = instanceSelected;
+			for (DtoInstance iTarget : listNewInstancesRelation) 
 			{
 				try {
 
@@ -588,7 +588,7 @@ public class OKCoController {
 
 		if(uri != null)
 		{
-			Instance.removeFromList(listNewInstancesRelation, uri);
+			DtoInstance.removeFromList(listNewInstancesRelation, uri);
 			return uri;
 		}
 
@@ -600,7 +600,7 @@ public class OKCoController {
 
 		if(uri!=null)
 		{
-			Instance i = CompleterApp.ManagerInstances.getInstance(listNewInstancesRelation, uri);
+			DtoInstance i = CompleterApp.ManagerInstances.getInstance(listNewInstancesRelation, uri);
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, listNewInstancesRelation);
 			return dto;
 		}
@@ -613,7 +613,7 @@ public class OKCoController {
 
 		if(uri != null)
 		{
-			Instance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);
+			DtoInstance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, CompleterApp.ListAllInstances);
 			return dto;
 		}
@@ -622,13 +622,13 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/selectInstanceAdd", method = RequestMethod.GET)
-	public @ResponseBody Instance selectInstanceAdd(@RequestParam String uri) { 
+	public @ResponseBody DtoInstance selectInstanceAdd(@RequestParam String uri) { 
 
 		//Add in listNewInstancesRelation
 
 		if(uri != null)
 		{
-			Instance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);
+			DtoInstance i = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uri);
 			listNewInstancesRelation.add(i);
 			return i;
 		}
@@ -656,8 +656,8 @@ public class OKCoController {
 					String uriSource = parts[1];
 					String uriTarget = parts[2];
 					
-					Instance s1 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriSource);
-					Instance s2 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriTarget);
+					DtoInstance s1 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriSource);
+					DtoInstance s2 = CompleterApp.ManagerInstances.getInstance(CompleterApp.ListAllInstances, uriTarget);
 					
 					if(type.equals("dif"))
 					{
@@ -779,7 +779,7 @@ public class OKCoController {
 		DtoResult dto = new DtoResult();
 		if(listNewDataValuesRelation.size() != 0)
 		{
-			Instance iSource = instanceSelected;
+			DtoInstance iSource = instanceSelected;
 			for (DataPropertyValue dataTarget : listNewDataValuesRelation) 
 			{
 				try {

@@ -23,6 +23,7 @@ import br.com.padtec.common.dto.DtoCreateDataValuePost;
 import br.com.padtec.common.dto.DtoCreateInstancePost;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoGetPrevNextSpecProperty;
+import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
@@ -31,7 +32,6 @@ import br.com.padtec.common.dto.EnumRelationTypeCompletness;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.queries.OntPropertyEnum;
-import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.util.UploadApp;
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
 import br.inf.nemo.padtec.wokco.WOKCOGraphPlotting;
@@ -43,19 +43,19 @@ public class OKCoController {
 	// Save the new instances before commit in views (completePropertyObject and completePropertyData)
 
 	//Instances to add in relation
-	ArrayList<Instance> listNewInstancesRelation;
+	ArrayList<DtoInstance> listNewInstancesRelation;
 
 	//DataValues to add in relation
 	ArrayList<DataPropertyValue> listNewDataValuesRelation;
 
 	//All instances in model
-	ArrayList<Instance> ListAllInstances;
+	ArrayList<DtoInstance> ListAllInstances;
 
 	//Dto selected
 	DtoDefinitionClass dtoSelected;
 
 	//Instance selected
-	Instance instanceSelected;
+	DtoInstance instanceSelected;
 
 	//Specialization - Complete classes for instance class
 	ArrayList<DtoCompleteClass> ListCompleteClsInstaceSelected;
@@ -149,7 +149,7 @@ public class OKCoController {
 	public String completeProperty(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
+		DtoInstance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
 
@@ -170,16 +170,16 @@ public class OKCoController {
 		if(type.equals("object"))
 		{
 			//List auxiliary
-			listNewInstancesRelation = new ArrayList<Instance>();
+			listNewInstancesRelation = new ArrayList<DtoInstance>();
 
 			//Get all instances except the instance selected for Same/Different list		
-			ArrayList<Instance> listInstancesSameDifferent = new ArrayList<Instance>(ListAllInstances);
+			ArrayList<DtoInstance> listInstancesSameDifferent = new ArrayList<DtoInstance>(ListAllInstances);
 
 			//get instances with had this relation
 			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
 			//populate the list of instances with had this relation	    	
-			List<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
+			List<DtoInstance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
 
 			//Create others sections
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
@@ -196,7 +196,7 @@ public class OKCoController {
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
-			List<Instance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
+			List<DtoInstance> listInstancesInRelation = HomeController.ManagerInstances.getIntersectionOf(ListAllInstances, listInstancesName);
 
 			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
 
@@ -240,7 +240,7 @@ public class OKCoController {
 		 * */
 
 		//Instance selected
-		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
+		DtoInstance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome,uriProperty);
@@ -268,7 +268,7 @@ public class OKCoController {
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
-				Instance newInstance = new Instance(HomeController.NS, instanceName, listClasses, listDif, listSame, false);
+				DtoInstance newInstance = new DtoInstance(HomeController.NS, instanceName, listClasses, listDif, listSame, false);
 
 				HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 				HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
@@ -293,7 +293,7 @@ public class OKCoController {
 					String instanceName = dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 					ArrayList<String> listSame = new ArrayList<String>();		  
 					ArrayList<String> listClasses = new ArrayList<String>();
-					Instance newInstance = new Instance(HomeController.NS, instanceName, listClasses, listDif, listSame, false);
+					DtoInstance newInstance = new DtoInstance(HomeController.NS, instanceName, listClasses, listDif, listSame, false);
 
 					HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 					HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
@@ -326,7 +326,7 @@ public class OKCoController {
 						String instanceName = dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 						ArrayList<String> listSame = new ArrayList<String>();
 						ArrayList<String> listClasses = new ArrayList<String>();
-						Instance newInstance = new Instance(HomeController.NS, instanceName, listClasses, listDif, listSame, false);
+						DtoInstance newInstance = new DtoInstance(HomeController.NS, instanceName, listClasses, listDif, listSame, false);
 
 						HomeController.Model = HomeController.ManagerInstances.CreateInstanceAuto(instance.ns + instance.name, dtoSelected, newInstance, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 						HomeController.ListModifiedInstances.add(newInstance.ns + newInstance.name);
@@ -383,7 +383,7 @@ public class OKCoController {
 	public String completeInstanceAuto(@RequestParam("uriInstance") String uriInstance, HttpServletRequest request) {
 
 		//Instance selected
-		Instance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
+		DtoInstance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 
 		HomeController.Model = HomeController.ManagerInstances.CompleteInstanceAuto(instance, HomeController.NS, HomeController.Model, HomeController.InfModel, HomeController.ListAllInstances);
 
@@ -412,7 +412,7 @@ public class OKCoController {
 		String subtitle = "";
 		
 		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
-		Instance i;
+		DtoInstance i;
 		int num = 0;
 
 		try  
@@ -466,7 +466,7 @@ public class OKCoController {
 	/*------ AJAX - ObjectProperty -----*/	
 
 	@RequestMapping(value="/createInstance", method = RequestMethod.POST)
-	public @ResponseBody Instance createInstance(@RequestBody final DtoCreateInstancePost dto){    
+	public @ResponseBody DtoInstance createInstance(@RequestBody final DtoCreateInstancePost dto){    
 
 		String separatorValues = "%&&%";
 
@@ -490,7 +490,7 @@ public class OKCoController {
 				listDif.add(s);			
 		}
 
-		Instance i = new Instance(HomeController.NS, name, new ArrayList<String>(), listDif, listSame, false);
+		DtoInstance i = new DtoInstance(HomeController.NS, name, new ArrayList<String>(), listDif, listSame, false);
 
 		listNewInstancesRelation.add(i);
 		return i;
@@ -504,8 +504,8 @@ public class OKCoController {
 		DtoResult dto = new DtoResult();
 		if(listNewInstancesRelation.size() != 0)
 		{
-			Instance iSource = instanceSelected;
-			for (Instance iTarget : listNewInstancesRelation) 
+			DtoInstance iSource = instanceSelected;
+			for (DtoInstance iTarget : listNewInstancesRelation) 
 			{
 				try {
 
@@ -632,7 +632,7 @@ public class OKCoController {
 
 		if(uri != null)
 		{
-			Instance.removeFromList(listNewInstancesRelation, uri);
+			DtoInstance.removeFromList(listNewInstancesRelation, uri);
 			return uri;
 		}
 
@@ -644,7 +644,7 @@ public class OKCoController {
 
 		if(uriInstance != null)
 		{
-			Instance i = HomeController.ManagerInstances.getInstance(listNewInstancesRelation, uriInstance);
+			DtoInstance i = HomeController.ManagerInstances.getInstance(listNewInstancesRelation, uriInstance);
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, listNewInstancesRelation);
 			return dto;
 		}
@@ -657,7 +657,7 @@ public class OKCoController {
 
 		if(uriInstance != null)
 		{
-			Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
+			DtoInstance i = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, ListAllInstances);
 			return dto;
 		}
@@ -666,13 +666,13 @@ public class OKCoController {
 	}
 
 	@RequestMapping(value="/selectInstanceAdd", method = RequestMethod.GET)
-	public @ResponseBody Instance selectInstanceAdd(@RequestParam String uriInstance) { 
+	public @ResponseBody DtoInstance selectInstanceAdd(@RequestParam String uriInstance) { 
 
 		//Add in listNewInstancesRelation
 
 		if(uriInstance != null)
 		{
-			Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
+			DtoInstance i = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 			listNewInstancesRelation.add(i);
 			return i;
 		}
@@ -700,8 +700,8 @@ public class OKCoController {
 					String uriSource = parts[1];
 					String uriTarget = parts[2];
 					
-					Instance s1 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, uriSource);
-					Instance s2 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, uriTarget);
+					DtoInstance s1 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, uriSource);
+					DtoInstance s2 = HomeController.ManagerInstances.getInstance(HomeController.ListAllInstances, uriTarget);
 					
 					if(type.equals("dif"))
 					{
@@ -826,7 +826,7 @@ public class OKCoController {
 		DtoResult dto = new DtoResult();
 		if(listNewDataValuesRelation.size() != 0)
 		{
-			Instance iSource = instanceSelected;
+			DtoInstance iSource = instanceSelected;
 			for (DataPropertyValue dataTarget : listNewDataValuesRelation) 
 			{
 				try {

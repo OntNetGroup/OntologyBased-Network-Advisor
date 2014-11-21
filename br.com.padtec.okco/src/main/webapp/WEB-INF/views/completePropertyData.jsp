@@ -1,5 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="br.com.padtec.common.util.Instance"%>
+<%@ page import="br.com.padtec.common.dto.DtoInstance"%>
 <%@ page import="br.com.padtec.common.dto.DataPropertyValue"%>
 <%@ page import="br.com.padtec.common.dto.DtoDefinitionClass"%>
 <%@ page import="java.util.ArrayList"%>
@@ -10,7 +10,7 @@
 	
 	ArrayList<DataPropertyValue> ListValuesInRelation = (ArrayList<DataPropertyValue>)request.getSession().getAttribute("listValuesInRelation");
 	DtoDefinitionClass dtoDefinition = (DtoDefinitionClass)request.getSession().getAttribute("definitionSelected");
-	Instance instanceSelected = (Instance)request.getSession().getAttribute("instanceSelected");
+	DtoInstance instanceSelected = (DtoInstance)request.getSession().getAttribute("instanceSelected");
 	String propType = request.getSession().getAttribute("propType").toString();
 %>
 

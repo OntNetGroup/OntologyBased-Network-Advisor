@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.padtec.common.dto.DtoDefinitionClass;
+import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.exceptions.OKCoExceptionFileFormat;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
@@ -33,9 +34,8 @@ import br.com.padtec.common.persistence.HermitReasonerImpl;
 import br.com.padtec.common.persistence.OntologyReasoner;
 import br.com.padtec.common.persistence.PelletReasonerImpl;
 import br.com.padtec.common.util.FactoryInstances;
-import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.util.ManagerInstances;
-import br.com.padtec.common.util.Search;
+import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
 import br.ufes.inf.padtec.tnokco.business.ManagerRelations;
 import br.ufes.inf.padtec.tnokco.business.Reader;
 
@@ -50,12 +50,11 @@ public class HomeController implements ServletContextAware{
 	public static OntModel Model;
 	public static OntModel tmpModel;	
 	public static InfModel InfModel;
-
-	public static Search Search;
+	
 	public static String NS;
 	public static FactoryInstances FactoryInstances;
 	public static ManagerInstances ManagerInstances;	
-	public static ArrayList<Instance> ListAllInstances;
+	public static ArrayList<DtoInstance> ListAllInstances;
 	public static ArrayList<String> ListModifiedInstances;
 	
 	//servelet context
@@ -110,7 +109,7 @@ public class HomeController implements ServletContextAware{
 			// Name space
 			HomeController.NS = Repository.getNameSpace();
 
-			HomeController.Search = new Search();
+			
 			HomeController.FactoryInstances = new FactoryInstances();
 			HomeController.ManagerInstances = new ManagerInstances(HomeController.FactoryInstances);
 
@@ -121,7 +120,7 @@ public class HomeController implements ServletContextAware{
 			HomeController.ListModifiedInstances = new ArrayList<String>();			
 			
 			//List All instances
-			HomeController.ListAllInstances = new ArrayList<Instance>(); 
+			HomeController.ListAllInstances = new ArrayList<DtoInstance>(); 
 
 			return "index";	//View to return
 			
@@ -258,8 +257,7 @@ public class HomeController implements ServletContextAware{
 			{
 				throw new OKCoExceptionNameSpace("Please select owl file with defined namespace.");
 			}
-
-			Search = new Search();
+			
 			FactoryInstances = new FactoryInstances();
 			ManagerInstances = new ManagerInstances(FactoryInstances);
 
@@ -282,7 +280,7 @@ public class HomeController implements ServletContextAware{
 			ListModifiedInstances = new ArrayList<String>();
 			
 			//List All instances
-			HomeController.ListAllInstances = new ArrayList<Instance>();
+			HomeController.ListAllInstances = new ArrayList<DtoInstance>();
 
 			// Update list instances
 			UpdateLists();
@@ -496,7 +494,7 @@ public class HomeController implements ServletContextAware{
 	    	
 	    	//Get model definitions on list of instances
 	    	
-		  	ModelDefinitions = Search.GetModelDefinitionsInInstances(ListAllInstances, InfModel);
+		  	ModelDefinitions = ApplicationQueryUtil.getClassDefinitionsFromInstances(ListAllInstances, InfModel);
 		  	
 			// Organize data (Update the list of all instances)
 			
@@ -519,7 +517,7 @@ public class HomeController implements ServletContextAware{
 			
 	    	//Get model definitions on list of instances
 	    	
-			ArrayList<DtoDefinitionClass> intanceDefinitions = Search.GetModelDefinitionsInInstances(instanceURI, Model, InfModel, ListAllInstances, ManagerInstances);
+			ArrayList<DtoDefinitionClass> intanceDefinitions = ApplicationQueryUtil.GetModelDefinitionsInInstances(instanceURI, Model, InfModel, ListAllInstances, ManagerInstances);
 		  	ModelDefinitions.addAll(intanceDefinitions); 
 			
 			// Organize data (Update the list of all instances)
@@ -537,7 +535,7 @@ public class HomeController implements ServletContextAware{
 	public static void UpdateListsModified()
 	{
 		// Update list instances modified
-		for (Instance i : ListAllInstances) {
+		for (DtoInstance i : ListAllInstances) {
 			String s = i.ns + i.name;
 			if (ListModifiedInstances.contains(s))
 			{

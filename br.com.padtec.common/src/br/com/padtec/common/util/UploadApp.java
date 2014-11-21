@@ -16,7 +16,6 @@ import br.com.padtec.common.persistence.InferredModelRepositoryImpl;
 import br.com.padtec.common.persistence.OntologyReasoner;
 import br.com.padtec.common.persistence.PelletReasonerImpl;
 import br.com.padtec.common.queries.OntModelAPI;
-import br.com.padtec.common.util.CompleterApp;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;

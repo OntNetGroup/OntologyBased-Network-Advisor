@@ -3,6 +3,7 @@ package br.com.padtec.common.okco.features;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
@@ -15,11 +16,11 @@ import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.persistence.HermitReasonerImpl;
 import br.com.padtec.common.persistence.OntologyReasoner;
 import br.com.padtec.common.persistence.PelletReasonerImpl;
-import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.queries.OntPropertyEnum;
+import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.util.DtoQueryUtil;
 import br.com.padtec.common.util.FactoryInstances;
 import br.com.padtec.common.util.ManagerInstances;
-import br.com.padtec.common.util.Search;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -83,8 +84,7 @@ public class OKCoFeatures {
 				dtoResult.ListErrors.add("ERROR: Please select an owl file with defined namespace.");
 				return dtoResult;
 			}
-			
-			Search search = new Search();
+						
 		  	FactoryInstances factoryInstance = new FactoryInstances();
 		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance);
 		  	
@@ -99,19 +99,18 @@ public class OKCoFeatures {
 		  	
 		  	//get instances
 		  	
-		  	ArrayList<br.com.padtec.common.util.Instance> ListAllInstances = managerInstances.getAllInstances(infModel);
+		  	ArrayList<br.com.padtec.common.dto.DtoInstance> ListAllInstances = managerInstances.getAllInstances(infModel);
 	  	  
 		  	// Gets definitions on model
-		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
-			
-			
+		  	List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitionsFromInstances(ListAllInstances);			
+						
 			// Organize data (Update the list of all instances)
 			
 	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
 			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			//build the return instances
-			for (br.com.padtec.common.util.Instance i : ListAllInstances) 
+			for (br.com.padtec.common.dto.DtoInstance i : ListAllInstances) 
 			{
 				//build list incompleteness relations
 				ArrayList<SimpleDtoRelation> ListImcompletenessRelationDefinitions = new ArrayList<SimpleDtoRelation>();
@@ -252,8 +251,7 @@ public class OKCoFeatures {
 				dtoResult.ListErrors.add("ERROR: Please select owl file with defined namespace.");
 				return dtoResult;
 			}
-			
-			Search search = new Search();
+						
 		  	FactoryInstances factoryInstance = new FactoryInstances();
 		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance);
 		  	
@@ -271,10 +269,10 @@ public class OKCoFeatures {
 												Update List instances
 			//--------------------------------------------------------------------------------------------- */
 		  	
-		  	ArrayList<br.com.padtec.common.util.Instance> ListAllInstances = managerInstances.getAllInstances(infModel);
+		  	ArrayList<br.com.padtec.common.dto.DtoInstance> ListAllInstances = managerInstances.getAllInstances(infModel);
 	  	  
 		  	// Gets definitions on model
-		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
+		  	List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitionsFromInstances(ListAllInstances);			
 			
 			
 			// Organize data (Update the list of all instances)
@@ -288,7 +286,7 @@ public class OKCoFeatures {
 			
 			//Complete the selected instances
 			
-			for (br.com.padtec.common.util.Instance instance : ListAllInstances) 
+			for (br.com.padtec.common.dto.DtoInstance instance : ListAllInstances) 
 			{
 				if(strength.equals("FULL"))
 				{
@@ -305,7 +303,7 @@ public class OKCoFeatures {
 						ArrayList<String> listSame = new ArrayList<String>();		  
 						ArrayList<String> listDif = new ArrayList<String>();
 						ArrayList<String> listClasses = new ArrayList<String>();
-						br.com.padtec.common.util.Instance newInstance = new br.com.padtec.common.util.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+						br.com.padtec.common.dto.DtoInstance newInstance = new br.com.padtec.common.dto.DtoInstance(ns, instanceName, listClasses, listDif, listSame, false);
 						
 						model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);
 					}
@@ -323,7 +321,7 @@ public class OKCoFeatures {
 							String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 							ArrayList<String> listSame = new ArrayList<String>();		  
 							ArrayList<String> listClasses = new ArrayList<String>();
-							br.com.padtec.common.util.Instance newInstance = new br.com.padtec.common.util.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+							br.com.padtec.common.dto.DtoInstance newInstance = new br.com.padtec.common.dto.DtoInstance(ns, instanceName, listClasses, listDif, listSame, false);
 							
 							model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);				
 							listDif.add(newInstance.ns + newInstance.name);
@@ -348,7 +346,7 @@ public class OKCoFeatures {
 								String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 								ArrayList<String> listSame = new ArrayList<String>();		  
 								ArrayList<String> listClasses = new ArrayList<String>();
-								br.com.padtec.common.util.Instance newInstance = new br.com.padtec.common.util.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+								br.com.padtec.common.dto.DtoInstance newInstance = new br.com.padtec.common.dto.DtoInstance(ns, instanceName, listClasses, listDif, listSame, false);
 								
 								model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);				
 								listDif.add(newInstance.ns + newInstance.name);
@@ -372,7 +370,7 @@ public class OKCoFeatures {
 			ListAllInstances = managerInstances.getAllInstances(infModel);
 		  	  
 		  	// Gets definitions on model
-		  	ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);		
+		  	ModelDefinitions = DtoQueryUtil.getClassDefinitionsFromInstances(ListAllInstances);		
 			
 			// Organize data (Update the list of all instances)
 			
@@ -383,7 +381,7 @@ public class OKCoFeatures {
 											Build the return instances
 			//--------------------------------------------------------------------------------------------- */
 			
-			for (br.com.padtec.common.util.Instance i : ListAllInstances) 
+			for (br.com.padtec.common.dto.DtoInstance i : ListAllInstances) 
 			{
 				//build list incompleteness relations
 				ArrayList<SimpleDtoRelation> ListImcompletenessRelationDefinitions = new ArrayList<SimpleDtoRelation>();
@@ -535,8 +533,7 @@ public class OKCoFeatures {
 				dtoResult.ListErrors.add("ERROR: Please select an owl file with defined namespace.");
 				return dtoResult;
 			}
-			
-			Search search = new Search();
+
 		  	FactoryInstances factoryInstance = new FactoryInstances();
 		  	ManagerInstances managerInstances = new ManagerInstances(factoryInstance);
 		  	
@@ -553,10 +550,10 @@ public class OKCoFeatures {
 												Update List instances
 			//--------------------------------------------------------------------------------------------- */
 		  	
-		  	ArrayList<br.com.padtec.common.util.Instance> ListAllInstances = managerInstances.getAllInstances(infModel);
+		  	ArrayList<br.com.padtec.common.dto.DtoInstance> ListAllInstances = managerInstances.getAllInstances(infModel);
 		  	  
 		  	// Gets definitions on model
-		  	ArrayList<DtoDefinitionClass> ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
+		  	List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitionsFromInstances(ListAllInstances);			
 			
 			// Organize data (Update the list of all instances)
 			
@@ -569,7 +566,7 @@ public class OKCoFeatures {
 			
 			//Complete the selected instances
 			
-			for (br.com.padtec.common.util.Instance instance : ListAllInstances) 
+			for (br.com.padtec.common.dto.DtoInstance instance : ListAllInstances) 
 			{
 				if(setInstances.contains(instance.ns + instance.name))
 				{
@@ -588,7 +585,7 @@ public class OKCoFeatures {
 							ArrayList<String> listSame = new ArrayList<String>();		  
 							ArrayList<String> listDif = new ArrayList<String>();
 							ArrayList<String> listClasses = new ArrayList<String>();
-							br.com.padtec.common.util.Instance newInstance = new br.com.padtec.common.util.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+							br.com.padtec.common.dto.DtoInstance newInstance = new br.com.padtec.common.dto.DtoInstance(ns, instanceName, listClasses, listDif, listSame, false);
 							
 							model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);
 						}
@@ -606,7 +603,7 @@ public class OKCoFeatures {
 								String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 								ArrayList<String> listSame = new ArrayList<String>();		  
 								ArrayList<String> listClasses = new ArrayList<String>();
-								br.com.padtec.common.util.Instance newInstance = new br.com.padtec.common.util.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+								br.com.padtec.common.dto.DtoInstance newInstance = new br.com.padtec.common.dto.DtoInstance(ns, instanceName, listClasses, listDif, listSame, false);
 								
 								model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);				
 								listDif.add(newInstance.ns + newInstance.name);
@@ -631,7 +628,7 @@ public class OKCoFeatures {
 									String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 									ArrayList<String> listSame = new ArrayList<String>();		  
 									ArrayList<String> listClasses = new ArrayList<String>();
-									br.com.padtec.common.util.Instance newInstance = new br.com.padtec.common.util.Instance(ns, instanceName, listClasses, listDif, listSame, false);
+									br.com.padtec.common.dto.DtoInstance newInstance = new br.com.padtec.common.dto.DtoInstance(ns, instanceName, listClasses, listDif, listSame, false);
 									
 									model = managerInstances.CreateInstanceAuto(instance.ns + instance.name, dto, newInstance, model, infModel, ListAllInstances);				
 									listDif.add(newInstance.ns + newInstance.name);
@@ -656,7 +653,7 @@ public class OKCoFeatures {
 			ListAllInstances = managerInstances.getAllInstances(infModel);
 		  	  
 		  	// Gets definitions on model
-		  	ModelDefinitions = search.GetModelDefinitionsInInstances(ListAllInstances, infModel);			
+		  	ModelDefinitions = DtoQueryUtil.getClassDefinitionsFromInstances(ListAllInstances);			
 			
 			// Organize data (Update the list of all instances)
 			
@@ -667,7 +664,7 @@ public class OKCoFeatures {
 											Build the return instances
 			//--------------------------------------------------------------------------------------------- */
 			
-			for (br.com.padtec.common.util.Instance i : ListAllInstances) 
+			for (br.com.padtec.common.dto.DtoInstance i : ListAllInstances) 
 			{
 				if(setInstances.contains(i.ns + i.name))
 				{

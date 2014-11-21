@@ -1,6 +1,6 @@
 <%@ page import="br.ufes.inf.padtec.tnokco.controller.HomeController"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ page import="br.com.padtec.common.util.Instance"%>
+<%@ page import="br.com.padtec.common.dto.DtoInstance"%>
 <%@ page import="br.com.padtec.common.dto.DtoCompleteClass"%>
 <%@ page import="br.com.padtec.common.queries.OntPropertyEnum"%>
 <%@ page import="br.com.padtec.common.dto.DtoPropertyAndSubProperties"%>
@@ -12,8 +12,8 @@
 <%
 	// Get the parameters from controller
 	
-	Instance instance = (Instance)request.getSession().getAttribute("instanceSelected");
-	ArrayList<Instance> ListAllInstances = (ArrayList<Instance>)request.getSession().getAttribute("listInstances");
+	DtoInstance instance = (DtoInstance)request.getSession().getAttribute("instanceSelected");
+	ArrayList<DtoInstance> ListAllInstances = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstances");
 	ArrayList<DtoInstanceRelation> InstanceListRelations = (ArrayList<DtoInstanceRelation>)request.getSession().getAttribute("instanceListRelations");	
 	
 	ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties = (ArrayList<DtoPropertyAndSubProperties>)request.getSession().getAttribute("ListSpecializationProperties");	
@@ -23,7 +23,6 @@
 	ArrayList<DtoDefinitionClass> listMinClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listMinClassDefinition");
 	ArrayList<DtoDefinitionClass> listMaxClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listMaxClassDefinition");
 	ArrayList<DtoDefinitionClass> listExactlyClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listExactlyClassDefinition");
-	
 %>
 
 <%@include file="../templates/header.jsp"%>
@@ -219,10 +218,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListSameInstances)
-								{
-									Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, iName);
-									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/tnokco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
-								}
+													{
+														DtoInstance i = HomeController.ManagerInstances.getInstance(ListAllInstances, iName);
+														out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/tnokco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+													}
 							%>
 							</ul>
 						</td>
@@ -234,10 +233,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListDiferentInstances)
-								{
-									Instance i = HomeController.ManagerInstances.getInstance(ListAllInstances, iName);
-									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/tnokco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
-								}
+													{
+														DtoInstance i = HomeController.ManagerInstances.getInstance(ListAllInstances, iName);
+														out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/tnokco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+													}
 							%>
 							</ul>
 						</td>

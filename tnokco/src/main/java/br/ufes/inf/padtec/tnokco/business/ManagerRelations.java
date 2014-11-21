@@ -4,12 +4,11 @@ package br.ufes.inf.padtec.tnokco.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.util.ManagerInstances;
-import br.com.padtec.common.util.Search;
 import br.com.padtec.common.util.UploadApp;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
@@ -27,12 +26,12 @@ public class ManagerRelations {
 	
 	public OntModel EnforceSubRelation(OntModel model, InfModel infModel, String NS)
 	{			
-		ArrayList<Instance> ListAllInstances;
+		ArrayList<DtoInstance> ListAllInstances;
 		try {
 			
 			// Get all instances			
 			ListAllInstances = manager.getAllInstances(infModel);			
-			for (Instance instance : ListAllInstances) 
+			for (DtoInstance instance : ListAllInstances) 
 			{				
 				List<String> sourceInstanceClasses = QueryUtil.getClassesURI(infModel,instance.ns + instance.name);
 				
