@@ -5,7 +5,7 @@ import java.util.List;
 
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoNameSpaceException;
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.Instance;
 import br.com.padtec.common.util.UploadApp;
 
@@ -26,13 +26,13 @@ public class QueryApp {
 	{
 		List<Instance> result = new ArrayList<Instance>();
 		InfModel model = UploadApp.getInferredModel();		
-		List<String> individualsURIList = InfModelQueryUtil.getIndividualsURIFromAllClasses(model);
+		List<String> individualsURIList = QueryUtil.getIndividualsURIFromAllClasses(model);
     	for (String indivURI : individualsURIList)
     	{    		
     		if(!indivURI.contains("#")){ throw new OKCoNameSpaceException("Entity namespace problem. The " + indivURI +" have to followed by \"#\"."); }
-    		List<String> classesURIList = InfModelQueryUtil.getClassesURI(model, indivURI);
-    		List<String> diffURIList = InfModelQueryUtil.getIndividualsURIDifferentFrom(model, indivURI);
-    		List<String> sameAsURIList = InfModelQueryUtil.getIndividualsURISameAs(model, indivURI);
+    		List<String> classesURIList = QueryUtil.getClassesURI(model, indivURI);
+    		List<String> diffURIList = QueryUtil.getIndividualsURIDifferentFrom(model, indivURI);
+    		List<String> sameAsURIList = QueryUtil.getIndividualsURISameAs(model, indivURI);
     		String nameSpace = indivURI.split("#")[0] + "#";
     		String name = indivURI.split("#")[1];
     		result.add(new Instance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true));
@@ -53,9 +53,9 @@ public class QueryApp {
 	{
 		InfModel model = UploadApp.getInferredModel();
 		if(!individualURI.contains("#")){ throw new OKCoNameSpaceException("Entity namespace problem. The " + individualURI +" have to followed by \"#\"."); }
-		List<String> classesURIList = InfModelQueryUtil.getClassesURI(model, individualURI);
-		List<String> diffURIList = InfModelQueryUtil.getIndividualsURIDifferentFrom(model, individualURI);
-		List<String> sameAsURIList = InfModelQueryUtil.getIndividualsURISameAs(model, individualURI);
+		List<String> classesURIList = QueryUtil.getClassesURI(model, individualURI);
+		List<String> diffURIList = QueryUtil.getIndividualsURIDifferentFrom(model, individualURI);
+		List<String> sameAsURIList = QueryUtil.getIndividualsURISameAs(model, individualURI);
 		String nameSpace =  individualURI.split("#")[0] + "#";
 		String name =  individualURI.split("#")[1];
 		return new Instance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true);
@@ -70,12 +70,12 @@ public class QueryApp {
 	static public List<DtoInstanceRelation> getRelations(String individualURI)
 	{
 		List<DtoInstanceRelation> result = new ArrayList<DtoInstanceRelation>();
-		List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(UploadApp.getInferredModel(), individualURI);
+		List<String> propertiesURIList = QueryUtil.getPropertiesURI(UploadApp.getInferredModel(), individualURI);
 		for(String propertyURI: propertiesURIList)
 		{
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;
-		    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+		    List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
 		    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
 		    else dtoItem.Target = "";
 		    result.add(dtoItem);

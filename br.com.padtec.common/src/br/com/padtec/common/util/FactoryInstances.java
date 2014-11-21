@@ -3,7 +3,7 @@ package br.com.padtec.common.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.ManagerInstances;
 import br.com.padtec.common.util.Instance;
 
@@ -72,14 +72,14 @@ public class FactoryInstances {
 		Individual indInstance = model.getIndividual(instance.ns + instance.name);
 		
 		//Remove the different
-		for (String s : InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instance.ns + instance.name)) 
+		for (String s : QueryUtil.getIndividualsURIDifferentFrom(infModel, instance.ns + instance.name)) 
 		{
 			Individual i = model.getIndividual(s);
 			indInstance.removeDifferentFrom(i);
 		}
 		
 		//Remove the same
-		for (String s : InfModelQueryUtil.getIndividualsURISameAs(infModel,instance.ns + instance.name)) 
+		for (String s : QueryUtil.getIndividualsURISameAs(infModel,instance.ns + instance.name)) 
 		{
 			Individual i = model.getIndividual(s);
 			indInstance.removeSameAs(i);

@@ -2,7 +2,7 @@ package br.com.padtec.common.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.EnumRelationTypeCompletness;
 import br.com.padtec.common.util.Instance;
@@ -30,48 +30,48 @@ public class Search
 				{
 					//relations URI some values
 					ArrayList<DtoDefinitionClass> dtoSomeRelationsList = new ArrayList<DtoDefinitionClass>();
-					for(String[] triple: InfModelQueryUtil.getTuplesSomeValuesFrom(InfModel,cls)){
+					for(String[] triple: QueryUtil.getTuplesSomeValuesFrom(InfModel,cls)){
 						DtoDefinitionClass dto = new DtoDefinitionClass();
 						dto.Source = triple[0];
 						dto.Relation = triple[1];
 						dto.Target = triple[2];
-						dto.PropertyType = InfModelQueryUtil.getPropertyURIType(InfModel, dto.Relation);
+						dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
 						dto.TypeCompletness = EnumRelationTypeCompletness.SOME;
 					}
 					
 					//relations URI minimum cardinality values
 					ArrayList<DtoDefinitionClass> dtoMinRelationsList = new ArrayList<DtoDefinitionClass>();
-					for(String[] triple: InfModelQueryUtil.getTuplesMinQualifiedCardinality(InfModel,cls)){
+					for(String[] triple: QueryUtil.getTuplesMinQualifiedCardinality(InfModel,cls)){
 						DtoDefinitionClass dto = new DtoDefinitionClass();
 						dto.Source = triple[0];
 						dto.Relation = triple[1];
 						dto.Cardinality = triple[2];
 						dto.Target = triple[3];
-						dto.PropertyType = InfModelQueryUtil.getPropertyURIType(InfModel, dto.Relation);
+						dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
 						dto.TypeCompletness = EnumRelationTypeCompletness.MIN;
 					}
 					
 					//relations URI maximum cardinality values
 					ArrayList<DtoDefinitionClass> dtoMaxRelationsList = new ArrayList<DtoDefinitionClass>();
-					for(String[] triple: InfModelQueryUtil.getTuplesMaxQualifiedCardinality(InfModel,cls)){
+					for(String[] triple: QueryUtil.getTuplesMaxQualifiedCardinality(InfModel,cls)){
 						DtoDefinitionClass dto = new DtoDefinitionClass();
 						dto.Source = triple[0];
 						dto.Relation = triple[1];
 						dto.Cardinality = triple[2];
 						dto.Target = triple[3];
-						dto.PropertyType = InfModelQueryUtil.getPropertyURIType(InfModel, dto.Relation);
+						dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
 						dto.TypeCompletness = EnumRelationTypeCompletness.MAX;
 					}	
 					
 					//relations URI exact cardinality values
 					ArrayList<DtoDefinitionClass> dtoExactlyRelationsList = new ArrayList<DtoDefinitionClass>();
-					for(String[] triple: InfModelQueryUtil.getTuplesQualifiedCardinality(InfModel,cls)){
+					for(String[] triple: QueryUtil.getTuplesQualifiedCardinality(InfModel,cls)){
 						DtoDefinitionClass dto = new DtoDefinitionClass();
 						dto.Source = triple[0];
 						dto.Relation = triple[1];
 						dto.Cardinality = triple[2];
 						dto.Target = triple[3];
-						dto.PropertyType = InfModelQueryUtil.getPropertyURIType(InfModel, dto.Relation);
+						dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
 						dto.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
 					}						
 					
@@ -91,7 +91,7 @@ public class Search
  	public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(String instanceURI, OntModel model, InfModel InfModel, List<Instance> listAllInstances, ManagerInstances manager) {
 
 		Instance Instance = manager.getInstance(listAllInstances, instanceURI); // GET INTANCE on MODEL
-		List<String> listInstancesDto = InfModelQueryUtil.getIndividualsURIFromAllClasses(InfModel);		
+		List<String> listInstancesDto = QueryUtil.getIndividualsURIFromAllClasses(InfModel);		
 		for (String dto : listInstancesDto) {
 			
 			if(dto.equals(instanceURI))
@@ -101,12 +101,12 @@ public class Search
 				
 				if (Instance == null)
 				{					
-					Instance = new Instance(nameSpace, name, InfModelQueryUtil.getClassesURI(InfModel, instanceURI), InfModelQueryUtil.getIndividualsURIDifferentFrom(InfModel, dto), InfModelQueryUtil.getIndividualsURISameAs(InfModel, dto),true);
+					Instance = new Instance(nameSpace, name, QueryUtil.getClassesURI(InfModel, instanceURI), QueryUtil.getIndividualsURIDifferentFrom(InfModel, dto), QueryUtil.getIndividualsURISameAs(InfModel, dto),true);
 					
 				} else {
 					
 					//Update classes
-					Instance.ListClasses = InfModelQueryUtil.getClassesURI(InfModel, instanceURI);
+					Instance.ListClasses = QueryUtil.getClassesURI(InfModel, instanceURI);
 				}
 			}
 		}
@@ -120,48 +120,48 @@ public class Search
 			{
 				//relations URI some values
 				ArrayList<DtoDefinitionClass> dtoSomeRelationsList = new ArrayList<DtoDefinitionClass>();
-				for(String[] triple: InfModelQueryUtil.getTuplesSomeValuesFrom(InfModel,cls)){
+				for(String[] triple: QueryUtil.getTuplesSomeValuesFrom(InfModel,cls)){
 					DtoDefinitionClass dto = new DtoDefinitionClass();
 					dto.Source = triple[0];
 					dto.Relation = triple[1];
 					dto.Target = triple[2];
-					dto.PropertyType = InfModelQueryUtil.getPropertyURIType(InfModel, dto.Relation);
+					dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
 					dto.TypeCompletness = EnumRelationTypeCompletness.SOME;
 				}
 				
 				//relations URI minimum cardinality values
 				ArrayList<DtoDefinitionClass> dtoMinRelationsList = new ArrayList<DtoDefinitionClass>();
-				for(String[] triple: InfModelQueryUtil.getTuplesMinQualifiedCardinality(InfModel,cls)){
+				for(String[] triple: QueryUtil.getTuplesMinQualifiedCardinality(InfModel,cls)){
 					DtoDefinitionClass dto = new DtoDefinitionClass();
 					dto.Source = triple[0];
 					dto.Relation = triple[1];
 					dto.Cardinality = triple[2];
 					dto.Target = triple[3];
-					dto.PropertyType = InfModelQueryUtil.getPropertyURIType(InfModel, dto.Relation);
+					dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
 					dto.TypeCompletness = EnumRelationTypeCompletness.MIN;
 				}
 				
 				//relations URI maximum cardinality values
 				ArrayList<DtoDefinitionClass> dtoMaxRelationsList = new ArrayList<DtoDefinitionClass>();
-				for(String[] triple: InfModelQueryUtil.getTuplesMaxQualifiedCardinality(InfModel,cls)){
+				for(String[] triple: QueryUtil.getTuplesMaxQualifiedCardinality(InfModel,cls)){
 					DtoDefinitionClass dto = new DtoDefinitionClass();
 					dto.Source = triple[0];
 					dto.Relation = triple[1];
 					dto.Cardinality = triple[2];
 					dto.Target = triple[3];
-					dto.PropertyType = InfModelQueryUtil.getPropertyURIType(InfModel, dto.Relation);
+					dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
 					dto.TypeCompletness = EnumRelationTypeCompletness.MAX;
 				}	
 				
 				//relations URI exact cardinality values
 				ArrayList<DtoDefinitionClass> dtoExactlyRelationsList = new ArrayList<DtoDefinitionClass>();
-				for(String[] triple: InfModelQueryUtil.getTuplesQualifiedCardinality(InfModel,cls)){
+				for(String[] triple: QueryUtil.getTuplesQualifiedCardinality(InfModel,cls)){
 					DtoDefinitionClass dto = new DtoDefinitionClass();
 					dto.Source = triple[0];
 					dto.Relation = triple[1];
 					dto.Cardinality = triple[2];
 					dto.Target = triple[3];
-					dto.PropertyType = InfModelQueryUtil.getPropertyURIType(InfModel, dto.Relation);
+					dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
 					dto.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
 				}						
 				

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.queries.InfModelQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.common.util.UploadApp;
@@ -60,7 +60,7 @@ public class ManagerInstances {
 		System.out.println("\nManager Instances: updating instance and relations()...");
 		for (DtoDefinitionClass dto : dtoRelationsList)
 		{			
-			List<String> listInstancesOfDomain =InfModelQueryUtil.getIndividualsURI(infModel, dto.Source);
+			List<String> listInstancesOfDomain =QueryUtil.getIndividualsURI(infModel, dto.Source);
 			if(listInstancesOfDomain.size() > 0)	//Check if are need to create
 			{
 				for (String instanceName : listInstancesOfDomain)
@@ -69,7 +69,7 @@ public class ManagerInstances {
 					
 					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.SOME))
 					{
-						boolean existInstanceTarget = InfModelQueryUtil.existsIndividualsAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
+						boolean existInstanceTarget = QueryUtil.existsIndividualsAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if(existInstanceTarget)
 						{
 							//Do nothing
@@ -82,7 +82,7 @@ public class ManagerInstances {
 							{
 								ArrayList<String> listClasses = new ArrayList<String>();
 								listClasses.add(dto.Source);
-								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName), true);
+								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, QueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), QueryUtil.getIndividualsURISameAs(infModel, instanceName), true);
 								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListSome);
 								if(!existDto)
 								{
@@ -105,7 +105,7 @@ public class ManagerInstances {
 					
 					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.MIN))
 					{
-						int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
+						int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if (quantityInstancesTarget < Integer.parseInt(dto.Cardinality))	//Min restriction
 						{
 							Instance instance = this.getInstance(listInstances, instanceName);
@@ -113,7 +113,7 @@ public class ManagerInstances {
 							{
 								ArrayList<String> listClasses = new ArrayList<String>();
 								listClasses.add(dto.Source);
-								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName),true);
+								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, QueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), QueryUtil.getIndividualsURISameAs(infModel, instanceName),true);
 								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListMin);
 								if(!existDto)
 								{
@@ -136,7 +136,7 @@ public class ManagerInstances {
 					
 					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.MAX))
 					{
-						int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
+						int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if (quantityInstancesTarget > Integer.parseInt(dto.Cardinality))	//Max restriction
 						{
 							Instance instance = this.getInstance(listInstances, instanceName);
@@ -144,7 +144,7 @@ public class ManagerInstances {
 							{
 								ArrayList<String> listClasses = new ArrayList<String>();
 								listClasses.add(dto.Source);
-								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName),true);
+								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, QueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), QueryUtil.getIndividualsURISameAs(infModel, instanceName),true);
 								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListMax);
 								if(!existDto)
 								{
@@ -167,7 +167,7 @@ public class ManagerInstances {
 					
 					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.EXACTLY))
 					{
-						int quantityInstancesTarget =InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
+						int quantityInstancesTarget =QueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if (quantityInstancesTarget != Integer.parseInt(dto.Cardinality))	//Exactly restriction
 						{
 							Instance instance = this.getInstance(listInstances, instanceName);
@@ -175,7 +175,7 @@ public class ManagerInstances {
 							{
 								ArrayList<String> listClasses = new ArrayList<String>();
 								listClasses.add(dto.Source);
-								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), InfModelQueryUtil.getIndividualsURISameAs(infModel, instanceName),true);
+								instance = new Instance(ns, instanceName.replace(ns, ""), listClasses, QueryUtil.getIndividualsURIDifferentFrom(infModel, instanceName), QueryUtil.getIndividualsURISameAs(infModel, instanceName),true);
 								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListExactly);
 								if(!existDto)
 								{
@@ -227,7 +227,7 @@ public class ManagerInstances {
 				
 				for (String cls : instanceSelected.ListClasses)
 				{					
-					HashMap<String,List<String>> map = InfModelQueryUtil.getCompleteClassesURI(cls, instanceSelected.ListClasses, infModel);
+					HashMap<String,List<String>> map = QueryUtil.getCompleteClassesURI(cls, instanceSelected.ListClasses, infModel);
 					for(String completeClassURI: map.keySet()){
 						DtoCompleteClass dtoCompleteClass = new DtoCompleteClass();
 						dtoCompleteClass.setCompleteClass(completeClassURI);
@@ -246,11 +246,11 @@ public class ManagerInstances {
 			
 			//Get instance relations
 			List<DtoInstanceRelation> instanceListRelations = new ArrayList<DtoInstanceRelation>();
-			List<String> propertiesURIList = InfModelQueryUtil.getPropertiesURI(UploadApp.getInferredModel(), instanceSelected.ns + instanceSelected.name);
+			List<String> propertiesURIList = QueryUtil.getPropertiesURI(UploadApp.getInferredModel(), instanceSelected.ns + instanceSelected.name);
 			for(String propertyURI: propertiesURIList){
 				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 			    dtoItem.Property = propertyURI;			      
-			    List<String> ranges = InfModelQueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);;
+			    List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);;
 			    if (ranges!=null && ranges.size()>0) dtoItem.Target = ranges.get(0);
 			    else dtoItem.Target = "";
 			    instanceListRelations.add(dtoItem);
@@ -258,7 +258,7 @@ public class ManagerInstances {
 			
 			for (DtoInstanceRelation dtoInstanceRelation : instanceListRelations) 
 			{			
-				List<String> subPropertiesWithDomainAndRange = InfModelQueryUtil.getSubPropertiesURIExcluding(infModel,instanceSelected.ns + instanceSelected.name, dtoInstanceRelation.Property, dtoInstanceRelation.Target, propertiesURIList);
+				List<String> subPropertiesWithDomainAndRange = QueryUtil.getSubPropertiesURIExcluding(infModel,instanceSelected.ns + instanceSelected.name, dtoInstanceRelation.Property, dtoInstanceRelation.Target, propertiesURIList);
 
 				if(subPropertiesWithDomainAndRange.size() > 0)
 				{
@@ -266,13 +266,13 @@ public class ManagerInstances {
 					dtoP.Property = dtoInstanceRelation.Property;
 					dtoP.iTargetNs = dtoInstanceRelation.Target.split("#")[0] + "#";
 					dtoP.iTargetName = dtoInstanceRelation.Target.split("#")[1];
-					dtoP.propertyType = InfModelQueryUtil.getPropertyURIType(infModel, dtoInstanceRelation.Property);
+					dtoP.propertyType = QueryUtil.getPropertyURIType(infModel, dtoInstanceRelation.Property);
 					
 					for (String sub : subPropertiesWithDomainAndRange) 
 					{
 						boolean ok = true;
 						
-						List<String> distointSubPropOfProp = InfModelQueryUtil.getPropertiesURIDisjointWith(infModel,sub);
+						List<String> distointSubPropOfProp = QueryUtil.getPropertiesURIDisjointWith(infModel,sub);
 						for (String disjointrop : distointSubPropOfProp) {
 							
 							for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
@@ -347,7 +347,7 @@ public class ManagerInstances {
 		//NS from model
 		
 		ArrayList<Instance> listInstances = new ArrayList<Instance>();
-		List<String> listInstancesDto = InfModelQueryUtil.getIndividualsURIFromAllClasses(infModel);
+		List<String> listInstancesDto = QueryUtil.getIndividualsURIFromAllClasses(infModel);
     	for (String dto : listInstancesDto) {
     		
     		if(! dto.contains("#"))
@@ -357,7 +357,7 @@ public class ManagerInstances {
     		}
     		String nameSpace = dto.split("#")[0] + "#";
     		String name = dto.split("#")[1];
-    		listInstances.add(new Instance(nameSpace, name, InfModelQueryUtil.getClassesURI(infModel, dto), InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, dto), InfModelQueryUtil.getIndividualsURISameAs(infModel, dto),true));
+    		listInstances.add(new Instance(nameSpace, name, QueryUtil.getClassesURI(infModel, dto), QueryUtil.getIndividualsURIDifferentFrom(infModel, dto), QueryUtil.getIndividualsURISameAs(infModel, dto),true));
 		}
 		
 		return listInstances;
@@ -369,8 +369,8 @@ public class ManagerInstances {
 	
 	public void UpdateInstanceSameAndDifferentFrom(InfModel infModel, Instance instance)
 	{
-		instance.ListDiferentInstances = InfModelQueryUtil.getIndividualsURIDifferentFrom(infModel, instance.ns + instance.name);
-		instance.ListSameInstances = InfModelQueryUtil.getIndividualsURISameAs(infModel, instance.ns + instance.name);
+		instance.ListDiferentInstances = QueryUtil.getIndividualsURIDifferentFrom(infModel, instance.ns + instance.name);
+		instance.ListSameInstances = QueryUtil.getIndividualsURISameAs(infModel, instance.ns + instance.name);
 	}
 	
 	public OntModel CreateTargetDataProperty(String instanceURI, String relation, String value, String TargetClass, OntModel model) {
@@ -421,7 +421,7 @@ public class ManagerInstances {
 				{
 					if(! subCls.equals(subCls2))
 					{
-						boolean result = InfModelQueryUtil.isClassesURIDisjoint(infModel, subCls, subCls2); /* Return true if subCls is disjoint of subCls2 */
+						boolean result = QueryUtil.isClassesURIDisjoint(infModel, subCls, subCls2); /* Return true if subCls is disjoint of subCls2 */
 						if(result == true)
 						{
 							//Not disjoint
@@ -463,7 +463,7 @@ public class ManagerInstances {
 			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 			{
 				//create the the new instance
-				String instanceName = dto.Target.split("#")[1] + "-" + (InfModelQueryUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
+				String instanceName = dto.Target.split("#")[1] + "-" + (QueryUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
@@ -476,7 +476,7 @@ public class ManagerInstances {
 		{
 			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 			{
-				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
+				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
 				
 				ArrayList<String> listDif = new ArrayList<String>();
 				while(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))
@@ -498,7 +498,7 @@ public class ManagerInstances {
 		{
 			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
 			{
-				int quantityInstancesTarget = InfModelQueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
+				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
 				
 				// Case 1 - same as min
 				if(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))
@@ -642,7 +642,7 @@ public class ManagerInstances {
 		ArrayList<String> listClassesMembersTmp = new ArrayList<String>();
 		for (DtoCompleteClass dto : instanceSelected.ListCompleteClasses) 
 		{
-			List<String> listDisjoint = InfModelQueryUtil.getClassesURIDisjointWith(infModel,dto.CompleteClass);
+			List<String> listDisjoint = QueryUtil.getClassesURIDisjointWith(infModel,dto.CompleteClass);
 			for (String clc : listClassesMembersTmpWithoutRepeat) 
 			{
 				if(! listDisjoint.contains(clc))
