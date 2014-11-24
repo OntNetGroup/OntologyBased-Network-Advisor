@@ -8,8 +8,8 @@ import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.EnumRelationTypeCompletness;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.common.util.ManagerInstances;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
+import br.ufes.inf.padtec.tnokco.controller.ManagerInstances;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.query.Query;

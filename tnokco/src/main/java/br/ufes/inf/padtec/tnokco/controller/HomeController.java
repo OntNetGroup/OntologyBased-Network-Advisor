@@ -28,13 +28,12 @@ import br.com.padtec.common.exceptions.OKCoExceptionFileFormat;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.exceptions.OKCoExceptionNameSpace;
 import br.com.padtec.common.exceptions.OKCoExceptionReasoner;
+import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.persistence.BaseModelRepository;
 import br.com.padtec.common.persistence.BaseModelRepositoryImpl;
-import br.com.padtec.common.persistence.HermitReasonerImpl;
-import br.com.padtec.common.persistence.OntologyReasoner;
-import br.com.padtec.common.persistence.PelletReasonerImpl;
-import br.com.padtec.common.util.FactoryInstances;
-import br.com.padtec.common.util.ManagerInstances;
+import br.com.padtec.common.reasoning.HermitReasonerImpl;
+import br.com.padtec.common.reasoning.OntologyReasoner;
+import br.com.padtec.common.reasoning.PelletReasonerImpl;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
 import br.ufes.inf.padtec.tnokco.business.ManagerRelations;
 import br.ufes.inf.padtec.tnokco.business.Reader;
@@ -52,7 +51,7 @@ public class HomeController implements ServletContextAware{
 	public static InfModel InfModel;
 	
 	public static String NS;
-	public static FactoryInstances FactoryInstances;
+	public static FactoryUtil FactoryInstances;
 	public static ManagerInstances ManagerInstances;	
 	public static ArrayList<DtoInstance> ListAllInstances;
 	public static ArrayList<String> ListModifiedInstances;
@@ -110,7 +109,7 @@ public class HomeController implements ServletContextAware{
 			HomeController.NS = Repository.getNameSpace();
 
 			
-			HomeController.FactoryInstances = new FactoryInstances();
+			HomeController.FactoryInstances = new FactoryUtil();
 			HomeController.ManagerInstances = new ManagerInstances(HomeController.FactoryInstances);
 
 			//Save temporary model
@@ -258,7 +257,7 @@ public class HomeController implements ServletContextAware{
 				throw new OKCoExceptionNameSpace("Please select owl file with defined namespace.");
 			}
 			
-			FactoryInstances = new FactoryInstances();
+			FactoryInstances = new FactoryUtil();
 			ManagerInstances = new ManagerInstances(FactoryInstances);
 
 			//Save temporary model

@@ -4,13 +4,13 @@ package br.ufes.inf.padtec.tnokco.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.padtec.common.appication.UploadApp;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.common.util.ManagerInstances;
-import br.com.padtec.common.util.UploadApp;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
+import br.ufes.inf.padtec.tnokco.controller.ManagerInstances;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;

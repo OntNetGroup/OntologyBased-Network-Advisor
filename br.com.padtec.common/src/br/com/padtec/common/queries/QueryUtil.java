@@ -1787,7 +1787,9 @@ public class QueryUtil {
 	}
 	
 
-	/* @author: Jordana Salamon
+	/**
+	 * 
+	 * @author: Jordana Salamon
 	 * @param: individual, list of relations from individual, model
 	 */
 	static public ArrayList<String> query_EndOfGraph(String individuo, ArrayList<String> Relacoes, InfModel model){
