@@ -3,7 +3,7 @@ package br.com.padtec.common.queries;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.padtec.common.appication.UploadApp;
+import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;

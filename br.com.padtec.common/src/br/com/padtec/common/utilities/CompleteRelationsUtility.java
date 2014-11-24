@@ -6,8 +6,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.padtec.common.appication.ManagerInstances;
-import br.com.padtec.common.appication.UploadApp;
+import br.com.padtec.common.application.ManagerInstances;
+import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.factory.FactoryUtil;

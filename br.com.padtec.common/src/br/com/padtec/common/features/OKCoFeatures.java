@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import br.com.padtec.common.appication.ManagerInstances;
+import br.com.padtec.common.application.ManagerInstances;
 import br.com.padtec.common.dto.DtoCompleteClass;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.simple.SimpleDtoClass;
