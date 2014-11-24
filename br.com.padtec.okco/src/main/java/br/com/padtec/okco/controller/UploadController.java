@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.com.padtec.common.appication.CompleterApp;
-import br.com.padtec.common.appication.UploadApp;
+import br.com.padtec.common.application.CompleterApp;
+import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.exceptions.OKCoExceptionFileFormat;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
