@@ -75,7 +75,7 @@ public class UploadApp {
 		}
 		
 		/** Fulfill the lists with data from the base ontology */
-		CompleterApp.updateLists();
+		OKCoApp.updateLists();
 	}
 		
 	public static BaseModelRepository getBaseRepository() { return baseRepository; }	
@@ -125,7 +125,7 @@ public class UploadApp {
 		baseRepository.cloneReplacing(tempModel);
 		inferredRepository.cloneReplacing(tempModel);
 		try {			
-			CompleterApp.updateLists();			
+			OKCoApp.updateLists();			
 		} catch (InconsistentOntologyException e1) {			
 			e1.printStackTrace();			
 		} catch (OKCoExceptionInstanceFormat e) {			

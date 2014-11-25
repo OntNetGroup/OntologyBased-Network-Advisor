@@ -169,5 +169,81 @@ public class DtoInstance implements Serializable {
 			}
 		}		
 	}
+	
+	public List<DtoPropertyAndSubProperties> getPropertiesAndSubProperties()
+	{
+		return ListSpecializationProperties;
+	}
+	
+	public List<DtoCompleteClass> getCompleteClasses()
+	{
+		return ListCompleteClasses;
+	}
+	
+	public List<DtoDefinitionClass> getSomeDefinitionWithNoRepetition()
+	{
+		ArrayList<DtoDefinitionClass> result = new ArrayList<DtoDefinitionClass>();
+		for (DtoDefinitionClass dto : ListSome) 
+		{				
+			boolean exist = false;
+			for (DtoDefinitionClass dto2 : result) 
+			{
+				if(dto.sameAs(dto2)){exist = true; break; }
+			}			
+			if(!exist){ result.add(dto); }			
+		}
+		return result;
+	}
+	
+	public List<DtoDefinitionClass> getMinDefinitionWithNoRepetition()
+	{
+		ArrayList<DtoDefinitionClass> result = new ArrayList<DtoDefinitionClass>();
+		for (DtoDefinitionClass dto : ListMin) 
+		{				
+			boolean exist = false;
+			for (DtoDefinitionClass dto2 : result) 
+			{
+				//Doesn't compare the source
+				if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
+				{ exist = true; break; }
+			}			
+			if(!exist){ result.add(dto); }			
+		}
+		return result;
+	}
+
+	public List<DtoDefinitionClass> getMaxDefinitionWithNoRepetition()
+	{
+		ArrayList<DtoDefinitionClass> result = new ArrayList<DtoDefinitionClass>();
+		for (DtoDefinitionClass dto : ListMax) 
+		{				
+			boolean exist = false;
+			for (DtoDefinitionClass dto2 : result) 
+			{
+				//Doesn't compare the source
+				if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
+				{ exist = true; break; }
+			}			
+			if(!exist){ result.add(dto); }			
+		}
+		return result;
+	}	
+	
+	public List<DtoDefinitionClass> getExactDefinitionWithNoRepetition()
+	{
+		ArrayList<DtoDefinitionClass> result = new ArrayList<DtoDefinitionClass>();
+		for (DtoDefinitionClass dto : ListExactly) 
+		{				
+			boolean exist = false;
+			for (DtoDefinitionClass dto2 : result) 
+			{
+				//Doesn't compare the source
+				if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
+				{ exist = true; break; }
+			}			
+			if(!exist){ result.add(dto); }			
+		}
+		return result;
+	}	
 
 }

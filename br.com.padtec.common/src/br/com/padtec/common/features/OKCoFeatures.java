@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import br.com.padtec.common.application.CompleterApp;
+import br.com.padtec.common.application.OKCoApp;
 import br.com.padtec.common.dto.DtoCompleteClass;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.simple.SimpleDtoClass;
@@ -102,8 +102,8 @@ public class OKCoFeatures {
 						
 			// Organize data (Update the list of all instances)
 			
-		  	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-		  	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+		  	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+		  	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			//build the return instances
 			for (br.com.padtec.common.dto.DtoInstance i : ListAllInstances) 
@@ -264,8 +264,8 @@ public class OKCoFeatures {
 			
 			// Organize data (Update the list of all instances)
 			
-		  	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-	    	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+		  	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 												Complete instances
@@ -278,7 +278,7 @@ public class OKCoFeatures {
 				if(strength.equals("FULL"))
 				{
 					//Classify instance classes
-					model = CompleterApp.ClassifyInstanceAuto(model,infModel,instance);
+					model = OKCoApp.ClassifyInstanceAuto(model,infModel,instance);
 				}
 				
 				for (DtoDefinitionClass dto : instance.ListSome) 
@@ -361,8 +361,8 @@ public class OKCoFeatures {
 			
 			// Organize data (Update the list of all instances)
 			
-	    	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-	    	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+	    	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 											Build the return instances
@@ -535,8 +535,8 @@ public class OKCoFeatures {
 			
 			// Organize data (Update the list of all instances)
 			
-	    	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-	    	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+	    	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 												Complete instances
@@ -551,7 +551,7 @@ public class OKCoFeatures {
 					if(strength.equals("FULL"))
 					{
 						//Classify instance classes
-						model = CompleterApp.ClassifyInstanceAuto(model, infModel,instance);
+						model = OKCoApp.ClassifyInstanceAuto(model, infModel,instance);
 					}
 					
 					for (DtoDefinitionClass dto : instance.ListSome) 
@@ -635,8 +635,8 @@ public class OKCoFeatures {
 			
 			// Organize data (Update the list of all instances)
 			
-		  	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-	    	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+		  	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 											Build the return instances

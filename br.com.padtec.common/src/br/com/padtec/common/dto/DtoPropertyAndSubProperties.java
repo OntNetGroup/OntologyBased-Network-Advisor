@@ -1,6 +1,7 @@
 package br.com.padtec.common.dto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.padtec.common.types.OntPropertyEnum;
 
@@ -17,7 +18,7 @@ public class DtoPropertyAndSubProperties {
 		this.SubProperties = new ArrayList<String>();
 	}
 
-	public static DtoPropertyAndSubProperties getInstance(ArrayList<DtoPropertyAndSubProperties> listSpecializationProperties,	String uriProperty) {
+	public static DtoPropertyAndSubProperties getInstance(List<DtoPropertyAndSubProperties> listSpecializationProperties,	String uriProperty) {
 		
 		for (DtoPropertyAndSubProperties dto : listSpecializationProperties) {
 			if(dto.Property.equals(uriProperty))

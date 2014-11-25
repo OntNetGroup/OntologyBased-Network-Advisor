@@ -25,30 +25,106 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
 
-public class CompleterApp {
+public class OKCoApp {
+	
+	public static List<String> modifiedIndividualsURIs = new ArrayList<String>();		
+	public static DtoInstance individualSelected;
+	public static List<DtoCompleteClass> completeClassesFromSelected;
+	public static List<DtoPropertyAndSubProperties> propertiesFromSelected;
+	
+	/**==========================================================
+	 * Functionalities...
+	 * ==========================================================*/
+	
+	public static List<DtoInstance> getIndividuals()
+	{
+		return DtoQueryUtil.getIndividuals(UploadApp.getInferredModel());
+	}
+	
+	public static List<String> getModifiedIndividuals()
+	{
+		return modifiedIndividualsURIs;
+	}
+	
+	public static String getSelectedIndividualURI()
+	{
+		return individualSelected.ns+individualSelected.name;
+	}
+	
+	public static DtoInstance selectIndividual(String individualURI)
+	{
+		individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), individualURI);
+		return individualSelected;
+	}
+	
+	public static List<DtoDefinitionClass> getSomeDefinitionsFromSelected()
+	{
+		if(individualSelected!=null) return individualSelected.getSomeDefinitionWithNoRepetition();
+		else return new ArrayList<DtoDefinitionClass>();
+	}
+	
+	public static List<DtoDefinitionClass> getMaxDefinitionsFromSelected()
+	{
+		if(individualSelected!=null) return individualSelected.getMaxDefinitionWithNoRepetition();
+		else return new ArrayList<DtoDefinitionClass>();
+	}
+	
+	public static List<DtoDefinitionClass> getMinDefinitionsFromSelected()
+	{
+		if(individualSelected!=null) return individualSelected.getMinDefinitionWithNoRepetition();
+		else return new ArrayList<DtoDefinitionClass>();
+	}
+	
+	public static List<DtoDefinitionClass> getExactDefinitionsFromSelected()
+	{
+		if(individualSelected!=null) return individualSelected.getExactDefinitionWithNoRepetition();
+		else return new ArrayList<DtoDefinitionClass>();
+	}
+	
+	public static List<DtoCompleteClass> getCompleteClassesFromSelected()
+	{
+		if(individualSelected!=null) {
+			completeClassesFromSelected = individualSelected.getCompleteClasses();
+			return completeClassesFromSelected;
+		}
+		else return new ArrayList<DtoCompleteClass>();
+	}
+	
+	public static List<DtoPropertyAndSubProperties> getPropertiesFromSelected()
+	{
+		if(individualSelected!=null) {
+			propertiesFromSelected = individualSelected.getPropertiesAndSubProperties();
+			return propertiesFromSelected;
+		}
+		else return new ArrayList<DtoPropertyAndSubProperties>();
+	}
+	
+	public static List<DtoInstanceRelation> getRelationsFromSelected()
+	{
+		if(individualSelected!=null) {
+			return DtoQueryUtil.getRelations(UploadApp.getInferredModel(),getSelectedIndividualURI());			
+		}
+		else return new ArrayList<DtoInstanceRelation>();
+	}
+	
+	//============================================================
+	//============================================================
+	//============================================================
 	
 	public static List<DtoInstance> ListAllInstances;	
 	public static List<DtoDefinitionClass> ModelDefinitions;
-	public static List<String> ListModifiedInstances = new ArrayList<String>();
-	
+		
 	// Save the new instances before commit in views (completePropertyObject and completePropertyData)
-
 	//Instances to add in relation
 	public static ArrayList<DtoInstance> listNewInstancesRelation;
 	//DataValues to add in relation
 	public static ArrayList<DataPropertyValue> listNewDataValuesRelation;
 	//Dto selected
-	public static DtoDefinitionClass dtoSelected;
-	//Instance selected
-	public static DtoInstance instanceSelected;
-	//Specialization - Complete classes for instance class
-	public static ArrayList<DtoCompleteClass> ListCompleteClsInstaceSelected;
-	//Specialization - Property and subProperties
-	public static ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties;
+	public static DtoDefinitionClass dtoSelected;	
 	
 	public static void clear() 
 	{
-		ListModifiedInstances.clear();
+		modifiedIndividualsURIs.clear();
 		ListAllInstances=null;	
 	}
 		
@@ -57,7 +133,7 @@ public class CompleterApp {
 		for (DtoInstance i : ListAllInstances) 
 		{
 			String s = i.ns + i.name;
-			if (ListModifiedInstances.contains(s)) i.setModified(true);			
+			if (modifiedIndividualsURIs.contains(s)) i.setModified(true);			
 		}
 	}
 	

@@ -1,6 +1,6 @@
 <%@page import="java.net.URLEncoder"%>
 <%@ page import="br.com.padtec.common.application.UploadApp"%>
-<%@ page import="br.com.padtec.common.application.CompleterApp"%>
+<%@ page import="br.com.padtec.common.application.OKCoApp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="br.com.padtec.common.dto.DtoInstance"%>
 <%@ page import="br.com.padtec.common.dto.DtoCompleteClass"%>
@@ -220,10 +220,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListSameInstances)
-																							{																			
-																								DtoInstance i = CompleterApp.getInstance(ListAllInstances, iName);																			
-																								out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
-																							}
+																												{																			
+																													DtoInstance i = OKCoApp.getInstance(ListAllInstances, iName);																			
+																													out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+																												}
 							%>
 							</ul>
 						</td>
@@ -235,10 +235,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListDiferentInstances)
-																							{
-																								DtoInstance i = CompleterApp.getInstance(ListAllInstances, iName);																			
-																								out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
-																							}
+																												{
+																													DtoInstance i = OKCoApp.getInstance(ListAllInstances, iName);																			
+																													out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+																												}
 							%>
 							</ul>
 						</td>
