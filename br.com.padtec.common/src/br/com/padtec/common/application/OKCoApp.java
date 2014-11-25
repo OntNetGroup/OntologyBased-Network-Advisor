@@ -27,10 +27,16 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class OKCoApp {
 	
-	public static List<String> modifiedIndividualsURIs = new ArrayList<String>();		
+	//Keeps the list of individuals that were modified
+	public static List<String> modifiedIndividualsURIs = new ArrayList<String>();
+	
+	//Keeps the individuals that was selected alongside with other useful informations
 	public static DtoInstance individualSelected;
 	public static List<DtoCompleteClass> completeClassesFromSelected;
 	public static List<DtoPropertyAndSubProperties> propertiesFromSelected;
+	
+	//Keeps a specific cardinality definition that was selected
+	public static DtoDefinitionClass definitionClassSelected;
 	
 	/**==========================================================
 	 * Functionalities...
@@ -112,15 +118,12 @@ public class OKCoApp {
 	//============================================================
 	
 	public static List<DtoInstance> ListAllInstances;	
-	public static List<DtoDefinitionClass> ModelDefinitions;
-		
+	public static List<DtoDefinitionClass> ModelDefinitions;		
 	// Save the new instances before commit in views (completePropertyObject and completePropertyData)
 	//Instances to add in relation
 	public static ArrayList<DtoInstance> listNewInstancesRelation;
 	//DataValues to add in relation
 	public static ArrayList<DataPropertyValue> listNewDataValuesRelation;
-	//Dto selected
-	public static DtoDefinitionClass dtoSelected;	
 	
 	public static void clear() 
 	{
