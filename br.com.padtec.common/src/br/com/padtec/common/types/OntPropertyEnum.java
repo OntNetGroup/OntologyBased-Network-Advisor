@@ -1,4 +1,4 @@
-package br.com.padtec.common.queries;
+package br.com.padtec.common.types;
 
 public enum OntPropertyEnum {
 	OBJECT_PROPERTY, DATA_PROPERTY, TRANSITIVE_PROPERTY, SYMMETRIC_PROPERTY, FUNCTIONAL_PROPERTY, ANNOTATION_PROPERTY, INVERSE_FUNCTIONAL_PROPERTY

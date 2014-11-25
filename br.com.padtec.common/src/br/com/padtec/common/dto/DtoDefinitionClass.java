@@ -2,8 +2,8 @@ package br.com.padtec.common.dto;
 
 import java.util.ArrayList;
 
-import br.com.padtec.common.queries.OntPropertyEnum;
-import br.com.padtec.common.dto.EnumRelationTypeCompletness;
+import br.com.padtec.common.types.OntCardinalityEnum;
+import br.com.padtec.common.types.OntPropertyEnum;
 
 public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 	
@@ -20,7 +20,7 @@ public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 	public String Source;
 	public String Relation;
 	public OntPropertyEnum PropertyType;				//object or data
-	public EnumRelationTypeCompletness TypeCompletness;	//some,min,max...
+	public OntCardinalityEnum TypeCompletness;	//some,min,max...
 	public String Target;
 	public String Cardinality;					// just in cases we need cardinality (max, min, exactly)
 	public static final String sKey = "#&&#";	// separator key

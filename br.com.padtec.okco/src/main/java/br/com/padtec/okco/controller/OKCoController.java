@@ -22,7 +22,6 @@ import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoClassifyInstancePost;
 import br.com.padtec.common.dto.DtoCommitMaxCard;
 import br.com.padtec.common.dto.DtoCommitPost;
-import br.com.padtec.common.dto.DtoCompleteClass;
 import br.com.padtec.common.dto.DtoCreateDataValuePost;
 import br.com.padtec.common.dto.DtoCreateInstancePost;
 import br.com.padtec.common.dto.DtoDefinitionClass;
@@ -32,14 +31,14 @@ import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
-import br.com.padtec.common.dto.EnumRelationTypeCompletness;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.OntModelAPI;
-import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.types.OntCardinalityEnum;
+import br.com.padtec.common.types.OntPropertyEnum;
 import br.com.padtec.okco.util.GraphPlotting;
 import br.com.padtec.okco.util.WOKCOGraphPlotting;
 
@@ -48,26 +47,6 @@ import com.hp.hpl.jena.ontology.OntModel;
 @Controller
 //@RequestMapping("/instance")
 public class OKCoController {
-
-	// Save the new instances before commit in views (completePropertyObject and completePropertyData)
-
-	//Instances to add in relation
-	ArrayList<DtoInstance> listNewInstancesRelation;
-
-	//DataValues to add in relation
-	ArrayList<DataPropertyValue> listNewDataValuesRelation;
-
-	//Dto selected
-	DtoDefinitionClass dtoSelected;
-
-	//Instance selected
-	DtoInstance instanceSelected;
-
-	//Specialization - Complete classes for instance class
-	ArrayList<DtoCompleteClass> ListCompleteClsInstaceSelected;
-
-	//Specialization - Property and subProperties
-	ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties;  
 
 	@RequestMapping(method = RequestMethod.GET, value="/list")
 	public String list(HttpServletRequest request) 
@@ -102,18 +81,18 @@ public class OKCoController {
 		uri = decodeURI(uri);
 		
 		List<DtoInstance> listAllInstances = CompleterApp.ListAllInstances;
-		instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uri);
-		ListCompleteClsInstaceSelected = instanceSelected.ListCompleteClasses;
-		ListSpecializationProperties = instanceSelected.ListSpecializationProperties;		
-		List<DtoDefinitionClass> listSomeClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
-		List<DtoDefinitionClass> listMinClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
-		List<DtoDefinitionClass> listMaxClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
-		List<DtoDefinitionClass> listExactlyClassDefinition = CompleterApp.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
-		List<DtoInstanceRelation> instanceRelationsList = DtoQueryUtil.getRelations(UploadApp.getInferredModel(),instanceSelected.ns + instanceSelected.name);		
+		CompleterApp.instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uri);
+		CompleterApp.ListCompleteClsInstaceSelected = CompleterApp.instanceSelected.ListCompleteClasses;
+		CompleterApp.ListSpecializationProperties = CompleterApp.instanceSelected.ListSpecializationProperties;		
+		List<DtoDefinitionClass> listSomeClassDefinition = DtoFactoryUtil.removeRepeatedInSomeDefinition(CompleterApp.instanceSelected);
+		List<DtoDefinitionClass> listMinClassDefinition = DtoFactoryUtil.removeRepeatedInMinDefinition(CompleterApp.instanceSelected);	
+		List<DtoDefinitionClass> listMaxClassDefinition = DtoFactoryUtil.removeRepeatedInMaxDefinition(CompleterApp.instanceSelected);
+		List<DtoDefinitionClass> listExactlyClassDefinition = DtoFactoryUtil.removeRepeatedInExactDefinition(CompleterApp.instanceSelected);	
+		List<DtoInstanceRelation> instanceRelationsList = DtoQueryUtil.getRelations(UploadApp.getInferredModel(),CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name);		
 		
 		request.getSession().setAttribute("listInstances", listAllInstances);
-		request.getSession().setAttribute("instanceSelected", instanceSelected);
-		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
+		request.getSession().setAttribute("instanceSelected", CompleterApp.instanceSelected);
+		request.getSession().setAttribute("ListSpecializationProperties", CompleterApp.ListSpecializationProperties);
 		request.getSession().setAttribute("listSomeClassDefinition", listSomeClassDefinition);
 		request.getSession().setAttribute("listMinClassDefinition", listMinClassDefinition);
 		request.getSession().setAttribute("listMaxClassDefinition", listMaxClassDefinition);
@@ -131,28 +110,28 @@ public class OKCoController {
 
 		//Search for the definition class correctly
 
-		dtoSelected = DtoDefinitionClass.get(instance.ListSome, uriProperty);
-		if(dtoSelected == null)
-			dtoSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
-		if(dtoSelected == null)
-			dtoSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
-		if(dtoSelected == null)
-			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
+		CompleterApp.dtoSelected = DtoDefinitionClass.get(instance.ListSome, uriProperty);
+		if(CompleterApp.dtoSelected == null)
+			CompleterApp.dtoSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
+		if(CompleterApp.dtoSelected == null)
+			CompleterApp.dtoSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
+		if(CompleterApp.dtoSelected == null)
+			CompleterApp.dtoSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
 
 		//Create the sections
 
-		request.getSession().setAttribute("definitionSelected", dtoSelected);
+		request.getSession().setAttribute("definitionSelected", CompleterApp.dtoSelected);
 		request.getSession().setAttribute("instanceSelected", instance);
 		request.getSession().setAttribute("propType", propType);
 
 		if(type.equals("object"))
 		{
 			//List auxiliary
-			listNewInstancesRelation = new ArrayList<DtoInstance>();
+			CompleterApp.listNewInstancesRelation = new ArrayList<DtoInstance>();
 			//Get all instances except the instance selected for Same/Different list		
 			ArrayList<DtoInstance> listInstancesSameDifferent = new ArrayList<DtoInstance>(CompleterApp.ListAllInstances);
 			//get instances with had this relation
-			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);
 			//populate the list of instances with had this relation	    	
 			List<DtoInstance> listInstancesInRelation = DtoFactoryUtil.intersection(CompleterApp.ListAllInstances, listInstancesName);
 
@@ -164,7 +143,7 @@ public class OKCoController {
 		} else if (type.equals("objectMax"))
 		{
 			//get instances with had this relation
-			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);
 			Collections.sort(listInstancesName);
 
 			//populate the list of instances with had this relation	    	
@@ -176,15 +155,15 @@ public class OKCoController {
 		} else if (type.equals("data"))
 		{
 			//List auxiliary
-			listNewDataValuesRelation = new ArrayList<DataPropertyValue>();
+			CompleterApp.listNewDataValuesRelation = new ArrayList<DataPropertyValue>();
 
 			//Get values with this data property
 			List<DataPropertyValue> listValuesInRelation = new ArrayList<DataPropertyValue>();
-			List<String> individualsList = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+			List<String> individualsList = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);
 			for(String individualURI: individualsList){
 				DataPropertyValue data = new DataPropertyValue();
 				data.value = individualURI.split("\\^\\^")[0];
-				data.classValue = dtoSelected.Target;
+				data.classValue = CompleterApp.dtoSelected.Target;
 				data.existInModel = true;
 				listValuesInRelation.add(data);
 			}
@@ -211,28 +190,28 @@ public class OKCoController {
 		DtoInstance instance = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uriInstance);
 
 		//Search for the definition class correctly
-		dtoSelected = DtoDefinitionClass.get(instance.ListSome, uriProperty);
-		EnumRelationTypeCompletness typeRelation = EnumRelationTypeCompletness.SOME;
+		CompleterApp.dtoSelected = DtoDefinitionClass.get(instance.ListSome, uriProperty);
+		OntCardinalityEnum typeRelation = OntCardinalityEnum.SOME;
 
-		if(dtoSelected == null){
-			dtoSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
-			typeRelation = EnumRelationTypeCompletness.MIN;
+		if(CompleterApp.dtoSelected == null){
+			CompleterApp.dtoSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
+			typeRelation = OntCardinalityEnum.MIN;
 		}
-		if(dtoSelected == null){
-			dtoSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
-			typeRelation = EnumRelationTypeCompletness.MAX;
+		if(CompleterApp.dtoSelected == null){
+			CompleterApp.dtoSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
+			typeRelation = OntCardinalityEnum.MAX;
 		}
-		if(dtoSelected == null){
-			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
-			typeRelation = EnumRelationTypeCompletness.EXACTLY;
+		if(CompleterApp.dtoSelected == null){
+			CompleterApp.dtoSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
+			typeRelation = OntCardinalityEnum.EXACTLY;
 		}		
 
 		if(type.equals("object"))
 		{
-			if(typeRelation.equals(EnumRelationTypeCompletness.SOME))
+			if(typeRelation.equals(OntCardinalityEnum.SOME))
 			{
 				//create the the new instance
-				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (QueryUtil.getIndividualsURI(UploadApp.getInferredModel(), dtoSelected.Target).size() + 1);
+				String instanceName = CompleterApp.dtoSelected.Target.split("#")[1] + "-" + (QueryUtil.getIndividualsURI(UploadApp.getInferredModel(), CompleterApp.dtoSelected.Target).size() + 1);
 				ArrayList<String> listSame = new ArrayList<String>();		  
 				ArrayList<String> listDif = new ArrayList<String>();
 				ArrayList<String> listClasses = new ArrayList<String>();
@@ -240,7 +219,7 @@ public class OKCoController {
 
 				//Create Individual
 				OntModel basemodel = UploadApp.getBaseModel();
-				basemodel = FactoryUtil.createIndividual(basemodel,newInstance.ns+newInstance.name,newInstance.ListSameInstances,newInstance.ListDiferentInstances, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+				basemodel = FactoryUtil.createIndividual(basemodel,newInstance.ns+newInstance.name,newInstance.ListSameInstances,newInstance.ListDiferentInstances, instance.ns + instance.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);
 				UploadApp.baseRepository.setBaseOntModel(basemodel);
 				
 				CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
@@ -254,22 +233,22 @@ public class OKCoController {
 					e.printStackTrace();
 				}
 
-			} else if(typeRelation.equals(EnumRelationTypeCompletness.MIN))
+			} else if(typeRelation.equals(OntCardinalityEnum.MIN))
 			{
-				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
+				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);
 
 				ArrayList<String> listDif = new ArrayList<String>();
-				while(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))
+				while(quantityInstancesTarget < Integer.parseInt(CompleterApp.dtoSelected.Cardinality))
 				{
 					//create the the new instance
-					String instanceName = dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
+					String instanceName = CompleterApp.dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 					ArrayList<String> listSame = new ArrayList<String>();		  
 					ArrayList<String> listClasses = new ArrayList<String>();
 					DtoInstance newInstance = new DtoInstance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 					
 					//Create Individual
 					OntModel basemodel = UploadApp.getBaseModel();
-					basemodel = FactoryUtil.createIndividual(basemodel,newInstance.ns+newInstance.name,newInstance.ListSameInstances,newInstance.ListDiferentInstances, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);					
+					basemodel = FactoryUtil.createIndividual(basemodel,newInstance.ns+newInstance.name,newInstance.ListSameInstances,newInstance.ListDiferentInstances, instance.ns + instance.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);					
 					UploadApp.baseRepository.setBaseOntModel(basemodel);
 					
 					CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
@@ -288,25 +267,25 @@ public class OKCoController {
 					quantityInstancesTarget ++;
 				}				
 
-			} else if(typeRelation.equals(EnumRelationTypeCompletness.EXACTLY))
+			} else if(typeRelation.equals(OntCardinalityEnum.EXACTLY))
 			{
-				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);				
+				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);				
 
 				// Case 1 - same as min relation
-				if(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))
+				if(quantityInstancesTarget < Integer.parseInt(CompleterApp.dtoSelected.Cardinality))
 				{
 					ArrayList<String> listDif = new ArrayList<String>();
-					while(quantityInstancesTarget < Integer.parseInt(dtoSelected.Cardinality))
+					while(quantityInstancesTarget < Integer.parseInt(CompleterApp.dtoSelected.Cardinality))
 					{
 						//create the the new instance
-						String instanceName = dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
+						String instanceName = CompleterApp.dtoSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
 						ArrayList<String> listSame = new ArrayList<String>();
 						ArrayList<String> listClasses = new ArrayList<String>();
 						DtoInstance newInstance = new DtoInstance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
 
 						// Create Individual
 						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createIndividual(basemodel,newInstance.ns+newInstance.name,newInstance.ListSameInstances,newInstance.ListDiferentInstances, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);						
+						basemodel = FactoryUtil.createIndividual(basemodel,newInstance.ns+newInstance.name,newInstance.ListSameInstances,newInstance.ListDiferentInstances, instance.ns + instance.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);						
 						UploadApp.baseRepository.setBaseOntModel(basemodel);
 						
 						CompleterApp.ListModifiedInstances.add(newInstance.ns + newInstance.name);
@@ -327,12 +306,12 @@ public class OKCoController {
 				}
 
 				// Case 2 - more individuals than necessary
-				if(quantityInstancesTarget > Integer.parseInt(dtoSelected.Cardinality))
+				if(quantityInstancesTarget > Integer.parseInt(CompleterApp.dtoSelected.Cardinality))
 				{
 
 				}
 
-			} else if(typeRelation.equals(EnumRelationTypeCompletness.MAX))
+			} else if(typeRelation.equals(OntCardinalityEnum.MAX))
 			{
 
 			}
@@ -368,7 +347,7 @@ public class OKCoController {
 			i.print();
 		}
 		System.out.println("Complete Instance ID="+uriInstance);		
-		UploadApp.baseRepository.setBaseOntModel(CompleterApp.ManagerInstances.CompleteInstanceAuto(instance, UploadApp.baseRepository.getNameSpace(), UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
+		UploadApp.baseRepository.setBaseOntModel(CompleterApp.CompleteInstanceAuto(instance, UploadApp.baseRepository.getNameSpace(), UploadApp.getBaseModel(), UploadApp.getInferredModel(), CompleterApp.ListAllInstances));
 
 		CompleterApp.ListModifiedInstances.add(instance.ns + instance.name);
 
@@ -464,7 +443,7 @@ public class OKCoController {
 
 		DtoInstance i = new DtoInstance(UploadApp.baseRepository.getNameSpace(), name, new ArrayList<String>(), listDif, listSame, false);
 
-		listNewInstancesRelation.add(i);
+		CompleterApp.listNewInstancesRelation.add(i);
 		return i;
 	}
 
@@ -474,10 +453,10 @@ public class OKCoController {
 		boolean isCreate = false;
 		boolean isUpdate = false;
 		DtoResult dto = new DtoResult();
-		if(listNewInstancesRelation.size() != 0)
+		if(CompleterApp.listNewInstancesRelation.size() != 0)
 		{
-			DtoInstance iSource = instanceSelected;
-			for (DtoInstance iTarget : listNewInstancesRelation) 
+			DtoInstance iSource = CompleterApp.instanceSelected;
+			for (DtoInstance iTarget : CompleterApp.listNewInstancesRelation) 
 			{
 				try {
 
@@ -485,7 +464,7 @@ public class OKCoController {
 					{
 						//Create instance
 						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createIndividual(basemodel, iTarget.ns + iTarget.name, iTarget.ListSameInstances, iTarget.ListDiferentInstances, iSource.ns + iSource.name, dtoSelected.Relation, dtoSelected.Target);
+						basemodel = FactoryUtil.createIndividual(basemodel, iTarget.ns + iTarget.name, iTarget.ListSameInstances, iTarget.ListDiferentInstances, iSource.ns + iSource.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);
 						UploadApp.baseRepository.setBaseOntModel(basemodel);
 						isCreate = true;
 
@@ -493,7 +472,7 @@ public class OKCoController {
 
 						//Selected instance
 						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createObjectProperty(basemodel, iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name);
+						basemodel = FactoryUtil.createObjectProperty(basemodel, iSource.ns + iSource.name, CompleterApp.dtoSelected.Relation, iTarget.ns + iTarget.name);
 						UploadApp.baseRepository.setBaseOntModel(basemodel);
 						
 						isUpdate = true;
@@ -523,7 +502,7 @@ public class OKCoController {
 
 					if(isUpdate == true){
 						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.deleteObjectProperty(basemodel, iSource.ns + iSource.name, dtoSelected.Relation, iTarget.ns + iTarget.name);
+						basemodel = FactoryUtil.deleteObjectProperty(basemodel, iSource.ns + iSource.name, CompleterApp.dtoSelected.Relation, iTarget.ns + iTarget.name);
 						UploadApp.baseRepository.setBaseOntModel(basemodel);
 					}
 					dto.setMessage(e.getMessage());
@@ -611,7 +590,7 @@ public class OKCoController {
 
 		if(uri != null)
 		{
-			DtoInstance.removeFromList(listNewInstancesRelation, uri);
+			DtoInstance.removeFromList(CompleterApp.listNewInstancesRelation, uri);
 			return uri;
 		}
 
@@ -637,8 +616,8 @@ public class OKCoController {
 
 		if(uri!=null)
 		{
-			DtoInstance i = getInstance(listNewInstancesRelation, uri);
-			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, listNewInstancesRelation);
+			DtoInstance i = getInstance(CompleterApp.listNewInstancesRelation, uri);
+			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, CompleterApp.listNewInstancesRelation);
 			return dto;
 		}
 
@@ -666,7 +645,7 @@ public class OKCoController {
 		if(uri != null)
 		{
 			DtoInstance i = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uri);
-			listNewInstancesRelation.add(i);
+			CompleterApp.listNewInstancesRelation.add(i);
 			return i;
 		}
 
@@ -795,7 +774,7 @@ public class OKCoController {
 
 		if(id != null)
 		{
-			DataPropertyValue.removeFromList(listNewDataValuesRelation, id);
+			DataPropertyValue.removeFromList(CompleterApp.listNewDataValuesRelation, id);
 			return id;
 		}
 
@@ -807,10 +786,10 @@ public class OKCoController {
 
 		DataPropertyValue data = new DataPropertyValue();
 		data.value = dto.value;
-		data.classValue = dtoSelected.Target;
+		data.classValue = CompleterApp.dtoSelected.Target;
 		data.existInModel = false;
 
-		listNewDataValuesRelation.add(data);
+		CompleterApp.listNewDataValuesRelation.add(data);
 		return data;
 	}
 
@@ -818,10 +797,10 @@ public class OKCoController {
 	public @ResponseBody DtoResult commitDataValues(@RequestBody final DtoCommitPost dtoCommit) {    
 
 		DtoResult dto = new DtoResult();
-		if(listNewDataValuesRelation.size() != 0)
+		if(CompleterApp.listNewDataValuesRelation.size() != 0)
 		{
-			DtoInstance iSource = instanceSelected;
-			for (DataPropertyValue dataTarget : listNewDataValuesRelation) 
+			DtoInstance iSource = CompleterApp.instanceSelected;
+			for (DataPropertyValue dataTarget : CompleterApp.listNewDataValuesRelation) 
 			{
 				try {
 
@@ -829,7 +808,7 @@ public class OKCoController {
 					{
 						//Create data value
 						OntModel basemodel = UploadApp.getBaseModel();
-						FactoryUtil.createRangeDataPropertyValue(basemodel, dataTarget.value, iSource.ns + iSource.name, dtoSelected.Relation, dtoSelected.Target);
+						FactoryUtil.createRangeDataPropertyValue(basemodel, dataTarget.value, iSource.ns + iSource.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);
 						UploadApp.baseRepository.setBaseOntModel(basemodel);						
 						dataTarget.existInModel = true;
 					}
@@ -853,7 +832,7 @@ public class OKCoController {
 				} catch (Exception e) {
 
 					OntModel basemodel = UploadApp.getBaseModel();
-					FactoryUtil.deleteRangeDataPropertyValue(basemodel, dataTarget.value, instanceSelected.ns + instanceSelected.name, dtoSelected.Relation, dtoSelected.Target);
+					FactoryUtil.deleteRangeDataPropertyValue(basemodel, dataTarget.value, CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name, CompleterApp.dtoSelected.Relation, CompleterApp.dtoSelected.Target);
 					UploadApp.baseRepository.setBaseOntModel(basemodel);	
 
 					dto.setMessage(e.getMessage());
@@ -900,7 +879,7 @@ public class OKCoController {
 				try {
 
 					OntModel basemodel = UploadApp.getBaseModel();
-					FactoryUtil.createIndividualOfClass(basemodel, instanceSelected.ns + instanceSelected.name, cls);
+					FactoryUtil.createIndividualOfClass(basemodel, CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name, cls);
 					UploadApp.baseRepository.setBaseOntModel(basemodel);
 					
 				} catch (Exception e) {
@@ -914,10 +893,10 @@ public class OKCoController {
 			try {
 
 				//Validate and update list
-				CompleterApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);;
+				CompleterApp.updateAddingToLists(CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name);;
 
 				//Instance selected update
-				instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), instanceSelected .uri);
+				CompleterApp.instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), CompleterApp.instanceSelected .uri);
 
 			} catch (Exception e) {
 
@@ -927,7 +906,7 @@ public class OKCoController {
 				//Remove all created
 				for (String clsAux : listCls) {
 					OntModel basemodel = UploadApp.getBaseModel();
-					FactoryUtil.deleteIndividualOfClass(basemodel, instanceSelected.ns + instanceSelected.name, clsAux);
+					FactoryUtil.deleteIndividualOfClass(basemodel, CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name, clsAux);
 					UploadApp.baseRepository.setBaseOntModel(basemodel);
 				}
 
@@ -935,13 +914,13 @@ public class OKCoController {
 				CompleterApp.updateLists();
 
 				//Instance selected update
-				instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), instanceSelected .uri);
+				CompleterApp.instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), CompleterApp.instanceSelected .uri);
 
 				return dtoResult;
 			}	
 
 			//Add on list modified instances
-			CompleterApp.ListModifiedInstances.add(instanceSelected.ns + instanceSelected.name);
+			CompleterApp.ListModifiedInstances.add(CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name);
 
 			//Update list instances modified
 			CompleterApp.updateModifiedList();
@@ -959,7 +938,7 @@ public class OKCoController {
 	@RequestMapping(value="/classifyInstanceProperty", method = RequestMethod.POST)
 	public @ResponseBody DtoResult classifyInstanceProperty(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
 
-		DtoPropertyAndSubProperties dtoSpec = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, dto.arraySubProp);
+		DtoPropertyAndSubProperties dtoSpec = DtoPropertyAndSubProperties.getInstance(CompleterApp.ListSpecializationProperties, dto.arraySubProp);
 
 		DtoResult dtoResult = new DtoResult();
 		String separatorValues = "%&&%";
@@ -982,12 +961,12 @@ public class OKCoController {
 					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY)){
 						//Case data property
 						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], instanceSelected.ns + instanceSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
+						basemodel = FactoryUtil.createRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
 						UploadApp.baseRepository.setBaseOntModel(basemodel);						
 					}else{
 						//Case object property
 						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createObjectProperty(basemodel,instanceSelected.ns + instanceSelected.name,subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName);
+						basemodel = FactoryUtil.createObjectProperty(basemodel, CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name,subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName);
 						UploadApp.baseRepository.setBaseOntModel(basemodel);						
 					}
 					
@@ -1002,10 +981,10 @@ public class OKCoController {
 			try {
 				
 				//Validate and update list
-				CompleterApp.updateAddingToLists(instanceSelected.ns + instanceSelected.name);
+				CompleterApp.updateAddingToLists(CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name);
 
 				//Instance selected update
-				instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), instanceSelected .uri);
+				CompleterApp.instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), CompleterApp.instanceSelected .uri);
 
 			} catch (Exception e) {
 
@@ -1018,12 +997,12 @@ public class OKCoController {
 					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY)){						
 						//Case data property
 						OntModel basemodel = UploadApp.getBaseModel();
-						FactoryUtil.deleteRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], instanceSelected.ns + instanceSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
+						FactoryUtil.deleteRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
 						UploadApp.baseRepository.setBaseOntModel(basemodel);
 					}else{
 						//Case object property
 						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createObjectProperty(basemodel, instanceSelected.ns + instanceSelected.name, subRelAux,dtoSpec.iTargetNs + dtoSpec.iTargetName);
+						basemodel = FactoryUtil.createObjectProperty(basemodel, CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name, subRelAux,dtoSpec.iTargetNs + dtoSpec.iTargetName);
 						UploadApp.baseRepository.setBaseOntModel(basemodel);
 					}
 				}
@@ -1032,13 +1011,13 @@ public class OKCoController {
 				CompleterApp.updateLists();
 
 				//Instance selected update
-				instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), instanceSelected .uri);
+				CompleterApp.instanceSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), CompleterApp.instanceSelected .uri);
 
 				return dtoResult;
 			}			  
 
 			//Add on list modified instances
-			CompleterApp.ListModifiedInstances.add(instanceSelected.ns + instanceSelected.name);
+			CompleterApp.ListModifiedInstances.add(CompleterApp.instanceSelected.ns + CompleterApp.instanceSelected.name);
 
 			//Update list instances modified
 			CompleterApp.updateModifiedList();
@@ -1058,7 +1037,7 @@ public class OKCoController {
 
 		if(uriProperty != null)
 		{
-			DtoPropertyAndSubProperties dto = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, uriProperty);
+			DtoPropertyAndSubProperties dto = DtoPropertyAndSubProperties.getInstance(CompleterApp.ListSpecializationProperties, uriProperty);
 			if(dto == null){
 
 				return null;
@@ -1067,14 +1046,14 @@ public class OKCoController {
 
 				boolean haveNext = false;
 				boolean havePrev = false;
-				DtoPropertyAndSubProperties dtoNext = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, ListSpecializationProperties.get(ListSpecializationProperties.indexOf(dto)+1).Property);
-				DtoPropertyAndSubProperties dtoPrev= DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, ListSpecializationProperties.get(ListSpecializationProperties.indexOf(dto)-1).Property);
+				DtoPropertyAndSubProperties dtoNext = DtoPropertyAndSubProperties.getInstance(CompleterApp.ListSpecializationProperties, CompleterApp.ListSpecializationProperties.get(CompleterApp.ListSpecializationProperties.indexOf(dto)+1).Property);
+				DtoPropertyAndSubProperties dtoPrev= DtoPropertyAndSubProperties.getInstance(CompleterApp.ListSpecializationProperties, CompleterApp.ListSpecializationProperties.get(CompleterApp.ListSpecializationProperties.indexOf(dto)-1).Property);
 				if(dtoNext != null)
 					haveNext = true;
 				if(dtoPrev != null)
 					havePrev = true;
 
-				DtoGetPrevNextSpecProperty data = new DtoGetPrevNextSpecProperty(instanceSelected.name, instanceSelected.ns, dto, haveNext, havePrev);				  
+				DtoGetPrevNextSpecProperty data = new DtoGetPrevNextSpecProperty(CompleterApp.instanceSelected.name, CompleterApp.instanceSelected.ns, dto, haveNext, havePrev);				  
 				return data;
 			}
 		}

@@ -6,8 +6,8 @@ import java.util.List;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
-import br.com.padtec.common.dto.EnumRelationTypeCompletness;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.types.OntCardinalityEnum;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 import br.ufes.inf.padtec.tnokco.controller.ManagerInstances;
 
@@ -62,7 +62,7 @@ public class ApplicationQueryUtil {
 					dto.Relation = triple[1];
 					dto.Target = triple[2];
 					dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
-					dto.TypeCompletness = EnumRelationTypeCompletness.SOME;
+					dto.TypeCompletness = OntCardinalityEnum.SOME;
 				}
 				
 				//relations URI minimum cardinality values
@@ -74,7 +74,7 @@ public class ApplicationQueryUtil {
 					dto.Cardinality = triple[2];
 					dto.Target = triple[3];
 					dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
-					dto.TypeCompletness = EnumRelationTypeCompletness.MIN;
+					dto.TypeCompletness = OntCardinalityEnum.MIN;
 				}
 				
 				//relations URI maximum cardinality values
@@ -86,7 +86,7 @@ public class ApplicationQueryUtil {
 					dto.Cardinality = triple[2];
 					dto.Target = triple[3];
 					dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
-					dto.TypeCompletness = EnumRelationTypeCompletness.MAX;
+					dto.TypeCompletness = OntCardinalityEnum.MAX;
 				}	
 				
 				//relations URI exact cardinality values
@@ -98,7 +98,7 @@ public class ApplicationQueryUtil {
 					dto.Cardinality = triple[2];
 					dto.Target = triple[3];
 					dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
-					dto.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
+					dto.TypeCompletness = OntCardinalityEnum.EXACTLY;
 				}						
 				
 				
@@ -139,7 +139,7 @@ public class ApplicationQueryUtil {
 						dto.Relation = triple[1];
 						dto.Target = triple[2];
 						dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
-						dto.TypeCompletness = EnumRelationTypeCompletness.SOME;
+						dto.TypeCompletness = OntCardinalityEnum.SOME;
 					}
 					
 					//relations URI minimum cardinality values
@@ -151,7 +151,7 @@ public class ApplicationQueryUtil {
 						dto.Cardinality = triple[2];
 						dto.Target = triple[3];
 						dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
-						dto.TypeCompletness = EnumRelationTypeCompletness.MIN;
+						dto.TypeCompletness = OntCardinalityEnum.MIN;
 					}
 					
 					//relations URI maximum cardinality values
@@ -163,7 +163,7 @@ public class ApplicationQueryUtil {
 						dto.Cardinality = triple[2];
 						dto.Target = triple[3];
 						dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
-						dto.TypeCompletness = EnumRelationTypeCompletness.MAX;
+						dto.TypeCompletness = OntCardinalityEnum.MAX;
 					}	
 					
 					//relations URI exact cardinality values
@@ -175,7 +175,7 @@ public class ApplicationQueryUtil {
 						dto.Cardinality = triple[2];
 						dto.Target = triple[3];
 						dto.PropertyType = QueryUtil.getPropertyURIType(InfModel, dto.Relation);
-						dto.TypeCompletness = EnumRelationTypeCompletness.EXACTLY;
+						dto.TypeCompletness = OntCardinalityEnum.EXACTLY;
 					}						
 					
 					resultListDefinitions.addAll(dtoSomeRelationsList);

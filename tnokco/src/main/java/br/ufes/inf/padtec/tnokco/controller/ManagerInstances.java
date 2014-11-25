@@ -9,12 +9,12 @@ import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
-import br.com.padtec.common.dto.EnumRelationTypeCompletness;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.OntModelAPI;
-import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.types.OntCardinalityEnum;
+import br.com.padtec.common.types.OntPropertyEnum;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -67,7 +67,7 @@ public class ManagerInstances {
 				{					
 					//---SOME---//
 					
-					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.SOME))
+					if(dto.TypeCompletness.equals(OntCardinalityEnum.SOME))
 					{
 						boolean existInstanceTarget = QueryUtil.existsIndividualsAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if(existInstanceTarget)
@@ -103,7 +103,7 @@ public class ManagerInstances {
 					
 					//---MIN---//
 					
-					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.MIN))
+					if(dto.TypeCompletness.equals(OntCardinalityEnum.MIN))
 					{
 						int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if (quantityInstancesTarget < Integer.parseInt(dto.Cardinality))	//Min restriction
@@ -134,7 +134,7 @@ public class ManagerInstances {
 					
 					//---MAX---//
 					
-					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.MAX))
+					if(dto.TypeCompletness.equals(OntCardinalityEnum.MAX))
 					{
 						int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if (quantityInstancesTarget > Integer.parseInt(dto.Cardinality))	//Max restriction
@@ -165,7 +165,7 @@ public class ManagerInstances {
 					
 					//---EXACLTY---//
 					
-					if(dto.TypeCompletness.equals(EnumRelationTypeCompletness.EXACTLY))
+					if(dto.TypeCompletness.equals(OntCardinalityEnum.EXACTLY))
 					{
 						int quantityInstancesTarget =QueryUtil.countIndividualsURIAtPropertyRange(infModel, instanceName, dto.Relation, dto.Target);
 						if (quantityInstancesTarget != Integer.parseInt(dto.Cardinality))	//Exactly restriction
@@ -530,11 +530,11 @@ public class ManagerInstances {
 		return model;
 	}
 
-	public ArrayList<DtoDefinitionClass> removeRepeatValuesOn(DtoInstance instanceSelected, EnumRelationTypeCompletness type) {
+	public ArrayList<DtoDefinitionClass> removeRepeatValuesOn(DtoInstance instanceSelected, OntCardinalityEnum type) {
 
 		ArrayList<DtoDefinitionClass> listDefinition = new ArrayList<DtoDefinitionClass>();
 		
-		if(type.equals(EnumRelationTypeCompletness.SOME))
+		if(type.equals(OntCardinalityEnum.SOME))
 		{
 			for (DtoDefinitionClass dto : instanceSelected.ListSome) 
 			{				
@@ -554,7 +554,7 @@ public class ManagerInstances {
 				}			
 			}
 			
-		} else if(type.equals(EnumRelationTypeCompletness.MIN))
+		} else if(type.equals(OntCardinalityEnum.MIN))
 		{
 			for (DtoDefinitionClass dto : instanceSelected.ListMin) 
 			{			
@@ -576,7 +576,7 @@ public class ManagerInstances {
 				}			
 			}
 			
-		} else  if(type.equals(EnumRelationTypeCompletness.MAX))
+		} else  if(type.equals(OntCardinalityEnum.MAX))
 		{
 			for (DtoDefinitionClass dto : instanceSelected.ListMax) 
 			{			
@@ -598,7 +598,7 @@ public class ManagerInstances {
 				}			
 			}
 			
-		} else if(type.equals(EnumRelationTypeCompletness.EXACTLY))
+		} else if(type.equals(OntCardinalityEnum.EXACTLY))
 		{
 			for (DtoDefinitionClass dto : instanceSelected.ListExactly) 
 			{			

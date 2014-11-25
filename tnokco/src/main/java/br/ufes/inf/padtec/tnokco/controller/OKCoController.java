@@ -29,10 +29,10 @@ import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
-import br.com.padtec.common.dto.EnumRelationTypeCompletness;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.types.OntCardinalityEnum;
+import br.com.padtec.common.types.OntPropertyEnum;
 import br.inf.nemo.padtec.graphplotting.GraphPlotting;
 import br.inf.nemo.padtec.wokco.WOKCOGraphPlotting;
 
@@ -94,10 +94,10 @@ public class OKCoController {
 
 		// ----- Remove repeat values -------- //
 
-		ArrayList<DtoDefinitionClass> listSomeClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.SOME);
-		ArrayList<DtoDefinitionClass> listMinClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MIN);	
-		ArrayList<DtoDefinitionClass> listMaxClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.MAX);
-		ArrayList<DtoDefinitionClass> listExactlyClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, EnumRelationTypeCompletness.EXACTLY);	
+		ArrayList<DtoDefinitionClass> listSomeClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, OntCardinalityEnum.SOME);
+		ArrayList<DtoDefinitionClass> listMinClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, OntCardinalityEnum.MIN);	
+		ArrayList<DtoDefinitionClass> listMaxClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, OntCardinalityEnum.MAX);
+		ArrayList<DtoDefinitionClass> listExactlyClassDefinition = HomeController.ManagerInstances.removeRepeatValuesOn(instanceSelected, OntCardinalityEnum.EXACTLY);	
 
 		// ------ Complete classes list ------//
 
@@ -244,24 +244,24 @@ public class OKCoController {
 
 		//Search for the definition class correctly
 		dtoSelected = DtoDefinitionClass.get(instance.ListSome,uriProperty);
-		EnumRelationTypeCompletness typeRelation = EnumRelationTypeCompletness.SOME;
+		OntCardinalityEnum typeRelation = OntCardinalityEnum.SOME;
 
 		if(dtoSelected == null){
 			dtoSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
-			typeRelation = EnumRelationTypeCompletness.MIN;
+			typeRelation = OntCardinalityEnum.MIN;
 		}
 		if(dtoSelected == null){
 			dtoSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
-			typeRelation = EnumRelationTypeCompletness.MAX;
+			typeRelation = OntCardinalityEnum.MAX;
 		}
 		if(dtoSelected == null){
 			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
-			typeRelation = EnumRelationTypeCompletness.EXACTLY;
+			typeRelation = OntCardinalityEnum.EXACTLY;
 		}		
 
 		if(type.equals("object"))
 		{
-			if(typeRelation.equals(EnumRelationTypeCompletness.SOME))
+			if(typeRelation.equals(OntCardinalityEnum.SOME))
 			{
 				//create the the new instance
 				String instanceName = dtoSelected.Target.split("#")[1] + "-" + (QueryUtil.getIndividualsURI( HomeController.InfModel, dtoSelected.Target).size() + 1);
@@ -282,7 +282,7 @@ public class OKCoController {
 					e.printStackTrace();
 				}
 
-			} else if(typeRelation.equals(EnumRelationTypeCompletness.MIN))
+			} else if(typeRelation.equals(OntCardinalityEnum.MIN))
 			{
 				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);
 
@@ -312,7 +312,7 @@ public class OKCoController {
 					quantityInstancesTarget ++;
 				}				
 
-			} else if(typeRelation.equals(EnumRelationTypeCompletness.EXACTLY))
+			} else if(typeRelation.equals(OntCardinalityEnum.EXACTLY))
 			{
 				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(HomeController.InfModel, instance.ns + instance.name, dtoSelected.Relation, dtoSelected.Target);				
 
@@ -352,7 +352,7 @@ public class OKCoController {
 
 				}
 
-			} else if(typeRelation.equals(EnumRelationTypeCompletness.MAX))
+			} else if(typeRelation.equals(OntCardinalityEnum.MAX))
 			{
 
 			}

@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="br.com.padtec.common.dto.DtoInstance"%>
 <%@ page import="br.com.padtec.common.dto.DtoCompleteClass"%>
-<%@ page import="br.com.padtec.common.queries.OntPropertyEnum"%>
+<%@ page import="br.com.padtec.common.types.OntPropertyEnum"%>
 <%@ page import="br.com.padtec.common.dto.DtoPropertyAndSubProperties"%>
 <%@ page import="br.com.padtec.common.dto.DtoDefinitionClass"%>
 <%@ page import="br.com.padtec.common.dto.DtoInstanceRelation"%>
@@ -221,7 +221,7 @@
 							<%
 								for(String iName: instance.ListSameInstances)
 																							{																			
-																								DtoInstance i = CompleterApp.ManagerInstances.getInstance(ListAllInstances, iName);																			
+																								DtoInstance i = CompleterApp.getInstance(ListAllInstances, iName);																			
 																								out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
 																							}
 							%>
@@ -236,7 +236,7 @@
 							<%
 								for(String iName: instance.ListDiferentInstances)
 																							{
-																								DtoInstance i = CompleterApp.ManagerInstances.getInstance(ListAllInstances, iName);																			
+																								DtoInstance i = CompleterApp.getInstance(ListAllInstances, iName);																			
 																								out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
 																							}
 							%>

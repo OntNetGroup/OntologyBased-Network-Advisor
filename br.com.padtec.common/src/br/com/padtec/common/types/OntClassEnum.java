@@ -1,4 +1,4 @@
-package br.com.padtec.common.queries;
+package br.com.padtec.common.types;
 
 public enum OntClassEnum {
 	INTERSECTION_CLASS, ENUMERATED_CLASS, COMPLEMENT_CLASS, UNION_CLASS, 

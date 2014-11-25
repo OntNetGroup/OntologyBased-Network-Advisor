@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.padtec.common.application.ManagerInstances;
 import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
@@ -65,9 +64,7 @@ public class CompleteRelationsUtility {
 		{
 			System.out.println("Namespace não definido");
 		}
-		
-	  	ManagerInstances managerInstances = new ManagerInstances();
-	  	
+			  	 	
 	  	//Call reasoner
 	  	InfModel infModel;
 	  	if(Reasoner == null)
@@ -79,7 +76,7 @@ public class CompleteRelationsUtility {
 	  	
 	  	// --------------------------------------- AQUI ---------------------------------- //
 	  	
-	  	ManagerRelations mRelations = new ManagerRelations(managerInstances);
+	  	ManagerRelations mRelations = new ManagerRelations();
 	  	model = mRelations.EnforceSubRelation(model, infModel, ns);
 	  	
 	  	// --------------------------------------- AQUI ---------------------------------- //
@@ -97,11 +94,11 @@ public class CompleteRelationsUtility {
 
 class ManagerRelations {
 	
-	ManagerInstances manager;
 	
-	ManagerRelations(ManagerInstances manager)
+	
+	ManagerRelations()
 	{		
-		this.manager = manager;
+		
 	}
 	
 	OntModel EnforceSubRelation(OntModel model, InfModel infModel, String NS)

@@ -2,7 +2,7 @@ package br.com.padtec.common.dto;
 
 import java.util.ArrayList;
 
-import br.com.padtec.common.queries.OntPropertyEnum;
+import br.com.padtec.common.types.OntPropertyEnum;
 
 public class DtoPropertyAndSubProperties {
 	

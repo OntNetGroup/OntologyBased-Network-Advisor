@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import br.com.padtec.common.application.ManagerInstances;
+import br.com.padtec.common.application.CompleterApp;
 import br.com.padtec.common.dto.DtoCompleteClass;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.simple.SimpleDtoClass;
@@ -15,11 +15,11 @@ import br.com.padtec.common.dto.simple.SimpleDtoInstance;
 import br.com.padtec.common.dto.simple.SimpleDtoRelation;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
-import br.com.padtec.common.queries.OntPropertyEnum;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.reasoning.HermitReasonerImpl;
 import br.com.padtec.common.reasoning.OntologyReasoner;
 import br.com.padtec.common.reasoning.PelletReasonerImpl;
+import br.com.padtec.common.types.OntPropertyEnum;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -84,8 +84,6 @@ public class OKCoFeatures {
 				return dtoResult;
 			}
 			
-		  	ManagerInstances managerInstances = new ManagerInstances();
-		  	
 		  	//Call reasoner
 		  	InfModel infModel;
 		  	if(Reasoner == null)
@@ -104,8 +102,8 @@ public class OKCoFeatures {
 						
 			// Organize data (Update the list of all instances)
 			
-	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
-			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+		  	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+		  	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			//build the return instances
 			for (br.com.padtec.common.dto.DtoInstance i : ListAllInstances) 
@@ -243,9 +241,7 @@ public class OKCoFeatures {
 				dtoResult.ListErrors.add("ERROR: Please select owl file with defined namespace.");
 				return dtoResult;
 			}
-			
-		  	ManagerInstances managerInstances = new ManagerInstances();
-		  	
+					  	
 		  	//Call reasoner
 		  	InfModel infModel;
 		  	if(Reasoner == null)
@@ -268,8 +264,8 @@ public class OKCoFeatures {
 			
 			// Organize data (Update the list of all instances)
 			
-	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
-			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+		  	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 												Complete instances
@@ -282,7 +278,7 @@ public class OKCoFeatures {
 				if(strength.equals("FULL"))
 				{
 					//Classify instance classes
-					model = managerInstances.ClassifyInstanceAuto(instance, model, infModel);
+					model = CompleterApp.ClassifyInstanceAuto(model,infModel,instance);
 				}
 				
 				for (DtoDefinitionClass dto : instance.ListSome) 
@@ -365,8 +361,8 @@ public class OKCoFeatures {
 			
 			// Organize data (Update the list of all instances)
 			
-	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
-			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+	    	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 											Build the return instances
@@ -518,8 +514,6 @@ public class OKCoFeatures {
 				dtoResult.ListErrors.add("ERROR: Please select an owl file with defined namespace.");
 				return dtoResult;
 			}
-
-		  	ManagerInstances managerInstances = new ManagerInstances();
 		  	
 		  	//Call reasoner
 		  	InfModel infModel;
@@ -541,8 +535,8 @@ public class OKCoFeatures {
 			
 			// Organize data (Update the list of all instances)
 			
-	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
-			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+	    	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 												Complete instances
@@ -557,7 +551,7 @@ public class OKCoFeatures {
 					if(strength.equals("FULL"))
 					{
 						//Classify instance classes
-						model = managerInstances.ClassifyInstanceAuto(instance, model, infModel);
+						model = CompleterApp.ClassifyInstanceAuto(model, infModel,instance);
 					}
 					
 					for (DtoDefinitionClass dto : instance.ListSome) 
@@ -641,8 +635,8 @@ public class OKCoFeatures {
 			
 			// Organize data (Update the list of all instances)
 			
-	    	managerInstances.UpdateInstanceAndRelations(ListAllInstances, ModelDefinitions, model, infModel, ns);
-			managerInstances.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+		  	CompleterApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	CompleterApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 											Build the return instances

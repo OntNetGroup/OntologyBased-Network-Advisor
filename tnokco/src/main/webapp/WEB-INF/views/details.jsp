@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="br.com.padtec.common.dto.DtoInstance"%>
 <%@ page import="br.com.padtec.common.dto.DtoCompleteClass"%>
-<%@ page import="br.com.padtec.common.queries.OntPropertyEnum"%>
+<%@ page import="br.com.padtec.common.types.OntPropertyEnum"%>
 <%@ page import="br.com.padtec.common.dto.DtoPropertyAndSubProperties"%>
 <%@ page import="br.com.padtec.common.dto.DtoDefinitionClass"%>
 <%@ page import="br.com.padtec.common.dto.DtoInstanceRelation"%>

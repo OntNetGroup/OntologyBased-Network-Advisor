@@ -45,12 +45,16 @@ public class DtoFactoryUtil {
 		return FactoryUtil.deleteIndividual(model, individual.ns+individual.name);
 	}
 	
-	static public List<DtoInstance> intersection(List<DtoInstance> listAllInstances, List<String> listInstancesName) 
+	//=======================================================
+	// Utility methods for manipulating a list of data transfer objects
+	//=======================================================
+	
+	static public List<DtoInstance> intersection(List<DtoInstance> individualsList, List<String> individualsURIs) 
 	{
 		List<DtoInstance> list = new ArrayList<DtoInstance>();		
-		for (String iName : listInstancesName) 
+		for (String iName : individualsURIs) 
 		{			
-			for (DtoInstance instance : listAllInstances) 
+			for (DtoInstance instance : individualsList) 
 			{				
 				if(iName.equals(instance.ns + instance.name))
 				{
@@ -61,4 +65,70 @@ public class DtoFactoryUtil {
 		}		
 		return list;
 	}
+	
+	static public List<DtoDefinitionClass> removeRepeatedInSomeDefinition(DtoInstance individualDto)
+	{
+		ArrayList<DtoDefinitionClass> result = new ArrayList<DtoDefinitionClass>();
+		for (DtoDefinitionClass dto : individualDto.ListSome) 
+		{				
+			boolean exist = false;
+			for (DtoDefinitionClass dto2 : result) 
+			{
+				if(dto.sameAs(dto2)){exist = true; break; }
+			}			
+			if(!exist){ result.add(dto); }			
+		}
+		return result;
+	}
+	
+	static public List<DtoDefinitionClass> removeRepeatedInMinDefinition(DtoInstance individualDto)
+	{
+		ArrayList<DtoDefinitionClass> result = new ArrayList<DtoDefinitionClass>();
+		for (DtoDefinitionClass dto : individualDto.ListMin) 
+		{				
+			boolean exist = false;
+			for (DtoDefinitionClass dto2 : result) 
+			{
+				//Doesn't compare the source
+				if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
+				{ exist = true; break; }
+			}			
+			if(!exist){ result.add(dto); }			
+		}
+		return result;
+	}
+
+	static public List<DtoDefinitionClass> removeRepeatedInMaxDefinition(DtoInstance individualDto)
+	{
+		ArrayList<DtoDefinitionClass> result = new ArrayList<DtoDefinitionClass>();
+		for (DtoDefinitionClass dto : individualDto.ListMax) 
+		{				
+			boolean exist = false;
+			for (DtoDefinitionClass dto2 : result) 
+			{
+				//Doesn't compare the source
+				if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
+				{ exist = true; break; }
+			}			
+			if(!exist){ result.add(dto); }			
+		}
+		return result;
+	}	
+	
+	static public List<DtoDefinitionClass> removeRepeatedInExactDefinition(DtoInstance individualDto)
+	{
+		ArrayList<DtoDefinitionClass> result = new ArrayList<DtoDefinitionClass>();
+		for (DtoDefinitionClass dto : individualDto.ListExactly) 
+		{				
+			boolean exist = false;
+			for (DtoDefinitionClass dto2 : result) 
+			{
+				//Doesn't compare the source
+				if(dto.Relation == dto2.Relation && dto.Target == dto2.Target && dto.Cardinality.equals(dto2.Cardinality) && dto.PropertyType.equals(dto2.PropertyType))					
+				{ exist = true; break; }
+			}			
+			if(!exist){ result.add(dto); }			
+		}
+		return result;
+	}	
 }
