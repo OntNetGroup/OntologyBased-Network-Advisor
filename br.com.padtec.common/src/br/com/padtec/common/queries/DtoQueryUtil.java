@@ -21,17 +21,36 @@ public class DtoQueryUtil {
 	 * @throws OKCoNameSpaceException
 	 * 
 	 * @author John Guerson
+	 * 
+	 * @param model
+	 * @param clsEager Defines when the classes of an individual must be got eagerly 
+	 * @param diffFromEager Defines when the "different from individuals" of an individual must be got eagerly
+	 * @param sameAsEager Defines when the "same as individuals" of an individual must be got eagerly
 	 */
-	static public List<DtoInstance> getIndividuals(InfModel model) throws OKCoNameSpaceException 
+	static public List<DtoInstance> getIndividuals(InfModel model, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager) throws OKCoNameSpaceException 
 	{		
 		List<DtoInstance> result = new ArrayList<DtoInstance>();				
 		List<String> individualsURIList = QueryUtil.getIndividualsURIFromAllClasses(model);
+		
     	for (String indivURI : individualsURIList)
     	{    		
+    		
     		if(!indivURI.contains("#")){ throw new OKCoNameSpaceException("Entity namespace problem. The " + indivURI +" have to followed by \"#\"."); }
-    		List<String> classesURIList = QueryUtil.getClassesURI(model, indivURI);
-    		List<String> diffURIList = QueryUtil.getIndividualsURIDifferentFrom(model, indivURI);
-    		List<String> sameAsURIList = QueryUtil.getIndividualsURISameAs(model, indivURI);
+    		List<String> classesURIList = null;
+    		List<String> diffURIList = null;
+    		List<String> sameAsURIList = null;
+    		if(classesEager){
+    			System.out.println("Getting classes eagerly");
+    			classesURIList = QueryUtil.getClassesURI(model, indivURI);
+    		}
+    		if(diffFromEager){
+    			System.out.println("Getting \"different from individuals\" eagerly");
+    			diffURIList = QueryUtil.getIndividualsURIDifferentFrom(model, indivURI);
+    		}    		
+    		if(sameAsEager){
+    			System.out.println("Getting \"same as individuals\" eagerly");
+    			sameAsURIList = QueryUtil.getIndividualsURISameAs(model, indivURI);
+    		}    		
     		String nameSpace = indivURI.split("#")[0] + "#";
     		String name = indivURI.split("#")[1];
     		result.add(new DtoInstance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true));
@@ -86,7 +105,7 @@ public class DtoQueryUtil {
 	 */
 	static public List<DtoDefinitionClass> getClassDefinitions(InfModel InfModel) 
 	{		
-		List<DtoInstance> listAllInstances = getIndividuals(InfModel);
+		List<DtoInstance> listAllInstances = getIndividuals(InfModel, true, true, true);
  		System.out.println("\nSearch: Getting model definitions in instances()...");
 		ArrayList<DtoDefinitionClass> resultListDefinitions = new ArrayList<DtoDefinitionClass>();		
 		for (DtoInstance instance : listAllInstances) 

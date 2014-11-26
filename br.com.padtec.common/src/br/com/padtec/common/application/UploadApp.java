@@ -52,6 +52,7 @@ public class UploadApp {
 	public static void uploadBaseModel(InputStream in, String useReasoner, String optReasoner)
 	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
 	{		
+		System.out.println("Cloning repositories...");
 		/** Upload the base model to a base repository */
 		baseRepository = new BaseModelRepositoryImpl();		 
 		baseRepository.readBaseOntModel(in);		 		 			  
@@ -60,21 +61,26 @@ public class UploadApp {
 		/** Keep a temporary model for rollbacking the base model */
 		tempModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 		
+		
 		/** Run the inference if required, otherwise the inferred model is a clone of the base model */
 		if(useReasoner!=null && useReasoner.equals("on"))
-		{	 
-			 if(optReasoner.equals("hermit")) reasoner = new HermitReasonerImpl();				  
-			 else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();				  
-			 else throw new OKCoExceptionReasoner("Please select a reasoner available.");
+		{
+			System.out.println("Running the reasoner");
+			if(optReasoner.equals("hermit")) reasoner = new HermitReasonerImpl();				  
+			else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();				  
+			else throw new OKCoExceptionReasoner("Please select a reasoner available.");
 			 
-			 InfModel inferredModel = reasoner.run(baseRepository);
-			 inferredRepository = new InferredModelRepositoryImpl(inferredModel);
+			System.out.println("Getting infModel");
+			InfModel inferredModel = reasoner.run(baseRepository);
+			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}else{
-			 InfModel  inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
-			 inferredRepository = new InferredModelRepositoryImpl(inferredModel);
+			System.out.println("Getting infModel");
+			InfModel  inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
+			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}
 		
 		/** Fulfill the lists with data from the base ontology */
+		//System.out.println("Updating lists...");
 		OKCoApp.updateLists();
 	}
 		

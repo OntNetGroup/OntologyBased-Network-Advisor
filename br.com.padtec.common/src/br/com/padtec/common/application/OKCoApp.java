@@ -13,6 +13,7 @@ import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
+import br.com.padtec.common.exceptions.OKCoNameSpaceException;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
@@ -41,10 +42,22 @@ public class OKCoApp {
 	/**==========================================================
 	 * Functionalities...
 	 * ==========================================================*/
-	
-	public static List<DtoInstance> getIndividuals()
+	/** 
+	 * Return the list of all individuals from the ontology.
+	 * It returns also all the classes of an individual as well as all the other individuals different and the same as this one.
+	 *  
+	 * @throws OKCoNameSpaceException
+	 * 
+	 * @author John Guerson
+	 * 
+	 * @param model
+	 * @param clsEager Defines when the classes of an individual must be got eagerly 
+	 * @param diffFromEager Defines when the "different from individuals" of an individual must be got eagerly
+	 * @param sameAsEager Defines when the "same as individuals" of an individual must be got eagerly
+	 */
+	public static List<DtoInstance> getIndividuals(Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager)
 	{
-		return DtoQueryUtil.getIndividuals(UploadApp.getInferredModel());
+		return DtoQueryUtil.getIndividuals(UploadApp.getInferredModel(), classesEager, diffFromEager, sameAsEager);
 	}
 	
 	public static List<String> getModifiedIndividuals()
@@ -147,7 +160,7 @@ public class OKCoApp {
 		InfModel inferredModel = UploadApp.getInferredModel();
 		OntModel Model = UploadApp.getBaseModel();
     	// Refresh list of instances
-    	ListAllInstances = DtoQueryUtil.getIndividuals(inferredModel);
+    	ListAllInstances = DtoQueryUtil.getIndividuals(inferredModel, true, true, true);
     	//Get model definitions on list of instances	    	
 	  	ModelDefinitions = DtoQueryUtil.getClassDefinitions(inferredModel);			
 		// Organize data (Update the list of all instances)			
@@ -393,8 +406,11 @@ public class OKCoApp {
 				{
 					dtoP = new DtoPropertyAndSubProperties();
 					dtoP.Property = dtoInstanceRelation.Property;
-					dtoP.iTargetNs = dtoInstanceRelation.Target.split("#")[0] + "#";
-					dtoP.iTargetName = dtoInstanceRelation.Target.split("#")[1];
+					String target = dtoInstanceRelation.Target;
+					if(target != null && !target.equals("")){
+						dtoP.iTargetNs = target.split("#")[0] + "#";
+						dtoP.iTargetName = target.split("#")[1];
+					}
 					dtoP.propertyType = QueryUtil.getPropertyURIType(infModel, dtoInstanceRelation.Property);
 					
 					for (String sub : subPropertiesWithDomainAndRange) 

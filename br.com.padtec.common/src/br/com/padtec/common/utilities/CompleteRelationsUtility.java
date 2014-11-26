@@ -105,7 +105,7 @@ class ManagerRelations {
 	{			
 		List<DtoInstance> ListAllInstances;
 		// Get all instances			
-		ListAllInstances = DtoQueryUtil.getIndividuals(infModel);			
+		ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);			
 		for (DtoInstance instance : ListAllInstances) 
 		{				
 			List<String> sourceInstanceClasses = QueryUtil.getClassesURI(infModel,instance.ns + instance.name);

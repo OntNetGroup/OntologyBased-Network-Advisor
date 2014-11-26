@@ -54,7 +54,7 @@ public class OKCoController {
 		/** ==================================================
 		 *  List All Individuals and Which were modified
 		 *  =================================================== */
-		List<DtoInstance> allIndividuals = OKCoApp.getIndividuals();			
+		List<DtoInstance> allIndividuals = OKCoApp.getIndividuals(true, false, false);			
 		List<String> modifiedIndividuals = OKCoApp.getModifiedIndividuals();
 		
 		if(allIndividuals != null) {
@@ -87,7 +87,7 @@ public class OKCoController {
 		/** ==================================================
 		 *  List All Individuals
 		 *  =================================================== */
-		List<DtoInstance> allIndividuals = OKCoApp.getIndividuals();
+		List<DtoInstance> allIndividuals = OKCoApp.getIndividuals(true, true, true);
 		request.getSession().setAttribute("listInstances", allIndividuals);
 		
 		/** ==================================================
@@ -165,7 +165,7 @@ public class OKCoController {
 			/** ==================================================
 			 *  List All Individuals
 			 *  =================================================== */
-			List<DtoInstance> allIndividuals = OKCoApp.getIndividuals();
+			List<DtoInstance> allIndividuals = OKCoApp.getIndividuals(true, true, true);
 			request.getSession().setAttribute("listInstances", allIndividuals);
 			
 			return "completePropertyObject";

@@ -95,7 +95,7 @@ public class OKCoFeatures {
 		  	
 		  	//get instances
 		  	
-		  	List<br.com.padtec.common.dto.DtoInstance> ListAllInstances = DtoQueryUtil.getIndividuals(infModel);
+		  	List<br.com.padtec.common.dto.DtoInstance> ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 	  	  
 		  	// Gets definitions on model
 		  	List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
@@ -256,7 +256,7 @@ public class OKCoFeatures {
 												Update List instances
 			//--------------------------------------------------------------------------------------------- */
 		  	
-		  	List<br.com.padtec.common.dto.DtoInstance> ListAllInstances = DtoQueryUtil.getIndividuals(infModel);
+		  	List<br.com.padtec.common.dto.DtoInstance> ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 	  	  
 		  	// Gets definitions on model
 		  	List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
@@ -354,7 +354,7 @@ public class OKCoFeatures {
 											Update List instances
 			//--------------------------------------------------------------------------------------------- */
 
-			ListAllInstances = DtoQueryUtil.getIndividuals(infModel);
+			ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 		  	  
 		  	// Gets definitions on model
 		  	ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);		
@@ -528,7 +528,7 @@ public class OKCoFeatures {
 												Update List instances
 			//--------------------------------------------------------------------------------------------- */
 		  	
-		  	List<br.com.padtec.common.dto.DtoInstance> ListAllInstances = DtoQueryUtil.getIndividuals(infModel);
+		  	List<br.com.padtec.common.dto.DtoInstance> ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 		  	  
 		  	// Gets definitions on model
 		  	List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
@@ -628,7 +628,7 @@ public class OKCoFeatures {
 											Update List instances
 			//--------------------------------------------------------------------------------------------- */
 
-			ListAllInstances = DtoQueryUtil.getIndividuals(infModel);
+			ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 		  	  
 		  	// Gets definitions on model
 		  	ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			

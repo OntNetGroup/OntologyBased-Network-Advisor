@@ -263,11 +263,21 @@
 							<%
 						  		for(DtoInstanceRelation dto : InstanceListRelations)
 						  		{
+						  			String x = dto.Property;
+							  		String split1 = ""; 
+							  		if(x != null && !x.equals("")){
+							  			split1 = dto.Property.split("#")[1];
+							  		}
 						  			if(dto.Target.contains("^^"))
 						  			{
-						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + dto.Property.split("#")[1] + " -> " + dto.Target.split("\\^\\^")[0] + "</li>");
+						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + split1 + " -> " + dto.Target.split("\\^\\^")[0] + "</li>");
 						  			}else{
-						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + dto.Property.split("#")[1] + " -> " + dto.Target.split("#")[1] + "</li>");
+						  				String y = dto.Target;
+								  		String split2 = ""; 
+								  		if(y != null && !y.equals("")){
+								  			split2 = dto.Target.split("#")[1];
+								  		}						  				
+						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + split1 + " -> " + split2 + "</li>");
 						  			}
 						  		}
 							%>
@@ -591,9 +601,21 @@
 												  		
 													  		//out.println("<td title=\"" + dto.Source + "\">" + dto.Source.split("#")[1] + "</td>");
 													  		out.println("<td title=\"" + instance.ns + instance.name + "\">" + instance.name + "</td>");
-													  		out.println("<td title=\"" + dto.Relation + "\">" + dto.Relation.split("#")[1] + "</td>");
+													  		String x = dto.Relation;
+													  		String split1 = ""; 
+													  		if(x != null && !x.equals("")){
+													  			split1 = dto.Relation.split("#")[1];
+													  		}
+													  		out.println("<td title=\"" + dto.Relation + "\">" + split1 + "</td>");
 													  		out.println("<td>" + "SOME" + "</td>");
-													  		out.println("<td title=\"" + dto.Target + "\">" + dto.Target.split("#")[1] + "</td>");									  									  		
+													  		
+													  		split1 = "";
+													  		x = dto.Target;
+													  		if(x != null && !x.equals("")){
+													  			split1 = dto.Relation.split("#")[1];
+													  		}
+													  		
+													  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");									  									  		
 													  		out.println("<td class=\"center\">" + 
 													  						"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\"></i> </a>" + "&nbsp;" +
 													  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-cogs\"></i> </a>" +
