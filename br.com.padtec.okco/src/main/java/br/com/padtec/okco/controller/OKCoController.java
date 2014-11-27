@@ -55,7 +55,7 @@ public class OKCoController {
 		 *  =================================================== */
 		List<DtoInstance> allIndividuals = OKCoApp.getIndividuals(true, false, false);			
 		List<String> modifiedIndividuals = OKCoApp.getModifiedIndividuals();
-		
+
 		if(allIndividuals != null) {
 			request.getSession().setAttribute("listInstances", allIndividuals);
 			request.getSession().setAttribute("listModifedInstances", modifiedIndividuals);

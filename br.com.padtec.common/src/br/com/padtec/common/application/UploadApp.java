@@ -81,7 +81,7 @@ public class UploadApp {
 		
 		/** Fulfill the lists with data from the base ontology */
 		//System.out.println("Updating lists...");
-		OKCoApp.updateLists();
+		//OKCoApp.updateLists();
 	}
 		
 	public static BaseModelRepository getBaseRepository() { return baseRepository; }	
