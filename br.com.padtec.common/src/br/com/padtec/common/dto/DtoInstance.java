@@ -38,14 +38,19 @@ public class DtoInstance implements Serializable {
 			this.uriEncoded = URLEncoder.encode(this.uri, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-		}
-		this.ListClasses = listClasses;
+		}		
 		this.ListCompleteClasses = new ArrayList<DtoCompleteClass>();
 		this.ListSpecializationProperties = new ArrayList<DtoPropertyAndSubProperties>();
 		this.ListSome = new ArrayList<DtoDefinitionClass>();
 		this.ListMin = new ArrayList<DtoDefinitionClass>();
 		this.ListMax = new ArrayList<DtoDefinitionClass>();
 		this.ListExactly = new ArrayList<DtoDefinitionClass>();
+		if (listClasses == null)
+		{
+			this.ListClasses = new ArrayList<String>();
+		}else{
+			this.ListClasses = new ArrayList<String>(listClasses);
+		}
 		if (listSame == null)
 		{
 			this.ListSameInstances = new ArrayList<String>();

@@ -253,10 +253,30 @@ public class DtoQueryUtil {
 				resultListDefinitions.addAll(dtoMaxRelationsList);
 				resultListDefinitions.addAll(dtoExactlyRelationsList);
 			}		
-		}
-		//Add to list of intances
-		//listAllInstances.add(Instance);		
-		//return
+		}				
 		return resultListDefinitions;
 	}
+	
+	/**
+	 * Return all the individuals transfer objects that are in the range of the given propertyURI as instance of rangeClassURI and connected to the individualURI.
+	 * This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param individualURI: Individual URI
+	 * @param propertyURI: Property URI
+	 * @param rangeClassURI: Rande Class URI
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<DtoInstance> getIndividualsAtObjectPropertyRange(InfModel model, String individualURI, String propertyURI, String rangeClassURI)
+	{
+		List<DtoInstance> result = new ArrayList<DtoInstance>();
+		List<String> individualsURIs = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, individualURI, propertyURI,rangeClassURI);
+		for(String uri: individualsURIs)
+		{
+			DtoInstance dtoInstance = getIndividual(model, uri);
+			if(dtoInstance!=null) result.add(dtoInstance);
+		}
+		return result;
+	}		
 }

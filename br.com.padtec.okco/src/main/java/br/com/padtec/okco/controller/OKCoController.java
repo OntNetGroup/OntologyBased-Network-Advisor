@@ -3,7 +3,6 @@ package br.com.padtec.okco.controller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +80,7 @@ public class OKCoController {
 	@RequestMapping(method = RequestMethod.GET, value="/details")
 	public String details(@RequestParam("uri") String uri, HttpServletRequest request) 
 	{
-		/** Decode URI FIrst */
+		/** Decode URI First */
 		uri = decodeURI(uri);
 		
 		/** ==================================================
@@ -119,279 +118,171 @@ public class OKCoController {
 		
 		return "details";
 	}
-
-	//==================================================================
-	//==================================================================
-	//==================================================================
-	//==================================================================
-	//==================================================================
-	
+		
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
 	public String completeProperty(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) 
 	{		
-		//Instance selected
-		DtoInstance instance = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uriInstance);
+		/** Decode URIs First */
+		uriProperty = decodeURI(uriProperty);		
+		uriInstance = decodeURI(uriInstance);
+		
+		/** ==================================================
+		 * Select a Specific Individual
+		 *  =================================================== */
+		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uriInstance);
+		request.getSession().setAttribute("instanceSelected", selectedIndividual);
 
-		//Search for the definition class correctly
+		/** ==================================================
+		 * Select a Specific class definition from the selected individual
+		 *  =================================================== */
+		DtoDefinitionClass classDefinitionSelected = OKCoApp.selectDefinitionFromSelected(uriProperty);
+		request.getSession().setAttribute("definitionSelected", classDefinitionSelected);
 
-		OKCoApp.definitionClassSelected = DtoDefinitionClass.get(instance.ListSome, uriProperty);
-		if(OKCoApp.definitionClassSelected == null)
-			OKCoApp.definitionClassSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
-		if(OKCoApp.definitionClassSelected == null)
-			OKCoApp.definitionClassSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
-		if(OKCoApp.definitionClassSelected == null)
-			OKCoApp.definitionClassSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
-
-		//Create the sections
-
-		request.getSession().setAttribute("definitionSelected", OKCoApp.definitionClassSelected);
-		request.getSession().setAttribute("instanceSelected", instance);
 		request.getSession().setAttribute("propType", propType);
-
 		if(type.equals("object"))
-		{
-			//List auxiliary
-			OKCoApp.listNewInstancesRelation = new ArrayList<DtoInstance>();
-			//Get all instances except the instance selected for Same/Different list		
-			ArrayList<DtoInstance> listInstancesSameDifferent = new ArrayList<DtoInstance>(OKCoApp.ListAllInstances);
-			//get instances with had this relation
-			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);
-			//populate the list of instances with had this relation	    	
-			List<DtoInstance> listInstancesInRelation = DtoFactoryUtil.intersection(OKCoApp.ListAllInstances, listInstancesName);
-
-			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
-			request.getSession().setAttribute("listInstancesSameDifferent", listInstancesSameDifferent);
-			
+		{					
+			/** ==================================================
+			 * List of Individuals that are connected to the Selected Individual through the Selected Class Definition relation
+			 *  =================================================== */
+			List<DtoInstance> individualsInClassDefinition = OKCoApp.getIndividualsAtClassDefinitionRangeSelected();
+			request.getSession().setAttribute("listInstancesInRelation", individualsInClassDefinition);
+						
 			/** ==================================================
 			 *  List All Individuals
 			 *  =================================================== */
 			List<DtoInstance> allIndividuals = OKCoApp.getIndividuals(true, true, true);
 			request.getSession().setAttribute("listInstances", allIndividuals);
 			
+			/** ==================================================
+			 *  List All Individuals Except the Individual Selected for Same/Different List
+			 *  =================================================== */
+			request.getSession().setAttribute("listInstancesSameDifferent", allIndividuals);
+			
 			return "completePropertyObject";
-
-		} else if (type.equals("objectMax"))
+		} 
+		else if (type.equals("objectMax"))
 		{
-			//get instances with had this relation
-			List<String> listInstancesName = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);
-			Collections.sort(listInstancesName);
-
-			//populate the list of instances with had this relation	    	
-			List<DtoInstance> listInstancesInRelation = DtoFactoryUtil.intersection(OKCoApp.ListAllInstances, listInstancesName);
-
-			request.getSession().setAttribute("listInstancesInRelation", listInstancesInRelation);
+			/** ==================================================
+			 * List of Individuals that are connected to the Selected Individual through the Selected Class Definition relation
+			 *  =================================================== */
+			List<DtoInstance> individualsInClassDefinition = OKCoApp.getIndividualsAtClassDefinitionRangeSelected();
+			request.getSession().setAttribute("listInstancesInRelation", individualsInClassDefinition);
+			
 			return "completePropertyObjectMaxCard";
-
-		} else if (type.equals("data"))
+		} 
+		else if (type.equals("data"))
 		{
-			//List auxiliary
-			OKCoApp.listNewDataValuesRelation = new ArrayList<DataPropertyValue>();
-
-			//Get values with this data property
-			List<DataPropertyValue> listValuesInRelation = new ArrayList<DataPropertyValue>();
-			List<String> individualsList = QueryUtil.getIndividualsURIAtObjectPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);
-			for(String individualURI: individualsList){
-				DataPropertyValue data = new DataPropertyValue();
-				data.value = individualURI.split("\\^\\^")[0];
-				data.classValue = OKCoApp.definitionClassSelected.Target;
-				data.existInModel = true;
-				listValuesInRelation.add(data);
-			}
-
+			/** ==================================================
+			 * List of Data Property Values that are connected to the Selected Individual through the Selected Class Definition relation
+			 *  =================================================== */
+			List<DataPropertyValue> listValuesInRelation = OKCoApp.getDataValuesAtClassDefinitionRangeSelected();			
 			request.getSession().setAttribute("listValuesInRelation", listValuesInRelation);
+			
 			return "completePropertyData";
-
-		} else {
-
+		}else{
 			return "index";
 		}
-
 	}
 
+	/**
+	 * ATTENTION: This function works only with object properties: min, exactly and some properties
+	 */
 	@RequestMapping(method = RequestMethod.GET, value="/completePropertyAuto")
-	public String completePropertyAuto(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) {
-
-		/*
-		 * ATTENTION: This function works only with object properties: min, exactly and some properties
-		 * 
-		 * */
-
-		//Instance selected
-		DtoInstance instance = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uriInstance);
-
-		//Search for the definition class correctly
-		OKCoApp.definitionClassSelected = DtoDefinitionClass.get(instance.ListSome, uriProperty);
-		OntCardinalityEnum typeRelation = OntCardinalityEnum.SOME;
-
-		if(OKCoApp.definitionClassSelected == null){
-			OKCoApp.definitionClassSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
-			typeRelation = OntCardinalityEnum.MIN;
-		}
-		if(OKCoApp.definitionClassSelected == null){
-			OKCoApp.definitionClassSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
-			typeRelation = OntCardinalityEnum.MAX;
-		}
-		if(OKCoApp.definitionClassSelected == null){
-			OKCoApp.definitionClassSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
-			typeRelation = OntCardinalityEnum.EXACTLY;
-		}		
+	public String completePropertyAuto(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) 
+	{
+		/** Decode URIs First */
+		uriProperty = decodeURI(uriProperty);		
+		uriInstance = decodeURI(uriInstance);
+		
+		/** ==================================================
+		 * Select a Specific Individual
+		 *  =================================================== */
+		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uriInstance);
+		String selectedIndividualURI = selectedIndividual.ns+selectedIndividual.name;
+		OKCoApp.setIsModified(selectedIndividualURI);
+		
+		/** ==================================================
+		 * Select a Specific class definition from the selected individual
+		 *  =================================================== */
+		DtoDefinitionClass classDefinitionSelected = OKCoApp.selectDefinitionFromSelected(uriProperty);
+		OntCardinalityEnum typeRelation = classDefinitionSelected.TypeCompletness;
 
 		if(type.equals("object"))
 		{
 			if(typeRelation.equals(OntCardinalityEnum.SOME))
 			{
-				//create the the new instance
-				String instanceName = OKCoApp.definitionClassSelected.Target.split("#")[1] + "-" + (QueryUtil.getIndividualsURI(UploadApp.getInferredModel(), OKCoApp.definitionClassSelected.Target).size() + 1);
-				ArrayList<String> listSame = new ArrayList<String>();		  
-				ArrayList<String> listDif = new ArrayList<String>();
-				ArrayList<String> listClasses = new ArrayList<String>();
-				DtoInstance newInstance = new DtoInstance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
-
-				//Create Individual
-				OntModel basemodel = UploadApp.getBaseModel();
-				basemodel = FactoryUtil.createIndividual(basemodel,newInstance.ns+newInstance.name,newInstance.ListSameInstances,newInstance.ListDiferentInstances, instance.ns + instance.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);
-				UploadApp.baseRepository.setBaseOntModel(basemodel);
-				
-				OKCoApp.modifiedIndividualsURIs.add(newInstance.ns + newInstance.name);
-				try {
-					OKCoApp.updateAddingToLists(newInstance.ns + newInstance.name);
-				} catch (InconsistentOntologyException e) {
-					
-					e.printStackTrace();
-				} catch (OKCoExceptionInstanceFormat e) {
-					
-					e.printStackTrace();
-				}
-
-			} else if(typeRelation.equals(OntCardinalityEnum.MIN))
-			{
-				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);
-
-				ArrayList<String> listDif = new ArrayList<String>();
-				while(quantityInstancesTarget < Integer.parseInt(OKCoApp.definitionClassSelected.Cardinality))
-				{
-					//create the the new instance
-					String instanceName = OKCoApp.definitionClassSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
-					ArrayList<String> listSame = new ArrayList<String>();		  
-					ArrayList<String> listClasses = new ArrayList<String>();
-					DtoInstance newInstance = new DtoInstance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
-					
-					//Create Individual
-					OntModel basemodel = UploadApp.getBaseModel();
-					basemodel = FactoryUtil.createIndividual(basemodel,newInstance.ns+newInstance.name,newInstance.ListSameInstances,newInstance.ListDiferentInstances, instance.ns + instance.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);					
-					UploadApp.baseRepository.setBaseOntModel(basemodel);
-					
-					OKCoApp.modifiedIndividualsURIs.add(newInstance.ns + newInstance.name);
-					OKCoApp.modifiedIndividualsURIs.add(newInstance.ns + newInstance.name);
-					try {
-						OKCoApp.updateAddingToLists(newInstance.ns + newInstance.name);
-					} catch (InconsistentOntologyException e) {
-						
-						e.printStackTrace();
-					} catch (OKCoExceptionInstanceFormat e) {
-						
-						e.printStackTrace();
-					}
-
-					listDif.add(newInstance.ns + newInstance.name);
-					quantityInstancesTarget ++;
-				}				
-
-			} else if(typeRelation.equals(OntCardinalityEnum.EXACTLY))
-			{
-				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), instance.ns + instance.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);				
-
-				// Case 1 - same as min relation
-				if(quantityInstancesTarget < Integer.parseInt(OKCoApp.definitionClassSelected.Cardinality))
-				{
-					ArrayList<String> listDif = new ArrayList<String>();
-					while(quantityInstancesTarget < Integer.parseInt(OKCoApp.definitionClassSelected.Cardinality))
-					{
-						//create the the new instance
-						String instanceName = OKCoApp.definitionClassSelected.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
-						ArrayList<String> listSame = new ArrayList<String>();
-						ArrayList<String> listClasses = new ArrayList<String>();
-						DtoInstance newInstance = new DtoInstance(UploadApp.baseRepository.getNameSpace(), instanceName, listClasses, listDif, listSame, false);
-
-						// Create Individual
-						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createIndividual(basemodel,newInstance.ns+newInstance.name,newInstance.ListSameInstances,newInstance.ListDiferentInstances, instance.ns + instance.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);						
-						UploadApp.baseRepository.setBaseOntModel(basemodel);
-						
-						OKCoApp.modifiedIndividualsURIs.add(newInstance.ns + newInstance.name);
-						OKCoApp.modifiedIndividualsURIs.add(newInstance.ns + newInstance.name);
-						try {
-							OKCoApp.updateAddingToLists(newInstance.ns + newInstance.name);
-						} catch (InconsistentOntologyException e) {
-							
-							e.printStackTrace();
-						} catch (OKCoExceptionInstanceFormat e) {
-							
-							e.printStackTrace();
-						}
-
-						listDif.add(newInstance.ns + newInstance.name);
-						quantityInstancesTarget ++;
-					}
-				}
-
-				// Case 2 - more individuals than necessary
-				if(quantityInstancesTarget > Integer.parseInt(OKCoApp.definitionClassSelected.Cardinality))
-				{
-
-				}
-
-			} else if(typeRelation.equals(OntCardinalityEnum.MAX))
-			{
-
+				int individualsNumber = QueryUtil.getIndividualsURI(UploadApp.getInferredModel(), classDefinitionSelected.Target).size();
+				/** ==================================================
+				 * Create a New Individual at the Range of the Selected Class Definition
+				 *  =================================================== */				
+				OKCoApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, null);
 			}
+			else if(typeRelation.equals(OntCardinalityEnum.MIN))
+			{
+				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), selectedIndividualURI, classDefinitionSelected.Relation, classDefinitionSelected.Target);
+				ArrayList<String> listDifferentFrom = new ArrayList<String>();
+				while(individualsNumber < Integer.parseInt(classDefinitionSelected.Cardinality))
+				{
+					/** ==================================================
+					 * Create a New Individual at the Range of the Selected Class Definition
+					 *  =================================================== */
+					OKCoApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);					
+									
+					individualsNumber ++;
+				}				
+			} 
+			else if(typeRelation.equals(OntCardinalityEnum.EXACTLY))
+			{
+				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), selectedIndividualURI, classDefinitionSelected.Relation, classDefinitionSelected.Target);				
+				ArrayList<String> listDifferentFrom = new ArrayList<String>();
+				if(individualsNumber < Integer.parseInt(classDefinitionSelected.Cardinality))
+				{
+					while(individualsNumber < Integer.parseInt(classDefinitionSelected.Cardinality))
+					{
+						/** ==================================================
+						 * Create a New Individual at the Range of the Selected Class Definition
+						 *  =================================================== */
+						OKCoApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);	
+						
+						individualsNumber ++;
+					}
+				}				
+			}			
+		}		
 
-
-		}  else if (type.equals("data")){
-
-			//Do nothing yet
-
-		}
-
-		//Add on list modified instances
-		OKCoApp.modifiedIndividualsURIs.add(instance.ns + instance.name);
-
-		//Update InfModel without calling reasoner
-		UploadApp.inferredRepository.setInferredModel(OntModelAPI.clone(UploadApp.baseRepository.getBaseOntModel()));
-
-		//Update lists
-		//HomeController.UpdateLists();
-
-		//Update list instances modified
-		OKCoApp.updateModifiedList();
+		/** ==================================================
+		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
+		 *  This is done since all the retrieve of information is performed in the inferred model.
+		 *  
+		 *  In other words: Update InfModel without calling the reasoner.
+		 *  =================================================== */
+		OntModel newInferredModel = OntModelAPI.clone(UploadApp.baseRepository.getBaseOntModel());
+		UploadApp.inferredRepository.setInferredModel(newInferredModel);
 
 		return "redirect:list";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/completeInstanceAuto")
-	public String completeInstanceAuto(@RequestParam("uriInstance") String uriInstance, HttpServletRequest request) {
-
-		//Instance selected
-		DtoInstance instance = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uriInstance);
-		for(DtoInstance i: OKCoApp.ListAllInstances){
-			i.print();
-		}
-		System.out.println("Complete Instance ID="+uriInstance);		
-		UploadApp.baseRepository.setBaseOntModel(OKCoApp.CompleteInstanceAuto(instance, UploadApp.baseRepository.getNameSpace(), UploadApp.getBaseModel(), UploadApp.getInferredModel(), OKCoApp.ListAllInstances));
-
-		OKCoApp.modifiedIndividualsURIs.add(instance.ns + instance.name);
-
-		try {
-			OKCoApp.updateLists();
-		} catch (InconsistentOntologyException e) {
-			e.printStackTrace();
-		} catch (OKCoExceptionInstanceFormat e) {
-			e.printStackTrace();
-		} 
+	public String completeInstanceAuto(@RequestParam("uriInstance") String uriInstance, HttpServletRequest request)
+	{
+		/** Decode URIs First */
+		uriInstance = decodeURI(uriInstance);
 		
-		//Update list instances modified
-		OKCoApp.updateModifiedList();
-
+		/** ==================================================
+		 * Select a Specific Individual
+		 *  =================================================== */
+		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uriInstance);
+		String selectedIndividualURI = selectedIndividual.ns+selectedIndividual.name;
+		OKCoApp.setIsModified(selectedIndividualURI);
+				
+		//============================================================================
+		//============================================================================
+		//============================================================================
+		
+		UploadApp.baseRepository.setBaseOntModel(
+			OKCoApp.CompleteInstanceAuto(selectedIndividual, UploadApp.baseRepository.getNameSpace(), UploadApp.getBaseModel(), UploadApp.getInferredModel(), OKCoApp.ListAllInstances)
+		);
+		
 		return "redirect:list";
 	}
 

@@ -31,7 +31,7 @@ public class OKCoApp {
 	//Keeps the list of individuals that were modified
 	public static List<String> modifiedIndividualsURIs = new ArrayList<String>();
 	
-	//Keeps the individuals that was selected alongside with other useful informations
+	//Keeps the individuals that was selected  with other useful informations
 	public static DtoInstance individualSelected;
 	public static List<DtoCompleteClass> completeClassesFromSelected;
 	public static List<DtoPropertyAndSubProperties> propertiesFromSelected;
@@ -39,9 +39,6 @@ public class OKCoApp {
 	//Keeps a specific cardinality definition that was selected
 	public static DtoDefinitionClass definitionClassSelected;
 	
-	/**==========================================================
-	 * Functionalities...
-	 * ==========================================================*/
 	/** 
 	 * Return the list of all individuals from the ontology.
 	 * It returns also all the classes of an individual as well as all the other individuals different and the same as this one.
@@ -124,6 +121,62 @@ public class OKCoApp {
 			return DtoQueryUtil.getRelations(UploadApp.getInferredModel(),getSelectedIndividualURI());			
 		}
 		else return new ArrayList<DtoInstanceRelation>();
+	}
+	
+	public static DtoDefinitionClass selectDefinitionFromSelected(String uriProperty)
+	{
+		OKCoApp.definitionClassSelected = DtoDefinitionClass.get(individualSelected.ListSome, uriProperty);
+		if(OKCoApp.definitionClassSelected == null) OKCoApp.definitionClassSelected = DtoDefinitionClass.get(individualSelected.ListMin, uriProperty);
+		if(OKCoApp.definitionClassSelected == null) OKCoApp.definitionClassSelected = DtoDefinitionClass.get(individualSelected.ListMax, uriProperty);
+		if(OKCoApp.definitionClassSelected == null)	OKCoApp.definitionClassSelected = DtoDefinitionClass.get(individualSelected.ListExactly, uriProperty);
+		return definitionClassSelected;
+	}
+	
+	public static List<DtoInstance> getIndividualsAtClassDefinitionRangeSelected()
+	{
+		String uriIndividualSelected = individualSelected.ns + individualSelected.name;
+		InfModel model = UploadApp.getInferredModel();
+		List<DtoInstance> dtoIndividuals = DtoQueryUtil.getIndividualsAtObjectPropertyRange(model,uriIndividualSelected, definitionClassSelected.Relation, definitionClassSelected.Target);
+		return dtoIndividuals;
+	}
+	
+	public static List<DataPropertyValue> getDataValuesAtClassDefinitionRangeSelected()
+	{
+		List<DataPropertyValue> result = new ArrayList<DataPropertyValue>();
+		String uriIndividualSelected = individualSelected.ns + individualSelected.name;
+		InfModel model = UploadApp.getInferredModel();
+		List<String> individualsList = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, uriIndividualSelected, definitionClassSelected.Relation, definitionClassSelected.Target);
+		for(String individualURI: individualsList)
+		{
+			DataPropertyValue data = new DataPropertyValue();
+			data.value = individualURI.split("\\^\\^")[0];
+			data.classValue = definitionClassSelected.Target;
+			data.existInModel = true;
+			result.add(data);
+		}
+		return result;
+	}
+	
+	public static void createNewIndividualAtClassDefinitionRangeSelected(Integer idNumber, List<String> differentFromList)
+	{
+		String individualName = definitionClassSelected.Target.split("#")[1] + "-" + (idNumber + 1);				
+		DtoInstance newDtoIndividual = new DtoInstance(UploadApp.baseRepository.getNameSpace(), individualName, null, differentFromList, null, false);
+		OntModel model = UploadApp.getBaseModel();
+		FactoryUtil.createIndividual(model, 
+			newDtoIndividual.ns+newDtoIndividual.name, 
+			newDtoIndividual.ListSameInstances, 
+			newDtoIndividual.ListDiferentInstances, 
+			individualSelected.ns+individualSelected.name, 
+			definitionClassSelected.Relation, 
+			definitionClassSelected.Target
+		);								
+		OKCoApp.modifiedIndividualsURIs.add(newDtoIndividual.ns + newDtoIndividual.name);
+		if(differentFromList!=null) differentFromList.add(newDtoIndividual.ns + newDtoIndividual.name);	
+	}
+	
+	public static void setIsModified(String individualURI)
+	{
+		if(!modifiedIndividualsURIs.contains(individualURI)) modifiedIndividualsURIs.add(individualURI);
 	}
 	
 	//============================================================
