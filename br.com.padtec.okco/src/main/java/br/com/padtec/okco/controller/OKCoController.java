@@ -110,8 +110,8 @@ public class OKCoController {
 		/** ==================================================
 		 * List of Properties and SubProperties of the Selected Individual
 		 *  =================================================== */	
-		List<DtoPropertyAndSubProperties> listProperties = OKCoApp.getPropertiesFromSelected();
-		request.getSession().setAttribute("ListSpecializationProperties", listProperties);
+		List<DtoPropertyAndSubProperties> ListSpecializationProperties = OKCoApp.getPropertiesFromSelected();
+		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
 		
 		List<DtoInstanceRelation> listRelations = OKCoApp.getRelationsFromSelected();	
 		request.getSession().setAttribute("instanceListRelations", listRelations);		

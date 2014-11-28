@@ -86,11 +86,11 @@ public class QueryUtil {
 			return result;
 		}
 		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT *" +
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + "> \n" +
+		" SELECT * \n" +
 		" WHERE {\n" +		
 			" <"+individualURI+"> rdf:type ?i .\n " +
 			" ?i rdf:type owl:Class .\n" +

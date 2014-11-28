@@ -10,7 +10,13 @@ import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoNameSpaceException;
 import br.com.padtec.common.types.OntCardinalityEnum;
 
+import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 public class DtoQueryUtil {
 
@@ -21,7 +27,8 @@ public class DtoQueryUtil {
 	 * @throws OKCoNameSpaceException
 	 * 
 	 * @author John Guerson
-	 * 
+	 * _ind_0
+
 	 * @param model
 	 * @param clsEager Defines when the classes of an individual must be got eagerly 
 	 * @param diffFromEager Defines when the "different from individuals" of an individual must be got eagerly
@@ -29,8 +36,32 @@ public class DtoQueryUtil {
 	 */
 	static public List<DtoInstance> getIndividuals(InfModel model, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager) throws OKCoNameSpaceException 
 	{		
+		//Resource s = model.createResource("http://www.semanticweb.org/ontologies/2014/5/ontology.owl#out_skaf1");
+		//Property p = model.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+		//Resource o = model.createResource("http://www.w3.org/2000/01/rdf-schema#Resource");
+		//StmtIterator res = model.listStatements(null, null, (RDFNode) o);
+//		List<Individual> res = OntModelAPI.getIndividuals(UploadApp.getBaseModel());
+//		
+//		for (Individual individual : res) {
+//			System.out.println(individual);
+//		}
+		
+//		while(res.hasNext()){
+//			Statement stm = res.next();
+//			Resource s = stm.getResource();
+//			Property p = stm.getPredicate();
+//			//RDFNode o = stm.getObject();
+//			
+//			System.out.println(s);
+//			System.out.println(p);
+//			System.out.println();
+//			
+//		}
+		
+		
 		List<DtoInstance> result = new ArrayList<DtoInstance>();				
 		List<String> individualsURIList = QueryUtil.getIndividualsURIFromAllClasses(model);
+		
 		
     	for (String indivURI : individualsURIList)
     	{    		
@@ -40,15 +71,18 @@ public class DtoQueryUtil {
     		List<String> diffURIList = null;
     		List<String> sameAsURIList = null;
     		if(classesEager){
-    			System.out.println("Getting classes eagerly");
+    			System.out.println();
+    			System.out.print("Getting classes eagerly");
     			classesURIList = QueryUtil.getClassesURI(model, indivURI);
     		}
     		if(diffFromEager){
-    			System.out.println("Getting \"different from individuals\" eagerly");
+    			System.out.println();
+    			System.out.print("Getting \"different from individuals\" eagerly");
     			diffURIList = QueryUtil.getIndividualsURIDifferentFrom(model, indivURI);
     		}    		
     		if(sameAsEager){
-    			System.out.println("Getting \"same as individuals\" eagerly");
+    			System.out.println();
+    			System.out.print("Getting \"same as individuals\" eagerly");
     			sameAsURIList = QueryUtil.getIndividualsURISameAs(model, indivURI);
     		}    		
     		String nameSpace = indivURI.split("#")[0] + "#";
@@ -87,12 +121,22 @@ public class DtoQueryUtil {
 		List<String> propertiesURIList = QueryUtil.getPropertiesURI(model, individualURI);
 		for(String propertyURI: propertiesURIList)
 		{
-			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
-		    dtoItem.Property = propertyURI;
-		    List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
-		    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
-		    else dtoItem.Target = "";
-		    result.add(dtoItem);
+			Resource s = model.createResource(individualURI);
+			Property p = model.createProperty(propertyURI);
+			StmtIterator statements = model.listStatements(s, p, (RDFNode) null);
+			while(statements.hasNext()){
+				Statement stm = statements.next();
+				RDFNode o = stm.getObject();
+				
+				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
+			    dtoItem.Property = propertyURI;
+			    //List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+			    //if(ranges.size()>0) dtoItem.Target = ranges.get(0);
+			    //else dtoItem.Target = "";
+			    dtoItem.Target = o.toString();
+			    result.add(dtoItem);
+			}
+			
 		}
 		return result;
 	}
