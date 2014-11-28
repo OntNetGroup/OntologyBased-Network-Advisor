@@ -179,6 +179,126 @@ public class OKCoApp {
 		if(!modifiedIndividualsURIs.contains(individualURI)) modifiedIndividualsURIs.add(individualURI);
 	}
 	
+	public static void getClassSpecializationsFromSelected() {
+		InfModel model = UploadApp.getInferredModel();
+		System.out.println("\nManager Instances: updating instance specialization()...");
+		//update and check specialization class for all instances one by one		
+		
+		// ------ Complete classes list ------//
+		
+		ArrayList<DtoCompleteClass> ListCompleteClsInstaceSelected = new ArrayList<DtoCompleteClass>();
+		DtoCompleteClass dto = null;
+		
+		if(individualSelected.ListClasses.size() == 1 && individualSelected.ListClasses.get(0).contains("Thing"))	//Case thing
+		{
+			//Case if the instance have no class selected - only Thing
+			dto = new DtoCompleteClass();
+			dto.CompleteClass = individualSelected.ListClasses.get(0);
+			
+			for (String subClas : QueryUtil.getClassesURI(model)) {
+				if(subClas != null)
+					dto.AddMember(subClas);
+			}
+			ListCompleteClsInstaceSelected.add(dto);
+			
+		} else {
+			
+			for (String cls : individualSelected.ListClasses)
+			{					
+				HashMap<String,List<String>> map = QueryUtil.getCompleteClassesURI(cls, individualSelected.ListClasses, model);
+				for(String completeClassURI: map.keySet()){
+					DtoCompleteClass dtoCompleteClass = new DtoCompleteClass();
+					dtoCompleteClass.setCompleteClass(completeClassURI);
+					dtoCompleteClass.addAllMember(map.get(completeClassURI));
+					ListCompleteClsInstaceSelected.add(dtoCompleteClass);
+				}											
+			}
+		}
+		
+		individualSelected.ListCompleteClasses = ListCompleteClsInstaceSelected;
+		
+	}
+	
+	public static void getRelationSpecializationsFromSelected() {
+		InfModel model = UploadApp.getInferredModel();
+		System.out.println("\nManager Instances: updating instance specialization()...");
+		//update and check specialization class for all instances one by one		
+		
+		// ------ Complete properties list ------//
+		
+		ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties = new ArrayList<DtoPropertyAndSubProperties>();
+		DtoPropertyAndSubProperties dtoP = null;
+		
+		//Get instance relations
+		List<DtoInstanceRelation> instanceListRelations = new ArrayList<DtoInstanceRelation>();
+		List<String> propertiesURIList = QueryUtil.getPropertiesURI(UploadApp.getInferredModel(), individualSelected.ns + individualSelected.name);
+		for(String propertyURI: propertiesURIList){
+			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
+		    dtoItem.Property = propertyURI;			      
+		    List<String> ranges = QueryUtil.getRangeIndividualURI(model, individualSelected.ns + individualSelected.name, propertyURI);
+		    //List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+		    if (ranges!=null && ranges.size()>0) dtoItem.Target = ranges.get(0);
+		    else dtoItem.Target = "";
+		    instanceListRelations.add(dtoItem);
+		}
+		
+		for (DtoInstanceRelation dtoInstanceRelation : instanceListRelations) 
+		{			
+			List<String> subPropertiesWithDomainAndRange = QueryUtil.getSubPropertiesURIExcluding(model,individualSelected.ns + individualSelected.name, dtoInstanceRelation.Property, dtoInstanceRelation.Target, propertiesURIList);
+
+			if(subPropertiesWithDomainAndRange.size() > 0)
+			{
+				dtoP = new DtoPropertyAndSubProperties();
+				dtoP.Property = dtoInstanceRelation.Property;
+				String target = dtoInstanceRelation.Target;
+				if(target != null && !target.equals("")){
+					dtoP.iTargetNs = target.split("#")[0] + "#";
+					dtoP.iTargetName = target.split("#")[1];
+				}
+				dtoP.propertyType = QueryUtil.getPropertyURIType(model, dtoInstanceRelation.Property);
+				
+				for (String sub : subPropertiesWithDomainAndRange) 
+				{
+					boolean ok = true;
+					
+					List<String> distointSubPropOfProp = QueryUtil.getPropertiesURIDisjointWith(model,sub);
+					for (String disjointrop : distointSubPropOfProp) {
+						
+						for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
+							if(dtoWithRelation.Property.equals(disjointrop)) // instance have this sub relation
+							{
+								ok = false;
+								break;
+							}
+						}
+					}
+					
+					for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
+					
+						if(dtoWithRelation.Property.equals(sub)) // instance have this sub relation
+						{
+							ok = false;
+							break;
+						}
+					}						
+					
+					
+					if(ok == true)
+					{
+						dtoP.SubProperties.add(sub);
+					}
+				}
+				
+				if(dtoP.SubProperties.size() > 0)
+					ListSpecializationProperties.add(dtoP);
+			}			
+		}
+		
+		individualSelected.ListSpecializationProperties = ListSpecializationProperties;						
+	
+		
+	}
+	
 	//============================================================
 	//============================================================
 	//============================================================

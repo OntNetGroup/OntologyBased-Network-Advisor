@@ -121,21 +121,28 @@ public class DtoQueryUtil {
 		List<String> propertiesURIList = QueryUtil.getPropertiesURI(model, individualURI);
 		for(String propertyURI: propertiesURIList)
 		{
-			Resource s = model.createResource(individualURI);
-			Property p = model.createProperty(propertyURI);
-			StmtIterator statements = model.listStatements(s, p, (RDFNode) null);
-			while(statements.hasNext()){
-				Statement stm = statements.next();
-				RDFNode o = stm.getObject();
-				
+			List<String> rangeIndividuals = QueryUtil.getRangeIndividualURI(model, individualURI, propertyURI);
+			for (String rngIdv : rangeIndividuals) {
 				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 			    dtoItem.Property = propertyURI;
-			    //List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
-			    //if(ranges.size()>0) dtoItem.Target = ranges.get(0);
-			    //else dtoItem.Target = "";
-			    dtoItem.Target = o.toString();
+			    dtoItem.Target = rngIdv;
 			    result.add(dtoItem);
 			}
+//			Resource s = model.createResource(individualURI);
+//			Property p = model.createProperty(propertyURI);
+//			StmtIterator statements = model.listStatements(s, p, (RDFNode) null);
+//			while(statements.hasNext()){
+//				Statement stm = statements.next();
+//				RDFNode o = stm.getObject();
+//				
+//				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
+//			    dtoItem.Property = propertyURI;
+//			    //List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+//			    //if(ranges.size()>0) dtoItem.Target = ranges.get(0);
+//			    //else dtoItem.Target = "";
+//			    dtoItem.Target = o.toString();
+//			    result.add(dtoItem);
+//			}
 			
 		}
 		return result;

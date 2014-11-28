@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.padtec.common.application.UploadApp;
+import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.persistence.BaseModelRepository;
 import br.com.padtec.common.types.OntPropertyEnum;
 
@@ -17,7 +18,11 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 public class QueryUtil {
@@ -211,7 +216,10 @@ public class QueryUtil {
 		{						
 			for (String classToCheck : classesURI)
 			{
-				if(!QueryUtil.isClassesURIDisjoint(infModel, domain, classToCheck)) isDomainDisjointWithAll = false;							
+				if(!QueryUtil.isClassesURIDisjoint(infModel, domain, classToCheck)){
+					isDomainDisjointWithAll = false;
+					break;
+				}
 			}			
 		}
 		return isDomainDisjointWithAll;
@@ -235,7 +243,10 @@ public class QueryUtil {
 		{						
 			for (String classToCheck : classesURI)
 			{
-				if(!QueryUtil.isClassesURIDisjoint(infModel, range, classToCheck)) isDomainDisjointWithAll = false;							
+				if(!QueryUtil.isClassesURIDisjoint(infModel, range, classToCheck)){
+					isDomainDisjointWithAll = false;
+					break;
+				}
 			}			
 		}
 		return isDomainDisjointWithAll;
@@ -482,10 +493,12 @@ public class QueryUtil {
 		{
 			QuerySolution row= results.next();
 		    RDFNode subProp = row.get("subProp");
-		    if(subProp.toString().contains(model.getNsPrefixURI("")) && (!subProp.toString().equals(propertyURI)))
+		    if(!subProp.toString().contains(w3URI) && (!subProp.toString().equals(propertyURI)))
 		    {
-		    	result.add(subProp.toString());
-		    	System.out.println("- SubProperty URI: "+subProp.toString());
+		    	if(!result.contains(subProp)) {
+		    		result.add(subProp.toString());
+		    		System.out.println("- SubProperty URI: "+subProp.toString());
+		    	}		    	
 		    }
 		}		
 		return result;
@@ -505,14 +518,14 @@ public class QueryUtil {
 	{
 		System.out.println("\nExecuting getSubPropertiesURIExcluding()...");
 		System.out.println("- Property URI: "+propertyURI);
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<String>();		
 		List<String> domainClassURIList = QueryUtil.getClassesURI(model,domainIndividualURI);
 		List<String> rangeClassURIList = QueryUtil.getClassesURI(model,rangeIndividualURI);		
-		List<String> subproperties = QueryUtil.getSubPropertiesURI(model, propertyURI, true, true);
+		List<String> subproperties = QueryUtil.getSubPropertiesURI(model, propertyURI, true, true);		
 		for (String subPropertyURI : subproperties) 
-	    {
+	    {							
 			boolean disjointDomain = QueryUtil.isDomainDisjointWithAll(model,subPropertyURI, domainClassURIList);
-			boolean disjointRange = QueryUtil.isRangeDisjointWithAll(model,subPropertyURI, rangeClassURIList);
+			boolean disjointRange = QueryUtil.isRangeDisjointWithAll(model,subPropertyURI, rangeClassURIList);		
 			if(disjointDomain && disjointRange)
 	    	{
 				if(!subPropertyURIList.contains(subPropertyURI)) {
@@ -521,6 +534,30 @@ public class QueryUtil {
 				}
 	    	}
 	    }
+		return result;
+	}
+	
+	/** 
+	 * Return the URI of all sub-properties of this property URI in the ontology but that are not contained in the subPropertyURIList given. 
+	 * This sub-property has always defined its range and domain.
+	 * This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param propertyURI: Property URI
+	 * 
+	 * @author John Guerson
+	 */
+	static public List<String> getRangeIndividualURI(InfModel model, String sourceIndividualURI, String propertyURI) 
+	{
+		List<String> result = new ArrayList<String>();
+		Resource s = model.createResource(sourceIndividualURI);
+		Property p = model.createProperty(propertyURI);
+		StmtIterator statements = model.listStatements(s, p, (RDFNode) null);
+		while(statements.hasNext()){
+			Statement stm = statements.next();
+			RDFNode o = stm.getObject();
+		    result.add(o.toString());
+		}
 		return result;
 	}
 
