@@ -272,7 +272,7 @@ public class OKCoApp {
 		return valuesGraph;
 	}
 		
-	public static void getClassSpecializationsFromSelected() {
+	public static void setClassSpecializationsInSelected() {
 		InfModel model = UploadApp.getInferredModel();
 		System.out.println("\nManager Instances: updating instance specialization()...");
 		//update and check specialization class for all instances one by one		
@@ -312,7 +312,7 @@ public class OKCoApp {
 		
 	}
 	
-	public static void getRelationSpecializationsFromSelected() {
+	public static void setRelationSpecializationsInSelected() {
 		InfModel model = UploadApp.getInferredModel();
 		System.out.println("\nManager Instances: updating instance specialization()...");
 		//update and check specialization class for all instances one by one		

@@ -92,8 +92,8 @@ public class OKCoController {
 		 * Select a Specific Individual
 		 *  =================================================== */
 		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uri);
-		OKCoApp.getClassSpecializationsFromSelected();
-		OKCoApp.getRelationSpecializationsFromSelected();
+		OKCoApp.setClassSpecializationsInSelected();
+		OKCoApp.setRelationSpecializationsInSelected();
 		
 		request.getSession().setAttribute("instanceSelected", selectedIndividual);
 		

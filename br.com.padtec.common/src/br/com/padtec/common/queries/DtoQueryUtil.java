@@ -3,20 +3,13 @@ package br.com.padtec.common.queries;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoNameSpaceException;
 import br.com.padtec.common.types.OntCardinalityEnum;
 
-import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 public class DtoQueryUtil {
 
@@ -36,29 +29,6 @@ public class DtoQueryUtil {
 	 */
 	static public List<DtoInstance> getIndividuals(InfModel model, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager) throws OKCoNameSpaceException 
 	{		
-		//Resource s = model.createResource("http://www.semanticweb.org/ontologies/2014/5/ontology.owl#out_skaf1");
-		//Property p = model.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-		//Resource o = model.createResource("http://www.w3.org/2000/01/rdf-schema#Resource");
-		//StmtIterator res = model.listStatements(null, null, (RDFNode) o);
-//		List<Individual> res = OntModelAPI.getIndividuals(UploadApp.getBaseModel());
-//		
-//		for (Individual individual : res) {
-//			System.out.println(individual);
-//		}
-		
-//		while(res.hasNext()){
-//			Statement stm = res.next();
-//			Resource s = stm.getResource();
-//			Property p = stm.getPredicate();
-//			//RDFNode o = stm.getObject();
-//			
-//			System.out.println(s);
-//			System.out.println(p);
-//			System.out.println();
-//			
-//		}
-		
-		
 		List<DtoInstance> result = new ArrayList<DtoInstance>();				
 		List<String> individualsURIList = QueryUtil.getIndividualsURIFromAllClasses(model);
 		
@@ -126,23 +96,10 @@ public class DtoQueryUtil {
 				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 			    dtoItem.Property = propertyURI;
 			    dtoItem.Target = rngIdv;
-			    result.add(dtoItem);
+			    if(!result.contains(dtoItem)){
+			    	result.add(dtoItem);
+			    }			    
 			}
-//			Resource s = model.createResource(individualURI);
-//			Property p = model.createProperty(propertyURI);
-//			StmtIterator statements = model.listStatements(s, p, (RDFNode) null);
-//			while(statements.hasNext()){
-//				Statement stm = statements.next();
-//				RDFNode o = stm.getObject();
-//				
-//				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
-//			    dtoItem.Property = propertyURI;
-//			    //List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
-//			    //if(ranges.size()>0) dtoItem.Target = ranges.get(0);
-//			    //else dtoItem.Target = "";
-//			    dtoItem.Target = o.toString();
-//			    result.add(dtoItem);
-//			}
 			
 		}
 		return result;

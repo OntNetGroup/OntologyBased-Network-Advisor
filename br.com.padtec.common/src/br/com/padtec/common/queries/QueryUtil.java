@@ -4,13 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.padtec.common.application.UploadApp;
-import br.com.padtec.common.dto.DtoInstanceRelation;
-import br.com.padtec.common.persistence.BaseModelRepository;
 import br.com.padtec.common.types.OntPropertyEnum;
 
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -23,7 +18,6 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 public class QueryUtil {
 	
@@ -128,17 +122,33 @@ public class QueryUtil {
 	 */
 	static public boolean isClassesURIDisjoint(InfModel model, String classURI, String checkingClassURI)
 	{
+		if(classURI.equals(checkingClassURI)){
+			return false;
+		}
 		System.out.println("\nExecuting isClassesURIDisjoint()...");
 		System.out.println("- Class URI: "+classURI);
 		System.out.println("- Class URI to check: "+checkingClassURI);
 		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-				"<" + classURI + "> " + "owl:disjointWith" + " ?classD .\n " +
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + "> \n" +
+		" SELECT DISTINCT ?classD \n" +
+		" WHERE {\n" +		
+			"\t{\n" +
+				"\t<" + classURI + "> " + "owl:disjointWith" + " ?classD .\n " +
+			"\t}\n" + 
+			"\tUNION\n" +
+			"\t{\n" +
+				"\t?classD " + "owl:disjointWith" + " <" + classURI + "> .\n " +
+			"\t}\n" +
+			"\tUNION\n" +
+			"\t{\n" +
+				"\t?AllDisjointClassesNode rdf:type owl:AllDisjointClasses . \n" + 
+				"\t?AllDisjointClassesNode owl:members ?disjointMembersNode . \n" +
+				"\t?disjointMembersNode rdf:rest*/rdf:first ?classD . \n" +
+				"\tFILTER EXISTS { ?disjointMembersNode rdf:rest*/rdf:first <" + classURI + "> } . \n" +
+			"\t}\n" +
 		"}";		
 		Query query = QueryFactory.create(queryString);		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -150,7 +160,7 @@ public class QueryUtil {
 		    RDFNode classD = row.get("classD");
 		    String strClassD = classD.toString();		    
 		    if(checkingClassURI.equals(strClassD)) {
-		    	System.out.println("- Is Disjoint: true");
+		    	System.out.println("- Is Disjoint: false");
 		    	return true; 
 		    }		    	    		    
 		}		
@@ -208,21 +218,21 @@ public class QueryUtil {
 	 * 
 	 * @author John Guerson
 	 */
-	static public boolean isDomainDisjointWithAll(InfModel infModel, String propertyURI, List<String> classesURI) 
+	static public boolean isDomainDisjointWithSome(InfModel infModel, String propertyURI, List<String> classesURI) 
 	{
 		List<String> domainList = QueryUtil.getDomainURIs(infModel, propertyURI);
-		boolean isDomainDisjointWithAll = true;
+		boolean isDomainDisjointWithSome = false;
 		for (String domain : domainList) 
 		{						
 			for (String classToCheck : classesURI)
 			{
-				if(!QueryUtil.isClassesURIDisjoint(infModel, domain, classToCheck)){
-					isDomainDisjointWithAll = false;
+				if(QueryUtil.isClassesURIDisjoint(infModel, domain, classToCheck)){
+					isDomainDisjointWithSome = true;
 					break;
 				}
 			}			
 		}
-		return isDomainDisjointWithAll;
+		return isDomainDisjointWithSome;
 	}
 
 	/** 
@@ -235,21 +245,21 @@ public class QueryUtil {
 	 * 
 	 * @author John Guerson
 	 */
-	static public boolean isRangeDisjointWithAll(InfModel infModel, String propertyURI, List<String> classesURI) 
+	static public boolean isRangeDisjointWithSome(InfModel infModel, String propertyURI, List<String> classesURI) 
 	{				
 		List<String> rangeList = QueryUtil.getRangeURIs(infModel, propertyURI);
-		boolean isDomainDisjointWithAll = true;
+		boolean isDomainDisjointWithSome = false;
 		for (String range : rangeList) 
 		{						
 			for (String classToCheck : classesURI)
 			{
-				if(!QueryUtil.isClassesURIDisjoint(infModel, range, classToCheck)){
-					isDomainDisjointWithAll = false;
+				if(QueryUtil.isClassesURIDisjoint(infModel, range, classToCheck)){
+					isDomainDisjointWithSome = true;
 					break;
 				}
 			}			
 		}
-		return isDomainDisjointWithAll;
+		return isDomainDisjointWithSome;
 	}
 	
 	/**
@@ -523,10 +533,10 @@ public class QueryUtil {
 		List<String> rangeClassURIList = QueryUtil.getClassesURI(model,rangeIndividualURI);		
 		List<String> subproperties = QueryUtil.getSubPropertiesURI(model, propertyURI, true, true);		
 		for (String subPropertyURI : subproperties) 
-	    {							
-			boolean disjointDomain = QueryUtil.isDomainDisjointWithAll(model,subPropertyURI, domainClassURIList);
-			boolean disjointRange = QueryUtil.isRangeDisjointWithAll(model,subPropertyURI, rangeClassURIList);		
-			if(disjointDomain && disjointRange)
+	    {	
+			boolean domainDisjointWithSome = QueryUtil.isDomainDisjointWithSome(model,subPropertyURI, domainClassURIList);
+			boolean rangeDisjointWithSome = QueryUtil.isRangeDisjointWithSome(model,subPropertyURI, rangeClassURIList);		
+			if(!domainDisjointWithSome && !rangeDisjointWithSome)
 	    	{
 				if(!subPropertyURIList.contains(subPropertyURI)) {
 					result.add(subPropertyURI);
