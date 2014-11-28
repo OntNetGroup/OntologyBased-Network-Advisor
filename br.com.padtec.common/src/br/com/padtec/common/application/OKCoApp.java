@@ -16,6 +16,7 @@ import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.exceptions.OKCoNameSpaceException;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.graph.GraphPlotting;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.queries.QueryUtil;
@@ -169,7 +170,24 @@ public class OKCoApp {
 			individualSelected.ns+individualSelected.name, 
 			definitionClassSelected.Relation, 
 			definitionClassSelected.Target
-		);								
+		);
+		OKCoApp.modifiedIndividualsURIs.add(newDtoIndividual.ns + newDtoIndividual.name);
+		if(differentFromList!=null) differentFromList.add(newDtoIndividual.ns + newDtoIndividual.name);	
+	}
+		
+	public static void createNewIndividualAtClassDefinitionRange(DtoInstance dtoIndividual, DtoDefinitionClass dtoDefinitionClass, Integer idNumber, List<String> differentFromList)
+	{
+		String individualName = dtoDefinitionClass.Target.split("#")[1] + "-" + (idNumber + 1);				
+		DtoInstance newDtoIndividual = new DtoInstance(UploadApp.baseRepository.getNameSpace(), individualName, null, differentFromList, null, false);
+		OntModel model = UploadApp.getBaseModel();
+		FactoryUtil.createIndividual(model, 
+			newDtoIndividual.ns+newDtoIndividual.name, 
+			newDtoIndividual.ListSameInstances, 
+			newDtoIndividual.ListDiferentInstances, 
+			dtoIndividual.ns+dtoIndividual.name, 
+			dtoDefinitionClass.Relation, 
+			dtoDefinitionClass.Target
+		);
 		OKCoApp.modifiedIndividualsURIs.add(newDtoIndividual.ns + newDtoIndividual.name);
 		if(differentFromList!=null) differentFromList.add(newDtoIndividual.ns + newDtoIndividual.name);	
 	}
@@ -179,6 +197,81 @@ public class OKCoApp {
 		if(!modifiedIndividualsURIs.contains(individualURI)) modifiedIndividualsURIs.add(individualURI);
 	}
 	
+	public static void createNewIndividualsAutomatically(DtoInstance dtoIndividual)
+	{
+		DtoFactoryUtil.createAndClassifyIndividualAutomatically(UploadApp.getBaseModel(), UploadApp.getInferredModel(), dtoIndividual);
+		
+		for (DtoDefinitionClass dtoDefinitionClass : dtoIndividual.ListSome) 
+		{
+			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
+			{
+				int individualsNumber = QueryUtil.getIndividualsURI(UploadApp.getInferredModel(), dtoDefinitionClass.Target).size()+ 1;
+				/** ==================================================
+				 * Create a New Individual at the Range of the Class Definition
+				 *  =================================================== */				
+				OKCoApp.createNewIndividualAtClassDefinitionRange(dtoIndividual, dtoDefinitionClass, individualsNumber, null);				
+			}
+		}
+		
+		for (DtoDefinitionClass dtoDefinitionClass : dtoIndividual.ListMin) 
+		{
+			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
+			{
+				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), dtoIndividual.ns + dtoIndividual.name, dtoDefinitionClass.Relation, dtoDefinitionClass.Target);
+				ArrayList<String> listDifferentFrom = new ArrayList<String>();
+				while(individualsNumber < Integer.parseInt(dtoDefinitionClass.Cardinality))
+				{
+					/** ==================================================
+					 * Create a New Individual at the Range of the Class Definition
+					 *  =================================================== */
+					OKCoApp.createNewIndividualAtClassDefinitionRange(dtoIndividual, dtoDefinitionClass, individualsNumber, listDifferentFrom);					
+									
+					individualsNumber ++;
+				}				
+			}					
+		}
+		
+		for (DtoDefinitionClass dtoDefinitionClass : dtoIndividual.ListExactly) 
+		{
+			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
+			{				
+				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), dtoIndividual.ns + dtoIndividual.name, dtoDefinitionClass.Relation, dtoDefinitionClass.Target);					
+				ArrayList<String> listDifferentFrom = new ArrayList<String>();
+				if(individualsNumber < Integer.parseInt(dtoDefinitionClass.Cardinality))
+				{
+					while(individualsNumber < Integer.parseInt(dtoDefinitionClass.Cardinality))
+					{
+						/** ==================================================
+						 * Create a New Individual at the Range of the Class Definition
+						 *  =================================================== */
+						OKCoApp.createNewIndividualAtClassDefinitionRange(dtoIndividual, dtoDefinitionClass, individualsNumber, listDifferentFrom);	
+						
+						individualsNumber ++;
+					}
+				}
+			}
+		}
+	}
+	
+	public static String getGraphValues(String typeView, String individualURI, GraphPlotting graphPlotting)
+	{		
+		String valuesGraph = new String();				
+		if(typeView.equals("ALL")) valuesGraph  = graphPlotting.getArborStructureFor(UploadApp.getInferredModel());
+		else if(individualURI != null)
+		{			
+			DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), individualURI);
+			if(typeView.equals("IN")) 
+			{				
+				valuesGraph  = graphPlotting.getArborStructureComingInOf(UploadApp.getInferredModel(), dtoIndividual.ns + dtoIndividual.name);
+			}
+			else if(typeView.equals("OUT")) 
+			{					
+				valuesGraph  = graphPlotting.getArborStructureComingOutOf(UploadApp.getInferredModel(), dtoIndividual.ns + dtoIndividual.name);	
+			}			
+		}	
+		return valuesGraph;
+	}
+		
 	public static void getClassSpecializationsFromSelected() {
 		InfModel model = UploadApp.getInferredModel();
 		System.out.println("\nManager Instances: updating instance specialization()...");
@@ -624,128 +717,6 @@ public class OKCoApp {
 			}
 			
 			instanceSelected.ListSpecializationProperties = ListSpecializationProperties;						
-		}
-		
-	}
-	
-	public static OntModel ClassifyInstanceAuto(OntModel model, InfModel infModel, DtoInstance instance) {
-		
-		/* Check the subclasses are disjoint and complete */
-		for (DtoCompleteClass dto : instance.ListCompleteClasses) 
-		{
-			boolean isDisjoint = true;
-			for (String subCls : dto.Members)
-			{
-				for (String subCls2 : dto.Members) 
-				{
-					if(! subCls.equals(subCls2))
-					{
-						boolean result = QueryUtil.isClassesURIDisjoint(infModel, subCls, subCls2); /* Return true if subCls is disjoint of subCls2 */
-						if(result == true)
-						{
-							//Not disjoint
-							isDisjoint = false;
-							
-						} else {
-							
-							//isDisjoint = true;
-						}
-					}
-				}
-				
-				if(isDisjoint == false)
-				{
-					break;
-				}
-			}
-			
-			if(isDisjoint == true && dto.Members.size() > 0 )
-			{
-				//Classify random
-				model = FactoryUtil.createIndividualOfClass(model, instance.ns + instance.name, dto.Members.get(0));
-			}
-		}
-		
-		
-		return model;
-		
-	}
-
-	public static OntModel CompleteInstanceAuto(DtoInstance instance, String modelNameSpace, OntModel model, InfModel infModel, List<DtoInstance> ListAllInstances)
-	{
-		//Classify instance classes
-		model = ClassifyInstanceAuto(model, infModel, instance);
-		
-		//complete relations
-		for (DtoDefinitionClass dto : instance.ListSome) 
-		{
-			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
-			{
-				//create the the new instance
-				String instanceName = dto.Target.split("#")[1] + "-" + (QueryUtil.getIndividualsURI(infModel, dto.Target).size() + 1);
-				ArrayList<String> listSame = new ArrayList<String>();		  
-				ArrayList<String> listDif = new ArrayList<String>();
-				ArrayList<String> listClasses = new ArrayList<String>();
-				DtoInstance newInstance = new DtoInstance(modelNameSpace, instanceName, listClasses, listDif, listSame, false);
-				
-				model = DtoFactoryUtil.createIndividual(model, newInstance, instance.ns + instance.name, dto);
-			}
-		}
-		for (DtoDefinitionClass dto : instance.ListMin) 
-		{
-			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
-			{
-				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
-				
-				ArrayList<String> listDif = new ArrayList<String>();
-				while(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))
-				{
-					//create the the new instance
-					String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
-					ArrayList<String> listSame = new ArrayList<String>();		  
-					ArrayList<String> listClasses = new ArrayList<String>();
-					DtoInstance newInstance = new DtoInstance(modelNameSpace, instanceName, listClasses, listDif, listSame, false);
-					
-					model = DtoFactoryUtil.createIndividual(model, newInstance, instance.ns + instance.name, dto);				
-					listDif.add(newInstance.ns + newInstance.name);
-					quantityInstancesTarget ++;
-				}
-			}
-					
-		}
-		for (DtoDefinitionClass dto : instance.ListExactly) 
-		{
-			if(dto.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
-			{
-				int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(infModel, instance.ns + instance.name, dto.Relation, dto.Target);
-				
-				// Case 1 - same as min
-				if(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))
-				{
-					ArrayList<String> listDif = new ArrayList<String>();
-					while(quantityInstancesTarget < Integer.parseInt(dto.Cardinality))
-					{
-						//create the the new instance
-						String instanceName = dto.Target.split("#")[1] + "-" + (quantityInstancesTarget + 1);
-						ArrayList<String> listSame = new ArrayList<String>();		  
-						ArrayList<String> listClasses = new ArrayList<String>();
-						DtoInstance newInstance = new DtoInstance(modelNameSpace, instanceName, listClasses, listDif, listSame, false);
-						
-						model = DtoFactoryUtil.createIndividual(model, newInstance, instance.ns + instance.name, dto);				
-						listDif.add(newInstance.ns + newInstance.name);
-						quantityInstancesTarget ++;
-					}
-				}
-				
-				// Case 2 - more individuals than necessary
-				if(quantityInstancesTarget > Integer.parseInt(dto.Cardinality))
-				{
-											
-				}
-			}
-		}
-		
-		
-		return model;
-	}
+		}		
+	}		
 }

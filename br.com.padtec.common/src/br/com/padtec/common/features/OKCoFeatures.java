@@ -278,7 +278,7 @@ public class OKCoFeatures {
 				if(strength.equals("FULL"))
 				{
 					//Classify instance classes
-					model = OKCoApp.ClassifyInstanceAuto(model,infModel,instance);
+					DtoFactoryUtil.createAndClassifyIndividualAutomatically(model,infModel,instance);
 				}
 				
 				for (DtoDefinitionClass dto : instance.ListSome) 
@@ -551,7 +551,7 @@ public class OKCoFeatures {
 					if(strength.equals("FULL"))
 					{
 						//Classify instance classes
-						model = OKCoApp.ClassifyInstanceAuto(model, infModel,instance);
+						DtoFactoryUtil.createAndClassifyIndividualAutomatically(model, infModel,instance);
 					}
 					
 					for (DtoDefinitionClass dto : instance.ListSome) 

@@ -138,4 +138,15 @@ public class UploadApp {
 			e.printStackTrace();
 		}			
 	}	
+	
+	/**
+	 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
+	 *  This is done since all the retrieve of information is performed in the inferred model and all the modifications in the base model.  
+	 *  In other words: Update InfModel without calling the reasoner but copying the OntModel.
+	 */
+	public static void substituteInferredModelFromBaseModel()
+	{
+		OntModel newInferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
+		inferredRepository.setInferredModel(newInferredModel);
+	}
 }

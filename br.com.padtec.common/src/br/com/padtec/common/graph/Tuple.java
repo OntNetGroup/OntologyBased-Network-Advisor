@@ -1,6 +1,6 @@
-package br.com.padtec.okco.util;
+package br.com.padtec.common.graph;
 
-public class Tupla{
+public class Tuple{
 	
 	public String source;
 	public boolean isSourceCenterNode = false;
@@ -8,7 +8,7 @@ public class Tupla{
 	public String target;
 	public boolean isTargetCenterNode = false;
 
-	public Tupla(String src, String prt, String trg, boolean isSourceCenterNode, boolean isTargetCenterNode) {
+	public Tuple(String src, String prt, String trg, boolean isSourceCenterNode, boolean isTargetCenterNode) {
 		source = src;
 		property = prt;
 		target = trg;
@@ -16,7 +16,7 @@ public class Tupla{
 		this.isTargetCenterNode = isTargetCenterNode;
 	}
 
-	public boolean isInverse(Tupla tupla){
+	public boolean isInverse(Tuple tupla){
 		if(source.equals(tupla.target) && target.equals(tupla.source)){
 			return true;
 		}
@@ -33,7 +33,7 @@ public class Tupla{
 	 * */
 	@Override
 	public boolean equals(Object tupla) {
-		if(source.equals(((Tupla)tupla).source) && target.equals(((Tupla)tupla).target)){
+		if(source.equals(((Tuple)tupla).source) && target.equals(((Tuple)tupla).target)){
 			return true;
 		}
 		return false;

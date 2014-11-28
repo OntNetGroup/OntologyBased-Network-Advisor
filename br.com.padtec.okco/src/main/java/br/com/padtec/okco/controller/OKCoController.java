@@ -33,13 +33,12 @@ import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.graph.GraphPlotting;
+import br.com.padtec.common.graph.WOKCOGraphPlotting;
 import br.com.padtec.common.queries.DtoQueryUtil;
-import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
-import br.com.padtec.okco.util.GraphPlotting;
-import br.com.padtec.okco.util.WOKCOGraphPlotting;
 
 import com.hp.hpl.jena.ontology.OntModel;
 
@@ -255,12 +254,10 @@ public class OKCoController {
 
 		/** ==================================================
 		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
-		 *  This is done since all the retrieve of information is performed in the inferred model.
-		 *  
-		 *  In other words: Update InfModel without calling the reasoner.
+		 *  This is done since all the retrieve of information is performed in the inferred model and all the modifications in the base model.  
+		 *  In other words: Update InfModel without calling the reasoner but copying the OntModel.
 		 *  =================================================== */
-		OntModel newInferredModel = OntModelAPI.clone(UploadApp.baseRepository.getBaseOntModel());
-		UploadApp.inferredRepository.setInferredModel(newInferredModel);
+		UploadApp.substituteInferredModelFromBaseModel();
 
 		return "redirect:list";
 	}
@@ -277,72 +274,58 @@ public class OKCoController {
 		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uriInstance);
 		String selectedIndividualURI = selectedIndividual.ns+selectedIndividual.name;
 		OKCoApp.setIsModified(selectedIndividualURI);
-				
-		//============================================================================
-		//============================================================================
-		//============================================================================
 		
-		UploadApp.baseRepository.setBaseOntModel(
-			OKCoApp.CompleteInstanceAuto(selectedIndividual, UploadApp.baseRepository.getNameSpace(), UploadApp.getBaseModel(), UploadApp.getInferredModel(), OKCoApp.ListAllInstances)
-		);
+		/** ==================================================
+		 * Complete Individuals Automatically
+		 *  =================================================== */								
+		OKCoApp.createNewIndividualsAutomatically(selectedIndividual);
+				
+		/** ==================================================
+		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
+		 *  This is done since all the retrieve of information is performed in the inferred model and all the modifications in the base model.  
+		 *  In other words: Update InfModel without calling the reasoner but copying the OntModel.
+		 *  =================================================== */
+		UploadApp.substituteInferredModelFromBaseModel();
 		
 		return "redirect:list";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/graphVisualizer")
-	public String graphVisualizer(@RequestParam("uri") String uri, @RequestParam("typeView") String typeView, HttpServletRequest request) {
-
-		String valuesGraph = "";
-		int width;
-		int height;
-		String subtitle = "";
-		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
-		DtoInstance i;
+	public String graphVisualizer(@RequestParam("uri") String uri, @RequestParam("typeView") String typeView, HttpServletRequest request) 
+	{
+		/** Decode URIs First */
+		uri = decodeURI(uri);
 		
-		//TypeView -> ALL/IN/OUT
-		if(typeView.equals("ALL"))
-		{
-
-			//All instances
-			valuesGraph  = graphPlotting.getArborStructureFor(UploadApp.getInferredModel()); 
-
-		} else if(uri != null){
-
-			//Get the instance
-			i = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uri);
-
-			if(typeView.equals("IN"))			//in on instance
-			{				
-				//Get the values
-				valuesGraph  = graphPlotting.getArborStructureComingInOf(UploadApp.getInferredModel(), i.ns + i.name);
-
-			} else if(typeView.equals("OUT")) {	//out from instance
-
-				//Get the values
-				valuesGraph  = graphPlotting.getArborStructureComingOutOf(UploadApp.getInferredModel(), i.ns + i.name);	
-			}			
-		}	
-
-		width  = graphPlotting.width;
-		height = graphPlotting.height;
-		subtitle = graphPlotting.getSubtitle();
-
-		//session
+		/** ==================================================
+		 * Get Values of Graph
+		 *  =================================================== */
+		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
+		String valuesGraph = OKCoApp.getGraphValues(uri,typeView,graphPlotting);
 		request.getSession().setAttribute("valuesGraph", valuesGraph);
+	
+		/** ==================================================
+		 * Get Width, Height and Subtitle of Graph
+		 *  =================================================== */
+		int width  = graphPlotting.width;
+		int height = graphPlotting.height;
+		String subtitle = graphPlotting.getSubtitle();		
 		request.getSession().setAttribute("width", width);
 		request.getSession().setAttribute("height", height);
 		request.getSession().setAttribute("subtitle", subtitle);
-
+		
 		return "graphVisualizer";
-
 	}
 
-
-	/*------ AJAX - ObjectProperty -----*/	
-
+	//====================================================================
+	//====================================================================
+	//====================================================================
+	//====================================================================
+	
+	
+	/*------ AJAX - ObjectProperty -----*/
 	@RequestMapping(value="/createInstance", method = RequestMethod.POST)
-	public @ResponseBody DtoInstance createInstance(@RequestBody final DtoCreateInstancePost dto){    
-
+	public @ResponseBody DtoInstance createInstance(@RequestBody final DtoCreateInstancePost dto)
+	{
 		String separatorValues = "%&&%";
 
 		/* 0 -> name

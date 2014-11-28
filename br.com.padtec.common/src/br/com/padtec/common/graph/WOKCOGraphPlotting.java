@@ -1,4 +1,5 @@
-package br.com.padtec.okco.util;
+package br.com.padtec.common.graph;
+
 
 public class WOKCOGraphPlotting extends GraphPlotting {
 

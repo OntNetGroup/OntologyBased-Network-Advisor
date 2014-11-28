@@ -1,4 +1,4 @@
-package br.com.padtec.okco.util;
+package br.com.padtec.common.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public class ArborParser {
 
 	public String getArborJsString(ResultSet results, boolean showAll) {
 		
-		ArrayList<Tupla> tuplas = this.getTuplas(results);
+		ArrayList<Tuple> tuplas = this.getTuplas(results);
 
 		//set screen size
 		graphPlotting.width  += 400 * (tuplas.size() / 10);
@@ -67,7 +67,7 @@ public class ArborParser {
 
 		final String HH = "#!!#";
 
-		for (Tupla tupla : tuplas) {
+		for (Tuple tupla : tuplas) {
 			if(hashTuplas.containsKey(tupla.source+HH+tupla.target)){
 				String property = hashTuplas.get(tupla.source+HH+tupla.target);
 				hashTuplas.remove(tupla.source+HH+tupla.target);
@@ -98,7 +98,7 @@ public class ArborParser {
 	}
 
 	public String getArborJsStringFor(ResultSet results, String centerNode){
-		ArrayList<Tupla> tuplas = getTuplas(results, centerNode);
+		ArrayList<Tuple> tuplas = getTuplas(results, centerNode);
 		String arborStrucure = "";
 
 		//set screen size
@@ -114,7 +114,7 @@ public class ArborParser {
 		final String HH = "#!!#";
 		HashMap<String,String> usedTuplas = new HashMap<String, String>();
 
-		for (Tupla tupla : tuplas) {
+		for (Tuple tupla : tuplas) {
 			if(usedTuplas.containsKey(tupla.source+HH+tupla.target)){
 				String property = usedTuplas.get(tupla.source+HH+tupla.target);
 				usedTuplas.remove(tupla.source+HH+tupla.target);
@@ -155,8 +155,8 @@ public class ArborParser {
 			return "graph.addEdge("+sourceNode+","+targetNode+", {name:'"+edgeName+"'});\n";
 	}
 
-	private ArrayList<Tupla> getTuplas(ResultSet results, String centerNode){
-		ArrayList<Tupla> tuplas = new ArrayList<Tupla>();
+	private ArrayList<Tuple> getTuplas(ResultSet results, String centerNode){
+		ArrayList<Tuple> tuplas = new ArrayList<Tuple>();
 
 		while (results.hasNext()) {
 			QuerySolution row= results.next();
@@ -188,14 +188,14 @@ public class ArborParser {
 			if(!source.contains("#") || !target.contains("#"))
 				continue;
 
-			Tupla tupla = new Tupla(source, property, target, isSourceCenterNode, isTargetCenterNode);
+			Tuple tupla = new Tuple(source, property, target, isSourceCenterNode, isTargetCenterNode);
 			tuplas.add(tupla);
 		}
 		return tuplas;
 	}
 
-	private ArrayList<Tupla> getTuplas(ResultSet results){
-		ArrayList<Tupla> tuplas = new ArrayList<Tupla>();
+	private ArrayList<Tuple> getTuplas(ResultSet results){
+		ArrayList<Tuple> tuplas = new ArrayList<Tuple>();
 
 		while (results.hasNext()) {
 			QuerySolution row = results.next();
@@ -214,7 +214,7 @@ public class ArborParser {
 			String target;
 			target = row.get("target").toString();
 
-			Tupla tupla = new Tupla(source, property, target, false, false);
+			Tuple tupla = new Tuple(source, property, target, false, false);
 			tuplas.add(tupla);
 		}
 		return tuplas;

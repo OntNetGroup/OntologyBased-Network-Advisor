@@ -1,4 +1,4 @@
-package br.com.padtec.okco.util;
+package br.com.padtec.common.graph;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
