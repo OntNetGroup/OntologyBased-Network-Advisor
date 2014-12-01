@@ -5,26 +5,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.mindswap.pellet.exceptions.InconsistentOntologyException;
-
 import br.com.padtec.common.dto.DataPropertyValue;
+import br.com.padtec.common.dto.DtoClassifyInstancePost;
 import br.com.padtec.common.dto.DtoCommitMaxCard;
 import br.com.padtec.common.dto.DtoCompleteClass;
 import br.com.padtec.common.dto.DtoDefinitionClass;
+import br.com.padtec.common.dto.DtoGetPrevNextSpecProperty;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
-import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.exceptions.OKCoNameSpaceException;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.graph.GraphPlotting;
 import br.com.padtec.common.queries.DtoQueryUtil;
-import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -296,7 +293,7 @@ public class OKCoApp {
 	 */
 	public static DtoViewSelectInstance getEditingIndividualFromCommitList(String individualURI)
 	{
-		DtoInstance dtoIndividual = DtoFactoryUtil.get(newIndividualsCommitList, individualURI);
+		DtoInstance dtoIndividual = DtoFactoryUtil.getIndividualFrom(newIndividualsCommitList, individualURI);
 		DtoViewSelectInstance dto = new DtoViewSelectInstance(dtoIndividual, newIndividualsCommitList);
 		return dto;
 	}
@@ -631,9 +628,7 @@ public class OKCoApp {
 			}			
 			if(dto.runReasoner.equals("true"))
 			{
-				/** ==================================================
-				 * Running the reasoner, storing the temporary model and cleaning the list of modified
-				 *  =================================================== */
+				/** Running the reasoner, storing the temporary model and cleaning the list of modified */
 				OKCoApp.runReasoner();				
 			} 
 			else if (!dto.runReasoner.equals("false"))
@@ -652,14 +647,136 @@ public class OKCoApp {
 		return dtoResult;
 	}
 	
-	//============================================================
-	//============================================================
-	//============================================================
+	/**
+	 * Classifies individuals classes.
+	 */
+	public static DtoResult classifyIndividualsClasses(String[] classes)
+	{
+		DtoResult dtoResult = new DtoResult();
+		List<String> classesList = new ArrayList<String>(Arrays.asList(classes));			
+		if(classesList.size()<=0)
+		{
+			dtoResult.setIsSucceed(true);
+			dtoResult.setMessage("nothing");
+			return dtoResult;			
+		}		
+		OntModel basemodel = UploadApp.getBaseModel();
+		for (String cls : classesList) 
+		{
+			try {				
+				/** Create an individual for this class */
+				FactoryUtil.createIndividualOfClass(basemodel, getSelectedIndividualURI(), cls);
+				
+			} catch (Exception e){
+				dtoResult.setMessage(e.getMessage());
+				dtoResult.setIsSucceed(false);
+				return dtoResult;
+			}
+		}
+		try {
+			/** Update of the individual selected */
+			OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), getSelectedIndividualURI());
+			
+		} catch (Exception e) {
+			dtoResult.setMessage(e.getMessage());
+			dtoResult.setIsSucceed(false);
+			/** Remove all created */
+			for (String clsAux : classesList)
+			{				
+				FactoryUtil.deleteIndividualOfClass(basemodel,getSelectedIndividualURI(), clsAux);				
+			}
+			/** Update of the individual selected */
+			OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), getSelectedIndividualURI());
+			return dtoResult;
+		}		
+		setIsModified(getSelectedIndividualURI());
+		dtoResult.setIsSucceed(true);
+		dtoResult.setMessage("ok");
+		return dtoResult;
+	}
+		
+	/**
+	 * Classifies individuals properties.
+	 */
+	public static DtoResult classifyIndividualsProperties(String[] properties, DtoClassifyInstancePost dto)
+	{
+		DtoResult dtoResult = new DtoResult();
+		List<String> propertiesList = new ArrayList<String>(Arrays.asList(properties));		
+		if(propertiesList.size()<=0) 
+		{
+			dtoResult.setIsSucceed(true);
+			dtoResult.setMessage("nothing");
+			return dtoResult;
+		}
+		DtoPropertyAndSubProperties dtoSpec =  DtoFactoryUtil.getPropertyFrom(propertiesFromSelected, dto.arraySubProp);		
+		OntModel basemodel = UploadApp.getBaseModel();		
+		for (String subRel : propertiesList) 
+		{
+			try {
+				if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
+				{	
+					/** Create Data Property */
+					FactoryUtil.createRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], getSelectedIndividualURI(), subRel, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);											
+				}else{
+					/** Create Object Property */
+					FactoryUtil.createObjectProperty(basemodel,getSelectedIndividualURI(),subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName);
+				}					
+			}catch (Exception e){
+				dtoResult.setMessage(e.getMessage());
+				dtoResult.setIsSucceed(false);
+				return dtoResult;
+			}
+		}
+		try {				
+			/** Update the individual selected */
+			OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), getSelectedIndividualURI());
+		}catch (Exception e){
+			dtoResult.setMessage(e.getMessage());
+			dtoResult.setIsSucceed(false);
+			/** Remove all created */
+			for (String subRelAux : propertiesList) 
+			{
+				if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY)){						
+					/** Delete Data Property */
+					FactoryUtil.deleteRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], getSelectedIndividualURI(), subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
+				}else{					
+					/** Delete Object Property */
+					FactoryUtil.createObjectProperty(basemodel, getSelectedIndividualURI(), subRelAux,dtoSpec.iTargetNs + dtoSpec.iTargetName);					
+				}
+			}
+			/** Update Individual Selected */
+			OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), getSelectedIndividualURI());
+			return dtoResult;
+		}
+		setIsModified(getSelectedIndividualURI());
+		dtoResult.setIsSucceed(true);
+		dtoResult.setMessage("ok");
+		return dtoResult;			
+	}
 	
-	public static void setClassSpecializationsInSelected() {
+	/**
+	 * Get the Property from Selected alongside the next and previous properties.
+	 */
+	public static DtoGetPrevNextSpecProperty getPropertyWithNextAndPreviousFromSelected(String propertyURI)
+	{
+		DtoPropertyAndSubProperties dto = DtoFactoryUtil.getPropertyFrom(propertiesFromSelected, propertyURI);
+		if(dto == null) return null;			
+		boolean haveNext = false;
+		boolean havePrev = false;
+		DtoPropertyAndSubProperties dtoNext =  DtoFactoryUtil.getPropertyFrom(propertiesFromSelected, propertiesFromSelected.get(propertiesFromSelected.indexOf(dto)+1).Property);
+		DtoPropertyAndSubProperties dtoPrev=  DtoFactoryUtil.getPropertyFrom(propertiesFromSelected, propertiesFromSelected.get(propertiesFromSelected.indexOf(dto)-1).Property);
+		if(dtoNext != null) haveNext = true;
+		if(dtoPrev != null) havePrev = true;
+		DtoGetPrevNextSpecProperty data = new DtoGetPrevNextSpecProperty(individualSelected.name, individualSelected.ns, dto, haveNext, havePrev);				  
+		return data;
+	}
+	
+	/**
+	 * Update and check specialization class for all instances one by one
+	 */
+	public static void setClassSpecializationsInSelected()
+	{
 		InfModel model = UploadApp.getInferredModel();
-		System.out.println("\nManager Instances: updating instance specialization()...");
-		//update and check specialization class for all instances one by one		
 		
 		// ------ Complete classes list ------//
 		
@@ -695,12 +812,14 @@ public class OKCoApp {
 		individualSelected.ListCompleteClasses = ListCompleteClsInstaceSelected;
 		
 	}
-	
-	public static void setRelationSpecializationsInSelected() {
+
+	/**
+	 * 	Update and check specialization class for all instances one by one
+	 */
+	public static void setRelationSpecializationsInSelected() 
+	{
 		InfModel model = UploadApp.getInferredModel();
-		System.out.println("\nManager Instances: updating instance specialization()...");
-		//update and check specialization class for all instances one by one		
-		
+	
 		// ------ Complete properties list ------//
 		
 		ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties = new ArrayList<DtoPropertyAndSubProperties>();
@@ -771,307 +890,7 @@ public class OKCoApp {
 			}			
 		}
 		
-		individualSelected.ListSpecializationProperties = ListSpecializationProperties;						
-	
-		
+		individualSelected.ListSpecializationProperties = ListSpecializationProperties;	
 	}
 	
-	public static List<DtoInstance> ListAllInstances;	
-	public static List<DtoDefinitionClass> ModelDefinitions;		
-	// Save the new instances before commit in views (completePropertyObject and completePropertyData)
-		
-	public static void updateModifiedList()
-	{
-		for (DtoInstance i : ListAllInstances) 
-		{
-			String s = i.ns + i.name;
-			if (modifiedIndividualsURIs.contains(s)) i.setModified(true);			
-		}
-	}
-	
-	//Check the validity of this method
-	public static void updateLists() throws InconsistentOntologyException, OKCoExceptionInstanceFormat 
-	{	
-		System.out.println("Updating Lists()...");
-		InfModel inferredModel = UploadApp.getInferredModel();
-		OntModel Model = UploadApp.getBaseModel();
-    	// Refresh list of instances
-    	ListAllInstances = DtoQueryUtil.getIndividuals(inferredModel, true, true, true);
-    	//Get model definitions on list of instances	    	
-	  	ModelDefinitions = DtoQueryUtil.getClassDefinitions(inferredModel);			
-		// Organize data (Update the list of all instances)			
-    	UpdateInstanceAndRelations(Model, UploadApp.getBaseRepository().getNameSpace(), ListAllInstances, ModelDefinitions);			
-		UpdateInstanceSpecialization(ListAllInstances, Model, inferredModel, UploadApp.getBaseRepository().getNameSpace());			
-    }
-	
-	//Check the validity of this method
-	public static void updateAddingToLists(String instanceURI) throws InconsistentOntologyException, OKCoExceptionInstanceFormat
-	{							
-		System.out.println("Updating and Adding to Lists()...");
-		InfModel inferredModel = UploadApp.getInferredModel();
-		OntModel Model = UploadApp.getBaseModel();
-	    //Get model definitions on list of instances	    	
-		List<DtoDefinitionClass> intanceDefinitions = DtoQueryUtil.getClassDefinitions(inferredModel, instanceURI);
-		ModelDefinitions.addAll(intanceDefinitions);			
-		// Organize data (Update the list of all instances)			
-		UpdateInstanceAndRelations(Model, UploadApp.getBaseRepository().getNameSpace(), ListAllInstances, intanceDefinitions);			
-		UpdateInstanceSpecialization(ListAllInstances, Model, inferredModel, UploadApp.getBaseRepository().getNameSpace());			
-	}
-	
-	public static void UpdateInstanceAndRelations(OntModel model, String ns, List<DtoInstance> listInstances, List<DtoDefinitionClass> dtoRelationsList)
-	{		
-		System.out.println("\nManager Instances: updating instance and relations()...");
-		for (DtoDefinitionClass dto : dtoRelationsList)
-		{			
-			List<String> listInstancesOfDomain =QueryUtil.getIndividualsURI(model, dto.Source);
-			if(listInstancesOfDomain.size() > 0)	//Check if are need to create
-			{
-				for (String instanceName : listInstancesOfDomain)
-				{					
-					//---SOME---//
-					
-					if(dto.TypeCompletness.equals(OntCardinalityEnum.SOME))
-					{
-						boolean existInstanceTarget = QueryUtil.existsIndividualsAtPropertyRange(model, instanceName, dto.Relation, dto.Target);
-						if(existInstanceTarget)
-						{
-							//Do nothing
-							
-						} else {
-							
-							//Check if individual already exist in list
-							DtoInstance instance = DtoFactoryUtil.get(listInstances, instanceName);
-							if(instance == null)
-							{
-								ArrayList<String> listClasses = new ArrayList<String>();
-								listClasses.add(dto.Source);
-								instance = new DtoInstance(ns, instanceName.replace(ns, ""), listClasses, QueryUtil.getIndividualsURIDifferentFrom(model, instanceName), QueryUtil.getIndividualsURISameAs(model, instanceName), true);
-								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListSome);
-								if(!existDto)
-								{
-									instance.ListSome.add(dto);
-								}
-								listInstances.add(instance);
-				
-							} else {
-								
-								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListSome);
-								if(!existDto)
-								{
-									instance.ListSome.add(dto);
-								}								
-							}
-						}
-					}
-					
-					//---MIN---//
-					
-					if(dto.TypeCompletness.equals(OntCardinalityEnum.MIN))
-					{
-						int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(model, instanceName, dto.Relation, dto.Target);
-						if (quantityInstancesTarget < Integer.parseInt(dto.Cardinality))	//Min restriction
-						{
-							DtoInstance instance = DtoFactoryUtil.get(listInstances, instanceName);
-							if(instance == null)
-							{
-								ArrayList<String> listClasses = new ArrayList<String>();
-								listClasses.add(dto.Source);
-								instance = new DtoInstance(ns, instanceName.replace(ns, ""), listClasses, QueryUtil.getIndividualsURIDifferentFrom(model, instanceName), QueryUtil.getIndividualsURISameAs(model, instanceName),true);
-								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListMin);
-								if(!existDto)
-								{
-									instance.ListMin.add(dto);
-								}
-								listInstances.add(instance);
-				
-							} else {
-								
-								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListMin);
-								if(!existDto)
-								{
-									instance.ListMin.add(dto);
-								}	
-							}
-						}
-					}
-					
-					//---MAX---//
-					
-					if(dto.TypeCompletness.equals(OntCardinalityEnum.MAX))
-					{
-						int quantityInstancesTarget = QueryUtil.countIndividualsURIAtPropertyRange(model, instanceName, dto.Relation, dto.Target);
-						if (quantityInstancesTarget > Integer.parseInt(dto.Cardinality))	//Max restriction
-						{
-							DtoInstance instance = DtoFactoryUtil.get(listInstances, instanceName);
-							if(instance == null)
-							{
-								ArrayList<String> listClasses = new ArrayList<String>();
-								listClasses.add(dto.Source);
-								instance = new DtoInstance(ns, instanceName.replace(ns, ""), listClasses, QueryUtil.getIndividualsURIDifferentFrom(model, instanceName), QueryUtil.getIndividualsURISameAs(model, instanceName),true);
-								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListMax);
-								if(!existDto)
-								{
-									instance.ListMax.add(dto);
-								}
-								listInstances.add(instance);
-				
-							} else {
-								
-								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListMax);
-								if(!existDto)
-								{
-									instance.ListMax.add(dto);
-								}	
-							}
-						}
-					}
-					
-					//---EXACLTY---//
-					
-					if(dto.TypeCompletness.equals(OntCardinalityEnum.EXACTLY))
-					{
-						int quantityInstancesTarget =QueryUtil.countIndividualsURIAtPropertyRange(model, instanceName, dto.Relation, dto.Target);
-						if (quantityInstancesTarget != Integer.parseInt(dto.Cardinality))	//Exactly restriction
-						{
-							DtoInstance instance = DtoFactoryUtil.get(listInstances, instanceName);
-							if(instance == null)
-							{
-								ArrayList<String> listClasses = new ArrayList<String>();
-								listClasses.add(dto.Source);
-								instance = new DtoInstance(ns, instanceName.replace(ns, ""), listClasses, QueryUtil.getIndividualsURIDifferentFrom(model, instanceName), QueryUtil.getIndividualsURISameAs(model, instanceName),true);
-								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListExactly);
-								if(!existDto)
-								{
-									instance.ListExactly.add(dto);
-								}
-								listInstances.add(instance);
-				
-							} else {
-								
-								boolean existDto = DtoDefinitionClass.existDto(dto, instance.ListExactly);
-								if(!existDto)
-								{
-									instance.ListExactly.add(dto);
-								}	
-							}
-						}
-					}
-					
-					//---COMPLETE---//
-				}
-			}			
-		}	
-	}
-	
-	public static void UpdateInstanceSpecialization(List<DtoInstance> listAllInstances, OntModel model, InfModel infModel, String ns) {
-		
-		System.out.println("\nManager Instances: updating instance specialization()...");
-		//update and check specialization class for all instances one by one		
-		
-		for (DtoInstance instanceSelected : listAllInstances) 
-		{			
-			// ------ Complete classes list ------//
-			
-			ArrayList<DtoCompleteClass> ListCompleteClsInstaceSelected = new ArrayList<DtoCompleteClass>();
-			DtoCompleteClass dto = null;
-			
-			if(instanceSelected.ListClasses.size() == 1 && instanceSelected.ListClasses.get(0).contains("Thing"))	//Case thing
-			{
-				//Case if the instance have no class selected - only Thing
-				dto = new DtoCompleteClass();
-				dto.CompleteClass = instanceSelected.ListClasses.get(0);
-				for (String subClas : OntModelAPI.getClassesURI(model)) {
-					if(subClas != null)
-						dto.AddMember(subClas);
-				}
-				ListCompleteClsInstaceSelected.add(dto);
-				
-			} else {
-				
-				for (String cls : instanceSelected.ListClasses)
-				{					
-					HashMap<String,List<String>> map = QueryUtil.getCompleteClassesURI(cls, instanceSelected.ListClasses, infModel);
-					for(String completeClassURI: map.keySet()){
-						DtoCompleteClass dtoCompleteClass = new DtoCompleteClass();
-						dtoCompleteClass.setCompleteClass(completeClassURI);
-						dtoCompleteClass.addAllMember(map.get(completeClassURI));
-						ListCompleteClsInstaceSelected.add(dtoCompleteClass);
-					}											
-				}
-			}
-			
-			instanceSelected.ListCompleteClasses = ListCompleteClsInstaceSelected;			
-			
-			// ------ Complete properties list ------//
-			
-			ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties = new ArrayList<DtoPropertyAndSubProperties>();
-			DtoPropertyAndSubProperties dtoP = null;
-			
-			//Get instance relations
-			List<DtoInstanceRelation> instanceListRelations = new ArrayList<DtoInstanceRelation>();
-			List<String> propertiesURIList = QueryUtil.getPropertiesURI(UploadApp.getInferredModel(), instanceSelected.ns + instanceSelected.name);
-			for(String propertyURI: propertiesURIList){
-				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
-			    dtoItem.Property = propertyURI;			      
-			    List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);;
-			    if (ranges!=null && ranges.size()>0) dtoItem.Target = ranges.get(0);
-			    else dtoItem.Target = "";
-			    instanceListRelations.add(dtoItem);
-			}
-			
-			for (DtoInstanceRelation dtoInstanceRelation : instanceListRelations) 
-			{			
-				List<String> subPropertiesWithDomainAndRange = QueryUtil.getSubPropertiesURIExcluding(infModel,instanceSelected.ns + instanceSelected.name, dtoInstanceRelation.Property, dtoInstanceRelation.Target, propertiesURIList);
-
-				if(subPropertiesWithDomainAndRange.size() > 0)
-				{
-					dtoP = new DtoPropertyAndSubProperties();
-					dtoP.Property = dtoInstanceRelation.Property;
-					String target = dtoInstanceRelation.Target;
-					if(target != null && !target.equals("")){
-						dtoP.iTargetNs = target.split("#")[0] + "#";
-						dtoP.iTargetName = target.split("#")[1];
-					}
-					dtoP.propertyType = QueryUtil.getPropertyURIType(infModel, dtoInstanceRelation.Property);
-					
-					for (String sub : subPropertiesWithDomainAndRange) 
-					{
-						boolean ok = true;
-						
-						List<String> distointSubPropOfProp = QueryUtil.getPropertiesURIDisjointWith(infModel,sub);
-						for (String disjointrop : distointSubPropOfProp) {
-							
-							for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
-								if(dtoWithRelation.Property.equals(disjointrop)) // instance have this sub relation
-								{
-									ok = false;
-									break;
-								}
-							}
-						}
-						
-						for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
-						
-							if(dtoWithRelation.Property.equals(sub)) // instance have this sub relation
-							{
-								ok = false;
-								break;
-							}
-						}						
-						
-						
-						if(ok == true)
-						{
-							dtoP.SubProperties.add(sub);
-						}
-					}
-					
-					if(dtoP.SubProperties.size() > 0)
-						ListSpecializationProperties.add(dtoP);
-				}			
-			}
-			
-			instanceSelected.ListSpecializationProperties = ListSpecializationProperties;						
-		}		
-	}		
 }

@@ -958,7 +958,7 @@ public class OKCoController {
 	@RequestMapping(value="/classifyInstanceProperty", method = RequestMethod.POST)
 	public @ResponseBody DtoResult classifyInstanceProperty(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
 
-		DtoPropertyAndSubProperties dtoSpec = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, dto.arraySubProp);
+		DtoPropertyAndSubProperties dtoSpec =  DtoFactoryUtil.getPropertyFrom(ListSpecializationProperties, dto.arraySubProp);
 
 		DtoResult dtoResult = new DtoResult();
 		String separatorValues = "%&&%";
@@ -1047,7 +1047,7 @@ public class OKCoController {
 
 		if(uriProperty != null)
 		{
-			DtoPropertyAndSubProperties dto = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, uriProperty);
+			DtoPropertyAndSubProperties dto =  DtoFactoryUtil.getPropertyFrom(ListSpecializationProperties, uriProperty);
 			if(dto == null){
 
 				return null;
@@ -1056,8 +1056,8 @@ public class OKCoController {
 
 				boolean haveNext = false;
 				boolean havePrev = false;
-				DtoPropertyAndSubProperties dtoNext = DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, ListSpecializationProperties.get(ListSpecializationProperties.indexOf(dto)+1).Property);
-				DtoPropertyAndSubProperties dtoPrev= DtoPropertyAndSubProperties.getInstance(ListSpecializationProperties, ListSpecializationProperties.get(ListSpecializationProperties.indexOf(dto)-1).Property);
+				DtoPropertyAndSubProperties dtoNext =  DtoFactoryUtil.getPropertyFrom(ListSpecializationProperties, ListSpecializationProperties.get(ListSpecializationProperties.indexOf(dto)+1).Property);
+				DtoPropertyAndSubProperties dtoPrev=  DtoFactoryUtil.getPropertyFrom(ListSpecializationProperties, ListSpecializationProperties.get(ListSpecializationProperties.indexOf(dto)-1).Property);
 				if(dtoNext != null)
 					haveNext = true;
 				if(dtoPrev != null)

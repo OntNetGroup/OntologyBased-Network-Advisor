@@ -7,6 +7,7 @@ import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoCompleteClass;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
+import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.queries.QueryUtil;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -78,7 +79,7 @@ public class DtoFactoryUtil {
 		}		
 	}
 	
-	public static void removeDataValueFrom(List<DataPropertyValue> dataValuesList, String individualURI) 
+	static public void removeDataValueFrom(List<DataPropertyValue> dataValuesList, String individualURI) 
 	{
 		for (DataPropertyValue data : dataValuesList) 
 		{			
@@ -90,18 +91,25 @@ public class DtoFactoryUtil {
 		}		
 	}
 	
-	static public DtoInstance get(List<DtoInstance> individualsList, String individualURI) {		
+	static public DtoInstance getIndividualFrom(List<DtoInstance> individualsList, String individualURI) {		
 		
 		for (DtoInstance instance : individualsList) 
 		{
-			System.out.println("Comparing: "+instance.ns + instance.name);
-			System.out.println("With: "+individualURI);
 			if((instance.ns + instance.name).equals(individualURI)) return instance;
 		}		
 		return null;
 	}
 
-	public static void createAndClassifyIndividualAutomatically(OntModel model, InfModel inferredModel, DtoInstance dtoIndividual) 
+	static public DtoPropertyAndSubProperties getPropertyFrom(List<DtoPropertyAndSubProperties> propertiesList, String propertyURI) 
+	{
+		for (DtoPropertyAndSubProperties dto : propertiesList) 
+		{
+			if(dto.Property.equals(propertyURI)) return dto;
+		}		
+		return null;
+	}
+	
+	static public void createAndClassifyIndividualAutomatically(OntModel model, InfModel inferredModel, DtoInstance dtoIndividual) 
 	{		
 		// Check if the subclasses are disjoint and complete
 		for (DtoCompleteClass dto : dtoIndividual.ListCompleteClasses) 

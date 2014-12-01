@@ -133,13 +133,6 @@ public class UploadApp {
 		else {
 			InfModel newnferredModel = reasoner.run(getBaseModel());
 			inferredRepository.setInferredModel(newnferredModel);
-		}		
-		try {			
-			OKCoApp.updateLists();			
-		} catch (InconsistentOntologyException e1) {			
-			e1.printStackTrace();			
-		} catch (OKCoExceptionInstanceFormat e) {			
-			e.printStackTrace();
 		}			
 	}	
 	

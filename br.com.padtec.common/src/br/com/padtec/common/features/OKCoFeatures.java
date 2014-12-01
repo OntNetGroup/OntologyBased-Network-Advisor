@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import br.com.padtec.common.application.OKCoApp;
 import br.com.padtec.common.dto.DtoCompleteClass;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.simple.SimpleDtoClass;
@@ -98,12 +97,12 @@ public class OKCoFeatures {
 		  	List<br.com.padtec.common.dto.DtoInstance> ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 	  	  
 		  	// Gets definitions on model
-		  	List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
+		  	//List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
 						
 			// Organize data (Update the list of all instances)
 			
-		  	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-		  	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+		  	//OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+		  	//OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			//build the return instances
 			for (br.com.padtec.common.dto.DtoInstance i : ListAllInstances) 
@@ -259,13 +258,13 @@ public class OKCoFeatures {
 		  	List<br.com.padtec.common.dto.DtoInstance> ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 	  	  
 		  	// Gets definitions on model
-		  	List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
+		  	//List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
 			
 			
 			// Organize data (Update the list of all instances)
 			
-		  	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-	    	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+		  //	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	//OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 												Complete instances
@@ -357,12 +356,12 @@ public class OKCoFeatures {
 			ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 		  	  
 		  	// Gets definitions on model
-		  	ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);		
+		  	//ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);		
 			
 			// Organize data (Update the list of all instances)
 			
-	    	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-	    	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+	    	//OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	//OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 											Build the return instances
@@ -531,12 +530,12 @@ public class OKCoFeatures {
 		  	List<br.com.padtec.common.dto.DtoInstance> ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 		  	  
 		  	// Gets definitions on model
-		  	List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
+		  	//List<DtoDefinitionClass> ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
 			
 			// Organize data (Update the list of all instances)
 			
-	    	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-	    	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+	    	//OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	//OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 												Complete instances
@@ -631,12 +630,12 @@ public class OKCoFeatures {
 			ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);
 		  	  
 		  	// Gets definitions on model
-		  	ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
+		  	//ModelDefinitions = DtoQueryUtil.getClassDefinitions(infModel);			
 			
 			// Organize data (Update the list of all instances)
 			
-		  	OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
-	    	OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
+		  	//OKCoApp.UpdateInstanceAndRelations(model, ns,ListAllInstances, ModelDefinitions);
+	    	//OKCoApp.UpdateInstanceSpecialization(ListAllInstances, model, infModel, ns);
 			
 			/*--------------------------------------------------------------------------------------------- //
 											Build the return instances

@@ -31,18 +31,12 @@ import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.graph.GraphPlotting;
 import br.com.padtec.common.graph.WOKCOGraphPlotting;
-import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
-import br.com.padtec.common.types.OntPropertyEnum;
-
-import com.hp.hpl.jena.ontology.OntModel;
 
 @Controller
-//@RequestMapping("/instance")
 public class OKCoController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/list")
@@ -463,210 +457,42 @@ public class OKCoController {
 		 *  ================================================== */	
 		return OKCoApp.commitDataValues(dtoCommit.commitReasoner);
 	}
-	
-	//====================================================================
-	//====================================================================
-	//====================================================================
-	//====================================================================
 
 	@RequestMapping(value="/classifyInstanceClasses", method = RequestMethod.POST)
 	public @ResponseBody DtoResult classifyInstanceClasses(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat
 	{    
-		String[] arrayCls = dto.arrayCls.split("%&&%");
+		String[] classes = dto.arrayCls.split("%&&%");
 
-		DtoResult dtoResult = new DtoResult();
-		ArrayList<String> listCls = new ArrayList<String>();
-		for (String s : arrayCls) {			  
-			if(!(s.equals("")))
-				listCls.add(s);			
-		}
-
-		if(listCls.size() > 0)
-		{
-			for (String cls : listCls) {
-
-				try {
-
-					OntModel basemodel = UploadApp.getBaseModel();
-					FactoryUtil.createIndividualOfClass(basemodel, OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name, cls);
-					UploadApp.baseRepository.setBaseOntModel(basemodel);
-					
-				} catch (Exception e) {
-
-					dtoResult.setMessage(e.getMessage());
-					dtoResult.setIsSucceed(false);
-					return dtoResult;
-				}
-			}
-
-			try {
-
-				//Validate and update list
-				OKCoApp.updateAddingToLists(OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name);;
-
-				//Instance selected update
-				OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.individualSelected .uri);
-
-			} catch (Exception e) {
-
-				dtoResult.setMessage(e.getMessage());
-				dtoResult.setIsSucceed(false);
-
-				//Remove all created
-				for (String clsAux : listCls) {
-					OntModel basemodel = UploadApp.getBaseModel();
-					FactoryUtil.deleteIndividualOfClass(basemodel, OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name, clsAux);
-					UploadApp.baseRepository.setBaseOntModel(basemodel);
-				}
-
-				//Validate and update list and infModel
-				OKCoApp.updateLists();
-
-				//Instance selected update
-				OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.individualSelected .uri);
-
-				return dtoResult;
-			}	
-
-			//Add on list modified instances
-			OKCoApp.modifiedIndividualsURIs.add(OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name);
-
-			//Update list instances modified
-			OKCoApp.updateModifiedList();
-
-			dtoResult.setIsSucceed(true);
-			dtoResult.setMessage("ok");
-			return dtoResult;
-		}
-
-		dtoResult.setIsSucceed(true);
-		dtoResult.setMessage("nothing");
-		return dtoResult;		  
+		/** ==================================================
+		 * Classifies the individuals classes.
+		 *  ================================================== */	
+		return OKCoApp.classifyIndividualsClasses(classes);	  
 	}
-
+	
 	@RequestMapping(value="/classifyInstanceProperty", method = RequestMethod.POST)
-	public @ResponseBody DtoResult classifyInstanceProperty(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
-
-		DtoPropertyAndSubProperties dtoSpec = DtoPropertyAndSubProperties.getInstance(OKCoApp.propertiesFromSelected, dto.arraySubProp);
-
-		DtoResult dtoResult = new DtoResult();
-		String separatorValues = "%&&%";
-
-		/* 0 -> arrayCls */
-		String[] arraySubProp = dto.arraySubProp.split(separatorValues);
-
-		ArrayList<String> listRelations = new ArrayList<String>();
-		for (String s : arraySubProp) {			  
-			if(!(s.equals("")))
-				listRelations.add(s);			
-		}
-
-		if(listRelations.size() > 0)
-		{
-			for (String subRel : listRelations) {
-
-				try {
-
-					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY)){
-						//Case data property
-						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name, subRel, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);						
-					}else{
-						//Case object property
-						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createObjectProperty(basemodel, OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name,subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);						
-					}
-					
-				} catch (Exception e) {
-
-					dtoResult.setMessage(e.getMessage());
-					dtoResult.setIsSucceed(false);
-					return dtoResult;
-				}
-			}
-
-			try {
-				
-				//Validate and update list
-				OKCoApp.updateAddingToLists(OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name);
-
-				//Instance selected update
-				OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.individualSelected .uri);
-
-			} catch (Exception e) {
-
-				dtoResult.setMessage(e.getMessage());
-				dtoResult.setIsSucceed(false);
-
-				//Remove all created
-				for (String subRelAux : listRelations) {
-
-					if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY)){						
-						//Case data property
-						OntModel basemodel = UploadApp.getBaseModel();
-						FactoryUtil.deleteRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name, subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);
-					}else{
-						//Case object property
-						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createObjectProperty(basemodel, OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name, subRelAux,dtoSpec.iTargetNs + dtoSpec.iTargetName);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);
-					}
-				}
-
-				//Validate and update list and infModel
-				OKCoApp.updateLists();
-
-				//Instance selected update
-				OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.individualSelected .uri);
-
-				return dtoResult;
-			}			  
-
-			//Add on list modified instances
-			OKCoApp.modifiedIndividualsURIs.add(OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name);
-
-			//Update list instances modified
-			OKCoApp.updateModifiedList();
-
-			dtoResult.setIsSucceed(true);
-			dtoResult.setMessage("ok");
-			return dtoResult;
-		}
-
-		dtoResult.setIsSucceed(true);
-		dtoResult.setMessage("nothing");
-		return dtoResult;		  
+	public @ResponseBody DtoResult classifyInstanceProperty(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat
+	{
+		String[] properties = dto.arraySubProp.split("%&&%");
+		
+		/** ==================================================
+		 * Classifies the individuals properties.
+		 *  ================================================== */	
+		return OKCoApp.classifyIndividualsProperties(properties, dto);	  
 	}
-
+	
 	@RequestMapping(value="/selectSpecializationProp", method = RequestMethod.GET)
-	public @ResponseBody DtoGetPrevNextSpecProperty selectSpecializationProp(@RequestParam String uriProperty) {    
-
+	public @ResponseBody DtoGetPrevNextSpecProperty selectSpecializationProp(@RequestParam String uriProperty) 
+	{    
 		if(uriProperty != null)
 		{
-			DtoPropertyAndSubProperties dto = DtoPropertyAndSubProperties.getInstance(OKCoApp.propertiesFromSelected, uriProperty);
-			if(dto == null){
-
-				return null;
-
-			} else {
-
-				boolean haveNext = false;
-				boolean havePrev = false;
-				DtoPropertyAndSubProperties dtoNext = DtoPropertyAndSubProperties.getInstance(OKCoApp.propertiesFromSelected, OKCoApp.propertiesFromSelected.get(OKCoApp.propertiesFromSelected.indexOf(dto)+1).Property);
-				DtoPropertyAndSubProperties dtoPrev= DtoPropertyAndSubProperties.getInstance(OKCoApp.propertiesFromSelected, OKCoApp.propertiesFromSelected.get(OKCoApp.propertiesFromSelected.indexOf(dto)-1).Property);
-				if(dtoNext != null)
-					haveNext = true;
-				if(dtoPrev != null)
-					havePrev = true;
-
-				DtoGetPrevNextSpecProperty data = new DtoGetPrevNextSpecProperty(OKCoApp.individualSelected.name, OKCoApp.individualSelected.ns, dto, haveNext, havePrev);				  
-				return data;
-			}
+			/** Decode URIs First */
+			uriProperty = decodeURI(uriProperty);
+			
+			/** ==================================================
+			 * Property with the Next and Previous properties from the selected property
+			 *  ================================================== */	
+			return OKCoApp.getPropertyWithNextAndPreviousFromSelected(uriProperty);	
 		}
-
 		return null;
 	}
 
