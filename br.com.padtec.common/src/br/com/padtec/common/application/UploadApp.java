@@ -126,10 +126,14 @@ public class UploadApp {
 	 * 
 	 * @author John Guerson
 	 */
-	public static void rollBack()
+	public static void rollBack(boolean runningReasoner)
 	{				
-		baseRepository.cloneReplacing(tempModel);
-		inferredRepository.cloneReplacing(tempModel);
+		baseRepository.cloneReplacing(tempModel);		
+		if(!runningReasoner) inferredRepository.cloneReplacing(tempModel);
+		else {
+			InfModel newnferredModel = reasoner.run(getBaseModel());
+			inferredRepository.setInferredModel(newnferredModel);
+		}		
 		try {			
 			OKCoApp.updateLists();			
 		} catch (InconsistentOntologyException e1) {			
@@ -142,11 +146,21 @@ public class UploadApp {
 	/**
 	 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
 	 *  This is done since all the retrieve of information is performed in the inferred model and all the modifications in the base model.  
-	 *  In other words: Update InfModel without calling the reasoner but copying the OntModel.
+	 *  In other words: Update InfModel i) without calling the reasoner, copying the OntModel or ii) running the inference
 	 */
-	public static void substituteInferredModelFromBaseModel()
+	public static void substituteInferredModelFromBaseModel(boolean runningReasoner)
 	{
-		OntModel newInferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
-		inferredRepository.setInferredModel(newInferredModel);
+		if(!runningReasoner){
+			OntModel newInferredModel = OntModelAPI.clone(getBaseModel());
+			inferredRepository.setInferredModel(newInferredModel);
+		}else{
+			InfModel newInferredModel = reasoner.run(getBaseModel());
+			inferredRepository.setInferredModel(newInferredModel);
+		}			
+	}	
+	
+	public static void storeTemporaryModelFromBaseModel()
+	{
+		tempModel = OntModelAPI.clone(getBaseModel());
 	}
 }

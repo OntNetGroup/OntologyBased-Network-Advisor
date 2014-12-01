@@ -1,6 +1,5 @@
 package br.com.padtec.common.dto;
 
-import java.util.ArrayList;
 
 public class DataPropertyValue {
 	
@@ -14,18 +13,4 @@ public class DataPropertyValue {
 		classValue = "";
 		existInModel = false;
 	}
-	
-	public static void removeFromList(ArrayList<DataPropertyValue> list, String uri) {
-
-		for (DataPropertyValue data : list) {
-			
-			if(data.classValue.equals(uri))
-			{
-				list.remove(data);
-				break;
-			}
-		}		
-	}
-	
-
 }

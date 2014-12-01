@@ -162,18 +162,6 @@ public class DtoInstance implements Serializable {
  		this.isModified = value;
  		
  	}
-
-	public static void removeFromList(ArrayList<DtoInstance> listNewInstances,	String uri) {
-
-		for (DtoInstance instance : listNewInstances) {
-			
-			if(instance.uri.equals(uri))
-			{
-				listNewInstances.remove(instance);
-				break;
-			}
-		}		
-	}
 	
 	public List<DtoPropertyAndSubProperties> getPropertiesAndSubProperties()
 	{

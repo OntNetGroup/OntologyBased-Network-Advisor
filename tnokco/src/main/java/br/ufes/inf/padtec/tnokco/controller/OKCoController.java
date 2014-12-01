@@ -30,6 +30,7 @@ import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
+import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
@@ -632,7 +633,7 @@ public class OKCoController {
 
 		if(uri != null)
 		{
-			DtoInstance.removeFromList(listNewInstancesRelation, uri);
+			DtoFactoryUtil.removeIndividualFrom(listNewInstancesRelation, uri);
 			return uri;
 		}
 
@@ -801,7 +802,7 @@ public class OKCoController {
 
 		if(uri != null)
 		{
-			DataPropertyValue.removeFromList(listNewDataValuesRelation, uri);
+			DtoFactoryUtil.removeDataValueFrom(listNewDataValuesRelation, uri);
 			return uri;
 		}
 

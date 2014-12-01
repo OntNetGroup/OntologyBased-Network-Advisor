@@ -3,6 +3,7 @@ package br.com.padtec.common.factory;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoCompleteClass;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
@@ -65,6 +66,41 @@ public class DtoFactoryUtil {
 		return list;
 	}
 	
+	static public void removeIndividualFrom(List<DtoInstance> individualsList, String individualURI) {
+
+		for (DtoInstance instance : individualsList) {
+			
+			if(instance.uri.equals(individualURI))
+			{
+				individualsList.remove(instance);
+				break;
+			}
+		}		
+	}
+	
+	public static void removeDataValueFrom(List<DataPropertyValue> dataValuesList, String individualURI) 
+	{
+		for (DataPropertyValue data : dataValuesList) 
+		{			
+			if(data.classValue.equals(individualURI))
+			{
+				dataValuesList.remove(data);
+				break;
+			}
+		}		
+	}
+	
+	static public DtoInstance get(List<DtoInstance> individualsList, String individualURI) {		
+		
+		for (DtoInstance instance : individualsList) 
+		{
+			System.out.println("Comparing: "+instance.ns + instance.name);
+			System.out.println("With: "+individualURI);
+			if((instance.ns + instance.name).equals(individualURI)) return instance;
+		}		
+		return null;
+	}
+
 	public static void createAndClassifyIndividualAutomatically(OntModel model, InfModel inferredModel, DtoInstance dtoIndividual) 
 	{		
 		// Check if the subclasses are disjoint and complete

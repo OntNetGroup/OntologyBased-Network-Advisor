@@ -31,7 +31,6 @@ import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.graph.GraphPlotting;
 import br.com.padtec.common.graph.WOKCOGraphPlotting;
@@ -254,10 +253,10 @@ public class OKCoController {
 
 		/** ==================================================
 		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
-		 *  This is done since all the retrieve of information is performed in the inferred model and all the modifications in the base model.  
-		 *  In other words: Update InfModel without calling the reasoner but copying the OntModel.
+		 *  This is done since all the retrieving of information is performed in the inferred model but all the Modifications in the base model.  
+		 *  In other words: update the InfModel without calling the reasoner but copying the OntModel to it.
 		 *  =================================================== */
-		UploadApp.substituteInferredModelFromBaseModel();
+		UploadApp.substituteInferredModelFromBaseModel(false);
 
 		return "redirect:list";
 	}
@@ -282,10 +281,10 @@ public class OKCoController {
 				
 		/** ==================================================
 		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
-		 *  This is done since all the retrieve of information is performed in the inferred model and all the modifications in the base model.  
-		 *  In other words: Update InfModel without calling the reasoner but copying the OntModel.
+		 *  This is done since all the retrieving of information is performed in the inferred model but all the Modifications in the base model.  
+		 *  In other words: update the InfModel without calling the reasoner but copying the OntModel to it.
 		 *  =================================================== */
-		UploadApp.substituteInferredModelFromBaseModel();
+		UploadApp.substituteInferredModelFromBaseModel(false);
 		
 		return "redirect:list";
 	}
@@ -315,464 +314,167 @@ public class OKCoController {
 		
 		return "graphVisualizer";
 	}
-
-	//====================================================================
-	//====================================================================
-	//====================================================================
-	//====================================================================
-	
-	
-	/*------ AJAX - ObjectProperty -----*/
+			
 	@RequestMapping(value="/createInstance", method = RequestMethod.POST)
 	public @ResponseBody DtoInstance createInstance(@RequestBody final DtoCreateInstancePost dto)
 	{
-		String separatorValues = "%&&%";
-
-		/* 0 -> name
-		 * 1 -> arraySame
-		 * 2 -> arrayDif
-		 * */
 		String name = dto.name;
-		String[] arraySame = dto.arraySame.split(separatorValues);
-		String[] arrayDif = dto.arrayDif.split(separatorValues);
-
-		ArrayList<String> listSame = new ArrayList<String>();
-		for (String s : arraySame) {			  
-			if(!(s.equals("")))
-				listSame.add(s);			
-		}
-
-		ArrayList<String> listDif = new ArrayList<String>();
-		for (String s : arrayDif) {			  
-			if(!(s.equals("")))
-				listDif.add(s);			
-		}
-
-		DtoInstance i = new DtoInstance(UploadApp.baseRepository.getNameSpace(), name, new ArrayList<String>(), listDif, listSame, false);
-
-		OKCoApp.listNewInstancesRelation.add(i);
-		return i;
-	}
-
-	@RequestMapping(value="/commitInstance", method = RequestMethod.POST)
-	public @ResponseBody DtoResult commitInstance(@RequestBody final DtoCommitPost dtoCommit) {    
-
-		boolean isCreate = false;
-		boolean isUpdate = false;
-		DtoResult dto = new DtoResult();
-		if(OKCoApp.listNewInstancesRelation.size() != 0)
-		{
-			DtoInstance iSource = OKCoApp.individualSelected;
-			for (DtoInstance iTarget : OKCoApp.listNewInstancesRelation) 
-			{
-				try {
-
-					if(iTarget.existInModel == false)
-					{
-						//Create instance
-						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createIndividual(basemodel, iTarget.ns + iTarget.name, iTarget.ListSameInstances, iTarget.ListDiferentInstances, iSource.ns + iSource.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);
-						isCreate = true;
-
-					} else {
-
-						//Selected instance
-						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.createObjectProperty(basemodel, iSource.ns + iSource.name, OKCoApp.definitionClassSelected.Relation, iTarget.ns + iTarget.name);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);
-						
-						isUpdate = true;
-					}
-
-					if(dtoCommit.commitReasoner.equals("true"))
-					{
-						//Update InfModel calling reasoner
-						UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
-
-					} else {
-						//Update InfModel without calling reasoner
-						UploadApp.inferredRepository.setInferredModel(UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel()));
-
-						//Add on list modified instances
-						OKCoApp.modifiedIndividualsURIs.add(iTarget.ns + iTarget.name);
-					}			 
-
-					//Update list
-					//HomeController.UpdateLists();
-					OKCoApp.updateAddingToLists(iTarget.ns + iTarget.name);
-
-				} catch (Exception e) {
-
-					if(isCreate == true)
-						UploadApp.baseRepository.setBaseOntModel(DtoFactoryUtil.deleteIndividual(UploadApp.getBaseModel(),iTarget));
-
-					if(isUpdate == true){
-						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.deleteObjectProperty(basemodel, iSource.ns + iSource.name, OKCoApp.definitionClassSelected.Relation, iTarget.ns + iTarget.name);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);
-					}
-					dto.setMessage(e.getMessage());
-					dto.setIsSucceed(false);
-					return dto;
-				}
-
-			} // end for
-
-			if(dtoCommit.commitReasoner.equals("true"))
-			{
-
-			} else {
-				//Add on list modified instances
-				OKCoApp.modifiedIndividualsURIs.add(iSource.ns + iSource.name);			
-			}
-
-			//Update list instances modified
-			OKCoApp.updateModifiedList();
-
-			dto.setIsSucceed(true);
-			dto.setMessage("ok");
-			return dto;
-		}
-
-		dto.setIsSucceed(true);
-		dto.setMessage("nothing");
-		return dto;
-	}
-
-	@RequestMapping(value="/runReasoner", method = RequestMethod.POST)
-	public @ResponseBody DtoResult runReasoner() {    
-
-		DtoResult dto = new DtoResult();
-		try {
-
-			//Run reasoner
-			UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
-
-			//Save temporary model
-			UploadApp.tempModel = UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel());
-
-			//Update list instances
-			OKCoApp.updateLists();
-
-			//Clean list modified instances
-			OKCoApp.modifiedIndividualsURIs = new ArrayList<String>();
-
-			//Update list instances modified
-			OKCoApp.updateModifiedList();
-
-		} catch (Exception e) {
-
-			//Roll back the tempModel
-			UploadApp.baseRepository.setBaseOntModel(UploadApp.baseRepository.cloneReplacing(UploadApp.tempModel));
-			UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
-
-			//Update list instances
-			try {
-				OKCoApp.updateLists();
-
-			} catch (InconsistentOntologyException e1) {
-
-				e1.printStackTrace();
-
-			} catch (OKCoExceptionInstanceFormat e1) {
-				
-				e1.printStackTrace();
-			}
-
-			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
-
-			dto.setMessage(error);
-			dto.setIsSucceed(false);
-			return dto;
-		}
-
-		dto.setIsSucceed(true);
-		dto.setMessage("ok");
-		return dto;
+		String[] arraySame = dto.arraySame.split("%&&%");
+		String[] arrayDif = dto.arrayDif.split("%&&%");
+		
+		/** ==================================================
+		 * Create a New Individual. It does not add the individual to the model. 
+		 * Instead, it adds this individual to the set of list of new individuals to be created later on.
+		 *  =================================================== */
+		return OKCoApp.createNewIndividualAtCommitList(name, arraySame, arrayDif);		
 	}
 
 	@RequestMapping(value="/removeInstance", method = RequestMethod.GET)
-	public @ResponseBody String removeInstance(@RequestParam String uri) {    
-
+	public @ResponseBody String removeInstance(@RequestParam String uri) 
+	{
 		if(uri != null)
 		{
-			DtoInstance.removeFromList(OKCoApp.listNewInstancesRelation, uri);
-			return uri;
-		}
-
-		return null;		  
-	}
-
-	public DtoInstance getInstance(List<DtoInstance> listInstances, String instanceName) {		
+			/** Decode URIs First */
+			uri = decodeURI(uri);
 		
-		for (DtoInstance instance : listInstances) {
-			System.out.println("Comparing: "+instance.ns + instance.name);
-			System.out.println("With: "+instanceName);
-			if((instance.ns + instance.name).equals(instanceName))
-			{
-				return instance;
-			}
+			/** ==================================================
+			 * Remove the recent individual that was going to be created later. 
+			 * This individual is not in the model yet. Thus, this method only removes it from the list of new individuals.
+			 *  =================================================== */
+			OKCoApp.removeNewIndividualFromCommitList(uri);
 		}
-		
-		return null;
+		return uri;		  
 	}
 		
 	@RequestMapping(value="/editInstance", method = RequestMethod.GET)
-	public @ResponseBody DtoViewSelectInstance editInstance(@RequestParam String uri) {    
-
+	public @ResponseBody DtoViewSelectInstance editInstance(@RequestParam String uri) 
+	{
 		if(uri!=null)
-		{
-			DtoInstance i = getInstance(OKCoApp.listNewInstancesRelation, uri);
-			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, OKCoApp.listNewInstancesRelation);
-			return dto;
+		{			
+			/** Decode URIs First */
+			uri = decodeURI(uri);
+			
+			/** ==================================================
+			 * Get individual in the commit list as an Editing Element.
+			 *  ================================================== */			 
+			return OKCoApp.getEditingIndividualFromCommitList(uri);
 		}
-
 		return null;	  
 	}
-
+	
 	@RequestMapping(value="/selectInstance", method = RequestMethod.GET)
-	public @ResponseBody DtoViewSelectInstance selectInstance(@RequestParam String uri) {    
-
+	public @ResponseBody DtoViewSelectInstance selectInstance(@RequestParam String uri) 
+	{
 		if(uri != null)
 		{
-			DtoInstance i = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uri);
-			DtoViewSelectInstance dto = new DtoViewSelectInstance(i, OKCoApp.ListAllInstances);
-			return dto;
+			/** Decode URIs First */
+			uri = decodeURI(uri);
+			
+			/** ==================================================
+			 * Get individual in the model as an Editing Element.
+			 *  ================================================== */			 
+			return OKCoApp.getEditingIndividualFromModel(uri);
 		}
 
 		return null;
 	}
-
+		
 	@RequestMapping(value="/selectInstanceAdd", method = RequestMethod.GET)
-	public @ResponseBody DtoInstance selectInstanceAdd(@RequestParam String uri) { 
-
-		//Add in listNewInstancesRelation
-
+	public @ResponseBody DtoInstance selectInstanceAdd(@RequestParam String uri) 
+	{
 		if(uri != null)
 		{
-			DtoInstance i = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uri);
-			OKCoApp.listNewInstancesRelation.add(i);
-			return i;
+			/** Decode URIs First */
+			uri = decodeURI(uri);
+			
+			/** ==================================================
+			 * Add existing individual to the Commit List
+			 *  ================================================== */	
+			return OKCoApp.addExistingIndividualAtCommitList(uri);
 		}
 
 		return null;
-	}
-
-	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
-	public @ResponseBody DtoResult commitMaxCard(@RequestBody final DtoCommitMaxCard dto){    
-		
-		DtoResult dtoResult = new DtoResult();
-		
-		try {
-			
-			String separatorValues = "%&&%";
-
-			String[] arrayValues = dto.ListInstanceDifSameIds.split(separatorValues);
-			for (String val : arrayValues) {
-
-				if(val.contains("x"))
-				{	
-					String[] parts = val.split("x");
-
-					String type = parts[0];
-					String uriSource = parts[1];
-					String uriTarget = parts[2];
-					
-					DtoInstance s1 = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uriSource);
-					DtoInstance s2 = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), uriTarget);
-					
-					if(type.equals("dif"))
-					{
-						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.setDifferentFrom(basemodel, s1.ns + s1.name, s2.ns + s2.name);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);
-						
-					} else if (type.equals("same"))
-					{
-						OntModel basemodel = UploadApp.getBaseModel();
-						basemodel = FactoryUtil.setSameAs(basemodel, s1.ns + s1.name, s2.ns + s2.name);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);
-						
-					} else {
-						
-						dtoResult.setMessage("error");
-						dtoResult.setIsSucceed(false);
-						return dtoResult;
-					}
-					
-					OKCoApp.modifiedIndividualsURIs.add(s1.ns + s1.name);
-					OKCoApp.modifiedIndividualsURIs.add(s2.ns + s2.name);
-				}
-
-			}
-			
-			if(dto.runReasoner.equals("true"))
-			{
-				try {
-
-					//Run reasoner
-					UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
-
-					//Save temporary model
-					UploadApp.tempModel = UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel());
-
-					//Update list instances
-					OKCoApp.updateLists();
-
-					//Clean list modified instances
-					OKCoApp.modifiedIndividualsURIs = new ArrayList<String>();
-
-					//Update list instances modified
-					OKCoApp.updateModifiedList();
-
-				} catch (Exception e) {
-
-					//Roll back the tempModel
-					UploadApp.baseRepository.setBaseOntModel(UploadApp.baseRepository.cloneReplacing(UploadApp.tempModel));
-					UploadApp.inferredRepository.setInferredModel( UploadApp.reasoner.run(UploadApp.getBaseModel()));
-
-					//Update list instances
-					try {
-						OKCoApp.updateLists();
-
-					} catch (InconsistentOntologyException e1) {
-
-						//e1.printStackTrace();
-
-					} 
-
-					String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
-					
-					dtoResult.setMessage(error);
-					dtoResult.setIsSucceed(false);
-					return dtoResult;
-				}
-				
-			} if(dto.runReasoner.equals("false")) {
-				
-				//Update list instances modified
-				OKCoApp.updateModifiedList();
-				
-			} else {
-				
-				dtoResult.setMessage("error");
-				dtoResult.setIsSucceed(false);
-				return dtoResult;
-			}
-			
-		} catch (Exception e) {
-			
-			dtoResult.setMessage("error");
-			dtoResult.setIsSucceed(false);
-			return dtoResult;
-		}
-		
-
-		dtoResult.setMessage("ok");
-		dtoResult.setIsSucceed(true);
-		return dtoResult;
 	}
 	
-	/*------ AJAX - DataProperty -----*/	
-
 	@RequestMapping(value="/removeDataValue", method = RequestMethod.GET)
-	public @ResponseBody String removeDataValue(@RequestParam String id) {    
-
+	public @ResponseBody String removeDataValue(@RequestParam String id) 
+	{
 		if(id != null)
 		{
-			DataPropertyValue.removeFromList(OKCoApp.listNewDataValuesRelation, id);
+			/** Decode URIs First */
+			id = decodeURI(id);
+			
+			/** ==================================================
+			 * Remove the data values that was going to be created later. 
+			 * This data value is not in the model yet. Thus, this method only removes it from the list of new data values.	 
+			 *  =================================================== */
+			OKCoApp.removeNewDataValueFromCommitList(id);
+			
 			return id;
 		}
-
 		return null;		  
 	}
 
 	@RequestMapping(value="/createDataValue", method = RequestMethod.POST)
-	public @ResponseBody DataPropertyValue createDataValue(@RequestBody final DtoCreateDataValuePost dto){    
-
-		DataPropertyValue data = new DataPropertyValue();
-		data.value = dto.value;
-		data.classValue = OKCoApp.definitionClassSelected.Target;
-		data.existInModel = false;
-
-		OKCoApp.listNewDataValuesRelation.add(data);
-		return data;
+	public @ResponseBody DataPropertyValue createDataValue(@RequestBody final DtoCreateDataValuePost dto)
+	{
+		/** ==================================================
+		 * Create a New Data Value. It does not add the data value to the model. 
+		 * Instead, it adds this value to the set of list of new data values to be created later on.
+		 *  =================================================== */
+		return OKCoApp.createNewDataValueAtCommitList(dto.value);		
 	}
-
+	
+	@RequestMapping(value="/runReasoner", method = RequestMethod.POST)
+	public @ResponseBody DtoResult runReasoner() 
+	{
+		/** ==================================================
+		 * Running the reasoner, storing the temporary model and cleaning the list of modified
+		 *  =================================================== */
+		return OKCoApp.runReasoner();		
+	}
+	
+	@RequestMapping(value="/commitInstance", method = RequestMethod.POST)
+	public @ResponseBody DtoResult commitInstance(@RequestBody final DtoCommitPost dtoCommit) 
+	{				
+		/** ==================================================
+		 * Performs the commit of the new individuals to be created.
+		 * It updates the inferred model from the base model using or not the inference engine.
+		 *  =================================================== */
+		return OKCoApp.commitNewIndividuals(dtoCommit.commitReasoner);		
+	}
+	
+	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
+	public @ResponseBody DtoResult commitMaxCard(@RequestBody final DtoCommitMaxCard dto)
+	{    
+		/** ==================================================
+		 * Performs the commit of the max cardinalities. 
+		 * It updates the inferred model from the base model using or not the inference engine.
+		 *  =================================================== */
+		return OKCoApp.commitMaxCardinalities(dto);
+	}
+	
 	@RequestMapping(value="/commitDataValues", method = RequestMethod.POST)
-	public @ResponseBody DtoResult commitDataValues(@RequestBody final DtoCommitPost dtoCommit) {    
-
-		DtoResult dto = new DtoResult();
-		if(OKCoApp.listNewDataValuesRelation.size() != 0)
-		{
-			DtoInstance iSource = OKCoApp.individualSelected;
-			for (DataPropertyValue dataTarget : OKCoApp.listNewDataValuesRelation) 
-			{
-				try {
-
-					if(dataTarget.existInModel == false)
-					{
-						//Create data value
-						OntModel basemodel = UploadApp.getBaseModel();
-						FactoryUtil.createRangeDataPropertyValue(basemodel, dataTarget.value, iSource.ns + iSource.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);
-						UploadApp.baseRepository.setBaseOntModel(basemodel);						
-						dataTarget.existInModel = true;
-					}
-
-					if(dtoCommit.commitReasoner.equals("true"))
-					{
-						//Update InfModel calling reasoner
-						UploadApp.inferredRepository.setInferredModel(UploadApp.reasoner.run(UploadApp.getBaseModel()));
-
-					} else {
-						//Update InfModel without calling reasoner
-						UploadApp.inferredRepository.setInferredModel(UploadApp.baseRepository.cloneReplacing(UploadApp.getBaseModel()));
-
-						//Add on list modified instances
-						OKCoApp.modifiedIndividualsURIs.add(iSource.ns + iSource.name);
-					}						 
-
-					//Update list instances
-					OKCoApp.updateLists();
-
-				} catch (Exception e) {
-
-					OntModel basemodel = UploadApp.getBaseModel();
-					FactoryUtil.deleteRangeDataPropertyValue(basemodel, dataTarget.value, OKCoApp.individualSelected.ns + OKCoApp.individualSelected.name, OKCoApp.definitionClassSelected.Relation, OKCoApp.definitionClassSelected.Target);
-					UploadApp.baseRepository.setBaseOntModel(basemodel);	
-
-					dto.setMessage(e.getMessage());
-					dto.setIsSucceed(false);
-					return dto;
-				}
-			} //end for
-
-			//Update list instances modified
-			OKCoApp.updateModifiedList();
-
-			dto.setIsSucceed(true);
-			dto.setMessage("ok");
-			return dto;
-		} //end if
-
-		dto.setIsSucceed(true);
-		dto.setMessage("nothing");
-		return dto;
+	public @ResponseBody DtoResult commitDataValues(@RequestBody final DtoCommitPost dtoCommit) 
+	{     
+		/** ==================================================
+		 * Performs the commit of the new data values to be created.
+		 * It updates the inferred model from the base model using or not the inference engine.
+		 *  ================================================== */	
+		return OKCoApp.commitDataValues(dtoCommit.commitReasoner);
 	}
-
-
-	/*------ AJAX - Specializations -----*/	
+	
+	//====================================================================
+	//====================================================================
+	//====================================================================
+	//====================================================================
 
 	@RequestMapping(value="/classifyInstanceClasses", method = RequestMethod.POST)
-	public @ResponseBody DtoResult classifyInstanceClasses(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{    
+	public @ResponseBody DtoResult classifyInstanceClasses(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat
+	{    
+		String[] arrayCls = dto.arrayCls.split("%&&%");
 
 		DtoResult dtoResult = new DtoResult();
-		String separatorValues = "%&&%";
-
-		/* 0 -> arrayCls */
-		String[] arrayCls = dto.arrayCls.split(separatorValues);
-
 		ArrayList<String> listCls = new ArrayList<String>();
 		for (String s : arrayCls) {			  
 			if(!(s.equals("")))

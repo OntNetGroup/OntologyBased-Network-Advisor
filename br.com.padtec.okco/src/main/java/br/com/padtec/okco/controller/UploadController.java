@@ -100,7 +100,7 @@ public class UploadController {
 		}catch (InconsistentOntologyException e){
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 			request.getSession().setAttribute("errorMensage", error);			
-			UploadApp.rollBack();			
+			UploadApp.rollBack(false);			
 			return "index";			
 		}catch (OKCoExceptionInstanceFormat e){			
 			String error = "Entity format error: " + e.getMessage();
