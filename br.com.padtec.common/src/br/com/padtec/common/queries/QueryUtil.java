@@ -1842,7 +1842,7 @@ public class QueryUtil {
 	
 
 	/**
-	 * 
+	 * It returns the end of the rdf/owl graph given the individual and the relations ahead of him 
 	 * @author: Jordana Salamon
 	 * @param: individual, list of relations from individual, model
 	 */
@@ -1887,5 +1887,58 @@ public class QueryUtil {
 		return list;
 	}
 	
-	
+	/**
+	 * It returns the end of the rdf/owl graph given the individual, the relations ahead of him and the ranges of the relations 
+	 * @author: Jordana Salamon
+	 * @param: individual, list of relations from individual, list of ranges of the relatios, model
+	 */
+	static public ArrayList<String> query_EndOfGraphWithRanges(String individuo, ArrayList<String> Relacoes, ArrayList<String> Ranges, InfModel model){
+  		// Create a new query
+  		String var1 = null;
+  		String queryString = 
+  		"PREFIX ont: <http://www.semanticweb.org/cacha_000/ontologies/2014/9/untitled-ontology-168#> " +
+  		 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+  		+ "SELECT ?var" + Relacoes.size()
+  		+ " WHERE { ";
+  		if((Relacoes.size() == 1) && (Ranges.size() == 1) && (Ranges.get(0) != " ")){
+  			var1 = "var"+Relacoes.size();
+  			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 + ".";
+  			queryString = queryString + "?" + var1 +  " rdf:type" + " ont:" + Ranges.get(0) + "." + " }";
+  		}
+  		else {
+  			var1 = "var";
+  			int cont=1;
+  			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 +cont + ".";
+  			if(Ranges.get(0) != " "){
+  				queryString = queryString + "?" + var1+cont +  " rdf:type" + " ont:" + Ranges.get(0) + ".";
+  			}
+  			for (int i = 1; i< Relacoes.size(); i++) {
+  				String var2 = "var";
+  				int cont2=cont+1;
+  				queryString = queryString + "?" + var1 + cont  + " ont:" + Relacoes.get(i) + " ?" + var2 + cont2 + " .";
+  				if(Ranges.get(i) != " "){
+  	  				queryString = queryString + " ?" + var2 + cont2 +  " rdf:type" + " ont:" + Ranges.get(i) + ".";
+  	  			}
+  				cont++;
+  			}
+  			queryString = queryString + " }";
+  		}
+  		Query query = QueryFactory.create(queryString); 
+  		
+  		// Execute the query and obtain results
+  		QueryExecution qe = QueryExecutionFactory.create(query, model);
+  		ResultSet results = qe.execSelect();
+  		ArrayList<String> list = new ArrayList<String>();
+
+  		//ResultSetFormatter.out(System.out, results, query);
+  		
+  		while (results.hasNext()) {
+  			QuerySolution row = results.next();
+  		    
+  		    RDFNode rdfY = row.get("var"+Relacoes.size());
+  	    	list.add(rdfY.toString());
+  		}
+  		return list;
+  		}
+
 }
