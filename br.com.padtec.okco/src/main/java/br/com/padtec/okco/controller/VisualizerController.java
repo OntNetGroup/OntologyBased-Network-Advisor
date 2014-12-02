@@ -25,7 +25,7 @@ public class VisualizerController {
 		 * Get Values of Graph
 		 *  =================================================== */
 		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
-		String valuesGraph = OKCoApp.getGraphValues(uri,typeView,graphPlotting);
+		String valuesGraph = OKCoApp.getGraphValues(typeView,uri, graphPlotting);
 		request.getSession().setAttribute("valuesGraph", valuesGraph);
 	
 		/** ==================================================
