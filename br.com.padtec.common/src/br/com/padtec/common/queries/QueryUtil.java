@@ -129,6 +129,30 @@ public class QueryUtil {
 		System.out.println("\nExecuting isClassesURIDisjoint()...");
 		System.out.println("- Class URI: "+classURI);
 		System.out.println("- Class URI to check: "+checkingClassURI);
+		ArrayList<String> disjointClasses = getDisjointClassesURIs(model, classURI);
+		for (String strClassD : disjointClasses) {
+			if(checkingClassURI.equals(strClassD)) {
+		    	System.out.println("- Is Disjoint: false");
+		    	return true; 
+		    }
+		}
+		return false;
+	}
+	
+	/**
+	 * Check if a class is disjoint from another. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param classURI: Class URI
+	 * @param checingClassURI: Class URI to be checked
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public ArrayList<String> getDisjointClassesURIs(InfModel model, String classURI)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		System.out.println("\nExecuting getDisjointClassesURIs()...");
+		System.out.println("- Class URI: "+classURI);
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
@@ -159,15 +183,11 @@ public class QueryUtil {
 		{			
 			QuerySolution row= results.next();
 		    RDFNode classD = row.get("classD");
-		    String strClassD = classD.toString();		    
-		    if(checkingClassURI.equals(strClassD)) {
-		    	System.out.println("- Is Disjoint: false");
-		    	return true; 
-		    }		    	    		    
-		}		
-		return false;
+		    result.add(classD.toString());	    	    		    
+		}	
+		result.remove(classURI);
+		return result;
 	}
-	
 	/** 
 	 * Return the type of this property URI. This method is performed using SPARQL.
 	 * 
@@ -273,6 +293,7 @@ public class QueryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	/*
 	static public List<String> getClassesURIDisjointWith(InfModel model,String classURI) 
 	{		
 		System.out.println("\nExecuting getClassesURIDisjointWith()...");
@@ -301,7 +322,7 @@ public class QueryUtil {
 		}		
 		return result;
 	}
-
+	*/
 	/**
 	 * Check if a URI is valid.
 	 * 
@@ -1881,7 +1902,9 @@ public class QueryUtil {
 		    	completeClassURI = completeClass.toString();
 		    	//check if member are disjoint of listClassesOfInstance		    	
     			boolean ok = true;
-    			List<String> listDisjointClassesOfMember = QueryUtil.getClassesURIDisjointWith(infModel,member.toString());
+    			
+    			//List<String> listDisjointClassesOfMember = QueryUtil.getClassesURIDisjointWith(infModel,member.toString());
+    			List<String> listDisjointClassesOfMember = QueryUtil.getDisjointClassesURIs(infModel, member.toString());
     			for (String disjointCls : listDisjointClassesOfMember) {
     				if(listClassesOfInstance.contains(disjointCls))
     				{
@@ -1909,7 +1932,8 @@ public class QueryUtil {
 		    		{
 		    			//check if member are disjoint of listClassesOfInstance
 		    			boolean ok = true;
-		    			List<String> listDisjointClassesOfMember = QueryUtil.getClassesURIDisjointWith(infModel,member.toString());
+		    			//List<String> listDisjointClassesOfMember = QueryUtil.getClassesURIDisjointWith(infModel,member.toString());
+		    			List<String> listDisjointClassesOfMember = QueryUtil.getDisjointClassesURIs(infModel, member.toString());
 		    			for (String disjointCls : listDisjointClassesOfMember) {
 		    				if(listClassesOfInstance.contains(disjointCls))
 		    				{
@@ -1941,7 +1965,8 @@ public class QueryUtil {
 		    		
 		    		//check if member are disjoint of listClassesOfInstance
 	    			boolean ok = true;
-	    			List<String> listDisjointClassesOfMember = QueryUtil.getClassesURIDisjointWith(infModel,member.toString());
+	    			List<String> listDisjointClassesOfMember = QueryUtil.getDisjointClassesURIs(infModel, member.toString());
+	    			//List<String> listDisjointClassesOfMember = QueryUtil.getClassesURIDisjointWith(infModel,member.toString());
 	    			for (String disjointCls : listDisjointClassesOfMember) {
 	    				if(listClassesOfInstance.contains(disjointCls))
 	    				{
