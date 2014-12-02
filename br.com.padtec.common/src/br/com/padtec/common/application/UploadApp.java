@@ -60,8 +60,7 @@ public class UploadApp {
 		
 		/** Keep a temporary model for rollbacking the base model */
 		tempModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
-		
-		
+				
 		/** Run the inference if required, otherwise the inferred model is a clone of the base model */
 		if(useReasoner!=null && useReasoner.equals("on"))
 		{
@@ -74,14 +73,14 @@ public class UploadApp {
 			InfModel inferredModel = reasoner.run(baseRepository);
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}else{
+			if(optReasoner.equals("hermit")) reasoner = new HermitReasonerImpl();				  
+			else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();	
+			else reasoner = new PelletReasonerImpl();
+			
 			System.out.println("Getting infModel");
 			InfModel  inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}
-		
-		/** Fulfill the lists with data from the base ontology */
-		//System.out.println("Updating lists...");
-		//OKCoApp.updateLists();
 	}
 		
 	public static BaseModelRepository getBaseRepository() { return baseRepository; }	
