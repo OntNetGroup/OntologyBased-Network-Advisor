@@ -76,7 +76,7 @@
 							</div>
 							<br /> <label class="checkbox inline"> <input
 								type="checkbox" name="loadReasonerFirstCheckbox"
-								id="loadReasonerFirstCheckbox" checked="checked" /> Use
+								id="loadReasonerFirstCheckbox" /> Use
 								reasoner in load
 							</label> <br /> <label class="control-label">File Upload:</label>
 							<div class="controls">

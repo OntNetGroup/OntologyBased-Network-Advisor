@@ -292,8 +292,8 @@
 						<td>
 							<ul style="margin: 0">
 								<%
-									out.println("<li><a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&uri=" + instance.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> IN</li>");
-									out.println("<li style=\"margin-top:3px;\"><a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=OUT&uri=" + instance.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> OUT</li>");
+									out.println("<li><a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&uri=" + instance.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> To "+instance.name+"</li>");
+									out.println("<li style=\"margin-top:3px;\"><a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=OUT&uri=" + instance.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> From "+instance.name+"</li>");
 								%>
 							</ul>
 						</td>
