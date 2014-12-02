@@ -74,7 +74,6 @@ public class DtoQueryUtil {
 		List<String> classesURIList = QueryUtil.getClassesURI(model, individualURI);
 		List<String> diffURIList = QueryUtil.getIndividualsURIDifferentFrom(model, individualURI);
 		List<String> sameAsURIList = QueryUtil.getIndividualsURISameAs(model, individualURI);
-		System.out.println("INDIVIDUAL::"+individualURI);
 		String nameSpace =  individualURI.split("#")[0] + "#";
 		String name =  individualURI.split("#")[1];
 		return new DtoInstance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true);

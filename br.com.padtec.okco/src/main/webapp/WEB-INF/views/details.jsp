@@ -1,4 +1,4 @@
-<%@page import="java.net.URLEncoder"%>
+!<%@page import="java.net.URLEncoder"%>
 <%@ page import="br.com.padtec.common.application.UploadApp"%>
 <%@ page import="br.com.padtec.common.application.OKCoApp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -71,19 +71,20 @@
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
-				success : function(data) {
-
-					if(data.ok == true)
+				success : function(json) {
+					  
+					if(!json.error)
 					{
+						  $(document).ajaxStop(function() { location.reload(true); });
 						//alert("sucess. Refresh the page instance and remember the id");
-						location.reload(true);
+						//location.reload(true);
 						
 					} else {
 
 						//Huston we have a problem
 						var html = "<div class=\"alert alert-danger\">" +
 										"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-										"<strong>" + "Erro! " + "</strong>"+ data.result + 
+										"<strong>" + "Erro! " + "</strong>"+ "Couldn't classify the property." + 
 									"</div>";
 
 						$("#content").prepend(html);
@@ -121,19 +122,20 @@
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
-				success : function(data) {
+				success : function(json) {
 
-					if(data.ok == true)
+					if(!json.error)
 					{
-						location.reload(true);
+						  $(document).ajaxStop(function() { location.reload(true); });
 						//alert("sucess. Refresh the page instance and remember the id");
+						//location.reload(true);
 						
 					} else {
 
 						//Huston we have a problem
 						var html = "<div class=\"alert alert-danger\">" +
 										"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-										"<strong>" + "Erro! " + "</strong>"+ data.result + 
+										"<strong>" + "Error. " + "</strong>"+ "Couldn't classify the individual."  + 
 									"</div>";
 
 						$("#content").prepend(html);

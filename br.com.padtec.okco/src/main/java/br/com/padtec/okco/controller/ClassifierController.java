@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.application.OKCoApp;
+import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoClassifyInstancePost;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
@@ -19,11 +20,20 @@ public class ClassifierController {
 	public @ResponseBody DtoResult classifyInstanceClasses(@RequestBody final DtoClassifyInstancePost dto) throws InconsistentOntologyException, OKCoExceptionInstanceFormat
 	{    
 		String[] classes = dto.arrayCls.split("%&&%");
-
+		
 		/** ==================================================
 		 * Classifies the individuals classes.
 		 *  ================================================== */	
-		return OKCoApp.classifyIndividualsClasses(classes);	  
+		DtoResult dtoResult = OKCoApp.classifyIndividualsClasses(classes);
+		
+		/** ==================================================
+		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
+		 *  This is done since all the retrieving of information is performed in the inferred model but all the Modifications in the base model.  
+		 *  In other words: update the InfModel without calling the reasoner but copying the OntModel to it.
+		 *  =================================================== */
+		if(dtoResult.isSucceed()) UploadApp.substituteInferredModelFromBaseModel(false);
+		
+		return dtoResult;		
 	}
 	
 	@RequestMapping(value="/classifyInstanceProperty", method = RequestMethod.POST)
@@ -34,6 +44,15 @@ public class ClassifierController {
 		/** ==================================================
 		 * Classifies the individuals properties.
 		 *  ================================================== */	
-		return OKCoApp.classifyIndividualsProperties(properties, dto);	  
+		DtoResult dtoResult = OKCoApp.classifyIndividualsProperties(properties, dto);	
+		
+		/** ==================================================
+		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
+		 *  This is done since all the retrieving of information is performed in the inferred model but all the Modifications in the base model.  
+		 *  In other words: update the InfModel without calling the reasoner but copying the OntModel to it.
+		 *  =================================================== */
+		if(dtoResult.isSucceed()) UploadApp.substituteInferredModelFromBaseModel(false);
+		
+		return dtoResult;	
 	}
 }

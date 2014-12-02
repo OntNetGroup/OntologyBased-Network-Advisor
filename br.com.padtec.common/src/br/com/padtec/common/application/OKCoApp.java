@@ -651,7 +651,7 @@ public class OKCoApp {
 	 * Classifies individuals classes.
 	 */
 	public static DtoResult classifyIndividualsClasses(String[] classes)
-	{
+	{		
 		DtoResult dtoResult = new DtoResult();
 		List<String> classesList = new ArrayList<String>(Arrays.asList(classes));			
 		if(classesList.size()<=0)
@@ -659,13 +659,13 @@ public class OKCoApp {
 			dtoResult.setIsSucceed(true);
 			dtoResult.setMessage("nothing");
 			return dtoResult;			
-		}		
+		}
 		OntModel basemodel = UploadApp.getBaseModel();
 		for (String cls : classesList) 
 		{
 			try {				
 				/** Create an individual for this class */
-				FactoryUtil.createIndividualOfClass(basemodel, getSelectedIndividualURI(), cls);
+				if(!cls.equals("")) FactoryUtil.createIndividualOfClass(basemodel, getSelectedIndividualURI(), cls);
 				
 			} catch (Exception e){
 				dtoResult.setMessage(e.getMessage());
@@ -683,7 +683,7 @@ public class OKCoApp {
 			/** Remove all created */
 			for (String clsAux : classesList)
 			{				
-				FactoryUtil.deleteIndividualOfClass(basemodel,getSelectedIndividualURI(), clsAux);				
+				if(!clsAux.equals(""))FactoryUtil.deleteIndividualOfClass(basemodel,getSelectedIndividualURI(), clsAux);				
 			}
 			/** Update of the individual selected */
 			OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), getSelectedIndividualURI());
@@ -716,10 +716,10 @@ public class OKCoApp {
 				if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY))
 				{	
 					/** Create Data Property */
-					FactoryUtil.createRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], getSelectedIndividualURI(), subRel, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);											
+					if(!subRel.equals(""))FactoryUtil.createRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], getSelectedIndividualURI(), subRel, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);											
 				}else{
 					/** Create Object Property */
-					FactoryUtil.createObjectProperty(basemodel,getSelectedIndividualURI(),subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName);
+					if(!subRel.equals(""))FactoryUtil.createObjectProperty(basemodel,getSelectedIndividualURI(),subRel, dtoSpec.iTargetNs + dtoSpec.iTargetName);
 				}					
 			}catch (Exception e){
 				dtoResult.setMessage(e.getMessage());
@@ -738,10 +738,10 @@ public class OKCoApp {
 			{
 				if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY)){						
 					/** Delete Data Property */
-					FactoryUtil.deleteRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], getSelectedIndividualURI(), subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
+					if(!subRelAux.equals(""))FactoryUtil.deleteRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], getSelectedIndividualURI(), subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
 				}else{					
 					/** Delete Object Property */
-					FactoryUtil.createObjectProperty(basemodel, getSelectedIndividualURI(), subRelAux,dtoSpec.iTargetNs + dtoSpec.iTargetName);					
+					if(!subRelAux.equals(""))FactoryUtil.createObjectProperty(basemodel, getSelectedIndividualURI(), subRelAux,dtoSpec.iTargetNs + dtoSpec.iTargetName);					
 				}
 			}
 			/** Update Individual Selected */

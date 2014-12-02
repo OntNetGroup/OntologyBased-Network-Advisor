@@ -7,5 +7,7 @@ public class DtoClassifyInstancePost {
 	
 	/* used in case properties */
 	public String arraySubProp;
+	
+	public String id;
 
 }
