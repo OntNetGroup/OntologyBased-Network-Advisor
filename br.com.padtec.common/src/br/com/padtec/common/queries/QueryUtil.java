@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.types.OntPropertyEnum;
 
 import com.hp.hpl.jena.query.Query;
@@ -150,7 +151,7 @@ public class QueryUtil {
 				"\tFILTER EXISTS { ?disjointMembersNode rdf:rest*/rdf:first <" + classURI + "> } . \n" +
 			"\t}\n" +
 		"}";		
-		Query query = QueryFactory.create(queryString);		
+		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();
 		// ResultSetFormatter.out(System.out, results, query);		
@@ -220,7 +221,8 @@ public class QueryUtil {
 	 */
 	static public boolean isDomainDisjointWithSome(InfModel infModel, String propertyURI, List<String> classesURI) 
 	{
-		List<String> domainList = QueryUtil.getDomainURIs(infModel, propertyURI);
+		//List<String> domainList = QueryUtil.getDomainURIs(infModel, propertyURI);
+		List<String> domainList = QueryUtil.getDomainURIsWithSupertypes(infModel, propertyURI);
 		boolean isDomainDisjointWithSome = false;
 		for (String domain : domainList) 
 		{						
@@ -247,7 +249,8 @@ public class QueryUtil {
 	 */
 	static public boolean isRangeDisjointWithSome(InfModel infModel, String propertyURI, List<String> classesURI) 
 	{				
-		List<String> rangeList = QueryUtil.getRangeURIs(infModel, propertyURI);
+		//List<String> rangeList = QueryUtil.getRangeURIs(infModel, propertyURI);
+		List<String> rangeList = QueryUtil.getRangeURIsWithSupertypes(infModel, propertyURI);
 		boolean isDomainDisjointWithSome = false;
 		for (String range : rangeList) 
 		{						
@@ -431,6 +434,50 @@ public class QueryUtil {
 	}
 	
 	/** 
+	 * Return the URI of all properties (both object and datatype properties) and individuals that this individual is linked to, in the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param individualURI: Individual URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public List<DtoInstanceRelation> getPropertiesAndIndividualsURI(InfModel model, String individualURI)
+	{
+		System.out.println("\nExecuting getPropertiesURI()...");
+		System.out.println("- Individual URI: "+individualURI);
+		List<DtoInstanceRelation> result = new ArrayList<DtoInstanceRelation>();		
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +		
+			"{ " + "<" + individualURI + ">" + " ?property" + " ?target .\n " +
+				" ?property " + " rdf:type" + " owl:ObjectProperty .\n " +
+			"}" +
+		"}";
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
+		{			
+			QuerySolution row= results.next();
+		    RDFNode property = row.get("property");
+		    RDFNode target = row.get("target");
+		    if(isValidURI(property.toString())){
+		    	DtoInstanceRelation dtoItem = new DtoInstanceRelation();
+		    	dtoItem.Property = property.toString();
+		    	dtoItem.Target = target.toString();
+		    	System.out.println("- Property URI: "+property.toString()); 
+		    	result.add(dtoItem);
+		    } 		    		    
+		}		
+		return result;
+	}
+	
+	/** 
 	 * Return the URI of all properties that are disjoint with this property URI in the ontology. This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
@@ -534,8 +581,8 @@ public class QueryUtil {
 		List<String> subproperties = QueryUtil.getSubPropertiesURI(model, propertyURI, true, true);		
 		for (String subPropertyURI : subproperties) 
 	    {	
-			boolean domainDisjointWithSome = QueryUtil.isDomainDisjointWithSome(model,subPropertyURI, domainClassURIList);
-			boolean rangeDisjointWithSome = QueryUtil.isRangeDisjointWithSome(model,subPropertyURI, rangeClassURIList);		
+			boolean domainDisjointWithSome = QueryUtil.isDomainDisjointWithSome(model, subPropertyURI, domainClassURIList);
+			boolean rangeDisjointWithSome = QueryUtil.isRangeDisjointWithSome(model, subPropertyURI, rangeClassURIList);		
 			if(!domainDisjointWithSome && !rangeDisjointWithSome)
 	    	{
 				if(!subPropertyURIList.contains(subPropertyURI)) {
@@ -572,7 +619,7 @@ public class QueryUtil {
 	}
 
 	/**
-	 * Return the domain class of this property URI (it might be more than one) . This method is performded using SPARQL.
+	 * Return the domain class of this property URI (it might be more than one) . This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
 	 * @param propertyURI: Property URI
@@ -585,14 +632,14 @@ public class QueryUtil {
 		System.out.println("- Property URI: "+propertyURI);
 		List<String> result = new ArrayList<String>();
 		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">\n" +
+		" SELECT DISTINCT *\n" +
 		" WHERE {\n" +
-			"<"+propertyURI+"> rdfs:domain ?domain ." +
-		"}";
+			"<"+propertyURI+"> rdfs:domain ?domain .\n" +
+		"}\n";
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect(); 
@@ -608,7 +655,98 @@ public class QueryUtil {
 	}
 	
 	/**
-	 * Return the first domain class of this property URI (since it might be more than one) . This method is performded using SPARQL.
+	 * Return the domain class of this property URI (it might be more than one), including all supertypes of the domain class . This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param propertyURI: Property URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public List<String> getDomainURIsWithSupertypes(InfModel model, String propertyURI)
+	{
+		System.out.println("\nExecuting getDomainURIsWithSupertypes()...");
+		System.out.println("- Property URI: "+propertyURI);
+		List<String> result = getDomainURIs(model, propertyURI);
+		List<String> allSupertypes = new ArrayList<String>();
+		for (String classURI : result) {
+			List<String> supertypes = getSupertypesURIs(model, classURI);
+			for (String supertype : supertypes) {
+				if(!allSupertypes.contains(supertype)){
+					allSupertypes.add(supertype);
+				}
+			}
+		}		
+		result.addAll(allSupertypes);
+		return result;
+	}
+	
+	/**
+	 * Return the range class of this property URI (it might be more than one), including all supertypes of the domain class . This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param propertyURI: Property URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public List<String> getRangeURIsWithSupertypes(InfModel model, String propertyURI)
+	{
+		System.out.println("\nExecuting getRangeURIsWithSupertypes()...");
+		System.out.println("- Property URI: "+propertyURI);
+		List<String> result = getRangeURIs(model, propertyURI);
+		List<String> allSupertypes = new ArrayList<String>();
+		for (String classURI : result) {
+			List<String> supertypes = getSupertypesURIs(model, classURI);
+			for (String supertype : supertypes) {
+				if(!allSupertypes.contains(supertype)){
+					allSupertypes.add(supertype);
+				}
+			}
+		}		
+		result.addAll(allSupertypes);
+		return result;
+	}
+	
+	/**
+	 * Return superptypes of a this class URI (it might be more than one). This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param classURI: Class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public List<String> getSupertypesURIs(InfModel model, String classURI) {
+		System.out.println("\nExecuting getSupertypesURIs()...");
+		System.out.println("- Class URI: "+classURI);
+		List<String> result = new ArrayList<String>();
+		String queryString = ""
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ "SELECT DISTINCT ?superClass "
+				+ "WHERE {\n"
+				+ "<" + classURI + "> rdfs:subClassOf*/rdfs:subClassOf ?superClass .\n"
+				+ "}\n";
+		
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		while (results.hasNext()) 
+		{
+			QuerySolution row= results.next();
+		    RDFNode superClass = row.get("superClass");
+		    if(superClass.toString().contains(model.getNsPrefixURI(""))){
+		    	result.add(superClass.toString());
+			    System.out.println("- Domain URI: "+superClass.toString());
+		    }
+		    		    
+		}		
+		return result;
+	}
+
+	/**
+	 * Return the first domain class of this property URI (since it might be more than one) . This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
 	 * @param propertyURI: Property URI
@@ -645,7 +783,7 @@ public class QueryUtil {
 	}
 	
 	/**
-	 * Return the range class of this property URI (it might be more than one) . This method is performded using SPARQL.
+	 * Return the range class of this property URI (it might be more than one) . This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
 	 * @param propertyURI: Property URI
@@ -681,7 +819,7 @@ public class QueryUtil {
 	}
 		
 	/**
-	 * Return thefirst  range class of this property URI (since it might be more than one) . This method is performded using SPARQL.
+	 * Return the first  range class of this property URI (since it might be more than one) . This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
 	 * @param propertyURI: Property URI

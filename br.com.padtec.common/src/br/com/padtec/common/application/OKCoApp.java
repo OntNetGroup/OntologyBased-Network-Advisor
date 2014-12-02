@@ -826,8 +826,11 @@ public class OKCoApp {
 		DtoPropertyAndSubProperties dtoP = null;
 		
 		//Get instance relations
-		List<DtoInstanceRelation> instanceListRelations = new ArrayList<DtoInstanceRelation>();
+		//List<DtoInstanceRelation> instanceListRelations = new ArrayList<DtoInstanceRelation>();
+		List<DtoInstanceRelation> instanceListRelations = QueryUtil.getPropertiesAndIndividualsURI(UploadApp.getInferredModel(), individualSelected.ns + individualSelected.name);
+		
 		List<String> propertiesURIList = QueryUtil.getPropertiesURI(UploadApp.getInferredModel(), individualSelected.ns + individualSelected.name);
+		/*
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;			      
@@ -837,9 +840,9 @@ public class OKCoApp {
 		    else dtoItem.Target = "";
 		    instanceListRelations.add(dtoItem);
 		}
-		
+		*/
 		for (DtoInstanceRelation dtoInstanceRelation : instanceListRelations) 
-		{			
+		{	
 			List<String> subPropertiesWithDomainAndRange = QueryUtil.getSubPropertiesURIExcluding(model,individualSelected.ns + individualSelected.name, dtoInstanceRelation.Property, dtoInstanceRelation.Target, propertiesURIList);
 
 			if(subPropertiesWithDomainAndRange.size() > 0)
