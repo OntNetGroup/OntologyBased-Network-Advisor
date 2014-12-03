@@ -14,7 +14,7 @@ import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
-import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.URIDecoder;
 
@@ -22,7 +22,7 @@ import br.com.padtec.common.types.URIDecoder;
 public class DetailingController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/details")
-	public String details(@RequestParam("uri") String uri, HttpServletRequest request) 
+	public String details(@RequestParam("uri") String uri, HttpServletRequest request) throws OKCoException 
 	{
 		/** Decode URI First */
 		uri = URIDecoder.decodeURI(uri);

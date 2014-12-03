@@ -16,6 +16,7 @@ import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
+import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.exceptions.OKCoNameSpaceException;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
@@ -897,10 +898,15 @@ public class OKCoApp {
 		individualSelected.ListSpecializationProperties = ListSpecializationProperties;	
 	}
 
-	public static void setDefinitionsInSelected(OntCardinalityEnum typeCompletness) {
+	public static void setDefinitionsInSelected(OntCardinalityEnum typeCompletness) throws OKCoException {
 		InfModel model = UploadApp.getInferredModel();
 		for (String classURI : individualSelected.ListClasses) {
-			List<DtoDefinitionClass> definitions = QueryUtil.getCardinalityDefinitionsFrom(model, classURI, typeCompletness);
+			List<DtoDefinitionClass> definitions;
+			if(typeCompletness.equals(OntCardinalityEnum.SOME)){
+				definitions = QueryUtil.getSomeCardinalityDefinitionsFrom(model, classURI);
+			}else{
+				definitions = QueryUtil.getCardinalityDefinitionsFrom(model, classURI, typeCompletness);
+			}			
 			
 			for (DtoDefinitionClass def : definitions) {
 				switch (typeCompletness) {

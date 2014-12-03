@@ -585,7 +585,7 @@
 					<thead>
 						<tr>
 							<th>Source</th>
-							<th>Relation</th>
+							<th>Object property</th>
 							<th>Type</th>
 							<th>Target</th>
 							<th>Actions</th>
@@ -749,7 +749,7 @@
 					<thead>
 						<tr>
 							<th>Source</th>
-							<th>Relation</th>
+							<th>Data property</th>
 							<th>Type</th>
 							<th>Target</th>
 							<th>Actions</th>

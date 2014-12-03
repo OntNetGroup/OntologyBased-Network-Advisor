@@ -7,7 +7,6 @@ import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.common.types.OntCardinalityEnum;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 import br.ufes.inf.padtec.tnokco.controller.ManagerInstances;
 
@@ -54,6 +53,7 @@ public class ApplicationQueryUtil {
 			DtoDefinitionClass aux = DtoDefinitionClass.getDtoWithSourceAndRelationAndTarget(resultListDefinitions, cls);
 			if(aux == null && ! cls.contains("Thing"))	//don't exist yet
 			{
+				/*
 				//relations URI some values
 				ArrayList<DtoDefinitionClass> dtoSomeRelationsList = new ArrayList<DtoDefinitionClass>();
 				for(String[] triple: QueryUtil.getTuplesSomeValuesFrom(InfModel,cls)){
@@ -106,6 +106,7 @@ public class ApplicationQueryUtil {
 				resultListDefinitions.addAll(dtoMinRelationsList);
 				resultListDefinitions.addAll(dtoMaxRelationsList);
 				resultListDefinitions.addAll(dtoExactlyRelationsList);
+				*/
 			}			
 			
 		}	
@@ -131,6 +132,7 @@ public class ApplicationQueryUtil {
 				DtoDefinitionClass aux = null;
 				if(aux == null && ! cls.contains("Thing"))	//doesn't exist yet
 				{
+					/*
 					//relations URI some values
 					ArrayList<DtoDefinitionClass> dtoSomeRelationsList = new ArrayList<DtoDefinitionClass>();
 					for(String[] triple: QueryUtil.getTuplesSomeValuesFrom(InfModel,cls)){
@@ -182,6 +184,7 @@ public class ApplicationQueryUtil {
 					resultListDefinitions.addAll(dtoMinRelationsList);
 					resultListDefinitions.addAll(dtoMaxRelationsList);
 					resultListDefinitions.addAll(dtoExactlyRelationsList);
+					*/
 				}			
 				
 			}		
