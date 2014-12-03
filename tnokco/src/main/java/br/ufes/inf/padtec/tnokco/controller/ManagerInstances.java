@@ -642,7 +642,8 @@ public class ManagerInstances {
 		ArrayList<String> listClassesMembersTmp = new ArrayList<String>();
 		for (DtoCompleteClass dto : instanceSelected.ListCompleteClasses) 
 		{
-			List<String> listDisjoint = QueryUtil.getClassesURIDisjointWith(infModel,dto.CompleteClass);
+			List<String> listDisjoint = QueryUtil.getDisjointClassesURIs(infModel, dto.CompleteClass);
+			//List<String> listDisjoint = QueryUtil.getClassesURIDisjointWith(infModel,dto.CompleteClass);
 			for (String clc : listClassesMembersTmpWithoutRepeat) 
 			{
 				if(! listDisjoint.contains(clc))

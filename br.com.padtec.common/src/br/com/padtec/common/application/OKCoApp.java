@@ -22,6 +22,7 @@ import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.graph.GraphPlotting;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -894,6 +895,43 @@ public class OKCoApp {
 		}
 		
 		individualSelected.ListSpecializationProperties = ListSpecializationProperties;	
+	}
+
+	public static void setDefinitionsInSelected(OntCardinalityEnum typeCompletness) {
+		InfModel model = UploadApp.getInferredModel();
+		for (String classURI : individualSelected.ListClasses) {
+			List<DtoDefinitionClass> definitions = QueryUtil.getCardinalityDefinitionsFrom(model, classURI, typeCompletness);
+			
+			for (DtoDefinitionClass def : definitions) {
+				switch (typeCompletness) {
+					case SOME:
+						if(!individualSelected.ListSome.contains(def)){
+							individualSelected.ListSome.add(def);
+						}
+						break;
+					case MIN:
+						if(!individualSelected.ListMin.contains(def)){
+							individualSelected.ListMin.add(def);
+						}
+						break;
+					case MAX:
+						if(!individualSelected.ListMax.contains(def)){
+							individualSelected.ListMax.add(def);
+						}
+						break;
+					case EXACTLY:
+						if(!individualSelected.ListExactly.contains(def)){
+							individualSelected.ListExactly.add(def);
+						}
+						break;
+					case COMPLETE:
+						
+						break;
+				}
+				
+				
+			}
+		}		
 	}
 	
 }

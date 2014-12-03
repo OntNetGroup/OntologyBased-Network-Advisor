@@ -105,6 +105,7 @@ public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 		return null;
 	}
 
+	@Override
 	public int compareTo(DtoDefinitionClass arg0) 
 	{
 		if(this.Source == arg0.Source && this.Relation == arg0.Relation && this.Target == arg0.Target && this.Cardinality.equals(arg0.Cardinality) && this.PropertyType.equals(arg0.PropertyType))
@@ -113,7 +114,21 @@ public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 		} else {
 			return this.Relation.compareTo(arg0.Relation);
 		}		
-	}	
+	}
+	
+	@Override
+	public boolean equals(Object arg) {
+		if(arg instanceof DtoDefinitionClass){
+			DtoDefinitionClass arg0 = (DtoDefinitionClass)arg;
+			if(this.Source == arg0.Source && this.Relation == arg0.Relation && this.Target == arg0.Target && this.Cardinality.equals(arg0.Cardinality) && this.PropertyType.equals(arg0.PropertyType))
+			{
+				return true;
+			} else {
+				return this.Relation.equals(arg0.Relation);
+			}
+		}
+		return false;
+	}
 	
 	
 }

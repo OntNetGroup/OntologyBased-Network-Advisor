@@ -14,6 +14,8 @@ import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
+import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.URIDecoder;
 
 @Controller
@@ -37,6 +39,11 @@ public class DetailingController {
 		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uri);
 		OKCoApp.setClassSpecializationsInSelected();
 		OKCoApp.setRelationSpecializationsInSelected();
+		OKCoApp.setDefinitionsInSelected(OntCardinalityEnum.SOME);
+		OKCoApp.setDefinitionsInSelected(OntCardinalityEnum.MIN);
+		OKCoApp.setDefinitionsInSelected(OntCardinalityEnum.MAX);
+		OKCoApp.setDefinitionsInSelected(OntCardinalityEnum.EXACTLY);
+		
 		
 		request.getSession().setAttribute("instanceSelected", selectedIndividual);
 		

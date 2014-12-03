@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstanceRelation;
+import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
 
 import com.hp.hpl.jena.query.Query;
@@ -1213,58 +1215,56 @@ public class QueryUtil {
 	}
 		
 	/**
-	 * It returns the triples in the format (domain,relation,range) of relations with some values.
+	 * It returns the cardinality definitions of a property.
 	 * Should be more of a description here...
 	 * 
 	 *  @param mode: jena.ontology.InfModel
 	 *  @param classURI: Class URI
 	 *  
-	 *  @author John Guerson
+	 *  @author Freddy Brasileiro
 	 */
-	static public List<String[]> getTuplesSomeValuesFrom(InfModel model, String classURI) 
+	static public List<DtoDefinitionClass> getCardinalityDefinitionsFrom(InfModel model, String classURI, OntCardinalityEnum typeCompletness) 
 	{
-		System.out.println("\nExecuting getRelationsURIWithSomeValues()...");
-		List<String[]> result = new ArrayList<String[]>();
+		System.out.println("\nExecuting getSomeCardinalityDefinitions()...");
+		List<DtoDefinitionClass> result = new ArrayList<DtoDefinitionClass>();
 		//classes
 		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT ?x ?y ?z" +
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">\n" +
+		" SELECT DISTINCT ?source ?property ?target ?propertyType\n" +
 		" WHERE {\n" +			
-			" { " +
-				" ?x " + "owl:equivalentClass" + " ?blank .\n " +
-				" ?blank rdf:type owl:Class .\n"  +
-				" ?blank owl:intersectionOf  ?list  .\n" +
-				" ?list  rdf:rest*/rdf:first  ?member . \n"  +			
-				" ?member " + "owl:someValuesFrom" + " ?z .\n " +
-				" ?member " + "owl:onProperty ?y .\n" +	
-				
-				" FILTER( ?x = <" + classURI + "> ) " +
-			"} UNION {\n" +		
-				" ?x " + "owl:equivalentClass" + " _:b0 .\n " +				
-				" _:b0 " + "owl:someValuesFrom" + " ?z .\n " +
-				" _:b0 " + "owl:onProperty ?y .\n" +
-				
-				" FILTER( ?x = <" + classURI + "> ) " +
-			" }\n" +	
-				
-			"UNION { " +
-				" ?x " + "rdfs:subClassOf" + " ?blank .\n " +
-				" ?blank rdf:type owl:Class .\n"  +
-				" ?blank owl:intersectionOf  ?list  .\n" +
-				" ?list  rdf:rest*/rdf:first  ?member . \n"  +			
-				" ?member " + "owl:someValuesFrom" + " ?z .\n " +
-				" ?member " + "owl:onProperty ?y .\n" +	
-				
-				" FILTER( ?x = <" + classURI + "> ) " +
-			"} UNION {\n" +		
-				" ?x " + "rdfs:subClassOf" + " _:b1 .\n " +				
-				" _:b1 " + "owl:someValuesFrom" + " ?z .\n " +
-				" _:b1 " + "owl:onProperty ?y .\n" +
-				
-				" FILTER( ?x = <" + classURI + "> ) " +
+			" \t{ \n" +
+				"\t\t ?source " + "owl:equivalentClass" + " ?blank .\n " +
+				"\t\t ?blank rdf:type owl:Class .\n"  +
+				"\t\t ?blank owl:intersectionOf  ?list  .\n" +
+				"\t\t ?list  rdf:rest*/rdf:first  ?member . \n"  +			
+				"\t\t ?member " + "owl:" + typeCompletness.getOwlAxiom() + " ?target .\n " +
+				"\t\t ?member " + "owl:onProperty ?property .\n" +	
+				"\t\t ?property rdf:type ?propertyType ." +
+				"\t\t FILTER( ?source = <" + classURI + "> ) \n" +
+			"\t} UNION {\n" +		
+				"\t\t ?source " + "owl:equivalentClass" + " _:b0 .\n " +				
+				"\t\t _:b0 " + "owl:" + typeCompletness.getOwlAxiom() + " ?target .\n " +
+				"\t\t _:b0 " + "owl:onProperty ?property .\n" +
+				"\t\t ?property rdf:type ?propertyType ." +
+				"\t\t FILTER( ?source = <" + classURI + "> ) \n" +
+			"\t }UNION { \n" +
+				"\t\t ?source " + "rdfs:subClassOf" + " ?blank .\n " +
+				"\t\t ?blank rdf:type owl:Class .\n"  +
+				"\t\t ?blank owl:intersectionOf  ?list  .\n" +
+				"\t\t ?list  rdf:rest*/rdf:first  ?member . \n"  +			
+				"\t\t ?member " + "owl:" + typeCompletness.getOwlAxiom() + " ?target .\n " +
+				"\t\t ?member " + "owl:onProperty ?property .\n" +	
+				"\t\t ?property rdf:type ?propertyType ." +
+				"\t\t FILTER( ?source = <" + classURI + "> ) \n" +
+			"\t} UNION {\n" +		
+				"\t\t ?source " + "rdfs:subClassOf" + " _:b1 .\n " +				
+				"\t\t _:b1 " + "owl:" + typeCompletness.getOwlAxiom() + " ?target .\n " +
+				"\t\t _:b1 " + "owl:onProperty ?property .\n" +
+				"\t\t ?property rdf:type ?propertyType ." +
+				"\t\t FILTER( ?source = <" + classURI + "> ) \n" +
 			" }\n" +			
 		
 		"}";		
@@ -1275,23 +1275,44 @@ public class QueryUtil {
 		while (results.hasNext()) 
 		{
 			QuerySolution row= results.next();
-		    RDFNode Source = row.get("x");
-		    RDFNode Relation = row.get("y");
-		    RDFNode Target = row.get("z");		    
+		    RDFNode source = row.get("source");
+		    RDFNode relation = row.get("property");
+		    RDFNode target = row.get("target");		
+		    RDFNode propertyType = row.get("propertyType");
 		    //jump the blank nodes - Check blank node and signal '-'
-		    String TargetStr = Target.toString();
-		    String SourceStr = Source.toString();
-		    if ( Character.isDigit(TargetStr.charAt(0)) || TargetStr.startsWith("-") || Character.isDigit(SourceStr.charAt(0)) || SourceStr.startsWith("-")) 
-		    {
-		        continue;
+		    String targetStr = target.toString();
+		    String sourceStr = source.toString();
+//		    boolean x = Character.isDigit(targetStr.charAt(0));
+//		    boolean y = targetStr.startsWith("-");
+//		    boolean z = Character.isDigit(sourceStr.charAt(0));
+//		    boolean w = sourceStr.startsWith("-");
+//		    if ( Character.isDigit(targetStr.charAt(0)) || targetStr.startsWith("-") || Character.isDigit(sourceStr.charAt(0)) || sourceStr.startsWith("-")) 
+//		    {
+//		        continue;
+//		    }		
+		    DtoDefinitionClass defClass = new DtoDefinitionClass();
+		    defClass.Source = source.toString();
+		    if(propertyType.toString().contains("ObjectProperty")){
+		    	defClass.PropertyType = OntPropertyEnum.OBJECT_PROPERTY;
+		    }else{
+		    	defClass.PropertyType = OntPropertyEnum.DATA_PROPERTY;
 		    }		    
-			String[] triple = new String[]{Source.toString(), Relation.toString(), Target.toString() };	
+		    defClass.Relation = relation.toString();
+		    defClass.Target = target.toString();
+		    defClass.TypeCompletness = OntCardinalityEnum.SOME;
+		    		    
+			//String[] triple = new String[]{Source.toString(), Relation.toString(), Target.toString() };	
 			System.out.println("- Triple: \n");
-			System.out.println("     "+Source.toString());
-			System.out.println("     "+Relation.toString());
-			System.out.println("     "+Target.toString());
-			result.add(triple);
-		}				
+			System.out.println("     "+source.toString());
+			System.out.println("     "+relation.toString());
+			System.out.println("     "+target.toString());
+			//result.add(triple);
+			if(!result.contains(defClass)){
+				result.add(defClass);				
+			}
+			
+		}	
+		/*
 		//sub-classes		
 		queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -1331,6 +1352,7 @@ public class QueryUtil {
 		    	}
 		    }
 		}
+		*/
 		return result;
 	}
 	
@@ -1353,7 +1375,7 @@ public class QueryUtil {
 	}
 	
 	/**
-	 * It returns the triples in the format (domain,relation,cardinality,range) of relations with minimum cardianlity values.
+	 * It returns the definitions of properties with min cardianlity values.
 	 * Should be more of a description here...
 	 * 
 	 *  @param mode: jena.ontology.InfModel
@@ -1361,9 +1383,10 @@ public class QueryUtil {
 	 *  
 	 *  @author John Guerson
 	 */
-	static public List<String[]> getTuplesMinQualifiedCardinality(InfModel model, String classURI) 
+	
+	static public List<String[]> getMinCardinalityDefinitions(InfModel model, String classURI) 
 	{
-		System.out.println("\nExecuting getRelationsURIWithMinCardinality()...");
+		System.out.println("\nExecuting getMinCardinalityDefinitions()...");
 		List<String[]> result = new ArrayList<String[]>();		
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -1515,7 +1538,7 @@ public class QueryUtil {
 	}
 	
 	/**
-	 * It returns the triples in the format (domain,relation,cardinality,range) of relations with maximum cardianlity values.
+	 * It returns the definitions of properties with maximum cardianlity values.
 	 * Should be more of a description here...
 	 * 
 	 *  @param mode: jena.ontology.InfModel
@@ -1523,9 +1546,9 @@ public class QueryUtil {
 	 *  
 	 *  @author John Guerson
 	 */
-	static public List<String[]> getTuplesMaxQualifiedCardinality(InfModel model, String classURI) 
+	static public List<String[]> getMaxCardinalityDefinitions(InfModel model, String classURI) 
 	{
-		System.out.println("\nExecuting getRelationsURIWithMaxCardinality()...");
+		System.out.println("\nExecuting getMaxCardinalityDefinitions()...");
 		List<String[]> result = new ArrayList<String[]>();
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -1675,7 +1698,7 @@ public class QueryUtil {
 	}
 	
 	/**
-	 * It returns the triples in the format (domain,relation,cardinality,range) of relations with exact cardianlity values.
+	 * It returns the definitions of properties with exact cardinality values.
 	 * Should be more of a description here...
 	 * 
 	 *  @param mode: jena.ontology.InfModel
@@ -1683,9 +1706,9 @@ public class QueryUtil {
 	 *  
 	 *  @author John Guerson
 	 */
-	static public List<String[]> getTuplesQualifiedCardinality(InfModel model, String classURI) {
+	static public List<String[]> getExactlyCardinalityDefinitions(InfModel model, String classURI) {
 
- 		System.out.println("\nExecuting getRelationsURIWithExactCardinality()...");
+ 		System.out.println("\nExecuting getExactlyCardinalityDefinitions()...");
  		List<String[]> result = new ArrayList<String[]>();
 		String queryString = 
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -1851,37 +1874,37 @@ public class QueryUtil {
 		String completeClassURI = new String();
 		List<String> members = new ArrayList<String>();
 		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT ?x0 ?completeClass ?member" +
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">\n" +
+		" SELECT DISTINCT ?x0 ?completeClass ?member\n" +
 		" WHERE {\n" +
-		"{ " +		
-			"?completeClass owl:equivalentClass ?cls ." +
-			"?cls owl:intersectionOf ?nodeFather." +
-			//one level
-			"?nodeFather ?r1 ?x0 ."+
-			"?x0 owl:unionOf  ?list ."+
-			"?list  rdf:rest*/rdf:first  ?member ." +
-			" FILTER( ?completeClass = <" + className + "> ) " +			
-		"} UNION {" +		
-			"?completeClass owl:equivalentClass ?cls ." +
-			"?cls owl:intersectionOf ?nodeFather." +
-			//two levels
-			"?nodeFather ?r2 ?x1 ." +
-			"?x1 ?r1 ?x0 ." +
-			"?x0 owl:unionOf  ?list ." +
-			"?list  rdf:rest*/rdf:first  ?member ." +
-			" FILTER( ?completeClass = <" + className + "> ) " +			
-		"} UNION {" +							
-			"?completeClass owl:equivalentClass ?x0 ." +			
-			//zero levels
-			"?x0 owl:unionOf  ?list ." +			
-			"?list  rdf:rest*/rdf:first  ?member ." +
-			" FILTER( ?completeClass = <" + className + "> ) " +			
-		"}" + 
-		"}";
+			"\t{ \n" +		
+				"\t\t?completeClass owl:equivalentClass ?cls .\n" +
+				"\t\t?cls owl:intersectionOf ?nodeFather.\n" +
+				//one level
+				"\t\t?nodeFather ?r1 ?x0 .\n"+
+				"\t\t?x0 owl:unionOf  ?list .\n"+
+				"\t\t?list  rdf:rest*/rdf:first  ?member .\n" +
+				"\t\t FILTER( ?completeClass = <" + className + "> ) \n" +			
+			"\t} UNION {\n" +		
+				"\t\t?completeClass owl:equivalentClass ?cls .\n" +
+				"\t\t?cls owl:intersectionOf ?nodeFather.\n" +
+				//two levels
+				"\t\t?nodeFather ?r2 ?x1 .\n" +
+				"\t\t?x1 ?r1 ?x0 .\n" +
+				"\t\t?x0 owl:unionOf  ?list .\n" +
+				"\t\t?list  rdf:rest*/rdf:first  ?member .\n" +
+				"\t\t FILTER( ?completeClass = <" + className + "> ) \n" +			
+			"\t} UNION {\n" +							
+				"\t\t?completeClass owl:equivalentClass ?x0 .\n" +			
+				//zero levels
+				"\t\t?x0 owl:unionOf  ?list .\n" +			
+				"\t\t?list  rdf:rest*/rdf:first  ?member .\n" +
+				"\t\t FILTER( ?completeClass = <" + className + "> ) \n" +			
+			"\t}\n" + 
+		"}\n";
 		/* The result is order by completClass */		
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, infModel);
