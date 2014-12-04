@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import br.com.padtec.common.application.OKCoApp;
 import br.com.padtec.common.dto.DtoInstance;
 
+/**
+ * Controller responsible for the listing of individuals. 
+ */
+
 @Controller
 public class ListingController {
 

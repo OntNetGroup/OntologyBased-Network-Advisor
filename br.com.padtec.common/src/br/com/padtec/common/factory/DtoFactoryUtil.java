@@ -109,6 +109,15 @@ public class DtoFactoryUtil {
 		return null;
 	}
 	
+	static public DtoDefinitionClass getDefinitionFrom(List<DtoDefinitionClass> relationsList, String relationURI)
+	{		
+		for (DtoDefinitionClass aux : relationsList) 
+		{	
+			if(aux.Relation.equals(relationURI)) return aux;
+		}
+		return null;
+	}
+	
 	static public void createAndClassifyIndividualAutomatically(OntModel model, InfModel inferredModel, DtoInstance dtoIndividual) 
 	{		
 		// Check if the subclasses are disjoint and complete

@@ -10,14 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import br.com.padtec.common.application.CommiterApp;
 import br.com.padtec.common.application.OKCoApp;
 import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
+import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.URIDecoder;
+
+/**
+ * Controller responsible for the functionality of Completing the knowledge.
+ * See this class: {@link CommiterApp} 
+ */
 
 @Controller
 public class CompleterController {
@@ -38,7 +45,7 @@ public class CompleterController {
 		/** ==================================================
 		 * Complete Individuals Automatically
 		 *  =================================================== */								
-		OKCoApp.createNewIndividualsAutomatically(selectedIndividual);
+		CommiterApp.createNewIndividualsAutomatically(selectedIndividual);
 				
 		/** ==================================================
 		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
@@ -52,11 +59,11 @@ public class CompleterController {
 	
 	/** This function works only with object properties: min, exactly and some properties */
 	@RequestMapping(method = RequestMethod.GET, value="/completePropertyAuto")
-	public String completePropertyAuto(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) 
+	public String completePropertyAuto(@RequestParam("uriInstance") String uriInstance, @RequestParam("idDefinition") String uriProperty, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) 
 	{
-		/** Decode URIs First */
-		uriProperty = URIDecoder.decodeURI(uriProperty);		
+		/** Decode URIs First */				
 		uriInstance = URIDecoder.decodeURI(uriInstance);
+		uriProperty = URIDecoder.decodeURI(uriProperty);
 		
 		/** ==================================================
 		 * Select a Specific Individual
@@ -79,7 +86,7 @@ public class CompleterController {
 				/** ==================================================
 				 * Create a New Individual at the Range of the Selected Class Definition
 				 *  =================================================== */				
-				OKCoApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, null);
+				CommiterApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, null);
 			}
 			else if(typeRelation.equals(OntCardinalityEnum.MIN))
 			{
@@ -90,7 +97,7 @@ public class CompleterController {
 					/** ==================================================
 					 * Create a New Individual at the Range of the Selected Class Definition
 					 *  =================================================== */
-					OKCoApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);					
+					CommiterApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);					
 									
 					individualsNumber ++;
 				}				
@@ -106,7 +113,7 @@ public class CompleterController {
 						/** ==================================================
 						 * Create a New Individual at the Range of the Selected Class Definition
 						 *  =================================================== */
-						OKCoApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);	
+						CommiterApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);	
 						
 						individualsNumber ++;
 					}
@@ -125,11 +132,11 @@ public class CompleterController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
-	public String completeProperty(@RequestParam("idDefinition") String uriProperty, @RequestParam("uriInstance") String uriInstance, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) 
+	public String completeProperty(@RequestParam("uriInstance") String uriInstance, @RequestParam("idDefinition") String uriProperty, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) throws OKCoException  
 	{		
 		/** Decode URIs First */
-		uriProperty = URIDecoder.decodeURI(uriProperty);		
 		uriInstance = URIDecoder.decodeURI(uriInstance);
+		uriProperty = URIDecoder.decodeURI(uriProperty);
 		
 		/** ==================================================
 		 * Select a Specific Individual
@@ -139,7 +146,7 @@ public class CompleterController {
 
 		/** ==================================================
 		 * Select a Specific class definition from the selected individual
-		 *  =================================================== */
+		 *  =================================================== */		
 		DtoDefinitionClass classDefinitionSelected = OKCoApp.selectDefinitionFromSelected(uriProperty);
 		request.getSession().setAttribute("definitionSelected", classDefinitionSelected);
 

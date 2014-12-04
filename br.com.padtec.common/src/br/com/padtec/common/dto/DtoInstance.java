@@ -163,7 +163,7 @@ public class DtoInstance implements Serializable {
  		
  	}
 	
-	public List<DtoPropertyAndSubProperties> getPropertiesAndSubProperties()
+	public List<DtoPropertyAndSubProperties> getSpecializationProperties()
 	{
 		return ListSpecializationProperties;
 	}

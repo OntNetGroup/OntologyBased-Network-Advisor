@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.common.application.OKCoApp;
+import br.com.padtec.common.application.ClassifierApp;
 import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoClassifyInstancePost;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
+
+/**
+ * Controller responsible for the functionality of Classifying the instances and relations.
+ * See this class: {@link ClassifierApp} 
+ */
 
 @Controller
 public class ClassifierController {
@@ -24,7 +29,7 @@ public class ClassifierController {
 		/** ==================================================
 		 * Classifies the individuals classes.
 		 *  ================================================== */	
-		DtoResult dtoResult = OKCoApp.classifyIndividualsClasses(classes);
+		DtoResult dtoResult = ClassifierApp.classifyIndividualsClasses(classes);
 		
 		/** ==================================================
 		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
@@ -44,7 +49,7 @@ public class ClassifierController {
 		/** ==================================================
 		 * Classifies the individuals properties.
 		 *  ================================================== */	
-		DtoResult dtoResult = OKCoApp.classifyIndividualsProperties(properties, dto);	
+		DtoResult dtoResult = ClassifierApp.classifyIndividualsProperties(properties, dto);	
 		
 		/** ==================================================
 		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).

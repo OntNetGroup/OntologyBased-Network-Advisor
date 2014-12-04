@@ -19,6 +19,7 @@ public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 	
 	public String Source;
 	public String Relation;
+	public String uriRelationEncoded = new String();
 	public OntPropertyEnum PropertyType;				//object or data
 	public OntCardinalityEnum TypeCompletness;	//some,min,max...
 	public String Target;
@@ -53,18 +54,6 @@ public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 		return this.Source + sKey + this.Relation + sKey + this.Target + sKey + this.Cardinality;
 	
 	}	
-
-	public static DtoDefinitionClass get(ArrayList<DtoDefinitionClass> list, String uriRelation)
-	{		
-		for (DtoDefinitionClass aux : list) {	
-			if(aux.Relation.equals(uriRelation))
-			{
-				return aux;
-			} 
-
-		}
-		return null;
-	}
 
 	public boolean sameAs(DtoDefinitionClass d) {
 		

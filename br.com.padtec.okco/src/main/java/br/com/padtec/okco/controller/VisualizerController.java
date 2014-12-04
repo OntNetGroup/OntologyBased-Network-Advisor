@@ -7,10 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.com.padtec.common.application.OKCoApp;
+import br.com.padtec.common.application.VisualizerApp;
 import br.com.padtec.common.graph.GraphPlotting;
 import br.com.padtec.common.graph.WOKCOGraphPlotting;
 import br.com.padtec.common.types.URIDecoder;
+
+/**
+ * Controller responsible for the graph visualization.
+ * See this class: {@link VisualizerApp} 
+ */
 
 @Controller
 public class VisualizerController {
@@ -25,7 +30,7 @@ public class VisualizerController {
 		 * Get Values of Graph
 		 *  =================================================== */
 		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
-		String valuesGraph = OKCoApp.getGraphValues(typeView,uri, graphPlotting);
+		String valuesGraph = VisualizerApp.getGraphValues(typeView,uri, graphPlotting);
 		request.getSession().setAttribute("valuesGraph", valuesGraph);
 	
 		/** ==================================================

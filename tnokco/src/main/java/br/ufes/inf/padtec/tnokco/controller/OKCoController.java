@@ -154,13 +154,13 @@ public class OKCoController {
 
 		//Search for the definition class correctly
 
-		dtoSelected = DtoDefinitionClass.get(instance.ListSome, uriProperty);
+		dtoSelected = DtoFactoryUtil.getDefinitionFrom(instance.ListSome, uriProperty);
 		if(dtoSelected == null)
-			dtoSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
+			dtoSelected = DtoFactoryUtil.getDefinitionFrom(instance.ListMin, uriProperty);
 		if(dtoSelected == null)
-			dtoSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
+			dtoSelected = DtoFactoryUtil.getDefinitionFrom(instance.ListMax, uriProperty);
 		if(dtoSelected == null)
-			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
+			dtoSelected = DtoFactoryUtil.getDefinitionFrom(instance.ListExactly, uriProperty);
 
 		//Create the sections
 
@@ -244,19 +244,19 @@ public class OKCoController {
 		DtoInstance instance = HomeController.ManagerInstances.getInstance(ListAllInstances, uriInstance);
 
 		//Search for the definition class correctly
-		dtoSelected = DtoDefinitionClass.get(instance.ListSome,uriProperty);
+		dtoSelected = DtoFactoryUtil.getDefinitionFrom(instance.ListSome,uriProperty);
 		OntCardinalityEnum typeRelation = OntCardinalityEnum.SOME;
 
 		if(dtoSelected == null){
-			dtoSelected = DtoDefinitionClass.get(instance.ListMin, uriProperty);
+			dtoSelected = DtoFactoryUtil.getDefinitionFrom(instance.ListMin, uriProperty);
 			typeRelation = OntCardinalityEnum.MIN;
 		}
 		if(dtoSelected == null){
-			dtoSelected = DtoDefinitionClass.get(instance.ListMax, uriProperty);
+			dtoSelected = DtoFactoryUtil.getDefinitionFrom(instance.ListMax, uriProperty);
 			typeRelation = OntCardinalityEnum.MAX;
 		}
 		if(dtoSelected == null){
-			dtoSelected = DtoDefinitionClass.get(instance.ListExactly, uriProperty);
+			dtoSelected = DtoFactoryUtil.getDefinitionFrom(instance.ListExactly, uriProperty);
 			typeRelation = OntCardinalityEnum.EXACTLY;
 		}		
 

@@ -22,6 +22,12 @@ import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.exceptions.OKCoExceptionNameSpace;
 import br.com.padtec.common.exceptions.OKCoExceptionReasoner;
 
+/**
+ * Controller responsible for the upload/store of the base ontology, inferred ontology and temporary ontology.
+ * It also records what reasoner is used.
+ * See this class: {@link UploadApp}  
+ */
+
 @Controller
 public class UploadController {
 	
@@ -79,7 +85,7 @@ public class UploadController {
 	public void clearAllApps()
 	{
 		UploadApp.clear(); 
-		OKCoApp.clear();	
+		OKCoApp.clearSelected();	
 	}
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)

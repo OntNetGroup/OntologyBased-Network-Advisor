@@ -622,8 +622,8 @@
 								  		
 								  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");									  									  		
 								  		out.println("<td class=\"center\">" + 
-								  						"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\"></i> </a>" + "&nbsp;" +
-								  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-cogs\"></i> </a>" +
+								  						"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+								  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
 								  					"</td>");
 							  									  		
 							  		out.println("</tr>");
@@ -652,8 +652,8 @@
 								  		}
 								  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");								  		
 								  		out.println("<td class=\"center\">" + 
-								  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\"></i> </a>" + "&nbsp;" +
-						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-cogs\"></i> </a>" +
+								  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
 								  					"</td>");
 							  									  		
 							  		out.println("</tr>");							  		
@@ -684,7 +684,7 @@
 							  		}
 							  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");							  		
 								  	out.println("<td class=\"center\">" + 
-								  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "objectMax" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\"></i> </a>" + "&nbsp;" +
+								  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "objectMax" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
 					  								
 								  					"</td>");
 							  									  		
@@ -716,8 +716,8 @@
 							  		}
 							  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");					  		
 								  	out.println("<td class=\"center\">" + 
-								  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\"></i> </a>" + "&nbsp;" +
-					  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-cogs\"></i> </a>" +
+								  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+					  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
 								  					"</td>");
 							  									  		
 							  		out.println("</tr>");							  		

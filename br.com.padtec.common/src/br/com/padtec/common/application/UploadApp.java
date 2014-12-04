@@ -151,6 +151,9 @@ public class UploadApp {
 		}			
 	}	
 	
+	/**
+	 * Record a temporary model from the last valid base model in order to allow a roll back in the future.
+	 */
 	public static void storeTemporaryModelFromBaseModel()
 	{
 		tempModel = OntModelAPI.clone(getBaseModel());
