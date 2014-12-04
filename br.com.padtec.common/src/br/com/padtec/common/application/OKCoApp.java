@@ -43,6 +43,16 @@ public class OKCoApp {
 	}
 	
 	/**
+	 * Select a individual to be used later on.
+	 * 
+	 * @param newSelectedIndividual
+	 */
+	public static void selectIndividual(DtoInstance newSelectedIndividual)
+	{
+		individualSelected = newSelectedIndividual;
+	}
+	
+	/**
 	 * Select a particular cardinality definition to be used later on.
 	 * 
 	 * @param uriProperty
@@ -390,8 +400,8 @@ public class OKCoApp {
 					boolean ok = true;
 					
 					List<String> distointSubPropOfProp = QueryUtil.getPropertiesURIDisjointWith(model,sub);
-					for (String disjointrop : distointSubPropOfProp) {
-						
+					for (String disjointrop : distointSubPropOfProp) 
+					{						
 						for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
 							if(dtoWithRelation.Property.equals(disjointrop)) // instance have this sub relation
 							{
@@ -408,8 +418,7 @@ public class OKCoApp {
 							ok = false;
 							break;
 						}
-					}						
-					
+					}					
 					
 					if(ok == true)
 					{

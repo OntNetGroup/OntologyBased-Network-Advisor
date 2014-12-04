@@ -39,7 +39,7 @@ public class CommiterApp {
 	{
 		ArrayList<String> listSame = new ArrayList<String>(Arrays.asList(arraySame));		
 		ArrayList<String> listDif = new ArrayList<String>(Arrays.asList(arrayDif));		
-		DtoInstance dtoIndividual = new DtoInstance(UploadApp.baseRepository.getNameSpace(), name, null, listDif, listSame, false);
+		DtoInstance dtoIndividual = new DtoInstance(UploadApp.getBaseRepository().getNameSpace(), name, null, listDif, listSame, false);
 		newIndividualsCommitList.add(dtoIndividual);
 		return dtoIndividual;
 	}
@@ -119,7 +119,7 @@ public class CommiterApp {
 	public static void createNewIndividualAtClassDefinitionRangeSelected(Integer idNumber, List<String> differentFromList)
 	{
 		String individualName = OKCoApp.getSelectedClassDefinition().Target.split("#")[1] + "-" + (idNumber + 1);				
-		DtoInstance newDtoIndividual = new DtoInstance(UploadApp.baseRepository.getNameSpace(), individualName, null, differentFromList, null, false);
+		DtoInstance newDtoIndividual = new DtoInstance(UploadApp.getBaseRepository().getNameSpace(), individualName, null, differentFromList, null, false);
 		OntModel model = UploadApp.getBaseModel();
 		FactoryUtil.createIndividual(model, 
 			newDtoIndividual.ns+newDtoIndividual.name, 
@@ -144,7 +144,7 @@ public class CommiterApp {
 	public static void createNewIndividualAtClassDefinitionRange(DtoInstance dtoIndividual, DtoDefinitionClass dtoDefinitionClass, Integer idNumber, List<String> differentFromList)
 	{
 		String individualName = dtoDefinitionClass.Target.split("#")[1] + "-" + (idNumber + 1);				
-		DtoInstance newDtoIndividual = new DtoInstance(UploadApp.baseRepository.getNameSpace(), individualName, null, differentFromList, null, false);
+		DtoInstance newDtoIndividual = new DtoInstance(UploadApp.getBaseRepository().getNameSpace(), individualName, null, differentFromList, null, false);
 		OntModel model = UploadApp.getBaseModel();
 		FactoryUtil.createIndividual(model, 
 			newDtoIndividual.ns+newDtoIndividual.name, 

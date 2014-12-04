@@ -44,7 +44,7 @@ public class ClassifierApp {
 		}
 		try {
 			/** Update of the individual selected */
-			OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.getSelectedIndividualURI(),true,true,true);
+			OKCoApp.selectIndividual(DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.getSelectedIndividualURI(),true,true,true));
 			
 		} catch (Exception e) {
 			dtoResult.setMessage(e.getMessage());
@@ -55,7 +55,7 @@ public class ClassifierApp {
 				if(!clsAux.equals(""))FactoryUtil.deleteIndividualOfClass(basemodel,OKCoApp.getSelectedIndividualURI(), clsAux);				
 			}
 			/** Update of the individual selected */
-			OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.getSelectedIndividualURI(),true,true,true);
+			OKCoApp.selectIndividual(DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.getSelectedIndividualURI(),true,true,true));
 			return dtoResult;
 		}		
 		OKCoApp.setSelectedToModified();
@@ -98,7 +98,7 @@ public class ClassifierApp {
 		}
 		try {				
 			/** Update the individual selected */
-			OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.getSelectedIndividualURI(),true,true,true);
+			OKCoApp.selectIndividual(DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.getSelectedIndividualURI(),true,true,true));
 		}catch (Exception e){
 			dtoResult.setMessage(e.getMessage());
 			dtoResult.setIsSucceed(false);
@@ -108,13 +108,13 @@ public class ClassifierApp {
 				if(dtoSpec.propertyType.equals(OntPropertyEnum.DATA_PROPERTY)){						
 					/** Delete Data Property */
 					if(!subRelAux.equals(""))FactoryUtil.deleteRangeDataPropertyValue(basemodel, dtoSpec.iTargetNs.split("\\^\\^")[0], OKCoApp.getSelectedIndividualURI(), subRelAux, dtoSpec.iTargetNs.split("\\^\\^")[1] + dtoSpec.iTargetName);
-				}else{					
+				}else{
 					/** Delete Object Property */
 					if(!subRelAux.equals(""))FactoryUtil.createObjectProperty(basemodel, OKCoApp.getSelectedIndividualURI(), subRelAux,dtoSpec.iTargetNs + dtoSpec.iTargetName);					
 				}
 			}
 			/** Update Individual Selected */
-			OKCoApp.individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.getSelectedIndividualURI(),true,true,true);
+			OKCoApp.selectIndividual(DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), OKCoApp.getSelectedIndividualURI(),true,true,true));
 			return dtoResult;
 		}
 		OKCoApp.setSelectedToModified();
