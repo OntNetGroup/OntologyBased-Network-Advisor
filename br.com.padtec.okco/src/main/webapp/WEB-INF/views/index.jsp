@@ -47,7 +47,7 @@
 		<div class="box">
 			<div class="box-header">
 				<h2>
-					<i class="icon-edit"></i>OKCo configuration
+					<i class="icon-edit"></i>OKCo Configuration
 				</h2>
 				<div class="box-icon">
 					<a href="#" class="btn-setting"><i class="icon-wrench"></i></a> <a
@@ -55,34 +55,37 @@
 				</div>
 			</div>
 			<div class="box-content">
-				<form action="upload" class="form-horizontal"
-					enctype="multipart/form-data" method="POST">
+				<form action="upload" class="form-horizontal" enctype="multipart/form-data" method="POST">
 					<fieldset class="col-sm-12">
 
 						<div class="form-group">
-							<label class="control-label">Select Reasoner:</label>
+							<label class="control-label">Select the Default Reasoner:</label>
 							<div class="controls">
 
-								<label class="radio"> <span class="checked"><input
-										type="radio" name="optionsReasoner" id="optionsRadios1"
-										value="pellet" checked="checked"></span> Pellet
+								<label class="radio"> 
+									<span class="checked">
+										<input type="radio" name="optionsReasoner" id="optionsRadios1" value="pellet" checked="checked">
+									</span> 
+									Pellet
 								</label>
-								<div style="clear: both"></div>
-								<label class="radio"> <span class=""><input
-										type="radio" name="optionsReasoner" id="optionsRadios2"
-										value="hermit" ></span> Hermit
+								<div style="clear: both">
+								</div>
+								<label class="radio"> 
+										<span class="">
+											<input type="radio" name="optionsReasoner" id="optionsRadios2" value="hermit" >
+										</span> 
+										Hermit
 								</label>
-
 							</div>
-							<br /> <label class="checkbox inline"> <input
-								type="checkbox" name="loadReasonerFirstCheckbox"
-								id="loadReasonerFirstCheckbox" /> Use
-								reasoner in load
-							</label> <br /> <label class="control-label">File Upload:</label>
+							<br /> 
+							<label class="control-label">File Upload:</label>
 							<div class="controls">
-								<input name="file" type="file"> <input type="submit" class="btnload"
-									name="submit" value="Upload" />
+								<input name="file" type="file"> 
+								<input type="submit" class="btnload" name="submit" value="Upload" />
 							</div>
+							<label class="checkbox inline"> 
+								<input type="checkbox" name="loadReasonerFirstCheckbox" id="loadReasonerFirstCheckbox" /> Run reasoner in load
+							</label>							
 						</div>
 
 					</fieldset>
