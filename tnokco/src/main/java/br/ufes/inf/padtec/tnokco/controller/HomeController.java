@@ -538,7 +538,7 @@ public class HomeController implements ServletContextAware{
 			String s = i.ns + i.name;
 			if (ListModifiedInstances.contains(s))
 			{
-				i.setModified(true);
+				//i.setModified(true);
 			}
 		}
 	}

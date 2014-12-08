@@ -21,9 +21,9 @@ import br.com.padtec.common.types.OntPropertyEnum;
 public class CommiterApp {
 	
 	//Keeps the new individuals to be created in the model, later on, in the commit.
-	public static List<DtoInstance> newIndividualsCommitList;
+	public static List<DtoInstance> newIndividualsCommitList = new ArrayList<DtoInstance>();
 	//Keeps the new data values to be created in the model, later on, in the commit.
-	public static List<DataPropertyValue> newDataValuesCommitList;
+	public static List<DataPropertyValue> newDataValuesCommitList = new ArrayList<DataPropertyValue>();
 	
 	public static void clearCommitLists()
 	{

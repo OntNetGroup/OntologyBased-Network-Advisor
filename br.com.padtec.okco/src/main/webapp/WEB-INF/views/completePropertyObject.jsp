@@ -4,8 +4,11 @@
 <%@ page import="java.util.ArrayList"%>
 
 <%
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoInstance> ListAllInstances = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstances");
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoInstance> ListInstancesInRelation = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstancesInRelation");
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoInstance> ListInstancesSameDifferent = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstancesSameDifferent");
 	DtoDefinitionClass dtoDefinition = (DtoDefinitionClass)request.getSession().getAttribute("definitionSelected");
 	String propType = request.getSession().getAttribute("propType").toString();
@@ -903,13 +906,14 @@
 					<div style="span6">
 						<h2>
 							<%
-								if(propType.equals("SOME")){
-														out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
-																						dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
-													} else {
-														out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
-																dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + dtoDefinition.Cardinality + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
-													}
+								if(propType.equals("SOME"))
+								{
+									out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
+									dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
+								} else {
+									out.println("<b>Relation: </b>" + instanceSelected.name + "<small> -> </small>" + 
+									dtoDefinition.Relation.split("#")[1] + "<small> -> </small>" + propType + " " + dtoDefinition.Cardinality + " [?] " + "(" + dtoDefinition.Target.split("#")[1] + ")");
+								}
 							%>
 						</h2>
 					</div>
@@ -1017,7 +1021,7 @@
 		
 		<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>
 		
-		<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit and Reasoner</button>
+		<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit and Reason</button>
 		
 	</form>
 

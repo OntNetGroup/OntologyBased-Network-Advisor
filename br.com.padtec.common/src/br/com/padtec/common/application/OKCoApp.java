@@ -318,38 +318,33 @@ public class OKCoApp {
 	{
 		InfModel model = UploadApp.getInferredModel();
 		
-		// ------ Complete classes list ------//
-		
-		ArrayList<DtoCompleteClass> ListCompleteClsInstaceSelected = new ArrayList<DtoCompleteClass>();
-		DtoCompleteClass dto = null;
-		
+		// ------ Complete classes list ------//		
+		ArrayList<DtoCompleteClass> completeClassesList = new ArrayList<DtoCompleteClass>();
+		DtoCompleteClass dto = null;		
 		if(individualSelected.ListClasses.size() == 1 && individualSelected.ListClasses.get(0).contains("Thing"))	//Case thing
 		{
 			//Case if the instance have no class selected - only Thing
 			dto = new DtoCompleteClass();
-			dto.CompleteClass = individualSelected.ListClasses.get(0);
-			
-			for (String subClas : QueryUtil.getClassesURI(model)) {
-				if(subClas != null)
-					dto.AddMember(subClas);
+			dto.CompleteClass = individualSelected.ListClasses.get(0);			
+			for (String subClas : QueryUtil.getClassesURI(model)) 
+			{
+				if(subClas != null) dto.AddMember(subClas);
 			}
-			ListCompleteClsInstaceSelected.add(dto);
-			
-		} else {
-			
+			completeClassesList.add(dto);			
+		} else {			
 			for (String cls : individualSelected.ListClasses)
 			{					
 				HashMap<String,List<String>> map = QueryUtil.getCompleteClassesURI(cls, individualSelected.ListClasses, model);
-				for(String completeClassURI: map.keySet()){
+				for(String completeClassURI: map.keySet())
+				{
 					DtoCompleteClass dtoCompleteClass = new DtoCompleteClass();
 					dtoCompleteClass.setCompleteClass(completeClassURI);
 					dtoCompleteClass.addAllMember(map.get(completeClassURI));
-					ListCompleteClsInstaceSelected.add(dtoCompleteClass);
+					completeClassesList.add(dtoCompleteClass);
 				}											
 			}
-		}
-		
-		individualSelected.ListCompleteClasses = ListCompleteClsInstaceSelected;		
+		}		
+		individualSelected.ListCompleteClasses = completeClassesList;		
 	}
 
 	/**
@@ -357,13 +352,10 @@ public class OKCoApp {
 	 */
 	private static void setRelationSpecializationsInSelected() 
 	{
-		InfModel model = UploadApp.getInferredModel();
-	
-		// ------ Complete properties list ------//
+		InfModel model = UploadApp.getInferredModel();	
 		
-		ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties = new ArrayList<DtoPropertyAndSubProperties>();
-		DtoPropertyAndSubProperties dtoP = null;
-		
+		ArrayList<DtoPropertyAndSubProperties> completePropertiesList = new ArrayList<DtoPropertyAndSubProperties>();
+		DtoPropertyAndSubProperties dtoP = null;		
 		//Get instance relations
 		//List<DtoInstanceRelation> instanceListRelations = new ArrayList<DtoInstanceRelation>();
 		List<DtoInstanceRelation> instanceListRelations = QueryUtil.getPropertiesAndIndividualsURI(UploadApp.getInferredModel(), individualSelected.ns + individualSelected.name);
@@ -383,55 +375,49 @@ public class OKCoApp {
 		for (DtoInstanceRelation dtoInstanceRelation : instanceListRelations) 
 		{	
 			List<String> subPropertiesWithDomainAndRange = QueryUtil.getSubPropertiesURIExcluding(model,individualSelected.ns + individualSelected.name, dtoInstanceRelation.Property, dtoInstanceRelation.Target, propertiesURIList);
-
 			if(subPropertiesWithDomainAndRange.size() > 0)
 			{
 				dtoP = new DtoPropertyAndSubProperties();
 				dtoP.Property = dtoInstanceRelation.Property;
 				String target = dtoInstanceRelation.Target;
-				if(target != null && !target.equals("")){
+				if(target != null && !target.equals(""))
+				{
 					dtoP.iTargetNs = target.split("#")[0] + "#";
 					dtoP.iTargetName = target.split("#")[1];
 				}
-				dtoP.propertyType = QueryUtil.getPropertyURIType(model, dtoInstanceRelation.Property);
-				
+				dtoP.propertyType = QueryUtil.getPropertyURIType(model, dtoInstanceRelation.Property);				
 				for (String sub : subPropertiesWithDomainAndRange) 
 				{
-					boolean ok = true;
-					
+					boolean ok = true;					
 					List<String> distointSubPropOfProp = QueryUtil.getPropertiesURIDisjointWith(model,sub);
 					for (String disjointrop : distointSubPropOfProp) 
 					{						
-						for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
+						for (DtoInstanceRelation dtoWithRelation : instanceListRelations) 
+						{
 							if(dtoWithRelation.Property.equals(disjointrop)) // instance have this sub relation
 							{
 								ok = false;
 								break;
 							}
 						}
-					}
-					
-					for (DtoInstanceRelation dtoWithRelation : instanceListRelations) {
-					
+					}					
+					for (DtoInstanceRelation dtoWithRelation : instanceListRelations) 
+					{					
 						if(dtoWithRelation.Property.equals(sub)) // instance have this sub relation
 						{
 							ok = false;
 							break;
 						}
-					}					
-					
+					}										
 					if(ok == true)
 					{
 						dtoP.SubProperties.add(sub);
 					}
-				}
-				
-				if(dtoP.SubProperties.size() > 0)
-					ListSpecializationProperties.add(dtoP);
+				}				
+				if(dtoP.SubProperties.size() > 0) completePropertiesList.add(dtoP);
 			}			
-		}
-		
-		individualSelected.ListSpecializationProperties = ListSpecializationProperties;	
+		}		
+		individualSelected.ListSpecializationProperties = completePropertiesList;	
 	}
 
 	private static void setDefinitionsInSelected(OntCardinalityEnum typeCompletness)

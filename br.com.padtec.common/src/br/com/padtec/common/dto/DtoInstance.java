@@ -18,7 +18,6 @@ public class DtoInstance implements Serializable {
 	public List<String> ListSameInstances;
 	public List<String> ListDiferentInstances;
 	public boolean existInModel;	//
-	public boolean isModified;		// Check is modified and not run the reasoner for him
 	
 	//Definitions respected by the instance
 	
@@ -65,7 +64,6 @@ public class DtoInstance implements Serializable {
 			this.ListDiferentInstances = new ArrayList<String>(listDifferent);
 		}
 		this.existInModel = existInModel;
-		this.isModified = false;
 	}
 	
  	public void print()
@@ -157,12 +155,6 @@ public class DtoInstance implements Serializable {
  		} 		
  	}
  	
- 	public void setModified(boolean value)
- 	{		
- 		this.isModified = value;
- 		
- 	}
-	
 	public List<DtoPropertyAndSubProperties> getSpecializationProperties()
 	{
 		return ListSpecializationProperties;

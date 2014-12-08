@@ -4,10 +4,9 @@
 <%@ page import="br.com.padtec.common.dto.DtoDefinitionClass"%>
 <%@ page import="java.util.ArrayList"%>
 
-
 <%
-	// Get the parameters from controller
-	
+	/** Get the parameters from controller */
+	@SuppressWarnings("unchecked")
 	ArrayList<DataPropertyValue> ListValuesInRelation = (ArrayList<DataPropertyValue>)request.getSession().getAttribute("listValuesInRelation");
 	DtoDefinitionClass dtoDefinition = (DtoDefinitionClass)request.getSession().getAttribute("definitionSelected");
 	DtoInstance instanceSelected = (DtoInstance)request.getSession().getAttribute("instanceSelected");
@@ -452,7 +451,7 @@
 		
 		<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>
 		
-		<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit and Reasoner</button>
+		<button id="commitAndReasonerButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit and Reason</button>
 	</form>
 
 </div>

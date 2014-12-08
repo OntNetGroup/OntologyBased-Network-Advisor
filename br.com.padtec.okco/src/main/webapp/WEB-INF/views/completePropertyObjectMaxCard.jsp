@@ -6,8 +6,8 @@
 
 
 <%
-	// Get the parameters from controller
-	
+	/** Get the parameters from controller */
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoInstance> ListInstancesInRelation = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstancesInRelation");
 	DtoDefinitionClass dtoDefinition = (DtoDefinitionClass)request.getSession().getAttribute("definitionSelected");
 	DtoInstance instanceSelected = (DtoInstance)request.getSession().getAttribute("instanceSelected");
@@ -301,7 +301,7 @@
 
 						<button id="commitAndReasonerButton" type="submit"
 							class="btn btn-pre btn-commit btnload">
-							<i class="icon-arrow-right"></i> Commit and Reasoner
+							<i class="icon-arrow-right"></i> Commit and Reason
 						</button>
 					</form>
 

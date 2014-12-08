@@ -2,81 +2,65 @@
 <%@ page import="br.com.padtec.common.dto.DtoInstance" %>
 <%@ page import="java.util.List" %>
 
-
 <%
-	// Get the parameters from controller
-	
+	/** Get the parameters from controller */
+	@SuppressWarnings("unchecked")
 	List<DtoInstance> ListAllInstances = (List<DtoInstance>)request.getSession().getAttribute("listInstances");
+	@SuppressWarnings("unchecked")
+	List<String> listModifedInstances = (List<String>)request.getSession().getAttribute("listModifedInstances");
 %>
 
 <%@include file="../templates/header.jsp" %>
 
 <script type="text/javascript">
-
-	$(document).ready(function() {
-
-		// Run reasoner
-		$('#runReasonerForm').submit(function(event) {
-
-				$.ajax({
-					url : $("#runReasonerForm").attr("action"),
-					//data : JSON.stringify(json),
-					type : "POST",
-
-					beforeSend : function(xhr) {
-						xhr.setRequestHeader("Accept", "application/json");
-						xhr.setRequestHeader("Content-Type", "application/json");
-					},
-					success : function(data) {
-
-						if(data.result == "ok")
-						{
-							//Redirect to instance page
-							window.location.href = "list";
-							
-						} else if(data.result == "nothing") {
-
-							alert("Not happens");
-							
-						} else {
-
-							//Huston we have a problem
-							var html = "<div class=\"alert alert-danger\">" +
-											"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-											"<strong>" + "Error! " + "</strong>"+ data.result + 
-										"</div>";
-
-							$("#content").prepend(html);
-						}
+	$(document).ready(function()
+	{
+		/** Run reasoner */
+		$('#runReasonerForm').submit(function(event)
+		{
+			$.ajax({
+				url : $("#runReasonerForm").attr("action"),
+				//data : JSON.stringify(json),
+				type : "POST",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader("Accept", "application/json");
+					xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success : function(data) 
+				{
+					if(data.result == "ok")
+					{
+						//Redirect to instance page
+						window.location.href = "list";
+					} 
+					else if(data.result == "nothing") 
+					{
+						alert("Not happens");
+					}else{
+						//Huston we have a problem
+						var html = "<div class=\"alert alert-danger\">" +
+						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+						"<strong>" + "Error! " + "</strong>"+ data.result + 
+						"</div>";
+						$("#content").prepend(html);
 					}
-				});
-
-			event.preventDefault();
-						
-		}); // end submmit
-		
+				}
+			});
+			event.preventDefault();						
+		}); // end submmit		
 	});
 
 </script>
-
-	<div class="row" style="margin-right:0px;margin-left:0px">
-	
+	<div class="row" style="margin-right:0px;margin-left:0px">	
 		<div id="boxViewAll" style="float:left">
 			<a class="btn btn-success" target="_blank" href="/br.com.padtec.okco/graphVisualizer?typeView=ALL&id=0"> <i class="icon-zoom-in"></i> </a>
 			VIEW ALL GRAPH			
 		</div>
 		<form id="runReasonerForm" style="float:right" action="runReasoner" method="POST">
-
-			<button type="submit"  class="btn btn-pre btnload"> <i class="icon-arrow-right"></i> Run reasoner</button>
-		
-		</form>
-		
-	</div>
-				
-	
-	
+			<button type="submit"  class="btn btn-pre btnload"> <i class="icon-arrow-right"></i> Run reasoner</button>		
+		</form>		
+	</div>	
 	<br/>
-
 	<div class="row">		
 		<div class="col-lg-12">
 			<div class="box">
@@ -96,76 +80,55 @@
 							  <th>Actions</th>
 						  </tr>
 					  </thead>   
-					  <tbody>
-					  
+					  <tbody>					  
 					  	<%
-					  					  		String listClass = "";
-					  					  					  	for (DtoInstance i : ListAllInstances) {
-					  					  					  		
-					  					  					  		out.println("<tr>");
-					  					  					  		
-					  					  						  		out.println("<td title=\"" + i.ns + i.name + "\">" + i.name + "</td>");
-					  					  						  		out.println("<td class=\"center\">");
-					  					  						  			out.println("<ul>");
-					  					  							  		for(String c : i.ListClasses)
-					  					  							  		{
-					  					  							  			out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
-					  					  							  		}
-					  					  						  			out.println("</ul>");
-					  					  						  		out.println("</td>");
-					  					  						  		
-					  					  						  		if( i.isModified == true )
-					  					  						  		{
-					  					  						  			out.println("<td class=\"center\">	<span class=\"label label-important\" style=\"background:#67c2ef\">Modified</span> </td>");
-					  					  						  			
-					  					  						  		} else {
-					  					  						  			
-					  					  						  			if(i.haveKnwologeToComplete() == true)
-					  					  							  		{
-					  					  							  			out.println("<td class=\"center\">	<span class=\"label label-important\">Not Satisfied</span> </td>");
-
-					  					  							  		} else {
-					  					  							  			
-					  					  							  			if(i.is_Semi_Complete() == true)
-					  					  							  			{
-					  					  							  				out.println("<td class=\"center\">	<span class=\"label label-warning\">Possible Refinements</span> </td>");
-					  					  							  				
-					  					  							  			} else {
-					  					  							  				
-					  					  							  				out.println("<td class=\"center\">	<span class=\"label label-success\">Satisfied</span> </td>");
-					  					  							  			}
-					  					  							  		}
-					  					  						  			
-					  					  						  		}
-					  					  						  		
-					  					  						  		
-					  					  						  		
-					  					  						  		out.println("<td class=\"center\">" + 
-					  					  						  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
-					  					  						  					"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
-					  					  					  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completeInstanceAuto?uriInstance="+ i.uriEncoded + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
-					  					  						  					"</td>");
-					  					  					  									  		
-					  					  					  		out.println("</tr>");
-					  					  					  		
-					  					  							
-					  					  						}
-					  					  	%>
-						
+					  	String listClass = "";
+  					  	for (DtoInstance i : ListAllInstances) 
+  					  	{  					  		
+  					  		out.println("<tr>");  					  		
+  						  	out.println("<td title=\"" + i.ns + i.name + "\">" + i.name + "</td>");
+  						  	out.println("<td class=\"center\">");
+  						  	out.println("<ul>");
+  							for(String c : i.ListClasses)
+  							{
+  								out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
+  							}
+  						  	out.println("</ul>");
+  						  	out.println("</td>");  						  		
+  						  	if(listModifedInstances.contains(i.ns+i.name))
+  						  	{
+  						  		out.println("<td class=\"center\">	<span class=\"label label-important\" style=\"background:#f63f2d\">Modified</span> </td>");
+  						  	}else{  						  			
+  						  		if(i.haveKnwologeToComplete() == true)
+  							  	{
+  							  		out.println("<td class=\"center\">	<span class=\"label label-important\">Not Satisfied</span> </td>");
+						  		}else{  							  			
+  							  		if(i.is_Semi_Complete() == true)
+  							  		{
+  							  			out.println("<td class=\"center\">	<span class=\"label label-warning\">Possible Refinements</span> </td>");
+  							  		}else{  							  				
+  							  			out.println("<td class=\"center\">	<span class=\"label label-success\">Satisfied</span> </td>");
+  							  		}
+  							  	}
+  						  	}	
+  						  	out.println("<td class=\"center\">" + 
+  						  	"<a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
+  						  	"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+  					  		"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completeInstanceAuto?uriInstance="+ i.uriEncoded + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
+  						  	"</td>");  					  									  		
+  					  		out.println("</tr>");
+  						}
+ 					  	%>						
 					  </tbody>
 				  </table>            
 				</div>
 			</div>
-		</div><!--/col-->
-	
-	</div><!--/row-->
-	
+		</div><!--/col-->	
+	</div><!--/row-->	
 	<div class="row">
 		 <div class="col-lg-12">
-			<p>Description of page:</p>
-			
-			<div class="tooltip-demo well">
-			
+			<p>Description of page:</p>			
+			<div class="tooltip-demo well">			
 				<p class="muted" style="margin-bottom: 0;">
 					This page shows all instances that exists in the OWL model, as well as its states and belonging classes. The possible states are:
 					<br>
@@ -184,12 +147,11 @@
 					</ul>
 					<br>
 					All instances relations can be visualized clicking on the magnifier icon.
-					Finally, the user can run the reasoned to check consistency and apply inferences at any time by clicking on the "Run reasoner" button. In case of inconsistencies, the last consistent state of the model is returned.
-					
-				</p>		
-			                               
-		 </div>
+					Finally, the user can run the reasoned to check consistency and apply inferences at any time by clicking on the "Run reasoner" button. In case of inconsistencies, the last consistent state of the model is returned.							                               
+		 	</div>
+		</div>	
 	</div>	
 	<!-- /row -->
 			
 <%@include file="../templates/footer.jsp" %></html>
+

@@ -11,20 +11,22 @@
 <%@ page import="br.com.padtec.common.dto.DtoInstanceRelation"%>
 <%@ page import="java.util.ArrayList"%>
 
-
 <%
-	// Get the parameters from controller
-	
+	/** Get the parameters from controller */	
 	DtoInstance instance = (DtoInstance)request.getSession().getAttribute("instanceSelected");
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoInstance> ListAllInstances = (ArrayList<DtoInstance>)request.getSession().getAttribute("listInstances");
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoInstanceRelation> InstanceListRelations = (ArrayList<DtoInstanceRelation>)request.getSession().getAttribute("instanceListRelations");	
-	
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoPropertyAndSubProperties> ListSpecializationProperties = (ArrayList<DtoPropertyAndSubProperties>)request.getSession().getAttribute("ListSpecializationProperties");	
-	//ArrayList<String> listClassesMembersTmp = (ArrayList<String>)request.getSession().getAttribute("listClassesMembersTmp");
-	
+	@SuppressWarnings("unchecked")	
 	ArrayList<DtoDefinitionClass> listSomeClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listSomeClassDefinition");
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoDefinitionClass> listMinClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listMinClassDefinition");
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoDefinitionClass> listMaxClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listMaxClassDefinition");
+	@SuppressWarnings("unchecked")
 	ArrayList<DtoDefinitionClass> listExactlyClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listExactlyClassDefinition");
 %>
 
@@ -32,126 +34,103 @@
 
 <script type="text/javascript">
 
-	//Variables to control specialization properties
-	
+	//Variables to control specialization properties	
 	var ablePrev = false; //begnning
 	var ableNext = true;  //begnning
-
-	$(document).ready(function() {
-
+	$(document).ready(function() 
+	{
 		$(".completePropertyForm").hide();
 		$(".completeClassForm").hide();
 		$("#completePropertyForm_1").show();
 		$("#completeClassForm_1").show();
-
 		// Complete property	
-		$('.completePropertyForm').submit(function(event) {
-
+		$('.completePropertyForm').submit(function(event) 
+		{
 			var separatorValues = "%&&%";
-			var id = $("#specValue").attr("value");
-			
+			var id = $("#specValue").attr("value");			
 			var arraySubProp = "";
 			$(this).find(".checked").each(function( index ) 
 			{
 				arraySubProp = arraySubProp + separatorValues + $(this).parent().parent().parent().parent().children("span").attr("title");		  
-			});
-			
+			});			
 			var json = {
 				"arrayCls" : "",
 				"arraySubProp" : arraySubProp,
 				"id" : id,
 			};
-
 			$.ajax({
 				url : $(".completePropertyForm").attr("action"),
 				data : JSON.stringify(json),
 				type : "POST",
-
-				beforeSend : function(xhr) {
+				beforeSend : function(xhr) 
+				{
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
-				success : function(json) {
-					  
+				success : function(json) 
+				{					  
 					if(!json.error)
 					{
-						  $(document).ajaxStop(function() { location.reload(true); });
+						$(document).ajaxStop(function() { location.reload(true); });
 						//alert("sucess. Refresh the page instance and remember the id");
-						//location.reload(true);
-						
-					} else {
-
+						//location.reload(true);						
+					}else{
 						//Huston we have a problem
 						var html = "<div class=\"alert alert-danger\">" +
-										"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-										"<strong>" + "Erro! " + "</strong>"+ "Couldn't classify the property." + 
-									"</div>";
-
+						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+						"<strong>" + "Erro! " + "</strong>"+ "Couldn't classify the property." + 
+						"</div>";
 						$("#content").prepend(html);
 					}
 				}
 			 });
-
-			event.preventDefault();
-			
+			event.preventDefault();			
 		}); // End - Complete Property
-
 		// Complete class	
-		$('.completeClassForm').submit(function(event) {
-
-			var separatorValues = "%&&%";
-			
+		$('.completeClassForm').submit(function(event) 
+		{
+			var separatorValues = "%&&%";			
 			var arrayCls = "";
 			$(this).find(".checked").each(function( index ) 
 			{
 				arrayCls = arrayCls + separatorValues + $(this).parent().parent().parent().parent().children("span").attr("title");		  
-			});
-			
+			});			
 			var json = {
 				"arrayCls" : arrayCls,
 				"arraySubProp" : "",
 				"id" : "",
 			};
-
 			$.ajax({
 				url : $(".completeClassForm").attr("action"),
 				data : JSON.stringify(json),
 				type : "POST",
-
 				beforeSend : function(xhr) {
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
-				success : function(json) {
-
+				success : function(json) 
+				{
 					if(!json.error)
 					{
-						  $(document).ajaxStop(function() { location.reload(true); });
+						$(document).ajaxStop(function() { location.reload(true); });
 						//alert("sucess. Refresh the page instance and remember the id");
-						//location.reload(true);
-						
-					} else {
-
+						//location.reload(true);						
+					}else{
 						//Huston we have a problem
 						var html = "<div class=\"alert alert-danger\">" +
-										"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-										"<strong>" + "Error. " + "</strong>"+ "Couldn't classify the individual."  + 
-									"</div>";
-
+						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+						"<strong>" + "Error. " + "</strong>"+ "Couldn't classify the individual."  + 
+						"</div>";
 						$("#content").prepend(html);
 					}
 				}
 			 });
-
-			event.preventDefault();
-			
+			event.preventDefault();			
 		}); // End - Complete Class		
-		
-	}); // End - document ready
-	
+	}); // End - document ready	
 	//Previous bottom click
-	$(document).on("click", ".btn-prev",function() {
-		
+	$(document).on("click", ".btn-prev",function() 
+	{		
 		if($(this).hasClass("btn-success"))
 		{
 			var form = $(this).parent().parent().parent();
@@ -164,11 +143,10 @@
 			$("#" + prev).show();
 		}
 		
-	}); // End - btn-prev
-	
+	}); // End - btn-prev	
 	//Next bottom click
-	$(document).on("click", ".btn-next",function() {
-
+	$(document).on("click", ".btn-next",function() 
+	{
 		if($(this).hasClass("btn-success"))
 		{
 			var form = $(this).parent().parent().parent();
@@ -180,23 +158,14 @@
 			var next = name + "_" + numFormNext.toString();
 			$("#" + next).show();
 		}
-		
-
 	});
-
-
 </script>
 
 <div class="row">
-
-	<div style="padding-left: 15px; margin-bottom:20px;">
-	
+	<div style="padding-left: 15px; margin-bottom:20px;">	
 		<button onclick="window.location = '/br.com.padtec.okco/list';" style="float:left;" type="button" class="btn btn-prev"> <i class="icon-arrow-left"></i> Back to list</button>
-
-		<div style="clear:both"></div>
-		
-	</div>
-			
+		<div style="clear:both"></div>		
+	</div>			
 	<div class="col-lg-12">
 		<div class="box">
 			<div class="box-header">
@@ -223,10 +192,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListSameInstances)
-																																	{																			
-																																		DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, iName);																			
-																																		out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
-																																	}
+								{																			
+									DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, iName);																			
+									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+								}
 							%>
 							</ul>
 						</td>
@@ -238,10 +207,10 @@
 							<ul style="margin: 0">
 							<%
 								for(String iName: instance.ListDiferentInstances)
-																																	{
-																																		DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, iName);																			
-																																		out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
-																																	}
+								{
+									DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, iName);																			
+									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+								}
 							%>
 							</ul>
 						</td>
@@ -315,50 +284,35 @@
 					 <a	href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
 				</div>
 			</div>
-			<div class="box-content">
-			
+			<div class="box-content">			
 				<ul class="nav tab-menu nav-tabs" style="padding-right: 24px;" id="myTab">
-					<li class="propExclamacao"><a href="#properties">Properties
-					
+					<li class="propExclamacao"><a href="#properties">Properties					
 					<%
 						if(ListSpecializationProperties.size() > 0)
 						{
-							out.println("<span class=\"notification orange\">!</span>");
-							
-						} 
-						
-					%>
-					
+							out.println("<span class=\"notification orange\">!</span>");							
+						} 						
+					%>					
 					</a></li>
-					<li class="active clsExclamacao"><a href="#classes">Classes
-					
+					<li class="active clsExclamacao"><a href="#classes">Classes					
 					<%
 						if(instance.ListCompleteClasses.size() > 0)
 						{
-							out.println("<span class=\"notification orange\">!</span>");
-							
-						} 
-						
-					%>
-					
+							out.println("<span class=\"notification orange\">!</span>");							
+						} 						
+					%>					
 					</a></li>
-				</ul>
-				
-				<div id="myTabContent" class="tab-content">
-					
-					<div class="tab-pane" id="classes">
-						
+				</ul>				
+				<div id="myTabContent" class="tab-content">					
+					<div class="tab-pane" id="classes">						
 						<%
 						if(instance.ListCompleteClasses.size() > 0)
 						{
-							
-						} else {
-							
+							//nothing
+						}else{							
 							out.println("<h3>* No class specializations.</h3>");
-						}
-						
-						%>
-						
+						}						
+						%>						
 						<%	
 							int countForm = 1;
 							if(instance.ListCompleteClasses.size() > 0)

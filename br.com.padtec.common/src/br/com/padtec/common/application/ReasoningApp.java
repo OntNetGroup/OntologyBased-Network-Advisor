@@ -12,11 +12,11 @@ public class ReasoningApp {
 	public static DtoResult runReasoner()
 	{
 		DtoResult dto = new DtoResult();
-		try {			
-			/** Running reasoner... */
-			UploadApp.substituteInferredModelFromBaseModel(true);			
+		try {
 			/** Storing a temporary model... */
 			UploadApp.storeTemporaryModelFromBaseModel();
+			/** Running reasoner... */
+			UploadApp.substituteInferredModelFromBaseModel(true);			
 			/** Clean List of modified individuals */
 			OKCoApp.clearModified();
 		}

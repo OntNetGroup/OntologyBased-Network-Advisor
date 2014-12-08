@@ -38,9 +38,8 @@ public class CompleterController {
 		/** ==================================================
 		 * Select a Specific Individual
 		 *  =================================================== */
-		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uriInstance);
-		String selectedIndividualURI = selectedIndividual.ns+selectedIndividual.name;
-		OKCoApp.setIsModified(selectedIndividualURI);
+		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uriInstance);		
+		OKCoApp.setSelectedToModified();
 		
 		/** ==================================================
 		 * Complete Individuals Automatically
