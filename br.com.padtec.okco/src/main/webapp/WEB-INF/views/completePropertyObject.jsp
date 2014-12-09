@@ -243,7 +243,7 @@
 				});
 
 				//unselect another check all
-				$( '.checkAll-create-different' ).prop('checked', false);
+				//$( '.checkAll-create-different' ).prop('checked', false);
 
 				//unselecting
 				listDif.each(function() {
@@ -294,6 +294,9 @@
 					node.parent().parent().find('span').css("text-decoration", "none");			//text
 				});
 
+				//unselect another check all
+				//$( '.checkAll-create-same' ).prop('checked', false);
+				
 				//unselecting
 				listSame.each(function() {
 					
@@ -326,6 +329,110 @@
 			 
 		});
 
+	$('.checkAll-select-same').on('click', function() {	
+			
+			var listSame = $("#selectInstanceForm .same li");
+			var listDif = $("#selectInstanceForm .different li");
+
+			if(this.checked == true) //select all
+			{				
+				//selecting
+				listSame.each(function() {
+					
+					var node = $( this ).children( ".todo-actions" );
+					node.find('i').removeClass('icon-check-empty').addClass('icon-check');		//check-box
+      				node.find('i').removeClass('disable');										//check-box-able-click
+					node.parent().parent().find('span').css({ opacity: 1 });					//text
+					node.parent().parent().find('span').css("text-decoration", "none");			//text
+				});
+
+				//unselect another check all
+				//$( '.checkAll-select-different' ).prop('checked', false);
+				//$( '.checkAll-select-different' ).parent().find('span').removeClass('checked');
+				
+				//unselecting
+				listDif.each(function() {
+					
+					var node = $( this ).children( ".todo-actions" );
+					node.find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
+			        node.parent().parent().find('span').css({ opacity: 1 });					//text
+					node.parent().parent().find('span').css("text-decoration", "none");			//text
+				});
+
+			} else { //unselect all
+
+				//unselecting
+				listSame.each(function() {
+					
+					var node = $( this ).children( ".todo-actions" );
+					node.find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
+			        node.parent().parent().find('span').css({ opacity: 1 });					//text
+					node.parent().parent().find('span').css("text-decoration", "none");			//text
+				});
+				//unselecting
+				listDif.each(function() {
+					
+					var node = $( this ).children( ".todo-actions" );
+					node.find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
+			        node.parent().parent().find('span').css({ opacity: 1 });					//text
+					node.parent().parent().find('span').css("text-decoration", "none");			//text
+				});				
+			}	 
+		});
+	
+		$('.checkAll-select-different').on('click', function() {
+			
+			var listSame = $("#selectInstanceForm .same li");
+			var listDif = $("#selectInstanceForm .different li");
+
+			if(this.checked == true) //select all
+			{				
+				//selecting
+				listDif.each(function() {
+					
+					var node = $( this ).children( ".todo-actions" );
+					node.find('i').removeClass('icon-check-empty').addClass('icon-check');		//check-box
+      				node.find('i').removeClass('disable');										//check-box-able-click
+					node.parent().parent().find('span').css({ opacity: 1 });					//text
+					node.parent().parent().find('span').css("text-decoration", "none");			//text
+				});
+
+				//unselect another check all
+				//$( '.checkAll-select-same' ).prop('checked', false);
+				//$( '.checkAll-select-same' ).parent().find('span').removeClass('checked');
+				
+				//unselecting
+				listSame.each(function() {
+					
+					var node = $( this ).children( ".todo-actions" );
+					node.find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
+			        node.parent().parent().find('span').css({ opacity: 1 });					//text
+					node.parent().parent().find('span').css("text-decoration", "none");			//text
+				});
+
+			} else { //unselect all
+
+				//unselecting
+				listDif.each(function() {
+					
+					var node = $( this ).children( ".todo-actions" );
+					node.find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
+			        node.parent().parent().find('span').css({ opacity: 1 });					//text
+					node.parent().parent().find('span').css("text-decoration", "none");			//text
+				});
+				//unselecting
+				listSame.each(function() {
+					
+					var node = $( this ).children( ".todo-actions" );
+					node.find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
+			        node.parent().parent().find('span').css({ opacity: 1 });					//text
+					node.parent().parent().find('span').css("text-decoration", "none");			//text
+				});
+				
+			}
+			 
+		});
+		
 		$('#selectError0').on('change', function() {		
 			
 			  instanceIdSelect = $(this).find('option:selected').attr("title");
@@ -363,7 +470,7 @@
 						{
 							result = result + " <li>" +
 							"<span class=\"todo-actions todo-actions-same\">" +
-								"<a href=\"#\" id=\"dif\"> <i	class=\"icon-check\"></i></a>" +
+								"<a id=\"dif\" href=\"#\"> <i	class=\"icon-check\"></i></a>" +
 							"</span>" +
 						    "<span title=\"" + dto.listDifferentShow[i].ns + dto.listDifferentShow[i].name + "\" class=\"desc\">" + 
 						   		dto.listDifferentShow[i].name + 
@@ -374,7 +481,7 @@
 						{
 							result = result + " <li>" +
 							"<span class=\"todo-actions todo-actions-same\">" +  
-								"<a href=\"#\" id=\"dif\"> <i	class=\"icon-check-empty\"></i></a>" +
+								"<a id=\"dif\" href=\"#\"> <i	class=\"icon-check-empty\"></i></a>" +
 							"</span>" +
 						    "<span title=\"" + dto.listDifferentShow[i].ns + dto.listDifferentShow[i].name + "\" class=\"desc\">" + 
 						   		dto.listDifferentShow[i].name + 
@@ -392,7 +499,7 @@
 						{
 							result = result + " <li>" +
 							"<span class=\"todo-actions todo-actions-same\">" +  
-								"<a href=\"#\" id=\"same\"> <i	class=\"icon-check\"></i></a>" +
+								"<a id=\"same\" href=\"#\"> <i	class=\"icon-check\"></i></a>" +
 							"</span>" +
 						    "<span title=\"" + dto.listSameShow[i].ns + dto.listSameShow[i].name + "\" class=\"desc\">" + 
 						   		dto.listSameShow[i].name + 
@@ -403,7 +510,7 @@
 						{
 							result = result + " <li>" +
 							"<span class=\"todo-actions todo-actions-same\">" +  
-								"<a href=\"#\" id=\"same\"> <i	class=\"icon-check-empty\"></i></a>" +
+								"<a id=\"same\" href=\"#\"> <i	class=\"icon-check-empty\"></i></a>" +
 							"</span>" +
 						    "<span title=\"" + dto.listSameShow[i].ns + dto.listSameShow[i].name + "\" class=\"desc\">" + 
 						   		dto.listSameShow[i].name + 
@@ -431,8 +538,8 @@
 			var id = instanceIdSelect;
 
 			$.ajax({
-				url : "selectInstanceAdd" + "?id=" + id,
-				//data : JSON.stringify(json),
+				url : "selectInstanceAdd",
+				data : "uri="+id,
 				type : "GET",
 
 				beforeSend : function(xhr) {
@@ -545,8 +652,8 @@
 			var id = $(this).attr("name");
 			
 			$.ajax({
-				url : "removeInstance" + "?id=" + id,
-				//data : JSON.stringify(json),
+				url : "removeInstance" ,
+				data : "uri=" + id,
 				type : "GET",
 
 				beforeSend : function(xhr) {
@@ -714,7 +821,7 @@
 					<div class="box">
 						<div class="box-header">
 							<h2>
-								<i class="icon-tasks"></i>Instance form
+								<i class="icon-tasks"></i>Form: Selecting a Instance
 							</h2>
 						</div>
 						<div class="box-content">
@@ -750,7 +857,7 @@
 					<div class="box">
 						<div class="box-header">
 							<h2>
-								<i class=""><input type="checkbox" disabled="disabled" class="checkAll-select-same" name="checkAll" title="Select All"></i>Same instance 
+								<i class=""><input type="checkbox" class="checkAll-select-same" name="checkAll" title="Select All"></i>Same As... 
 							</h2>
 							<div class="box-icon">
 									<a	href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
@@ -775,7 +882,7 @@
 					<div class="box">
 						<div class="box-header">
 							<h2>
-								<i class=""><input type="checkbox" disabled="disabled" class="checkAll-select-different" name="checkAll" title="Select All"></i>Different instance
+								<i class=""><input type="checkbox" class="checkAll-select-different" name="checkAll" title="Select All"></i>Different From...
 							</h2>
 							<div class="box-icon">
 									<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
@@ -814,14 +921,14 @@
 					<div class="box">
 						<div class="box-header">
 							<h2>
-								<i class="icon-tasks"></i>Instance form
+								<i class="icon-tasks"></i>Creating New Instance
 							</h2>
 						</div>
 						<div class="box-content">
 							
 								<table class="table">
 									<tr>
-										<td>New Instance name</td>
+										<td>Instance Name:</td>
 										<td><input class="form-control" type="text" name="name" id="name"></td>
 									</tr>
 			
@@ -838,7 +945,7 @@
 					<div class="box">
 						<div class="box-header">
 							<h2>
-								<i class=""><input type="checkbox" class="checkAll-create-same" name="checkAll" title="Select All"></i>Same instance
+								<i class=""><input type="checkbox" class="checkAll-create-same" name="checkAll" title="Select All"></i>Same As...
 							</h2>
 							<div class="box-icon">
 									<a	href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
@@ -873,7 +980,7 @@
 					<div class="box">
 						<div class="box-header">
 							<h2>
-								<i class=""><input type="checkbox" class="checkAll-create-different" name="checkAll" title="Select All"></i>Different instance
+								<i class=""><input type="checkbox" class="checkAll-create-different" name="checkAll" title="Select All"></i>Different From...
 							</h2>
 							<div class="box-icon">
 									<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
@@ -977,9 +1084,9 @@
 				<table id="table-instances" class="table table-bordered">
 					<thead>
 						<tr>
-							<th>Instance name</th>
-							<th>Same instances</th>
-							<th>Different instances</th>
+							<th>Instance Name</th>
+							<th>Same As</th>
+							<th>Different From</th>
 							<th>Actions</th>
 						</tr>
 					</thead>

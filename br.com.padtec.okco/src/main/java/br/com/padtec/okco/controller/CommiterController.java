@@ -106,6 +106,26 @@ public class CommiterController {
 
 		return null;
 	}
+			
+	@RequestMapping(value="/commitInstance", method = RequestMethod.POST)
+	public @ResponseBody DtoResult commitInstance(@RequestBody final DtoCommitPost dtoCommit) 
+	{				
+		/** ==================================================
+		 * Performs the commit of the new individuals to be created.
+		 * It updates the inferred model from the base model using or not the inference engine.
+		 *  =================================================== */
+		return CommiterApp.commitNewIndividuals(dtoCommit.commitReasoner);		
+	}
+	
+	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
+	public @ResponseBody DtoResult commitMaxCard(@RequestBody final DtoCommitMaxCard dto)
+	{    
+		/** ==================================================
+		 * Performs the commit of the max cardinalities. 
+		 * It updates the inferred model from the base model using or not the inference engine.
+		 *  =================================================== */
+		return CommiterApp.commitMaxCardinalities(dto);
+	}
 	
 	@RequestMapping(value="/removeDataValue", method = RequestMethod.GET)
 	public @ResponseBody String removeDataValue(@RequestParam String id) 
@@ -134,26 +154,6 @@ public class CommiterController {
 		 * Instead, it adds this value to the set of list of new data values to be created later on.
 		 *  =================================================== */
 		return CommiterApp.createNewDataValueAtCommitList(dto.value);		
-	}
-		
-	@RequestMapping(value="/commitInstance", method = RequestMethod.POST)
-	public @ResponseBody DtoResult commitInstance(@RequestBody final DtoCommitPost dtoCommit) 
-	{				
-		/** ==================================================
-		 * Performs the commit of the new individuals to be created.
-		 * It updates the inferred model from the base model using or not the inference engine.
-		 *  =================================================== */
-		return CommiterApp.commitNewIndividuals(dtoCommit.commitReasoner);		
-	}
-	
-	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
-	public @ResponseBody DtoResult commitMaxCard(@RequestBody final DtoCommitMaxCard dto)
-	{    
-		/** ==================================================
-		 * Performs the commit of the max cardinalities. 
-		 * It updates the inferred model from the base model using or not the inference engine.
-		 *  =================================================== */
-		return CommiterApp.commitMaxCardinalities(dto);
 	}
 	
 	@RequestMapping(value="/commitDataValues", method = RequestMethod.POST)

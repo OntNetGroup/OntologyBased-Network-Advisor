@@ -37,28 +37,15 @@ public class CommiterApp {
 	 */
 	public static DtoInstance createNewIndividualAtCommitList(String name, String[] arraySame, String[] arrayDif)
 	{
-		ArrayList<String> listSame = new ArrayList<String>(Arrays.asList(arraySame));		
-		ArrayList<String> listDif = new ArrayList<String>(Arrays.asList(arrayDif));		
+		ArrayList<String> listSame = new ArrayList<String>();
+		if(arraySame!=null && arraySame[0].equals("")) listSame.addAll(Arrays.asList(arraySame));		
+		ArrayList<String> listDif = new ArrayList<String>();
+		if(arrayDif!=null && arrayDif[0].equals("")) listDif.addAll(Arrays.asList(arrayDif));
 		DtoInstance dtoIndividual = new DtoInstance(UploadApp.getBaseRepository().getNameSpace(), name, null, listDif, listSame, false);
-		newIndividualsCommitList.add(dtoIndividual);		
+		newIndividualsCommitList.add(dtoIndividual);
 		return dtoIndividual;
 	}
-	
-	/**
-	 * This method does not add this data value to the model.
-	 * Instead, it only adds this data value to the set of list of new data value to be created in the model when the method commitNewDataValues() was called.
-	 */
-	public static DataPropertyValue createNewDataValueAtCommitList(String dataValue)
-	{
-		DataPropertyValue data = new DataPropertyValue();
-		data.value = dataValue;
-		data.classValue = OKCoApp.getSelectedClassDefinition().Target;
-		data.existInModel = false;
-		newDataValuesCommitList.add(data);
-		System.out.println("Create New Data Value: "+data);
-		return data;
-	}
-	
+		
 	public static DtoInstance addExistingIndividualAtCommitList(String individualURI)
 	{
 		DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), individualURI,true,true,true);
@@ -75,16 +62,6 @@ public class CommiterApp {
 	{		
 		DtoFactoryUtil.removeIndividualFrom(newIndividualsCommitList, individualURI);
 		System.out.println("Remove Individual: "+individualURI);
-	}
-	
-	/** 
-	 * Remove the data values that was going to be created later. 
-	 * This data value is not in the model yet. Thus, this method only removes it from the list of new data values.
-	 */
-	public static void removeNewDataValueFromCommitList(String individualURI)
-	{		
-		DtoFactoryUtil.removeDataValueFrom(newDataValuesCommitList, individualURI);
-		System.out.println("Remove Data Value: "+individualURI);
 	}
 	
 	/**
@@ -114,8 +91,8 @@ public class CommiterApp {
 		DtoViewSelectInstance dto = new DtoViewSelectInstance(dtoIndividual, allIndividuals);
 		System.out.println("Editing Individual: "+individualURI);
 		return dto;
-	}
-		
+	}	
+	
 	/**
 	 * Create a new individual at the range of the cardinality restriction that was selected.
 	 * 
@@ -267,6 +244,31 @@ public class CommiterApp {
 		dtoResult.setIsSucceed(true);
 		dtoResult.setMessage("ok");
 		return dtoResult;
+	}
+	
+	/** 
+	 * Remove the data values that was going to be created later. 
+	 * This data value is not in the model yet. Thus, this method only removes it from the list of new data values.
+	 */
+	public static void removeNewDataValueFromCommitList(String individualURI)
+	{		
+		DtoFactoryUtil.removeDataValueFrom(newDataValuesCommitList, individualURI);
+		System.out.println("Remove Data Value: "+individualURI);
+	}
+	
+	/**
+	 * This method does not add this data value to the model.
+	 * Instead, it only adds this data value to the set of list of new data value to be created in the model when the method commitNewDataValues() was called.
+	 */
+	public static DataPropertyValue createNewDataValueAtCommitList(String dataValue)
+	{
+		DataPropertyValue data = new DataPropertyValue();
+		data.value = dataValue;
+		data.classValue = OKCoApp.getSelectedClassDefinition().Target;
+		data.existInModel = false;
+		newDataValuesCommitList.add(data);
+		System.out.println("Create New Data Value: "+data);
+		return data;
 	}
 	
 	/**
