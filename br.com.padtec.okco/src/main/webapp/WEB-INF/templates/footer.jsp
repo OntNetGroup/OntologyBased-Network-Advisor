@@ -13,6 +13,24 @@
 		</p>
 
 	</footer>
+	
+	<script>
+		//readjusting the content when the content is short and the footer appears in the middle of the page 
+		$(window).bind("load", function() {
+			var docHeight = $(document).height();
+			var footerPadTop = $("footer").css("padding-top").replace("px", "");
+			var footerPadBottom = $("footer").css("padding-bottom").replace("px", "");
+			var footerHeight = $("footer").height()
+			footerHeight = footerHeight + Number(footerPadTop) + Number(footerPadBottom);
+			var navbarInnerHeigth = $("#navbar-inner").height();
+			var contentHeigth = $("#content").height();
+			var h = navbarInnerHeigth + contentHeigth + footerHeight;
+			if(docHeight > h){
+				contentHeigth = docHeight - navbarInnerHeigth - footerHeight;
+				$('#content').css({'height':contentHeigth});
+			}
+		}); // End - document ready	
+	</script>
 
 </body>
 </html>

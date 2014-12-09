@@ -43,6 +43,7 @@
 		// Complete property	
 		$('.completePropertyForm').submit(function(event) 
 		{
+			loading();
 			var separatorValues = "%&&%";
 			var id = $("#specValue").attr("value");			
 			var arraySubProp = "";
@@ -86,6 +87,7 @@
 		// Complete class	
 		$('.completeClassForm').submit(function(event) 
 		{
+			loading();
 			var separatorValues = "%&&%";			
 			var arrayCls = "";
 			$(this).find(".checked").each(function( index ) 
@@ -732,7 +734,7 @@
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");								  		
 											  		out.println("<td class=\"center\">" + 
-											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "data" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
+											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
 											  					"</td>");
 											  									  		
 											  		out.println("</tr>");							  		
@@ -763,7 +765,7 @@
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");						  		
 												  	out.println("<td class=\"center\">" + 
-												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "data" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
+												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
 												  					"</td>");
 											  									  		
 											  		out.println("</tr>");							  		
@@ -794,7 +796,7 @@
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");							  		
 											  		out.println("<td class=\"center\">" + 
-											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "data" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
+											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
 											  					"</td>");
 											  									  		
 											  		out.println("</tr>");							  		
@@ -825,7 +827,7 @@
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");
 												  	out.println("<td class=\"center\">" + 
-												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.Relation + "&type=" + "data" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
+												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
 												  					"</td>");							  									  		
 											  		out.println("</tr>");							  		
 										  		}							  		

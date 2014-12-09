@@ -23,9 +23,11 @@
 
 	$(document).ready(function()
 	{
+		 
 		/** Run reasoner */
 		$('#runReasonerForm').submit(function(event)
 		{
+			loading();
 			$.ajax({
 				url : $("#runReasonerForm").attr("action"),
 				//data : JSON.stringify(json),
@@ -34,21 +36,17 @@
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
-				success : function(data) 
-				{
-					if(data.result == "ok")
+				success : function(json) 
+				{						
+					if(!json.error)
 					{
-						//Redirect to instance page
 						window.location.href = "list";
-					} 
-					else if(data.result == "nothing") 
-					{
-						alert("Not happens");
+						$(document).ajaxStop(function() { location.reload(true); });
 					}else{
 						//Huston we have a problem
 						var html = "<div class=\"alert alert-danger\">" +
 						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-						"<strong>" + "Error! " + "</strong>"+ data.result + 
+						"<strong>" + "Erro! " + "</strong>"+ "Couldn't execute the reasoner." + 
 						"</div>";
 						$("#content").prepend(html);
 					}

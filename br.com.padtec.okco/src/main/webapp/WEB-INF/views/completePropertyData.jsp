@@ -130,7 +130,7 @@
 
 		// Commit
 		$('#commitInstanceForm').submit(function(event) {
-
+			loading();
 			var rows = $("#table-instances tr").length;			
 			if(rows > 2)
 			{
@@ -148,26 +148,18 @@
 						xhr.setRequestHeader("Accept", "application/json");
 						xhr.setRequestHeader("Content-Type", "application/json");
 					},
-					success : function(data) {
-
-						if(data.result == "ok")
+					success : function(json) 
+					{						
+						if(!json.error)
 						{
-							//Redirect to instance page
-							
 							window.location.href = "list";
-							
-						} else if(data.result == "nothing") {
-
-							alert("Not happens");
-							
-						} else {
-
+							$(document).ajaxStop(function() { location.reload(true); });
+						}else{
 							//Huston we have a problem
 							var html = "<div class=\"alert alert-danger\">" +
-											"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-											"<strong>" + "Erro! " + "</strong>"+ data.result + 
-										"</div>";
-
+							"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+							"<strong>" + "Erro! " + "</strong>"+ "Couldn't execute the reasoner." + 
+							"</div>";
 							$("#content").prepend(html);
 						}
 					}

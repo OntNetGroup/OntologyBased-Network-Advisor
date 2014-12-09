@@ -160,8 +160,8 @@
 		<img src="Assets/img/loading.gif">
 	</div>
 	<!-- start: Header -->
-	<div class="navbar">
-		<div class="navbar-inner">
+	<div id="navbar" class="navbar">
+		<div id="navbar-inner" class="navbar-inner">
 			<div class="container">
 				<button class="navbar-toggle" type="button" data-toggle="collapse"
 					data-target=".sidebar-nav.nav-collapse">
@@ -185,7 +185,7 @@
 	</div>
 	<!-- end: Header -->
 
-	<div class="container">
+	<div id="container" class="container">
 		<div class="row">
 
 			<!-- start: Main Menu -->

@@ -264,7 +264,8 @@ public class OKCoApp {
 	{
 		List<DataPropertyValue> result = new ArrayList<DataPropertyValue>();		
 		InfModel model = UploadApp.getInferredModel();
-		List<String> individualsList = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, getSelectedIndividualURI(), definitionClassSelected.Relation, definitionClassSelected.Target);
+		List<String> individualsList = QueryUtil.getIndividualsURIAtDataTypePropertyRange(model, getSelectedIndividualURI(), definitionClassSelected.Relation, definitionClassSelected.Target);
+		//List<String> individualsList = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, getSelectedIndividualURI(), definitionClassSelected.Relation, definitionClassSelected.Target);
 		for(String individualURI: individualsList)
 		{
 			DataPropertyValue data = new DataPropertyValue();
