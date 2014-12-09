@@ -556,7 +556,7 @@
 					respContent += "<ul>";
 		  			for (var i = 0; i < dto.ListSameInstances.length; i++) 
 					{
-		  				respContent += "<li title=\"" + dto.ListSameInstances[i] + "\">" + dto.ListSameInstances[i].split("#")[1] + "</li>"; 
+		  				if(dto.ListSameInstances[i]!=null) respContent += "<li title=\"" + dto.ListSameInstances[i] + "\">" + dto.ListSameInstances[i].split("#")[1] + "</li>"; 
 			  		}
 		  			respContent += "</ul>";
 					respContent += "</td>";
@@ -565,7 +565,7 @@
 					respContent += "<ul>";							
 		  		  	for (var i = 0; i < dto.ListDiferentInstances.length; i++) 
 				  	{
-		  		  		respContent += "<li title=\"" + dto.ListDiferentInstances[i] + "\">" + dto.ListDiferentInstances[i].split("#")[1] + "</li>"; 
+		  		  		if(dto.ListDiferentInstances[i]!=null) respContent += "<li title=\"" + dto.ListDiferentInstances[i] + "\">" + dto.ListDiferentInstances[i].split("#")[1] + "</li>"; 
 			  		}
 		  		  	respContent += "</ul>";
 					respContent += "</td>";
@@ -603,25 +603,18 @@
 						xhr.setRequestHeader("Accept", "application/json");
 						xhr.setRequestHeader("Content-Type", "application/json");
 					},
-					success : function(data) {
-
-						if(data.result == "ok")
+					success : function(json) 
+					{						
+						if(!json.error)
 						{
-							//Redirect to instance page
 							window.location.href = "list";
-							
-						} else if(data.result == "nothing") {
-
-							alert("Not happens");
-							
-						} else {
-
+							$(document).ajaxStop(function() { location.reload(true); });
+						}else{
 							//Huston we have a problem
 							var html = "<div class=\"alert alert-danger\">" +
-											"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
-											"<strong>" + "Erro! " + "</strong>"+ data.result + 
-										"</div>";
-
+							"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+							"<strong>" + "Erro! " + "</strong>"+ "Couldn't execute the reasoner." + 
+							"</div>";
 							$("#content").prepend(html);
 						}
 					}
@@ -722,7 +715,7 @@
 					respContent += "<ul>";
 		  			for (var i = 0; i < dto.ListSameInstances.length; i++) 
 					{
-		  				respContent += "<li title=\"" + dto.ListSameInstances[i] + "\">" + dto.ListSameInstances[i].split("#")[1] + "</li>"; 
+		  				if(dto.ListSameInstances[i]!=null) respContent += "<li title=\"" + dto.ListSameInstances[i] + "\">" + dto.ListSameInstances[i].split("#")[1] + "</li>"; 
 			  		}
 		  			respContent += "</ul>";
 					respContent += "</td>";
@@ -731,7 +724,7 @@
 					respContent += "<ul>";							
 		  		  	for (var i = 0; i < dto.ListDiferentInstances.length; i++) 
 				  	{
-		  		  		respContent += "<li title=\"" + dto.ListDiferentInstances[i] + "\">" + dto.ListDiferentInstances[i].split("#")[1] + "</li>"; 
+		  		  	if(dto.ListDiferentInstances[i]!=null) respContent += "<li title=\"" + dto.ListDiferentInstances[i] + "\">" + dto.ListDiferentInstances[i].split("#")[1] + "</li>"; 
 			  		}
 		  		  	respContent += "</ul>";
 					respContent += "</td>";
