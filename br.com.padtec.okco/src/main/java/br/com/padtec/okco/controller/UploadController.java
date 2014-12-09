@@ -2,6 +2,7 @@ package br.com.padtec.okco.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -91,6 +92,8 @@ public class UploadController {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String upload(HttpServletRequest request, @RequestParam("optionsReasoner") String optReasoner)
 	{		
+		System.out.println("Executing /upload...");
+		Date beginDate = new Date();
 		try {
 			 String useReasoner = request.getParameter("loadReasonerFirstCheckbox");
 			 MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -135,6 +138,13 @@ public class UploadController {
 			return "index";
 		}		 
 		request.getSession().removeAttribute("errorMensage");  
+		
+		Date endDate = new Date();
+		long diff = endDate.getTime() - beginDate.getTime();
+		long diffSeconds = diff / 1000;
+		long diffMinutes = diff / (60 * 1000);         
+		long diffHours = diff / (60 * 60 * 1000); 
+		System.out.println("Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
 		return "redirect:list";
 	}
 		
