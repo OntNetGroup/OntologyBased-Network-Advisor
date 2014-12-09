@@ -225,7 +225,7 @@
 
 		// CHECK BOXES
 		
-		$('.checkAll-create-same').live('click', function() {	
+		$('.checkAll-create-same').on('click', function() {	
 			
 			var listSame = $("#newInstanceForm .todo-list.same li");
 			var listDif = $("#newInstanceForm .todo-list.different li");
@@ -277,7 +277,7 @@
 	 
 		});
 
-		$('.checkAll-create-different').live('click', function() {
+		$('.checkAll-create-different').on('click', function() {
 			
 			var listSame = $("#newInstanceForm .todo-list.same li");
 			var listDif = $("#newInstanceForm .todo-list.different li");
@@ -326,10 +326,10 @@
 			 
 		});
 
-		$('#selectError0').live('change', function() {		
+		$('#selectError0').on('change', function() {		
 			
 			  instanceIdSelect = $(this).find('option:selected').attr("title");
-			  if(instanceIdSelect > 0)
+			  if(instanceIdSelect != "0") //Not Choose
 			  {
 				  selectInstance();
 			  }		 
@@ -342,8 +342,8 @@
 			var id = instanceIdSelect;
 			
 			$.ajax({
-				url : "selectInstance" + "?id=" + id,
-				//data : JSON.stringify(json),
+				url : "selectInstance",
+				data : "uri="+instanceIdSelect,
 				type : "GET",
 
 				beforeSend : function(xhr) {
@@ -418,7 +418,7 @@
 			});
 		}
 
-		$('.btn-add').live('click', function() {		
+		$('.btn-add').on('click', function() {		
 			$('#mask, .window').hide();
 		});
 
@@ -439,21 +439,40 @@
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
-				success : function(data) {
+				success : function(dto) {
 
 					var respContent = "<tr>" + 
-						  "<td title=\"" + data.ns + data.name + "\">" + data.name + "</td>" +
-						  "<td></td>" +
-						  "<td></td>" +
-						  "<td class=\"center\">" + 
-		  						"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
-		  						"<a class=\"btn btn-danger btn-exclude\" name=\""+ data.name + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +	
-		  			 	  "</td>" +
-					  "</tr>";
 					
+					"<td title=\"" + dto.ns + dto.name + "\">" + dto.name + "</td>";
+						  
+				  	respContent += "<td class=\"center\">";
+					respContent += "<ul>";
+		  			for (var i = 0; i < dto.ListSameInstances.length; i++) 
+					{
+		  				respContent += "<li title=\"" + dto.ListSameInstances[i] + "\">" + dto.ListSameInstances[i].split("#")[1] + "</li>"; 
+			  		}
+		  			respContent += "</ul>";
+					respContent += "</td>";
+					
+					respContent += "<td class=\"center\">";
+					respContent += "<ul>";							
+		  		  	for (var i = 0; i < dto.ListDiferentInstances.length; i++) 
+				  	{
+		  		  		respContent += "<li title=\"" + dto.ListDiferentInstances[i] + "\">" + dto.ListDiferentInstances[i].split("#")[1] + "</li>"; 
+			  		}
+		  		  	respContent += "</ul>";
+					respContent += "</td>";
+			  								  
+					respContent +=  "<td class=\"center\">" + 
+	  				"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
+	  				"<a class=\"btn btn-danger btn-exclude\" name=\""+ dto.name + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +	
+	  			 	"</td>" +
+	  			 	
+				  	"</tr>";
+				  	
 					$('#table-instances tr:last').after(respContent); 
 
-				}
+				}				
 			});
 		});
 
@@ -556,7 +575,7 @@
 			{
 				if ( $(this).find("i").attr("class") == "icon-check")
 				{
-					arraySame = arraySame + separatorValues + $(this).children(".desc").attr("title");
+					arraySame += $(this).children(".desc").attr("title") + separatorValues;
 				}				  
 			});
 
@@ -565,7 +584,7 @@
 			{
 				if ( $(this).find("i").attr("class") == "icon-check")
 				{
-					arrayDif = arrayDif + separatorValues + $(this).children(".desc").attr("title");
+					arrayDif += $(this).children(".desc").attr("title") + separatorValues;
 				}				  
 			});	
 
@@ -586,18 +605,37 @@
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
-				success : function(data) {
+				success : function(dto) {
 
 					var respContent = "<tr>" + 
-						  "<td title=\"" + data.ns + data.name + "\">" + data.name + "</td>" +
-						  "<td></td>" +
-						  "<td></td>" +
-						  "<td class=\"center\">" + 
-		  						"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
-		  						"<a class=\"btn btn-danger btn-exclude\" name=\""+ data.name + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +	
-		  			 	  "</td>" +
-					  "</tr>";
 					
+					"<td title=\"" + dto.ns + dto.name + "\">" + dto.name + "</td>";
+						  
+				  	respContent += "<td class=\"center\">";
+					respContent += "<ul>";
+		  			for (var i = 0; i < dto.ListSameInstances.length; i++) 
+					{
+		  				respContent += "<li title=\"" + dto.ListSameInstances[i] + "\">" + dto.ListSameInstances[i].split("#")[1] + "</li>"; 
+			  		}
+		  			respContent += "</ul>";
+					respContent += "</td>";
+					
+					respContent += "<td class=\"center\">";
+					respContent += "<ul>";							
+		  		  	for (var i = 0; i < dto.ListDiferentInstances.length; i++) 
+				  	{
+		  		  		respContent += "<li title=\"" + dto.ListDiferentInstances[i] + "\">" + dto.ListDiferentInstances[i].split("#")[1] + "</li>"; 
+			  		}
+		  		  	respContent += "</ul>";
+					respContent += "</td>";
+			  								  
+					respContent +=  "<td class=\"center\">" + 
+	  				"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
+	  				"<a class=\"btn btn-danger btn-exclude\" name=\""+ dto.name + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +	
+	  			 	"</td>" +
+	  			 	
+				  	"</tr>";
+				  	
 					$('#table-instances tr:last').after(respContent); 
 
 				}

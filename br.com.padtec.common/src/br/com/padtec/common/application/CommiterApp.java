@@ -40,7 +40,7 @@ public class CommiterApp {
 		ArrayList<String> listSame = new ArrayList<String>(Arrays.asList(arraySame));		
 		ArrayList<String> listDif = new ArrayList<String>(Arrays.asList(arrayDif));		
 		DtoInstance dtoIndividual = new DtoInstance(UploadApp.getBaseRepository().getNameSpace(), name, null, listDif, listSame, false);
-		newIndividualsCommitList.add(dtoIndividual);
+		newIndividualsCommitList.add(dtoIndividual);		
 		return dtoIndividual;
 	}
 	
@@ -55,13 +55,15 @@ public class CommiterApp {
 		data.classValue = OKCoApp.getSelectedClassDefinition().Target;
 		data.existInModel = false;
 		newDataValuesCommitList.add(data);
+		System.out.println("Create New Data Value: "+data);
 		return data;
 	}
 	
 	public static DtoInstance addExistingIndividualAtCommitList(String individualURI)
 	{
 		DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), individualURI,true,true,true);
-		newIndividualsCommitList.add(dtoIndividual);		
+		newIndividualsCommitList.add(dtoIndividual);	
+		System.out.println("Add Existing Individual: "+dtoIndividual);
 		return dtoIndividual;
 	}
 	
@@ -71,7 +73,8 @@ public class CommiterApp {
 	 */  
 	public static void removeNewIndividualFromCommitList(String individualURI)
 	{		
-		DtoFactoryUtil.removeIndividualFrom(newIndividualsCommitList, individualURI);		
+		DtoFactoryUtil.removeIndividualFrom(newIndividualsCommitList, individualURI);
+		System.out.println("Remove Individual: "+individualURI);
 	}
 	
 	/** 
@@ -80,7 +83,8 @@ public class CommiterApp {
 	 */
 	public static void removeNewDataValueFromCommitList(String individualURI)
 	{		
-		DtoFactoryUtil.removeDataValueFrom(newDataValuesCommitList, individualURI);		
+		DtoFactoryUtil.removeDataValueFrom(newDataValuesCommitList, individualURI);
+		System.out.println("Remove Data Value: "+individualURI);
 	}
 	
 	/**
@@ -93,6 +97,7 @@ public class CommiterApp {
 	{
 		DtoInstance dtoIndividual = DtoFactoryUtil.getIndividualFrom(newIndividualsCommitList, individualURI);
 		DtoViewSelectInstance dto = new DtoViewSelectInstance(dtoIndividual, newIndividualsCommitList);
+		System.out.println("Editing Individual: "+individualURI);
 		return dto;
 	}
 	
@@ -107,6 +112,7 @@ public class CommiterApp {
 		DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), individualURI,true,true,true);
 		List<DtoInstance> allIndividuals = DtoQueryUtil.getIndividuals(UploadApp.getInferredModel(), true, true, true);
 		DtoViewSelectInstance dto = new DtoViewSelectInstance(dtoIndividual, allIndividuals);
+		System.out.println("Editing Individual: "+individualURI);
 		return dto;
 	}
 		
@@ -131,6 +137,7 @@ public class CommiterApp {
 		);
 		OKCoApp.setIsModified(newDtoIndividual.ns + newDtoIndividual.name);
 		if(differentFromList!=null) differentFromList.add(newDtoIndividual.ns + newDtoIndividual.name);	
+		System.out.println("New Individual at Class Definition: "+newDtoIndividual);
 	}
 		
 	/**
@@ -156,6 +163,7 @@ public class CommiterApp {
 		);
 		OKCoApp.setIsModified(newDtoIndividual.ns + newDtoIndividual.name);
 		if(differentFromList!=null) differentFromList.add(newDtoIndividual.ns + newDtoIndividual.name);	
+		System.out.println("New Individual at Class Definition: "+newDtoIndividual);
 	}
 	
 	/**
