@@ -1,4 +1,4 @@
-!<%@page import="java.net.URLEncoder"%>
+<%@page import="java.net.URLEncoder"%>
 <%@ page import="br.com.padtec.common.application.UploadApp"%>
 <%@ page import="br.com.padtec.common.application.OKCoApp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -10,7 +10,6 @@
 <%@ page import="br.com.padtec.common.dto.DtoDefinitionClass"%>
 <%@ page import="br.com.padtec.common.dto.DtoInstanceRelation"%>
 <%@ page import="java.util.ArrayList"%>
-
 <%
 	/** Get the parameters from controller */	
 	DtoInstance instance = (DtoInstance)request.getSession().getAttribute("instanceSelected");
@@ -29,9 +28,7 @@
 	@SuppressWarnings("unchecked")
 	ArrayList<DtoDefinitionClass> listExactlyClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listExactlyClassDefinition");
 %>
-
 <%@include file="../templates/header.jsp"%>
-
 <script type="text/javascript">
 
 	//Variables to control specialization properties	

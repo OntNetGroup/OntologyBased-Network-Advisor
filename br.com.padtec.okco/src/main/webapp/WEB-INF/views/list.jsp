@@ -13,6 +13,14 @@
 <%@include file="../templates/header.jsp" %>
 
 <script type="text/javascript">
+
+	$(document).ready(function() {
+		$(".btn btn-info").click(function(){
+			loading();
+		});	
+		
+	}); // End - document ready;
+
 	$(document).ready(function()
 	{
 		/** Run reasoner */
@@ -113,8 +121,8 @@
   						  	}	
   						  	out.println("<td class=\"center\">" + 
   						  	"<a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
-  						  	"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
-  					  		"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completeInstanceAuto?uriInstance="+ i.uriEncoded + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
+  						  	"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\" onclick=\"loading()\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+  					  		"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completeInstanceAuto?uriInstance="+ i.uriEncoded + "\" onclick=\"loading()\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
   						  	"</td>");  					  									  		
   					  		out.println("</tr>");
   						}

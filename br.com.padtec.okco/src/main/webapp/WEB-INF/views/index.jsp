@@ -8,14 +8,15 @@
 
 <%@include file="../templates/header.jsp"%>
 
-
 <script type="text/javascript">
 
-	$(document).ready(function() {
+$(document).ready(function() {
 
-		
-		
-	}); // End - document ready;
+	$(".btnload").click(function(){
+		loading();
+	});	
+	
+}); // End - document ready;
 
 </script>
 

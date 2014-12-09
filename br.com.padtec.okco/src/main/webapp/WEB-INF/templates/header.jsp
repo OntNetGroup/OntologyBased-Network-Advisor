@@ -3,7 +3,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
 <!-- start: Meta -->
 <meta charset="utf-8">
 <title>OKCo - Ontology Knowlodge Completer</title>
@@ -21,6 +20,7 @@
 <link href="Assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="Assets/css/style.min.css" rel="stylesheet">
 <link href="Assets/css/retina.min.css" rel="stylesheet">
+<link href="Assets/css/okco.css" rel="stylesheet">
 
 <!--end: CSS -->
 
@@ -119,8 +119,10 @@
 <script src="Assets/js/charts.min.js"></script>
 <script src="Assets/js/custom.min.js"></script>
 <script src="Assets/js/jquery.paulund_modal_box.js"></script>
-<!-- end: JavaScript-->
+<script src="Assets/js/okco.js"></script>
 
+<!-- end: JavaScript-->
+<!-- 
 <style type="text/css">
 
 	#maskforloading 
@@ -145,36 +147,8 @@
 	}
 
 </style>
-
+-->
 </head>
-
-<script type="text/javascript">
-
-$(document).ready(function() {
-
-	$("#maskforloading").hide();
-
-	  // Function loading
-	  function loading()
-	  {
-		  	var maskHeight = $(document).height();
-			var maskWidth = "100%";//$(document).width();
-	
-			//Define largura e altura do div#maskforloading iguais ás dimensões da tela
-			$('#maskforloading').css({'width':maskWidth,'height':maskHeight});
-	
-			//efeito de transição
-			$('#maskforloading').show();
-	  }
-
-	$(".btnload").click(function(){
-
-		loading();
-	});	
-	
-}); // End - document ready;
-
-</script>
 
 <body>
 
@@ -183,9 +157,8 @@ $(document).ready(function() {
 	
 	<!-- Não remova o div#maskforloading, pois ele é necessário para preencher toda a janela -->
 	<div id="maskforloading">
-		<img src="Assets/img/loading.gif" height="100px">
+		<img src="Assets/img/loading.gif">
 	</div>
-
 	<!-- start: Header -->
 	<div class="navbar">
 		<div class="navbar-inner">
