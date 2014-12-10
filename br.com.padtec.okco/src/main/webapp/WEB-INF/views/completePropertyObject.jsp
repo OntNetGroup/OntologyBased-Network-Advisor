@@ -23,7 +23,9 @@
 	var commitReasoner = false;		//Used to select commit and reasoner or only commit
 
 	$(document).ready(function() {
-
+		$(".btn-prev").click(function(){
+			loading();
+		});
 		/* ---- MODAL - inicio ---- */
 		
 		//seleciona os elementos a com atributo name="modal"
@@ -1154,7 +1156,7 @@
 					
 	<form id="commitInstanceForm" action="commitInstance" method="POST">
 		<%
-			out.println("<button onclick=\"window.location = '/br.com.padtec.okco/details?uri=" + instanceSelected.uriEncoded + "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
+			out.println("<button onclick=\"window.location = '/br.com.padtec.okco/details?uri=" + instanceSelected.uriEncoded + "';\" type=\"button\" class=\"btn btn-prev\" id=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
 		%>
 		
 		<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>

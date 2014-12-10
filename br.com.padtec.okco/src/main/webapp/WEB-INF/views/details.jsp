@@ -178,8 +178,8 @@
 			<div class="box-content">
 				<table class="table table-bordered table-striped">
 					<tr>
-						<td>Name</td>
-						<td style="padding-left: 30px;">
+						<td class="instanceInformations">Name</td>
+						<td class="instanceData" style="padding-left: 30px;">
 							<%
 								out.println("<label title=\"" + instance.ns +instance.name + "\">" + instance.name + "</label>");
 							%>
@@ -537,11 +537,11 @@
 					class="table table-striped table-bordered bootstrap-datatable datatable">
 					<thead>
 						<tr>
-							<th>Source Individual</th>
-							<th>Object Property</th>
-							<th>Cardinality</th>
-							<th>Target Type</th>
-							<th>Actions</th>
+							<th class="sourceIndividual">Source Individual</th>
+							<th class="objectProperty">Object Property</th>
+							<th class="cardinality">Cardinality</th>
+							<th class="targetType">Target Type</th>
+							<th class="actions">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -574,7 +574,7 @@
 								  		}
 								  		
 								  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");									  									  		
-								  		out.println("<td class=\"center\">" + 
+								  		out.println("<td class=\"actions\">" + 
 								  						"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
 								  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
 								  					"</td>");
@@ -604,7 +604,7 @@
 								  			split1 = dto.Target.split("#")[1];
 								  		}
 								  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");								  		
-								  		out.println("<td class=\"center\">" + 
+								  		out.println("<td class=\"actions\">" + 
 								  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
 						  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
 								  					"</td>");
@@ -636,7 +636,7 @@
 							  			split1 = dto.Target.split("#")[1];
 							  		}
 							  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");							  		
-								  	out.println("<td class=\"center\">" + 
+								  	out.println("<td class=\"actions\">" + 
 								  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "objectMax" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
 					  								
 								  					"</td>");
@@ -668,7 +668,7 @@
 							  			split1 = dto.Target.split("#")[1];
 							  		}
 							  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");					  		
-								  	out.println("<td class=\"center\">" + 
+								  	out.println("<td class=\"actions\">" + 
 								  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
 					  								"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completePropertyAuto?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
 								  					"</td>");
@@ -701,11 +701,11 @@
 					class="table table-striped table-bordered bootstrap-datatable datatable">
 					<thead>
 						<tr>
-							<th>Source Individual</th>
-							<th>Data Property</th>
-							<th>Cardinality</th>
-							<th>Target DataType</th>
-							<th>Actions</th>
+							<th class="sourceIndividual">Source Individual</th>
+							<th class="dataProperty">Data Property</th>
+							<th class="cardinality">Cardinality</th>
+							<th class="target">Target DataType</th>
+							<th class="actions">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -733,7 +733,7 @@
 											  			split1 = dto.Target.split("#")[1];
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");								  		
-											  		out.println("<td class=\"center\">" + 
+											  		out.println("<td class=\"actions\">" + 
 											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
 											  					"</td>");
 											  									  		
@@ -764,7 +764,7 @@
 											  			split1 = dto.Target.split("#")[1];
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");						  		
-												  	out.println("<td class=\"center\">" + 
+												  	out.println("<td class=\"actions\">" + 
 												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
 												  					"</td>");
 											  									  		
@@ -795,7 +795,7 @@
 											  			split1 = dto.Target.split("#")[1];
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");							  		
-											  		out.println("<td class=\"center\">" + 
+											  		out.println("<td class=\"actions\">" + 
 											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
 											  					"</td>");
 											  									  		
@@ -826,7 +826,7 @@
 											  			split1 = dto.Target.split("#")[1];
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");
-												  	out.println("<td class=\"center\">" + 
+												  	out.println("<td class=\"actions\">" + 
 												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
 												  					"</td>");							  									  		
 											  		out.println("</tr>");							  		

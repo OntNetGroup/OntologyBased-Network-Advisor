@@ -82,8 +82,8 @@
 						  <tr>
 							  <th>Instance name</th>
 							  <th>Class name</th>
-							  <th>State</th>
-							  <th>Actions</th>
+							  <th class="state">State</th>
+							  <th class="actions">Actions</th>
 						  </tr>
 					  </thead>   
 					  <tbody>					  
@@ -94,30 +94,42 @@
   					  		out.println("<tr>");  					  		
   						  	out.println("<td title=\"" + i.ns + i.name + "\">" + i.name + "</td>");
   						  	out.println("<td class=\"center\">");
-  						  	out.println("<ul>");
-  							for(String c : i.ListClasses)
-  							{
-  								out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
-  							}
-  						  	out.println("</ul>");
-  						  	out.println("</td>");  						  		
+	  						  	out.println("<ul>");
+	  							for(String c : i.ListClasses)
+	  							{
+	  								out.println("<li title=\"" + c + "\">" + c.split("#")[1] + "</li>");
+	  							}
+	  						  	out.println("</ul>");
+  						  	out.println("</td>");  						  
+  						  	
+  						  	String stateClass = "";
+  						  	String stateLabel = "";
   						  	if(listModifedInstances.contains(i.ns+i.name))
   						  	{
-  						  		out.println("<td class=\"center\">	<span class=\"label label-important\" style=\"background:#f63f2d\">Modified</span> </td>");
+  						  		stateClass = "label label-important";
+  						  		stateLabel = "Modified";
+  						  		//out.println("<td class=\"center\">	<span class=\"label label-important\" style=\"background:#f63f2d\">Modified</span> </td>");
   						  	}else{  						  			
   						  		if(i.haveKnwologeToComplete() == true)
   							  	{
-  							  		out.println("<td class=\"center\">	<span class=\"label label-important\">Not Satisfied</span> </td>");
+  						  			stateClass = "label label-important";
+  						  			stateLabel = "Not Satisfied";
+  							  		//out.println("<td class=\"center\">	<span class=\"label label-important\">Not Satisfied</span> </td>");
 						  		}else{  							  			
   							  		if(i.is_Semi_Complete() == true)
   							  		{
-  							  			out.println("<td class=\"center\">	<span class=\"label label-warning\">Possible Refinements</span> </td>");
-  							  		}else{  							  				
-  							  			out.println("<td class=\"center\">	<span class=\"label label-success\">Satisfied</span> </td>");
+  							  			stateClass = "label label-warning";
+  							  			stateLabel = "Possible Refinements";
+  							  			//out.println("<td class=\"center\">	<span class=\"label label-warning\">Possible Refinements</span> </td>");
+  							  		}else{
+  							  			stateClass = "label label-success";
+  							  			stateLabel = "Satisfied";
+  							  			//out.println("<td class=\"center\">	<span class=\"label label-success\">Satisfied</span> </td>");
   							  		}
   							  	}
   						  	}	
-  						  	out.println("<td class=\"center\">" + 
+  						 	out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+stateLabel+"</span> </td>");
+  						  	out.println("<td class=\"actions\">" + 
   						  	"<a class=\"btn btn-success\" target=\"_blank\" href=\"/br.com.padtec.okco/graphVisualizer?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
   						  	"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\" onclick=\"loading()\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
   					  		"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"/br.com.padtec.okco/completeInstanceAuto?uriInstance="+ i.uriEncoded + "\" onclick=\"loading()\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +

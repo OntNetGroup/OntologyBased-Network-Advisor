@@ -23,3 +23,49 @@
 	width: 25px;
 	height: 25px;
 }
+
+table.table thead,
+table.table tbody
+{
+	vertical-align: middle;
+}
+
+table.table tbody .actions,
+table.table tbody .state
+{
+	text-align: center;
+}
+
+table.table thead .actions
+{
+	width: 23%;
+}
+
+table.table thead .state
+{
+	width: 8%;
+}
+
+table.table thead .cardinality
+{
+	width: 10%;
+}
+
+table.table thead .sourceIndividual,
+table.table thead .targetType,
+table.table tbody .instanceInformations
+{
+	width: 21%;
+}
+
+table.table tbody .instanceData
+{
+	
+}
+
+table.table thead .objectProperty,
+table.table thead .dataProperty
+{
+	width: 25%;
+}
+

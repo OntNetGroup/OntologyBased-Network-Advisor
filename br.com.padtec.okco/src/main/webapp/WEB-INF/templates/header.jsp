@@ -17,10 +17,10 @@
 
 <!-- start: CSS -->
 
+<link href="Assets/css/okco.css" rel="stylesheet">
 <link href="Assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="Assets/css/style.min.css" rel="stylesheet">
 <link href="Assets/css/retina.min.css" rel="stylesheet">
-<link href="Assets/css/okco.css" rel="stylesheet">
 
 <!--end: CSS -->
 
