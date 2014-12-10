@@ -27,8 +27,8 @@ public class OKCoApp {
 	//Keeps the individual that was selected with other useful informations
 	public static DtoInstance individualSelected;
 	public static DtoDefinitionClass definitionClassSelected;
-	public static List<DtoCompleteClass> completeClassesFromSelected;
-	public static List<DtoPropertyAndSubProperties> relationSpecializationsFromSelected;	
+	public static List<DtoCompleteClass> completeClassesFromSelected = new ArrayList<DtoCompleteClass>();
+	public static List<DtoPropertyAndSubProperties> relationSpecializationsFromSelected = new ArrayList<DtoPropertyAndSubProperties>();	
 		
 	/**
 	 * Select a particular individual to be used later on.

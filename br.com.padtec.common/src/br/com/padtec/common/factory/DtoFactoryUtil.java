@@ -104,7 +104,8 @@ public class DtoFactoryUtil {
 	{
 		for (DtoPropertyAndSubProperties dto : propertiesList) 
 		{
-			if(dto.Property.equals(propertyURI)) return dto;
+			if(propertyURI.contains(dto.Property)) return dto;
+			//if(dto.Property.equals(propertyURI)) return dto;
 		}		
 		return null;
 	}

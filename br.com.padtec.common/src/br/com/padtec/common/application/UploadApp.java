@@ -81,6 +81,10 @@ public class UploadApp {
 			InfModel  inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}
+		
+		OKCoApp.clearModified();
+		OKCoApp.clearSelected();
+		
 	}
 		
 	public static BaseModelRepository getBaseRepository() { return baseRepository; }	

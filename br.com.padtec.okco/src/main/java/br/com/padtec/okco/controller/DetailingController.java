@@ -57,6 +57,11 @@ public class DetailingController {
 		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
 		
 		/** ==================================================
+		 * List of relations and Sub-relations of the Selected Individual
+		 *  =================================================== */	
+		OKCoApp.getCompleteClassesFromSelected();
+		
+		/** ==================================================
 		 * List of relations of the Selected Individual
 		 *  =================================================== */
 		List<DtoInstanceRelation> listRelations = OKCoApp.getRelationsFromSelected();	
