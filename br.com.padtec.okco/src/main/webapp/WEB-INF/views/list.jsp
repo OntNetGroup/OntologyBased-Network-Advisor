@@ -20,31 +20,8 @@
 		});	
 
 		$('#sorting').click(function(){
-			var cHeigth = $("#content").height();
-			
-			var contentPadTop = $("#content").css("padding-top").replace("px", "");
-			//alert("contentPadTop: "+contentPadTop);
-			var contentPadBottom = $("#content").css("padding-bottom").replace("px", "");
-			//alert("contentPadBottom: "+contentPadBottom);
-			
-			var rowHeigth = $("#row").height();
-			//alert("rowHeigth: "+rowHeigth);
-			var row2Heigth = $("#row2").height();
-			//alert("row2Heigth: "+row2Heigth);
-			var row3Heigth = $("#row3").height();
-			//alert("row3Heigth: "+row3Heigth);
-			
-			var h = Number(contentPadTop) + Number(contentPadBottom) + Number(rowHeigth) + Number(row2Heigth) + Number(row3Heigth);
-			//alert("contentHeigth: "+cHeigth);
-			//alert("h: "+h);
-			
-			//if(cHeigth > h){
-				$('#content').css({'height':h});
-			//}
 			
 			
-			
-			adjustContent();
 		});
 		/** Run reasoner */
 		$('#runReasonerForm').submit(function(event)
