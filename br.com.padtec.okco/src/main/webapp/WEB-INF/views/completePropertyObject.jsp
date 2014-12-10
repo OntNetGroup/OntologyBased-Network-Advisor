@@ -587,11 +587,11 @@
 
 		// Commit
 		$('#commitInstanceForm').submit(function(event) {
-			loading();
 			var rows = $("#table-instances tr").length;
 			
 			if(rows > 2)
 			{
+				loading();
 				var json = {
 						"commitReasoner" : commitReasoner
 					};

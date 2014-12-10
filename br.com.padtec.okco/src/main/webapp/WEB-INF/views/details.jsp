@@ -543,7 +543,7 @@
 							<th class="objectProperty">Object Property</th>
 							<th class="cardinality">Cardinality</th>
 							<th class="targetType">Target Type</th>
-							<th class="status">Status</th>
+							<th class="state">State</th>
 							<th class="actions">Actions</th>
 						</tr>
 					</thead>
@@ -584,7 +584,7 @@
 								  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateClass = "label label-important";
 								  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateClass = "label label-warning";
 								  			
-								  		out.println("<td class=\"status\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
+								  		out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 								  		
 								  		out.println("<td class=\"actions\">" + 
 					  						"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
@@ -621,7 +621,7 @@
 								  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateClass = "label label-important";
 								  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateClass = "label label-warning";
 								  		
-								  		out.println("<td class=\"status\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
+								  		out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 								  		
 								  		out.println("<td class=\"actions\">" + 
 								  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
@@ -660,7 +660,7 @@
 							  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateClass = "label label-important";
 							  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateClass = "label label-warning";
 							  		
-							  		out.println("<td class=\"status\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
+							  		out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 							  		
 								  	out.println("<td class=\"actions\">" + 
 								  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "objectMax" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
@@ -699,7 +699,7 @@
 							  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateClass = "label label-important";
 							  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateClass = "label label-warning";
 							  		
-							  		out.println("<td class=\"status\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
+							  		out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 							  		
 								  	out.println("<td class=\"actions\">" + 
 								  			"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;" +
@@ -738,7 +738,7 @@
 							<th class="dataProperty">Data Property</th>
 							<th class="cardinality">Cardinality</th>
 							<th class="target">Target DataType</th>
-							<th class="status">Status</th>
+							<th class="state">State</th>
 							<th class="actions">Actions</th>
 						</tr>
 					</thead>
@@ -774,7 +774,7 @@
 											  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateData = "label label-important";
 											  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateData = "label label-warning";
 											  		
-											  		out.println("<td class=\"status\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
+											  		out.println("<td class=\"state\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
 											  		
 											  		out.println("<td class=\"actions\">" + 
 											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
@@ -812,7 +812,7 @@
 											  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateData = "label label-important";
 											  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateData = "label label-warning";
 											  		
-											  		out.println("<td class=\"status\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
+											  		out.println("<td class=\"state\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
 											  		
 												  	out.println("<td class=\"actions\">" + 
 												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
@@ -850,7 +850,7 @@
 											  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateData = "label label-important";
 											  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateData = "label label-warning";
 											  		
-											  		out.println("<td class=\"status\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
+											  		out.println("<td class=\"state\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
 											  		
 											  		out.println("<td class=\"actions\">" + 
 											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
@@ -888,7 +888,7 @@
 											  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateData = "label label-important";
 											  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateData = "label label-warning";
 											  		
-											  		out.println("<td class=\"status\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
+											  		out.println("<td class=\"state\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
 											  		
 												  	out.println("<td class=\"actions\">" + 
 												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +

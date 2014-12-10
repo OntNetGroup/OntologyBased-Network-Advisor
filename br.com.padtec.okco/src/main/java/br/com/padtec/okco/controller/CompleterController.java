@@ -132,7 +132,8 @@ public class CompleterController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
 	public String completeProperty(@RequestParam("uriInstance") String uriInstance, @RequestParam("idDefinition") String uriProperty, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) throws OKCoException  
-	{		
+	{
+		CommiterApp.clearCommitLists();
 		/** Decode URIs First */
 		uriInstance = URIDecoder.decodeURI(uriInstance);
 		uriProperty = URIDecoder.decodeURI(uriProperty);
