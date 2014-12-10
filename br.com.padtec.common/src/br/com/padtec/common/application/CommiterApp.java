@@ -38,9 +38,9 @@ public class CommiterApp {
 	public static DtoInstance createNewIndividualAtCommitList(String name, String[] arraySame, String[] arrayDif)
 	{
 		ArrayList<String> listSame = new ArrayList<String>();
-		if(arraySame!=null && arraySame[0].equals("")) listSame.addAll(Arrays.asList(arraySame));		
+		if(arraySame!=null && arraySame[0]!="") listSame.addAll(Arrays.asList(arraySame));		
 		ArrayList<String> listDif = new ArrayList<String>();
-		if(arrayDif!=null && arrayDif[0].equals("")) listDif.addAll(Arrays.asList(arrayDif));
+		if(arrayDif!=null && arrayDif[0]!="") listDif.addAll(Arrays.asList(arrayDif));
 		DtoInstance dtoIndividual = new DtoInstance(UploadApp.getBaseRepository().getNameSpace(), name, null, listDif, listSame, false);
 		newIndividualsCommitList.add(dtoIndividual);
 		return dtoIndividual;

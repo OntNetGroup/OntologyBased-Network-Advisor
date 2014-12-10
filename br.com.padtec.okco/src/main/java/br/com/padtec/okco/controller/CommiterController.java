@@ -30,8 +30,12 @@ public class CommiterController {
 	public @ResponseBody DtoInstance createInstance(@RequestBody final DtoCreateInstancePost dto)
 	{
 		String name = dto.name;
-		String[] arraySame = dto.arraySame.split("%&&%");
-		String[] arrayDif = dto.arrayDif.split("%&&%");
+		 
+		String[] arraySame = null;
+		String[] arrayDif = null;
+		
+		if(dto.arraySame!=null) arraySame = dto.arraySame.split("%&&%");
+		if(dto.arrayDif!=null) arrayDif = dto.arrayDif.split("%&&%");
 		
 		/** ==================================================
 		 * Create a New Individual. It does not add the individual to the model. 

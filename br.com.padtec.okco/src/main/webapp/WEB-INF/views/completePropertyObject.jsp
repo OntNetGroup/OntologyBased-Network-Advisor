@@ -668,7 +668,7 @@
 			
 			var name = $('#name').val();
 			
-			var arraySame = "";
+			var arraySame = null;
 			$(this).find(".same").children("li").each(function( index ) 
 			{
 				if ( $(this).find("i").attr("class") == "icon-check")
@@ -677,7 +677,7 @@
 				}				  
 			});
 
-			var arrayDif = "";			
+			var arrayDif = null;			
 			$(this).find(".different").children("li").each(function( index ) 
 			{
 				if ( $(this).find("i").attr("class") == "icon-check")
