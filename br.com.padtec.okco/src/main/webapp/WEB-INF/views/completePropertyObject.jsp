@@ -227,7 +227,7 @@
 
 		// CHECK BOXES
 		
-		$('.checkAll-create-same').on('click', function() {	
+		$('.checkAll-create-same').live('click', function() {	
 			
 			var listSame = $("#newInstanceForm .todo-list.same li");
 			var listDif = $("#newInstanceForm .todo-list.different li");
@@ -279,7 +279,7 @@
 	 
 		});
 
-		$('.checkAll-create-different').on('click', function() {
+		$('.checkAll-create-different').live('click', function() {
 			
 			var listSame = $("#newInstanceForm .todo-list.same li");
 			var listDif = $("#newInstanceForm .todo-list.different li");
@@ -331,7 +331,7 @@
 			 
 		});
 
-	$('.checkAll-select-same').on('click', function() {	
+	$('.checkAll-select-same').live('click', function() {	
 			
 			var listSame = $("#selectInstanceForm .same li");
 			var listDif = $("#selectInstanceForm .different li");
@@ -382,7 +382,7 @@
 			}	 
 		});
 	
-		$('.checkAll-select-different').on('click', function() {
+		$('.checkAll-select-different').live('click', function() {
 			
 			var listSame = $("#selectInstanceForm .same li");
 			var listDif = $("#selectInstanceForm .different li");
@@ -435,7 +435,7 @@
 			 
 		});
 		
-		$('#selectError0').on('change', function() {		
+		$('#selectError0').live('change', function() {		
 			
 			  instanceIdSelect = $(this).find('option:selected').attr("title");
 			  if(instanceIdSelect != "0") //Not Choose
@@ -527,7 +527,7 @@
 			});
 		}
 
-		$('.btn-add').on('click', function() {		
+		$('.btn-add').live('click', function() {		
 			$('#mask, .window').hide();
 		});
 
@@ -573,8 +573,8 @@
 					respContent += "</td>";
 			  								  
 					respContent +=  "<td class=\"center\">" + 
-	  				"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
-	  				"<a class=\"btn btn-danger btn-exclude\" name=\""+ dto.name + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +	
+	  				"<a class=\"btn btn-info\" "+ dto.uriEncoded + "href=\"#\"> <i class=\"icon-edit\">&nbsp;Edit</i> </a>" +
+	  				"<a class=\"btn btn-danger btn-exclude\" name=\""+ dto.uriEncoded + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \">&nbsp;Remove</i> </a>" +	
 	  			 	"</td>" +
 	  			 	
 				  	"</tr>";
@@ -651,10 +651,6 @@
 				data : "uri=" + id,
 				type : "GET",
 
-				beforeSend : function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
 				success : function(data) {
 
 					$(".exclude-process").parent().parent().remove();
@@ -732,8 +728,8 @@
 					respContent += "</td>";
 			  								  
 					respContent +=  "<td class=\"center\">" + 
-	  				"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
-	  				"<a class=\"btn btn-danger btn-exclude\" name=\""+ dto.name + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +	
+	  				"<a class=\"btn btn-info\" "+ dto.uriEncoded + "href=\"#\"> <i class=\"icon-edit\">&nbsp;Edit</i> </a>" +
+	  				"<a class=\"btn btn-danger btn-exclude\" name=\""+ dto.uriEncoded + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \">&nbsp;Remove</i> </a>" +	
 	  			 	"</td>" +
 	  			 	
 				  	"</tr>";

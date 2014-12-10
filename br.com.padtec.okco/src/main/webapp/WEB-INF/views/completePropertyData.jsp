@@ -137,6 +137,7 @@
 			var rows = $("#table-instances tr").length;			
 			if(rows > 2)
 			{
+
 				loading();
 				var json = {
 						"commitReasoner" : commitReasoner
@@ -193,14 +194,10 @@
 			var id = $(this).attr("name");
 			
 			$.ajax({
-				url : "removeDataValue" + "?id=" + id,
-				//data : JSON.stringify(json),
+				url : "removeDataValue",
+				data : "uri="+id,
 				type : "GET",
-
-				beforeSend : function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
+				
 				success : function(data) {
 
 					$(".exclude-process").parent().parent().remove();
@@ -233,10 +230,10 @@
 
 					var respContent = "<tr>" + 
 						  "<td title=\"" + data.value + "\">" + data.value + "</td>" +
-						  "<td title=\"" + data.classValue + "\">" + data.classValue + "</td>" +
+						  "<td title=\"" + data.classValue + "\">" + data.classValue.split("#")[1] + "</td>" +
 						  "<td class=\"center\">" + 
-		  						"<a class=\"btn btn-info\" href=\"#\"> <i class=\"icon-edit\"></i> </a>" +
-		  						"<a class=\"btn btn-danger btn-exclude\" name=\""+ data.classValue + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \"></i> </a>" +	
+		  						"<a class=\"btn btn-info\" name=\"" +data.classValueEncoded +"href=\"#\"> <i class=\"icon-edit\">&nbsp;Edit</i> </a>" +
+		  						"<a class=\"btn btn-danger btn-exclude\" name=\""+ data.classValueEncoded + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \">&nbsp;Remove</i> </a>" +	
 		  			 	  "</td>" +
 					  "</tr>";
 					
@@ -323,7 +320,7 @@
 									</tr>
 									<tr>
 										<td>Data Type</td>
-										<td><% out.println(dtoDefinition.Target); %></td>
+										<td><% out.println(dtoDefinition.Target.split("#")[1]); %></td>
 									</tr>
 			
 								</table>
@@ -334,7 +331,7 @@
 				</div>
 				<!--/col-->					
 
-				<input type="submit" class="btn btn-pre btn-add" value="Add data value" />
+				<input type="submit" class="btn btn-pre btn-add" value="Create" />
 	
 			</div>
 			<!--/row-->
@@ -398,8 +395,8 @@
 				<table id="table-instances" class="table table-bordered">
 					<thead>
 						<tr>
-							<th>Data value</th>
-							<th>DataType</th>
+							<th>Data Value</th>
+							<th>Data Type</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -407,21 +404,21 @@
 
 						<%
 							if(ListValuesInRelation.size() == 0)
-					  		{
-					  			out.println("<tr>");
-					  			out.println("<td></td>");
-					  			out.println("<td></td>");
-					  			out.println("<td></td>");
-					  			out.println("</tr>");
-					  		}
-						  	for (DataPropertyValue data : ListValuesInRelation) {
-						  		
-						  		out.println("<tr>");						  		
-							  		out.println("<td title=\"" + data.value + "\">" + data.value + "</td>");
-							  		out.println("<td title=\"" + data.classValue + "\">" + data.classValue + "</td>");
-							  		out.println("<td class=\"center\">	<i>No actions</i> </td>");						  									  		
-						  		out.println("</tr>");	  		
-							}
+													  		{
+													  			out.println("<tr>");
+													  			out.println("<td></td>");
+													  			out.println("<td></td>");
+													  			out.println("<td></td>");
+													  			out.println("</tr>");
+													  		}
+														  	for (DataPropertyValue data : ListValuesInRelation) {
+														  		
+														  		out.println("<tr>");						  		
+															  		out.println("<td title=\"" + data.value + "\">" + data.value + "</td>");
+															  		out.println("<td title=\"" + data.classValue + "\">" + data.classValue.split("#")[1] + "</td>");
+															  		out.println("<td class=\"center\">	<i>No actions</i> </td>");						  									  		
+														  		out.println("</tr>");	  		
+															}
 						%>
 
 					</tbody>

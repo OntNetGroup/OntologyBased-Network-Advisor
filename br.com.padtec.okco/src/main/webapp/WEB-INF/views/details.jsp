@@ -128,7 +128,7 @@
 		}); // End - Complete Class		
 	}); // End - document ready	
 	//Previous bottom click
-	$(document).on("click", ".btn-prev",function() 
+	$(document).live("click", ".btn-prev",function() 
 	{		
 		if($(this).hasClass("btn-success"))
 		{
@@ -144,7 +144,7 @@
 		
 	}); // End - btn-prev	
 	//Next bottom click
-	$(document).on("click", ".btn-next",function() 
+	$(document).live("click", ".btn-next",function() 
 	{
 		if($(this).hasClass("btn-success"))
 		{

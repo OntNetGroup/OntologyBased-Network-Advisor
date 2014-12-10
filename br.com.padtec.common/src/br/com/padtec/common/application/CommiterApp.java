@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.hp.hpl.jena.ontology.OntModel;
-
 import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoCommitMaxCard;
 import br.com.padtec.common.dto.DtoDefinitionClass;
@@ -17,6 +15,8 @@ import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntPropertyEnum;
+
+import com.hp.hpl.jena.ontology.OntModel;
 
 public class CommiterApp {
 	
@@ -50,7 +50,6 @@ public class CommiterApp {
 	{
 		DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), individualURI,true,true,true);
 		newIndividualsCommitList.add(dtoIndividual);	
-		System.out.println("Add Existing Individual: "+dtoIndividual);
 		return dtoIndividual;
 	}
 	
@@ -61,7 +60,6 @@ public class CommiterApp {
 	public static void removeNewIndividualFromCommitList(String individualURI)
 	{		
 		DtoFactoryUtil.removeIndividualFrom(newIndividualsCommitList, individualURI);
-		System.out.println("Remove Individual: "+individualURI);
 	}
 	
 	/**
@@ -74,7 +72,6 @@ public class CommiterApp {
 	{
 		DtoInstance dtoIndividual = DtoFactoryUtil.getIndividualFrom(newIndividualsCommitList, individualURI);
 		DtoViewSelectInstance dto = new DtoViewSelectInstance(dtoIndividual, newIndividualsCommitList);
-		System.out.println("Editing Individual: "+individualURI);
 		return dto;
 	}
 	
@@ -89,7 +86,6 @@ public class CommiterApp {
 		DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), individualURI,true,true,true);
 		List<DtoInstance> allIndividuals = DtoQueryUtil.getIndividuals(UploadApp.getInferredModel(), true, true, true);
 		DtoViewSelectInstance dto = new DtoViewSelectInstance(dtoIndividual, allIndividuals);
-		System.out.println("Editing Individual: "+individualURI);
 		return dto;
 	}	
 	
@@ -114,7 +110,6 @@ public class CommiterApp {
 		);
 		OKCoApp.setIsModified(newDtoIndividual.ns + newDtoIndividual.name);
 		if(differentFromList!=null) differentFromList.add(newDtoIndividual.ns + newDtoIndividual.name);	
-		System.out.println("New Individual at Class Definition: "+newDtoIndividual);
 	}
 		
 	/**
@@ -140,7 +135,6 @@ public class CommiterApp {
 		);
 		OKCoApp.setIsModified(newDtoIndividual.ns + newDtoIndividual.name);
 		if(differentFromList!=null) differentFromList.add(newDtoIndividual.ns + newDtoIndividual.name);	
-		System.out.println("New Individual at Class Definition: "+newDtoIndividual);
 	}
 	
 	/**
@@ -204,7 +198,7 @@ public class CommiterApp {
 		{ 
 			/** Nothing to do... */
 			dtoResult.setIsSucceed(true); 
-			dtoResult.setMessage("nothing"); 
+			dtoResult.setMessage("ok"); 
 			return dtoResult; 
 		}		
 		OntModel basemodel = UploadApp.getBaseModel();
@@ -250,10 +244,9 @@ public class CommiterApp {
 	 * Remove the data values that was going to be created later. 
 	 * This data value is not in the model yet. Thus, this method only removes it from the list of new data values.
 	 */
-	public static void removeNewDataValueFromCommitList(String individualURI)
+	public static void removeNewDataValueFromCommitList(String uri)
 	{		
-		DtoFactoryUtil.removeDataValueFrom(newDataValuesCommitList, individualURI);
-		System.out.println("Remove Data Value: "+individualURI);
+		DtoFactoryUtil.removeDataValueFrom(newDataValuesCommitList, uri);
 	}
 	
 	/**
@@ -264,10 +257,10 @@ public class CommiterApp {
 	{
 		DataPropertyValue data = new DataPropertyValue();
 		data.value = dataValue;
-		data.classValue = OKCoApp.getSelectedClassDefinition().Target;
+		data.classValue = OKCoApp.getSelectedClassDefinition().Target;	
+		data.classValueEncoded = OKCoApp.getSelectedClassDefinition().uriTargetEncoded;
 		data.existInModel = false;
 		newDataValuesCommitList.add(data);
-		System.out.println("Create New Data Value: "+data);
 		return data;
 	}
 	

@@ -208,6 +208,11 @@ public class DtoQueryUtil {
 				e.printStackTrace();
 			}	
 		    defClass.Target = target.toString();
+		    try {
+				defClass.uriTargetEncoded = URLEncoder.encode(defClass.Target, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		    defClass.TypeCompletness = OntCardinalityEnum.SOME;
 		    if(Character.isDigit(targetStr.charAt(0))) 
 		    {
@@ -397,6 +402,11 @@ public class DtoQueryUtil {
 				e.printStackTrace();
 			}
 		    defClass.Target = target.toString();
+		    try {
+				defClass.uriTargetEncoded = URLEncoder.encode(defClass.Target, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		    defClass.TypeCompletness = OntCardinalityEnum.SOME;
 		    String cardinalityStr = cardinality.toString();
 		    if(Character.isDigit(cardinalityStr.charAt(0))) 

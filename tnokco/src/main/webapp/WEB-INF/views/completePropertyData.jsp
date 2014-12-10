@@ -413,21 +413,21 @@
 
 						<%
 							if(ListValuesInRelation.size() == 0)
-					  		{
-					  			out.println("<tr>");
-					  			out.println("<td></td>");
-					  			out.println("<td></td>");
-					  			out.println("<td></td>");
-					  			out.println("</tr>");
-					  		}
-						  	for (DataPropertyValue data : ListValuesInRelation) {
-						  		
-						  		out.println("<tr>");						  		
-							  		out.println("<td title=\"" + data.value + "\">" + data.value + "</td>");
-							  		out.println("<td title=\"" + data.classValue + "\">" + data.classValue + "</td>");
-							  		out.println("<td class=\"center\">	<i>No actions</i> </td>");						  									  		
-						  		out.println("</tr>");	  		
-							}
+													  		{
+													  			out.println("<tr>");
+													  			out.println("<td></td>");
+													  			out.println("<td></td>");
+													  			out.println("<td></td>");
+													  			out.println("</tr>");
+													  		}
+														  	for (DataPropertyValue data : ListValuesInRelation) {
+														  		
+														  		out.println("<tr>");						  		
+															  		out.println("<td title=\"" + data.value + "\">" + data.value + "</td>");
+															  		out.println("<td title=\"" + data.classValue + "\">" + data.classValue + "</td>");
+															  		out.println("<td class=\"center\">	<i>No actions</i> </td>");						  									  		
+														  		out.println("</tr>");	  		
+															}
 						%>
 
 					</tbody>

@@ -47,7 +47,7 @@ public class CommiterController {
 		{
 			/** Decode URIs First */
 			uri = URIDecoder.decodeURI(uri);
-		
+			
 			/** ==================================================
 			 * Remove the recent individual that was going to be created later. 
 			 * This individual is not in the model yet. Thus, this method only removes it from the list of new individuals.
@@ -128,20 +128,20 @@ public class CommiterController {
 	}
 	
 	@RequestMapping(value="/removeDataValue", method = RequestMethod.GET)
-	public @ResponseBody String removeDataValue(@RequestParam String id) 
+	public @ResponseBody String removeDataValue(@RequestParam String uri) 
 	{
-		if(id != null)
+		if(uri != null)
 		{
 			/** Decode URIs First */
-			id = URIDecoder.decodeURI(id);
+			uri = URIDecoder.decodeURI(uri);
 			
 			/** ==================================================
 			 * Remove the data values that was going to be created later. 
 			 * This data value is not in the model yet. Thus, this method only removes it from the list of new data values.	 
 			 *  =================================================== */
-			CommiterApp.removeNewDataValueFromCommitList(id);
+			CommiterApp.removeNewDataValueFromCommitList(uri);
 			
-			return id;
+			return uri;
 		}
 		return null;		  
 	}

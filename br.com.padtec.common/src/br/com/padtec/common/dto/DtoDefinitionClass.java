@@ -23,6 +23,7 @@ public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 	public OntPropertyEnum PropertyType;				//object or data
 	public OntCardinalityEnum TypeCompletness;	//some,min,max...
 	public String Target;
+	public String uriTargetEncoded = new String();
 	public String Cardinality;					// just in cases we need cardinality (max, min, exactly)
 	public static final String sKey = "#&&#";	// separator key
 	
