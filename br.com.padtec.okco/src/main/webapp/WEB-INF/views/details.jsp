@@ -3,6 +3,7 @@
 <%@ page import="br.com.padtec.common.application.OKCoApp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="br.com.padtec.common.dto.DtoInstance"%>
+<%@ page import="br.com.padtec.common.dto.DtoStatus"%>
 <%@ page import="br.com.padtec.common.dto.DtoCompleteClass"%>
 <%@ page import="br.com.padtec.common.factory.DtoFactoryUtil"%>
 <%@ page import="br.com.padtec.common.types.OntPropertyEnum"%>
@@ -552,7 +553,7 @@
 							String split1 = ""; 
 							String x; 
 				  		
-							String stateClass = "label label-warning";
+							String stateClass = "label label-important";
 					  			
 							for (DtoDefinitionClass dto : listSomeClassDefinition) {
 															  		
@@ -577,7 +578,12 @@
 								  			split1 = dto.Target.split("#")[1];
 								  		}
 								  		
-								  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");									  									  		
+								  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");
+								  		
+								  		if(dto.status.equals(DtoStatus.SATISFIED)) stateClass = "label label-success";
+								  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateClass = "label label-important";
+								  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateClass = "label label-warning";
+								  			
 								  		out.println("<td class=\"status\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 								  		
 								  		out.println("<td class=\"actions\">" + 
@@ -609,7 +615,12 @@
 								  		if(x != null && !x.equals("")){
 								  			split1 = dto.Target.split("#")[1];
 								  		}
-								  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");				
+								  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");	
+								  		
+								  		if(dto.status.equals(DtoStatus.SATISFIED)) stateClass = "label label-success";
+								  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateClass = "label label-important";
+								  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateClass = "label label-warning";
+								  		
 								  		out.println("<td class=\"status\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 								  		
 								  		out.println("<td class=\"actions\">" + 
@@ -644,6 +655,11 @@
 							  			split1 = dto.Target.split("#")[1];
 							  		}
 							  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");
+							  		
+							  		if(dto.status.equals(DtoStatus.SATISFIED)) stateClass = "label label-success";
+							  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateClass = "label label-important";
+							  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateClass = "label label-warning";
+							  		
 							  		out.println("<td class=\"status\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 							  		
 								  	out.println("<td class=\"actions\">" + 
@@ -678,6 +694,11 @@
 							  			split1 = dto.Target.split("#")[1];
 							  		}
 							  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");	
+							  		
+							  		if(dto.status.equals(DtoStatus.SATISFIED)) stateClass = "label label-success";
+							  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateClass = "label label-important";
+							  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateClass = "label label-warning";
+							  		
 							  		out.println("<td class=\"status\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 							  		
 								  	out.println("<td class=\"actions\">" + 
@@ -724,7 +745,7 @@
 					<tbody>
 
 						<%
-						String stateData = "label label-warning";
+						String stateData = "label label-important";
 				  			
 							for (DtoDefinitionClass dto : listSomeClassDefinition) {
 															  		
@@ -748,6 +769,11 @@
 											  			split1 = dto.Target.split("#")[1];
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");
+											  		
+											  		if(dto.status.equals(DtoStatus.SATISFIED)) stateData = "label label-success";
+											  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateData = "label label-important";
+											  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateData = "label label-warning";
+											  		
 											  		out.println("<td class=\"status\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
 											  		
 											  		out.println("<td class=\"actions\">" + 
@@ -781,6 +807,11 @@
 											  			split1 = dto.Target.split("#")[1];
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");
+											  		
+											  		if(dto.status.equals(DtoStatus.SATISFIED)) stateData = "label label-success";
+											  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateData = "label label-important";
+											  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateData = "label label-warning";
+											  		
 											  		out.println("<td class=\"status\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
 											  		
 												  	out.println("<td class=\"actions\">" + 
@@ -814,6 +845,11 @@
 											  			split1 = dto.Target.split("#")[1];
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");
+											  		
+											  		if(dto.status.equals(DtoStatus.SATISFIED)) stateData = "label label-success";
+											  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateData = "label label-important";
+											  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateData = "label label-warning";
+											  		
 											  		out.println("<td class=\"status\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
 											  		
 											  		out.println("<td class=\"actions\">" + 
@@ -847,6 +883,11 @@
 											  			split1 = dto.Target.split("#")[1];
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");
+											  		
+											  		if(dto.status.equals(DtoStatus.SATISFIED)) stateData = "label label-success";
+											  		if(dto.status.equals(DtoStatus.NOT_SATISFIED)) stateData = "label label-important";
+											  		if(dto.status.equals(DtoStatus.POSSIBLE_REFINEMENTS)) stateData = "label label-warning";
+											  		
 											  		out.println("<td class=\"status\">	<span class=\""+stateData+"\">"+dto.status+"</span> </td>");
 											  		
 												  	out.println("<td class=\"actions\">" + 

@@ -219,7 +219,7 @@ public class DtoQueryUtil {
 		    	String cardinality = targetStr.split("http")[0];
 		    	cardinality = cardinality.substring(0, cardinality.length()-2); 
 		    	defClass.Cardinality = cardinality;
-		    }
+		    }		    
 			System.out.println("- Triple: \n");
 			System.out.println("     "+source.toString());
 			System.out.println("     "+relation.toString());

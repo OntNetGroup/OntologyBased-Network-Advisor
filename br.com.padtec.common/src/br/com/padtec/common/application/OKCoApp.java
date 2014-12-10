@@ -11,6 +11,7 @@ import br.com.padtec.common.dto.DtoGetPrevNextSpecProperty;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
+import br.com.padtec.common.dto.DtoStatus;
 import br.com.padtec.common.exceptions.OKCoNameSpaceException;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
@@ -437,22 +438,30 @@ public class OKCoApp {
 			for (DtoDefinitionClass def : definitions) {
 				switch (typeCompletness) {
 					case SOME:
-						if(!individualSelected.ListSome.contains(def)){
+						if(!individualSelected.ListSome.contains(def))
+						{
+							def.status = getStatus(individualSelected,def);
 							individualSelected.ListSome.add(def);
 						}
 						break;
 					case MIN:
-						if(!individualSelected.ListMin.contains(def)){
+						if(!individualSelected.ListMin.contains(def))
+						{
+							def.status = getStatus(individualSelected,def);
 							individualSelected.ListMin.add(def);
 						}
 						break;
 					case MAX:
-						if(!individualSelected.ListMax.contains(def)){
+						if(!individualSelected.ListMax.contains(def))
+						{
+							def.status = getStatus(individualSelected,def);
 							individualSelected.ListMax.add(def);
 						}
 						break;
 					case EXACTLY:
-						if(!individualSelected.ListExactly.contains(def)){
+						if(!individualSelected.ListExactly.contains(def))
+						{
+							def.status = getStatus(individualSelected,def);
 							individualSelected.ListExactly.add(def);
 						}
 						break;
@@ -462,6 +471,31 @@ public class OKCoApp {
 				}				
 			}
 		}		
+	}
+	
+	private static DtoStatus getStatus(DtoInstance dtoIndividual, DtoDefinitionClass dtoDefinition)
+	{
+		if(dtoDefinition.TypeCompletness==OntCardinalityEnum.MIN)
+		{
+			Integer number = Integer.parseInt(dtoDefinition.Cardinality);
+			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(UploadApp.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
+			if(individuals.size()<number) return DtoStatus.NOT_SATISFIED;
+			else return DtoStatus.SATISFIED;
+		}
+		if(dtoDefinition.TypeCompletness==OntCardinalityEnum.SOME)
+		{			
+			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(UploadApp.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
+			if(individuals.size()==0) return DtoStatus.NOT_SATISFIED;
+			else return DtoStatus.SATISFIED;
+		}
+		if(dtoDefinition.TypeCompletness==OntCardinalityEnum.EXACTLY)
+		{			
+			Integer number = Integer.parseInt(dtoDefinition.Cardinality);
+			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(UploadApp.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
+			if(individuals.size()!=number) return DtoStatus.NOT_SATISFIED;
+			else return DtoStatus.SATISFIED;
+		}
+		return DtoStatus.NOT_SATISFIED;
 	}
 	
 }
