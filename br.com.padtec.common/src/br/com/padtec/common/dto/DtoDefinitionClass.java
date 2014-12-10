@@ -26,6 +26,7 @@ public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 	public String uriTargetEncoded = new String();
 	public String Cardinality;					// just in cases we need cardinality (max, min, exactly)
 	public static final String sKey = "#&&#";	// separator key
+	public DtoStatus status = DtoStatus.NOT_SATISFIED;
 	
 	public DtoDefinitionClass()
 	{
@@ -36,7 +37,7 @@ public class DtoDefinitionClass implements Comparable<DtoDefinitionClass>{
 		this.PropertyType = null;
 		this.TypeCompletness = null;
 	}
-	
+		
 	public static ArrayList<DtoDefinitionClass> getDtosWithSource(ArrayList<DtoDefinitionClass> list, String source)
 	{
 		ArrayList<DtoDefinitionClass> listResult = new ArrayList<DtoDefinitionClass>();

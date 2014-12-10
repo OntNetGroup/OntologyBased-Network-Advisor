@@ -573,7 +573,7 @@
 					respContent += "</td>";
 			  								  
 					respContent +=  "<td class=\"center\">" + 
-	  				"<a class=\"btn btn-info\" "+ dto.uriEncoded + "href=\"#\"> <i class=\"icon-edit\">&nbsp;Edit</i> </a>" +
+	  				//"<a class=\"btn btn-info\" "+ dto.uriEncoded + "href=\"#\"> <i class=\"icon-edit\">&nbsp;Edit</i> </a>" +
 	  				"<a class=\"btn btn-danger btn-exclude\" name=\""+ dto.uriEncoded + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \">&nbsp;Remove</i> </a>" +	
 	  			 	"</td>" +
 	  			 	
@@ -728,7 +728,7 @@
 					respContent += "</td>";
 			  								  
 					respContent +=  "<td class=\"center\">" + 
-	  				"<a class=\"btn btn-info\" "+ dto.uriEncoded + "href=\"#\"> <i class=\"icon-edit\">&nbsp;Edit</i> </a>" +
+	  				//"<a class=\"btn btn-info\" "+ dto.uriEncoded + "href=\"#\"> <i class=\"icon-edit\">&nbsp;Edit</i> </a>" +
 	  				"<a class=\"btn btn-danger btn-exclude\" name=\""+ dto.uriEncoded + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \">&nbsp;Remove</i> </a>" +	
 	  			 	"</td>" +
 	  			 	

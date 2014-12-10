@@ -232,7 +232,7 @@
 						  "<td title=\"" + data.value + "\">" + data.value + "</td>" +
 						  "<td title=\"" + data.classValue + "\">" + data.classValue.split("#")[1] + "</td>" +
 						  "<td class=\"center\">" + 
-		  						"<a class=\"btn btn-info\" name=\"" +data.classValueEncoded +"href=\"#\"> <i class=\"icon-edit\">&nbsp;Edit</i> </a>" +
+		  						//"<a class=\"btn btn-info\" name=\"" +data.classValueEncoded +"href=\"#\"> <i class=\"icon-edit\">&nbsp;Edit</i> </a>" +
 		  						"<a class=\"btn btn-danger btn-exclude\" name=\""+ data.classValueEncoded + "\" style=\"margin-left: 5px;\" href=\"#\"> <i class=\"icon-trash \">&nbsp;Remove</i> </a>" +	
 		  			 	  "</td>" +
 					  "</tr>";

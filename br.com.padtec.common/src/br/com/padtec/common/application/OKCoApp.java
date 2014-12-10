@@ -459,9 +459,7 @@ public class OKCoApp {
 					case COMPLETE:
 						
 						break;
-				}
-				
-				
+				}				
 			}
 		}		
 	}
