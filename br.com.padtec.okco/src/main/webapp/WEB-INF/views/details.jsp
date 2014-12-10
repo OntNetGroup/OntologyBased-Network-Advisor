@@ -537,10 +537,10 @@
 					class="table table-striped table-bordered bootstrap-datatable datatable">
 					<thead>
 						<tr>
-							<th>Source</th>
-							<th>Object property</th>
-							<th>Type</th>
-							<th>Target</th>
+							<th>Source Individual</th>
+							<th>Object Property</th>
+							<th>Cardinality</th>
+							<th>Target Type</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -701,10 +701,10 @@
 					class="table table-striped table-bordered bootstrap-datatable datatable">
 					<thead>
 						<tr>
-							<th>Source</th>
-							<th>Data property</th>
-							<th>Type</th>
-							<th>Target</th>
+							<th>Source Individual</th>
+							<th>Data Property</th>
+							<th>Cardinality</th>
+							<th>Target DataType</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -734,7 +734,7 @@
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");								  		
 											  		out.println("<td class=\"center\">" + 
-											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
+											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
 											  					"</td>");
 											  									  		
 											  		out.println("</tr>");							  		
@@ -765,7 +765,7 @@
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");						  		
 												  	out.println("<td class=\"center\">" + 
-												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
+												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MIN" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
 												  					"</td>");
 											  									  		
 											  		out.println("</tr>");							  		
@@ -796,7 +796,7 @@
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");							  		
 											  		out.println("<td class=\"center\">" + 
-											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
+											  				"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=MAX" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
 											  					"</td>");
 											  									  		
 											  		out.println("</tr>");							  		
@@ -827,7 +827,7 @@
 											  		}
 											  		out.println("<td title=\"" + dto.Target + "\">" + split1 + "</td>");
 												  	out.println("<td class=\"center\">" + 
-												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\"></i> </a>" +
+												  			"<a class=\"btn btn-info\" href=\"/br.com.padtec.okco/completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "data" + "&propType=EXACTLY" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" +
 												  					"</td>");							  									  		
 											  		out.println("</tr>");							  		
 										  		}							  		

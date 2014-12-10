@@ -297,7 +297,7 @@
 	<div id="dialog-create" class="window">
 		
 		<!-- Botão para fechar a janela tem class="close" -->
-		<a href="#" class="close">Fechar [X]</a>
+		<a href="#" class="close">Close [X]</a>
 		<br />
 		<br />		
 		<form id="newDataValueForm" action="createDataValue" method="POST">
@@ -308,18 +308,18 @@
 					<div class="box">
 						<div class="box-header">
 							<h2>
-								<i class="icon-tasks"></i>Datatype form
+								<i class="icon-tasks"></i>Form: Creating a new Data Value
 							</h2>
 						</div>
 						<div class="box-content">
 							
 								<table class="table">
 									<tr>
-										<td>New data value</td>
+										<td>Value:</td>
 										<td><input class="form-control" type="text" name="value" id="value"></td>
 									</tr>
 									<tr>
-										<td>DataType</td>
+										<td>Data Type</td>
 										<td><% out.println(dtoDefinition.Target); %></td>
 									</tr>
 			
@@ -380,7 +380,7 @@
 							<div style="margin-left: 10px; padding: 5px;">
 								<a href="#dialog-create" name="modal-create" style="padding: 15px 10px 5px 10px;"
 									class="quick-button-small"> <i class="icon-group"></i>
-									<p>Add data values</p>
+									<p>Create</p>
 								</a>
 							</div>
 						</div>
