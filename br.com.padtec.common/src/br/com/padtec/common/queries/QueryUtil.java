@@ -1,5 +1,6 @@
 package br.com.padtec.common.queries;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -227,6 +228,51 @@ public class QueryUtil {
 		    if(type.contains("FunctionalProperty")) return OntPropertyEnum.FUNCTIONAL_PROPERTY;
 		}		
 		return null;
+	}
+	
+	/** 
+	 * Return true if the property have the domain classes disjoint of all classes in classesURIList at same time.
+	 * This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param objectPropertyURI: Property URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public List<String> getAllInverseOfURIs(InfModel model, String objectPropertyURI){
+		System.out.println("\nExecuting getAllInverseOfURIs()...");
+		System.out.println("- Object Property URI: " + objectPropertyURI);
+		List<String> result = new ArrayList<String>();		
+		String queryString = "" 
+		+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n "
+		+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+		+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+		+ " SELECT DISTINCT *\n"
+		+ " WHERE\n"	
+		+ "{ \n"
+		+ "\t{\n"
+		+ "\t\t<" + objectPropertyURI + "> owl:inverseOf ?inverse\n"
+		+ "\t}\n" 
+		+ "\tUNION\n"
+		+ "\t{\n"
+		+ "\t\t?inverse owl:inverseOf <" + objectPropertyURI + ">\n"
+		+ "\t}\n"
+		+ "}";
+		Query query = QueryFactory.create(queryString);		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext())	
+		{			
+			QuerySolution row= results.next();
+		    RDFNode inverse = row.get("inverse");	
+		    if(isValidURI(inverse.toString())){
+		    	System.out.println("- Datatype Property URI: "+inverse.toString()); 
+		    	result.add(inverse.toString());
+		    }
+		}		
+		return result;
 	}
 	
 	/** 
@@ -950,18 +996,25 @@ public class QueryUtil {
 		System.out.println("- Individual URI: "+individualURI);
 		List<String> list = new ArrayList<String>();
 		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("")  + ">" +
-		" SELECT DISTINCT ?y " +
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+		"PREFIX ns: <" + model.getNsPrefixURI("")  + ">\n" +
+		" SELECT DISTINCT * \n" +
 		" WHERE {\n" +		
-			"{ " + 
-				"<" + individualURI + "> owl:differentFrom" + " ?y .\n " +
-			"} UNION { " +
-				" ?y owl:differentFrom <" + individualURI + "> .\n " +
-			" } " +
-		"}";
+			"\t{ \n" + 
+				"\t\t<" + individualURI + "> owl:differentFrom" + " ?differentIndividual .\n " +
+			"\t} UNION { \n" +
+				"\t\t ?differentIndividual owl:differentFrom <" + individualURI + "> .\n " +
+			"\t } \n" +
+			"\tUNION\n" +
+			"\t{\n" +
+				"\t\t?AllDifferentNode rdf:type owl:AllDifferent ." +
+				"\t\t?AllDifferentNode owl:distinctMembers ?distinctMembers ." + 
+				"\t\t?distinctMembers rdf:rest*/rdf:first ?differentIndividual ." +
+				"\t\tFILTER EXISTS { ?distinctMembers rdf:rest*/rdf:first <" + individualURI + "> } . " +
+			"\t}\n" +
+		"}\n";
 		Query query = QueryFactory.create(queryString);		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
@@ -969,11 +1022,11 @@ public class QueryUtil {
 		while (results.hasNext()) 
 		{
 			QuerySolution row = results.next();		    
-		    RDFNode rdfY = row.get("y");
-		    if(! individualURI.equals(rdfY.toString()))
+		    RDFNode differentIndividual = row.get("differentIndividual");
+		    if(! individualURI.equals(differentIndividual.toString()))
 		    {
-		    	list.add(rdfY.toString());
-				System.out.println("- Different Individual URI: "+rdfY.toString());
+		    	list.add(differentIndividual.toString());
+				System.out.println("- Different Individual URI: "+differentIndividual.toString());
 		    }
 		}	
 		return list;

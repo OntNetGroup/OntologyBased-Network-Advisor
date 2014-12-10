@@ -18,12 +18,34 @@
 		$(".btn btn-info").click(function(){
 			loading();
 		});	
-		
-	}); // End - document ready;
 
-	$(document).ready(function()
-	{
-		 
+		$('#sorting').click(function(){
+			var cHeigth = $("#content").height();
+			
+			var contentPadTop = $("#content").css("padding-top").replace("px", "");
+			//alert("contentPadTop: "+contentPadTop);
+			var contentPadBottom = $("#content").css("padding-bottom").replace("px", "");
+			//alert("contentPadBottom: "+contentPadBottom);
+			
+			var rowHeigth = $("#row").height();
+			//alert("rowHeigth: "+rowHeigth);
+			var row2Heigth = $("#row2").height();
+			//alert("row2Heigth: "+row2Heigth);
+			var row3Heigth = $("#row3").height();
+			//alert("row3Heigth: "+row3Heigth);
+			
+			var h = Number(contentPadTop) + Number(contentPadBottom) + Number(rowHeigth) + Number(row2Heigth) + Number(row3Heigth);
+			//alert("contentHeigth: "+cHeigth);
+			//alert("h: "+h);
+			
+			//if(cHeigth > h){
+				$('#content').css({'height':h});
+			//}
+			
+			
+			
+			adjustContent();
+		});
 		/** Run reasoner */
 		$('#runReasonerForm').submit(function(event)
 		{
@@ -57,7 +79,7 @@
 	});
 
 </script>
-	<div class="row" style="margin-right:0px;margin-left:0px">	
+	<div id="row" class="row" style="margin-right:0px;margin-left:0px">	
 		<div id="boxViewAll" style="float:left">
 			<a class="btn btn-success" target="_blank" href="/br.com.padtec.okco/graphVisualizer?typeView=ALL&id=0"> <i class="icon-zoom-in"></i> </a>
 			VIEW ALL GRAPH			
@@ -67,7 +89,7 @@
 		</form>		
 	</div>	
 	<br/>
-	<div class="row">		
+	<div id="row2" class="row">		
 		<div class="col-lg-12">
 			<div class="box">
 				<div class="box-header" data-original-title>
@@ -80,10 +102,10 @@
 					<table class="table table-striped table-bordered bootstrap-datatable datatable">
 					  <thead>
 						  <tr>
-							  <th>Instance name</th>
-							  <th>Class name</th>
-							  <th class="state">State</th>
-							  <th class="actions">Actions</th>
+							  <th id="sorting">Instance name</th>
+							  <th id="sorting">Class name</th>
+							  <th id="sorting" class="state">State</th>
+							  <th id="sorting" class="actions">Actions</th>
 						  </tr>
 					  </thead>   
 					  <tbody>					  
@@ -143,7 +165,7 @@
 			</div>
 		</div><!--/col-->	
 	</div><!--/row-->	
-	<div class="row">
+	<div id="row3" class="row">
 		 <div class="col-lg-12">
 			<p>Description of page:</p>			
 			<div class="tooltip-demo well">			

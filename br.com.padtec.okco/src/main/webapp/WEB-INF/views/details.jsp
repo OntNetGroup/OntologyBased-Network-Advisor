@@ -160,7 +160,7 @@
 	});
 </script>
 
-<div class="row">
+<div id="row" class="row">
 	<div style="padding-left: 15px; margin-bottom:20px;">	
 		<button onclick="window.location = '/br.com.padtec.okco/list';" style="float:left;" type="button" class="btn btn-prev"> <i class="icon-arrow-left"></i> Back to list</button>
 		<div style="clear:both"></div>		
@@ -247,8 +247,9 @@
 								  		String split2 = ""; 
 								  		if(y != null && !y.equals("")){
 								  			split2 = dto.Target.split("#")[1];
-								  		}						  				
-						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + split1 + " -> " + split2 + "</li>");
+								  		}		
+								  		DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, dto.Target);
+						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + split1 + " -> " + "<a href=\"/br.com.padtec.okco/details?uri=" + i.uriEncoded + "\">" + split2 + "</a>" + "</li>");
 						  			}
 						  		}
 							%>
@@ -521,7 +522,7 @@
 </div>
 <!--/row-->
 
-<div class="row">
+<div id="row2" class="row">
 	<div class="col-lg-12">
 		<div class="box">
 			<div class="box-header" data-original-title>
@@ -845,7 +846,7 @@
 </div>
 <!--/row-->
 
-<div class="row">
+<div id="row3" class="row">
 	 <div class="col-lg-12">
 		<p>Description of page:</p>
 		<div class="tooltip-demo well">

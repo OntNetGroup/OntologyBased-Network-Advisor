@@ -152,6 +152,14 @@ public class FactoryUtil {
 		Individual indInstanceTarget = model.getIndividual(tgtIndividualURI);
 		Property relation = model.getProperty(relationURI);
 		indInstanceSource.addProperty(relation, indInstanceTarget);		
+		
+		List<String> allInverseOfURIs = QueryUtil.getAllInverseOfURIs(model, relationURI);
+		
+		for (String inverseOfURI : allInverseOfURIs) {
+			Property inverse = model.getProperty(inverseOfURI);
+			indInstanceTarget.addProperty(inverse, indInstanceSource);
+		}
+		
 		return model;
 	}
 	
