@@ -341,7 +341,90 @@ public class Provisioning {
 	}
 
 	public static ArrayList<String[]> getPossibleConnects(String rp){
-		InfModel = HomeController.InfModel;
+			InfModel = HomeController.InfModel;
+			ArrayList<String[]> result = new ArrayList<String[]>();
+			
+			List<String> classes_from_rp=QueryUtil.getClassesURI(InfModel,HomeController.NS+rp);
+			ArrayList<String> relations = new ArrayList<String>();
+			ArrayList<String> rp_sink = new ArrayList<String>();
+			ArrayList<String> rp_so = new ArrayList<String>();
+			ArrayList<String> ranges = new ArrayList<String>();
+
+			if(classes_from_rp.contains(HomeController.NS+"Source_PM-FEP"))
+			{
+				relations.add("INV.binding_is_represented_by");
+				ranges.add(" ");
+				relations.add("is_binding");
+				ranges.add("Input");
+				relations.add("INV.componentOf");
+				ranges.add(" ");
+				relations.add("componentOf");
+				ranges.add("Output");
+				relations.add("INV.is_binding");
+				ranges.add("Binding");
+				relations.add("binding_is_represented_by");
+				ranges.add("Sink_PM-FEP");
+				
+				rp_sink = QueryUtil.query_EndOfGraphWithRanges(rp, relations, ranges, InfModel);
+				for(int i = 0; i < rp_sink.size(); i++){
+					if(!QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+rp,HomeController.NS+"has_forwarding", HomeController.NS+"Reference_Point").contains(rp_sink.get(i))){
+						String[] tuple = new String[2];
+						tuple[0] = rp_sink.get(i);
+						tuple[1] = "pm_nc";
+						result.add(tuple);
+					}
+				}
+				System.out.println();
+
+			}else{
+				relations.add("INV.binding_is_represented_by");
+				ranges.add(" ");
+				relations.add("is_binding");
+				ranges.add("Input");
+				relations.add("INV.componentOf");
+				ranges.add(" ");
+				relations.add("componentOf");
+				ranges.add("Output");
+				relations.add("INV.is_binding");
+				ranges.add("Binding");
+				relations.add("binding_is_represented_by");
+				ranges.add("Reference_Point");
+				rp_so = QueryUtil.query_EndOfGraphWithRanges(rp, relations, ranges, InfModel);
+				relations.add("has_forwarding");
+				ranges.add("Reference_Point");
+				relations.add("INV.binding_is_represented_by");
+				ranges.add("Binding");
+				relations.add("is_binding");
+				ranges.add("Input");
+				relations.add("INV.componentOf");
+				ranges.add(" ");
+				relations.add("componentOf");
+				ranges.add("Output");
+				relations.add("INV.is_binding");
+				ranges.add("Binding");
+				relations.add("binding_is_represented_by");
+				ranges.add("Reference_Point");
+
+				rp_sink = QueryUtil.query_EndOfGraphWithRanges(rp, relations, ranges, InfModel);
+				
+				for(int i = 0; i < rp_sink.size(); i++){
+					if(!QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, HomeController.NS+rp,HomeController.NS+"has_forwarding", HomeController.NS+"Reference_Point").contains(rp_sink.get(i))){
+						String[] tuple = new String[2];
+						tuple[0]= rp_sink.get(i);
+						for(int j = 0; j < rp_so.size(); j++){
+							if(rp_so.get(j).equals(HomeController.NS+"Source_PM-FEP")|| rp_so.get(j).equals(HomeController.NS+"Source_Path_FEP")){
+								tuple[1]="nc";
+							}else{
+								tuple[1]="trail";
+								result.add(tuple);
+							}
+						}
+					}
+				}
+				System.out.println();
+			}
+			return result;
+		/*InfModel = HomeController.InfModel;
 		ArrayList<String[]> result = new ArrayList<String[]>();
 		
 		List<String> classes_from_rp=QueryUtil.getClassesURI(InfModel,HomeController.NS+rp);
@@ -424,7 +507,7 @@ public class Provisioning {
 			}
 		}
 		return result;
-	}
+*/	}
 
 
 	public static void connects(String rp, String rp_2, String type) throws InconsistentOntologyException, OKCoExceptionInstanceFormat{
