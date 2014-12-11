@@ -43,6 +43,19 @@ public class OKCoApp {
 		return individualSelected;
 	}
 	
+	public static DtoInstance selectIndividual(String individualURI, boolean loadCardinalityDefinitions)
+	{
+		individualSelected = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), individualURI, true, true, true);		
+		if(loadCardinalityDefinitions)
+		{
+			getSomeDefinitionsFromSelected();
+			getMinDefinitionsFromSelected();
+			getMaxDefinitionsFromSelected();
+			getExactDefinitionsFromSelected();
+		}		
+		return individualSelected;
+	}
+	
 	/**
 	 * Select a individual to be used later on.
 	 * 

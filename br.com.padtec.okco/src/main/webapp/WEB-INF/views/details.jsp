@@ -36,7 +36,7 @@
 	var ablePrev = false; //begnning
 	var ableNext = true;  //begnning
 	$(document).ready(function() 
-	{
+	{			
 		$(".completePropertyForm").hide();
 		$(".completeClassForm").hide();
 		$("#completePropertyForm_1").show();
@@ -534,7 +534,7 @@
 					<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
 				</div>
 			</div>
-			<div class="box-content">
+			<div class="box-content">				
 				<table
 					class="table table-striped table-bordered bootstrap-datatable datatable">
 					<thead>

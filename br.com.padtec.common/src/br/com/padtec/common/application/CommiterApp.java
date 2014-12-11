@@ -9,6 +9,7 @@ import br.com.padtec.common.dto.DtoCommitMaxCard;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoResult;
+import br.com.padtec.common.dto.DtoStatus;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
@@ -147,7 +148,7 @@ public class CommiterApp {
 		DtoFactoryUtil.createAndClassifyIndividualAutomatically(UploadApp.getBaseModel(), UploadApp.getInferredModel(), dtoIndividual);		
 		for (DtoDefinitionClass dtoDefinitionClass : dtoIndividual.ListSome) 
 		{
-			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
+			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY) && dtoDefinitionClass.status.equals(DtoStatus.NOT_SATISFIED))
 			{
 				int individualsNumber = QueryUtil.getIndividualsURI(UploadApp.getInferredModel(), dtoDefinitionClass.Target).size()+ 1;
 				/** Create a New Individual at the Range of the Class Definition */				
@@ -156,7 +157,7 @@ public class CommiterApp {
 		}		
 		for (DtoDefinitionClass dtoDefinitionClass : dtoIndividual.ListMin) 
 		{
-			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
+			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY) && dtoDefinitionClass.status.equals(DtoStatus.NOT_SATISFIED))
 			{
 				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), dtoIndividual.ns + dtoIndividual.name, dtoDefinitionClass.Relation, dtoDefinitionClass.Target);
 				ArrayList<String> listDifferentFrom = new ArrayList<String>();
@@ -167,10 +168,10 @@ public class CommiterApp {
 					individualsNumber ++;
 				}				
 			}					
-		}		
+		}
 		for (DtoDefinitionClass dtoDefinitionClass : dtoIndividual.ListExactly) 
 		{
-			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY))
+			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY) && dtoDefinitionClass.status.equals(DtoStatus.NOT_SATISFIED))
 			{				
 				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), dtoIndividual.ns + dtoIndividual.name, dtoDefinitionClass.Relation, dtoDefinitionClass.Target);					
 				ArrayList<String> listDifferentFrom = new ArrayList<String>();

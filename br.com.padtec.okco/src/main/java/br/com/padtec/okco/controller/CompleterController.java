@@ -1,5 +1,7 @@
 package br.com.padtec.okco.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
+import br.com.padtec.common.dto.DtoStatus;
 import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
@@ -38,7 +41,7 @@ public class CompleterController {
 		/** ==================================================
 		 * Select a Specific Individual
 		 *  =================================================== */
-		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uriInstance);		
+		DtoInstance selectedIndividual = OKCoApp.selectIndividual(uriInstance,true);		
 		OKCoApp.setSelectedToModified();
 		
 		/** ==================================================
@@ -53,7 +56,13 @@ public class CompleterController {
 		 *  =================================================== */
 		UploadApp.substituteInferredModelFromBaseModel(false);
 		
-		return "redirect:list";
+		String uriInstanceEncoded = new String(); 
+		try {
+			uriInstanceEncoded = URLEncoder.encode(uriInstance, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}	
+		return "redirect:details?uri="+uriInstanceEncoded;
 	}
 	
 	/** This function works only with object properties: min, exactly and some properties */
@@ -79,7 +88,7 @@ public class CompleterController {
 
 		if(type.equals("object"))
 		{
-			if(typeRelation.equals(OntCardinalityEnum.SOME))
+			if(typeRelation.equals(OntCardinalityEnum.SOME) && classDefinitionSelected.status.equals(DtoStatus.NOT_SATISFIED))
 			{
 				int individualsNumber = QueryUtil.getIndividualsURI(UploadApp.getInferredModel(), classDefinitionSelected.Target).size();
 				/** ==================================================
@@ -87,7 +96,7 @@ public class CompleterController {
 				 *  =================================================== */				
 				CommiterApp.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, null);
 			}
-			else if(typeRelation.equals(OntCardinalityEnum.MIN))
+			else if(typeRelation.equals(OntCardinalityEnum.MIN) && classDefinitionSelected.status.equals(DtoStatus.NOT_SATISFIED))
 			{
 				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), selectedIndividualURI, classDefinitionSelected.Relation, classDefinitionSelected.Target);
 				ArrayList<String> listDifferentFrom = new ArrayList<String>();
@@ -101,7 +110,7 @@ public class CompleterController {
 					individualsNumber ++;
 				}				
 			} 
-			else if(typeRelation.equals(OntCardinalityEnum.EXACTLY))
+			else if(typeRelation.equals(OntCardinalityEnum.EXACTLY) && classDefinitionSelected.status.equals(DtoStatus.NOT_SATISFIED))
 			{
 				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(UploadApp.getInferredModel(), selectedIndividualURI, classDefinitionSelected.Relation, classDefinitionSelected.Target);				
 				ArrayList<String> listDifferentFrom = new ArrayList<String>();
@@ -127,7 +136,13 @@ public class CompleterController {
 		 *  =================================================== */
 		UploadApp.substituteInferredModelFromBaseModel(false);
 
-		return "redirect:list";
+		String uriInstanceEncoded = new String(); 
+		try {
+			uriInstanceEncoded = URLEncoder.encode(uriInstance, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}	
+		return "redirect:details?uri="+uriInstanceEncoded;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
