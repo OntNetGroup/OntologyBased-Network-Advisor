@@ -68,7 +68,7 @@
 
 		//seleciona os elementos a com atributo name="modal"
 		$('a[name=modal-select]').click(function(e) {
-
+			alert("teste");
 			$('#selectInstanceForm').show();
 			$('#newInstanceForm').hide();
 			
@@ -137,106 +137,94 @@
 		//http://api.jquery.com/find/
 		
 		$(".todo-actions > a").click(function(){
+			var isDisabled = $(this).find('i').attr('class');
+			
+			if(isDisabled == "icon-check-empty disable")
+			{
+				return;
+			}
 
 			var type = $(this).attr("id");
-			
+
+			var findFor;
 			if(type == "dif")
-			{				
-				//get name instance clicked
-				var nameSelected = $(this).parent().parent().children(".desc").attr("title");
+			{
+				findFor = ".same";
+			}else {
+				findFor = ".different";	
+			}
+			
+			//get name instance clicked
+			var nameSelected = $(this).parent().parent().children(".desc").attr("title");
 
-				if(! ($(this).parent().find('i').attr("class") == "disable"))
-				{
-					// cheking
-					if ($(this).find('i').attr('class') == 'icon-check') {
-				        
-				        $(this).find('i').removeClass('icon-check-empty').addClass('icon-check');		//check-box
-				        $(this).find('i').removeClass('disable');										//check-box-able-click
-						$(this).parent().parent().find('span').css({ opacity: 1 });						//text
-						$(this).parent().parent().find('span').css("text-decoration", "none");			//text		
-	
-						//Find the respective inside the ul:same
-						
-						var respective = $(this).parent().parent().parent().parent().parent().parent().parent().parent().find(".same").find("[title=\""+ nameSelected + "\"]");			
+			if(! ($(this).parent().find('i').attr("class") == "disable"))
+			{
+				// cheking
+				if ($(this).find('i').attr('class') == 'icon-check') {
+			        
+			        $(this).find('i').removeClass('icon-check-empty').addClass('icon-check');		//check-box
+			        $(this).find('i').removeClass('disable');										//check-box-able-click
+					$(this).parent().parent().find('span').css({ opacity: 1 });						//text
+					$(this).parent().parent().find('span').css("text-decoration", "none");			//text		
 
-						respective.parent().find('i').addClass("disable");										//check-box-disable-click
-				        respective.parent().find('.icon-check').removeClass('icon-check').addClass('icon-check-empty');		//check-box
-				        respective.css("text-decoration", "line-through");													//text
-				        respective.css({ opacity: 0.25 });																	//text
-						
-					} else {	// unchecking
-						
-				        $(this).find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
-				        $(this).parent().parent().find('span').css({ opacity: 1 });						//text
-						$(this).parent().parent().find('span').css("text-decoration", "none");			//text		
-	
-						//Find the respective inside the ul:same
-						
-						var respective = $(this).parent().parent().parent().parent().parent().parent().parent().parent().find(".same").find("[title=\""+ nameSelected + "\"]");			
-				        
-				        respective.parent().find('i').removeClass("disable");				//check-box-disable-click
-				        respective.css("text-decoration", "none");							//text
-				        respective.css({ opacity: 1 });										//text
-						
-					}
-				}
-				
-			} else	{
+					//Find the respective inside the ul:same
+					
+					var respective = $(this).parent().parent().parent().parent().parent().parent().parent().parent().find(findFor).find("[title=\""+ nameSelected + "\"]");			
 
-				//get name instance clicked
-				var nameSelected = $(this).parent().parent().children(".desc").attr("title");
+					respective.parent().find('i').addClass("disable");										//check-box-disable-click
+			        respective.parent().find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
+			        //respective.css("text-decoration", "line-through");													//text
+			        //respective.css({ opacity: 0.25 });																	//text
+			        respective.parent().find('span').css({ opacity: 0.25 });					//text
+			        respective.parent().find('span').css("text-decoration", "line-through");			//text		
+					
+				} else {	// unchecking
+					
+			        $(this).find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
+					$(this).parent().parent().find('span').css({ opacity: 1 });						//text
+					$(this).parent().parent().find('span').css("text-decoration", "none");			//text		
 
-				if(! ($(this).parent().find('i').attr("class") == "disable"))
-				{
-					// if checked
-					if ($(this).find('i').attr('class') == 'icon-check') {
-				        
-				        $(this).find('i').removeClass('icon-check-empty').addClass('icon-check');		//check-box
-				        $(this).find('i').removeClass('disable');										//check-box-able-click
-						$(this).parent().parent().find('span').css({ opacity: 1 });						//text
-						$(this).parent().parent().find('span').css("text-decoration", "none");			//text		
-	
-						//Find the respective inside the ul:same
-						
-						var respective = $(this).parent().parent().parent().parent().parent().parent().parent().parent().find(".different").find("[title=\""+ nameSelected + "\"]");			
-
-						respective.parent().find('i').addClass("disable");										//check-box-disable-click
-				        respective.parent().find('.icon-check').removeClass('icon-check').addClass('icon-check-empty');		//check-box
-				        respective.css("text-decoration", "line-through");													//text
-				        respective.css({ opacity: 0.25 });																	//text
-						
-					} else {	//if unchecked
-						
-				        $(this).find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
-				        $(this).parent().parent().find('span').css({ opacity: 1 });						//text
-						$(this).parent().parent().find('span').css("text-decoration", "none");			//text		
-	
-						//Find the respective inside the ul:same
-						
-						var respective = $(this).parent().parent().parent().parent().parent().parent().parent().parent().find(".different").find("[title=\""+ nameSelected + "\"]");			
-				        
-				        respective.parent().find('i').removeClass("disable");						//check-box-disable-click
-				        respective.css("text-decoration", "none");									//text
-				        respective.css({ opacity: 1 });												//text
-						
-					}
+					//Find the respective inside the ul:same
+					
+					var respective = $(this).parent().parent().parent().parent().parent().parent().parent().parent().find(findFor).find("[title=\""+ nameSelected + "\"]");			
+			        
+			        respective.parent().find('i').removeClass("disable");				//check-box-disable-click
+			        respective.parent().find('span').css("text-decoration", "none");							//text
+			        respective.parent().find('span').css({ opacity: 1 });										//text
+					
 				}
 			}
 		});
 
+		function checkAll(obj)
+		{
+			var listSameCreate = $("#newInstanceForm .todo-list.same li");
+			var listDifCreate = $("#newInstanceForm .todo-list.different li");
+			var listSameSelect = $("#selectInstanceForm .same li");
+			var listDifSelect = $("#selectInstanceForm .different li");
+			//alert(obj.className);
 
-		// CHECK BOXES
-		
-		$('.checkAll-create-same').live('click', function() {	
-			
-			var listSame = $("#newInstanceForm .todo-list.same li");
-			var listDif = $("#newInstanceForm .todo-list.different li");
+			var mainList;
+			var secondaryList;
+			if(obj.className == "checkAll-create-same")
+			{
+				mainList = listSameCreate;
+				secondaryList = listDifCreate;
+			}else if(obj.className == "checkAll-select-same"){
+				mainList = listSameSelect;
+				secondaryList = listDifSelect;
+			}else if(obj.className == "checkAll-create-different"){
+				mainList = listDifCreate;
+				secondaryList = listSameCreate;
+			}else{
+				mainList = listDifSelect;
+				secondaryList = listSameSelect;
+			}
 
-			if(this.checked == true) //select all
+			if(obj.checked == true) //select all
 			{				
 				//selecting
-				listSame.each(function() {
-					
+				mainList.each(function() {
 					var node = $( this ).children( ".todo-actions" );
 					node.find('i').removeClass('icon-check-empty').addClass('icon-check');		//check-box
       				node.find('i').removeClass('disable');										//check-box-able-click
@@ -248,18 +236,19 @@
 				//$( '.checkAll-create-different' ).prop('checked', false);
 
 				//unselecting
-				listDif.each(function() {
+				secondaryList.each(function() {
 					
 					var node = $( this ).children( ".todo-actions" );
 					node.find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
-			        node.parent().parent().find('span').css({ opacity: 1 });					//text
-					node.parent().parent().find('span').css("text-decoration", "none");			//text
+					node.find('i').addClass('disable');											//check-box-able-click
+			        node.parent().parent().find('span').css({ opacity: 0.25 });					//text
+					node.parent().parent().find('span').css("text-decoration", "line-through");			//text
 				});
 
 			} else { //unselect all
 
 				//unselecting
-				listSame.each(function() {
+				mainList.each(function() {
 					
 					var node = $( this ).children( ".todo-actions" );
 					node.find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
@@ -267,7 +256,7 @@
 					node.parent().parent().find('span').css("text-decoration", "none");			//text
 				});
 				//unselecting
-				listDif.each(function() {
+				secondaryList.each(function() {
 					
 					var node = $( this ).children( ".todo-actions" );
 					node.find('i').removeClass('icon-check').addClass('icon-check-empty');		//check-box
@@ -276,11 +265,18 @@
 				});
 				
 			}
-	 
+		}
+
+		// CHECK BOXES
+		
+		$('.checkAll-create-same').live('click', function() {	
+			checkAll(this);
+			
 		});
 
 		$('.checkAll-create-different').live('click', function() {
-			
+			checkAll(this);
+			/*
 			var listSame = $("#newInstanceForm .todo-list.same li");
 			var listDif = $("#newInstanceForm .todo-list.different li");
 
@@ -328,11 +324,13 @@
 				});
 				
 			}
-			 
+			
+			 */
 		});
 
 	$('.checkAll-select-same').live('click', function() {	
-			
+			checkAll(this);
+			/*
 			var listSame = $("#selectInstanceForm .same li");
 			var listDif = $("#selectInstanceForm .different li");
 
@@ -380,10 +378,12 @@
 					node.parent().parent().find('span').css("text-decoration", "none");			//text
 				});				
 			}	 
+			*/
 		});
 	
 		$('.checkAll-select-different').live('click', function() {
-			
+			checkAll(this);
+			/*
 			var listSame = $("#selectInstanceForm .same li");
 			var listDif = $("#selectInstanceForm .different li");
 
@@ -432,11 +432,10 @@
 				});
 				
 			}
-			 
+			 */
 		});
 		
 		$('#selectError0').live('change', function() {		
-			
 			  instanceIdSelect = $(this).find('option:selected').attr("title");
 			  if(instanceIdSelect != "0") //Not Choose
 			  {
@@ -445,9 +444,9 @@
 		});
 
 		//SELECT INSTANCE
-		
 		function selectInstance()
 		{
+			alert("teste2")
 			var id = instanceIdSelect;
 			
 			$.ajax({
@@ -470,7 +469,8 @@
 					{ 
 						if(dto.listDifferentShow[i].exist == true)
 						{
-							result = result + " <li>" +
+							result += "" +
+							" <li>" +
 							"<span class=\"todo-actions todo-actions-same\">" +
 								"<a id=\"dif\" href=\"#\"> <i	class=\"icon-check\"></i></a>" +
 							"</span>" +
@@ -481,7 +481,8 @@
 						}
 						else
 						{
-							result = result + " <li>" +
+							result += "" +
+							" <li>" +
 							"<span class=\"todo-actions todo-actions-same\">" +  
 								"<a id=\"dif\" href=\"#\"> <i	class=\"icon-check-empty\"></i></a>" +
 							"</span>" +
@@ -499,7 +500,8 @@
 					{ 
 						if(dto.listSameShow[i].exist == true)
 						{
-							result = result + " <li>" +
+							result += "" +
+							" <li>" +
 							"<span class=\"todo-actions todo-actions-same\">" +  
 								"<a id=\"same\" href=\"#\"> <i	class=\"icon-check\"></i></a>" +
 							"</span>" +
@@ -510,7 +512,8 @@
 						}
 						else
 						{
-							result = result + " <li>" +
+							result += "" +
+							" <li>" +
 							"<span class=\"todo-actions todo-actions-same\">" +  
 								"<a id=\"same\" href=\"#\"> <i	class=\"icon-check-empty\"></i></a>" +
 							"</span>" +
@@ -826,7 +829,6 @@
 															for (DtoInstance i : ListAllInstances) 
 																								{
 																									//Unchecked
-																									
 																									out.println("<option title=\"" + i.uriEncoded + "\">" + i.name + "</option>");									
 																								}
 														%>
