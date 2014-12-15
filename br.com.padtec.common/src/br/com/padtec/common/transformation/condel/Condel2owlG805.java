@@ -1,4 +1,4 @@
-package br.com.padtec.common.features.condel;
+package br.com.padtec.common.transformation.condel;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;

@@ -125,11 +125,11 @@
 					  					  						  			out.println("</ul>");
 					  					  						  		out.println("</td>");
 					  					  						  		
-					  					  						  		if( i.isModified == true )
-					  					  						  		{
-					  					  						  			out.println("<td class=\"center\">	<span class=\"label label-important\" style=\"background:#67c2ef\">Modified</span> </td>");
+					  					  						  		//if( i.isModified == true )
+					  					  						  		//{
+					  					  						  			//out.println("<td class=\"center\">	<span class=\"label label-important\" style=\"background:#67c2ef\">Modified</span> </td>");
 					  					  						  			
-					  					  						  		} else {
+					  					  						  		//} else {
 					  					  						  			
 					  					  						  			if(i.haveKnwologeToComplete() == true)
 					  					  							  		{
@@ -147,7 +147,7 @@
 					  					  							  			}
 					  					  							  		}
 					  					  						  			
-					  					  						  		}
+					  					  						  		//}
 					  					  						  		
 					  					  						  		out.println("<td class=\"center\">" + 
 					  					  					  					"<a class=\"btn btn-success\" target=\"_blank\" href=\"/tnokco/graphVisualizer?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 

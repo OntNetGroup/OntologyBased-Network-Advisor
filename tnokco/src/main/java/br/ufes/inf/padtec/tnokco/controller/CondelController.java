@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.ufes.inf.nemo.condelOwlg805.Condel2owlG805;
-import br.ufes.inf.nemo.condelOwlg805.OwlG805toCondel;
+import br.com.padtec.common.transformation.condel.Condel2owlG805;
+import br.com.padtec.common.transformation.condel.OwlG805toCondel;
 import br.ufes.inf.padtec.tnokco.business.DtoResultAjax;
 
 @Controller
