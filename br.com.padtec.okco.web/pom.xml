@@ -65,13 +65,14 @@
 			<version>1.3.2</version>
 		</dependency>
 
-		<!-- OKCo kernel -->
-
+		<!-- Padtec Common -->
 		<dependency>
 			<groupId>br.com.padtec</groupId>
 			<artifactId>padtec-common</artifactId>
 			<version>1.0</version>
 		</dependency>
+		
+		<!-- OKCo Core -->
 		<dependency>
 			<groupId>br.com.padtec.okco</groupId>
 			<artifactId>okco-core</artifactId>

@@ -289,7 +289,7 @@
 
 					<form id="commitInstanceForm" action="commitMaxCard" method="POST">
 						<%
-							out.println("<button onclick=\"window.location = '/br.com.padtec.okco/details?uri="
+							out.println("<button onclick=\"window.location = '/br.com.padtec.okco.web/details?uri="
 									+ instanceSelected.uriEncoded
 									+ "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
 						%>
