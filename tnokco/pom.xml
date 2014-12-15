@@ -120,16 +120,7 @@
 			<artifactId>Sindel2OWL</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-
-		<!-- Condel2Owl -->
 		
-		<dependency>
-			<groupId>CondelOWLG805_Transformations</groupId>
-			<artifactId>CondelOWLG805_Transformations</artifactId>
-			<version>0.0.1</version>
-		</dependency>
-		 
-
 		<!-- GraphVisualizer -->
 		<dependency>
 			<groupId>br.ufes.inf.padtec</groupId>

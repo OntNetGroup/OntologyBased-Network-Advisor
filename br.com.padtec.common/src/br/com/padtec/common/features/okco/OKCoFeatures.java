@@ -1,4 +1,4 @@
-package br.com.padtec.common.features;
+package br.com.padtec.common.features.okco;
 
 import java.io.InputStream;
 import java.io.StringWriter;
