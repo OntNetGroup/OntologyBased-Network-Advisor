@@ -1,4 +1,4 @@
-package br.com.padtec.common.transformation.condel;
+package br.com.padtec.transformation.condel;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

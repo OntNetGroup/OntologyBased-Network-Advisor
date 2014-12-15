@@ -12,6 +12,9 @@
         <dependent-module archiveName="common-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.common/br.com.padtec.common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="condel-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.transformation.condel/br.com.padtec.transformation.condel">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/tnokco/target/classes"/>
         <property name="context-root" value="tnokco"/>
     </wb-module>
