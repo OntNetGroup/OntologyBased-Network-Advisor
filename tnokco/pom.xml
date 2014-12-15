@@ -118,23 +118,23 @@
 		<dependency>
 			<groupId>br.com.padtec.transformation</groupId>
 			<artifactId>sindel</artifactId>
-			<version>0.0.1</version>
+			<version>1.0</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>br.com.padtec</groupId>
 			<artifactId>common</artifactId>
-			<version>0.0.1</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.padtec.okco</groupId>
 			<artifactId>web</artifactId>
-			<version>0.0.1</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.padtec.transformation</groupId>
 			<artifactId>condel</artifactId>
-			<version>0.0.1</version>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
