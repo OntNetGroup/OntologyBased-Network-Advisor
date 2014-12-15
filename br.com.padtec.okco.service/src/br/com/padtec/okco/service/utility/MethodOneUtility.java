@@ -1,22 +1,20 @@
-package br.com.padtec.common.utilities;
-import java.util.ArrayList;
+package br.com.padtec.okco.service.utility;
 
 import br.com.padtec.common.dto.simple.SimpleDtoClass;
 import br.com.padtec.common.dto.simple.SimpleDtoInstance;
 import br.com.padtec.common.dto.simple.SimpleDtoRelation;
-import br.com.padtec.common.features.okco.OKCoFeatures;
-import br.com.padtec.common.features.okco.OKCoResultFromFile;
+import br.com.padtec.okco.service.feature.OKCoFeatures;
+import br.com.padtec.okco.service.feature.OKCoResult;
 
-public class MethodThreeUtility {
+
+public class MethodOneUtility {
 
 	public static void main(String[] args) {
 
-		String inputFileName = "C://Users//fabio_000//Desktop//OntologiasOWL//assassinato.owl";
-		ArrayList<String> setInstances = new ArrayList<String>();
-		setInstances.add("http://www.semanticweb.org/ontologies/2013/8/ontology.owl#fabio");
+		String inputFileName = "C://Users//fabio_000//Desktop//OntologiasOWL//assassinato.owl";	
 
 		OKCoFeatures o = new OKCoFeatures();
-		OKCoResultFromFile dto = o.completeIncompleteness(setInstances, inputFileName, "HERMIT", "REGULAR");
+		OKCoResult dto = o.listFileIncompleteness(inputFileName, "PELLET");
 		
 		if(dto.ListErrors.size() > 0)
 		{

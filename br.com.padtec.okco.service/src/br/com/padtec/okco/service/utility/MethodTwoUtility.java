@@ -1,20 +1,20 @@
-package br.com.padtec.common.utilities;
+package br.com.padtec.okco.service.utility;
 
 import br.com.padtec.common.dto.simple.SimpleDtoClass;
 import br.com.padtec.common.dto.simple.SimpleDtoInstance;
 import br.com.padtec.common.dto.simple.SimpleDtoRelation;
-import br.com.padtec.common.features.okco.OKCoFeatures;
-import br.com.padtec.common.features.okco.OKCoResult;
+import br.com.padtec.okco.service.feature.OKCoFeatures;
+import br.com.padtec.okco.service.feature.OKCoResultFromFile;
 
 
-public class MethodOneUtility {
+public class MethodTwoUtility {
 
 	public static void main(String[] args) {
 
 		String inputFileName = "C://Users//fabio_000//Desktop//OntologiasOWL//assassinato.owl";	
 
 		OKCoFeatures o = new OKCoFeatures();
-		OKCoResult dto = o.listFileIncompleteness(inputFileName, "PELLET");
+		OKCoResultFromFile dto = o.completeIncompleteness(inputFileName, "HERMIT", "FULL");
 		
 		if(dto.ListErrors.size() > 0)
 		{

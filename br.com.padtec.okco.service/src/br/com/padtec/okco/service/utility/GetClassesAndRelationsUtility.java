@@ -1,4 +1,4 @@
-package br.com.padtec.common.utilities;
+package br.com.padtec.okco.service.utility;
 import java.io.InputStream;
 import java.util.List;
 

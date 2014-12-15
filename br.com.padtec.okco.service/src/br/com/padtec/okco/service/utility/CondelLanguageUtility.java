@@ -1,4 +1,4 @@
-package br.com.padtec.common.utilities;
+package br.com.padtec.okco.service.utility;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
