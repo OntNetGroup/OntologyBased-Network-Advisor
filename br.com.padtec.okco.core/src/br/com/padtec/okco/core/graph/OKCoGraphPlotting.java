@@ -1,4 +1,6 @@
-package br.com.padtec.common.graph;
+package br.com.padtec.okco.core.graph;
+
+import br.com.padtec.common.graph.BaseGraphPlotting;
 
 
 public class OKCoGraphPlotting extends BaseGraphPlotting {

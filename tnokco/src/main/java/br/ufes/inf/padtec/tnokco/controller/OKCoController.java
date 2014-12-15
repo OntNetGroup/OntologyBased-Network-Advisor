@@ -30,12 +30,12 @@ import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.graph.BaseGraphPlotting;
-import br.com.padtec.common.graph.OKCoGraphPlotting;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
 import br.com.padtec.okco.core.UploadApp;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.core.graph.OKCoGraphPlotting;
 
 @Controller
 //@RequestMapping("/instance")
