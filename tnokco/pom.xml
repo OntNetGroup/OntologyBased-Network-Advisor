@@ -127,8 +127,8 @@
 			<version>0.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>br.com.padtec</groupId>
-			<artifactId>okco</artifactId>
+			<groupId>br.com.padtec.okco</groupId>
+			<artifactId>web</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 		<dependency>
