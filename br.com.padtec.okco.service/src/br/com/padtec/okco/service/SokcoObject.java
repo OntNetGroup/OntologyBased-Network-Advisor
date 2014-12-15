@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.service.model;
+package br.com.padtec.okco.service;
 
 import java.util.ArrayList;
 

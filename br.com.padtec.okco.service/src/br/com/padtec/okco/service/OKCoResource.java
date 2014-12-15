@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.okco.service;
+package br.com.padtec.okco.service;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import br.com.padtec.common.features.okco.OKCoFeatures;
 import br.com.padtec.common.features.okco.OKCoResult;
 import br.com.padtec.common.features.okco.OKCoResultFromFile;
-import br.ufes.inf.nemo.okco.service.model.SokcoObject;
 
 @Path("/app")
 public class OKCoResource {
