@@ -11,10 +11,12 @@ import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoStatus;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
+import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -35,9 +37,10 @@ public class CommiterApp {
 	/**
 	 * This method does not add this new individual to the model and to the modified list.
 	 * Instead, it only adds this individual to the set of list of new individuals to be created in the model when the method commitNewIndividuals() was called.
+	 * @throws OKCoException 
 	 */
-	public static DtoInstance createNewIndividualAtCommitList(String name, String[] arraySame, String[] arrayDif)
-	{
+	public static DtoInstance createNewIndividualAtCommitList(String name, String[] arraySame, String[] arrayDif) throws OKCoException
+	{		
 		ArrayList<String> listSame = new ArrayList<String>();
 		if(arraySame!=null && arraySame[0]!="") listSame.addAll(Arrays.asList(arraySame));		
 		ArrayList<String> listDif = new ArrayList<String>();
@@ -47,6 +50,29 @@ public class CommiterApp {
 		return dtoIndividual;
 	}
 		
+	/** 
+	 * It does not make sense to check this in the OKCo application.
+	 */
+	@Deprecated
+	public static void checkIndividualsViolateMaxCardinality() throws OKCoException
+	{		
+		DtoInstance dtoIndividual = OKCoApp.getSelectedIndividual();
+		DtoDefinitionClass dtoDefinition = OKCoApp.getSelectedClassDefinition();		
+		if(dtoDefinition.TypeCompletness==OntCardinalityEnum.MAX)
+		{	
+			Integer number = Integer.parseInt(dtoDefinition.Cardinality);
+			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(UploadApp.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
+			int newIndividuals = newIndividualsCommitList.size();
+			if((individuals.size()+newIndividuals)>number) 
+			{ 
+				String message = "Max Cardinality Restriction Violated!\n\n "+
+				"This property cannot have bear more than "+number+" individuals. \n"+
+				"You tried to create "+newIndividuals+" new individuals in a property with already "+individuals.size()+" individuals.\n";
+				new OKCoException(message); 
+			}				
+		}		
+	}
+	
 	public static DtoInstance addExistingIndividualAtCommitList(String individualURI)
 	{
 		DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(UploadApp.getInferredModel(), individualURI,true,true,true);

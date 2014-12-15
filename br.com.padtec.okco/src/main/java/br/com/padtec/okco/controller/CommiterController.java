@@ -16,6 +16,7 @@ import br.com.padtec.common.dto.DtoCreateInstancePost;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
+import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.types.URIDecoder;
 
 /**
@@ -27,7 +28,7 @@ import br.com.padtec.common.types.URIDecoder;
 public class CommiterController {
 				
 	@RequestMapping(value="/createInstance", method = RequestMethod.POST)
-	public @ResponseBody DtoInstance createInstance(@RequestBody final DtoCreateInstancePost dto)
+	public @ResponseBody DtoInstance createInstance(@RequestBody final DtoCreateInstancePost dto) throws OKCoException
 	{
 		String name = dto.name;
 		 

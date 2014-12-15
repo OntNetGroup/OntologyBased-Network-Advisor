@@ -18,12 +18,14 @@ public class DtoFactoryUtil {
 	static public OntModel createIndividual(OntModel model, DtoInstance newIndividual, String srcIndividualURI, String relationURI, String rangeClassURI)
 	{	
 		newIndividual.existInModel=true;
+		newIndividual.name = newIndividual.name.trim().replaceAll(" ","");
 		return FactoryUtil.createIndividual(model, newIndividual.ns+newIndividual.name, newIndividual.ListSameInstances, newIndividual.ListDiferentInstances, srcIndividualURI, relationURI, rangeClassURI);
 	}
 	
 	static public OntModel createIndividual(OntModel model, DtoInstance newIndividual, String srcIndividualURI, DtoDefinitionClass dtoDefinitionClass)
 	{	
 		newIndividual.existInModel=true;
+		newIndividual.name = newIndividual.name.trim().replaceAll(" ","");
 		return FactoryUtil.createIndividual(model, newIndividual.ns+newIndividual.name, newIndividual.ListSameInstances, newIndividual.ListDiferentInstances, srcIndividualURI, dtoDefinitionClass.Relation, dtoDefinitionClass.Target);
 	}
 	

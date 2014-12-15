@@ -26,11 +26,11 @@ public class FactoryUtil {
 	 * @author John Guerson
 	 */
 	static public OntModel createIndividual(OntModel model, String individualURI, List<String> sameAsList, List<String> diffList, String srcIndividualURI, String relationURI, String rangeClassURI)
-	{	
+	{			
 		Individual indInstance = model.getIndividual(srcIndividualURI);
 		OntClass ClassImage = model.getOntClass(rangeClassURI);
 		Property relation = model.getProperty(relationURI);		
-		Individual newInstance = ClassImage.createIndividual(individualURI);		
+		Individual newInstance = ClassImage.createIndividual(individualURI.replaceAll(" ", ""));		
 		for (String s : diffList) 
 		{
 			Individual i = model.getIndividual(s);
