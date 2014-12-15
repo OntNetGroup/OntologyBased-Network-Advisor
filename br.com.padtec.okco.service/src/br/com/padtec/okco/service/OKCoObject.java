@@ -2,7 +2,7 @@ package br.com.padtec.okco.service;
 
 import java.util.ArrayList;
 
-public class SokcoObject {
+public class OKCoObject {
 
 	String pathOwlFileString;
 	String reasonerOption;
