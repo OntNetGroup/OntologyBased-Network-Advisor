@@ -1,7 +1,7 @@
 package br.com.padtec.common.application;
 
 import br.com.padtec.common.dto.DtoInstance;
-import br.com.padtec.common.graph.okco.OKCoBaseGraphPlotting;
+import br.com.padtec.common.graph.BaseGraphPlotting;
 import br.com.padtec.common.queries.DtoQueryUtil;
 
 public class VisualizerApp {
@@ -11,7 +11,7 @@ public class VisualizerApp {
 	 * 
 	 * @return
 	 */
-	public static String getGraphValues(String typeView, String individualURI, OKCoBaseGraphPlotting graphPlotting)
+	public static String getGraphValues(String typeView, String individualURI, BaseGraphPlotting graphPlotting)
 	{		
 		String valuesGraph = new String();				
 		if(typeView.equals("ALL")) valuesGraph  = graphPlotting.getArborStructureFor(UploadApp.getInferredModel());

@@ -1,7 +1,7 @@
-package br.com.padtec.common.graph.okco;
+package br.com.padtec.common.graph;
 
 
-public class OKCoGraphPlotting extends OKCoBaseGraphPlotting {
+public class OKCoGraphPlotting extends BaseGraphPlotting {
 
 	@Override
 	public String getArborNode(String elem, boolean isCenterNode){

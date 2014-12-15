@@ -1,4 +1,4 @@
-package br.com.padtec.common.graph.okco;
+package br.com.padtec.common.graph;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -7,7 +7,7 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
-public class OKCoQueryManager {
+public class QueryManager {
 
 	/**
 	 * Run query and set the ResultSet

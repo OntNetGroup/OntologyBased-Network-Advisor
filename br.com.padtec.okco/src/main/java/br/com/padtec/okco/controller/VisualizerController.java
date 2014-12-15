@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.padtec.common.application.VisualizerApp;
-import br.com.padtec.common.graph.okco.OKCoBaseGraphPlotting;
-import br.com.padtec.common.graph.okco.OKCoGraphPlotting;
+import br.com.padtec.common.graph.BaseGraphPlotting;
+import br.com.padtec.common.graph.OKCoGraphPlotting;
 import br.com.padtec.common.types.URIDecoder;
 
 /**
@@ -29,7 +29,7 @@ public class VisualizerController {
 		/** ==================================================
 		 * Get Values of Graph
 		 *  =================================================== */
-		OKCoBaseGraphPlotting graphPlotting = new OKCoGraphPlotting();
+		BaseGraphPlotting graphPlotting = new OKCoGraphPlotting();
 		String valuesGraph = VisualizerApp.getGraphValues(typeView,uri, graphPlotting);
 		request.getSession().setAttribute("valuesGraph", valuesGraph);
 	

@@ -1,4 +1,4 @@
-package br.com.padtec.common.graph.okco;
+package br.com.padtec.common.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,18 +8,18 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
-public class OKCoArborParser {
-	private OKCoBaseGraphPlotting graphPlotting;
+public class ArborParser {
+	private BaseGraphPlotting graphPlotting;
 
-	public OKCoArborParser(InfModel ontology, OKCoBaseGraphPlotting graphPlotting) {
+	public ArborParser(InfModel ontology, BaseGraphPlotting graphPlotting) {
 		this.graphPlotting = graphPlotting;
 
 		if(graphPlotting.hash != null)
 			return;
 
 		graphPlotting.hash = new HashMap<String, ArrayList<String>>();
-		String query = OKCoQueryManager.getAllIndividuous();
-		ResultSet results = OKCoQueryManager.runQuery(ontology, query);
+		String query = QueryManager.getAllIndividuous();
+		ResultSet results = QueryManager.runQuery(ontology, query);
 
 		ArrayList<String> owlclasses;
 		while (results.hasNext()) {
@@ -44,7 +44,7 @@ public class OKCoArborParser {
 		}
 	}
 
-	public OKCoArborParser(InfModel ontology, OKCoBaseGraphPlotting graphPlotting, HashMap<String, ArrayList<String>> hashClasses) {
+	public ArborParser(InfModel ontology, BaseGraphPlotting graphPlotting, HashMap<String, ArrayList<String>> hashClasses) {
 		this.graphPlotting = graphPlotting;
 
 		if(graphPlotting.hash != null)
@@ -55,7 +55,7 @@ public class OKCoArborParser {
 
 	public String getArborJsString(ResultSet results, boolean showAll) {
 		
-		ArrayList<OKCoTuple> tuplas = this.getTuplas(results);
+		ArrayList<Tuple> tuplas = this.getTuplas(results);
 
 		//set screen size
 		graphPlotting.width  += 400 * (tuplas.size() / 10);
@@ -67,7 +67,7 @@ public class OKCoArborParser {
 
 		final String HH = "#!!#";
 
-		for (OKCoTuple tupla : tuplas) {
+		for (Tuple tupla : tuplas) {
 			if(hashTuplas.containsKey(tupla.source+HH+tupla.target)){
 				String property = hashTuplas.get(tupla.source+HH+tupla.target);
 				hashTuplas.remove(tupla.source+HH+tupla.target);
@@ -98,7 +98,7 @@ public class OKCoArborParser {
 	}
 
 	public String getArborJsStringFor(ResultSet results, String centerNode){
-		ArrayList<OKCoTuple> tuplas = getTuplas(results, centerNode);
+		ArrayList<Tuple> tuplas = getTuplas(results, centerNode);
 		String arborStrucure = "";
 
 		//set screen size
@@ -114,7 +114,7 @@ public class OKCoArborParser {
 		final String HH = "#!!#";
 		HashMap<String,String> usedTuplas = new HashMap<String, String>();
 
-		for (OKCoTuple tupla : tuplas) {
+		for (Tuple tupla : tuplas) {
 			if(usedTuplas.containsKey(tupla.source+HH+tupla.target)){
 				String property = usedTuplas.get(tupla.source+HH+tupla.target);
 				usedTuplas.remove(tupla.source+HH+tupla.target);
@@ -155,8 +155,8 @@ public class OKCoArborParser {
 			return "graph.addEdge("+sourceNode+","+targetNode+", {name:'"+edgeName+"'});\n";
 	}
 
-	private ArrayList<OKCoTuple> getTuplas(ResultSet results, String centerNode){
-		ArrayList<OKCoTuple> tuplas = new ArrayList<OKCoTuple>();
+	private ArrayList<Tuple> getTuplas(ResultSet results, String centerNode){
+		ArrayList<Tuple> tuplas = new ArrayList<Tuple>();
 
 		while (results.hasNext()) {
 			QuerySolution row= results.next();
@@ -188,14 +188,14 @@ public class OKCoArborParser {
 			if(!source.contains("#") || !target.contains("#"))
 				continue;
 
-			OKCoTuple tupla = new OKCoTuple(source, property, target, isSourceCenterNode, isTargetCenterNode);
+			Tuple tupla = new Tuple(source, property, target, isSourceCenterNode, isTargetCenterNode);
 			tuplas.add(tupla);
 		}
 		return tuplas;
 	}
 
-	private ArrayList<OKCoTuple> getTuplas(ResultSet results){
-		ArrayList<OKCoTuple> tuplas = new ArrayList<OKCoTuple>();
+	private ArrayList<Tuple> getTuplas(ResultSet results){
+		ArrayList<Tuple> tuplas = new ArrayList<Tuple>();
 
 		while (results.hasNext()) {
 			QuerySolution row = results.next();
@@ -214,7 +214,7 @@ public class OKCoArborParser {
 			String target;
 			target = row.get("target").toString();
 
-			OKCoTuple tupla = new OKCoTuple(source, property, target, false, false);
+			Tuple tupla = new Tuple(source, property, target, false, false);
 			tuplas.add(tupla);
 		}
 		return tuplas;

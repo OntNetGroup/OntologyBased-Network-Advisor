@@ -31,11 +31,11 @@ import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.factory.DtoFactoryUtil;
+import br.com.padtec.common.graph.BaseGraphPlotting;
+import br.com.padtec.common.graph.OKCoGraphPlotting;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
-import br.inf.nemo.padtec.graphplotting.GraphPlotting;
-import br.inf.nemo.padtec.wokco.WOKCOGraphPlotting;
 
 @Controller
 //@RequestMapping("/instance")
@@ -412,7 +412,7 @@ public class OKCoController {
 		int height;
 		String subtitle = "";
 		
-		GraphPlotting graphPlotting = new WOKCOGraphPlotting();
+		BaseGraphPlotting graphPlotting = new OKCoGraphPlotting();
 		DtoInstance i;
 		int num = 0;
 

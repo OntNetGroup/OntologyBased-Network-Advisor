@@ -1,4 +1,4 @@
-package br.com.padtec.common.graph.okco;
+package br.com.padtec.common.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
-public abstract class OKCoBaseGraphPlotting {
+public abstract class BaseGraphPlotting {
 	
 	protected String VERDE = "#00FF00";
 	protected String AZUL = "#0000FF";
@@ -20,10 +20,10 @@ public abstract class OKCoBaseGraphPlotting {
 	public HashMap<String,ArrayList<String>> hash = null;
 	
 	public String getArborStructureComingOutOf(InfModel ontology, String centerIndividual){
-		String query = OKCoQueryManager.getAllRelationsComingOutOf(centerIndividual);
-		ResultSet resultSet = OKCoQueryManager.runQuery(ontology, query);
+		String query = QueryManager.getAllRelationsComingOutOf(centerIndividual);
+		ResultSet resultSet = QueryManager.runQuery(ontology, query);
 
-		OKCoArborParser arborParser = new OKCoArborParser(ontology,this);
+		ArborParser arborParser = new ArborParser(ontology,this);
 		String arborStructure = arborParser.getArborJsStringFor(resultSet, centerIndividual);
 
 		String arborHashStructure = arborParser.getArborHashStructure();
@@ -32,10 +32,10 @@ public abstract class OKCoBaseGraphPlotting {
 	}
 
 	public String getArborStructureComingInOf(InfModel ontology, String centerIndividual){
-		String query = OKCoQueryManager.getAllRelationsComingInOf(centerIndividual);
-		ResultSet resultSet = OKCoQueryManager.runQuery(ontology, query);
+		String query = QueryManager.getAllRelationsComingInOf(centerIndividual);
+		ResultSet resultSet = QueryManager.runQuery(ontology, query);
 
-		OKCoArborParser arborParser = new OKCoArborParser(ontology,this);
+		ArborParser arborParser = new ArborParser(ontology,this);
 		String arborStructure = arborParser.getArborJsStringFor(resultSet, centerIndividual);
 
 		String arborHashStructure = arborParser.getArborHashStructure();
@@ -45,10 +45,10 @@ public abstract class OKCoBaseGraphPlotting {
 
 	public String getArborStructureFor(InfModel ontology){
 		
-		String query = OKCoQueryManager.getPropertiesBetweenAllIndividuals();
-		ResultSet resultSet = OKCoQueryManager.runQuery(ontology, query);
+		String query = QueryManager.getPropertiesBetweenAllIndividuals();
+		ResultSet resultSet = QueryManager.runQuery(ontology, query);
 
-		OKCoArborParser arborParser = new OKCoArborParser(ontology,this);
+		ArborParser arborParser = new ArborParser(ontology,this);
 		String arborStructure = arborParser.getArborJsString(resultSet,true);
 
 		String arborHashStructure = arborParser.getArborHashStructure();

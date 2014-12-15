@@ -121,13 +121,6 @@
 			<version>0.0.1</version>
 		</dependency>
 		
-		<!-- GraphVisualizer -->
-		<dependency>
-			<groupId>br.ufes.inf.padtec</groupId>
-			<artifactId>GraphVisualizer</artifactId>
-			<version>0.0.1</version>
-		</dependency>
-
 		<dependency>
 			<groupId>br.com.padtec</groupId>
 			<artifactId>common</artifactId>
