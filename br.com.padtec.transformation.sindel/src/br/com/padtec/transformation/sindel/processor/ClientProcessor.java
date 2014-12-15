@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.padtec.processors;
+package br.com.padtec.transformation.sindel.processor;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;

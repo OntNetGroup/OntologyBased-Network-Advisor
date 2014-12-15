@@ -116,8 +116,8 @@
 
 		<!-- Sindel2Owl -->
 		<dependency>
-			<groupId>br.ufes.inf.padtec</groupId>
-			<artifactId>Sindel2OWL</artifactId>
+			<groupId>br.com.padtec.transformation</groupId>
+			<artifactId>sindel</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 		

@@ -10,7 +10,7 @@ import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.queries.QueryUtil;
-import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
+import br.com.padtec.transformation.sindel.processor.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 
 import com.hp.hpl.jena.ontology.Individual;

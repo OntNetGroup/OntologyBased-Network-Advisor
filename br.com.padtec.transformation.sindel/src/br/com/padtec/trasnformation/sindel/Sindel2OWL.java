@@ -1,17 +1,16 @@
-package br.ufes.inf.nemo.padtec;
+package br.com.padtec.trasnformation.sindel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
-import br.ufes.inf.nemo.padtec.DtoSindel.DtoResultSindel;
-import br.ufes.inf.nemo.padtec.processors.AttributeProcessor;
-import br.ufes.inf.nemo.padtec.processors.BindsProcessor;
-import br.ufes.inf.nemo.padtec.processors.ClientProcessor;
-import br.ufes.inf.nemo.padtec.processors.CompositionProcessor;
-import br.ufes.inf.nemo.padtec.processors.ConnectsProcessor;
-import br.ufes.inf.nemo.padtec.processors.ElementsProcessor;
-import br.ufes.inf.nemo.padtec.processors.MapsProcessor;
+import br.com.padtec.transformation.sindel.dto.DtoResultSindel;
+import br.com.padtec.transformation.sindel.processor.AttributeProcessor;
+import br.com.padtec.transformation.sindel.processor.BindsProcessor;
+import br.com.padtec.transformation.sindel.processor.ClientProcessor;
+import br.com.padtec.transformation.sindel.processor.CompositionProcessor;
+import br.com.padtec.transformation.sindel.processor.ConnectsProcessor;
+import br.com.padtec.transformation.sindel.processor.ElementsProcessor;
+import br.com.padtec.transformation.sindel.processor.MapsProcessor;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -141,6 +140,7 @@ public class Sindel2OWL {
 //		createModelImports();
 	}
 
+	@SuppressWarnings("unused")
 	private void createModelImports() {
 		model.remove(owlReference);
 
@@ -160,6 +160,7 @@ public class Sindel2OWL {
 		DtoSindel.model = model;
 	}
 
+	@SuppressWarnings("unused")
 	private void createDisjointness(){
 		//Make all individuals different
 		ExtendedIterator<Individual> individuals = model.listIndividuals();

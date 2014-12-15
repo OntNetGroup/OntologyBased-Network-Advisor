@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.padtec.processors;
+package br.com.padtec.transformation.sindel.processor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.padtec.common.queries.QueryUtil;
-import br.ufes.inf.nemo.padtec.Sindel2OWL;
+import br.com.padtec.trasnformation.sindel.Sindel2OWL;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;
@@ -152,6 +152,7 @@ public class BindsProcessor {
 				if(isP1 && isP2){
 					//IF a and b are Ports
 					processAssignableRelation_PortxPort();
+					@SuppressWarnings("unused")
 					ArrayList<Individual> portsAndRp = new ArrayList<Individual>();
 					addPortsAndRPsToBindsSpecifically(a, b, x, k);
 					
@@ -430,6 +431,7 @@ public class BindsProcessor {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public static void bindPorts(Individual rp, Individual port1, Individual port2, Individual binding, String NS, OntModel ontModel, ArrayList<String> listInstancesCreated){
 		if(listInstancesCreated == null){
 			listInstancesCreated = new ArrayList<String>();

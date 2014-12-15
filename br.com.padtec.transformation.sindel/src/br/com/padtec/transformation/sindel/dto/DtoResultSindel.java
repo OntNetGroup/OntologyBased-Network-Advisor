@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.padtec.DtoSindel;
+package br.com.padtec.transformation.sindel.dto;
 
 import com.hp.hpl.jena.ontology.OntModel;
 
