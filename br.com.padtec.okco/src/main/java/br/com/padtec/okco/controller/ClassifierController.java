@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.dto.DtoClassifyInstancePost;
 import br.com.padtec.common.dto.DtoResult;
-import br.com.padtec.okco.core.ClassifierApp;
-import br.com.padtec.okco.core.UploadApp;
+import br.com.padtec.okco.core.application.ClassifierApp;
+import br.com.padtec.okco.core.application.UploadApp;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 
 /**

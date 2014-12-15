@@ -1,4 +1,4 @@
-package br.com.padtec.okco.core;
+package br.com.padtec.okco.core.application;
 
 import java.util.ArrayList;
 import java.util.HashMap;

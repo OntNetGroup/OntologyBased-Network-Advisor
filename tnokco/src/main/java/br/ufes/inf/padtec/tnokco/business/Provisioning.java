@@ -8,7 +8,7 @@ import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.okco.core.UploadApp;
+import br.com.padtec.okco.core.application.UploadApp;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.transformation.sindel.processor.BindsProcessor;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;

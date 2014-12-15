@@ -1,4 +1,4 @@
-package br.com.padtec.okco.core;
+package br.com.padtec.okco.core.application;
 
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.graph.BaseGraphPlotting;

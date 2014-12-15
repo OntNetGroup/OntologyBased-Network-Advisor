@@ -16,7 +16,7 @@ import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.types.URIDecoder;
-import br.com.padtec.okco.core.CommiterApp;
+import br.com.padtec.okco.core.application.CommiterApp;
 import br.com.padtec.okco.core.exception.OKCoException;
 
 /**

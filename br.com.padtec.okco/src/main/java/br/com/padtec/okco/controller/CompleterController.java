@@ -19,9 +19,9 @@ import br.com.padtec.common.dto.DtoStatus;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.URIDecoder;
-import br.com.padtec.okco.core.CommiterApp;
-import br.com.padtec.okco.core.OKCoApp;
-import br.com.padtec.okco.core.UploadApp;
+import br.com.padtec.okco.core.application.CommiterApp;
+import br.com.padtec.okco.core.application.OKCoApp;
+import br.com.padtec.okco.core.application.UploadApp;
 import br.com.padtec.okco.core.exception.OKCoException;
 
 /**

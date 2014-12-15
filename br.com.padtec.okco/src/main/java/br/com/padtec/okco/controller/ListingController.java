@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.padtec.common.dto.DtoInstance;
-import br.com.padtec.okco.core.OKCoApp;
+import br.com.padtec.okco.core.application.OKCoApp;
 
 /**
  * Controller responsible for the listing of individuals. 

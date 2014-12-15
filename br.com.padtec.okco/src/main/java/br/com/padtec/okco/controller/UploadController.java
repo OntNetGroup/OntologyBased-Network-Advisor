@@ -16,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.padtec.common.dto.DtoResult;
-import br.com.padtec.okco.core.OKCoApp;
-import br.com.padtec.okco.core.UploadApp;
+import br.com.padtec.okco.core.application.OKCoApp;
+import br.com.padtec.okco.core.application.UploadApp;
 import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionNameSpace;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.padtec.common.graph.BaseGraphPlotting;
 import br.com.padtec.common.types.URIDecoder;
-import br.com.padtec.okco.core.VisualizerApp;
+import br.com.padtec.okco.core.application.VisualizerApp;
 import br.com.padtec.okco.core.graph.OKCoGraphPlotting;
 
 /**

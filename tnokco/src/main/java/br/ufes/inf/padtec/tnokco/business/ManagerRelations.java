@@ -7,7 +7,7 @@ import java.util.List;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.okco.core.UploadApp;
+import br.com.padtec.okco.core.application.UploadApp;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.ufes.inf.padtec.tnokco.controller.HomeController;
 import br.ufes.inf.padtec.tnokco.controller.ManagerInstances;

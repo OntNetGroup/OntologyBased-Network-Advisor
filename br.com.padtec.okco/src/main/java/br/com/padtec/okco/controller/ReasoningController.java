@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.dto.DtoResult;
-import br.com.padtec.okco.core.ReasoningApp;
+import br.com.padtec.okco.core.application.ReasoningApp;
 
 /**
  * Controller responsible for the inference.

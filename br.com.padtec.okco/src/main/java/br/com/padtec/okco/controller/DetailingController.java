@@ -16,7 +16,7 @@ import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.types.URIDecoder;
-import br.com.padtec.okco.core.OKCoApp;
+import br.com.padtec.okco.core.application.OKCoApp;
 import br.com.padtec.okco.core.exception.OKCoException;
 
 /**

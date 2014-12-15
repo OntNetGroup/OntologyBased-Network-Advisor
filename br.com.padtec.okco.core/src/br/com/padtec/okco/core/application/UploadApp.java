@@ -1,4 +1,4 @@
-package br.com.padtec.okco.core;
+package br.com.padtec.okco.core.application;
 
 import java.io.IOException;
 import java.io.InputStream;

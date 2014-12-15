@@ -10,9 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import br.com.padtec.okco.service.feature.OKCoFeatures;
-import br.com.padtec.okco.service.feature.OKCoResult;
-import br.com.padtec.okco.service.feature.OKCoResultFromFile;
+import br.com.padtec.okco.core.feature.OKCoFeatures;
+import br.com.padtec.okco.core.feature.OKCoResult;
+import br.com.padtec.okco.core.feature.OKCoResultFromFile;
 
 import com.google.gson.Gson;
 
