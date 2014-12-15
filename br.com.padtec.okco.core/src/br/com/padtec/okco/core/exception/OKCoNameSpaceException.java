@@ -1,4 +1,4 @@
-package br.com.padtec.common.exceptions;
+package br.com.padtec.okco.core.exception;
 
 public class OKCoNameSpaceException extends RuntimeException{
 

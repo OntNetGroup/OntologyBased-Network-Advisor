@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.factory.FactoryUtil;
@@ -15,6 +14,7 @@ import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.reasoning.HermitReasonerImpl;
 import br.com.padtec.common.reasoning.OntologyReasoner;
 import br.com.padtec.common.reasoning.PelletReasonerImpl;
+import br.com.padtec.okco.core.UploadApp;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;

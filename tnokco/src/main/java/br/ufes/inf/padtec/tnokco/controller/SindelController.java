@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.transformation.sindel.dto.DtoResultSindel;
 import br.com.padtec.trasnformation.sindel.Sindel2OWL;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;

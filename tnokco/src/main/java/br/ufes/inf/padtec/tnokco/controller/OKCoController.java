@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoClassifyInstancePost;
 import br.com.padtec.common.dto.DtoCommitMaxCard;
@@ -29,13 +28,14 @@ import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
-import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.graph.BaseGraphPlotting;
 import br.com.padtec.common.graph.OKCoGraphPlotting;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
+import br.com.padtec.okco.core.UploadApp;
+import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 
 @Controller
 //@RequestMapping("/instance")

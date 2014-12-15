@@ -1,13 +1,10 @@
-package br.com.padtec.common.application;
+package br.com.padtec.okco.core;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
-import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.exceptions.OKCoExceptionNameSpace;
-import br.com.padtec.common.exceptions.OKCoExceptionReasoner;
 import br.com.padtec.common.persistence.BaseModelRepository;
 import br.com.padtec.common.persistence.BaseModelRepositoryImpl;
 import br.com.padtec.common.persistence.InferredModelRepository;
@@ -16,6 +13,9 @@ import br.com.padtec.common.queries.OntModelAPI;
 import br.com.padtec.common.reasoning.HermitReasonerImpl;
 import br.com.padtec.common.reasoning.OntologyReasoner;
 import br.com.padtec.common.reasoning.PelletReasonerImpl;
+import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.core.exception.OKCoExceptionNameSpace;
+import br.com.padtec.okco.core.exception.OKCoExceptionReasoner;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;

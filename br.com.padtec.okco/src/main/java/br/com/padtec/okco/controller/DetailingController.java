@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.common.application.OKCoApp;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoGetPrevNextSpecProperty;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
-import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.types.URIDecoder;
+import br.com.padtec.okco.core.OKCoApp;
+import br.com.padtec.okco.core.exception.OKCoException;
 
 /**
  * Controller responsible for the detailing of individuals. 

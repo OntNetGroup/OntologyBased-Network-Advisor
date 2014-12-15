@@ -1,4 +1,4 @@
-package br.com.padtec.common.application;
+package br.com.padtec.okco.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;

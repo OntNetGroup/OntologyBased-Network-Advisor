@@ -3,7 +3,10 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <dependent-module archiveName="common-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.common/br.com.padtec.common">
+        <dependent-module archiveName="padtec-common-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.common/br.com.padtec.common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="okco-core-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.okco.core/br.com.padtec.okco.core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/br.com.padtec.okco/target/classes"/>

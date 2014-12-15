@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.transformation.condel.Condel2owlG805;
 import br.com.padtec.transformation.condel.OwlG805toCondel;
 import br.ufes.inf.padtec.tnokco.business.DtoResultAjax;

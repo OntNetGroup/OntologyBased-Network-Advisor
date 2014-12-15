@@ -24,10 +24,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
-import br.com.padtec.common.exceptions.OKCoExceptionFileFormat;
-import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
 import br.com.padtec.common.persistence.BaseModelRepositoryImpl;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
+import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.transformation.sindel.processor.BindsProcessor;
 import br.com.padtec.trasnformation.sindel.Sindel2OWL;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;

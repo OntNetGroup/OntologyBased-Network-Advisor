@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.common.application.ClassifierApp;
-import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoClassifyInstancePost;
 import br.com.padtec.common.dto.DtoResult;
-import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.core.ClassifierApp;
+import br.com.padtec.okco.core.UploadApp;
+import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 
 /**
  * Controller responsible for the functionality of Classifying the instances and relations.

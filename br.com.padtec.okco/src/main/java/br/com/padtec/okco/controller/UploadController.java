@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.com.padtec.common.application.OKCoApp;
-import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DtoResult;
-import br.com.padtec.common.exceptions.OKCoExceptionFileFormat;
-import br.com.padtec.common.exceptions.OKCoExceptionInstanceFormat;
-import br.com.padtec.common.exceptions.OKCoExceptionNameSpace;
-import br.com.padtec.common.exceptions.OKCoExceptionReasoner;
+import br.com.padtec.okco.core.OKCoApp;
+import br.com.padtec.okco.core.UploadApp;
+import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
+import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
+import br.com.padtec.okco.core.exception.OKCoExceptionNameSpace;
+import br.com.padtec.okco.core.exception.OKCoExceptionReasoner;
 
 /**
  * Controller responsible for the upload/store of the base ontology, inferred ontology and temporary ontology.

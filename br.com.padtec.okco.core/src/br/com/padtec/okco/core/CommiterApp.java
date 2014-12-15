@@ -1,4 +1,4 @@
-package br.com.padtec.common.application;
+package br.com.padtec.okco.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,13 +11,13 @@ import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoStatus;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
-import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
+import br.com.padtec.okco.core.exception.OKCoException;
 
 import com.hp.hpl.jena.ontology.OntModel;
 

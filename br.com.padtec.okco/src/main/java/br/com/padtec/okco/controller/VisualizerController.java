@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.com.padtec.common.application.VisualizerApp;
 import br.com.padtec.common.graph.BaseGraphPlotting;
 import br.com.padtec.common.graph.OKCoGraphPlotting;
 import br.com.padtec.common.types.URIDecoder;
+import br.com.padtec.okco.core.VisualizerApp;
 
 /**
  * Controller responsible for the graph visualization.

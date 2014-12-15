@@ -1,4 +1,4 @@
-package br.com.padtec.common.application;
+package br.com.padtec.okco.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,11 +12,11 @@ import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.dto.DtoStatus;
-import br.com.padtec.common.exceptions.OKCoNameSpaceException;
 import br.com.padtec.common.factory.DtoFactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
+import br.com.padtec.okco.core.exception.OKCoNameSpaceException;
 
 import com.hp.hpl.jena.rdf.model.InfModel;
 

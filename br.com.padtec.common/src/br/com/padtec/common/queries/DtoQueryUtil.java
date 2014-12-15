@@ -8,8 +8,6 @@ import java.util.List;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
-import br.com.padtec.common.exceptions.OKCoException;
-import br.com.padtec.common.exceptions.OKCoNameSpaceException;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
 
@@ -38,13 +36,13 @@ public class DtoQueryUtil {
 	 * @param diffFromEager Defines when the "different from individuals" of an individual must be got eagerly
 	 * @param sameAsEager Defines when the "same as individuals" of an individual must be got eagerly
 	 */
-	static public List<DtoInstance> getIndividuals(InfModel model, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager) throws OKCoNameSpaceException 
+	static public List<DtoInstance> getIndividuals(InfModel model, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager) throws RuntimeException 
 	{		
 		List<DtoInstance> result = new ArrayList<DtoInstance>();				
 		List<String> individualsURIList = QueryUtil.getIndividualsURIFromAllClasses(model);		
     	for (String indivURI : individualsURIList)
     	{    		    		
-    		if(!indivURI.contains("#")){ throw new OKCoNameSpaceException("Entity namespace problem. The " + indivURI +" have to followed by \"#\"."); }
+    		if(!indivURI.contains("#")){ throw new RuntimeException("Entity namespace problem. The " + indivURI +" have to followed by \"#\"."); }
     		List<String> classesURIList = null;
     		List<String> diffURIList = null;
     		List<String> sameAsURIList = null;
@@ -78,7 +76,7 @@ public class DtoQueryUtil {
 	 */
 	static public DtoInstance getIndividual(InfModel model, String individualURI, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager)
 	{		
-		if(!individualURI.contains("#")){ throw new OKCoNameSpaceException("Entity namespace problem. The " + individualURI +" have to followed by \"#\"."); }
+		if(!individualURI.contains("#")){ throw new RuntimeException("Entity namespace problem. The " + individualURI +" have to followed by \"#\"."); }
 		List<String> classesURIList = new ArrayList<String>();
 		List<String> diffURIList =  new ArrayList<String>();
 		List<String> sameAsURIList =  new ArrayList<String>();

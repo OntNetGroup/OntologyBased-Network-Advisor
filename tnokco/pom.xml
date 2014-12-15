@@ -112,28 +112,31 @@
 			<version>1.3.2</version>
 		</dependency>
 
-		<!-- OKCo kernel -->
-
 		<!-- Sindel2Owl -->
 		<dependency>
 			<groupId>br.com.padtec.transformation</groupId>
-			<artifactId>sindel</artifactId>
+			<artifactId>padtec-sindel2owl</artifactId>
 			<version>1.0</version>
 		</dependency>
 		
+		<!-- Padtec Common -->
 		<dependency>
 			<groupId>br.com.padtec</groupId>
-			<artifactId>common</artifactId>
+			<artifactId>padtec-common</artifactId>
 			<version>1.0</version>
 		</dependency>
+		
+		<!-- OKCo Core -->
 		<dependency>
 			<groupId>br.com.padtec.okco</groupId>
-			<artifactId>web</artifactId>
+			<artifactId>okco-core</artifactId>
 			<version>1.0</version>
 		</dependency>
+		
+		<!-- Condel2Owl -->
 		<dependency>
 			<groupId>br.com.padtec.transformation</groupId>
-			<artifactId>condel</artifactId>
+			<artifactId>padtec-condel2owl</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>

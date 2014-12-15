@@ -1,6 +1,6 @@
 <%@page import="java.net.URLEncoder"%>
-<%@ page import="br.com.padtec.common.application.UploadApp"%>
-<%@ page import="br.com.padtec.common.application.OKCoApp"%>
+<%@ page import="br.com.padtec.okco.core.UploadApp"%>
+<%@ page import="br.com.padtec.okco.core.OKCoApp"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="br.com.padtec.common.dto.DtoInstance"%>
 <%@ page import="br.com.padtec.common.dto.DtoStatus"%>

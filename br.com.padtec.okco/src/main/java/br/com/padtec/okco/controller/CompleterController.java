@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.com.padtec.common.application.CommiterApp;
-import br.com.padtec.common.application.OKCoApp;
-import br.com.padtec.common.application.UploadApp;
 import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoStatus;
-import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.URIDecoder;
+import br.com.padtec.okco.core.CommiterApp;
+import br.com.padtec.okco.core.OKCoApp;
+import br.com.padtec.okco.core.UploadApp;
+import br.com.padtec.okco.core.exception.OKCoException;
 
 /**
  * Controller responsible for the functionality of Completing the knowledge.

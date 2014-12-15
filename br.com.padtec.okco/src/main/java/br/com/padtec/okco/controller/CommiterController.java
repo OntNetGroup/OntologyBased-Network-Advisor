@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.common.application.CommiterApp;
 import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoCommitMaxCard;
 import br.com.padtec.common.dto.DtoCommitPost;
@@ -16,8 +15,9 @@ import br.com.padtec.common.dto.DtoCreateInstancePost;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
-import br.com.padtec.common.exceptions.OKCoException;
 import br.com.padtec.common.types.URIDecoder;
+import br.com.padtec.okco.core.CommiterApp;
+import br.com.padtec.okco.core.exception.OKCoException;
 
 /**
  * Controller responsible for the create/deletion/update and commit of new individuals and relations.

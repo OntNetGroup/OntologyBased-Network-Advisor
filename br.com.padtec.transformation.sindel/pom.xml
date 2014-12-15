@@ -65,7 +65,7 @@
     </dependency>
     <dependency>
     	<groupId>br.com.padtec</groupId>
-    	<artifactId>common</artifactId>
+    	<artifactId>padtec-common</artifactId>
     	<version>1.0</version>
     </dependency>
   </dependencies>
@@ -82,5 +82,5 @@
       </plugin>
     </plugins>
   </build>
-  <artifactId>sindel</artifactId>
+  <artifactId>padtec-sindel2owl</artifactId>
 </project>
