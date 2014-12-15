@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.condelOwlg805;
+package br.com.padtec.common.features.condel;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

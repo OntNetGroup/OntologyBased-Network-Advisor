@@ -1,4 +1,4 @@
-package auxiliar;
+package br.com.padtec.common.features.condel;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -22,7 +22,6 @@ public class JavaAplicationGenerateCode {
 	public static void main(String[] args) {		
 				
 		String inputFileName = "C://Users//fabio_000//Desktop//OntologiasOwl//G800Completa.owl";	
-		String NS = "";
 		String javaCodeProp = "";
 		String javaCodeCls = "";
 		
@@ -33,7 +32,7 @@ public class JavaAplicationGenerateCode {
 		    throw new IllegalArgumentException("File: " + inputFileName + " not found");
 		}		
 		model.read(in,null);
-		NS = model.getNsPrefixURI(""); 
+		 
 		
 		//QueryExample(model, NS);
 		

@@ -3,8 +3,8 @@ package br.com.padtec.common.utilities;
 import br.com.padtec.common.dto.simple.SimpleDtoClass;
 import br.com.padtec.common.dto.simple.SimpleDtoInstance;
 import br.com.padtec.common.dto.simple.SimpleDtoRelation;
-import br.com.padtec.common.features.OKCoFeatures;
-import br.com.padtec.common.features.OKCoResult;
+import br.com.padtec.common.features.okco.OKCoFeatures;
+import br.com.padtec.common.features.okco.OKCoResult;
 
 
 public class ProgramUtility {

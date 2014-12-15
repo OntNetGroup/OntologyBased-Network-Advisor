@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.condelOwlg805;
+package br.com.padtec.common.features.condel;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;

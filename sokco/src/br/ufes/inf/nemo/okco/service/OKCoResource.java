@@ -12,9 +12,9 @@ import javax.ws.rs.Consumes;
 
 import com.google.gson.Gson;
 
-import br.com.padtec.common.features.OKCoFeatures;
-import br.com.padtec.common.features.OKCoResult;
-import br.com.padtec.common.features.OKCoResultFromFile;
+import br.com.padtec.common.features.okco.OKCoFeatures;
+import br.com.padtec.common.features.okco.OKCoResult;
+import br.com.padtec.common.features.okco.OKCoResultFromFile;
 import br.ufes.inf.nemo.okco.service.model.SokcoObject;
 
 @Path("/app")

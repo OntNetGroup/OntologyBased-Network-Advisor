@@ -1,13 +1,11 @@
-package br.ufes.inf.nemo.condelOwlg805;
+package br.com.padtec.common.features.condel;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import br.com.padtec.common.dto.DtoInstanceRelation;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;

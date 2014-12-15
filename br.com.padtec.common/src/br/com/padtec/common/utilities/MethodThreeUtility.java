@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import br.com.padtec.common.dto.simple.SimpleDtoClass;
 import br.com.padtec.common.dto.simple.SimpleDtoInstance;
 import br.com.padtec.common.dto.simple.SimpleDtoRelation;
-import br.com.padtec.common.features.OKCoFeatures;
-import br.com.padtec.common.features.OKCoResultFromFile;
+import br.com.padtec.common.features.okco.OKCoFeatures;
+import br.com.padtec.common.features.okco.OKCoResultFromFile;
 
 public class MethodThreeUtility {
 

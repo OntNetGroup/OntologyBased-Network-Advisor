@@ -9,9 +9,6 @@
         <dependent-module archiveName="Sindel2OWL-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Sindel2OWL/Sindel2OWL">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="CondelOWLG805_Transformations-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/CondelOWLG805_Transformations/CondelOWLG805_Transformations">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="GraphVisualizer-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/GraphVisualizer/GraphVisualizer">
             <dependency-type>uses</dependency-type>
         </dependent-module>

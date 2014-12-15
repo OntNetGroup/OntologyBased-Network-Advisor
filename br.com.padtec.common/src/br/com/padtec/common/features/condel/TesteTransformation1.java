@@ -1,11 +1,8 @@
-package br.ufes.inf.nemo.condel2owlg805App;
+package br.com.padtec.common.features.condel;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-
-import br.ufes.inf.nemo.condelOwlg805.Condel2owlG805;
-import br.ufes.inf.nemo.condelOwlg805.ReaderCondel;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;

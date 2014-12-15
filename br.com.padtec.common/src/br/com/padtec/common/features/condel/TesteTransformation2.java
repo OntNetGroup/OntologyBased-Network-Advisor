@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.condel2owlg805App;
+package br.com.padtec.common.features.condel;
 
 
 import java.io.BufferedWriter;
@@ -8,8 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
-import br.ufes.inf.nemo.condelOwlg805.OwlG805toCondel;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
