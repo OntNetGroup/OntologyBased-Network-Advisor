@@ -17,7 +17,7 @@
     </plugins>
   </build>
   <dependencies>
-  	<!-- Pellet -->
+  	<!-- Pellet  -->
 	<dependency>
 		<groupId>com.github.ansell.pellet</groupId>
 		<artifactId>pellet-jena</artifactId>
