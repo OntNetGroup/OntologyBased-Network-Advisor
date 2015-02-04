@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.com.padtec.advisor.controller.UploaderController;
+import br.com.padtec.advisor.controller.AdvisorUploadController;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.DtoQueryUtil;
@@ -163,7 +163,7 @@ public class ProvisioningController{
 				String error = "Ontology have inconsistence: " + e.toString();
 				System.out.println(error);
 				request.getSession().setAttribute("errorMensage", error);
-				UploaderController.clearOKCoUploader();
+				AdvisorUploadController.clearOKCoUploader();
 				dto.ok = false;
 				dto.result = error;				
 				return dto;
@@ -260,7 +260,7 @@ public class ProvisioningController{
 			String error = "Ontology have inconsistence: " + e.toString();
 			System.out.println(error);
 			request.getSession().setAttribute("errorMensage", error);
-			UploaderController.clearOKCoUploader();
+			AdvisorUploadController.clearOKCoUploader();
 			dto.ok = false;
 			dto.result = error;				
 			return dto;

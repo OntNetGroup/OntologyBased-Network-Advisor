@@ -67,7 +67,6 @@ public class UploadController {
 			return "faq";
 		}
 	}
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password)
 	{		
@@ -163,7 +162,7 @@ public class UploadController {
 		    return "index";
 		}
 	}
-
+	
 	/* AJAX */
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
 	public DtoResult save(HttpServletRequest request)
