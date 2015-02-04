@@ -7,9 +7,8 @@ import java.util.List;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.okco.core.application.UploadApp;
+import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
-import br.ufes.inf.padtec.tnokco.controller.HomeController;
 import br.ufes.inf.padtec.tnokco.controller.ManagerInstances;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -37,11 +36,11 @@ public class ManagerRelations {
 				
 				//Relations from instance
 				List<DtoInstanceRelation> dtoInstanceRelations = new ArrayList<DtoInstanceRelation>();
-				List<String> propertiesURIList = QueryUtil.getPropertiesURI(HomeController.InfModel, instance.ns + instance.name);
+				List<String> propertiesURIList = QueryUtil.getPropertiesURI(OKCoUploader.getInferredModel(), instance.ns + instance.name);
 				for(String propertyURI: propertiesURIList){
 					DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 				    dtoItem.Property = propertyURI;
-				    List<String> ranges = QueryUtil.getRangeURIs(UploadApp.getInferredModel(), propertyURI);
+				    List<String> ranges = QueryUtil.getRangeURIs(OKCoUploader.getInferredModel(), propertyURI);
 				    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
 				    else dtoItem.Target = "";
 				    dtoInstanceRelations.add(dtoItem);

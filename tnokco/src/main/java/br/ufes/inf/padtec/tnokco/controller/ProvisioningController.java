@@ -22,12 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import br.com.padtec.advisor.controller.UploaderController;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
-import br.com.padtec.common.persistence.BaseModelRepositoryImpl;
+import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
-import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.transformation.sindel.processor.BindsProcessor;
 import br.com.padtec.trasnformation.sindel.Sindel2OWL;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
@@ -62,12 +63,12 @@ public class ProvisioningController{
 		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
 
 		// Load Model
-		HomeController.Model = HomeController.Repository.Open(path);
+		OKCoUploader.getBaseModel() = HomeController.Repository.Open(path);
 		HomeController.tmpModel = HomeController.Repository.Open(path);
-		HomeController.NS = HomeController.Repository.getNameSpace(HomeController.Model);
+		OKCoUploader.getNamespace() = HomeController.Repository.getNameSpace(OKCoUploader.getBaseModel());
 		 */
 
-		if(HomeController.Model == null)
+		if(OKCoUploader.getBaseModel() == null)
 		{
 			String error = "Error! You need to load the model first.";
 			request.getSession().setAttribute("errorMensage", error);
@@ -88,7 +89,7 @@ public class ProvisioningController{
 
 		try {
 			
-			HomeController.Repository = new BaseModelRepositoryImpl();
+			//HomeController.Repository = new BaseModelRepositoryImpl(); ### I think we don not need this anymore...
 
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
@@ -148,43 +149,26 @@ public class ProvisioningController{
 			try {		  	      
 
 				// Populate the model
-				Sindel2OWL so = new Sindel2OWL(HomeController.Model, individualsPrefixName);
+				Sindel2OWL so = new Sindel2OWL(OKCoUploader.getBaseModel(), individualsPrefixName);
 				so.run(sindelParsedCode);
 
-				HomeController.Model = so.getDtoSindel().model;
-
-				//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
-				HomeController.InfModel = so.getDtoSindel().model;
+				//OKCoUploader.getBaseModel() = so.getDtoSindel().model;
+				//OKCoUploader.getInferredModel() = HomeController.Reasoner.run(OKCoUploader.getBaseModel());
 				
-				// Update list instances
-				HomeController.UpdateLists();
+				OKCoUploader.substituteInferredModelFromBaseModel(false);
+				
 
 			} catch (InconsistentOntologyException e) {
 
 				String error = "Ontology have inconsistence: " + e.toString();
 				System.out.println(error);
 				request.getSession().setAttribute("errorMensage", error);
-				HomeController.Model = null;
-				HomeController.InfModel = null;
-				HomeController.ListAllInstances = null;
-
+				UploaderController.clearOKCoUploader();
 				dto.ok = false;
 				dto.result = error;				
 				return dto;
 
-			} catch (OKCoExceptionInstanceFormat e) {
-
-				String error = "Entity format error: " + e.toString();
-				System.out.println(error);
-				request.getSession().setAttribute("errorMensage", error);
-				HomeController.Model = null;
-				HomeController.InfModel = null;
-				HomeController.ListAllInstances = null;
-
-				dto.ok = false;
-				dto.result = error;				
-				return dto;				
-			}
+			} 
 		}
 
 		request.getSession().removeAttribute("errorMensage");      
@@ -263,42 +247,26 @@ public class ProvisioningController{
 		try {		  	      
 
 			// Populate the model
-			Sindel2OWL so = new Sindel2OWL(HomeController.Model, individualsPrefixName);
+			Sindel2OWL so = new Sindel2OWL(OKCoUploader.getBaseModel(), individualsPrefixName);
 			so.run(sindelCode);
 
-			HomeController.Model = so.getDtoSindel().model;
-
-			//HomeController.InfModel = HomeController.Reasoner.run(HomeController.Model);
-			HomeController.InfModel = so.getDtoSindel().model;
-			// Update list instances
-			HomeController.UpdateLists();
-
+			//OKCoUploader.getBaseModel() = so.getDtoSindel().model;
+			//OKCoUploader.getInferredModel() = HomeController.Reasoner.run(OKCoUploader.getBaseModel());
+			
+			OKCoUploader.substituteInferredModelFromBaseModel(false);
+		
 		} catch (InconsistentOntologyException e) {
 
 			String error = "Ontology have inconsistence: " + e.toString();
 			System.out.println(error);
 			request.getSession().setAttribute("errorMensage", error);
-			HomeController.Model = null;
-			HomeController.InfModel = null;
-			HomeController.ListAllInstances = null;
-
+			UploaderController.clearOKCoUploader();
 			dto.ok = false;
 			dto.result = error;				
 			return dto;
 
-		} catch (OKCoExceptionInstanceFormat e) {
-
-			String error = "Entity format error: " + e.toString();
-			System.out.println(error);
-			request.getSession().setAttribute("errorMensage", error);
-			HomeController.Model = null;
-			HomeController.InfModel = null;
-			HomeController.ListAllInstances = null;
-
-			dto.ok = false;
-			dto.result = error;				
-			return dto;				
 		}
+
 
 		//FAZER O CATCH DA SINDEL
 
@@ -338,29 +306,29 @@ public class ProvisioningController{
 		String outputNs = "";
 		String inputNs = "";
 		
-		List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, HomeController.NS+outInt);
+		List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace()+outInt);
 		for (DtoInstanceRelation outIntRelation : outIntRelations) {
-			if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
+			if(outIntRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"maps_output")){
 				outputNs = outIntRelation.Target;
-				outputNs = outputNs.replace(HomeController.NS, "");
+				outputNs = outputNs.replace(OKCoUploader.getNamespace(), "");
 				break;
 			}
 		}		
 
-		List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, HomeController.NS+inInt);
+		List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace()+inInt);
 		for (DtoInstanceRelation inIntRelation : inIntRelations) {
-			if(inIntRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
+			if(inIntRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"maps_input")){
 				inputNs = inIntRelation.Target;
-				inputNs = inputNs.replace(HomeController.NS, "");
+				inputNs = inputNs.replace(OKCoUploader.getNamespace(), "");
 				break;
 			}
 		}
 		
 		Boolean inputIsPmInput = false;
 		if(inputNs.equals("")){
-			DtoInstance inputOrIntInput = getInstanceFromNameSpace(HomeController.NS+inInt);
+			DtoInstance inputOrIntInput = getInstanceFromNameSpace(OKCoUploader.getNamespace()+inInt);
 			for (String inputOrIntInputClass : inputOrIntInput.ListClasses) {
-				if(inputOrIntInputClass.equals(HomeController.NS+"Physical_Media_Input")){
+				if(inputOrIntInputClass.equals(OKCoUploader.getNamespace()+"Physical_Media_Input")){
 					inputNs = inInt;
 					inputIsPmInput = true;
 					break;
@@ -370,9 +338,9 @@ public class ProvisioningController{
 //		System.out.println();
 		Boolean outputIsPmOutput = false;
 		if(outputNs.equals("")){
-			DtoInstance outputOrIntOutput = getInstanceFromNameSpace(HomeController.NS+outputNs);
+			DtoInstance outputOrIntOutput = getInstanceFromNameSpace(OKCoUploader.getNamespace()+outputNs);
 			for (String outputOrIntOutputClass : outputOrIntOutput.ListClasses) {
-				if(outputOrIntOutputClass.equals(HomeController.NS+"Physical_Media_Output")){
+				if(outputOrIntOutputClass.equals(OKCoUploader.getNamespace()+"Physical_Media_Output")){
 					outputNs = inInt;
 					outputIsPmOutput = true;
 					break;
@@ -384,21 +352,21 @@ public class ProvisioningController{
 		Individual a, b;
 		ObjectProperty rel = null;
 		if(inputIsPmInput && !outputIsPmOutput){
-			a = HomeController.Model.getIndividual(HomeController.NS+outInt);
-			b = HomeController.Model.getIndividual(HomeController.NS+inputNs);
-			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds_PM_out_interface");
+			a = OKCoUploader.getBaseModel().getIndividual(OKCoUploader.getNamespace()+outInt);
+			b = OKCoUploader.getBaseModel().getIndividual(OKCoUploader.getNamespace()+inputNs);
+			rel = OKCoUploader.getBaseModel().getObjectProperty(OKCoUploader.getNamespace()+"binds_PM_out_interface");
 		}else if(!inputIsPmInput && outputIsPmOutput){
-			a = HomeController.Model.getIndividual(HomeController.NS+inInt);
-			b = HomeController.Model.getIndividual(HomeController.NS+outputNs);
-			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds_PM_in_Interface");
+			a = OKCoUploader.getBaseModel().getIndividual(OKCoUploader.getNamespace()+inInt);
+			b = OKCoUploader.getBaseModel().getIndividual(OKCoUploader.getNamespace()+outputNs);
+			rel = OKCoUploader.getBaseModel().getObjectProperty(OKCoUploader.getNamespace()+"binds_PM_in_Interface");
 		}else{
-			a = HomeController.Model.getIndividual(HomeController.NS+outInt);
-			b = HomeController.Model.getIndividual(HomeController.NS+inInt);
-			rel = HomeController.Model.getObjectProperty(HomeController.NS+"interface_binds");
+			a = OKCoUploader.getBaseModel().getIndividual(OKCoUploader.getNamespace()+outInt);
+			b = OKCoUploader.getBaseModel().getIndividual(OKCoUploader.getNamespace()+inInt);
+			rel = OKCoUploader.getBaseModel().getObjectProperty(OKCoUploader.getNamespace()+"interface_binds");
 		}
 		
-		Statement stmt = HomeController.Model.createStatement(a, rel, b);
-		HomeController.Model.add(stmt);
+		Statement stmt = OKCoUploader.getBaseModel().createStatement(a, rel, b);
+		OKCoUploader.getBaseModel().add(stmt);
 
 		if(listInstancesCreated == null){
 			listInstancesCreated = new ArrayList<String>();
@@ -408,18 +376,18 @@ public class ProvisioningController{
 		
 		if(!outputNs.equals("") && !inputNs.equals("")){
 			
-			a = HomeController.Model.getIndividual(HomeController.NS+outputNs);
-			b = HomeController.Model.getIndividual(HomeController.NS+inputNs);
+			a = OKCoUploader.getBaseModel().getIndividual(OKCoUploader.getNamespace()+outputNs);
+			b = OKCoUploader.getBaseModel().getIndividual(OKCoUploader.getNamespace()+inputNs);
 			
-//			ArrayList<String> tiposA=HomeController.Search.GetClassesFrom(HomeController.NS+a.getLocalName(),HomeController.Model);
-//			ArrayList<String> tiposB=HomeController.Search.GetClassesFrom(HomeController.NS+b.getLocalName(),HomeController.Model);
-//			tiposA.remove(HomeController.NS+"Geographical_Element");
-//			tiposA.remove(HomeController.NS+"Bound_Input-Output");
-//			tiposB.remove(HomeController.NS+"Geographical_Element");
-//			tiposB.remove(HomeController.NS+"Bound_Input-Output");
-//			rel = HomeController.Model.getObjectProperty(HomeController.NS+"binds");
-//			stmt = HomeController.Model.createStatement(a, rel, b);
-//			HomeController.Model.add(stmt);	
+//			ArrayList<String> tiposA=HomeController.Search.GetClassesFrom(OKCoUploader.getNamespace()+a.getLocalName(),OKCoUploader.getBaseModel());
+//			ArrayList<String> tiposB=HomeController.Search.GetClassesFrom(OKCoUploader.getNamespace()+b.getLocalName(),OKCoUploader.getBaseModel());
+//			tiposA.remove(OKCoUploader.getNamespace()+"Geographical_Element");
+//			tiposA.remove(OKCoUploader.getNamespace()+"Bound_Input-Output");
+//			tiposB.remove(OKCoUploader.getNamespace()+"Geographical_Element");
+//			tiposB.remove(OKCoUploader.getNamespace()+"Bound_Input-Output");
+//			rel = OKCoUploader.getBaseModel().getObjectProperty(OKCoUploader.getNamespace()+"binds");
+//			stmt = OKCoUploader.getBaseModel().createStatement(a, rel, b);
+//			OKCoUploader.getBaseModel().add(stmt);	
 //			HashMap<String, String> hash = new HashMap<String, String>();
 //			hash.put("INPUT", tiposB.get(0));
 //			hash.put("OUTPUT", tiposA.get(0));
@@ -427,30 +395,30 @@ public class ProvisioningController{
 //			Provisioning.bindsSpecific(a,b,tiposA.get(0),tiposB.get(0));
 			//BindsProcessor.bindPorts(outputNs, inputNs);
 			
-			BindsProcessor.bindPorts(null, a, b, null, HomeController.NS, HomeController.Model, listInstancesCreated);
+			BindsProcessor.bindPorts(null, a, b, null, OKCoUploader.getNamespace(), OKCoUploader.getBaseModel(), listInstancesCreated);
 
 		}
 
-		HomeController.InfModel = HomeController.Model;
+		OKCoUploader.substituteInferredModelFromBaseModel(false);
 		
 		
-		if(updateListsInTheEnd){
-			
-			try {
-				
-				for (String instanceUri : listInstancesCreated) {
-					HomeController.UpdateAddIntanceInLists(instanceUri);	
-				}
-				
-			} catch (InconsistentOntologyException e) {
-				
-				e.printStackTrace();
-				
-			} catch (OKCoExceptionInstanceFormat e) {
-				
-				e.printStackTrace();
-			}			
-		}
+//		if(updateListsInTheEnd){
+//			
+//			try {
+//				
+////				for (String instanceUri : listInstancesCreated) {
+////					HomeController.UpdateAddIntanceInLists(instanceUri);	
+////				}
+//				
+//			} catch (InconsistentOntologyException e) {
+//				
+//				e.printStackTrace();
+//				
+//			} catch (OKCoExceptionInstanceFormat e) {
+//				
+//				e.printStackTrace();
+//			}			
+//		}
 		
 		dto.ok = true;
 		dto.result = "ok";
@@ -477,18 +445,18 @@ public class ProvisioningController{
 
 		//get all relations of the output interface
 		
-		List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
+		List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), outputInterface.ns+outputInterface.name);
 
 		//get namespaces of individuals of some output interface relations
 		String outputNs = "";
 		String eqOutNs = "";
 		String interfaceBindsNs = "";
 		for (DtoInstanceRelation outRelation : outIntRelations) {
-			if(outRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_output")){
+			if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"maps_output")){
 				outputNs = outRelation.Target;
-			}else if(outRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
+			}else if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"INV.componentOf")){
 				eqOutNs = outRelation.Target;
-			}else if(outRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
+			}else if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"interface_binds")){
 				interfaceBindsNs = outRelation.Target;
 			}
 		}
@@ -499,12 +467,12 @@ public class ProvisioningController{
 		//if the output interface does not maps an output, it can not connects
 		if(outputNs.equals("")){
 			for (DtoInstance inputInterface : inputInterfaces) {
-				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
+				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), inputInterface.ns+inputInterface.name);
 				String eqInNs = "";
 				
 				//get namespaces of individuals of some input interface relations
 				for (DtoInstanceRelation inRelation : inIntRelations) {
-					if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
+					if(inRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"INV.componentOf")){
 						eqInNs = inRelation.Target;		
 						break;
 					}
@@ -535,7 +503,8 @@ public class ProvisioningController{
 		
 		//get the instance of the output mapped by the output interface
 		DtoInstance output = null;
-		for (DtoInstance instance : HomeController.ListAllInstances) {
+		List<DtoInstance> listAllInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
+		for (DtoInstance instance : listAllInstances) {
 			if(outputNs.equals(instance.ns+instance.name)){
 				output = instance;
 				break;
@@ -547,7 +516,7 @@ public class ProvisioningController{
 //		ArrayList<Instance> inputInterfaces = new ArrayList<Instance>(); 
 //		for (Instance instance : HomeController.ListAllInstances) {
 //			for (String className : instance.ListClasses) {
-//				className = className.replace(HomeController.NS, "");
+//				className = className.replace(OKCoUploader.getNamespace(), "");
 //				if(className.equalsIgnoreCase("Input_Interface")){
 //					inputInterfaces.add(instance);
 //					break;
@@ -558,38 +527,40 @@ public class ProvisioningController{
 		
 		//now, the idea is compare all types of the output with all types of all inputs
 		for (String outputClassName : output.ListClasses) {
-			outputClassName = outputClassName.replace(HomeController.NS, "");
+			outputClassName = outputClassName.replace(OKCoUploader.getNamespace(), "");
 			
 			//here, I look for possible connections with input interfaces
 			for (DtoInstance inputInterface : inputInterfaces) {
-				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, inputInterface.ns+inputInterface.name);
+				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), inputInterface.ns+inputInterface.name);
 				String inputNs = "";
 				String eqInNs = "";
 				Boolean inputInterfaceAlreadyConnected = false;
 				
 				//get namespaces of individuals of some input interface relations
 				for (DtoInstanceRelation inRelation : inIntRelations) {
-					if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"maps_input")){
+					if(inRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"maps_input")){
 						inputNs = inRelation.Target;
-					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
+					}else if(inRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"INV.componentOf")){
 						eqInNs = inRelation.Target;						
-					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.interface_binds")){
+					}else if(inRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"INV.interface_binds")){
 						inputInterfaceAlreadyConnected = true;
 					}
 				}
 
+				List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
+				
 				//since I verify the inverse relation of interface_binds above, 
 				//it's necessary to verify if some output interface has the interface_binds relation
 				//with the actual input interface
 				//the block below it's for this purpose
 				if(!inputInterfaceAlreadyConnected){
-					for(DtoInstance otherOutput : HomeController.ListAllInstances){
+					for(DtoInstance otherOutput : allInstances){
 						for (String otherOutputClassName : otherOutput.ListClasses) {
-							otherOutputClassName = otherOutputClassName.replace(HomeController.NS, "");
+							otherOutputClassName = otherOutputClassName.replace(OKCoUploader.getNamespace(), "");
 							if(otherOutputClassName.equalsIgnoreCase("Output_Interface")){
-								List<DtoInstanceRelation> otherOutputRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, otherOutput.ns+otherOutput.name);
+								List<DtoInstanceRelation> otherOutputRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), otherOutput.ns+otherOutput.name);
 								for (DtoInstanceRelation otherOutputRelation : otherOutputRelations) {
-									if(otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
+									if(otherOutputRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"interface_binds")){
 										if((inputInterface.ns+inputInterface.name).equals(otherOutputRelation.Target)){
 											inputInterfaceAlreadyConnected = true;
 											break;
@@ -611,7 +582,7 @@ public class ProvisioningController{
 				if(inputNs != ""){
 					//get the input mapped by the input interface 
 					DtoInstance input = null;
-					for (DtoInstance instance : HomeController.ListAllInstances) {
+					for (DtoInstance instance : allInstances) {
 						if(inputNs.equals(instance.ns+instance.name)){
 							input = instance;
 							break;
@@ -620,7 +591,7 @@ public class ProvisioningController{
 					
 					//for each input and output class names, I verify if exist a possible relation of binds
 					for(String inputClassName : input.ListClasses){
-						inputClassName = inputClassName.replace(HomeController.NS, ""); 
+						inputClassName = inputClassName.replace(OKCoUploader.getNamespace(), ""); 
 						HashMap<String, String> tf1 = new HashMap<String, String>();
 						tf1.put("INPUT", inputClassName);
 						tf1.put("OUTPUT", outputClassName);
@@ -672,15 +643,15 @@ public class ProvisioningController{
 			
 			//here, I look for possible connections with physical media inputs
 			for (DtoInstance pmInput : physicalMediaInputs) {
-				List<DtoInstanceRelation> inPMRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, pmInput.ns+pmInput.name);
+				List<DtoInstanceRelation> inPMRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), pmInput.ns+pmInput.name);
 				String pmNs = "";
 				Boolean inputPMAlreadyConnected = false;
 				
 				//get namespaces of individuals of some input interface relations
 				for (DtoInstanceRelation inRelation : inPMRelations) {
-					if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf.Single_Physical_Media.Physical_Media_Input") || inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
+					if(inRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"INV.componentOf.Single_Physical_Media.Physical_Media_Input") || inRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"INV.componentOf")){
 						pmNs = inRelation.Target;
-					}else if(inRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.binds_PM_out_interface")){
+					}else if(inRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"INV.binds_PM_out_interface")){
 						inputPMAlreadyConnected = true;
 					}
 				}
@@ -690,16 +661,17 @@ public class ProvisioningController{
 				//with the actual PM input
 				//the block below it's for this purpose
 				if(!inputPMAlreadyConnected){
-					for(DtoInstance otherOutput : HomeController.ListAllInstances){
+					List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
+					for(DtoInstance otherOutput : allInstances){
 						for (String otherOutputClassName : otherOutput.ListClasses) {
-							otherOutputClassName = otherOutputClassName.replace(HomeController.NS, "");
+							otherOutputClassName = otherOutputClassName.replace(OKCoUploader.getNamespace(), "");
 							if(otherOutputClassName.equalsIgnoreCase("Output")){
 								if(otherOutput.name.equals("out_sotf3")){
 									System.out.println();
 								}
-								List<DtoInstanceRelation> otherOutputRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, otherOutput.ns+otherOutput.name);
+								List<DtoInstanceRelation> otherOutputRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), otherOutput.ns+otherOutput.name);
 								for (DtoInstanceRelation otherOutputRelation : otherOutputRelations) {
-									if(otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds") || otherOutputRelation.Property.equalsIgnoreCase(HomeController.NS+"binds")){
+									if(otherOutputRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"interface_binds") || otherOutputRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"binds")){
 										if((pmInput.ns+pmInput.name).equals(otherOutputRelation.Target)){
 											inputPMAlreadyConnected = true;
 											break;
@@ -721,7 +693,7 @@ public class ProvisioningController{
 				
 				//for each input and output class names, I verify if exist a possible relation of binds
 				for(String pmInputClassName : pmInput.ListClasses){
-					pmInputClassName = pmInputClassName.replace(HomeController.NS, ""); 
+					pmInputClassName = pmInputClassName.replace(OKCoUploader.getNamespace(), ""); 
 					HashMap<String, String> tf1 = new HashMap<String, String>();
 					tf1.put("INPUT", pmInputClassName);
 					tf1.put("OUTPUT", outputClassName);
@@ -765,7 +737,8 @@ public class ProvisioningController{
 	
 	public static DtoInstance getInstanceFromNameSpace(String nameSpace){
 		DtoInstance instance = null;
-		for (DtoInstance inst : HomeController.ListAllInstances) {
+		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
+		for (DtoInstance inst : allInstances) {
 			String instNs = inst.name;
 			instNs = instNs.replace(inst.ns, "");
 			nameSpace = nameSpace.replace(inst.ns, "");
@@ -788,10 +761,11 @@ public class ProvisioningController{
 	
 	public static ArrayList<DtoInstance> getInstancesFromClasses(ArrayList<String> classNamesWithoutNameSpace){
 		ArrayList<DtoInstance> instances = new ArrayList<DtoInstance>();
-		for (DtoInstance instance : HomeController.ListAllInstances) {
+		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
+		for (DtoInstance instance : allInstances) {
 			for (String classNameWithoutNameSpace : classNamesWithoutNameSpace) {
 				Boolean foundInstance = false;
-				if(instance.ListClasses.contains(HomeController.NS+classNameWithoutNameSpace)){
+				if(instance.ListClasses.contains(OKCoUploader.getNamespace()+classNameWithoutNameSpace)){
 					if(!instances.contains(instance)){
 						instances.add(instance);
 					}
@@ -803,7 +777,7 @@ public class ProvisioningController{
 				}
 			}			
 //			for (String className : instance.ListClasses) {
-//				className = className.replace(HomeController.NS, "");
+//				className = className.replace(OKCoUploader.getNamespace(), "");
 //				if(className.equalsIgnoreCase(classNameWithoutNameSpace)){
 //					
 //				}
@@ -817,15 +791,15 @@ public class ProvisioningController{
 			return true;
 		}
 		
-		List<DtoInstanceRelation> equipRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, actualEquipNS+actualEquipName);
+		List<DtoInstanceRelation> equipRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), actualEquipNS+actualEquipName);
 		
 		ArrayList<String> outIntNss = new ArrayList<String>();
 		//get namespaces of individuals of some input interface relations
 		for (DtoInstanceRelation eqRelation : equipRelations) {
-			if(eqRelation.Property.equalsIgnoreCase(HomeController.NS+"componentOf.Equipment.Output_Interface") || eqRelation.Property.equalsIgnoreCase(HomeController.NS+"componentOf")){
+			if(eqRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"componentOf.Equipment.Output_Interface") || eqRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"componentOf")){
 				DtoInstance outIntInstance = getInstanceFromNameSpace(eqRelation.Target);
 				for (String classOutIntName : outIntInstance.ListClasses) {
-					if(classOutIntName.equals(HomeController.NS+"Output_Interface")){
+					if(classOutIntName.equals(OKCoUploader.getNamespace()+"Output_Interface")){
 						outIntNss.add(eqRelation.Target);
 					}
 				}
@@ -835,22 +809,22 @@ public class ProvisioningController{
 		for (String oiNs : outIntNss) {
 			DtoInstance outputInterface = getInstanceFromNameSpace(oiNs);
 			
-			List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, outputInterface.ns+outputInterface.name);
+			List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), outputInterface.ns+outputInterface.name);
 			String inIntNs = "";
 			//get namespaces of individuals of some input interface relations
 			for (DtoInstanceRelation outIntRelation : outIntRelations) {
-				if(outIntRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
+				if(outIntRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"interface_binds")){
 					inIntNs = outIntRelation.Target;
 					break;
 				}
 			}
 			//se inIntNs != null
 			if(!inIntNs.equals("")){
-				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, inIntNs);
+				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), inIntNs);
 				String inIntEquipNs = "";
 				//get namespaces of individuals of some input interface relations
 				for (DtoInstanceRelation inIntRelation : inIntRelations) {
-					if(inIntRelation.Property.equalsIgnoreCase(HomeController.NS+"INV.componentOf")){
+					if(inIntRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"INV.componentOf")){
 						inIntEquipNs = inIntRelation.Target;
 						break;
 					}
@@ -886,13 +860,14 @@ public class ProvisioningController{
 	public String autoBinds(HttpServletRequest request){
 		//pego todas as instancias de interface de output nao conectadas
 		ArrayList<DtoInstance> outputInterfaces = new ArrayList<DtoInstance>(); 
-		for (DtoInstance instance : HomeController.ListAllInstances) {
+		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
+		for (DtoInstance instance : allInstances) {
 			for (String className : instance.ListClasses) {
-				if(className.equalsIgnoreCase(HomeController.NS+"Output_Interface")){
-					List<DtoInstanceRelation> outputInterfaceRelations = ApplicationQueryUtil.GetInstanceRelations(HomeController.InfModel, instance.ns+instance.name);
+				if(className.equalsIgnoreCase(OKCoUploader.getNamespace()+"Output_Interface")){
+					List<DtoInstanceRelation> outputInterfaceRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), instance.ns+instance.name);
 					boolean alreadyConnected = false;
 					for (DtoInstanceRelation outputInterfaceRelation : outputInterfaceRelations) {
-						if(outputInterfaceRelation.Property.equalsIgnoreCase(HomeController.NS+"interface_binds")){
+						if(outputInterfaceRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"interface_binds")){
 							if((instance.ns+instance.name).equals(outputInterfaceRelation.Target)){
 								alreadyConnected  = true;
 								break;
@@ -953,16 +928,16 @@ public class ProvisioningController{
 		}
 		
 		if(bindsMade>0){
-			try {
-				for (String instanceUri : listInstancesCreated) {
-					HomeController.UpdateAddIntanceInLists(instanceUri);	
-				}
-				//HomeController.UpdateLists();
-			} catch (InconsistentOntologyException e) {
-				e.printStackTrace();
-			} catch (OKCoExceptionInstanceFormat e) {
-				e.printStackTrace();
-			}
+//			try {
+////				for (String instanceUri : listInstancesCreated) {
+////					HomeController.UpdateAddIntanceInLists(instanceUri);	
+////				}
+//				//HomeController.UpdateLists();
+//			} catch (InconsistentOntologyException e) {
+//				e.printStackTrace();
+//			} catch (OKCoExceptionInstanceFormat e) {
+//				e.printStackTrace();
+//			}
 		}else{
 			returnMessage = "No interfaces binded.";
 		}

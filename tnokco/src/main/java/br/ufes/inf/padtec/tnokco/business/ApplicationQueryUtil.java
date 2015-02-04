@@ -7,7 +7,7 @@ import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
-import br.ufes.inf.padtec.tnokco.controller.HomeController;
+import br.com.padtec.okco.core.application.OKCoUploader;
 import br.ufes.inf.padtec.tnokco.controller.ManagerInstances;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -269,11 +269,11 @@ public class ApplicationQueryUtil {
 	static public List<DtoInstanceRelation> GetInstanceAllRelations(InfModel infModel, String individualUri)
 	{
 		List<DtoInstanceRelation> listIndividualRelations = new ArrayList<DtoInstanceRelation>();
-		List<String> propertiesURIList = QueryUtil.getPropertiesURI(HomeController.InfModel, individualUri);
+		List<String> propertiesURIList = QueryUtil.getPropertiesURI(OKCoUploader.getInferredModel(), individualUri);
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 		    dtoItem.Property = propertyURI;
-		    dtoItem.Target = QueryUtil.getRangeURIs(HomeController.InfModel, propertyURI).get(0);
+		    dtoItem.Target = QueryUtil.getRangeURIs(OKCoUploader.getInferredModel(), propertyURI).get(0);
 		    listIndividualRelations.add(dtoItem);
 		}
 		

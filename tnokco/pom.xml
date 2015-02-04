@@ -132,7 +132,7 @@
 			<artifactId>okco-core</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+	
 		<!-- Condel2Owl -->
 		<dependency>
 			<groupId>br.com.padtec.transformation</groupId>

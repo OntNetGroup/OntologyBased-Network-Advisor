@@ -5,6 +5,7 @@
 	<projects>
 		<project>br.com.padtec.common</project>
 		<project>br.com.padtec.okco</project>
+		<project>br.com.padtec.okco.web</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
