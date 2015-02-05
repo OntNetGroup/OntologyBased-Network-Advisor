@@ -1,0 +1,71 @@
+/*
+* Author: Freddy Brasileiro
+*/
+#maskforloading 
+{
+	position:absolute;
+	z-index:9990;  
+	background-color:#000; 
+	display:none;
+	width: 100%;	
+	
+	filter:alpha(opacity=50);
+	opacity: 0.5;
+	-moz-opacity:0.5;
+	-webkit-opacity:0.5;	
+}
+
+#maskforloading img
+{
+	position:absolute;
+	top:1.2%;
+	left:1%;
+	width: 25px;
+	height: 25px;
+}
+
+table.table thead,
+table.table tbody
+{
+	vertical-align: middle;
+}
+
+table.table tbody .actions,
+table.table tbody .state
+{
+	text-align: center;
+}
+
+table.table thead .actions
+{
+	width: 23%;
+}
+
+table.table thead .state
+{
+	width: 8%;
+}
+
+table.table thead .cardinality
+{
+	width: 6%;
+}
+
+table.table thead .sourceIndividual,
+table.table thead .targetType,
+table.table tbody .instanceInformations
+{
+	width: 17%;
+}
+
+table.table tbody .instanceData
+{
+	
+}
+
+table.table thead .objectProperty,
+table.table thead .dataProperty
+{
+	width: 29%;
+}
+
