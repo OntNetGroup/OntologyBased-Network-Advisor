@@ -3,7 +3,7 @@
   <display-name>Archetype Created Web Application</display-name>
   <context-param>
     <param-name>PathG800owl</param-name>
-    <param-value>http://localhost:8080/tnokco/Assets/owl/g800.owl</param-value>
+    <param-value>http://localhost:8080/br.com.padtec.advisor.web/Assets/owl/g800.owl</param-value>
   </context-param>
   <servlet>
     <servlet-name>dispatcher</servlet-name>

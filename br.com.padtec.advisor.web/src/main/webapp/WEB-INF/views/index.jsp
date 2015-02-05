@@ -15,13 +15,7 @@
 
 		$('.btn-editor-sindel').click(function(event) {
 
-			window.location.href = "/tnokco/sindel";
-
-		}); //End load sindel file
-
-		$('.btn-editor-condel').click(function(event) {
-
-			window.location.href = "/tnokco/condel";
+			window.location.href = "sindel";
 
 		}); //End load sindel file
 
@@ -263,25 +257,6 @@
 
 								</li>
 								
-								<!-- Condel -->
-								
-								<li style="margin-top: 20px;">Load Condel file.
-									<form action="uploadCondel" class="form-horizontal"
-										enctype="multipart/form-data" method="POST">
-										<div class="controls">
-											<input name="file" type="file"> <input type="submit" class="btnload"
-												name="submit" value="Upload" />
-										</div>
-									</form>
-								</li>
-								<li style="margin-top: 20px;">
-									<div>Write and load a Condel description</div>
-									<button type="button" class="btn btn-pre btn-editor-condel">
-										<i class="icon-arrow-right"></i> Go to editor
-									</button>
-
-								</li>
-								
 								<!-- OKCo -->
 								
 								<li style="margin-top: 20px;">
@@ -329,9 +304,7 @@
 										The information can be provided in five different ways: 
 										(i) by loading a file with a Sindel specification, 
 										(ii) by writing a Sindel specification, 
-										(iii) by loading a file with a Condel specification, 
-										(iv) by writing a Condel specification, or 
-										(v) by loading an OWL file with instances (be careful: this action will overwrite the application's default knowledge-base).
+										(iii) by loading an OWL file with instances (be careful: this action will overwrite the application's default knowledge-base).
 										
 									</p>
 									

@@ -153,7 +153,10 @@ public class OKCoUploader {
 	public static BaseModelRepository getBaseRepository() { return baseRepository; }	
 	public static OntModel getBaseModel() { return baseRepository.getBaseOntModel(); }	
 	public static InferredModelRepository getInferredRepository() { return inferredRepository; }	
-	public static InfModel getInferredModel() { return inferredRepository.getInferredOntModel(); }	
+	public static InfModel getInferredModel() {
+		if(inferredRepository == null) return null;
+		return inferredRepository.getInferredOntModel(); 
+	}	
 	public static boolean isBaseModelUploaded() { return baseRepository.getBaseOntModel()!=null; }	
 	public static String getBaseModelAsString() { return baseRepository.getBaseOntModelAsString(); }
 	public static String getNamespace() { if(baseRepository!=null && baseRepository.getBaseOntModel()!=null) return baseRepository.getNameSpace(); else return ""; }

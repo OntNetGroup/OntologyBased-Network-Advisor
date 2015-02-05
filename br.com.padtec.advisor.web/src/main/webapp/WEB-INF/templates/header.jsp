@@ -7,8 +7,6 @@
 <!-- start: Meta -->
 <meta charset="utf-8">
 <title>Ontology-based Network Advisor</title>
-<meta name="description" content="Ontology-based Network Advisor">
-	<meta name="author" content="Fábio Coradini, Pedro Paulo Barcelos, Vitcor Amorim, Freddy Brasileiro, Cássio Reginato">
 <!-- end: Meta -->
 
 <!-- start: Mobile Specific -->
@@ -18,6 +16,7 @@
 
 <!-- start: CSS -->
 
+<link href="Assets/css/okco.css" rel="stylesheet">
 <link href="Assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="Assets/css/style.min.css" rel="stylesheet">
 <link href="Assets/css/retina.min.css" rel="stylesheet">
@@ -124,7 +123,6 @@
 <!-- Sindel includes -->
 
 <script src="Assets/js/jison/sindel-parser.js"></script>
-<script src="Assets/js/jison/condel-parser.js"></script> 
 	
 <!-- Code mirror includes - used in Sindel -->
 
@@ -138,8 +136,7 @@
 <script src="Assets/code_mirror/addon/show-hint.js"></script> 
 <script src="Assets/code_mirror/sindel_custom/sindel-hint.js"></script> 
 <script src="Assets/code_mirror/sindel_custom/sindel-highlight.js"></script> 
-<script src="Assets/code_mirror/condel_custom/condel-hint.js"></script> 
-<script src="Assets/code_mirror/condel_custom/condel-highlight.js"></script>
+<script src="Assets/js/okco.js"></script>
 
 <!-- END Syntax Highlight -->
 
@@ -181,29 +178,30 @@
 <!-- GraphVisualizer includes -->
 
 <!-- Includes for loading.gif -->
-<style type="text/css">
 
-	#maskforloading 
-	{
-		position:absolute;
-		z-index:9990;  
-		background-color:#000; 
-		display:none;
-		width: 100%;	
+<style type="text/css">
+/* 	<!--  */
+/* 	#maskforloading  */
+/* 	{ */
+/* 		position:absolute; */
+/* 		z-index:9990;   */
+/* 		background-color:#000;  */
+/* 		display:none; */
+/* 		width: 100%;	 */
 		
-		 filter:alpha(opacity=50);
-     	opacity: 0.5;
-     	-moz-opacity:0.5;
-     	-webkit-opacity:0.5;	
-	}
+/* 		 filter:alpha(opacity=50); */
+/*      	opacity: 0.5; */
+/*      	-moz-opacity:0.5; */
+/*      	-webkit-opacity:0.5;	 */
+/* 	} */
 	
-	#maskforloading img 
-	{
-		position:absolute;
-		top:50%;
-		left:50%;
-	}
-	
+/* 	#maskforloading img  */
+/* 	{ */
+/* 		position:absolute; */
+/* 		top:50%; */
+/* 		left:50%; */
+/* 	} */
+/* 	--> */
 	.container #sidebar-left {
 		width: 18.422%;  /* +4 */
 	}
@@ -274,7 +272,7 @@ $(document).ready(function() {
 		   modal: true,
 		   buttons : {
 		        "Confirm" : function() {  
-		            window.location.href = "/tnokco/welcome";
+		            window.location.href = "welcome";
 		        },
 		        "Cancel" : function() {
 		          $(this).dialog("close");
@@ -319,7 +317,7 @@ $(document).ready(function() {
 					class="icon-reorder"></i></a>
 				<div class="row">
 					<a class="navbar-brand col-lg-2 col-sm-1 col-xs-12"
-						href="/tnokco/welcome">
+						href="welcome">
 							<span>Ontology-based Network Advisor</span>
  					</a>
 				</div>
@@ -353,9 +351,8 @@ $(document).ready(function() {
 									<a class="dropmenu drop" href="#"><i class="icon-download"></i><span class="hidden-sm"> Add Information</span> <span class="label">3</span></a>
 									<ul class="dropmenuLevel2">								
 										
-										<li><a class="submenu" href="/tnokco/sindel"><i class="">S</i><span class="hidden-sm"> &nbsp;&nbsp; Sindel Editor</span></a></li>
-										<li><a class="submenu" href="/tnokco/condel"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Condel Editor</span></a></li>
-										<li><a class="submenu" href="/tnokco/newEquipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipment Instances</span></a></li>
+										<li><a class="submenu" href="sindel"><i class="">S</i><span class="hidden-sm"> &nbsp;&nbsp; Sindel Editor</span></a></li>
+										<li><a class="submenu" href="newEquipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipment Instances</span></a></li>
 									</ul>	
 								</li>
 								
@@ -363,10 +360,10 @@ $(document).ready(function() {
 									<a class="dropmenu" href="#"><i class="icon-lightbulb"></i><span class="hidden-sm"> Functionalites</span> <span class="label">3</span></a>
 									<ul class="dropmenuLevel2">								
 										
-										<li><a class="submenu" href="/tnokco/list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion <br> &nbsp;&nbsp; (TN-OKCo)</span></a></li>
-										<li><a class="submenu" href="/tnokco/open_visualizator"><i class="icon-eye-open"></i><span class="hidden-sm">&nbsp;&nbsp; Visualization</span></a></li>
-										<li><a class="submenu" href="/tnokco/provisoning_visualization"><i class="">B</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Binds</span></a></li>
-										<li><a class="submenu" href="/tnokco/connects_provisoning_visualization"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Connects</span></a></li>
+										<li><a class="submenu" href="okco-list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion <br> &nbsp;&nbsp; (TN-OKCo)</span></a></li>
+										<li><a class="submenu" href="open_visualizator"><i class="icon-eye-open"></i><span class="hidden-sm">&nbsp;&nbsp; Visualization</span></a></li>
+										<li><a class="submenu" href="binds"><i class="">B</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Binds</span></a></li>
+										<li><a class="submenu" href="connects"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Connects</span></a></li>
 									</ul>
 								</li>
 								
@@ -374,8 +371,7 @@ $(document).ready(function() {
 									<a class="dropmenu" href="#"><i class="icon-save"></i><span class="hidden-sm"> Output Results</span> <span class="label">2</span></a>
 									<ul class="dropmenuLevel2">								
 										
-										<li><a class="submenu" href="/tnokco/getModel"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as OWL</span></a></li>
-										<li><a class="submenu" href="/tnokco/getCondel"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as Condel</span></a></li>
+										<li><a class="submenu" href="getModel"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as OWL</span></a></li>
 									</ul>	
 								</li>
 								
@@ -383,10 +379,10 @@ $(document).ready(function() {
 						</li>
 					
 					
-						<li><a href="/tnokco/faq" class=""><i class="icon-question-sign"></i><span
+						<li><a href="faq" class=""><i class="icon-question-sign"></i><span
 								class="hidden-sm"> FAQ</span></a></li>
 								
-						<li><a href="/tnokco/about" class=""><i class="icon-exclamation-sign"></i><span
+						<li><a href="about" class=""><i class="icon-exclamation-sign"></i><span
 								class="hidden-sm"> About</span></a></li>
 
 					</ul>

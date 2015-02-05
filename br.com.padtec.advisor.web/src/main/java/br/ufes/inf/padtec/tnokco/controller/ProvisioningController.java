@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.com.padtec.advisor.controller.AdvisorUploadController;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.DtoQueryUtil;
@@ -163,7 +162,7 @@ public class ProvisioningController{
 				String error = "Ontology have inconsistence: " + e.toString();
 				System.out.println(error);
 				request.getSession().setAttribute("errorMensage", error);
-				AdvisorUploadController.clearOKCoUploader();
+				OKCoUploader.clear();
 				dto.ok = false;
 				dto.result = error;				
 				return dto;
@@ -260,7 +259,7 @@ public class ProvisioningController{
 			String error = "Ontology have inconsistence: " + e.toString();
 			System.out.println(error);
 			request.getSession().setAttribute("errorMensage", error);
-			AdvisorUploadController.clearOKCoUploader();
+			OKCoUploader.clear();
 			dto.ok = false;
 			dto.result = error;				
 			return dto;
@@ -944,7 +943,7 @@ public class ProvisioningController{
 		
 		request.getSession().setAttribute("loadOk", returnMessage);
 		
-		return VisualizationController.provisoning_visualization(request);
+		return VisualizationController.bindsV(request);
 	}
 	
 	public static void getEquipmentsWithRPs(InfModel infModel, String NS, ArrayList<String> equipsWithRps, ArrayList<String> connectsBetweenEqsAndRps, ArrayList<String> connectsBetweenRps){

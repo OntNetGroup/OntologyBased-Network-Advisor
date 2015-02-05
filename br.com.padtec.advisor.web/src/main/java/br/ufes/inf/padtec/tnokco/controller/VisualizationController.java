@@ -383,8 +383,8 @@ public class VisualizationController {
 		return hashEquipIntIn;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value="/connects_provisoning_visualization")
-	public static String connects_provisoning_visualization(HttpServletRequest request) {
+	@RequestMapping(method = RequestMethod.GET, value="/connects")
+	public static String connects(HttpServletRequest request) {
 		elementsInitialize();
 
 		String arborStructure = new String();
@@ -509,12 +509,12 @@ public class VisualizationController {
 		request.getSession().setAttribute("hashRPEquip", hashRPEquip);
 		request.getSession().setAttribute("size", size);
 
-		return "connectsProvisioning";
+		return "connects";
 	}
 
 	//Binds Provisioning
-	@RequestMapping(method = RequestMethod.GET, value="/provisoning_visualization")
-	public static String provisoning_visualization(HttpServletRequest request) {
+	@RequestMapping(method = RequestMethod.GET, value="/binds")
+	public static String bindsV(HttpServletRequest request) {
 		elementsInitialize();
 		Provisioning.inferInterfaceConnections();
 		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
@@ -603,7 +603,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("hashAllowed", hashAllowed);
 		request.getSession().setAttribute("size", size);
 
-		return "equipmentVisualizer";
+		return "binds";
 	}
 
 	private static void elementsInitialize(){

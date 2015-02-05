@@ -7,22 +7,25 @@
 	<div class="clearfix"></div>
 	
 	<footer>
-	
 		<p>
-			<span style="text-align:left;float:left">&copy; 2014 <a href="#" alt="Ontology-based Network Advisor">Ontology-based Network Advisor</a></span>
-			<span class="hidden-phone" style="text-align:right;float:right">
-				<!-- Developed by: <a href="#" alt="Fábio Coradini / Pedro Paulo Barcelos / Victor Amorin / Fred Brasileiro / Cássio">
-								Fábio Coradini / Pedro Paulo Barcelos / Victor Amorin / Fred Brasileiro / Cássio </a> -->
-
-					<img src="Assets/img/parceiros.png" alt="Parteners" width="600px">
-				
-			</span>
-			
+			<table width="100%">
+				<tr>
+					<td width="33.33%">
+						<span style="text-align:left;float:left">&copy; 2014 <a href="#" alt="Nemo">Nemo OKCo</a></span>
+					</td>
+					<td width="33.33%">
+						<span class="hidden-phone" style="text-align:right;float:right">
+							Powered by: 
+							<a href="www.ontnetgroup.com">
+								<img src="Assets/img/LogoOntNetGroup.png" alt="OntNet Group" width="92">
+							</a>
+						</span>
+					</td>
+				</tr>
+			</table>			
 		</p>
-		<div style="clear:both"></div>
-		
 
 	</footer>
-
+	
 </body>
 </html>

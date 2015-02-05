@@ -146,7 +146,7 @@
 														success : function(dto) {
 
 															if (dto.ok == true)
-																window.location.href = "/tnokco/sindel";
+																window.location.href = "sindel";
 
 														},
 														error : function(x, e) {
@@ -371,7 +371,7 @@
 																		alert("Sindel tranformation messages:" + " " + dto.result);
 																	}
 																	
-																	window.location.href = "list";
+																	window.location.href = "okco-list";
 
 																}
 

@@ -14,9 +14,6 @@
         <dependent-module archiveName="okco-core-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.okco.core/br.com.padtec.okco.core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="padtec-condel2owl-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.transformation.condel/br.com.padtec.transformation.condel">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="java-output-path" value="/br.com.padtec.advisor.web/target/classes"/>
         <property name="context-root" value="br.com.padtec.advisor.web"/>
     </wb-module>
