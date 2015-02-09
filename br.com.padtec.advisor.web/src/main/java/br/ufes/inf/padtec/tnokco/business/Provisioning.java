@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
+import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -13,7 +14,6 @@ import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.transformation.sindel.processor.BindsProcessor;
 
 import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -255,14 +255,16 @@ public class Provisioning {
 
 
 	// get all equipments from specific site
-	public static ArrayList<Equipment> getEquipmentsFromSite(String site){
+	public static ArrayList<Equipment> getEquipmentsFromSite(String site)
+	{
 		equipments = new ArrayList<String>();
-		equipments =  QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, site, namespace+"has_equipment", namespace+"Equipment");
+		equipments =  AdvisorQueryUtil.getRangeEquipmentsURIAtHasEquipament(site);
 		return getEquipments();
 	}
 
 	public static String nameRelation="";
 	public static ArrayList<String[]> siteConnects= new ArrayList<String[]>();
+	
 	public static List<String> getSitesAndRelations(){
 		ind_class= new HashMap<String, List<String>>();
 		nameRelation="site_connects";
@@ -569,51 +571,39 @@ public class Provisioning {
 		return "";
 	}
 
-	public static ArrayList<Equipment> getEquipmentsConnectionsBinds(){
+	public static ArrayList<Equipment> getEquipmentsConnectionsBinds()
+	{
 		return getAllEquipmentsandConnections();
 
 	}
 
-	public static boolean bindsInterfaces(String output, String input){
+	public static boolean bindsInterfaces(String output, String input)
+	{
 		Individual ind= Model.getIndividual(output);
-
 		return true;
 	}
 
-	public static List<String> getAllSitesAndConnections(){
+	public static List<String> getAllSitesAndConnections()
+	{
 		connections = new ArrayList<String[]>();
-		List<String> sites = QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), namespace+"Site");
-		for (String site : sites) {
-			if(!QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, site, namespace+"site_connects", namespace+"Site").isEmpty()){
-				List<String>targets=QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, site, namespace+"site_connects", namespace+"Site");
-				for (String target : targets) {
+		List<String> sitesList = AdvisorQueryUtil.getSitesURI();
+		for (String siteURI : sitesList) 
+		{
+			List<String> sitesAtRange = AdvisorQueryUtil.getRangeSitesURIAtSiteConnects(siteURI);
+			if(!sitesAtRange.isEmpty())
+			{				
+				for (String rangeURI : sitesAtRange) 
+				{
 					String[] connection = new String[2];
-					connection[0]=site;
-					connection[1]=target;
+					connection[0]=siteURI;
+					connection[1]=rangeURI;
 					connections.add(connection);
 				}
 			}
 		}
-
-		return sites;
+		return sitesList;
 	}
 
-	public static List<String> getAllG800(){
-		List<String> allIndividuals=QueryUtil.getIndividualsURIFromAllClasses(InfModel);
-		ArrayList<String> copy = new ArrayList<String>();
-
-		for (String ind : allIndividuals) {
-			List<String> classesFromIndividual= QueryUtil.getClassesURI(InfModel,ind);
-			if((classesFromIndividual.contains(namespace+"Input_Interface")  || classesFromIndividual.contains(namespace+"Output_Interface") || classesFromIndividual.contains(namespace+"Site") || classesFromIndividual.contains(namespace+"Equipment"))){
-				copy.add(ind);
-			}
-		}
-		for (String string : copy) {
-			allIndividuals.remove(string);
-		}
-		setRelationsG800(allIndividuals);
-		return allIndividuals;
-	}
 	public static List<String> getG800FromEquipment(String equipment){
 		Provisioning.triples_g800 =  new ArrayList<String[]>();
 
@@ -636,6 +626,7 @@ public class Provisioning {
 		setRelationsG800(g800s);
 		return g800s;
 	}
+	
 	public static void setRelationsG800(List<String> g800_elements){
 
 		ind_class = new HashMap<String, List<String>>();
@@ -687,45 +678,6 @@ public class Provisioning {
 		}catch(Exception e){
 			e = new Exception("not bound");
 		}
-	}
-
-
-	public static void inferInterfaceConnections(){
-		HashMap<String, String> int_port = new HashMap<String, String>();
-		List<String> inters = QueryUtil.getIndividualsURI(InfModel, namespace+"Input_Interface");
-		for (String inter : inters) {
-			List<String> port_inp =QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inter, namespace+"maps_input", namespace+"Input");
-			if(port_inp.size()>0){
-				int_port.put(port_inp.get(0), inter);
-			}
-		}
-		inters = QueryUtil.getIndividualsURI(InfModel, namespace+"Output_Interface");
-		for (String inter : inters) {
-			List<String> port_inp =QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, inter, namespace+"maps_output", namespace+"Output");
-			if(port_inp.size()>0){
-				int_port.put(port_inp.get(0), inter);
-			}
-		}
-
-		List<String> outs = QueryUtil.getIndividualsURI(InfModel, namespace+"Output");
-		for (String out : outs) {
-			List<String> inputs  = QueryUtil.getIndividualsURIAtObjectPropertyRange(InfModel, out, namespace+"binds", namespace+"Input");
-			if(inputs.size()>0){
-				String interfac_input= int_port.get(inputs.get(0));
-				String interfac_output= int_port.get(out);
-				Individual a = null,b=null;
-				if(interfac_input!=null)
-					a = OKCoUploader.getBaseModel().getIndividual(interfac_input);
-				if(interfac_output!=null)
-					b = OKCoUploader.getBaseModel().getIndividual(interfac_output);
-				ObjectProperty rel = OKCoUploader.getBaseModel().getObjectProperty(namespace+"interface_binds");
-				if(a!=null && b!=null){
-					Statement stmt = OKCoUploader.getBaseModel().createStatement(b, rel, a);
-					OKCoUploader.getBaseModel().add(stmt);
-				}
-			}
-		}
-		OKCoUploader.substituteInferredModelFromBaseModel(false);
 	}
 
 	private static String[] getTriplePM(String value, String pm) {

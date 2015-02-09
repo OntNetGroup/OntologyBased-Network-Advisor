@@ -5,10 +5,12 @@ import java.util.List;
 import br.com.padtec.common.queries.QueryUtil;
 
 import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Statement;
 
 public class FactoryUtil {
 
@@ -249,6 +251,20 @@ public class FactoryUtil {
 		Individual i2 = model.getIndividual(individualURI2);		
 		i1.setDifferentFrom(i2);
 		i2.setDifferentFrom(i1);		
+		return model;
+	}
+	
+	static public OntModel createStatement(OntModel model, String subjectURI, String predicateURI, String objectURI)
+	{
+		Individual a = null, b=null;
+		if(objectURI!=null) a = model.getIndividual(objectURI);
+		if(subjectURI!=null) b = model.getIndividual(subjectURI);				
+		ObjectProperty rel = model.getObjectProperty(predicateURI);
+		if(a!=null && b!=null)
+		{
+			Statement stmt = model.createStatement(b, rel, a);
+			model.add(stmt);
+		}
 		return model;
 	}
 

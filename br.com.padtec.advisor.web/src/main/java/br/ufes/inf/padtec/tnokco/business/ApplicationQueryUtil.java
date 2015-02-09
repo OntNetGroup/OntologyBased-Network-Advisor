@@ -6,9 +6,9 @@ import java.util.List;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
+import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
-import br.ufes.inf.padtec.tnokco.controller.ManagerInstances;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.query.Query;
@@ -23,9 +23,9 @@ import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 
 public class ApplicationQueryUtil {
 				
- 	static public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(String instanceURI, OntModel model, InfModel InfModel, List<DtoInstance> listAllInstances, ManagerInstances manager) {
-
-		DtoInstance Instance = manager.getInstance(listAllInstances, instanceURI); // GET INTANCE on MODEL
+ 	static public ArrayList<DtoDefinitionClass> GetModelDefinitionsInInstances(String instanceURI, OntModel model, InfModel InfModel) 
+ 	{ 		
+		DtoInstance Instance = DtoQueryUtil.getIndividual(InfModel, instanceURI, true, true, true);
 		List<String> listInstancesDto = QueryUtil.getIndividualsURIFromAllClasses(InfModel);		
 		for (String dto : listInstancesDto) {
 			

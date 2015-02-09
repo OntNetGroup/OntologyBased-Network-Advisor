@@ -6,30 +6,23 @@ import java.util.List;
 
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
+import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
-import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
-import br.ufes.inf.padtec.tnokco.controller.ManagerInstances;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class ManagerRelations {
 		
-	private ManagerInstances manager;
-	
-	public ManagerRelations(ManagerInstances manager)
-	{		
-		this.manager = manager;
-	}
-	
 	public OntModel EnforceSubRelation(OntModel model, InfModel infModel, String NS)
 	{			
-		ArrayList<DtoInstance> ListAllInstances;
-		try {
+		List<DtoInstance> ListAllInstances;
+		
 			
 			// Get all instances			
-			ListAllInstances = manager.getAllInstances(infModel);			
+			ListAllInstances = DtoQueryUtil.getIndividuals(infModel, true, true, true);			
 			for (DtoInstance instance : ListAllInstances) 
 			{				
 				List<String> sourceInstanceClasses = QueryUtil.getClassesURI(infModel,instance.ns + instance.name);
@@ -82,16 +75,13 @@ public class ManagerRelations {
 							
 							
 							//relation have domain and range available
-							model = manager.CreateRelationProperty(instance.ns + instance.name, subproperty, targetInstance, model);
+							model = FactoryUtil.createObjectProperty(model,instance.ns + instance.name, subproperty, targetInstance);
 						}
 					}
 				}
 			}
 			
-		} catch (OKCoExceptionInstanceFormat e) {
-
-			e.printStackTrace();
-		}		
+		
 		
 		return model;
 	}

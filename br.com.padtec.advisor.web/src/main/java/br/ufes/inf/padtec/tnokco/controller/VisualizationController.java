@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.advisor.application.ProvisioningFunctionality;
+import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -24,24 +26,32 @@ import br.ufes.inf.padtec.tnokco.business.Provisioning;
 
 @Controller
 public class VisualizationController {
+	
 	private static HashMap<String,String> elements = null;
 	 
 	@RequestMapping(method = RequestMethod.GET, value="/open_visualizator")
-	public String open_visualizator(HttpServletRequest request) {
+	public String open_visualizator(HttpServletRequest request) 
+	{
 
-		if(OKCoUploader.getBaseModel() == null)
-			return "open_visualizator"; 
+		if(OKCoUploader.getBaseModel() == null) return "open_visualizator"; 
 
-		List<String> sites = QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace()+"Site");
-		List<String> equipments = QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace()+"Equipment");
-
-		Provisioning.inferInterfaceConnections();
-		Provisioning.getAllG800();
-		HashMap<String, List<String>> g800List = Provisioning.ind_class;
-
-		//session
+		/**===========================================================
+		 * Get Sites and Equipments
+		 * =========================================================== */
+		List<String> sites = AdvisorQueryUtil.getSitesURI();
+		List<String> equipments = AdvisorQueryUtil.getEquipmentsURI();		
 		request.getSession().setAttribute("sites", sites);
 		request.getSession().setAttribute("equipments", equipments);
+		
+		/**===========================================================
+		 * Executing Inference:: Inferring Interface Connections...
+		 * =========================================================== */
+		ProvisioningFunctionality.inferInterfaceConnections();
+		
+		List<String> allIndividuals = ProvisioningFunctionality.getAllIndividualsFromG800();
+		
+		Provisioning.setRelationsG800(allIndividuals);		
+		HashMap<String, List<String>> g800List = Provisioning.ind_class;				
 		request.getSession().setAttribute("g800", g800List);
 
 		elementsInitialize();
@@ -77,7 +87,9 @@ public class VisualizationController {
 			request.getSession().setAttribute("targetURL", "open_equipment_visualization_from_site?selected=");
 			request.getSession().setAttribute("popupMessage", "Go to Site\'s components");
 		}else if(visualization.equals("allEquipments")){
-			Provisioning.inferInterfaceConnections();
+			
+			ProvisioningFunctionality.inferInterfaceConnections();
+			
 			ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
 
 			for(Equipment equip : list){
@@ -103,7 +115,9 @@ public class VisualizationController {
 			request.getSession().setAttribute("targetURL", "open_g800_visualization_from_equip?selected=");
 			request.getSession().setAttribute("popupMessage", "Go to Equipment\'s components");
 		}else if(visualization.equals("allG800")){
-			List<String> g800s = Provisioning.getAllG800();
+			
+			List<String> g800s = ProvisioningFunctionality.getAllIndividualsFromG800();
+			
 			ArrayList<String[]> triplas = Provisioning.triples_g800;
 			HashMap<String, List<String>> hashIndv = Provisioning.ind_class;
 
@@ -516,7 +530,9 @@ public class VisualizationController {
 	@RequestMapping(method = RequestMethod.GET, value="/binds")
 	public static String bindsV(HttpServletRequest request) {
 		elementsInitialize();
-		Provisioning.inferInterfaceConnections();
+		
+		ProvisioningFunctionality.inferInterfaceConnections();
+		
 		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
 
 		String arborStructure = "";
