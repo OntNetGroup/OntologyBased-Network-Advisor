@@ -14,14 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.advisor.application.ProvisioningFunctionality;
+import br.com.padtec.advisor.application.dto.DtoEquipment;
+import br.com.padtec.advisor.application.dto.DtoInterfaceOutput;
+import br.com.padtec.advisor.application.dto.DtoResultAjax;
+import br.com.padtec.advisor.application.queries.AdvisorDtoQueryUtil;
 import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
-import br.ufes.inf.padtec.tnokco.business.DtoResultAjax;
-import br.ufes.inf.padtec.tnokco.business.Equipment;
-import br.ufes.inf.padtec.tnokco.business.InterfaceOutput;
 import br.ufes.inf.padtec.tnokco.business.Provisioning;
 
 @Controller
@@ -50,8 +51,8 @@ public class VisualizationController {
 		
 		List<String> allIndividuals = ProvisioningFunctionality.getAllIndividualsFromG800();
 		
-		Provisioning.setRelationsG800(allIndividuals);		
-		HashMap<String, List<String>> g800List = Provisioning.ind_class;				
+		Provisioning.generateG800Mappings(allIndividuals);		
+		HashMap<String, List<String>> g800List = Provisioning.individual_classes_map;				
 		request.getSession().setAttribute("g800", g800List);
 
 		elementsInitialize();
@@ -68,10 +69,11 @@ public class VisualizationController {
 		int width  = 1000;
 		int height = 800;
 
-		if(visualization.equals("allSites")){
-			List<String> sites = Provisioning.getAllSitesAndConnections();
-			ArrayList<String[]> sitesConnections = Provisioning.connections;
-			String rel = Provisioning.relation;
+		if(visualization.equals("allSites"))
+		{
+			List<String> sites = AdvisorQueryUtil.getSitesURI();
+			List<String[]> sitesConnections = ProvisioningFunctionality.getSiteConnectsTuples();
+			String rel = "site_connects";
 
 			for (String site : sites) {
 				valuesGraph += "graph.addNode(\""+site.substring(site.indexOf("#")+1)+"\", {shape:\"SITE_AZUL\"});";
@@ -90,17 +92,19 @@ public class VisualizationController {
 			
 			ProvisioningFunctionality.inferInterfaceConnections();
 			
-			ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
-
-			for(Equipment equip : list){
+			// I substituted this line but I am not sure about it... (John)
+			//List<DtoEquipment> list = Provisioning.getEquipmentsConnectionsBinds();
+			List<DtoEquipment> list = AdvisorDtoQueryUtil.getAllDtoEquipments();
+			
+			for(DtoEquipment equip : list){
 				hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
-				for(InterfaceOutput outs : equip.getOutputs()){
+				for(DtoInterfaceOutput outs : equip.getOutputs()){
 					valuesGraph += "graph.addEdge(graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
 					hashTypes += "hash[\""+outs.getName()+"\"] = \"<b>"+outs.getName()+" is an individual of classes: </b><br><ul><li>Output_Interface</li></ul>\";";
 					size++;
 				}
 
-				for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
+				for(Map.Entry<ArrayList<String>,DtoEquipment> entry : equip.getBinds().entrySet()){
 					valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'interface_binds'});";
 					hashTypes += "hash[\""+entry.getKey().get(1)+"\"] = \"<b>"+entry.getKey().get(1)+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
 					valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'componentOf'});";
@@ -118,8 +122,8 @@ public class VisualizationController {
 			
 			List<String> g800s = ProvisioningFunctionality.getAllIndividualsFromG800();
 			
-			ArrayList<String[]> triplas = Provisioning.triples_g800;
-			HashMap<String, List<String>> hashIndv = Provisioning.ind_class;
+			ArrayList<String[]> triplas = Provisioning.g800_triples;
+			HashMap<String, List<String>> hashIndv = Provisioning.individual_classes_map;
 
 			for (String g800 : g800s) {
 				valuesGraph += "graph.addNode(\""+g800.substring(g800.indexOf("#")+1)+"\", {shape:\""+getG800Image(hashIndv.get(g800))+"_AZUL\"});";
@@ -192,8 +196,9 @@ public class VisualizationController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_equipment_visualization_from_site")
-	public String open_equipment_visualization_from_site(@RequestParam("selected") String selected_site, HttpServletRequest request) {
-		ArrayList<Equipment> equips = Provisioning.getEquipmentsFromSite(OKCoUploader.getNamespace()+selected_site);
+	public String open_equipment_visualization_from_site(@RequestParam("selected") String selected_site, HttpServletRequest request) 
+	{
+		List<DtoEquipment> equips = AdvisorDtoQueryUtil.getDtoEquipmentsFromSite(OKCoUploader.getNamespace()+selected_site);
 
 		String valuesGraph = "";
 		String hashTypes = "";
@@ -201,9 +206,9 @@ public class VisualizationController {
 		int width  = 1000;
 		int height = 800;
 
-		for(Equipment equip : equips){
+		for(DtoEquipment equip : equips){
 			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
-			for(InterfaceOutput outs : equip.getOutputs()){
+			for(DtoInterfaceOutput outs : equip.getOutputs()){
 				valuesGraph += "graph.addEdge(graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
 				hashTypes += "hash[\""+outs.getName()+"\"] = \"<b>"+outs.getName()+" is an individual of classes: </b><br><ul><li>Output_Interface</li></ul>\";";
 				size++;
@@ -215,7 +220,7 @@ public class VisualizationController {
 				size++;
 			}
 
-			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
+			for(Map.Entry<ArrayList<String>,DtoEquipment> entry : equip.getBinds().entrySet()){
 				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'interface_binds'});";
 				hashTypes += "hash[\""+entry.getKey().get(1)+"\"] = \"<b>"+entry.getKey().get(1)+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
 				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'componentOf'});";
@@ -244,10 +249,12 @@ public class VisualizationController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_g800_visualization_from_equip")
-	public String open_g800_visualization_from_equip(@RequestParam("selected") String equip, HttpServletRequest request) {
-		List<String> g800s = Provisioning.getG800FromEquipment(equip);
-		ArrayList<String[]> triplas = Provisioning.triples_g800;
-		HashMap<String, List<String>> hashIndv = Provisioning.ind_class;
+	public String open_g800_visualization_from_equip(@RequestParam("selected") String equip, HttpServletRequest request) 
+	{
+		List<String> g800s = Provisioning.filterG800ForEquipment(equip);
+		
+		ArrayList<String[]> triplas = Provisioning.g800_triples;
+		HashMap<String, List<String>> hashIndv = Provisioning.individual_classes_map;
 
 		String valuesGraph = "";
 		String hashTypes = "";
@@ -533,7 +540,9 @@ public class VisualizationController {
 		
 		ProvisioningFunctionality.inferInterfaceConnections();
 		
-		ArrayList<Equipment> list = Provisioning.getEquipmentsConnectionsBinds();
+		// I substituted this line but I am not sure about it... (John)
+		//List<DtoEquipment> list = Provisioning.getEquipmentsConnectionsBinds();
+		List<DtoEquipment> list = AdvisorDtoQueryUtil.getAllDtoEquipments();
 
 		String arborStructure = "";
 		String hashEquipIntOut = "";
@@ -544,10 +553,10 @@ public class VisualizationController {
 		int width  = 1000;
 		int height = 800;
 
-		for(Equipment equip : list){
+		for(DtoEquipment equip : list){
 			hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"'] = new Array();";
 			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
-			for(InterfaceOutput outs : equip.getOutputs()){
+			for(DtoInterfaceOutput outs : equip.getOutputs()){
 				hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"']['"+outs.getName()+"'] = \""+outs.isConnected()+"\";";
 				if(hashAllowed.contains(equip.getName()))
 					continue;
@@ -560,7 +569,7 @@ public class VisualizationController {
 				}
 			}
 
-			for(Map.Entry<ArrayList<String>,Equipment> entry : equip.getBinds().entrySet()){
+			for(Map.Entry<ArrayList<String>,DtoEquipment> entry : equip.getBinds().entrySet()){
 				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_ROXO\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+entry.getValue().getName()))+"_ROXO\"}), {name:'binds:";
 				arborStructure += entry.getKey().get(0)+"-"+entry.getKey().get(1);
 				arborStructure += "'});";

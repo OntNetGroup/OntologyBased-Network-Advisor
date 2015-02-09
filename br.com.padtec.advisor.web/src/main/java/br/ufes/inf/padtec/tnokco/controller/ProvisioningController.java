@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import br.com.padtec.advisor.application.dto.DtoResultAjax;
+import br.com.padtec.advisor.application.util.FileReader;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.DtoQueryUtil;
@@ -31,8 +33,6 @@ import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.transformation.sindel.processor.BindsProcessor;
 import br.com.padtec.trasnformation.sindel.Sindel2OWL;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
-import br.ufes.inf.padtec.tnokco.business.DtoResultAjax;
-import br.ufes.inf.padtec.tnokco.business.Reader;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;
@@ -40,27 +40,27 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Statement;
 
 @Controller
-public class ProvisioningController{
+public class ProvisioningController {
+	
 	private final int maxElements = 10;
 
 	@RequestMapping(method = RequestMethod.GET, value="/newEquipment")
-	public String newEquipment(HttpSession session, HttpServletRequest request) {
+	public String newEquipment(HttpSession session, HttpServletRequest request) 
+	{
 		request.getSession().setAttribute("txtSindelCode", "");
 		request.getSession().setAttribute("txtSindelCodeBr", "");
 		request.getSession().setAttribute("action", "");
 		request.getSession().setAttribute("equipNameAux", "");
-		request.getSession().setAttribute("equipName", "");
-		
-		for (int i = 1; i <= maxElements; i++) {
+		request.getSession().setAttribute("equipName", "");		
+		for (int i = 1; i <= maxElements; i++) 
+		{
 			request.getSession().setAttribute("equipName"+i, "");
 			request.getSession().setAttribute("txtSindel"+i, "");
 			request.getSession().setAttribute("file"+i, "");
 			request.getSession().setAttribute("filename"+i, "");
 		}
-
 		/*
-		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl"; 
-
+		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl";
 		// Load Model
 		OKCoUploader.getBaseModel() = HomeController.Repository.Open(path);
 		HomeController.tmpModel = HomeController.Repository.Open(path);
@@ -102,7 +102,7 @@ public class ProvisioningController{
 			InputStream in = file.getInputStream();
 			InputStreamReader r = new InputStreamReader(in);
 			BufferedReader br = new BufferedReader(r);
-			Reader readerFile = new Reader();
+			FileReader readerFile = new FileReader();
 
 			String txtSindel = readerFile.readFile(br);
 			//SindelController.txtSindelCode = txtSindel;
@@ -202,7 +202,7 @@ public class ProvisioningController{
 				InputStream in = file.getInputStream();
 				InputStreamReader r = new InputStreamReader(in);
 				BufferedReader br = new BufferedReader(r);
-				Reader readerFile = new Reader();
+				FileReader readerFile = new FileReader();
 
 				String txtSindel = readerFile.readFile(br);
 				String equipName = multipartRequest.getParameter("equipName"+i);

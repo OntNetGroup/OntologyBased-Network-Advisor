@@ -10,8 +10,11 @@ public enum ConceptEnum {
 	OUTPUT("Output"),	
 	INPUT_INTERFACE("Input_Interface"),
 	OUTPUT_INTERFACE("Output_Interface"),	
-	PHYSICAL_MEDIA_INPUT("Physical_Media_Input");
-		
+	PHYSICAL_MEDIA("Physical_Media"),
+	PHYSICAL_MEDIA_INPUT("Physical_Media_Input"),
+	TRANSPORT_FUNCTION("Transport_Function"),
+	REFERENCE_POINT("Reference_Point");
+	
 	private String concept;
 	
 	ConceptEnum(String concept)

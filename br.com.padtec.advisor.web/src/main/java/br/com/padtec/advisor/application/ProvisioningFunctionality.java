@@ -15,6 +15,30 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class ProvisioningFunctionality {
 		
+	/** Returns all the tuples {domain,range} of the "site_connects" relation. */	
+	public static List<String[]> getSiteConnectsTuples()
+	{
+		List<String[]> result = new ArrayList<String[]>();
+		
+		List<String> sitesList = AdvisorQueryUtil.getSitesURI();
+		for (String siteURI : sitesList) 
+		{
+			List<String> sitesAtRange = AdvisorQueryUtil.getSitesURIAtSiteConnectsRange(siteURI);
+			if(!sitesAtRange.isEmpty())
+			{				
+				for (String rangeURI : sitesAtRange) 
+				{
+					String[] tuple = new String[2];
+					tuple[0]=siteURI;
+					tuple[1]=rangeURI;
+					result.add(tuple);
+				}
+			}
+		}
+		return result;	
+	}
+	
+	/** Returns all individuals from the G800 owl ontology */
 	public static List<String> getAllIndividualsFromG800()
 	{	
 		InfModel inferredModel = OKCoUploader.getInferredModel();
@@ -38,6 +62,7 @@ public class ProvisioningFunctionality {
 		return allIndividuals;
 	}
 	
+	/** Infer interface connections in the ontology */
 	public static void inferInterfaceConnections()
 	{
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -46,7 +71,7 @@ public class ProvisioningFunctionality {
 		List<String> inInterfacesList = AdvisorQueryUtil.getInputInterfacesURI();
 		for (String interfaceURI: inInterfacesList) 
 		{
-			List<String> inputs = AdvisorQueryUtil.getRangeInputsURIAtMapsInput(interfaceURI);
+			List<String> inputs = AdvisorQueryUtil.getInputsURIAtMapsInputRange(interfaceURI);
 			if(inputs.size()>0) map.put(inputs.get(0), interfaceURI);			
 		}
 		
@@ -54,7 +79,7 @@ public class ProvisioningFunctionality {
 		List<String> outInterfacesList  = AdvisorQueryUtil.getOutputInterfacesURI();		
 		for (String interfaceURI : outInterfacesList) 
 		{
-			List<String> outputs = AdvisorQueryUtil.getRangeOutputsURIAtMapsOutput(interfaceURI);
+			List<String> outputs = AdvisorQueryUtil.getOutputsURIAtMapsOutputRange(interfaceURI);
 			if(outputs.size()>0) map.put(outputs.get(0), interfaceURI);			
 		}
 
@@ -62,7 +87,7 @@ public class ProvisioningFunctionality {
 		List<String> outputsList = AdvisorQueryUtil.getOutputsURI();
 		for (String outputURI : outputsList) 
 		{
-			List<String> inputsURIList  = AdvisorQueryUtil.getRangeInputsURIAtBinds(outputURI);
+			List<String> inputsURIList  = AdvisorQueryUtil.getInputsURIAtBindsRange(outputURI);
 			if(inputsURIList.size()>0)
 			{
 				String interfac_input= map.get(inputsURIList.get(0));

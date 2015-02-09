@@ -7,7 +7,11 @@ public enum RelationEnum {
 	BINDS("binds"),
 	SITE_CONNECTS("site_connects"),
 	HAS_EQUIPMENT("has_equipament"),
-	INTERFACE_BINDS("interface_binds");
+	INTERFACE_BINDS("interface_binds"),
+	COMPONENTOF("componentOf"),
+	BINDING_IS_REPRESENTED_BY("binding_is_represented_by"),
+	IS_BINDING("is_binding"),
+	HAS_FORWARDING("has_forwarding");
 	
 	private String relation;
 	private String domain = new String();

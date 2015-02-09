@@ -17,11 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.padtec.advisor.application.SindelUploader;
+import br.com.padtec.advisor.application.dto.DtoResultAjax;
+import br.com.padtec.advisor.application.util.FileReader;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.transformation.sindel.dto.DtoResultSindel;
-import br.ufes.inf.padtec.tnokco.business.DtoResultAjax;
-import br.ufes.inf.padtec.tnokco.business.Reader;
 
 @Controller
 public class SindelController{
@@ -35,7 +35,7 @@ public class SindelController{
 			InputStream in = file.getInputStream();
 			InputStreamReader r = new InputStreamReader(in);
 			BufferedReader br = new BufferedReader(r);
-			Reader readerFile = new Reader();
+			FileReader readerFile = new FileReader();
 			String txtSindel = readerFile.readFile(br);
 			
 			/** ==========================================
