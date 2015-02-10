@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.padtec.advisor.application.dto.DtoResultAjax;
+import br.com.padtec.advisor.application.types.ConceptEnum;
+import br.com.padtec.advisor.application.types.RelationEnum;
 import br.com.padtec.advisor.application.util.FileReader;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
@@ -445,17 +447,17 @@ public class ProvisioningController {
 		String eqOutNs = "";
 		String interfaceBindsNs = "";
 		for (DtoInstanceRelation outRelation : outIntRelations) {
-			if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"maps_output")){
+			if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+RelationEnum.MAPS_OUTPUT)){
 				outputNs = outRelation.Target;
-			}else if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"INV.componentOf")){
+			}else if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+RelationEnum.INVCOMPONENTOF)){
 				eqOutNs = outRelation.Target;
-			}else if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"interface_binds")){
+			}else if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+RelationEnum.INTERFACE_BINDS)){
 				interfaceBindsNs = outRelation.Target;
 			}
 		}
 
-		ArrayList<DtoInstance> inputInterfaces = getInstancesFromClass("Input_Interface");
-		ArrayList<DtoInstance> physicalMediaInputs = getInstancesFromClass("Physical_Media_Input");
+		ArrayList<DtoInstance> inputInterfaces = getInstancesFromClass(ConceptEnum.INPUT_INTERFACE);
+		ArrayList<DtoInstance> physicalMediaInputs = getInstancesFromClass(ConceptEnum.PHYSICAL_MEDIA_INPUT);
 		
 		//if the output interface does not maps an output, it can not connects
 		if(outputNs.equals("")){
@@ -743,9 +745,9 @@ public class ProvisioningController {
 		return instance;
 	}
 	
-	public static ArrayList<DtoInstance> getInstancesFromClass(String classNameWithoutNameSpace){
+	public static ArrayList<DtoInstance> getInstancesFromClass(ConceptEnum inputInterface){
 		ArrayList<String> classNamesWithoutNameSpace = new ArrayList<String>();
-		classNamesWithoutNameSpace.add(classNameWithoutNameSpace);
+		classNamesWithoutNameSpace.add(String.valueOf(inputInterface));
 		
 		ArrayList<DtoInstance> instances = getInstancesFromClasses(classNamesWithoutNameSpace);
 		
@@ -950,7 +952,7 @@ public class ProvisioningController {
 		if(connectsBetweenRps == null){
 			connectsBetweenRps = new ArrayList<String>();
 		}
-		ArrayList<DtoInstance> rpInstances = getInstancesFromClass("Reference_Point");
+		ArrayList<DtoInstance> rpInstances = getInstancesFromClass(ConceptEnum.REFERENCE_POINT);
 		
 		for (DtoInstance rp : rpInstances) {
 			List<DtoInstanceRelation> rpRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, rp.ns+rp.name);

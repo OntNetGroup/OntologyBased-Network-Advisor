@@ -69,3 +69,8 @@ table.table thead .dataProperty
 	width: 29%;
 }
 
+div.floatingDiv
+{
+	position: absolute;
+}
+

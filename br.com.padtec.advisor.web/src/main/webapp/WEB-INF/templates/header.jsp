@@ -145,7 +145,7 @@
 #currentNode {
 	border: 1px solid #B8B8B8;
 	width: 300px;
-	height: 250px;
+	height: 100px;
 	padding-left: 15px;
 	padding-top: 15px;
 	top: 20px;

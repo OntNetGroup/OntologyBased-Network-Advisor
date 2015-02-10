@@ -1,5 +1,6 @@
 package br.com.padtec.advisor.application.types;
 
+
 public enum RelationEnum {
 
 	MAPS_INPUT("maps_input"),
@@ -9,6 +10,7 @@ public enum RelationEnum {
 	HAS_EQUIPMENT("has_equipament"),
 	INTERFACE_BINDS("interface_binds"),
 	COMPONENTOF("componentOf"),
+	INVCOMPONENTOF("INV.componentOf"),
 	BINDING_IS_REPRESENTED_BY("binding_is_represented_by"),
 	IS_BINDING("is_binding"),
 	HAS_FORWARDING("has_forwarding");
@@ -27,6 +29,11 @@ public enum RelationEnum {
 		this.relation = relation;
 		this.domain = domain;
 		this.range = range;
+	}
+	
+	@Override
+	public String toString() {
+		return relation();
 	}
 	
 	public String relation() { return relation; }  

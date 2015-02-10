@@ -1,5 +1,6 @@
 package br.com.padtec.advisor.application.types;
 
+
 public enum ConceptEnum {
 	
 	EQUIPMENT("Equipment"),

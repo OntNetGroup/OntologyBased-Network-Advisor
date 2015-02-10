@@ -302,46 +302,50 @@
 	}
 %>
 
-<div class="col-lg-12">
-
-	<h2>Provisioning settings:</h2>
-	<div class="tooltip-demo well">
-		<table>
-			<tr>
-				<td style="padding-right: 5px; padding-left: 20px;">
-					<button type="button" id="resetSelection" disabled="disabled"
-						onclick="resetSelection();">Reset Selection</button>
-				</td>
-				<td style="padding-right: 5px;">
-					<form action="autoBinds" class="form-horizontal" method="POST"
-						enctype="multipart/form-data">
-						<input type="submit" id="automatic-binds" name="submit"
-							value="Automatic Binds" />
-					</form>
-				</td>
-			</tr>
-		</table>
-		<div style="clear: both"></div>
+<h1>Provisioning: Binds</h1>
+<div class="row" id="row">
+	<div class="col-lg-12">
+		<div class="box">
+			<div class="box-header">
+				<h2>
+					<i class="icon-edit"></i>Binds
+				</h2>
+				<div class="box-icon"> 
+					<a href="#" class="btn-minimize"><i class="icon-chevron-up" id="hideEquipmentType"></i></a>
+				</div>
+			</div>
+			<div class="tooltip-demo well" id="canvas-div">
+				<div class="floatingDiv">
+					<table>
+						<tr>
+							<td>
+								<button type="button" id="resetSelection" disabled="disabled" onclick="resetSelection();">Reset Selection</button>
+							</td>
+							<td>
+								<form action="autoBinds" class="form-horizontal" method="POST" enctype="multipart/form-data">
+									<input type="submit" id="automatic-binds" name="submit" value="Automatic Binds" />
+								</form>
+							</td>							
+						</tr>
+					</table>
+				</div>
+				
+				<div class="floatingDiv" style="right: 35px;">
+					<div id="currentNode">Select a node to visualize information about it.</div>
+				</div>
+				<div class="floatingDiv" style="right: 35px; bottom: 20px;">
+					<img id="sub" src="Assets/img/subtitles/Subtitle_TNOKCO_Binds.png"></img>
+				</div>
+				
+				<div style="clear: both"></div>
+				<%
+					out.println("<canvas id=\"viewport\" width=\"" + width
+							+ "\" height=\"" + height
+							+ "\" style=\"\"></canvas>");
+				%>
+			</div>
+		</div>
 	</div>
-</div>
-
-
-<br>
-<%
-	out.println("<div style=\"width:" + (width + 520) + "px\">");
-%>
-<div style="float: left; border: 1px solid black;">
-	<%
-		out.println("<canvas id=\"viewport\" width=\"" + width
-				+ "\" height=\"" + height
-				+ "\" style=\"background-color:white;\"></canvas>");
-	%>
-</div>
-<div style="float: right;">
-	<div id="currentNode">Select a node to visualize information
-		about it.</div>
-	<br> <img id="sub" src="Assets/img/subtitles/Subtitle_TNOKCO_Binds.png"></img>
-</div>
 </div>
 
 <script>
@@ -409,6 +413,29 @@
 
 	$('#currentNode').drags();
 	$('#sub').drags();
+
+    jQuery(document).ready(function($){
+        var canvas = document.getElementById('viewport'),
+        context = canvas.getContext('2d');
+
+		// resize the canvas to fill browser window dynamically
+		window.addEventListener('resize', resizeCanvas, false);
+		
+		function resizeCanvas() {
+				canvasDiv = document.getElementById('canvas-div');
+				canvas.width = canvasDiv.offsetWidth - 40;
+		        canvas.height = 568;
+		}
+
+		$('#main-menu-toggle').click();
+		resizeCanvas();
+		
+	    $('#main-menu-toggle').click(function(){
+	    	resizeCanvas();
+	    });
+
+	    
+	})();
 </script>
 
 <!-- Images of ITU elements -->
