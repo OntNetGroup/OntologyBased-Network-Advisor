@@ -1,7 +1,7 @@
 package br.com.padtec.advisor.application.types;
 
 public enum ConceptEnum {
-
+	
 	EQUIPMENT("Equipment"),
 	SITE("Site"),
 	BINDING("Binding"),
@@ -20,6 +20,11 @@ public enum ConceptEnum {
 	ConceptEnum(String concept)
 	{
 		this.concept = concept;
+	}
+	
+	@Override
+	public String toString() {
+		return concept();
 	}
 	
 	public String concept() { return concept; }  

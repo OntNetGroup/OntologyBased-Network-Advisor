@@ -534,7 +534,7 @@ public class VisualizationController {
 	}
 
 	//Binds Provisioning
-	@RequestMapping(method = RequestMethod.GET, value="/bindsV")
+	@RequestMapping(method = RequestMethod.GET, value="/binds")
 	public static String bindsV(HttpServletRequest request) {
 		elementsInitialize();
 		

@@ -352,7 +352,7 @@ $(document).ready(function() {
 									<ul class="dropmenuLevel2">								
 										
 										<li><a class="submenu" href="sindel"><i class="">S</i><span class="hidden-sm"> &nbsp;&nbsp; Sindel Editor</span></a></li>
-										<li><a class="submenu" href="newEquipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipment Instances</span></a></li>
+										<li><a class="submenu" href="add-equipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipment Instances</span></a></li>
 									</ul>	
 								</li>
 								
@@ -360,7 +360,7 @@ $(document).ready(function() {
 									<a class="dropmenu" href="#"><i class="icon-lightbulb"></i><span class="hidden-sm"> Functionalites</span> <span class="label">3</span></a>
 									<ul class="dropmenuLevel2">								
 										
-										<li><a class="submenu" href="okco-list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion <br> &nbsp;&nbsp; (TN-OKCo)</span></a></li>
+										<li><a class="submenu" href="okco-list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion <br> &nbsp;&nbsp; (OKCo)</span></a></li>
 										<li><a class="submenu" href="open-visualizer"><i class="icon-eye-open"></i><span class="hidden-sm">&nbsp;&nbsp; Visualization</span></a></li>
 										<li><a class="submenu" href="binds"><i class="">B</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Binds</span></a></li>
 										<li><a class="submenu" href="connects"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Connects</span></a></li>

@@ -44,7 +44,7 @@ public class ProvisioningController {
 	
 	private final int maxElements = 10;
 
-	@RequestMapping(method = RequestMethod.GET, value="/newEquipment")
+	@RequestMapping(method = RequestMethod.GET, value="/add-equipment")
 	public String newEquipment(HttpSession session, HttpServletRequest request) 
 	{
 		request.getSession().setAttribute("txtSindelCode", "");
@@ -80,7 +80,7 @@ public class ProvisioningController {
 		//this.getCandidateInterfacesForConnection(null);
 		//this.provision(null, null);
 
-		return "newEquipment";	//View to return
+		return "add-equipment";	//View to return
 	}
 
 	@RequestMapping(value = "/uploadSindelEquip", method = RequestMethod.POST)
@@ -292,12 +292,6 @@ public class ProvisioningController {
 		return dto;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value="/binds")
-	public String binds(HttpSession session, HttpServletRequest request) {
-
-		return "binds";	//View to return
-	}
-	
 	public static DtoResultAjax provisioningBinds(String outInt, String inInt, HttpServletRequest request, Boolean updateListsInTheEnd, ArrayList<String> listInstancesCreated) {
 
 		DtoResultAjax dto = new DtoResultAjax();

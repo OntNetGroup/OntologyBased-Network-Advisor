@@ -1,21 +1,16 @@
 <%@include file="../templates/header.jsp"%>
 <%
-	String arborStructure = (String) request.getSession().getAttribute(
-			"valuesGraph");
-	int width = (Integer) request.getSession().getAttribute("width");
-	int height = (Integer) request.getSession().getAttribute("height");
-	String hashEquipIntOut = (String) request.getSession()
-			.getAttribute("hashEquipIntOut");
-	String hashTypes = (String) request.getSession().getAttribute(
-			"hashTypes");
+	String arborStructure = (String) request.getSession().getAttribute("valuesGraph");
+	Integer width = (Integer) request.getSession().getAttribute("width");
+	Integer height = (Integer) request.getSession().getAttribute("height");
+	String hashEquipIntOut = (String) request.getSession().getAttribute("hashEquipIntOut");
+	String hashTypes = (String) request.getSession().getAttribute("hashTypes");
 	String hashAllowed = (String) request.getSession().getAttribute("hashAllowed");
-	int size = (Integer) request.getSession().getAttribute("size");
+	Integer size = (Integer) request.getSession().getAttribute("size");
 
 	//Get the parameters from controller
-	String error = (String) request.getSession().getAttribute(
-			"errorMensage");
-	String loadOk = (String) request.getSession()
-			.getAttribute("loadOk");
+	String error = (String) request.getSession().getAttribute("errorMensage");
+	String loadOk = (String) request.getSession().getAttribute("loadOk");
 	request.getSession().setAttribute("loadOk", "");
 %>
 <script>
@@ -46,7 +41,7 @@
 						possiblePopUp = "Equip";
 						
 						initHash();
-<%if (size == 1)
+<%if (size != null && size.equals(1))
 				out.println("graph = startArbor(\"#viewport\", 1.0);");
 			else
 				out.println("graph = startArbor(\"#viewport\", 0.91);");%>
@@ -320,7 +315,7 @@
 				<td style="padding-right: 5px;">
 					<form action="autoBinds" class="form-horizontal" method="POST"
 						enctype="multipart/form-data">
-						<input type="submit" id="autoBinds" name="submit"
+						<input type="submit" id="automatic-binds" name="submit"
 							value="Automatic Binds" />
 					</form>
 				</td>
