@@ -1,4 +1,4 @@
-package br.ufes.inf.padtec.tnokco.controller;
+package br.com.padtec.advisor.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,11 +30,11 @@ public class VisualizationController {
 	
 	private static HashMap<String,String> elements = null;
 	 
-	@RequestMapping(method = RequestMethod.GET, value="/open_visualizator")
+	@RequestMapping(method = RequestMethod.GET, value="/open-visualizer")
 	public String open_visualizator(HttpServletRequest request) 
 	{
 
-		if(OKCoUploader.getBaseModel() == null) return "open_visualizator"; 
+		if(OKCoUploader.getBaseModel() == null) return "open-visualizer"; 
 
 		/**===========================================================
 		 * Get Sites and Equipments
@@ -57,7 +57,7 @@ public class VisualizationController {
 
 		elementsInitialize();
 
-		return "open_visualizator";
+		return "open-visualizer";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_network_visualization")
@@ -322,7 +322,7 @@ public class VisualizationController {
 
 	@RequestMapping(method = RequestMethod.GET, value="/connect_equip_binds")
 	public @ResponseBody String connect_equip_binds(@RequestParam("equip_source") String equip_source,@RequestParam("interface_source") String interface_source,@RequestParam("equip_target") String equip_target,@RequestParam("interface_target") String interface_target , HttpServletRequest request) {
-		DtoResultAjax dto = ProvisioningController.binds(interface_target, interface_source, request, true, null);
+		DtoResultAjax dto = ProvisioningController.provisioningBinds(interface_target, interface_source, request, true, null);
 		return dto.ok+"";
 	}
 
@@ -534,7 +534,7 @@ public class VisualizationController {
 	}
 
 	//Binds Provisioning
-	@RequestMapping(method = RequestMethod.GET, value="/binds")
+	@RequestMapping(method = RequestMethod.GET, value="/bindsV")
 	public static String bindsV(HttpServletRequest request) {
 		elementsInitialize();
 		

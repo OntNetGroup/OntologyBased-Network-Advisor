@@ -1,5 +1,5 @@
 
-package br.ufes.inf.padtec.tnokco.controller;
+package br.com.padtec.advisor.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -292,13 +292,13 @@ public class ProvisioningController {
 		return dto;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value="/provisioning")
-	public String provisioning(HttpSession session, HttpServletRequest request) {
+	@RequestMapping(method = RequestMethod.GET, value="/binds")
+	public String binds(HttpSession session, HttpServletRequest request) {
 
-		return "provisioning";	//View to return
+		return "binds";	//View to return
 	}
 	
-	public static DtoResultAjax binds(String outInt, String inInt, HttpServletRequest request, Boolean updateListsInTheEnd, ArrayList<String> listInstancesCreated) {
+	public static DtoResultAjax provisioningBinds(String outInt, String inInt, HttpServletRequest request, Boolean updateListsInTheEnd, ArrayList<String> listInstancesCreated) {
 
 		DtoResultAjax dto = new DtoResultAjax();
 
@@ -916,7 +916,7 @@ public class ProvisioningController {
 			ArrayList<String> outs = candidates.getValue();
 			
 			if(outs.size() == 1){
-				binds(outs.get(0), inputInterface, request, false, listInstancesCreated);
+				provisioningBinds(outs.get(0), inputInterface, request, false, listInstancesCreated);
 				bindsMade++;
 				returnMessage += outs.get(0);
 				returnMessage += " -> ";
