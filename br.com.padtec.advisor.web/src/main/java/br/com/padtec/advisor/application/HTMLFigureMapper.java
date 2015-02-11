@@ -3,6 +3,8 @@ package br.com.padtec.advisor.application;
 import java.util.HashMap;
 import java.util.List;
 
+import br.com.padtec.advisor.application.types.ConceptEnum;
+
 public class HTMLFigureMapper {
 
 	private static HashMap<String,String> elements = new HashMap<String,String>();
@@ -11,30 +13,29 @@ public class HTMLFigureMapper {
 	{	
 		elements.clear();
 		
-		elements.put("Termination_Function", "TF");
-		elements.put("Adaptation_Function", "AF");
-		elements.put("Matrix", "Matrix");
-		elements.put("Subnetwork", "SN");
-		elements.put("Physical_Media", "PM");
-		elements.put("Input", "Input");
-		elements.put("Output", "Output");
-		elements.put("Reference_Point", "RP");
-		elements.put("Forwarding_End_Point", "RP");
-		elements.put("Forwarding_Point", "RP");
-		elements.put("Transport_Entity", "TE");
-		elements.put("Layer_Network", "Layer");
-		elements.put("Binding", "Binding");
-		elements.put("Input_Interface", "INT_IN");
-		elements.put("Output_Interface", "INT_OUT");
-		elements.put("Forwarding", "FORWARDING");
-		elements.put("Adaptation_Sink_Process", "Process");
-		elements.put("Adaptation_Source_Process", "Process");
-		elements.put("Termination_Sink_Process", "Process");
-		elements.put("Layer_Processor_Process", "Process");
-		elements.put("Termination_Source_Process", "Process");
-		//elements.put("Forwarding_Rule", "FWR_RULE");
-		elements.put("Equipment", "Equip");
-		elements.put("Site", "SITE");
+		elements.put(ConceptEnum.TRANSPORT_FUNCTION.toString(), "TF");
+		elements.put(ConceptEnum.ADAPTATION_FUNCTION.toString(), "AF");
+		elements.put(ConceptEnum.MATRIX.toString(), "Matrix");
+		elements.put(ConceptEnum.SUBNETWORK.toString(), "SN");
+		elements.put(ConceptEnum.PHYSICAL_MEDIA.toString(), "PM");
+		elements.put(ConceptEnum.INPUT.toString(), "Input");
+		elements.put(ConceptEnum.OUTPUT.toString(), "Output");
+		elements.put(ConceptEnum.REFERENCE_POINT.toString(), "RP");
+		elements.put(ConceptEnum.FORWARDING_END_POINT.toString(), "RP");
+		elements.put(ConceptEnum.FORWARDING_POINT.toString(), "RP");
+		elements.put(ConceptEnum.TRANSPORT_ENTITY.toString(), "TE");
+		elements.put(ConceptEnum.LAYER_NETWORK.toString(), "Layer");
+		elements.put(ConceptEnum.BINDING.toString(), "Binding");
+		elements.put(ConceptEnum.INPUT_INTERFACE.toString(), "INT_IN");
+		elements.put(ConceptEnum.OUTPUT_INTERFACE.toString(), "INT_OUT");
+		elements.put(ConceptEnum.FORWARDING.toString(), "FORWARDING");
+		elements.put(ConceptEnum.ADAPTATION_SINK_PROCESS.toString(), "Process");
+		elements.put(ConceptEnum.ADAPTATION_SOURCE_PROCESS.toString(), "Process");
+		elements.put(ConceptEnum.TERMINATION_SINK_PROCESS.toString(), "Process");
+		elements.put(ConceptEnum.LAYER_PROCESSOR_PROCESS.toString(), "Process");
+		elements.put(ConceptEnum.TERMINATION_SOURCE_PROCESS.toString(), "Process");
+		elements.put(ConceptEnum.EQUIPMENT.toString(), "Equip");
+		elements.put(ConceptEnum.SITE.toString(), "SITE");
 	}
 
 	public static String getG800Image(List<String> elemTypes)

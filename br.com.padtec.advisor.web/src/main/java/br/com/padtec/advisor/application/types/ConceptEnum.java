@@ -80,7 +80,20 @@ public enum ConceptEnum {
 	SOURCE_M_FP_BINDING("Source_M-FP_Binding"),
 	SOURCE_M_FP("Source_M-FP"),
 	TERMINATION_SOURCE_INPUT("Termination_Source_Input"),
-	SINK_M_FP_BINDING("Sink_M-FP_Binding");
+	SINK_M_FP_BINDING("Sink_M-FP_Binding"),
+	TERMINATION_FUNCTION("Termination_Function"),
+	ADAPTATION_FUNCTION("Adaptation_Function"),	
+	SUBNETWORK("Subnetwork"),
+	FORWARDING_END_POINT("Forwarding_End_Point"),
+	FORWARDING_POINT("Forwarding_Point"),
+	TRANSPORT_ENTITY("Transport_Entity"),
+	LAYER_NETWORK("Layer_Network"),
+	FORWARDING("Forwarding"),
+	ADAPTATION_SINK_PROCESS("Adaptation_Sink_Process"),
+	ADAPTATION_SOURCE_PROCESS("Adaptation_Source_Process"),
+	TERMINATION_SINK_PROCESS("Termination_Sink_Process"),
+	LAYER_PROCESSOR_PROCESS("Layer_Processor_Process"),
+	TERMINATION_SOURCE_PROCESS("Termination_Source_Process");
 	
 	// ==============================
 	// New Concepts to be generated... 

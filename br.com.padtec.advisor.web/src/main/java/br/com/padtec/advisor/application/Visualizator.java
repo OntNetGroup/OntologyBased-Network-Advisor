@@ -9,6 +9,7 @@ import br.com.padtec.advisor.application.dto.DtoEquipment;
 import br.com.padtec.advisor.application.dto.DtoInterfaceOutput;
 import br.com.padtec.advisor.application.queries.AdvisorDtoQueryUtil;
 import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
+import br.com.padtec.advisor.application.types.ConceptEnum;
 import br.com.padtec.advisor.application.types.RelationEnum;
 import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
 import br.com.padtec.common.dto.DtoInstanceRelation;
@@ -49,18 +50,18 @@ public class Visualizator {
 		List<DtoEquipment> list = AdvisorDtoQueryUtil.getAllDtoEquipments();		
 		for(DtoEquipment equip : list)
 		{
-			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
+			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>"+ConceptEnum.EQUIPMENT+"</li></ul>\";";
 			for(DtoInterfaceOutput outs : equip.getOutputs())
 			{
-				valuesGraph += "graph.addEdge(graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
-				hashTypes += "hash[\""+outs.getName()+"\"] = \"<b>"+outs.getName()+" is an individual of classes: </b><br><ul><li>Output_Interface</li></ul>\";";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'"+RelationEnum.INV_COMPONENTOF+"'});";
+				hashTypes += "hash[\""+outs.getName()+"\"] = \"<b>"+outs.getName()+" is an individual of classes: </b><br><ul><li>"+ConceptEnum.OUTPUT_INTERFACE+"</li></ul>\";";
 				size++;
 			}
 			for(Map.Entry<ArrayList<String>,DtoEquipment> entry : equip.getBinds().entrySet())
 			{
-				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'interface_binds'});";
-				hashTypes += "hash[\""+entry.getKey().get(1)+"\"] = \"<b>"+entry.getKey().get(1)+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
-				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'componentOf'});";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'"+RelationEnum.INTERFACE_BINDS+"'});";
+				hashTypes += "hash[\""+entry.getKey().get(1)+"\"] = \"<b>"+entry.getKey().get(1)+" is an individual of classes: </b><br><ul><li>"+ConceptEnum.INPUT_INTERFACE+"</li></ul>\";";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'"+RelationEnum.COMPONENTOF+"'});";
 				size++;
 			}
 			if(equip.getBinds().isEmpty())
@@ -78,24 +79,24 @@ public class Visualizator {
 		List<DtoEquipment> equips = AdvisorDtoQueryUtil.getDtoEquipmentsFromSite(OKCoUploader.getNamespace()+selectedSiteName);
 		for(DtoEquipment equip : equips)
 		{
-			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
+			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>"+ConceptEnum.EQUIPMENT+"</li></ul>\";";
 			for(DtoInterfaceOutput outs : equip.getOutputs())
 			{
-				valuesGraph += "graph.addEdge(graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
-				hashTypes += "hash[\""+outs.getName()+"\"] = \"<b>"+outs.getName()+" is an individual of classes: </b><br><ul><li>Output_Interface</li></ul>\";";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+outs.getName()+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'"+RelationEnum.INV_COMPONENTOF+"'});";
+				hashTypes += "hash[\""+outs.getName()+"\"] = \"<b>"+outs.getName()+" is an individual of classes: </b><br><ul><li>"+ConceptEnum.OUTPUT_INTERFACE+"</li></ul>\";";
 				size++;
 			}
 			for(String in : equip.getInputs())
 			{
-				valuesGraph += "graph.addEdge(graph.addNode(\""+in+"\", {shape:\"INT_IN_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'INV.componentOf'});";
-				hashTypes += "hash[\""+in+"\"] = \"<b>"+in+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+in+"\", {shape:\"INT_IN_AZUL\"}),graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_AZUL\"}), {name:'"+RelationEnum.INV_COMPONENTOF+"'});";
+				hashTypes += "hash[\""+in+"\"] = \"<b>"+in+" is an individual of classes: </b><br><ul><li>"+ConceptEnum.INPUT_INTERFACE+"</li></ul>\";";
 				size++;
 			}
 			for(Map.Entry<ArrayList<String>,DtoEquipment> entry : equip.getBinds().entrySet())
 			{
-				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'interface_binds'});";
-				hashTypes += "hash[\""+entry.getKey().get(1)+"\"] = \"<b>"+entry.getKey().get(1)+" is an individual of classes: </b><br><ul><li>Input_Interface</li></ul>\";";
-				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'componentOf'});";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getKey().get(0)+"\", {shape:\"INT_OUT_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'"+RelationEnum.INTERFACE_BINDS+"'});";
+				hashTypes += "hash[\""+entry.getKey().get(1)+"\"] = \"<b>"+entry.getKey().get(1)+" is an individual of classes: </b><br><ul><li>"+ConceptEnum.INPUT_INTERFACE+"</li></ul>\";";
+				valuesGraph += "graph.addEdge(graph.addNode(\""+entry.getValue().getName()+"\", {shape:\"Equip_AZUL\"}),graph.addNode(\""+entry.getKey().get(1)+"\", {shape:\"INT_IN_AZUL\"}), {name:'"+RelationEnum.COMPONENTOF+"'});";
 				size++;
 			}
 			if(equip.getBinds().isEmpty())
@@ -119,8 +120,7 @@ public class Visualizator {
 			hashTypes += "hash[\""+g800.substring(g800.indexOf("#")+1)+"\"] = \"<b>"+g800.substring(g800.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
 			for(String type : hashIndv.get(g800))
 			{
-				if(type.contains("#"))
-					hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
+				if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 			}
 			hashTypes += "</ul>\";";
 			size++;
@@ -150,8 +150,7 @@ public class Visualizator {
 			hashTypes += "hash[\""+g800.substring(g800.indexOf("#")+1)+"\"] = \"<b>"+g800.substring(g800.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
 			for(String type : hashIndv.get(g800))
 			{
-				if(type.contains("#"))
-					hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
+				if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 			}
 			hashTypes += "</ul>\";";
 			size++;
