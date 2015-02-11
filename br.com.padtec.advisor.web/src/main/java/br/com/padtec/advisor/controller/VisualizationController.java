@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.advisor.application.AdvisorUtil;
+import br.com.padtec.advisor.application.AdvisorService;
 import br.com.padtec.advisor.application.GeneralConnects;
 import br.com.padtec.advisor.application.dto.DtoEquipment;
 import br.com.padtec.advisor.application.dto.DtoInterfaceOutput;
 import br.com.padtec.advisor.application.dto.DtoResultAjax;
 import br.com.padtec.advisor.application.queries.AdvisorDtoQueryUtil;
 import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
+import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
-import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
 
 @Controller
 public class VisualizationController {
@@ -52,8 +52,8 @@ public class VisualizationController {
 		/**===========================================================
 		 * Get mappings of Individual x Classes from G800
 		 * =========================================================== */
-		List<String> allIndividuals = AdvisorUtil.getAllIndividualsFromG800();				
-		HashMap<String, List<String>> g800List = AdvisorUtil.getIndividualVSClassesMap(allIndividuals);;				
+		List<String> allIndividuals = AdvisorService.getAllIndividualsFromG800();				
+		HashMap<String, List<String>> g800List = AdvisorService.getIndividualVSClassesMap(allIndividuals);;				
 		request.getSession().setAttribute("g800", g800List);
 
 		elementsInitialize();
@@ -73,7 +73,7 @@ public class VisualizationController {
 		if(visualization.equals("allSites"))
 		{
 			List<String> sites = AdvisorQueryUtil.getSitesURI();
-			List<String[]> sitesConnections = AdvisorUtil.getSiteConnectsTuples();
+			List<String[]> sitesConnections = AdvisorService.getSiteConnectsTuples();
 			String rel = "site_connects";
 
 			for (String site : sites) {
@@ -121,10 +121,10 @@ public class VisualizationController {
 			request.getSession().setAttribute("popupMessage", "Go to Equipment\'s components");
 		}else if(visualization.equals("allG800")){
 			
-			List<String> g800s = AdvisorUtil.getAllIndividualsFromG800();
+			List<String> g800s = AdvisorService.getAllIndividualsFromG800();
 			
-			List<String[]> triplas = AdvisorUtil.getAllG800Triples();
-			HashMap<String, List<String>> hashIndv = AdvisorUtil.getIndividualVSClassesMap(g800s);
+			List<String[]> triplas = AdvisorService.getAllG800Triples();
+			HashMap<String, List<String>> hashIndv = AdvisorService.getIndividualVSClassesMap(g800s);
 
 			for (String g800 : g800s) {
 				valuesGraph += "graph.addNode(\""+g800.substring(g800.indexOf("#")+1)+"\", {shape:\""+getG800Image(hashIndv.get(g800))+"_AZUL\"});";
@@ -252,10 +252,10 @@ public class VisualizationController {
 	@RequestMapping(method = RequestMethod.GET, value="/open_g800_visualization_from_equip")
 	public String open_g800_visualization_from_equip(@RequestParam("selected") String equip, HttpServletRequest request) 
 	{
-		List<String> g800s = AdvisorUtil.getAllIndividualsFromG800(equip);
+		List<String> g800s = AdvisorService.getAllIndividualsFromG800(equip);
 		
-		List<String[]> triplas = AdvisorUtil.getAllG800Triples();
-		HashMap<String, List<String>> hashIndv = AdvisorUtil.getIndividualVSClassesMap(g800s);
+		List<String[]> triplas = AdvisorService.getAllG800Triples();
+		HashMap<String, List<String>> hashIndv = AdvisorService.getIndividualVSClassesMap(g800s);
 
 		String valuesGraph = "";
 		String hashTypes = "";
@@ -360,11 +360,11 @@ public class VisualizationController {
 				String src = connections.split("#")[0];
 				String trg = connections.split("#")[1];
 
-				possibleConnections = AdvisorUtil.getPossibleConnectsTuples(src);
+				possibleConnections = AdvisorService.getPossibleConnectsTuples(src);
 				if(!possibleConnections.isEmpty() && !hashAllowed.contains(src))
 					hashAllowed += src+"#";
 
-				possibleConnections = AdvisorUtil.getPossibleConnectsTuples(trg);
+				possibleConnections = AdvisorService.getPossibleConnectsTuples(trg);
 				if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg))
 					hashAllowed += trg+"#";
 			}
@@ -374,7 +374,7 @@ public class VisualizationController {
 				String rp = equipWithRP.split("#")[1];
 
 				if(!equip.isEmpty()){
-					if(!AdvisorUtil.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
+					if(!AdvisorService.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
 						hashAllowed += equip+"#";
 					}
 				}
@@ -394,7 +394,7 @@ public class VisualizationController {
 		 * [0] = RP's name
 		 * [1] = Connection type
 		 * */
-		ArrayList<String[]> list = AdvisorUtil.getPossibleConnectsTuples(rp);
+		ArrayList<String[]> list = AdvisorService.getPossibleConnectsTuples(rp);
 
 		String hashEquipIntIn = "";
 
@@ -439,12 +439,12 @@ public class VisualizationController {
 			String src = connections.split("#")[0];
 			String trg = connections.split("#")[1];
 
-			possibleConnections = AdvisorUtil.getPossibleConnectsTuples(src);
+			possibleConnections = AdvisorService.getPossibleConnectsTuples(src);
 			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+src))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(src))
 				hashAllowed += "hashAllowed.push(\""+src+"\");";
 
-			possibleConnections = AdvisorUtil.getPossibleConnectsTuples(trg);
+			possibleConnections = AdvisorService.getPossibleConnectsTuples(trg);
 			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trg))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg))
 				hashAllowed += "hashAllowed.push(\""+trg+"\");";
@@ -483,7 +483,7 @@ public class VisualizationController {
 				}else{
 					situation = false;
 					hashTypes += "hash[\""+equip+"\"] = \"<b>"+equip+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
-					if(!AdvisorUtil.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
+					if(!AdvisorService.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
 						arborStructure += "graph.getNode(\""+equip+"\").data.shape = graph.getNode(\""+equip+"\").data.shape.split(\"_\")[0]+\"_VERDE\";";
 						hashAllowed += "hashAllowed.push(\""+equip+"\");";
 					}
@@ -511,10 +511,10 @@ public class VisualizationController {
 			if(rpXequip.containsKey(trgRP)){ //trg is inside a equip
 				trgNode = rpXequip.get(trgRP);
 			}
-			possibleConnections = AdvisorUtil.getPossibleConnectsTuples(srcNode);
+			possibleConnections = AdvisorService.getPossibleConnectsTuples(srcNode);
 			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+srcNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 
-			possibleConnections = AdvisorUtil.getPossibleConnectsTuples(trgNode);
+			possibleConnections = AdvisorService.getPossibleConnectsTuples(trgNode);
 			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trgNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
 		}
 
@@ -585,7 +585,7 @@ public class VisualizationController {
 
 		//Getting Physical medias
 
-		ArrayList<String[]> pms = AdvisorUtil.getAllPhysicalMediaTriples();
+		ArrayList<String[]> pms = AdvisorService.getAllPhysicalMediaTriples();
 		/*
 		 * pm[0] = connected equipment interface (output)
 		 * pm[1] = connected pm port (input)

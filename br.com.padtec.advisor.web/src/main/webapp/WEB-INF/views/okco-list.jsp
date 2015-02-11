@@ -16,9 +16,36 @@
 
 	$(document).ready(function() {
 		//Enforce Sub Relations
-		$('#EnforceSubRelation').click(function(event) {
+		$('#EnforceSubRelation').submit(function(event) {
 
-			window.location.href = "/EnforceSubRelation";
+			//window.location.href = "/EnforceSubRelation";
+			
+// 			loading();
+// 			$.ajax({
+// 				url : $("#EnforceSubRelation").attr("action"),
+// 				//data : JSON.stringify(json),
+// 				type : "POST",
+// 				beforeSend : function(xhr) {
+// 					xhr.setRequestHeader("Accept", "application/json");
+// 					xhr.setRequestHeader("Content-Type", "application/json");
+// 				},
+// 				success : function(json) 
+// 				{						
+// 					if(!json.error)
+// 					{
+// 						window.location.href = "okco-list";
+// 						$(document).ajaxStop(function() { location.reload(true); });
+// 					}else{
+// 						//Huston we have a problem
+// 						var html = "<div class=\"alert alert-danger\">" +
+// 						"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>" + 
+// 						"<strong>" + "Erro! " + "</strong>"+ "Couldn't enforce sub-relations." + 
+// 						"</div>";
+// 						$("#content").prepend(html);
+// 					}
+// 				}
+// 			});
+// 			event.preventDefault();	
 				
 		});	//End load sindel file
 

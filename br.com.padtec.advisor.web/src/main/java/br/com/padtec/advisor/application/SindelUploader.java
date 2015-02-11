@@ -2,12 +2,12 @@ package br.com.padtec.advisor.application;
 
 import java.util.List;
 
+import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoReasoner;
 import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.trasnformation.sindel.Sindel2OWL;
-import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
 
 import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntModel;

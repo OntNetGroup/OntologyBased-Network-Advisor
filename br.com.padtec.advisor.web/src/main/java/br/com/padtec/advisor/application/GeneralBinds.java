@@ -12,7 +12,11 @@ import com.hp.hpl.jena.rdf.model.Statement;
 
 public class GeneralBinds extends AdvisorService {
 
-	public static BindsMap possibleBinds = new BindsMap();
+	public static PossibleBindsMap possibleBinds = new PossibleBindsMap();
+	
+	//==============================================
+	//These are factory methods because they modify the ontology
+	//==============================================
 	
 	/**
 	 * Bind specifics.

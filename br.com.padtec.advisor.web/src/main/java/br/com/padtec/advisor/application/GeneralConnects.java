@@ -17,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 public class GeneralConnects extends AdvisorService {
 
 	//==============================================
-	//Factory Methods: because it modifies the ontology
+	//These are factory methods because they modify the ontology
 	//==============================================
 	
 	/**

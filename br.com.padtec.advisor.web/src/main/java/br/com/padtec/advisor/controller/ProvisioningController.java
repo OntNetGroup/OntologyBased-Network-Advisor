@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import br.com.padtec.advisor.application.dto.DtoResultAjax;
 import br.com.padtec.advisor.application.types.ConceptEnum;
 import br.com.padtec.advisor.application.types.RelationEnum;
+import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
 import br.com.padtec.advisor.application.util.FileReader;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
@@ -34,7 +35,6 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.transformation.sindel.processor.BindsProcessor;
 import br.com.padtec.trasnformation.sindel.Sindel2OWL;
-import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;

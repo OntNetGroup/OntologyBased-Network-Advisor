@@ -211,7 +211,7 @@ public class UploadController implements ServletContextAware{
 		System.out.println("Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
 		
 		request.getSession().removeAttribute("errorMensage");  
-		return "redirect:list";
+		return "redirect:okco-list";
 	}	
 	
 	@RequestMapping(method = RequestMethod.GET, value="/getModel")
