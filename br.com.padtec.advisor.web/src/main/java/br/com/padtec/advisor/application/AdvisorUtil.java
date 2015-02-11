@@ -7,19 +7,15 @@ import java.util.List;
 import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
 import br.com.padtec.advisor.application.types.ConceptEnum;
 import br.com.padtec.advisor.application.types.RelationEnum;
-import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.Statement;
 
-public class ProvisioningFunctionality {
+public class AdvisorUtil {
 		
 	//==============================================
-	//Query Module: because it only searches for values in the ontology
+	//Query Methods: because it only searches for values in the ontology
 	//==============================================
 	
 	/** 
@@ -48,6 +44,83 @@ public class ProvisioningFunctionality {
 		allIndividuals.removeAll(classesList);
 		
 		return allIndividuals;
+	}
+	
+	/**
+	 * Returns all individuals from G800 filtered by a particular equipment
+	 * 
+	 * @param equipmentName
+	 * @return
+	 */
+	public static List<String> getAllIndividualsFromG800(String equipmentName)
+	{		
+		String namespace = OKCoUploader.getNamespace();
+		
+		List<String> result  = AdvisorQueryUtil.getTransportFunctionsURIAtComponentOfRange(namespace+equipmentName);
+		
+		List<String> outInterfacesList = AdvisorQueryUtil.getOutputInterfacesURIAtComponentOfRange(namespace+equipmentName);
+		for (String interface_out : outInterfacesList) 
+		{			
+			List<String> outputs = AdvisorQueryUtil.getOutputsURIAtMapsOutputRange(namespace+interface_out);
+			if(outputs.size()>0) result.add(outputs.get(0));
+		}
+		
+		List<String> inpInt = AdvisorQueryUtil.getInputInterfacesURIAtComponentOfRange(namespace+equipmentName);
+		for (String interface_inp : inpInt) 
+		{
+			List<String> inputs = AdvisorQueryUtil.getInputsURIAtMapsInputRange(namespace+interface_inp);
+			if(inputs.size()>0) result.add(inputs.get(0));
+		}
+		return result;
+	}
+	
+	/**
+	 * Returns a mapping of every individual and their set of classes in the ontology.
+	 * 
+	 * @param individualURIList: A list of individuals URIs
+	 * @return
+	 */
+	public static HashMap<String, List<String>> getIndividualVSClassesMap(List<String> individualURIList)
+	{
+		InfModel inferredModel = OKCoUploader.getInferredModel();
+		
+		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+		
+		for (String individualURI : individualURIList) 
+		{
+			List<String> classesFromIndividual= QueryUtil.getClassesURI(inferredModel,individualURI);
+			map.put(individualURI, classesFromIndividual);			
+		}
+		
+		return map;
+	}
+	
+	/**
+	 * Return all triples from G800 ontology.
+	 * 
+	 * @return
+	 */
+	public static List<String[]> getAllG800Triples()
+	{					
+		List<String[]> result = new ArrayList<String[]>();
+		
+		List<String> G800individuals = getAllIndividualsFromG800();
+		for (String individualURI : G800individuals) 
+		{														
+			List<String> propertiesURIList = QueryUtil.getPropertiesURI(OKCoUploader.getInferredModel(), individualURI);
+			
+			for(String propertyURI: propertiesURIList)
+			{				
+			    String[] triple = new String[3];
+			    triple[0]=individualURI;
+				triple[1]=propertyURI;				
+			    List<String> ranges = QueryUtil.getRangeURIs(OKCoUploader.getInferredModel(), propertyURI);			    
+			    if(ranges.size()>0) triple[2] = ranges.get(0);
+			    else triple[2] = "";			    
+			    result.add(triple);
+			}			
+		}
+		return result;
 	}
 	
 	/**
@@ -268,107 +341,33 @@ public class ProvisioningFunctionality {
 		return result ;
 	} 
 			
-	//==============================================
-	//Factory Module: because it modifies the ontology
-	//==============================================
-	
 	/**
-	 * Connects.
+	 * Returns all physical media triples.
 	 * 
-	 * @param rpName: Reference Point Name
-	 * @param rp2Name: Reference Point Name
-	 * @param type: "pm_nc", "nc" or other
+	 * @return
 	 */
-	public static void connects(String rpName, String rp2Name, String type) 
-	{
-		/** Substitute InferredModel for the Base Model. */
-		OKCoUploader.substituteInferredModelFromBaseModel(false);
-		
-		OntModel baseModel = OKCoUploader.getBaseModel();
-		String namespace = OKCoUploader.getNamespace();
-				
-		ArrayList<Statement> result = new ArrayList<Statement>();		
-		
-		if(type.equals("pm_nc"))
-		{			
-			Individual forwarding = baseModel.createIndividual(namespace+rpName+"_fw_"+rp2Name, baseModel.getResource(namespace+ConceptEnum.PM_NC_FORWARDING));
-			Individual te = baseModel.createIndividual(namespace+rpName+"_ate_"+rp2Name, baseModel.getResource(namespace+ConceptEnum.UNIDIRECTIONAL_PM_NC));
-			
-			result.add(baseModel.createStatement(forwarding, baseModel.getProperty(namespace+RelationEnum.IS_REPRESENTED_BY_UNI_ACCESS_TRANSPORT_ENTITY), te));
-			result.add(baseModel.createStatement(forwarding, baseModel.getProperty(namespace+RelationEnum.FORWARDING_FROM_UNI_PM_NC), baseModel.getIndividual(namespace+rpName)));
-			result.add(baseModel.createStatement(forwarding, baseModel.getProperty(namespace+RelationEnum.FORWARDING_TO_UNI_PM_NC), baseModel.getIndividual(namespace+rp2Name)));	
-			
-		}else{
-			if(type.equals("nc"))
-			{
-				Individual forwarding = baseModel.createIndividual(namespace+rpName+"_fw_"+rp2Name, baseModel.getResource(namespace+ConceptEnum.PATH_NC_FORWARDING));
-				Individual te = baseModel.createIndividual(namespace+rpName+"_ate_"+rp2Name, baseModel.getResource(namespace+ConceptEnum.UNIDIRECTIONAL_PATH_NC));
-				
-				result = new ArrayList<Statement>();
-				
-				result.add(baseModel.createStatement(forwarding, baseModel.getProperty(namespace+RelationEnum.IS_REPRESENTED_BY_UNI_PATH_NC), te));
-				result.add(baseModel.createStatement(forwarding, baseModel.getProperty(namespace+RelationEnum.FORWARDING_FROM_UNI_PATH_NC), baseModel.getIndividual(namespace+rpName)));
-				result.add(baseModel.createStatement(forwarding, baseModel.getProperty(namespace+RelationEnum.FORWARDING_TO_UNI_PATH_NC), baseModel.getIndividual(namespace+rp2Name)));	
-			}else{
-				Individual forwarding = baseModel.createIndividual(namespace+rpName+"_fw_"+rp2Name,baseModel.getResource(namespace+ConceptEnum.AP_FORWARDING));
-				Individual te = baseModel.createIndividual(namespace+rpName+"_ate_"+rp2Name,baseModel.getResource(namespace+ConceptEnum.UNIDIRECTIONAL_ACCESS_TRANSPORT_ENTITY));
-				
-				result = new ArrayList<Statement>();
-				
-				result.add(baseModel.createStatement(forwarding, baseModel.getProperty(namespace+RelationEnum.IS_REPRESENTED_BY_UNI_ACCESS_TRANSPORT_ENTITY), te));
-				result.add(baseModel.createStatement(forwarding, baseModel.getProperty(namespace+RelationEnum.FORWARDING_FROM_UNI_ACCESS_TRANSPORT_ENTITY), baseModel.getIndividual(namespace+rpName)));
-				result.add(baseModel.createStatement(forwarding, baseModel.getProperty(namespace+RelationEnum.FORWARDING_TO_UNI_ACCESS_TRANSPORT_ENTITY), baseModel.getIndividual(namespace+rp2Name)));					
-			}			
+	public static ArrayList<String[]> getAllPhysicalMediaTriples()
+	{		
+		List<String> mediasList = AdvisorQueryUtil.getPhysicalMediasURI();		
+		ArrayList<String[]> result = new ArrayList<String[]>();
+		for (String pm : mediasList) 
+		{
+			String[] triple = new String[7];			
+			String[] triple_aux = new String[3];			
+			triple_aux= AdvisorUtil.getPhysicalMediaTriples("input", pm);			
+			if(triple_aux[0]!=null) triple[1]= triple_aux[0].split("#")[1];
+			if(triple_aux[1]!=null) triple[0]= triple_aux[1].split("#")[1];
+			if(triple_aux[2]!=null) triple[2]= triple_aux[2].split("#")[1];
+			triple[3]=pm.split("#")[1];
+			triple_aux= AdvisorUtil.getPhysicalMediaTriples("output", pm);
+			if(triple_aux[0]!=null) triple[4]= triple_aux[0].split("#")[1];			
+			if(triple_aux[1]!=null) triple[5]= triple_aux[1].split("#")[1];
+			if(triple_aux[2]!=null)	triple[6]= triple_aux[2].split("#")[1];
+			result.add(triple);
 		}
-		result.add(baseModel.createStatement(baseModel.getIndividual(namespace+rpName), baseModel.getProperty(namespace+RelationEnum.HAS_FORWARDING), baseModel.getIndividual(namespace+rp2Name)));
-		baseModel.add(result);
-		
-		/** Substitute InferredModel for the Base Model. The changes were made at the base model! */
-		OKCoUploader.substituteInferredModelFromBaseModel(false);
+		return result;
 	}
 	
-	/**
-	 * Infer interface connections in the ontology. 
-	 */
-	public static void inferInterfaceConnections()
-	{
-		HashMap<String, String> map = new HashMap<String, String>();
-		
-		/** Input Interfaces */
-		List<String> inInterfacesList = AdvisorQueryUtil.getInputInterfacesURI();
-		for (String interfaceURI: inInterfacesList) 
-		{
-			List<String> inputs = AdvisorQueryUtil.getInputsURIAtMapsInputRange(interfaceURI);
-			if(inputs.size()>0) map.put(inputs.get(0), interfaceURI);			
-		}
-		
-		/** Output Interfaces */
-		List<String> outInterfacesList  = AdvisorQueryUtil.getOutputInterfacesURI();		
-		for (String interfaceURI : outInterfacesList) 
-		{
-			List<String> outputs = AdvisorQueryUtil.getOutputsURIAtMapsOutputRange(interfaceURI);
-			if(outputs.size()>0) map.put(outputs.get(0), interfaceURI);			
-		}
-
-		/** Outputs... */
-		List<String> outputsList = AdvisorQueryUtil.getOutputsURI();
-		for (String outputURI : outputsList) 
-		{
-			List<String> inputsURIList  = AdvisorQueryUtil.getInputsURIAtBindsRange(outputURI);
-			if(inputsURIList.size()>0)
-			{
-				String interfac_input= map.get(inputsURIList.get(0));
-				String interfac_output= map.get(outputURI);
-				
-				/** Create Statement OUTPUT_INTERFACE -> INTERFACE_BINDS -> INPUT_INTERFACE */
-				FactoryUtil.createStatement(
-					OKCoUploader.getBaseModel(), 
-					interfac_output, OKCoUploader.getNamespace()+RelationEnum.INTERFACE_BINDS, interfac_input
-				);				
-			}
-		}
-		
-		/** Substitute InferredModel for the Base Model. The changes were made at the base model! */
-		OKCoUploader.substituteInferredModelFromBaseModel(false);
-	}
+	
+	
 }

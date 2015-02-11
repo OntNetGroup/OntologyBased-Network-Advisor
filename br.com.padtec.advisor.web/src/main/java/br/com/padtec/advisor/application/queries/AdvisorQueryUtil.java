@@ -69,7 +69,7 @@ public class AdvisorQueryUtil {
 	
 	public static List<String> getOutputInterfacesURIAtInvMapsInputRange(String domainIndividualURI)
 	{
-		return QueryUtil.getIndividualsURIAtObjectPropertyRange(OKCoUploader.getInferredModel(), domainIndividualURI, OKCoUploader.getNamespace()+"INV."+RelationEnum.MAPS_INPUT, OKCoUploader.getNamespace()+ConceptEnum.OUTPUT_INTERFACE);	
+		return QueryUtil.getIndividualsURIAtObjectPropertyRange(OKCoUploader.getInferredModel(), domainIndividualURI, OKCoUploader.getNamespace()+RelationEnum.INV_MAPS_INPUT, OKCoUploader.getNamespace()+ConceptEnum.OUTPUT_INTERFACE);	
 	}	
 	
 	public static List<String> getOutputsURIAtMapsOutputRange(String domainIndividualURI)

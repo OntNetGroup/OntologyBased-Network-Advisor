@@ -17,7 +17,7 @@ public enum RelationEnum {
 	BINDING_IS_REPRESENTED_BY("binding_is_represented_by"),
 	IS_BINDING("is_binding"),
 	HAS_FORWARDING("has_forwarding"),	
-	
+		
 	// ==============================
 	// Inverses from the Ontology
 	// ==============================
@@ -40,7 +40,8 @@ public enum RelationEnum {
 	FORWARDING_FROM_UNI_PATH_NC("Forwarding_from_Uni_Path_NC"),
 	FORWARDING_TO_UNI_PATH_NC("Forwarding_to_Uni_Path_NC"),
 	FORWARDING_FROM_UNI_ACCESS_TRANSPORT_ENTITY("Forwarding_from_Uni_Access_Transport_Entity"),	
-	FORWARDING_TO_UNI_ACCESS_TRANSPORT_ENTITY("Forwarding_to_Uni_Access_Transport_Entity");
+	FORWARDING_TO_UNI_ACCESS_TRANSPORT_ENTITY("Forwarding_to_Uni_Access_Transport_Entity"),
+	IS_REPRESENTED_BY_SO_A_FEP("is_represented_by_So_A-FEP");
 	
 	private String relation;
 	private String domain = new String();

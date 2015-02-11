@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.advisor.application.ProvisioningFunctionality;
+import br.com.padtec.advisor.application.AdvisorUtil;
+import br.com.padtec.advisor.application.GeneralConnects;
 import br.com.padtec.advisor.application.dto.DtoEquipment;
 import br.com.padtec.advisor.application.dto.DtoInterfaceOutput;
 import br.com.padtec.advisor.application.dto.DtoResultAjax;
@@ -23,7 +24,6 @@ import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 import br.ufes.inf.padtec.tnokco.business.ApplicationQueryUtil;
-import br.ufes.inf.padtec.tnokco.business.Provisioning;
 
 @Controller
 public class VisualizationController {
@@ -45,14 +45,15 @@ public class VisualizationController {
 		request.getSession().setAttribute("equipments", equipments);
 		
 		/**===========================================================
-		 * Executing Inference:: Inferring Interface Connections...
+		 * Executing Inference: Inferring Interface Connections...
 		 * =========================================================== */
-		ProvisioningFunctionality.inferInterfaceConnections();
+		GeneralConnects.inferInterfaceConnections();
 		
-		List<String> allIndividuals = ProvisioningFunctionality.getAllIndividualsFromG800();
-		
-		Provisioning.generateG800Mappings(allIndividuals);		
-		HashMap<String, List<String>> g800List = Provisioning.individual_classes_map;				
+		/**===========================================================
+		 * Get mappings of Individual x Classes from G800
+		 * =========================================================== */
+		List<String> allIndividuals = AdvisorUtil.getAllIndividualsFromG800();				
+		HashMap<String, List<String>> g800List = AdvisorUtil.getIndividualVSClassesMap(allIndividuals);;				
 		request.getSession().setAttribute("g800", g800List);
 
 		elementsInitialize();
@@ -72,7 +73,7 @@ public class VisualizationController {
 		if(visualization.equals("allSites"))
 		{
 			List<String> sites = AdvisorQueryUtil.getSitesURI();
-			List<String[]> sitesConnections = ProvisioningFunctionality.getSiteConnectsTuples();
+			List<String[]> sitesConnections = AdvisorUtil.getSiteConnectsTuples();
 			String rel = "site_connects";
 
 			for (String site : sites) {
@@ -90,7 +91,7 @@ public class VisualizationController {
 			request.getSession().setAttribute("popupMessage", "Go to Site\'s components");
 		}else if(visualization.equals("allEquipments")){
 			
-			ProvisioningFunctionality.inferInterfaceConnections();
+			GeneralConnects.inferInterfaceConnections();
 			
 			// I substituted this line but I am not sure about it... (John)
 			//List<DtoEquipment> list = Provisioning.getEquipmentsConnectionsBinds();
@@ -120,10 +121,10 @@ public class VisualizationController {
 			request.getSession().setAttribute("popupMessage", "Go to Equipment\'s components");
 		}else if(visualization.equals("allG800")){
 			
-			List<String> g800s = ProvisioningFunctionality.getAllIndividualsFromG800();
+			List<String> g800s = AdvisorUtil.getAllIndividualsFromG800();
 			
-			ArrayList<String[]> triplas = Provisioning.g800_triples;
-			HashMap<String, List<String>> hashIndv = Provisioning.individual_classes_map;
+			List<String[]> triplas = AdvisorUtil.getAllG800Triples();
+			HashMap<String, List<String>> hashIndv = AdvisorUtil.getIndividualVSClassesMap(g800s);
 
 			for (String g800 : g800s) {
 				valuesGraph += "graph.addNode(\""+g800.substring(g800.indexOf("#")+1)+"\", {shape:\""+getG800Image(hashIndv.get(g800))+"_AZUL\"});";
@@ -251,10 +252,10 @@ public class VisualizationController {
 	@RequestMapping(method = RequestMethod.GET, value="/open_g800_visualization_from_equip")
 	public String open_g800_visualization_from_equip(@RequestParam("selected") String equip, HttpServletRequest request) 
 	{
-		List<String> g800s = Provisioning.filterG800ForEquipment(equip);
+		List<String> g800s = AdvisorUtil.getAllIndividualsFromG800(equip);
 		
-		ArrayList<String[]> triplas = Provisioning.g800_triples;
-		HashMap<String, List<String>> hashIndv = Provisioning.individual_classes_map;
+		List<String[]> triplas = AdvisorUtil.getAllG800Triples();
+		HashMap<String, List<String>> hashIndv = AdvisorUtil.getIndividualVSClassesMap(g800s);
 
 		String valuesGraph = "";
 		String hashTypes = "";
@@ -341,7 +342,7 @@ public class VisualizationController {
 	@RequestMapping(method = RequestMethod.GET, value="/do_connects")
 	public @ResponseBody String do_connects(@RequestParam("rp_src") String rp_src,@RequestParam("rp_trg") String rp_trg, @RequestParam("rp_type") String rp_type, HttpServletRequest request) {
 		try {
-			ProvisioningFunctionality.connects(rp_src, rp_trg, rp_type);
+			GeneralConnects.connects(rp_src, rp_trg, rp_type);
 			
 			/*
 			 * Verify the new possible connects
@@ -359,11 +360,11 @@ public class VisualizationController {
 				String src = connections.split("#")[0];
 				String trg = connections.split("#")[1];
 
-				possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(src);
+				possibleConnections = AdvisorUtil.getPossibleConnectsTuples(src);
 				if(!possibleConnections.isEmpty() && !hashAllowed.contains(src))
 					hashAllowed += src+"#";
 
-				possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(trg);
+				possibleConnections = AdvisorUtil.getPossibleConnectsTuples(trg);
 				if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg))
 					hashAllowed += trg+"#";
 			}
@@ -373,7 +374,7 @@ public class VisualizationController {
 				String rp = equipWithRP.split("#")[1];
 
 				if(!equip.isEmpty()){
-					if(!ProvisioningFunctionality.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
+					if(!AdvisorUtil.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
 						hashAllowed += equip+"#";
 					}
 				}
@@ -393,7 +394,7 @@ public class VisualizationController {
 		 * [0] = RP's name
 		 * [1] = Connection type
 		 * */
-		ArrayList<String[]> list = ProvisioningFunctionality.getPossibleConnectsTuples(rp);
+		ArrayList<String[]> list = AdvisorUtil.getPossibleConnectsTuples(rp);
 
 		String hashEquipIntIn = "";
 
@@ -438,12 +439,12 @@ public class VisualizationController {
 			String src = connections.split("#")[0];
 			String trg = connections.split("#")[1];
 
-			possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(src);
+			possibleConnections = AdvisorUtil.getPossibleConnectsTuples(src);
 			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+src))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(src))
 				hashAllowed += "hashAllowed.push(\""+src+"\");";
 
-			possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(trg);
+			possibleConnections = AdvisorUtil.getPossibleConnectsTuples(trg);
 			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trg))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg))
 				hashAllowed += "hashAllowed.push(\""+trg+"\");";
@@ -482,7 +483,7 @@ public class VisualizationController {
 				}else{
 					situation = false;
 					hashTypes += "hash[\""+equip+"\"] = \"<b>"+equip+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
-					if(!ProvisioningFunctionality.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
+					if(!AdvisorUtil.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
 						arborStructure += "graph.getNode(\""+equip+"\").data.shape = graph.getNode(\""+equip+"\").data.shape.split(\"_\")[0]+\"_VERDE\";";
 						hashAllowed += "hashAllowed.push(\""+equip+"\");";
 					}
@@ -510,10 +511,10 @@ public class VisualizationController {
 			if(rpXequip.containsKey(trgRP)){ //trg is inside a equip
 				trgNode = rpXequip.get(trgRP);
 			}
-			possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(srcNode);
+			possibleConnections = AdvisorUtil.getPossibleConnectsTuples(srcNode);
 			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+srcNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 
-			possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(trgNode);
+			possibleConnections = AdvisorUtil.getPossibleConnectsTuples(trgNode);
 			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trgNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
 		}
 
@@ -538,7 +539,7 @@ public class VisualizationController {
 	public static String bindsV(HttpServletRequest request) {
 		elementsInitialize();
 		
-		ProvisioningFunctionality.inferInterfaceConnections();
+		GeneralConnects.inferInterfaceConnections();
 		
 		// I substituted this line but I am not sure about it... (John)
 		//List<DtoEquipment> list = Provisioning.getEquipmentsConnectionsBinds();
@@ -584,7 +585,7 @@ public class VisualizationController {
 
 		//Getting Physical medias
 
-		ArrayList<String[]> pms = Provisioning.getAllPhysicalMediaAndBinds();
+		ArrayList<String[]> pms = AdvisorUtil.getAllPhysicalMediaTriples();
 		/*
 		 * pm[0] = connected equipment interface (output)
 		 * pm[1] = connected pm port (input)
