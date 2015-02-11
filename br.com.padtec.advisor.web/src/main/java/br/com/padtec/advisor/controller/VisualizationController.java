@@ -341,7 +341,7 @@ public class VisualizationController {
 	@RequestMapping(method = RequestMethod.GET, value="/do_connects")
 	public @ResponseBody String do_connects(@RequestParam("rp_src") String rp_src,@RequestParam("rp_trg") String rp_trg, @RequestParam("rp_type") String rp_type, HttpServletRequest request) {
 		try {
-			Provisioning.connects(rp_src, rp_trg, rp_type);
+			ProvisioningFunctionality.connects(rp_src, rp_trg, rp_type);
 			
 			/*
 			 * Verify the new possible connects
@@ -359,11 +359,11 @@ public class VisualizationController {
 				String src = connections.split("#")[0];
 				String trg = connections.split("#")[1];
 
-				possibleConnections = Provisioning.getPossibleConnects(src);
+				possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(src);
 				if(!possibleConnections.isEmpty() && !hashAllowed.contains(src))
 					hashAllowed += src+"#";
 
-				possibleConnections = Provisioning.getPossibleConnects(trg);
+				possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(trg);
 				if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg))
 					hashAllowed += trg+"#";
 			}
@@ -373,7 +373,7 @@ public class VisualizationController {
 				String rp = equipWithRP.split("#")[1];
 
 				if(!equip.isEmpty()){
-					if(!Provisioning.getPossibleConnects(rp).isEmpty() && !hashAllowed.contains(rp)){
+					if(!ProvisioningFunctionality.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
 						hashAllowed += equip+"#";
 					}
 				}
@@ -393,7 +393,7 @@ public class VisualizationController {
 		 * [0] = RP's name
 		 * [1] = Connection type
 		 * */
-		ArrayList<String[]> list = Provisioning.getPossibleConnects(rp);
+		ArrayList<String[]> list = ProvisioningFunctionality.getPossibleConnectsTuples(rp);
 
 		String hashEquipIntIn = "";
 
@@ -438,12 +438,12 @@ public class VisualizationController {
 			String src = connections.split("#")[0];
 			String trg = connections.split("#")[1];
 
-			possibleConnections = Provisioning.getPossibleConnects(src);
+			possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(src);
 			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+src))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(src))
 				hashAllowed += "hashAllowed.push(\""+src+"\");";
 
-			possibleConnections = Provisioning.getPossibleConnects(trg);
+			possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(trg);
 			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trg))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg))
 				hashAllowed += "hashAllowed.push(\""+trg+"\");";
@@ -482,7 +482,7 @@ public class VisualizationController {
 				}else{
 					situation = false;
 					hashTypes += "hash[\""+equip+"\"] = \"<b>"+equip+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
-					if(!Provisioning.getPossibleConnects(rp).isEmpty() && !hashAllowed.contains(rp)){
+					if(!ProvisioningFunctionality.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
 						arborStructure += "graph.getNode(\""+equip+"\").data.shape = graph.getNode(\""+equip+"\").data.shape.split(\"_\")[0]+\"_VERDE\";";
 						hashAllowed += "hashAllowed.push(\""+equip+"\");";
 					}
@@ -510,10 +510,10 @@ public class VisualizationController {
 			if(rpXequip.containsKey(trgRP)){ //trg is inside a equip
 				trgNode = rpXequip.get(trgRP);
 			}
-			possibleConnections = Provisioning.getPossibleConnects(srcNode);
+			possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(srcNode);
 			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+srcNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 
-			possibleConnections = Provisioning.getPossibleConnects(trgNode);
+			possibleConnections = ProvisioningFunctionality.getPossibleConnectsTuples(trgNode);
 			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trgNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
 		}
 

@@ -111,5 +111,10 @@ public class AdvisorQueryUtil {
 	{
 		return QueryUtil.getIndividualsURIAtObjectPropertyRange(OKCoUploader.getInferredModel(), domainIndividualURI, OKCoUploader.getNamespace()+RelationEnum.INTERFACE_BINDS, OKCoUploader.getNamespace()+ConceptEnum.INPUT_INTERFACE);
 	}
+	
+	public static List<String> getReferencePointsURIAtHasForwarding(String domainIndividualURI)
+	{
+		return QueryUtil.getIndividualsURIAtObjectPropertyRange(OKCoUploader.getInferredModel(), domainIndividualURI, OKCoUploader.getNamespace()+RelationEnum.HAS_FORWARDING, OKCoUploader.getNamespace()+ConceptEnum.REFERENCE_POINT);
+	}
 
 }

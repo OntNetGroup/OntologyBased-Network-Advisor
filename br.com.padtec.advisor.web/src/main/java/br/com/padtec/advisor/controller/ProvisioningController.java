@@ -449,7 +449,7 @@ public class ProvisioningController {
 		for (DtoInstanceRelation outRelation : outIntRelations) {
 			if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+RelationEnum.MAPS_OUTPUT)){
 				outputNs = outRelation.Target;
-			}else if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+RelationEnum.INVCOMPONENTOF)){
+			}else if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+RelationEnum.INV_COMPONENTOF)){
 				eqOutNs = outRelation.Target;
 			}else if(outRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+RelationEnum.INTERFACE_BINDS)){
 				interfaceBindsNs = outRelation.Target;

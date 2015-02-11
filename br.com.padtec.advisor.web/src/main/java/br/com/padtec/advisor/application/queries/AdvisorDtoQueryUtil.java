@@ -28,8 +28,6 @@ public class AdvisorDtoQueryUtil {
 		return getDtoEquipments(equipmentsURIList);
 	}
 	
-	//===============================================================
-	
 	private static List<DtoEquipment> getDtoEquipments(List<String> equipmentsURIList)
 	{
 		List<DtoEquipment> result= new ArrayList<DtoEquipment>();

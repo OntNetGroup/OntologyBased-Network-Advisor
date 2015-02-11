@@ -1775,25 +1775,25 @@ public class QueryUtil {
 	 * @author: Jordana Salamon
 	 * @param: individual, list of relations from individual, model
 	 */
-	static public ArrayList<String> query_EndOfGraph(String individuo, ArrayList<String> Relacoes, InfModel model){
+	static public ArrayList<String> endOfGraph(InfModel model, String individualName, ArrayList<String> relationsNameList){
 		// Create a new query
   		String var1 = null;
 		String queryString = 
 		 "PREFIX ont: <" + model.getNsPrefixURI("") + "> "
-		+ "SELECT ?var" + Relacoes.size()
+		+ "SELECT ?var" + relationsNameList.size()
 		+ " WHERE { ";
-		if(Relacoes.size() == 1){
-			var1 = "var"+Relacoes.size();
-			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 + " }";
+		if(relationsNameList.size() == 1){
+			var1 = "var"+relationsNameList.size();
+			queryString = queryString + "ont:" + individualName +  " ont:" + relationsNameList.get(0) + " ?" + var1 + " }";
 		}
 		else {
 			var1 = "var";
 			int cont=1;
-			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 +cont + ".";
-			for (int i = 1; i< Relacoes.size(); i++) {
+			queryString = queryString + "ont:" + individualName +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + ".";
+			for (int i = 1; i< relationsNameList.size(); i++) {
 				String var2 = "var";
 				int cont2=cont+1;
-				queryString = queryString + "?" + var1 + cont  + " ont:" + Relacoes.get(i) + " ?" + var2 + cont2 + " .";
+				queryString = queryString + "?" + var1 + cont  + " ont:" + relationsNameList.get(i) + " ?" + var2 + cont2 + " .";
 				cont++;
 			}
 			queryString = queryString + " }";
@@ -1810,7 +1810,7 @@ public class QueryUtil {
 		while (results.hasNext()) {
 			QuerySolution row = results.next();
 		    
-		    RDFNode rdfY = row.get("var"+Relacoes.size());
+		    RDFNode rdfY = row.get("var"+relationsNameList.size());
 	    	list.add(rdfY.toString());
 		}
 		return list;
@@ -1821,32 +1821,32 @@ public class QueryUtil {
 	 * @author: Jordana Salamon
 	 * @param: individual, list of relations from individual, list of ranges of the relations, model
 	 */
-	static public ArrayList<String> query_EndOfGraphWithRanges(String individuo, ArrayList<String> Relacoes, ArrayList<String> Ranges, InfModel model){
+	static public ArrayList<String> endOfGraphWithRanges(InfModel model, String individualName, ArrayList<String> relationsNameList, ArrayList<String> rangesNameList){
   		// Create a new query
   		String var1 = null;
   		String queryString = 
   		"PREFIX ont: <" + model.getNsPrefixURI("") + "> " +
   		 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-  		+ "SELECT ?var" + Relacoes.size()
+  		+ "SELECT ?var" + relationsNameList.size()
   		+ " WHERE { ";
-  		if((Relacoes.size() == 1) && (Ranges.size() == 1) && (Ranges.get(0) != " ")){
-  			var1 = "var"+Relacoes.size();
-  			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 + ".";
-  			queryString = queryString + "?" + var1 +  " rdf:type" + " ont:" + Ranges.get(0) + "." + " }";
+  		if((relationsNameList.size() == 1) && (rangesNameList.size() == 1) && (rangesNameList.get(0) != " ")){
+  			var1 = "var"+relationsNameList.size();
+  			queryString = queryString + "ont:" + individualName +  " ont:" + relationsNameList.get(0) + " ?" + var1 + ".";
+  			queryString = queryString + "?" + var1 +  " rdf:type" + " ont:" + rangesNameList.get(0) + "." + " }";
   		}
   		else {
   			var1 = "var";
   			int cont=1;
-  			queryString = queryString + " ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 +cont + " .";
-  			if(Ranges.get(0) != " "){
-  				queryString = queryString + " ?" + var1+cont +  " rdf:type" + " ont:" + Ranges.get(0) + " .";
+  			queryString = queryString + " ont:" + individualName +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + " .";
+  			if(rangesNameList.get(0) != " "){
+  				queryString = queryString + " ?" + var1+cont +  " rdf:type" + " ont:" + rangesNameList.get(0) + " .";
   			}
-  			for (int i = 1; i< Relacoes.size(); i++) {
+  			for (int i = 1; i< relationsNameList.size(); i++) {
   				String var2 = "var";
   				int cont2=cont+1;
-  				queryString = queryString + " ?" + var1 + cont  + " ont:" + Relacoes.get(i) + " ?" + var2 + cont2 + " .";
-  				if(Ranges.get(i) != " "){
-  	  				queryString = queryString + " ?" + var2 + cont2 +  " rdf:type" + " ont:" + Ranges.get(i) + " .";
+  				queryString = queryString + " ?" + var1 + cont  + " ont:" + relationsNameList.get(i) + " ?" + var2 + cont2 + " .";
+  				if(rangesNameList.get(i) != " "){
+  	  				queryString = queryString + " ?" + var2 + cont2 +  " rdf:type" + " ont:" + rangesNameList.get(i) + " .";
   	  			}
   				cont++;
   			}
@@ -1864,7 +1864,7 @@ public class QueryUtil {
   		while (results.hasNext()) {
   			QuerySolution row = results.next();
   		    
-  		    RDFNode rdfY = row.get("var"+Relacoes.size());
+  		    RDFNode rdfY = row.get("var"+relationsNameList.size());
   	    	list.add(rdfY.toString());
   		}
   		return list;
