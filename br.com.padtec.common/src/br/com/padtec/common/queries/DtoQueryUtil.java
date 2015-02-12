@@ -22,6 +22,21 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class DtoQueryUtil {
 
+	public static DtoInstance getIndividualByName(InfModel model, String individualURI)
+	{		
+		List<DtoInstance> dtoIndividualList = getIndividuals(model, false, false, false);
+		for (DtoInstance dtoIndividual : dtoIndividualList) 
+		{
+			String dtoIndividualName = dtoIndividual.name;
+			dtoIndividualName = dtoIndividualName.replace(dtoIndividual.ns, "");
+			
+			String individualName = individualURI.replace(dtoIndividual.ns, "");
+			
+			if(dtoIndividualName.equals(individualName)) { return dtoIndividual; }
+		}
+		return null;
+	}
+	
 	/** 
 	 * Return the list of all individuals from the ontology.
 	 * It returns also all the classes of an individual as well as all the other individuals different and the same as this one.

@@ -58,7 +58,7 @@ public class ProvisioningController {
 		
 		Boolean inputIsPmInput = false;
 		if(inputNs.equals("")){
-			DtoInstance inputOrIntInput = getInstanceFromNameSpace(OKCoUploader.getNamespace()+inInt);
+			DtoInstance inputOrIntInput = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+inInt);
 			for (String inputOrIntInputClass : inputOrIntInput.ListClasses) {
 				if(inputOrIntInputClass.equals(OKCoUploader.getNamespace()+"Physical_Media_Input")){
 					inputNs = inInt;
@@ -70,7 +70,7 @@ public class ProvisioningController {
 //		System.out.println();
 		Boolean outputIsPmOutput = false;
 		if(outputNs.equals("")){
-			DtoInstance outputOrIntOutput = getInstanceFromNameSpace(OKCoUploader.getNamespace()+outputNs);
+			DtoInstance outputOrIntOutput = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+outputNs);
 			for (String outputOrIntOutputClass : outputOrIntOutput.ListClasses) {
 				if(outputOrIntOutputClass.equals(OKCoUploader.getNamespace()+"Physical_Media_Output")){
 					outputNs = inInt;
@@ -163,7 +163,7 @@ public class ProvisioningController {
 		
 		ArrayList<String> allowedInputInterfaces = new ArrayList<String>();
 		//find the instance of the output interface
-		DtoInstance outputInterface = getInstanceFromNameSpace(outIntNs);
+		DtoInstance outputInterface = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(),outIntNs);
 //		Instance outputInterface = null;
 //		for (Instance instance : HomeController.ListAllInstances) {
 //			String instNs = instance.name;
@@ -467,21 +467,6 @@ public class ProvisioningController {
 		return allowedInputInterfaces;
 	}
 	
-	public static DtoInstance getInstanceFromNameSpace(String nameSpace){
-		DtoInstance instance = null;
-		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
-		for (DtoInstance inst : allInstances) {
-			String instNs = inst.name;
-			instNs = instNs.replace(inst.ns, "");
-			nameSpace = nameSpace.replace(inst.ns, "");
-			if(instNs.equals(nameSpace)){
-				instance = inst;
-				break;
-			}
-		}
-		return instance;
-	}
-	
 	public static ArrayList<DtoInstance> getInstancesFromClass(ConceptEnum inputInterface){
 		ArrayList<String> classNamesWithoutNameSpace = new ArrayList<String>();
 		classNamesWithoutNameSpace.add(String.valueOf(inputInterface));
@@ -529,7 +514,7 @@ public class ProvisioningController {
 		//get namespaces of individuals of some input interface relations
 		for (DtoInstanceRelation eqRelation : equipRelations) {
 			if(eqRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"componentOf.Equipment.Output_Interface") || eqRelation.Property.equalsIgnoreCase(OKCoUploader.getNamespace()+"componentOf")){
-				DtoInstance outIntInstance = getInstanceFromNameSpace(eqRelation.Target);
+				DtoInstance outIntInstance = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(),eqRelation.Target);
 				for (String classOutIntName : outIntInstance.ListClasses) {
 					if(classOutIntName.equals(OKCoUploader.getNamespace()+"Output_Interface")){
 						outIntNss.add(eqRelation.Target);
@@ -539,7 +524,7 @@ public class ProvisioningController {
 		}
 		
 		for (String oiNs : outIntNss) {
-			DtoInstance outputInterface = getInstanceFromNameSpace(oiNs);
+			DtoInstance outputInterface = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(),oiNs);
 			
 			List<DtoInstanceRelation> outIntRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), outputInterface.ns+outputInterface.name);
 			String inIntNs = "";
