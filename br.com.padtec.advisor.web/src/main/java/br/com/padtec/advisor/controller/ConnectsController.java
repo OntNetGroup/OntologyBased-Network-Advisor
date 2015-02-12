@@ -1,6 +1,7 @@
 package br.com.padtec.advisor.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,26 +13,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.advisor.application.AdvisorService;
 import br.com.padtec.advisor.application.GeneralConnects;
-import br.com.padtec.advisor.application.dto.DtoResultAjax;
+import br.com.padtec.advisor.application.types.ConceptEnum;
+import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
+import br.com.padtec.common.dto.DtoInstance;
+import br.com.padtec.common.dto.DtoInstanceRelation;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
+
+import com.hp.hpl.jena.rdf.model.InfModel;
 
 @Controller
 public class ConnectsController {
 
-	@RequestMapping(method = RequestMethod.GET, value="/connect_equip_binds")
-	public @ResponseBody String connect_equip_binds(@RequestParam("equip_source") String equip_source,@RequestParam("interface_source") String interface_source,@RequestParam("equip_target") String equip_target,@RequestParam("interface_target") String interface_target , HttpServletRequest request) 
-	{
-		DtoResultAjax dto = ProvisioningController.provisioningBinds(interface_target, interface_source, request, true, null);
-		return dto.ok+"";
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value="/get_input_interfaces_from")
-	public @ResponseBody String get_input_interfaces_from(@RequestParam("equip") String equip, @RequestParam("interf") String interf, HttpServletRequest request) 
-	{
-		ArrayList<String> list = ProvisioningController.getCandidateInterfacesForConnection(interf);
-		String hashEquipIntIn = "";
-		for(String line : list) hashEquipIntIn += line;		
-		return hashEquipIntIn;
+	@RequestMapping(value = "/autoConnects", method = RequestMethod.POST)
+	public String autoConnects(HttpServletRequest request){
+		return "";
+		
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/do_connects")
@@ -49,7 +46,7 @@ public class ConnectsController {
 			ArrayList<String> connectsBetweenRps = new ArrayList<String>();
 			ArrayList<String[]> possibleConnections;
 			
-			ProvisioningController.getEquipmentsWithRPs(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace(), equipsWithRps, connectsBetweenEqsAndRps, connectsBetweenRps);
+			getEquipmentsWithRPs(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace(), equipsWithRps, connectsBetweenEqsAndRps, connectsBetweenRps);
 
 			for (String connections : connectsBetweenEqsAndRps) {
 				String src = connections.split("#")[0];
@@ -97,5 +94,250 @@ public class ConnectsController {
 		}
 
 		return hashEquipIntIn;
+	}
+	
+	public static void getEquipmentsWithRPs(InfModel infModel, String NS, ArrayList<String> equipsWithRps, ArrayList<String> connectsBetweenEqsAndRps, ArrayList<String> connectsBetweenRps){
+		if(equipsWithRps == null){
+			equipsWithRps = new ArrayList<String>();
+		}
+		if(connectsBetweenEqsAndRps == null){
+			connectsBetweenEqsAndRps = new ArrayList<String>();
+		}
+		if(connectsBetweenRps == null){
+			connectsBetweenRps = new ArrayList<String>();
+		}
+		ArrayList<DtoInstance> rpInstances = ProvisioningController.getInstancesFromClass(ConceptEnum.REFERENCE_POINT);
+		
+		for (DtoInstance rp : rpInstances) {
+			List<DtoInstanceRelation> rpRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, rp.ns+rp.name);
+			String bindingNs = "";
+			for (DtoInstanceRelation rel : rpRelations) {
+				String propertyName = rel.Property.replace(NS, "");
+				if(propertyName.equals("INV.binding_is_represented_by")){
+					bindingNs = rel.Target;			
+				}else if(propertyName.equals("has_forwarding")){
+					String cnct = "";
+					cnct += rp.name;
+					cnct += "#";
+					cnct += rel.Target.replace(NS, "");
+					connectsBetweenRps.add(cnct);
+				}
+			}
+			
+			ArrayList<String> equips = new ArrayList<String>();
+			if(!bindingNs.equals("")){
+				equips = getEquipmentFromBinding(infModel, NS, bindingNs);
+			}
+			
+			String equipmentWithRp = "";
+			if(equips.size() == 1){
+				equipmentWithRp += equips.get(0).replace(NS, "");
+			}else if(equips.size() >= 2){
+				for (String eq : equips) {
+					String cnct = "";
+					cnct += eq.replace(NS, "");
+					cnct += "#";
+					cnct += rp.name;
+					
+					String cnctInv = "";
+					cnctInv += rp.name;
+					cnctInv += "#";
+					cnctInv += eq.replace(NS, "");
+					
+					if(!connectsBetweenEqsAndRps.contains(cnct) && !connectsBetweenEqsAndRps.contains(cnctInv)){
+						connectsBetweenEqsAndRps.add(cnct);
+					}
+				}								
+			}
+			equipmentWithRp += "#";
+			equipmentWithRp += rp.name;
+			
+			if(!equipsWithRps.contains(equipmentWithRp)){
+				equipsWithRps.add(equipmentWithRp);
+			}
+			
+		}
+		
+	}
+	
+	public static ArrayList<String> getEquipmentFromBinding(InfModel infModel, String NS, String bindingName){
+		bindingName = bindingName.replace(NS, "");
+		List<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindingName);
+		
+		String bindedPort1Ns="";
+		String bindedPort2Ns="";
+		for (DtoInstanceRelation rel : bindingRelations) {
+			String propertyName = rel.Property.replace(NS, "");
+			if(propertyName.equals("is_binding")){
+				if(bindedPort1Ns.equals("")){
+					bindedPort1Ns = rel.Target;
+				}else{
+					bindedPort2Ns = rel.Target;
+					break;
+				}
+			}
+		}
+		ArrayList<String> equips = new ArrayList<String>();
+		if(!bindedPort1Ns.equals("")){
+			//String equipmentNs = getEquipmentFromPort(infModel, NS, bindedPort1Ns, searchEquipmentFromPortToTop(infModel, NS, bindedPort1Ns));
+			//if(!equipmentNs.equals("")){
+				//equips.add(equipmentNs);
+			//}			
+			ArrayList<String> equipsNs = getEquipmentFromPort(infModel, NS, bindedPort1Ns, searchEquipmentFromPortToTop(infModel, NS, bindedPort1Ns));
+			equips.addAll(equipsNs);
+		}
+		if(!bindedPort2Ns.equals("")){
+			//String equipmentNs = getEquipmentFromPort(infModel, NS, bindedPort2Ns, searchEquipmentFromPortToTop(infModel, NS, bindedPort2Ns));
+			//if(!equips.contains(equipmentNs)){
+			//if(!equipmentNs.equals("") && !equips.contains(equipmentNs)){
+			//	equips.add(equipmentNs);
+			//}
+			ArrayList<String> equipsNs = getEquipmentFromPort(infModel, NS, bindedPort2Ns, searchEquipmentFromPortToTop(infModel, NS, bindedPort2Ns));
+			for (String eqNs : equipsNs) {
+				if(!equips.contains(eqNs)){
+					equips.add(eqNs);
+				}
+			}
+		}
+		return equips;
+	}
+	
+	public static ArrayList<String> getEquipmentFromPort(InfModel infModel, String NS, String bindedPortNs, Boolean searchToTop){
+		ArrayList<String> ret = new ArrayList<String>();
+		bindedPortNs = bindedPortNs.replace(NS, "");
+		
+		List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindedPortNs);
+		String outIntNs = "";
+		String inIntNs = "";
+		String tfNs = "";
+		for (DtoInstanceRelation portRel : portRelations) {
+			String portRelName = portRel.Property.replace(NS, "");
+			if(portRelName.equals("INV.maps_output")){
+				outIntNs = portRel.Target;
+			}else if(portRelName.equals("INV.maps_input")){
+				inIntNs = portRel.Target;
+			}else if(portRelName.equals("INV.componentOf")){
+				tfNs = portRel.Target;
+			}
+		}
+		
+		if(!tfNs.equals("") && outIntNs.equals("") && inIntNs.equals("")){
+			tfNs = tfNs.replace(NS, "");
+			List<String> tiposPm=QueryUtil.getClassesURI(infModel,NS+tfNs);
+			if(tiposPm.contains(NS+"Physical_Media")){
+				ret.add(tfNs);
+				return ret;
+				//return tfNs;
+			}
+			
+			ArrayList<String> nextPorts = new ArrayList<String>(); 
+			List<DtoInstanceRelation> tfRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+tfNs);
+			String eqNs = "";
+			for (DtoInstanceRelation tfRel : tfRelations) {
+				String tfRelRelName = tfRel.Property.replace(NS, "");
+				if(tfRelRelName.equals("INV.componentOf")){
+					eqNs = tfRel.Target;
+					eqNs = eqNs.replace(NS, "");
+					List<String> tiposEq=QueryUtil.getClassesURI(infModel,NS+eqNs);
+					if(tiposEq.contains(NS+"Equipment")){
+						ret.add(eqNs);
+						return ret;
+						//return eqNs;
+					}
+				}else if(tfRelRelName.equals("componentOf")){
+					if(!tfRel.Target.equals(NS+bindedPortNs)){
+						List<String> tiposTf=QueryUtil.getClassesURI(infModel,tfRel.Target);
+						if(tiposTf.contains(NS+"Input") || tiposTf.contains(NS+"Output")){
+							nextPorts.add(tfRel.Target);
+						}
+					}
+				}
+				
+			}
+			
+			ArrayList<String> nextRps = getNextRpsFromTf(infModel, NS, bindedPortNs, nextPorts, searchToTop);
+			ret.addAll(nextRps);
+			System.out.println();
+			
+		}else if(!outIntNs.equals("")){
+			ret.add(getEquipmentFromInterface(infModel, NS, outIntNs));
+			return ret;
+			//return getEquipmentFromInterface(infModel, NS, outIntNs);
+		}else if(!inIntNs.equals("")){
+			ret.add(getEquipmentFromInterface(infModel, NS, inIntNs));
+			return ret;
+			//return getEquipmentFromInterface(infModel, NS, inIntNs);
+		}
+		
+		return ret;
+	}
+	
+	public static Boolean searchEquipmentFromPortToTop(InfModel infModel, String NS, String portNs){
+		portNs = portNs.replace(NS, "");
+		List<String> tiposPort=QueryUtil.getClassesURI(infModel,NS+portNs);
+		if(tiposPort.contains(NS+"Output")){
+			return true;
+		}
+		return false;
+	}
+	
+	public static String getEquipmentFromInterface(InfModel infModel, String NS, String interfaceNs){
+		interfaceNs = interfaceNs.replace(NS, "");
+		List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+interfaceNs);
+		
+		for (DtoInstanceRelation intRel : portRelations) {
+			String intRelName = intRel.Property.replace(NS, "");
+			if(intRelName.equals("INV.componentOf")){
+				return intRel.Target;
+			}
+		}
+		
+		return "";
+	}
+	
+	public static String getRPFromBinding(InfModel infModel, String NS, String bindingNs){
+		bindingNs = bindingNs.replace(NS, "");
+		List<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+bindingNs);
+		
+		for (DtoInstanceRelation bindingRel : bindingRelations) {
+			String intRelName = bindingRel.Property.replace(NS, "");
+			if(intRelName.equals("binding_is_represented_by")){
+				return bindingRel.Target;
+			}
+		}
+		
+		return "";
+	}
+	
+	public static ArrayList<String> getNextRpsFromTf(InfModel infModel, String NS, String actualPort, ArrayList<String> nextPorts, Boolean searchToTop){
+		ArrayList<String> nextRps = new ArrayList<String>();
+		for (String portNs : nextPorts) {
+			portNs = portNs.replace(NS, "");
+			
+			List<String> nextPortClasses = QueryUtil.getClassesURI(infModel,NS+portNs);
+			List<String> actualPortClasses = QueryUtil.getClassesURI(infModel,NS+actualPort);
+			
+			if((nextPortClasses.contains(NS+"Output") && actualPortClasses.contains(NS+"Input")) || (nextPortClasses.contains(NS+"Input") && actualPortClasses.contains(NS+"Output"))){
+				List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, NS+portNs);
+				
+				for (DtoInstanceRelation portRel : portRelations) {
+					String portRelName = portRel.Property.replace(NS, "");
+					if(portRelName.equals("INV.is_binding")){
+						List<DtoInstanceRelation> bindingRelations =ApplicationQueryUtil.GetInstanceAllRelations(infModel, portRel.Target);
+						for (DtoInstanceRelation bindingRel : bindingRelations) {
+							String bindingRelName = bindingRel.Property.replace(NS, "");
+							if(bindingRelName.equals("binding_is_represented_by")){
+								nextRps.add(bindingRel.Target);
+							}
+						}					
+					}
+				}	
+			}
+			
+					
+		}
+		
+		
+		return nextRps;
 	}
 }

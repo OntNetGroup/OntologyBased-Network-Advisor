@@ -3,7 +3,7 @@ package br.com.padtec.advisor.application;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import br.com.padtec.advisor.controller.ProvisioningController;
+import br.com.padtec.advisor.controller.ConnectsController;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
@@ -21,7 +21,7 @@ public class ConnectsVisualizator extends Visualizator {
 		ArrayList<String> connectsBetweenEqsAndRps = new ArrayList<String>();
 		ArrayList<String> connectsBetweenRps = new ArrayList<String>();
 
-		ProvisioningController.getEquipmentsWithRPs(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace(), equipsWithRps, connectsBetweenEqsAndRps, connectsBetweenRps);
+		ConnectsController.getEquipmentsWithRPs(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace(), equipsWithRps, connectsBetweenEqsAndRps, connectsBetweenRps);
 
 		ArrayList<String> usedRPs = new ArrayList<String>();
 		ArrayList<String[]> possibleConnections;
