@@ -1,40 +1,27 @@
 
 package br.com.padtec.advisor.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.padtec.advisor.application.dto.DtoResultAjax;
 import br.com.padtec.advisor.application.types.ConceptEnum;
 import br.com.padtec.advisor.application.types.RelationEnum;
 import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
-import br.com.padtec.advisor.application.util.FileReader;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
-import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.transformation.sindel.processor.BindsProcessor;
-import br.com.padtec.trasnformation.sindel.Sindel2OWL;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;
@@ -44,256 +31,6 @@ import com.hp.hpl.jena.rdf.model.Statement;
 @Controller
 public class ProvisioningController {
 	
-	private final int maxElements = 10;
-
-	@RequestMapping(method = RequestMethod.GET, value="/add-equipment")
-	public String newEquipment(HttpSession session, HttpServletRequest request) 
-	{
-		request.getSession().setAttribute("txtSindelCode", "");
-		request.getSession().setAttribute("txtSindelCodeBr", "");
-		request.getSession().setAttribute("action", "");
-		request.getSession().setAttribute("equipNameAux", "");
-		request.getSession().setAttribute("equipName", "");		
-		for (int i = 1; i <= maxElements; i++) 
-		{
-			request.getSession().setAttribute("equipName"+i, "");
-			request.getSession().setAttribute("txtSindel"+i, "");
-			request.getSession().setAttribute("file"+i, "");
-			request.getSession().setAttribute("filename"+i, "");
-		}
-		/*
-		String path = "http://localhost:8080/tnokco/Assets/owl/g800.owl";
-		// Load Model
-		OKCoUploader.getBaseModel() = HomeController.Repository.Open(path);
-		HomeController.tmpModel = HomeController.Repository.Open(path);
-		OKCoUploader.getNamespace() = HomeController.Repository.getNameSpace(OKCoUploader.getBaseModel());
-		 */
-
-		if(OKCoUploader.getBaseModel() == null)
-		{
-			String error = "Error! You need to load the model first.";
-			request.getSession().setAttribute("errorMensage", error);
-
-			return "index";
-		}
-
-		this.cleanEquipSindel(request);
-
-		//this.getCandidateInterfacesForConnection(null);
-		//this.provision(null, null);
-
-		return "add-equipment";	//View to return
-	}
-
-	@RequestMapping(value = "/uploadSindelEquip", method = RequestMethod.POST)
-	public String uploadSindelEquip(HttpServletRequest request){
-
-		try {
-			
-			//HomeController.Repository = new BaseModelRepositoryImpl(); ### I think we don not need this anymore...
-
-			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-			MultipartFile file = multipartRequest.getFile("file");
-
-			if(! file.getOriginalFilename().endsWith(".sindel"))
-			{
-				throw new OKCoExceptionFileFormat("Please select owl file.");
-			}
-			// Load sindel file
-
-			InputStream in = file.getInputStream();
-			InputStreamReader r = new InputStreamReader(in);
-			BufferedReader br = new BufferedReader(r);
-			FileReader readerFile = new FileReader();
-
-			String txtSindel = readerFile.readFile(br);
-			//SindelController.txtSindelCode = txtSindel;
-			request.getSession().setAttribute("txtSindelCode", txtSindel);
-			txtSindel = txtSindel.replaceAll("\n", "<br>");
-			request.getSession().setAttribute("txtSindelCodeBr", txtSindel);
-			
-			String equipNameAux = multipartRequest.getParameter("equipNameAux");
-			request.getSession().setAttribute("equipNameAux", equipNameAux);
-			request.getSession().setAttribute("equipName", equipNameAux);
-
-		}  catch (IOException e) {
-			String error = "File not found.\n" + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);
-			System.out.println("File not found.");
-		} catch (OKCoExceptionFileFormat e) {
-			String error = "File format error: " + e.getMessage();
-			request.getSession().setAttribute("errorMensage", error);			
-		}
-
-		return "newEquipment";			
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value="/runEquipTypes")
-	public @ResponseBody DtoResultAjax runEquipTypes(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
-
-		DtoResultAjax dto = new DtoResultAjax();
-		dto.ok = false;
-		dto.result = "It is necessary to inform the name of the new Equipment.";				
-
-
-
-		for (int i = 0; i < dtoGet.equipments.length; i++) {
-			String individualsPrefixName = dtoGet.equipments[i][0];
-			String sindelParsedCode = dtoGet.equipments[i][1];
-
-			if(individualsPrefixName == null){
-				return dto;
-			}else if(individualsPrefixName == ""){
-				return dto;
-			}
-
-			try {		  	      
-
-				// Populate the model
-				Sindel2OWL so = new Sindel2OWL(OKCoUploader.getBaseModel(), individualsPrefixName);
-				so.run(sindelParsedCode);
-
-				//OKCoUploader.getBaseModel() = so.getDtoSindel().model;
-				//OKCoUploader.getInferredModel() = HomeController.Reasoner.run(OKCoUploader.getBaseModel());
-				
-				OKCoUploader.substituteInferredModelFromBaseModel(false);
-				
-
-			} catch (InconsistentOntologyException e) {
-
-				String error = "Ontology have inconsistence: " + e.toString();
-				System.out.println(error);
-				request.getSession().setAttribute("errorMensage", error);
-				OKCoUploader.clear();
-				dto.ok = false;
-				dto.result = error;				
-				return dto;
-
-			} 
-		}
-
-		request.getSession().removeAttribute("errorMensage");      
-
-		dto.ok = true;
-		dto.result = "ok";
-
-		this.cleanEquipSindel(request);
-
-		return dto;
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value="/uploadEquipTypes")
-	public String uploadEquipTypes(HttpServletRequest request) {
-
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		try{
-			//MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-
-			for(int i = 1; i <= maxElements; i++){
-				MultipartFile file = multipartRequest.getFile("file"+i);
-				//Object file = request.getAttribute("file"+i);
-				//Enumeration teste = request.getAttributeNames();
-
-				if(file.getSize() <= 0){
-					throw new OKCoExceptionFileFormat("Select one file on the position " + i + ".");
-				}else if(! file.getOriginalFilename().endsWith(".sindel"))
-				{
-					throw new OKCoExceptionFileFormat("Please select owl file on the position " + i + ".");		
-				}
-
-				InputStream in = file.getInputStream();
-				InputStreamReader r = new InputStreamReader(in);
-				BufferedReader br = new BufferedReader(r);
-				FileReader readerFile = new FileReader();
-
-				String txtSindel = readerFile.readFile(br);
-				String equipName = multipartRequest.getParameter("equipName"+i);
-
-				request.getSession().setAttribute("equipName"+i, equipName);
-				request.getSession().setAttribute("txtSindel"+i, txtSindel);
-				request.getSession().setAttribute("file"+i, file);
-				request.getSession().setAttribute("filename"+i, file.getOriginalFilename());
-
-			}
-		}  catch (IOException e) {
-			String error = "File not found.\n" + e.getMessage();
-			multipartRequest.getSession().setAttribute("errorMensage", error);
-			System.out.println("File not found.");
-		} catch (OKCoExceptionFileFormat e) {
-			String error = "File format error: " + e.getMessage();
-			multipartRequest.getSession().setAttribute("errorMensage", error);			
-		}
-
-		request.getSession().setAttribute("action", "runParser");
-		return "newEquipment";
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value="/runEquipScratch")
-	public @ResponseBody DtoResultAjax runEquipScratch(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) {
-
-		String sindelCode = dtoGet.result;
-		DtoResultAjax dto = new DtoResultAjax();
-		String individualsPrefixName = dtoGet.equipmentName;
-
-		dto.ok = false;
-		dto.result = "It is necessary to inform the name of the new Equipment.";				
-
-		if(individualsPrefixName == null){
-			return dto;
-		}else if(individualsPrefixName == ""){
-			return dto;
-		}		
-
-
-		try {		  	      
-
-			// Populate the model
-			Sindel2OWL so = new Sindel2OWL(OKCoUploader.getBaseModel(), individualsPrefixName);
-			so.run(sindelCode);
-
-			//OKCoUploader.getBaseModel() = so.getDtoSindel().model;
-			//OKCoUploader.getInferredModel() = HomeController.Reasoner.run(OKCoUploader.getBaseModel());
-			
-			OKCoUploader.substituteInferredModelFromBaseModel(false);
-		
-		} catch (InconsistentOntologyException e) {
-
-			String error = "Ontology have inconsistence: " + e.toString();
-			System.out.println(error);
-			request.getSession().setAttribute("errorMensage", error);
-			OKCoUploader.clear();
-			dto.ok = false;
-			dto.result = error;				
-			return dto;
-
-		}
-
-
-		//FAZER O CATCH DA SINDEL
-
-		request.getSession().removeAttribute("errorMensage");      
-
-		dto.ok = true;
-		dto.result = "ok";
-
-		this.cleanEquipSindel(request);
-
-		return dto;
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value="/cleanEquipSindel")
-	public @ResponseBody DtoResultAjax cleanEquipSindel(HttpServletRequest request) {
-
-		String txtSindelCode = "";
-		request.getSession().setAttribute("txtSindelCode", txtSindelCode);
-
-		DtoResultAjax dto = new DtoResultAjax();
-		dto.ok = true;
-		dto.result = "ok";
-
-		return dto;
-	}
-
 	public static DtoResultAjax provisioningBinds(String outInt, String inInt, HttpServletRequest request, Boolean updateListsInTheEnd, ArrayList<String> listInstancesCreated) {
 
 		DtoResultAjax dto = new DtoResultAjax();

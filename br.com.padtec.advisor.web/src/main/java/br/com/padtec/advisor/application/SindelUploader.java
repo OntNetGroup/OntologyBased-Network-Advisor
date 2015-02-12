@@ -9,14 +9,24 @@ import com.hp.hpl.jena.ontology.OntModel;
 
 public class SindelUploader {
 
-	public static String sindelCode = new String();
+	private static String sindelCode = new String();
 	
 	public static void uploadSindelModel(String sindelCode)
 	{
 		SindelUploader.sindelCode = sindelCode;
 	}
 	
-	public static DtoResult transformSindelToLoadedOwl()
+	public static String getSindelCode()
+	{
+		return sindelCode;
+	}
+	
+	public static void clear()
+	{
+		sindelCode = "";
+	}
+	
+	public static DtoResult transformSindelToOwl()
 	{
 		OntModel basemodel = OKCoUploader.getBaseModel();
 				
@@ -24,5 +34,25 @@ public class SindelUploader {
 		so.run(sindelCode);
 	
 		return OKCoReasoner.runReasoner(OKCoUploader.reasonOnLoading);
+	}
+	
+	public static DtoResult transformSindelToOwl(String individualsPrefixName)
+	{
+		OntModel basemodel = OKCoUploader.getBaseModel();
+				
+		Sindel2OWL so = new Sindel2OWL(basemodel, individualsPrefixName);
+		so.run(sindelCode);
+	
+		return OKCoReasoner.runReasoner(OKCoUploader.reasonOnLoading);
+	}
+	
+	public static DtoResult transformSindelToOwl(String individualsPrefixName, boolean runReasoning)
+	{
+		OntModel basemodel = OKCoUploader.getBaseModel();
+				
+		Sindel2OWL so = new Sindel2OWL(basemodel, individualsPrefixName);
+		so.run(sindelCode);
+	
+		return OKCoReasoner.runReasoner(runReasoning);
 	}
 }

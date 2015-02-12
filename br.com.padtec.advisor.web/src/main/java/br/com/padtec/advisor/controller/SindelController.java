@@ -21,6 +21,7 @@ import br.com.padtec.advisor.application.dto.DtoResultAjax;
 import br.com.padtec.advisor.application.util.FileReader;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.okco.core.application.OKCoUploader;
+import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.transformation.sindel.dto.DtoResultSindel;
 
 @Controller
@@ -32,6 +33,7 @@ public class SindelController{
 		try {
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
+			if(!file.getOriginalFilename().endsWith(".sindel")) throw new OKCoExceptionFileFormat("Please select *.sindel file.");
 			InputStream in = file.getInputStream();
 			InputStreamReader r = new InputStreamReader(in);
 			BufferedReader br = new BufferedReader(r);
@@ -44,22 +46,180 @@ public class SindelController{
 			SindelUploader.uploadSindelModel(txtSindel);			
 			
 		} catch (IOException e){
-			System.out.println("File not found: "+e.getLocalizedMessage());
+			String error = "File not found: "+e.getLocalizedMessage();
+			request.getSession().setAttribute("errorMensage", error);
+			return "index";
+			
+		}catch (OKCoExceptionFileFormat e) {
+			String error = "File format error: " + e.getMessage();
+			request.getSession().setAttribute("errorMensage", error);
 			return "index";
 		}
 		return "redirect:sindel";
 	}
 	
+	@RequestMapping(value = "/uploadSindelEquip", method = RequestMethod.POST)
+	public String uploadSindelEquip(HttpServletRequest request)
+	{
+		try {			
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+			MultipartFile file = multipartRequest.getFile("file");
+			if(!file.getOriginalFilename().endsWith(".sindel")) throw new OKCoExceptionFileFormat("Please select *.sindel file.");			
+			InputStream in = file.getInputStream();
+			InputStreamReader r = new InputStreamReader(in);
+			BufferedReader br = new BufferedReader(r);
+			FileReader readerFile = new FileReader();
+			String txtSindel = readerFile.readFile(br);
+			
+			/** ==========================================
+			 *  Upload Sindel Model
+			 *  ========================================== */
+			//SindelUploader.uploadSindelModel(txtSindel);
+				
+			request.getSession().setAttribute("txtSindelCode", txtSindel);
+			
+			txtSindel = txtSindel.replaceAll("\n", "<br>");
+			request.getSession().setAttribute("txtSindelCodeBr", txtSindel);
+			
+			String equipNameAux = multipartRequest.getParameter("equipNameAux");
+			request.getSession().setAttribute("equipNameAux", equipNameAux);
+			request.getSession().setAttribute("equipName", equipNameAux);
+
+		}catch (IOException e) {
+			String error = "File not found.\n" + e.getMessage();
+			request.getSession().setAttribute("errorMensage", error);
+			
+		}catch (OKCoExceptionFileFormat e) {
+			String error = "File format error: " + e.getMessage();
+			request.getSession().setAttribute("errorMensage", error);			
+		}
+		
+		return "add-equipment";			
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value="/uploadEquipTypes")
+	public String uploadEquipTypes(HttpServletRequest request) 
+	{
+		int maxElements = 10;		
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		
+		try{
+			for(int i = 1; i <= maxElements; i++)
+			{
+				MultipartFile file = multipartRequest.getFile("file"+i);
+
+				if(file.getSize() <= 0) throw new OKCoExceptionFileFormat("Select one file on the position " + i + ".");
+				else if(! file.getOriginalFilename().endsWith(".sindel")) throw new OKCoExceptionFileFormat("Please select owl file on the position " + i + ".");		
+				
+				InputStream in = file.getInputStream();
+				InputStreamReader r = new InputStreamReader(in);
+				BufferedReader br = new BufferedReader(r);
+				FileReader readerFile = new FileReader();
+				String txtSindel = readerFile.readFile(br);
+				
+				/** ==========================================
+				 *  Upload Sindel Model
+				 *  ========================================== */
+				//SindelUploader.uploadSindelModel(txtSindel);
+				
+				request.getSession().setAttribute("txtSindel"+i, txtSindel);
+				
+				String equipName = multipartRequest.getParameter("equipName"+i);
+				request.getSession().setAttribute("equipName"+i, equipName);				
+
+				request.getSession().setAttribute("file"+i, file);
+				request.getSession().setAttribute("filename"+i, file.getOriginalFilename());
+			}
+		}catch (IOException e) {
+			String error = "File not found.\n" + e.getMessage();
+			multipartRequest.getSession().setAttribute("errorMensage", error);
+						
+		}catch (OKCoExceptionFileFormat e) {
+			String error = "File format error: " + e.getMessage();
+			multipartRequest.getSession().setAttribute("errorMensage", error);			
+		}
+		request.getSession().setAttribute("action", "runParser");
+		
+		return "add-equipment";
+	}
+			
+	@RequestMapping(method = RequestMethod.POST, value="/runEquipTypes")
+	public @ResponseBody DtoResultAjax runEquipTypes(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) 
+	{
+		DtoResultAjax dtoResult = new DtoResultAjax();
+		dtoResult.ok = false;
+		dtoResult.result = "It is necessary to inform the name of the new Equipment.";
+		
+		for (int i = 0; i < dtoGet.equipments.length; i++) 
+		{
+			/** Individual's prefix name */
+			String individualsPrefixName = dtoGet.equipments[i][0];
+			if(individualsPrefixName == null) return dtoResult;
+			else if(individualsPrefixName == "") return dtoResult;
+			
+			/** Sindel code, parsed */
+			String sindelParsedCode = dtoGet.equipments[i][1];
+
+			/** ==========================================
+			 *  Upload Sindel Model
+			 *  ========================================== */
+			SindelUploader.uploadSindelModel(sindelParsedCode);
+			
+			/** ==========================================
+			 *  Transforms  Sindel into the OWL Base Model
+			 *  ========================================== */
+			SindelUploader.transformSindelToOwl(individualsPrefixName, false);				
+		}
+		request.getSession().removeAttribute("errorMensage");
+		dtoResult.ok = true;
+		dtoResult.result = "ok";
+
+		cleanEquipSindel(request);
+
+		return dtoResult;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value="/runEquipScratch")
+	public @ResponseBody DtoResultAjax runEquipScratch(@RequestBody final DtoResultAjax dtoGet, HttpServletRequest request) 
+	{
+		DtoResultAjax dtoResult = new DtoResultAjax();
+		dtoResult.ok = false;
+		dtoResult.result = "It is necessary to inform the name of the new Equipment.";				
+
+		String sindelCode = dtoGet.result;
+		String individualsPrefixName = dtoGet.equipmentName;
+		
+		if(individualsPrefixName == null) return dtoResult;
+		else if(individualsPrefixName == "") return dtoResult;
+				
+		/** ==========================================
+		 *  Upload Sindel Model
+		 *  ========================================== */
+		SindelUploader.uploadSindelModel(sindelCode);
+		
+		/** ==========================================
+		 *  Transforms  Sindel into the OWL Base Model
+		 *  ========================================== */
+		SindelUploader.transformSindelToOwl(individualsPrefixName, false);	
+				
+		request.getSession().removeAttribute("errorMensage");
+		dtoResult.ok = true;
+		dtoResult.result = "ok";
+		
+		cleanEquipSindel(request);
+
+		return dtoResult;
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/sindel")
 	public String sindel(HttpSession session, HttpServletRequest request) 
 	{					
-		request.getSession().setAttribute("txtSindelCode", SindelUploader.sindelCode);
+		request.getSession().setAttribute("txtSindelCode", SindelUploader.getSindelCode());
 		
 		/** ==========================================
-		 *  Empty Sindel code
+		 *  Clear Sindel code
 		 *  ========================================== */
-		SindelUploader.sindelCode = "";
+		SindelUploader.clear();
 		
 		return "sindel";	
 	}
@@ -67,9 +227,9 @@ public class SindelController{
 	@RequestMapping(method = RequestMethod.GET, value="/getSindel")
 	public String getSindel(HttpSession session, HttpServletRequest request) throws IOException {
 
-		if(SindelUploader.sindelCode!="")
+		if(SindelUploader.getSindelCode()!="")
 		{
-			request.getSession().setAttribute("txtSindelCode", SindelUploader.sindelCode);
+			request.getSession().setAttribute("txtSindelCode", SindelUploader.getSindelCode());
 			request.getSession().removeAttribute("loadOk");
 			return "getSindel";
 		}else{
@@ -86,7 +246,7 @@ public class SindelController{
 		/** ==========================================
 		 *  Save Sindel code
 		 *  ========================================== */
-		SindelUploader.sindelCode = sindelCode;
+		SindelUploader.uploadSindelModel(sindelCode);
 		
 		if(sindelCode == ""){
 			dto.ok = false;
@@ -102,15 +262,29 @@ public class SindelController{
 	public @ResponseBody DtoResultAjax cleanSindelCode(HttpServletRequest request) 
 	{
 		/** ==========================================
-		 *  Empty Sindel code
+		 *  Clear Sindel code
 		 *  ========================================== */
-		SindelUploader.sindelCode = "";
-		request.getSession().setAttribute("txtSindelCode", SindelUploader.sindelCode);
+		SindelUploader.clear();
+		
+		request.getSession().setAttribute("txtSindelCode", SindelUploader.getSindelCode());
 
 		DtoResultAjax dto = new DtoResultAjax();
 		dto.ok = true;
 		dto.result = "ok";
 		return dto;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/cleanEquipSindel")
+	public @ResponseBody DtoResultAjax cleanEquipSindel(HttpServletRequest request) 
+	{
+		String txtSindelCode = new String();
+		
+		request.getSession().setAttribute("txtSindelCode", txtSindelCode);
+
+		DtoResultAjax dtoResult = new DtoResultAjax();
+		dtoResult.ok = true;
+		dtoResult.result = "ok";
+		return dtoResult;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value="/runSindel")
@@ -124,12 +298,16 @@ public class SindelController{
 			dtoResult.result = "Error! You need to load the model first.";
 			return dtoResult;
 		}
-			
+		
 		/** ==========================================
-		 *  Transforms the Sindel into the OWL Base Model
+		 *  Upload Sindel Model
 		 *  ========================================== */
-		SindelUploader.sindelCode = dtoGet.result;
-		DtoResult result = SindelUploader.transformSindelToLoadedOwl();
+		SindelUploader.uploadSindelModel(dtoGet.result);
+		
+		/** ==========================================
+		 *  Transforms Sindel into the OWL Base Model
+		 *  ========================================== */
+		DtoResult result = SindelUploader.transformSindelToOwl();
 
 		if(!result.isSucceed()) 
 		{			 
@@ -142,12 +320,44 @@ public class SindelController{
 			request.getSession().removeAttribute("errorMensage");
 			dtoResult.ok = true;
 			DtoResultSindel dtoSindel = new DtoResultSindel();
-			dtoResult.result = dtoSindel.warning;		
+			dtoResult.result = dtoSindel.warning;	
+			
 			/** ==========================================
-			 *  Empty Sindel code
+			 *  Clear Sindel code
 			 *  ========================================== */
-			SindelUploader.sindelCode = "";
+			SindelUploader.clear();
+			
 			return dtoResult;
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/add-equipment")
+	public String newEquipment(HttpSession session, HttpServletRequest request) 
+	{
+		int maxElements = 10;
+		
+		request.getSession().setAttribute("txtSindelCode", "");
+		request.getSession().setAttribute("txtSindelCodeBr", "");
+		request.getSession().setAttribute("action", "");
+		request.getSession().setAttribute("equipNameAux", "");
+		request.getSession().setAttribute("equipName", "");		
+		for (int i = 1; i <= maxElements; i++) 
+		{
+			request.getSession().setAttribute("equipName"+i, "");
+			request.getSession().setAttribute("txtSindel"+i, "");
+			request.getSession().setAttribute("file"+i, "");
+			request.getSession().setAttribute("filename"+i, "");
+		}	
+		if(OKCoUploader.getBaseModel() == null)
+		{
+			String error = "Error! You need to load the model first.";
+			request.getSession().setAttribute("errorMensage", error);
+			return "index";
+		}
+		
+		cleanEquipSindel(request);
+		
+		return "add-equipment";
+	}
+
 }
