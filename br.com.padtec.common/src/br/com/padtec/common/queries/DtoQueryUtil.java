@@ -22,6 +22,38 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class DtoQueryUtil {
 
+	public static List<DtoInstance> getIndividualsFromClass(InfModel model, String className)
+	{
+		List<String> classNamesWithoutNameSpace = new ArrayList<String>();
+		
+		classNamesWithoutNameSpace.add(className);
+		
+		List<DtoInstance> result = getIndividualsFromClasses(model, classNamesWithoutNameSpace);
+		
+		return result;
+	}
+	
+	public static List<DtoInstance> getIndividualsFromClasses(InfModel model, List<String> classNamesList)
+	{
+		List<DtoInstance> result = new ArrayList<DtoInstance>();
+		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(model, false, false, false);
+		for (DtoInstance dtoInstance : allInstances) 
+		{
+			for (String className : classNamesList) 
+			{
+				Boolean foundInstance = false;
+				if(dtoInstance.ListClasses.contains(model.getNsPrefixURI("")+className))
+				{
+					if(!result.contains(dtoInstance)) result.add(dtoInstance);					
+					foundInstance  = true;
+					break;
+				}
+				if(foundInstance) break;				
+			}
+		}
+		return result;
+	}
+	
 	public static DtoInstance getIndividualByName(InfModel model, String individualURI)
 	{		
 		List<DtoInstance> dtoIndividualList = getIndividuals(model, false, false, false);

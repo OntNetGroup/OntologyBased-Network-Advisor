@@ -17,6 +17,7 @@ import br.com.padtec.advisor.application.types.ConceptEnum;
 import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
+import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
@@ -106,7 +107,7 @@ public class ConnectsController {
 		if(connectsBetweenRps == null){
 			connectsBetweenRps = new ArrayList<String>();
 		}
-		ArrayList<DtoInstance> rpInstances = ProvisioningController.getInstancesFromClass(ConceptEnum.REFERENCE_POINT);
+		List<DtoInstance> rpInstances = DtoQueryUtil.getIndividualsFromClass(OKCoUploader.getInferredModel(),ConceptEnum.REFERENCE_POINT.toString());
 		
 		for (DtoInstance rp : rpInstances) {
 			List<DtoInstanceRelation> rpRelations = ApplicationQueryUtil.GetInstanceAllRelations(infModel, rp.ns+rp.name);

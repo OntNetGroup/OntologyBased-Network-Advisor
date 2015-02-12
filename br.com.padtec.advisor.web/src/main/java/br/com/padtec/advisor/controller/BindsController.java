@@ -191,8 +191,8 @@ public class BindsController {
 			}
 		}
 
-		ArrayList<DtoInstance> inputInterfaces = ProvisioningController.getInstancesFromClass(ConceptEnum.INPUT_INTERFACE);
-		ArrayList<DtoInstance> physicalMediaInputs = ProvisioningController.getInstancesFromClass(ConceptEnum.PHYSICAL_MEDIA_INPUT);
+		List<DtoInstance> inputInterfaces = DtoQueryUtil.getIndividualsFromClass(OKCoUploader.getInferredModel(),ConceptEnum.INPUT_INTERFACE.toString());
+		List<DtoInstance> physicalMediaInputs = DtoQueryUtil.getIndividualsFromClass(OKCoUploader.getInferredModel(),ConceptEnum.PHYSICAL_MEDIA_INPUT.toString());
 		
 		//if the output interface does not maps an output, it can not connects
 		if(outputNs.equals("")){
