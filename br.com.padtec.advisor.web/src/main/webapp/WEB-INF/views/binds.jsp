@@ -415,26 +415,11 @@
 	$('#sub').drags();
 
     jQuery(document).ready(function($){
-        var canvas = document.getElementById('viewport'),
-        context = canvas.getContext('2d');
-
-		// resize the canvas to fill browser window dynamically
-		window.addEventListener('resize', resizeCanvas, false);
+        initCanvas();
 		
-		function resizeCanvas() {
-				canvasDiv = document.getElementById('canvas-div');
-				canvas.width = canvasDiv.offsetWidth - 40;
-		        canvas.height = 568;
-		}
-
-		$('#main-menu-toggle').click();
-		resizeCanvas();
-		
-	    $('#main-menu-toggle').click(function(){
+		$('#main-menu-toggle').click(function(){
 	    	resizeCanvas();
-	    });
-
-	    
+	    });	    
 	})();
 </script>
 

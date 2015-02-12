@@ -180,28 +180,7 @@
 <!-- Includes for loading.gif -->
 
 <style type="text/css">
-/* 	<!--  */
-/* 	#maskforloading  */
-/* 	{ */
-/* 		position:absolute; */
-/* 		z-index:9990;   */
-/* 		background-color:#000;  */
-/* 		display:none; */
-/* 		width: 100%;	 */
-		
-/* 		 filter:alpha(opacity=50); */
-/*      	opacity: 0.5; */
-/*      	-moz-opacity:0.5; */
-/*      	-webkit-opacity:0.5;	 */
-/* 	} */
-	
-/* 	#maskforloading img  */
-/* 	{ */
-/* 		position:absolute; */
-/* 		top:50%; */
-/* 		left:50%; */
-/* 	} */
-/* 	--> */
+
 	.container #sidebar-left {
 		width: 18.422%;  /* +4 */
 	}
@@ -244,7 +223,20 @@
 </head>
 
 <script type="text/javascript">
+function resizeCanvas() {
+	var canvas = document.getElementById('viewport'),
+    canvasDiv = document.getElementById('canvas-div');
+	canvas.width = canvasDiv.offsetWidth - 40;
+    canvas.height = 568;
+}
 
+function initCanvas(){
+	// resize the canvas to fill browser window dynamically
+	window.addEventListener('resize', resizeCanvas, false);
+
+	$('#main-menu-toggle').click();
+	resizeCanvas();
+}
 $(document).ready(function() {
 
 	$("#maskforloading").hide();

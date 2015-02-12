@@ -3,9 +3,9 @@ function loading()
 {
 	document.body.style.cursor='wait';
 	var maskHeight = $(document).height();
-	//Define largura e altura do div#maskforloading iguais ás dimensões da tela
+	//Define largura e altura do div#maskforloading iguais ï¿½s dimensï¿½es da tela
 	$('#maskforloading').css({'height':maskHeight});
 	
-	//efeito de transição
+	//efeito de transiï¿½ï¿½o
 	$('#maskforloading').show();
 }
