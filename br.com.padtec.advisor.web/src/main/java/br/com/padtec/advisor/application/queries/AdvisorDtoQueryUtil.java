@@ -28,6 +28,7 @@ public class AdvisorDtoQueryUtil {
 		return getDtoEquipments(equipmentsURIList);
 	}
 	
+	/** Get DTO Equipments from Equipments URIs */
 	private static List<DtoEquipment> getDtoEquipments(List<String> equipmentsURIList)
 	{
 		List<DtoEquipment> result= new ArrayList<DtoEquipment>();
@@ -90,6 +91,7 @@ public class AdvisorDtoQueryUtil {
 			/** Add DTO Equipment */
 			result.add(dtoEquipment); 
 		}		
+		System.out.println(result);
 		return result;
 	}
 }

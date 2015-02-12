@@ -252,41 +252,6 @@ public class AdvisorService {
 	}
 	
 	/**
-	 * Returns the reference point from an interface.
-	 * 
-	 * @param eqInterfaceURI: Equipment Interface URI
-	 * @param type:  0 for output and 1 for input
-	 * @return
-	 */
-	public static String getRPFromInterface(String eqInterfaceURI, Integer type)
-	{
-		RelationEnum relation = RelationEnum.MAPS_OUTPUT;
-		ConceptEnum range=ConceptEnum.OUTPUT;
-		if(type==1)
-		{
-			relation=RelationEnum.MAPS_INPUT;
-			range=ConceptEnum.INPUT;
-		}
-		List<String> rangeList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(eqInterfaceURI, relation, range);
-		
-		if(rangeList.size()>0)
-		{
-			String portURI= rangeList.get(0);
-			List<String> bindings = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(portURI, RelationEnum.INV_IS_BINDING, ConceptEnum.BINDING);			
-			if(bindings.size()>0)
-			{
-				String bindingURI = bindings.get(0);
-				List<String> boundedRPs = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(bindingURI, RelationEnum.BINDING_IS_REPRESENTED_BY, ConceptEnum.DIRECTLY_BOUND_REFERENCE_POINT);
-				if(boundedRPs.size()>0)
-				{
-					return boundedRPs.get(0);					
-				}
-			}
-		}
-		return new String();
-	}
-	
-	/**
 	 * Returns all physical media triples.
 	 * 
 	 * @param value: "input" or "output"
@@ -363,4 +328,40 @@ public class AdvisorService {
 		}
 		return result;
 	}
+	
+	/**
+	 * Returns the reference point from an interface.
+	 * 
+	 * @param eqInterfaceURI: Equipment Interface URI
+	 * @param type:  0 for output and 1 for input
+	 * @return
+	 */
+//	public static String getRPFromInterface(String interfaceURI, Integer type)
+//	{
+//		RelationEnum relation = RelationEnum.MAPS_OUTPUT;
+//		ConceptEnum range=ConceptEnum.OUTPUT;
+//		if(type==1)
+//		{
+//			relation=RelationEnum.MAPS_INPUT;
+//			range=ConceptEnum.INPUT;
+//		}
+//		List<String> rangeList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(interfaceURI, relation, range);
+//		
+//		if(rangeList.size()>0)
+//		{
+//			String portURI= rangeList.get(0);
+//			List<String> bindings = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(portURI, RelationEnum.INV_IS_BINDING, ConceptEnum.BINDING);			
+//			if(bindings.size()>0)
+//			{
+//				String bindingURI = bindings.get(0);
+//				List<String> boundedRPs = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(bindingURI, RelationEnum.BINDING_IS_REPRESENTED_BY, ConceptEnum.DIRECTLY_BOUND_REFERENCE_POINT);
+//				if(boundedRPs.size()>0)
+//				{
+//					return boundedRPs.get(0);					
+//				}
+//			}
+//		}
+//		return new String();
+//	}
+	
 }

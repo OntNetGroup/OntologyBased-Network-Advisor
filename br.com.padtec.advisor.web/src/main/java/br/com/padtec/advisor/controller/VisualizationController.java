@@ -152,6 +152,16 @@ public class VisualizationController {
 		HTMLFigureMapper.init();
 
 		ConnectsVisualizator viz = new ConnectsVisualizator();
+		viz.setConfig();
+		
+		System.out.println("ABORSTRUCTURE\n"+viz.getArborStructure());
+		System.out.println("WIDTH\n"+viz.getWidth());
+		System.out.println("HEIGHT\n"+viz.getHeight());
+		System.out.println("HASHEQUIPINTOUT\n"+viz.getHashEquipIntOut());
+		System.out.println("HASHTYPES\n"+viz.getHashTypes());
+		System.out.println("HASHALLOWED\n"+viz.getHashAllowed());
+		System.out.println("HASHRPEQUIP\n"+viz.getHashRPEquip());
+		System.out.println("SIZE\n"+viz.getSize());
 		
 		request.getSession().setAttribute("valuesGraph", viz.getArborStructure());
 		request.getSession().setAttribute("width", viz.getWidth());

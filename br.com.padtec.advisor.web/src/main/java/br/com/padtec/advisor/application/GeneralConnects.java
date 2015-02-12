@@ -7,15 +7,306 @@ import java.util.List;
 import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
 import br.com.padtec.advisor.application.types.ConceptEnum;
 import br.com.padtec.advisor.application.types.RelationEnum;
+import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
+import br.com.padtec.common.dto.DtoInstance;
+import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.DtoQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Statement;
 
 public class GeneralConnects extends AdvisorService {
 
+	private static List<String> equipmentsWithRps = new ArrayList<String>();
+	private static List<String> connectsBetweenEqsAndRps = new ArrayList<String>();
+	private static List<String> connectsBetweenRps = new ArrayList<String>();
+	
+	public static List<String> getEquipmentsWithRps() 
+	{
+		return equipmentsWithRps;
+	}
+
+	public static List<String> getConnectsBetweenEqsAndRps() 
+	{
+		return connectsBetweenEqsAndRps;
+	}
+
+	public static List<String> getConnectsBetweenRps() 
+	{
+		return connectsBetweenRps;
+	}
+	
+	public static void clear()
+	{
+		equipmentsWithRps.clear();
+		connectsBetweenEqsAndRps.clear();
+		connectsBetweenRps.clear();
+	}
+	
+	//==============================================
+	//These are initialization methods because they initialize the values of the lists
+	//==============================================
+
+	/** Set Equipments with Reference Points */
+	public static void setEquipmentsWithRPs()
+	{		
+		InfModel inferredModel = OKCoUploader.getInferredModel();
+		String namespace = OKCoUploader.getNamespace();
+		
+		clear();
+		
+		List<DtoInstance> rpDtoInstanceList = DtoQueryUtil.getIndividualsFromClass(inferredModel, ConceptEnum.REFERENCE_POINT.toString());
+		
+		for (DtoInstance dtoInstance : rpDtoInstanceList) 
+		{
+			List<DtoInstanceRelation> rpRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, dtoInstance.ns+dtoInstance.name);
+			String bindingURI = new String();
+			for (DtoInstanceRelation dtoRelation : rpRelations) 
+			{
+				String propertyName = dtoRelation.Property.replace(namespace, "");
+				if(propertyName.equals(RelationEnum.INV_BINDING_IS_REPRESENTED_BY.toString())) bindingURI = dtoRelation.Target;			
+				else if(propertyName.equals(RelationEnum.HAS_FORWARDING))
+				{
+					String cnct = "";
+					cnct += dtoInstance.name;
+					cnct += "#";
+					cnct += dtoRelation.Target.replace(namespace, "");
+					connectsBetweenRps.add(cnct);
+				}
+			}
+			
+			List<String> equips = new ArrayList<String>();
+			if(!bindingURI.isEmpty()) equips = GeneralConnects.getEquipmentFromBinding(bindingURI);
+						
+			String equipmentWithRp = new String();
+			if(equips.size() == 1) equipmentWithRp += equips.get(0).replace(namespace, "");
+			else if(equips.size() >= 2)
+			{
+				for (String eq : equips) 
+				{
+					String cnct = "";
+					cnct += eq.replace(namespace, "");
+					cnct += "#";
+					cnct += dtoInstance.name;
+					
+					String cnctInv = "";
+					cnctInv += dtoInstance.name;
+					cnctInv += "#";
+					cnctInv += eq.replace(namespace, "");
+					
+					if(!connectsBetweenEqsAndRps.contains(cnct) && !connectsBetweenEqsAndRps.contains(cnctInv))
+					{
+						connectsBetweenEqsAndRps.add(cnct);
+					}
+				}								
+			}
+			equipmentWithRp += "#";
+			equipmentWithRp += dtoInstance.name;
+			
+			if(!equipmentsWithRps.contains(equipmentWithRp))
+			{
+				equipmentsWithRps.add(equipmentWithRp);
+			}			
+		}		
+		return;
+	}	
+	
+	//==============================================
+	//These are query methods because they only query values from the ontology
+	//==============================================
+	
+	/** Returns the Equipment from an interface */
+	public static String getEquipmentFromInterface(String interfaceURI)
+	{		
+		InfModel inferredModel = OKCoUploader.getInferredModel();
+		String namespace = OKCoUploader.getNamespace();
+		
+		List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, interfaceURI);		
+		for (DtoInstanceRelation dtoRelation : portRelations) 
+		{
+			String relationName = dtoRelation.Property.replace(namespace, "");
+			if(relationName.equals(RelationEnum.INV_COMPONENTOF.toString())) return dtoRelation.Target;			
+		}		
+		return new String();
+	}
+	
+	/** Returns the Reference Point from a Binding */
+	public static String getRPFromBinding(String bindingURI)
+	{
+		InfModel inferredModel = OKCoUploader.getInferredModel();
+		String namespace = OKCoUploader.getNamespace();
+		
+		List<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, bindingURI);		
+		for (DtoInstanceRelation dtoRelation : bindingRelations) 
+		{
+			String intRelName = dtoRelation.Property.replace(namespace, "");
+			if(intRelName.equals(RelationEnum.BINDING_IS_REPRESENTED_BY.toString())) return dtoRelation.Target;			
+		}		
+		return new String();
+	}
+
+	/** Returns Next Reference Points from the Transport Function */  
+	public static List<String> getNextRPsFromTF(String actualPortName, List<String> nextPortsURIList, Boolean searchToTop)
+	{
+		InfModel inferredModel = OKCoUploader.getInferredModel();
+		String namespace = OKCoUploader.getNamespace();	
+		
+		List<String> nextRps = new ArrayList<String>();
+		for (String portURI : nextPortsURIList) 
+		{	
+			List<String> nextPortClasses = QueryUtil.getClassesURI(inferredModel,portURI);
+			List<String> actualPortClasses = QueryUtil.getClassesURI(inferredModel,namespace+actualPortName);
+			
+			if((nextPortClasses.contains(namespace+ConceptEnum.OUTPUT.toString()) && actualPortClasses.contains(namespace+ConceptEnum.INPUT.toString())) || 
+			  (nextPortClasses.contains(namespace+ConceptEnum.INPUT.toString()) && actualPortClasses.contains(namespace+ConceptEnum.OUTPUT.toString())))
+			{
+				List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, portURI);
+				
+				for (DtoInstanceRelation portRel : portRelations) 
+				{
+					String portRelName = portRel.Property.replace(namespace, "");
+					if(portRelName.equals(RelationEnum.INV_IS_BINDING.toString()))
+					{
+						List<DtoInstanceRelation> bindingRelations =ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, portRel.Target);
+						for (DtoInstanceRelation bindingRel : bindingRelations) 
+						{
+							String bindingRelName = bindingRel.Property.replace(namespace, "");
+							if(bindingRelName.equals(RelationEnum.BINDING_IS_REPRESENTED_BY.toString()))
+							{
+								nextRps.add(bindingRel.Target);
+							}
+						}					
+					}
+				}	
+			}		
+		}
+		return nextRps;
+	}
+		
+	/** Returns the Equipments from a Port */
+	public static List<String> getEquipmentFromPort(String bindedPortURI, Boolean searchToTop)
+	{
+		InfModel inferredModel = OKCoUploader.getInferredModel();
+		String namespace = OKCoUploader.getNamespace();	
+		
+		List<String> result = new ArrayList<String>();
+				
+		List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, bindedPortURI);
+		String outInterfaceURI = new String();
+		String inInterfaceURI = new String();
+		String TfnURI = new String();
+		for (DtoInstanceRelation dtoRelation : portRelations) 
+		{
+			String relationName = dtoRelation.Property.replace(namespace, "");
+			if(relationName.equals(RelationEnum.INV_MAPS_OUTPUT.toString())) outInterfaceURI = dtoRelation.Target;
+			else if(relationName.equals(RelationEnum.INV_MAPS_INPUT.toString())) inInterfaceURI = dtoRelation.Target;
+			else if(relationName.equals(RelationEnum.INV_COMPONENTOF.toString())) TfnURI = dtoRelation.Target;			
+		}
+		
+		if(!TfnURI.isEmpty() && outInterfaceURI.isEmpty() && inInterfaceURI.isEmpty())
+		{			
+			List<String> tiposPm=QueryUtil.getClassesURI(inferredModel,TfnURI);
+			if(tiposPm.contains(namespace+ConceptEnum.PHYSICAL_MEDIA.toString()))
+			{
+				result.add(TfnURI);
+				return result;
+			}			
+			ArrayList<String> nextPorts = new ArrayList<String>(); 
+			List<DtoInstanceRelation> tfRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, TfnURI);
+			String eqURI = new String();
+			for (DtoInstanceRelation dtoRelation : tfRelations) 
+			{
+				String RelationName = dtoRelation.Property.replace(namespace, "");
+				if(RelationName.equals(RelationEnum.INV_COMPONENTOF.toString()))
+				{
+					eqURI = dtoRelation.Target;					
+					List<String> tiposEq=QueryUtil.getClassesURI(inferredModel,eqURI);
+					if(tiposEq.contains(namespace+ConceptEnum.EQUIPMENT.toString()))
+					{
+						result.add(eqURI);
+						return result;					
+					}
+				}else if(RelationName.equals(RelationEnum.COMPONENTOF.toString()))
+				{
+					if(!dtoRelation.Target.equals(bindedPortURI))
+					{
+						List<String> tiposTf=QueryUtil.getClassesURI(inferredModel, dtoRelation.Target);
+						if(tiposTf.contains(namespace+ConceptEnum.INPUT.toString()) || tiposTf.contains(namespace+ConceptEnum.OUTPUT.toString()))
+						{
+							nextPorts.add(dtoRelation.Target);
+						}
+					}
+				}				
+			}			
+			List<String> nextRps = GeneralConnects.getNextRPsFromTF(bindedPortURI.replace(namespace,""), nextPorts, searchToTop);
+			result.addAll(nextRps);			
+		}
+		else if(!outInterfaceURI.isEmpty())
+		{
+			result.add(GeneralConnects.getEquipmentFromInterface(outInterfaceURI));
+			return result;
+		}
+		else if(!inInterfaceURI.isEmpty())
+		{
+			result.add(GeneralConnects.getEquipmentFromInterface(inInterfaceURI));
+			return result;
+		}		
+		return result;
+	}
+	
+	/** Returns the Equipments from a Binding */
+	public static List<String> getEquipmentFromBinding(String bindingURI)
+	{		
+		InfModel inferredModel = OKCoUploader.getInferredModel();
+		String namespace = OKCoUploader.getNamespace();	
+		
+		List<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, bindingURI);
+		
+		String bindedPort1URI = new String();
+		String bindedPort2URI = new String();
+		for (DtoInstanceRelation dtoRelation : bindingRelations) 
+		{
+			String propertyName = dtoRelation.Property.replace(namespace, "");
+			if(propertyName.equals(RelationEnum.IS_BINDING.toString()))
+			{
+				if(bindedPort1URI.isEmpty()) bindedPort1URI = dtoRelation.Target;
+				else { bindedPort2URI = dtoRelation.Target; break; }				
+			}
+		}
+		
+		ArrayList<String> equips = new ArrayList<String>();
+		if(!bindedPort1URI.isEmpty())
+		{
+			List<String> equipsNs = GeneralConnects.getEquipmentFromPort(bindedPort1URI, GeneralConnects.searchEquipmentFromPortToTop(bindedPort1URI));
+			equips.addAll(equipsNs);
+		}
+		if(!bindedPort2URI.isEmpty())
+		{		
+			List<String> equipsNs = GeneralConnects.getEquipmentFromPort(bindedPort2URI, GeneralConnects.searchEquipmentFromPortToTop(bindedPort2URI));
+			for (String eqNs : equipsNs) 
+			{
+				if(!equips.contains(eqNs)) equips.add(eqNs);				
+			}
+		}
+		return equips;
+	}	
+	
+	/** ? */
+	public static Boolean searchEquipmentFromPortToTop(String portURI)
+	{
+		InfModel inferredModel = OKCoUploader.getInferredModel();
+		String namespace = OKCoUploader.getNamespace();	
+		
+		List<String> tiposPort=QueryUtil.getClassesURI(inferredModel,portURI);
+		if(tiposPort.contains(namespace+ConceptEnum.OUTPUT.toString())) return true;		
+		return false;
+	}	
+	
 	//==============================================
 	//These are factory methods because they modify the ontology
 	//==============================================
@@ -119,4 +410,5 @@ public class GeneralConnects extends AdvisorService {
 		/** Substitute InferredModel for the Base Model. The changes were made at the base model! */
 		OKCoUploader.substituteInferredModelFromBaseModel(false);
 	}
+	
 }

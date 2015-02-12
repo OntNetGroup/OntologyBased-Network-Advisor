@@ -93,5 +93,10 @@ public class DtoEquipment {
 	public void addInp(String element) 
 	{
 		inputs.add( element);
-	}	
+	}
+	
+	public String toString()
+	{
+		return name+"\n";
+	}
 }

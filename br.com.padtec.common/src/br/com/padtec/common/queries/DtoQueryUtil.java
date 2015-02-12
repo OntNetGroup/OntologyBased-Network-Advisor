@@ -69,6 +69,7 @@ public class DtoQueryUtil {
 		return null;
 	}
 	
+	
 	/** 
 	 * Return the list of all individuals from the ontology.
 	 * It returns also all the classes of an individual as well as all the other individuals different and the same as this one.

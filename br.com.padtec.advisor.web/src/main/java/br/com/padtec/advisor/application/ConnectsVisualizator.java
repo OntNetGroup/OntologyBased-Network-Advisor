@@ -3,7 +3,6 @@ package br.com.padtec.advisor.application;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import br.com.padtec.advisor.controller.ConnectsController;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
@@ -16,16 +15,12 @@ public class ConnectsVisualizator extends Visualizator {
 	protected String hashRPEquip = new String();
 	
 	public void setConfig()
-	{
-		ArrayList<String> equipsWithRps = new ArrayList<String>();
-		ArrayList<String> connectsBetweenEqsAndRps = new ArrayList<String>();
-		ArrayList<String> connectsBetweenRps = new ArrayList<String>();
-
-		ConnectsController.getEquipmentsWithRPs(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace(), equipsWithRps, connectsBetweenEqsAndRps, connectsBetweenRps);
-
+	{		
+		GeneralConnects.setEquipmentsWithRPs();
+		
 		ArrayList<String> usedRPs = new ArrayList<String>();
 		ArrayList<String[]> possibleConnections;
-		for (String connections : connectsBetweenEqsAndRps) 
+		for (String connections : GeneralConnects.getConnectsBetweenEqsAndRps()) 
 		{
 			String src = connections.split("#")[0];
 			String trg = connections.split("#")[1];
@@ -60,7 +55,7 @@ public class ConnectsVisualizator extends Visualizator {
 
 		HashMap<String, String> rpXequip = new HashMap<String, String>();
 
-		for (String equipWithRP : equipsWithRps) 
+		for (String equipWithRP : GeneralConnects.getEquipmentsWithRps()) 
 		{
 			String equip = equipWithRP.split("#")[0];
 			String rp = equipWithRP.split("#")[1];
@@ -85,7 +80,7 @@ public class ConnectsVisualizator extends Visualizator {
 			}
 		}
 
-		for (String rpXrp : connectsBetweenRps) 
+		for (String rpXrp : GeneralConnects.getConnectsBetweenRps()) 
 		{
 			String srcRP = rpXrp.split("#")[0];
 			String trgRP = rpXrp.split("#")[1];

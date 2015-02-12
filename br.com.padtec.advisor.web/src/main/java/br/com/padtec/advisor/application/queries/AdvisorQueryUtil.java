@@ -30,6 +30,11 @@ public class AdvisorQueryUtil {
 		return QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace()+ConceptEnum.SITE);
 	}
 	
+	public static List<String> getReferencePointsURI()
+	{
+		return QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace()+ConceptEnum.REFERENCE_POINT);
+	}
+	
 	public static List<String> getEquipmentsURI()
 	{
 		return QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace()+ConceptEnum.EQUIPMENT);
@@ -115,6 +120,5 @@ public class AdvisorQueryUtil {
 	public static List<String> getReferencePointsURIAtHasForwarding(String domainIndividualURI)
 	{
 		return QueryUtil.getIndividualsURIAtObjectPropertyRange(OKCoUploader.getInferredModel(), domainIndividualURI, OKCoUploader.getNamespace()+RelationEnum.HAS_FORWARDING, OKCoUploader.getNamespace()+ConceptEnum.REFERENCE_POINT);
-	}
-
+	}	
 }
