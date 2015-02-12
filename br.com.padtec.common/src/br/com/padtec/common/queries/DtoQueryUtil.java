@@ -36,7 +36,7 @@ public class DtoQueryUtil {
 	public static List<DtoInstance> getIndividualsFromClasses(InfModel model, List<String> classNamesList)
 	{
 		List<DtoInstance> result = new ArrayList<DtoInstance>();
-		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(model, false, false, false);
+		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(model, true, false, false);
 		for (DtoInstance dtoInstance : allInstances) 
 		{
 			for (String className : classNamesList) 

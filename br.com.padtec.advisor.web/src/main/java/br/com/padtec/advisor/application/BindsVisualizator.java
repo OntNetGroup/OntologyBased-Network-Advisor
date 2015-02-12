@@ -25,6 +25,9 @@ public class BindsVisualizator extends Visualizator {
 		
 		for(DtoEquipment equip : list)
 		{
+			if(equip.getName().equalsIgnoreCase("skeq2")){
+				System.out.println();
+			}
 			hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"'] = new Array();";
 			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
 			for(DtoInterfaceOutput outs : equip.getOutputs())

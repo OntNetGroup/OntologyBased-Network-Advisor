@@ -194,7 +194,7 @@
 								for(String iName: instance.ListSameInstances)
 								{																			
 									DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, iName);																			
-									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"okco-details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
 								}
 							%>
 							</ul>
@@ -209,7 +209,7 @@
 								for(String iName: instance.ListDiferentInstances)
 								{
 									DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, iName);																			
-									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"okco-details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
 								}
 							%>
 							</ul>
@@ -250,7 +250,7 @@
 								  			split2 = dto.Target.split("#")[1];
 								  		}		
 								  		DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, dto.Target);
-						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + split1 + " -> " + "<a href=\"details?uri=" + i.uriEncoded + "\">" + split2 + "</a>" + "</li>");
+						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + split1 + " -> " + "<a href=\"okco-details?uri=" + i.uriEncoded + "\">" + split2 + "</a>" + "</li>");
 						  			}
 						  		}
 							%>

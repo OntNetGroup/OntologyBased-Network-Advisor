@@ -233,7 +233,7 @@ public class BindsController {
 		
 		//get the instance of the output mapped by the output interface
 		DtoInstance output = null;
-		List<DtoInstance> listAllInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
+		List<DtoInstance> listAllInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), true, false, false);
 		for (DtoInstance instance : listAllInstances) {
 			if(outputNs.equals(instance.ns+instance.name)){
 				output = instance;
@@ -261,6 +261,9 @@ public class BindsController {
 			
 			//here, I look for possible connections with input interfaces
 			for (DtoInstance inputInterface : inputInterfaces) {
+				if(inputInterface.name.equalsIgnoreCase("in_skeq1")){
+					System.out.println();
+				}
 				List<DtoInstanceRelation> inIntRelations = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(), inputInterface.ns+inputInterface.name);
 				String inputNs = "";
 				String eqInNs = "";
@@ -277,7 +280,7 @@ public class BindsController {
 					}
 				}
 
-				List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
+				List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), true, false, false);
 				
 				//since I verify the inverse relation of interface_binds above, 
 				//it's necessary to verify if some output interface has the interface_binds relation
@@ -321,6 +324,9 @@ public class BindsController {
 					
 					//for each input and output class names, I verify if exist a possible relation of binds
 					for(String inputClassName : input.ListClasses){
+						if(inputClassName.contains("Termination_Sink_Input") && outputClassName.contains("Adaptation_Sink_Output")){
+							System.out.println();
+						}
 						inputClassName = inputClassName.replace(OKCoUploader.getNamespace(), ""); 
 						HashMap<String, String> tf1 = new HashMap<String, String>();
 						tf1.put("INPUT", inputClassName);
