@@ -7,7 +7,6 @@ import java.util.Map;
 import br.com.padtec.advisor.application.dto.DtoEquipment;
 import br.com.padtec.advisor.application.dto.DtoInterfaceOutput;
 import br.com.padtec.advisor.application.queries.AdvisorDtoQueryUtil;
-import br.com.padtec.advisor.controller.BindsController;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
@@ -25,7 +24,7 @@ public class BindsVisualizator extends Visualizator {
 		
 		for(DtoEquipment equip : list)
 		{
-			if(equip.getName().equalsIgnoreCase("skeq2")){
+			if(equip.getName().equalsIgnoreCase("skeq1")){
 				System.out.println();
 			}
 			hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"'] = new Array();";
@@ -34,7 +33,7 @@ public class BindsVisualizator extends Visualizator {
 			{
 				hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"']['"+outs.getName()+"'] = \""+outs.isConnected()+"\";";
 				if(hashAllowed.contains(equip.getName())) continue;
-				ArrayList<String> possibleList = BindsController.getCandidateInterfacesForConnection(outs.getName());
+				ArrayList<String> possibleList = GeneralBinds.getCandidateInterfacesForConnection(outs.getName());
 				for(String possibleConnection : possibleList)
 				{
 					if(possibleConnection.contains("true"))

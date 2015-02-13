@@ -42,6 +42,12 @@
 	$(document)
 			.ready(
 					function() {
+						initCanvas();
+						
+						$('#main-menu-toggle').click(function(){
+					    	resizeCanvas();
+					    });	 
+					    
 						canClickable = true;
 						canShowContextMenu = true;
 						targetURL = "open_g800_visualization_from_equip\?selected=";
@@ -82,20 +88,6 @@
 		}
 		
 		graph.renderer.redraw();
-	}
-
-	function loading() {
-		var maskHeight = $(document).height();
-		var maskWidth = "100%";//$(document).width();
-
-		//Define largura e altura do div#maskforloading iguais ás dimensões da tela
-		$('#maskforloading').css({
-			'width' : maskWidth,
-			'height' : maskHeight
-		});
-
-		//efeito de transição
-		$('#maskforloading').show();
 	}
 
 	function resetSelection() {
@@ -348,48 +340,50 @@
 	}
 %>
 
-<div class="col-lg-12">
-
-	<h2>Provisioning settings:</h2>
-	<div class="tooltip-demo well">
-		<table>
-			<tr>
-				<td style="padding-right: 5px; padding-left: 20px;">
-					<button type="button" id="resetSelection" disabled="disabled"
-						onclick="resetSelection();">Reset Selection</button>
-				</td>
-				<td style="padding-right: 5px;">
-					<form action="autoConnects" class="form-horizontal" method="POST"
-						enctype="multipart/form-data">
-						<input type="submit" id="autoConnects" name="submit"
-							value="Automatic Connects" />
-					</form>
-				</td>
-			</tr>
-		</table>
-		<div style="clear: both"></div>
+<div class="row" id="row">
+	<div class="col-lg-12">
+		<div class="box">
+			<div class="box-header">
+				<h2>
+					<i class="icon-edit"></i>Provisioning: Connects
+				</h2>
+				<div class="box-icon"> 
+					<a href="#" class="btn-minimize"><i class="icon-chevron-up" id="hideEquipmentType"></i></a>
+				</div>
+			</div>
+			<div class="tooltip-demo well" id="canvas-div">
+				<div class="floatingDiv">
+					<table>
+						<tr>
+							<td style="padding-right: 5px; padding-left: 20px;">
+								<button type="button" id="resetSelection" disabled="disabled"
+									onclick="resetSelection();">Reset Selection</button>
+							</td>
+							<td style="padding-right: 5px;">
+								<form action="autoConnects" class="form-horizontal" method="POST"
+									enctype="multipart/form-data">
+									<input type="submit" id="autoConnects" name="submit"
+										value="Automatic Connects" />
+								</form>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="floatingDiv" style="right: 35px; bottom: 20px;">
+					<img id="sub" src="Assets/img/subtitles/Subtitle_TNOKCO_Connects.png"></img>
+				</div>
+				<div style="clear: both"></div>
+				<%
+					out.println("<canvas id=\"viewport\" width=\"" + width
+							+ "\" height=\"" + height
+							+ "\" style=\"\"></canvas>");
+				%>
+			</div>
+		</div>
 	</div>
 </div>
-
-
-<br>
-<%
-	out.println("<div style=\"width:" + (width + 520) + "px\">");
-%>
-<div style="float: left; border: 1px solid black;">
-	<%
-		out.println("<canvas id=\"viewport\" width=\"" + width
-				+ "\" height=\"" + height
-				+ "\" style=\"background-color:white;\"></canvas>");
-	%>
-</div>
-<div style="float: right;">
-	<div id="currentNode">Select a node to visualize information
-		about it.</div>
-	<br> <img id="sub" src="Assets/img/subtitles/Subtitle_TNOKCO_Connects.png"></img>
-</div>
-</div>
-
+	
 <script>
 	(function($) {
 		$.fn.drags = function(opt) {

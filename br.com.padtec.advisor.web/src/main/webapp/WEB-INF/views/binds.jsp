@@ -302,13 +302,12 @@
 	}
 %>
 
-<h1>Provisioning: Binds</h1>
 <div class="row" id="row">
 	<div class="col-lg-12">
 		<div class="box">
 			<div class="box-header">
 				<h2>
-					<i class="icon-edit"></i>Binds
+					<i class="icon-edit"></i>Provisioning: Binds
 				</h2>
 				<div class="box-icon"> 
 					<a href="#" class="btn-minimize"><i class="icon-chevron-up" id="hideEquipmentType"></i></a>
@@ -330,9 +329,6 @@
 					</table>
 				</div>
 				
-				<div class="floatingDiv" style="right: 35px;">
-					<div id="currentNode">Select a node to visualize information about it.</div>
-				</div>
 				<div class="floatingDiv" style="right: 35px; bottom: 20px;">
 					<img id="sub" src="Assets/img/subtitles/Subtitle_TNOKCO_Binds.png"></img>
 				</div>
@@ -411,7 +407,6 @@
 		}
 	})(jQuery);
 
-	$('#currentNode').drags();
 	$('#sub').drags();
 
     jQuery(document).ready(function($){

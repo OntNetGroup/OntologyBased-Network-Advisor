@@ -17,12 +17,17 @@
 <!-- start: CSS -->
 
 <link href="Assets/css/okco.css" rel="stylesheet">
+<link href="Assets/css/advisor.css" rel="stylesheet">
 <link href="Assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="Assets/css/style.min.css" rel="stylesheet">
 <link href="Assets/css/retina.min.css" rel="stylesheet">
 
-<!--end: CSS -->
+<!-- Code mirror includes - used in Sindel -->
+<link rel="stylesheet" href="Assets/code_mirror/lib/codemirror.css">
+<link rel="stylesheet" href="Assets/code_mirror/addon/show-hint.css">
+<link rel="stylesheet" href="Assets/code_mirror/theme/neat.css">
 
+<!--end: CSS -->
 
 <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -35,84 +40,45 @@
 	<![endif]-->
 
 <!-- start: Favicon and Touch Icons -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144"
-	href="Assets/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114"
-	href="Assets/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72"
-	href="Assets/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed"
-	href="Assets/ico/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon"
-	href="Assets/ico/favicon.png">
+<link rel="shortcut icon" href="Assets/ico/favicon.png">
 <!-- end: Favicon and Touch Icons -->
 
 <!-- start: JavaScript-->
-<script
-	src="Assets/js/jquery-1.10.2.min.js"></script>
-<script
-	src="Assets/js/jquery-migrate-1.2.1.min.js"></script>
-<script
-	src="Assets/js/jquery-ui-1.10.3.custom.min.js"></script>
-<script
-	src="Assets/js/jquery.ui.touch-punch.js"></script>
+<script src="Assets/js/jquery-1.10.2.min.js"></script>
+<script src="Assets/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="Assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="Assets/js/jquery.ui.touch-punch.js"></script>
 <script src="Assets/js/modernizr.js"></script>
-<script
-	src="Assets/js/bootstrap.min.js"></script>
-<script
-	src="Assets/js/jquery.cookie.js"></script>
-<script
-	src='Assets/js/fullcalendar.min.js'></script>
-<script
-	src='Assets/js/jquery.dataTables.min.js'></script>
-<script
-	src='Assets/js/dataTables.bootstrap.min.js'></script>
+<script src="Assets/js/bootstrap.min.js"></script>
+<script src="Assets/js/jquery.cookie.js"></script>
+<script src='Assets/js/fullcalendar.min.js'></script>
+<script src='Assets/js/jquery.dataTables.min.js'></script>
+<script src='Assets/js/dataTables.bootstrap.min.js'></script>
 <script src="Assets/js/excanvas.js"></script>
 <script src="Assets/js/jquery.flot.js"></script>
-<script
-	src="Assets/js/jquery.flot.pie.js"></script>
-<script
-	src="Assets/js/jquery.flot.stack.js"></script>
-<script
-	src="Assets/js/jquery.flot.resize.min.js"></script>
-<script
-	src="Assets/js/jquery.flot.time.js"></script>
-
-<script
-	src="Assets/js/jquery.chosen.min.js"></script>
-<script
-	src="Assets/js/jquery.uniform.min.js"></script>
-<script
-	src="Assets/js/jquery.cleditor.min.js"></script>
+<script src="Assets/js/jquery.flot.pie.js"></script>
+<script src="Assets/js/jquery.flot.stack.js"></script>
+<script src="Assets/js/jquery.flot.resize.min.js"></script>
+<script src="Assets/js/jquery.flot.time.js"></script>
+<script src="Assets/js/jquery.chosen.min.js"></script>
+<script src="Assets/js/jquery.uniform.min.js"></script>
+<script src="Assets/js/jquery.cleditor.min.js"></script>
 <script src="Assets/js/jquery.noty.js"></script>
-<script
-	src="Assets/js/jquery.elfinder.min.js"></script>
-<script
-	src="Assets/js/jquery.raty.min.js"></script>
-<script
-	src="Assets/js/jquery.iphone.toggle.js"></script>
-<script
-	src="Assets/js/jquery.uploadify-3.1.min.js"></script>
-<script
-	src="Assets/js/jquery.gritter.min.js"></script>
-<script
-	src="Assets/js/jquery.imagesloaded.js"></script>
-<script
-	src="Assets/js/jquery.masonry.min.js"></script>
-<script
-	src="Assets/js/jquery.knob.modified.js"></script>
-<script
-	src="Assets/js/jquery.sparkline.min.js"></script>
+<script src="Assets/js/jquery.elfinder.min.js"></script>
+<script src="Assets/js/jquery.raty.min.js"></script>
+<script src="Assets/js/jquery.iphone.toggle.js"></script>
+<script src="Assets/js/jquery.uploadify-3.1.min.js"></script>
+<script src="Assets/js/jquery.gritter.min.js"></script>
+<script src="Assets/js/jquery.imagesloaded.js"></script>
+<script src="Assets/js/jquery.masonry.min.js"></script>
+<script src="Assets/js/jquery.knob.modified.js"></script>
+<script src="Assets/js/jquery.sparkline.min.js"></script>
 <script src="Assets/js/counter.min.js"></script>
-<script
-	src="Assets/js/raphael.2.1.0.min.js"></script>
-<script
-	src="Assets/js/justgage.1.0.1.min.js"></script>
-<script
-	src="Assets/js/jquery.autosize.min.js"></script>
+<script src="Assets/js/raphael.2.1.0.min.js"></script>
+<script src="Assets/js/justgage.1.0.1.min.js"></script>
+<script src="Assets/js/jquery.autosize.min.js"></script>
 <script src="Assets/js/retina.js"></script>
-<script
-	src="Assets/js/jquery.placeholder.min.js"></script>
+<script src="Assets/js/jquery.placeholder.min.js"></script>
 <script src="Assets/js/wizard.min.js"></script>
 <script src="Assets/js/core.min.js"></script>
 <script src="Assets/js/charts.min.js"></script>
@@ -121,15 +87,7 @@
 <!-- end: JavaScript-->
 
 <!-- Sindel includes -->
-
 <script src="Assets/js/jison/sindel-parser.js"></script>
-	
-<!-- Code mirror includes - used in Sindel -->
-
-<link rel="stylesheet" href="Assets/code_mirror/lib/codemirror.css">
-<link rel="stylesheet" href="Assets/code_mirror/addon/show-hint.css">
-<link rel="stylesheet" href="Assets/code_mirror/theme/neat.css">
-
 <script src="Assets/code_mirror/lib/codemirror.js"></script> 
 <script src="Assets/code_mirror/addon/matchbrackets.js"></script> 
 <script src="Assets/code_mirror/addon/closebrackets.js"></script> 			
@@ -137,47 +95,14 @@
 <script src="Assets/code_mirror/sindel_custom/sindel-hint.js"></script> 
 <script src="Assets/code_mirror/sindel_custom/sindel-highlight.js"></script> 
 <script src="Assets/js/okco.js"></script>
+<script src="Assets/js/advisor.js"></script>
 
 <!-- END Syntax Highlight -->
-
-<!-- GraphVisualizer includes -->
-<style>
-#currentNode {
-	border: 1px solid #B8B8B8;
-	width: 300px;
-	height: 100px;
-	padding-left: 15px;
-	padding-top: 15px;
-	top: 20px;
-	overflow-y: auto;
-	max-width: 290px;
-	max-height: 210px;
-	color: #fff;
-	background: #222 linear-gradient(#444, #222);
-	font-family: verdana, arial, sans-serif;
-	font-size: 14px;
-}
-
-#subtitle {
-	border: 1px solid #B8B8B8;
-	width: 270px;
-	height: 240px;
-	padding-left: 10px;
-	padding-top: 10px;
-	overflow-y: auto;
-	background: #222 linear-gradient(#444, #222);
-}
-</style>
-
 <script src="Assets/js/graph/arbor.js"></script>
 <script src="Assets/js/graph/graphics.js"></script>
 <script src="Assets/js/graph/main.js"></script>
 <script src="Assets/js/graph/jquery.contextmenu.js"></script>
 <link rel="stylesheet" type="text/css" href="Assets/js/graph/contextMenu.css"	media="all">
-
-<!-- GraphVisualizer includes -->
-
-<!-- Includes for loading.gif -->
 
 <style type="text/css">
 
@@ -223,39 +148,11 @@
 </head>
 
 <script type="text/javascript">
-function resizeCanvas() {
-	var canvas = document.getElementById('viewport'),
-    canvasDiv = document.getElementById('canvas-div');
-	canvas.width = canvasDiv.offsetWidth - 40;
-    canvas.height = 568;
-}
-
-function initCanvas(){
-	// resize the canvas to fill browser window dynamically
-	window.addEventListener('resize', resizeCanvas, false);
-
-	$('#main-menu-toggle').click();
-	resizeCanvas();
-}
 $(document).ready(function() {
 
 	$("#maskforloading").hide();
 
-	 // Function loading
-	 function loading()
-	 {
-	  	var maskHeight = $(document).height();
-		var maskWidth = "100%";//$(document).width();
-	
-		//Define largura e altura do div#maskforloading iguais ás dimensões da tela
-		$('#maskforloading').css({'width':maskWidth,'height':maskHeight});
-	
-		//efeito de transição
-		$('#maskforloading').show();
-	 }
-
 	$(".btnload").click(function(){
-
 		loading();
 	});	
 

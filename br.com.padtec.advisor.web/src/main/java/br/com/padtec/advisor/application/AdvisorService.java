@@ -57,14 +57,14 @@ public class AdvisorService {
 		List<String> outInterfacesList = AdvisorQueryUtil.getOutputInterfacesURIAtComponentOfRange(namespace+equipmentName);
 		for (String interface_out : outInterfacesList) 
 		{			
-			List<String> outputs = AdvisorQueryUtil.getOutputsURIAtMapsOutputRange(namespace+interface_out);
+			List<String> outputs = AdvisorQueryUtil.getOutputsURIAtMapsOutputRange(interface_out);
 			if(outputs.size()>0) result.add(outputs.get(0));
 		}
 		
 		List<String> inpInt = AdvisorQueryUtil.getInputInterfacesURIAtComponentOfRange(namespace+equipmentName);
 		for (String interface_inp : inpInt) 
 		{
-			List<String> inputs = AdvisorQueryUtil.getInputsURIAtMapsInputRange(namespace+interface_inp);
+			List<String> inputs = AdvisorQueryUtil.getInputsURIAtMapsInputRange(interface_inp);
 			if(inputs.size()>0) result.add(inputs.get(0));
 		}
 		return result;

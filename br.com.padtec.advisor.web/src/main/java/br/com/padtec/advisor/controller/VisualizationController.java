@@ -1,5 +1,6 @@
 package br.com.padtec.advisor.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -66,7 +67,8 @@ public class VisualizationController {
 			
 			request.getSession().setAttribute("canClick", true);
 			request.getSession().setAttribute("targetURL", "open_equipment_visualization_from_site?selected=");
-			request.getSession().setAttribute("popupMessage", "Go to Site\'s components");			
+			request.getSession().setAttribute("popupMessage", "Go to Site\'s components");	
+			request.getSession().setAttribute("visualizationType", "allSites");
 		}
 		else if(visualization.equals("allEquipments"))
 		{
@@ -80,12 +82,15 @@ public class VisualizationController {
 			request.getSession().setAttribute("canClick", true);
 			request.getSession().setAttribute("targetURL", "open_g800_visualization_from_equip?selected=");
 			request.getSession().setAttribute("popupMessage", "Go to Equipment\'s components");
+			
+			request.getSession().setAttribute("visualizationType", "allEquipments");
 		}
 		else if(visualization.equals("allG800"))
 		{			
 			viz.setAllG800Config();
 
 			request.getSession().setAttribute("canClick", false);
+			request.getSession().setAttribute("visualizationType", "allG800");
 		}
 		else if(visualization.equals("allElements"))
 		{
@@ -97,6 +102,8 @@ public class VisualizationController {
 			viz.setAllElementsConfig();
 			
 			request.getSession().setAttribute("canClick", false);
+			
+			request.getSession().setAttribute("visualizationType", "allElements");
 		}
 		
 		request.getSession().setAttribute("valuesGraph", viz.getValuesGraph());
@@ -124,6 +131,9 @@ public class VisualizationController {
 		request.getSession().setAttribute("hashTypes", viz.getHashTypes());
 		request.getSession().setAttribute("size", viz.getSize());
 		
+		request.getSession().setAttribute("visualizationType", "fromSite");
+		request.getSession().setAttribute("site", selected_site);
+		
 		return "show-visualization";
 	}
 
@@ -139,6 +149,9 @@ public class VisualizationController {
 		request.getSession().setAttribute("height", viz.getHeight());
 		request.getSession().setAttribute("hashTypes", viz.getHashTypes());
 		request.getSession().setAttribute("size", viz.getSize());
+		
+		request.getSession().setAttribute("visualizationType", "fromEquip");
+		request.getSession().setAttribute("equip", equip);
 		
 		return "show-visualization";
 	}
@@ -178,6 +191,7 @@ public class VisualizationController {
 	@RequestMapping(method = RequestMethod.GET, value="/binds")
 	public static String bindsV(HttpServletRequest request) 
 	{
+		Date beginDate = new Date();
 		/**===========================================================
 		 * Initialize figure mapper
 		 * =========================================================== */
@@ -199,6 +213,15 @@ public class VisualizationController {
 		request.getSession().setAttribute("hashAllowed", viz.getHashAllowed());
 		request.getSession().setAttribute("size", viz.getSize());
 
+		Date endDate = new Date();
+		long diff = endDate.getTime() - beginDate.getTime();
+		long diffHours = diff / (60 * 60 * 1000);
+		diff -= diffHours * 60 * 60 * 1000;
+		long diffMinutes = diff / (60 * 1000);         
+		diff -= diffMinutes * 60 * 1000;
+		long diffSeconds = diff / 1000;
+		System.out.println("/binds Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
+		
 		return "binds";
 	}	
 }

@@ -13,21 +13,6 @@
 			.ready(
 					function() {
 
-						// Function loading
-						function loading() {
-							var maskHeight = $(document).height();
-							var maskWidth = "100%";//$(document).width();
-
-							//Define largura e altura do div#maskforloading iguais ás dimensões da tela
-							$('#maskforloading').css({
-								'width' : maskWidth,
-								'height' : maskHeight
-							});
-
-							//efeito de transição
-							$('#maskforloading').show();
-						}
-
 						var open = 1;
 						$(".uploader").hide();
 						$(".btnUpload").hide();
@@ -86,8 +71,7 @@
 															dto) {
 
 														$(
-																"#maskforloading")
-																.hide();
+																"#maskforloading").hide();
 
 														
 														if (dto.ok == false) {
@@ -194,8 +178,7 @@
 															success : function(dto) {
 
 																$(
-																		"#maskforloading")
-																		.hide();
+																		"#maskforloading").hide();
 
 																if (dto.ok == false) {
 																	var html = "<div class=\"alert alert-danger\">"
@@ -224,8 +207,7 @@
 																	e) {
 
 																$(
-																		"#maskforloading")
-																		.hide();
+																		"#maskforloading").hide();
 																alert("Erro");
 															},
 														});
@@ -261,8 +243,7 @@
 																	success : function(dto) {
 
 																		$(
-																				"#maskforloading")
-																				.hide();
+																				"#maskforloading").hide();
 
 																		if (dto.ok == false) {
 																			var html = "<div class=\"alert alert-danger\">"
@@ -289,8 +270,7 @@
 																			e) {
 
 																		$(
-																				"#maskforloading")
-																				.hide();
+																				"#maskforloading").hide();
 																		alert("Erro");
 																	},
 																});
@@ -380,8 +360,7 @@
 																	e) {
 
 																$(
-																		"#maskforloading")
-																		.hide();
+																		"#maskforloading").hide();
 																alert("Erro");
 															},
 														});

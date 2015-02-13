@@ -95,10 +95,12 @@ public class UploadController implements ServletContextAware{
 			
 			Date endDate = new Date();
 			long diff = endDate.getTime() - beginDate.getTime();
-			long diffSeconds = diff / 1000;
+			long diffHours = diff / (60 * 60 * 1000);
+			diff -= diffHours * 60 * 60 * 1000;
 			long diffMinutes = diff / (60 * 1000);         
-			long diffHours = diff / (60 * 60 * 1000); 
-			System.out.println("Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
+			diff -= diffMinutes * 60 * 1000;
+			long diffSeconds = diff / 1000;
+			System.out.println("/welcome Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
 			
 			return "index";			
 		}else{
@@ -208,7 +210,7 @@ public class UploadController implements ServletContextAware{
 		long diffSeconds = diff / 1000;
 		long diffMinutes = diff / (60 * 1000);         
 		long diffHours = diff / (60 * 60 * 1000); 
-		System.out.println("Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
+		System.out.println("/uploadOwl Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
 		
 		request.getSession().removeAttribute("errorMensage");  
 		return "redirect:okco-list";

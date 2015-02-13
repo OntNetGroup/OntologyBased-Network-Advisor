@@ -1,29 +1,6 @@
 /*
 * Author: Freddy Brasileiro
 */
-#maskforloading 
-{
-	position:absolute;
-	z-index:9990;  
-	background-color:#000; 
-	display:none;
-	width: 100%;	
-	
-	filter:alpha(opacity=50);
-	opacity: 0.5;
-	-moz-opacity:0.5;
-	-webkit-opacity:0.5;	
-}
-
-#maskforloading img
-{
-	position:absolute;
-	top:1.2%;
-	left:1%;
-	width: 25px;
-	height: 25px;
-}
-
 table.table thead,
 table.table tbody
 {
@@ -68,9 +45,3 @@ table.table thead .dataProperty
 {
 	width: 29%;
 }
-
-div.floatingDiv
-{
-	position: absolute;
-}
-
