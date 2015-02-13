@@ -74,7 +74,7 @@ public class BindsVisualizator extends Visualizator {
 				hashEquipIntOut += "hashEquipIntOut['"+pm[3].substring(pm[3].indexOf("#")+1)+"']['"+pm[5]+"'] = \"true\";";
 				size++;
 			}
-			if(pm[0] == null && pm[4] == null)
+			if(pm[0] == null && pm[5] == null)
 			{
 				arborStructure += "graph.addNode(\""+pm[3].substring(pm[3].indexOf("#")+1)+"\", {shape:\"PM_ROXO\"});";
 			}

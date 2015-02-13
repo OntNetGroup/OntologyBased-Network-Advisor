@@ -61,6 +61,21 @@ public class UploadController implements ServletContextAware{
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value="/about")
+	public String about(HttpSession session, HttpServletRequest request) 
+	{
+		String login = (String)request.getSession().getAttribute("login");
+		if(login == null) login = "";
+		if(login.equals("true"))
+		{
+			request.getSession().removeAttribute("errorMensage");
+			request.getSession().removeAttribute("loadOk");
+			return "about";
+		}else{
+			return "login";
+		}
+	}
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password)
 	{

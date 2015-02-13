@@ -84,10 +84,6 @@
 		<!--/col-->
 
 	</div>
-<<<<<<< .mine
-=======
-	<!--/row-->
->>>>>>> .r139
 
 
 <%@include file="../templates/footer.jsp"%>
