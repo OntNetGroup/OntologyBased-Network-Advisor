@@ -14,7 +14,6 @@ public enum RelationEnum {
 	SITE_CONNECTS("site_connects"),
 	HAS_EQUIPMENT("has_equipament"),
 	INTERFACE_BINDS("interface_binds"),
-	INV_INTERFACE_BINDS("INV.interface_binds"),
 	COMPONENTOF("componentOf"),	
 	BINDING_IS_REPRESENTED_BY("binding_is_represented_by"),
 	IS_BINDING("is_binding"),
@@ -75,17 +74,21 @@ public enum RelationEnum {
 	IS_REPRESENTED_BY_SK_M_FP("is_represented_by_Sk_M-FP"),
 	BINDS_SK_M_FP_TO("binds_Sk_M-FP_to"),
 	BINDS_SK_M_FP_FROM("binds_Sk_M-FP_from"),
+	COMPONENTOF_EQUIPMENT_OUTPUT_INTERFACE("componentOf.Equipment.Output_Interface"),
 		
 	// ==============================
 	// Inverses from the Ontology
 	// ==============================
 	
+	INV_INTERFACE_BINDS("INV.interface_binds"),
+	INV_COMPONENTOF_SINGLE_PHYSICAL_MEDIA_PHYSICAL_MEDIA_INPUT("INV.componentOf.Single_Physical_Media.Physical_Media_Input"),
 	INV_COMPONENTOF("INV.componentOf"),
 	INV_BINDING_IS_REPRESENTED_BY("INV.binding_is_represented_by"),
 	INV_IS_BINDING("INV.is_binding"),
 	INV_BINDS("INV.binds"),
 	INV_MAPS_OUTPUT("INV.maps_output"),
 	INV_MAPS_INPUT("INV.maps_input"),
+	INV_BINDS_PM_OUT_INTERFACE("INV.binds_PM_out_interface"),
 	
 	// ==============================
 	// New relations to be generated...

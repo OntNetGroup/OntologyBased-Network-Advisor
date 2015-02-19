@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import br.com.padtec.advisor.application.util.PerformanceUtil;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.okco.core.application.OKCoSelector;
 
@@ -40,14 +41,7 @@ public class OKCoListingController {
 			ret = "index";
 		}
 		
-		Date endDate = new Date();
-		long diff = endDate.getTime() - beginDate.getTime();
-		long diffHours = diff / (60 * 60 * 1000);
-		diff -= diffHours * 60 * 60 * 1000;
-		long diffMinutes = diff / (60 * 1000);         
-		diff -= diffMinutes * 60 * 1000;
-		long diffSeconds = diff / 1000;
-		System.out.println("Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
+		PerformanceUtil.printExecutionTime("/okco-list", beginDate);
 		
 		return ret;
 	}	

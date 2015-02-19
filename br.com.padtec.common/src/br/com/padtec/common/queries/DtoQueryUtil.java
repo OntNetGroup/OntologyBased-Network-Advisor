@@ -36,6 +36,7 @@ public class DtoQueryUtil {
 	public static List<DtoInstance> getIndividualsFromClasses(InfModel model, List<String> classNamesList)
 	{
 		List<DtoInstance> result = new ArrayList<DtoInstance>();
+		/*
 		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(model, true, false, false);
 		for (DtoInstance dtoInstance : allInstances) 
 		{
@@ -51,9 +52,20 @@ public class DtoQueryUtil {
 				if(foundInstance) break;				
 			}
 		}
+		*/
+		
+		String ns = model.getNsPrefixURI("");
+		for (String className : classNamesList){
+			List<String> individuals = QueryUtil.getIndividualsURI(model, ns+className);
+			for (String indv : individuals) {
+				DtoInstance dtoIndv = DtoQueryUtil.getIndividualByName(model, indv, true, false, false);
+				if(!result.contains(dtoIndv)) result.add(dtoIndv);
+			}		
+		}
+		
 		return result;
 	}
-	
+	/*
 	public static DtoInstance getIndividualByName(InfModel model, String individualURI)
 	{		
 		List<DtoInstance> dtoIndividualList = getIndividuals(model, false, false, false);
@@ -68,66 +80,24 @@ public class DtoQueryUtil {
 		}
 		return null;
 	}
-	
-	
+	*/
 	/** 
-	 * Return the list of all individuals from the ontology.
+	 * Return a individual by its name.
 	 * It returns also all the classes of an individual as well as all the other individuals different and the same as this one.
 	 *  
-	 * @throws OKCoNameSpaceException
-	 * 
-	 * @author John Guerson
-	 * _ind_0
-
-	 * @param model
+	 * @author Freddy Brasileiro
+	 *
+	 * @param model Identify in which model you are searching
+	 * @param individualURI Identify which the URI (with namespace) from the individual you are searching
 	 * @param clsEager Defines when the classes of an individual must be got eagerly 
 	 * @param diffFromEager Defines when the "different from individuals" of an individual must be got eagerly
 	 * @param sameAsEager Defines when the "same as individuals" of an individual must be got eagerly
 	 */
-	static public List<DtoInstance> getIndividuals(InfModel model, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager) throws RuntimeException 
-	{		
-		List<DtoInstance> result = new ArrayList<DtoInstance>();				
-		List<String> individualsURIList = QueryUtil.getIndividualsURIFromAllClasses(model);		
-    	for (String indivURI : individualsURIList)
-    	{    		    		
-    		if(!indivURI.contains("#")){ throw new RuntimeException("Entity namespace problem. The " + indivURI +" have to followed by \"#\"."); }
-    		List<String> classesURIList = null;
-    		List<String> diffURIList = null;
-    		List<String> sameAsURIList = null;
-    		if(classesEager){
-    			System.out.println();
-    			System.out.print("Getting classes eagerly");
-    			classesURIList = QueryUtil.getClassesURI(model, indivURI);
-    		}
-    		if(diffFromEager){
-    			System.out.println();
-    			System.out.print("Getting \"different from individuals\" eagerly");
-    			diffURIList = QueryUtil.getIndividualsURIDifferentFrom(model, indivURI);
-    		}    		
-    		if(sameAsEager){
-    			System.out.println();
-    			System.out.print("Getting \"same as individuals\" eagerly");
-    			sameAsURIList = QueryUtil.getIndividualsURISameAs(model, indivURI);
-    		}    		
-    		String nameSpace = indivURI.split("#")[0] + "#";
-    		String name = indivURI.split("#")[1];
-    		result.add(new DtoInstance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true));
-		}		
-		return result;
-	}
-	
-	/** 
-	 * Return a particular individual from the ontology.
-	 * It returns also all the classes of an individual as well as all the other individuals different and the same as this one.
- 	 *
-	 * @author John Guerson
-	 */
-	static public DtoInstance getIndividual(InfModel model, String individualURI, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager)
-	{		
+	public static DtoInstance getIndividualByName(InfModel model, String individualURI, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager){
 		if(!individualURI.contains("#")){ throw new RuntimeException("Entity namespace problem. The " + individualURI +" have to followed by \"#\"."); }
-		List<String> classesURIList = new ArrayList<String>();
-		List<String> diffURIList =  new ArrayList<String>();
-		List<String> sameAsURIList =  new ArrayList<String>();
+		List<String> classesURIList = null;
+		List<String> diffURIList = null;
+		List<String> sameAsURIList = null;
 		if(classesEager){
 			System.out.println();
 			System.out.print("Getting classes eagerly");
@@ -142,10 +112,39 @@ public class DtoQueryUtil {
 			System.out.println();
 			System.out.print("Getting \"same as individuals\" eagerly");
 			sameAsURIList = QueryUtil.getIndividualsURISameAs(model, individualURI);
-		}				
-		String nameSpace =  individualURI.split("#")[0] + "#";
-		String name =  individualURI.split("#")[1];
-		return new DtoInstance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true);
+		}    		
+		String nameSpace = individualURI.split("#")[0] + "#";
+		String name = individualURI.split("#")[1];
+		
+		DtoInstance individual = new DtoInstance(nameSpace, name, classesURIList, diffURIList, sameAsURIList, true);
+		
+		return individual;
+	}
+	
+	
+	/** 
+	 * Return the list of all individuals from the ontology.
+	 * It returns also all the classes of an individual as well as all the other individuals different and the same as this one.
+	 *  
+	 * @throws OKCoNameSpaceException
+	 * 
+	 * @author John Guerson
+	 * 
+	 * @param model
+	 * @param clsEager Defines when the classes of an individual must be got eagerly 
+	 * @param diffFromEager Defines when the "different from individuals" of an individual must be got eagerly
+	 * @param sameAsEager Defines when the "same as individuals" of an individual must be got eagerly
+	 */
+	static public List<DtoInstance> getIndividuals(InfModel model, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager) throws RuntimeException 
+	{		
+		List<DtoInstance> result = new ArrayList<DtoInstance>();				
+		List<String> individualsURIList = QueryUtil.getIndividualsURIFromAllClasses(model);		
+    	for (String indivURI : individualsURIList)
+    	{    		    		
+    		DtoInstance individual = getIndividualByName(model, indivURI, classesEager, diffFromEager, sameAsEager);
+    		result.add(individual);
+		}		
+		return result;
 	}
 	
 	/** 
@@ -534,7 +533,7 @@ public class DtoQueryUtil {
 		List<String> individualsURIs = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, individualURI, propertyURI,rangeClassURI);
 		for(String uri: individualsURIs)
 		{
-			DtoInstance dtoInstance = getIndividual(model, uri,true,true,true);
+			DtoInstance dtoInstance = getIndividualByName(model, uri,true,true,true);
 			if(dtoInstance!=null) result.add(dtoInstance);
 		}
 		return result;

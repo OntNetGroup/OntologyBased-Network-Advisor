@@ -18,6 +18,7 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import br.com.padtec.advisor.application.util.PerformanceUtil;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.reasoning.HermitReasonerImpl;
 import br.com.padtec.okco.core.application.OKCoSelector;
@@ -108,14 +109,7 @@ public class UploadController implements ServletContextAware{
 			
 			if(!error.isEmpty())request.getSession().setAttribute("errorMensage", error);
 			
-			Date endDate = new Date();
-			long diff = endDate.getTime() - beginDate.getTime();
-			long diffHours = diff / (60 * 60 * 1000);
-			diff -= diffHours * 60 * 60 * 1000;
-			long diffMinutes = diff / (60 * 1000);         
-			diff -= diffMinutes * 60 * 1000;
-			long diffSeconds = diff / 1000;
-			System.out.println("/welcome Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
+			PerformanceUtil.printExecutionTime("/welcome", beginDate);
 			
 			return "index";			
 		}else{
@@ -220,12 +214,7 @@ public class UploadController implements ServletContextAware{
 			return "index";
 		}	 
 		
-		Date endDate = new Date();
-		long diff = endDate.getTime() - beginDate.getTime();
-		long diffSeconds = diff / 1000;
-		long diffMinutes = diff / (60 * 1000);         
-		long diffHours = diff / (60 * 60 * 1000); 
-		System.out.println("/uploadOwl Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
+		PerformanceUtil.printExecutionTime("/uploadOwl", beginDate);
 		
 		request.getSession().removeAttribute("errorMensage");  
 		return "redirect:okco-list";

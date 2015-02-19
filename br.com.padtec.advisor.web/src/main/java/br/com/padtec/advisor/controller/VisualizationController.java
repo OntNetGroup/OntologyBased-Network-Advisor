@@ -18,6 +18,7 @@ import br.com.padtec.advisor.application.GeneralConnects;
 import br.com.padtec.advisor.application.HTMLFigureMapper;
 import br.com.padtec.advisor.application.Visualizator;
 import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
+import br.com.padtec.advisor.application.util.PerformanceUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 @Controller
@@ -202,25 +203,18 @@ public class VisualizationController {
 		 * =========================================================== */
 		GeneralConnects.inferInterfaceConnections();
 		
-		BindsVisualizator viz = new BindsVisualizator();
-		viz.setConfig();
+		BindsVisualizator bindsViz = new BindsVisualizator();
+		bindsViz.createArborStruct();
 
-		request.getSession().setAttribute("valuesGraph", viz.getArborStructure());
-		request.getSession().setAttribute("width", viz.getWidth());
-		request.getSession().setAttribute("height", viz.getHeight());
-		request.getSession().setAttribute("hashEquipIntOut", viz.getHashEquipIntOut());
-		request.getSession().setAttribute("hashTypes", viz.getHashTypes());
-		request.getSession().setAttribute("hashAllowed", viz.getHashAllowed());
-		request.getSession().setAttribute("size", viz.getSize());
+		request.getSession().setAttribute("valuesGraph", bindsViz.getArborStructure());
+		request.getSession().setAttribute("width", bindsViz.getWidth());
+		request.getSession().setAttribute("height", bindsViz.getHeight());
+		request.getSession().setAttribute("hashEquipIntOut", bindsViz.getHashEquipIntOut());
+		request.getSession().setAttribute("hashTypes", bindsViz.getHashTypes());
+		request.getSession().setAttribute("hashAllowed", bindsViz.getHashAllowed());
+		request.getSession().setAttribute("size", bindsViz.getSize());
 
-		Date endDate = new Date();
-		long diff = endDate.getTime() - beginDate.getTime();
-		long diffHours = diff / (60 * 60 * 1000);
-		diff -= diffHours * 60 * 60 * 1000;
-		long diffMinutes = diff / (60 * 1000);         
-		diff -= diffMinutes * 60 * 1000;
-		long diffSeconds = diff / 1000;
-		System.out.println("/binds Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s");
+		PerformanceUtil.printExecutionTime("/binds", beginDate);
 		
 		return "binds";
 	}	

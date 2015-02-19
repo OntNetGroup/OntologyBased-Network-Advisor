@@ -38,7 +38,7 @@
 					"Ontology-based Advisor for Network Management" Project ("Assessor
 					Baseado em Ontologias para Gerenciamento de Redes", in Portuguese),
 					between Padtec S.A. and Federal University of Espírito Santo. We
-					thank the Padtec employees and all <a href="http://nemo.inf.ufes.br/"><u>NEMO</u>	</a>
+					thank the Padtec employees and all <a href="http://nemo.inf.ufes.br/"><u>NEMO</u></a>
 					reasearches who have somehow contributed to the Advisor's
 					development. This research has also been funded by FAPES/CNPq
 					(PRONEX 52272362/11).</p>

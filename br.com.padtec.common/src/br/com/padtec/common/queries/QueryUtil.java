@@ -1002,7 +1002,7 @@ public class QueryUtil {
 		    list.add(i.toString());	
 		    System.out.println("- Individual URI: "+i.toString());
 		}
-		return list;		
+		return list;
 	}
 	
 	/**

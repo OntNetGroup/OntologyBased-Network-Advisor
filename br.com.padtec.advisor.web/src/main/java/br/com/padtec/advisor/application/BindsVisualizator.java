@@ -18,7 +18,7 @@ public class BindsVisualizator extends Visualizator {
 	protected String hashAllowed = new String();
 	protected String hashRPEquip = new String();
 	
-	public void setConfig()
+	public void createArborStruct()
 	{
 		List<DtoEquipment> list = AdvisorDtoQueryUtil.getAllDtoEquipments();
 		
@@ -65,7 +65,8 @@ public class BindsVisualizator extends Visualizator {
 
 			if(pm[0] != null)
 			{
-				arborStructure += "graph.addEdge(graph.addNode(\""+pm[3].substring(pm[3].indexOf("#")+1)+"\", {shape:\"PM_ROXO\"}),graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"Equip_ROXO\"}), {name:'binds:"+pm[0].substring(pm[0].indexOf("#")+1)+"-"+pm[1].substring(pm[1].indexOf("#")+1)+"'});";
+				//arborStructure += "graph.addEdge(graph.addNode(\""+pm[3].substring(pm[3].indexOf("#")+1)+"\", {shape:\"PM_ROXO\"}),graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"Equip_ROXO\"}), {name:'binds:"+pm[0].substring(pm[0].indexOf("#")+1)+"-"+pm[1].substring(pm[1].indexOf("#")+1)+"'});";
+				arborStructure += "graph.addEdge(graph.addNode(\""+pm[2].substring(pm[2].indexOf("#")+1)+"\", {shape:\"Equip_ROXO\"}),graph.addNode(\""+pm[3].substring(pm[3].indexOf("#")+1)+"\", {shape:\"PM_ROXO\"}), {name:'binds:"+pm[0].substring(pm[0].indexOf("#")+1)+"-"+pm[1].substring(pm[1].indexOf("#")+1)+"'});";
 				size++;
 			}
 			if(pm[5] != null)

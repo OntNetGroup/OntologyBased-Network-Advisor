@@ -39,13 +39,13 @@ public class OKCoSelector {
 	 */
 	public static DtoInstance selectIndividual(String individualURI)
 	{
-		individualSelected = DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), individualURI, true, true, true);
+		individualSelected = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI, true, true, true);
 		return individualSelected;
 	}
 	
 	public static DtoInstance selectIndividual(String individualURI, boolean loadCardinalityDefinitions)
 	{
-		individualSelected = DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), individualURI, true, true, true);		
+		individualSelected = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI, true, true, true);		
 		if(loadCardinalityDefinitions)
 		{
 			getSomeDefinitionsFromSelected();

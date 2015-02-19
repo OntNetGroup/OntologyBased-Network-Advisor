@@ -75,7 +75,7 @@ public class OKCoCommiter {
 	
 	public static DtoInstance addExistingIndividualAtCommitList(String individualURI)
 	{
-		DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), individualURI,true,true,true);
+		DtoInstance dtoIndividual = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI,true,true,true);
 		newIndividualsCommitList.add(dtoIndividual);	
 		return dtoIndividual;
 	}
@@ -110,7 +110,7 @@ public class OKCoCommiter {
 	 */
 	public static DtoViewSelectInstance getEditingIndividualFromModel(String individualURI)
 	{
-		DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), individualURI,true,true,true);
+		DtoInstance dtoIndividual = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI,true,true,true);
 		List<DtoInstance> allIndividuals = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), true, true, true);
 		DtoViewSelectInstance dto = new DtoViewSelectInstance(dtoIndividual, allIndividuals);
 		return dto;
@@ -355,8 +355,8 @@ public class OKCoCommiter {
 					String type = parts[0];
 					String uriSource = parts[1];
 					String uriTarget = parts[2];					
-					DtoInstance s1 = DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), uriSource,true,true,true);
-					DtoInstance s2 = DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), uriTarget,true,true,true);					
+					DtoInstance s1 = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), uriSource,true,true,true);
+					DtoInstance s2 = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), uriTarget,true,true,true);					
 					if(type.equals("dif"))
 					{
 						OntModel basemodel = OKCoUploader.getBaseModel();

@@ -17,7 +17,7 @@ public class OKCoVisualizer {
 		if(typeView.equals("ALL")) valuesGraph  = graphPlotting.getArborStructureFor(OKCoUploader.getInferredModel());
 		else if(individualURI != null)
 		{			
-			DtoInstance dtoIndividual = DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), individualURI,true,true,true);
+			DtoInstance dtoIndividual = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI,true,true,true);
 			if(typeView.equals("IN")) 
 			{				
 				valuesGraph  = graphPlotting.getArborStructureComingInOf(OKCoUploader.getInferredModel(), dtoIndividual.ns + dtoIndividual.name);

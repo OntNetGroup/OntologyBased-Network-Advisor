@@ -44,7 +44,7 @@ public class OKCoClassifier {
 		}
 		try {
 			/** Update of the individual selected */
-			OKCoSelector.selectIndividual(DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), OKCoSelector.getSelectedIndividualURI(),true,true,true));
+			OKCoSelector.selectIndividual(DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), OKCoSelector.getSelectedIndividualURI(),true,true,true));
 			
 		} catch (Exception e) {
 			dtoResult.setMessage(e.getMessage());
@@ -55,7 +55,7 @@ public class OKCoClassifier {
 				if(!clsAux.equals(""))FactoryUtil.deleteIndividualOfClass(basemodel,OKCoSelector.getSelectedIndividualURI(), clsAux);				
 			}
 			/** Update of the individual selected */
-			OKCoSelector.selectIndividual(DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), OKCoSelector.getSelectedIndividualURI(),true,true,true));
+			OKCoSelector.selectIndividual(DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), OKCoSelector.getSelectedIndividualURI(),true,true,true));
 			return dtoResult;
 		}		
 		OKCoSelector.setSelectedToModified();
@@ -98,7 +98,7 @@ public class OKCoClassifier {
 		}
 		try {				
 			/** Update the individual selected */
-			OKCoSelector.selectIndividual(DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), OKCoSelector.getSelectedIndividualURI(),true,true,true));
+			OKCoSelector.selectIndividual(DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), OKCoSelector.getSelectedIndividualURI(),true,true,true));
 		}catch (Exception e){
 			dtoResult.setMessage(e.getMessage());
 			dtoResult.setIsSucceed(false);
@@ -114,7 +114,7 @@ public class OKCoClassifier {
 				}
 			}
 			/** Update Individual Selected */
-			OKCoSelector.selectIndividual(DtoQueryUtil.getIndividual(OKCoUploader.getInferredModel(), OKCoSelector.getSelectedIndividualURI(),true,true,true));
+			OKCoSelector.selectIndividual(DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), OKCoSelector.getSelectedIndividualURI(),true,true,true));
 			return dtoResult;
 		}
 		OKCoSelector.setSelectedToModified();
