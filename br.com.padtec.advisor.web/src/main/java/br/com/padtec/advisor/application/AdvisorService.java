@@ -269,15 +269,18 @@ public class AdvisorService {
 			String portURI= pmediaList.get(0);
 			result[0]=portURI;
 			
-			List<String> terminationList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(portURI, RelationEnum.INV_BINDS, ConceptEnum.TERMINATION_SOURCE_OUTPUT);
+			//List<String> terminationList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(portURI, RelationEnum.INV_BINDS, ConceptEnum.TERMINATION_SOURCE_OUTPUT);
+			List<String> terminationList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyDomain(ConceptEnum.TERMINATION_SOURCE_OUTPUT, RelationEnum.BINDS, portURI);
 			if(terminationList.size()==0) return result;			
 			String tfURI= terminationList.get(0);			
-			List<String> outputList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(tfURI, RelationEnum.INV_MAPS_OUTPUT, ConceptEnum.OUTPUT_INTERFACE);
+			//List<String> outputList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(tfURI, RelationEnum.INV_MAPS_OUTPUT, ConceptEnum.OUTPUT_INTERFACE);
+			List<String> outputList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyDomain(ConceptEnum.OUTPUT_INTERFACE, RelationEnum.MAPS_OUTPUT, tfURI);
 			if(outputList.size()==0) return result;			
 			String outputURI= outputList.get(0);
 			result[1]=outputURI;
 			
-			List<String> eqList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(outputURI, RelationEnum.INV_COMPONENTOF, ConceptEnum.EQUIPMENT);
+			List<String> eqList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyDomain(ConceptEnum.EQUIPMENT, RelationEnum.COMPONENTOF, outputURI);
+			//List<String> eqList = AdvisorQueryUtil.getIndividualsURIAtObjectPropertyRange(outputURI, RelationEnum.INV_COMPONENTOF, ConceptEnum.EQUIPMENT);
 			if(eqList.size()==0) return result;			
 			result[2]= eqList.get(0);
 			

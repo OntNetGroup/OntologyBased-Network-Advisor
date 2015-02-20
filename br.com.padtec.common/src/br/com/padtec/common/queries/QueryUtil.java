@@ -1149,7 +1149,7 @@ public class QueryUtil {
 	 * @param model: jena.ontology.InfModel
 	 * @param individualURI: Individual URI
 	 * @param propertyURI: Property URI
-	 * @param rangeClassURI: Rande Class URI
+	 * @param rangeClassURI: Range Class URI
 	 * 
 	 * @author John Guerson
 	 */
@@ -1178,6 +1178,51 @@ public class QueryUtil {
 		{			
 			QuerySolution row= results.next();
 		    RDFNode property = row.get("target");
+		    if(isValidURI(property.toString()))
+		    {
+		    	System.out.println("- Range Individual URI: "+property.toString()); 
+		    	result.add(property.toString());
+		    } 		    		    
+		}		
+		return result;
+	}	
+	
+	/**
+	 * Return all the individuals URI that are in the domain of the given propertyURI as instance of domainClassURI and connected to the individualURI.
+	 * This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param individualURI: Individual URI
+	 * @param propertyURI: Property URI
+	 * @param domainClassURI: Domain Class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public List<String> getIndividualsURIAtObjectPropertyDomain(InfModel model, String individualURI, String propertyURI, String domainClassURI)
+	{
+		System.out.println("\nExecuting getIndividualsURIAtPropertyRange()...");
+		System.out.println("- Individual URI: "+individualURI);
+		System.out.println("- Property URI: "+propertyURI);
+		System.out.println("- Range Class URI: "+domainClassURI);
+		List<String> result = new ArrayList<String>();		
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">\n" +
+		"SELECT DISTINCT *\n" +
+		"WHERE {\n" +		
+			" ?domain " + "<"+propertyURI+"> " + "<" + individualURI + ">.\n" +
+			" ?domain" + " rdf:type" + " <"+ domainClassURI + "> .\n" +
+		"}";
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
+		{			
+			QuerySolution row= results.next();
+		    RDFNode property = row.get("domain");
 		    if(isValidURI(property.toString()))
 		    {
 		    	System.out.println("- Range Individual URI: "+property.toString()); 

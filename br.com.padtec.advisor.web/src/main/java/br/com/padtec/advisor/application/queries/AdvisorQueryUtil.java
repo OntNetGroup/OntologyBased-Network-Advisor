@@ -23,6 +23,13 @@ public class AdvisorQueryUtil {
 		return QueryUtil.getIndividualsURIAtObjectPropertyRange(OKCoUploader.getInferredModel(), domainIndividualURI, OKCoUploader.getNamespace()+relation, OKCoUploader.getNamespace()+rangeConcept);	
 	}	
 	
+	/** ====================== General Individual URIs At Target ================================= */
+	
+	public static List<String> getIndividualsURIAtObjectPropertyDomain(ConceptEnum domainConcept, RelationEnum relation, String rangeIndividualURI)
+	{
+		return QueryUtil.getIndividualsURIAtObjectPropertyDomain(OKCoUploader.getInferredModel(), rangeIndividualURI, OKCoUploader.getNamespace()+relation, OKCoUploader.getNamespace()+domainConcept);	
+	}	
+	
 	/** ====================== Specific Query Individual URIs ================================= */
 	
 	public static List<String> getSitesURI()

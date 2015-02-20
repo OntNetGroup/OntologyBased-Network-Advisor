@@ -79,6 +79,19 @@ public class BindsVisualizator extends Visualizator {
 			{
 				arborStructure += "graph.addNode(\""+pm[3].substring(pm[3].indexOf("#")+1)+"\", {shape:\"PM_ROXO\"});";
 			}
+			
+			if(pm[5]== null && pm[4] != null){
+				ArrayList<String> possibleList = GeneralBinds.getCandidateInterfacesForConnection(pm[4]);
+				for(String possibleConnection : possibleList)
+				{
+					if(possibleConnection.contains("true"))
+					{
+						hashAllowed += "hashAllowed[\""+pm[3]+"\"] = \"VERDE\";";
+						hashEquipIntOut += "hashEquipIntOut['"+pm[3]+"']['"+pm[4]+"'] = \""+false+"\";";
+						break;
+					}
+				}
+			}
 		}		
 		width  += 400 * (size / 10);
 		height += 400 * (size / 10);
