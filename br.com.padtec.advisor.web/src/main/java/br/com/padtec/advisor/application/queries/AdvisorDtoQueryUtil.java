@@ -6,6 +6,10 @@ import java.util.List;
 
 import br.com.padtec.advisor.application.dto.DtoEquipment;
 import br.com.padtec.advisor.application.dto.DtoInterfaceOutput;
+import br.com.padtec.advisor.application.types.ConceptEnum;
+import br.com.padtec.common.dto.DtoInstance;
+import br.com.padtec.common.dto.DtoInstanceRelation;
+import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.hp.hpl.jena.ontology.Individual;
@@ -13,7 +17,25 @@ import com.hp.hpl.jena.ontology.OntModel;
 
 public class AdvisorDtoQueryUtil {
 
-	/** Get all DTO Equipments related to a Site URI Individual */
+	/** ====================== General ================================= */
+	
+	public static List<DtoInstance> getIndividualsFromClass(ConceptEnum concept)
+	{
+		return DtoQueryUtil.getIndividualsFromClass(OKCoUploader.getInferredModel(), concept.toString());		
+	}
+	
+	public static DtoInstance getIndividualByName(String individualURI, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager)
+	{
+		return DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI, classesEager, diffFromEager, sameAsEager);
+	}
+	
+	public static List<DtoInstanceRelation>  getRelationsFrom(DtoInstance dtoIndividual)
+	{
+		return DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(), dtoIndividual);
+	}
+	
+	/** ====================== Specific ================================= */
+	
 	public static List<DtoEquipment> getDtoEquipmentsFromSite(String siteURI)
 	{
 		List<String> equipmentsURIList = new ArrayList<String>();
@@ -21,14 +43,12 @@ public class AdvisorDtoQueryUtil {
 		return getDtoEquipments(equipmentsURIList);
 	}
 	
-	/** Get all DTO Equipments */
 	public static List<DtoEquipment> getAllDtoEquipments()
 	{		
 		List<String> equipmentsURIList = AdvisorQueryUtil.getEquipmentsURI();
 		return getDtoEquipments(equipmentsURIList);
 	}
 	
-	/** Get DTO Equipments from Equipments URIs */
 	private static List<DtoEquipment> getDtoEquipments(List<String> equipmentsURIList)
 	{
 		List<DtoEquipment> result= new ArrayList<DtoEquipment>();

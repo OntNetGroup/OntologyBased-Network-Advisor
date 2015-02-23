@@ -102,7 +102,9 @@ public enum RelationEnum {
 	FORWARDING_TO_UNI_PATH_NC("Forwarding_to_Uni_Path_NC"),
 	FORWARDING_FROM_UNI_ACCESS_TRANSPORT_ENTITY("Forwarding_from_Uni_Access_Transport_Entity"),	
 	FORWARDING_TO_UNI_ACCESS_TRANSPORT_ENTITY("Forwarding_to_Uni_Access_Transport_Entity"),
-	IS_REPRESENTED_BY_SO_A_FEP("is_represented_by_So_A-FEP");
+	IS_REPRESENTED_BY_SO_A_FEP("is_represented_by_So_A-FEP"),
+	BINDS_PM_IN_INTERFACE("binds_PM_in_Interface"),
+	BINDS_PM_OUT_INTERFACE("binds_PM_out_Interface");
 	
 	private String relation;
 	private String domain = new String();

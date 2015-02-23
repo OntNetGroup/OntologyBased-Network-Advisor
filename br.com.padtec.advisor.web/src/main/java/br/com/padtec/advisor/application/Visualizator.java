@@ -11,8 +11,8 @@ import br.com.padtec.advisor.application.queries.AdvisorDtoQueryUtil;
 import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
 import br.com.padtec.advisor.application.types.ConceptEnum;
 import br.com.padtec.advisor.application.types.RelationEnum;
-import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
 import br.com.padtec.common.dto.DtoInstanceRelation;
+import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
@@ -196,7 +196,7 @@ public class Visualizator {
 		List<String> allInstances =QueryUtil.getIndividualsURIFromAllClasses(OKCoUploader.getInferredModel());		
 		for (String instance : allInstances) 
 		{
-			List<DtoInstanceRelation> targetList = ApplicationQueryUtil.GetInstanceRelations(OKCoUploader.getInferredModel(),instance);
+			List<DtoInstanceRelation> targetList = DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(),instance);
 			List<String> classes = QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),instance);
 			for (DtoInstanceRelation dtoInstanceRelation : targetList) 
 			{

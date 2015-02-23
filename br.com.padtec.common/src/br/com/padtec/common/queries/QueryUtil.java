@@ -497,7 +497,7 @@ public class QueryUtil {
 		    } 		    		    
 		}		
 		return result;
-	}
+	}	
 	
 	/** 
 	 * Return the URI of all properties (both object and datatype properties) and individuals that this individual is linked to, in the ontology. This method is performed using SPARQL.

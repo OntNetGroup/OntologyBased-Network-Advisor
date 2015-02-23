@@ -9,28 +9,24 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class AdvisorQueryUtil {
 
-	/** ====================== General Query Individual URIs ================================= */
+	/** ====================== General ================================= */
 	
 	public static List<String> getIndividualsURI(ConceptEnum concept)
 	{
 		return QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace()+concept);
 	}
 	
-	/** ====================== General Individual URIs At Range ================================= */
-	
 	public static List<String> getIndividualsURIAtObjectPropertyRange(String domainIndividualURI, RelationEnum relation, ConceptEnum rangeConcept)
 	{
 		return QueryUtil.getIndividualsURIAtObjectPropertyRange(OKCoUploader.getInferredModel(), domainIndividualURI, OKCoUploader.getNamespace()+relation, OKCoUploader.getNamespace()+rangeConcept);	
 	}	
-	
-	/** ====================== General Individual URIs At Target ================================= */
-	
+			
 	public static List<String> getIndividualsURIAtObjectPropertyDomain(ConceptEnum domainConcept, RelationEnum relation, String rangeIndividualURI)
 	{
 		return QueryUtil.getIndividualsURIAtObjectPropertyDomain(OKCoUploader.getInferredModel(), rangeIndividualURI, OKCoUploader.getNamespace()+relation, OKCoUploader.getNamespace()+domainConcept);	
 	}	
 	
-	/** ====================== Specific Query Individual URIs ================================= */
+	/** ====================== Specific ================================= */
 	
 	public static List<String> getSitesURI()
 	{
@@ -71,8 +67,6 @@ public class AdvisorQueryUtil {
 	{
 		return QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), OKCoUploader.getNamespace()+ConceptEnum.PHYSICAL_MEDIA);
 	}
-	
-	/** ====================== Specific Query Individual URIs At Range ================================= */
 	
 	public static List<String> getInputsURIAtMapsInputRange(String domainIndividualURI)
 	{

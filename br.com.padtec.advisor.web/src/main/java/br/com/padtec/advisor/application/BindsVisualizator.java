@@ -33,7 +33,7 @@ public class BindsVisualizator extends Visualizator {
 			{
 				hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"']['"+outs.getName()+"'] = \""+outs.isConnected()+"\";";
 				if(hashAllowed.contains(equip.getName())) continue;
-				ArrayList<String> possibleList = GeneralBinds.getCandidateInterfacesForConnection(outs.getName());
+				List<String> possibleList = GeneralBinds.getCandidateInterfacesForConnection(outs.getName());
 				for(String possibleConnection : possibleList)
 				{
 					if(possibleConnection.contains("true"))
@@ -81,7 +81,7 @@ public class BindsVisualizator extends Visualizator {
 			}
 			
 			if(pm[5]== null && pm[4] != null){
-				ArrayList<String> possibleList = GeneralBinds.getCandidateInterfacesForConnection(pm[4]);
+				List<String> possibleList = GeneralBinds.getCandidateInterfacesForConnection(pm[4]);
 				for(String possibleConnection : possibleList)
 				{
 					if(possibleConnection.contains("true"))

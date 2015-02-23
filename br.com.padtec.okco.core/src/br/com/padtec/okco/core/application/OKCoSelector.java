@@ -220,7 +220,7 @@ public class OKCoSelector {
 	{
 		if(individualSelected!=null) 
 		{
-			return DtoQueryUtil.getRelations(OKCoUploader.getInferredModel(),getSelectedIndividualURI());			
+			return DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(),getSelectedIndividualURI());			
 		}
 		else return new ArrayList<DtoInstanceRelation>();
 	}

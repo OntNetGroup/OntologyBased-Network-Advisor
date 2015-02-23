@@ -7,7 +7,6 @@ import java.util.List;
 import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
 import br.com.padtec.advisor.application.types.ConceptEnum;
 import br.com.padtec.advisor.application.types.RelationEnum;
-import br.com.padtec.advisor.application.util.ApplicationQueryUtil;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.factory.FactoryUtil;
@@ -64,7 +63,7 @@ public class GeneralConnects extends AdvisorService {
 		
 		for (DtoInstance dtoInstance : rpDtoInstanceList) 
 		{
-			List<DtoInstanceRelation> rpRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, dtoInstance.ns+dtoInstance.name);
+			List<DtoInstanceRelation> rpRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, dtoInstance.ns+dtoInstance.name);
 			String bindingURI = new String();
 			for (DtoInstanceRelation dtoRelation : rpRelations) 
 			{
@@ -126,7 +125,7 @@ public class GeneralConnects extends AdvisorService {
 		InfModel inferredModel = OKCoUploader.getInferredModel();
 		String namespace = OKCoUploader.getNamespace();
 		
-		List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, interfaceURI);		
+		List<DtoInstanceRelation> portRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, interfaceURI);		
 		for (DtoInstanceRelation dtoRelation : portRelations) 
 		{
 			String relationName = dtoRelation.Property.replace(namespace, "");
@@ -141,7 +140,7 @@ public class GeneralConnects extends AdvisorService {
 		InfModel inferredModel = OKCoUploader.getInferredModel();
 		String namespace = OKCoUploader.getNamespace();
 		
-		List<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, bindingURI);		
+		List<DtoInstanceRelation> bindingRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, bindingURI);		
 		for (DtoInstanceRelation dtoRelation : bindingRelations) 
 		{
 			String intRelName = dtoRelation.Property.replace(namespace, "");
@@ -165,14 +164,14 @@ public class GeneralConnects extends AdvisorService {
 			if((nextPortClasses.contains(namespace+ConceptEnum.OUTPUT.toString()) && actualPortClasses.contains(namespace+ConceptEnum.INPUT.toString())) || 
 			  (nextPortClasses.contains(namespace+ConceptEnum.INPUT.toString()) && actualPortClasses.contains(namespace+ConceptEnum.OUTPUT.toString())))
 			{
-				List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, portURI);
+				List<DtoInstanceRelation> portRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, portURI);
 				
 				for (DtoInstanceRelation portRel : portRelations) 
 				{
 					String portRelName = portRel.Property.replace(namespace, "");
 					if(portRelName.equals(RelationEnum.INV_IS_BINDING.toString()))
 					{
-						List<DtoInstanceRelation> bindingRelations =ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, portRel.Target);
+						List<DtoInstanceRelation> bindingRelations =DtoQueryUtil.getRelationsFromAndTo(inferredModel, portRel.Target);
 						for (DtoInstanceRelation bindingRel : bindingRelations) 
 						{
 							String bindingRelName = bindingRel.Property.replace(namespace, "");
@@ -196,7 +195,7 @@ public class GeneralConnects extends AdvisorService {
 		
 		List<String> result = new ArrayList<String>();
 				
-		List<DtoInstanceRelation> portRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, bindedPortURI);
+		List<DtoInstanceRelation> portRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, bindedPortURI);
 		String outInterfaceURI = new String();
 		String inInterfaceURI = new String();
 		String TfnURI = new String();
@@ -217,7 +216,7 @@ public class GeneralConnects extends AdvisorService {
 				return result;
 			}			
 			ArrayList<String> nextPorts = new ArrayList<String>(); 
-			List<DtoInstanceRelation> tfRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, TfnURI);
+			List<DtoInstanceRelation> tfRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, TfnURI);
 			String eqURI = new String();
 			for (DtoInstanceRelation dtoRelation : tfRelations) 
 			{
@@ -265,7 +264,7 @@ public class GeneralConnects extends AdvisorService {
 		InfModel inferredModel = OKCoUploader.getInferredModel();
 		String namespace = OKCoUploader.getNamespace();	
 		
-		List<DtoInstanceRelation> bindingRelations = ApplicationQueryUtil.GetInstanceAllRelations(inferredModel, bindingURI);
+		List<DtoInstanceRelation> bindingRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, bindingURI);
 		
 		String bindedPort1URI = new String();
 		String bindedPort2URI = new String();
