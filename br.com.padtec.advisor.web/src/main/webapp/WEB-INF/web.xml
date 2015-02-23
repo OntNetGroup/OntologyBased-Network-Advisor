@@ -32,4 +32,7 @@
   <welcome-file-list>
     <welcome-file>/welcome</welcome-file>
   </welcome-file-list>
+  <error-page>
+        <location>/ops</location>
+  </error-page>
 </web-app>
