@@ -1,0 +1,12 @@
+***
+
+Equipment: x, y;
+Input_Interface: a;
+Output_Interface: b;
+Layer_Network: k;
+
+***
+
+***
+
+***
