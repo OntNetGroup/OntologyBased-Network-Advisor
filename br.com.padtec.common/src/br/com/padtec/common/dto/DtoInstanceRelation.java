@@ -2,6 +2,7 @@ package br.com.padtec.common.dto;
 
 public class DtoInstanceRelation{
 	
+	public String Source;
 	public String Property;
 	public String Target;
 
@@ -13,7 +14,7 @@ public class DtoInstanceRelation{
 		
 		DtoInstanceRelation objDto = (DtoInstanceRelation)obj;
 		
-		if(this.Property.equals(objDto.Property) && this.Target.equals(objDto.Target)){
+		if(this.Source.equals(objDto.Source) && this.Property.equals(objDto.Property) && this.Target.equals(objDto.Target)){
 			return true;
 		}
 		

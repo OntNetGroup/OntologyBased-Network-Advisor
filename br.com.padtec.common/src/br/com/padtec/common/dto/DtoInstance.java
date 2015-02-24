@@ -17,10 +17,12 @@ public class DtoInstance implements Serializable {
 	public List<String> ListClasses;
 	public List<String> ListSameInstances;
 	public List<String> ListDiferentInstances;
-	public boolean existInModel;	//
+	public boolean existInModel;
+	
+	private List<DtoInstanceRelation> relationsAsSource;
+	private List<DtoInstanceRelation> relationsAsTarget;
 	
 	//Definitions respected by the instance
-	
 	public ArrayList<DtoDefinitionClass> ListSome;
 	public ArrayList<DtoDefinitionClass> ListMin;
 	public ArrayList<DtoDefinitionClass> ListMax;
@@ -66,7 +68,23 @@ public class DtoInstance implements Serializable {
 		this.existInModel = existInModel;
 	}
 	
- 	public void print()
+ 	public List<DtoInstanceRelation> getRelationsAsSource() {
+		return relationsAsSource;
+	}
+
+	public void addRelationsAsSource(DtoInstanceRelation relationAsSource) {
+		this.relationsAsSource.add(relationAsSource);
+	}
+
+	public List<DtoInstanceRelation> getRelationsAsTarget() {
+		return relationsAsTarget;
+	}
+
+	public void addRelationsAsTarget(DtoInstanceRelation relationAsTarget) {
+		this.relationsAsTarget.add(relationAsTarget);
+	}
+
+	public void print()
 	{
 		System.out.println("\n-------------------------------------");
 		System.out.println("- Instance name: " + this.ns + this.name);
