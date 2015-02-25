@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.transformation.sindel.dto.DtoResultSindel;
 import br.com.padtec.transformation.sindel.processor.AttributeProcessor;
@@ -158,8 +159,8 @@ public class Sindel2OWL {
 		for(String[] st : list)
 		{
 			specificRelation = null;			
-			List<String> st0Types = QueryUtil.getClassesURI(model,st[0]);
-			List<String> st1Types = QueryUtil.getClassesURI(model,st[1]);			
+			List<String> st0Types = QueryUtil.getClassesURIFromIndividual(model,st[0]);
+			List<String> st1Types = QueryUtil.getClassesURIFromIndividual(model,st[1]);			
 			if(st0Types.contains(namespace+"Source_AP") && (st1Types.contains(namespace+"Sink_AP")))
 			{
 				specificRelation = "Forwarding_Unidirectional_Access_Transport_Entity";

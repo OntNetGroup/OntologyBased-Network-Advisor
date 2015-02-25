@@ -160,19 +160,19 @@ public class Visualizator {
 			if(!hashIndv.containsKey(stCon[0]) || !hashIndv.containsKey(stCon[2]))
 			{
 				valuesGraph += "graph.addEdge(graph.addNode(\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),stCon[0]))+"_AZUL\"}),";
+				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),stCon[0]))+"_AZUL\"}),";
 				valuesGraph += "graph.addNode(\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),stCon[2]))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
+				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),stCon[2]))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
 
 				hashTypes += "hash[\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\"] = \"<b>"+stCon[0].substring(stCon[0].indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
-				for(String type : QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),stCon[0]))
+				for(String type : QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),stCon[0]))
 				{
 					if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 				}
 				hashTypes += "</ul>\";";
 
 				hashTypes += "hash[\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\"] = \"<b>"+stCon[2].substring(stCon[2].indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
-				for(String type : QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),stCon[2]))
+				for(String type : QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),stCon[2]))
 				{
 					if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 				}
@@ -197,20 +197,20 @@ public class Visualizator {
 		for (String instance : allInstances) 
 		{
 			List<DtoInstanceRelation> targetList = DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(),instance);
-			List<String> classes = QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),instance);
+			List<String> classes = QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),instance);
 			for (DtoInstanceRelation dtoInstanceRelation : targetList) 
 			{
 				valuesGraph += "graph.addEdge(graph.addNode(\""+instance.substring(instance.indexOf("#")+1)+"\", ";
 				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(classes)+"_AZUL\"}),";
 				valuesGraph += "graph.addNode(\""+dtoInstanceRelation.Target.substring(dtoInstanceRelation.Target.indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),dtoInstanceRelation.Target))+"_AZUL\"}), ";
+				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),dtoInstanceRelation.Target))+"_AZUL\"}), ";
 				valuesGraph	+= "{name:'"+dtoInstanceRelation.Property.substring(dtoInstanceRelation.Property.indexOf("#")+1)+"'});";
 				size++;
 			}
 			if(targetList.isEmpty())
 			{
 				valuesGraph += "graph.addNode(\""+instance.substring(instance.indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),instance))+"_AZUL\"});";
+				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),instance))+"_AZUL\"});";
 			}
 			hashTypes += "hash[\""+instance.substring(instance.indexOf("#")+1)+"\"] = \"<b>"+instance.substring(instance.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
 			for(String type : classes)

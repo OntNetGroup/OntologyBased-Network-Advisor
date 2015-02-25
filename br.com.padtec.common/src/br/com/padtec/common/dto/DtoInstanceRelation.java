@@ -20,4 +20,13 @@ public class DtoInstanceRelation{
 		
 		return false;
 	}
+	
+	public DtoInstanceRelation(String Source, String Property, String Target) {
+		this.Source = Source;
+		this.Property = Property;
+		this.Target = Target;
+	}
+
+	public DtoInstanceRelation() {
+	}
 }

@@ -26,11 +26,11 @@ public class ConnectsVisualizator extends Visualizator {
 			String trg = connections.split("#")[1];
 
 			possibleConnections = AdvisorService.getPossibleConnectsTuples(src);
-			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+src))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
+			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+src))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(src)) hashAllowed += "hashAllowed.push(\""+src+"\");";
 
 			possibleConnections = AdvisorService.getPossibleConnectsTuples(trg);
-			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trg))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
+			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trg))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg)) hashAllowed += "hashAllowed.push(\""+trg+"\");";
 
 			size++;
@@ -39,14 +39,14 @@ public class ConnectsVisualizator extends Visualizator {
 			usedRPs.add(trg);
 
 			hashTypes += "hash[\""+src+"\"] = \"<b>"+src+" is an individual of classes: </b><br><ul>";
-			for(String type : QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+src))
+			for(String type : QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+src))
 			{
 				if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 			}
 			hashTypes += "</ul>\";";
 
 			hashTypes += "hash[\""+trg+"\"] = \"<b>"+trg+" is an individual of classes: </b><br><ul>";
-			for(String type : QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trg))
+			for(String type : QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trg))
 			{
 				if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 			}
@@ -91,9 +91,9 @@ public class ConnectsVisualizator extends Visualizator {
 			//trg is inside a equip
 			if(rpXequip.containsKey(trgRP)) trgNode = rpXequip.get(trgRP);			
 			possibleConnections = AdvisorService.getPossibleConnectsTuples(srcNode);
-			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+srcNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
+			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+srcNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 			possibleConnections = AdvisorService.getPossibleConnectsTuples(trgNode);
-			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trgNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
+			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trgNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
 		}
 		width  += 400 * (size / 10);
 		height += 400 * (size / 10);	

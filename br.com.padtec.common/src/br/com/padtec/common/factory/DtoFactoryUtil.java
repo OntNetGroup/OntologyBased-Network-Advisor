@@ -7,6 +7,7 @@ import br.com.padtec.common.dto.DataPropertyValue;
 import br.com.padtec.common.dto.DtoCompleteClass;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
+import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.queries.QueryUtil;
 
@@ -145,5 +146,116 @@ public class DtoFactoryUtil {
 				FactoryUtil.createIndividualOfClass(model, dtoIndividual.ns + dtoIndividual.name, dto.Members.get(0));
 			}
 		}
+	}
+	
+	public static void createIndividual(OntModel model, DtoInstance individual){
+		setSuperClassesOfIndividual(model, individual);
+		
+		for (String classURI : individual.getListClasses()) {
+			FactoryUtil.createIndividual(model, individual.uri, classURI);
+		}
+		
+		setSuperRelationsOfIndividual(model, individual, true);
+		setSuperRelationsOfIndividual(model, individual, false);
+		setInverseRelationsOfIndividual(model, individual, true);
+		setInverseRelationsOfIndividual(model, individual, false);
+	}
+	
+	/**
+	 * Set all relations' inverses from an individual. 
+	 * E.g., if R1 is inverse of R2 and R2(x,y), this function asserts R1(y,x).
+	 * 
+	 * @param model: OntModel
+	 * @param individual: DtoInstance
+	 * @param asSource: assert in relations where the individual is the source
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	public static void setInverseRelationsOfIndividual(OntModel model, DtoInstance individual, boolean asSource){
+		List<DtoInstanceRelation> relationsToRefresh;
+		List<DtoInstanceRelation> relationsToVerify;
+		if(asSource){
+			relationsToVerify = individual.getRelationsAsSource();
+			relationsToRefresh = individual.getRelationsAsTarget();			
+		}else{
+			relationsToVerify = individual.getRelationsAsTarget();
+			relationsToRefresh = individual.getRelationsAsSource();
+			
+		}
+		
+		//search for all relation's (as source) inverses
+		ArrayList<DtoInstanceRelation> newRelations = new ArrayList<DtoInstanceRelation>();
+		for (DtoInstanceRelation relation : relationsToVerify) {
+			List<String> inverses = QueryUtil.getAllInverseOfURIs(model, relation.Property);
+			
+			for (String inverse : inverses) {
+				DtoInstanceRelation newRelation = new DtoInstanceRelation(relation.Target, inverse, relation.Source);
+				
+				if(!newRelations.contains(newRelation) && !relationsToRefresh.contains(newRelation)){
+					newRelations.add(newRelation);
+				}
+			}			 
+		}
+		
+		relationsToRefresh.addAll(newRelations);	
+	}
+	
+	/**
+	 * Set all super relations from an individual. 
+	 * E.g., if R1 is super relation of R2 and R2(x,y), this function asserts R1(x,y).
+	 * 
+	 * @param model: OntModel
+	 * @param individual: DtoInstance
+	 * @param asSource: assert in relations where the individual is the source
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	public static void setSuperRelationsOfIndividual(OntModel model, DtoInstance individual, boolean asSource){
+		List<DtoInstanceRelation> relationsToRefresh;
+		if(asSource){
+			relationsToRefresh = individual.getRelationsAsSource();
+		}else{
+			relationsToRefresh = individual.getRelationsAsTarget();
+		}
+		
+		//search for all super relations
+		ArrayList<DtoInstanceRelation> newSuperRelations = new ArrayList<DtoInstanceRelation>();
+		for (DtoInstanceRelation relation : relationsToRefresh) {
+			List<String> superRelations = QueryUtil.getAllSuperObjectProperties(model, relation.Property);
+			
+			for (String superRel : superRelations) {
+				DtoInstanceRelation newSuperRelation = new DtoInstanceRelation(relation.Source, superRel, relation.Target);
+				
+				if(!newSuperRelations.contains(newSuperRelation) && !relationsToRefresh.contains(newSuperRelation)){
+					newSuperRelations.add(newSuperRelation);
+				}
+			}
+		}
+		relationsToRefresh.addAll(newSuperRelations);
+	}
+	
+	/**
+	 * Set all super classes from an individual. 
+	 * E.g., if A is super type of B and an individual x is from B, this function asserts x as A.
+	 * 
+	 * @param model: OntModel
+	 * @param individual: DtoInstance
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	public static void setSuperClassesOfIndividual(OntModel model, DtoInstance individual){
+		//search for all super types of instance's classes 
+		ArrayList<String> newTypes = new ArrayList<String>();
+		for (String classURI : individual.getListClasses()) {
+			List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
+			
+			for (String superType : superTypes) {
+				superType = superType.replace(individual.ns, "");
+				if(!newTypes.contains(superType) && !individual.getListClasses().contains(superType)){
+					newTypes.add(superType);
+				}
+			}
+		}
+		individual.getListClasses().addAll(newTypes);
 	}
 }

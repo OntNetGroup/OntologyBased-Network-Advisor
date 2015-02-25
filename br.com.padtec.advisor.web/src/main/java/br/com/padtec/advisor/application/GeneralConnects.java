@@ -158,8 +158,8 @@ public class GeneralConnects extends AdvisorService {
 		List<String> nextRps = new ArrayList<String>();
 		for (String portURI : nextPortsURIList) 
 		{	
-			List<String> nextPortClasses = QueryUtil.getClassesURI(inferredModel,portURI);
-			List<String> actualPortClasses = QueryUtil.getClassesURI(inferredModel,namespace+actualPortName);
+			List<String> nextPortClasses = QueryUtil.getClassesURIFromIndividual(inferredModel,portURI);
+			List<String> actualPortClasses = QueryUtil.getClassesURIFromIndividual(inferredModel,namespace+actualPortName);
 			
 			if((nextPortClasses.contains(namespace+ConceptEnum.OUTPUT.toString()) && actualPortClasses.contains(namespace+ConceptEnum.INPUT.toString())) || 
 			  (nextPortClasses.contains(namespace+ConceptEnum.INPUT.toString()) && actualPortClasses.contains(namespace+ConceptEnum.OUTPUT.toString())))
@@ -209,7 +209,7 @@ public class GeneralConnects extends AdvisorService {
 		
 		if(!TfnURI.isEmpty() && outInterfaceURI.isEmpty() && inInterfaceURI.isEmpty())
 		{			
-			List<String> tiposPm=QueryUtil.getClassesURI(inferredModel,TfnURI);
+			List<String> tiposPm=QueryUtil.getClassesURIFromIndividual(inferredModel,TfnURI);
 			if(tiposPm.contains(namespace+ConceptEnum.PHYSICAL_MEDIA.toString()))
 			{
 				result.add(TfnURI);
@@ -224,7 +224,7 @@ public class GeneralConnects extends AdvisorService {
 				if(RelationName.equals(RelationEnum.INV_COMPONENTOF.toString()))
 				{
 					eqURI = dtoRelation.Target;					
-					List<String> tiposEq=QueryUtil.getClassesURI(inferredModel,eqURI);
+					List<String> tiposEq=QueryUtil.getClassesURIFromIndividual(inferredModel,eqURI);
 					if(tiposEq.contains(namespace+ConceptEnum.EQUIPMENT.toString()))
 					{
 						result.add(eqURI);
@@ -234,7 +234,7 @@ public class GeneralConnects extends AdvisorService {
 				{
 					if(!dtoRelation.Target.equals(bindedPortURI))
 					{
-						List<String> tiposTf=QueryUtil.getClassesURI(inferredModel, dtoRelation.Target);
+						List<String> tiposTf=QueryUtil.getClassesURIFromIndividual(inferredModel, dtoRelation.Target);
 						if(tiposTf.contains(namespace+ConceptEnum.INPUT.toString()) || tiposTf.contains(namespace+ConceptEnum.OUTPUT.toString()))
 						{
 							nextPorts.add(dtoRelation.Target);
@@ -301,7 +301,7 @@ public class GeneralConnects extends AdvisorService {
 		InfModel inferredModel = OKCoUploader.getInferredModel();
 		String namespace = OKCoUploader.getNamespace();	
 		
-		List<String> tiposPort=QueryUtil.getClassesURI(inferredModel,portURI);
+		List<String> tiposPort=QueryUtil.getClassesURIFromIndividual(inferredModel,portURI);
 		if(tiposPort.contains(namespace+ConceptEnum.OUTPUT.toString())) return true;		
 		return false;
 	}	

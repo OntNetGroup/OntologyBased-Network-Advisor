@@ -73,7 +73,7 @@ public class QueryUtil {
 	 * 
 	 * @author John Guerson
 	 */
-	static public List<String> getClassesURI(InfModel model, String individualURI) 
+	static public List<String> getClassesURIFromIndividual(InfModel model, String individualURI) 
 	{		
 		System.out.println("\nExecuting getClassesURI()...");
 		System.out.println("- IndividualURI: "+individualURI);
@@ -642,8 +642,8 @@ public class QueryUtil {
 		System.out.println("\nExecuting getSubPropertiesURIExcluding()...");
 		System.out.println("- Property URI: "+propertyURI);
 		List<String> result = new ArrayList<String>();		
-		List<String> domainClassURIList = QueryUtil.getClassesURI(model,domainIndividualURI);
-		List<String> rangeClassURIList = QueryUtil.getClassesURI(model,rangeIndividualURI);		
+		List<String> domainClassURIList = QueryUtil.getClassesURIFromIndividual(model,domainIndividualURI);
+		List<String> rangeClassURIList = QueryUtil.getClassesURIFromIndividual(model,rangeIndividualURI);		
 		List<String> subproperties = QueryUtil.getSubPropertiesURI(model, propertyURI, true, true);		
 		for (String subPropertyURI : subproperties) 
 	    {	
@@ -792,7 +792,7 @@ public class QueryUtil {
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT DISTINCT ?superClass "
 				+ "WHERE {\n"
-				+ "<" + classURI + "> rdfs:subClassOf*/rdfs:subClassOf ?superClass .\n"
+				+ "\t\t<" + classURI + "> rdfs:subClassOf*/rdfs:subClassOf ?superClass .\n"
 				+ "}\n";
 		
 		Query query = QueryFactory.create(queryString);
@@ -802,7 +802,7 @@ public class QueryUtil {
 		{
 			QuerySolution row= results.next();
 		    RDFNode superClass = row.get("superClass");
-		    if(superClass.toString().contains(model.getNsPrefixURI(""))){
+		    if(superClass.toString().contains(model.getNsPrefixURI("")) && !superClass.toString().equals(classURI)){
 		    	result.add(superClass.toString());
 			    System.out.println("- Domain URI: "+superClass.toString());
 		    }
@@ -1940,4 +1940,33 @@ public class QueryUtil {
   		return list;
   		}
 
+	public static List<String> getAllSuperObjectProperties(InfModel model, String objectPropertyURI){
+		System.out.println("\nExecuting getAllSuperObjectProperties()...");
+		System.out.println("- Object Property URI: " + objectPropertyURI);
+		List<String> result = new ArrayList<String>();		
+		String queryString = "" 
+		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+		+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>"
+		+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"
+		+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+		+ "SELECT *"
+		+ "WHERE "
+		+ "{ "
+		+ "\t<" + objectPropertyURI + "> rdfs:subPropertyOf*/rdfs:subPropertyOf ?superOP "
+		+ "}";
+		Query query = QueryFactory.create(queryString);		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext())	
+		{			
+			QuerySolution row= results.next();
+		    RDFNode superOP = row.get("superOP");	
+		    if(isValidURI(superOP.toString())){
+		    	System.out.println("- Object Property URI: "+superOP.toString()); 
+		    	result.add(superOP.toString());
+		    }
+		}		
+		return result;
+	}
 }

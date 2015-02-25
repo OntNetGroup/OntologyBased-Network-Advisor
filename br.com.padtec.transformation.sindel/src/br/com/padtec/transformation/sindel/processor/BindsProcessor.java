@@ -437,8 +437,8 @@ public class BindsProcessor {
 			listInstancesCreated = new ArrayList<String>();
 		}
 		//initValues();
-		List<String> tiposPort1=QueryUtil.getClassesURI(ontModel,NS+port1.getLocalName());
-		List<String> tiposPort2=QueryUtil.getClassesURI(ontModel,NS+port2.getLocalName());
+		List<String> tiposPort1=QueryUtil.getClassesURIFromIndividual(ontModel,NS+port1.getLocalName());
+		List<String> tiposPort2=QueryUtil.getClassesURIFromIndividual(ontModel,NS+port2.getLocalName());
 		tiposPort1.remove(NS+"Geographical_Element");
 		tiposPort1.remove(NS+"Bound_Input-Output");
 		tiposPort2.remove(NS+"Geographical_Element");

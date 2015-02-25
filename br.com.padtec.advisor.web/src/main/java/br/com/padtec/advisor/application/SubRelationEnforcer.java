@@ -41,7 +41,7 @@ public class SubRelationEnforcer {
 			    dtoRelationsList.add(dtoItem);
 			}
 			
-			List<String> sourceClassesURIList = QueryUtil.getClassesURI(inferredModel, instance.ns + instance.name);
+			List<String> sourceClassesURIList = QueryUtil.getClassesURIFromIndividual(inferredModel, instance.ns + instance.name);
 			for (DtoInstanceRelation dtoRelation : dtoRelationsList) 
 			{					
 				String propertyURI = dtoRelation.Property;
@@ -55,7 +55,7 @@ public class SubRelationEnforcer {
 				
 				/** Get classes of the target */
 				String targetURI = dtoRelation.Target;
-				List<String> targetClassesURIList =  QueryUtil.getClassesURI(inferredModel,targetURI);
+				List<String> targetClassesURIList =  QueryUtil.getClassesURIFromIndividual(inferredModel,targetURI);
 				
 				for (String subproperty : subproperties) 
 				{				

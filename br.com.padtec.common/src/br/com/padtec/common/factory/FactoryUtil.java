@@ -15,6 +15,77 @@ import com.hp.hpl.jena.rdf.model.Statement;
 public class FactoryUtil {
 
 	/**
+	 * Create an Individual as from some classURI and from all classURI's super types.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createIndividual(OntModel model, String individualURI, String classURI)
+	{			
+		//create the individualURI as from classURI
+		Individual individual = model.getIndividual(individualURI);
+		OntClass ontClass = model.getOntClass(classURI);
+		individual.addOntClass(ontClass);
+		
+		//also set the individualURI as from all super types of classURI
+		List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
+		for (String superType : superTypes) {
+			OntClass superClass = model.getOntClass(superType);
+			individual.addOntClass(superClass);
+		}
+	}
+	
+	/**
+	 * Create an object property between two individuals, and all super OP and all inverses between the same two individuals.
+	 * 
+	 * @param model: OntModel
+	 * @param indvSourceURI: source individual URI
+	 * @param objectPropertyURI: object property URI
+	 * @param indvTargetURI: target individual URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createIndividualRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI)
+	{			
+		//Create an object property between two individuals
+		Individual indvSource = model.getIndividual(indvSourceURI);
+		Individual indvTarget = model.getIndividual(indvTargetURI);
+		ObjectProperty objProp = model.getObjectProperty(objectPropertyURI);
+		
+		Statement stmt = model.createStatement(indvSource, objProp, indvTarget);
+		model.add(stmt);
+		
+		//create all inverses of the OP
+		List<String> inverses = QueryUtil.getAllInverseOfURIs(model, objectPropertyURI);
+		for (String invURI : inverses) {
+			ObjectProperty invOP = model.getObjectProperty(invURI);
+			Statement invStmt = model.createStatement(indvTarget, invOP, indvSource);
+			model.add(invStmt);
+		}
+		
+		//create all super OP between the same two individuals
+		List<String> superOPUris = QueryUtil.getAllSuperObjectProperties(model, objectPropertyURI);
+		for (String superOPURI : superOPUris) {
+			ObjectProperty superOP = model.getObjectProperty(superOPURI);
+			Statement superStmt = model.createStatement(indvSource, superOP, indvTarget);
+			model.add(superStmt);
+			
+			//create all inverses of the super OP
+			List<String> superInversesURIs = QueryUtil.getAllInverseOfURIs(model, superOPURI);
+			for (String superInvURI : superInversesURIs) {
+				ObjectProperty superInvOP = model.getObjectProperty(superInvURI);
+				Statement superInvStmt = model.createStatement(indvTarget, superInvOP, indvSource);
+				model.add(superInvStmt);
+			}
+		}
+		
+		
+	}
+	
+	/**
 	 * Create Individual.
 	 * 
 	 * @param model: OntModel

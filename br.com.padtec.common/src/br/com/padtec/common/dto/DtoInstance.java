@@ -72,8 +72,12 @@ public class DtoInstance implements Serializable {
 		return relationsAsSource;
 	}
 
-	public void addRelationsAsSource(DtoInstanceRelation relationAsSource) {
+ 	public void addRelationsAsSource(DtoInstanceRelation relationAsSource) {
 		this.relationsAsSource.add(relationAsSource);
+	}
+
+ 	public void addAllRelationsAsSource(ArrayList<DtoInstanceRelation> relationsAsSource) {
+		this.relationsAsSource.addAll(relationsAsSource);
 	}
 
 	public List<DtoInstanceRelation> getRelationsAsTarget() {
@@ -82,6 +86,10 @@ public class DtoInstance implements Serializable {
 
 	public void addRelationsAsTarget(DtoInstanceRelation relationAsTarget) {
 		this.relationsAsTarget.add(relationAsTarget);
+	}
+
+	public void addAllRelationsAsTarget(ArrayList<DtoInstanceRelation> relationsAsTarget) {
+		this.relationsAsTarget.addAll(relationsAsTarget);
 	}
 
 	public void print()
@@ -247,6 +255,83 @@ public class DtoInstance implements Serializable {
 			if(!exist){ result.add(dto); }			
 		}
 		return result;
+	}
+
+	public String getNs() {
+		return ns;
+	}
+
+	public void setNs(String ns) {
+		this.ns = ns;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
+	public String getUriEncoded() {
+		return uriEncoded;
+	}
+
+	public void setUriEncoded(String uriEncoded) {
+		this.uriEncoded = uriEncoded;
+	}
+
+	public boolean isExistInModel() {
+		return existInModel;
+	}
+
+	public void setExistInModel(boolean existInModel) {
+		this.existInModel = existInModel;
+	}
+
+	public List<String> getListClasses() {
+		return ListClasses;
+	}
+
+	public List<String> getListSameInstances() {
+		return ListSameInstances;
+	}
+
+	public List<String> getListDiferentInstances() {
+		return ListDiferentInstances;
+	}
+
+	public ArrayList<DtoDefinitionClass> getListSome() {
+		return ListSome;
+	}
+
+	public ArrayList<DtoDefinitionClass> getListMin() {
+		return ListMin;
+	}
+
+	public ArrayList<DtoDefinitionClass> getListMax() {
+		return ListMax;
+	}
+
+	public ArrayList<DtoDefinitionClass> getListExactly() {
+		return ListExactly;
+	}
+
+	public ArrayList<DtoCompleteClass> getListCompleteClasses() {
+		return ListCompleteClasses;
+	}
+
+	public ArrayList<DtoPropertyAndSubProperties> getListSpecializationProperties() {
+		return ListSpecializationProperties;
 	}	
 
+	
 }

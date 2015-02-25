@@ -72,7 +72,7 @@ public class DtoQueryUtil {
 		{
 			System.out.println();
 			System.out.print("Getting classes eagerly");
-			classesURIList = QueryUtil.getClassesURI(model, individualURI);
+			classesURIList = QueryUtil.getClassesURIFromIndividual(model, individualURI);
 		}
 		if(diffFromEager)
 		{

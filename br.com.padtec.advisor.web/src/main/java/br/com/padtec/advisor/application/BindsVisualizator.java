@@ -45,7 +45,7 @@ public class BindsVisualizator extends Visualizator {
 			}
 			for(Map.Entry<ArrayList<String>,DtoEquipment> entry : equip.getBinds().entrySet())
 			{
-				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_ROXO\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURI(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+entry.getValue().getName()))+"_ROXO\"}), {name:'binds:";
+				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_ROXO\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+entry.getValue().getName()))+"_ROXO\"}), {name:'binds:";
 				arborStructure += entry.getKey().get(0)+"-"+entry.getKey().get(1);
 				arborStructure += "'});";
 				size++;

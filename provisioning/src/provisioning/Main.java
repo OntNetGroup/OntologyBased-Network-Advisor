@@ -3,17 +3,10 @@ package provisioning;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Scanner;
 
-import org.mindswap.pellet.exceptions.InconsistentOntologyException;
-
 import br.com.padtec.okco.core.application.OKCoUploader;
-import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
-import br.com.padtec.okco.core.exception.OKCoExceptionNameSpace;
-import br.com.padtec.okco.core.exception.OKCoExceptionReasoner;
 
 public class Main {
 

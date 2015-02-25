@@ -30,7 +30,7 @@ public class AdvisorService {
 		ArrayList<String> classesList = new ArrayList<String>();
 		for (String individualURI : allIndividuals) 
 		{
-			List<String> classesFromIndividual= QueryUtil.getClassesURI(inferredModel,individualURI);
+			List<String> classesFromIndividual= QueryUtil.getClassesURIFromIndividual(inferredModel,individualURI);
 			if((classesFromIndividual.contains(namespace+ConceptEnum.INPUT_INTERFACE) || classesFromIndividual.contains(namespace+ConceptEnum.OUTPUT_INTERFACE) ||
 				classesFromIndividual.contains(namespace+ConceptEnum.SITE) || classesFromIndividual.contains(namespace+ConceptEnum.EQUIPMENT)))
 			{				
@@ -84,7 +84,7 @@ public class AdvisorService {
 		
 		for (String individualURI : individualURIList) 
 		{
-			List<String> classesFromIndividual= QueryUtil.getClassesURI(inferredModel,individualURI);
+			List<String> classesFromIndividual= QueryUtil.getClassesURIFromIndividual(inferredModel,individualURI);
 			map.put(individualURI, classesFromIndividual);			
 		}
 		
@@ -159,7 +159,7 @@ public class AdvisorService {
 		
 		ArrayList<String[]> result = new ArrayList<String[]>();
 			
-		List<String> rpClassesList = QueryUtil.getClassesURI(inferredModel,namespace+rpName);
+		List<String> rpClassesList = QueryUtil.getClassesURIFromIndividual(inferredModel,namespace+rpName);
 			
 		ArrayList<String> relationsNameList = new ArrayList<String>();		
 		ArrayList<String> rangesNameList = new ArrayList<String>();
