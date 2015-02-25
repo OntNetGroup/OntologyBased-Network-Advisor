@@ -16,7 +16,14 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Statement;
 
 public class GeneralConnects extends AdvisorService {
@@ -409,5 +416,119 @@ public class GeneralConnects extends AdvisorService {
 		/** Substitute InferredModel for the Base Model. The changes were made at the base model! */
 		OKCoUploader.substituteInferredModelFromBaseModel(false);
 	}
+	
+	/**
+	 * Returns the Reference Point in the layer above.
+	 * 
+	 * @return the list of Reference Points.
+	 */
+	public static ArrayList<String> getReferencePointLayerAbove(String rpName, String typeName){
+		InfModel inferredModel = OKCoUploader.getInferredModel();		
+		
+		ArrayList<String> tempResult = new ArrayList<String>();
+		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> relationsNameList = new ArrayList<String>();
+		ArrayList<String> rangesNameList = new ArrayList<String>();
+		
+		relationsNameList.add(RelationEnum.INV_BINDING_IS_REPRESENTED_BY.toString());
+		relationsNameList.add(RelationEnum.INV_IS_BINDING.toString());
+		relationsNameList.add(RelationEnum.INV_COMPONENTOF.toString());
+		relationsNameList.add(RelationEnum.COMPONENTOF.toString());
+		
+		rangesNameList.add(" ");
+		if(typeName.equalsIgnoreCase("so")){
+			rangesNameList.add(ConceptEnum.OUTPUT.toString());
+		} else{
+			rangesNameList.add(ConceptEnum.INPUT.toString());
+		}
+		rangesNameList.add(" ");
+		if(typeName.equalsIgnoreCase("so")){
+			rangesNameList.add(ConceptEnum.INPUT.toString());
+		} else{
+			rangesNameList.add(ConceptEnum.OUTPUT.toString());
+		}
+		
+		tempResult = QueryUtil.endOfGraphWithRanges(inferredModel, rpName, relationsNameList, rangesNameList);		
+		if(tempResult.size() == 1){
+			relationsNameList.add(RelationEnum.INV_IS_BINDING.toString());
+			relationsNameList.add(RelationEnum.BINDING_IS_REPRESENTED_BY.toString());
+			
+			rangesNameList.add(" ");
+			rangesNameList.add(" ");
+			result = QueryUtil.endOfGraphWithRanges(inferredModel, rpName, relationsNameList, rangesNameList);
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param model
+	 * @return list of tuples, each tuple contains Reference Points that are connected by a has_forwarding relation.
+	 */
+	public static ArrayList<String[]> getAllHasForwardingRelationships(InfModel model){
+		// Create a new query
+  		String queryString = 
+  		"PREFIX ont: <" + model.getNsPrefixURI("") + "> " +
+  		 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+  		+ "SELECT ?var1 ?var2"
+  		+ " WHERE { ?var1 rdf:type ont:Connected_Reference_Point . "
+		+ "?var2 rdf:type ont:Connected_Reference_Point . "
+		+ "?var1 ont:has_forwarding ?var2 . "
+		+ "}";
+  		
+  		Query query = QueryFactory.create(queryString); 
+  		
+  		// Execute the query and obtain results
+  		QueryExecution qe = QueryExecutionFactory.create(query, model);
+  		ResultSet results = qe.execSelect();
+  		ArrayList<String[]> list = new ArrayList<String[]>();
+
+  		//ResultSetFormatter.out(System.out, results, query);
+  		
+  		while (results.hasNext()) {
+  			QuerySolution row = results.next();
+  		    
+  		    RDFNode rdfX = row.get("var1");
+  		    RDFNode rdfY = row.get("var2");
+  		    String[] vec = new String[2];
+  		    vec[0] = rdfX.toString();
+  		    vec[1] = rdfY.toString();
+  	    	list.add(vec);
+  		}
+
+		return list;
+	}
+	
+	public static ArrayList<String[]> autoConnect() {
+		InfModel inferredModel = OKCoUploader.getInferredModel();	
+		ArrayList<String[]> has_forwardings = new ArrayList<String[]>();
+		ArrayList<String[]> list = new ArrayList<String[]>();
+		overloop: //label dos 2 blocos de iteração
+		do{
+			has_forwardings = getAllHasForwardingRelationships(inferredModel);
+			for(String[] relationship : has_forwardings){
+				ArrayList<String> rplayerabove1 = getReferencePointLayerAbove(relationship[0], "so");
+				ArrayList<String> rplayerabove2 = getReferencePointLayerAbove(relationship[1], "sk");
+				if((rplayerabove1.size() != 0) && (rplayerabove2.size() != 0)){
+					
+					//verifico se os RPs encontrados já possuem alguma conexão com outros RPs
+					if(!has_forwardings.contains(new String[]{rplayerabove1.get(0), rplayerabove2.get(0)})){
+						connects(rplayerabove1.get(0).substring(rplayerabove1.get(0).indexOf("#")+1), rplayerabove2.get(0).substring(rplayerabove2.get(0).indexOf("#")+1), "nc"); 
+						String[] str = new String[2];
+						str[0] = rplayerabove1.get(0);
+						str[1] = rplayerabove2.get(0);
+						list.add(str);
+					}
+				} 
+				else {
+					//condição para saida
+					break overloop;
+				}
+			}
+		} while(!has_forwardings.isEmpty());
+		
+		return list;
+	}
+	
 	
 }

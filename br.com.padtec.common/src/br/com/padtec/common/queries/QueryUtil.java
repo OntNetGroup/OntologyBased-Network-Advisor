@@ -1854,12 +1854,12 @@ public class QueryUtil {
 		+ " WHERE { ";
 		if(relationsNameList.size() == 1){
 			var1 = "var"+relationsNameList.size();
-			queryString = queryString + "ont:" + individualName +  " ont:" + relationsNameList.get(0) + " ?" + var1 + " }";
+			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 + " }";
 		}
 		else {
 			var1 = "var";
 			int cont=1;
-			queryString = queryString + "ont:" + individualName +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + ".";
+			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + ".";
 			for (int i = 1; i< relationsNameList.size(); i++) {
 				String var2 = "var";
 				int cont2=cont+1;
@@ -1901,13 +1901,13 @@ public class QueryUtil {
   		+ " WHERE { ";
   		if((relationsNameList.size() == 1) && (rangesNameList.size() == 1) && (rangesNameList.get(0) != " ")){
   			var1 = "var"+relationsNameList.size();
-  			queryString = queryString + "ont:" + individualName +  " ont:" + relationsNameList.get(0) + " ?" + var1 + ".";
+  			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 + ".";
   			queryString = queryString + "?" + var1 +  " rdf:type" + " ont:" + rangesNameList.get(0) + "." + " }";
   		}
   		else {
   			var1 = "var";
   			int cont=1;
-  			queryString = queryString + " ont:" + individualName +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + " .";
+  			queryString = queryString + " ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + " .";
   			if(rangesNameList.get(0) != " "){
   				queryString = queryString + " ?" + var1+cont +  " rdf:type" + " ont:" + rangesNameList.get(0) + " .";
   			}

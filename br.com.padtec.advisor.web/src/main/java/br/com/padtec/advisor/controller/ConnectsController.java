@@ -19,7 +19,21 @@ public class ConnectsController {
 	@RequestMapping(value = "/autoConnects", method = RequestMethod.POST)
 	public String autoConnects(HttpServletRequest request)
 	{
-		return "";		
+
+		ArrayList<String[]> listInstancesCreated = new ArrayList<String[]>();
+		listInstancesCreated = GeneralConnects.autoConnect();
+		
+		String returnMessage;
+		if(listInstancesCreated.size()>0){
+			returnMessage = "Reference Points connected:<br>";
+		}else{
+			returnMessage = "No reference points connected.";
+		}
+		
+		request.getSession().setAttribute("loadOk", returnMessage);
+		
+		return VisualizationController.connects(request);
+			
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/do_connects")

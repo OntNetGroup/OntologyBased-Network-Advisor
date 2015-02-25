@@ -332,6 +332,9 @@ public class AdvisorService {
 		return result;
 	}
 	
+	}
+
+	
 	/**
 	 * Returns the reference point from an interface.
 	 * 
@@ -367,4 +370,3 @@ public class AdvisorService {
 //		return new String();
 //	}
 	
-}
