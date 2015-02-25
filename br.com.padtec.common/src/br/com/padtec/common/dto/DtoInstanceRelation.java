@@ -3,10 +3,10 @@ package br.com.padtec.common.dto;
 
 public class DtoInstanceRelation{
 	
-	public String Source;
-	public String Property;
-	public String Target;
-	public String Inverse;
+	public String Source = new String();
+	public String Property = new String();
+	public String Target = new String();;
+	public String Inverse = new String();
 	
 	public String getInverse() {
 		return Inverse;
@@ -34,6 +34,7 @@ public class DtoInstanceRelation{
 		
 		return false;
 	}
+	
 	public DtoInstanceRelation(String Source, String Property, String Target) {
 		this.Source = Source;
 		this.Property = Property;
