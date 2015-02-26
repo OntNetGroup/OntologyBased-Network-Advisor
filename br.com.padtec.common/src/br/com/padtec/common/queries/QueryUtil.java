@@ -73,7 +73,7 @@ public class QueryUtil {
 	 * 
 	 * @author John Guerson
 	 */
-	static public List<String> getClassesURI(InfModel model, String individualURI) 
+	static public List<String> getClassesURIFromIndividual(InfModel model, String individualURI) 
 	{		
 		System.out.println("\nExecuting getClassesURI()...");
 		System.out.println("- IndividualURI: "+individualURI);
@@ -497,7 +497,7 @@ public class QueryUtil {
 		    } 		    		    
 		}		
 		return result;
-	}
+	}	
 	
 	/** 
 	 * Return the URI of all properties (both object and datatype properties) and individuals that this individual is linked to, in the ontology. This method is performed using SPARQL.
@@ -642,8 +642,8 @@ public class QueryUtil {
 		System.out.println("\nExecuting getSubPropertiesURIExcluding()...");
 		System.out.println("- Property URI: "+propertyURI);
 		List<String> result = new ArrayList<String>();		
-		List<String> domainClassURIList = QueryUtil.getClassesURI(model,domainIndividualURI);
-		List<String> rangeClassURIList = QueryUtil.getClassesURI(model,rangeIndividualURI);		
+		List<String> domainClassURIList = QueryUtil.getClassesURIFromIndividual(model,domainIndividualURI);
+		List<String> rangeClassURIList = QueryUtil.getClassesURIFromIndividual(model,rangeIndividualURI);		
 		List<String> subproperties = QueryUtil.getSubPropertiesURI(model, propertyURI, true, true);		
 		for (String subPropertyURI : subproperties) 
 	    {	
@@ -792,7 +792,7 @@ public class QueryUtil {
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT DISTINCT ?superClass "
 				+ "WHERE {\n"
-				+ "<" + classURI + "> rdfs:subClassOf*/rdfs:subClassOf ?superClass .\n"
+				+ "\t\t<" + classURI + "> rdfs:subClassOf*/rdfs:subClassOf ?superClass .\n"
 				+ "}\n";
 		
 		Query query = QueryFactory.create(queryString);
@@ -802,7 +802,7 @@ public class QueryUtil {
 		{
 			QuerySolution row= results.next();
 		    RDFNode superClass = row.get("superClass");
-		    if(superClass.toString().contains(model.getNsPrefixURI(""))){
+		    if(superClass.toString().contains(model.getNsPrefixURI("")) && !superClass.toString().equals(classURI)){
 		    	result.add(superClass.toString());
 			    System.out.println("- Domain URI: "+superClass.toString());
 		    }
@@ -921,6 +921,31 @@ public class QueryUtil {
 		return result;
 	}
 	
+	static public List<String[]> getDomainAndRangeURI(InfModel model, String propertyURI) 
+	{		
+		List<String[]> list = new ArrayList<String[]>();		
+		String queryString =		
+		" SELECT *" +
+		" WHERE {\n" +		
+			" ?source <" + propertyURI + "> ?target .\n " +	
+		"}";
+		Query query = QueryFactory.create(queryString);
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		while (results.hasNext()) 
+		{
+			String [] tupla = new String[2];
+			QuerySolution row = results.next();		    
+		    RDFNode source = row.get("source");
+		    RDFNode target = row.get("target");		    
+		    tupla[0] = source.toString();
+		    tupla[1] = target.toString();	
+		    list.add(tupla);
+		}
+		return list;		
+	}
+	
 	/** 
 	 * Return all individuals URI of all the classes of the ontology. This method is performed using SPARQL.
 	 * 
@@ -977,7 +1002,7 @@ public class QueryUtil {
 		    list.add(i.toString());	
 		    System.out.println("- Individual URI: "+i.toString());
 		}
-		return list;		
+		return list;
 	}
 	
 	/**
@@ -1124,7 +1149,7 @@ public class QueryUtil {
 	 * @param model: jena.ontology.InfModel
 	 * @param individualURI: Individual URI
 	 * @param propertyURI: Property URI
-	 * @param rangeClassURI: Rande Class URI
+	 * @param rangeClassURI: Range Class URI
 	 * 
 	 * @author John Guerson
 	 */
@@ -1153,6 +1178,51 @@ public class QueryUtil {
 		{			
 			QuerySolution row= results.next();
 		    RDFNode property = row.get("target");
+		    if(isValidURI(property.toString()))
+		    {
+		    	System.out.println("- Range Individual URI: "+property.toString()); 
+		    	result.add(property.toString());
+		    } 		    		    
+		}		
+		return result;
+	}	
+	
+	/**
+	 * Return all the individuals URI that are in the domain of the given propertyURI as instance of domainClassURI and connected to the individualURI.
+	 * This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param individualURI: Individual URI
+	 * @param propertyURI: Property URI
+	 * @param domainClassURI: Domain Class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public List<String> getIndividualsURIAtObjectPropertyDomain(InfModel model, String individualURI, String propertyURI, String domainClassURI)
+	{
+		System.out.println("\nExecuting getIndividualsURIAtPropertyRange()...");
+		System.out.println("- Individual URI: "+individualURI);
+		System.out.println("- Property URI: "+propertyURI);
+		System.out.println("- Range Class URI: "+domainClassURI);
+		List<String> result = new ArrayList<String>();		
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">\n" +
+		"SELECT DISTINCT *\n" +
+		"WHERE {\n" +		
+			" ?domain " + "<"+propertyURI+"> " + "<" + individualURI + ">.\n" +
+			" ?domain" + " rdf:type" + " <"+ domainClassURI + "> .\n" +
+		"}";
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
+		{			
+			QuerySolution row= results.next();
+		    RDFNode property = row.get("domain");
 		    if(isValidURI(property.toString()))
 		    {
 		    	System.out.println("- Range Individual URI: "+property.toString()); 
@@ -1775,25 +1845,25 @@ public class QueryUtil {
 	 * @author: Jordana Salamon
 	 * @param: individual, list of relations from individual, model
 	 */
-	static public ArrayList<String> query_EndOfGraph(String individuo, ArrayList<String> Relacoes, InfModel model){
+	static public ArrayList<String> endOfGraph(InfModel model, String individualName, ArrayList<String> relationsNameList){
 		// Create a new query
   		String var1 = null;
 		String queryString = 
 		 "PREFIX ont: <" + model.getNsPrefixURI("") + "> "
-		+ "SELECT ?var" + Relacoes.size()
+		+ "SELECT ?var" + relationsNameList.size()
 		+ " WHERE { ";
-		if(Relacoes.size() == 1){
-			var1 = "var"+Relacoes.size();
-			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 + " }";
+		if(relationsNameList.size() == 1){
+			var1 = "var"+relationsNameList.size();
+			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 + " }";
 		}
 		else {
 			var1 = "var";
 			int cont=1;
-			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 +cont + ".";
-			for (int i = 1; i< Relacoes.size(); i++) {
+			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + ".";
+			for (int i = 1; i< relationsNameList.size(); i++) {
 				String var2 = "var";
 				int cont2=cont+1;
-				queryString = queryString + "?" + var1 + cont  + " ont:" + Relacoes.get(i) + " ?" + var2 + cont2 + " .";
+				queryString = queryString + "?" + var1 + cont  + " ont:" + relationsNameList.get(i) + " ?" + var2 + cont2 + " .";
 				cont++;
 			}
 			queryString = queryString + " }";
@@ -1810,7 +1880,7 @@ public class QueryUtil {
 		while (results.hasNext()) {
 			QuerySolution row = results.next();
 		    
-		    RDFNode rdfY = row.get("var"+Relacoes.size());
+		    RDFNode rdfY = row.get("var"+relationsNameList.size());
 	    	list.add(rdfY.toString());
 		}
 		return list;
@@ -1821,32 +1891,32 @@ public class QueryUtil {
 	 * @author: Jordana Salamon
 	 * @param: individual, list of relations from individual, list of ranges of the relations, model
 	 */
-	static public ArrayList<String> query_EndOfGraphWithRanges(String individuo, ArrayList<String> Relacoes, ArrayList<String> Ranges, InfModel model){
+	static public ArrayList<String> endOfGraphWithRanges(InfModel model, String individualName, ArrayList<String> relationsNameList, ArrayList<String> rangesNameList){
   		// Create a new query
   		String var1 = null;
   		String queryString = 
   		"PREFIX ont: <" + model.getNsPrefixURI("") + "> " +
   		 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-  		+ "SELECT ?var" + Relacoes.size()
+  		+ "SELECT ?var" + relationsNameList.size()
   		+ " WHERE { ";
-  		if((Relacoes.size() == 1) && (Ranges.size() == 1) && (Ranges.get(0) != " ")){
-  			var1 = "var"+Relacoes.size();
-  			queryString = queryString + "ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 + ".";
-  			queryString = queryString + "?" + var1 +  " rdf:type" + " ont:" + Ranges.get(0) + "." + " }";
+  		if((relationsNameList.size() == 1) && (rangesNameList.size() == 1) && (rangesNameList.get(0) != " ")){
+  			var1 = "var"+relationsNameList.size();
+  			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 + ".";
+  			queryString = queryString + "?" + var1 +  " rdf:type" + " ont:" + rangesNameList.get(0) + "." + " }";
   		}
   		else {
   			var1 = "var";
   			int cont=1;
-  			queryString = queryString + " ont:" + individuo +  " ont:" + Relacoes.get(0) + " ?" + var1 +cont + " .";
-  			if(Ranges.get(0) != " "){
-  				queryString = queryString + " ?" + var1+cont +  " rdf:type" + " ont:" + Ranges.get(0) + " .";
+  			queryString = queryString + " ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + " .";
+  			if(rangesNameList.get(0) != " "){
+  				queryString = queryString + " ?" + var1+cont +  " rdf:type" + " ont:" + rangesNameList.get(0) + " .";
   			}
-  			for (int i = 1; i< Relacoes.size(); i++) {
+  			for (int i = 1; i< relationsNameList.size(); i++) {
   				String var2 = "var";
   				int cont2=cont+1;
-  				queryString = queryString + " ?" + var1 + cont  + " ont:" + Relacoes.get(i) + " ?" + var2 + cont2 + " .";
-  				if(Ranges.get(i) != " "){
-  	  				queryString = queryString + " ?" + var2 + cont2 +  " rdf:type" + " ont:" + Ranges.get(i) + " .";
+  				queryString = queryString + " ?" + var1 + cont  + " ont:" + relationsNameList.get(i) + " ?" + var2 + cont2 + " .";
+  				if(rangesNameList.get(i) != " "){
+  	  				queryString = queryString + " ?" + var2 + cont2 +  " rdf:type" + " ont:" + rangesNameList.get(i) + " .";
   	  			}
   				cont++;
   			}
@@ -1864,10 +1934,39 @@ public class QueryUtil {
   		while (results.hasNext()) {
   			QuerySolution row = results.next();
   		    
-  		    RDFNode rdfY = row.get("var"+Relacoes.size());
+  		    RDFNode rdfY = row.get("var"+relationsNameList.size());
   	    	list.add(rdfY.toString());
   		}
   		return list;
   		}
 
+	public static List<String> getAllSuperProperties(InfModel model, String objectPropertyURI){
+		System.out.println("\nExecuting getAllSuperObjectProperties()...");
+		System.out.println("- Object Property URI: " + objectPropertyURI);
+		List<String> result = new ArrayList<String>();		
+		String queryString = "" 
+		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+		+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>"
+		+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"
+		+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+		+ "SELECT *"
+		+ "WHERE "
+		+ "{ "
+		+ "\t<" + objectPropertyURI + "> rdfs:subPropertyOf*/rdfs:subPropertyOf ?superOP "
+		+ "}";
+		Query query = QueryFactory.create(queryString);		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext())	
+		{			
+			QuerySolution row= results.next();
+		    RDFNode superOP = row.get("superOP");	
+		    if(isValidURI(superOP.toString())){
+		    	System.out.println("- Object Property URI: "+superOP.toString()); 
+		    	result.add(superOP.toString());
+		    }
+		}		
+		return result;
+	}
 }

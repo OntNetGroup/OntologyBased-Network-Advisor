@@ -436,9 +436,9 @@ public class BindsProcessor {
 		if(listInstancesCreated == null){
 			listInstancesCreated = new ArrayList<String>();
 		}
-		initValues();
-		List<String> tiposPort1=QueryUtil.getClassesURI(ontModel,NS+port1.getLocalName());
-		List<String> tiposPort2=QueryUtil.getClassesURI(ontModel,NS+port2.getLocalName());
+		//initValues();
+		List<String> tiposPort1=QueryUtil.getClassesURIFromIndividual(ontModel,NS+port1.getLocalName());
+		List<String> tiposPort2=QueryUtil.getClassesURIFromIndividual(ontModel,NS+port2.getLocalName());
 		tiposPort1.remove(NS+"Geographical_Element");
 		tiposPort1.remove(NS+"Bound_Input-Output");
 		tiposPort2.remove(NS+"Geographical_Element");
@@ -465,7 +465,7 @@ public class BindsProcessor {
 		HashMap<String, String> hash = new HashMap<String, String>();
 		hash.put("OUTPUT", tiposOutputPort.get(0).replace(NS, ""));
 		hash.put("INPUT", tiposInputPort.get(0).replace(NS, ""));
-		HashMap<String, String>element= values.get(hash);
+		HashMap<String, String>element= allowedRelationsHash.get(hash);
 		bindsSpecific(rp, outputPort,inputPort,binding,tiposOutputPort.get(0),tiposInputPort.get(0),ontModel,NS, listInstancesCreated);
 	}
 	
@@ -480,7 +480,7 @@ public class BindsProcessor {
 		key.put("INPUT", tipo_inp);
 		key.put("OUTPUT", tipo_out);
 		try{
-			HashMap<String, String> value = values.get(key);
+			HashMap<String, String> value = allowedRelationsHash.get(key);
 			OntClass ClassImage = ontModel.getOntClass(NS+value.get("RP"));
 			if(rp == null){
 				rp = ontModel.createIndividual(NS+outputPort.getLocalName()+"rp"+inputPort.getLocalName(),ClassImage);
@@ -505,9 +505,11 @@ public class BindsProcessor {
 		return ontModel;
 	}
 	
-	public static HashMap<HashMap<String, String>, HashMap<String,String>> values = new HashMap<HashMap<String,String>, HashMap<String,String>>();
+	public static HashMap<HashMap<String, String>, HashMap<String,String>> allowedRelationsHash = initAllowedRelationsHash();
 	
-	public static void initValues(){
+	private static HashMap<HashMap<String, String>, HashMap<String, String>> initAllowedRelationsHash(){
+		HashMap<HashMap<String, String>, HashMap<String, String>> newAllowedRelationsHash = new HashMap<HashMap<String,String>, HashMap<String,String>>();
+		
 		HashMap<String, String> tf1= new HashMap<String, String>();
 		HashMap<String, String> hashrp= new HashMap<String, String>();
 		tf1.put("INPUT", "Adaptation_Source_Input");//the input port
@@ -517,7 +519,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source_A-FEP_Binding");//binding type
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_A-FEP_to");//relation bind and input
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_A-FEP_from");//relation bind and output		
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -528,7 +530,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source-M-FEP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_M-FEP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_M-FEP-from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -539,7 +541,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source-SN-FEP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_SN-FEP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_SN-FEP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -550,7 +552,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source_LPF-FEP Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_LPF-FEP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_LPF-FEP-from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 
 		tf1.put("INPUT", "Termination_Sink_Input");
@@ -560,7 +562,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_A-FEP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_A-FEP_from");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_A-FEP_to");		
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -571,7 +573,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_M-FEP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_M-FEP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_M-FEP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -582,7 +584,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_SN-FEP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_SN-FEP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_SN-FEP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -593,7 +595,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_LPF-FEP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_LPF-FEP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_LPF-FEP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -604,7 +606,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source_PM-FEP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_PM-FEP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_PM-FEP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -615,7 +617,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_PM-FEP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_PM-FEP_from");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_PM-FEP_to");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -626,7 +628,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source_AP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_AP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_AP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -637,7 +639,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_AP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_AP_from");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_AP_to");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -648,7 +650,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source_L-FP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_L-FP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_L-FP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -659,7 +661,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_L-FP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_L-FP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_L-FP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -670,7 +672,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "A-FP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_A-FP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_A-FP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -681,7 +683,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source_SN-FP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_SN-FP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_SN-FP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -692,7 +694,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_SN-FP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_SN-FP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_SN-FP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -703,7 +705,7 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Source_M-FP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_So_M-FP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_So_M-FP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
 
 		tf1= new HashMap<String, String>();
 		hashrp= new HashMap<String, String>();
@@ -714,6 +716,8 @@ public class BindsProcessor {
 		hashrp.put("RP_BINDING", "Sink_M-FP_Binding");
 		hashrp.put("RP_BINDING_REL_IN", "binds_Sk_M-FP_to");
 		hashrp.put("RP_BINDING_REL_OUT", "binds_Sk_M-FP_from");	
-		values.put(tf1, hashrp);
+		newAllowedRelationsHash.put(tf1, hashrp);
+		
+		return newAllowedRelationsHash;
 	}
 }

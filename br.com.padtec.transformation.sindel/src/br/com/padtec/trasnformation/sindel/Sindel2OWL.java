@@ -2,7 +2,10 @@ package br.com.padtec.trasnformation.sindel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.transformation.sindel.dto.DtoResultSindel;
 import br.com.padtec.transformation.sindel.processor.AttributeProcessor;
 import br.com.padtec.transformation.sindel.processor.BindsProcessor;
@@ -13,12 +16,14 @@ import br.com.padtec.transformation.sindel.processor.ElementsProcessor;
 import br.com.padtec.transformation.sindel.processor.MapsProcessor;
 
 import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.ontology.Ontology;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 
@@ -138,8 +143,45 @@ public class Sindel2OWL {
 	//	createDisjointness();
 		createDtoSindel();
 //		createModelImports();
+		
+		setSpecificTypesForConnections();
 	}
 
+	private void setSpecificTypesForConnections()
+	{
+		String namespace = model.getNsPrefixURI("");
+		
+		/** ==================================================== 
+		  * Set specific types for connects relations 
+		  * ==================================================== */		
+		List<String[]> list = QueryUtil.getDomainAndRangeURI(model,namespace+"has_forwarding");
+		String specificRelation = null;		
+		for(String[] st : list)
+		{
+			specificRelation = null;			
+			List<String> st0Types = QueryUtil.getClassesURIFromIndividual(model,st[0]);
+			List<String> st1Types = QueryUtil.getClassesURIFromIndividual(model,st[1]);			
+			if(st0Types.contains(namespace+"Source_AP") && (st1Types.contains(namespace+"Sink_AP")))
+			{
+				specificRelation = "Forwarding_Unidirectional_Access_Transport_Entity";
+			}
+			else if(st0Types.contains(namespace+"Source_A-FEP") && (st1Types.contains(namespace+"Sink_A-FEP")))
+			{
+				specificRelation = "Forwarding_Path_NC";
+			}
+			else if(st0Types.contains(namespace+"Source_PM-FEP") && (st1Types.contains(namespace+"Sink_PM-FEP")))
+			{
+				specificRelation = "Forwarding_Path_NC";
+			}			
+			if(specificRelation != null)
+			{
+				ObjectProperty rel = model.getObjectProperty(namespace+specificRelation);
+				Statement stmt = model.createStatement(model.getIndividual(st[0]), rel, model.getIndividual(st[1]));
+				model.add(stmt);
+			}
+		}
+	}
+	
 	@SuppressWarnings("unused")
 	private void createModelImports() {
 		model.remove(owlReference);

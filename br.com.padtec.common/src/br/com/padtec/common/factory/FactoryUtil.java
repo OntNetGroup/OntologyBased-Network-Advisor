@@ -5,13 +5,160 @@ import java.util.List;
 import br.com.padtec.common.queries.QueryUtil;
 
 import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Statement;
 
 public class FactoryUtil {
 
+	/**
+	 * Create an Instance of Data Property as from an Individual and enforce all dataTypeURI's super DP.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createInstanceAttribute(OntModel model, String individualURI, String classURI)
+	{			
+		createInstanceAttribute(model, individualURI, classURI, true);
+	}
+	/**
+	 * Create an Instance of Data Property as from an Individual and enforce all dataTypeURI's super DP.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * @param forceSuperTypes: force all super types
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createInstanceAttribute(OntModel model, String individualURI, String classURI, boolean forceSuperTypes)
+	{			
+		//create the individualURI as from classURI
+		Individual individual = model.getIndividual(individualURI);
+		OntClass ontClass = model.getOntClass(classURI);
+		individual.addOntClass(ontClass);
+		
+		if(forceSuperTypes){
+			//also set the individualURI as from all super types of classURI
+			List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
+			for (String superType : superTypes) {
+				OntClass superClass = model.getOntClass(superType);
+				individual.addOntClass(superClass);
+			}
+		}		
+	}
+	/**
+	 * Create an Individual as from some classURI and from all classURI's super types.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI)
+	{			
+		createInstanceIndividual(model, individualURI, classURI, true);		
+	}
+	/**
+	 * Create an Individual as from some classURI and from all classURI's super types.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * @param forceSuperTypes: force all super types
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI, boolean forceSuperTypes)
+	{			
+		//create the individualURI as from classURI
+		Individual individual = model.getIndividual(individualURI);
+		OntClass ontClass = model.getOntClass(classURI);
+		individual.addOntClass(ontClass);
+		
+		if(forceSuperTypes){
+			//also set the individualURI as from all super types of classURI
+			List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
+			for (String superType : superTypes) {
+				OntClass superClass = model.getOntClass(superType);
+				individual.addOntClass(superClass);
+			}
+		}		
+	}
+	
+	/**
+	 * Create an object property between two individuals, and all super OP and all inverses between the same two individuals.
+	 * 
+	 * @param model: OntModel
+	 * @param indvSourceURI: source individual URI
+	 * @param objectPropertyURI: object property URI
+	 * @param indvTargetURI: target individual URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI){
+		createInstanceRelation(model, indvSourceURI, objectPropertyURI, indvTargetURI, true, true);
+	}
+	/**
+	 * Create an object property between two individuals, and all super OP and all inverses between the same two individuals.
+	 * 
+	 * @param model: OntModel
+	 * @param indvSourceURI: source individual URI
+	 * @param objectPropertyURI: object property URI
+	 * @param indvTargetURI: target individual URI
+	 * @param forceSuperObjProp: force all super object properties
+	 * @param forceInverses: force all inverses
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceSuperObjProp, boolean forceInverses)
+	{			
+		//Create an object property between two individuals
+		Individual indvSource = model.getIndividual(indvSourceURI);
+		Individual indvTarget = model.getIndividual(indvTargetURI);
+		ObjectProperty objProp = model.getObjectProperty(objectPropertyURI);
+		
+		Statement stmt = model.createStatement(indvSource, objProp, indvTarget);
+		model.add(stmt);
+		
+		if(forceInverses){
+			//create all inverses of the OP
+			List<String> inverses = QueryUtil.getAllInverseOfURIs(model, objectPropertyURI);
+			for (String invURI : inverses) {
+				ObjectProperty invOP = model.getObjectProperty(invURI);
+				Statement invStmt = model.createStatement(indvTarget, invOP, indvSource);
+				model.add(invStmt);
+			}
+		}		
+		
+		if(forceSuperObjProp){
+			//create all super OP between the same two individuals
+			List<String> superOPUris = QueryUtil.getAllSuperProperties(model, objectPropertyURI);
+			for (String superOPURI : superOPUris) {
+				ObjectProperty superOP = model.getObjectProperty(superOPURI);
+				Statement superStmt = model.createStatement(indvSource, superOP, indvTarget);
+				model.add(superStmt);
+				
+				if(forceInverses){
+					//create all inverses of the super OP
+					List<String> superInversesURIs = QueryUtil.getAllInverseOfURIs(model, superOPURI);
+					for (String superInvURI : superInversesURIs) {
+						ObjectProperty superInvOP = model.getObjectProperty(superInvURI);
+						Statement superInvStmt = model.createStatement(indvTarget, superInvOP, indvSource);
+						model.add(superInvStmt);
+					}
+				}
+			}
+		}		
+	}
+	
 	/**
 	 * Create Individual.
 	 * 
@@ -249,6 +396,20 @@ public class FactoryUtil {
 		Individual i2 = model.getIndividual(individualURI2);		
 		i1.setDifferentFrom(i2);
 		i2.setDifferentFrom(i1);		
+		return model;
+	}
+	
+	static public OntModel createStatement(OntModel model, String subjectURI, String predicateURI, String objectURI)
+	{
+		Individual a = null, b=null;
+		if(objectURI!=null) a = model.getIndividual(objectURI);
+		if(subjectURI!=null) b = model.getIndividual(subjectURI);				
+		ObjectProperty rel = model.getObjectProperty(predicateURI);
+		if(a!=null && b!=null)
+		{
+			Statement stmt = model.createStatement(b, rel, a);
+			model.add(stmt);
+		}
 		return model;
 	}
 
