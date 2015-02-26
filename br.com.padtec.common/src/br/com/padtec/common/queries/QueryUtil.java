@@ -1940,7 +1940,7 @@ public class QueryUtil {
   		return list;
   		}
 
-	public static List<String> getAllSuperObjectProperties(InfModel model, String objectPropertyURI){
+	public static List<String> getAllSuperProperties(InfModel model, String objectPropertyURI){
 		System.out.println("\nExecuting getAllSuperObjectProperties()...");
 		System.out.println("- Object Property URI: " + objectPropertyURI);
 		List<String> result = new ArrayList<String>();		

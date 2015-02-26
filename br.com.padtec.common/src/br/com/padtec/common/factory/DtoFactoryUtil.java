@@ -152,7 +152,7 @@ public class DtoFactoryUtil {
 		setSuperClassesOfIndividual(model, individual);
 		
 		for (String classURI : individual.getListClasses()) {
-			FactoryUtil.createIndividual(model, individual.uri, classURI);
+			FactoryUtil.createInstanceIndividual(model, individual.uri, classURI);
 		}
 		
 		setSuperRelationsOfIndividual(model, individual, true);
@@ -221,7 +221,7 @@ public class DtoFactoryUtil {
 		//search for all super relations
 		ArrayList<DtoInstanceRelation> newSuperRelations = new ArrayList<DtoInstanceRelation>();
 		for (DtoInstanceRelation relation : relationsToRefresh) {
-			List<String> superRelations = QueryUtil.getAllSuperObjectProperties(model, relation.Property);
+			List<String> superRelations = QueryUtil.getAllSuperProperties(model, relation.Property);
 			
 			for (String superRel : superRelations) {
 				DtoInstanceRelation newSuperRelation = new DtoInstanceRelation(relation.Source, superRel, relation.Target);

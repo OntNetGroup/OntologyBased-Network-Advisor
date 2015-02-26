@@ -15,6 +15,45 @@ import com.hp.hpl.jena.rdf.model.Statement;
 public class FactoryUtil {
 
 	/**
+	 * Create an Instance of Data Property as from an Individual and enforce all dataTypeURI's super DP.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createInstanceAttribute(OntModel model, String individualURI, String classURI)
+	{			
+		createInstanceAttribute(model, individualURI, classURI, true);
+	}
+	/**
+	 * Create an Instance of Data Property as from an Individual and enforce all dataTypeURI's super DP.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * @param forceSuperTypes: force all super types
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createInstanceAttribute(OntModel model, String individualURI, String classURI, boolean forceSuperTypes)
+	{			
+		//create the individualURI as from classURI
+		Individual individual = model.getIndividual(individualURI);
+		OntClass ontClass = model.getOntClass(classURI);
+		individual.addOntClass(ontClass);
+		
+		if(forceSuperTypes){
+			//also set the individualURI as from all super types of classURI
+			List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
+			for (String superType : superTypes) {
+				OntClass superClass = model.getOntClass(superType);
+				individual.addOntClass(superClass);
+			}
+		}		
+	}
+	/**
 	 * Create an Individual as from some classURI and from all classURI's super types.
 	 * 
 	 * @param model: OntModel
@@ -23,9 +62,9 @@ public class FactoryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	static public void createIndividual(OntModel model, String individualURI, String classURI)
+	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI)
 	{			
-		createIndividual(model, individualURI, classURI, true);		
+		createInstanceIndividual(model, individualURI, classURI, true);		
 	}
 	/**
 	 * Create an Individual as from some classURI and from all classURI's super types.
@@ -37,7 +76,7 @@ public class FactoryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	static public void createIndividual(OntModel model, String individualURI, String classURI, boolean forceSuperTypes)
+	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI, boolean forceSuperTypes)
 	{			
 		//create the individualURI as from classURI
 		Individual individual = model.getIndividual(individualURI);
@@ -64,8 +103,8 @@ public class FactoryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	static public void createIndividualRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI){
-		createIndividualRelation(model, indvSourceURI, objectPropertyURI, indvTargetURI, true, true);
+	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI){
+		createInstanceRelation(model, indvSourceURI, objectPropertyURI, indvTargetURI, true, true);
 	}
 	/**
 	 * Create an object property between two individuals, and all super OP and all inverses between the same two individuals.
@@ -79,7 +118,7 @@ public class FactoryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	static public void createIndividualRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceSuperObjProp, boolean forceInverses)
+	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceSuperObjProp, boolean forceInverses)
 	{			
 		//Create an object property between two individuals
 		Individual indvSource = model.getIndividual(indvSourceURI);
@@ -101,7 +140,7 @@ public class FactoryUtil {
 		
 		if(forceSuperObjProp){
 			//create all super OP between the same two individuals
-			List<String> superOPUris = QueryUtil.getAllSuperObjectProperties(model, objectPropertyURI);
+			List<String> superOPUris = QueryUtil.getAllSuperProperties(model, objectPropertyURI);
 			for (String superOPURI : superOPUris) {
 				ObjectProperty superOP = model.getObjectProperty(superOPURI);
 				Statement superStmt = model.createStatement(indvSource, superOP, indvTarget);
