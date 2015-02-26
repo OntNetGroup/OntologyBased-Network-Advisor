@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.padtec.common.queries.QueryUtil;
 
+import com.hp.hpl.jena.ontology.DatatypeProperty;
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntClass;
@@ -23,9 +24,9 @@ public class FactoryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	static public void createInstanceAttribute(OntModel model, String individualURI, String classURI)
+	static public void createInstanceAttribute(OntModel model, String individualURI, String dataPropertyURI, String value, String typeURI)
 	{			
-		createInstanceAttribute(model, individualURI, classURI, true);
+		createInstanceAttribute(model, individualURI, dataPropertyURI, value, typeURI, true);
 	}
 	/**
 	 * Create an Instance of Data Property as from an Individual and enforce all dataTypeURI's super DP.
@@ -37,19 +38,25 @@ public class FactoryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	static public void createInstanceAttribute(OntModel model, String individualURI, String classURI, boolean forceSuperTypes)
+	static public void createInstanceAttribute(OntModel model, String individualURI, String dataPropertyURI, String value, String typeURI, boolean forceSuperDP)
 	{			
 		//create the individualURI as from classURI
 		Individual individual = model.getIndividual(individualURI);
-		OntClass ontClass = model.getOntClass(classURI);
-		individual.addOntClass(ontClass);
+		DatatypeProperty dataProperty = model.getDatatypeProperty(dataPropertyURI);
+		Literal literal = model.createTypedLiteral(value, typeURI);
+		System.out.println(individual);
+		System.out.println(individualURI);
+		System.out.println(dataProperty);
+		System.out.println(dataPropertyURI);
+		System.out.println(literal);
+		individual.addLiteral(dataProperty, literal);
 		
-		if(forceSuperTypes){
+		if(forceSuperDP){
 			//also set the individualURI as from all super types of classURI
-			List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
-			for (String superType : superTypes) {
-				OntClass superClass = model.getOntClass(superType);
-				individual.addOntClass(superClass);
+			List<String> superDPs = QueryUtil.getAllSuperProperties(model, dataPropertyURI);
+			for (String superDP : superDPs) {
+				DatatypeProperty superDataProperty = model.getDatatypeProperty(superDP);
+				individual.addLiteral(superDataProperty, literal);
 			}
 		}		
 	}
@@ -79,8 +86,8 @@ public class FactoryUtil {
 	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI, boolean forceSuperTypes)
 	{			
 		//create the individualURI as from classURI
-		Individual individual = model.getIndividual(individualURI);
 		OntClass ontClass = model.getOntClass(classURI);
+		Individual individual = model.createIndividual(individualURI, ontClass);
 		individual.addOntClass(ontClass);
 		
 		if(forceSuperTypes){
