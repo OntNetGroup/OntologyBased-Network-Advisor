@@ -1,0 +1,3409 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://nemo.inf.ufes.br/NewProject.owl#"
+    xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#" > 
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#a">
+    <INV.componentOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#x"/>
+    <rdf:type rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdf:type rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input_Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A1">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Equipment.Transport_Function">
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Transport_Function"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Transport_Function"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Transport_Function"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A2">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A3"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A4">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_to"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A5">
+    <rdf:rest rdf:nodeID="A6"/>
+    <rdf:first rdf:nodeID="A7"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A8">
+    <rdf:rest rdf:nodeID="A9"/>
+    <rdf:first rdf:nodeID="A10"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A11">
+    <rdf:rest rdf:nodeID="A12"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A13">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.adapts_to"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A14">
+    <rdf:first rdf:nodeID="A15"/>
+    <rdf:rest rdf:nodeID="A16"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.TF_Source.TF_So_Out">
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Source.TF_So_Out"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Source.TF_So_Out"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Output_Interface">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Transport_Processing_Function"/>
+    <owl:equivalentClass rdf:nodeID="A17"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A18">
+    <swrl:body rdf:nodeID="A19"/>
+    <swrl:head rdf:nodeID="A20"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A21">
+    <rdf:rest rdf:nodeID="A22"/>
+    <rdf:first rdf:nodeID="A23"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A24">
+    <rdf:rest rdf:nodeID="A25"/>
+    <rdf:first rdf:nodeID="A26"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Physical_Media.PM_In">
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Physical_Media.PM_In"/>
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Physical_Media.PM_In"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:swrl#v4">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A27">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A28">
+    <rdf:rest rdf:nodeID="A29"/>
+    <rdf:first rdf:nodeID="A13"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Transport_Processing_Function">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Transport_Function"/>
+    <owl:equivalentClass rdf:nodeID="A30"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A31">
+    <rdf:first rdf:nodeID="A32"/>
+    <rdf:rest rdf:nodeID="A33"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A34">
+    <rdf:rest rdf:nodeID="A35"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A36">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A37">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A38">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <owl:equivalentClass rdf:nodeID="A39"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A40">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A41">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Equipment.Transport_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A42">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A43">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A44">
+    <rdf:rest rdf:nodeID="A45"/>
+    <rdf:first rdf:nodeID="A46"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A47">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A48">
+    <rdf:rest rdf:nodeID="A49"/>
+    <rdf:first rdf:nodeID="A50"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A51">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A52">
+    <owl:intersectionOf rdf:nodeID="A53"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A54">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A4"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A7">
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A12">
+    <rdf:rest rdf:nodeID="A55"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A10">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A56">
+    <rdf:first rdf:nodeID="A57"/>
+    <rdf:rest rdf:nodeID="A58"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#binds.TF_Sk_In_PM_bound.PM_Out">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_PM_bound"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_Sk_In_PM_bound.PM_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_PM_bound">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:equivalentClass rdf:nodeID="A59"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A20">
+    <rdf:first rdf:nodeID="A60"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A23">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A26">
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.AF_Source.AF_So_Out">
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Source.AF_So_Out"/>
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Source.AF_So_Out"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:swrl#v5">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.AF_Sk_In.TF_Sk_Out">
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A61">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A55">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A33">
+    <rdf:first rdf:nodeID="A62"/>
+    <rdf:rest rdf:nodeID="A63"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A9">
+    <rdf:first rdf:nodeID="A64"/>
+    <rdf:rest rdf:nodeID="A65"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A66">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A67">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <owl:equivalentClass rdf:nodeID="A68"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A69">
+    <swrl:head rdf:nodeID="A70"/>
+    <swrl:body rdf:nodeID="A71"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A72">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A41"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A73">
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A74">
+    <owl:intersectionOf rdf:nodeID="A75"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A76">
+    <rdf:first rdf:nodeID="A77"/>
+    <rdf:rest rdf:nodeID="A78"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A39">
+    <owl:intersectionOf rdf:nodeID="A79"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A50">
+    <swrl:argument1 rdf:resource="urn:swrl#v3"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A80">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Sink.AF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A58">
+    <rdf:first rdf:nodeID="A81"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A82">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.AF_Source.AF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A83">
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#maps"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A63">
+    <rdf:rest rdf:nodeID="A84"/>
+    <rdf:first rdf:nodeID="A85"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A6">
+    <rdf:rest rdf:nodeID="A86"/>
+    <rdf:first rdf:nodeID="A87"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A88">
+    <swrl:argument1 rdf:resource="urn:swrl#v3"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A89">
+    <owl:intersectionOf rdf:nodeID="A90"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_In">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:equivalentClass rdf:nodeID="A91"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A22">
+    <rdf:rest rdf:nodeID="A92"/>
+    <rdf:first rdf:nodeID="A93"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A94">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Equipment.Output_Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A25">
+    <rdf:rest rdf:nodeID="A95"/>
+    <rdf:first rdf:nodeID="A96"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A71">
+    <rdf:rest rdf:nodeID="A97"/>
+    <rdf:first rdf:nodeID="A98"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A99">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.eq_binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A100">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:swrl#v2">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A87">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A65">
+    <rdf:first rdf:nodeID="A101"/>
+    <rdf:rest rdf:nodeID="A102"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A30">
+    <owl:intersectionOf rdf:nodeID="A103"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A77">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A104">
+    <owl:intersectionOf rdf:nodeID="A105"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A78">
+    <rdf:rest rdf:nodeID="A106"/>
+    <rdf:first rdf:nodeID="A107"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A29">
+    <rdf:rest rdf:nodeID="A108"/>
+    <rdf:first rdf:nodeID="A67"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A109">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Source.TF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A110">
+    <rdf:first rdf:nodeID="A111"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Sink.TF_Sk_Out">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A112">
+    <rdf:first rdf:nodeID="A113"/>
+    <rdf:rest rdf:nodeID="A114"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A115">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A80"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A85">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Transport_Processing_Function"/>
+    <owl:equivalentClass rdf:nodeID="A116"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A49">
+    <rdf:rest rdf:nodeID="A117"/>
+    <rdf:first rdf:nodeID="A118"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A119">
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A120">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A98">
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A53">
+    <rdf:rest rdf:nodeID="A121"/>
+    <rdf:first rdf:nodeID="A82"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A122">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A96">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_from"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:equivalentClass rdf:nodeID="A52"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:swrl#v3">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A123">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds.AF_So_Out.TF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A124">
+    <swrl:body rdf:nodeID="A125"/>
+    <swrl:head rdf:nodeID="A126"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A127">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A128">
+    <owl:unionOf rdf:nodeID="A129"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A86">
+    <rdf:first rdf:nodeID="A130"/>
+    <rdf:rest rdf:nodeID="A131"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A75">
+    <rdf:rest rdf:nodeID="A132"/>
+    <rdf:first rdf:nodeID="A109"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A107">
+    <swrl:argument1 rdf:resource="urn:swrl#v9"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A90">
+    <rdf:rest rdf:nodeID="A133"/>
+    <rdf:first rdf:nodeID="A99"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A111">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A134">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Equipment.Input_Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#componentOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A102">
+    <rdf:first rdf:nodeID="A135"/>
+    <rdf:rest rdf:nodeID="A24"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A136">
+    <rdf:rest rdf:nodeID="A137"/>
+    <rdf:first rdf:nodeID="A138"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.binds">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A93">
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A139">
+    <owl:unionOf rdf:nodeID="A140"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A141">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_from"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A142">
+    <rdf:rest rdf:nodeID="A143"/>
+    <rdf:first rdf:nodeID="A144"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A145">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_to"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A146">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.maps.Output_Interface.Mapped_Output"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A84">
+    <rdf:rest rdf:nodeID="A147"/>
+    <rdf:first rdf:nodeID="A148"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A149">
+    <rdf:rest rdf:nodeID="A150"/>
+    <rdf:first rdf:nodeID="A151"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A152">
+    <rdf:first rdf:nodeID="A153"/>
+    <rdf:rest rdf:nodeID="A112"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A138">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.AF_So_Out.TF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A154">
+    <rdf:first rdf:nodeID="A155"/>
+    <rdf:rest rdf:nodeID="A156"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A157">
+    <owl:unionOf rdf:nodeID="A158"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A159">
+    <rdf:first rdf:nodeID="A160"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A161">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A162">
+    <rdf:first rdf:nodeID="A163"/>
+    <rdf:rest rdf:nodeID="A164"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A165">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Physical_Media.PM_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A166">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A167">
+    <rdf:first rdf:nodeID="A61"/>
+    <rdf:rest rdf:nodeID="A168"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A169">
+    <rdf:rest rdf:nodeID="A170"/>
+    <rdf:first rdf:nodeID="A171"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A172">
+    <rdf:rest rdf:nodeID="A173"/>
+    <rdf:first rdf:nodeID="A174"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <owl:equivalentClass rdf:nodeID="A175"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A176">
+    <rdf:rest rdf:nodeID="A177"/>
+    <rdf:first rdf:nodeID="A178"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A179">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A139"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A180">
+    <rdf:rest rdf:nodeID="A181"/>
+    <rdf:first rdf:nodeID="A182"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A183">
+    <swrl:body rdf:nodeID="A8"/>
+    <swrl:head rdf:nodeID="A184"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A148">
+    <swrl:argument2 rdf:resource="urn:swrl#v2"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A185">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#int_binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A186">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A146"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A151">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A187">
+    <rdf:rest rdf:nodeID="A188"/>
+    <rdf:first rdf:nodeID="A157"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A156">
+    <rdf:rest rdf:nodeID="A189"/>
+    <rdf:first rdf:nodeID="A190"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A160">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A191">
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#int_binds">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.int_binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:swrl#v1">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A164">
+    <rdf:first rdf:nodeID="A192"/>
+    <rdf:rest rdf:nodeID="A193"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A194">
+    <rdf:rest rdf:nodeID="A195"/>
+    <rdf:first rdf:nodeID="A196"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A35">
+    <rdf:rest rdf:nodeID="A197"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A168">
+    <rdf:rest rdf:nodeID="A198"/>
+    <rdf:first rdf:nodeID="A199"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A200">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A165"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A171">
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A174">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A201">
+    <rdf:rest rdf:nodeID="A202"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A182">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A203">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_from"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A147">
+    <rdf:first rdf:nodeID="A47"/>
+    <rdf:rest rdf:nodeID="A204"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A178">
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A184">
+    <rdf:first rdf:nodeID="A205"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A140">
+    <rdf:rest rdf:nodeID="A206"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A143">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A185"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A207">
+    <owl:intersectionOf rdf:nodeID="A208"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.maps">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Mapped_Output">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output"/>
+    <owl:equivalentClass rdf:nodeID="A209"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A150">
+    <rdf:first rdf:nodeID="A210"/>
+    <rdf:rest rdf:nodeID="A211"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A158">
+    <rdf:rest rdf:nodeID="A212"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_AF_bound"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A213">
+    <rdf:rest rdf:nodeID="A214"/>
+    <rdf:first rdf:nodeID="A215"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A216">
+    <rdf:first rdf:nodeID="A217"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A218">
+    <rdf:first rdf:nodeID="A191"/>
+    <rdf:rest rdf:nodeID="A219"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A193">
+    <rdf:rest rdf:nodeID="A14"/>
+    <rdf:first rdf:nodeID="A220"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A196">
+    <swrl:argument2 rdf:resource="urn:swrl#v2"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#adapts_to">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.adapts_to"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A170">
+    <rdf:rest rdf:nodeID="A31"/>
+    <rdf:first rdf:nodeID="A221"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A199">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A202">
+    <rdf:rest rdf:nodeID="A222"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A197">
+    <rdf:rest rdf:nodeID="A223"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A173">
+    <rdf:first rdf:nodeID="A66"/>
+    <rdf:rest rdf:nodeID="A224"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A225">
+    <owl:intersectionOf rdf:nodeID="A44"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A226">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A181">
+    <rdf:rest rdf:nodeID="A227"/>
+    <rdf:first rdf:nodeID="A228"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A204">
+    <rdf:first rdf:nodeID="A0"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A229">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A177">
+    <rdf:first rdf:nodeID="A230"/>
+    <rdf:rest rdf:nodeID="A5"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A231">
+    <rdf:rest rdf:nodeID="A54"/>
+    <rdf:first rdf:nodeID="A203"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A206">
+    <rdf:rest rdf:nodeID="A11"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A205">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A232">
+    <owl:intersectionOf rdf:nodeID="A28"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A233">
+    <owl:unionOf rdf:nodeID="A34"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Sink.TF_Sk_In">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A215">
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A217">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#eq_binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A219">
+    <rdf:first rdf:nodeID="A161"/>
+    <rdf:rest rdf:nodeID="A21"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A220">
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A208">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A233"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A195">
+    <rdf:rest rdf:nodeID="A56"/>
+    <rdf:first rdf:nodeID="A27"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A198">
+    <rdf:first rdf:nodeID="A36"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Physical_Media.PM_Out">
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Physical_Media.PM_Out"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Physical_Media.PM_Out"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A221">
+    <swrl:argument1 rdf:resource="urn:swrl#v3"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A224">
+    <rdf:first rdf:nodeID="A38"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A222">
+    <rdf:rest rdf:nodeID="A37"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A234">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Transport_Processing_Function"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A235">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_to"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A223">
+    <rdf:rest rdf:nodeID="A43"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output"/>
+    <owl:equivalentClass rdf:nodeID="A236"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A46">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Physical_Media.PM_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A237">
+    <rdf:rest rdf:nodeID="A238"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.TF_Source.TF_So_In">
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Source.TF_So_In"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Source.TF_So_In"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A239">
+    <rdf:rest rdf:nodeID="A240"/>
+    <rdf:first rdf:nodeID="A241"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A242">
+    <rdf:first rdf:nodeID="A235"/>
+    <rdf:rest rdf:nodeID="A243"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A244">
+    <swrl:argument2 rdf:resource="urn:swrl#v2"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A245">
+    <rdf:rest rdf:nodeID="A246"/>
+    <rdf:first rdf:nodeID="A247"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A248">
+    <owl:intersectionOf rdf:nodeID="A249"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Source.TF_So_In">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A250">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A251">
+    <rdf:first rdf:nodeID="A252"/>
+    <rdf:rest rdf:nodeID="A253"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A45">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A254"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A62">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_from"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A255">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Interface">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:equivalentClass rdf:nodeID="A256"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A32">
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A60">
+    <swrl:argument2 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#z"/>
+    <swrl:argument1 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#x"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A210">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A257">
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A258">
+    <rdf:first rdf:nodeID="A127"/>
+    <rdf:rest rdf:nodeID="A259"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A68">
+    <owl:intersectionOf rdf:nodeID="A260"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A261">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Source.AF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.maps.Output_Interface.Mapped_Output">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Mapped_Output"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.maps"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A243">
+    <rdf:first rdf:nodeID="A226"/>
+    <rdf:rest rdf:nodeID="A262"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A263">
+    <rdf:rest rdf:nodeID="A264"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A265">
+    <rdf:rest rdf:nodeID="A266"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_AF_bound"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A267">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A268">
+    <rdf:first rdf:nodeID="A269"/>
+    <rdf:rest rdf:nodeID="A270"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A271">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds.TF_Sk_In_AF_bound.AF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A272">
+    <owl:intersectionOf rdf:nodeID="A273"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A253">
+    <rdf:first rdf:nodeID="A274"/>
+    <rdf:rest rdf:nodeID="A275"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A19">
+    <rdf:first rdf:nodeID="A276"/>
+    <rdf:rest rdf:nodeID="A277"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A79">
+    <rdf:rest rdf:nodeID="A278"/>
+    <rdf:first rdf:nodeID="A94"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A279">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A280">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Sink.AF_Sk_In">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_In"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A281">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A282">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A283">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_AF_bound"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_Sk_In_AF_bound.AF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A259">
+    <rdf:first rdf:nodeID="A120"/>
+    <rdf:rest rdf:nodeID="A284"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A264">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A285">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A266">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_PM_bound"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A249">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A271"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A270">
+    <rdf:first rdf:nodeID="A286"/>
+    <rdf:rest rdf:nodeID="A287"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A288">
+    <owl:unionOf rdf:nodeID="A289"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A275">
+    <rdf:first rdf:nodeID="A290"/>
+    <rdf:rest rdf:nodeID="A291"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A277">
+    <rdf:first rdf:nodeID="A292"/>
+    <rdf:rest rdf:nodeID="A293"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A92">
+    <rdf:rest rdf:nodeID="A294"/>
+    <rdf:first rdf:nodeID="A295"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A296">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Mapped_Output"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#maps.Output_Interface.Mapped_Output"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A297">
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A298">
+    <swrl:head rdf:nodeID="A299"/>
+    <swrl:body rdf:nodeID="A300"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A15">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A301">
+    <swrl:head rdf:nodeID="A302"/>
+    <swrl:body rdf:nodeID="A303"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A260">
+    <rdf:rest rdf:nodeID="A304"/>
+    <rdf:first rdf:nodeID="A283"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A305">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.TF_Source.TF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A306">
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Input">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <owl:equivalentClass rdf:nodeID="A307"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A59">
+    <owl:intersectionOf rdf:nodeID="A308"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A287">
+    <rdf:rest rdf:nodeID="A309"/>
+    <rdf:first rdf:nodeID="A310"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A291">
+    <rdf:rest rdf:nodeID="A311"/>
+    <rdf:first rdf:nodeID="A312"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A273">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A288"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A293">
+    <rdf:first rdf:nodeID="A313"/>
+    <rdf:rest rdf:nodeID="A314"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A295">
+    <swrl:argument2 rdf:resource="urn:swrl#v4"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Physical_Media.PM_Out">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A278">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A296"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A315">
+    <swrl:argument1 rdf:resource="urn:swrl#v9"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A300">
+    <rdf:first rdf:nodeID="A316"/>
+    <rdf:rest rdf:nodeID="A317"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Source.AF_So_In">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#AF_Source">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <owl:equivalentClass rdf:nodeID="A318"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A192">
+    <swrl:argument1 rdf:resource="urn:swrl#v9"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A303">
+    <rdf:first rdf:nodeID="A319"/>
+    <rdf:rest rdf:nodeID="A320"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A70">
+    <rdf:first rdf:nodeID="A321"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A322">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A114">
+    <rdf:first rdf:nodeID="A323"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#binds.AF_So_Out.TF_So_In">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.AF_So_Out.TF_So_In"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A97">
+    <rdf:rest rdf:nodeID="A324"/>
+    <rdf:first rdf:nodeID="A325"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A118">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A103">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A128"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A91">
+    <owl:intersectionOf rdf:nodeID="A326"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A126">
+    <rdf:first rdf:nodeID="A327"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#binds.TF_Sk_In_AF_bound.AF_Sk_Out">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_AF_bound"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_Sk_In_AF_bound.AF_Sk_Out"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:swrl#v8">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#adapts_from">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.adapts_from"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A328">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.AF_Sink.AF_Sk_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A106">
+    <rdf:first rdf:nodeID="A73"/>
+    <rdf:rest rdf:nodeID="A329"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A117">
+    <rdf:rest rdf:nodeID="A330"/>
+    <rdf:first rdf:nodeID="A331"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A332">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Source.TF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A333">
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A334">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.TF_Source.TF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A121">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A123"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A335">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A190">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A336">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#eq_binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A131">
+    <rdf:rest rdf:nodeID="A337"/>
+    <rdf:first rdf:nodeID="A338"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A105">
+    <rdf:rest rdf:nodeID="A339"/>
+    <rdf:first rdf:nodeID="A134"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A95">
+    <rdf:first rdf:nodeID="A340"/>
+    <rdf:rest rdf:nodeID="A341"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#binds.TF_So_Out_AF_bound.AF_So_In">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_AF_bound"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_So_Out_AF_bound.AF_So_In"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A325">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A342">
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A327">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_to"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A211">
+    <rdf:first rdf:nodeID="A343"/>
+    <rdf:rest rdf:nodeID="A344"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#defines">
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A129">
+    <rdf:rest rdf:nodeID="A345"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A132">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A332"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A329">
+    <rdf:first rdf:nodeID="A40"/>
+    <rdf:rest rdf:nodeID="A346"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A323">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output"/>
+    <owl:equivalentClass rdf:nodeID="A347"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Physical_Media.PM_In">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:swrl#v9">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A286">
+    <swrl:argument2 rdf:resource="urn:swrl#v7"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A113">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_to"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A137">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A334"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A212">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_PM_bound"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A326">
+    <rdf:rest rdf:nodeID="A348"/>
+    <rdf:first rdf:nodeID="A328"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A189">
+    <rdf:rest rdf:nodeID="A349"/>
+    <rdf:first rdf:nodeID="A350"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A331">
+    <swrl:argument2 rdf:resource="urn:swrl#v2"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A318">
+    <owl:intersectionOf rdf:nodeID="A351"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A352">
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A338">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A133">
+    <rdf:rest rdf:nodeID="A353"/>
+    <rdf:first rdf:nodeID="A336"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A341">
+    <rdf:first rdf:nodeID="A354"/>
+    <rdf:rest rdf:nodeID="A355"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A324">
+    <rdf:first rdf:nodeID="A119"/>
+    <rdf:rest rdf:nodeID="A356"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A345">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A125">
+    <rdf:first rdf:nodeID="A357"/>
+    <rdf:rest rdf:nodeID="A358"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A346">
+    <rdf:rest rdf:nodeID="A242"/>
+    <rdf:first rdf:nodeID="A359"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A116">
+    <owl:intersectionOf rdf:nodeID="A239"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A347">
+    <owl:intersectionOf rdf:nodeID="A245"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A269">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A344">
+    <rdf:first rdf:nodeID="A360"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A228">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#binds.TF_So_Out_PM_bound.PM_In">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_PM_bound"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_So_Out_PM_bound.PM_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.TF_Sink.TF_Sk_Out">
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Sink.TF_Sk_Out"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Sink.TF_Sk_Out"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:swrl#v6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A360">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A361">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.TF_Sink.TF_Sk_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A350">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A214">
+    <rdf:rest rdf:nodeID="A251"/>
+    <rdf:first rdf:nodeID="A362"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A153">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_from"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A330">
+    <rdf:rest rdf:nodeID="A258"/>
+    <rdf:first rdf:nodeID="A363"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A364">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds.AF_Sk_In.TF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A365">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Source.AF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A319">
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A366">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input_Interface"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Input_Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#b">
+    <INV.componentOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#x"/>
+    <rdf:type rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdf:type rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.eq_binds">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A367">
+    <owl:members rdf:nodeID="A237"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A358">
+    <rdf:first rdf:nodeID="A368"/>
+    <rdf:rest rdf:nodeID="A369"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A359">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A241">
+    <owl:unionOf rdf:nodeID="A263"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A247">
+    <owl:unionOf rdf:nodeID="A265"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A155">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A349">
+    <rdf:rest rdf:nodeID="A268"/>
+    <rdf:first rdf:nodeID="A250"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A188">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A361"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A227">
+    <rdf:first rdf:nodeID="A279"/>
+    <rdf:rest rdf:nodeID="A370"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Equipment.Input_Interface">
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Input_Interface"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Input_Interface"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input_Interface"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input"/>
+    <owl:equivalentClass rdf:nodeID="A371"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:swrl#v7">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_Sk_In_PM_bound.PM_Out">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_PM_bound"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A370">
+    <rdf:first rdf:nodeID="A255"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A254">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Physical_Media.PM_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A362">
+    <swrl:argument1 rdf:resource="urn:swrl#v9"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A343">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A372">
+    <swrl:argument1 rdf:resource="urn:swrl#v9"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A348">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A364"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A363">
+    <swrl:argument2 rdf:resource="urn:swrl#v4"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A302">
+    <rdf:first rdf:nodeID="A373"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A351">
+    <rdf:rest rdf:nodeID="A374"/>
+    <rdf:first rdf:nodeID="A365"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_AF_bound">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_PM_bound"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:equivalentClass rdf:nodeID="A248"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A313">
+    <swrl:argument2 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#z"/>
+    <swrl:argument1 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#x"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A375">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A354">
+    <swrl:argument2 rdf:resource="urn:swrl#v2"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A376">
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_AF_bound">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_PM_bound"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:equivalentClass rdf:nodeID="A377"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A378">
+    <rdf:rest rdf:nodeID="A379"/>
+    <rdf:first rdf:nodeID="A380"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A356">
+    <rdf:first rdf:nodeID="A88"/>
+    <rdf:rest rdf:nodeID="A381"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A357">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Mapped_Input">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input"/>
+    <owl:equivalentClass rdf:nodeID="A382"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A383">
+    <rdf:rest rdf:nodeID="A384"/>
+    <rdf:first rdf:nodeID="A385"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A386">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A387"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#binds">
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A353">
+    <rdf:rest rdf:nodeID="A388"/>
+    <rdf:first rdf:nodeID="A366"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A389">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A256">
+    <owl:intersectionOf rdf:nodeID="A390"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A391">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network.isLast"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_PM_bound">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:equivalentClass rdf:nodeID="A392"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A393">
+    <rdf:rest rdf:nodeID="A394"/>
+    <rdf:first rdf:nodeID="A395"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A396">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A397">
+    <owl:intersectionOf rdf:nodeID="A398"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A340">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A399">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A391"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A400">
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A380">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A401">
+    <swrl:body rdf:nodeID="A402"/>
+    <swrl:head rdf:nodeID="A403"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A381">
+    <rdf:rest rdf:nodeID="A404"/>
+    <rdf:first rdf:nodeID="A405"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A369">
+    <rdf:first rdf:nodeID="A342"/>
+    <rdf:rest rdf:nodeID="A406"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#maps">
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.maps"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A292">
+    <swrl:argument2 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#z"/>
+    <swrl:argument1 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#y"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A373">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#int_binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A407">
+    <rdf:first rdf:nodeID="A408"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A409">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Output_Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A410">
+    <owl:unionOf rdf:nodeID="A411"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A135">
+    <swrl:argument1 rdf:resource="urn:swrl#v3"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A412">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_PM_bound"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_Sk_In_PM_bound.PM_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A379">
+    <rdf:first rdf:nodeID="A400"/>
+    <rdf:rest rdf:nodeID="A413"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:equivalentClass rdf:nodeID="A414"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A390">
+    <rdf:rest rdf:nodeID="A142"/>
+    <rdf:first rdf:nodeID="A410"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A405">
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A403">
+    <rdf:first rdf:nodeID="A415"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A238">
+    <rdf:rest rdf:nodeID="A416"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A406">
+    <rdf:first rdf:nodeID="A322"/>
+    <rdf:rest rdf:nodeID="A417"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A418">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#int_binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.maps.Input_Interface.Mapped_Input">
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Mapped_Input"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input_Interface"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.maps"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Equipment.Output_Interface">
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Output_Interface"/>
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Output_Interface"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A419">
+    <swrl:head rdf:nodeID="A420"/>
+    <swrl:body rdf:nodeID="A421"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A374">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A261"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A413">
+    <rdf:first rdf:nodeID="A376"/>
+    <rdf:rest rdf:nodeID="A422"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A388">
+    <rdf:rest rdf:nodeID="A423"/>
+    <rdf:first rdf:nodeID="A409"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A408">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A130">
+    <swrl:argument2 rdf:resource="urn:swrl#v2"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A404">
+    <rdf:rest rdf:nodeID="A424"/>
+    <rdf:first rdf:nodeID="A425"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A426">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Transport_Function"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Transport_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A415">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A417">
+    <rdf:first rdf:nodeID="A122"/>
+    <rdf:rest rdf:nodeID="A427"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A411">
+    <rdf:rest rdf:nodeID="A428"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input_Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A416">
+    <rdf:rest rdf:nodeID="A429"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A262">
+    <rdf:first rdf:nodeID="A430"/>
+    <rdf:rest rdf:nodeID="A431"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A432">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A101">
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.adapts_to">
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A284">
+    <rdf:rest rdf:nodeID="A433"/>
+    <rdf:first rdf:nodeID="A434"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A17">
+    <owl:intersectionOf rdf:nodeID="A435"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A402">
+    <rdf:first rdf:nodeID="A280"/>
+    <rdf:rest rdf:nodeID="A436"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A421">
+    <rdf:rest rdf:nodeID="A437"/>
+    <rdf:first rdf:nodeID="A438"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A425">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Sink.AF_Sk_Out">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A246">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A305"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A310">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A439">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds.TF_Sk_In_PM_bound.PM_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A289">
+    <rdf:rest rdf:nodeID="A440"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A312">
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A314">
+    <rdf:rest rdf:nodeID="A441"/>
+    <rdf:first rdf:nodeID="A442"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A294">
+    <rdf:first rdf:nodeID="A432"/>
+    <rdf:rest rdf:nodeID="A443"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A355">
+    <rdf:rest rdf:nodeID="A444"/>
+    <rdf:first rdf:nodeID="A445"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A446">
+    <owl:intersectionOf rdf:nodeID="A447"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#PM_In">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:equivalentClass rdf:nodeID="A446"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A81">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.client_of">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A316">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A448">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.client_of"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A317">
+    <rdf:first rdf:nodeID="A315"/>
+    <rdf:rest rdf:nodeID="A449"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#PM_Out">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output"/>
+    <owl:equivalentClass rdf:nodeID="A397"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Input_Interface">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <owl:equivalentClass rdf:nodeID="A104"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A163">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A308">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A439"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#maps.Input_Interface.Mapped_Input">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#maps"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Mapped_Input"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input_Interface"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.maps.Input_Interface.Mapped_Input"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A309">
+    <rdf:first rdf:nodeID="A335"/>
+    <rdf:rest rdf:nodeID="A450"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A311">
+    <rdf:first rdf:nodeID="A451"/>
+    <rdf:rest rdf:nodeID="A452"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A440">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A442">
+    <swrl:argument1 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#y"/>
+    <swrl:argument2 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#x"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A443">
+    <rdf:first rdf:nodeID="A418"/>
+    <rdf:rest rdf:nodeID="A453"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A445">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.AF_Source.AF_So_In">
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Source.AF_So_In"/>
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Source.AF_So_In"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A57">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A454">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_PM_bound"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_So_Out_PM_bound.PM_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A299">
+    <rdf:first rdf:nodeID="A455"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A449">
+    <rdf:first rdf:nodeID="A297"/>
+    <rdf:rest rdf:nodeID="A456"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A108">
+    <rdf:rest rdf:nodeID="A457"/>
+    <rdf:first rdf:nodeID="A448"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_So_Out_AF_bound.AF_So_In">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_AF_bound"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A458">
+    <swrl:body rdf:nodeID="A459"/>
+    <swrl:head rdf:nodeID="A460"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.TF_Sink.TF_Sk_In">
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Sink.TF_Sk_In"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Sink.TF_Sk_In"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A236">
+    <owl:intersectionOf rdf:nodeID="A461"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A414">
+    <owl:intersectionOf rdf:nodeID="A383"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A452">
+    <rdf:first rdf:nodeID="A306"/>
+    <rdf:rest rdf:nodeID="A462"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A441">
+    <rdf:first rdf:nodeID="A463"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A453">
+    <rdf:first rdf:nodeID="A396"/>
+    <rdf:rest rdf:nodeID="A464"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.defines">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A444">
+    <rdf:first rdf:nodeID="A465"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A466">
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A321">
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network.isLast"/>
+    <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl:argument2>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A447">
+    <rdf:rest rdf:nodeID="A386"/>
+    <rdf:first rdf:nodeID="A454"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#eq_binds">
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.eq_binds"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A455">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#maps.Output_Interface.Mapped_Output">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#maps"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Mapped_Output"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.maps.Output_Interface.Mapped_Output"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A456">
+    <rdf:rest rdf:nodeID="A393"/>
+    <rdf:first rdf:nodeID="A467"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A468">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Mapped_Input"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#maps.Input_Interface.Mapped_Input"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A469">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#client_of"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#k">
+    <Layer_Network.isLast rdf:datatype="http://www.w3.org/2001/XMLSchema#true">true</Layer_Network.isLast>
+    <rdf:type rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A462">
+    <rdf:rest rdf:nodeID="A470"/>
+    <rdf:first rdf:nodeID="A471"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A385">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Sink.TF_Sk_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A463">
+    <swrl:argument2 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#z"/>
+    <swrl:argument1 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#y"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A464">
+    <rdf:first rdf:nodeID="A375"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A465">
+    <swrl:argument2 rdf:resource="urn:swrl#v3"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A472">
+    <swrl:argument1 rdf:resource="urn:swrl#v3"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A473">
+    <swrl:head rdf:nodeID="A474"/>
+    <swrl:body rdf:nodeID="A378"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A368">
+    <swrl:argument1 rdf:resource="urn:swrl#v9"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_So_Out_PM_bound.PM_In">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_PM_bound"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Port">
+    <owl:equivalentClass rdf:nodeID="A272"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A387">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.Physical_Media.PM_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A467">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A337">
+    <rdf:rest rdf:nodeID="A407"/>
+    <rdf:first rdf:nodeID="A389"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A339">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A468"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A457">
+    <rdf:rest rdf:nodeID="A399"/>
+    <rdf:first rdf:nodeID="A469"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Transport_Function">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Transport_Function"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Source.AF_So_Out">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:equivalentClass rdf:nodeID="A232"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A382">
+    <owl:intersectionOf rdf:nodeID="A475"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#z">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A476">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#client_of"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A477">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A478">
+    <rdf:first rdf:nodeID="A229"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A479">
+    <rdf:rest rdf:nodeID="A2"/>
+    <rdf:first rdf:nodeID="A480"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A481">
+    <rdf:rest rdf:nodeID="A234"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A392">
+    <owl:intersectionOf rdf:nodeID="A482"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A483">
+    <swrl:body rdf:nodeID="A76"/>
+    <swrl:head rdf:nodeID="A484"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A485">
+    <rdf:rest rdf:nodeID="A486"/>
+    <rdf:first rdf:nodeID="A487"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A461">
+    <rdf:rest rdf:nodeID="A488"/>
+    <rdf:first rdf:nodeID="A489"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A471">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A490">
+    <swrl:argument2 rdf:resource="urn:swrl#v8"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_from"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A491">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input_Interface"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.maps.Input_Interface.Mapped_Input"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network.isLast">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#y">
+    <INV.eq_binds rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#x"/>
+    <rdf:type rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A16">
+    <rdf:first rdf:nodeID="A281"/>
+    <rdf:rest rdf:nodeID="A492"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A459">
+    <rdf:first rdf:nodeID="A282"/>
+    <rdf:rest rdf:nodeID="A493"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A494">
+    <rdf:first rdf:nodeID="A352"/>
+    <rdf:rest rdf:nodeID="A495"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A175">
+    <owl:intersectionOf rdf:nodeID="A496"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A3">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.AF_Source.AF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A484">
+    <rdf:first rdf:nodeID="A42"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A497">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds.TF_So_Out_PM_bound.PM_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A498">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.TF_Sink.TF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A487">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A470">
+    <rdf:first rdf:nodeID="A285"/>
+    <rdf:rest rdf:nodeID="A499"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A500">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Sink.TF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_Source">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:equivalentClass rdf:nodeID="A74"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A501">
+    <swrl:body rdf:nodeID="A162"/>
+    <swrl:head rdf:nodeID="A502"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A422">
+    <rdf:first rdf:nodeID="A472"/>
+    <rdf:rest rdf:nodeID="A503"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A428">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Output_Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A475">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A491"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A395">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A492">
+    <rdf:rest rdf:nodeID="A149"/>
+    <rdf:first rdf:nodeID="A504"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A493">
+    <rdf:first rdf:nodeID="A257"/>
+    <rdf:rest rdf:nodeID="A505"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A506">
+    <owl:someValuesFrom rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_In"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Sink.AF_Sk_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A495">
+    <rdf:first rdf:nodeID="A333"/>
+    <rdf:rest rdf:nodeID="A48"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Output">
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <owl:equivalentClass rdf:nodeID="A207"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#x">
+    <eq_binds rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#y"/>
+    <componentOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#b"/>
+    <componentOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#a"/>
+    <rdf:type rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Transport_Processing_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Transport_Function"/>
+    <owl:equivalentClass rdf:nodeID="A225"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A482">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A497"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A488">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A498"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A486">
+    <rdf:rest rdf:nodeID="A110"/>
+    <rdf:first rdf:nodeID="A507"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A499">
+    <rdf:first rdf:nodeID="A267"/>
+    <rdf:rest rdf:nodeID="A508"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A276">
+    <swrl:argument2 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#y"/>
+    <swrl:argument1 rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#x"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A384">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A500"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A502">
+    <rdf:first rdf:nodeID="A509"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A503">
+    <rdf:first rdf:nodeID="A466"/>
+    <rdf:rest rdf:nodeID="A510"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A436">
+    <rdf:rest rdf:nodeID="A169"/>
+    <rdf:first rdf:nodeID="A511"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A420">
+    <rdf:first rdf:nodeID="A141"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A144">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.int_binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A209">
+    <owl:intersectionOf rdf:nodeID="A186"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A394">
+    <rdf:rest rdf:nodeID="A180"/>
+    <rdf:first rdf:nodeID="A145"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.Equipment.Input_Interface">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input_Interface"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A504">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A505">
+    <rdf:first rdf:nodeID="A372"/>
+    <rdf:rest rdf:nodeID="A152"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A496">
+    <rdf:rest rdf:nodeID="A115"/>
+    <rdf:first rdf:nodeID="A506"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A507">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A371">
+    <owl:intersectionOf rdf:nodeID="A136"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A508">
+    <rdf:first rdf:nodeID="A244"/>
+    <rdf:rest rdf:nodeID="A154"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A512">
+    <swrl:body rdf:nodeID="A213"/>
+    <swrl:head rdf:nodeID="A159"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A398">
+    <rdf:rest rdf:nodeID="A200"/>
+    <rdf:first rdf:nodeID="A412"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A513">
+    <owl:intersectionOf rdf:nodeID="A187"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A509">
+    <swrl:argument2 rdf:resource="urn:swrl#v9"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#adapts_to"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A510">
+    <rdf:rest rdf:nodeID="A194"/>
+    <rdf:first rdf:nodeID="A166"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A511">
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A514">
+    <swrl:argument2 rdf:resource="urn:swrl#v2"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v1"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf">
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A438">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A429">
+    <rdf:rest rdf:nodeID="A515"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A516">
+    <owl:unionOf rdf:nodeID="A517"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A427">
+    <rdf:first rdf:nodeID="A100"/>
+    <rdf:rest rdf:nodeID="A518"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A423">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A426"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A431">
+    <rdf:rest rdf:nodeID="A519"/>
+    <rdf:first rdf:nodeID="A520"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A230">
+    <swrl:argument1 rdf:resource="urn:swrl#v3"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A521">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#defines"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A64">
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.adapts_from">
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#client_of">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.client_of"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A424">
+    <rdf:rest rdf:nodeID="A167"/>
+    <rdf:first rdf:nodeID="A514"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <owl:equivalentClass rdf:nodeID="A522"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A523">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.AF_Sink.AF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A518">
+    <rdf:rest rdf:nodeID="A172"/>
+    <rdf:first rdf:nodeID="A524"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A434">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v2"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#maps"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A515">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#binds.AF_Sk_In.TF_Sk_Out">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.AF_Sk_In.TF_Sk_Out"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A240">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A521"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.int_binds">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A304">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A523"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A520">
+    <swrl:argument1 rdf:resource="urn:swrl#v7"/>
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A433">
+    <rdf:first rdf:nodeID="A83"/>
+    <rdf:rest rdf:nodeID="A525"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A435">
+    <rdf:rest rdf:nodeID="A231"/>
+    <rdf:first rdf:nodeID="A516"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A451">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A437">
+    <rdf:rest rdf:nodeID="A176"/>
+    <rdf:first rdf:nodeID="A526"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A307">
+    <owl:intersectionOf rdf:nodeID="A179"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A527">
+    <swrl:head rdf:nodeID="A216"/>
+    <swrl:body rdf:nodeID="A218"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A528">
+    <owl:members rdf:nodeID="A529"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A524">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A519">
+    <rdf:first rdf:nodeID="A530"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A320">
+    <rdf:rest rdf:nodeID="A531"/>
+    <rdf:first rdf:nodeID="A532"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A533">
+    <owl:intersectionOf rdf:nodeID="A534"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Transport_Function">
+    <owl:equivalentClass rdf:nodeID="A533"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#hasPart.TF_Source.TF_So_Out">
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Source"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A377">
+    <owl:intersectionOf rdf:nodeID="A535"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <rdfs:subClassOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Input"/>
+    <owl:equivalentClass rdf:nodeID="A513"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A290">
+    <swrl:argument1 rdf:resource="urn:swrl#v3"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A532">
+    <swrl:argument1 rdf:resource="urn:swrl#v6"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Equipment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A525">
+    <rdf:first rdf:nodeID="A51"/>
+    <rdf:rest rdf:nodeID="A536"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.AF_Sink.AF_Sk_In">
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Sink.AF_Sk_In"/>
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Sink.AF_Sk_In"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_In"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A522">
+    <owl:intersectionOf rdf:nodeID="A479"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A517">
+    <rdf:rest rdf:nodeID="A537"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A526">
+    <swrl:argument1 rdf:resource="urn:swrl#v8"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#Equipment">
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Termination_Function"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#PM_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Layer_Network"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In"/>
+    <owl:equivalentClass rdf:nodeID="A89"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <owl:disjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.AF_So_Out.TF_So_In">
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_In"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A529">
+    <rdf:rest rdf:nodeID="A201"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_In"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A538">
+    <owl:unionOf rdf:nodeID="A481"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A530">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v5"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A539">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_So_In"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#binds.TF_So_Out_AF_bound.AF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A274">
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Port"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.hasPart.AF_Sink.AF_Sk_Out">
+    <owl:inverseOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Sink.AF_Sk_Out"/>
+    <owl:propertyDisjointWith rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#hasPart.AF_Sink.AF_Sk_Out"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.componentOf"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out"/>
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sink"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A450">
+    <rdf:rest rdf:nodeID="A485"/>
+    <rdf:first rdf:nodeID="A540"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A460">
+    <rdf:first rdf:nodeID="A476"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A531">
+    <rdf:rest rdf:nodeID="A494"/>
+    <rdf:first rdf:nodeID="A477"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A480">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_So_Out_AF_bound"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_So_Out_AF_bound.AF_So_In"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A536">
+    <rdf:first rdf:nodeID="A1"/>
+    <rdf:rest rdf:nodeID="A478"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A537">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Source"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A474">
+    <rdf:first rdf:nodeID="A490"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A534">
+    <rdf:rest rdf:nodeID="A72"/>
+    <rdf:first rdf:nodeID="A538"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A430">
+    <swrl:argument2 rdf:resource="urn:swrl#v5"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:propertyPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#componentOf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A252">
+    <swrl:argument1 rdf:resource="urn:swrl#v4"/>
+    <swrl:classPredicate rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#Physical_Media"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A535">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:nodeID="A539"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A489">
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_In"/>
+    <owl:onProperty rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.AF_Sk_In.TF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A540">
+    <swrl:argument2 rdf:resource="urn:swrl#v6"/>
+    <swrl:argument1 rdf:resource="urn:swrl#v2"/>
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://nemo.inf.ufes.br/NewProject.owl#INV.binds.TF_Sk_In_AF_bound.AF_Sk_Out">
+    <rdfs:range rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#TF_Sk_In_AF_bound"/>
+    <rdfs:subPropertyOf rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#INV.binds"/>
+    <rdfs:domain rdf:resource="http://nemo.inf.ufes.br/NewProject.owl#AF_Sk_Out"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+</rdf:RDF>
