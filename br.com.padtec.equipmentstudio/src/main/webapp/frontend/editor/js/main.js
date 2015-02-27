@@ -1,253 +1,648 @@
-var graph = new joint.dia.Graph;
+var Rappid = Backbone.Router.extend({
 
-//Create a paper and wrap it in a PaperScroller.
-//----------------------------------------------
+    routes: {
+        '*path': 'home'
+    },
 
-var paper = new joint.dia.Paper({
+    initialize: function(options) {
+        
+        this.options = options || {};
+    },
 
-	width: 1000,
-	height: 1000,
-	gridSize: 1,
-	perpendicularLinks: true,
-	model: graph,
-	defaultLink: new joint.dia.Link({
-		attrs: {
-			// @TODO: scale(0) fails in Firefox
-			'.marker-source': { d: 'M 10 0 L 0 5 L 10 10 z', transform: 'scale(0.001)' },
-			'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }
-		}
-	})
-});
+    home: function() {
 
-var paperScroller = new joint.ui.PaperScroller({
-	autoResizePaper: true,
-	paper: paper
-});
+        this.initializeEditor();
+    },
 
-$('#paper').append(paperScroller.render().el);
+    initializeEditor: function() {
 
-paperScroller.center();
+        this.inspectorClosedGroups = {};
 
-//Create and populate stencil.
-//----------------------------
+        this.initializePaper();
+        this.initializeStencil();
+        this.initializeSelection();
+        this.initializeHaloAndInspector();
+        this.initializeNavigator();
+        this.initializeClipboard();
+        this.initializeCommandManager();
+        this.initializeToolbar();
+        // Intentionally commented out. See the `initializeValidator()` method for reasons.
+        // Uncomment for demo purposes.
+        // this.initializeValidator();
+        // Commented out by default. You need to run `node channelHub.js` in order to make
+        // channels working. See the documentation to the joint.com.Channel plugin for details.
+        //this.initializeChannel('ws://jointjs.com:4141');
+        if (this.options.channelUrl) {
+            this.initializeChannel(this.options.channelUrl);
+        }
+    },
 
-var stencil = new joint.ui.Stencil({ 
-	graph: graph,
-	paper: paper, 
-	width: 200, 
-	height: 380, 
-	groups: {
-		tfs: { label: 'Transport Functions', index: 1 },
-		equips: { label: 'Equipment Constructs', index: 2}
-	} });
+    // Create a graph, paper and wrap the paper in a PaperScroller.
+    initializePaper: function() {
+        
+        this.graph = new joint.dia.Graph;
 
-$('#stencil').append(stencil.render().el);
+        this.graph.on('add', function(cell, collection, opt) {
+            if (opt.stencil) {
+                this.createInspector(cell);
+                this.commandManager.stopListening();
+                this.inspector.updateCell();
+                this.commandManager.listen();
+                this.inspector.$('[data-attribute]:first').focus();
+            }
+        }, this);
 
-var r = new joint.shapes.basic.Rect({
-	position: { x: 60, y: 20 },
-	size: { width: 100, height: 60 },
-	attrs: {
-		rect: { rx: 2, ry: 2, width: 50, height: 30, fill: '#27AE60' },
-		text: { text: 'rect', fill: 'white', 'font-size': 10 }
-	}
-});
-var c = new joint.shapes.basic.Circle({
-	position: { x: 60, y: 100 },
-	size: { width: 100, height: 60 },
-	attrs: {
-		circle: { width: 50, height: 30, fill: '#E74C3C' },
-		text: { text: 'ellipse', fill: 'white', 'font-size': 10 }
-	}
-});
-var m = new joint.shapes.devs.Model({
-	position: { x: 75, y: 180 },
-	size: { width: 80, height: 90 },
-	inPorts: ['in1','in2'],
-	outPorts: ['out'],
-	attrs: {
-		rect: { fill: '#8e44ad', rx: 2, ry: 2 },
-		'.label': { text: 'model', fill: 'white', 'font-size': 10 },
-		'.inPorts circle, .outPorts circle': { fill: '#f1c40f', opacity: 0.9 },
-		'.inPorts text, .outPorts text': { 'font-size': 9 },
-	}
-});
-var i = new joint.shapes.basic.Image({
-	position: { x: 85, y: 290 },
-	size: { width: 50, height: 50 },
-	attrs: {
-		image: { width: 50, height: 50, 'xlink:href': 'data:image/png;base64,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' },
-		text: { text: 'image', 'font-size': 9, display: '' }
-	}
-});
+        this.paper = new joint.dia.Paper({
+            width: 1000,
+            height: 1000,
+            gridSize: 10,
+            perpendicularLinks: true,
+            model: this.graph,
+            defaultLink: new joint.dia.Link({
+                attrs: {
+                    // @TODO: scale(0) fails in Firefox
+                    '.marker-source': { d: 'M 10 0 L 0 5 L 10 10 z', transform: 'scale(0.001)' },
+                    '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' },
+                    '.connection': {
+                        stroke: 'black'
+                        // filter: { name: 'dropShadow', args: { dx: 1, dy: 1, blur: 2 } }
+                    }
+                }
+            })
+        });
 
-var myPath = new joint.shapes.basic.Path({
-    position: { x: 100, y: 50 },
-    size: { width: 60, height: 60 },
-    attrs: {
-        path: { d: 'M 10 25 L 10 75 L 60 75 L 10 25' },
-        text: { text: 'Triangle', 'font-size': 9, display: ''  }
+        this.paperScroller = new joint.ui.PaperScroller({
+            autoResizePaper: true,
+            padding: 50,
+            paper: this.paper
+        });
+
+        this.paperScroller.$el.appendTo('.paper-container');
+
+        this.paperScroller.center();
+
+        this.graph.on('add', this.initializeLinkTooltips, this);
+
+        $('.paper-scroller').on('mousewheel DOMMouseScroll', _.bind(function(evt) {
+
+            if (_.contains(KeyboardJS.activeKeys(), 'alt')) {
+                evt.preventDefault();
+                var delta = Math.max(-1, Math.min(1, (evt.originalEvent.wheelDelta || -evt.originalEvent.detail)));
+	        var offset = this.paperScroller.$el.offset();
+	        var o = this.paperScroller.toLocalPoint(evt.pageX - offset.left, evt.pageY - offset.top);
+                this.paperScroller.zoom(delta / 10, { min: 0.2, max: 5, ox: o.x, oy: o.y });
+            }
+
+        }, this));
+
+        this.snapLines = new joint.ui.Snaplines({ paper: this.paper });
+    },
+
+    initializeLinkTooltips: function(cell) {
+
+        if (cell instanceof joint.dia.Link) {
+
+            var linkView = this.paper.findViewByModel(cell);
+            new joint.ui.Tooltip({
+                className: 'tooltip small',
+                target: linkView.$('.tool-options'),
+                content: 'Click to open Inspector for this link',
+                left: linkView.$('.tool-options'),
+                direction: 'left'
+            });
+        }
+    },
+
+    // Create and popoulate stencil.
+    initializeStencil: function() {
+
+        this.stencil = new joint.ui.Stencil({
+            graph: this.graph,
+            paper: this.paper,
+            width: 240,
+            groups: Stencil.groups,
+            search: {
+                '*': ['type','attrs/text/text','attrs/.label/text'],
+                'org.Member': ['attrs/.rank/text','attrs/.name/text']
+            }
+        });
+
+        $('.stencil-container').append(this.stencil.render().el);
+
+        this.stencil.$el.on('contextmenu', function(evt) { evt.preventDefault(); });
+        $('.stencil-paper-drag').on('contextmenu', function(evt) { evt.preventDefault(); });
+
+        var layoutOptions = {
+            columnWidth: this.stencil.options.width / 2 - 10,
+            columns: 2,
+            rowHeight: 80,
+            resizeToFit: true,
+            dy: 10,
+            dx: 10
+        };
+
+        _.each(Stencil.groups, function(group, name) {
+            
+            this.stencil.load(Stencil.shapes[name], name);
+            joint.layout.GridLayout.layout(this.stencil.getGraph(name), layoutOptions);
+            this.stencil.getPaper(name).fitToContent(1, 1, 10);
+
+        }, this);
+
+        this.stencil.on('filter', function(graph) {
+            joint.layout.GridLayout.layout(graph, layoutOptions);
+        });
+
+        $('.stencil-container .btn-expand').on('click', _.bind(this.stencil.openGroups, this.stencil));
+        $('.stencil-container .btn-collapse').on('click', _.bind(this.stencil.closeGroups, this.stencil));
+
+        this.initializeStencilTooltips();
+    },
+
+    initializeStencilTooltips: function() {
+
+        // Create tooltips for all the shapes in stencil.
+        _.each(this.stencil.graphs, function(graph) {
+
+            graph.get('cells').each(function(cell) {
+
+                new joint.ui.Tooltip({
+                    target: '.stencil [model-id="' + cell.id + '"]',
+                    content: cell.get('type').split('.').join(' '),
+                    left: '.stencil',
+                    direction: 'left'
+                });
+            });
+        });
+    },
+
+    initializeSelection: function() {
+        
+        this.selection = new Backbone.Collection;
+        this.selectionView = new joint.ui.SelectionView({ paper: this.paper, graph: this.graph, model: this.selection });
+
+        // Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
+        // Otherwise, initiate paper pan.
+        this.paper.on('blank:pointerdown', function(evt, x, y) {
+
+            if (_.contains(KeyboardJS.activeKeys(), 'shift')) {
+                this.selectionView.startSelecting(evt, x, y);
+            } else {
+                this.selectionView.cancelSelection();
+                this.paperScroller.startPanning(evt, x, y);
+            }
+        }, this);
+
+        this.paper.on('cell:pointerdown', function(cellView, evt) {
+            // Select an element if CTRL/Meta key is pressed while the element is clicked.
+            if ((evt.ctrlKey || evt.metaKey) && !(cellView.model instanceof joint.dia.Link)) {
+                this.selection.add(cellView.model);
+                this.selectionView.createSelectionBox(cellView);
+            }
+        }, this);
+
+        this.selectionView.on('selection-box:pointerdown', function(evt) {
+            // Unselect an element if the CTRL/Meta key is pressed while a selected element is clicked.
+            if (evt.ctrlKey || evt.metaKey) {
+                var cell = this.selection.get($(evt.target).data('model'));
+                this.selection.reset(this.selection.without(cell));
+                this.selectionView.destroySelectionBox(this.paper.findViewByModel(cell));
+            }
+        }, this);
+
+        // Disable context menu inside the paper.
+        // This prevents from context menu being shown when selecting individual elements with Ctrl in OS X.
+        this.paper.el.oncontextmenu = function(evt) { evt.preventDefault(); };
+
+        KeyboardJS.on('delete, backspace', _.bind(function(evt, keys) {
+
+            if (!$.contains(evt.target, this.paper.el)) {
+                // remove selected elements from the paper only if the target is the paper
+                return;
+            }
+
+            this.commandManager.initBatchCommand();
+            this.selection.invoke('remove');
+            this.commandManager.storeBatchCommand();
+            this.selectionView.cancelSelection();
+
+            // Prevent Backspace from navigating one page back (happens in FF).
+            if (_.contains(keys, 'backspace') && !$(evt.target).is("input, textarea")) {
+
+                evt.preventDefault();
+            }
+
+        }, this));
+    },
+
+    createInspector: function(cellView) {
+
+        var cell = cellView.model || cellView;
+
+        // No need to re-render inspector if the cellView didn't change.
+        if (!this.inspector || this.inspector.options.cell !== cell) {
+            
+            if (this.inspector) {
+
+                this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {
+		    return $(g).attr('data-name');
+		});
+                
+                // Clean up the old inspector if there was one.
+                this.inspector.updateCell();
+                this.inspector.remove();
+            }
+
+            var inspectorDefs = InspectorDefs[cell.get('type')];
+
+            this.inspector = new joint.ui.Inspector({
+                inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,
+                groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,
+                cell: cell
+            });
+
+            this.initializeInspectorTooltips();
+            
+            this.inspector.render();
+            $('.inspector-container').html(this.inspector.el);
+
+            if (this.inspectorClosedGroups[cell.id]) {
+
+		_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);
+
+            } else {
+                this.inspector.$('.group:not(:first-child)').addClass('closed');
+            }
+        }
+    },
+
+    initializeInspectorTooltips: function() {
+        
+        this.inspector.on('render', function() {
+
+            this.inspector.$('[data-tooltip]').each(function() {
+
+                var $label = $(this);
+                new joint.ui.Tooltip({
+                    target: $label,
+                    content: $label.data('tooltip'),
+                    right: '.inspector',
+                    direction: 'right'
+                });
+            });
+            
+        }, this);
+    },
+
+    initializeHaloAndInspector: function() {
+
+        this.paper.on('cell:pointerup', function(cellView, evt) {
+
+            if (cellView.model instanceof joint.dia.Link || this.selection.contains(cellView.model)) return;
+
+            // In order to display halo link magnets on top of the freetransform div we have to create the
+            // freetransform first. This is necessary for IE9+ where pointer-events don't work and we wouldn't
+            // be able to access magnets hidden behind the div.
+            var freetransform = new joint.ui.FreeTransform({ graph: this.graph, paper: this.paper, cell: cellView.model });
+            var halo = new joint.ui.Halo({ graph: this.graph, paper: this.paper, cellView: cellView });
+
+            // As we're using the FreeTransform plugin, there is no need for an extra resize tool in Halo.
+            // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
+            // handles nicely spread around the elements.
+            halo.removeHandle('resize');
+            halo.changeHandle('clone', { position: 'se' });
+            
+            freetransform.render();
+            halo.render();
+
+            this.initializeHaloTooltips(halo);
+
+            this.createInspector(cellView);
+
+            this.selectionView.cancelSelection();
+            this.selection.reset([cellView.model]);
+            
+        }, this);
+
+        this.paper.on('link:options', function(evt, cellView, x, y) {
+
+            this.createInspector(cellView);
+        }, this);
+    },
+
+    initializeNavigator: function() {
+
+        var navigator = this.navigator = new joint.ui.Navigator({
+            width: 240,
+            height: 115,
+            paperScroller: this.paperScroller,
+            zoomOptions: { max: 5, min: 0.2 }
+        });
+
+        navigator.$el.appendTo('.navigator-container');
+        navigator.render();
+    },
+
+    initializeHaloTooltips: function(halo) {
+
+        new joint.ui.Tooltip({
+            className: 'tooltip small',
+            target: halo.$('.remove'),
+            content: 'Click to remove the object',
+            direction: 'right',
+            right: halo.$('.remove'),
+            padding: 15
+        });
+        new joint.ui.Tooltip({
+            className: 'tooltip small',
+            target: halo.$('.fork'),
+            content: 'Click and drag to clone and connect the object in one go',
+            direction: 'left',
+            left: halo.$('.fork'),
+            padding: 15
+        });
+        new joint.ui.Tooltip({
+            className: 'tooltip small',
+            target: halo.$('.clone'),
+            content: 'Click and drag to clone the object',
+            direction: 'left',
+            left: halo.$('.clone'),
+            padding: 15
+        });
+        new joint.ui.Tooltip({
+            className: 'tooltip small',
+            target: halo.$('.unlink'),
+            content: 'Click to break all connections to other objects',
+            direction: 'right',
+            right: halo.$('.unlink'),
+            padding: 15
+        });
+        new joint.ui.Tooltip({
+            className: 'tooltip small',
+            target: halo.$('.link'),
+            content: 'Click and drag to connect the object',
+            direction: 'left',
+            left: halo.$('.link'),
+            padding: 15
+        });
+        new joint.ui.Tooltip({
+            className: 'tooltip small',
+            target: halo.$('.rotate'),
+            content: 'Click and drag to rotate the object',
+            direction: 'right',
+            right: halo.$('.rotate'),
+            padding: 15
+        });
+    },
+
+    initializeClipboard: function() {
+
+        this.clipboard = new joint.ui.Clipboard;
+        
+        KeyboardJS.on('ctrl + c', _.bind(function() {
+            // Copy all selected elements and their associated links.
+            this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
+        }, this));
+        
+        KeyboardJS.on('ctrl + v', _.bind(function() {
+
+            this.selectionView.cancelSelection();
+
+            this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
+
+            // Make sure pasted elements get selected immediately. This makes the UX better as
+            // the user can immediately manipulate the pasted elements.
+            this.clipboard.each(function(cell) {
+
+                if (cell.get('type') === 'link') return;
+
+                // Push to the selection not to the model from the clipboard but put the model into the graph.
+                // Note that they are different models. There is no views associated with the models
+                // in clipboard.
+                this.selection.add(this.graph.getCell(cell.id));
+		this.selectionView.createSelectionBox(cell.findView(this.paper));
+
+            }, this);
+
+        }, this));
+
+        KeyboardJS.on('ctrl + x', _.bind(function() {
+
+            var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
+            this.commandManager.initBatchCommand();
+            _.invoke(originalCells, 'remove');
+            this.commandManager.storeBatchCommand();
+            this.selectionView.cancelSelection();
+        }, this));
+    },
+
+    initializeCommandManager: function() {
+
+        this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
+
+        KeyboardJS.on('ctrl + z', _.bind(function() {
+
+            this.commandManager.undo();
+            this.selectionView.cancelSelection();
+        }, this));
+        
+        KeyboardJS.on('ctrl + y', _.bind(function() {
+
+            this.commandManager.redo();
+            this.selectionView.cancelSelection();
+        }, this));
+    },
+
+    initializeValidator: function() {
+
+        // This is just for demo purposes. Every application has its own validation rules or no validation
+        // rules at all.
+        
+        this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
+
+        this.validator.validate('change:position change:size add', _.bind(function(err, command, next) {
+
+            if (command.action === 'add' && command.batch) return next();
+
+            var cell = command.data.attributes || this.graph.getCell(command.data.id).toJSON();
+            var area = g.rect(cell.position.x, cell.position.y, cell.size.width, cell.size.height);
+
+            if (_.find(this.graph.getElements(), function(e) {
+
+	        var position = e.get('position');
+                var size = e.get('size');
+	        return (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height)));
+
+            })) return next("Another cell in the way!");
+        }, this));
+
+        this.validator.on('invalid',function(message) {
+            
+            $('.statusbar-container').text(message).addClass('error');
+
+            _.delay(function() {
+
+                $('.statusbar-container').text('').removeClass('error');
+                
+            }, 1500);
+        });
+    },
+
+    initializeToolbar: function() {
+
+        this.initializeToolbarTooltips();
+        
+        $('#btn-undo').on('click', _.bind(this.commandManager.undo, this.commandManager));
+        $('#btn-redo').on('click', _.bind(this.commandManager.redo, this.commandManager));
+        $('#btn-clear').on('click', _.bind(this.graph.clear, this.graph));
+        $('#btn-svg').on('click', _.bind(this.paper.openAsSVG, this.paper));
+        $('#btn-png').on('click', _.bind(this.paper.openAsPNG, this.paper));
+        $('#btn-zoom-in').on('click', _.bind(function() { this.paperScroller.zoom(0.2, { max: 5, grid: 0.2 }); }, this));
+        $('#btn-zoom-out').on('click', _.bind(function() { this.paperScroller.zoom(-0.2, { min: 0.2, grid: 0.2 }); }, this));
+        $('#btn-zoom-to-fit').on('click', _.bind(function() {
+            this.paperScroller.zoomToFit({
+                padding: 20,
+                scaleGrid: 0.2,
+                minScale: 0.2,
+                maxScale: 5
+            });
+        }, this));
+        $('#btn-fullscreen').on('click', _.bind(this.toggleFullscreen, this));
+        $('#btn-print').on('click', _.bind(this.paper.print, this.paper));
+
+        // toFront/toBack must be registered on mousedown. SelectionView empties the selection
+        // on document mouseup which happens before the click event. @TODO fix SelectionView?
+        $('#btn-to-front').on('mousedown', _.bind(function(evt) { this.selection.invoke('toFront'); }, this));
+        $('#btn-to-back').on('mousedown', _.bind(function(evt) { this.selection.invoke('toBack'); }, this));
+
+        $('#btn-layout').on('click', _.bind(this.layoutDirectedGraph, this));
+        
+        $('#input-gridsize').on('change', _.bind(function(evt) {
+            var gridSize = parseInt(evt.target.value, 10);
+            $('#output-gridsize').text(gridSize);
+            this.setGrid(gridSize);
+        }, this));
+
+        $('#snapline-switch').change(_.bind(function(evt) {
+            if (evt.target.checked) {
+                this.snapLines.startListening();
+            } else {
+                this.snapLines.stopListening();
+            }
+        }, this));
+
+        var $zoomLevel = $('#zoom-level');
+        this.paper.on('scale', function(scale) {
+            $zoomLevel.text(Math.round(scale * 100));
+        });
+    },
+
+    initializeToolbarTooltips: function() {
+        
+        $('.toolbar-container [data-tooltip]').each(function() {
+            
+            new joint.ui.Tooltip({
+                target: $(this),
+                content: $(this).data('tooltip'),
+                top: '.toolbar-container',
+                direction: 'top'
+            });
+        });
+    },
+
+    toggleFullscreen: function() {
+
+        var el = document.body;
+
+        function prefixedResult(el, prop) {
+            
+            var prefixes = ['webkit', 'moz', 'ms', 'o', ''];
+            for (var i = 0; i < prefixes.length; i++) {
+                var prefix = prefixes[i];
+                var propName = prefix ? (prefix + prop) : (prop.substr(0, 1).toLowerCase() + prop.substr(1));
+                if (!_.isUndefined(el[propName])) {
+                    return _.isFunction(el[propName]) ? el[propName]() : el[propName];
+                }
+            }
+        }
+
+        if (prefixedResult(document, 'FullScreen') || prefixedResult(document, 'IsFullScreen')) {
+            prefixedResult(document, 'CancelFullScreen');
+        } else {
+            prefixedResult(el, 'RequestFullScreen');
+        }
+    },
+
+    setGrid: function(gridSize) {
+
+        this.paper.options.gridSize = gridSize;
+        
+        var backgroundImage = this.getGridBackgroundImage(gridSize);
+        this.paper.$el.css('background-image', 'url("' + backgroundImage + '")');
+    },
+
+    getGridBackgroundImage: function(gridSize, color) {
+
+        var canvas = $('<canvas/>', { width: gridSize, height: gridSize });
+
+        canvas[0].width = gridSize;
+        canvas[0].height = gridSize;
+
+        var context = canvas[0].getContext('2d');
+        context.beginPath();
+        context.rect(1, 1, 1, 1);
+        context.fillStyle = color || '#AAAAAA';
+        context.fill();
+
+        return canvas[0].toDataURL('image/png');
+    },
+
+    layoutDirectedGraph: function() {
+
+        this.commandManager.initBatchCommand();
+        
+        _.each(this.graph.getLinks(), function(link) {
+
+            // Reset vertices.
+            link.set('vertices', []);
+            
+            // Remove all the non-connected links.
+            if (!link.get('source').id || !link.get('target').id) {
+                link.remove();
+            }
+        });
+
+        var pad = 50; // padding for the very left and very top element.
+        joint.layout.DirectedGraph.layout(this.graph, {
+            setLinkVertices: false,
+            rankDir: 'LR',
+            rankDir: 'TB',
+            setPosition: function(cell, box) {
+                cell.position(box.x - box.width / 2 + pad, box.y - box.height / 2 + pad);
+            }
+        });
+
+        // Scroll to the top-left corner as this is the initial position for the DirectedGraph layout.
+        this.paperScroller.el.scrollLeft = 0;
+        this.paperScroller.el.scrollTop = 0;
+        
+        this.commandManager.storeBatchCommand();
+    },
+
+    initializeChannel: function(url) {
+        // Example usage of the Channel plugin. Note that this assumes the `node channelHub` is running.
+        // See the channelHub.js file for furhter instructions.
+
+        var room = (location.hash && location.hash.substr(1));
+        if (!room) {
+            room = joint.util.uuid();
+            this.navigate('#' + room);
+        }
+
+        var channel = this.channel = new joint.com.Channel({ graph: this.graph, url: url || 'ws://localhost:4141', query: { room: room } });
+        console.log('room', room, 'channel', channel.id);
+
+        var roomUrl = location.href.replace(location.hash, '') + '#' + room;
+        $('.statusbar-container .rt-colab').html('Send this link to a friend to <b>collaborate in real-time</b>: <a href="' + roomUrl + '" target="_blank">' + roomUrl + '</a>');
     }
 });
-
-stencil.load(CustomShape.getStencilForTransportFunctions(),'tfs');
-stencil.load([myPath, r, c, i, m],'equips');
-
-
-//Selection.
-//----------
-
-var selection = new Backbone.Collection;
-
-var selectionView = new joint.ui.SelectionView({
-	paper: paper,
-	graph: graph,
-	model: selection
-});
-
-
-paper.on('blank:pointerdown', selectionView.startSelecting);
-
-paper.on('cell:pointerdown', function(cellView, evt) {
-	// Select an element if CTRL/Meta key is pressed while the element is clicked.
-	if ((evt.ctrlKey || evt.metaKey) && !(cellView.model instanceof joint.dia.Link)) {
-		selection.add(cellView.model);
-		selectionView.createSelectionBox(cellView);
-	}
-});
-
-selectionView.on('selection-box:pointerdown', function(evt) {
-	// Unselect an element if the CTRL/Meta key is pressed while a selected element is clicked.
-	if (evt.ctrlKey || evt.metaKey) {
-		var cell = selection.get($(evt.target).data('model'));
-		selection.reset(selection.without(cell));
-		selectionView.destroySelectionBox(paper.findViewByModel(cell));
-	}
-});
-
-//Disable context menu inside the paper.
-//This prevents from context menu being shown when selecting individual elements with Ctrl in OS X.
-paper.el.oncontextmenu = function(evt) { evt.preventDefault(); };
-
-//CUSTOM
-//Removing rotate action of a selection
-selectionView.removeHandle('rotate');
-
-//An example of a simple element editor.
-//--------------------------------------
-
-var elementInspector = new ElementInspector();
-$('.inspector').append(elementInspector.el);
-
-//Halo - element tools.
-//---------------------
-
-paper.on('cell:pointerup', function(cellView, evt) {
-
-	if (cellView.model instanceof joint.dia.Link || selection.contains(cellView.model)) return;
-
-	var halo = new joint.ui.Halo({
-		graph: graph,
-		paper: paper,
-		cellView: cellView
-	});
-
-	halo.render();
-	elementInspector.render(cellView);
-
-	//CUSTOM
-	//Removing useless actions
-	halo.removeHandle('clone');
-	halo.removeHandle('rotate');
-	halo.removeHandle('fork');
-	halo.removeHandle('unlink');
-
-	halo.changeHandle('remove', { position: 'sw' });
-	halo.changeHandle('link', { position: 's' });
-
-});
-
-
-//Clipboard.
-//----------
-
-var clipboard = new joint.ui.Clipboard;
-KeyboardJS.on('ctrl + c', function() {
-	// Copy all selected elements and their associated links.
-	clipboard.copyElements(selection, graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
-});
-KeyboardJS.on('ctrl + v', function() {
-	clipboard.pasteCells(graph);
-
-	selectionView.cancelSelection();
-
-	clipboard.pasteCells(graph, { link: { z: -1 }, useLocalStorage: true });
-
-	// Make sure pasted elements get selected immediately. This makes the UX better as
-	// the user can immediately manipulate the pasted elements.
-	clipboard.each(function(cell) {
-
-		if (cell.get('type') === 'link') return;
-
-		// Push to the selection not to the model from the clipboard but put the model into the graph.
-		// Note that they are different models. There is no views associated with the models
-		// in clipboard.
-		selection.add(graph.get('cells').get(cell.id));
-	});
-
-	selection.each(function(cell) {
-		selectionView.createSelectionBox(paper.findViewByModel(cell));
-	});
-});
-
-//Command Manager - undo/redo.
-//----------------------------
-
-var commandManager = new joint.dia.CommandManager({ graph: graph });
-
-//Validator
-//---------
-
-var validator = new joint.dia.Validator({ commandManager: commandManager });
-
-validator.validate('change:position change:size add', function (err, command, next) {
-
-	if (command.action === 'add' && command.batch) return next();
-
-	var cell = command.data.attributes || graph.getCell(command.data.id).toJSON();
-	var area = g.rect(cell.position.x, cell.position.y, cell.size.width, cell.size.height);
-
-	if (_.find(graph.getElements(), function (e) {
-
-		var position = e.get('position'), size = e.get('size');
-		return (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height)));
-
-	})) return next("Another cell in the way!");
-});
-
-validator.on('invalid',function(message) {
-	$('#message').text(message).fadeIn(0).delay(1500).fadeOut(0);
-});
-
-//Hook on toolbar buttons.
-//------------------------
-
-$('#btn-undo').on('click', _.bind(commandManager.undo, commandManager));
-$('#btn-redo').on('click', _.bind(commandManager.redo, commandManager));
-$('#btn-clear').on('click', _.bind(graph.clear, graph));
-$('#btn-svg').on('click', function() {
-	paper.openAsSVG();
-	console.log(paper.toSVG()); // An exmaple of retriving the paper SVG as a string.
-});
-
-$('#btn-zoom-in').on('click', function() {
-	paperScroller.zoom(.2, { max: 3 });
-});
-$('#btn-zoom-out').on('click', function() {
-	paperScroller.zoom(-.2, { min: 0.2 });
-});
-
-//Snaplines - a.k.a Guidelines - CUSTOM
-//------------------------
-
-var snaplines = new joint.ui.Snaplines({ paper: paper });
-snaplines.startListening();
