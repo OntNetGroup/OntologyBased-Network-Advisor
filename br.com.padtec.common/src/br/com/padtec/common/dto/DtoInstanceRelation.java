@@ -41,4 +41,8 @@ public class DtoInstanceRelation{
 		this.Target = Target;
 	}
 
+	@Override
+	public String toString() {
+		return this.Source + " -> " + this.Property + " -> " + this.Target;
+	}
 }
