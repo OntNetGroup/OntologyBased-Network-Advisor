@@ -126,5 +126,11 @@
 			<artifactId>okco-core</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>br.inf.ufes.padtec</groupId>
+			<artifactId>tnokco</artifactId>
+			<version>0.0.1</version>
+			<type>war</type>
+		</dependency>
   </dependencies>
 </project>

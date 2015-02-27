@@ -11,6 +11,8 @@ import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFList;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Statement;
 
 public class FactoryUtil {
@@ -44,11 +46,6 @@ public class FactoryUtil {
 		Individual individual = model.getIndividual(individualURI);
 		DatatypeProperty dataProperty = model.getDatatypeProperty(dataPropertyURI);
 		Literal literal = model.createTypedLiteral(value, typeURI);
-		System.out.println(individual);
-		System.out.println(individualURI);
-		System.out.println(dataProperty);
-		System.out.println(dataPropertyURI);
-		System.out.println(literal);
 		individual.addLiteral(dataProperty, literal);
 		
 		if(forceSuperDP){
@@ -56,7 +53,9 @@ public class FactoryUtil {
 			List<String> superDPs = QueryUtil.getAllSuperProperties(model, dataPropertyURI);
 			for (String superDP : superDPs) {
 				DatatypeProperty superDataProperty = model.getDatatypeProperty(superDP);
-				individual.addLiteral(superDataProperty, literal);
+				if(superDataProperty != null){
+					individual.addLiteral(superDataProperty, literal);
+				}				
 			}
 		}		
 	}
@@ -73,6 +72,32 @@ public class FactoryUtil {
 	{			
 		createInstanceIndividual(model, individualURI, classURI, true);		
 	}
+	
+	/**
+	 * Create an Individual as from some classURI and from all classURI's super types.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void createAllDifferent(OntModel model, List<String> individualURIs)
+	{			
+		RDFNode[] nodes = new RDFNode[individualURIs.size()];
+				
+		for (int i = 0; i < individualURIs.size(); i++) {
+			Individual indv = model.getIndividual(individualURIs.get(i));
+			nodes[i] = indv;
+		}
+		RDFList rdfList = model.createList(nodes);
+		
+		model.createAllDifferent(rdfList);
+		
+		System.out.println();
+	}
+	
+	
 	/**
 	 * Create an Individual as from some classURI and from all classURI's super types.
 	 * 
@@ -94,6 +119,9 @@ public class FactoryUtil {
 			//also set the individualURI as from all super types of classURI
 			List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
 			for (String superType : superTypes) {
+				if(superType.contains("Thing")){
+					System.out.println();
+				}
 				OntClass superClass = model.getOntClass(superType);
 				individual.addOntClass(superClass);
 			}
@@ -150,16 +178,20 @@ public class FactoryUtil {
 			List<String> superOPUris = QueryUtil.getAllSuperProperties(model, objectPropertyURI);
 			for (String superOPURI : superOPUris) {
 				ObjectProperty superOP = model.getObjectProperty(superOPURI);
-				Statement superStmt = model.createStatement(indvSource, superOP, indvTarget);
-				model.add(superStmt);
-				
-				if(forceInverses){
-					//create all inverses of the super OP
-					List<String> superInversesURIs = QueryUtil.getAllInverseOfURIs(model, superOPURI);
-					for (String superInvURI : superInversesURIs) {
-						ObjectProperty superInvOP = model.getObjectProperty(superInvURI);
-						Statement superInvStmt = model.createStatement(indvTarget, superInvOP, indvSource);
-						model.add(superInvStmt);
+				if(superOP != null){
+					Statement superStmt = model.createStatement(indvSource, superOP, indvTarget);
+					model.add(superStmt);
+					
+					if(forceInverses){
+						//create all inverses of the super OP
+						List<String> superInversesURIs = QueryUtil.getAllInverseOfURIs(model, superOPURI);
+						for (String superInvURI : superInversesURIs) {
+							ObjectProperty superInvOP = model.getObjectProperty(superInvURI);
+							if(superInvOP != null){
+								Statement superInvStmt = model.createStatement(indvTarget, superInvOP, indvSource);
+								model.add(superInvStmt);
+							}
+						}
 					}
 				}
 			}

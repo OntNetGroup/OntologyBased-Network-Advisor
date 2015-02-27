@@ -34,6 +34,31 @@ public class QueryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	static public boolean individualExists(InfModel model, String individualUri) 
+	{		
+		System.out.println("\nExecuting individualExists()...");
+		String queryString = ""
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+				+ "ASK\n"
+				+ "{\n"
+				+ "\t<" + individualUri + "> rdf:type owl:NamedIndividual  ;\n"
+				+ "}\n";
+		Query query = QueryFactory.create(queryString);
+		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean exist = qe.execAsk();		
+		
+		return exist;
+	}
+	
+	/** 
+	 * Return the URI of all classes of the ontology. This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * 
+	 * @author John Guerson
+	 */
 	static public List<String> getClassesURI(InfModel model) 
 	{		
 		System.out.println("\nExecuting getClassesURI()...");
