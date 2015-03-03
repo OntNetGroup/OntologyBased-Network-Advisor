@@ -1,0 +1,65 @@
+***
+
+Layer_Network: ODU, OTU, OCh, OMS, OTS;
+
+Equipment: eq_oms_so, eq_oms_sk;
+Input_Interface: eq_oms_so_in1, eq_oms_so_in2, eq_oms_sk_in;
+Output_Interface: eq_oms_so_out, eq_oms_sk_out1, eq_oms_sk_out2;
+
+TF_Source: tf_oms_so;
+TF_Sink: tf_oms_sk;
+AF_Source: af_oms_so;  
+AF_Sink: af_oms_sk;
+
+Input: tf_oms_so_in, af_oms_so_in1, af_oms_so_in2, tf_oms_sk_in, af_oms_sk_in;
+Output: tf_oms_so_out, af_oms_so_out, tf_oms_sk_out, af_oms_sk_out1, af_oms_sk_out2;
+
+***
+
+client_of: (ODU, OTU), (OTU, OCh), (OCh, OMS), (OMS, OTS);
+
+componentOf: 	(eq_oms_so, eq_oms_so_in1),
+				(eq_oms_so, eq_oms_so_in2),
+				(eq_oms_so, eq_oms_so_out),
+				(eq_oms_sk, eq_oms_sk_in),
+				(eq_oms_sk, eq_oms_sk_out1),
+				(eq_oms_sk, eq_oms_sk_out2);
+				
+defines: (tf_oms_so, OMS), (tf_oms_sk, OMS);
+adapts_from: (af_oms_so, OCh), (af_oms_sk, OCh);
+adapts_to: (af_oms_so, OMS), (af_oms_sk, OMS);
+
+componentOf:	(eq_oms_so, af_oms_so),
+				(eq_oms_so, tf_oms_so),
+				(eq_oms_sk, af_oms_sk),
+				(eq_oms_sk, tf_oms_sk);
+				
+componentOf:	(tf_oms_so, tf_oms_so_in), 
+				(af_oms_so, af_oms_so_in1), 
+				(af_oms_so, af_oms_so_in2), 
+				(tf_oms_sk, tf_oms_sk_in), 
+				(af_oms_sk, af_oms_sk_in),
+				(tf_oms_so, tf_oms_so_out), 
+				(af_oms_so, af_oms_so_out), 
+				(tf_oms_sk, tf_oms_sk_out), 
+				(af_oms_sk, af_oms_sk_out1), 
+				(af_oms_sk, af_oms_sk_out2);
+				
+binds:	(af_oms_so_out, tf_oms_so_in),
+		(af_oms_sk_in, tf_oms_sk_out);
+
+maps:	(eq_oms_so_in1, af_oms_so_in1),
+		(eq_oms_so_in2, af_oms_so_in2),
+		(eq_oms_sk_in, tf_oms_sk_in),
+		(eq_oms_so_out, tf_oms_so_out),
+		(eq_oms_sk_out1, af_oms_sk_out1),
+		(eq_oms_sk_out2, af_oms_sk_out2);
+
+
+				
+				
+***
+
+
+
+***
