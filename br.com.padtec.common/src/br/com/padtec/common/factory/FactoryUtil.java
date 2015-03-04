@@ -30,6 +30,7 @@ public class FactoryUtil {
 	{			
 		createInstanceAttribute(model, individualURI, dataPropertyURI, value, typeURI, true);
 	}
+	
 	/**
 	 * Create an Instance of Data Property as from an Individual and enforce all dataTypeURI's super DP.
 	 * 
@@ -49,16 +50,33 @@ public class FactoryUtil {
 		individual.addLiteral(dataProperty, literal);
 		
 		if(forceSuperDP){
-			//also set the individualURI as from all super types of classURI
-			List<String> superDPs = QueryUtil.getAllSuperProperties(model, dataPropertyURI);
-			for (String superDP : superDPs) {
-				DatatypeProperty superDataProperty = model.getDatatypeProperty(superDP);
-				if(superDataProperty != null){
-					individual.addLiteral(superDataProperty, literal);
-				}				
-			}
+			enforceInstAttrSuper(model, individualURI, dataPropertyURI, value, typeURI);
 		}		
 	}
+	
+	/**
+	 * Enforce all super types of an individualURI from a classURI's.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void enforceInstAttrSuper(OntModel model, String individualURI, String dataPropertyURI, String value, String typeURI){
+		//create the individualURI as from classURI
+		Individual individual = model.getIndividual(individualURI);
+		Literal literal = model.createTypedLiteral(value, typeURI);
+		//also set the individualURI as from all super types of classURI
+		List<String> superDPs = QueryUtil.getAllSuperProperties(model, dataPropertyURI);
+		for (String superDP : superDPs) {
+			DatatypeProperty superDataProperty = model.getDatatypeProperty(superDP);
+			if(superDataProperty != null){
+				individual.addLiteral(superDataProperty, literal);
+			}				
+		}
+	}	
+		
 	/**
 	 * Create an Individual as from some classURI and from all classURI's super types.
 	 * 
@@ -116,16 +134,30 @@ public class FactoryUtil {
 		individual.addOntClass(ontClass);
 		
 		if(forceSuperTypes){
-			//also set the individualURI as from all super types of classURI
-			List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
-			for (String superType : superTypes) {
-				if(superType.contains("Thing")){
-					System.out.println();
-				}
-				OntClass superClass = model.getOntClass(superType);
-				individual.addOntClass(superClass);
-			}
+			enforceInstIndvSuperTypes(model, individualURI, classURI);
 		}		
+	}
+	
+	/**
+	 * Enforce all super types of an individualURI from a classURI's.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void enforceInstIndvSuperTypes(OntModel model, String individualURI, String classURI){
+		//also set the individualURI as from all super types of classURI
+		List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
+		for (String superType : superTypes) {
+			if(superType.contains("Thing")){
+				System.out.println();
+			}
+			OntClass superClass = model.getOntClass(superType);
+			Individual individual = model.createIndividual(individualURI, superClass);
+			individual.addOntClass(superClass);
+		}
 	}
 	
 	/**
@@ -139,8 +171,9 @@ public class FactoryUtil {
 	 * @author Freddy Brasileiro
 	 */
 	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI){
-		createInstanceRelation(model, indvSourceURI, objectPropertyURI, indvTargetURI, true, true);
+		createInstanceRelation(model, indvSourceURI, objectPropertyURI, indvTargetURI, true, true, true);
 	}
+	
 	/**
 	 * Create an object property between two individuals, and all super OP and all inverses between the same two individuals.
 	 * 
@@ -153,7 +186,7 @@ public class FactoryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceSuperObjProp, boolean forceInverses)
+	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceSuperObjProp, boolean forceInverses, boolean forceCandSubRelation)
 	{			
 		//Create an object property between two individuals
 		Individual indvSource = model.getIndividual(indvSourceURI);
@@ -164,38 +197,108 @@ public class FactoryUtil {
 		model.add(stmt);
 		
 		if(forceInverses){
-			//create all inverses of the OP
-			List<String> inverses = QueryUtil.getAllInverseOfURIs(model, objectPropertyURI);
-			for (String invURI : inverses) {
-				ObjectProperty invOP = model.getObjectProperty(invURI);
-				Statement invStmt = model.createStatement(indvTarget, invOP, indvSource);
-				model.add(invStmt);
-			}
+			enforceInstRelInv(model, indvSourceURI, objectPropertyURI, indvTargetURI);
 		}		
 		
 		if(forceSuperObjProp){
-			//create all super OP between the same two individuals
-			List<String> superOPUris = QueryUtil.getAllSuperProperties(model, objectPropertyURI);
-			for (String superOPURI : superOPUris) {
-				ObjectProperty superOP = model.getObjectProperty(superOPURI);
-				if(superOP != null){
-					Statement superStmt = model.createStatement(indvSource, superOP, indvTarget);
-					model.add(superStmt);
-					
-					if(forceInverses){
-						//create all inverses of the super OP
-						List<String> superInversesURIs = QueryUtil.getAllInverseOfURIs(model, superOPURI);
-						for (String superInvURI : superInversesURIs) {
-							ObjectProperty superInvOP = model.getObjectProperty(superInvURI);
-							if(superInvOP != null){
-								Statement superInvStmt = model.createStatement(indvTarget, superInvOP, indvSource);
-								model.add(superInvStmt);
-							}
-						}
-					}
+			enforceInstRelSuper(model, indvSourceURI, objectPropertyURI, indvTargetURI, forceInverses);
+		}
+		
+		if(forceCandSubRelation){
+			enforceSubRelCandidates(model, indvSourceURI, objectPropertyURI, indvTargetURI, forceInverses);
+		}
+	}
+	
+	/**
+	 * Enforce super relations of an objectPropertyURI
+	 * 
+	 * @param model: OntModel
+	 * @param indvSourceURI: source individual URI
+	 * @param objectPropertyURI: object property URI
+	 * @param indvTargetURI: target individual URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void enforceInstRelSuper(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI){
+		enforceInstRelSuper(model, indvSourceURI, objectPropertyURI, indvTargetURI, true);
+	}
+	
+	/**
+	 * Enforce super relations of an objectPropertyURI
+	 * 
+	 * @param model: OntModel
+	 * @param indvSourceURI: source individual URI
+	 * @param objectPropertyURI: object property URI
+	 * @param indvTargetURI: target individual URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void enforceInstRelSuper(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceInverses){
+		Individual indvSource = model.getIndividual(indvSourceURI);
+		Individual indvTarget = model.getIndividual(indvTargetURI);
+		//create all super OP between the same two individuals
+		List<String> superOPUris = QueryUtil.getAllSuperProperties(model, objectPropertyURI);
+		for (String superOPURI : superOPUris) {
+			ObjectProperty superOP = model.getObjectProperty(superOPURI);
+			if(superOP != null){
+				Statement superStmt = model.createStatement(indvSource, superOP, indvTarget);
+				model.add(superStmt);
+				
+				if(forceInverses){
+					enforceInstRelInv(model, indvSourceURI, superOPURI, indvTargetURI);
 				}
 			}
-		}		
+		}
+	}
+	
+	/**
+	 * Enforce candidates for sub-relations of an objectPropertyURI
+	 * 
+	 * @param model: OntModel
+	 * @param indvSourceURI: source individual URI
+	 * @param objectPropertyURI: object property URI
+	 * @param indvTargetURI: target individual URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void enforceSubRelCandidates(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceInverses){
+		Individual indvSource = model.getIndividual(indvSourceURI);
+		Individual indvTarget = model.getIndividual(indvTargetURI);
+		//create all super OP between the same two individuals
+		List<String> candSubOPUris = QueryUtil.getPossibleSubRelations(model, indvSourceURI, objectPropertyURI, indvTargetURI);
+		for (String candSubOPURI : candSubOPUris) {
+			ObjectProperty candSubOP = model.getObjectProperty(candSubOPURI);
+			if(candSubOP != null){
+				Statement superStmt = model.createStatement(indvSource, candSubOP, indvTarget);
+				model.add(superStmt);
+				
+				if(forceInverses){
+					enforceInstRelInv(model, indvSourceURI, candSubOPURI, indvTargetURI);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Enforce inverses of an objectPropertyURI
+	 * 
+	 * @param model: OntModel
+	 * @param indvSourceURI: source individual URI
+	 * @param objectPropertyURI: object property URI
+	 * @param indvTargetURI: target individual URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public void enforceInstRelInv(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI){
+		Individual indvSource = model.getIndividual(indvSourceURI);
+		Individual indvTarget = model.getIndividual(indvTargetURI);
+		//create all inverses of the OP
+		List<String> inverses = QueryUtil.getAllInverseOfURIs(model, objectPropertyURI);
+		for (String invURI : inverses) {
+			ObjectProperty invOP = model.getObjectProperty(invURI);
+			Statement invStmt = model.createStatement(indvTarget, invOP, indvSource);
+			model.add(invStmt);
+		}
 	}
 	
 	/**

@@ -837,6 +837,52 @@ public class QueryUtil {
 	}
 
 	/**
+	 * Return a list of possible subRelations of a subRelURI involving two individual URIs
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param indvSrcURI: individual source URI
+	 * @param relationURI: relation URI
+	 * @param indvTgtURI: individual target URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public List<String> getPossibleSubRelations(InfModel model, String indvSrcURI, String relationURI, String indvTgtURI) {
+		System.out.println("\nExecuting getPossibleSubRelations()...");
+		System.out.println("- relationURI: "+relationURI);
+		List<String> result = new ArrayList<String>();
+		String queryString = ""
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>"
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX ns:<http://nemo.inf.ufes.br/NewProject.owl#>"
+				+ "SELECT *"
+				+ "WHERE {"
+				+ "	?subRelation rdfs:subPropertyOf*/rdfs:subPropertyOf <" + relationURI + "> ."
+				+ "	?subRelation rdfs:domain ?domain ."
+				+ "	?subRelation rdfs:range ?range ."
+				+ "	<" + indvSrcURI + "> <" + relationURI + "> <" + indvTgtURI + "> ."
+				+ "	<" + indvSrcURI + "> rdf:type ?domain ."
+				+ "	<" + indvTgtURI + "> rdf:type ?range ."
+				+ "}";
+		
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		while (results.hasNext()) 
+		{
+			QuerySolution row = results.next();
+		    RDFNode subRelation = row.get("subRelation");
+		    if(subRelation.toString().contains(model.getNsPrefixURI(""))){
+		    	result.add(subRelation.toString());
+			    System.out.println("- Domain URI: "+subRelation.toString());
+		    }
+		    		    
+		}		
+		return result;
+	}
+
+	/**
 	 * Return the first domain class of this property URI (since it might be more than one) . This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
