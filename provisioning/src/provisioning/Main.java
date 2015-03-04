@@ -51,13 +51,11 @@ public class Main {
 			String possibleEquipFile = FindCertainExtension.chooseFile("available Equipment", ".txt");
 			createInstances(possibleEquipFile);
 			
-			String srcEquip = algorithmPart1(equipMappingOut.get(srcEquip2Prov));
-			algorithmPart2(srcEquip, true);
-			
-			
 			verifiyMinimumEquipWithPM();						
 			//runReasoner();
 			
+			String srcEquip = algorithmPart1(equipMappingOut.get(srcEquip2Prov));
+			algorithmPart2(srcEquip, true);
 			
 			
 		} catch (Exception e) {
@@ -390,7 +388,7 @@ public class Main {
 		return result;
 	}
 	
-	public static List<String> getLayersAdaptedFromAF(String afURI){
+	public static List<String> getLayersAdaptedFromAF(String interfaceURI){
 		OntModel model = OKCoUploader.getBaseModel();
 		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
 		List<String> result = new ArrayList<String>();				
@@ -402,7 +400,9 @@ public class Main {
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
-				+ "<" + afURI + "> ns:adapts_to ?layer ."
+				+ " <" + interfaceURI + "> ns:maps ?port .\n"
+				+ "	?tf ns:componentOf ?port .\n"
+				+ "	?tf ns:adapts_to ?layer .\n "
 				+ "}";
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -420,7 +420,60 @@ public class Main {
 		return result;
 	}
 	
-	public static List<String> getServerLayersFromTF(String tfURI){
+	public static List<String> getCompatibleEquipment(String layerURI, boolean isSource, boolean isTF){
+		String intType = "";
+		String relName = "";
+		String from = "";
+		if(isTF){
+			relName = "adapts_from";
+			from += "AF_";
+		}else{
+			relName = "defines";
+			from += "TF_";
+		}
+		if(isSource){
+			intType = "Input";
+			from += "Source";
+		}else{
+			intType = "Output";
+			from += "Sink";
+		}
+		
+		OntModel model = OKCoUploader.getBaseModel();
+		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
+		List<String> result = new ArrayList<String>();				
+		String queryString = ""
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>"
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX ns: <http://nemo.inf.ufes.br/NewProject.owl#>"
+				+ "SELECT *"
+				+ "WHERE {"
+				+ "	?eq ns:componentOf ?int .\n"
+				+ " ?int rdf:type ns:" + intType + "_Interface . \n"
+				+ "	?int ns:maps ?port .\n"
+				+ "	?tf ns:componentOf ?port .\n"
+				+ "	?tf ns:" + relName + " <" + layerURI + "> . \n"
+				+ " ?tf rdf:type ns:" + from + " . \n"
+				+ "}";
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();
+		    RDFNode eq = row.get("eq");	
+		    if(QueryUtil.isValidURI(eq.toString()))
+		    {
+		    	System.out.println("- layer URI: "+eq.toString()); 
+		    	result.add(eq.toString()); 
+		    }
+		}
+		return result;
+	}
+	
+	public static List<String> getServerLayersFromTF(String interfaceURI){
 		OntModel model = OKCoUploader.getBaseModel();
 		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
 		List<String> result = new ArrayList<String>();				
@@ -432,8 +485,9 @@ public class Main {
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
-				+ "<" + tfURI + "> ns:defines ?layer . "
-				+ "?layer ns:client_of ?serverLayer . " 
+				+ "<" + interfaceURI + "> ns:maps ?port .\n"
+				+ "	?tf ns:componentOf ?port .\n"
+				+ "	?tf ns:defines ?serverLayer . \n" 
 				+ "}";
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -460,11 +514,11 @@ public class Main {
 				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "ASK"
-				+ "WHERE {"
-				+ "	<" + interfaceURI + "> ns:maps ?port ."
-				+ "	?tf ns:componentOf ?port ."
-				+ "	?tf rdf:type ns:Adaptation_Function"
+				+ "ASK\n"
+				+ "WHERE {\n"
+				+ "	<" + interfaceURI + "> ns:maps ?port .\n"
+				+ "	?tf ns:componentOf ?port .\n"
+				+ "	?tf rdf:type ns:Termination_Function . \n"
 				+ "}";
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -555,18 +609,23 @@ public class Main {
 		
 		int choosenInt = chooseOne(availableInt, type + " Interface to provision");
 		
-		String layer = "";
+		String layerURI = "";
 		List<String> layers;
+		boolean isTF;
 		if(isInterfaceMappedByTF(availableInt.get(choosenInt))){
 			layers = getServerLayersFromTF(availableInt.get(choosenInt));
+			isTF = true;
 		}else{
-			layers = getLayersAdaptedFromAF(availableInt.get(choosenInt));			
+			layers = getLayersAdaptedFromAF(availableInt.get(choosenInt));
+			isTF = false;
 		}
 		if(layers.size() > 0){
-			layer = layers.get(0);
+			layerURI = layers.get(0);
 		}
 		
+		List<String> listEquipmentTo = getCompatibleEquipment(layerURI, isSource, isTF);
 		
+		int equipmentToIndex = chooseOne(listEquipmentTo, " Equipment");
 		
 		return "";
 	}
