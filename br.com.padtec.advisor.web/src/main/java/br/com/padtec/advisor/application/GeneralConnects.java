@@ -327,7 +327,7 @@ public class GeneralConnects extends AdvisorService {
 	public static void connects(String rpName, String rp2Name, String type) 
 	{
 		/** Substitute InferredModel for the Base Model. */
-		OKCoUploader.substituteInferredModelFromBaseModel(false);
+		//OKCoUploader.substituteInferredModelFromBaseModel(false);
 		
 		OntModel baseModel = OKCoUploader.getBaseModel();
 		String namespace = OKCoUploader.getNamespace();
@@ -369,7 +369,9 @@ public class GeneralConnects extends AdvisorService {
 		baseModel.add(result);
 		
 		/** Substitute InferredModel for the Base Model. The changes were made at the base model! */
+		//FactoryUtil.createInstanceRelation(baseModel, namespace+rpName,  namespace+RelationEnum.HAS_FORWARDING, namespace+rp2Name);
 		OKCoUploader.substituteInferredModelFromBaseModel(false);
+		
 	}
 	
 	/**
@@ -431,7 +433,7 @@ public class GeneralConnects extends AdvisorService {
 		ArrayList<String> rangesNameList = new ArrayList<String>();
 		
 		relationsNameList.add(RelationEnum.INV_BINDING_IS_REPRESENTED_BY.toString());
-		relationsNameList.add(RelationEnum.INV_IS_BINDING.toString());
+		relationsNameList.add(RelationEnum.IS_BINDING.toString());
 		relationsNameList.add(RelationEnum.INV_COMPONENTOF.toString());
 		relationsNameList.add(RelationEnum.COMPONENTOF.toString());
 		
@@ -500,12 +502,12 @@ public class GeneralConnects extends AdvisorService {
 	}
 	
 	public static ArrayList<String[]> autoConnect() {
-		InfModel inferredModel = OKCoUploader.getInferredModel();	
 		ArrayList<String[]> has_forwardings = new ArrayList<String[]>();
+		ArrayList<String[]> has_forwardings2 = new ArrayList<String[]>();
 		ArrayList<String[]> list = new ArrayList<String[]>();
 		overloop: //label dos 2 blocos de iteração
-		do{
-			has_forwardings = getAllHasForwardingRelationships(inferredModel);
+		do{ 
+			has_forwardings = getAllHasForwardingRelationships(OKCoUploader.getInferredModel());
 			for(String[] relationship : has_forwardings){
 				ArrayList<String> rplayerabove1 = getReferencePointLayerAbove(relationship[0], "so");
 				ArrayList<String> rplayerabove2 = getReferencePointLayerAbove(relationship[1], "sk");
@@ -518,12 +520,14 @@ public class GeneralConnects extends AdvisorService {
 						str[0] = rplayerabove1.get(0);
 						str[1] = rplayerabove2.get(0);
 						list.add(str);
+						has_forwardings2 = getAllHasForwardingRelationships(OKCoUploader.getInferredModel());
 					}
 				} 
 				else {
 					//condição para saida
 					break overloop;
 				}
+				
 			}
 		} while(!has_forwardings.isEmpty());
 		
