@@ -1,4 +1,4 @@
-package br.com.padtec.advisor.application.types;
+package br.com.padtec.advisor.core.types;
 
 
 

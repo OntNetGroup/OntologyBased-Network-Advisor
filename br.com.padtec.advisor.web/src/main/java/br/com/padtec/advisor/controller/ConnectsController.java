@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.advisor.application.AdvisorService;
-import br.com.padtec.advisor.application.GeneralConnects;
+import br.com.padtec.advisor.core.application.AdvisorService;
+import br.com.padtec.advisor.core.application.GeneralConnects;
 
 @Controller
 public class ConnectsController {

@@ -1,4 +1,4 @@
-package br.com.padtec.advisor.application.dto;
+package br.com.padtec.advisor.core.dto;
 
 public class DtoResultAjax {
 	

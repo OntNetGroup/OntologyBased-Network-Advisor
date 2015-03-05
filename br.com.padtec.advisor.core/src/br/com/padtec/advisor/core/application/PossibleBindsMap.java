@@ -1,9 +1,9 @@
-package br.com.padtec.advisor.application;
+package br.com.padtec.advisor.core.application;
 
 import java.util.HashMap;
 
-import br.com.padtec.advisor.application.types.ConceptEnum;
-import br.com.padtec.advisor.application.types.RelationEnum;
+import br.com.padtec.advisor.core.types.ConceptEnum;
+import br.com.padtec.advisor.core.types.RelationEnum;
 
 public class PossibleBindsMap {
 	

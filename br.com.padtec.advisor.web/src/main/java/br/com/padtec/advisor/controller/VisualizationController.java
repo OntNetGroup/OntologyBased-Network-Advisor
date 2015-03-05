@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.com.padtec.advisor.application.AdvisorService;
-import br.com.padtec.advisor.application.BindsVisualizator;
-import br.com.padtec.advisor.application.ConnectsVisualizator;
-import br.com.padtec.advisor.application.GeneralConnects;
-import br.com.padtec.advisor.application.HTMLFigureMapper;
-import br.com.padtec.advisor.application.Visualizator;
-import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
-import br.com.padtec.advisor.application.util.PerformanceUtil;
+import br.com.padtec.advisor.core.application.AdvisorService;
+import br.com.padtec.advisor.core.application.BindsVisualizator;
+import br.com.padtec.advisor.core.application.ConnectsVisualizator;
+import br.com.padtec.advisor.core.application.GeneralConnects;
+import br.com.padtec.advisor.core.application.HTMLFigureMapper;
+import br.com.padtec.advisor.core.application.Visualizator;
+import br.com.padtec.advisor.core.queries.AdvisorQueryUtil;
+import br.com.padtec.advisor.core.util.PerformanceUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 @Controller

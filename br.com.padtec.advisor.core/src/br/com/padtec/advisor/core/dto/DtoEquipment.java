@@ -1,4 +1,4 @@
-package br.com.padtec.advisor.application.dto;
+package br.com.padtec.advisor.core.dto;
 
 import java.util.ArrayList;
 import java.util.HashMap;

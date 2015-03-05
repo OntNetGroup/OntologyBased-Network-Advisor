@@ -1,9 +1,9 @@
-package br.com.padtec.advisor.application.queries;
+package br.com.padtec.advisor.core.queries;
 
 import java.util.List;
 
-import br.com.padtec.advisor.application.types.ConceptEnum;
-import br.com.padtec.advisor.application.types.RelationEnum;
+import br.com.padtec.advisor.core.types.ConceptEnum;
+import br.com.padtec.advisor.core.types.RelationEnum;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 

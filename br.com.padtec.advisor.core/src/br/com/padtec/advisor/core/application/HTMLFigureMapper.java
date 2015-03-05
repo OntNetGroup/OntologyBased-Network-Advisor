@@ -1,9 +1,9 @@
-package br.com.padtec.advisor.application;
+package br.com.padtec.advisor.core.application;
 
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.padtec.advisor.application.types.ConceptEnum;
+import br.com.padtec.advisor.core.types.ConceptEnum;
 
 public class HTMLFigureMapper {
 

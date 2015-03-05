@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.com.padtec.advisor.application.SindelUploader;
-import br.com.padtec.advisor.application.dto.DtoResultAjax;
-import br.com.padtec.advisor.application.util.FileReader;
+import br.com.padtec.advisor.core.application.SindelUploader;
+import br.com.padtec.advisor.core.dto.DtoResultAjax;
+import br.com.padtec.advisor.core.util.FileReader;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;

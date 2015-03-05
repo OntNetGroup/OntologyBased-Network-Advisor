@@ -1,4 +1,4 @@
-package br.com.padtec.advisor.application;
+package br.com.padtec.advisor.core.application;
 
 import java.util.ArrayList;
 import java.util.List;

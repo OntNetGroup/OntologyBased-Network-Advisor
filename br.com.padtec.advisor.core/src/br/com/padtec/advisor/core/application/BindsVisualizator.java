@@ -1,12 +1,12 @@
-package br.com.padtec.advisor.application;
+package br.com.padtec.advisor.core.application;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import br.com.padtec.advisor.application.dto.DtoEquipment;
-import br.com.padtec.advisor.application.dto.DtoInterfaceOutput;
-import br.com.padtec.advisor.application.queries.AdvisorDtoQueryUtil;
+import br.com.padtec.advisor.core.dto.DtoEquipment;
+import br.com.padtec.advisor.core.dto.DtoInterfaceOutput;
+import br.com.padtec.advisor.core.queries.AdvisorDtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 

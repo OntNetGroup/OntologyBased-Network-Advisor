@@ -1,16 +1,16 @@
-package br.com.padtec.advisor.application;
+package br.com.padtec.advisor.core.application;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import br.com.padtec.advisor.application.dto.DtoEquipment;
-import br.com.padtec.advisor.application.dto.DtoInterfaceOutput;
-import br.com.padtec.advisor.application.queries.AdvisorDtoQueryUtil;
-import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
-import br.com.padtec.advisor.application.types.ConceptEnum;
-import br.com.padtec.advisor.application.types.RelationEnum;
+import br.com.padtec.advisor.core.dto.DtoEquipment;
+import br.com.padtec.advisor.core.dto.DtoInterfaceOutput;
+import br.com.padtec.advisor.core.queries.AdvisorDtoQueryUtil;
+import br.com.padtec.advisor.core.queries.AdvisorQueryUtil;
+import br.com.padtec.advisor.core.types.ConceptEnum;
+import br.com.padtec.advisor.core.types.RelationEnum;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;

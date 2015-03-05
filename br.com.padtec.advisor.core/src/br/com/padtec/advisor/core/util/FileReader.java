@@ -1,4 +1,4 @@
-package br.com.padtec.advisor.application.util;
+package br.com.padtec.advisor.core.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 

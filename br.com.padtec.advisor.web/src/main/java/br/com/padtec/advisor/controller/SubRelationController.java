@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import br.com.padtec.advisor.application.SubRelationEnforcer;
+import br.com.padtec.advisor.core.application.SubRelationEnforcer;
 
 @Controller
 public class SubRelationController {

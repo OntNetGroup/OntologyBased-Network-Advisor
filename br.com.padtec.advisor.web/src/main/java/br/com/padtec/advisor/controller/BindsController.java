@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.advisor.application.GeneralBinds;
-import br.com.padtec.advisor.application.dto.DtoResultAjax;
+import br.com.padtec.advisor.core.application.GeneralBinds;
+import br.com.padtec.advisor.core.dto.DtoResultAjax;
 
 @Controller
 public class BindsController {
@@ -21,7 +21,7 @@ public class BindsController {
 		/**===========================================================
 		 * General Binds: provisioning binds
 		 * =========================================================== */
-		DtoResultAjax dto = GeneralBinds.provisioningBinds(interface_target, interface_source, request, true, null);
+		DtoResultAjax dto = GeneralBinds.provisioningBinds(interface_target, interface_source, true, null);
 		
 		return dto.ok+"";
 	}
@@ -45,7 +45,7 @@ public class BindsController {
 		/**===========================================================
 		 * General Binds: auto binds
 		 * =========================================================== */		
-		String returnMessage = GeneralBinds.autoBinds(request);
+		String returnMessage = GeneralBinds.autoBinds();
 		
 		request.getSession().setAttribute("loadOk", returnMessage);		
 		

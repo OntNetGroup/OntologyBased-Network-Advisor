@@ -1,12 +1,12 @@
-package br.com.padtec.advisor.application;
+package br.com.padtec.advisor.core.application;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.padtec.advisor.application.queries.AdvisorQueryUtil;
-import br.com.padtec.advisor.application.types.ConceptEnum;
-import br.com.padtec.advisor.application.types.RelationEnum;
+import br.com.padtec.advisor.core.queries.AdvisorQueryUtil;
+import br.com.padtec.advisor.core.types.ConceptEnum;
+import br.com.padtec.advisor.core.types.RelationEnum;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.factory.FactoryUtil;
@@ -501,6 +501,7 @@ public class GeneralConnects extends AdvisorService {
 		return list;
 	}
 	
+	@SuppressWarnings("unused")
 	public static ArrayList<String[]> autoConnect() {
 		ArrayList<String[]> has_forwardings = new ArrayList<String[]>();
 		ArrayList<String[]> has_forwardings2 = new ArrayList<String[]>();

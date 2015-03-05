@@ -1,4 +1,4 @@
-package br.com.padtec.advisor.application;
+package br.com.padtec.advisor.core.application;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,13 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
-
-import br.com.padtec.advisor.application.dto.DtoResultAjax;
-import br.com.padtec.advisor.application.queries.AdvisorDtoQueryUtil;
-import br.com.padtec.advisor.application.types.ConceptEnum;
-import br.com.padtec.advisor.application.types.RelationEnum;
-import br.com.padtec.advisor.application.util.PerformanceUtil;
+import br.com.padtec.advisor.core.dto.DtoResultAjax;
+import br.com.padtec.advisor.core.queries.AdvisorDtoQueryUtil;
+import br.com.padtec.advisor.core.types.ConceptEnum;
+import br.com.padtec.advisor.core.types.RelationEnum;
+import br.com.padtec.advisor.core.util.PerformanceUtil;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.DtoQueryUtil;
@@ -28,7 +26,7 @@ public class GeneralBinds extends AdvisorService {
 	public static PossibleBindsMap possibleBinds = new PossibleBindsMap();
 	
 	/** Provisioning Binds */
-	public static DtoResultAjax provisioningBinds(String outInt, String inInt, HttpServletRequest request, Boolean updateListsInTheEnd, ArrayList<String> listInstancesCreated) 
+	public static DtoResultAjax provisioningBinds(String outInt, String inInt, Boolean updateListsInTheEnd, ArrayList<String> listInstancesCreated) 
 	{
 		DtoResultAjax dto = new DtoResultAjax();
 		String namespace = OKCoUploader.getNamespace();
@@ -514,7 +512,7 @@ public class GeneralBinds extends AdvisorService {
 		return false;
 	}
 	
-	public static String autoBinds(HttpServletRequest request)
+	public static String autoBinds()
 	{		
 		String namespace = OKCoUploader.getNamespace();
 		ArrayList<DtoInstance> outputInterfaces = new ArrayList<DtoInstance>();
@@ -591,7 +589,7 @@ public class GeneralBinds extends AdvisorService {
 			
 			if(outs.size() == 1)
 			{
-				GeneralBinds.provisioningBinds(outs.get(0), inputInterface, request, false, listInstancesCreated);
+				GeneralBinds.provisioningBinds(outs.get(0), inputInterface, false, listInstancesCreated);
 				
 				bindsMade++;
 				returnMessage += outs.get(0);

@@ -1,4 +1,4 @@
-package br.com.padtec.advisor.application;
+package br.com.padtec.advisor.core.application;
 
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.okco.core.application.OKCoReasoner;
