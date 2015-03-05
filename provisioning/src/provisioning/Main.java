@@ -21,16 +21,11 @@ import br.com.padtec.okco.core.application.OKCoReasoner;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class Main {
-
+	static OntModel model;
+	static String ns;
+	static boolean teste = true;
 	public static void main(String[] args){
 		String tBoxFile = "";
 		try {
@@ -45,22 +40,37 @@ public class Main {
 			List<String> equipMappingOut = verifyIfEquipmentMapsOutPorts();
 			List<String> equipMappingIn = verifyIfEquipmentMapsInPorts();
 			
-			int srcEquip2Prov = chooseOne(equipMappingOut, "Source Equipment to provision");
-			int tgtEquip2Prov = chooseOne(equipMappingIn, "Target Equipment to provision");
+			int srcEquip2ProvIndex = chooseOne(equipMappingOut, "Source Equipment to provision");
+			String srcEquipToProv = equipMappingOut.get(srcEquip2ProvIndex);
+			int tgtEquip2ProvIndex = chooseOne(equipMappingIn, "Target Equipment to provision");
+			String tgtEquipToProv = equipMappingIn.get(tgtEquip2ProvIndex);
 			
 			String possibleEquipFile = FindCertainExtension.chooseFile("available Equipment", ".txt");
 			createInstances(possibleEquipFile);
 			
 			verifiyMinimumEquipWithPM();						
 			//runReasoner();
+			boolean equipHasPM;
+			String lastEquip = srcEquipToProv;
+			do {
+				String srcEquip = algorithmPart1(lastEquip);
+				lastEquip = algorithmPart2(srcEquip, true);
+				//runReasoner();
+				equipHasPM = QueryUtil.isTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
+			} while (!equipHasPM);			
 			
-			String srcEquip = algorithmPart1(equipMappingOut.get(srcEquip2Prov));
-			algorithmPart2(srcEquip, true);
-			
+			lastEquip = tgtEquipToProv;
+			do {
+				String tgtEquip = algorithmPart1(lastEquip);
+				lastEquip = algorithmPart2(tgtEquip, false);
+				//runReasoner();
+				equipHasPM = QueryUtil.isTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
+			} while (!equipHasPM);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
+		
 		saveNewOwl(tBoxFile);
 		System.out.println("Done.");
 	}
@@ -68,11 +78,11 @@ public class Main {
 	public static void createTBox(String tBoxFile) throws Exception{
 		FileInputStream inTBox = new FileInputStream(new File(tBoxFile));
 		OKCoUploader.uploadBaseModel(inTBox, "off", "hermit");
+		model = OKCoUploader.getBaseModel();
+		ns = model.getNsPrefixURI("");
 	}
 	
 	public static List<DtoInstance> verifiyMinimumEquipment() throws Exception{
-		OntModel model = OKCoUploader.getBaseModel();
-		
 		List<DtoInstance> equipList = DtoQueryUtil.getIndividualsFromClass(model, "Equipment");
 		if(equipList.size() < 2){
 			throw new Exception("Is required a minimun of 2 Equipment.\n");
@@ -83,7 +93,7 @@ public class Main {
 	}
 	
 	public static List<String> verifyIfEquipmentMapsOutPorts() throws Exception{
-		List<String> equipMappingOut = getEquipmentMappingPorts(true);
+		List<String> equipMappingOut = Queries.getEquipmentMappingPorts(model, true);
 		if(equipMappingOut.size() < 1){
 			throw new Exception("Is required a minimun of 1 Equipment which the Output Interface maps an Output Port from a Source component.\n");
 		}
@@ -92,7 +102,7 @@ public class Main {
 	}
 	
 	public static List<String> verifyIfEquipmentMapsInPorts() throws Exception{
-		List<String> equipMappingIn = getEquipmentMappingPorts(false);
+		List<String> equipMappingIn = Queries.getEquipmentMappingPorts(model, false);
 		if(equipMappingIn.size() < 1){
 			throw new Exception("Is required a minimun of 1 Equipment which the Input Interface maps an Input Port from a Sink component.\n");
 		}
@@ -100,14 +110,13 @@ public class Main {
 	}
 	
 	public static void verifiyMinimumEquipWithPM() throws Exception{
-		List<String> equipWithPm = getEquipmentWithPhysicalMedia();
+		List<String> equipWithPm = Queries.getEquipmentWithPhysicalMedia(model);
 		if(equipWithPm.size() < 1){
 			throw new Exception("Is required a minimun of 1 Equipment with Physical Media.\n");
 		}		
 	}
 	
 	public static void saveNewOwl(String oldName){
-		OntModel model = OKCoUploader.getBaseModel();
 		System.out.println("Saving OWL");
 		String syntax = "RDF/XML";
 		StringWriter out = new StringWriter();
@@ -161,8 +170,6 @@ public class Main {
 	public static HashMap<String, String> createIndividualInstances(String[] individualDcls){
 		HashMap<String, String> newMapping = new HashMap<String,String>();
 		List<String> newIndividuals = new ArrayList<String>();
-		OntModel model = OKCoUploader.getBaseModel();
-		String ns = model.getNsPrefixURI("");
 		for (String indvDcl : individualDcls) {
 			indvDcl = indvDcl.replace(" ", "").replace("\n", "");
 			String[] indvDclSplit = indvDcl.split(":");
@@ -192,8 +199,6 @@ public class Main {
 	}
 	
 	public static void createRelationInstances(String[] relationDcls, HashMap<String, String> newMapping){
-		OntModel model = OKCoUploader.getBaseModel();
-		String ns = model.getNsPrefixURI("");
 		for (String relDcl : relationDcls) {
 			relDcl = relDcl.replace(" ", "").replace("\n", "");
 			String[] relDclSplit = relDcl.split(":");
@@ -208,16 +213,13 @@ public class Main {
 					src = newMapping.get(src);
 					tgt = newMapping.get(tgt);
 					
-					FactoryUtil.createInstanceRelation(model, ns+src, ns+relation, ns+tgt);				
-					
+					FactoryUtil.createInstanceRelation(model, ns+src, ns+relation, ns+tgt);
 				}
 			}
 		}
 	}
 	
 	public static void createAttributeInstances(String[] attributeDcls, HashMap<String, String> newMapping){
-		OntModel model = OKCoUploader.getBaseModel();
-		String ns = model.getNsPrefixURI("");
 		for (String attDcl : attributeDcls) {
 			attDcl = attDcl.replace(" ", "").replace("\n", "");
 			String[] attDclSplit = attDcl.split(":");
@@ -238,338 +240,10 @@ public class Main {
 		}
 	}
 	
-	public static List<String> getEquipmentMappingPorts(boolean forOutput){
-		String portType = "";
-		String tfType = "";
-		if(forOutput){
-			portType = "Output";
-			tfType = "TF_Source";
-		}else{
-			portType = "Input";
-			tfType = "TF_Sink";
-		}
-		
-		OntModel model = OKCoUploader.getBaseModel();
-		System.out.println("\nExecuting getEquipmentMappingPorts()...");
-		List<String> result = new ArrayList<String>();				
-		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "SELECT *\n"
-				+ "WHERE {\n"
-				+ "\t?equipment rdf:type ns:Equipment .\n"
-				+ "\t?equipment ns:componentOf ?interface .\n"
-				+ "\t?interface rdf:type ns:" + portType +"_Interface .\n"
-				+ "\t?interface ns:maps ?mappedPort .\n"
-				+ "\t?mappedPort ns:INV.componentOf ?tf .\n"
-				+ "\t?tf rdf:type ns:" + tfType + " .\n"
-				+ "}";
-		Query query = QueryFactory.create(queryString); 		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();		
-		while (results.hasNext()) 
-		{			
-			QuerySolution row = results.next();
-		    RDFNode equipment = row.get("equipment");	
-		    @SuppressWarnings("unused")
-			RDFNode interface_ = row.get("interface");
-		    @SuppressWarnings("unused")
-			RDFNode mappedPort = row.get("mappedPort");
-		    if(QueryUtil.isValidURI(equipment.toString()))
-		    {
-		    	System.out.println("- Class URI: "+equipment.toString()); 
-		    	result.add(equipment.toString()); 
-		    }
-		}
-		return result;
-	}
-	
-	public static List<String> getAvailabeInterfacesFromEquipment(String equipURI, boolean forOutput){
-		String portType = "";
-		if(forOutput){
-			portType = "Output";
-		}else{
-			portType = "Input";
-		}
-		
-		OntModel model = OKCoUploader.getBaseModel();
-		System.out.println("\nExecuting getEquipmentMappingPorts()...");
-		List<String> toRemove = new ArrayList<String>();				
-		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "SELECT *\n"
-				+ "WHERE {\n"
-				+ "\t<" + equipURI + "> ns:componentOf ?int1 .\n"
-				+ "\t?int1 rdf:type ns:" + portType + "_Interface ."
-				+ "	?int1 ns:eq_binds ?int2 ."
-				+ "}";
-		Query query = QueryFactory.create(queryString); 		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();		
-		while (results.hasNext()) 
-		{			
-			QuerySolution row = results.next();
-		    RDFNode int1 = row.get("int1");	
-		   if(QueryUtil.isValidURI(int1.toString()))
-		    {
-		    	System.out.println("- Class URI: "+int1.toString()); 
-		    	toRemove.add(int1.toString()); 
-		    }
-		}
-		
-		List<String> result = new ArrayList<String>();
-		queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "SELECT *\n"
-				+ "WHERE {\n"
-				+ "\t<" + equipURI + "> ns:componentOf ?int1 .\n"
-				+ "\t?int1 rdf:type ns:" + portType + "_Interface ."
-				+ "}";
-		query = QueryFactory.create(queryString); 		
-		qe = QueryExecutionFactory.create(query, model);
-		results = qe.execSelect();		
-		while (results.hasNext()) 
-		{			
-			QuerySolution row = results.next();
-		    RDFNode int1 = row.get("int1");	
-		   if(QueryUtil.isValidURI(int1.toString()))
-		    {
-		    	System.out.println("- Class URI: "+int1.toString()); 
-		    	result.add(int1.toString()); 
-		    }
-		}
-		
-		result.removeAll(toRemove);
-		return result;
-	}
-	
-	public static List<String> getEquipmentWithPhysicalMedia(){
-		OntModel model = OKCoUploader.getBaseModel();
-		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
-		List<String> result = new ArrayList<String>();				
-		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "SELECT *\n"
-				+ "WHERE {\n"
-				+ "\t?equipment rdf:type ns:Equipment .\n"
-				+ "\t?equipment ns:componentOf ?pm .\n"
-				+ "\t?pm rdf:type ns:Physical_Media .\n"
-				+ "}";
-		Query query = QueryFactory.create(queryString); 		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();		
-		while (results.hasNext()) 
-		{			
-			QuerySolution row = results.next();
-		    RDFNode equipment = row.get("equipment");	
-		    @SuppressWarnings("unused")
-			RDFNode pm = row.get("pm");
-		    if(QueryUtil.isValidURI(equipment.toString()))
-		    {
-		    	System.out.println("- Class URI: "+equipment.toString()); 
-		    	result.add(equipment.toString()); 
-		    }
-		}
-		return result;
-	}
-	
-	public static List<String> getLayersAdaptedFromAF(String interfaceURI){
-		OntModel model = OKCoUploader.getBaseModel();
-		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
-		List<String> result = new ArrayList<String>();				
-		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "SELECT *\n"
-				+ "WHERE {\n"
-				+ " <" + interfaceURI + "> ns:maps ?port .\n"
-				+ "	?tf ns:componentOf ?port .\n"
-				+ "	?tf ns:adapts_to ?layer .\n "
-				+ "}";
-		Query query = QueryFactory.create(queryString); 		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();		
-		while (results.hasNext()) 
-		{			
-			QuerySolution row = results.next();
-		    RDFNode layer = row.get("layer");	
-		    if(QueryUtil.isValidURI(layer.toString()))
-		    {
-		    	System.out.println("- layer URI: "+layer.toString()); 
-		    	result.add(layer.toString()); 
-		    }
-		}
-		return result;
-	}
-	
-	public static List<String> getCompatibleEquipment(String layerURI, boolean isSource, boolean isTF){
-		String intType = "";
-		String relName = "";
-		String from = "";
-		if(isTF){
-			relName = "adapts_from";
-			from += "AF_";
-		}else{
-			relName = "defines";
-			from += "TF_";
-		}
-		if(isSource){
-			intType = "Input";
-			from += "Source";
-		}else{
-			intType = "Output";
-			from += "Sink";
-		}
-		
-		OntModel model = OKCoUploader.getBaseModel();
-		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
-		List<String> result = new ArrayList<String>();				
-		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-				+ "PREFIX ns: <http://nemo.inf.ufes.br/NewProject.owl#>"
-				+ "SELECT *"
-				+ "WHERE {"
-				+ "	?eq ns:componentOf ?int .\n"
-				+ " ?int rdf:type ns:" + intType + "_Interface . \n"
-				+ "	?int ns:maps ?port .\n"
-				+ "	?tf ns:componentOf ?port .\n"
-				+ "	?tf ns:" + relName + " <" + layerURI + "> . \n"
-				+ " ?tf rdf:type ns:" + from + " . \n"
-				+ "}";
-		Query query = QueryFactory.create(queryString); 		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();		
-		while (results.hasNext()) 
-		{			
-			QuerySolution row = results.next();
-		    RDFNode eq = row.get("eq");	
-		    if(QueryUtil.isValidURI(eq.toString()))
-		    {
-		    	System.out.println("- layer URI: "+eq.toString()); 
-		    	result.add(eq.toString()); 
-		    }
-		}
-		return result;
-	}
-	
-	public static List<String> getServerLayersFromTF(String interfaceURI){
-		OntModel model = OKCoUploader.getBaseModel();
-		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
-		List<String> result = new ArrayList<String>();				
-		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "SELECT *\n"
-				+ "WHERE {\n"
-				+ "<" + interfaceURI + "> ns:maps ?port .\n"
-				+ "	?tf ns:componentOf ?port .\n"
-				+ "	?tf ns:defines ?serverLayer . \n" 
-				+ "}";
-		Query query = QueryFactory.create(queryString); 		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();		
-		while (results.hasNext()) 
-		{			
-			QuerySolution row = results.next();
-		    RDFNode serverLayer = row.get("serverLayer");	
-		    if(QueryUtil.isValidURI(serverLayer.toString()))
-		    {
-		    	System.out.println("- serverLayer URI: "+serverLayer.toString()); 
-		    	result.add(serverLayer.toString()); 
-		    }
-		}
-		return result;
-	}
-	
-	public static boolean isInterfaceMappedByTF(String interfaceURI){
-		OntModel model = OKCoUploader.getBaseModel();
-		System.out.println("\nExecuting isInterfaceMappedByTF()...");
-		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "ASK\n"
-				+ "WHERE {\n"
-				+ "	<" + interfaceURI + "> ns:maps ?port .\n"
-				+ "	?tf ns:componentOf ?port .\n"
-				+ "	?tf rdf:type ns:Termination_Function . \n"
-				+ "}";
-		Query query = QueryFactory.create(queryString); 		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		boolean results = qe.execAsk();		
-		
-		return results;
-	}
-	
-	public static List<String> getLastBindedEquipmentFrom(String fromEquipURI){
-		OntModel model = OKCoUploader.getBaseModel();
-		System.out.println("\nExecuting getBindedEquipmentFrom()...");
-		List<String> result = new ArrayList<String>();				
-		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <http://nemo.inf.ufes.br/NewProject.owl#>\n"
-				+ "SELECT *\n"
-				+ "WHERE {\n"
-				+ "\t?equip1 ns:eq_binds*/ns:eq_binds ?equip2 .\n"
-				+ "}\n";
-		Query query = QueryFactory.create(queryString); 		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();		
-		List<String> aux = new ArrayList<String>();				
-		while (results.hasNext()) 
-		{			
-			QuerySolution row = results.next();
-			RDFNode equip1 = row.get("equip1");	
-			RDFNode equip2 = row.get("equip2");	
-			if(QueryUtil.isValidURI(equip1.toString()))
-		    {
-				aux.add(equip1.toString()); 
-		    }if(QueryUtil.isValidURI(equip2.toString()))
-		    {
-		    	System.out.println("- Equipment URI: "+equip2.toString()); 
-		    	result.add(equip2.toString()); 
-		    }
-		}
-		result.removeAll(aux);
-		return result;
-	}
-	
 	public static int chooseOne(List<String> list, String message) throws Exception{
-		OntModel model = OKCoUploader.getBaseModel();
-		
 		System.out.println();
 		System.out.println("--- Choose one " + message);
 		
-		String ns = model.getNsPrefixURI("");
 		for (int i = 0; i < list.size(); i++) {
 			String elem = list.get(i).replace(ns, "");
 			System.out.println((i+1) + " - " + elem);
@@ -586,7 +260,7 @@ public class Main {
 	public static String algorithmPart1(String equipURI) throws Exception{
 		String choosenEquipURI = "";
 		
-		List<String> bindedEquip = getLastBindedEquipmentFrom(equipURI);
+		List<String> bindedEquip = Queries.getLastBindedEquipmentFrom(model, equipURI);
 		
 		if(bindedEquip.size() == 0){
 			choosenEquipURI = equipURI;
@@ -599,7 +273,7 @@ public class Main {
 	}
 	
 	public static String algorithmPart2(String equipURI, boolean isSource) throws Exception{
-		List<String> availableInt = getAvailabeInterfacesFromEquipment(equipURI, isSource);
+		List<String> availableInt = Queries.getAvailabeInterfacesFromEquipment(model, equipURI, isSource);
 		String type = "";
 		if(isSource){
 			type = "Output";
@@ -607,26 +281,64 @@ public class Main {
 			type = "Input";
 		}
 		
-		int choosenInt = chooseOne(availableInt, type + " Interface to provision");
-		
+		int outIntIndex = chooseOne(availableInt, type + " Output Interface to provision");
+		String outInt = availableInt.get(outIntIndex);
 		String layerURI = "";
 		List<String> layers;
 		boolean isTF;
-		if(isInterfaceMappedByTF(availableInt.get(choosenInt))){
-			layers = getServerLayersFromTF(availableInt.get(choosenInt));
+		if(Queries.isInterfaceMappedByTF(model, outInt)){
+			layers = Queries.getServerLayersFromTF(model, outInt);
 			isTF = true;
 		}else{
-			layers = getLayersAdaptedFromAF(availableInt.get(choosenInt));
+			layers = Queries.getLayersAdaptedFromAF(model, outInt);
 			isTF = false;
 		}
 		if(layers.size() > 0){
 			layerURI = layers.get(0);
 		}
 		
-		List<String> listEquipmentTo = getCompatibleEquipment(layerURI, isSource, isTF);
+		List<String> listEquipmentTo = Queries.getCompatibleEquipment(model, layerURI, isSource, isTF);
 		
-		int equipmentToIndex = chooseOne(listEquipmentTo, " Equipment");
+		int inEquipIndex = chooseOne(listEquipmentTo, " Equipment");
+		String inEquip = listEquipmentTo.get(inEquipIndex);
 		
-		return "";
+		List<String> outPortURIs = Queries.getMappedPort(model, outInt);
+		String outPort = "";
+		if(outPortURIs.size() > 0){
+			outPort  = outPortURIs.get(0);
+		}
+		
+		List<String> listInInt = Queries.getAvailabeInterfacesFromEquipment(model, inEquip, !isSource);
+		
+		List<String> inPortURIs = new ArrayList<String>();
+		
+		int inIntIndex = chooseOne(listInInt, " Interface");
+		String inInt = listInInt.get(inIntIndex);
+		inPortURIs = Queries.getMappedPort(model, inInt);
+		
+		String inPort = "";
+		if(inPortURIs.size() > 0){
+			inPort = inPortURIs.get(0);
+		}
+		
+		FactoryUtil.createInstanceRelation(model, outPort, ns+"binds", inPort);
+		
+		return inEquip;
+	}
+	
+	public static void verifyIfEquipProvidedBySamePM(String srcEquipToProv, String tgtEquipToProv) throws Exception{
+		List<String> lastSrcEquipList = Queries.getLastBindedEquipmentFrom(model, srcEquipToProv);
+		List<String> lastTgtEquipList = Queries.getLastBindedEquipmentFrom(model, tgtEquipToProv);
+		
+		if(lastSrcEquipList.size() == 0 || lastTgtEquipList.size() == 0){
+			throw new Exception("No equipment found.");
+		}
+		
+		String lastSrcEquip = lastSrcEquipList.get(0);
+		String lastTgtEquip = lastTgtEquipList.get(0);
+		
+		if(!lastSrcEquip.equals(lastTgtEquip)){
+			throw new Exception("Something went wrong. Source and Target equipment were provisioned by different Physical Media.");
+		}
 	}
 }

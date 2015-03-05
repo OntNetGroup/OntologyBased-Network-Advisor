@@ -63,7 +63,7 @@ maps:	(eq_och_so_in, tf_och_so_in),
 		(eq_ots_in, af_ots_so_in),
 		(eq_och_so_out, tf_och_so_out),
 		(eq_och_sk_out, tf_och_sk_out), 
-		(eq_ots_out, af_ots_so_out);
+		(eq_ots_out, af_ots_sk_out);
 			
 ***
 

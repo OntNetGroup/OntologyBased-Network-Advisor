@@ -53,6 +53,62 @@ public class QueryUtil {
 	}
 	
 	/** 
+	 * Return true if an individual is from a specific class
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param individualUri: individual URI 
+	 * @param classURI: class URI 
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public boolean isIndividualFromClass(InfModel model, String individualUri, String classURI) 
+	{		
+		System.out.println("\nExecuting isIndividualFromClass()...");
+		String queryString = ""
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+				+ "ASK\n"
+				+ "{\n"
+				+ "\t<" + individualUri + "> rdf:type <" + classURI + ">  ;\n"
+				+ "}\n";
+		Query query = QueryFactory.create(queryString);
+		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean isFromClass = qe.execAsk();		
+		
+		return isFromClass;
+	}
+	
+	/** 
+	 * Return true if an individual has a relation with another individual from a specific class
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param individualUri: source individual URI 
+	 * @param relationURI: relation URI 
+	 * @param tgtClassURI: class URI of the target individual 
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public boolean isTargetIndividualFromClass(InfModel model, String srcIndividualUri, String relationURI, String tgtClassURI) 
+	{		
+		System.out.println("\nExecuting isTargetIndividualFromClass()...");
+		String queryString = ""
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">  \n"
+				+ "ASK\n"
+				+ "{\n"
+				+ "<"+ srcIndividualUri + "> <" + relationURI + "> ?indv . \n"
+				+ "	?indv rdf:type <" + tgtClassURI + "> .\n"
+				+ "}\n";
+		Query query = QueryFactory.create(queryString);
+		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean isFromClass = qe.execAsk();		
+		
+		return isFromClass;
+	}
+	
+	/** 
 	 * Return the URI of all classes of the ontology. This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
@@ -851,19 +907,19 @@ public class QueryUtil {
 		System.out.println("- relationURI: "+relationURI);
 		List<String> result = new ArrayList<String>();
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-				+ "PREFIX ns:<http://nemo.inf.ufes.br/NewProject.owl#>"
-				+ "SELECT *"
-				+ "WHERE {"
-				+ "	?subRelation rdfs:subPropertyOf*/rdfs:subPropertyOf <" + relationURI + "> ."
-				+ "	?subRelation rdfs:domain ?domain ."
-				+ "	?subRelation rdfs:range ?range ."
-				+ "	<" + indvSrcURI + "> <" + relationURI + "> <" + indvTgtURI + "> ."
-				+ "	<" + indvSrcURI + "> rdf:type ?domain ."
-				+ "	<" + indvTgtURI + "> rdf:type ?range ."
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX ns:<http://nemo.inf.ufes.br/NewProject.owl#>\n"
+				+ "SELECT DISTINCT ?subRelation \n"
+				+ "WHERE {\n"
+				+ "	?subRelation rdfs:subPropertyOf*/rdfs:subPropertyOf <" + relationURI + "> .\n"
+				+ "	?subRelation rdfs:domain ?domain .\n"
+				+ "	?subRelation rdfs:range ?range .\n"
+				+ "	<" + indvSrcURI + "> <" + relationURI + "> <" + indvTgtURI + "> .\n"
+				+ "	<" + indvSrcURI + "> rdf:type ?domain .\n"
+				+ "	<" + indvTgtURI + "> rdf:type ?range .\n"
 				+ "}";
 		
 		Query query = QueryFactory.create(queryString);
