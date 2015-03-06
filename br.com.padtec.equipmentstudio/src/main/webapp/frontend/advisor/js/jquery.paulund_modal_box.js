@@ -63,7 +63,7 @@
 				'display':'block',
 				'height':'50px',
 				'width':'50px',
-				'background': 'url(Assets/img/close.png) no-repeat',
+				'background': 'url(frontend/advisor/img/close.png) no-repeat',
 			});
 			$('.paulund_block_page').css({
 				'position':'absolute',

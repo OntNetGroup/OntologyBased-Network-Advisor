@@ -16,93 +16,93 @@
 
 <!-- start: CSS -->
 
-<link href="Assets/css/okco.css" rel="stylesheet">
-<link href="Assets/css/advisor.css" rel="stylesheet">
-<link href="Assets/css/bootstrap.min.css" rel="stylesheet">
-<link href="Assets/css/style.min.css" rel="stylesheet">
-<link href="Assets/css/retina.min.css" rel="stylesheet">
+<link href="frontend/advisor/css/okco.css" rel="stylesheet">
+<link href="frontend/advisor/css/advisor.css" rel="stylesheet">
+<link href="frontend/advisor/css/bootstrap.min.css" rel="stylesheet">
+<link href="frontend/advisor/css/style.min.css" rel="stylesheet">
+<link href="frontend/advisor/css/retina.min.css" rel="stylesheet">
 
 <!-- Code mirror includes - used in Sindel -->
-<link rel="stylesheet" href="Assets/code_mirror/lib/codemirror.css">
-<link rel="stylesheet" href="Assets/code_mirror/addon/show-hint.css">
-<link rel="stylesheet" href="Assets/code_mirror/theme/neat.css">
+<link rel="stylesheet" href="frontend/advisor/code_mirror/lib/codemirror.css">
+<link rel="stylesheet" href="frontend/advisor/code_mirror/addon/show-hint.css">
+<link rel="stylesheet" href="frontend/advisor/code_mirror/theme/neat.css">
 
 <!--end: CSS -->
 
 <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 	  	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<link id="ie-style" href="Assets/ie.css" rel="stylesheet">
+		<link id="ie-style" href="frontend/advisor/ie.css" rel="stylesheet">
 	<![endif]-->
 
 <!--[if IE 9]>
-		<link id="ie9style" href="Assets/ie9.css" rel="stylesheet">
+		<link id="ie9style" href="frontend/advisor/ie9.css" rel="stylesheet">
 	<![endif]-->
 
 <!-- start: Favicon and Touch Icons -->
-<link rel="shortcut icon" href="Assets/ico/favicon.png">
+<link rel="shortcut icon" href="frontend/advisor/ico/favicon.png">
 <!-- end: Favicon and Touch Icons -->
 
 <!-- start: JavaScript-->
-<script src="Assets/js/jquery-1.10.2.min.js"></script>
-<script src="Assets/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="Assets/js/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="Assets/js/jquery.ui.touch-punch.js"></script>
-<script src="Assets/js/modernizr.js"></script>
-<script src="Assets/js/bootstrap.min.js"></script>
-<script src="Assets/js/jquery.cookie.js"></script>
-<script src='Assets/js/fullcalendar.min.js'></script>
-<script src='Assets/js/jquery.dataTables.min.js'></script>
-<script src='Assets/js/dataTables.bootstrap.min.js'></script>
-<script src="Assets/js/excanvas.js"></script>
-<script src="Assets/js/jquery.flot.js"></script>
-<script src="Assets/js/jquery.flot.pie.js"></script>
-<script src="Assets/js/jquery.flot.stack.js"></script>
-<script src="Assets/js/jquery.flot.resize.min.js"></script>
-<script src="Assets/js/jquery.flot.time.js"></script>
-<script src="Assets/js/jquery.chosen.min.js"></script>
-<script src="Assets/js/jquery.uniform.min.js"></script>
-<script src="Assets/js/jquery.cleditor.min.js"></script>
-<script src="Assets/js/jquery.noty.js"></script>
-<script src="Assets/js/jquery.elfinder.min.js"></script>
-<script src="Assets/js/jquery.raty.min.js"></script>
-<script src="Assets/js/jquery.iphone.toggle.js"></script>
-<script src="Assets/js/jquery.uploadify-3.1.min.js"></script>
-<script src="Assets/js/jquery.gritter.min.js"></script>
-<script src="Assets/js/jquery.imagesloaded.js"></script>
-<script src="Assets/js/jquery.masonry.min.js"></script>
-<script src="Assets/js/jquery.knob.modified.js"></script>
-<script src="Assets/js/jquery.sparkline.min.js"></script>
-<script src="Assets/js/counter.min.js"></script>
-<script src="Assets/js/raphael.2.1.0.min.js"></script>
-<script src="Assets/js/justgage.1.0.1.min.js"></script>
-<script src="Assets/js/jquery.autosize.min.js"></script>
-<script src="Assets/js/retina.js"></script>
-<script src="Assets/js/jquery.placeholder.min.js"></script>
-<script src="Assets/js/wizard.min.js"></script>
-<script src="Assets/js/core.min.js"></script>
-<script src="Assets/js/charts.min.js"></script>
-<script src="Assets/js/custom.min.js"></script>
-<script src="Assets/js/jquery.paulund_modal_box.js"></script>
+<script src="frontend/advisor/js/jquery-1.10.2.min.js"></script>
+<script src="frontend/advisor/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="frontend/advisor/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="frontend/advisor/js/jquery.ui.touch-punch.js"></script>
+<script src="frontend/advisor/js/modernizr.js"></script>
+<script src="frontend/advisor/js/bootstrap.min.js"></script>
+<script src="frontend/advisor/js/jquery.cookie.js"></script>
+<script src='frontend/advisor/js/fullcalendar.min.js'></script>
+<script src='frontend/advisor/js/jquery.dataTables.min.js'></script>
+<script src='frontend/advisor/js/dataTables.bootstrap.min.js'></script>
+<script src="frontend/advisor/js/excanvas.js"></script>
+<script src="frontend/advisor/js/jquery.flot.js"></script>
+<script src="frontend/advisor/js/jquery.flot.pie.js"></script>
+<script src="frontend/advisor/js/jquery.flot.stack.js"></script>
+<script src="frontend/advisor/js/jquery.flot.resize.min.js"></script>
+<script src="frontend/advisor/js/jquery.flot.time.js"></script>
+<script src="frontend/advisor/js/jquery.chosen.min.js"></script>
+<script src="frontend/advisor/js/jquery.uniform.min.js"></script>
+<script src="frontend/advisor/js/jquery.cleditor.min.js"></script>
+<script src="frontend/advisor/js/jquery.noty.js"></script>
+<script src="frontend/advisor/js/jquery.elfinder.min.js"></script>
+<script src="frontend/advisor/js/jquery.raty.min.js"></script>
+<script src="frontend/advisor/js/jquery.iphone.toggle.js"></script>
+<script src="frontend/advisor/js/jquery.uploadify-3.1.min.js"></script>
+<script src="frontend/advisor/js/jquery.gritter.min.js"></script>
+<script src="frontend/advisor/js/jquery.imagesloaded.js"></script>
+<script src="frontend/advisor/js/jquery.masonry.min.js"></script>
+<script src="frontend/advisor/js/jquery.knob.modified.js"></script>
+<script src="frontend/advisor/js/jquery.sparkline.min.js"></script>
+<script src="frontend/advisor/js/counter.min.js"></script>
+<script src="frontend/advisor/js/raphael.2.1.0.min.js"></script>
+<script src="frontend/advisor/js/justgage.1.0.1.min.js"></script>
+<script src="frontend/advisor/js/jquery.autosize.min.js"></script>
+<script src="frontend/advisor/js/retina.js"></script>
+<script src="frontend/advisor/js/jquery.placeholder.min.js"></script>
+<script src="frontend/advisor/js/wizard.min.js"></script>
+<script src="frontend/advisor/js/core.min.js"></script>
+<script src="frontend/advisor/js/charts.min.js"></script>
+<script src="frontend/advisor/js/custom.min.js"></script>
+<script src="frontend/advisor/js/jquery.paulund_modal_box.js"></script>
 <!-- end: JavaScript-->
 
 <!-- Sindel includes -->
-<script src="Assets/js/jison/sindel-parser.js"></script>
-<script src="Assets/code_mirror/lib/codemirror.js"></script> 
-<script src="Assets/code_mirror/addon/matchbrackets.js"></script> 
-<script src="Assets/code_mirror/addon/closebrackets.js"></script> 			
-<script src="Assets/code_mirror/addon/show-hint.js"></script> 
-<script src="Assets/code_mirror/sindel_custom/sindel-hint.js"></script> 
-<script src="Assets/code_mirror/sindel_custom/sindel-highlight.js"></script> 
-<script src="Assets/js/okco.js"></script>
-<script src="Assets/js/advisor.js"></script>
+<script src="frontend/advisor/js/jison/sindel-parser.js"></script>
+<script src="frontend/advisor/code_mirror/lib/codemirror.js"></script> 
+<script src="frontend/advisor/code_mirror/addon/matchbrackets.js"></script> 
+<script src="frontend/advisor/code_mirror/addon/closebrackets.js"></script> 			
+<script src="frontend/advisor/code_mirror/addon/show-hint.js"></script> 
+<script src="frontend/advisor/code_mirror/sindel_custom/sindel-hint.js"></script> 
+<script src="frontend/advisor/code_mirror/sindel_custom/sindel-highlight.js"></script> 
+<script src="frontend/advisor/js/okco.js"></script>
+<script src="frontend/advisor/js/advisor.js"></script>
 
 <!-- END Syntax Highlight -->
-<script src="Assets/js/graph/arbor.js"></script>
-<script src="Assets/js/graph/graphics.js"></script>
-<script src="Assets/js/graph/main.js"></script>
-<script src="Assets/js/graph/jquery.contextmenu.js"></script>
-<link rel="stylesheet" type="text/css" href="Assets/js/graph/contextMenu.css"	media="all">
+<script src="frontend/advisor/js/graph/arbor.js"></script>
+<script src="frontend/advisor/js/graph/graphics.js"></script>
+<script src="frontend/advisor/js/graph/main.js"></script>
+<script src="frontend/advisor/js/graph/jquery.contextmenu.js"></script>
+<link rel="stylesheet" type="text/css" href="frontend/advisor/js/graph/contextMenu.css"	media="all">
 
 <style type="text/css">
 
@@ -186,7 +186,7 @@ $(document).ready(function() {
 
 	<!-- Não remova o div#maskforloading, pois ele é necessário para preencher toda a janela -->
 	<div id="maskforloading">
-		<img src="Assets/img/loading.gif" height="100px">
+		<img src="frontend/advisor/img/loading.gif" height="100px">
 	</div>
 
 	<div id="dialog" title="Confirmation Required">

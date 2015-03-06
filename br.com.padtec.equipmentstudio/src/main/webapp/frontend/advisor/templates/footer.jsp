@@ -17,7 +17,7 @@
 						<span class="hidden-phone" style="text-align:right;float:right">
 							Powered by: 
 							<a href="http://www.ontnetgroup.com">
-								<img src="Assets/img/LogoOntNetGroup.png" alt="OntNet Group" width="92">
+								<img src="frontend/advisor/img/LogoOntNetGroup.png" alt="OntNet Group" width="92">
 							</a>
 						</span>
 					</td>

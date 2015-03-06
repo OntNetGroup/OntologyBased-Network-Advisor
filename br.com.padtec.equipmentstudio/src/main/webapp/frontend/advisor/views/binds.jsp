@@ -330,7 +330,7 @@
 				</div>
 				
 				<div class="floatingDiv" style="right: 35px; bottom: 20px;">
-					<img id="sub" src="Assets/img/subtitles/Subtitle_TNOKCO_Binds.png"></img>
+					<img id="sub" src="frontend/advisor/img/subtitles/Subtitle_TNOKCO_Binds.png"></img>
 				</div>
 				
 				<div style="clear: both"></div>

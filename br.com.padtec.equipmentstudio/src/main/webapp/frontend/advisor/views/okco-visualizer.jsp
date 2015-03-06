@@ -31,10 +31,10 @@
 }
 </style>
 
-<script src="Assets/js/jquery-1.10.2.min.js"></script>
-<script src="Assets/js/graph/arbor.js"></script>
-<script src="Assets/js/graph/graphics.js"></script>
-<script src="Assets/js/graph/main.js"></script>
+<script src="frontend/advisor/js/jquery-1.10.2.min.js"></script>
+<script src="frontend/advisor/js/graph/arbor.js"></script>
+<script src="frontend/advisor/js/graph/graphics.js"></script>
+<script src="frontend/advisor/js/graph/main.js"></script>
 
 </head>
 <body>
@@ -64,7 +64,7 @@
 		<div id="subtitle">
 			<%
 					String subtitle = (String)request.getSession().getAttribute("subtitle");
-					out.println("<img id=\"subtitle_table\" src=\"Assets/img/subtitles/"+subtitle+"\">");
+					out.println("<img id=\"subtitle_table\" src=\"frontend/advisor/img/subtitles/"+subtitle+"\">");
 			%>
 		</div>
 		<br>
