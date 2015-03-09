@@ -59,8 +59,7 @@
 		<input type="submit" value="Go">
 	</form>
 
-	<form id="advisor" action="advisor.htm">
-		<button id="btn-open-advisor"> </button>
+	<form id="advisor" action="advisor.htm">	
 		<input type="submit" value="Open Advisor">
 	</form>
 		
