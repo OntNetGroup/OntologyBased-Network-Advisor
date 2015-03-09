@@ -287,9 +287,9 @@
 
 				<div class="actions">
 
-					<form id="commitInstanceForm" action="commitMaxCard" method="POST">
+					<form id="commitInstanceForm" action="commitMaxCard.htm" method="POST">
 						<%
-							out.println("<button onclick=\"window.location = 'okco-details?uri="
+							out.println("<button onclick=\"window.location = 'okco-details.htm?uri="
 									+ instanceSelected.uriEncoded
 									+ "';\" type=\"button\" class=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
 						%>

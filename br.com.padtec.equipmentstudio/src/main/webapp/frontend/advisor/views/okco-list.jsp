@@ -92,10 +92,10 @@
 </script>
 	<div id="row" class="row" style="margin-right:0px;margin-left:0px">	
 		<div id="boxViewAll" style="float:left">
-			<a class="btn btn-success" target="_blank" href="okco-visualizer?typeView=ALL&id=0"> <i class="icon-zoom-in"></i> </a>
+			<a class="btn btn-success" target="_blank" href="okco-visualizer.htm?typeView=ALL&id=0"> <i class="icon-zoom-in"></i> </a>
 			VIEW ALL GRAPH			
 		</div>
-		<form id="runReasonerForm" style="float:right" action="runReasoner" method="POST">
+		<form id="runReasonerForm" style="float:right" action="runReasoner.htm" method="POST">
 			<button id="EnforceSubRelation" type="button" class="btn btn-pre btnload"> <i class="icon-arrow-right"></i> Enforce Sub Relation(s)</button>	
 			<button type="submit"  class="btn btn-pre btnload"> <i class="icon-arrow-right"></i> Run reasoner</button>		
 		</form>		
@@ -164,9 +164,9 @@
   						  	}	
   						 	out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+stateLabel+"</span> </td>");
   						  	out.println("<td class=\"actions\">" + 
-  						  	"<a class=\"btn btn-success\" target=\"_blank\" href=\"okco-visualizer?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
-  						  	"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"okco-details?uri=" + i.uriEncoded + "\" onclick=\"loading()\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
-  					  		"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"completeInstanceAuto?uriInstance="+ i.uriEncoded + "\" onclick=\"loading()\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
+  						  	"<a class=\"btn btn-success\" target=\"_blank\" href=\"okco-visualizer.htm?typeView=IN&uri=" + i.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> " + 
+  						  	"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"okco-details.htm?uri=" + i.uriEncoded + "\" onclick=\"loading()\"> <i class=\"icon-hand-up\"> &nbsp;Manually Complete</i> </a>" + "&nbsp;" +
+  					  		"<a class=\"btn btn-info\" title=\"Auto Complete\" href=\"completeInstanceAuto.htm?uriInstance="+ i.uriEncoded + "\" onclick=\"loading()\"> <i class=\"icon-cogs\">&nbsp;Auto Complete</i> </a>" +
   						  	"</td>");  					  									  		
   					  		out.println("</tr>");
   						}

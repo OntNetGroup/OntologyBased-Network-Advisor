@@ -31,7 +31,8 @@ public class OKCoReasoner {
 			OKCoUploader.rollBack(true);			
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 			dto.setMessage(error);
-			dto.setIsSucceed(false);			
+			dto.setIsSucceed(false);		
+			return dto;	
 		}
 		dto.setIsSucceed(true);
 		dto.setMessage("ok");

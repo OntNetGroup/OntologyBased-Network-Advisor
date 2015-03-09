@@ -904,7 +904,7 @@
 		<!-- /SELECT DIALOG -->
 		
 		<!-- CREATE DIALOG -->
-		<form id="newInstanceForm" action="createInstance" method="POST">
+		<form id="newInstanceForm" action="createInstance.htm" method="POST">
 		
 			<div class="row">
 			
@@ -1150,9 +1150,9 @@
 
 <div class="row" style="margin-left: 0px">
 					
-	<form id="commitInstanceForm" action="commitInstance" method="POST">
+	<form id="commitInstanceForm" action="commitInstance.htm" method="POST">
 		<%
-			out.println("<button onclick=\"window.location = 'okco-details?uri=" + instanceSelected.uriEncoded + "';\" type=\"button\" class=\"btn btn-prev\" id=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
+			out.println("<button onclick=\"window.location = 'okco-details.htm?uri=" + instanceSelected.uriEncoded + "';\" type=\"button\" class=\"btn btn-prev\" id=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
 		%>
 		
 		<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>

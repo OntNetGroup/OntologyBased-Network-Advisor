@@ -321,7 +321,7 @@
 								<button type="button" id="resetSelection" disabled="disabled" onclick="resetSelection();">Reset Selection</button>
 							</td>
 							<td>
-								<form action="autoBinds" class="form-horizontal" method="POST" enctype="multipart/form-data">
+								<form action="autoBinds.htm" class="form-horizontal" method="POST" enctype="multipart/form-data">
 									<input type="submit" id="automatic-binds" name="submit" value="Automatic Binds" />
 								</form>
 							</td>							

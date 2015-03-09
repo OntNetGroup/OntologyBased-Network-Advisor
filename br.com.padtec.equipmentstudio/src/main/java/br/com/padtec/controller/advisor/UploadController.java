@@ -83,7 +83,7 @@ public class UploadController implements ServletContextAware{
 		if(username.equals("advisor") && password.equals("1234"))
 		{
 			request.getSession().setAttribute("login", "true");
-			return "redirect:advisor/views/welcome";
+			return "redirect:welcome.htm";
 		}else{
 			request.getSession().setAttribute("login", "false");
 			return "advisor/views/login";
@@ -168,7 +168,7 @@ public class UploadController implements ServletContextAware{
 		System.out.println("Executing /uploadOwl...");
 		Date beginDate = new Date();
 		
-		try{
+		try{			
 			
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
@@ -217,7 +217,7 @@ public class UploadController implements ServletContextAware{
 		PerformanceUtil.printExecutionTime("/uploadOwl", beginDate);
 		
 		request.getSession().removeAttribute("errorMensage");  
-		return "redirect:advisor/views/okco-list";
+		return "redirect:okco-list.htm";
 	}	
 	
 	@RequestMapping(method = RequestMethod.GET, value="/getModel")

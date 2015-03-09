@@ -163,7 +163,7 @@
 
 <div id="row" class="row">
 	<div style="padding-left: 15px; margin-bottom:20px;">	
-		<button onclick="window.location = 'okco-list';" style="float:left;" type="button" class="btn btn-prev"> <i class="icon-arrow-left"></i> Back to list</button>
+		<button onclick="window.location = 'okco-list.htm';" style="float:left;" type="button" class="btn btn-prev"> <i class="icon-arrow-left"></i> Back to list</button>
 		<div style="clear:both"></div>		
 	</div>			
 	<div class="col-lg-12">
@@ -194,7 +194,7 @@
 								for(String iName: instance.ListSameInstances)
 								{																			
 									DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, iName);																			
-									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"okco-details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"okco-details.htm?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
 								}
 							%>
 							</ul>
@@ -209,7 +209,7 @@
 								for(String iName: instance.ListDiferentInstances)
 								{
 									DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, iName);																			
-									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"okco-details?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
+									out.println("<li> <a title=\"" + i.ns + i.name  + "\" href=\"okco-details.htm?uri=" + i.uriEncoded + "\">" + i.name + "</a> </li>");
 								}
 							%>
 							</ul>
@@ -250,7 +250,7 @@
 								  			split2 = dto.Target.split("#")[1];
 								  		}		
 								  		DtoInstance i = DtoFactoryUtil.getIndividualFrom(ListAllInstances, dto.Target);
-						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + split1 + " -> " + "<a href=\"okco-details?uri=" + i.uriEncoded + "\">" + split2 + "</a>" + "</li>");
+						  				out.println("<li title=\"" + dto.Property + " -> " + dto.Target + "\">" + split1 + " -> " + "<a href=\"okco-details.htm?uri=" + i.uriEncoded + "\">" + split2 + "</a>" + "</li>");
 						  			}
 						  		}
 							%>
@@ -262,8 +262,8 @@
 						<td>
 							<ul style="margin: 0">
 								<%
-									out.println("<li><a class=\"btn btn-success\" target=\"_blank\" href=\"okco-visualizer?typeView=IN&uri=" + instance.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> To "+instance.name+"</li>");
-									out.println("<li style=\"margin-top:3px;\"><a class=\"btn btn-success\" target=\"_blank\" href=\"okco-visualizer?typeView=OUT&uri=" + instance.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> From "+instance.name+"</li>");
+									out.println("<li><a class=\"btn btn-success\" target=\"_blank\" href=\"okco-visualizer.htm?typeView=IN&uri=" + instance.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> To "+instance.name+"</li>");
+									out.println("<li style=\"margin-top:3px;\"><a class=\"btn btn-success\" target=\"_blank\" href=\"okco-visualizer.htm?typeView=OUT&uri=" + instance.uriEncoded + "\"> <i class=\"icon-zoom-in\"></i> </a> From "+instance.name+"</li>");
 								%>
 							</ul>
 						</td>
@@ -322,7 +322,7 @@
 								{
 									if(dto.Members.size()> 0)
 									{
-										out.println("<form class=\"completeClassForm\" id=\"completeClassForm_"+ countForm + "\" action=\"classifyInstanceClasses\" method=\"POST\">");
+										out.println("<form class=\"completeClassForm\" id=\"completeClassForm_"+ countForm + "\" action=\"classifyInstanceClasses.htm\" method=\"POST\">");
 											out.println("<h3 style=\"margin-bottom: 10px;\">Classify instance <i>" +  instance.name + "</i> from <i>" + dto.CompleteClass.split("#")[1] + "</i> as:</h3>");
 											
 												out.println("<div class=\"controls\">");
@@ -408,7 +408,7 @@
 								{
 									if(dto.SubProperties.size() > 0)
 									{
-										out.println("<form id=\"completePropertyForm_"+ countDtos + "\" class=\"completePropertyForm\" action=\"classifyInstanceProperty\" method=\"POST\">");
+										out.println("<form id=\"completePropertyForm_"+ countDtos + "\" class=\"completePropertyForm\" action=\"classifyInstanceProperty.htm\" method=\"POST\">");
 										
 										out.println("<div class=\"form-group\" style=\"margin-top: 20px;\">");
 										if(dto.iTargetNs.contains("^^"))
@@ -587,7 +587,7 @@
 								  		out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 								  		
 								  		out.println("<td class=\"actions\">" + 
-					  						"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;");
+					  						"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"completeProperty.htm?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;");
 					  					
 								  		if(!dto.status.equals(DtoStatus.SATISFIED)) 
 								  		{
@@ -629,7 +629,7 @@
 								  		out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 								  		
 								  		out.println("<td class=\"actions\">" + 
-						  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;");
+						  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"completeProperty.htm?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;");
 						  				
 									  	if(!dto.status.equals(DtoStatus.SATISFIED)) 
 									  	{
@@ -674,7 +674,7 @@
 							  		out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 							  		
 							  		out.println("<td class=\"actions\">" + 
-					  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;");
+					  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"completeProperty.htm?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;");
 					  				
 								  	if(!dto.status.equals(DtoStatus.SATISFIED)) 
 								  	{
@@ -718,7 +718,7 @@
 							  		out.println("<td class=\"state\">	<span class=\""+stateClass+"\">"+dto.status+"</span> </td>");
 							  		
 							  		out.println("<td class=\"actions\">" + 
-					  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"completeProperty?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;");
+					  				"<a class=\"btn btn-info\" title=\"Manually Complete\" href=\"completeProperty.htm?uriInstance="+ instance.uriEncoded + "&idDefinition=" + dto.uriRelationEncoded + "&type=" + "object" + "&propType=SOME" + "\"> <i class=\"icon-hand-up\">&nbsp;Manually Complete</i> </a>" + "&nbsp;");
 					  				
 								  	if(!dto.status.equals(DtoStatus.SATISFIED)) 
 								  	{
@@ -953,7 +953,7 @@
 <!-- /row -->	
 
 <div class="actions">
-	<button onclick="window.location = 'okco-list';" type="button" class="btn btn-prev"> <i class="icon-arrow-left"></i> Back to list</button>
+	<button onclick="window.location = 'okco-list.htm';" type="button" class="btn btn-prev"> <i class="icon-arrow-left"></i> Back to list</button>
 	<!-- <button type="button" class="btn btn-success btn-next" data-last="Finish">Next <i class="icon-arrow-right"></i></button> -->
 </div>
 

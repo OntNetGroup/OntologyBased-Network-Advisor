@@ -113,7 +113,7 @@
 					</a>
 
 					<h2>Login</h2>
-					<form class="form-horizontal" action="login"
+					<form class="form-horizontal" action="login.htm"
 						enctype="multipart/form-data" method="post">
 						<fieldset>
 

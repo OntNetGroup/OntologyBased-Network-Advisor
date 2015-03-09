@@ -360,7 +360,7 @@
 									onclick="resetSelection();">Reset Selection</button>
 							</td>
 							<td style="padding-right: 5px;">
-								<form action="autoConnects" class="form-horizontal" method="POST"
+								<form action="autoConnects.htm" class="form-horizontal" method="POST"
 									enctype="multipart/form-data">
 									<input type="submit" id="autoConnects" name="submit"
 										value="Automatic Connects" />

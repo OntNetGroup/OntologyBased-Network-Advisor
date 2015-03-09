@@ -491,7 +491,7 @@
 			</div>
 			
 			<div class="tooltip-demo well" id="equipTypeContainer">
-				<form action="uploadEquipTypes" id="equipTypeForm" class="form-horizontal" method="POST" enctype="multipart/form-data" >
+				<form action="uploadEquipTypes.htm" id="equipTypeForm" class="form-horizontal" method="POST" enctype="multipart/form-data" >
 					<%
 					int maxElements = 10;
 					for(int i = 1; i <= maxElements; i++){
@@ -565,7 +565,7 @@
 			<!-- ------------------- -->
 			<!-- Content Sindel here -->
 			<!-- ------------------- -->
-			<form id="sindelForm" method="POST" action="runEquipScratch">
+			<form id="sindelForm" method="POST" action="runEquipScratch.htm">
 
 				<div style="border: 1px solid black; width: 100%;">
 					<textarea id="code" name="code" style="width: 100%;"><%if(sindelValue != null){out.println(sindelValue);}%>

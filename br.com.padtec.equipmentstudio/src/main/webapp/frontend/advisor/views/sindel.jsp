@@ -543,14 +543,14 @@
 							
 						</form>
 						
-						<form id="getSindelForm" style="float:left" method="POST" action="getSindelCode">
+						<form id="getSindelForm" style="float:left" method="POST" action="getSindelCode.htm">
 							<input type="button" class="btn btn-pre btn-clean" value="Clean" />
 							<input type="submit" class="btn btn-pre btn-export" value="Save File" />
 						</form>
 						  
 						<!-- <input type="button" class="btn btn-pre btn-save" value="Save" /> --> 
 					
-						<form id="sindelForm" style="float:left; margin-left:3px;" method="POST" action="runSindel">
+						<form id="sindelForm" style="float:left; margin-left:3px;" method="POST" action="runSindel.htm">
 							<input type="submit" class="btn btn-pre" value="Run" />
 						</form>
 						

@@ -300,7 +300,7 @@
 		<a href="#" class="close">Close [X]</a>
 		<br />
 		<br />		
-		<form id="newDataValueForm" action="createDataValue" method="POST">
+		<form id="newDataValueForm" action="createDataValue.htm" method="POST">
 		
 			<div class="row">
 			
@@ -436,9 +436,9 @@
 
 <div class="row">
 	
-	<form id="commitInstanceForm" action="commitDataValues" method="POST">
+	<form id="commitInstanceForm" action="commitDataValues.htm" method="POST">
 		<%
-			out.println("<button onclick=\"window.location = 'okco-details?uri=" + instanceSelected.uriEncoded + "';\" type=\"button\" class=\"btn btn-prev\" id=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
+			out.println("<button onclick=\"window.location = 'okco-details.htm?uri=" + instanceSelected.uriEncoded + "';\" type=\"button\" class=\"btn btn-prev\" id=\"btn btn-prev\"> <i class=\"icon-arrow-left\"></i> Back to instance</button>");
 		%>
 		
 		<button id="commitButton" type="submit" class="btn btn-pre btn-commit btnload"> <i class="icon-arrow-right"></i> Commit</button>
