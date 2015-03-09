@@ -28,6 +28,11 @@ public class Home {
 		return "dashboard/dashboard";
 	}
 	
+	@RequestMapping("/advisor")
+	public String advisorRequest() {
+		return "advisor/index";
+	}
+	
 	@RequestMapping(value = "/node_added", method = RequestMethod.GET)
 	public @ResponseBody String nodeAdded(@RequestParam("id") String id, @RequestParam("stencil") String stencil) {
 		System.out.println("id: "+id);

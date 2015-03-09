@@ -59,6 +59,11 @@
 		<input type="submit" value="Go">
 	</form>
 
+	<form id="advisor" action="advisor.htm">
+		<button id="btn-open-advisor"> </button>
+		<input type="submit" value="Open Advisor">
+	</form>
+		
 	<script>
 		/**
 		Crating and setting the stencils for this pages
