@@ -29,7 +29,7 @@
 	@SuppressWarnings("unchecked")
 	ArrayList<DtoDefinitionClass> listExactlyClassDefinition = (ArrayList<DtoDefinitionClass>)request.getSession().getAttribute("listExactlyClassDefinition");
 %>
-<%@include file="../templates/header.jsp"%>
+<%@include file="/frontend/advisor/templates/header.jsp"%>
 <script type="text/javascript">
 
 	//Variables to control specialization properties	
@@ -958,4 +958,4 @@
 </div>
 
 
-<%@include file="../templates/footer.jsp"%>
+<%@include file="/frontend/advisor/templates/footer.jsp"%>

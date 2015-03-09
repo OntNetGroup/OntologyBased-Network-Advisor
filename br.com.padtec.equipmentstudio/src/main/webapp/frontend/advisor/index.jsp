@@ -239,7 +239,7 @@
 								<!-- Sindel -->
 								
 								<li >Load Sindel file.
-									<form action="uploadSindel" class="form-horizontal"
+									<form action="uploadSindel.htm" class="form-horizontal"
 										enctype="multipart/form-data" method="POST">
 										<div class="controls">
 											<input name="file" type="file"> <input type="submit" class="btnload"
@@ -260,7 +260,7 @@
 								<!-- OKCo -->
 								
 								<li style="margin-top: 20px;">
-									<form action="uploadOwl" class="form-horizontal"
+									<form action="uploadOwl.htm" class="form-horizontal"
 										enctype="multipart/form-data" method="POST">
 										
 										<div>Load OWL file:</div>

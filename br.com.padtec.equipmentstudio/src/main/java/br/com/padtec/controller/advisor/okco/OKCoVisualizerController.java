@@ -43,6 +43,6 @@ public class OKCoVisualizerController {
 		request.getSession().setAttribute("height", height);
 		request.getSession().setAttribute("subtitle", subtitle);
 		
-		return "okco-visualizer";
+		return "advisor/views/okco-visualizer";
 	}
 }

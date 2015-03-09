@@ -14,7 +14,7 @@
 	String propType = request.getSession().getAttribute("propType").toString();
 %>
 
-<%@include file="../templates/header.jsp"%>
+<%@include file="/frontend/advisor/templates/header.jsp"%>
 
 <script type="text/javascript">
 
@@ -335,4 +335,4 @@
 <!-- /row -->
 
 
-<%@include file="../templates/footer.jsp"%>
+<%@include file="/frontend/advisor/templates/footer.jsp"%>

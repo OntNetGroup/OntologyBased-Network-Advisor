@@ -120,7 +120,7 @@
 	</script>
 	
 	<!-- Images of ITU elements -->
-<%@include file="../templates/tnokco_images_visualization.jsp"%>
+<%@include file="/frontend/advisor/templates/tnokco_images_visualization.jsp"%>
 
 </body>
 </html>

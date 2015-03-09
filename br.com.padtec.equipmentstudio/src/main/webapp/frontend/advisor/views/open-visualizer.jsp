@@ -1,6 +1,6 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@include file="../templates/header.jsp"%>
+<%@include file="/frontend/advisor/templates/header.jsp"%>
 <%
 	ArrayList<String> equipements = (ArrayList<String>) request.getSession().getAttribute("equipments");
 	ArrayList<String> sites = (ArrayList<String>) request.getSession().getAttribute("sites");
@@ -179,4 +179,4 @@ function changedEquipmentCB(){
 		</div>
 
 </div>
-<%@include file="../templates/footer.jsp"%>
+<%@include file="/frontend/advisor/templates/footer.jsp"%>

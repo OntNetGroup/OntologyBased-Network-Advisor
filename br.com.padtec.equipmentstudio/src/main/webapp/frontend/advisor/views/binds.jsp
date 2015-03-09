@@ -1,4 +1,4 @@
-<%@include file="../templates/header.jsp"%>
+<%@include file="/frontend/advisor/templates/header.jsp"%>
 <%
 	String arborStructure = (String) request.getSession().getAttribute("valuesGraph");
 	Integer width = (Integer) request.getSession().getAttribute("width");
@@ -419,5 +419,5 @@
 </script>
 
 <!-- Images of ITU elements -->
-<%@include file="../templates/tnokco_images_visualization.jsp"%>
-<%@include file="../templates/footer.jsp"%>
+<%@include file="/frontend/advisor/templates/tnokco_images_visualization.jsp"%>
+<%@include file="/frontend/advisor/templates/footer.jsp"%>

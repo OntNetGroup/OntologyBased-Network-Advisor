@@ -161,7 +161,7 @@ $(document).ready(function() {
 		   modal: true,
 		   buttons : {
 		        "Confirm" : function() {  
-		            window.location.href = "welcome";
+		            window.location.href = "welcome.htm";
 		        },
 		        "Cancel" : function() {
 		          $(this).dialog("close");
@@ -206,7 +206,7 @@ $(document).ready(function() {
 					class="icon-reorder"></i></a>
 				<div class="row">
 					<a class="navbar-brand col-lg-2 col-sm-1 col-xs-12"
-						href="welcome">
+						href="welcome.htm">
 							<span>Ontology-based Network Advisor</span>
  					</a>
 				</div>
@@ -240,8 +240,8 @@ $(document).ready(function() {
 									<a class="dropmenu drop" href="#"><i class="icon-download"></i><span class="hidden-sm"> Add Information</span> <span class="label">3</span></a>
 									<ul class="dropmenuLevel2">								
 										
-										<li><a class="submenu" href="sindel"><i class="">S</i><span class="hidden-sm"> &nbsp;&nbsp; Sindel Editor</span></a></li>
-										<li><a class="submenu" href="add-equipment"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipment Instances</span></a></li>
+										<li><a class="submenu" href="sindel.htm"><i class="">S</i><span class="hidden-sm"> &nbsp;&nbsp; Sindel Editor</span></a></li>
+										<li><a class="submenu" href="add-equipment.htm"><i class="">E</i><span class="hidden-sm"> &nbsp;&nbsp; Equipment Instances</span></a></li>
 									</ul>	
 								</li>
 								
@@ -249,10 +249,10 @@ $(document).ready(function() {
 									<a class="dropmenu" href="#"><i class="icon-lightbulb"></i><span class="hidden-sm"> Functionalites</span> <span class="label">3</span></a>
 									<ul class="dropmenuLevel2">								
 										
-										<li><a class="submenu" href="okco-list"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion <br> &nbsp;&nbsp; (OKCo)</span></a></li>
-										<li><a class="submenu" href="open-visualizer"><i class="icon-eye-open"></i><span class="hidden-sm">&nbsp;&nbsp; Visualization</span></a></li>
-										<li><a class="submenu" href="binds"><i class="">B</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Binds</span></a></li>
-										<li><a class="submenu" href="connects"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Connects</span></a></li>
+										<li><a class="submenu" href="okco-list.htm"><i class="icon-ok-circle"></i><span class="hidden-sm">&nbsp;&nbsp; Knowledge Completion <br> &nbsp;&nbsp; (OKCo)</span></a></li>
+										<li><a class="submenu" href="open-visualizer.htm"><i class="icon-eye-open"></i><span class="hidden-sm">&nbsp;&nbsp; Visualization</span></a></li>
+										<li><a class="submenu" href="binds.htm"><i class="">B</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Binds</span></a></li>
+										<li><a class="submenu" href="connects.htm"><i class="">C</i><span class="hidden-sm"> &nbsp;&nbsp; Provisioning: Connects</span></a></li>
 									</ul>
 								</li>
 								
@@ -260,7 +260,7 @@ $(document).ready(function() {
 									<a class="dropmenu" href="#"><i class="icon-save"></i><span class="hidden-sm"> Output Results</span> <span class="label">2</span></a>
 									<ul class="dropmenuLevel2">								
 										
-										<li><a class="submenu" href="getModel"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as OWL</span></a></li>
+										<li><a class="submenu" href="getModel.htm"><i class="icon-save"></i><span class="hidden-sm">&nbsp;&nbsp; Save as OWL</span></a></li>
 									</ul>	
 								</li>
 								
@@ -268,10 +268,10 @@ $(document).ready(function() {
 						</li>
 					
 					
-						<li><a href="faq" class=""><i class="icon-question-sign"></i><span
+						<li><a href="faq.htm" class=""><i class="icon-question-sign"></i><span
 								class="hidden-sm"> FAQ</span></a></li>
 								
-						<li><a href="about" class=""><i class="icon-exclamation-sign"></i><span
+						<li><a href="about.htm" class=""><i class="icon-exclamation-sign"></i><span
 								class="hidden-sm"> About</span></a></li>
 
 					</ul>

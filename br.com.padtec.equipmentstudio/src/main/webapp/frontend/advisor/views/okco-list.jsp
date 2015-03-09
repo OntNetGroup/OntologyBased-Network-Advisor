@@ -10,7 +10,7 @@
 	List<String> listModifedInstances = (List<String>)request.getSession().getAttribute("listModifedInstances");
 %>
 
-<%@include file="../templates/header.jsp" %>
+<%@include file="/frontend/advisor/templates/header.jsp" %>
 
 <script type="text/javascript">
 
@@ -33,7 +33,7 @@
 // 				{						
 // 					if(!json.error)
 // 					{
-// 						window.location.href = "okco-list";
+// 						window.location.href = "okco-list.htm";
 // 						$(document).ajaxStop(function() { location.reload(true); });
 // 					}else{
 // 						//Huston we have a problem
@@ -205,5 +205,5 @@
 	</div>	
 	<!-- /row -->
 			
-<%@include file="../templates/footer.jsp" %></html>
+<%@include file="/frontend/advisor/templates/footer.jsp" %></html>
 

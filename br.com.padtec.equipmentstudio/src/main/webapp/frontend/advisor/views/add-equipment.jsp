@@ -4,7 +4,7 @@
 	String sindelValue = (String)request.getSession().getAttribute("txtSindelCode");
 	
 %>
-<%@include file="../templates/header.jsp"%>
+<%@include file="/frontend/advisor/templates/header.jsp"%>
 
 <script>
 	
@@ -546,7 +546,7 @@
 			
 			<div class="tooltip-demo well" id="scratchContainer">
 					
-				<form action="uploadSindelEquip" class="form-horizontal" enctype="multipart/form-data" method="POST">
+				<form action="uploadSindelEquip.htm" class="form-horizontal" enctype="multipart/form-data" method="POST">
 		 			<div class="controls">
 		 				<%
 						String equipNameAux = (String)request.getSession().getAttribute("equipNameAux");
@@ -638,4 +638,4 @@
 </div>
 <!--/row-->
 
-<%@include file="../templates/footer.jsp"%>
+<%@include file="/frontend/advisor/templates/footer.jsp"%>

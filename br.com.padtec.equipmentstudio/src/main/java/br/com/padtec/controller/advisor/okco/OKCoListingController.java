@@ -35,10 +35,10 @@ public class OKCoListingController {
 		if(allIndividuals != null) {
 			request.getSession().setAttribute("listInstances", allIndividuals);
 			request.getSession().setAttribute("listModifedInstances", modifiedIndividuals);
-			ret =  "okco-list";
+			ret =  "advisor/views/okco-list";
 		} else{
 			request.getSession().setAttribute("loadOk", "false");
-			ret = "index";
+			ret = "advisor/index";
 		}
 		
 		PerformanceUtil.printExecutionTime("/okco-list", beginDate);

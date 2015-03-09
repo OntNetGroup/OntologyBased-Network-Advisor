@@ -6,7 +6,7 @@
 	String sindelValue = (String)request.getSession().getAttribute("txtSindelCode");
 // 	ArrayList<Code> ListCodes = (ArrayList<Code>)request.getSession().getAttribute("ListCodes");
 %>
-<%@include file="../templates/header.jsp"%>
+<%@include file="/frontend/advisor/templates/header.jsp"%>
 
 <script>
 	$(document)
@@ -351,7 +351,7 @@
 																		alert("Sindel tranformation messages:" + " " + dto.result);
 																	}
 																	
-																	window.location.href = "okco-list";
+																	window.location.href = "okco-list.htm";
 
 																}
 
@@ -527,7 +527,7 @@
 						%>
 						<!-- TEXTA AREA -->
 
-						<form action="uploadSindel" style="float:left; margin-right:5px;" class="form-horizontal" enctype="multipart/form-data" method="POST">
+						<form action="uploadSindel.htm" style="float:left; margin-right:5px;" class="form-horizontal" enctype="multipart/form-data" method="POST">
 						
 								<input type="button" class="btn btn-pre btn-load" value="Open file" /> 
 							
@@ -614,4 +614,4 @@
 </div>
 <!--/row-->
 
-<%@include file="../templates/footer.jsp"%>
+<%@include file="/frontend/advisor/templates/footer.jsp"%>

@@ -27,7 +27,7 @@ public class VisualizationController {
 	@RequestMapping(method = RequestMethod.GET, value="/open-visualizer")
 	public String open_visualizator(HttpServletRequest request) 
 	{
-		if(OKCoUploader.getBaseModel() == null) return "open-visualizer"; 
+		if(OKCoUploader.getBaseModel() == null) return "advisor/views/open-visualizer"; 
 
 		/**===========================================================
 		 * Initialize figure mapper
@@ -54,7 +54,7 @@ public class VisualizationController {
 		HashMap<String, List<String>> g800List = AdvisorService.getIndividualVSClassesMap(allIndividuals);;				
 		request.getSession().setAttribute("g800", g800List);
 
-		return "open-visualizer";
+		return "advisor/views/open-visualizer";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_network_visualization")
@@ -114,7 +114,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("nameSpace", OKCoUploader.getNamespace());
 		request.getSession().setAttribute("size", viz.getSize());
 		
-		return "show-visualization";
+		return "advisor/views/show-visualization";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_equipment_visualization_from_site")
@@ -135,7 +135,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("visualizationType", "fromSite");
 		request.getSession().setAttribute("site", selected_site);
 		
-		return "show-visualization";
+		return "advisor/views/show-visualization";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_g800_visualization_from_equip")
@@ -154,7 +154,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("visualizationType", "fromEquip");
 		request.getSession().setAttribute("equip", equip);
 		
-		return "show-visualization";
+		return "advisor/views/show-visualization";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/connects")
@@ -167,16 +167,7 @@ public class VisualizationController {
 
 		ConnectsVisualizator viz = new ConnectsVisualizator();
 		viz.setConfig();
-		
-		System.out.println("ABORSTRUCTURE\n"+viz.getArborStructure());
-		System.out.println("WIDTH\n"+viz.getWidth());
-		System.out.println("HEIGHT\n"+viz.getHeight());
-		System.out.println("HASHEQUIPINTOUT\n"+viz.getHashEquipIntOut());
-		System.out.println("HASHTYPES\n"+viz.getHashTypes());
-		System.out.println("HASHALLOWED\n"+viz.getHashAllowed());
-		System.out.println("HASHRPEQUIP\n"+viz.getHashRPEquip());
-		System.out.println("SIZE\n"+viz.getSize());
-		
+				
 		request.getSession().setAttribute("valuesGraph", viz.getArborStructure());
 		request.getSession().setAttribute("width", viz.getWidth());
 		request.getSession().setAttribute("height", viz.getHeight());
@@ -186,7 +177,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("hashRPEquip", viz.getHashRPEquip());
 		request.getSession().setAttribute("size", viz.getSize());
 
-		return "connects";
+		return "advisor/views/connects";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/binds")
@@ -216,7 +207,7 @@ public class VisualizationController {
 
 		PerformanceUtil.printExecutionTime("/binds", beginDate);
 		
-		return "binds";
+		return "advisor/views/binds";
 	}	
 }
 

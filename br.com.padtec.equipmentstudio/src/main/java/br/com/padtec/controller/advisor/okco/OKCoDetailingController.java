@@ -73,7 +73,7 @@ public class OKCoDetailingController {
 		List<DtoInstance> allIndividuals = OKCoSelector.getIndividuals(true, true, true);
 		request.getSession().setAttribute("listInstances", allIndividuals);
 		
-		return "okco-details";
+		return "advisor/views/okco-details";
 	}
 	
 	@RequestMapping(value="/selectSpecializationProp", method = RequestMethod.GET)

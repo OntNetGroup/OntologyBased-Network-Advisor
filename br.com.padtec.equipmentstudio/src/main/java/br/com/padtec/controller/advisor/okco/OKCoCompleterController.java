@@ -62,7 +62,7 @@ public class OKCoCompleterController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}	
-		return "redirect:okco-details?uri="+uriInstanceEncoded;
+		return "redirect:advisor/views/okco-details?uri="+uriInstanceEncoded;
 	}
 	
 	/** This function works only with object properties: min, exactly and some properties */
@@ -142,7 +142,7 @@ public class OKCoCompleterController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}	
-		return "redirect:okco-details?uri="+uriInstanceEncoded;
+		return "redirect:advisor/views/okco-details?uri="+uriInstanceEncoded;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
@@ -185,7 +185,7 @@ public class OKCoCompleterController {
 			 *  =================================================== */
 			request.getSession().setAttribute("listInstancesSameDifferent", allIndividuals);
 			
-			return "okco-complete-relation";
+			return "advisor/views/okco-complete-relation";
 		} 
 		else if (type.equals("objectMax"))
 		{
@@ -195,7 +195,7 @@ public class OKCoCompleterController {
 			List<DtoInstance> individualsInClassDefinition = OKCoSelector.getIndividualsAtClassDefinitionRangeSelected();
 			request.getSession().setAttribute("listInstancesInRelation", individualsInClassDefinition);
 			
-			return "okco-complete-cardinality";
+			return "advisor/views/okco-complete-cardinality";
 		} 
 		else if (type.equals("data"))
 		{
@@ -205,9 +205,9 @@ public class OKCoCompleterController {
 			List<DataPropertyValue> listValuesInRelation = OKCoSelector.getDataValuesAtClassDefinitionRangeSelected();			
 			request.getSession().setAttribute("listValuesInRelation", listValuesInRelation);
 			
-			return "okco-complete-attribute";
+			return "advisor/views/okco-complete-attribute";
 		}else{
-			return "index";
+			return "advisor/index";
 		}
 	}
 

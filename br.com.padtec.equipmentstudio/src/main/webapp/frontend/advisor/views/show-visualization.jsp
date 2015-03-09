@@ -1,6 +1,6 @@
 <%@page import="com.hp.hpl.jena.sparql.util.StringUtils"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@include file="../templates/header.jsp"%>
+<%@include file="/frontend/advisor/templates/header.jsp"%>
 <%
 	String arborStructure = (String) request.getSession().getAttribute("valuesGraph");
 	int width  = (Integer) request.getSession().getAttribute("width");
@@ -153,5 +153,5 @@
 </div>
 			
 <!-- Images of ITU elements -->
-<%@include file="../templates/tnokco_images_visualization.jsp"%>
-<%@include file="../templates/footer.jsp"%>
+<%@include file="/frontend/advisor/templates/tnokco_images_visualization.jsp"%>
+<%@include file="/frontend/advisor/templates/footer.jsp"%>
