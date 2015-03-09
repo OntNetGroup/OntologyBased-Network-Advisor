@@ -151,7 +151,7 @@ public class OKCoUploader {
 	}
 	
 	public static BaseModelRepository getBaseRepository() { return baseRepository; }	
-	public static OntModel getBaseModel() { return baseRepository.getBaseOntModel(); }	
+	public static OntModel getBaseModel() { if(baseRepository!=null) return baseRepository.getBaseOntModel(); else return null; }	
 	public static InferredModelRepository getInferredRepository() { return inferredRepository; }	
 	public static InfModel getInferredModel() {
 		if(inferredRepository == null) return null;
