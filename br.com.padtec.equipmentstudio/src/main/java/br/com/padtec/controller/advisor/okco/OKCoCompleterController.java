@@ -62,7 +62,7 @@ public class OKCoCompleterController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}	
-		return "redirect:advisor/views/okco-details?uri="+uriInstanceEncoded;
+		return "redirect:okco-details.htm?uri="+uriInstanceEncoded;
 	}
 	
 	/** This function works only with object properties: min, exactly and some properties */
@@ -142,7 +142,7 @@ public class OKCoCompleterController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}	
-		return "redirect:advisor/views/okco-details?uri="+uriInstanceEncoded;
+		return "redirect:okco-details.htm?uri="+uriInstanceEncoded;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
