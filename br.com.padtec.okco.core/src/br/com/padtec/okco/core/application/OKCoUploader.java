@@ -128,7 +128,7 @@ public class OKCoUploader {
 		if(reasonOnLoading)
 		{
 			System.out.println("Running the reasoner");
-			if(optReasoner.equals("hermit")) reasoner = new HermitReasonerImpl();				  
+			if(optReasoner.equals("hermit")) reasoner = new HermitReasonerImpl();	  
 			else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();				  
 			else throw new OKCoExceptionReasoner("Please select a reasoner available.");
 			 

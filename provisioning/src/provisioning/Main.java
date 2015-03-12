@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -23,55 +24,93 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 import com.hp.hpl.jena.ontology.OntModel;
 
 public class Main {
+	static boolean runReason = true;
 	static OntModel model;
 	static String ns;
 	static boolean teste = true;
 	public static void main(String[] args){
 		String tBoxFile = "";
 		try {
+			//#1
 			tBoxFile = FindCertainExtension.chooseFile("TBox", ".owl");
-			createTBox(tBoxFile);
-			
+			//#2
 			String aBoxFile = FindCertainExtension.chooseFile("ABox", ".txt");
-			createInstances(aBoxFile);
-			//runReasoner();
+			//#11
+			String possibleEquipFile = FindCertainExtension.chooseFile("available Equipment", ".txt");
 			
+			//#1
+			createTBox(tBoxFile);
+			//#3
+			createInstances(aBoxFile);
+						
+			//#4
+			//runReasoner(true, true, true);
+			
+			//#7 and #8
 			verifiyMinimumEquipment();
+			
+			//#9
 			List<String> equipMappingOut = verifyIfEquipmentMapsOutPorts();
 			List<String> equipMappingIn = verifyIfEquipmentMapsInPorts();
 			
+			//#10
 			int srcEquip2ProvIndex = chooseOne(equipMappingOut, "Source Equipment to provision");
 			String srcEquipToProv = equipMappingOut.get(srcEquip2ProvIndex);
 			int tgtEquip2ProvIndex = chooseOne(equipMappingIn, "Target Equipment to provision");
 			String tgtEquipToProv = equipMappingIn.get(tgtEquip2ProvIndex);
 			
-			String possibleEquipFile = FindCertainExtension.chooseFile("available Equipment", ".txt");
+			//#12
 			createInstances(possibleEquipFile);
 			
-			verifiyMinimumEquipWithPM();						
-			//runReasoner();
+			//#13
+			verifiyMinimumEquipWithPM();
+			
+			//#14
+			runReasoner(true, true, true);
+			
 			boolean equipHasPM;
+			boolean equipBindedWithPMEquip;
 			String lastEquip = srcEquipToProv;
 			do {
-				String srcEquip = algorithmPart1(lastEquip);
-				lastEquip = algorithmPart2(srcEquip, true);
-				//runReasoner();
-				equipHasPM = QueryUtil.isTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
-			} while (!equipHasPM);			
+				//#17
+				lastEquip = algorithmPart1(lastEquip, true);
+				//lastEquip = algorithmPart2(srcEquip, true);
+				
+				//#18
+				//runReasoner(false, false, true);
+				
+				//#20
+				equipHasPM = QueryUtil.hasTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
+				equipBindedWithPMEquip = Queries.isEquipBindedWithPMEquip(model, lastEquip, true);
+				
+			} while (!equipHasPM && !equipBindedWithPMEquip);//#20			
+			
 			
 			lastEquip = tgtEquipToProv;
 			do {
-				String tgtEquip = algorithmPart1(lastEquip);
-				lastEquip = algorithmPart2(tgtEquip, false);
-				//runReasoner();
-				equipHasPM = QueryUtil.isTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
-			} while (!equipHasPM);
+				//#22
+				lastEquip = algorithmPart1(lastEquip, false);
+				//lastEquip = algorithmPart2(tgtEquip, false);
+				
+				//#23
+				//runReasoner(false, false, true);
+				
+				//#25
+				equipHasPM = QueryUtil.hasTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
+				equipBindedWithPMEquip = Queries.isEquipBindedWithPMEquip(model, lastEquip, false);
+				
+			} while (!equipHasPM && !equipBindedWithPMEquip);//#25
 			
+			//#26
+			//???
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 		
+		//#27
 		saveNewOwl(tBoxFile);
+		
+		System.out.println();
 		System.out.println("Done.");
 	}
 	
@@ -136,12 +175,20 @@ public class Main {
 		}
 	}
 	
-	public static void runReasoner() throws Exception{
+	public static void runReasoner(boolean inferHierarchies, boolean inferAssertions, boolean inferRules) throws Exception{
+		if(!runReason) return;
+		OKCoUploader.reasoner.inferAssertions = inferAssertions;
+		OKCoUploader.reasoner.inferHierarchies = inferHierarchies;
+		OKCoUploader.reasoner.inferRules = inferRules;
+		
+		//OKCoUploader.reasoner.run(m);
 		DtoResult result = OKCoReasoner.runReasoner();
 		
 		if(!result.isSucceed()){
 			throw new Exception(result.getMessage());
 		}
+		
+		model = OKCoUploader.getBaseModel();
 	}
 	
 	public static void createInstances(String aBoxFile) throws Exception{
@@ -244,6 +291,8 @@ public class Main {
 		System.out.println();
 		System.out.println("--- Choose one " + message);
 		
+		Collections.sort(list);
+		
 		for (int i = 0; i < list.size(); i++) {
 			String elem = list.get(i).replace(ns, "");
 			System.out.println((i+1) + " - " + elem);
@@ -257,23 +306,28 @@ public class Main {
 		return index-1;
 	}
 	
-	public static String algorithmPart1(String equipURI) throws Exception{
+	public static String algorithmPart1(String equipURI, boolean isSource) throws Exception{
 		String choosenEquipURI = "";
 		
+		//#17.1.1
 		List<String> bindedEquip = Queries.getLastBindedEquipmentFrom(model, equipURI);
 		
 		if(bindedEquip.size() == 0){
 			choosenEquipURI = equipURI;
 		}else{
+			//#17.1.3 and #17.1.4
 			int choosen = chooseOne(bindedEquip, "Equipment to Provision");
 			choosenEquipURI = bindedEquip.get(choosen);
 		}
 		
-		return choosenEquipURI;
+		//#17.1.2 and #17.1.5
+		return algorithmPart2(choosenEquipURI, isSource);
+		//return choosenEquipURI;
 	}
 	
 	public static String algorithmPart2(String equipURI, boolean isSource) throws Exception{
-		List<String> availableInt = Queries.getAvailabeInterfacesFromEquipment(model, equipURI, isSource);
+		//#17.2.1
+		List<String> availableInt = Queries.getAvailableInterfacesFromEquipment(model, equipURI, isSource);
 		String type = "";
 		if(isSource){
 			type = "Output";
@@ -281,46 +335,57 @@ public class Main {
 			type = "Input";
 		}
 		
-		int outIntIndex = chooseOne(availableInt, type + " Output Interface to provision");
+		//#17.2.2
+		int outIntIndex = chooseOne(availableInt, type + " Interface to provision");
+		
 		String outInt = availableInt.get(outIntIndex);
 		String layerURI = "";
 		List<String> layers;
 		boolean isTF;
+		
+		//#17.2.3
 		if(Queries.isInterfaceMappedByTF(model, outInt)){
+			//#17.2.4
 			layers = Queries.getServerLayersFromTF(model, outInt);
 			isTF = true;
 		}else{
+			//#17.2.5
 			layers = Queries.getLayersAdaptedFromAF(model, outInt);
 			isTF = false;
 		}
+		
 		if(layers.size() > 0){
 			layerURI = layers.get(0);
 		}
 		
+		//#17.2.6
 		List<String> listEquipmentTo = Queries.getCompatibleEquipment(model, layerURI, isSource, isTF);
 		
-		int inEquipIndex = chooseOne(listEquipmentTo, " Equipment");
+		//#17.2.7
+		int inEquipIndex = chooseOne(listEquipmentTo, "Equipment");
 		String inEquip = listEquipmentTo.get(inEquipIndex);
 		
+		//#17.2.8
+		List<String> listInInt = Queries.getAvailableInterfacesFromEquipment(model, inEquip, !isSource);
+		
+		//#17.2.9
+		int inIntIndex = chooseOne(listInInt, "Interface");
+		String inInt = listInInt.get(inIntIndex);
+		
+		//#17.2.10
 		List<String> outPortURIs = Queries.getMappedPort(model, outInt);
 		String outPort = "";
 		if(outPortURIs.size() > 0){
 			outPort  = outPortURIs.get(0);
 		}
 		
-		List<String> listInInt = Queries.getAvailabeInterfacesFromEquipment(model, inEquip, !isSource);
-		
-		List<String> inPortURIs = new ArrayList<String>();
-		
-		int inIntIndex = chooseOne(listInInt, " Interface");
-		String inInt = listInInt.get(inIntIndex);
-		inPortURIs = Queries.getMappedPort(model, inInt);
-		
+		List<String> inPortURIs = Queries.getMappedPort(model, inInt);
 		String inPort = "";
 		if(inPortURIs.size() > 0){
 			inPort = inPortURIs.get(0);
 		}
 		
+		//#17.2.10
 		FactoryUtil.createInstanceRelation(model, outPort, ns+"binds", inPort);
 		
 		return inEquip;

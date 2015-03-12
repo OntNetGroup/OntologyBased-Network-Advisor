@@ -89,7 +89,7 @@ public class QueryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	static public boolean isTargetIndividualFromClass(InfModel model, String srcIndividualUri, String relationURI, String tgtClassURI) 
+	static public boolean hasTargetIndividualFromClass(InfModel model, String srcIndividualUri, String relationURI, String tgtClassURI) 
 	{		
 		System.out.println("\nExecuting isTargetIndividualFromClass()...");
 		String queryString = ""
@@ -106,6 +106,37 @@ public class QueryUtil {
 		boolean isFromClass = qe.execAsk();		
 		
 		return isFromClass;
+	}
+	
+	/** 
+	 * Return true if an individual has some data property with determined value
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param individualUri: source individual URI 
+	 * @param relationURI: relation URI 
+	 * @param tgtClassURI: class URI of the target individual 
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public boolean hasDataPropWithValue(InfModel model, String srcIndividualUri, String dataPropURI, String value) 
+	{		
+		System.out.println("\nExecuting isTargetIndividualFromClass()...");
+		String queryString = ""
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ "ASK\n"
+				+ "WHERE {\n"
+				+ "<" + srcIndividualUri + "> <" + dataPropURI + "> " + value + "\n"
+				+ "}\n";
+		Query query = QueryFactory.create(queryString);
+		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean hasDP = qe.execAsk();		
+		
+		return hasDP;
 	}
 	
 	/** 

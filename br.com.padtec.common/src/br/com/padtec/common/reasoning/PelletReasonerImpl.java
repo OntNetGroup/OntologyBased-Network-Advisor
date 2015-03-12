@@ -9,7 +9,7 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.reasoner.Reasoner;
 
-public class PelletReasonerImpl implements OntologyReasoner {
+public class PelletReasonerImpl extends OntologyReasoner {
 
 	/** 
 	 * Runs the inference using Pellet

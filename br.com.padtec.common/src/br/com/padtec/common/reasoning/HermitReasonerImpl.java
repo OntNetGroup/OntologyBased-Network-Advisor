@@ -34,10 +34,13 @@ import org.semanticweb.owlapi.util.InferredSubObjectPropertyAxiomGenerator;
 
 import br.com.padtec.common.persistence.BaseModelRepository;
 
+import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 
-public class HermitReasonerImpl implements OntologyReasoner {
+public class HermitReasonerImpl extends OntologyReasoner {
 
 	/** 
 	 * Runs the inference using Pellet
@@ -105,15 +108,20 @@ public class HermitReasonerImpl implements OntologyReasoner {
 		}
         
         List<InferredAxiomGenerator<? extends OWLAxiom>> gens = new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>();
-		gens.add(new InferredEquivalentClassAxiomGenerator());				//class hierarchy
-		gens.add(new InferredSubClassAxiomGenerator());						//class hierarchy
-		gens.add(new InferredEquivalentObjectPropertyAxiomGenerator());		//object properties
-		gens.add(new InferredInverseObjectPropertiesAxiomGenerator());		//object properties
-		gens.add(new InferredSubObjectPropertyAxiomGenerator());			//object properties
-		gens.add(new InferredEquivalentDataPropertiesAxiomGenerator());		//data properties
-		gens.add(new InferredSubDataPropertyAxiomGenerator());				//data properties
-		gens.add(new InferredClassAssertionAxiomGenerator()); 				//class instance data structures
-		gens.add(new InferredPropertyAssertionGenerator());					//property instance data structures, data properties, class instance data structures
+        
+        if(this.inferHierarchies){
+        	gens.add(new InferredEquivalentClassAxiomGenerator());				//class hierarchy
+    		gens.add(new InferredSubClassAxiomGenerator());						//class hierarchy
+    		gens.add(new InferredEquivalentObjectPropertyAxiomGenerator());		//object properties
+    		gens.add(new InferredInverseObjectPropertiesAxiomGenerator());		//object properties
+    		gens.add(new InferredSubObjectPropertyAxiomGenerator());			//object properties
+    		gens.add(new InferredEquivalentDataPropertiesAxiomGenerator());		//data properties
+    		gens.add(new InferredSubDataPropertyAxiomGenerator());				//data properties
+        }
+        if(this.inferAssertions){
+        	gens.add(new InferredClassAssertionAxiomGenerator()); 				//class instance data structures
+    		gens.add(new InferredPropertyAssertionGenerator());					//property instance data structures, data properties, class instance data structures
+        }
 		
 		//gens.add(new InferredDataPropertyCharacteristicAxiomGenerator());
 		//gens.add(new InferredObjectPropertyCharacteristicAxiomGenerator());
@@ -134,6 +142,16 @@ public class HermitReasonerImpl implements OntologyReasoner {
 		
 		long tempo = System.currentTimeMillis() - antes;        
 		System.out.printf("Hermit executed in %d miliseconds.%n", tempo);
+		
+		Node thingNode = Node.createURI("http://www.w3.org/2002/07/owl#Thing");
+		RDFNode thingRdfNode = model.getRDFNode(thingNode);
+		model.removeAll(null, null, thingRdfNode);
+		
+		Property topOP = model.getProperty("http://www.w3.org/2002/07/owl#topObjectProperty");
+		model.removeAll(null, topOP, null);
+		
+		Property topDP = model.getProperty("http://www.w3.org/2002/07/owl#topDataProperty");
+		model.removeAll(null, topDP, null);
 		return model;
 	}
 }
