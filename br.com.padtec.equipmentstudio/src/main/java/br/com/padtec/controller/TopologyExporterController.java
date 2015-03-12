@@ -1,5 +1,6 @@
 package br.com.padtec.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -40,17 +41,30 @@ public class TopologyExporterController extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("test");
-	}
+	
+	private static String PADTEC_URI = "http://www.padtec.com.br";
+	private static String PADTEC_TOPOLOGY_URI = "http://www.padtec.com.br/topology/";
+	private static String PADTEC_NODE_URI = "http://www.padtec.com.br/node/";
+	private static String PADTEC_LINK_URI = "http://www.padtec.com.br/link/";
+	
+
 	
 	//@RequestMapping(value = "/exportTopology", method = RequestMethod.POST)
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException ,IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException ,IOException {
 		
-	    String simpleJSON = request.getParameter("json");
+		request.setCharacterEncoding("UTF-8");
+		
+
+		//String simpleJSON = request.getParameter("json");
+		
+		StringBuilder simpleJSON = new StringBuilder();
+	    BufferedReader br = request.getReader();
+	    String str;
+	    while( (str = br.readLine()) != null ){
+	    	simpleJSON.append(str);
+	    }    
+		
+	    //String simpleJSON = request.getParameter("json");
 		
 		int linkIdCounter = 1;
 		ArrayList<String> nodesId = new ArrayList<String>();
@@ -58,10 +72,12 @@ public class TopologyExporterController extends HttpServlet {
 		Map<String, Node> nodes = new HashMap<String, Node>();
 		ArrayList<Link> links = new ArrayList<Link>();
 		
+		System.out.println(simpleJSON.toString());
+		
 		// JSON
 
 		JsonParser crunhifyParser = new JsonParser();
-		JsonObject jsonObject = crunhifyParser.parse(simpleJSON).getAsJsonObject();
+		JsonObject jsonObject = crunhifyParser.parse(simpleJSON.toString()).getAsJsonObject();
 		JsonArray jsonArray = jsonObject.getAsJsonArray("cells");
 		
 		for(int i = 0; i < jsonArray.size(); i++){
@@ -108,7 +124,7 @@ public class TopologyExporterController extends HttpServlet {
 		}
         Document doc = icBuilder.newDocument();
         
-        Element networkTopology = doc.createElementNS("http://www.padtec.com.br", "network-topology");
+        Element networkTopology = doc.createElementNS(PADTEC_URI, "network-topology");
         doc.appendChild(networkTopology);
         
         Element topology = doc.createElement("topology");
@@ -116,7 +132,7 @@ public class TopologyExporterController extends HttpServlet {
         
         networkTopology.appendChild(topology);
         topology.appendChild(topologyId);
-        topologyId.appendChild(doc.createTextNode("http://www.padtec.com/topology#topology1"));
+        topologyId.appendChild(doc.createTextNode(PADTEC_TOPOLOGY_URI + "topology1"));
 
 		
 		for(int i = 0; i < nodesId.size(); i++){
@@ -127,7 +143,7 @@ public class TopologyExporterController extends HttpServlet {
 			topology.appendChild(node);
 			node.appendChild(nodeId);
 			 
-			nodeId.appendChild(doc.createTextNode("http://www.padtec.com/node#" + nodes.get(nodesId.get(i)).getName()));
+			nodeId.appendChild(doc.createTextNode(PADTEC_NODE_URI + nodes.get(nodesId.get(i)).getName()));
 			
 		}
 		
@@ -147,9 +163,9 @@ public class TopologyExporterController extends HttpServlet {
 			source.appendChild(sourceNode);
 			destination.appendChild(destNode);
 			
-			linkId.appendChild(doc.createTextNode("http://www.padtec.com/link#link" + links.get(i).getId()));
-			sourceNode.appendChild(doc.createTextNode("http://www.padtec.com/node#" + links.get(i).getNodeSource().getName()));
-			destNode.appendChild(doc.createTextNode("http://www.padtec.com/node#" + links.get(i).getNodeTarget().getName()));
+			linkId.appendChild(doc.createTextNode(PADTEC_LINK_URI + links.get(i).getId()));
+			sourceNode.appendChild(doc.createTextNode(PADTEC_NODE_URI + links.get(i).getNodeSource().getName()));
+			destNode.appendChild(doc.createTextNode(PADTEC_NODE_URI + links.get(i).getNodeTarget().getName()));
 			
 		}
 		
