@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
-import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -75,7 +74,7 @@ public class SubRelationEnforcer {
 					
 					if(existInDomainsSource == true && existInRangeTarget == true)
 					{
-						FactoryUtil.createObjectProperty(baseModel,instance.ns + instance.name, subproperty, targetURI);
+						//FactoryUtil.createObjectProperty(baseModel,instance.ns + instance.name, subproperty, targetURI);
 					}
 				}
 			}

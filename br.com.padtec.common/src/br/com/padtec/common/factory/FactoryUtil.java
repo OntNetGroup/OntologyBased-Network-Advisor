@@ -302,7 +302,36 @@ public class FactoryUtil {
 	}
 	
 	/**
-	 * Create Individual.
+	 * Create Statement. 
+	 * 
+	 * @param model: OntModel
+	 * @param subjectURI 
+	 * @param predicateURI
+	 * @param objectURI 
+	 * 
+	 * @return
+	 * @author John Guerson
+	 */
+	static public OntModel createStatement(OntModel model, String subjectURI, String predicateURI, String objectURI)
+	{
+		Individual a = null, b=null;
+		if(objectURI!=null) a = model.getIndividual(objectURI);
+		if(subjectURI!=null) b = model.getIndividual(subjectURI);				
+		ObjectProperty rel = model.getObjectProperty(predicateURI);
+		if(a!=null && b!=null)
+		{
+			Statement stmt = model.createStatement(b, rel, a);
+			model.add(stmt);
+		}
+		return model;
+	}
+	
+	//=========================================================================
+	// These below are used at the OKCo application
+	//=========================================================================
+	
+	/**
+	 * Create Individual. Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param newIndividual: new Individual URI
@@ -350,7 +379,7 @@ public class FactoryUtil {
 	}
 	
 	/**
-	 * Update Individual.
+	 * Update Individual. Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param newIndividual: new Individual URI
@@ -386,7 +415,7 @@ public class FactoryUtil {
 	}
 		
 	/**
-	 * Create a value at the range of the data property relation.
+	 * Create a value at the range of the data property relation. Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param value: value
@@ -406,7 +435,7 @@ public class FactoryUtil {
 	}
 
 	/**
-	 * Delete a value from the range of the data property relation.
+	 * Delete a value from the range of the data property relation. Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param value: value
@@ -426,7 +455,7 @@ public class FactoryUtil {
 	}
 
 	/**
-	 * Create an object property.
+	 * Create an object property. Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param srcIndividualURI: source individual URI
@@ -453,7 +482,7 @@ public class FactoryUtil {
 	}
 	
 	/**
-	 * Delete an object property.
+	 * Delete an object property.Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param srcIndividualURI: source individual URI
@@ -472,7 +501,7 @@ public class FactoryUtil {
 	}
 
 	/**
-	 * Create an individual in a given class.
+	 * Create an individual in a given class. Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param individualURI: individual URI
@@ -489,7 +518,7 @@ public class FactoryUtil {
 	}
 	
 	/**
-	 * Delete an individual in a given class.
+	 * Delete an individual in a given class. Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param individualURI: individual URI
@@ -506,7 +535,7 @@ public class FactoryUtil {
 	}
 	
 	/**
-	 * Set Same As.
+	 * Set Same As. Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param individualURI1: individual URI 1
@@ -524,7 +553,7 @@ public class FactoryUtil {
 	}
 
 	/**
-	 * Set Different From.
+	 * Set Different From. Used at the OKCo application.
 	 * 
 	 * @param model: OntModel
 	 * @param individualURI1: individual URI 1
@@ -539,20 +568,5 @@ public class FactoryUtil {
 		i1.setDifferentFrom(i2);
 		i2.setDifferentFrom(i1);		
 		return model;
-	}
-	
-	static public OntModel createStatement(OntModel model, String subjectURI, String predicateURI, String objectURI)
-	{
-		Individual a = null, b=null;
-		if(objectURI!=null) a = model.getIndividual(objectURI);
-		if(subjectURI!=null) b = model.getIndividual(subjectURI);				
-		ObjectProperty rel = model.getObjectProperty(predicateURI);
-		if(a!=null && b!=null)
-		{
-			Statement stmt = model.createStatement(b, rel, a);
-			model.add(stmt);
-		}
-		return model;
-	}
-
+	}	
 }

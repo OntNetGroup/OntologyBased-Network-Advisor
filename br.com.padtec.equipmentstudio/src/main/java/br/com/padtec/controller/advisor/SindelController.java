@@ -31,9 +31,7 @@ public class SindelController{
 	public String uploadSindel(HttpServletRequest request)
 	{
 		try {
-						
-//			HttpServletRequest originalRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-//			MultipartHttpServletRequest multipartRequest = new DefaultMultipartHttpServletRequest(originalRequest);	
+			
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
 			if(!file.getOriginalFilename().endsWith(".sindel")) throw new OKCoExceptionFileFormat("Please select *.sindel file.");

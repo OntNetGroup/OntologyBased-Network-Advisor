@@ -49,6 +49,9 @@ public class BindsController {
 		
 		request.getSession().setAttribute("loadOk", returnMessage);		
 		
+		/**===========================================================
+		 * General Binds: Visualization
+		 * =========================================================== */
 		return VisualizationController.bindsV(request);
 	}
 	

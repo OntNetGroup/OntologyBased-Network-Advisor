@@ -302,7 +302,6 @@ public class GeneralConnects extends AdvisorService {
 		return equips;
 	}	
 	
-	/** ? */
 	public static Boolean searchEquipmentFromPortToTop(String portURI)
 	{
 		InfModel inferredModel = OKCoUploader.getInferredModel();
@@ -312,6 +311,38 @@ public class GeneralConnects extends AdvisorService {
 		if(tiposPort.contains(namespace+ConceptEnum.OUTPUT.toString())) return true;		
 		return false;
 	}	
+	
+	public static String getPossibleConnects()
+	{
+		String hashAllowed = new String();			
+		ArrayList<String[]> possibleConnections;
+	
+		GeneralConnects.setEquipmentsWithRPs();
+
+		for (String connections : GeneralConnects.getConnectsBetweenEqsAndRps()) 
+		{
+			String src = connections.split("#")[0];
+			String trg = connections.split("#")[1];
+	
+			possibleConnections = AdvisorService.getPossibleConnectsTuples(src);
+			if(!possibleConnections.isEmpty() && !hashAllowed.contains(src)) hashAllowed += src+"#";
+	
+			possibleConnections = AdvisorService.getPossibleConnectsTuples(trg);
+			if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg)) hashAllowed += trg+"#";
+		}
+		
+		for (String equipWithRP : GeneralConnects.getEquipmentsWithRps()) 
+		{
+			String equip = equipWithRP.split("#")[0];
+			String rp = equipWithRP.split("#")[1];	
+			if(!equip.isEmpty())
+			{
+				if(!AdvisorService.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)) hashAllowed += equip+"#";				
+			}
+		}	
+		
+		return hashAllowed;
+	}
 	
 	//==============================================
 	//These are factory methods because they modify the ontology
