@@ -1,9 +1,9 @@
 <div class="toolbar-container">
      <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="./img/undo.png" alt="Undo"/></button>
      <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="./img/redo.png" alt="Redo"/></button>
-     <button id="btn-xml" class="btn" data-tooltip="Import XML file"><img src="./img/import.png" alt="Import XML"/> import XML</button>
+     <button id="btn-import-xml" class="btn" data-tooltip="Import XML file"><img src="./img/import.png" alt="Import XML"/> import XML</button>
      <button id="btn-pre" class="btn" data-tooltip="Preview XML"><img src="./img/preview.png" alt="Preview XML"/></button>
-     <button id="btn-xml" class="btn" data-tooltip="Export to XML"><img src="./img/export.png" alt="Export to XML"/></button>
+     <button id="btn-export-xml" class="btn" data-tooltip="Export to XML"><img src="./img/export.png" alt="Export to XML"/></button>
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window"><img src="./img/pngfile.png" alt="PNG"/></button>
      <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="./img/print.png" alt="Print"/></button>
      <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="./img/zoomin.png" alt="Zoom in"/></button>

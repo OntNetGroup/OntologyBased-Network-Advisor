@@ -47,8 +47,6 @@ public class TopologyExporterController extends HttpServlet {
 	private static String PADTEC_NODE_URI = "http://www.padtec.com.br/node/";
 	private static String PADTEC_LINK_URI = "http://www.padtec.com.br/link/";
 	
-
-	
 	//@RequestMapping(value = "/exportTopology", method = RequestMethod.POST)
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException ,IOException {
 		

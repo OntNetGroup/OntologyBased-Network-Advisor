@@ -73,8 +73,9 @@
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
+            $('#btn-import-xml').click(function(){exportTopology(app.graph)});
             $('#btn-pre').click(function(){previewTopology(app.graph)});
-            $('#btn-xml').click(function(){exportTopology(app.graph)});
+            $('#btn-export-xml').click(function(){exportTopology(app.graph)});
         </script>
     </body>
 </html>
