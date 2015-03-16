@@ -109,23 +109,27 @@ public class HermitReasonerImpl extends OntologyReasoner {
         
         List<InferredAxiomGenerator<? extends OWLAxiom>> gens = new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>();
         
+        //InferredEntityAxiomGenerator
         if(this.inferHierarchies){
-        	gens.add(new InferredEquivalentClassAxiomGenerator());				//class hierarchy
-    		gens.add(new InferredSubClassAxiomGenerator());						//class hierarchy
-    		gens.add(new InferredEquivalentObjectPropertyAxiomGenerator());		//object properties
-    		gens.add(new InferredInverseObjectPropertiesAxiomGenerator());		//object properties
-    		gens.add(new InferredSubObjectPropertyAxiomGenerator());			//object properties
-    		gens.add(new InferredEquivalentDataPropertiesAxiomGenerator());		//data properties
-    		gens.add(new InferredSubDataPropertyAxiomGenerator());				//data properties
+        	//gens.add(new InferredDisjointClassesAxiomGenerator());				//InferredClassAxiomGenerator
+        	gens.add(new InferredEquivalentClassAxiomGenerator());					//InferredClassAxiomGenerator
+    		gens.add(new InferredSubClassAxiomGenerator());							//InferredClassAxiomGenerator
+    		
+    		//gens.add(new InferredDataPropertyCharacteristicAxiomGenerator());		//InferredDataPropertyAxiomGenerator
+    		gens.add(new InferredEquivalentDataPropertiesAxiomGenerator());			//InferredDataPropertyAxiomGenerator
+    		gens.add(new InferredSubDataPropertyAxiomGenerator());					//InferredDataPropertyAxiomGenerator
+    		
+    		gens.add(new InferredEquivalentObjectPropertyAxiomGenerator());			//InferredObjectPropertyAxiomGenerator
+    		gens.add(new InferredInverseObjectPropertiesAxiomGenerator());			//InferredObjectPropertyAxiomGenerator
+    		//gens.add(new InferredObjectPropertyCharacteristicAxiomGenerator());	//InferredObjectPropertyAxiomGenerator
+    		gens.add(new InferredSubObjectPropertyAxiomGenerator());				//InferredObjectPropertyAxiomGenerator
         }
         if(this.inferAssertions){
-        	gens.add(new InferredClassAssertionAxiomGenerator()); 				//class instance data structures
-    		gens.add(new InferredPropertyAssertionGenerator());					//property instance data structures, data properties, class instance data structures
+        	gens.add(new InferredClassAssertionAxiomGenerator()); 					//InferredIndividualAxiomGenerator
+    		gens.add(new InferredPropertyAssertionGenerator());						//InferredIndividualAxiomGenerator
         }
 		
-		//gens.add(new InferredDataPropertyCharacteristicAxiomGenerator());
-		//gens.add(new InferredObjectPropertyCharacteristicAxiomGenerator());
-		//gens.add(new InferredDisjointClassesAxiomGenerator());
+		
 		
 		InferredOntologyGenerator iog = new InferredOntologyGenerator(hermit, gens);
 		iog.fillOntology(m, o);

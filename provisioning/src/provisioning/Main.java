@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -22,7 +21,6 @@ import br.com.padtec.okco.core.application.OKCoReasoner;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class Main {
 	static boolean runReason = true;
@@ -34,16 +32,13 @@ public class Main {
 		try {
 			//#1
 			tBoxFile = FindCertainExtension.chooseFile("TBox", ".owl");
+			createTBox(tBoxFile);
+			
 			//#2
 			String aBoxFile = FindCertainExtension.chooseFile("ABox", ".txt");
-			//#11
-			String possibleEquipFile = FindCertainExtension.chooseFile("available Equipment", ".txt");
-			
-			//#1
-			createTBox(tBoxFile);
 			//#3
 			createInstances(aBoxFile);
-						
+			
 			//#4
 			runReasoner(true, true, true);
 			
@@ -51,19 +46,24 @@ public class Main {
 			verifiyMinimumEquipment();
 			
 			//#9
-			List<String> equipMappingOut = verifyIfEquipmentMapsOutPorts();
-			List<String> equipMappingIn = verifyIfEquipmentMapsInPorts();
+			verifyIfEquipmentMapsOutPortsInSource();
+			List<String> INT_SO_LIST = verifyIfEquipmentMapsInPortsInSource();
+			verifyIfEquipmentMapsInPortsInSink();
+			List<String> INT_SK_LIST = verifyIfEquipmentMapsOutPortsInSink();
 			
-			//#10
-			int srcEquip2ProvIndex = chooseOne(equipMappingOut, "Source Equipment to provision");
-			String srcEquipToProv = equipMappingOut.get(srcEquip2ProvIndex);
-			int tgtEquip2ProvIndex = chooseOne(equipMappingIn, "Target Equipment to provision");
-			String tgtEquipToProv = equipMappingIn.get(tgtEquip2ProvIndex);
+			//#10 and #11
+			int srcInt2ProvIndex = chooseOne(INT_SO_LIST, "Input Interface that maps an Input Port from Source", 2);
+			String srcIntToProv = INT_SO_LIST.get(srcInt2ProvIndex);
+			//#12 and #13
+			int tgtInt2ProvIndex = chooseOne(INT_SK_LIST, "Output Interface that maps an Output Port from Sink", 2);
+			String tgtIntToProv = INT_SK_LIST.get(tgtInt2ProvIndex);
 			
-			//#12
+			//#14
+			String possibleEquipFile = FindCertainExtension.chooseFile("available Equipment", ".txt");
+			//#15
 			createInstances(possibleEquipFile);
 			
-			//#13
+			//#16
 			verifiyMinimumEquipWithPM();
 			
 			//#14
@@ -76,46 +76,45 @@ public class Main {
 //			List<DtoInstanceRelation> portRels = DtoQueryUtil.getRelationsFromAndTo(model, ns+"af_otu_so_in");
 //			List<DtoInstanceRelation> tfRels = DtoQueryUtil.getRelationsFrom(model, ns+"af_otu_so");
 //			List<String> tfClasses = QueryUtil.getClassesURIFromIndividual(model, ns+"af_otu_so");
-			boolean equipHasPM;
+
+			boolean intPartOfEquipPM;
 			boolean equipBindedWithPMEquip;
-			String lastEquip = srcEquipToProv;
+			String lastInt = srcIntToProv;
 			do {
-				//#17
-				lastEquip = algorithmPart1(lastEquip, true);
-				//lastEquip = algorithmPart2(srcEquip, true);
-				
-				//#18
-				runReasoner(false, true, true);
-				
 				//#20
-				equipHasPM = QueryUtil.hasTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
-				equipBindedWithPMEquip = Queries.isEquipBindedWithPMEquip(model, lastEquip, true);
+				lastInt = algorithmPart1(lastInt, true);
 				
-			} while (!equipHasPM && !equipBindedWithPMEquip);//#20			
-			
-			
-			lastEquip = tgtEquipToProv;
-			do {
-				//#22
-				lastEquip = algorithmPart1(lastEquip, false);
-				//lastEquip = algorithmPart2(tgtEquip, false);
+				//#21
+				runReasoner(false, true, true);
 				
 				//#23
+				intPartOfEquipPM = Queries.isInterfacePartOfEquipWithPM(model, lastInt);
+				equipBindedWithPMEquip = Queries.isEquipBindedWithPMEquip(model, lastInt);
+				System.out.println();
+			} while (!intPartOfEquipPM && !equipBindedWithPMEquip);//#23			
+			
+			//#24????????
+			
+			lastInt = tgtIntToProv;
+			do {
+				//#25
+				lastInt = algorithmPart1(lastInt, false);
+				
+				//#26
 				runReasoner(false, true, true);
 				
-				//#25
-				equipHasPM = QueryUtil.hasTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
-				equipBindedWithPMEquip = Queries.isEquipBindedWithPMEquip(model, lastEquip, false);
+				//#28
+				intPartOfEquipPM = Queries.isInterfacePartOfEquipWithPM(model, lastInt);
+				equipBindedWithPMEquip = Queries.isEquipBindedWithPMEquip(model, lastInt);
 				
-			} while (!equipHasPM && !equipBindedWithPMEquip);//#25
+			} while (!intPartOfEquipPM && !equipBindedWithPMEquip);//#28
 			
-			//#26
-			//???
+			//#29????????
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 		
-		//#27
+		//#30
 		saveNewOwl(tBoxFile);
 		
 		System.out.println();
@@ -139,27 +138,43 @@ public class Main {
 				
 	}
 	
-	public static List<String> verifyIfEquipmentMapsOutPorts() throws Exception{
-		List<String> equipMappingOut = Queries.getEquipmentMappingPorts(model, true);
-		if(equipMappingOut.size() < 1){
+	public static List<String> verifyIfEquipmentMapsOutPortsInSource() throws Exception{
+		List<String> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(model, true, true);
+		if(equipAndInterfaces.size() < 1){
 			throw new Exception("Is required a minimun of 1 Equipment which the Output Interface maps an Output Port from a Source component.\n");
 		}
 		
-		return equipMappingOut;
+		return equipAndInterfaces;
 	}
 	
-	public static List<String> verifyIfEquipmentMapsInPorts() throws Exception{
-		List<String> equipMappingIn = Queries.getEquipmentMappingPorts(model, false);
-		if(equipMappingIn.size() < 1){
-			throw new Exception("Is required a minimun of 1 Equipment which the Input Interface maps an Input Port from a Sink component.\n");
+	public static List<String> verifyIfEquipmentMapsInPortsInSource() throws Exception{
+		List<String> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(model, false, true);
+		if(equipAndInterfaces.size() < 1){
+			throw new Exception("Is required a minimum of 1 Equipment which the Input Interface maps an Input Port from a Source component.\n");
 		}
-		return equipMappingIn;
+		return equipAndInterfaces;
+	}
+	
+	public static List<String> verifyIfEquipmentMapsInPortsInSink() throws Exception{
+		List<String> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(model, false, false);
+		if(equipAndInterfaces.size() < 1){
+			throw new Exception("Is required a minimum of 1 Equipment which the Input Interface maps an Input Port from a Sink component.\n");
+		}
+		return equipAndInterfaces;
+	}
+	
+	public static List<String> verifyIfEquipmentMapsOutPortsInSink() throws Exception{
+		List<String> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(model, true, false);
+		if(equipAndInterfaces.size() < 1){
+			throw new Exception("Is required a minimum of 1 Equipment which the Output Interface maps an Output Port from a Sink component.\n");
+		}
+		return equipAndInterfaces;
 	}
 	
 	public static void verifiyMinimumEquipWithPM() throws Exception{
 		List<String> equipWithPm = Queries.getEquipmentWithPhysicalMedia(model);
 		if(equipWithPm.size() < 1){
-			throw new Exception("Is required a minimun of 1 Equipment with Physical Media.\n");
+			throw new Exception("Is required a minimum of 1 Equipment with Physical Media.\n");
 		}		
 	}
 	
@@ -301,118 +316,81 @@ public class Main {
 	}
 	
 	public static int chooseOne(List<String> list, String message) throws Exception{
+		return chooseOne(list, message, 1);
+	}
+	
+	public static int chooseOne(List<String> list, String message, int increment) throws Exception{
 		System.out.println();
 		System.out.println("--- Choose one " + message);
 		
-		Collections.sort(list);
+		//Collections.sort(list);
 		
-		for (int i = 0; i < list.size(); i++) {
-			String elem = list.get(i).replace(ns, "");
-			System.out.println((i+1) + " - " + elem);
+		for (int i = 0; i < list.size(); i+=increment) {
+			String elem = "";
+			elem += list.get(i).replace(ns, "");
+			
+			if(increment > 1){
+				elem += " [from equipment: ";
+				elem += list.get(i+1).replace(ns, "");
+				elem += "]";
+			}
+			
+			int id = (i+increment)/increment;
+			
+			System.out.println(id + " - " + elem);
 		}
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		Integer index;
 		
+		int highestOption = list.size()/increment;
 		do {
 			index = Integer.valueOf(bufferRead.readLine());
-		} while (index < 1 || index > list.size());
-		return index-1;
+		} while (index < 1 || index > highestOption);
+				
+		index = (index*increment)-increment;
+		
+		return index;
 	}
 	
-	public static String algorithmPart1(String equipURI, boolean isSource) throws Exception{
-		String choosenEquipURI = "";
+	public static String algorithmPart1(String interfaceURI, boolean isSource) throws Exception{
+		//#A
+		String mappedTF = Queries.getMappedTFFrom(model, interfaceURI);
+		List<String> bindedTFList = Queries.getLastBindedTFFrom(model, mappedTF);
+		bindedTFList.add(mappedTF);
 		
-		//#17.1.1
-		List<String> bindedEquip = Queries.getLastBindedEquipmentFrom(model, equipURI);
-		
-		if(bindedEquip.size() == 0){
-			choosenEquipURI = equipURI;
-		}else{
-			//#17.1.3 and #17.1.4
-			int choosen = chooseOne(bindedEquip, "Equipment to Provision");
-			choosenEquipURI = bindedEquip.get(choosen);
+		List<String> LIST_INT = new ArrayList<String>();
+		for (String tfURI : bindedTFList) {
+			LIST_INT.addAll(Queries.getMappingInterfaceFrom(model, tfURI, isSource));
 		}
 		
-		//#17.1.2 and #17.1.5
-		return algorithmPart2(choosenEquipURI, isSource);
-		//return choosenEquipURI;
-	}
-	
-	public static String algorithmPart2(String equipURI, boolean isSource) throws Exception{
-		//#17.2.1
-		List<String> availableInt = Queries.getAvailableInterfacesFromEquipment(model, equipURI, isSource);
+		//#B
 		String type = "";
 		if(isSource){
 			type = "Output";
 		}else{
 			type = "Input";
 		}
+		int choosenInt2Prov = chooseOne(LIST_INT, type + " Interface to Provision", 2);
+		String choosenInt2ProvURI = LIST_INT.get(choosenInt2Prov);
 		
-		//#17.2.2
-		int outIntIndex = chooseOne(availableInt, type + " Interface to provision");
+		//#C
+		List<String> listInterfacesTo = Queries.getInterfacesToProvision(model, choosenInt2ProvURI, isSource);
 		
-		String outInt = availableInt.get(outIntIndex);
-		String layerURI = "";
-		List<String> layers;
-		boolean isTF;
+		//#D
+		int inInterfaceIndex = chooseOne(listInterfacesTo, "Available Interface to Provision", 2);
+		String inInterface = listInterfacesTo.get(inInterfaceIndex);
 		
-		//#17.2.3
-		if(Queries.isInterfaceMappedByTF(model, outInt)){
-			//#17.2.4
-			layers = Queries.getServerLayersFromTF(model, outInt);
-			isTF = true;
-		}else{
-			//#17.2.5
-			layers = Queries.getLayersAdaptedFromAF(model, outInt);
-			isTF = false;
-		}
-		
-		if(layers.size() > 0){
-			layerURI = layers.get(0);
-		}
-		InfModel infModel = OKCoUploader.getInferredModel();
-		if(infModel.equals(model)){
-			System.out.println("teste");
-		}else{
-			System.out.println("teste2");
-		}
-		//#17.2.6
-		List<String> listEquipmentTo = Queries.getCompatibleEquipment(model, layerURI, isSource, isTF);
-		//List<String> listEquipmentTo2 = Queries.getCompatibleEquipment((OntModel) infModel, layerURI, isSource, isTF);
-		
-		//#17.2.7
-		int inEquipIndex = chooseOne(listEquipmentTo, "Equipment");
-		String inEquip = listEquipmentTo.get(inEquipIndex);
-		
-		//#17.2.8
-		List<String> listInInt = Queries.getAvailableInterfacesFromEquipment(model, inEquip, !isSource);
-		
-		//#17.2.9
-		int inIntIndex = chooseOne(listInInt, "Interface");
-		String inInt = listInInt.get(inIntIndex);
-		
-		//#17.2.10
-		List<String> outPortURIs = Queries.getMappedPort(model, outInt);
-		String outPort = "";
-		if(outPortURIs.size() > 0){
-			outPort  = outPortURIs.get(0);
-		}
-		
-		List<String> inPortURIs = Queries.getMappedPort(model, inInt);
-		String inPort = "";
-		if(inPortURIs.size() > 0){
-			inPort = inPortURIs.get(0);
-		}
-		
-		//#17.2.10
+		//#E
+		String outPort = Queries.getMappedPort(model, interfaceURI);
+		String inPort = Queries.getMappedPort(model, inInterface);
 		FactoryUtil.createInstanceRelation(model, outPort, ns+"binds", inPort);
 		
-		return inEquip;
+		return inInterface;
 	}
 	
 	public static void verifyIfEquipProvidedBySamePM(String srcEquipToProv, String tgtEquipToProv) throws Exception{
-		List<String> lastSrcEquipList = Queries.getLastBindedEquipmentFrom(model, srcEquipToProv);
-		List<String> lastTgtEquipList = Queries.getLastBindedEquipmentFrom(model, tgtEquipToProv);
+		List<String> lastSrcEquipList = Queries.getLastBindedTFFrom(model, srcEquipToProv);
+		List<String> lastTgtEquipList = Queries.getLastBindedTFFrom(model, tgtEquipToProv);
 		
 		if(lastSrcEquipList.size() == 0 || lastTgtEquipList.size() == 0){
 			throw new Exception("No equipment found.");
