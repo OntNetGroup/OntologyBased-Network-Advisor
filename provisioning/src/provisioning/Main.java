@@ -22,6 +22,7 @@ import br.com.padtec.okco.core.application.OKCoReasoner;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class Main {
 	static boolean runReason = true;
@@ -44,7 +45,7 @@ public class Main {
 			createInstances(aBoxFile);
 						
 			//#4
-			//runReasoner(true, true, true);
+			runReasoner(true, true, true);
 			
 			//#7 and #8
 			verifiyMinimumEquipment();
@@ -66,8 +67,15 @@ public class Main {
 			verifiyMinimumEquipWithPM();
 			
 			//#14
-			runReasoner(true, true, true);
+			runReasoner(false, true, true);
 			
+//			List<String> equips = QueryUtil.getIndividualsURI(model, ns+"Equipment");
+//			List<DtoInstanceRelation> equipRels = DtoQueryUtil.getRelationsFrom(model, ns+"peq_otu_so");
+//			List<DtoInstanceRelation> inIntRel = DtoQueryUtil.getRelationsFrom(model, ns+"peq_otu_so_in");
+//			List<String> inIntClasses = QueryUtil.getClassesURIFromIndividual(model, ns+"peq_otu_so_in");
+//			List<DtoInstanceRelation> portRels = DtoQueryUtil.getRelationsFromAndTo(model, ns+"af_otu_so_in");
+//			List<DtoInstanceRelation> tfRels = DtoQueryUtil.getRelationsFrom(model, ns+"af_otu_so");
+//			List<String> tfClasses = QueryUtil.getClassesURIFromIndividual(model, ns+"af_otu_so");
 			boolean equipHasPM;
 			boolean equipBindedWithPMEquip;
 			String lastEquip = srcEquipToProv;
@@ -77,7 +85,7 @@ public class Main {
 				//lastEquip = algorithmPart2(srcEquip, true);
 				
 				//#18
-				//runReasoner(false, false, true);
+				runReasoner(false, true, true);
 				
 				//#20
 				equipHasPM = QueryUtil.hasTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
@@ -93,7 +101,7 @@ public class Main {
 				//lastEquip = algorithmPart2(tgtEquip, false);
 				
 				//#23
-				//runReasoner(false, false, true);
+				runReasoner(false, true, true);
 				
 				//#25
 				equipHasPM = QueryUtil.hasTargetIndividualFromClass(model, lastEquip, ns+"componentOf", ns+"Physical_Media");
@@ -187,8 +195,6 @@ public class Main {
 		if(!result.isSucceed()){
 			throw new Exception(result.getMessage());
 		}
-		
-		model = OKCoUploader.getBaseModel();
 	}
 	
 	public static void createInstances(String aBoxFile) throws Exception{
@@ -226,12 +232,13 @@ public class Main {
 				String type = indvDclSplit[0];
 				String[] individuals = indvDclSplit[1].split(",");
 				for (String indv : individuals) {
-					boolean indvExist = QueryUtil.individualExists(model, ns+indv);
 					String oldName = indv;
-					if(indvExist){
-						indv += "_eq";
-					}
-					
+					if(!type.equals("Layer_Network")){
+						boolean indvExist = QueryUtil.individualExists(model, ns+indv);
+						if(indvExist){
+							indv += "_eq";
+						}
+					}					
 					newMapping.put(oldName, indv);
 					
 					FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type);
@@ -257,10 +264,16 @@ public class Main {
 					String src = individuals[i].replace("(", "").replace("\t", "");
 					String tgt = individuals[i+1].replace(")", "").replace("\t", "");
 					
-					src = newMapping.get(src);
-					tgt = newMapping.get(tgt);
+					String newSrc = newMapping.get(src);
+					String newTgt = newMapping.get(tgt);
 					
-					FactoryUtil.createInstanceRelation(model, ns+src, ns+relation, ns+tgt);
+					if(newSrc == null || newSrc.equals("")){
+						newSrc = src;
+					}
+					if(newTgt == null || newTgt.equals("")){
+						newTgt = tgt;
+					}					
+					FactoryUtil.createInstanceRelation(model, ns+newSrc, ns+relation, ns+newTgt);
 				}
 			}
 		}
@@ -357,9 +370,15 @@ public class Main {
 		if(layers.size() > 0){
 			layerURI = layers.get(0);
 		}
-		
+		InfModel infModel = OKCoUploader.getInferredModel();
+		if(infModel.equals(model)){
+			System.out.println("teste");
+		}else{
+			System.out.println("teste2");
+		}
 		//#17.2.6
 		List<String> listEquipmentTo = Queries.getCompatibleEquipment(model, layerURI, isSource, isTF);
+		//List<String> listEquipmentTo2 = Queries.getCompatibleEquipment((OntModel) infModel, layerURI, isSource, isTF);
 		
 		//#17.2.7
 		int inEquipIndex = chooseOne(listEquipmentTo, "Equipment");

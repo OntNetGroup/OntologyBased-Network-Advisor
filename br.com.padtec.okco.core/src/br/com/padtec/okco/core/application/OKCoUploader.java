@@ -85,7 +85,7 @@ public class OKCoUploader {
 			else reasoner = new PelletReasonerImpl();
 			
 			System.out.println("Getting infModel");
-			InfModel  inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
+			InfModel inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}
 		
@@ -220,6 +220,7 @@ public class OKCoUploader {
 			InfModel newInferredModel = reasoner.run(getBaseModel());
 			inferredRepository.setInferredModel(newInferredModel);
 		}			
+		baseRepository.setBaseOntModel((OntModel) inferredRepository.getInferredOntModel());
 	}	
 	
 	/**
