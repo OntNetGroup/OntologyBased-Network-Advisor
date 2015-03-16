@@ -1,11 +1,11 @@
-package br.com.padtec.networktopology;
+package br.com.padtec.nopen.networktopology.model;
 
-public class Node {
+public class TNode {
 
 	String 	id,
 			name;
 
-	public Node(String id, String name){
+	public TNode(String id, String name){
 		this.id = id;
 		this.name = name;
 	}

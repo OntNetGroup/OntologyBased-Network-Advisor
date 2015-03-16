@@ -7,19 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.com.padtec.nopen.networktopology.service.TopologyExporter;
+import br.com.padtec.nopen.networktopology.service.TopologyImporter;
 
-public class TopologyExporterController extends HttpServlet {
+public class TopologyImporterController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException ,IOException {
 		
-		TopologyExporter topology = new TopologyExporter();
-		topology.exportTopology(request, response);
+		TopologyImporter topology = new TopologyImporter();
+		topology.importTopology(request, response);
 		
 	}
-	
+
 }
-
-

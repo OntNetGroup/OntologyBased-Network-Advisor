@@ -41,6 +41,7 @@
 		<!-- PLUGINS -->
         
         <script src="../../plugins/topology-exporter.js"></script>
+        <script src="../../plugins/topology-importer.js"></script>
 
 		<!-- JS -->
 		
@@ -67,13 +68,26 @@
 	      document.onselectstart = function() { return false; };
 	    </script>
 	<![endif]-->
+		     
+		     
+	
         <script>
             // Uncomment the following line and comment the line after if you
             // want to use channels.
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
-            $('#btn-import-xml').click(function(){exportTopology(app.graph)});
+            
+            $('#btn-import-xml').click(function(){
+            	$('#file').click();
+            	//$('#fileForm').submit();
+				//importTopology(app.graph);
+			});
+
+            $('#file').change(function(){
+            	importTopology(app.graph);
+            });
+            
             $('#btn-pre').click(function(){previewTopology(app.graph)});
             $('#btn-export-xml').click(function(){exportTopology(app.graph)});
         </script>

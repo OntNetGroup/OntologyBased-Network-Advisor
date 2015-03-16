@@ -30,4 +30,13 @@
     <servlet-name>TopologyExporter</servlet-name>
     <url-pattern>/exportTopology</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <display-name>Topology</display-name>
+    <servlet-name>TopologyImporter</servlet-name>
+    <servlet-class>br.com.padtec.controller.TopologyImporterController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TopologyImporter</servlet-name>
+    <url-pattern>/importTopology</url-pattern>
+  </servlet-mapping>
 </web-app>
