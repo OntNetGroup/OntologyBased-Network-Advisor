@@ -8,37 +8,37 @@
 
         <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css" />
 
-        <link rel="stylesheet" type="text/css" href="../../core/rappid_api/css/joint.all.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
 
-        <link rel="stylesheet" type="text/css" href="./css/layout.css" />
-        <link rel="stylesheet" type="text/css" href="./css/paper.css" />
-        <link rel="stylesheet" type="text/css" href="./css/inspector.css" />
-        <link rel="stylesheet" type="text/css" href="./css/navigator.css" />
-        <link rel="stylesheet" type="text/css" href="./css/stencil.css" />
-        <link rel="stylesheet" type="text/css" href="./css/halo.css" />
-        <link rel="stylesheet" type="text/css" href="./css/selection.css" />
-        <link rel="stylesheet" type="text/css" href="./css/toolbar.css" />
-        <link rel="stylesheet" type="text/css" href="./css/statusbar.css" />
-        <link rel="stylesheet" type="text/css" href="./css/freetransform.css" />
-        <link rel="stylesheet" type="text/css" href="./css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/layout.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/paper.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/inspector.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/navigator.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/stencil.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/halo.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/selection.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/toolbar.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/statusbar.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/freetransform.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/style.css" />
     </head>
     <body>
         <h1>DENADAI STUDIO</h1>
         <div class="toolbar-container">
-            <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="./img/undo.png" alt="Undo"/></button>
-            <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="./img/redo.png" alt="Redo"/></button>
-            <button id="btn-clear" class="btn" data-tooltip="Clear Paper"><img src="./img/clear.png" alt="Clear"/></button>
+            <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/equipment-studio/img/undo.png" alt="Undo"/></button>
+            <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/equipment-studio/img/redo.png" alt="Redo"/></button>
+            <button id="btn-clear" class="btn" data-tooltip="Clear Paper"><img src="/nopen/frontend/equipment-studio/img/clear.png" alt="Clear"/></button>
             <button id="btn-svg" class="btn" data-tooltip="Open as SVG in a New Window">open as SVG</button>
             <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window">open as PNG</button>
-            <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="./img/print.png" alt="Print"/></button>
-            <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="./img/zoomin.png" alt="Zoom in"/></button>
-            <button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out"><img src="./img/zoomout.png" alt="Zoom out"/></button>
+            <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/equipment-studio/img/print.png" alt="Print"/></button>
+            <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="/nopen/frontend/equipment-studio/img/zoomin.png" alt="Zoom in"/></button>
+            <button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out"><img src="/nopen/frontend/equipment-studio/img/zoomout.png" alt="Zoom out"/></button>
             <div class="panel">
               <span id="zoom-level">100</span>
               <span>%</span>
             </div>
-            <button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom To Fit"><img src="./img/zoomtofit.png" alt="Zoom To Fit"/></button>
-            <button id="btn-fullscreen" class="btn" data-tooltip="Toggle Fullscreen Mode"><img src="./img/fullscreen.png" alt="Fullscreen"/></button>
+            <button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom To Fit"><img src="/nopen/frontend/equipment-studio/img/zoomtofit.png" alt="Zoom To Fit"/></button>
+            <button id="btn-fullscreen" class="btn" data-tooltip="Toggle Fullscreen Mode"><img src="/nopen/frontend/equipment-studio/img/fullscreen.png" alt="Fullscreen"/></button>
             <button id="btn-to-front" class="btn" data-tooltip="Bring Object to Front">to front</button>
             <button id="btn-to-back" class="btn" data-tooltip="Send Object to Back">to back</button>
             <button id="btn-layout" class="btn" data-tooltip="Auto-layout Graph">layout</button>
@@ -58,18 +58,18 @@
         <div class="navigator-container"></div>
         <div class="statusbar-container"><span class="rt-colab"></span></div>
 
-        <script src="../../core/rappid_api/js/joint.js"></script>
+        <script src="/nopen/core/rappid_api/js/joint.js"></script>
 
-        <script src="../../core/rappid_api/js/joint.all.js"></script>
+        <script src="/nopen/core/rappid_api/js/joint.all.js"></script>
 
-        <script src="./js/keyboard.js"></script>
+        <script src="/nopen/frontend/equipment-studio/js/keyboard.js"></script>
 
-		<script src="../../core/rappid_api/js/joint.shapes.devs.js"></script>
-        <script src="./js/inspector.js"></script>
-		<script src="./js/mymodel.js"></script>
-		<script src="./js/mypool.js"></script>
-        <script src="./js/stencil.js"></script>
-        <script src="./js/main.js"></script>
+		<script src="/nopen/core/rappid_api/js/joint.shapes.devs.js"></script>
+        <script src="/nopen/frontend/equipment-studio/js/inspector.js"></script>
+		<script src="/nopen/frontend/equipment-studio/js/mymodel.js"></script>
+		<script src="/nopen/frontend/equipment-studio/js/mypool.js"></script>
+        <script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
+        <script src="/nopen/frontend/equipment-studio/js/main.js"></script>
 		
 		
 	<!--[if IE 9]>
