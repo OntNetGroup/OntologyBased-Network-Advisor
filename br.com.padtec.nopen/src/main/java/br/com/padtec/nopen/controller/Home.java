@@ -18,6 +18,11 @@ public class Home {
 		return "hello";
 	}
 
+	@RequestMapping("/home")
+	public String homeRequest(HttpServletRequest request) {		
+		return "index";
+	}
+	
 	@RequestMapping("/editor")
 	public String editorRequest(HttpServletRequest request) {
 		return "editor_squeleton";
@@ -36,6 +41,16 @@ public class Home {
 	@RequestMapping("/advisor")
 	public String advisorRequest() {
 		return "advisor/index";
+	}
+	
+	@RequestMapping("/network-topology")
+	public String networkTopologyRequest() {
+		return "network-topology/network-topology";
+	}
+	
+	@RequestMapping("/provisioning")
+	public String provisioningRequest() {
+		return "provisioning/provisioning";
 	}
 	
 	@RequestMapping(value = "/node_added", method = RequestMethod.GET)
