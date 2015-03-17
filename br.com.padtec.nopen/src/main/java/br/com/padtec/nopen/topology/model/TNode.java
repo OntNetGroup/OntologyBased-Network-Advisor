@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.model.topology;
+package br.com.padtec.nopen.topology.model;
 
 public class TNode {
 

@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.service.topology;
+package br.com.padtec.nopen.topology.service;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,9 +20,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import br.com.padtec.nopen.model.topology.DataReader;
-import br.com.padtec.nopen.model.topology.TLink;
-import br.com.padtec.nopen.model.topology.TNode;
+import br.com.padtec.nopen.topology.model.DataReader;
+import br.com.padtec.nopen.topology.model.TLink;
+import br.com.padtec.nopen.topology.model.TNode;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

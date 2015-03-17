@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.controller.advisor.okco;
+package br.com.padtec.nopen.advisor.okco.controller;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 import org.springframework.stereotype.Controller;

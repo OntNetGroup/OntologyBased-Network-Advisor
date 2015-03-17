@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.service.topology;
+package br.com.padtec.nopen.topology.service;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import br.com.padtec.nopen.model.topology.DataReader;
+import br.com.padtec.nopen.topology.model.DataReader;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

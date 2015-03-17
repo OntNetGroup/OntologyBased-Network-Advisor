@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.controller.topology;
+package br.com.padtec.nopen.topology.controller;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.com.padtec.nopen.service.topology.TopologyExporter;
+import br.com.padtec.nopen.topology.service.TopologyExporter;
 
 public class TopologyExporterController extends HttpServlet {
 

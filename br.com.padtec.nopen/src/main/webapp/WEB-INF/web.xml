@@ -24,7 +24,7 @@
   <servlet>
     <display-name>Topology</display-name>
     <servlet-name>TopologyExporter</servlet-name>
-    <servlet-class>br.com.padtec.nopen.controller.topology.TopologyExporterController</servlet-class>
+    <servlet-class>br.com.padtec.nopen.topology.controller.TopologyExporterController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>TopologyExporter</servlet-name>
@@ -33,7 +33,7 @@
   <servlet>
     <display-name>Topology</display-name>
     <servlet-name>TopologyImporter</servlet-name>
-    <servlet-class>br.com.padtec.nopen.controller.topology.TopologyImporterController</servlet-class>
+    <servlet-class>br.com.padtec.nopen.topology.controller.TopologyImporterController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>TopologyImporter</servlet-name>

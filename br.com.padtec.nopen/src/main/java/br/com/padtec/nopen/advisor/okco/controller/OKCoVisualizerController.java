@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.controller.advisor.okco;
+package br.com.padtec.nopen.advisor.okco.controller;
 
 import javax.servlet.http.HttpServletRequest;
 

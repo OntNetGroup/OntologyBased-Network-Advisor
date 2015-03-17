@@ -63,6 +63,11 @@
 		<input type="submit" value="Open Advisor">
 	</form>
 		
+	<form id="equipment-studio" action="equipment-studio.htm">	
+		<input type="submit" value="Open Equipment Studio">
+	</form>
+	
+	
 	<script>
 		/**
 		Crating and setting the stencils for this pages

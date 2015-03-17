@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.controller.advisor;
+package br.com.padtec.nopen.advisor.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
