@@ -172,7 +172,11 @@ componentOf:	(tf_otu_so, 		tf_otu_so_in),
 
 binds:	(tf_ots_so_sk1_out, pm1_in),
 		(tf_ots_so_sk2_in, pm1_out),
-		(tf_otu_och_sk1_in, af_otu_och_sk2_out);
+		(af_otu_och_sk1_in, tf_otu_och_sk1_out),
+		(tf_otu_och_sk1_in, af_otu_och_sk2_out),
+		(af_otu_so_out, tf_otu_so_in),
+		(af_otu_och_sk2_in, tf_otu_och_sk2_out),
+		(af_ots_so_out, tf_ots_so_in);
 
 
 maps:	(peq_otu_so_in, af_otu_so_in),

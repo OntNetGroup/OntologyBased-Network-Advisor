@@ -76,40 +76,19 @@ public class Main {
 //			List<DtoInstanceRelation> portRels = DtoQueryUtil.getRelationsFromAndTo(model, ns+"af_otu_so_in");
 //			List<DtoInstanceRelation> tfRels = DtoQueryUtil.getRelationsFrom(model, ns+"af_otu_so");
 //			List<String> tfClasses = QueryUtil.getClassesURIFromIndividual(model, ns+"af_otu_so");
-
-			boolean intPartOfEquipPM;
-			boolean equipBindedWithPMEquip;
-			String lastInt = srcIntToProv;
-			do {
-				//#20
-				lastInt = algorithmPart1(lastInt, true);
-				
-				//#21
-				runReasoner(false, true, true);
-				
-				//#23
-				intPartOfEquipPM = Queries.isInterfacePartOfEquipWithPM(model, lastInt);
-				equipBindedWithPMEquip = Queries.isEquipBindedWithPMEquip(model, lastInt);
-				System.out.println();
-			} while (!intPartOfEquipPM && !equipBindedWithPMEquip);//#23			
+			
+			//#20 -> #23
+			String equipWithPM1 = callAlgorithm(srcIntToProv, true, "");
 			
 			//#24????????
 			
-			lastInt = tgtIntToProv;
-			do {
-				//#25
-				lastInt = algorithmPart1(lastInt, false);
-				
-				//#26
-				runReasoner(false, true, true);
-				
-				//#28
-				intPartOfEquipPM = Queries.isInterfacePartOfEquipWithPM(model, lastInt);
-				equipBindedWithPMEquip = Queries.isEquipBindedWithPMEquip(model, lastInt);
-				
-			} while (!intPartOfEquipPM && !equipBindedWithPMEquip);//#28
+			//#25 -> #28
+			String equipWithPM2 = callAlgorithm(tgtIntToProv, false, equipWithPM1);
 			
 			//#29????????
+			if(!equipWithPM1.equals(equipWithPM2)){
+				throw new Exception("Somenthing went wrong. The provisioning was made by different Physical Media.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
@@ -323,7 +302,12 @@ public class Main {
 		System.out.println();
 		System.out.println("--- Choose one " + message);
 		
+		if(list.size() == 0){
+			throw new Exception("Something went wrong. The list is empty.");
+		}
+		
 		//Collections.sort(list);
+		myBubbleSort(list, increment);
 		
 		for (int i = 0; i < list.size(); i+=increment) {
 			String elem = "";
@@ -352,7 +336,39 @@ public class Main {
 		return index;
 	}
 	
-	public static String algorithmPart1(String interfaceURI, boolean isSource) throws Exception{
+	public static String callAlgorithm(String lastInt, boolean isSource, String equipWithPM) throws Exception{
+		boolean intPartOfEquipPM;
+		boolean equipBindedWithPMEquip;
+		String equipWithPMRet = "";
+		do {
+			//#20 and #25
+			lastInt = algorithm(lastInt, isSource, equipWithPM);
+			
+			//#21 and #26
+			//runReasoner(false, true, true);
+			
+			//#23 and #28
+			equipWithPMRet = Queries.EquipWithPMofInterface(model, lastInt);
+			if(equipWithPMRet.equals("")){
+				intPartOfEquipPM = false;
+			}else{
+				intPartOfEquipPM = true;
+				return equipWithPMRet;
+			}			
+			equipWithPMRet = Queries.equipBindingEquipWithPM(model, lastInt);
+			if(equipWithPMRet.equals("")){
+				equipBindedWithPMEquip = false;
+			}else{
+				equipBindedWithPMEquip = true;
+				return equipWithPMRet;
+			}			
+			
+		} while (!intPartOfEquipPM && !equipBindedWithPMEquip);//#23 and #28
+		
+		return equipWithPMRet;
+	}
+	
+	public static String algorithm(String interfaceURI, boolean isSource, String equipWithPM) throws Exception{
 		//#A
 		String mappedTF = Queries.getMappedTFFrom(model, interfaceURI);
 		List<String> bindedTFList = Queries.getLastBindedTFFrom(model, mappedTF);
@@ -374,7 +390,7 @@ public class Main {
 		String choosenInt2ProvURI = LIST_INT.get(choosenInt2Prov);
 		
 		//#C
-		List<String> listInterfacesTo = Queries.getInterfacesToProvision(model, choosenInt2ProvURI, isSource);
+		List<String> listInterfacesTo = Queries.getInterfacesToProvision(model, choosenInt2ProvURI, isSource, equipWithPM);
 		
 		//#D
 		int inInterfaceIndex = chooseOne(listInterfacesTo, "Available Interface to Provision", 2);
@@ -403,4 +419,28 @@ public class Main {
 			throw new Exception("Something went wrong. Source and Target equipment were provisioned by different Physical Media.");
 		}
 	}
+	
+	public static void myBubbleSort(List<String> list, int increment) {
+		boolean troca = true;
+        String aux;
+        while (troca) {
+            troca = false;
+            for (int i = 0; i < list.size() - increment; i += increment) {
+//            	String a1 = list.get(i);
+//            	String a2 = list.get(i + increment);
+            	int comparison = list.get(i).compareTo(list.get(i + increment));
+            	if(comparison > 0){
+            		for(int j = i; j < i + increment; j++){
+            			aux = list.get(j);
+            			list.set(j, list.get(j + increment));
+                        //list.get(j) = list.get(j + increment);
+            			list.set(j + increment, aux);
+                        //list[j + increment] = aux;
+                        
+            		}
+            		troca = true;
+            	}
+            }
+        }
+    }
 }

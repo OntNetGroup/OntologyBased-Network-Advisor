@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 
 public class FindCertainExtension {
 
@@ -59,6 +61,11 @@ public class FindCertainExtension {
 	
 	public static String chooseFile(String fileContaining, String ext) throws NumberFormatException, IOException{
 		String[] files = FindCertainExtension.getFileList(ext);
+//		List<String> filesAux = Arrays.asList(files);
+//		Main.myBubbleSort(filesAux, 1);
+//		
+//		files = (String[]) filesAux.toArray();
+		
 		System.out.println("--- " + ext + " files ---");
 		for (int i = 0; i < files.length; i++) {
 			System.out.println((i+1) + " - " + files[i]);

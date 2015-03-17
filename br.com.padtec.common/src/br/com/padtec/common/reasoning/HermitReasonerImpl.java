@@ -129,8 +129,6 @@ public class HermitReasonerImpl extends OntologyReasoner {
     		gens.add(new InferredPropertyAssertionGenerator());						//InferredIndividualAxiomGenerator
         }
 		
-		
-		
 		InferredOntologyGenerator iog = new InferredOntologyGenerator(hermit, gens);
 		iog.fillOntology(m, o);
 
