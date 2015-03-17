@@ -28,6 +28,11 @@ public class Home {
 		return "dashboard/dashboard";
 	}
 	
+	@RequestMapping("/equipment-studio")
+	public String equipmentStudioRequest() {
+		return "equipment-studio/equipment-studio";
+	}
+		
 	@RequestMapping("/advisor")
 	public String advisorRequest() {
 		return "advisor/index";
