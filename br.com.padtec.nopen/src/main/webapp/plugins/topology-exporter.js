@@ -29,7 +29,7 @@ function exportTopology (graph) {
 	
 	$.ajax({
 	   type: "POST",
-	   url: "../../exportTopology",
+	   url: "/nopen/exportTopology",
 	   data : JSON.stringify(graph.toJSON()),
 	   contentType: "text/xml; charset=\"utf-8\"",
 	   dataType: "xml",
@@ -52,7 +52,7 @@ function previewTopology (graph) {
 	
 	$.ajax({
 	   type: "POST",
-	   url: "../../exportTopology",
+	   url: "/nopen/exportTopology",
 	   data : JSON.stringify(graph.toJSON()),
 	   contentType: "text/xml; charset=\"utf-8\"",
 	   dataType: "xml",
@@ -81,9 +81,19 @@ function openXMLWindow(content) {
 };
 
 function openDownloadWindows(content) {
+	
 	var blob=new Blob([content]);
 	var link=document.createElement('a');
 	link.href=window.URL.createObjectURL(blob);
+	//link.setAttribute("download", "topology.xml");
 	link.download="topology.xml";
+	//link.trigger('click');
 	link.click();
-}
+};
+
+// To run Click method on Firefox
+HTMLElement.prototype.click = function() {
+   var evt = this.ownerDocument.createEvent('MouseEvents');
+   evt.initMouseEvent('click', true, true, this.ownerDocument.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+   this.dispatchEvent(evt);
+};

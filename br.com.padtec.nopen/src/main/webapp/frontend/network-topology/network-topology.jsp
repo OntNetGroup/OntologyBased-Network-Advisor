@@ -10,21 +10,21 @@
 
 		<!-- CSS CORE -->
 
-        <link rel="stylesheet" type="text/css" href="../../core/rappid_api/css/joint.all.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
 
 		<!-- CSS -->
 
-        <link rel="stylesheet" type="text/css" href="./css/layout.css" />
-        <link rel="stylesheet" type="text/css" href="./css/paper.css" />
-        <link rel="stylesheet" type="text/css" href="./css/inspector.css" />
-        <link rel="stylesheet" type="text/css" href="./css/navigator.css" />
-        <link rel="stylesheet" type="text/css" href="./css/stencil.css" />
-        <link rel="stylesheet" type="text/css" href="./css/halo.css" />
-        <link rel="stylesheet" type="text/css" href="./css/selection.css" />
-        <link rel="stylesheet" type="text/css" href="./css/toolbar.css" />
-        <link rel="stylesheet" type="text/css" href="./css/statusbar.css" />
-        <link rel="stylesheet" type="text/css" href="./css/freetransform.css" />
-        <link rel="stylesheet" type="text/css" href="./css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/layout.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/paper.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/inspector.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/navigator.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/stencil.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/halo.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/selection.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/toolbar.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/statusbar.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/freetransform.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/style.css" />
     </head>
     <body>
         <h1>Network Topology</h1>
@@ -35,25 +35,25 @@
 
 		<!-- JS CORE -->
 
-        <script src="../../core/rappid_api/js/joint.js"></script>
-        <script src="../../core/rappid_api/js/joint.all.js"></script>
+        <script src="/nopen/core/rappid_api/js/joint.js"></script>
+        <script src="/nopen/core/rappid_api/js/joint.all.js"></script>
 
 		<!-- PLUGINS -->
         
-        <script src="../../plugins/topology-exporter.js"></script>
-        <script src="../../plugins/topology-importer.js"></script>
+        <script src="/nopen/plugins/topology-exporter.js"></script>
+        <script src="/nopen/plugins/topology-importer.js"></script>
 
 		<!-- JS -->
 		
-		<script src="../common/libs/jquery/jquery.js"></script>
+		<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
 		
-        <script src="./js/keyboard.js"></script>
-        <script src="./js/inspector.js"></script> 
-        <script src="./js/main.js"></script>
+        <script src="/nopen/frontend/network-topology/js/keyboard.js"></script>
+        <script src="/nopen/frontend/network-topology/js/inspector.js"></script> 
+        <script src="/nopen/frontend/network-topology/js/main.js"></script>
         
         <!-- STENCILS -->
         
-        <script src="../../stencils/network-topology/js/network-topology.js"></script>
+        <script src="/nopen/stencils/network-topology/js/network-topology.js"></script>
 
 	<!--[if IE 9]>
 	    <script src="./lib/base64.js"></script>

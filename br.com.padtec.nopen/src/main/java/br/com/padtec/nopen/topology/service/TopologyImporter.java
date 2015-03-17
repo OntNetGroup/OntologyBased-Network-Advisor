@@ -9,7 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import br.com.padtec.nopen.topology.model.DataReader;
+import br.com.padtec.nopen.topology.service.util.DataReader;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

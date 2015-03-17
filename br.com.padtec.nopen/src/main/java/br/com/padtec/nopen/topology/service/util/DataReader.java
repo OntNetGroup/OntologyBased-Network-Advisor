@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.topology.model;
+package br.com.padtec.nopen.topology.service.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
