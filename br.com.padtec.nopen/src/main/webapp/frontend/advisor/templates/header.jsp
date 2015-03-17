@@ -6,7 +6,7 @@
 
 <!-- start: Meta -->
 <meta charset="utf-8">
-<title>Ontology-based Network Advisor</title>
+<title>Network Advisor</title>
 <!-- end: Meta -->
 
 <!-- start: Mobile Specific -->
@@ -207,7 +207,7 @@ $(document).ready(function() {
 				<div class="row">
 					<a class="navbar-brand col-lg-2 col-sm-1 col-xs-12"
 						href="welcome.htm">
-							<span>Ontology-based Network Advisor</span>
+							<span>Network Advisor</span>
  					</a>
 				</div>
 				<!-- start: Header Menu -->
@@ -229,8 +229,8 @@ $(document).ready(function() {
 				
 					<ul class="nav nav-tabs nav-stacked main-menu">
 					
-						<li><a href="/oryx" target="_blank"><i class="icon-edit"></i><span
-								class="hidden-sm"> Equipment Studio</span></a></li>
+						<!-- <li><a href="/oryx" target="_blank"><i class="icon-edit"></i><span
+								class="hidden-sm"> Equipment Studio</span></a></li> -->
 						<li>
 							<a class="dropmenu" href="#"><i class="icon-laptop"></i><span class="hidden-sm"> Network Advisor</span> <span class="label">4</span></a>
 							<ul class="dropmenuLevel1">

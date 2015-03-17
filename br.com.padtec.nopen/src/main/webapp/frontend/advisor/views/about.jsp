@@ -29,7 +29,7 @@
 			</div>
 			<div class="box-content">
 
-				<i>Ontology-based Network Advisor</i> <br> <i>Prototype II
+				<i>Network Advisor</i> <br> <i>Prototype II
 					- 12th May 2014</i>
 					<br><br>
 				<p align="justify">The Ontology-based Network Advisor has been funded by the

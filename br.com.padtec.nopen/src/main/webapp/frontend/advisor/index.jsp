@@ -187,7 +187,7 @@
 %>
 
 
-<h1>Welcome to the Ontology-based Network Advisor</h1>
+<h1>Welcome to the Network Advisor</h1>
 
 <div class="row">
 	<div class="col-lg-12">

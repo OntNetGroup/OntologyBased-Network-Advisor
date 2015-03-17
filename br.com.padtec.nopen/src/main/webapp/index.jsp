@@ -7,7 +7,7 @@
 	href="${pageContext.request.contextPath}//core/rappid_api/css/joint.ui.stencil.css"
 	rel="stylesheet" type="text/css" />
 
-<title>Equipment Studio</title>
+<title>N-Open</title>
 
 <style>
 #paper {

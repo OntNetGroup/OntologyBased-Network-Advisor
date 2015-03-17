@@ -6,8 +6,8 @@
 
 <!-- start: Meta -->
 <meta charset="utf-8">
-<title>Ontology-based Network Advisor</title>
-<meta name="description" content="Ontology-based Network Advisor">
+<title>Network Advisor</title>
+<meta name="description" content="Network Advisor">
 <meta name="author"
 	content="Fábio Coradini, Pedro Paulo Barcelos, Vitcor Amorim, Freddy Brasileiro, Cássio Reginato">
 <!-- end: Meta -->
@@ -109,7 +109,7 @@
 
 					<a class="navbar-brand col-lg-2 col-sm-1 col-xs-12" href="#"
 						style="position: static; width: 100%; margin-bottom: 10px; font-size: 23px; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;">
-						<span>Ontology-based Network Advisor</span>
+						<span>Network Advisor</span>
 					</a>
 
 					<h2>Login</h2>
