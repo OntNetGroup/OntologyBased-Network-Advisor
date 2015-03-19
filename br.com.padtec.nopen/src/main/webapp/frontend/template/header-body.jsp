@@ -45,7 +45,7 @@ $(document).ready(function() {
 			</button>
 			<a id="main-menu-toggle" class="hidden-xs open"><i class="icon-reorder"></i></a>
 			<div class="row">
-				<a class="navbar-brand col-lg-2 col-sm-1 col-xs-12" href="home.htm"> <span>N-Open Environment</span> </a>
+				<a class="navbar-brand col-lg-2 col-sm-1 col-xs-12" href="home.htm"> <span>N-OPEn</span> </a>
 			</div>
 			<!-- start: Header Menu -->
 			<div class="nav-no-collapse header-nav"></div>

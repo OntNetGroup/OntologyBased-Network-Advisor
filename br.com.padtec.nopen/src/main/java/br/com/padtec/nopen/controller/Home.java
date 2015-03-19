@@ -20,7 +20,12 @@ public class Home {
 
 	@RequestMapping("/home")
 	public String homeRequest(HttpServletRequest request) {		
-		return "index";
+		return "welcome";
+	}
+	
+	@RequestMapping("/info")
+	public String aboutRequest(HttpServletRequest request) {		
+		return "about";
 	}
 	
 	@RequestMapping("/editor")
