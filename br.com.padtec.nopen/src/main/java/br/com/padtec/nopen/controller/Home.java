@@ -10,14 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class Home {
-	String message = "Welcome to your 1st Maven Spring project !";
-
-	@RequestMapping("/hello")
-	public String showMessage(HttpServletRequest request) {
-		System.out.println("from controller");
-		return "hello";
-	}
-
+	
 	@RequestMapping("/home")
 	public String homeRequest(HttpServletRequest request) {		
 		return "welcome";
@@ -32,17 +25,7 @@ public class Home {
 	public String faqRequest(HttpServletRequest request) {		
 		return "faq";
 	}
-	
-	@RequestMapping("/editor")
-	public String editorRequest(HttpServletRequest request) {
-		return "editor_squeleton";
-	}
-	
-	@RequestMapping("/dashboard")
-	public String editorRequest() {
-		return "dashboard/dashboard";
-	}
-	
+			
 	@RequestMapping("/equipment-studio")
 	public String equipmentStudioRequest() {
 		return "equipment-studio/equipment-studio";
@@ -61,6 +44,19 @@ public class Home {
 	@RequestMapping("/provisioning")
 	public String provisioningRequest() {
 		return "provisioning/provisioning";
+	}	
+	
+	//==========================================================================
+			
+	@RequestMapping("/dashboard")
+	public String editorRequest() {
+		return "dashboard/dashboard";
+	}
+
+	@RequestMapping("/hello")
+	public String showMessage(HttpServletRequest request) {
+		System.out.println("from controller");
+		return "hello";
 	}
 	
 	@RequestMapping(value = "/node_added", method = RequestMethod.GET)

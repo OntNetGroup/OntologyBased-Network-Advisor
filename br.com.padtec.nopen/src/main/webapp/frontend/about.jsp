@@ -25,6 +25,8 @@
 				</div>
 			</div>
 			<div class="box-content">
+				
+				<!-- Write the content of the page here... -->
 				<i>NOPEn</i><br><i>March 19th 2015</i><br><br>								
 				<p>Project Members (Current):</p>
 				<ul style="margin-top:5px">
@@ -43,6 +45,7 @@
 				<ul style="margin-top:5px">
 					<li>BSc. Fabio Santa Rosa Coradini {fabiosrc@gmail.com} </li>
 				</ul>
+				
 			</div>
 		</div>
 	</div>
