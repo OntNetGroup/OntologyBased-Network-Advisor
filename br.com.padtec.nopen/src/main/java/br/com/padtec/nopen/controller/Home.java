@@ -28,6 +28,11 @@ public class Home {
 		return "about";
 	}
 	
+	@RequestMapping("/questions")
+	public String faqRequest(HttpServletRequest request) {		
+		return "faq";
+	}
+	
 	@RequestMapping("/editor")
 	public String editorRequest(HttpServletRequest request) {
 		return "editor_squeleton";

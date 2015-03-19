@@ -25,9 +25,7 @@
 				</div>
 			</div>
 			<div class="box-content">
-					
-				<p>NOPEn version 1.0 </p>				 
-				<p>Build Date: March 19th 2015</p>				
+				<i>NOPEn</i><br><i>March 19th 2015</i><br><br>								
 				<p>Project Members (Current):</p>
 				<ul style="margin-top:5px">
 					<li>Prof. PhD. Anilton Salles Garcia (coordinator)	{anilton@inf.ufes.br} </li>

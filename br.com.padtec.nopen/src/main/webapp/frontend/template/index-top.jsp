@@ -19,22 +19,23 @@
 			<div id="sidebar-left" class="col-lg-2 col-sm-1">
 				<br/>
 				<div class="nav-collapse sidebar-nav collapse navbar-collapse bs-navbar-collapse">				
-					<ul class="nav nav-tabs nav-stacked main-menu">					
+					<ul class="nav nav-tabs nav-stacked main-menu">	
 						<li>
-							<a href="network-topology.htm" class=""><i class="icon-edit"></i><span class="hidden-sm">&nbsp;&nbsp; Network Topology</span></a>
-						</li>						
+						<a class="dropmenu drop" href="#"><i class="icon-edit"></i><span class="hidden-sm">&nbsp;&nbsp; Edit</span> <span class="label"></span></a>
+						<ul class="dropmenuLevel1">									
+							<li><a  class="submenu" href="network-topology.htm" class=""><b class="">(NT)</b><span class="hidden-sm">&nbsp;&nbsp; Network Topology</span></a></li>
+							<li><a  class="submenu" href="equipment-studio.htm" class=""><b class="">(ES)</b><span class="hidden-sm">&nbsp;&nbsp; Equipment Studio</span></a></li>
+							<li><a  class="submenu" href="provisioning.htm" class=""><b class="">(PR)</b><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
+							<li><a  class="submenu" href="advisor.htm" class=""><b class="">(NA)</b><span class="hidden-sm">&nbsp;&nbsp; Network Advisor</span></a></li>
+						</ul>	
+						</li>																		
 						<li>
-							<a href="equipment-studio.htm" class=""><i class="icon-edit"></i><span class="hidden-sm">&nbsp;&nbsp; Equipment Studio</span></a>
-						</li>
-						<li>
-							<a href="provisioning.htm" class=""><i class="icon-edit"></i><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a>
-						</li>														
-						<li>
-							<a href="advisor.htm" class=""><i class="icon-edit"></i><span class="hidden-sm">&nbsp;&nbsp; Network Advisor</span></a>
-						</li>
-						<li>
-							<a href="info.htm" class=""><i class="icon-exclamation-sign"></i><span class="hidden-sm">&nbsp;&nbsp; About</span></a>
-						</li>
+						<a class="dropmenu drop" href="#"><i class="icon-question-sign"></i><span class="hidden-sm">&nbsp;&nbsp; Help</span> <span class="label"></span></a>
+						<ul class="dropmenuLevel1">									
+							<li><a  class="submenu" href="info.htm" class=""><i class="icon-exclamation-sign"></i><span class="hidden-sm">&nbsp;&nbsp; About</span></a></li>
+							<li><a  class="submenu" href="questions.htm" class=""><i class="icon-question-sign"></i><span class="hidden-sm">&nbsp;&nbsp; Frequently Asked Questions (FAQ)</span></a></li>
+						</ul>	
+						</li>												
 					</ul>
 				</div>
 			</div>
