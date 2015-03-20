@@ -180,7 +180,8 @@ var Rappid = Backbone.Router.extend({
         
         this.selection = new Backbone.Collection;
         this.selectionView = new joint.ui.SelectionView({ paper: this.paper, graph: this.graph, model: this.selection });
-
+        this.selectionView.removeHandle('rotate');
+        
         // Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
         // Otherwise, initiate paper pan.
         this.paper.on('blank:pointerdown', function(evt, x, y) {
@@ -303,16 +304,18 @@ var Rappid = Backbone.Router.extend({
             // In order to display halo link magnets on top of the freetransform div we have to create the
             // freetransform first. This is necessary for IE9+ where pointer-events don't work and we wouldn't
             // be able to access magnets hidden behind the div.
-            var freetransform = new joint.ui.FreeTransform({ graph: this.graph, paper: this.paper, cell: cellView.model });
+            //var freetransform = new joint.ui.FreeTransform({ graph: this.graph, paper: this.paper, cell: cellView.model });
             var halo = new joint.ui.Halo({ graph: this.graph, paper: this.paper, cellView: cellView });
 
             // As we're using the FreeTransform plugin, there is no need for an extra resize tool in Halo.
             // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
             // handles nicely spread around the elements.
-            halo.removeHandle('resize');
-            halo.changeHandle('clone', { position: 'se' });
+            //halo.removeHandle('resize');
+            halo.removeHandle('clone');
+            halo.removeHandle('rotate');
+            //halo.changeHandle('clone', { position: 'se' });
             
-            freetransform.render();
+            //freetransform.render();
             halo.render();
 
             this.initializeHaloTooltips(halo);
