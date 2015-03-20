@@ -21,9 +21,12 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/statusbar.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/freetransform.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/header.css" />
     </head>
     <body>
-        <h1>DENADAI STUDIO</h1>
+        <h1 style="margin-top:40px;">DENADAI STUDIO</h1>
+		
+       	<%@include file="templates/header.jsp"%>
         <div class="toolbar-container">
             <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/equipment-studio/img/undo.png" alt="Undo"/></button>
             <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/equipment-studio/img/redo.png" alt="Redo"/></button>

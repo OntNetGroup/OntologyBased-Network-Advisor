@@ -1,0 +1,22 @@
+@import url(http://fonts.googleapis.com/css?family=Kaushan+Script);
+
+.menu .menu-button{
+	position: absolute;
+	background: #1e8fc6;
+	width: 240px;
+	height: 40px;
+	left: 0;
+	top: 0;
+	text-align: center;
+}
+
+.menu a {
+	text-decoration: none;
+	font-family: 'Kaushan Script',cursive;
+	color: #FFF;
+	font-size: 18px;
+}
+
+.menu-button span {
+  vertical-align: middle;
+}

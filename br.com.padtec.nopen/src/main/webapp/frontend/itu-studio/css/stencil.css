@@ -64,9 +64,9 @@
    background: transparent;
 }
 
-.stencil .elements text, .stencil-paper-drag .element text {
+/*.stencil .elements text, .stencil-paper-drag .element text {
     display: none;
-}
+}*/
 
 /* filter */
 .stencil .element.unmatched {

@@ -59,13 +59,13 @@ var Rappid = Backbone.Router.extend({
 
 			if(cell.get('type') === 'link') return;
 			var type = cell.get('type');
+			console.log('type: ' +type);
 
 			// configuration of resizing
-			var sizeMultiplier = { 	'bpmn.Pool': 6,
-									'basic.Circle': 0.5 ,
+			var sizeMultiplier = { 	'bpmn.Pool': 5,
+									'basic.Path': 1.5,
 									'basic.Rect': 0.5,
-									'AF': 2,
-									'TTF': 2
+									'basic.Circle': 0.5
 									}[type];
 
 			if (sizeMultiplier) {
@@ -77,33 +77,6 @@ var Rappid = Backbone.Router.extend({
 			}
 			
 			sizeMultiplier = 0;
-		}, this);
-		
-		// when a cell is added on another one, it should be embedded
-		this.graph.on('add', function(cell) {
-			
-			//console.log(JSON.stringify(cell));
-			if(cell.get('type') === 'link') return;
-			
-			var position = cell.get('position');
-			var size = cell.get('size');
-            var area = g.rect(position.x, position.y, size.width, size.height);
-			
-			var parent;			
-			_.each(this.graph.getElements(), function(e) {
-
-				var position = e.get('position');
-                var size = e.get('size');
-				if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-					parent = e;
-				}
-            });
-			
-			if(parent) {
-//				parent.embed(cell);
-//				console.log('parent embedded cell');			
-				this.embedOrConnect(parent, cell);
-			}
 		}, this);
 		
 
@@ -242,6 +215,8 @@ var Rappid = Backbone.Router.extend({
         this.selection = new Backbone.Collection;
         this.selectionView = new joint.ui.SelectionView({ paper: this.paper, graph: this.graph, model: this.selection });
 
+        this.selectionView.removeHandle('rotate');
+        
         // Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
         // Otherwise, initiate paper pan.
         this.paper.on('blank:pointerdown', function(evt, x, y) {
@@ -373,9 +348,13 @@ var Rappid = Backbone.Router.extend({
             // handles nicely spread around the elements.
 			// descomentar para remover a ferramenta de redimensionamento ao Halo
             //halo.removeHandle('resize');
+            halo.removeHandle('fork');
+            halo.removeHandle('clone');
+            halo.removeHandle('rotate');
+            if(cellView.model.get('type') === 'basic.Path') halo.removeHandle('link');
             
 			// descomentar para inserir a borda de redimensionamento
-            //freetransform.render();
+            // freetransform.render();
             halo.render();
 
             this.initializeHaloTooltips(halo);
@@ -416,22 +395,22 @@ var Rappid = Backbone.Router.extend({
             right: halo.$('.remove'),
             padding: 15
         });
-        // new joint.ui.Tooltip({
-            // className: 'tooltip small',
-            // target: halo.$('.fork'),
-            // content: 'Click and drag to clone and connect the object in one go',
-            // direction: 'left',
-            // left: halo.$('.fork'),
-            // padding: 15
-        // });
-        // new joint.ui.Tooltip({
-            // className: 'tooltip small',
-            // target: halo.$('.clone'),
-            // content: 'Click and drag to clone the object',
-            // direction: 'left',
-            // left: halo.$('.clone'),
-            // padding: 15
-        // });
+         new joint.ui.Tooltip({
+             className: 'tooltip small',
+             target: halo.$('.fork'),
+             content: 'Click and drag to clone and connect the object in one go',
+             direction: 'left',
+             left: halo.$('.fork'),
+             padding: 15
+         });
+         new joint.ui.Tooltip({
+             className: 'tooltip small',
+             target: halo.$('.clone'),
+             content: 'Click and drag to clone the object',
+             direction: 'left',
+             left: halo.$('.clone'),
+             padding: 15
+         });
         new joint.ui.Tooltip({
             className: 'tooltip small',
             target: halo.$('.unlink'),
@@ -448,14 +427,14 @@ var Rappid = Backbone.Router.extend({
             left: halo.$('.link'),
             padding: 15
         });
-        // new joint.ui.Tooltip({
-            // className: 'tooltip small',
-            // target: halo.$('.rotate'),
-            // content: 'Click and drag to rotate the object',
-            // direction: 'right',
-            // right: halo.$('.rotate'),
-            // padding: 15
-        // });
+         new joint.ui.Tooltip({
+             className: 'tooltip small',
+             target: halo.$('.rotate'),
+             content: 'Click and drag to rotate the object',
+             direction: 'right',
+             right: halo.$('.rotate'),
+             padding: 15
+         });
     },
 
     initializeClipboard: function() {
@@ -709,6 +688,7 @@ var Rappid = Backbone.Router.extend({
         $('.statusbar-container .rt-colab').html('Send this link to a friend to <b>collaborate in real-time</b>: <a href="' + roomUrl + '" target="_blank">' + roomUrl + '</a>');
     },
     
+    //------- FUNÇÕES AUXILIARES ---------
     embedOrConnect: function(parent, child) {
     	
     	var parentType = parent.get('type');
@@ -718,9 +698,10 @@ var Rappid = Backbone.Router.extend({
     		console.log('embedded!');
     	} else {
     		if((parentType === 'TTF' || parentType === 'AF') && (childType === 'basic.Rect' || childType === 'basic.Circle')) {
-    			this.graph.addCell(new joint.dia.Link({
-    				source: {id: child.id}, target: {id: parent.id},
-    			}));
+
+    			var blah = new joint.dia.Link({	source: {id: child.id}, target: {id: parent.id}});
+//    			this.graph.addCell(blah.toJSON());
+    			alert(JSON.parse(blah));
     			console.log('connected ' +parent.id+ ' to ' +child.id);
     		}
     	}

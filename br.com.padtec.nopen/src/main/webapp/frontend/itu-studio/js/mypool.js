@@ -2,7 +2,7 @@ MyPool = joint.dia.Element.extend({
 
     markup: ['<g class="rotatable">',
              '<g class="scalable"><rect class="body"/></g>',
-             '<svg overflow="hidden" class="blackbox-wrap"><text class="blackbox-label"/></svg>',
+             '<svg overflow="hidden" class="blackbox-wrap"></svg>',
              '<rect class="header"/><text class="label"/>',
              '<g class="lanes"/>',
              '</g>'].join(''),
@@ -12,6 +12,7 @@ MyPool = joint.dia.Element.extend({
     defaults: joint.util.deepSupplement({
 
         type: 'bpmn.Pool',
+        subtype: '',
         size: {
             width: 600,
             height: 300

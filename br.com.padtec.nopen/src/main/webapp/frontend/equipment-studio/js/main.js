@@ -100,17 +100,12 @@ var Rappid = Backbone.Router.extend({
             });
 			
 			if(parent) {
-				parent.embed(cell);
-				//console.log('parent embedded cell');
+//				parent.embed(cell);
+//				console.log('parent embedded cell');			
+				this.embedOrConnect(parent, cell);
 			}
 		}, this);
 		
-		// when a port is dragged and dropped over an element, they should connect
-		this.graph.on('change:embeds', function(parentView, childId) {
-			
-			console.log(parentView.get('type')+ ' embedded ' +childId);
-			
-		}, this);
 
         this.paper = new joint.dia.Paper({
             width: 1000,
@@ -119,7 +114,7 @@ var Rappid = Backbone.Router.extend({
             perpendicularLinks: true,
             model: this.graph,
 			// RF: Permitir que nós contenham outros nós
-			embeddingMode: true,
+//			embeddingMode: true,
 			// RF: Ao selecionar uma porta, destacar portas disponíveis para conexão com aquela
 			markAvailable: true,
 			// RF: Inserir 'snap link' às conexões
@@ -712,5 +707,23 @@ var Rappid = Backbone.Router.extend({
 
         var roomUrl = location.href.replace(location.hash, '') + '#' + room;
         $('.statusbar-container .rt-colab').html('Send this link to a friend to <b>collaborate in real-time</b>: <a href="' + roomUrl + '" target="_blank">' + roomUrl + '</a>');
+    },
+    
+    embedOrConnect: function(parent, child) {
+    	
+    	var parentType = parent.get('type');
+    	var childType = child.get('type');
+    	if(parentType === 'bpmn.Pool' && (childType === 'TTF' || childType === 'AF')) {
+    		parent.embed(child);
+    		console.log('embedded!');
+    	} else {
+    		if((parentType === 'TTF' || parentType === 'AF') && (childType === 'basic.Rect' || childType === 'basic.Circle')) {
+    			this.graph.addCell(new joint.dia.Link({
+    				source: {id: child.id}, target: {id: parent.id},
+    			}));
+    			console.log('connected ' +parent.id+ ' to ' +child.id);
+    		}
+    	}
+    	console.log('parent type: ' +parentType+ '; child type: ' +childType);
     }
 });
