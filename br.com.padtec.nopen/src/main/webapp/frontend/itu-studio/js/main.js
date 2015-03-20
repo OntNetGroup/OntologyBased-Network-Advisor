@@ -158,7 +158,7 @@ var Rappid = Backbone.Router.extend({
             width: 240,
             groups: Stencil.groups,
             search: {
-                '*': ['type','attrs/text/text','attrs/.label/text'],
+                '*': ['type','attrs/text/text','attrs/.label/text', 'subtype'],
                 'org.Member': ['attrs/.rank/text','attrs/.name/text']
             }
         });
@@ -204,7 +204,7 @@ var Rappid = Backbone.Router.extend({
 
                 new joint.ui.Tooltip({
                     target: '.stencil [model-id="' + cell.id + '"]',
-                    content: cell.get('type').split('.').join(' '),
+                    content: cell.get('subtype'),
                     left: '.stencil',
                     direction: 'left'
                 });

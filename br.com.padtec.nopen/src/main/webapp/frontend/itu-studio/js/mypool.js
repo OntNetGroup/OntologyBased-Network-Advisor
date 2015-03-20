@@ -1,8 +1,9 @@
-MyPool = joint.dia.Element.extend({
+// bpmn.Pool without blackbox-label
+Layer = joint.dia.Element.extend({
 
     markup: ['<g class="rotatable">',
              '<g class="scalable"><rect class="body"/></g>',
-             '<svg overflow="hidden" class="blackbox-wrap"></svg>',
+             '<svg overflow="hidden" class="blackbox-wrap"/>',
              '<rect class="header"/><text class="label"/>',
              '<g class="lanes"/>',
              '</g>'].join(''),
@@ -63,13 +64,6 @@ MyPool = joint.dia.Element.extend({
                 ref: '.body',
                 'ref-width': 1,
                 'ref-height': 1
-            },
-            '.blackbox-label': {
-                text: 'Black Box',
-                dx: '50%',
-                dy: '50%',
-                'text-anchor': 'middle',
-                transform: 'translate(0,-7)'
             }
         }
 

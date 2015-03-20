@@ -2,14 +2,13 @@ var Stencil = {};
 
 Stencil.groups = {
 		layers: { index: 1, label: 'Layers'},
-		itu: { index: 2, label: 'ITU' },
-		basic: { index: 3, label: 'Basic shapes' }
+		itu: { index: 2, label: 'ITU' }
 };
 
 Stencil.shapes = {
 	
 	layers: [
-			new MyPool({
+			new Layer({
 				subtype: 'OTS',
 				attrs: {
 					'.': { magnet: false },
@@ -18,7 +17,7 @@ Stencil.shapes = {
 				lanes: { label: 'OTS' }
 			}),
 			
-			new MyPool({
+			new Layer({
 				subtype: 'OTU',
 				attrs: {
 					'.': { magnet: false },
@@ -27,7 +26,7 @@ Stencil.shapes = {
 				lanes: { label: 'OTU' }
 			}),
 			
-			new MyPool({
+			new Layer({
 				subtype: 'ODU',
 				attrs: {
 					'.': { magnet: false },
@@ -36,7 +35,7 @@ Stencil.shapes = {
 				lanes: { label: 'ODU' }
 			}),
 			
-			new MyPool({
+			new Layer({
 				subtype: 'OCh',
 				attrs: {
 					'.': { magnet: false },
@@ -45,7 +44,7 @@ Stencil.shapes = {
 				lanes: { label: 'OCh' }
 			}),
 			
-			new MyPool({
+			new Layer({
 				subtype: 'OMS',
 				attrs: {
 					'.': { magnet: false },
@@ -94,25 +93,5 @@ Stencil.shapes = {
                 text: { text: 'out', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
             }
         })
-	],
-	
-	basic: [
-	        new joint.shapes.basic.Rect({
-	            size: { width: 100, height: 60 },
-	            attrs: {
-	                rect: {
-	                    rx: 2, ry: 2,
-	                    fill: '#27AE60'
-	                },
-	                text: { text: 'rect', fill: '#ffffff', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
-	            }
-	        }),
-	        new joint.shapes.basic.Circle({
-	            size: { width: 100, height: 60 },
-	            attrs: {
-	                circle: { fill: '#E74C3C' },
-	                text: { text: 'ellipse', fill: '#ffffff', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
-	            }
-	        })
-	    ]
+	]
 };
