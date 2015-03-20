@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
 import br.com.padtec.common.dto.DtoInstance;
@@ -30,7 +29,6 @@ public class Main {
 	static boolean runReason = true;
 	static OntModel model;
 	static String ns;
-	static boolean manual = false;
 	
 	public static void main(String[] args){
 		String tBoxFile = "";
@@ -75,15 +73,21 @@ public class Main {
 			//#14
 			runReasoner(false, true, true);
 			
-//			List<String> equips = QueryUtil.getIndividualsURI(model, ns+"Equipment");
-//			List<DtoInstanceRelation> equipRels = DtoQueryUtil.getRelationsFrom(model, ns+"peq_otu_so");
-//			List<DtoInstanceRelation> inIntRel = DtoQueryUtil.getRelationsFrom(model, ns+"peq_otu_so_in");
-//			List<String> inIntClasses = QueryUtil.getClassesURIFromIndividual(model, ns+"peq_otu_so_in");
-//			List<DtoInstanceRelation> portRels = DtoQueryUtil.getRelationsFromAndTo(model, ns+"af_otu_so_in");
-//			List<DtoInstanceRelation> tfRels = DtoQueryUtil.getRelationsFrom(model, ns+"af_otu_so");
-//			List<String> tfClasses = QueryUtil.getClassesURIFromIndividual(model, ns+"af_otu_so");
-			
-			if(manual){
+			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+			Character option = 'A';
+			boolean ok;
+			do {
+				ok = true;
+				System.out.print("Do you want to proceed automatically (A) or (M) manually? ");
+				try {
+					
+					option = bufferRead.readLine().charAt(0);
+				} catch (Exception e) {
+					ok = false;
+				}			
+			} while ((!option.equals('A') || !option.equals('M') || !option.equals('a') || !option.equals('m')) && !ok);
+					
+			if(option.equals('M') || option.equals('m')){
 				String equipWithPM1 = callAlgorithmManual(srcIntToProv, true, "");
 				//#24????????
 				//#25 -> #28
@@ -94,46 +98,13 @@ public class Main {
 					throw new Exception("Somenthing went wrong. The provisioning was made by different Physical Media.");
 				}
 			}else{
-				DefaultMutableTreeNode sourceRoot;
-				sourceRoot = new DefaultMutableTreeNode(new Interface(srcIntToProv, srcEquipToProv));
-		        DefaultTreeModel sourceTree = new DefaultTreeModel(sourceRoot);
-		        DefaultMutableTreeNode targetRoot;
-		        targetRoot = new DefaultMutableTreeNode(new Interface(tgtIntToProv, tgtEquipToProv));
-		        DefaultTreeModel targetTree = new DefaultTreeModel(targetRoot);
-		        
-				List<DefaultMutableTreeNode> sourceLeafs = new ArrayList<DefaultMutableTreeNode>();
-				algorithmSemiAuto(sourceRoot, true, "", sourceLeafs);
-				List<DefaultMutableTreeNode> targetLeafs = new ArrayList<DefaultMutableTreeNode>();
-				algorithmSemiAuto(targetRoot, false, "", targetLeafs);
-				
-				for (DefaultMutableTreeNode srcLeaf : sourceLeafs) {
-					for (DefaultMutableTreeNode tgtLeaf : targetLeafs) {
-						String srcEquip = ((Interface) srcLeaf.getUserObject()).getEquipmentURI();
-						String tgtEquip = ((Interface) tgtLeaf.getUserObject()).getEquipmentURI();
-						if(srcEquip.equals(tgtEquip)){
-							TreeNode[] srcPath = srcLeaf.getPath();
-							for (TreeNode srcNode : srcPath) {
-								System.out.print(srcNode);
-								System.out.print(" -> ");
-							}
-							TreeNode[] tgtPath = tgtLeaf.getPath();
-							for(int i = tgtPath.length - 1; i >= 0; i--){
-								System.out.print(tgtPath[i]);
-								if(i > 0){
-									System.out.print(" -> ");
-								}								
-							}
-							System.out.println();
-						}
-					}
-				}
-				//sourceTree.get
-				
-				System.out.println();
+				callAlgorithmSemiAuto(srcEquipToProv, srcIntToProv, tgtEquipToProv, tgtIntToProv);				
 			}
+			
+			runReasoner(false, true, true);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}				
 		
 		//#30
 		saveNewOwl(tBoxFile);
@@ -336,11 +307,12 @@ public class Main {
 		}
 	}
 	
-	public static int chooseOne(List<String> list, String message) throws Exception{
+	public static <T> int chooseOne(List<T> list, String message) throws Exception{
 		return chooseOne(list, message, 1);
 	}
 	
-	public static int chooseOne(List<String> list, String message, int increment) throws Exception{
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <T> int chooseOne(List<T> list, String message, int increment) throws Exception{
 		System.out.println();
 		System.out.println("--- Choose one " + message);
 		
@@ -349,15 +321,15 @@ public class Main {
 		}
 		
 		//Collections.sort(list);
-		myBubbleSort(list, increment);
+		myBubbleSort((List<Comparable>) list, increment);
 		
 		for (int i = 0; i < list.size(); i+=increment) {
 			String elem = "";
-			elem += list.get(i).replace(ns, "");
+			elem += ((String) list.get(i)).replace(ns, "");
 			
 			if(increment > 1){
 				elem += " [from equipment: ";
-				elem += list.get(i+1).replace(ns, "");
+				elem += ((String) list.get(i+1)).replace(ns, "");
 				elem += "]";
 			}
 			
@@ -366,9 +338,30 @@ public class Main {
 			System.out.println(id + " - " + elem);
 		}
 		
+//		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+//		Integer index = 0;
+//		
+//		int highestOption = list.size()/increment;
+//		boolean ok;
+//		do {
+//			ok = true;
+//			try {
+//				index = Integer.valueOf(bufferRead.readLine());
+//			} catch (Exception e) {
+//				ok = false;
+//			}			
+//		} while ((index < 1 || index > highestOption) && !ok);
+//				
+//		index = (index*increment)-increment;
+		
+		Integer index = getOptionFromConsole(list, increment);
+		
+		return index;
+	}
+	
+	public static <T> int getOptionFromConsole(List<T> list, int increment){
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		Integer index = 0;
-		
 		int highestOption = list.size()/increment;
 		boolean ok;
 		do {
@@ -383,6 +376,75 @@ public class Main {
 		index = (index*increment)-increment;
 		
 		return index;
+	}
+	
+	public static void callAlgorithmSemiAuto(String srcEquipToProv, String srcIntToProv, String tgtEquipToProv, String tgtIntToProv) throws Exception{
+		DefaultMutableTreeNode sourceRoot;
+		sourceRoot = new DefaultMutableTreeNode(new Interface(srcIntToProv, srcEquipToProv));
+        //DefaultTreeModel sourceTree = new DefaultTreeModel(sourceRoot);
+        DefaultMutableTreeNode targetRoot;
+        targetRoot = new DefaultMutableTreeNode(new Interface(tgtIntToProv, tgtEquipToProv));
+        //DefaultTreeModel targetTree = new DefaultTreeModel(targetRoot);
+        
+		List<DefaultMutableTreeNode> sourceLeafs = new ArrayList<DefaultMutableTreeNode>();
+		algorithmSemiAuto(sourceRoot, true, "", sourceLeafs);
+		List<DefaultMutableTreeNode> targetLeafs = new ArrayList<DefaultMutableTreeNode>();
+		algorithmSemiAuto(targetRoot, false, "", targetLeafs);
+		
+		ArrayList<TreeNode[]> paths = new ArrayList<TreeNode[]>(); 
+		for (DefaultMutableTreeNode srcLeaf : sourceLeafs) {
+			for (DefaultMutableTreeNode tgtLeaf : targetLeafs) {
+				String srcEquip = ((Interface) srcLeaf.getUserObject()).getEquipmentURI();
+				String tgtEquip = ((Interface) tgtLeaf.getUserObject()).getEquipmentURI();
+				if(srcEquip.equals(tgtEquip)){
+					TreeNode[] srcPath = srcLeaf.getPath();
+					TreeNode[] tgtPath = tgtLeaf.getPath();
+					paths.add(srcPath);
+					paths.add(tgtPath);
+				}
+			}
+		}
+		
+		for(int i = 0; i < paths.size(); i+=2){
+			int id = (i+2)/2;
+			System.out.print(id + " - ");
+			TreeNode[] srcPath = paths.get(i);
+			TreeNode[] tgtPath = paths.get(i+1);
+			for (TreeNode srcNode : srcPath) {
+				System.out.print(srcNode);
+				System.out.print(" -> ");
+			}
+			for(int j = tgtPath.length - 1; j >= 0; j--){
+				System.out.print(tgtPath[j]);
+				if(j > 0){
+					System.out.print(" -> ");
+				}								
+			}
+			System.out.println();
+		}
+		
+		System.out.print("Choose a path: ");
+		int path = getOptionFromConsole(paths, 2);
+		TreeNode[] srcPath = paths.get(path);
+		TreeNode[] tgtPath = paths.get(path+1);
+		
+		provisionSemiAuto(srcPath, tgtPath);
+	}
+	
+	public static void provisionSemiAuto(TreeNode[] srcPath, TreeNode[] tgtPath){
+		for (int i = 1; i < srcPath.length; i+=2) {
+			Interface from = (Interface)((DefaultMutableTreeNode)srcPath[i]).getUserObject();
+			Interface to = (Interface)((DefaultMutableTreeNode)srcPath[i+1]).getUserObject();
+
+			bindsInterfaces(from.getInterfaceURI(), to.getInterfaceURI());
+		}
+		
+		for (int i = 1; i < tgtPath.length; i+=2) {
+			Interface from = (Interface)((DefaultMutableTreeNode)tgtPath[i]).getUserObject();
+			Interface to = (Interface)((DefaultMutableTreeNode)tgtPath[i+1]).getUserObject();
+
+			bindsInterfaces(from.getInterfaceURI(), to.getInterfaceURI());
+		}
 	}
 	
 	public static void algorithmSemiAuto(DefaultMutableTreeNode lastInputIntNode, boolean isSource, String equipWithPM, List<DefaultMutableTreeNode> leafs) throws Exception{
@@ -485,29 +547,25 @@ public class Main {
 		List<String> LIST_INT = algorithmPart1(interfaceURI, isSource);
 		
 		String choosenInt2ProvURI = "";
-		if(manual){
-			//#B
-			String type = "";
-			if(isSource){
-				type = "Output";
-			}else{
-				type = "Input";
-			}
-			int choosenInt2Prov = chooseOne(LIST_INT, type + " Interface to Provision", 2);
-			choosenInt2ProvURI = LIST_INT.get(choosenInt2Prov);			
+		//#B
+		String type = "";
+		if(isSource){
+			type = "Output";
+		}else{
+			type = "Input";
 		}
+		int choosenInt2Prov = chooseOne(LIST_INT, type + " Interface to Provision", 2);
+		choosenInt2ProvURI = LIST_INT.get(choosenInt2Prov);			
 		
 		List<String> listInterfacesTo = algorithmPart2(isSource, equipWithPM, choosenInt2ProvURI);
 		
 		String inInterface = "";
-		if(manual){
-			//#D
-			int inInterfaceIndex = chooseOne(listInterfacesTo, "Available Interface to Provision", 2);
-			inInterface = listInterfacesTo.get(inInterfaceIndex);
-			
-			bindsInterfaces(interfaceURI, inInterface);
-		}
+		//#D
+		int inInterfaceIndex = chooseOne(listInterfacesTo, "Available Interface to Provision", 2);
+		inInterface = listInterfacesTo.get(inInterfaceIndex);
 		
+		bindsInterfaces(interfaceURI, inInterface);
+	
 //		for(int i = 0; i < LIST_INT.size(); i+=2){
 //			FactoryUtil.createInstanceRelation(model, interfaceURI, ns+"poderia_ligar", LIST_INT.get(i));
 //			for(int j = 0; j < listInterfacesTo.size(); j+=2){
@@ -534,9 +592,10 @@ public class Main {
 		}
 	}
 	
-	public static void myBubbleSort(List<String> list, int increment) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void myBubbleSort(List<Comparable> list, int increment) {
 		boolean troca = true;
-        String aux;
+		Comparable aux;
         while (troca) {
             troca = false;
             for (int i = 0; i < list.size() - increment; i += increment) {
