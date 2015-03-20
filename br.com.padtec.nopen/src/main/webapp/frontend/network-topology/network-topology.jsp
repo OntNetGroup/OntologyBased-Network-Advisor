@@ -24,13 +24,20 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/toolbar.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/statusbar.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/freetransform.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/style.css" />  
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/header.css" />
+        
+        
     </head>
     <body>
-        <h1>Network Topology</h1>
+        
         
         <!-- TEMPLATES -->
+
         
+		<h1 style="margin-top:40px;">Network Topology</h1>
+		
+       	<%@include file="templates/header.jsp"%>
         <%@include file="templates/toolbar.jsp"%>
 
 		<!-- JS CORE -->
@@ -90,6 +97,7 @@
             
             $('#btn-pre').click(function(){previewTopology(app.graph)});
             $('#btn-export-xml').click(function(){exportTopology(app.graph)});
+            
         </script>
     </body>
 </html>

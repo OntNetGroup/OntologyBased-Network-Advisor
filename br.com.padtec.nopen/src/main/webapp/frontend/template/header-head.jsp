@@ -104,7 +104,5 @@
 	a.navbar-brand {
 		width: 18.422%;
 	}	
-	a#main-menu-toggle {
-		left: 40px !important;
-	}
+
 </style>
