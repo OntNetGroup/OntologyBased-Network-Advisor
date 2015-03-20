@@ -130,6 +130,8 @@ var Rappid = Backbone.Router.extend({
         }, this));
 
         this.snapLines = new joint.ui.Snaplines({ paper: this.paper });
+        
+     
     },
 
     initializeLinkTooltips: function(cell) {
@@ -686,25 +688,5 @@ var Rappid = Backbone.Router.extend({
 
         var roomUrl = location.href.replace(location.hash, '') + '#' + room;
         $('.statusbar-container .rt-colab').html('Send this link to a friend to <b>collaborate in real-time</b>: <a href="' + roomUrl + '" target="_blank">' + roomUrl + '</a>');
-    },
-    
-    //------- FUNÇÕES AUXILIARES ---------
-    embedOrConnect: function(parent, child) {
-    	
-    	var parentType = parent.get('type');
-    	var childType = child.get('type');
-    	if(parentType === 'bpmn.Pool' && (childType === 'TTF' || childType === 'AF')) {
-    		parent.embed(child);
-    		console.log('embedded!');
-    	} else {
-    		if((parentType === 'TTF' || parentType === 'AF') && (childType === 'basic.Rect' || childType === 'basic.Circle')) {
-
-    			var blah = new joint.dia.Link({	source: {id: child.id}, target: {id: parent.id}});
-//    			this.graph.addCell(blah.toJSON());
-    			alert(JSON.parse(blah));
-    			console.log('connected ' +parent.id+ ' to ' +child.id);
-    		}
-    	}
-    	console.log('parent type: ' +parentType+ '; child type: ' +childType);
     }
 });

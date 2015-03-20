@@ -73,6 +73,7 @@
 		<script src="/nopen/frontend/itu-studio/js/mypool.js"></script>
         <script src="/nopen/frontend/itu-studio/js/stencil.js"></script>
         <script src="/nopen/frontend/itu-studio/js/main.js"></script>
+        <script src="/nopen/frontend/itu-studio/js/functions.js"></script>
 		
 		
 	<!--[if IE 9]>
@@ -95,37 +96,8 @@
             var app = new Rappid;
             Backbone.history.start();            
 
+            graphHandle(app.graph);
     		
-    		// when a cell is added on another one, it should be embedded
-    		app.graph.on('add', function(cell) {
-    			
-    			//console.log(JSON.stringify(cell));
-    			if(cell.get('type') === 'link') return;
-    			
-    			var position = cell.get('position');
-    			var size = cell.get('size');
-                var area = g.rect(position.x, position.y, size.width, size.height);
-    			
-    			var parent;			
-    			_.each(app.graph.getElements(), function(e) {
-
-    				var position = e.get('position');
-                    var size = e.get('size');
-    				if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-    					parent = e;
-    				}
-                });
-    			
-    			if(parent) {
-//    				parent.embed(cell);
-//    				console.log('parent embedded cell');			
-//    				this.embedOrConnect(parent, cell);
-    				var newLink = new joint.dia.Link({source: {id: cell.id}, target: {id: parent.id}, attrs: { '.marker-source': { d: 'M 10 0 L 0 5 L 10 10 z' }} });
-    				//alert(JSON.stringify(newLink.toJSON()));
-    				app.graph.addCell(newLink);
-    				cell.translate(-200, 0);
-    			}
-    		}, this);
         </script>
     </body>
 </html>
