@@ -29,6 +29,7 @@ var Rappid = Backbone.Router.extend({
         // Intentionally commented out. See the `initializeValidator()` method for reasons.
         // Uncomment for demo purposes.
         this.initializeValidator();
+        this.graphHandle();
         // Commented out by default. You need to run `node channelHub.js` in order to make
         // channels working. See the documentation to the joint.com.Channel plugin for details.
         //this.initializeChannel('ws://jointjs.com:4141');
@@ -59,7 +60,6 @@ var Rappid = Backbone.Router.extend({
 
 			if(cell.get('type') === 'link') return;
 			var type = cell.get('type');
-			console.log('type: ' +type);
 
 			// configuration of resizing
 			var sizeMultiplier = { 	'bpmn.Pool': 5,
@@ -131,7 +131,26 @@ var Rappid = Backbone.Router.extend({
 
         this.snapLines = new joint.ui.Snaplines({ paper: this.paper });
         
-     
+        // Listen on cell:pointerup and link to or be embedded by an element found below
+        this.paper.on('cell:pointerup', function(cellView, evt, x, y) {
+        	// Find the first element below that is not a link nor the dragged element itself.
+            var elementBelow = this.graph.get('cells').find(function(cell) {
+                if (cell instanceof joint.dia.Link) return false; // Not interested in links.
+                if (cell.id === cellView.model.id) return false; // The same element as the dropped one.
+                if (cell.getBBox().containsPoint(g.point(x, y))) {
+                    return true;
+                }
+                return false;
+            });
+            
+            // If the two elements are connected already, don't
+            // connect them again (this is application specific though).
+            if (elementBelow && !_.contains(this.graph.getNeighbors(elementBelow), cellView.model)) {
+                
+                console.log('Embed or connect!');
+                this.embedOrConnect(elementBelow, cellView.model);
+            }
+        }, this);
     },
 
     initializeLinkTooltips: function(cell) {
@@ -343,7 +362,13 @@ var Rappid = Backbone.Router.extend({
             // be able to access magnets hidden behind the div.
 			// descomentar para inserir a borda de redimensionamento
             //var freetransform = new joint.ui.FreeTransform({ graph: this.graph, paper: this.paper, cell: cellView.model });
-            var halo = new joint.ui.Halo({ graph: this.graph, paper: this.paper, cellView: cellView });
+            var halo = new joint.ui.Halo({ 	graph: this.graph,
+            								paper: this.paper, cellView: cellView,
+            								// tooltip shows only the subtype
+            								boxContent: function(cellView) {
+            									return cellView.model.get('subtype');
+            								}
+            });
 
             // As we're using the FreeTransform plugin, there is no need for an extra resize tool in Halo.
             // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
@@ -688,5 +713,59 @@ var Rappid = Backbone.Router.extend({
 
         var roomUrl = location.href.replace(location.hash, '') + '#' + room;
         $('.statusbar-container .rt-colab').html('Send this link to a friend to <b>collaborate in real-time</b>: <a href="' + roomUrl + '" target="_blank">' + roomUrl + '</a>');
+    },
+    
+
+    // Add event listeners to the graph
+    graphHandle: function() {
+
+        // When a cell is added on another one, it should be embedded or connected (in case of it being a port)
+        this.graph.on('add', function(cell) {
+
+    		if(cell.get('type') === 'link') return;
+
+    		var position = cell.get('position');
+    		var size = cell.get('size');
+    		var area = g.rect(position.x, position.y, size.width, size.height);
+
+    		var parent;
+    		// get all elements below the added one
+    		_.each(this.graph.getElements(), function(e) {
+
+    			var position = e.get('position');
+    			var size = e.get('size');
+    			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+    				// save the most above among the elements below
+    				parent = e;
+    			}
+    		});
+
+    		if(parent) {		
+    			this.embedOrConnect(parent, cell);
+    		}
+    	}, this);
+    },
+    
+    /* ------ AUXILIAR FUNCTIONS ------- */
+    // decide whether the elements should be embedded or connected
+    embedOrConnect: function(parent, child) {
+    	
+    	var parentType = parent.get('type');
+    	var childType = child.get('type');
+    	console.log('parent type: ' +parentType+ '; child type: ' +childType);
+    	
+    	if(parentType === 'bpmn.Pool' && childType === 'basic.Path') { // parent is a layer and child is an ITU element
+    		parent.embed(child);
+    	} else { // parent is an ITU element and child is a port
+    		if(parentType === 'basic.Path' && (childType === 'basic.Rect' || childType === 'basic.Circle')) {
+
+    			var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: child.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
+    			this.graph.addCell(newLink);
+    			
+    			// Move the port a bit up (in port) or down (out port)
+    			if(childType === 'basic.Circle') child.translate(0, -60);
+    			else child.translate(0, 100);
+    		}
+    	}
     }
 });

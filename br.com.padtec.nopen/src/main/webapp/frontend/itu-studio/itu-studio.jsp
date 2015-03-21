@@ -73,7 +73,6 @@
 		<script src="/nopen/frontend/itu-studio/js/mypool.js"></script>
         <script src="/nopen/frontend/itu-studio/js/stencil.js"></script>
         <script src="/nopen/frontend/itu-studio/js/main.js"></script>
-        <script src="/nopen/frontend/itu-studio/js/functions.js"></script>
 		
 		
 	<!--[if IE 9]>
@@ -94,9 +93,7 @@
             // want to use channels.
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
-            Backbone.history.start();            
-
-            graphHandle(app.graph);
+            Backbone.history.start();
     		
         </script>
     </body>
