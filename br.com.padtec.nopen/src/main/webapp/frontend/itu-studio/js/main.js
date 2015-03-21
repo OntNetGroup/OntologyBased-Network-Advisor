@@ -86,12 +86,16 @@ var Rappid = Backbone.Router.extend({
             gridSize: 10,
             perpendicularLinks: true,
             model: this.graph,
+            
 			// RF: Permitir que nós contenham outros nós
 //			embeddingMode: true,
+            
 			// RF: Ao selecionar uma porta, destacar portas disponíveis para conexão com aquela
 			markAvailable: true,
+			
 			// RF: Inserir 'snap link' às conexões
-			snapLinks: { radius: 75 },
+			snapLinks: { radius: 25 },
+			
             defaultLink: new joint.dia.Link({
                 attrs: {
                     // @TODO: scale(0) fails in Firefox
@@ -102,7 +106,26 @@ var Rappid = Backbone.Router.extend({
                         // filter: { name: 'dropShadow', args: { dx: 1, dy: 1, blur: 2 } }
                     }
                 }
-            })
+            }),
+
+        	// RF: Inserir restrições de conexão entre os nós
+            validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+            	/*
+            	 * TODO:	ADD CONNECTION RESTRICTIONS HERE
+            	 * 			se elemento ITU tenta se conectar a elemento ITU, retorna false
+            	 * 			se porta in tenta se conectar a in ou out se conectar a out, retorna false
+            	 * 			se porta tenta se conectar a uma porta ja usada, retorna false
+            	 * 			se porta de um elemento ITU tenta se conectar à porta de um elemento ITU, consulta ontologia
+            	*/
+            },
+            
+	         // RF: Inserir 'containmnet rules' aos nós
+        	validateEmbedding: function(childView, parentView) {
+        		 /*
+        		  * TODO:	ADD EMBEDDING RESTRICTIONS HERE
+        		  * 		se elemento ITU tenta ser incluido em alguma camada, consulta ontologia
+        		  */
+        	}
         });
 
         this.paperScroller = new joint.ui.PaperScroller({
@@ -523,9 +546,6 @@ var Rappid = Backbone.Router.extend({
     },
 
     initializeValidator: function() {
-
-        // This is just for demo purposes. Every application has its own validation rules or no validation
-        // rules at all.
         
         this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
 
@@ -554,6 +574,21 @@ var Rappid = Backbone.Router.extend({
                 $('.statusbar-container').text('').removeClass('error');
                 
             }, 1500);
+        });
+        
+        
+        // garantir que elementos ITU sejam inseridas somente sobre camadas
+        // garantir que portas sejam inseridas somente sobre elementos ITU 
+        this.validator.on('add', isNotLink, function(err, command, next) {
+        	/*
+        	 * TODO:	se nao tiver elemento abaixo, retorna false
+        	 * 			se o elemento for um elemento ITU
+        	 * 				se o elemento abaixo nao for uma camada, retorna false
+        	 * 				consulta ontologia para criacao de um elemento ITU
+        	 * 			se o elemento for uma porta
+        	 * 				se o elemento abaixo nao for um elemento ITU, retorna false
+        	 * 			retorna true
+        	*/
         });
     },
 
@@ -767,5 +802,12 @@ var Rappid = Backbone.Router.extend({
     			else child.translate(0, 100);
     		}
     	}
+    },
+    
+    /* ------- VALIDATION FUNCTIONS -------- */
+    // Check if cell in command is not a link. Continue validating if yes, otherwise stop.
+    isNotLink: function(err, command, next) {
+        if (command.data.type !== 'link') return next(err);
+        // otherwise stop validating (don't call next validation function)
     }
 });
