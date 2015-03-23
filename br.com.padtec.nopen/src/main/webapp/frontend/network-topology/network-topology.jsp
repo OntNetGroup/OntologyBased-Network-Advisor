@@ -58,6 +58,8 @@
         <script src="/nopen/frontend/network-topology/js/inspector.js"></script> 
         <script src="/nopen/frontend/network-topology/js/main.js"></script>
         
+        <script src="/nopen/frontend/common/util/util.js"></script>
+        
         <!-- STENCILS -->
         
         <script src="/nopen/stencils/network-topology/js/network-topology.js"></script>
@@ -84,19 +86,25 @@
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
-            
+            var uuid = joint.util.uuid();
+
             $('#btn-import-xml').click(function(){
             	$('#file').click();
-            	//$('#fileForm').submit();
-				//importTopology(app.graph);
 			});
-
+            
             $('#file').change(function(){
             	importTopology(app.graph);
             });
             
-            $('#btn-pre').click(function(){previewTopology(app.graph)});
-            $('#btn-export-xml').click(function(){exportTopology(app.graph)});
+            $('#btn-pre').click(function(){
+            	previewTopology(app.graph, uuid)
+            });
+            
+            $('#btn-export-xml').click(function(){
+            	exportTopology(app.graph, uuid)
+            });
+            
+           
             
         </script>
     </body>

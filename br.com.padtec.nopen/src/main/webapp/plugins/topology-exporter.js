@@ -1,10 +1,11 @@
-function exportTopology (graph) {
+function exportTopology (graph, uuid) {
 	
 	$.ajax({
 	   type: "POST",
 	   url: "exportTopology.htm",
 	   data : {
-		   "json": JSON.stringify(graph.toJSON())
+		   "json": JSON.stringify(graph.toJSON()),
+		   "uuid": uuid
 	   },
 	   success: function(data){   	  
            openDownloadWindows(data);	   
@@ -16,13 +17,14 @@ function exportTopology (graph) {
 	
 };
 
-function previewTopology (graph) {
+function previewTopology (graph, uuid) {
 	
 	$.ajax({
 	   type: "POST",
 	   url: "exportTopology.htm",
 	   data : {
-		   "json": JSON.stringify(graph.toJSON())
+		   "json": JSON.stringify(graph.toJSON()),
+		   "uuid": uuid
 	   },
 	   success: function(data){   
 		   openXMLWindow(data);   

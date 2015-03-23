@@ -11,24 +11,24 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class DataReader {
+public class Util {
 
-	private static DataReader instance;
+	private static Util instance;
 	
-	private DataReader(){
+	private Util(){
 		
 	}
 	
-	public static synchronized DataReader getInstance(){
+	public static synchronized Util getInstance(){
 		
 		if(instance == null){
-			instance = new DataReader();
+			instance = new Util();
 		}
 		
 		return instance;
 		
 	}
-	
+
 	public String readData(HttpServletRequest request) throws IOException{
 		
 		request.setCharacterEncoding("UTF-8");
@@ -50,7 +50,7 @@ public class DataReader {
 
         try {
 			builder = factory.newDocumentBuilder();
-		  Document doc = builder.parse( new InputSource( new StringReader( xmlStr ) ) ); 
+			Document doc = builder.parse( new InputSource( new StringReader( xmlStr ) ) ); 
             return doc;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

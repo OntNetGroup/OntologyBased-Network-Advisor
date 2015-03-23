@@ -38,7 +38,7 @@ public class TopologyExporter {
 	 * @throws TransformerFactoryConfigurationError 
 	 * @throws TransformerException 
 	 */
-	public String exportTopology(String json) {	
+	public String exportTopology(String json, String uuid) {	
 
 	    // Variables
 	    
@@ -107,7 +107,8 @@ public class TopologyExporter {
         
         networkTopology.appendChild(topology);
         topology.appendChild(topologyId);
-        topologyId.appendChild(doc.createTextNode("topology1"));
+        
+        topologyId.appendChild(doc.createTextNode(uuid));
 
 		// NODES
 		for(int i = 0; i < nodesId.size(); i++){

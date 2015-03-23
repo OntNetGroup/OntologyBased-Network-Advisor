@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import br.com.padtec.nopen.topology.service.util.DataReader;
+import br.com.padtec.nopen.topology.service.util.Util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -26,69 +26,72 @@ public class TopologyImporter {
 		
 		// Read XML
 
-		DataReader dataReader = DataReader.getInstance();
+		Util util = Util.getInstance();
 		
 		String xml = "";
 		try {
-			xml = dataReader.readData(request);
+			xml = util.readData(request);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 
-		Document doc = dataReader.convertStringToDocument(xml);
-
-		// Get topology tags
-		NodeList nodeList = doc.getElementsByTagName("node");
-		NodeList nodeIdList = doc.getElementsByTagName("node-id");
-		NodeList linkIdList = doc.getElementsByTagName("link-id");
-		NodeList linkList = doc.getElementsByTagName("link");
-		NodeList sourceList = doc.getElementsByTagName("source");
-		NodeList destList = doc.getElementsByTagName("destination");
+		Document doc = util.convertStringToDocument(xml);
 
 		JsonObject topology = new JsonObject();
 		JsonArray cells = new JsonArray();	
 		
-		// Read nodes
-		for (int i = 0; i < nodeList.getLength(); i++){
-			
-			Node node = nodeList.item(i);
-			String nodeId = "";
-			
-			if(nodeIdList.item(i) != null){
-				Node nodeIdItem = nodeIdList.item(i);
-				nodeId = nodeIdItem.getTextContent();
+		// Get topology tags
+		try{
+			NodeList nodeList = doc.getElementsByTagName("node");
+			NodeList nodeIdList = doc.getElementsByTagName("node-id");
+			NodeList linkIdList = doc.getElementsByTagName("link-id");
+			NodeList linkList = doc.getElementsByTagName("link");
+			NodeList sourceList = doc.getElementsByTagName("source");
+			NodeList destList = doc.getElementsByTagName("destination");
+	
+			// Read nodes
+			for (int i = 0; i < nodeList.getLength(); i++){
+				
+				Node node = nodeList.item(i);
+				String nodeIdEName = "";
+				
+				if(nodeIdList.item(i) != null){
+					Node nodeIdItem = nodeIdList.item(i);
+					nodeIdEName = nodeIdItem.getTextContent();
+				}
+				else{
+					nodeIdEName = node.getAttributes().getNamedItem("id").getTextContent();
+				}
+				
+				JsonObject jsonNode = createNode(nodeIdEName, nodeIdEName);
+				cells.add(jsonNode);
 			}
-			else{
-				nodeId = node.getAttributes().getNamedItem("id").getTextContent();
-			}
 			
-			JsonObject jsonNode = createNode(nodeId, nodeId);
-			cells.add(jsonNode);
-		}
+			// Read links
+			for (int i = 0; i < linkList.getLength(); i++){
+				
+				Node link = linkList.item(i);
+				Node sourceNode = sourceList.item(i);
+				Node destNode = destList.item(i);
+				String linkId = "";
+				
+				if(linkIdList.item(i) != null){
+					Node linkIdItem = linkIdList.item(i);
+					linkId = linkIdItem.getTextContent();
+				}
+				else{
+					linkId = link.getAttributes().getNamedItem("id").getTextContent();
+				}
+				
+				String source = sourceNode.getTextContent();
+				String target = destNode.getTextContent();
+				
+				JsonObject jsonLink = createLink(linkId, source, target);
+				cells.add(jsonLink);
+			}
 		
-		// Read links
-		for (int i = 0; i < linkList.getLength(); i++){
-			
-			Node link = linkList.item(i);
-			Node sourceNode = sourceList.item(i);
-			Node destNode = destList.item(i);
-			String linkId = "";
-			
-			if(linkIdList.item(i) != null){
-				Node linkIdItem = linkIdList.item(i);
-				linkId = linkIdItem.getTextContent();
-			}
-			else{
-				linkId = link.getAttributes().getNamedItem("id").getTextContent();
-			}
-			
-			String source = sourceNode.getTextContent();
-			String target = destNode.getTextContent();
-			
-			JsonObject jsonLink = createLink(linkId, source, target);
-			cells.add(jsonLink);
-		}
+		}catch(Exception e){}
 		
 		topology.add("cells", cells);
 	
@@ -192,5 +195,35 @@ public class TopologyImporter {
 		return attrs;
 	}
 	
+	
+	public String getTopologyId(HttpServletRequest request){
+		
+		// Read XML
+
+		Util util = Util.getInstance();
+		
+		String xml = "";
+		try {
+			xml = util.readData(request);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+
+		Document doc = util.convertStringToDocument(xml);
+		String topologyId = "";
+		
+		try {
+			
+			NodeList topologyList = doc.getElementsByTagName("topology-id");
+		
+			if(topologyList.getLength() > 0){
+				topologyId = topologyList.item(0).getTextContent();
+			}
+			
+		} catch (Exception e) {}
+		
+		return topologyId;
+	}
 	
 }
