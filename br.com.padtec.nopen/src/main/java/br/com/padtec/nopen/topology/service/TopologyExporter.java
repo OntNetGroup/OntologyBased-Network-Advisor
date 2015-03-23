@@ -1,19 +1,19 @@
 package br.com.padtec.nopen.topology.service;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -22,7 +22,6 @@ import org.w3c.dom.Element;
 
 import br.com.padtec.nopen.topology.model.TLink;
 import br.com.padtec.nopen.topology.model.TNode;
-import br.com.padtec.nopen.topology.service.util.DataReader;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -36,8 +35,10 @@ public class TopologyExporter {
 	 * @param response
 	 * @throws IOException
 	 * Method to generate the Topology in a XML format
+	 * @throws TransformerFactoryConfigurationError 
+	 * @throws TransformerException 
 	 */
-	public void exportTopology(HttpServletRequest request, HttpServletResponse response) throws IOException{	
+	public String exportTopology(String json) {	
 
 	    // Variables
 	    
@@ -46,11 +47,6 @@ public class TopologyExporter {
 		
 		Map<String, TNode> nodes = new HashMap<String, TNode>();
 		ArrayList<TLink> links = new ArrayList<TLink>();
-		
-		// READ JSON
-		
-		DataReader dataReader = DataReader.getInstance();
-		String json = dataReader.readData(request);
 		
 		// Parse JSON
 
@@ -149,6 +145,26 @@ public class TopologyExporter {
 			
 		}
 		
+		String xml = "";
+		
+		try {
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer;
+			transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			StringWriter writer = new StringWriter();
+			transformer.transform(new DOMSource(doc), new StreamResult(writer));
+			xml = xml + writer.getBuffer().toString();	
+			
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return xml;
+		
+		/*
 		try {
 
 			//StringWriter out = new StringWriter();	
@@ -174,7 +190,7 @@ public class TopologyExporter {
 	    } catch (Exception e){
 	        e.printStackTrace();
 	    }
-		
+		*/
 	}
 	
 }

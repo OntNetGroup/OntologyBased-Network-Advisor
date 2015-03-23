@@ -3,7 +3,6 @@ package br.com.padtec.nopen.topology.service;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -23,13 +22,20 @@ public class TopologyImporter {
 	 * @throws IOException
 	 * Method to import a Topology file in a XML format
 	 */
-	public void importTopology(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public String importTopology(HttpServletRequest request) {
 		
 		// Read XML
 
 		DataReader dataReader = DataReader.getInstance();
 		
-		String xml = dataReader.readData(request);	
+		String xml = "";
+		try {
+			xml = dataReader.readData(request);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+
 		Document doc = dataReader.convertStringToDocument(xml);
 
 		// Get topology tags
@@ -86,8 +92,7 @@ public class TopologyImporter {
 		
 		topology.add("cells", cells);
 	
-		response.setContentType("application/json"); 
-		response.getWriter().print(topology.toString());
+		return topology.toString();
 		
 	}
 	
