@@ -45,8 +45,8 @@ public class ITUStudioController {
 	 * @param id: identificador da porta a ser deletada
 	 * @return
 	 */
-	@RequestMapping(value = "/createPort", method = RequestMethod.POST)
-	public @ResponseBody String createPort(@RequestParam("id") String id) {
+	@RequestMapping(value = "/deletePort", method = RequestMethod.POST)
+	public @ResponseBody String deletePort(@RequestParam("id") String id) {
 		return null;
 	}
 	

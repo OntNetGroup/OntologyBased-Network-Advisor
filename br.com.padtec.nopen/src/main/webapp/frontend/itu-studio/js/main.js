@@ -577,13 +577,11 @@ var Rappid = Backbone.Router.extend({
         });
         
         
-        // garantir que elementos ITU sejam inseridas somente sobre camadas
-        // garantir que portas sejam inseridas somente sobre elementos ITU 
-        this.validator.on('add', isNotLink, function(err, command, next) {
+        // validar inserção de transport functions
+        // validar que portas sejam inseridas somente sobre elementos ITU 
+        this.validator.on('add', this.isNotLink, function(err, command, next) {
         	/*
-        	 * TODO:	se nao tiver elemento abaixo, retorna false
-        	 * 			se o elemento for um elemento ITU
-        	 * 				se o elemento abaixo nao for uma camada, retorna false
+        	 * TODO:	se o elemento for um elemento ITU
         	 * 				consulta ontologia para criacao de um elemento ITU
         	 * 			se o elemento for uma porta
         	 * 				se o elemento abaixo nao for um elemento ITU, retorna false
