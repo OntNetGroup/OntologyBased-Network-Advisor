@@ -24,7 +24,7 @@ Layer = joint.dia.Element.extend({
                 stroke: '#000000',
                 width: 500,
                 height: 200,
-                'pointer-events': 'stroke'
+                'pointer-events': 'visiblePainted'
             },
             '.header': {
                 fill:'#ffffff',
@@ -47,7 +47,7 @@ Layer = joint.dia.Element.extend({
             '.lane-body': {
                 fill:'#ffffff',
                 stroke: '#000000',
-                'pointer-events': 'stroke'
+                'pointer-events': 'visiblePainted'
             },
             '.lane-header': {
                 fill:'#ffffff',
