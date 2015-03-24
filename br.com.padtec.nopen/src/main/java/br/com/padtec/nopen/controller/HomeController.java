@@ -8,8 +8,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.application.Initializator;
+
 @Controller
-public class Home {
+public class HomeController {
+		
+	@RequestMapping(method = RequestMethod.GET, value="/init")
+	public String index(HttpServletRequest request) 
+	{		
+		String errorMsg  = Initializator.uploadTBOx();
+		if(!errorMsg.isEmpty()) request.getSession().removeAttribute("errorMensage");
+		
+		return "welcome";
+	}
 	
 	@RequestMapping("/home")
 	public String homeRequest(HttpServletRequest request) {		

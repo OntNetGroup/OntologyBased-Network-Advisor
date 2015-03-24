@@ -7,13 +7,20 @@
   </context-param>
   <servlet>
     <servlet-name>mvc-dispatcher</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>     
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <!-- <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/frontend/*</url-pattern>
+  </servlet-mapping> -->
   <servlet-mapping>
     <servlet-name>mvc-dispatcher</servlet-name>
     <url-pattern>*.htm</url-pattern>
   </servlet-mapping>
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/mvc-dispatcher-servlet.xml</param-value>
@@ -22,7 +29,6 @@
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
   <welcome-file-list>  	
-    <welcome-file>/home</welcome-file>
-    <welcome-file>frontend/welcome.jsp</welcome-file>
+    <welcome-file>init.htm</welcome-file>    
   </welcome-file-list>
 </web-app>

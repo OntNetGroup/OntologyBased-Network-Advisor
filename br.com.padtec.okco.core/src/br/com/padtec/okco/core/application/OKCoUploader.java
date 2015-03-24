@@ -111,8 +111,6 @@ public class OKCoUploader {
 	public static void uploadBaseModel(String path, String useReasoner, String optReasoner)
 	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
 	{	
-		System.out.println("Cloning repositories...");
-		
 		/** Upload the base model to a base repository */
 		baseRepository = new BaseModelRepositoryImpl();		 
 		baseRepository.readBaseOntModel(path);		 		 			  
@@ -185,8 +183,8 @@ public class OKCoUploader {
 	 */
 	public static void clear()
 	{		
-		baseRepository.clear();
-		inferredRepository.clear();
+		if(baseRepository!=null) baseRepository.clear();
+		if(inferredRepository!=null) inferredRepository.clear();
 		tempModel = null;				
 		reasoner = null;
 	}

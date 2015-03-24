@@ -59,6 +59,7 @@ public class ITUStudioController {
 	 */
 	@RequestMapping(value = "/createLink", method = RequestMethod.POST)
 	public @ResponseBody String createLink(@RequestParam("linkID") String linkID, @RequestParam("sourcePortID") String sourcePortID, @RequestParam("targetPortID") String targetPortID) {
+		
 		return null;
 	}
 	
