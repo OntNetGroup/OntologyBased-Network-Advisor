@@ -248,7 +248,7 @@ public class Main {
 					}					
 					newMapping.put(oldName, indv);
 					
-					FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type);
+					FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type, false);
 					
 					newIndividuals.add(ns+indv);
 				}
@@ -280,7 +280,7 @@ public class Main {
 					if(newTgt == null || newTgt.equals("")){
 						newTgt = tgt;
 					}					
-					FactoryUtil.createInstanceRelation(model, ns+newSrc, ns+relation, ns+newTgt);
+					FactoryUtil.createInstanceRelation(model, ns+newSrc, ns+relation, ns+newTgt, false, false, true);
 				}
 			}
 		}
@@ -301,7 +301,7 @@ public class Main {
 					
 					indv = newMapping.get(indv);
 					
-					FactoryUtil.createInstanceAttribute(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type);
+					FactoryUtil.createInstanceAttribute(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type, false);
 				}
 			}
 		}
@@ -540,7 +540,7 @@ public class Main {
 		//#E
 		String outPort = Queries.getMappedPort(model, interfaceURI);
 		String inPort = Queries.getMappedPort(model, inInterface);
-		FactoryUtil.createInstanceRelation(model, outPort, ns+"binds", inPort);
+		FactoryUtil.createInstanceRelation(model, outPort, ns+"binds", inPort, false, false, true);
 	}
 	
 	public static String algorithmManual(String interfaceURI, boolean isSource, String equipWithPM) throws Exception{
