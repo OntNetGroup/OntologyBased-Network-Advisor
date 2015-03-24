@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.nopen.application.Initializator;
+import br.com.padtec.nopen.core.application.Initializator;
 
 @Controller
 public class HomeController {

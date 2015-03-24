@@ -1,10 +1,15 @@
 package br.com.padtec.nopen.itustudio.controller;
 
+import java.io.IOException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import br.com.padtec.nopen.itustudio.core.ITUStudioFactory;
+import br.com.padtec.nopen.itustudio.core.ITUStudioSerializator;
 
 @Controller
 public class ITUStudioController {
@@ -16,8 +21,14 @@ public class ITUStudioController {
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String createTransportFunction(@RequestParam("id") String id, @RequestParam("layer") String layer) {
-		return null;
+	public @ResponseBody String createTransportFunction(@RequestParam("id") String id, @RequestParam("layer") String layer) 
+	{
+		/**===========================================================
+		 * Create Transport Function
+		 * =========================================================== */
+		ITUStudioFactory.createTransportFunction(id,layer);
+		
+		return new String();
 	}
 	
 	/**
@@ -25,8 +36,14 @@ public class ITUStudioController {
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/deleteTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String deleteTransportFunction(@RequestParam("id") String id) {
-		return null;
+	public @ResponseBody String deleteTransportFunction(@RequestParam("id") String id) 
+	{
+		/**===========================================================
+		 * Delete Transport Function
+		 * =========================================================== */
+		ITUStudioFactory.deleteTransportFunction(id);
+		
+		return new String();
 	}
 	
 	
@@ -37,8 +54,14 @@ public class ITUStudioController {
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/createPort", method = RequestMethod.POST)
-	public @ResponseBody String createPort(@RequestParam("portID") String portID, @RequestParam("transportFunctionID") String transportFunctionID) {
-		return null;
+	public @ResponseBody String createPort(@RequestParam("portID") String portID, @RequestParam("transportFunctionID") String transportFunctionID) 
+	{
+		/**===========================================================
+		 * Create Port
+		 * =========================================================== */
+		ITUStudioFactory.createPort(portID, transportFunctionID);
+		
+		return new String();
 	}
 	
 	/**
@@ -46,8 +69,14 @@ public class ITUStudioController {
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/deletePort", method = RequestMethod.POST)
-	public @ResponseBody String deletePort(@RequestParam("id") String id) {
-		return null;
+	public @ResponseBody String deletePort(@RequestParam("id") String id) 
+	{
+		/**===========================================================
+		 * Delete Port
+		 * =========================================================== */
+		ITUStudioFactory.deletePort(id);
+		
+		return new String();		
 	}
 	
 	/* ----- CRUD for link ----- */
@@ -58,9 +87,15 @@ public class ITUStudioController {
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/createLink", method = RequestMethod.POST)
-	public @ResponseBody String createLink(@RequestParam("linkID") String linkID, @RequestParam("sourcePortID") String sourcePortID, @RequestParam("targetPortID") String targetPortID) {
+	public @ResponseBody String createLink(@RequestParam("linkID") String linkID, @RequestParam("sourcePortID") String sourcePortID, @RequestParam("targetPortID") String targetPortID) 
+	{
 		
-		return null;
+		/**===========================================================
+		 * Create Link
+		 * =========================================================== */
+		ITUStudioFactory.createLink(linkID, sourcePortID, targetPortID);
+		
+		return new String();	
 	}
 	
 	/**
@@ -68,8 +103,14 @@ public class ITUStudioController {
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/deleteLink", method = RequestMethod.POST)
-	public @ResponseBody String deleteLink(@RequestParam("id") String id) {
-		return null;
+	public @ResponseBody String deleteLink(@RequestParam("id") String id) 
+	{
+		/**===========================================================
+		 * Delete Link
+		 * =========================================================== */
+		ITUStudioFactory.deleteLink(id);
+		
+		return new String();	
 	}
 	
 	/* ----- Save/Load graph  ----- */
@@ -79,8 +120,18 @@ public class ITUStudioController {
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/saveGraphJSON", method = RequestMethod.POST)
-	public @ResponseBody String saveGraphJSON(@RequestParam("graphJSON") String graphJSON, @RequestParam("fileName") String fileName) {
-		return null;
+	public @ResponseBody String saveGraphJSON(@RequestParam("graphJSON") String graphJSON, @RequestParam("fileName") String fileName) 
+	{		
+		String errorMsg = new String();
+		try {
+			/**===========================================================
+			 * Serialize JSON
+			 * =========================================================== */			
+			ITUStudioSerializator.serialize(graphJSON, fileName);
+		} catch (IOException e) {
+			errorMsg = "Serialize JOINT Error: "+ e.getMessage();	
+		}		
+		return errorMsg;	
 	}
 	
 	/**
@@ -88,7 +139,20 @@ public class ITUStudioController {
 	 * @return: conteúdo do grafo no formato JSON
 	 */
 	@RequestMapping(value = "/loadGraphJSON", method = RequestMethod.POST)
-	public @ResponseBody String loadGraphJSON(@RequestParam("fileName") String fileName) {
-		return null;
+	public @ResponseBody String loadGraphJSON(@RequestParam("fileName") String fileName) 
+	{
+		String errorMsg = new String();
+		String json = new String();
+		try {
+			/**===========================================================
+			 * Deserialize JSON
+			 * =========================================================== */
+			json = ITUStudioSerializator.deserialize(fileName);
+		
+		} catch (IOException e) {
+			errorMsg = "Serialize JOINT Error: "+ e.getMessage();	
+			return errorMsg;
+		}		
+		return json;	
 	}
 }

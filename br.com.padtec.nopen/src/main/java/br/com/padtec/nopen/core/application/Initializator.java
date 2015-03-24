@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.application;
+package br.com.padtec.nopen.core.application;
 
 import java.io.IOException;
 import java.util.Date;
