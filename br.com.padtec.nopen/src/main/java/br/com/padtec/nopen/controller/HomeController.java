@@ -35,27 +35,17 @@ public class HomeController {
 	@RequestMapping("/questions")
 	public String faqRequest(HttpServletRequest request) {		
 		return "faq";
-	}
-			
-	@RequestMapping("/equipment-studio")
-	public String equipmentStudioRequest() {
-		return "equipment-studio/equipment-studio";
+	}		
+	
+	@RequestMapping("/options")
+	public String configRequest(HttpServletRequest request) {		
+		return "options";
 	}
 		
 	@RequestMapping("/advisor")
 	public String advisorRequest() {
 		return "advisor/index";
 	}
-	
-	@RequestMapping("/network-topology")
-	public String networkTopologyRequest() {
-		return "network-topology/network-topology";
-	}
-	
-	@RequestMapping("/provisioning")
-	public String provisioningRequest() {
-		return "provisioning/provisioning";
-	}	
 	
 	//==========================================================================
 			

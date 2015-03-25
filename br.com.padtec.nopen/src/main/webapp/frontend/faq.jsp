@@ -46,8 +46,7 @@
 				<ol class="list-questions">
 					<li><a class="question" href="#">What is the "Network Topology" functionality?</a> <div class="answer">Coming soon...</div> </li>					 
 					<li><a class="question" href="#">What is the "Equipment Studio" functionality?</a> <div class="answer">Coming soon...</div> </li>					  
-					<li><a class="question" href="#">What is the "Provisioning" functionality?</a> <div class="answer">Coming soon...</div> </li>
-					<li><a class="question" href="#">What is the "Network Advisor" functionality?</a> <div class="answer">Coming soon...</div> </li>
+					<li><a class="question" href="#">What is the "Provisioning" functionality?</a> <div class="answer">Coming soon...</div> </li>					
 				</ol>
 				
 			</div>

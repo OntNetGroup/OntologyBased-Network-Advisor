@@ -14,6 +14,11 @@ import br.com.padtec.nopen.topology.service.TopologyImporter;
 @Controller
 public class TopologyController {
 
+	@RequestMapping("/network-topology")
+	public String networkTopologyRequest() {
+		return "network-topology/network-topology";
+	}
+	
 	@RequestMapping(value = "/exportTopology", method = RequestMethod.POST)
 	protected @ResponseBody String exportTopology(@RequestParam("json") String json, @RequestParam("uuid") String uuid){
 		
