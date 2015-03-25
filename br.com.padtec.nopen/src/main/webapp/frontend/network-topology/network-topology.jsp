@@ -57,6 +57,7 @@
         <script src="/nopen/frontend/network-topology/js/keyboard.js"></script>
         <script src="/nopen/frontend/network-topology/js/inspector.js"></script> 
         <script src="/nopen/frontend/network-topology/js/main.js"></script>
+        <script src="/nopen/frontend/network-topology/js/graphHandle.js"></script>
         
         <script src="/nopen/frontend/common/util/util.js"></script>
         
@@ -86,6 +87,9 @@
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
+            
+            graphHandle(app.graph);
+            
             var uuid = joint.util.uuid();
 
             $('#btn-import-xml').click(function(){
@@ -103,8 +107,6 @@
             $('#btn-export-xml').click(function(){
             	exportTopology(app.graph, uuid)
             });
-            
-           
             
         </script>
     </body>

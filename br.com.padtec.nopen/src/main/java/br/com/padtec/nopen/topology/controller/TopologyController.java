@@ -1,5 +1,7 @@
 package br.com.padtec.nopen.topology.controller;
 
+import java.util.HashSet;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.topology.service.TopologyExporter;
 import br.com.padtec.nopen.topology.service.TopologyImporter;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 @Controller
 public class TopologyController {
@@ -37,6 +42,29 @@ public class TopologyController {
 			
 		TopologyImporter topology = new TopologyImporter();
 		return topology.getTopologyId(request);
+	}
+	
+	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
+	protected @ResponseBody String getAllTemplateEquipment(){
+			
+		System.out.println("Foi!");
+		
+		HashSet<String> equipments = new HashSet<String>();
+		equipments.add("Equipment1");
+		equipments.add("Equipment2");
+		
+		JsonArray json = new JsonArray();
+
+		for(String equipment : equipments){
+			System.out.println(equipment);
+			
+			JsonObject j = new JsonObject();
+			j.addProperty("equipment", equipment);
+			
+			json.add(j);
+		}
+		
+		return json.toString();
 	}
 	
 }
