@@ -39,14 +39,6 @@ public class UploadController implements ServletContextAware{
 		this.servletContext = servletContext;		
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value="/")
-	public String index(HttpSession session, HttpServletRequest request) 
-	{
-		request.getSession().removeAttribute("errorMensage");
-		request.getSession().removeAttribute("loadOk");
-		return "advisor/views/login";	
-	}
-
 	@RequestMapping(method = RequestMethod.GET, value="/faq")
 	public String faq(HttpSession session, HttpServletRequest request) 
 	{

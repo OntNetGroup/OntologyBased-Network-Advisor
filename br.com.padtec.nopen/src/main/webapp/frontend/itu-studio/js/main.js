@@ -62,10 +62,10 @@ var Rappid = Backbone.Router.extend({
 			var type = cell.get('type');
 
 			// configuration of resizing
-			var sizeMultiplier = { 	'bpmn.Pool': 5,
-									'basic.Path': 1.5,
-									'basic.Rect': 0.5,
-									'basic.Circle': 0.5
+			var sizeMultiplier = { 	'bpmn.Pool': 5, // layers
+									'basic.Path': 1.5, // transport functions
+									'basic.Rect': 0.5, // out port
+									'basic.Circle': 0.5 // in port
 									}[type];
 
 			if (sizeMultiplier) {
@@ -88,7 +88,7 @@ var Rappid = Backbone.Router.extend({
             model: this.graph,
             
 			// RF: Permitir que nós contenham outros nós
-//			embeddingMode: true,
+			embeddingMode: true,
             
 			// RF: Ao selecionar uma porta, destacar portas disponíveis para conexão com aquela
 			markAvailable: true,
@@ -123,7 +123,7 @@ var Rappid = Backbone.Router.extend({
         	validateEmbedding: function(childView, parentView) {
         		 /*
         		  * TODO:	ADD EMBEDDING RESTRICTIONS HERE
-        		  * 		se elemento ITU tenta ser incluido em alguma camada, consulta ontologia
+        		  * 		se transport function tenta ser incluido em alguma camada, consulta ontologia
         		  */
         	}
         });
@@ -549,7 +549,7 @@ var Rappid = Backbone.Router.extend({
         
         this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
 
-        // this.validator.validate('change:position change:size add', _.bind(function(err, command, next) {
+//         this.validator.validate('change:position change:size add', _.bind(function(err, command, next) {
 
             // if (command.action === 'add' && command.batch) return next();
 
@@ -563,7 +563,7 @@ var Rappid = Backbone.Router.extend({
 				// return (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height)));
 
             // })) return next("Another cell in the way!");
-        // }, this));
+//         }, this));
 
         this.validator.on('invalid',function(message) {
             
@@ -573,21 +573,73 @@ var Rappid = Backbone.Router.extend({
 
                 $('.statusbar-container').text('').removeClass('error');
                 
-            }, 1500);
+            }, 3000);
         });
         
         
         // validar inserção de transport functions
         // validar que portas sejam inseridas somente sobre elementos ITU 
-        this.validator.on('add', this.isNotLink, function(err, command, next) {
-        	/*
-        	 * TODO:	se o elemento for um elemento ITU
-        	 * 				consulta ontologia para criacao de um elemento ITU
-        	 * 			se o elemento for uma porta
-        	 * 				se o elemento abaixo nao for um elemento ITU, retorna false
-        	 * 			retorna true
-        	*/
-        });
+        this.validator.validate('add', this.isNotLink, _.bind(function(err, command, next) {
+        	
+        	if (command.action === 'add' && command.batch) return next();
+        	
+        	var cell = command.data.attributes || this.graph.getCell(command.data.id).toJSON();
+//        	console.log(cell);
+        	var cellType = cell.type;
+        	var position = cell.position;
+			var size = cell.size;
+			var area = g.rect(position.x, position.y, size.width, size.height);
+			
+			var parent;
+			// get all elements below the added one
+			_.each(this.graph.getElements(), function(e) {
+			
+				var position = e.get('position');
+				var size = e.get('size');
+				if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+					// save the most above among the elements below
+					console.log('yes');
+					parent = e;
+				}
+			});
+        	
+			console.log(parent);
+			
+			if(cellType === 'basic.Rect' || cellType === 'basic.Circle') { // elemento é uma porta
+				if(parent) { // existe algum elemento abaixo
+					var parentType = parent.get('type');
+					console.log(parentType);
+					if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
+						return next('Please, add the port over a transport function.');
+					} else {
+						console.log('consulta ontologia');
+						next(err);
+					}
+					
+				} else { // nenhum elemento abaixo
+					return next('Please, add the port over a transport function.');
+				}
+			
+			} else if(cellType === 'bpmn.Pool') { // elemento é uma camada
+				if(parent) { // existe algum elemento abaixo
+					return next('Another element in the way!');
+				}
+			
+			} else { // elemento é um transport function
+				if(parent) { // existe algum elemento abaixo
+					var parentType = parent.get('type');
+					if(parentType !== 'bpmn.Pool'){ // elemento abaixo não é uma camada
+						return next('Transport function or port in the way!.');
+					} else {
+						console.log('consulta ontologia');
+						next(err);
+					}
+				} else { // não existe elemento abaixo
+					console.log('consulta ontologia');
+					next(err);
+				}
+			}
+        }, this));
     },
 
     initializeToolbar: function() {
@@ -785,7 +837,7 @@ var Rappid = Backbone.Router.extend({
     	
     	var parentType = parent.get('type');
     	var childType = child.get('type');
-    	console.log('parent type: ' +parentType+ '; child type: ' +childType);
+//    	console.log('parent type: ' +parentType+ '; child type: ' +childType);
     	
     	if(parentType === 'bpmn.Pool' && childType === 'basic.Path') { // parent is a layer and child is an ITU element
     		parent.embed(child);

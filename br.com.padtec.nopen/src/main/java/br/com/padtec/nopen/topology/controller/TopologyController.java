@@ -19,6 +19,11 @@ import com.google.gson.JsonObject;
 @Controller
 public class TopologyController {
 
+	@RequestMapping("/network-topology")
+	public String networkTopologyRequest() {
+		return "network-topology/network-topology";
+	}
+	
 	@RequestMapping(value = "/exportTopology", method = RequestMethod.POST)
 	protected @ResponseBody String exportTopology(@RequestParam("json") String json, @RequestParam("uuid") String uuid){
 		

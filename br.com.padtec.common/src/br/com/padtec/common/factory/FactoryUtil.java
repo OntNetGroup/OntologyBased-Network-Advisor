@@ -343,6 +343,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel createIndividual(OntModel model, String individualURI, List<String> sameAsList, List<String> diffList, String srcIndividualURI, String relationURI, String rangeClassURI)
 	{			
 		Individual indInstance = model.getIndividual(srcIndividualURI);
@@ -371,6 +372,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel deleteIndividual(OntModel model, String individualURI) 
 	{
 		Individual ind = model.getIndividual(individualURI);
@@ -388,6 +390,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel updateIndividual(OntModel model, String individualURI, List<String> sameAsList, List<String> diffList) 
 	{				
 		Individual indInstance = model.getIndividual(individualURI);		
@@ -425,6 +428,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel createRangeDataPropertyValue(OntModel model, String value, String individualURI, String relationURI, String rangeClassURI) 
 	{
 		Individual indInstance = model.getIndividual(individualURI);
@@ -445,6 +449,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel deleteRangeDataPropertyValue(OntModel model, String value, String individualURI, String relationURI, String rangeClassURI) 
 	{
 		Individual indInstance = model.getIndividual(individualURI);
@@ -464,6 +469,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel createObjectProperty(OntModel model, String srcIndividualURI, String relationURI, String tgtIndividualURI) 
 	{		
 		Individual indInstanceSource = model.getIndividual(srcIndividualURI);
@@ -491,6 +497,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel deleteObjectProperty(OntModel model, String srcIndividual, String relationURI, String tgtIndividualURI) 
 	{
 		Individual indInstanceSource = model.getIndividual(srcIndividual);
@@ -509,6 +516,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel createIndividualOfClass(OntModel model, String individualURI, String classURI) 
 	{	
 		Individual indInstance = model.getIndividual(individualURI);
@@ -526,6 +534,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel deleteIndividualOfClass(OntModel model, String individualURI, String classURI) 
 	{	
 		Individual indInstance = model.getIndividual(individualURI);
@@ -543,6 +552,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel setSameAs(OntModel model, String individualURI1, String individualURI2)
 	{
 		Individual i1 = model.getIndividual(individualURI1);
@@ -561,6 +571,7 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
+	@Deprecated
 	static public OntModel setDifferentFrom(OntModel model, String individualURI1, String individualURI2)
 	{
 		Individual i1 = model.getIndividual(individualURI1);

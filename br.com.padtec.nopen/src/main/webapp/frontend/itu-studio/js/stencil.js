@@ -2,7 +2,8 @@ var Stencil = {};
 
 Stencil.groups = {
 		layers: { index: 1, label: 'Layers'},
-		itu: { index: 2, label: 'ITU' }
+		transportFunctions: { index: 2, label: 'Transport Functions' },
+		ports: { index: 3, label: 'Ports'},
 };
 
 Stencil.shapes = {
@@ -54,7 +55,7 @@ Stencil.shapes = {
 			})
 	],
 
-    itu: [
+	transportFunctions: [
 	
 		new joint.shapes.basic.Path({
 			subtype: 'AF',
@@ -70,28 +71,31 @@ Stencil.shapes = {
 			        path: { d: 'M 0 0 L 0.5 1 L 1 0 z', fill: '#8e44ad' },
 			    	text: { text: 'TTF', 'font-size': 9, display: '', 'ref-y': .2, fill: 'white'  }
 			}
-		}),
+		})
 		
-		/* RF: Inserir portas de entrada e saída aos nós */
-		// porta de saída
-        new joint.shapes.basic.Circle({
-        	subtype: 'out',
-            attrs: {
-                circle: { fill: '#f1c40f' },
-                text: { text: 'in', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
-            }
-        }),
+	],
+	
+	/* RF: Inserir portas de entrada e saída aos nós */
+	ports: [
+		//porta de saída
+		new joint.shapes.basic.Circle({
+			subtype: 'out',
+		    attrs: {
+		        circle: { fill: '#f1c40f' },
+		        text: { text: 'in', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
+		    }
+		}),
 		
 		// porta de entrada
 		new joint.shapes.basic.Rect({
 			subtype: 'in',
-            attrs: {
-                rect: {
-                    rx: 2, ry: 2,
-                    fill: '#e9967a'
-                },
-                text: { text: 'out', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
-            }
-        })
+		    attrs: {
+		        rect: {
+		            rx: 2, ry: 2,
+		            fill: '#e9967a'
+		        },
+		        text: { text: 'out', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
+		    }
+		})
 	]
 };

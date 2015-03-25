@@ -40,12 +40,6 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<dependency>
-			<groupId>br.com.padtec</groupId>
-			<artifactId>advisor-core</artifactId>
-			<version>0.0.1</version>
-		</dependency>
-		
 		<!-- Apache Commons Upload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -65,6 +59,27 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.2.4</version>
+		</dependency>
+		
+		<!-- Padtec Common -->
+		<dependency>
+			<groupId>br.com.padtec</groupId>
+			<artifactId>padtec-common</artifactId>
+			<version>1.0</version>
+		</dependency>		
+		
+		<!-- OKCo Core -->
+		<dependency>
+			<groupId>br.com.padtec.okco</groupId>
+			<artifactId>okco-core</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+		<!-- Advisor Core -->
+		<dependency>
+			<groupId>br.com.padtec</groupId>
+			<artifactId>advisor-core</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 		
 	</dependencies>

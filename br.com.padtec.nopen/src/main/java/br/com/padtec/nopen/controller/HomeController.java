@@ -8,8 +8,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.core.application.Initializator;
+
 @Controller
-public class Home {
+public class HomeController {
+		
+	@RequestMapping(method = RequestMethod.GET, value="/init")
+	public String index(HttpServletRequest request) 
+	{		
+		String errorMsg  = Initializator.uploadTBOx();
+		if(!errorMsg.isEmpty()) request.getSession().removeAttribute("errorMensage");
+		
+		return "welcome";
+	}
 	
 	@RequestMapping("/home")
 	public String homeRequest(HttpServletRequest request) {		
@@ -24,27 +35,17 @@ public class Home {
 	@RequestMapping("/questions")
 	public String faqRequest(HttpServletRequest request) {		
 		return "faq";
-	}
-			
-	@RequestMapping("/equipment-studio")
-	public String equipmentStudioRequest() {
-		return "equipment-studio/equipment-studio";
+	}		
+	
+	@RequestMapping("/options")
+	public String configRequest(HttpServletRequest request) {		
+		return "options";
 	}
 		
 	@RequestMapping("/advisor")
 	public String advisorRequest() {
 		return "advisor/index";
 	}
-	
-	@RequestMapping("/network-topology")
-	public String networkTopologyRequest() {
-		return "network-topology/network-topology";
-	}
-	
-	@RequestMapping("/provisioning")
-	public String provisioningRequest() {
-		return "provisioning/provisioning";
-	}	
 	
 	//==========================================================================
 			
