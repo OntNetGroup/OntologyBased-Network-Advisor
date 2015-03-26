@@ -110,7 +110,7 @@
             $('#btn-export-xml').click(function(){
             	exportTopology(app.graph, uuid)
             });
-            
+
         </script>
     </body>
 </html>

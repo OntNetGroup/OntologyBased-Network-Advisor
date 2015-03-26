@@ -2,8 +2,8 @@
 function graphHandle(graph){
 	
 	graph.on('add', function(cell) {
-	
-		if(cell.attr('text/text') == "NODE"){
+		
+		if(cell.get('type') == "NODE"){
 			$.ajax({
 			   type: "GET",
 			   url: "getAllTemplateEquipment.htm",
@@ -22,6 +22,8 @@ function graphHandle(graph){
 	
 	function generateDialog(data, cell){
 		
+		$("#dialog").html('');
+		
 		dialog = $("#dialog").dialog({
 		      autoOpen: false,
 		      height: 300,
@@ -31,25 +33,25 @@ function graphHandle(graph){
 		    	"Match": matchEquipment,  
 		        Cancel: function() {
 		          dialog.dialog( "close" );
-		          $("#dialog").html('');
 		        }
 		      },
-		      close: function() {
-		    	$("#dialog").html('');
-		        //form[ 0 ].reset();
-		        //allFields.removeClass( "ui-state-error" );
-		      }
+		      close: function() { }
 		});
 		
 		function matchEquipment(){
-			alert($('input[name=equipment]:checked', '#dialog').val() + " " + cell.id);
+			
 			dialog.dialog( "close");
-			$("#dialog").html('');
+			
+			var equipment = $('input[name=equipment]:checked', '#dialog').val();
+			
+			cell.attr('equipment/template', equipment);
+			cell.attr('text/text', equipment);
+			//$('.text').attr('readonly', true);
 		};
 		
 
 		$("#dialog").append('<form>')
-
+		
 		for(var i = Object.keys(data).length-1; i >= 0; i--){
 
 			if(i == Object.keys(data).length-1){
@@ -62,6 +64,7 @@ function graphHandle(graph){
 		}
 		
 		$("#dialog").append('</form>') 
+		
 		$("#dialog").dialog("open");
 		
 	}

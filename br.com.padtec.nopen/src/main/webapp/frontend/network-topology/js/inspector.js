@@ -8,15 +8,16 @@ var CommonInspectorInputs = {
         x: { type: 'number', min: 1, max: 2000, group: 'geometry', label: 'x', index: 3 },
         y: { type: 'number', min: 1, max: 2000, group: 'geometry', label: 'y', index: 4 }
     },
-    custom: { type: 'text', group: 'data', index: 1, label: 'Custom data', attrs: { 'label': { 'data-tooltip': 'An example of setting custom data via Inspector.' } } }
+    //custom: { type: 'text', group: 'data', index: 1, label: 'Custom data', attrs: { 'label': { 'data-tooltip': 'An example of setting custom data via Inspector.' } } }
 };
 
 var CommonInspectorGroups = {
 
     text: { label: 'Text', index: 1 },
-    presentation: { label: 'Presentation', index: 2 },
-    geometry: { label: 'Geometry', index: 3 },
-    data: { label: 'Data', index: 4 }
+    equipment: { label: 'Equipment', index: 2 },	
+    presentation: { label: 'Presentation', index: 3 },
+    geometry: { label: 'Geometry', index: 4 },
+    //data: { label: 'Data', index: 5 }
 };
 
 var CommonInspectorTextInputs = {
@@ -32,6 +33,7 @@ var CommonInspectorTextInputs = {
 };
 
 var InputDefs = {
+    template: { type: 'text', group: 'equipment'},
     text: { type: 'textarea', label: 'Text' },
     'font-size': { type: 'range', min: 5, max: 80, unit: 'px', label: 'Font size' },
     'font-family': { type: 'select', options: ['Arial', 'Helvetica', 'Times New Roman', 'Courier New', 'Georgia', 'Garamond', 'Tahoma', 'Lucida Console', 'Comic Sans MS'], label: 'Font family' },
@@ -113,10 +115,13 @@ var InspectorDefs = {
     // Basic
     // -----
     
-    'basic.Circle': {
+    'NODE': {
 
         inputs: _.extend({
             attrs: {
+            	equipment: inp({
+            		template: { type: 'text', group: 'equipment',  label: 'Template', index: 1 },
+            	}),
                 text: inp({
                     text: { group: 'text', index: 1 },
                     'font-size': { group: 'text', index: 2 },
