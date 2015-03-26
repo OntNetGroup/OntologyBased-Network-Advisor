@@ -61,7 +61,7 @@ Stencil.shapes = {
 			subtype: 'AF',
 			attrs: {
 			        path: { d: 'M 50 0 L 0 0 L 25 50 L 75 50 L 100 0  z', fill: '#8e44ad' },
-			    	text: { text: 'AF', 'font-size': 9, display: '', 'ref-y': .2, fill: 'white'  }
+			    	text: { text: 'AF', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
 			}
 		}),
 
@@ -69,7 +69,7 @@ Stencil.shapes = {
 			subtype: 'TTF',
 			attrs: {
 			        path: { d: 'M 0 0 L 0.5 1 L 1 0 z', fill: '#8e44ad' },
-			    	text: { text: 'TTF', 'font-size': 9, display: '', 'ref-y': .2, fill: 'white'  }
+			    	text: { text: 'TTF', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
 			}
 		})
 		
@@ -77,7 +77,7 @@ Stencil.shapes = {
 	
 	/* RF: Inserir portas de entrada e saída aos nós */
 	ports: [
-		//porta de saída
+		//porta de entrada
 		new joint.shapes.basic.Circle({
 			subtype: 'out',
 		    attrs: {
@@ -86,7 +86,7 @@ Stencil.shapes = {
 		    }
 		}),
 		
-		// porta de entrada
+		// porta de saída
 		new joint.shapes.basic.Rect({
 			subtype: 'in',
 		    attrs: {

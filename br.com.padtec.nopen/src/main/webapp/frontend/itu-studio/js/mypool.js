@@ -15,7 +15,7 @@ Layer = joint.dia.Element.extend({
         type: 'bpmn.Pool',
         subtype: '',
         size: {
-            width: 600,
+            width: 800,
             height: 300
         },
         attrs: {

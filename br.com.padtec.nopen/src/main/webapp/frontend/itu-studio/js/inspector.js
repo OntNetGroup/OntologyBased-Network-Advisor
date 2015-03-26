@@ -1,13 +1,13 @@
 var CommonInspectorInputs = {
 
-//    size: {
-//        width: { type: 'number', min: 1, max: 500, group: 'geometry', label: 'width', index: 1 },
-//        height: { type: 'number', min: 1, max: 500, group: 'geometry', label: 'height', index: 2 }
-//    },
-//    position: {
-//        x: { type: 'number', min: 1, max: 2000, group: 'geometry', label: 'x', index: 3 },
-//        y: { type: 'number', min: 1, max: 2000, group: 'geometry', label: 'y', index: 4 }
-//    },
+    size: {
+        width: { type: 'number', min: 1, max: 500, group: 'geometry', label: 'width', index: 1 },
+        height: { type: 'number', min: 1, max: 500, group: 'geometry', label: 'height', index: 2 }
+    },
+    position: {
+        x: { type: 'number', min: 1, max: 2000, group: 'geometry', label: 'x', index: 3 },
+        y: { type: 'number', min: 1, max: 2000, group: 'geometry', label: 'y', index: 4 }
+    },
     custom: { type: 'text', group: 'data', index: 1, label: 'Custom data', attrs: { 'label': { 'data-tooltip': 'An example of setting custom data via Inspector.' } } }
 };
 

@@ -26,16 +26,9 @@ var Rappid = Backbone.Router.extend({
         this.initializeClipboard();
         this.initializeCommandManager();
         this.initializeToolbar();
-        // Intentionally commented out. See the `initializeValidator()` method for reasons.
-        // Uncomment for demo purposes.
-        this.initializeValidator();
         this.graphHandle();
-        // Commented out by default. You need to run `node channelHub.js` in order to make
-        // channels working. See the documentation to the joint.com.Channel plugin for details.
-        //this.initializeChannel('ws://jointjs.com:4141');
-        if (this.options.channelUrl) {
-            this.initializeChannel(this.options.channelUrl);
-        }
+        this.initializeValidator();
+        this.initializePortsBar();
     },
 
     // Create a graph, paper and wrap the paper in a PaperScroller.
@@ -55,28 +48,41 @@ var Rappid = Backbone.Router.extend({
 		
 		// some types of the elements need resizing after they are dropped
 		this.graph.on('add', function(cell, collection, opt) {
-
 			if (!opt.stencil) return;
 
 			if(cell.get('type') === 'link') return;
 			var type = cell.get('type');
-
+			var subtype = cell.get('subtype');
+			
 			// configuration of resizing
-			var sizeMultiplier = { 	'bpmn.Pool': 5, // layers
+			var sizeMultiplierTypeWidth = { 	'bpmn.Pool': 5, // layers
 									'basic.Path': 1.5, // transport functions
-									'basic.Rect': 0.5, // out port
-									'basic.Circle': 0.5 // in port
+									}[type];			
+			var sizeMultiplierTypeHeight = { 	'bpmn.Pool': 5, // layers
+										'basic.Path': 1.5, // transport functions
 									}[type];
 
-			if (sizeMultiplier) {
-				var originalSize = cell.get('size');
+			var sizeMultiplierSubtypeWidth = {  'in': 0.5, // in port
+											'out': 0.5, // out port
+										}[subtype];
+			var sizeMultiplierSubTypeHeight = {  'in': 0.5, // in port
+											'out': 0.5, // out port
+											'AF': 0.7, // AF transport function
+										}[subtype];
+			
+			var sizeMultiplierWidth = sizeMultiplierSubtypeWidth ? sizeMultiplierSubtypeWidth : sizeMultiplierTypeWidth;
+			var sizeMultiplierHeight = sizeMultiplierSubTypeHeight ? sizeMultiplierSubTypeHeight : sizeMultiplierTypeHeight;
+						
+			var originalSize = cell.get('size');
+			if (sizeMultiplierWidth && sizeMultiplierHeight) {
 				cell.set('size', {
-					width: originalSize.width * sizeMultiplier,
-					height: originalSize.height * sizeMultiplier
+					width: originalSize.width * sizeMultiplierWidth,
+					height: originalSize.height * sizeMultiplierHeight
 				});
 			}
 			
-			sizeMultiplier = 0;
+			sizeMultiplierWidth = 0;
+			sizeMultiplierHeight = 0;
 		}, this);
 		
 
@@ -94,7 +100,7 @@ var Rappid = Backbone.Router.extend({
 			markAvailable: true,
 			
 			// RF: Inserir 'snap link' às conexões
-			snapLinks: { radius: 25 },
+			snapLinks: { radius: 50 },
 			
             defaultLink: new joint.dia.Link({
                 attrs: {
@@ -112,19 +118,21 @@ var Rappid = Backbone.Router.extend({
             validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
             	/*
             	 * TODO:	ADD CONNECTION RESTRICTIONS HERE
-            	 * 			se elemento ITU tenta se conectar a elemento ITU, retorna false
+            	 * 			se transport function tenta se conectar a transport function, retorna false
             	 * 			se porta in tenta se conectar a in ou out se conectar a out, retorna false
             	 * 			se porta tenta se conectar a uma porta ja usada, retorna false
-            	 * 			se porta de um elemento ITU tenta se conectar à porta de um elemento ITU, consulta ontologia
+            	 * 			se porta de um transport function tenta se conectar à porta de um transport function, consulta ontologia
             	*/
+            	return true;
             },
             
 	         // RF: Inserir 'containmnet rules' aos nós
         	validateEmbedding: function(childView, parentView) {
         		 /*
         		  * TODO:	ADD EMBEDDING RESTRICTIONS HERE
-        		  * 		se transport function tenta ser incluido em alguma camada, consulta ontologia
+        		  * 		se transport function tenta ser inserido, consulta ontologia
         		  */
+        		return true;
         	}
         });
 
@@ -155,29 +163,29 @@ var Rappid = Backbone.Router.extend({
         this.snapLines = new joint.ui.Snaplines({ paper: this.paper });
         
         // Listen on cell:pointerup and link to or be embedded by an element found below
-        this.paper.on('cell:pointerup', function(cellView, evt, x, y) {
-        	// Find the first element below that is not a link nor the dragged element itself.
-            var elementBelow = this.graph.get('cells').find(function(cell) {
-                if (cell instanceof joint.dia.Link) return false; // Not interested in links.
-                if (cell.id === cellView.model.id) return false; // The same element as the dropped one.
-                if (cell.getBBox().containsPoint(g.point(x, y))) {
-                    return true;
-                }
-                return false;
-            });
-            
-            // If the two elements are connected already, don't
-            // connect them again (this is application specific though).
-            if (elementBelow && !_.contains(this.graph.getNeighbors(elementBelow), cellView.model)) {
-                
-                console.log('Embed or connect!');
-                this.embedOrConnect(elementBelow, cellView.model);
-            }
-        }, this);
+//        this.paper.on('cell:pointerup', function(cellView, evt, x, y) {
+//        	console.log('pointerup1');
+//        	// Find the first element below that is not a link nor the dragged element itself.
+//            var elementBelow = this.graph.get('cells').find(function(cell) {
+//                if (cell instanceof joint.dia.Link) return false; // Not interested in links.
+//                if (cell.id === cellView.model.id) return false; // The same element as the dropped one.
+//                if (cell.getBBox().containsPoint(g.point(x, y))) {
+//                    return true;
+//                }
+//                return false;
+//            });
+//            
+//            // If the two elements are connected already, don't
+//            // connect them again (this is application specific though).
+//            if (elementBelow && !_.contains(this.graph.getNeighbors(elementBelow), cellView.model)) {
+//                
+//                console.log('Embed or connect!');
+//                this.embedOrConnect(elementBelow, cellView.model);
+//            }
+//        }, this);
     },
 
     initializeLinkTooltips: function(cell) {
-
         if (cell instanceof joint.dia.Link) {
 
             var linkView = this.paper.findViewByModel(cell);
@@ -393,6 +401,8 @@ var Rappid = Backbone.Router.extend({
             								}
             });
 
+            var cellSubtype = cellView.model.get('subtype');
+            
             // As we're using the FreeTransform plugin, there is no need for an extra resize tool in Halo.
             // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
             // handles nicely spread around the elements.
@@ -401,7 +411,6 @@ var Rappid = Backbone.Router.extend({
             halo.removeHandle('fork');
             halo.removeHandle('clone');
             halo.removeHandle('rotate');
-            if(cellView.model.get('type') === 'basic.Path') halo.removeHandle('link');
             
 			// descomentar para inserir a borda de redimensionamento
             // freetransform.render();
@@ -549,22 +558,6 @@ var Rappid = Backbone.Router.extend({
         
         this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
 
-//         this.validator.validate('change:position change:size add', _.bind(function(err, command, next) {
-
-            // if (command.action === 'add' && command.batch) return next();
-
-            // var cell = command.data.attributes || this.graph.getCell(command.data.id).toJSON();
-            // var area = g.rect(cell.position.x, cell.position.y, cell.size.width, cell.size.height);
-
-            // if (_.find(this.graph.getElements(), function(e) {
-
-				// var position = e.get('position');
-                // var size = e.get('size');
-				// return (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height)));
-
-            // })) return next("Another cell in the way!");
-//         }, this));
-
         this.validator.on('invalid',function(message) {
             
             $('.statusbar-container').text(message).addClass('error');
@@ -583,11 +576,12 @@ var Rappid = Backbone.Router.extend({
         	
         	if (command.action === 'add' && command.batch) return next();
         	
-        	var cell = command.data.attributes || this.graph.getCell(command.data.id).toJSON();
-//        	console.log(cell);
-        	var cellType = cell.type;
-        	var position = cell.position;
-			var size = cell.size;
+        	var cell = this.graph.getCell(command.data.id);
+        	var cellType = cell.get('type');
+        	var cellSubType = cell.get('subtype');
+        	        	
+        	var position = cell.get('position');
+			var size = cell.get('size');
 			var area = g.rect(position.x, position.y, size.width, size.height);
 			
 			var parent;
@@ -602,17 +596,31 @@ var Rappid = Backbone.Router.extend({
 					parent = e;
 				}
 			});
-        	
-			console.log(parent);
-			
-			if(cellType === 'basic.Rect' || cellType === 'basic.Circle') { // elemento é uma porta
+        				
+			if(cellSubType === 'out' || cellSubType === 'in') { // elemento é uma porta
+				
 				if(parent) { // existe algum elemento abaixo
 					var parentType = parent.get('type');
-					console.log(parentType);
+//					console.log(parentType);
+					
 					if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
 						return next('Please, add the port over a transport function.');
-					} else {
-						console.log('consulta ontologia');
+					} else { // elemento abaixo é um transport function
+						console.log('elemento abaixo é um transport function');
+						
+						var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: cell.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
+		    			this.graph.addCell(newLink);
+		    			
+		    			// Move the port to the superior (in port) or inferior (out port) bar
+		    			if(cellType === 'basic.Circle') {
+		    				cell.transition('position/x', 10, {});
+		    				cell.transition('position/y', 15, {});
+		    			}
+		    			else {
+		    				cell.transition('position/x', 10, {});
+		    				cell.transition('position/y', 955, {});
+		    			}
+		    			
 						next(err);
 					}
 					
@@ -621,23 +629,31 @@ var Rappid = Backbone.Router.extend({
 				}
 			
 			} else if(cellType === 'bpmn.Pool') { // elemento é uma camada
+				
 				if(parent) { // existe algum elemento abaixo
 					return next('Another element in the way!');
+				} else {
+					// consultar ontologia para adicionar camada???
 				}
 			
-			} else { // elemento é um transport function
+			} else if(cellType === 'basic.Path') { // elemento é um transport function
+				
 				if(parent) { // existe algum elemento abaixo
 					var parentType = parent.get('type');
-					if(parentType !== 'bpmn.Pool'){ // elemento abaixo não é uma camada
+					if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
+						console.log('elemento abaixo é uma camada');
+						
+						parent.embed(cell);
+						
+						next(err);						
+					} else { // elemento abaixo não é uma camada
 						return next('Transport function or port in the way!.');
-					} else {
-						console.log('consulta ontologia');
-						next(err);
 					}
 				} else { // não existe elemento abaixo
-					console.log('consulta ontologia');
+					console.log('não existe elemento abaixo');
 					next(err);
 				}
+				
 			}
         }, this));
     },
@@ -782,22 +798,69 @@ var Rappid = Backbone.Router.extend({
         
         this.commandManager.storeBatchCommand();
     },
-
-    initializeChannel: function(url) {
-        // Example usage of the Channel plugin. Note that this assumes the `node channelHub` is running.
-        // See the channelHub.js file for furhter instructions.
-
-        var room = (location.hash && location.hash.substr(1));
-        if (!room) {
-            room = joint.util.uuid();
-            this.navigate('#' + room);
-        }
-
-        var channel = this.channel = new joint.com.Channel({ graph: this.graph, url: url || 'ws://localhost:4141', query: { room: room } });
-        console.log('room', room, 'channel', channel.id);
-
-        var roomUrl = location.href.replace(location.hash, '') + '#' + room;
-        $('.statusbar-container .rt-colab').html('Send this link to a friend to <b>collaborate in real-time</b>: <a href="' + roomUrl + '" target="_blank">' + roomUrl + '</a>');
+    
+    // inicializa as barras superior e inferior das portas de entrada e saída, respectivamente
+    initializePortsBar: function() {
+    	// barra superior das portas de entrada
+    	var barIn = new joint.shapes.basic.Rect({
+						subtype: 'barIn',
+						position: {x: 0, y: 0},
+						size: {width: 900, height: 60},
+					    attrs: {
+							'.': { magnet: false },
+					        rect: {
+					            fill: '#ffffff',
+					            'pointer-events': 'none'
+					        }
+					    }
+					});
+    	// barra inferior das portas de saída
+    	var barOut = new joint.shapes.basic.Rect({
+					subtype: 'barOut',
+					magnet: false,
+					position: {x: 0, y: 940},
+					size: {width: 900, height: 60},
+				    attrs: {
+						'.': { magnet: false },
+				        rect: {
+				            fill: '#ffffff',
+				            'pointer-events': 'none'
+				        }
+				    }
+				});
+    	
+    	// rótulo da barra superior
+    	var labelIn = new joint.shapes.basic.Rect({
+						subtype: 'labelIn',
+						position: {x: 900, y: 0},
+						size: {width: 100, height: 60},
+					    attrs: {
+							'.': { magnet: false },
+					        rect: {
+					            fill: '#f1c40f',
+					            'pointer-events': 'none'
+					        },
+					    	text: { text: 'I N', fill: '#000000', 'font-size': 24, stroke: '#000000', 'stroke-width': 2, 'pointer-events': 'none' }
+					    },
+					});
+    	// rótulo da barra inferior    	
+    	var labelOut = new joint.shapes.basic.Rect({
+						subtype: 'labelOut',
+						position: {x: 900, y: 940},
+						size: {width: 100, height: 60},
+					    attrs: {
+							'.': { magnet: false },
+					        rect: {
+					            fill: '#e9967a',
+					            'pointer-events': 'none'
+					        },
+					    	text: { text: 'O U T', fill: '#000000', 'font-size': 24, stroke: '#000000', 'stroke-width': 2, 'pointer-events': 'none' }
+					    },
+					});
+    	
+    	
+    	
+    	this.graph.addCells([barIn, labelIn, barOut, labelOut]);
     },
     
 
@@ -805,30 +868,30 @@ var Rappid = Backbone.Router.extend({
     graphHandle: function() {
 
         // When a cell is added on another one, it should be embedded or connected (in case of it being a port)
-        this.graph.on('add', function(cell) {
-
-    		if(cell.get('type') === 'link') return;
-
-    		var position = cell.get('position');
-    		var size = cell.get('size');
-    		var area = g.rect(position.x, position.y, size.width, size.height);
-
-    		var parent;
-    		// get all elements below the added one
-    		_.each(this.graph.getElements(), function(e) {
-
-    			var position = e.get('position');
-    			var size = e.get('size');
-    			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-    				// save the most above among the elements below
-    				parent = e;
-    			}
-    		});
-
-    		if(parent) {		
-    			this.embedOrConnect(parent, cell);
-    		}
-    	}, this);
+//        this.graph.on('add', function(cell) {
+//
+//    		if(cell.get('type') === 'link') return;
+//
+//    		var position = cell.get('position');
+//    		var size = cell.get('size');
+//    		var area = g.rect(position.x, position.y, size.width, size.height);
+//
+//    		var parent;
+//    		// get all elements below the added one
+//    		_.each(this.graph.getElements(), function(e) {
+//
+//    			var position = e.get('position');
+//    			var size = e.get('size');
+//    			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+//    				// save the most above among the elements below
+//    				parent = e;
+//    			}
+//    		});
+//
+//    		if(parent) {		
+//    			this.embedOrConnect(parent, cell);
+//    		}
+//    	}, this);
     },
     
     /* ------ AUXILIAR FUNCTIONS ------- */
@@ -837,12 +900,12 @@ var Rappid = Backbone.Router.extend({
     	
     	var parentType = parent.get('type');
     	var childType = child.get('type');
-//    	console.log('parent type: ' +parentType+ '; child type: ' +childType);
     	
     	if(parentType === 'bpmn.Pool' && childType === 'basic.Path') { // parent is a layer and child is an ITU element
+    		console.log(child);
     		parent.embed(child);
-    	} else { // parent is an ITU element and child is a port
-    		if(parentType === 'basic.Path' && (childType === 'basic.Rect' || childType === 'basic.Circle')) {
+    	} else {
+    		if(parentType === 'basic.Path' && (childType === 'basic.Rect' || childType === 'basic.Circle')) { // parent is a transport function and child is a port
 
     			var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: child.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
     			this.graph.addCell(newLink);
@@ -857,7 +920,9 @@ var Rappid = Backbone.Router.extend({
     /* ------- VALIDATION FUNCTIONS -------- */
     // Check if cell in command is not a link. Continue validating if yes, otherwise stop.
     isNotLink: function(err, command, next) {
-        if (command.data.type !== 'link') return next(err);
+        if (command.data.type !== 'link') {
+        	return next(err);
+        }
         // otherwise stop validating (don't call next validation function)
     }
 });
