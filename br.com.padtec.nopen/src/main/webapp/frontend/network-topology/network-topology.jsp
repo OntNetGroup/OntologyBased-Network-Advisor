@@ -6,13 +6,12 @@
 
         <title>Network Topology</title>
 
-        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css" />
-
 		<!-- CSS CORE -->
 
         <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
 
 		<!-- CSS -->
+
 
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/layout.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/paper.css" />
@@ -26,8 +25,8 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/freetransform.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/style.css" />  
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/header.css" />
-        
-        
+
+		<link rel="stylesheet" type="text/css" href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css"/>
     </head>
     <body>
         
@@ -53,13 +52,12 @@
 		<!-- JS -->
 		
 		<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
+		<script src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
 		
         <script src="/nopen/frontend/network-topology/js/keyboard.js"></script>
         <script src="/nopen/frontend/network-topology/js/inspector.js"></script> 
         <script src="/nopen/frontend/network-topology/js/main.js"></script>
         <script src="/nopen/frontend/network-topology/js/graphHandle.js"></script>
-        
-        <script src="/nopen/frontend/common/util/util.js"></script>
         
         <!-- STENCILS -->
         
@@ -78,8 +76,12 @@
 	      document.onselectstart = function() { return false; };
 	    </script>
 	<![endif]-->
-		     
-		     
+
+		
+		
+
+		<div id="dialog" title="Match Equipment" style="display:none"></div>
+
 	
         <script>
             // Uncomment the following line and comment the line after if you
@@ -89,6 +91,7 @@
             Backbone.history.start();
             
             graphHandle(app.graph);
+            paperHandle(app.paper);
             
             var uuid = joint.util.uuid();
 

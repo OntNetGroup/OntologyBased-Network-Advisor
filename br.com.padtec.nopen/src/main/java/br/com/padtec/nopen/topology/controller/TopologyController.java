@@ -51,18 +51,21 @@ public class TopologyController {
 	
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
-			
-		System.out.println("Foi!");
 		
 		HashSet<String> equipments = new HashSet<String>();
 		equipments.add("Equipment1");
 		equipments.add("Equipment2");
+		equipments.add("Equipment3");
+		equipments.add("Equipment4");
+		equipments.add("Equipment5");
+		equipments.add("Equipment6");
+		equipments.add("Equipment7");
+		equipments.add("Equipment8");
+		equipments.add("Equipment9");
 		
 		JsonArray json = new JsonArray();
 
 		for(String equipment : equipments){
-			System.out.println(equipment);
-			
 			JsonObject j = new JsonObject();
 			j.addProperty("equipment", equipment);
 			
