@@ -412,6 +412,12 @@ var Rappid = Backbone.Router.extend({
             halo.removeHandle('clone');
             halo.removeHandle('rotate');
             
+            if(_.contains(['in', 'out'], cellSubtype)) {
+            	halo.removeHandle('resize');
+            	halo.removeHandle('unlink');
+            	halo.removeHandle('link');
+            }
+            
 			// descomentar para inserir a borda de redimensionamento
             // freetransform.render();
             halo.render();

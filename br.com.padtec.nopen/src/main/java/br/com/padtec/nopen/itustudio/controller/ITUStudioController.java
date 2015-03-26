@@ -81,19 +81,17 @@ public class ITUStudioController {
 	
 	/* ----- CRUD for link ----- */
 	/**
-	 * @param linkID: identificador do link a ser criado
-	 * @param sourcePortID: identificador da porta de origem do link
-	 * @param targetPortID: identificador da porta destino do link
-	 * @return: success or error
+	 * @param sourceTFunctionID
+	 * @param targetTFunctionID
+	 * @return: id do link criado or error
 	 */
 	@RequestMapping(value = "/createLink", method = RequestMethod.POST)
-	public @ResponseBody String createLink(@RequestParam("linkID") String linkID, @RequestParam("sourcePortID") String sourcePortID, @RequestParam("targetPortID") String targetPortID) 
+	public @ResponseBody String createLink(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) 
 	{
 		
 		/**===========================================================
 		 * Create Link
 		 * =========================================================== */
-		ITUStudioFactory.createLink(linkID, sourcePortID, targetPortID);
 		
 		return new String();	
 	}
@@ -136,7 +134,7 @@ public class ITUStudioController {
 	
 	/**
 	 * @param fileName: nome do arquivo contendo o grafo desejado no formato JSON (nome do card que se deseja abrir, no caso)
-	 * @return: conteúdo do grafo no formato JSON
+	 * @return: conteúdo do grafo no formato JSON or error
 	 */
 	@RequestMapping(value = "/loadGraphJSON", method = RequestMethod.POST)
 	public @ResponseBody String loadGraphJSON(@RequestParam("fileName") String fileName) 
