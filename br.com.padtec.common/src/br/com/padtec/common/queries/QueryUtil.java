@@ -962,7 +962,7 @@ public class QueryUtil {
 		    RDFNode subRelation = row.get("subRelation");
 		    if(subRelation.toString().contains(model.getNsPrefixURI(""))){
 		    	result.add(subRelation.toString());
-			    System.out.println("- Domain URI: "+subRelation.toString());
+			    System.out.println("- subRelation URI: "+subRelation.toString());
 		    }
 		    		    
 		}		

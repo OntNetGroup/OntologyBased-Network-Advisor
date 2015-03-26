@@ -193,6 +193,10 @@ public class FactoryUtil {
 		Individual indvTarget = model.getIndividual(indvTargetURI);
 		ObjectProperty objProp = model.getObjectProperty(objectPropertyURI);
 		
+		if(indvSource == null || indvTarget == null || objProp == null || model == null){
+			System.out.println();
+			System.out.println();
+		}
 		Statement stmt = model.createStatement(indvSource, objProp, indvTarget);
 		model.add(stmt);
 		

@@ -39,23 +39,13 @@ public class Queries {
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
-				+ "\t{\n"
-				+ "\t\t?equipment rdf:type ns:Equipment .\n"
-				+ "\t\t?equipment ns:componentOf ?interface .\n"
-				+ "\t\t?interface rdf:type ns:" + interfaceType +"_Interface .\n"
-				+ "\t\t?interface ns:maps ?mappedPort .\n"
-				+ "\t\t?mappedPort ns:INV.componentOf ?tf .\n"
-				+ "\t\t?tf rdf:type ns:AF_" + componentType + " .\n"
-				+ "\t}\n"
-				+ "\tUNION\n"
-				+ "\t{\n"
-				+ "\t\t?equipment rdf:type ns:Equipment .\n"
-				+ "\t\t?equipment ns:componentOf ?interface .\n"
-				+ "\t\t?interface rdf:type ns:" + interfaceType +"_Interface .\n"
-				+ "\t\t?interface ns:maps ?mappedPort .\n"
-				+ "\t\t?mappedPort ns:INV.componentOf ?tf .\n"
-				+ "\t\t?tf rdf:type ns:TF_" + componentType + " .\n"
-				+ "\t}\n"
+				+ "\t?equipment rdf:type ns:Equipment .\n"
+				+ "\t?equipment ns:componentOf ?interface .\n"
+				+ "\t?interface rdf:type ns:" + interfaceType +"_Interface .\n"
+				+ "\t?interface ns:maps ?mappedPort .\n"
+				+ "\t?tf ns:componentOf ?mappedPort .\n"
+				+ "\t?tf rdf:type ?tfType .\n"
+				+ "\tFILTER( ?tfType IN (ns:AF_" + componentType + ", ns:TF_" + componentType + ", ns:Matrix_" + componentType + ")).\n"
 				+ "}";
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -357,31 +347,39 @@ public class Queries {
 		return result;
 	}
 	
-	public static List<String> getInterfacesToProvision(OntModel model, String interfaceFromURI, boolean isSource, String equipWithPM){
+	public static List<String> getInterfacesToProvision(OntModel model, String interfaceFromURI, boolean isSource, String equipWithPM) throws Exception{
 		System.out.println("\nExecuting getInterfacesToProvision()...");
 		
 		String intType = "";
 		String relName1 = "";
 		String relName2 = "";
 		String tgtTFtype = "";
+		String srcOrSk = "";
 		
-		boolean isMappedByTF = isInterfaceMappedByTF(model, interfaceFromURI);
+		List<String> tfTypes = getTfTypesMappedByInterface(model, interfaceFromURI);
 		
-		if(isMappedByTF){
-			relName1 = "adapts_from";
-			relName2 = "defines";
-			tgtTFtype += "AF_";
-		}else{
-			relName1 = "defines";
-			relName2 = "adapts_from";
-			tgtTFtype += "TF_";
-		}
 		if(isSource){
 			intType = "Input";
-			tgtTFtype += "Source";
+			srcOrSk = "Source";
 		}else{
 			intType = "Output";
-			tgtTFtype += "Sink";
+			srcOrSk = "Sink";
+		}
+		
+		if(tfTypes.contains(Main.ns+"Termination_Function")){
+			relName1 = "ns:adapts_from, ns:hasLayer";
+			relName2 = "defines";
+			tgtTFtype = "ns:AF_" + srcOrSk + ", ns:Matrix_" + srcOrSk;
+		}else if(tfTypes.contains(Main.ns+"Adaptation_Function")){
+			relName1 = "ns:defines";
+			relName2 = "adapts_from";
+			tgtTFtype += "ns:TF_" + srcOrSk;
+		}else if(tfTypes.contains(Main.ns+"Matrix")){
+			relName1 = "ns:adapts_from";
+			relName2 = "hasLayer";
+			tgtTFtype += "ns:AF_" + srcOrSk;
+		}else{
+			throw new Exception("Something went wrong. The interface is does not mapping neither Termination_Function, Adaptation_Function and Matrix");
 		}
 		
 		List<String> result = new ArrayList<String>();				
@@ -414,17 +412,24 @@ public class Queries {
 					+ "	<" + interfaceFromURI + "> ns:maps ?portFrom .\n"
 					+ "	?tfFrom ns:componentOf ?portFrom .\n"
 					+ "	?tfFrom ns:" + relName2 + " ?layer .\n"
-					+ "	?tfTo ns:" + relName1 + " ?layer .\n"
+					+ "	?tfTo ?tfToRel ?layer .\n"
 					+ " ?tfTo ns:componentOf ?portTo .\n"
-					+ "	?tfTo rdf:type ns:" + tgtTFtype + " .\n"
+					+ "	?tfTo rdf:type ?tfToType .\n"
 					+ "	?intTo ns:maps ?portTo .\n"
 					+ " ?equipTo ns:componentOf ?intTo . 	\n"
+					+ "	FILTER( ?tfToRel IN (" + relName1 + ") ) .\n"
+					+ "	FILTER ( ?tfToType IN (" + tgtTFtype + ") )\n"
 					+ "}";
 		}
 		
 		List<String> bindedInterfaces = getBindedInterfaces(model);
+		Query query = null;
+		try{
+			query = QueryFactory.create(queryString);
+		}catch(Exception e){
+			System.out.println();
+		}		 	
 		
-		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
 		while (results.hasNext()) 
@@ -514,25 +519,36 @@ public class Queries {
 		return result;
 	}
 	
-	public static boolean isInterfaceMappedByTF(OntModel model, String interfaceURI){
+	public static List<String> getTfTypesMappedByInterface(OntModel model, String interfaceURI){
 		System.out.println("\nExecuting isInterfaceMappedByTF()...");
+		List<String> result = new ArrayList<String>();				
 		String queryString = ""
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "ASK\n"
+				+ "SELECT DISTINCT *\n"
 				+ "WHERE {\n"
 				+ "	<" + interfaceURI + "> ns:maps ?port .\n"
 				+ "	?tf ns:componentOf ?port .\n"
-				+ "	?tf rdf:type ns:Termination_Function . \n"
+				+ "	?tf rdf:type ?tfType . \n"
 				+ "}";
+		
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		boolean results = qe.execAsk();		
-		
-		return results;
+		ResultSet results = qe.execSelect();		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();
+			RDFNode tfType = row.get("tfType");	
+			if(QueryUtil.isValidURI(tfType.toString()))
+		    {
+		    	System.out.println("- tfType URI: "+tfType.toString()); 
+		    	result.add(tfType.toString()); 
+		    }
+		}
+		return result;
 	}
 	
 	public static boolean isInterfaceInTheLastLayer(OntModel model, String interfaceURI){
