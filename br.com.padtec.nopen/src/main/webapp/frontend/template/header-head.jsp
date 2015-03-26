@@ -8,14 +8,15 @@
 <link href="/nopen/frontend/template/css/bootstrap.min.css" rel="stylesheet">
 <link href="/nopen/frontend/template/css/style.min.css" rel="stylesheet">
 <link href="/nopen/frontend/template/css/retina.min.css" rel="stylesheet">
+
 <!-- Code mirror includes -->
-<link rel="stylesheet" href="/nopen/frontend/template/code_mirror/lib/codemirror.css">
+<!-- <link rel="stylesheet" href="/nopen/frontend/template/code_mirror/lib/codemirror.css">
 <link rel="stylesheet" href="/nopen/frontend/template/code_mirror/addon/show-hint.css">
-<link rel="stylesheet" href="/nopen/frontend/template/code_mirror/theme/neat.css">
+<link rel="stylesheet" href="/nopen/frontend/template/code_mirror/theme/neat.css"> -->
 <!--end: CSS -->
 
 <!-- start: Favicon and Touch Icons -->
-<link rel="shortcut icon" href="/nopen/frontend/template/ico/favicon.png">
+<!-- <link rel="shortcut icon" href="/nopen/frontend/template/ico/favicon.png"> -->
 <!-- end: Favicon and Touch Icons -->
 
 <!-- start: JavaScript-->
@@ -62,7 +63,7 @@
 <!-- end: JavaScript-->
 
 <!-- Sindel includes -->
-<script src="/nopen/frontend/template/js/jison/sindel-parser.js"></script>
+<!-- <script src="/nopen/frontend/template/js/jison/sindel-parser.js"></script>
 <script src="/nopen/frontend/template/code_mirror/lib/codemirror.js"></script> 
 <script src="/nopen/frontend/template/code_mirror/addon/matchbrackets.js"></script> 
 <script src="/nopen/frontend/template/code_mirror/addon/closebrackets.js"></script> 			
@@ -70,14 +71,14 @@
 <script src="/nopen/frontend/template/code_mirror/sindel_custom/sindel-hint.js"></script> 
 <script src="/nopen/frontend/template/code_mirror/sindel_custom/sindel-highlight.js"></script> 
 <script src="/nopen/frontend/template/js/okco.js"></script>
-<script src="/nopen/frontend/template/js/advisor.js"></script>
+<script src="/nopen/frontend/template/js/advisor.js"></script> -->
 <!-- END Syntax Highlight -->
 
-<script src="/nopen/frontend/template/js/graph/arbor.js"></script>
+<!-- <script src="/nopen/frontend/template/js/graph/arbor.js"></script>
 <script src="/nopen/frontend/template/js/graph/graphics.js"></script>
 <script src="/nopen/frontend/template/js/graph/main.js"></script>
 <script src="/nopen/frontend/template/js/graph/jquery.contextmenu.js"></script>
-<link rel="stylesheet" type="text/css" href="/nopen/frontend/template/js/graph/contextMenu.css"	media="all">
+<link rel="stylesheet" type="text/css" href="/nopen/frontend/template/js/graph/contextMenu.css"	media="all"> -->
 
 <style type="text/css">
 	.container #sidebar-left {
