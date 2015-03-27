@@ -1,5 +1,11 @@
 <%@include file="/frontend/template/index-top.jsp"%>
 
+<%
+	//Get the parameters from controller
+	String[] techs = (String[]) request.getSession().getAttribute("techs");
+	String[][] layers = (String[][]) request.getSession().getAttribute("layers");
+%>
+
 <script src="frontend/template/js/jquery.nestable.min.js"></script>
 			
 <div class="row">				
@@ -40,8 +46,8 @@
 			<div class="dd" id="nestable">
 	            <ol class="dd-list">
 	            	<%
-	            	String[][] layers = {{"POUk", "ODUk","OTUk"},{"Subscribers", "MEN"}};		            	
-	            	String[] techs = {"OTN","MEF"};		            	
+	            	//String[][] layers = {{"POUk", "ODUk","OTUk"},{"Subscribers", "MEN"}};		            	
+	            	//String[] techs = {"OTN","MEF"};		            	
 	            	int i=0;
             		for(String tech: techs){
            				out.println(

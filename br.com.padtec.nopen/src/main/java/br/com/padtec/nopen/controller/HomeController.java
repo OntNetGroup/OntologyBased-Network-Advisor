@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.core.application.Initializator;
+import br.com.padtec.nopen.core.queries.NOpenQueryUtil;
 
 @Controller
 public class HomeController {
@@ -16,10 +17,11 @@ public class HomeController {
 	@RequestMapping(method = RequestMethod.GET, value="/init")
 	public String index(HttpServletRequest request) throws Exception 
 	{		
-		String errorMsg  = Initializator.uploadTBOx(getClass().getResourceAsStream("/br/com/padtec/nopen/resources/nOpenModel.owl"));
+		String errorMsg = Initializator.run();
 		if(!errorMsg.isEmpty()) { request.getSession().removeAttribute("errorMensage"); throw new Exception(errorMsg); }
 		
-		Initializator.registerDefaultTechnologies();
+		request.getSession().setAttribute("techs", NOpenQueryUtil.getTechnologiesNames());
+		request.getSession().setAttribute("layers", NOpenQueryUtil.getLayerNames());
 		
 		return "welcome";
 	}

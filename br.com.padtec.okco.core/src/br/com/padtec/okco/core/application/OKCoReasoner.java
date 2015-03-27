@@ -15,7 +15,7 @@ public class OKCoReasoner {
 	}
 	
 	public static DtoResult runReasoner(boolean useInference)
-	{
+	{		
 		DtoResult dto = new DtoResult();
 		try {
 			/** Storing a temporary model... */
@@ -33,7 +33,7 @@ public class OKCoReasoner {
 			dto.setMessage(error);
 			dto.setIsSucceed(false);		
 			return dto;	
-		}
+		}		
 		dto.setIsSucceed(true);
 		dto.setMessage("ok");
 		return dto;		

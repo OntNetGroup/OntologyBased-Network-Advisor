@@ -2,7 +2,8 @@ package br.com.padtec.nopen.core.types;
 
 public enum RelationEnum {
 
-	APPLIES("applies");
+	APPLIES("applies"),
+	COMPONENTOF3("ComponentOf3");
 	
 	private String relation;
 	private String domain = new String();

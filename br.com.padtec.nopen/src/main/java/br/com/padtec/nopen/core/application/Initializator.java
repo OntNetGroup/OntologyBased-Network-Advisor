@@ -10,6 +10,8 @@ import br.com.padtec.advisor.core.util.PerformanceUtil;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.reasoning.HermitReasonerImpl;
 import br.com.padtec.nopen.core.types.ConceptEnum;
+import br.com.padtec.nopen.core.types.RelationEnum;
+import br.com.padtec.okco.core.application.OKCoReasoner;
 import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionNameSpace;
@@ -17,10 +19,22 @@ import br.com.padtec.okco.core.exception.OKCoExceptionReasoner;
 
 public class Initializator {
 	
-	public static String uploadTBOx(InputStream s)
+	public static String run()
+	{
+		InputStream tboxIS = Initializator.class.getResourceAsStream("/br/com/padtec/nopen/resources/nOpenModel.owl");
+		String errorMsg  = Initializator.uploadTBOx(tboxIS, false);		
+		
+		Initializator.registerDefaultTechnologies();
+		
+		Initializator.runInference(true);
+		
+		return errorMsg;
+	}
+	
+	public static String uploadTBOx(InputStream s, boolean runReasoner)
 	{
 		Date beginDate = new Date();		
-		OKCoUploader.reasonOnLoading=true;
+		OKCoUploader.reasonOnLoading=runReasoner;
 		OKCoUploader.reasoner = new HermitReasonerImpl();
 		String error = new String();
 		try{						
@@ -50,6 +64,13 @@ public class Initializator {
 		return error;
 	}
 	
+	public static void runInference(boolean runReasoner)
+	{
+		Date beginDate = new Date();
+		OKCoReasoner.runReasoner(runReasoner);
+		PerformanceUtil.printExecutionTime("Inference executed at initialization.", beginDate);
+	}
+	
 	public static void registerDefaultTechnologies()
 	{
 		Date beginDate = new Date();
@@ -72,7 +93,7 @@ public class Initializator {
 		FactoryUtil.createInstanceIndividual(OKCoUploader.getBaseModel(), menURI, layerURI);
 		FactoryUtil.createInstanceIndividual(OKCoUploader.getBaseModel(), subscribersURI, layerURI);
 		
-		String techToLayerURI = OKCoUploader.getNamespace()+"ComponentOf3";
+		String techToLayerURI = OKCoUploader.getNamespace()+RelationEnum.COMPONENTOF3.toString();
 				
 		FactoryUtil.createInstanceRelation(OKCoUploader.getBaseModel(),mefURI, techToLayerURI, menURI);
 		FactoryUtil.createInstanceRelation(OKCoUploader.getBaseModel(),mefURI, techToLayerURI, subscribersURI);
@@ -93,7 +114,7 @@ public class Initializator {
 		FactoryUtil.createInstanceIndividual(OKCoUploader.getBaseModel(), odukURI, layerURI);
 		FactoryUtil.createInstanceIndividual(OKCoUploader.getBaseModel(), otukURI, layerURI);
 		
-		String techToLayerURI = OKCoUploader.getNamespace()+"ComponentOf3";
+		String techToLayerURI = OKCoUploader.getNamespace()+RelationEnum.COMPONENTOF3.toString();
 				
 		FactoryUtil.createInstanceRelation(OKCoUploader.getBaseModel(),otnURI, techToLayerURI, poukURI);
 		FactoryUtil.createInstanceRelation(OKCoUploader.getBaseModel(),otnURI, techToLayerURI, odukURI);
