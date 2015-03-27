@@ -24,7 +24,7 @@ public class Main {
 			OWLUtil.createInstances(aBoxFile);
 			
 			//#4
-			OWLUtil.runReasoner(true, true, true);
+			//OWLUtil.runReasoner(true, true, true);
 			
 			//#7 and #8
 			Provisioning.verifiyMinimumEquipment();
@@ -52,7 +52,7 @@ public class Main {
 			Provisioning.verifiyMinimumEquipWithPM();
 			
 			//#14
-			OWLUtil.runReasoner(false, true, true);
+			OWLUtil.runReasoner(true, true, true);
 			
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 			Character option = 'A';
@@ -147,21 +147,28 @@ public class Main {
 	}
 	
 	public static <T> int getOptionFromConsole(List<T> list, String message, int increment){
-		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		Integer index = 0;
 		int highestOption = list.size()/increment;
+		return getOptionFromConsole(list, message, increment, highestOption);
+	}
+	public static <T> int getOptionFromConsole(List<T> list, String message, int increment, int highestOption){
+		Integer index = getOptionFromConsole(message, 1, highestOption);				
+		index = (index*increment)-increment;		
+		return index;
+	}
+	
+	public static int getOptionFromConsole(String message, int lowestOption, int highestOption){
+		Integer index = 0;
+		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		boolean ok;
 		do {
 			ok = true;
 			try {
-				System.out.print("--- Choose one " + message + ": ");
+				System.out.print("--- Choose " + message + ": ");
 				index = Integer.valueOf(bufferRead.readLine());
 			} catch (Exception e) {
 				ok = false;
 			}			
-		} while ((index < 1 || index > highestOption) && !ok);
-				
-		index = (index*increment)-increment;
+		} while ((index < lowestOption || index > highestOption) && !ok);
 		
 		return index;
 	}

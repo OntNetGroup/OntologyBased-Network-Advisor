@@ -93,16 +93,29 @@ public class Provisioning {
 		if(arquivo.exists()){
 			arquivo.delete();
 		}
-		FileOutputStream fos = new FileOutputStream(arquivo);  // Perceba que estamos instanciando uma classe aqui. A FileOutputStream. Pesquise sobre ela!  
+		FileOutputStream fos = new FileOutputStream(arquivo);    
+		
+		myBubbleSort(paths);
+		
+		int max = paths.size()/2;
+		int range = Main.getOptionFromConsole("0 for all results or the number of possibilities (max: " + max + ")", 0, max);
+		
+		if(range == 0){
+			range = paths.size();
+		}else{
+			range *= 2;
+		}
 		
 		System.out.println("--- PATHS ---");
-		for(int i = 0; i < paths.size(); i+=2){
+		ArrayList<String> outs = new ArrayList<String>();
+		for(int i = 0; i < range; i+=2){
+			TreeNode[] srcPath = paths.get(i);
+			TreeNode[] tgtPath = paths.get(i+1);
 			String out = "";
+			out += "size: " + (srcPath.length+tgtPath.length) + " - ";
 			int id = (i+2)/2;
 			out += id + " - ";
 			//System.out.print(id + " - ");
-			TreeNode[] srcPath = paths.get(i);
-			TreeNode[] tgtPath = paths.get(i+1);
 			for (TreeNode srcNode : srcPath) {
 				out += srcNode;
 				out += " -> ";
@@ -119,6 +132,9 @@ public class Provisioning {
 			}
 			out += "\n";
 			//System.out.println();
+			if(!outs.contains(out)){
+				outs.add(out);
+			}
 			System.out.print(out);
 			try{
 				fos.write(out.getBytes());   				  
@@ -127,14 +143,39 @@ public class Provisioning {
 			}
 		}
 		fos.close();
-		
+		System.out.println("outs.size(): " + outs.size());
 		//System.out.print("Choose a path: ");
-		int path = Main.getOptionFromConsole(paths, "path", 2);
+		int path = Main.getOptionFromConsole(paths, "path", 2, range/2);
 		TreeNode[] srcPath = paths.get(path);
 		TreeNode[] tgtPath = paths.get(path+1);
 		
 		provisionSemiAuto(srcPath, tgtPath);
 	}
+	
+	public static void myBubbleSort(ArrayList<TreeNode[]> list) {
+		boolean troca = true;
+		TreeNode[] aux;
+        while (troca) {
+            troca = false;
+            for (int i = 0; i < list.size() - 2; i += 2) {
+//            	String a1 = list.get(i);
+//            	String a2 = list.get(i + increment);
+            	int size1 = list.get(i).length + list.get(i+1).length;
+            	int size2 = list.get(i+2).length + list.get(i+3).length;
+            	//int comparison = list.get(i).compareTo(list.get(i + 2));
+            	if(size1 > size2){
+            		for(int j = i; j < i + 2; j++){
+            			aux = list.get(j);
+            			list.set(j, list.get(j + 2));
+                        //list.get(j) = list.get(j + increment);
+            			list.set(j + 2, aux);
+                        //list[j + increment] = aux;                        
+            		}
+            		troca = true;
+            	}
+            }
+        }
+    }
 	
 	public static void provisionSemiAuto(TreeNode[] srcPath, TreeNode[] tgtPath){
 		for (int i = 1; i < srcPath.length; i+=2) {

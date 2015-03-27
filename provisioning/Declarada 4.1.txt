@@ -231,7 +231,7 @@ hasLayer:	(m_odu_so, ODU),
 					
 componentOf:	(deq_odu_so1		, tf_odu_so1		),
 				(deq_odu_so2		, tf_odu_so2		), 
-				(deq_odu_so3		, tf_odu_so3		)
+				(deq_odu_so3		, tf_odu_so3		),
 				(deq_otu_och_so		, tf_otu_och_so1	), 
 				(deq_otu_och_so	    , tf_otu_och_so2	), 	
 				(deq_och_so			, tf_och_so			), 
