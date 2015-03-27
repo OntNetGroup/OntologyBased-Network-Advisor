@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-  <display-name>N-Open</display-name>
+  <display-name>N-Open</display-name>  
   <context-param>
     <param-name>PathG800owl</param-name>
     <param-value>http://localhost:8080/br.com.padtec.nopen/frontend/advisor/owl/g800.owl</param-value>
-  </context-param>
+  </context-param>     
   <servlet>
     <servlet-name>mvc-dispatcher</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>     

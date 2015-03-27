@@ -53,9 +53,7 @@ public class OKCoUploader {
 	 */
 	public static void uploadBaseModel(InputStream in, String useReasoner, String optReasoner)
 	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
-	{		
-		System.out.println("Cloning repositories...");
-		
+	{	
 		/** Upload the base model to a base repository */
 		baseRepository = new BaseModelRepositoryImpl();		 
 		baseRepository.readBaseOntModel(in);		 		 			  
@@ -69,13 +67,11 @@ public class OKCoUploader {
 		
 		/** Run the inference if required, otherwise the inferred model is a clone of the base model */
 		if(reasonOnLoading)
-		{			
-			System.out.println("Running the reasoner");
+		{	
 			if(optReasoner.equals("hermit")) reasoner = new HermitReasonerImpl();				  
 			else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();				  
 			else throw new OKCoExceptionReasoner("Please select a reasoner available.");
-			 
-			System.out.println("Getting infModel");
+			
 			InfModel inferredModel = reasoner.run(baseRepository);
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}else{
@@ -84,7 +80,6 @@ public class OKCoUploader {
 			else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();	
 			else reasoner = new PelletReasonerImpl();
 			
-			System.out.println("Getting infModel");
 			InfModel inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}
@@ -124,13 +119,11 @@ public class OKCoUploader {
 		
 		/** Run the inference if required, otherwise the inferred model is a clone of the base model */
 		if(reasonOnLoading)
-		{
-			System.out.println("Running the reasoner");
+		{			
 			if(optReasoner.equals("hermit")) reasoner = new HermitReasonerImpl();	  
 			else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();				  
 			else throw new OKCoExceptionReasoner("Please select a reasoner available.");
-			 
-			System.out.println("Getting infModel");
+			
 			InfModel inferredModel = reasoner.run(baseRepository);
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}else{
@@ -139,7 +132,6 @@ public class OKCoUploader {
 			else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();	
 			else reasoner = new PelletReasonerImpl();
 			
-			System.out.println("Getting infModel");
 			InfModel  inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}
@@ -149,9 +141,14 @@ public class OKCoUploader {
 	}
 	
 	public static BaseModelRepository getBaseRepository() { return baseRepository; }	
-	public static OntModel getBaseModel() { if(baseRepository!=null) return baseRepository.getBaseOntModel(); else return null; }	
+	public static OntModel getBaseModel() 
+	{ 
+		if(baseRepository!=null) return baseRepository.getBaseOntModel(); 
+		else return null; 
+	}	
 	public static InferredModelRepository getInferredRepository() { return inferredRepository; }	
-	public static InfModel getInferredModel() {
+	public static InfModel getInferredModel() 
+	{
 		if(inferredRepository == null) return null;
 		return inferredRepository.getInferredOntModel(); 
 	}	

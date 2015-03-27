@@ -3,8 +3,9 @@ package br.com.padtec.nopen.core.types;
 public enum ConceptEnum {
 	
 	TRANSPORT_FUNCTION("Transport_Function"), 
-	LAYER("Layer");
-		
+	LAYER("Layer"),
+	TECHNOLOGY("Technology");
+	
 	private String concept;
 	
 	ConceptEnum(String concept)

@@ -14,10 +14,12 @@ import br.com.padtec.nopen.core.application.Initializator;
 public class HomeController {
 		
 	@RequestMapping(method = RequestMethod.GET, value="/init")
-	public String index(HttpServletRequest request) 
+	public String index(HttpServletRequest request) throws Exception 
 	{		
-		String errorMsg  = Initializator.uploadTBOx();
-		if(!errorMsg.isEmpty()) request.getSession().removeAttribute("errorMensage");
+		String errorMsg  = Initializator.uploadTBOx(getClass().getResourceAsStream("/br/com/padtec/nopen/resources/nOpenModel.owl"));
+		if(!errorMsg.isEmpty()) { request.getSession().removeAttribute("errorMensage"); throw new Exception(errorMsg); }
+		
+		Initializator.registerDefaultTechnologies();
 		
 		return "welcome";
 	}
@@ -38,7 +40,8 @@ public class HomeController {
 	}		
 	
 	@RequestMapping("/options")
-	public String configRequest(HttpServletRequest request) {		
+	public String configRequest(HttpServletRequest request) {	
+		
 		return "options";
 	}
 		
