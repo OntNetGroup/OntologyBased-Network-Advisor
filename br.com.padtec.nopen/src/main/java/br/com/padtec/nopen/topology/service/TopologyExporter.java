@@ -57,7 +57,7 @@ public class TopologyExporter {
 		for(int i = 0; i < jsonArray.size(); i++){
 			
 			// Create NODES array
-			if(jsonArray.get(i).getAsJsonObject().get("type").getAsString().equals("NODE")){
+			if(jsonArray.get(i).getAsJsonObject().get("type").getAsString().equals("basic.Circle")){
 			
 				String nodeName = jsonArray.get(i).getAsJsonObject().getAsJsonObject("attrs").getAsJsonObject("text").get("text").getAsString();
 				String nodeId = jsonArray.get(i).getAsJsonObject().get("id").getAsString();

@@ -111,7 +111,7 @@ public class TopologyImporter {
 		// Create node
 		JsonObject node = new JsonObject();
 		node.addProperty("type", "basic.Circle");
-		
+
 		// Add node ID
 		node.addProperty("id", nodeId);
 		

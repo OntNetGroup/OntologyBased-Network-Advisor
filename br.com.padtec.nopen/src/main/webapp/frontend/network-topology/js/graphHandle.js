@@ -4,7 +4,7 @@ function graphHandle(graph){
 	graph.on('add', function(cell) {
 		
 		//Add Node
-		if(cell.get('type') == "NODE"){
+		if(cell.get('type') == "basic.Circle"){
 			$.ajax({
 			   type: "GET",
 			   url: "getAllTemplateEquipment.htm",

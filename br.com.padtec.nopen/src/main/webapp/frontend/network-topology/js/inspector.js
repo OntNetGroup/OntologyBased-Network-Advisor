@@ -115,7 +115,7 @@ var InspectorDefs = {
     // Basic
     // -----
     
-    'NODE': {
+    'basic.Circle': {
 
         inputs: _.extend({
             attrs: {
