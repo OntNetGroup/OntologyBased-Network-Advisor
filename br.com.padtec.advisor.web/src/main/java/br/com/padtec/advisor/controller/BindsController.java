@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.advisor.core.application.GeneralBinds;
+import br.com.padtec.advisor.core.application.AdvisorComponents;
 import br.com.padtec.advisor.core.dto.DtoResultAjax;
 
 @Controller
@@ -21,7 +21,7 @@ public class BindsController {
 		/**===========================================================
 		 * General Binds: provisioning binds
 		 * =========================================================== */
-		DtoResultAjax dto = GeneralBinds.provisioningBinds(interface_target, interface_source, true, null);
+		DtoResultAjax dto = AdvisorComponents.binds.provisioningBinds(interface_target, interface_source, true, null);
 		
 		return dto.ok+"";
 	}
@@ -32,7 +32,7 @@ public class BindsController {
 		/**===========================================================
 		 * General Binds: get candidate interfaces for connection
 		 * =========================================================== */
-		List<String> list = GeneralBinds.getCandidateInterfacesForConnection(interf);
+		List<String> list = AdvisorComponents.binds.getCandidateInterfacesForConnection(interf);
 		
 		String hashEquipIntIn = "";
 		for(String line : list) hashEquipIntIn += line;		
@@ -45,7 +45,7 @@ public class BindsController {
 		/**===========================================================
 		 * General Binds: auto binds
 		 * =========================================================== */		
-		String returnMessage = GeneralBinds.autoBinds();
+		String returnMessage = AdvisorComponents.binds.autoBinds();
 		
 		request.getSession().setAttribute("loadOk", returnMessage);		
 		

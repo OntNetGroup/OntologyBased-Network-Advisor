@@ -10,7 +10,7 @@ import br.com.padtec.advisor.core.types.ConceptEnum;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.DtoQueryUtil;
-import br.com.padtec.okco.core.application.OKCoUploader;
+import br.com.padtec.okco.core.application.OKCoComponents;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -21,17 +21,17 @@ public class AdvisorDtoQueryUtil {
 	
 	public static List<DtoInstance> getIndividualsFromClass(ConceptEnum concept)
 	{
-		return DtoQueryUtil.getIndividualsFromClass(OKCoUploader.getInferredModel(), concept.toString());		
+		return DtoQueryUtil.getIndividualsFromClass(OKCoComponents.repository.getInferredModel(), concept.toString());		
 	}
 	
 	public static DtoInstance getIndividualByName(String individualURI, Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager)
 	{
-		return DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI, classesEager, diffFromEager, sameAsEager);
+		return DtoQueryUtil.getIndividualByName(OKCoComponents.repository.getInferredModel(), individualURI, classesEager, diffFromEager, sameAsEager);
 	}
 	
 	public static List<DtoInstanceRelation>  getRelationsFrom(DtoInstance dtoIndividual)
 	{
-		return DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(), dtoIndividual);
+		return DtoQueryUtil.getRelationsFrom(OKCoComponents.repository.getInferredModel(), dtoIndividual);
 	}
 	
 	/** ====================== Specific ================================= */
@@ -53,8 +53,8 @@ public class AdvisorDtoQueryUtil {
 	{
 		List<DtoEquipment> result= new ArrayList<DtoEquipment>();
 		
-		OntModel baseModel = OKCoUploader.getBaseModel();
-		String namespace = OKCoUploader.getNamespace();
+		OntModel baseModel = OKCoComponents.repository.getBaseModel();
+		String namespace = OKCoComponents.repository.getNamespace();
 		
 	    /** Initialize a [Input_Interface,Equipment] mapping */
 		HashMap<String, String> inputEquipmentMap= new HashMap<String, String>();				

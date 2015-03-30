@@ -7,7 +7,7 @@ import br.com.padtec.okco.core.application.OKCoCommiter;
 
 /**
  * Controller responsible for the create/deletion/update and commit of new individuals and relations.
- * See this class: {@link OKCoCommiter} 
+ * See this class: {@link OKCoComponents} 
  */
 
 @Controller

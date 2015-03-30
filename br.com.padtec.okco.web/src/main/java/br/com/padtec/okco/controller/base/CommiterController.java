@@ -15,12 +15,12 @@ import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.dto.DtoViewSelectInstance;
 import br.com.padtec.common.types.URIDecoder;
-import br.com.padtec.okco.core.application.OKCoCommiter;
+import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.exception.OKCoException;
 
 /**
  * Controller responsible for the create/deletion/update and commit of new individuals and relations.
- * See this class: {@link OKCoCommiter} 
+ * See this class: {@link OKCoComponents} 
  */
 
 public class CommiterController {
@@ -40,7 +40,7 @@ public class CommiterController {
 		 * Create a New Individual. It does not add the individual to the model. 
 		 * Instead, it adds this individual to the set of list of new individuals to be created later on.
 		 *  =================================================== */
-		return OKCoCommiter.createNewIndividualAtCommitList(name, arraySame, arrayDif);		
+		return OKCoComponents.commiter.createNewIndividualAtCommitList(name, arraySame, arrayDif);		
 	}
 
 	@RequestMapping(value="/removeInstance", method = RequestMethod.GET)
@@ -55,7 +55,7 @@ public class CommiterController {
 			 * Remove the recent individual that was going to be created later. 
 			 * This individual is not in the model yet. Thus, this method only removes it from the list of new individuals.
 			 *  =================================================== */
-			OKCoCommiter.removeNewIndividualFromCommitList(uri);
+			OKCoComponents.commiter.removeNewIndividualFromCommitList(uri);
 		}
 		return uri;		  
 	}
@@ -71,7 +71,7 @@ public class CommiterController {
 			/** ==================================================
 			 * Get individual in the commit list as an Editing Element.
 			 *  ================================================== */			 
-			return OKCoCommiter.getEditingIndividualFromCommitList(uri);
+			return OKCoComponents.commiter.getEditingIndividualFromCommitList(uri);
 		}
 		return null;	  
 	}
@@ -87,7 +87,7 @@ public class CommiterController {
 			/** ==================================================
 			 * Get individual in the model as an Editing Element.
 			 *  ================================================== */			 
-			return OKCoCommiter.getEditingIndividualFromModel(uri);
+			return OKCoComponents.commiter.getEditingIndividualFromModel(uri);
 		}
 
 		return null;
@@ -104,7 +104,7 @@ public class CommiterController {
 			/** ==================================================
 			 * Add existing individual to the Commit List
 			 *  ================================================== */	
-			return OKCoCommiter.addExistingIndividualAtCommitList(uri);
+			return OKCoComponents.commiter.addExistingIndividualAtCommitList(uri);
 		}
 
 		return null;
@@ -117,7 +117,7 @@ public class CommiterController {
 		 * Performs the commit of the new individuals to be created.
 		 * It updates the inferred model from the base model using or not the inference engine.
 		 *  =================================================== */
-		return OKCoCommiter.commitNewIndividuals(dtoCommit.commitReasoner);		
+		return OKCoComponents.commiter.commitNewIndividuals(dtoCommit.commitReasoner);		
 	}
 	
 	@RequestMapping(value="/commitMaxCard", method = RequestMethod.POST)
@@ -127,7 +127,7 @@ public class CommiterController {
 		 * Performs the commit of the max cardinalities. 
 		 * It updates the inferred model from the base model using or not the inference engine.
 		 *  =================================================== */
-		return OKCoCommiter.commitMaxCardinalities(dto);
+		return OKCoComponents.commiter.commitMaxCardinalities(dto);
 	}
 	
 	@RequestMapping(value="/removeDataValue", method = RequestMethod.GET)
@@ -142,7 +142,7 @@ public class CommiterController {
 			 * Remove the data values that was going to be created later. 
 			 * This data value is not in the model yet. Thus, this method only removes it from the list of new data values.	 
 			 *  =================================================== */
-			OKCoCommiter.removeNewDataValueFromCommitList(uri);
+			OKCoComponents.commiter.removeNewDataValueFromCommitList(uri);
 			
 			return uri;
 		}
@@ -156,7 +156,7 @@ public class CommiterController {
 		 * Create a New Data Value. It does not add the data value to the model. 
 		 * Instead, it adds this value to the set of list of new data values to be created later on.
 		 *  =================================================== */
-		return OKCoCommiter.createNewDataValueAtCommitList(dto.value);		
+		return OKCoComponents.commiter.createNewDataValueAtCommitList(dto.value);		
 	}
 	
 	@RequestMapping(value="/commitDataValues", method = RequestMethod.POST)
@@ -166,6 +166,6 @@ public class CommiterController {
 		 * Performs the commit of the new data values to be created.
 		 * It updates the inferred model from the base model using or not the inference engine.
 		 *  ================================================== */	
-		return OKCoCommiter.commitDataValues(dtoCommit.commitReasoner);
+		return OKCoComponents.commiter.commitDataValues(dtoCommit.commitReasoner);
 	}
 }

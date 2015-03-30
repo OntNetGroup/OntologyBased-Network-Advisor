@@ -15,8 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.padtec.common.dto.DtoResult;
-import br.com.padtec.okco.core.application.OKCoSelector;
-import br.com.padtec.okco.core.application.OKCoUploader;
+import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionNameSpace;
@@ -25,7 +24,7 @@ import br.com.padtec.okco.core.exception.OKCoExceptionReasoner;
 /**
  * Controller responsible for the upload/store of the base ontology, inferred ontology and temporary ontology.
  * It also records what reasoner is used.
- * See this class: {@link OKCoUploader}  
+ * See this class: {@link OKCoComponents}  
  */
 
 public class UploadController {
@@ -83,8 +82,8 @@ public class UploadController {
 	
 	public static void clearAllApps()
 	{
-		OKCoUploader.clear(); 
-		OKCoSelector.clearSelected();	
+		OKCoComponents.repository.clear(); 
+		OKCoComponents.selector.clearSelected();	
 	}
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -102,12 +101,15 @@ public class UploadController {
 			 /** ==================================================
 			  *  Performs the upload 
 			  *  =================================================== */
-			 OKCoUploader.uploadBaseModel(in, useReasoner, optReasoner);
+			 OKCoComponents.repository.uploadBaseModel(in, useReasoner, optReasoner);
 			  
+			 OKCoComponents.selector.clearModified();
+			 OKCoComponents.selector.clearSelected();		
+				
 		}catch (InconsistentOntologyException e){
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 			request.getSession().setAttribute("errorMensage", error);			
-			OKCoUploader.rollBack(false);			
+			OKCoComponents.repository.rollBack(false);			
 			return "index";			
 		}catch (OKCoExceptionInstanceFormat e){			
 			String error = "Entity format error: " + e.getMessage();
@@ -152,10 +154,10 @@ public class UploadController {
 		/** ==================================================
 		*  Get the base model which was uploaded as a string text 
 		*  =================================================== */
-		if(OKCoUploader.isBaseModelUploaded())
+		if(OKCoComponents.repository.isBaseModelUploaded())
 		{
 			request.getSession().removeAttribute("loadOk");
-			request.getSession().setAttribute("model", OKCoUploader.getBaseModelAsString());
+			request.getSession().setAttribute("model", OKCoComponents.repository.getBaseModelAsString());
 			return "model";
 		}else{				
 			request.getSession().removeAttribute("model");
@@ -173,7 +175,7 @@ public class UploadController {
 		/** ==================================================
 		*  Saves the base model which was uploaded
 		*  =================================================== */
-		dto.setIsSucceed(OKCoUploader.saveBaseModel());
+		dto.setIsSucceed(OKCoComponents.repository.saveBaseModel());
 		
 		return dto;
 	}	

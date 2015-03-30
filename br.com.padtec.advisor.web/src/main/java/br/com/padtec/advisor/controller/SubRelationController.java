@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import br.com.padtec.advisor.core.application.SubRelationEnforcer;
+import br.com.padtec.advisor.core.application.AdvisorComponents;
 
 @Controller
 public class SubRelationController {
@@ -15,7 +15,7 @@ public class SubRelationController {
 		/** ==================================================
 		 * Enforce sub-relations in the uploaded ontology
 		 *  =================================================== */
-		SubRelationEnforcer.run();	
+		AdvisorComponents.enforcer.run();	
 		
 		return "redirect::okco-details";
 	}

@@ -14,15 +14,22 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class AdvisorService {
 
+	protected OKCoUploader repository;
+	
+	public AdvisorService(OKCoUploader repository)
+	{
+		this.repository = repository;		
+	}
+	
 	/** 
 	 * Returns all individuals from the G800 owl ontology.
 	 * 
 	 * @return
 	 */
-	public static List<String> getAllIndividualsFromG800()
+	public List<String> getAllIndividualsFromG800()
 	{	
-		InfModel inferredModel = OKCoUploader.getInferredModel();
-		String namespace = OKCoUploader.getNamespace();
+		InfModel inferredModel = repository.getInferredModel();
+		String namespace = repository.getNamespace();
 		
 		List<String> allIndividuals = QueryUtil.getIndividualsURIFromAllClasses(inferredModel);
 		
@@ -48,9 +55,9 @@ public class AdvisorService {
 	 * @param equipmentName
 	 * @return
 	 */
-	public static List<String> getAllIndividualsFromG800(String equipmentName)
+	public List<String> getAllIndividualsFromG800(String equipmentName)
 	{		
-		String namespace = OKCoUploader.getNamespace();
+		String namespace = repository.getNamespace();
 		
 		List<String> result  = AdvisorQueryUtil.getTransportFunctionsURIAtComponentOfRange(namespace+equipmentName);
 		
@@ -76,9 +83,9 @@ public class AdvisorService {
 	 * @param individualURIList: A list of individuals URIs
 	 * @return
 	 */
-	public static HashMap<String, List<String>> getIndividualVSClassesMap(List<String> individualURIList)
+	public HashMap<String, List<String>> getIndividualVSClassesMap(List<String> individualURIList)
 	{
-		InfModel inferredModel = OKCoUploader.getInferredModel();
+		InfModel inferredModel = repository.getInferredModel();
 		
 		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
 		
@@ -96,21 +103,21 @@ public class AdvisorService {
 	 * 
 	 * @return
 	 */
-	public static List<String[]> getAllG800Triples()
+	public List<String[]> getAllG800Triples()
 	{					
 		List<String[]> result = new ArrayList<String[]>();
 		
 		List<String> G800individuals = getAllIndividualsFromG800();
 		for (String individualURI : G800individuals) 
 		{														
-			List<String> propertiesURIList = QueryUtil.getPropertiesURI(OKCoUploader.getInferredModel(), individualURI);
+			List<String> propertiesURIList = QueryUtil.getPropertiesURI(repository.getInferredModel(), individualURI);
 			
 			for(String propertyURI: propertiesURIList)
 			{				
 			    String[] triple = new String[3];
 			    triple[0]=individualURI;
 				triple[1]=propertyURI;				
-			    List<String> ranges = QueryUtil.getRangeURIs(OKCoUploader.getInferredModel(), propertyURI);			    
+			    List<String> ranges = QueryUtil.getRangeURIs(repository.getInferredModel(), propertyURI);			    
 			    if(ranges.size()>0) triple[2] = ranges.get(0);
 			    else triple[2] = "";			    
 			    result.add(triple);
@@ -124,7 +131,7 @@ public class AdvisorService {
 	 *  	
 	 * @return
 	 */
-	public static List<String[]> getSiteConnectsTuples()
+	public List<String[]> getSiteConnectsTuples()
 	{
 		List<String[]> result = new ArrayList<String[]>();
 		
@@ -152,10 +159,10 @@ public class AdvisorService {
 	 * @param rpName: Reference Point Name
 	 * @return
 	 */
-	public static ArrayList<String[]> getPossibleConnectsTuples(String rpName)
+	public ArrayList<String[]> getPossibleConnectsTuples(String rpName)
 	{
-		InfModel inferredModel = OKCoUploader.getInferredModel();		
-		String namespace = OKCoUploader.getNamespace();
+		InfModel inferredModel = repository.getInferredModel();		
+		String namespace = repository.getNamespace();
 		
 		ArrayList<String[]> result = new ArrayList<String[]>();
 			

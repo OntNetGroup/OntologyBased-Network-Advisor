@@ -23,12 +23,23 @@ import com.hp.hpl.jena.ontology.OntModel;
 
 public class OKCoCommiter {
 	
-	//Keeps the new individuals to be created in the model, later on, in the commit.
-	public static List<DtoInstance> newIndividualsCommitList = new ArrayList<DtoInstance>();
-	//Keeps the new data values to be created in the model, later on, in the commit.
-	public static List<DataPropertyValue> newDataValuesCommitList = new ArrayList<DataPropertyValue>();
+	protected OKCoUploader repository; 
+	protected OKCoSelector selector; 
+	protected OKCoReasoner reasoner; 
 	
-	public static void clearCommitLists()
+	public OKCoCommiter(OKCoUploader repository, OKCoSelector selector, OKCoReasoner reasoner)
+	{
+		this.repository = repository;
+		this.selector = selector;
+		this.reasoner= reasoner;
+	}	
+	
+	//Keeps the new individuals to be created in the model, later on, in the commit.
+	public List<DtoInstance> newIndividualsCommitList = new ArrayList<DtoInstance>();
+	//Keeps the new data values to be created in the model, later on, in the commit.
+	public List<DataPropertyValue> newDataValuesCommitList = new ArrayList<DataPropertyValue>();
+	
+	public void clearCommitLists()
 	{
 		newDataValuesCommitList.clear();
 		newIndividualsCommitList.clear();
@@ -39,13 +50,13 @@ public class OKCoCommiter {
 	 * Instead, it only adds this individual to the set of list of new individuals to be created in the model when the method commitNewIndividuals() was called.
 	 * @throws OKCoException 
 	 */
-	public static DtoInstance createNewIndividualAtCommitList(String name, String[] arraySame, String[] arrayDif) throws OKCoException
+	public DtoInstance createNewIndividualAtCommitList(String name, String[] arraySame, String[] arrayDif) throws OKCoException
 	{		
 		ArrayList<String> listSame = new ArrayList<String>();
 		if(arraySame!=null && arraySame[0]!="") listSame.addAll(Arrays.asList(arraySame));		
 		ArrayList<String> listDif = new ArrayList<String>();
 		if(arrayDif!=null && arrayDif[0]!="") listDif.addAll(Arrays.asList(arrayDif));
-		DtoInstance dtoIndividual = new DtoInstance(OKCoUploader.getBaseRepository().getNameSpace(), name, null, listDif, listSame, false);
+		DtoInstance dtoIndividual = new DtoInstance(repository.getBaseRepository().getNameSpace(), name, null, listDif, listSame, false);
 		newIndividualsCommitList.add(dtoIndividual);
 		return dtoIndividual;
 	}
@@ -54,14 +65,14 @@ public class OKCoCommiter {
 	 * It does not make sense to check this in the OKCo application.
 	 */
 	@Deprecated
-	public static void checkIndividualsViolateMaxCardinality() throws OKCoException
+	public void checkIndividualsViolateMaxCardinality() throws OKCoException
 	{		
-		DtoInstance dtoIndividual = OKCoSelector.getSelectedIndividual();
-		DtoDefinitionClass dtoDefinition = OKCoSelector.getSelectedClassDefinition();		
+		DtoInstance dtoIndividual = selector.getSelectedIndividual();
+		DtoDefinitionClass dtoDefinition = selector.getSelectedClassDefinition();		
 		if(dtoDefinition.TypeCompletness==OntCardinalityEnum.MAX)
 		{	
 			Integer number = Integer.parseInt(dtoDefinition.Cardinality);
-			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(OKCoUploader.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
+			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
 			int newIndividuals = newIndividualsCommitList.size();
 			if((individuals.size()+newIndividuals)>number) 
 			{ 
@@ -73,9 +84,9 @@ public class OKCoCommiter {
 		}		
 	}
 	
-	public static DtoInstance addExistingIndividualAtCommitList(String individualURI)
+	public DtoInstance addExistingIndividualAtCommitList(String individualURI)
 	{
-		DtoInstance dtoIndividual = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI,true,true,true);
+		DtoInstance dtoIndividual = DtoQueryUtil.getIndividualByName(repository.getInferredModel(), individualURI,true,true,true);
 		newIndividualsCommitList.add(dtoIndividual);	
 		return dtoIndividual;
 	}
@@ -84,7 +95,7 @@ public class OKCoCommiter {
 	 * Remove the recent individual that was going to be created later. 
 	 * This individual is not in the model yet. Thus, this method only removes it from the list of new individuals.
 	 */  
-	public static void removeNewIndividualFromCommitList(String individualURI)
+	public void removeNewIndividualFromCommitList(String individualURI)
 	{		
 		DtoFactoryUtil.removeIndividualFrom(newIndividualsCommitList, individualURI);
 	}
@@ -95,7 +106,7 @@ public class OKCoCommiter {
 	 * @param individualURI
 	 * @return
 	 */
-	public static DtoViewSelectInstance getEditingIndividualFromCommitList(String individualURI)
+	public DtoViewSelectInstance getEditingIndividualFromCommitList(String individualURI)
 	{
 		DtoInstance dtoIndividual = DtoFactoryUtil.getIndividualFrom(newIndividualsCommitList, individualURI);
 		DtoViewSelectInstance dto = new DtoViewSelectInstance(dtoIndividual, newIndividualsCommitList);
@@ -108,10 +119,10 @@ public class OKCoCommiter {
 	 * @param individualURI
 	 * @return
 	 */
-	public static DtoViewSelectInstance getEditingIndividualFromModel(String individualURI)
+	public DtoViewSelectInstance getEditingIndividualFromModel(String individualURI)
 	{
-		DtoInstance dtoIndividual = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI,true,true,true);
-		List<DtoInstance> allIndividuals = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), true, true, true);
+		DtoInstance dtoIndividual = DtoQueryUtil.getIndividualByName(repository.getInferredModel(), individualURI,true,true,true);
+		List<DtoInstance> allIndividuals = DtoQueryUtil.getIndividuals(repository.getInferredModel(), true, true, true);
 		DtoViewSelectInstance dto = new DtoViewSelectInstance(dtoIndividual, allIndividuals);
 		return dto;
 	}	
@@ -122,20 +133,20 @@ public class OKCoCommiter {
 	 * @param idNumber
 	 * @param differentFromList
 	 */
-	public static void createNewIndividualAtClassDefinitionRangeSelected(Integer idNumber, List<String> differentFromList)
+	public void createNewIndividualAtClassDefinitionRangeSelected(Integer idNumber, List<String> differentFromList)
 	{
-		String individualName = OKCoSelector.getSelectedClassDefinition().Target.split("#")[1] + "-" + (idNumber + 1);				
-		DtoInstance newDtoIndividual = new DtoInstance(OKCoUploader.getBaseRepository().getNameSpace(), individualName, null, differentFromList, null, false);
-		OntModel model = OKCoUploader.getBaseModel();
+		String individualName = selector.getSelectedClassDefinition().Target.split("#")[1] + "-" + (idNumber + 1);				
+		DtoInstance newDtoIndividual = new DtoInstance(repository.getBaseRepository().getNameSpace(), individualName, null, differentFromList, null, false);
+		OntModel model = repository.getBaseModel();
 		FactoryUtil.createIndividual(model, 
 			newDtoIndividual.ns+newDtoIndividual.name, 
 			newDtoIndividual.ListSameInstances, 
 			newDtoIndividual.ListDiferentInstances, 
-			OKCoSelector.getSelectedIndividualURI(), 
-			OKCoSelector.getSelectedClassDefinition().Relation, 
-			OKCoSelector.getSelectedClassDefinition().Target
+			selector.getSelectedIndividualURI(), 
+			selector.getSelectedClassDefinition().Relation, 
+			selector.getSelectedClassDefinition().Target
 		);
-		OKCoSelector.setIsModified(newDtoIndividual.ns + newDtoIndividual.name);
+		selector.setIsModified(newDtoIndividual.ns + newDtoIndividual.name);
 		if(differentFromList!=null) differentFromList.add(newDtoIndividual.ns + newDtoIndividual.name);	
 	}
 		
@@ -147,11 +158,11 @@ public class OKCoCommiter {
 	 * @param idNumber
 	 * @param differentFromList
 	 */
-	public static void createNewIndividualAtClassDefinitionRange(DtoInstance dtoIndividual, DtoDefinitionClass dtoDefinitionClass, Integer idNumber, List<String> differentFromList)
+	public void createNewIndividualAtClassDefinitionRange(DtoInstance dtoIndividual, DtoDefinitionClass dtoDefinitionClass, Integer idNumber, List<String> differentFromList)
 	{
 		String individualName = dtoDefinitionClass.Target.split("#")[1] + "-" + (idNumber + 1);				
-		DtoInstance newDtoIndividual = new DtoInstance(OKCoUploader.getBaseRepository().getNameSpace(), individualName, null, differentFromList, null, false);
-		OntModel model = OKCoUploader.getBaseModel();
+		DtoInstance newDtoIndividual = new DtoInstance(repository.getBaseRepository().getNameSpace(), individualName, null, differentFromList, null, false);
+		OntModel model = repository.getBaseModel();
 		FactoryUtil.createIndividual(model, 
 			newDtoIndividual.ns+newDtoIndividual.name, 
 			newDtoIndividual.ListSameInstances, 
@@ -160,7 +171,7 @@ public class OKCoCommiter {
 			dtoDefinitionClass.Relation, 
 			dtoDefinitionClass.Target
 		);
-		OKCoSelector.setIsModified(newDtoIndividual.ns + newDtoIndividual.name);
+		selector.setIsModified(newDtoIndividual.ns + newDtoIndividual.name);
 		if(differentFromList!=null) differentFromList.add(newDtoIndividual.ns + newDtoIndividual.name);	
 	}
 	
@@ -169,14 +180,14 @@ public class OKCoCommiter {
 	 * 	
 	 * @param dtoIndividual
 	 */
-	public static void createNewIndividualsAutomatically(DtoInstance dtoIndividual)
+	public void createNewIndividualsAutomatically(DtoInstance dtoIndividual)
 	{
-		DtoFactoryUtil.createAndClassifyIndividualAutomatically(OKCoUploader.getBaseModel(), OKCoUploader.getInferredModel(), dtoIndividual);		
+		DtoFactoryUtil.createAndClassifyIndividualAutomatically(repository.getBaseModel(), repository.getInferredModel(), dtoIndividual);		
 		for (DtoDefinitionClass dtoDefinitionClass : dtoIndividual.ListSome) 
 		{
 			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY) && dtoDefinitionClass.status.equals(DtoStatus.NOT_SATISFIED))
 			{
-				int individualsNumber = QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), dtoDefinitionClass.Target).size()+ 1;
+				int individualsNumber = QueryUtil.getIndividualsURI(repository.getInferredModel(), dtoDefinitionClass.Target).size()+ 1;
 				/** Create a New Individual at the Range of the Class Definition */				
 				createNewIndividualAtClassDefinitionRange(dtoIndividual, dtoDefinitionClass, individualsNumber, null);				
 			}
@@ -185,7 +196,7 @@ public class OKCoCommiter {
 		{
 			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY) && dtoDefinitionClass.status.equals(DtoStatus.NOT_SATISFIED))
 			{
-				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(OKCoUploader.getInferredModel(), dtoIndividual.ns + dtoIndividual.name, dtoDefinitionClass.Relation, dtoDefinitionClass.Target);
+				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(repository.getInferredModel(), dtoIndividual.ns + dtoIndividual.name, dtoDefinitionClass.Relation, dtoDefinitionClass.Target);
 				ArrayList<String> listDifferentFrom = new ArrayList<String>();
 				while(individualsNumber < Integer.parseInt(dtoDefinitionClass.Cardinality))
 				{
@@ -199,7 +210,7 @@ public class OKCoCommiter {
 		{
 			if(dtoDefinitionClass.PropertyType.equals(OntPropertyEnum.OBJECT_PROPERTY) && dtoDefinitionClass.status.equals(DtoStatus.NOT_SATISFIED))
 			{				
-				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(OKCoUploader.getInferredModel(), dtoIndividual.ns + dtoIndividual.name, dtoDefinitionClass.Relation, dtoDefinitionClass.Target);					
+				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(repository.getInferredModel(), dtoIndividual.ns + dtoIndividual.name, dtoDefinitionClass.Relation, dtoDefinitionClass.Target);					
 				ArrayList<String> listDifferentFrom = new ArrayList<String>();
 				if(individualsNumber < Integer.parseInt(dtoDefinitionClass.Cardinality))
 				{
@@ -218,7 +229,7 @@ public class OKCoCommiter {
 	 * Performs the commit of the new individuals to be created.
 	 * It updates the inferred model from the base model using or not the inference engine.
 	 */		
-	public static DtoResult commitNewIndividuals(String useReasoning)
+	public DtoResult commitNewIndividuals(String useReasoning)
 	{		
 		DtoResult dtoResult = new DtoResult();		
 		if(newIndividualsCommitList.size()<=0) 
@@ -228,7 +239,7 @@ public class OKCoCommiter {
 			dtoResult.setMessage("ok"); 
 			return dtoResult; 
 		}		
-		OntModel basemodel = OKCoUploader.getBaseModel();
+		OntModel basemodel = repository.getBaseModel();
 		boolean isCreate = false;
 		for (DtoInstance dtoIndividual : newIndividualsCommitList) 
 		{
@@ -236,32 +247,32 @@ public class OKCoCommiter {
 				if(!dtoIndividual.existInModel) 
 				{
 					/** Create instance */						
-					DtoFactoryUtil.createIndividual(basemodel, dtoIndividual, OKCoSelector.getSelectedIndividualURI(), OKCoSelector.getSelectedClassDefinition().Relation, OKCoSelector.getSelectedClassDefinition().Target);						
+					DtoFactoryUtil.createIndividual(basemodel, dtoIndividual, selector.getSelectedIndividualURI(), selector.getSelectedClassDefinition().Relation, selector.getSelectedClassDefinition().Target);						
 					isCreate = true;
 				}else{
 					/** Selected instance */						
-					FactoryUtil.createObjectProperty(basemodel, OKCoSelector.getSelectedIndividualURI(), OKCoSelector.getSelectedClassDefinition().Relation, dtoIndividual.ns+dtoIndividual.name);						
+					FactoryUtil.createObjectProperty(basemodel, selector.getSelectedIndividualURI(), selector.getSelectedClassDefinition().Relation, dtoIndividual.ns+dtoIndividual.name);						
 					isCreate = false;
 				}
 				if(useReasoning.equals("true")) 
 				{
 					/** Running the reasoner */
-					OKCoUploader.substituteInferredModelFromBaseModel(true); 
+					repository.substituteInferredModelFromBaseModel(true); 
 				}else {
 					/** Without running the reasoner */
-					OKCoUploader.substituteInferredModelFromBaseModel(false);
-					OKCoSelector.setIsModified(dtoIndividual.ns + dtoIndividual.name);
+					repository.substituteInferredModelFromBaseModel(false);
+					selector.setIsModified(dtoIndividual.ns + dtoIndividual.name);
 				}			 
 			}catch (Exception e) {
 				/** Delete Individual */
-				if(isCreate) DtoFactoryUtil.deleteIndividual(OKCoUploader.getBaseModel(),dtoIndividual);
-				else FactoryUtil.deleteObjectProperty(basemodel, OKCoSelector.getSelectedIndividualURI(), OKCoSelector.getSelectedClassDefinition().Relation, dtoIndividual.ns + dtoIndividual.name);				
+				if(isCreate) DtoFactoryUtil.deleteIndividual(repository.getBaseModel(),dtoIndividual);
+				else FactoryUtil.deleteObjectProperty(basemodel, selector.getSelectedIndividualURI(), selector.getSelectedClassDefinition().Relation, dtoIndividual.ns + dtoIndividual.name);				
 				dtoResult.setMessage(e.getMessage());
 				dtoResult.setIsSucceed(false);
 				return dtoResult;
 			}
 		}		
-		if(useReasoning.equals("false")) OKCoSelector.setIsModified(OKCoSelector.getSelectedIndividualURI());
+		if(useReasoning.equals("false")) selector.setIsModified(selector.getSelectedIndividualURI());
 		dtoResult.setIsSucceed(true);
 		dtoResult.setMessage("ok");
 		return dtoResult;
@@ -271,7 +282,7 @@ public class OKCoCommiter {
 	 * Remove the data values that was going to be created later. 
 	 * This data value is not in the model yet. Thus, this method only removes it from the list of new data values.
 	 */
-	public static void removeNewDataValueFromCommitList(String uri)
+	public void removeNewDataValueFromCommitList(String uri)
 	{		
 		DtoFactoryUtil.removeDataValueFrom(newDataValuesCommitList, uri);
 	}
@@ -280,12 +291,12 @@ public class OKCoCommiter {
 	 * This method does not add this data value to the model.
 	 * Instead, it only adds this data value to the set of list of new data value to be created in the model when the method commitNewDataValues() was called.
 	 */
-	public static DataPropertyValue createNewDataValueAtCommitList(String dataValue)
+	public DataPropertyValue createNewDataValueAtCommitList(String dataValue)
 	{
 		DataPropertyValue data = new DataPropertyValue();
 		data.value = dataValue;
-		data.classValue = OKCoSelector.getSelectedClassDefinition().Target;	
-		data.classValueEncoded = OKCoSelector.getSelectedClassDefinition().uriTargetEncoded;
+		data.classValue = selector.getSelectedClassDefinition().Target;	
+		data.classValueEncoded = selector.getSelectedClassDefinition().uriTargetEncoded;
 		data.existInModel = false;
 		newDataValuesCommitList.add(data);
 		return data;
@@ -295,7 +306,7 @@ public class OKCoCommiter {
 	 * Performs the commit of the new data values to be created.
 	 * It updates the inferred model from the base model using or not the inference engine.
 	 */	
-	public static DtoResult commitDataValues(String useReasoner)
+	public DtoResult commitDataValues(String useReasoner)
 	{
 		DtoResult dtoResult = new DtoResult();
 		if(newDataValuesCommitList.size()<=0) 
@@ -305,28 +316,28 @@ public class OKCoCommiter {
 			dtoResult.setMessage("nothing"); 
 			return dtoResult; 
 		}		
-		OntModel basemodel = OKCoUploader.getBaseModel();
+		OntModel basemodel = repository.getBaseModel();
 		for (DataPropertyValue dataTarget : newDataValuesCommitList) 
 		{
 			try {
 				if(!dataTarget.existInModel)
 				{
 					/** Create Data Value */
-					FactoryUtil.createRangeDataPropertyValue(basemodel, dataTarget.value, OKCoSelector.getSelectedIndividualURI(), OKCoSelector.getSelectedClassDefinition().Relation, OKCoSelector.getSelectedClassDefinition().Target);											
+					FactoryUtil.createRangeDataPropertyValue(basemodel, dataTarget.value, selector.getSelectedIndividualURI(), selector.getSelectedClassDefinition().Relation, selector.getSelectedClassDefinition().Target);											
 					dataTarget.existInModel = true;
 				}
 				if(useReasoner.equals("true"))
 				{
 					/** Running the reasoner */
-					OKCoUploader.substituteInferredModelFromBaseModel(true);
+					repository.substituteInferredModelFromBaseModel(true);
 				} else {
 					/** Without running the reasoner */
-					OKCoUploader.substituteInferredModelFromBaseModel(false);
-					OKCoSelector.setIsModified(OKCoSelector.getSelectedIndividualURI());
+					repository.substituteInferredModelFromBaseModel(false);
+					selector.setIsModified(selector.getSelectedIndividualURI());
 				}
 			} catch (Exception e) {
 				/** Delete Data Value */
-				FactoryUtil.deleteRangeDataPropertyValue(basemodel, dataTarget.value, OKCoSelector.getSelectedIndividualURI(), OKCoSelector.getSelectedClassDefinition().Relation, OKCoSelector.getSelectedClassDefinition().Target);
+				FactoryUtil.deleteRangeDataPropertyValue(basemodel, dataTarget.value, selector.getSelectedIndividualURI(), selector.getSelectedClassDefinition().Relation, selector.getSelectedClassDefinition().Target);
 				dtoResult.setMessage(e.getMessage());
 				dtoResult.setIsSucceed(false);
 				return dtoResult;
@@ -341,7 +352,7 @@ public class OKCoCommiter {
 	 * Performs the commit of the max cardinalities. 
 	 * It updates the inferred model from the base model using or not the inference engine.
 	 */
-	public static DtoResult commitMaxCardinalities(DtoCommitMaxCard dto)
+	public DtoResult commitMaxCardinalities(DtoCommitMaxCard dto)
 	{
 		DtoResult dtoResult = new DtoResult();		
 		try {			
@@ -355,30 +366,30 @@ public class OKCoCommiter {
 					String type = parts[0];
 					String uriSource = parts[1];
 					String uriTarget = parts[2];					
-					DtoInstance s1 = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), uriSource,true,true,true);
-					DtoInstance s2 = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), uriTarget,true,true,true);					
+					DtoInstance s1 = DtoQueryUtil.getIndividualByName(repository.getInferredModel(), uriSource,true,true,true);
+					DtoInstance s2 = DtoQueryUtil.getIndividualByName(repository.getInferredModel(), uriTarget,true,true,true);					
 					if(type.equals("dif"))
 					{
-						OntModel basemodel = OKCoUploader.getBaseModel();
+						OntModel basemodel = repository.getBaseModel();
 						FactoryUtil.setDifferentFrom(basemodel, s1.ns + s1.name, s2.ns + s2.name);											
 					} 
 					else if (type.equals("same"))
 					{
-						OntModel basemodel = OKCoUploader.getBaseModel();
+						OntModel basemodel = repository.getBaseModel();
 						FactoryUtil.setSameAs(basemodel, s1.ns + s1.name, s2.ns + s2.name);												
 					}else{						
 						dtoResult.setMessage("error");
 						dtoResult.setIsSucceed(false);
 						return dtoResult;
 					}					
-					OKCoSelector.setIsModified(s1.ns + s1.name);
-					OKCoSelector.setIsModified(s2.ns + s2.name);
+					selector.setIsModified(s1.ns + s1.name);
+					selector.setIsModified(s2.ns + s2.name);
 				}
 			}			
 			if(dto.runReasoner.equals("true"))
 			{
 				/** Running the reasoner, storing the temporary model and cleaning the list of modified */
-				OKCoReasoner.runReasoner();				
+				reasoner.runReasoner();				
 			} 
 			else if (!dto.runReasoner.equals("false"))
 			{				

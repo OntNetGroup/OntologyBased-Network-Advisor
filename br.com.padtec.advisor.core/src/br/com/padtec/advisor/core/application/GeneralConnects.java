@@ -28,26 +28,31 @@ import com.hp.hpl.jena.rdf.model.Statement;
 
 public class GeneralConnects extends AdvisorService {
 
-	private static List<String> equipmentsWithRps = new ArrayList<String>();
-	private static List<String> connectsBetweenEqsAndRps = new ArrayList<String>();
-	private static List<String> connectsBetweenRps = new ArrayList<String>();
+	private List<String> equipmentsWithRps = new ArrayList<String>();
+	private List<String> connectsBetweenEqsAndRps = new ArrayList<String>();
+	private List<String> connectsBetweenRps = new ArrayList<String>();
+		
+	public GeneralConnects(OKCoUploader repository)
+	{
+		super(repository);		
+	}
 	
-	public static List<String> getEquipmentsWithRps() 
+	public List<String> getEquipmentsWithRps() 
 	{
 		return equipmentsWithRps;
 	}
 
-	public static List<String> getConnectsBetweenEqsAndRps() 
+	public List<String> getConnectsBetweenEqsAndRps() 
 	{
 		return connectsBetweenEqsAndRps;
 	}
 
-	public static List<String> getConnectsBetweenRps() 
+	public List<String> getConnectsBetweenRps() 
 	{
 		return connectsBetweenRps;
 	}
 	
-	public static void clear()
+	public void clear()
 	{
 		equipmentsWithRps.clear();
 		connectsBetweenEqsAndRps.clear();
@@ -59,10 +64,10 @@ public class GeneralConnects extends AdvisorService {
 	//==============================================
 
 	/** Set Equipments with Reference Points */
-	public static void setEquipmentsWithRPs()
+	public void setEquipmentsWithRPs()
 	{		
-		InfModel inferredModel = OKCoUploader.getInferredModel();
-		String namespace = OKCoUploader.getNamespace();
+		InfModel inferredModel = repository.getInferredModel();
+		String namespace = repository.getNamespace();
 		
 		clear();
 		
@@ -87,7 +92,7 @@ public class GeneralConnects extends AdvisorService {
 			}
 			
 			List<String> equips = new ArrayList<String>();
-			if(!bindingURI.isEmpty()) equips = GeneralConnects.getEquipmentFromBinding(bindingURI);
+			if(!bindingURI.isEmpty()) equips = getEquipmentFromBinding(bindingURI);
 						
 			String equipmentWithRp = new String();
 			if(equips.size() == 1) equipmentWithRp += equips.get(0).replace(namespace, "");
@@ -127,10 +132,10 @@ public class GeneralConnects extends AdvisorService {
 	//==============================================
 	
 	/** Returns the Equipment from an interface */
-	public static String getEquipmentFromInterface(String interfaceURI)
+	public String getEquipmentFromInterface(String interfaceURI)
 	{		
-		InfModel inferredModel = OKCoUploader.getInferredModel();
-		String namespace = OKCoUploader.getNamespace();
+		InfModel inferredModel = repository.getInferredModel();
+		String namespace = repository.getNamespace();
 		
 		List<DtoInstanceRelation> portRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, interfaceURI);		
 		for (DtoInstanceRelation dtoRelation : portRelations) 
@@ -142,10 +147,10 @@ public class GeneralConnects extends AdvisorService {
 	}
 	
 	/** Returns the Reference Point from a Binding */
-	public static String getRPFromBinding(String bindingURI)
+	public String getRPFromBinding(String bindingURI)
 	{
-		InfModel inferredModel = OKCoUploader.getInferredModel();
-		String namespace = OKCoUploader.getNamespace();
+		InfModel inferredModel = repository.getInferredModel();
+		String namespace = repository.getNamespace();
 		
 		List<DtoInstanceRelation> bindingRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, bindingURI);		
 		for (DtoInstanceRelation dtoRelation : bindingRelations) 
@@ -157,10 +162,10 @@ public class GeneralConnects extends AdvisorService {
 	}
 
 	/** Returns Next Reference Points from the Transport Function */  
-	public static List<String> getNextRPsFromTF(String actualPortName, List<String> nextPortsURIList, Boolean searchToTop)
+	public List<String> getNextRPsFromTF(String actualPortName, List<String> nextPortsURIList, Boolean searchToTop)
 	{
-		InfModel inferredModel = OKCoUploader.getInferredModel();
-		String namespace = OKCoUploader.getNamespace();	
+		InfModel inferredModel = repository.getInferredModel();
+		String namespace = repository.getNamespace();	
 		
 		List<String> nextRps = new ArrayList<String>();
 		for (String portURI : nextPortsURIList) 
@@ -195,10 +200,10 @@ public class GeneralConnects extends AdvisorService {
 	}
 		
 	/** Returns the Equipments from a Port */
-	public static List<String> getEquipmentFromPort(String bindedPortURI, Boolean searchToTop)
+	public List<String> getEquipmentFromPort(String bindedPortURI, Boolean searchToTop)
 	{
-		InfModel inferredModel = OKCoUploader.getInferredModel();
-		String namespace = OKCoUploader.getNamespace();	
+		InfModel inferredModel = repository.getInferredModel();
+		String namespace = repository.getNamespace();	
 		
 		List<String> result = new ArrayList<String>();
 				
@@ -249,27 +254,27 @@ public class GeneralConnects extends AdvisorService {
 					}
 				}				
 			}			
-			List<String> nextRps = GeneralConnects.getNextRPsFromTF(bindedPortURI.replace(namespace,""), nextPorts, searchToTop);
+			List<String> nextRps = getNextRPsFromTF(bindedPortURI.replace(namespace,""), nextPorts, searchToTop);
 			result.addAll(nextRps);			
 		}
 		else if(!outInterfaceURI.isEmpty())
 		{
-			result.add(GeneralConnects.getEquipmentFromInterface(outInterfaceURI));
+			result.add(getEquipmentFromInterface(outInterfaceURI));
 			return result;
 		}
 		else if(!inInterfaceURI.isEmpty())
 		{
-			result.add(GeneralConnects.getEquipmentFromInterface(inInterfaceURI));
+			result.add(getEquipmentFromInterface(inInterfaceURI));
 			return result;
 		}		
 		return result;
 	}
 	
 	/** Returns the Equipments from a Binding */
-	public static List<String> getEquipmentFromBinding(String bindingURI)
+	public List<String> getEquipmentFromBinding(String bindingURI)
 	{		
-		InfModel inferredModel = OKCoUploader.getInferredModel();
-		String namespace = OKCoUploader.getNamespace();	
+		InfModel inferredModel = repository.getInferredModel();
+		String namespace = repository.getNamespace();	
 		
 		List<DtoInstanceRelation> bindingRelations = DtoQueryUtil.getRelationsFromAndTo(inferredModel, bindingURI);
 		
@@ -288,12 +293,12 @@ public class GeneralConnects extends AdvisorService {
 		ArrayList<String> equips = new ArrayList<String>();
 		if(!bindedPort1URI.isEmpty())
 		{
-			List<String> equipsNs = GeneralConnects.getEquipmentFromPort(bindedPort1URI, GeneralConnects.searchEquipmentFromPortToTop(bindedPort1URI));
+			List<String> equipsNs = getEquipmentFromPort(bindedPort1URI, searchEquipmentFromPortToTop(bindedPort1URI));
 			equips.addAll(equipsNs);
 		}
 		if(!bindedPort2URI.isEmpty())
 		{		
-			List<String> equipsNs = GeneralConnects.getEquipmentFromPort(bindedPort2URI, GeneralConnects.searchEquipmentFromPortToTop(bindedPort2URI));
+			List<String> equipsNs = getEquipmentFromPort(bindedPort2URI, searchEquipmentFromPortToTop(bindedPort2URI));
 			for (String eqNs : equipsNs) 
 			{
 				if(!equips.contains(eqNs)) equips.add(eqNs);				
@@ -302,42 +307,42 @@ public class GeneralConnects extends AdvisorService {
 		return equips;
 	}	
 	
-	public static Boolean searchEquipmentFromPortToTop(String portURI)
+	public Boolean searchEquipmentFromPortToTop(String portURI)
 	{
-		InfModel inferredModel = OKCoUploader.getInferredModel();
-		String namespace = OKCoUploader.getNamespace();	
+		InfModel inferredModel = repository.getInferredModel();
+		String namespace = repository.getNamespace();	
 		
 		List<String> tiposPort=QueryUtil.getClassesURIFromIndividual(inferredModel,portURI);
 		if(tiposPort.contains(namespace+ConceptEnum.OUTPUT.toString())) return true;		
 		return false;
 	}	
 	
-	public static String getPossibleConnects()
+	public String getPossibleConnects()
 	{
 		String hashAllowed = new String();			
 		ArrayList<String[]> possibleConnections;
 	
-		GeneralConnects.setEquipmentsWithRPs();
+		setEquipmentsWithRPs();
 
-		for (String connections : GeneralConnects.getConnectsBetweenEqsAndRps()) 
+		for (String connections : getConnectsBetweenEqsAndRps()) 
 		{
 			String src = connections.split("#")[0];
 			String trg = connections.split("#")[1];
 	
-			possibleConnections = AdvisorService.getPossibleConnectsTuples(src);
+			possibleConnections = getPossibleConnectsTuples(src);
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(src)) hashAllowed += src+"#";
 	
-			possibleConnections = AdvisorService.getPossibleConnectsTuples(trg);
+			possibleConnections = getPossibleConnectsTuples(trg);
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg)) hashAllowed += trg+"#";
 		}
 		
-		for (String equipWithRP : GeneralConnects.getEquipmentsWithRps()) 
+		for (String equipWithRP : getEquipmentsWithRps()) 
 		{
 			String equip = equipWithRP.split("#")[0];
 			String rp = equipWithRP.split("#")[1];	
 			if(!equip.isEmpty())
 			{
-				if(!AdvisorService.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)) hashAllowed += equip+"#";				
+				if(!getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)) hashAllowed += equip+"#";				
 			}
 		}	
 		
@@ -355,13 +360,13 @@ public class GeneralConnects extends AdvisorService {
 	 * @param rp2Name: Reference Point Name
 	 * @param type: "pm_nc", "nc" or other
 	 */
-	public static void connects(String rpName, String rp2Name, String type) 
+	public void connects(String rpName, String rp2Name, String type) 
 	{
 		/** Substitute InferredModel for the Base Model. */
 		//OKCoUploader.substituteInferredModelFromBaseModel(false);
 		
-		OntModel baseModel = OKCoUploader.getBaseModel();
-		String namespace = OKCoUploader.getNamespace();
+		OntModel baseModel = repository.getBaseModel();
+		String namespace = repository.getNamespace();
 				
 		ArrayList<Statement> result = new ArrayList<Statement>();		
 		
@@ -401,14 +406,14 @@ public class GeneralConnects extends AdvisorService {
 		
 		/** Substitute InferredModel for the Base Model. The changes were made at the base model! */
 		//FactoryUtil.createInstanceRelation(baseModel, namespace+rpName,  namespace+RelationEnum.HAS_FORWARDING, namespace+rp2Name);
-		OKCoUploader.substituteInferredModelFromBaseModel(false);
+		repository.substituteInferredModelFromBaseModel(false);
 		
 	}
 	
 	/**
 	 * Infer interface connections in the ontology. 
 	 */
-	public static void inferInterfaceConnections()
+	public void inferInterfaceConnections()
 	{
 		HashMap<String, String> map = new HashMap<String, String>();
 		
@@ -440,14 +445,14 @@ public class GeneralConnects extends AdvisorService {
 				
 				/** Create Statement OUTPUT_INTERFACE -> INTERFACE_BINDS -> INPUT_INTERFACE */
 				FactoryUtil.createStatement(
-					OKCoUploader.getBaseModel(), 
-					interfac_output, OKCoUploader.getNamespace()+RelationEnum.INTERFACE_BINDS, interfac_input
+						repository.getBaseModel(), 
+					interfac_output, repository.getNamespace()+RelationEnum.INTERFACE_BINDS, interfac_input
 				);				
 			}
 		}
 		
 		/** Substitute InferredModel for the Base Model. The changes were made at the base model! */
-		OKCoUploader.substituteInferredModelFromBaseModel(false);
+		repository.substituteInferredModelFromBaseModel(false);
 	}
 	
 	/**
@@ -455,8 +460,8 @@ public class GeneralConnects extends AdvisorService {
 	 * 
 	 * @return the list of Reference Points.
 	 */
-	public static ArrayList<String> getReferencePointLayerAbove(String rpName, String typeName){
-		InfModel inferredModel = OKCoUploader.getInferredModel();		
+	public ArrayList<String> getReferencePointLayerAbove(String rpName, String typeName){
+		InfModel inferredModel = repository.getInferredModel();		
 		
 		ArrayList<String> tempResult = new ArrayList<String>();
 		ArrayList<String> result = new ArrayList<String>();
@@ -498,7 +503,7 @@ public class GeneralConnects extends AdvisorService {
 	 * @param model
 	 * @return list of tuples, each tuple contains Reference Points that are connected by a has_forwarding relation.
 	 */
-	public static ArrayList<String[]> getAllHasForwardingRelationships(InfModel model){
+	public ArrayList<String[]> getAllHasForwardingRelationships(InfModel model){
 		// Create a new query
   		String queryString = 
   		"PREFIX ont: <" + model.getNsPrefixURI("") + "> " +
@@ -533,13 +538,13 @@ public class GeneralConnects extends AdvisorService {
 	}
 	
 	@SuppressWarnings("unused")
-	public static ArrayList<String[]> autoConnect() {
+	public ArrayList<String[]> autoConnect() {
 		ArrayList<String[]> has_forwardings = new ArrayList<String[]>();
 		ArrayList<String[]> has_forwardings2 = new ArrayList<String[]>();
 		ArrayList<String[]> list = new ArrayList<String[]>();
 		overloop: //label dos 2 blocos de iteração
 		do{ 
-			has_forwardings = getAllHasForwardingRelationships(OKCoUploader.getInferredModel());
+			has_forwardings = getAllHasForwardingRelationships(repository.getInferredModel());
 			for(String[] relationship : has_forwardings){
 				ArrayList<String> rplayerabove1 = getReferencePointLayerAbove(relationship[0], "so");
 				ArrayList<String> rplayerabove2 = getReferencePointLayerAbove(relationship[1], "sk");
@@ -552,7 +557,7 @@ public class GeneralConnects extends AdvisorService {
 						str[0] = rplayerabove1.get(0);
 						str[1] = rplayerabove2.get(0);
 						list.add(str);
-						has_forwardings2 = getAllHasForwardingRelationships(OKCoUploader.getInferredModel());
+						has_forwardings2 = getAllHasForwardingRelationships(repository.getInferredModel());
 					}
 				} 
 				else {

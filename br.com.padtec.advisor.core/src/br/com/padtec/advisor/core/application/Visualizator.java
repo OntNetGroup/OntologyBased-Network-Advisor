@@ -23,11 +23,19 @@ public class Visualizator {
 	protected int size = 0;
 	protected int width  = 1000;
 	protected int height = 800;
+	protected OKCoUploader repository;
+	protected AdvisorService service;
+	
+	public Visualizator(OKCoUploader repository, AdvisorService service)
+	{
+		this.repository = repository;
+		this.service = service;
+	}
 	
 	public void setAllSitesConfig()
 	{
 		List<String> sites = AdvisorQueryUtil.getSitesURI();
-		List<String[]> sitesConnections = AdvisorService.getSiteConnectsTuples();
+		List<String[]> sitesConnections = service.getSiteConnectsTuples();
 		String rel = RelationEnum.SITE_CONNECTS.toString();
 		for (String site : sites) 
 		{
@@ -76,7 +84,7 @@ public class Visualizator {
 	
 	public void setAllEquipmentsConfing(String selectedSiteName)
 	{
-		List<DtoEquipment> equips = AdvisorDtoQueryUtil.getDtoEquipmentsFromSite(OKCoUploader.getNamespace()+selectedSiteName);
+		List<DtoEquipment> equips = AdvisorDtoQueryUtil.getDtoEquipmentsFromSite(repository.getNamespace()+selectedSiteName);
 		for(DtoEquipment equip : equips)
 		{
 			hashTypes += "hash[\""+equip.getName()+"\"] = \"<b>"+equip.getName()+" is an individual of classes: </b><br><ul><li>"+ConceptEnum.EQUIPMENT+"</li></ul>\";";
@@ -111,9 +119,9 @@ public class Visualizator {
 	
 	public void setAllG800Config()
 	{
-		List<String> g800s = AdvisorService.getAllIndividualsFromG800();		
-		List<String[]> triplas = AdvisorService.getAllG800Triples();
-		HashMap<String, List<String>> hashIndv = AdvisorService.getIndividualVSClassesMap(g800s);
+		List<String> g800s = service.getAllIndividualsFromG800();		
+		List<String[]> triplas = service.getAllG800Triples();
+		HashMap<String, List<String>> hashIndv = service.getIndividualVSClassesMap(g800s);
 		for (String g800 : g800s) 
 		{
 			valuesGraph += "graph.addNode(\""+g800.substring(g800.indexOf("#")+1)+"\", {shape:\""+HTMLFigureMapper.getG800Image(hashIndv.get(g800))+"_AZUL\"});";
@@ -140,9 +148,9 @@ public class Visualizator {
 	
 	public void setAllG800COnfig(String selectedEquipName)
 	{
-		List<String> g800s = AdvisorService.getAllIndividualsFromG800(selectedEquipName);		
-		List<String[]> triplas = AdvisorService.getAllG800Triples();
-		HashMap<String, List<String>> hashIndv = AdvisorService.getIndividualVSClassesMap(g800s);
+		List<String> g800s = service.getAllIndividualsFromG800(selectedEquipName);		
+		List<String[]> triplas = service.getAllG800Triples();
+		HashMap<String, List<String>> hashIndv = service.getIndividualVSClassesMap(g800s);
 
 		for (String g800 : g800s) 
 		{
@@ -160,19 +168,19 @@ public class Visualizator {
 			if(!hashIndv.containsKey(stCon[0]) || !hashIndv.containsKey(stCon[2]))
 			{
 				valuesGraph += "graph.addEdge(graph.addNode(\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),stCon[0]))+"_AZUL\"}),";
+				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),stCon[0]))+"_AZUL\"}),";
 				valuesGraph += "graph.addNode(\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),stCon[2]))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
+				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),stCon[2]))+"_AZUL\"}), {name:'"+stCon[1].substring(stCon[1].indexOf("#")+1)+"'});";
 
 				hashTypes += "hash[\""+stCon[0].substring(stCon[0].indexOf("#")+1)+"\"] = \"<b>"+stCon[0].substring(stCon[0].indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
-				for(String type : QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),stCon[0]))
+				for(String type : QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),stCon[0]))
 				{
 					if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 				}
 				hashTypes += "</ul>\";";
 
 				hashTypes += "hash[\""+stCon[2].substring(stCon[2].indexOf("#")+1)+"\"] = \"<b>"+stCon[2].substring(stCon[2].indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
-				for(String type : QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),stCon[2]))
+				for(String type : QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),stCon[2]))
 				{
 					if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 				}
@@ -193,24 +201,24 @@ public class Visualizator {
 	
 	public void setAllElementsConfig()
 	{
-		List<String> allInstances =QueryUtil.getIndividualsURIFromAllClasses(OKCoUploader.getInferredModel());		
+		List<String> allInstances =QueryUtil.getIndividualsURIFromAllClasses(repository.getInferredModel());		
 		for (String instance : allInstances) 
 		{
-			List<DtoInstanceRelation> targetList = DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(),instance);
-			List<String> classes = QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),instance);
+			List<DtoInstanceRelation> targetList = DtoQueryUtil.getRelationsFrom(repository.getInferredModel(),instance);
+			List<String> classes = QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),instance);
 			for (DtoInstanceRelation dtoInstanceRelation : targetList) 
 			{
 				valuesGraph += "graph.addEdge(graph.addNode(\""+instance.substring(instance.indexOf("#")+1)+"\", ";
 				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(classes)+"_AZUL\"}),";
 				valuesGraph += "graph.addNode(\""+dtoInstanceRelation.Target.substring(dtoInstanceRelation.Target.indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),dtoInstanceRelation.Target))+"_AZUL\"}), ";
+				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),dtoInstanceRelation.Target))+"_AZUL\"}), ";
 				valuesGraph	+= "{name:'"+dtoInstanceRelation.Property.substring(dtoInstanceRelation.Property.indexOf("#")+1)+"'});";
 				size++;
 			}
 			if(targetList.isEmpty())
 			{
 				valuesGraph += "graph.addNode(\""+instance.substring(instance.indexOf("#")+1)+"\", ";
-				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),instance))+"_AZUL\"});";
+				valuesGraph += "{shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),instance))+"_AZUL\"});";
 			}
 			hashTypes += "hash[\""+instance.substring(instance.indexOf("#")+1)+"\"] = \"<b>"+instance.substring(instance.indexOf("#")+1)+" is an individual of classes: </b><br><ul>";
 			for(String type : classes)

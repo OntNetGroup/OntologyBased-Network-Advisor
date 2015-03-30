@@ -7,7 +7,7 @@ import br.com.padtec.okco.core.application.OKCoCommiter;
 
 /**
  * Controller responsible for the functionality of Completing the knowledge.
- * See this class: {@link OKCoCommiter} 
+ * See this class: {@link OKCoComponents} 
  */
 
 @Controller

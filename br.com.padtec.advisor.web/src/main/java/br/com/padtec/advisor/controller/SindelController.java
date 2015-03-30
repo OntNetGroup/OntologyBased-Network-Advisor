@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.com.padtec.advisor.core.application.SindelUploader;
+import br.com.padtec.advisor.core.application.AdvisorComponents;
 import br.com.padtec.advisor.core.dto.DtoResultAjax;
 import br.com.padtec.advisor.core.util.FileReader;
 import br.com.padtec.common.dto.DtoResult;
-import br.com.padtec.okco.core.application.OKCoUploader;
+import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.transformation.sindel.dto.DtoResultSindel;
 
@@ -43,7 +43,7 @@ public class SindelController{
 			/** ==========================================
 			 *  Upload Sindel Model
 			 *  ========================================== */
-			SindelUploader.uploadSindelModel(txtSindel);			
+			AdvisorComponents.sindelUploader.uploadSindelModel(txtSindel);			
 			
 		} catch (IOException e){
 			String error = "File not found: "+e.getLocalizedMessage();
@@ -163,12 +163,12 @@ public class SindelController{
 			/** ==========================================
 			 *  Upload Sindel Model
 			 *  ========================================== */
-			SindelUploader.uploadSindelModel(sindelParsedCode);
+			AdvisorComponents.sindelUploader.uploadSindelModel(sindelParsedCode);
 			
 			/** ==========================================
 			 *  Transforms  Sindel into the OWL Base Model
 			 *  ========================================== */
-			SindelUploader.transformSindelToOwl(individualsPrefixName, false);				
+			AdvisorComponents.sindelUploader.transformSindelToOwl(individualsPrefixName, false);				
 		}
 		request.getSession().removeAttribute("errorMensage");
 		dtoResult.ok = true;
@@ -195,12 +195,12 @@ public class SindelController{
 		/** ==========================================
 		 *  Upload Sindel Model
 		 *  ========================================== */
-		SindelUploader.uploadSindelModel(sindelCode);
+		AdvisorComponents.sindelUploader.uploadSindelModel(sindelCode);
 		
 		/** ==========================================
 		 *  Transforms  Sindel into the OWL Base Model
 		 *  ========================================== */
-		SindelUploader.transformSindelToOwl(individualsPrefixName, false);	
+		AdvisorComponents.sindelUploader.transformSindelToOwl(individualsPrefixName, false);	
 				
 		request.getSession().removeAttribute("errorMensage");
 		dtoResult.ok = true;
@@ -214,12 +214,12 @@ public class SindelController{
 	@RequestMapping(method = RequestMethod.GET, value="/sindel")
 	public String sindel(HttpSession session, HttpServletRequest request) 
 	{					
-		request.getSession().setAttribute("txtSindelCode", SindelUploader.getSindelCode());
+		request.getSession().setAttribute("txtSindelCode", AdvisorComponents.sindelUploader.getSindelCode());
 		
 		/** ==========================================
 		 *  Clear Sindel code
 		 *  ========================================== */
-		SindelUploader.clear();
+		AdvisorComponents.sindelUploader.clear();
 		
 		return "sindel";	
 	}
@@ -227,9 +227,9 @@ public class SindelController{
 	@RequestMapping(method = RequestMethod.GET, value="/getSindel")
 	public String getSindel(HttpSession session, HttpServletRequest request) throws IOException {
 
-		if(SindelUploader.getSindelCode()!="")
+		if(AdvisorComponents.sindelUploader.getSindelCode()!="")
 		{
-			request.getSession().setAttribute("txtSindelCode", SindelUploader.getSindelCode());
+			request.getSession().setAttribute("txtSindelCode", AdvisorComponents.sindelUploader.getSindelCode());
 			request.getSession().removeAttribute("loadOk");
 			return "getSindel";
 		}else{
@@ -246,7 +246,7 @@ public class SindelController{
 		/** ==========================================
 		 *  Save Sindel code
 		 *  ========================================== */
-		SindelUploader.uploadSindelModel(sindelCode);
+		AdvisorComponents.sindelUploader.uploadSindelModel(sindelCode);
 		
 		if(sindelCode == ""){
 			dto.ok = false;
@@ -264,9 +264,9 @@ public class SindelController{
 		/** ==========================================
 		 *  Clear Sindel code
 		 *  ========================================== */
-		SindelUploader.clear();
+		AdvisorComponents.sindelUploader.clear();
 		
-		request.getSession().setAttribute("txtSindelCode", SindelUploader.getSindelCode());
+		request.getSession().setAttribute("txtSindelCode", AdvisorComponents.sindelUploader.getSindelCode());
 
 		DtoResultAjax dto = new DtoResultAjax();
 		dto.ok = true;
@@ -292,7 +292,7 @@ public class SindelController{
 	{
 		DtoResultAjax dtoResult = new DtoResultAjax();
 				
-		if(OKCoUploader.getBaseModel()==null)
+		if(OKCoComponents.repository.getBaseModel()==null)
 		{
 			dtoResult.ok = false;
 			dtoResult.result = "Error! You need to load the model first.";
@@ -302,12 +302,12 @@ public class SindelController{
 		/** ==========================================
 		 *  Upload Sindel Model
 		 *  ========================================== */
-		SindelUploader.uploadSindelModel(dtoGet.result);
+		AdvisorComponents.sindelUploader.uploadSindelModel(dtoGet.result);
 		
 		/** ==========================================
 		 *  Transforms Sindel into the OWL Base Model
 		 *  ========================================== */
-		DtoResult result = SindelUploader.transformSindelToOwl();
+		DtoResult result = AdvisorComponents.sindelUploader.transformSindelToOwl();
 
 		if(!result.isSucceed()) 
 		{			 
@@ -325,7 +325,7 @@ public class SindelController{
 			/** ==========================================
 			 *  Clear Sindel code
 			 *  ========================================== */
-			SindelUploader.clear();
+			AdvisorComponents.sindelUploader.clear();
 			
 			return dtoResult;
 		}
@@ -348,7 +348,7 @@ public class SindelController{
 			request.getSession().setAttribute("file"+i, "");
 			request.getSession().setAttribute("filename"+i, "");
 		}	
-		if(OKCoUploader.getBaseModel() == null)
+		if(OKCoComponents.repository.getBaseModel() == null)
 		{
 			String error = "Error! You need to load the model first.";
 			request.getSession().setAttribute("errorMensage", error);

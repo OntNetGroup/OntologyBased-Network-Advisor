@@ -22,14 +22,21 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class OKCoSelector {
 	
+	protected OKCoUploader repository; 
+	
+	public OKCoSelector(OKCoUploader repository)
+	{
+		this.repository = repository;
+	}	
+	
 	//Keeps the list of individuals that were modified
-	public static List<String> modifiedIndividualsURIs = new ArrayList<String>();
+	public List<String> modifiedIndividualsURIs = new ArrayList<String>();
 	
 	//Keeps the individual that was selected with other useful informations
-	public static DtoInstance individualSelected;
-	public static DtoDefinitionClass definitionClassSelected;
-	public static List<DtoCompleteClass> completeClassesFromSelected = new ArrayList<DtoCompleteClass>();
-	public static List<DtoPropertyAndSubProperties> relationSpecializationsFromSelected = new ArrayList<DtoPropertyAndSubProperties>();	
+	public DtoInstance individualSelected;
+	public DtoDefinitionClass definitionClassSelected;
+	public List<DtoCompleteClass> completeClassesFromSelected = new ArrayList<DtoCompleteClass>();
+	public List<DtoPropertyAndSubProperties> relationSpecializationsFromSelected = new ArrayList<DtoPropertyAndSubProperties>();	
 		
 	/**
 	 * Select a particular individual to be used later on.
@@ -37,15 +44,15 @@ public class OKCoSelector {
 	 * @param individualURI
 	 * @return
 	 */
-	public static DtoInstance selectIndividual(String individualURI)
+	public DtoInstance selectIndividual(String individualURI)
 	{
-		individualSelected = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI, true, true, true);
+		individualSelected = DtoQueryUtil.getIndividualByName(repository.getInferredModel(), individualURI, true, true, true);
 		return individualSelected;
 	}
 	
-	public static DtoInstance selectIndividual(String individualURI, boolean loadCardinalityDefinitions)
+	public DtoInstance selectIndividual(String individualURI, boolean loadCardinalityDefinitions)
 	{
-		individualSelected = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI, true, true, true);		
+		individualSelected = DtoQueryUtil.getIndividualByName(repository.getInferredModel(), individualURI, true, true, true);		
 		if(loadCardinalityDefinitions)
 		{
 			getSomeDefinitionsFromSelected();
@@ -61,7 +68,7 @@ public class OKCoSelector {
 	 * 
 	 * @param newSelectedIndividual
 	 */
-	public static void selectIndividual(DtoInstance newSelectedIndividual)
+	public void selectIndividual(DtoInstance newSelectedIndividual)
 	{
 		individualSelected = newSelectedIndividual;
 	}
@@ -72,7 +79,7 @@ public class OKCoSelector {
 	 * @param uriProperty
 	 * @return
 	 */
-	public static DtoDefinitionClass selectDefinitionFromSelected(String uriProperty)
+	public DtoDefinitionClass selectDefinitionFromSelected(String uriProperty)
 	{
 		/** SOME */
 		List<DtoDefinitionClass> someList = getSomeDefinitionsFromSelected();		
@@ -93,22 +100,22 @@ public class OKCoSelector {
 		return definitionClassSelected;
 	}
 			
-	public static void setSelectedToModified()
+	public void setSelectedToModified()
 	{
 		setIsModified(getSelectedIndividualURI());
 	}
 	
-	public static void setIsModified(String individualURI)
+	public void setIsModified(String individualURI)
 	{
 		if(!modifiedIndividualsURIs.contains(individualURI)) modifiedIndividualsURIs.add(individualURI);
 	}
 	
-	public static void clearModified()
+	public void clearModified()
 	{
 		modifiedIndividualsURIs.clear();
 	}
 	
-	public static void clearSelected() 
+	public void clearSelected() 
 	{		
 		definitionClassSelected=null;
 		individualSelected=null;
@@ -116,7 +123,7 @@ public class OKCoSelector {
 		relationSpecializationsFromSelected.clear();		
 	}
 
-	public static List<String> getModifiedIndividuals()
+	public List<String> getModifiedIndividuals()
 	{
 		return modifiedIndividualsURIs;
 	}
@@ -126,7 +133,7 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static DtoDefinitionClass getSelectedClassDefinition()
+	public DtoDefinitionClass getSelectedClassDefinition()
 	{
 		return definitionClassSelected;
 	}
@@ -134,7 +141,7 @@ public class OKCoSelector {
 	/**
 	 * The selected individual
 	 */
-	public static DtoInstance getSelectedIndividual()
+	public DtoInstance getSelectedIndividual()
 	{
 		return individualSelected;
 	}
@@ -144,7 +151,7 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static String getSelectedIndividualURI()
+	public String getSelectedIndividualURI()
 	{
 		if(individualSelected!=null) return individualSelected.ns+individualSelected.name;
 		else return null;
@@ -155,7 +162,7 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static List<DtoDefinitionClass> getSomeDefinitionsFromSelected()
+	public List<DtoDefinitionClass> getSomeDefinitionsFromSelected()
 	{
 		if(individualSelected!=null) 
 		{
@@ -170,7 +177,7 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static List<DtoDefinitionClass> getMaxDefinitionsFromSelected()
+	public List<DtoDefinitionClass> getMaxDefinitionsFromSelected()
 	{
 		if(individualSelected!=null) 
 		{
@@ -185,7 +192,7 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static List<DtoDefinitionClass> getMinDefinitionsFromSelected()
+	public List<DtoDefinitionClass> getMinDefinitionsFromSelected()
 	{
 		if(individualSelected!=null) 
 		{
@@ -200,7 +207,7 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static List<DtoDefinitionClass> getExactDefinitionsFromSelected()
+	public List<DtoDefinitionClass> getExactDefinitionsFromSelected()
 	{
 		if(individualSelected!=null) 
 		{
@@ -216,11 +223,11 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static List<DtoInstanceRelation> getRelationsFromSelected()
+	public List<DtoInstanceRelation> getRelationsFromSelected()
 	{
 		if(individualSelected!=null) 
 		{
-			return DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(),getSelectedIndividualURI());			
+			return DtoQueryUtil.getRelationsFrom(repository.getInferredModel(),getSelectedIndividualURI());			
 		}
 		else return new ArrayList<DtoInstanceRelation>();
 	}
@@ -230,7 +237,7 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static List<DtoPropertyAndSubProperties> getRelationSpecializationsFromSelected()
+	public List<DtoPropertyAndSubProperties> getRelationSpecializationsFromSelected()
 	{
 		if(individualSelected!=null) 
 		{
@@ -246,7 +253,7 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static List<DtoCompleteClass> getCompleteClassesFromSelected()
+	public List<DtoCompleteClass> getCompleteClassesFromSelected()
 	{
 		if(individualSelected!=null) 
 		{
@@ -262,9 +269,9 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static List<DtoInstance> getIndividualsAtClassDefinitionRangeSelected()
+	public List<DtoInstance> getIndividualsAtClassDefinitionRangeSelected()
 	{
-		InfModel model = OKCoUploader.getInferredModel();
+		InfModel model = repository.getInferredModel();
 		List<DtoInstance> dtoIndividuals = DtoQueryUtil.getIndividualsAtObjectPropertyRange(model, getSelectedIndividualURI(), definitionClassSelected.Relation, definitionClassSelected.Target);
 		return dtoIndividuals;
 	}
@@ -274,10 +281,10 @@ public class OKCoSelector {
 	 * 
 	 * @return
 	 */
-	public static List<DataPropertyValue> getDataValuesAtClassDefinitionRangeSelected()
+	public List<DataPropertyValue> getDataValuesAtClassDefinitionRangeSelected()
 	{
 		List<DataPropertyValue> result = new ArrayList<DataPropertyValue>();		
-		InfModel model = OKCoUploader.getInferredModel();
+		InfModel model = repository.getInferredModel();
 		List<String> individualsList = QueryUtil.getIndividualsURIAtDataTypePropertyRange(model, getSelectedIndividualURI(), definitionClassSelected.Relation, definitionClassSelected.Target);
 		//List<String> individualsList = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, getSelectedIndividualURI(), definitionClassSelected.Relation, definitionClassSelected.Target);
 		for(String individualURI: individualsList)
@@ -304,15 +311,15 @@ public class OKCoSelector {
 	 * @param diffFromEager Defines when the "different from individuals" of an individual must be got eagerly
 	 * @param sameAsEager Defines when the "same as individuals" of an individual must be got eagerly
 	 */
-	public static List<DtoInstance> getIndividuals(Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager)
+	public List<DtoInstance> getIndividuals(Boolean classesEager, Boolean diffFromEager, Boolean sameAsEager)
 	{
-		return DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), classesEager, diffFromEager, sameAsEager);
+		return DtoQueryUtil.getIndividuals(repository.getInferredModel(), classesEager, diffFromEager, sameAsEager);
 	}
 
 	/**
 	 * Get the Property from Selected alongside the next and previous properties.
 	 */
-	public static DtoGetPrevNextSpecProperty getPropertyWithNextAndPreviousFromSelected(String propertyURI)
+	public DtoGetPrevNextSpecProperty getPropertyWithNextAndPreviousFromSelected(String propertyURI)
 	{
 		DtoPropertyAndSubProperties dto = DtoFactoryUtil.getPropertyFrom(relationSpecializationsFromSelected, propertyURI);
 		if(dto == null) return null;			
@@ -329,9 +336,9 @@ public class OKCoSelector {
 	/**
 	 * Update and check specialization class for all instances one by one
 	 */
-	private static void setClassSpecializationsInSelected()
+	private void setClassSpecializationsInSelected()
 	{
-		InfModel model = OKCoUploader.getInferredModel();
+		InfModel model = repository.getInferredModel();
 		
 		// ------ Complete classes list ------//		
 		ArrayList<DtoCompleteClass> completeClassesList = new ArrayList<DtoCompleteClass>();
@@ -365,17 +372,17 @@ public class OKCoSelector {
 	/**
 	 * 	Update and check specialization class for all instances one by one
 	 */
-	private static void setRelationSpecializationsInSelected() 
+	private void setRelationSpecializationsInSelected() 
 	{
-		InfModel model = OKCoUploader.getInferredModel();	
+		InfModel model = repository.getInferredModel();	
 		
 		ArrayList<DtoPropertyAndSubProperties> completePropertiesList = new ArrayList<DtoPropertyAndSubProperties>();
 		DtoPropertyAndSubProperties dtoP = null;		
 		//Get instance relations
 		//List<DtoInstanceRelation> instanceListRelations = new ArrayList<DtoInstanceRelation>();
-		List<DtoInstanceRelation> instanceListRelations = QueryUtil.getPropertiesAndIndividualsURI(OKCoUploader.getInferredModel(), individualSelected.ns + individualSelected.name);
+		List<DtoInstanceRelation> instanceListRelations = QueryUtil.getPropertiesAndIndividualsURI(repository.getInferredModel(), individualSelected.ns + individualSelected.name);
 		
-		List<String> propertiesURIList = QueryUtil.getPropertiesURI(OKCoUploader.getInferredModel(), individualSelected.ns + individualSelected.name);
+		List<String> propertiesURIList = QueryUtil.getPropertiesURI(repository.getInferredModel(), individualSelected.ns + individualSelected.name);
 		/*
 		for(String propertyURI: propertiesURIList){
 			DtoInstanceRelation dtoItem = new DtoInstanceRelation();
@@ -435,9 +442,9 @@ public class OKCoSelector {
 		individualSelected.ListSpecializationProperties = completePropertiesList;	
 	}
 
-	private static void setDefinitionsInSelected(OntCardinalityEnum typeCompletness)
+	private void setDefinitionsInSelected(OntCardinalityEnum typeCompletness)
 	{
-		InfModel model = OKCoUploader.getInferredModel();
+		InfModel model = repository.getInferredModel();
 		
 		for (String classURI : individualSelected.ListClasses) 
 		{
@@ -486,25 +493,25 @@ public class OKCoSelector {
 		}		
 	}
 	
-	private static DtoStatus getStatus(DtoInstance dtoIndividual, DtoDefinitionClass dtoDefinition)
+	private DtoStatus getStatus(DtoInstance dtoIndividual, DtoDefinitionClass dtoDefinition)
 	{
 		if(dtoDefinition.TypeCompletness==OntCardinalityEnum.MIN)
 		{
 			Integer number = Integer.parseInt(dtoDefinition.Cardinality);
-			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(OKCoUploader.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
+			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
 			if(individuals.size()<number) return DtoStatus.NOT_SATISFIED;
 			else return DtoStatus.SATISFIED;
 		}
 		if(dtoDefinition.TypeCompletness==OntCardinalityEnum.SOME)
 		{			
-			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(OKCoUploader.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
+			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
 			if(individuals.size()==0) return DtoStatus.NOT_SATISFIED;
 			else return DtoStatus.SATISFIED;
 		}
 		if(dtoDefinition.TypeCompletness==OntCardinalityEnum.EXACTLY)
 		{			
 			Integer number = Integer.parseInt(dtoDefinition.Cardinality);
-			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(OKCoUploader.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
+			List<String> individuals = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), dtoIndividual.uri, dtoDefinition.Relation);
 			if(individuals.size()!=number) return DtoStatus.NOT_SATISFIED;
 			else return DtoStatus.SATISFIED;
 		}

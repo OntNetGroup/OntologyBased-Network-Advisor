@@ -14,23 +14,31 @@ public class ConnectsVisualizator extends Visualizator {
 	protected String hashAllowed = new String();
 	protected String hashRPEquip = new String();
 	
+	protected GeneralConnects connects;
+		
+	public ConnectsVisualizator(OKCoUploader repository, GeneralConnects connects)
+	{
+		super(repository, connects);
+		this.connects = connects;	
+	}
+	
 	public void setConfig()
 	{		
-		GeneralConnects.setEquipmentsWithRPs();
+		connects.setEquipmentsWithRPs();
 		
 		ArrayList<String> usedRPs = new ArrayList<String>();
 		ArrayList<String[]> possibleConnections;
-		for (String connections : GeneralConnects.getConnectsBetweenEqsAndRps()) 
+		for (String connections : connects.getConnectsBetweenEqsAndRps()) 
 		{
 			String src = connections.split("#")[0];
 			String trg = connections.split("#")[1];
 
-			possibleConnections = AdvisorService.getPossibleConnectsTuples(src);
-			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+src))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
+			possibleConnections = connects.getPossibleConnectsTuples(src);
+			arborStructure += "graph.addEdge(graph.addNode(\""+src+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),repository.getNamespace()+src))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(src)) hashAllowed += "hashAllowed.push(\""+src+"\");";
 
-			possibleConnections = AdvisorService.getPossibleConnectsTuples(trg);
-			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trg))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
+			possibleConnections = connects.getPossibleConnectsTuples(trg);
+			arborStructure += "graph.addNode(\""+trg+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),repository.getNamespace()+trg))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:' '});";
 			if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg)) hashAllowed += "hashAllowed.push(\""+trg+"\");";
 
 			size++;
@@ -39,14 +47,14 @@ public class ConnectsVisualizator extends Visualizator {
 			usedRPs.add(trg);
 
 			hashTypes += "hash[\""+src+"\"] = \"<b>"+src+" is an individual of classes: </b><br><ul>";
-			for(String type : QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+src))
+			for(String type : QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),repository.getNamespace()+src))
 			{
 				if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 			}
 			hashTypes += "</ul>\";";
 
 			hashTypes += "hash[\""+trg+"\"] = \"<b>"+trg+" is an individual of classes: </b><br><ul>";
-			for(String type : QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trg))
+			for(String type : QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),repository.getNamespace()+trg))
 			{
 				if(type.contains("#")) hashTypes += "<li>"+type.substring(type.indexOf("#")+1)+"</li>";
 			}
@@ -55,7 +63,7 @@ public class ConnectsVisualizator extends Visualizator {
 
 		HashMap<String, String> rpXequip = new HashMap<String, String>();
 
-		for (String equipWithRP : GeneralConnects.getEquipmentsWithRps()) 
+		for (String equipWithRP : connects.getEquipmentsWithRps()) 
 		{
 			String equip = equipWithRP.split("#")[0];
 			String rp = equipWithRP.split("#")[1];
@@ -67,7 +75,7 @@ public class ConnectsVisualizator extends Visualizator {
 				else{
 					situation = false;
 					hashTypes += "hash[\""+equip+"\"] = \"<b>"+equip+" is an individual of classes: </b><br><ul><li>Equipment</li></ul>\";";
-					if(!AdvisorService.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp))
+					if(!connects.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp))
 					{
 						arborStructure += "graph.getNode(\""+equip+"\").data.shape = graph.getNode(\""+equip+"\").data.shape.split(\"_\")[0]+\"_VERDE\";";
 						hashAllowed += "hashAllowed.push(\""+equip+"\");";
@@ -80,7 +88,7 @@ public class ConnectsVisualizator extends Visualizator {
 			}
 		}
 
-		for (String rpXrp : GeneralConnects.getConnectsBetweenRps()) 
+		for (String rpXrp : connects.getConnectsBetweenRps()) 
 		{
 			String srcRP = rpXrp.split("#")[0];
 			String trgRP = rpXrp.split("#")[1];
@@ -90,10 +98,10 @@ public class ConnectsVisualizator extends Visualizator {
 			if(rpXequip.containsKey(srcRP)) srcNode = rpXequip.get(srcRP);
 			//trg is inside a equip
 			if(rpXequip.containsKey(trgRP)) trgNode = rpXequip.get(trgRP);			
-			possibleConnections = AdvisorService.getPossibleConnectsTuples(srcNode);
-			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+srcNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
-			possibleConnections = AdvisorService.getPossibleConnectsTuples(trgNode);
-			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+trgNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
+			possibleConnections = connects.getPossibleConnectsTuples(srcNode);
+			arborStructure += "graph.addEdge(graph.addNode(\""+srcNode+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),repository.getNamespace()+srcNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}),";
+			possibleConnections = connects.getPossibleConnectsTuples(trgNode);
+			arborStructure += "graph.addNode(\""+trgNode+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),repository.getNamespace()+trgNode))+"_"+(possibleConnections.isEmpty()?"ROXO":"VERDE")+"\"}), {name:'connects'});";
 		}
 		width  += 400 * (size / 10);
 		height += 400 * (size / 10);	

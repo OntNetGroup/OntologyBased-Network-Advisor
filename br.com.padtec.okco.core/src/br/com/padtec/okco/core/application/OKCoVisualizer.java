@@ -6,25 +6,32 @@ import br.com.padtec.common.queries.DtoQueryUtil;
 
 public class OKCoVisualizer {
 	
+	protected OKCoUploader repository; 
+	
+	public OKCoVisualizer(OKCoUploader repository)
+	{
+		this.repository = repository;
+	}
+	
 	/**
 	 * Get the graph values for the graph visualization.
 	 * 
 	 * @return
 	 */
-	public static String getGraphValues(String typeView, String individualURI, BaseGraphPlotting graphPlotting)
+	public String getGraphValues(String typeView, String individualURI, BaseGraphPlotting graphPlotting)
 	{		
 		String valuesGraph = new String();				
-		if(typeView.equals("ALL")) valuesGraph  = graphPlotting.getArborStructureFor(OKCoUploader.getInferredModel());
+		if(typeView.equals("ALL")) valuesGraph  = graphPlotting.getArborStructureFor(repository.getInferredModel());
 		else if(individualURI != null)
 		{			
-			DtoInstance dtoIndividual = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(), individualURI,true,true,true);
+			DtoInstance dtoIndividual = DtoQueryUtil.getIndividualByName(repository.getInferredModel(), individualURI,true,true,true);
 			if(typeView.equals("IN")) 
 			{				
-				valuesGraph  = graphPlotting.getArborStructureComingInOf(OKCoUploader.getInferredModel(), dtoIndividual.ns + dtoIndividual.name);
+				valuesGraph  = graphPlotting.getArborStructureComingInOf(repository.getInferredModel(), dtoIndividual.ns + dtoIndividual.name);
 			}
 			else if(typeView.equals("OUT")) 
 			{					
-				valuesGraph  = graphPlotting.getArborStructureComingOutOf(OKCoUploader.getInferredModel(), dtoIndividual.ns + dtoIndividual.name);	
+				valuesGraph  = graphPlotting.getArborStructureComingOutOf(repository.getInferredModel(), dtoIndividual.ns + dtoIndividual.name);	
 			}			
 		}	
 		return valuesGraph;

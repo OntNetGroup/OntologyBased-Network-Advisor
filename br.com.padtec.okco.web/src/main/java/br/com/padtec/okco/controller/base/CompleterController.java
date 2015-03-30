@@ -18,14 +18,12 @@ import br.com.padtec.common.dto.DtoStatus;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.URIDecoder;
-import br.com.padtec.okco.core.application.OKCoCommiter;
-import br.com.padtec.okco.core.application.OKCoSelector;
-import br.com.padtec.okco.core.application.OKCoUploader;
+import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.exception.OKCoException;
 
 /**
  * Controller responsible for the functionality of Completing the knowledge.
- * See this class: {@link OKCoCommiter} 
+ * See this class: {@link OKCoComponents} 
  */
 
 public class CompleterController {
@@ -39,20 +37,20 @@ public class CompleterController {
 		/** ==================================================
 		 * Select a Specific Individual
 		 *  =================================================== */
-		DtoInstance selectedIndividual = OKCoSelector.selectIndividual(uriInstance,true);		
-		OKCoSelector.setSelectedToModified();
+		DtoInstance selectedIndividual = OKCoComponents.selector.selectIndividual(uriInstance,true);		
+		OKCoComponents.selector.setSelectedToModified();
 		
 		/** ==================================================
 		 * Complete Individuals Automatically
 		 *  =================================================== */								
-		OKCoCommiter.createNewIndividualsAutomatically(selectedIndividual);
+		OKCoComponents.commiter.createNewIndividualsAutomatically(selectedIndividual);
 				
 		/** ==================================================
 		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
 		 *  This is done since all the retrieving of information is performed in the inferred model but all the Modifications in the base model.  
 		 *  In other words: update the InfModel without calling the reasoner but copying the OntModel to it.
 		 *  =================================================== */
-		OKCoUploader.substituteInferredModelFromBaseModel(false);
+		OKCoComponents.repository.substituteInferredModelFromBaseModel(false);
 		
 		String uriInstanceEncoded = new String(); 
 		try {
@@ -74,43 +72,43 @@ public class CompleterController {
 		/** ==================================================
 		 * Select a Specific Individual
 		 *  =================================================== */
-		DtoInstance selectedIndividual = OKCoSelector.selectIndividual(uriInstance);
+		DtoInstance selectedIndividual = OKCoComponents.selector.selectIndividual(uriInstance);
 		String selectedIndividualURI = selectedIndividual.ns+selectedIndividual.name;
-		OKCoSelector.setIsModified(selectedIndividualURI);
+		OKCoComponents.selector.setIsModified(selectedIndividualURI);
 		
 		/** ==================================================
 		 * Select a Specific class definition from the selected individual
 		 *  =================================================== */
-		DtoDefinitionClass classDefinitionSelected = OKCoSelector.selectDefinitionFromSelected(uriProperty);
+		DtoDefinitionClass classDefinitionSelected = OKCoComponents.selector.selectDefinitionFromSelected(uriProperty);
 		OntCardinalityEnum typeRelation = classDefinitionSelected.TypeCompletness;
 
 		if(type.equals("object"))
 		{
 			if(typeRelation.equals(OntCardinalityEnum.SOME) && classDefinitionSelected.status.equals(DtoStatus.NOT_SATISFIED))
 			{
-				int individualsNumber = QueryUtil.getIndividualsURI(OKCoUploader.getInferredModel(), classDefinitionSelected.Target).size();
+				int individualsNumber = QueryUtil.getIndividualsURI(OKCoComponents.repository.getInferredModel(), classDefinitionSelected.Target).size();
 				/** ==================================================
 				 * Create a New Individual at the Range of the Selected Class Definition
 				 *  =================================================== */				
-				OKCoCommiter.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, null);
+				OKCoComponents.commiter.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, null);
 			}
 			else if(typeRelation.equals(OntCardinalityEnum.MIN) && classDefinitionSelected.status.equals(DtoStatus.NOT_SATISFIED))
 			{
-				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(OKCoUploader.getInferredModel(), selectedIndividualURI, classDefinitionSelected.Relation, classDefinitionSelected.Target);
+				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(OKCoComponents.repository.getInferredModel(), selectedIndividualURI, classDefinitionSelected.Relation, classDefinitionSelected.Target);
 				ArrayList<String> listDifferentFrom = new ArrayList<String>();
 				while(individualsNumber < Integer.parseInt(classDefinitionSelected.Cardinality))
 				{
 					/** ==================================================
 					 * Create a New Individual at the Range of the Selected Class Definition
 					 *  =================================================== */
-					OKCoCommiter.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);					
+					OKCoComponents.commiter.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);					
 									
 					individualsNumber ++;
 				}				
 			} 
 			else if(typeRelation.equals(OntCardinalityEnum.EXACTLY) && classDefinitionSelected.status.equals(DtoStatus.NOT_SATISFIED))
 			{
-				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(OKCoUploader.getInferredModel(), selectedIndividualURI, classDefinitionSelected.Relation, classDefinitionSelected.Target);				
+				int individualsNumber = QueryUtil.countIndividualsURIAtPropertyRange(OKCoComponents.repository.getInferredModel(), selectedIndividualURI, classDefinitionSelected.Relation, classDefinitionSelected.Target);				
 				ArrayList<String> listDifferentFrom = new ArrayList<String>();
 				if(individualsNumber < Integer.parseInt(classDefinitionSelected.Cardinality))
 				{
@@ -119,7 +117,7 @@ public class CompleterController {
 						/** ==================================================
 						 * Create a New Individual at the Range of the Selected Class Definition
 						 *  =================================================== */
-						OKCoCommiter.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);	
+						OKCoComponents.commiter.createNewIndividualAtClassDefinitionRangeSelected(individualsNumber, listDifferentFrom);	
 						
 						individualsNumber ++;
 					}
@@ -132,7 +130,7 @@ public class CompleterController {
 		 *  This is done since all the retrieving of information is performed in the inferred model but all the Modifications in the base model.  
 		 *  In other words: update the InfModel without calling the reasoner but copying the OntModel to it.
 		 *  =================================================== */
-		OKCoUploader.substituteInferredModelFromBaseModel(false);
+		OKCoComponents.repository.substituteInferredModelFromBaseModel(false);
 
 		String uriInstanceEncoded = new String(); 
 		try {
@@ -146,7 +144,7 @@ public class CompleterController {
 	@RequestMapping(method = RequestMethod.GET, value="/completeProperty")
 	public String completeProperty(@RequestParam("uriInstance") String uriInstance, @RequestParam("idDefinition") String uriProperty, @RequestParam("type") String type, @RequestParam("propType") String propType, HttpServletRequest request) throws OKCoException  
 	{
-		OKCoCommiter.clearCommitLists();
+		OKCoComponents.commiter.clearCommitLists();
 		/** Decode URIs First */
 		uriInstance = URIDecoder.decodeURI(uriInstance);
 		uriProperty = URIDecoder.decodeURI(uriProperty);
@@ -154,13 +152,13 @@ public class CompleterController {
 		/** ==================================================
 		 * Select a Specific Individual
 		 *  =================================================== */
-		DtoInstance selectedIndividual = OKCoSelector.selectIndividual(uriInstance);
+		DtoInstance selectedIndividual = OKCoComponents.selector.selectIndividual(uriInstance);
 		request.getSession().setAttribute("instanceSelected", selectedIndividual);
 
 		/** ==================================================
 		 * Select a Specific class definition from the selected individual
 		 *  =================================================== */		
-		DtoDefinitionClass classDefinitionSelected = OKCoSelector.selectDefinitionFromSelected(uriProperty);
+		DtoDefinitionClass classDefinitionSelected = OKCoComponents.selector.selectDefinitionFromSelected(uriProperty);
 		request.getSession().setAttribute("definitionSelected", classDefinitionSelected);
 
 		request.getSession().setAttribute("propType", propType);
@@ -169,13 +167,13 @@ public class CompleterController {
 			/** ==================================================
 			 * List of Individuals that are connected to the Selected Individual through the Selected Class Definition relation
 			 *  =================================================== */
-			List<DtoInstance> individualsInClassDefinition = OKCoSelector.getIndividualsAtClassDefinitionRangeSelected();
+			List<DtoInstance> individualsInClassDefinition = OKCoComponents.selector.getIndividualsAtClassDefinitionRangeSelected();
 			request.getSession().setAttribute("listInstancesInRelation", individualsInClassDefinition);
 						
 			/** ==================================================
 			 *  List All Individuals
 			 *  =================================================== */
-			List<DtoInstance> allIndividuals = OKCoSelector.getIndividuals(true, true, true);
+			List<DtoInstance> allIndividuals = OKCoComponents.selector.getIndividuals(true, true, true);
 			request.getSession().setAttribute("listInstances", allIndividuals);
 			
 			/** ==================================================
@@ -190,7 +188,7 @@ public class CompleterController {
 			/** ==================================================
 			 * List of Individuals that are connected to the Selected Individual through the Selected Class Definition relation
 			 *  =================================================== */
-			List<DtoInstance> individualsInClassDefinition = OKCoSelector.getIndividualsAtClassDefinitionRangeSelected();
+			List<DtoInstance> individualsInClassDefinition = OKCoComponents.selector.getIndividualsAtClassDefinitionRangeSelected();
 			request.getSession().setAttribute("listInstancesInRelation", individualsInClassDefinition);
 			
 			return "completePropertyObjectMaxCard";
@@ -200,7 +198,7 @@ public class CompleterController {
 			/** ==================================================
 			 * List of Data Property Values that are connected to the Selected Individual through the Selected Class Definition relation
 			 *  =================================================== */
-			List<DataPropertyValue> listValuesInRelation = OKCoSelector.getDataValuesAtClassDefinitionRangeSelected();			
+			List<DataPropertyValue> listValuesInRelation = OKCoComponents.selector.getDataValuesAtClassDefinitionRangeSelected();			
 			request.getSession().setAttribute("listValuesInRelation", listValuesInRelation);
 			
 			return "completePropertyData";

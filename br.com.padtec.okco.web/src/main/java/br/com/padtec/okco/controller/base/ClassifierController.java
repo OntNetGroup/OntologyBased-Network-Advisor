@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.dto.DtoClassifyInstancePost;
 import br.com.padtec.common.dto.DtoResult;
-import br.com.padtec.okco.core.application.OKCoClassifier;
-import br.com.padtec.okco.core.application.OKCoUploader;
+import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 
 /**
  * Controller responsible for the functionality of Classifying the instances and relations.
- * See this class: {@link OKCoClassifier} 
+ * See this class: {@link OKCoApplication.} 
  */
 
 public class ClassifierController {
@@ -27,14 +26,14 @@ public class ClassifierController {
 		/** ==================================================
 		 * Classifies the individuals classes.
 		 *  ================================================== */	
-		DtoResult dtoResult = OKCoClassifier.classifyIndividualsClasses(classes);
+		DtoResult dtoResult = OKCoComponents.classifier.classifyIndividualsClasses(classes);
 		
 		/** ==================================================
 		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
 		 *  This is done since all the retrieving of information is performed in the inferred model but all the Modifications in the base model.  
 		 *  In other words: update the InfModel without calling the reasoner but copying the OntModel to it.
 		 *  =================================================== */
-		if(dtoResult.isSucceed()) OKCoUploader.substituteInferredModelFromBaseModel(false);
+		if(dtoResult.isSucceed()) OKCoComponents.repository.substituteInferredModelFromBaseModel(false);
 		
 		return dtoResult;		
 	}
@@ -47,14 +46,14 @@ public class ClassifierController {
 		/** ==================================================
 		 * Classifies the individuals properties.
 		 *  ================================================== */	
-		DtoResult dtoResult = OKCoClassifier.classifyIndividualsProperties(properties, dto);	
+		DtoResult dtoResult = OKCoComponents.classifier.classifyIndividualsProperties(properties, dto);	
 		
 		/** ==================================================
 		 *  Bring all the modification from the Base Model to the Inferred Model (OntModel -> InfModel).
 		 *  This is done since all the retrieving of information is performed in the inferred model but all the Modifications in the base model.  
 		 *  In other words: update the InfModel without calling the reasoner but copying the OntModel to it.
 		 *  =================================================== */
-		if(dtoResult.isSucceed()) OKCoUploader.substituteInferredModelFromBaseModel(false);
+		if(dtoResult.isSucceed()) OKCoComponents.repository.substituteInferredModelFromBaseModel(false);
 		
 		return dtoResult;	
 	}

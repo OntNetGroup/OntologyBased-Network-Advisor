@@ -17,6 +17,13 @@ public class BindsVisualizator extends Visualizator {
 	protected String hashTypes = new String();
 	protected String hashAllowed = new String();
 	protected String hashRPEquip = new String();
+	protected GeneralBinds binds;
+	
+	public BindsVisualizator(OKCoUploader repository, GeneralBinds binds)
+	{
+		super(repository, binds);
+		this.binds = binds;	
+	}
 	
 	public void createArborStruct()
 	{
@@ -33,7 +40,7 @@ public class BindsVisualizator extends Visualizator {
 			{
 				hashEquipIntOut += "hashEquipIntOut['"+equip.getName()+"']['"+outs.getName()+"'] = \""+outs.isConnected()+"\";";
 				if(hashAllowed.contains(equip.getName())) continue;
-				List<String> possibleList = GeneralBinds.getCandidateInterfacesForConnection(outs.getName());
+				List<String> possibleList = binds.getCandidateInterfacesForConnection(outs.getName());
 				for(String possibleConnection : possibleList)
 				{
 					if(possibleConnection.contains("true"))
@@ -45,7 +52,7 @@ public class BindsVisualizator extends Visualizator {
 			}
 			for(Map.Entry<ArrayList<String>,DtoEquipment> entry : equip.getBinds().entrySet())
 			{
-				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_ROXO\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(OKCoUploader.getInferredModel(),OKCoUploader.getNamespace()+entry.getValue().getName()))+"_ROXO\"}), {name:'binds:";
+				arborStructure += "graph.addEdge(graph.addNode(\""+equip.getName()+"\", {shape:\"Equip_ROXO\"}),graph.addNode(\""+entry.getValue().getName()+"\", {shape:\""+HTMLFigureMapper.getG800Image(QueryUtil.getClassesURIFromIndividual(repository.getInferredModel(),repository.getNamespace()+entry.getValue().getName()))+"_ROXO\"}), {name:'binds:";
 				arborStructure += entry.getKey().get(0)+"-"+entry.getKey().get(1);
 				arborStructure += "'});";
 				size++;
@@ -81,7 +88,7 @@ public class BindsVisualizator extends Visualizator {
 			}
 			
 			if(pm[5]== null && pm[4] != null){
-				List<String> possibleList = GeneralBinds.getCandidateInterfacesForConnection(pm[4]);
+				List<String> possibleList = binds.getCandidateInterfacesForConnection(pm[4]);
 				for(String possibleConnection : possibleList)
 				{
 					if(possibleConnection.contains("true"))

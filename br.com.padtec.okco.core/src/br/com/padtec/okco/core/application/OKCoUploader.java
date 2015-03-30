@@ -23,18 +23,22 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 public class OKCoUploader {
 
 	/** Reasoner */
-	public static OntologyReasoner reasoner;
+	protected OntologyReasoner reasoner;
 	
 	/** Base Model Repository */
-	public static BaseModelRepository baseRepository;
+	protected BaseModelRepository baseRepository;
 	
 	/** Inferred Model Repository */
-	public static InferredModelRepository inferredRepository;
+	protected InferredModelRepository inferredRepository;
 	
 	/** Temporary Model used to rool back */
-	public static OntModel tempModel;
+	protected OntModel tempModel;
 	
-	public static boolean reasonOnLoading = false;
+	protected boolean reasonOnLoading = false;
+	
+	public boolean isReasonOnLoading()  { return reasonOnLoading; }
+	public void setIsReasonOnLoading(boolean value)  { reasonOnLoading=value; }
+	public OntologyReasoner getReasoner() { return reasoner; }
 	
 	/**
 	 * Upload the base model ontology in OWL. The user might opt for not using the reasoner at the upload.
@@ -51,7 +55,7 @@ public class OKCoUploader {
 	 * 
 	 * @author John Guerson
 	 */
-	public static void uploadBaseModel(InputStream in, String useReasoner, String optReasoner)
+	public void uploadBaseModel(InputStream in, String useReasoner, String optReasoner)
 	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
 	{	
 		/** Upload the base model to a base repository */
@@ -83,9 +87,6 @@ public class OKCoUploader {
 			InfModel inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}
-		
-		OKCoSelector.clearModified();
-		OKCoSelector.clearSelected();		
 	}
 		
 	/**
@@ -103,7 +104,7 @@ public class OKCoUploader {
 	 * 
 	 * @author John Guerson
 	 */
-	public static void uploadBaseModel(String path, String useReasoner, String optReasoner)
+	public void uploadBaseModel(String path, String useReasoner, String optReasoner)
 	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
 	{	
 		/** Upload the base model to a base repository */
@@ -135,33 +136,30 @@ public class OKCoUploader {
 			InfModel  inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
 		}
-		
-		OKCoSelector.clearModified();
-		OKCoSelector.clearSelected();
 	}
 	
-	public static BaseModelRepository getBaseRepository() { return baseRepository; }	
-	public static OntModel getBaseModel() 
+	public BaseModelRepository getBaseRepository() { return baseRepository; }	
+	public OntModel getBaseModel() 
 	{ 
 		if(baseRepository!=null) return baseRepository.getBaseOntModel(); 
 		else return null; 
 	}	
-	public static InferredModelRepository getInferredRepository() { return inferredRepository; }	
-	public static InfModel getInferredModel() 
+	public InferredModelRepository getInferredRepository() { return inferredRepository; }	
+	public InfModel getInferredModel() 
 	{
 		if(inferredRepository == null) return null;
 		return inferredRepository.getInferredOntModel(); 
 	}	
-	public static boolean isBaseModelUploaded() { return baseRepository.getBaseOntModel()!=null; }	
-	public static String getBaseModelAsString() { return baseRepository.getBaseOntModelAsString(); }
-	public static String getNamespace() { if(baseRepository!=null && baseRepository.getBaseOntModel()!=null) return baseRepository.getNameSpace(); else return ""; }
+	public boolean isBaseModelUploaded() { return baseRepository.getBaseOntModel()!=null; }	
+	public String getBaseModelAsString() { return baseRepository.getBaseOntModelAsString(); }
+	public String getNamespace() { if(baseRepository!=null && baseRepository.getBaseOntModel()!=null) return baseRepository.getNameSpace(); else return ""; }
 	
 	/**
 	 * Save Base Model to a file.
 	 * 
 	 * @author John Guerson
 	 */
-	public static boolean saveBaseModel()
+	public boolean saveBaseModel()
 	{		
 		if(baseRepository.getBaseOntModel() != null)
 		{			
@@ -178,7 +176,7 @@ public class OKCoUploader {
 	 * 
 	 * @author John Guerson
 	 */
-	public static void clear()
+	public void clear()
 	{		
 		if(baseRepository!=null) baseRepository.clear();
 		if(inferredRepository!=null) inferredRepository.clear();
@@ -191,7 +189,7 @@ public class OKCoUploader {
 	 * 
 	 * @author John Guerson
 	 */
-	public static void rollBack(boolean runningReasoner)
+	public void rollBack(boolean runningReasoner)
 	{				
 		baseRepository.cloneReplacing(tempModel);		
 		if(!runningReasoner) inferredRepository.cloneReplacing(tempModel);
@@ -206,7 +204,7 @@ public class OKCoUploader {
 	 *  This is done since all the retrieve of information is performed in the inferred model and all the modifications in the base model.  
 	 *  In other words: Update InfModel i) without calling the reasoner, copying the OntModel or ii) running the inference
 	 */
-	public static void substituteInferredModelFromBaseModel(boolean runningReasoner)
+	public void substituteInferredModelFromBaseModel(boolean runningReasoner)
 	{
 		if(!runningReasoner){
 			OntModel newInferredModel = OntModelAPI.clone(getBaseModel());
@@ -221,7 +219,7 @@ public class OKCoUploader {
 	/**
 	 * Record a temporary model from the last valid base model in order to allow a roll back in the future.
 	 */
-	public static void storeTemporaryModelFromBaseModel()
+	public void storeTemporaryModelFromBaseModel()
 	{
 		tempModel = OntModelAPI.clone(getBaseModel());
 	}

@@ -23,18 +23,23 @@ import com.hp.hpl.jena.rdf.model.Statement;
 
 public class GeneralBinds extends AdvisorService {
 	
-	public static PossibleBindsMap possibleBinds = new PossibleBindsMap();
+	public PossibleBindsMap possibleBinds = new PossibleBindsMap();
+		
+	public GeneralBinds(OKCoUploader repository)
+	{
+		super(repository);			
+	}
 	
 	/** Provisioning Binds */
-	public static DtoResultAjax provisioningBinds(String outInt, String inInt, Boolean updateListsInTheEnd, ArrayList<String> listInstancesCreated) 
+	public DtoResultAjax provisioningBinds(String outInt, String inInt, Boolean updateListsInTheEnd, ArrayList<String> listInstancesCreated) 
 	{
 		DtoResultAjax dto = new DtoResultAjax();
-		String namespace = OKCoUploader.getNamespace();
+		String namespace = repository.getNamespace();
 		String outputNs = new String();
 		String inputNs = new String();		
 		
-		List<DtoInstanceRelation> outIntRelations = DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(), namespace+outInt);
-		List<DtoInstanceRelation> inIntRelations = DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(), namespace+inInt);		
+		List<DtoInstanceRelation> outIntRelations = DtoQueryUtil.getRelationsFrom(repository.getInferredModel(), namespace+outInt);
+		List<DtoInstanceRelation> inIntRelations = DtoQueryUtil.getRelationsFrom(repository.getInferredModel(), namespace+inInt);		
 		for (DtoInstanceRelation outIntRelation : outIntRelations) 
 		{
 			if(outIntRelation.Property.equalsIgnoreCase(namespace+RelationEnum.MAPS_OUTPUT))
@@ -57,7 +62,7 @@ public class GeneralBinds extends AdvisorService {
 		Boolean outputIsPmOutput = false;
 		if(inputNs.equals(""))
 		{
-			DtoInstance inputOrIntInput = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(),namespace+inInt, true, false, false);
+			DtoInstance inputOrIntInput = DtoQueryUtil.getIndividualByName(repository.getInferredModel(),namespace+inInt, true, false, false);
 			for (String inputOrIntInputClass : inputOrIntInput.ListClasses) 
 			{
 				if(inputOrIntInputClass.equals(namespace+ConceptEnum.PHYSICAL_MEDIA_INPUT))
@@ -70,7 +75,7 @@ public class GeneralBinds extends AdvisorService {
 		}		
 		if(outputNs.equals(""))
 		{
-			DtoInstance outputOrIntOutput = DtoQueryUtil.getIndividualByName(OKCoUploader.getInferredModel(),namespace+outInt, true, false, false);
+			DtoInstance outputOrIntOutput = DtoQueryUtil.getIndividualByName(repository.getInferredModel(),namespace+outInt, true, false, false);
 			for (String outputOrIntOutputClass : outputOrIntOutput.ListClasses) 
 			{
 				if(outputOrIntOutputClass.equals(namespace+ConceptEnum.PHYSICAL_MEDIA_OUTPUT))
@@ -87,24 +92,24 @@ public class GeneralBinds extends AdvisorService {
 		ObjectProperty rel = null;
 		if(inputIsPmInput && !outputIsPmOutput)
 		{
-			a = OKCoUploader.getBaseModel().getIndividual(namespace+outInt);
-			b = OKCoUploader.getBaseModel().getIndividual(namespace+inputNs);
-			rel = OKCoUploader.getBaseModel().getObjectProperty(namespace+RelationEnum.BINDS_PM_OUT_INTERFACE);
+			a = repository.getBaseModel().getIndividual(namespace+outInt);
+			b = repository.getBaseModel().getIndividual(namespace+inputNs);
+			rel = repository.getBaseModel().getObjectProperty(namespace+RelationEnum.BINDS_PM_OUT_INTERFACE);
 		}
 		else if(!inputIsPmInput && outputIsPmOutput)
 		{
-			a = OKCoUploader.getBaseModel().getIndividual(namespace+inInt);
-			b = OKCoUploader.getBaseModel().getIndividual(namespace+outputNs);
-			rel = OKCoUploader.getBaseModel().getObjectProperty(namespace+RelationEnum.BINDS_PM_IN_INTERFACE);
+			a = repository.getBaseModel().getIndividual(namespace+inInt);
+			b = repository.getBaseModel().getIndividual(namespace+outputNs);
+			rel = repository.getBaseModel().getObjectProperty(namespace+RelationEnum.BINDS_PM_IN_INTERFACE);
 		}
 		else
 		{
-			a = OKCoUploader.getBaseModel().getIndividual(namespace+outInt);
-			b = OKCoUploader.getBaseModel().getIndividual(namespace+inInt);
-			rel = OKCoUploader.getBaseModel().getObjectProperty(namespace+RelationEnum.INTERFACE_BINDS);
+			a = repository.getBaseModel().getIndividual(namespace+outInt);
+			b = repository.getBaseModel().getIndividual(namespace+inInt);
+			rel = repository.getBaseModel().getObjectProperty(namespace+RelationEnum.INTERFACE_BINDS);
 		}		
-		Statement stmt = OKCoUploader.getBaseModel().createStatement(a, rel, b);
-		OKCoUploader.getBaseModel().add(stmt);
+		Statement stmt = repository.getBaseModel().createStatement(a, rel, b);
+		repository.getBaseModel().add(stmt);
 
 		if(listInstancesCreated == null) listInstancesCreated = new ArrayList<String>();		
 		listInstancesCreated.add(a.getNameSpace()+a.getLocalName());
@@ -112,13 +117,13 @@ public class GeneralBinds extends AdvisorService {
 		
 		if(!outputNs.equals("") && !inputNs.equals(""))
 		{			
-			a = OKCoUploader.getBaseModel().getIndividual(namespace+outputNs);
-			b = OKCoUploader.getBaseModel().getIndividual(namespace+inputNs);
+			a = repository.getBaseModel().getIndividual(namespace+outputNs);
+			b = repository.getBaseModel().getIndividual(namespace+inputNs);
 			
-			BindsProcessor.bindPorts(null, a, b, null, namespace, OKCoUploader.getBaseModel(), listInstancesCreated);
+			BindsProcessor.bindPorts(null, a, b, null, namespace, repository.getBaseModel(), listInstancesCreated);
 		}
 
-		OKCoUploader.substituteInferredModelFromBaseModel(false);		
+		repository.substituteInferredModelFromBaseModel(false);		
 		dto.ok = true;
 		dto.result = "ok";
 		return dto;
@@ -126,9 +131,9 @@ public class GeneralBinds extends AdvisorService {
 	}
 	
 	/** Filer Allowed Interfaces with Physical Media */
-	private static void filterAllowedInterfacesWithPhysicalMedia(String outputClassName,  List<String> allowedInputInterfaces, String eqOutNs, Boolean outputInterfaceAlreadyBinded)
+	private void filterAllowedInterfacesWithPhysicalMedia(String outputClassName,  List<String> allowedInputInterfaces, String eqOutNs, Boolean outputInterfaceAlreadyBinded)
 	{
-		String namespace = OKCoUploader.getNamespace();	
+		String namespace = repository.getNamespace();	
 		List<DtoInstance> outputs = AdvisorDtoQueryUtil.getIndividualsFromClass(ConceptEnum.OUTPUT);
 		List<DtoInstance> physicalMediaInputs = AdvisorDtoQueryUtil.getIndividualsFromClass(ConceptEnum.PHYSICAL_MEDIA_INPUT);
 		
@@ -216,9 +221,9 @@ public class GeneralBinds extends AdvisorService {
 	}
 	
 	/** Filer Allowed Interfaces with Input Interfaces */
-	private static void filterAllowedInterfacesWithInputInterfaces(String outputClassName, List<String> allowedInputInterfaces, List<DtoInstance> inputInterfaces , String eqOutNs, Boolean outputInterfaceAlreadyBinded)
+	private void filterAllowedInterfacesWithInputInterfaces(String outputClassName, List<String> allowedInputInterfaces, List<DtoInstance> inputInterfaces , String eqOutNs, Boolean outputInterfaceAlreadyBinded)
 	{
-		String namespace = OKCoUploader.getNamespace();	
+		String namespace = repository.getNamespace();	
 		List<DtoInstance> outputInterfaces = AdvisorDtoQueryUtil.getIndividualsFromClass(ConceptEnum.OUTPUT_INTERFACE);
 		
 		/** here, I look for possible connections with input interfaces */
@@ -320,9 +325,9 @@ public class GeneralBinds extends AdvisorService {
 	}
 	
 	/** Cannot Connect */
-	private static void cannotConnect(List<DtoInstance> inputInterfaces, List<String> allowedInputInterfaces) 
+	private void cannotConnect(List<DtoInstance> inputInterfaces, List<String> allowedInputInterfaces) 
 	{
-		String namespace = OKCoUploader.getNamespace();
+		String namespace = repository.getNamespace();
 		
 		for (DtoInstance dtoInputInterface : inputInterfaces) 
 		{
@@ -348,10 +353,10 @@ public class GeneralBinds extends AdvisorService {
 	}
 	
 	/** Get candidate interfaces for connection */
-	public static List<String> getCandidateInterfacesForConnection(String sourceName)
+	public List<String> getCandidateInterfacesForConnection(String sourceName)
 	{
 		Date beginDate = new Date();		
-		String namespace = OKCoUploader.getNamespace();		
+		String namespace = repository.getNamespace();		
 		
 		List<String> allowedInputInterfaces = new ArrayList<String>();		
 		List<DtoInstance> inputInterfaces = AdvisorDtoQueryUtil.getIndividualsFromClass(ConceptEnum.INPUT_INTERFACE);
@@ -435,7 +440,7 @@ public class GeneralBinds extends AdvisorService {
 		 * ============================================*/
 		for (String outputClassName : dtoOutput.ListClasses) 
 		{
-			outputClassName = outputClassName.replace(OKCoUploader.getNamespace(), "");
+			outputClassName = outputClassName.replace(repository.getNamespace(), "");
 						
 			filterAllowedInterfacesWithInputInterfaces(outputClassName, allowedInputInterfaces, inputInterfaces, eqOutNs, outputInterfaceAlreadyBinded);
 			
@@ -448,12 +453,12 @@ public class GeneralBinds extends AdvisorService {
 	}
 	
 	/** Checks whether we have a cycle in relationship */
-	public static Boolean hasCyclicalRelationship(String searchForEquipNS, String searchForEquipName, String actualEquipNS, String actualEquipName)
+	public Boolean hasCyclicalRelationship(String searchForEquipNS, String searchForEquipName, String actualEquipNS, String actualEquipName)
 	{
-		String namespace = OKCoUploader.getNamespace();	
+		String namespace = repository.getNamespace();	
 		if(searchForEquipNS.equals(actualEquipNS) && searchForEquipName.equals(actualEquipName)) return true;
 				
-		List<DtoInstanceRelation> equipRelations = DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(), actualEquipNS+actualEquipName);		
+		List<DtoInstanceRelation> equipRelations = DtoQueryUtil.getRelationsFrom(repository.getInferredModel(), actualEquipNS+actualEquipName);		
 		ArrayList<String> outIntNss = new ArrayList<String>();
 		
 		/** get name spaces of individuals of some input interface relations */
@@ -489,7 +494,7 @@ public class GeneralBinds extends AdvisorService {
 			/** if inIntNs != null */
 			if(!inIntNs.equals(""))
 			{
-				List<DtoInstanceRelation> inIntRelations = DtoQueryUtil.getRelationsFrom(OKCoUploader.getInferredModel(), inIntNs);
+				List<DtoInstanceRelation> inIntRelations = DtoQueryUtil.getRelationsFrom(repository.getInferredModel(), inIntNs);
 				String inIntEquipNs = new String();
 				
 				/** get name spaces of individuals of some input interface relations */
@@ -512,13 +517,13 @@ public class GeneralBinds extends AdvisorService {
 		return false;
 	}
 	
-	public static String autoBinds()
+	public String autoBinds()
 	{		
-		String namespace = OKCoUploader.getNamespace();
+		String namespace = repository.getNamespace();
 		ArrayList<DtoInstance> outputInterfaces = new ArrayList<DtoInstance>();
 		
 		/** get all instances of output interfaces not connected */				
-		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(OKCoUploader.getInferredModel(), false, false, false);
+		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(repository.getInferredModel(), false, false, false);
 		for (DtoInstance instance : allInstances) 
 		{
 			for (String className : instance.ListClasses) 
@@ -551,7 +556,7 @@ public class GeneralBinds extends AdvisorService {
 		
 		for (DtoInstance outputInterface : outputInterfaces) 
 		{
-			List<String> candidatesForConnection = GeneralBinds.getCandidateInterfacesForConnection(outputInterface.ns+outputInterface.name);
+			List<String> candidatesForConnection = getCandidateInterfacesForConnection(outputInterface.ns+outputInterface.name);
 			
 			int noCandidates = 0;
 			String inputCandidateName = new String();
@@ -589,7 +594,7 @@ public class GeneralBinds extends AdvisorService {
 			
 			if(outs.size() == 1)
 			{
-				GeneralBinds.provisioningBinds(outs.get(0), inputInterface, false, listInstancesCreated);
+				provisioningBinds(outs.get(0), inputInterface, false, listInstancesCreated);
 				
 				bindsMade++;
 				returnMessage += outs.get(0);

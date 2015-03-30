@@ -9,50 +9,59 @@ import com.hp.hpl.jena.ontology.OntModel;
 
 public class SindelUploader {
 
-	private static String sindelCode = new String();
+	private String sindelCode = new String();
 	
-	public static void uploadSindelModel(String sindelCode)
+	protected OKCoUploader repository;
+	protected OKCoReasoner reasoner;
+	
+	public SindelUploader(OKCoUploader repository, OKCoReasoner reasoner)
 	{
-		SindelUploader.sindelCode = sindelCode;
+		this.repository = repository;
+		this.reasoner = reasoner;
 	}
 	
-	public static String getSindelCode()
+	public void uploadSindelModel(String sindelCode)
+	{
+		this.sindelCode = sindelCode;
+	}
+	
+	public String getSindelCode()
 	{
 		return sindelCode;
 	}
 	
-	public static void clear()
+	public void clear()
 	{
 		sindelCode = "";
 	}
 	
-	public static DtoResult transformSindelToOwl()
+	public DtoResult transformSindelToOwl()
 	{
-		OntModel basemodel = OKCoUploader.getBaseModel();
+		OntModel basemodel = repository.getBaseModel();
 				
 		Sindel2OWL so = new Sindel2OWL(basemodel);
 		so.run(sindelCode);
 	
-		return OKCoReasoner.runReasoner(OKCoUploader.reasonOnLoading);
+		return reasoner.runReasoner(repository.isReasonOnLoading());
 	}
 	
-	public static DtoResult transformSindelToOwl(String individualsPrefixName)
+	public DtoResult transformSindelToOwl(String individualsPrefixName)
 	{
-		OntModel basemodel = OKCoUploader.getBaseModel();
+		OntModel basemodel = repository.getBaseModel();
 				
 		Sindel2OWL so = new Sindel2OWL(basemodel, individualsPrefixName);
 		so.run(sindelCode);
 	
-		return OKCoReasoner.runReasoner(OKCoUploader.reasonOnLoading);
+		return reasoner.runReasoner(repository.isReasonOnLoading());
 	}
 	
-	public static DtoResult transformSindelToOwl(String individualsPrefixName, boolean runReasoning)
+	public DtoResult transformSindelToOwl(String individualsPrefixName, boolean runReasoning)
 	{
-		OntModel basemodel = OKCoUploader.getBaseModel();
+		OntModel basemodel = repository.getBaseModel();
 				
 		Sindel2OWL so = new Sindel2OWL(basemodel, individualsPrefixName);
 		so.run(sindelCode);
 	
-		return OKCoReasoner.runReasoner(runReasoning);
+		return reasoner.runReasoner(runReasoning);
 	}
 }

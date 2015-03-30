@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.advisor.core.application.AdvisorService;
-import br.com.padtec.advisor.core.application.GeneralConnects;
+import br.com.padtec.advisor.core.application.AdvisorComponents;
 
 @Controller
 public class ConnectsController {
@@ -21,7 +20,7 @@ public class ConnectsController {
 	{
 
 		ArrayList<String[]> listInstancesCreated = new ArrayList<String[]>();
-		listInstancesCreated = GeneralConnects.autoConnect();
+		listInstancesCreated = AdvisorComponents.connects.autoConnect();
 		
 		String returnMessage;
 		if(listInstancesCreated.size()>0){
@@ -40,7 +39,7 @@ public class ConnectsController {
 	public @ResponseBody String do_connects(@RequestParam("rp_src") String rp_src,@RequestParam("rp_trg") String rp_trg, @RequestParam("rp_type") String rp_type, HttpServletRequest request) 
 	{
 		try {
-			GeneralConnects.connects(rp_src, rp_trg, rp_type);
+			AdvisorComponents.connects.connects(rp_src, rp_trg, rp_type);
 			
 			/*
 			 * Verify the new possible connects
@@ -48,27 +47,27 @@ public class ConnectsController {
 			String hashAllowed = new String();			
 			ArrayList<String[]> possibleConnections;
 			
-			GeneralConnects.setEquipmentsWithRPs();
+			AdvisorComponents.connects.setEquipmentsWithRPs();
 
-			for (String connections : GeneralConnects.getConnectsBetweenEqsAndRps()) {
+			for (String connections : AdvisorComponents.connects.getConnectsBetweenEqsAndRps()) {
 				String src = connections.split("#")[0];
 				String trg = connections.split("#")[1];
 
-				possibleConnections = AdvisorService.getPossibleConnectsTuples(src);
+				possibleConnections = AdvisorComponents.connects.getPossibleConnectsTuples(src);
 				if(!possibleConnections.isEmpty() && !hashAllowed.contains(src))
 					hashAllowed += src+"#";
 
-				possibleConnections = AdvisorService.getPossibleConnectsTuples(trg);
+				possibleConnections = AdvisorComponents.connects.getPossibleConnectsTuples(trg);
 				if(!possibleConnections.isEmpty() && !hashAllowed.contains(trg))
 					hashAllowed += trg+"#";
 			}
 			
-			for (String equipWithRP : GeneralConnects.getEquipmentsWithRps()) {
+			for (String equipWithRP : AdvisorComponents.connects.getEquipmentsWithRps()) {
 				String equip = equipWithRP.split("#")[0];
 				String rp = equipWithRP.split("#")[1];
 
 				if(!equip.isEmpty()){
-					if(!AdvisorService.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
+					if(!AdvisorComponents.connects.getPossibleConnectsTuples(rp).isEmpty() && !hashAllowed.contains(rp)){
 						hashAllowed += equip+"#";
 					}
 				}
@@ -87,7 +86,7 @@ public class ConnectsController {
 		 * [0] = RP's name
 		 * [1] = Connection type
 		 * */
-		ArrayList<String[]> list = AdvisorService.getPossibleConnectsTuples(rp);
+		ArrayList<String[]> list = AdvisorComponents.connects.getPossibleConnectsTuples(rp);
 
 		String hashEquipIntIn = "";
 

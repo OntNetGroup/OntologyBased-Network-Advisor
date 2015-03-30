@@ -14,27 +14,34 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 public class SubRelationEnforcer {
 
+	protected OKCoUploader repository;
+	
+	public SubRelationEnforcer(OKCoUploader repository)
+	{
+		this.repository = repository;
+	}
+	
 	/**
 	 * Enforce Sub Relations.
 	 * 
 	 * @return
 	 */
-	public static OntModel run()
+	public OntModel run()
 	{				
-		InfModel inferredModel = OKCoUploader.getInferredModel();
-		OntModel baseModel = OKCoUploader.getBaseModel();
+		InfModel inferredModel = repository.getInferredModel();
+		OntModel baseModel = repository.getBaseModel();
 		
 		List<DtoInstance> allInstances = DtoQueryUtil.getIndividuals(inferredModel, true, true, true);		
 		for (DtoInstance instance : allInstances) 
 		{		
 			/** Get all relations of that instance */
 			List<DtoInstanceRelation> dtoRelationsList = new ArrayList<DtoInstanceRelation>();
-			List<String> propertiesURIList = QueryUtil.getPropertiesURI(OKCoUploader.getInferredModel(), instance.ns + instance.name);
+			List<String> propertiesURIList = QueryUtil.getPropertiesURI(repository.getInferredModel(), instance.ns + instance.name);
 			for(String propertyURI: propertiesURIList)
 			{
 				DtoInstanceRelation dtoItem = new DtoInstanceRelation();
 			    dtoItem.Property = propertyURI;
-			    List<String> ranges = QueryUtil.getRangeURIs(OKCoUploader.getInferredModel(), propertyURI);
+			    List<String> ranges = QueryUtil.getRangeURIs(repository.getInferredModel(), propertyURI);
 			    if(ranges.size()>0) dtoItem.Target = ranges.get(0);
 			    else dtoItem.Target = "";
 			    dtoRelationsList.add(dtoItem);
