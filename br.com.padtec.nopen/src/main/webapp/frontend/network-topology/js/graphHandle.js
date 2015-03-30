@@ -3,6 +3,7 @@ function graphHandle(graph){
 	
 	graph.on('add', function(cell) {
 		
+		//Add Node
 		if(cell.get('type') == "NODE"){
 			$.ajax({
 			   type: "GET",
@@ -19,7 +20,31 @@ function graphHandle(graph){
 		
 	});
 	
-	
+	graph.on('change:target', function(link) { 
+		
+		if (link.get("target").id != null) {
+			
+			var source = graph.getCell(link.get("source").id);
+			var target = graph.getCell(link.get("target").id);
+			
+			$.ajax({
+			   type: "POST",
+			   url: "createConnection.htm",
+			   data: {
+				 'source': source.id,
+				 'target': target.id
+			   },
+			   success: function(data){ 		   
+				   //link.remove();
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+		}
+		
+	});
+
 	function generateDialog(data, cell){
 		
 		$("#dialog").html('');
@@ -30,7 +55,7 @@ function graphHandle(graph){
 		      width: 350,
 		      modal: true,
 		      buttons: { 
-		    	"Match": matchEquipment,  
+		    	"Match": matchEquipmentToNode,  
 		        Cancel: function() {
 		          dialog.dialog( "close" );
 		        }
@@ -38,15 +63,30 @@ function graphHandle(graph){
 		      close: function() { }
 		});
 		
-		function matchEquipment(){
-			
-			dialog.dialog( "close");
+		function matchEquipmentToNode(){
 			
 			var equipment = $('input[name=equipment]:checked', '#dialog').val();
 			
-			cell.attr('equipment/template', equipment);
-			cell.attr('text/text', equipment);
-			//$('.text').attr('readonly', true);
+			$.ajax({
+			   type: "POST",
+			   url: "matchEquipmentToNode.htm",
+			   data: {
+				 'idNode' : cell.id,
+				 'idEquipment' : equipment
+			   },
+			   success: function(data){
+				   cell.attr('equipment/template', equipment);
+				   cell.attr('text/text', equipment);
+					
+				   dialog.dialog( "close");
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+			
+			
+			
 		};
 		
 
@@ -76,6 +116,21 @@ function paperHandle(paper){
 	
 	paper.on('cell:pointerdblclick', function(cellView, evt, x, y) { 
 	    alert(cellView.model.id);
-	})
+	});
 	
-}
+	/*
+	paper.on('cell:pointerup', function(cellView, evt, x, y) { 
+
+		var link = cellView.model;
+		
+		if(link.get('type') == "link"){
+				
+			if(link.get('target').id == null){
+				alert(link.get('target').id);
+				link.remove();
+			}
+		}
+	});
+	*/
+};
+

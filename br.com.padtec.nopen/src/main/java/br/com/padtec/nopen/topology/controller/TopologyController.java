@@ -52,6 +52,9 @@ public class TopologyController {
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
 		
+		// ManagerTopology managerTopology = new ManagerTopology();
+		// HashSet<String> equipments = managerTopology.getAllTemplateEquipment();
+		
 		HashSet<String> equipments = new HashSet<String>();
 		equipments.add("Equipment1");
 		equipments.add("Equipment2");
@@ -73,6 +76,27 @@ public class TopologyController {
 		}
 		
 		return json.toString();
+	}
+	
+	@RequestMapping(value = "/matchEquipmentToNode", method = RequestMethod.POST)
+	protected @ResponseBody void matchEquipmentToNode(@RequestParam("idNode") String idNode, @RequestParam("idEquipment") String idEquipment){
+		
+		System.out.println("idNode: " + idNode);
+		System.out.println("idEquipment: " + idEquipment);
+		
+		// ManagerTopology managerTopology = new ManagerTopology();
+		// managerTopology.matchEquipmentToNode(idNode, idEquipment);
+	}	
+	
+	@RequestMapping(value = "/createConnection", method = RequestMethod.POST)
+	protected @ResponseBody void createConnection(@RequestParam("source") String source, @RequestParam("target") String target){
+		
+		System.out.println("Source: " + source);
+		System.out.println("Target: " + target);
+		
+		// ManagerTopology managerTopology = new ManagerTopology();
+		// managerTopology.createConnection(source, target);
+		
 	}
 	
 }
