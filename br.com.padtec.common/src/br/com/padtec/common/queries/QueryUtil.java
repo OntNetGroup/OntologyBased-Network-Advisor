@@ -2,6 +2,7 @@ package br.com.padtec.common.queries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import br.com.padtec.common.dto.DtoInstanceRelation;
@@ -2125,6 +2126,31 @@ public class QueryUtil {
 		    	result.add(superOP.toString());
 		    }
 		}		
+		return result;
+	}
+	
+	public static HashSet<String> getAllTemplateEquipment(InfModel model){
+		HashSet<String> result = new HashSet<String>();
+		String queryString = ""
+		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+		+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#>" 
+		+ "SELECT ?subject "
+		+  " WHERE { ?subject rdf:type ont:Equipment }" ;
+		
+		Query query = QueryFactory.create(queryString); 
+  		
+  		// Execute the query and obtain results
+  		QueryExecution qe = QueryExecutionFactory.create(query, model);
+  		ResultSet results = qe.execSelect();
+  		//ResultSetFormatter.out(System.out, results, query);
+  		
+  		while (results.hasNext()) {
+  			QuerySolution row = results.next();
+  		    
+  		    RDFNode rdfY = row.get("subject");
+  	    	result.add(rdfY.toString());
+  		}
+  		
 		return result;
 	}
 }
