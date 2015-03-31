@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.common.dto.DtoResult;
+import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.application.OKCoReasoner;
 
 /**
@@ -22,6 +23,6 @@ public class OKCoReasoningController {
 		/** ==================================================
 		 * Running the reasoner, storing the temporary model and cleaning the list of modified
 		 *  =================================================== */
-		return OKCoReasoner.runReasoner();		
+		return OKCoComponents.reasoner.runReasoner();		
 	}
 }

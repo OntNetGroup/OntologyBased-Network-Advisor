@@ -16,7 +16,7 @@ import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.dto.DtoPropertyAndSubProperties;
 import br.com.padtec.common.types.URIDecoder;
-import br.com.padtec.okco.core.application.OKCoSelector;
+import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.exception.OKCoException;
 
 /**
@@ -35,16 +35,16 @@ public class OKCoDetailingController {
 		/** ==================================================
 		 * Select a Specific Individual
 		 *  =================================================== */
-		DtoInstance selectedIndividual = OKCoSelector.selectIndividual(uri);
+		DtoInstance selectedIndividual = OKCoComponents.selector.selectIndividual(uri);
 		request.getSession().setAttribute("instanceSelected", selectedIndividual);
 				
 		/** ==================================================
 		 * List of Cardinality Details of the Selected Individual
 		 *  =================================================== */				
-		List<DtoDefinitionClass> listSomeClassDefinition = OKCoSelector.getSomeDefinitionsFromSelected();
-		List<DtoDefinitionClass> listMinClassDefinition = OKCoSelector.getMinDefinitionsFromSelected();	
-		List<DtoDefinitionClass> listMaxClassDefinition = OKCoSelector.getMaxDefinitionsFromSelected();
-		List<DtoDefinitionClass> listExactlyClassDefinition = OKCoSelector.getExactDefinitionsFromSelected();
+		List<DtoDefinitionClass> listSomeClassDefinition = OKCoComponents.selector.getSomeDefinitionsFromSelected();
+		List<DtoDefinitionClass> listMinClassDefinition = OKCoComponents.selector.getMinDefinitionsFromSelected();	
+		List<DtoDefinitionClass> listMaxClassDefinition = OKCoComponents.selector.getMaxDefinitionsFromSelected();
+		List<DtoDefinitionClass> listExactlyClassDefinition = OKCoComponents.selector.getExactDefinitionsFromSelected();
 		request.getSession().setAttribute("listSomeClassDefinition", listSomeClassDefinition);
 		request.getSession().setAttribute("listMinClassDefinition", listMinClassDefinition);
 		request.getSession().setAttribute("listMaxClassDefinition", listMaxClassDefinition);
@@ -53,24 +53,24 @@ public class OKCoDetailingController {
 		/** ==================================================
 		 * List of relations and Sub-relations of the Selected Individual
 		 *  =================================================== */	
-		List<DtoPropertyAndSubProperties> ListSpecializationProperties = OKCoSelector.getRelationSpecializationsFromSelected();
+		List<DtoPropertyAndSubProperties> ListSpecializationProperties = OKCoComponents.selector.getRelationSpecializationsFromSelected();
 		request.getSession().setAttribute("ListSpecializationProperties", ListSpecializationProperties);
 		
 		/** ==================================================
 		 * List of relations and Sub-relations of the Selected Individual
 		 *  =================================================== */	
-		OKCoSelector.getCompleteClassesFromSelected();
+		OKCoComponents.selector.getCompleteClassesFromSelected();
 		
 		/** ==================================================
 		 * List of relations of the Selected Individual
 		 *  =================================================== */
-		List<DtoInstanceRelation> listRelations = OKCoSelector.getRelationsFromSelected();	
+		List<DtoInstanceRelation> listRelations = OKCoComponents.selector.getRelationsFromSelected();	
 		request.getSession().setAttribute("instanceListRelations", listRelations);		
 		
 		/** ==================================================
 		 *  List All Individuals
 		 *  =================================================== */
-		List<DtoInstance> allIndividuals = OKCoSelector.getIndividuals(true, true, true);
+		List<DtoInstance> allIndividuals = OKCoComponents.selector.getIndividuals(true, true, true);
 		request.getSession().setAttribute("listInstances", allIndividuals);
 		
 		return "advisor/views/okco-details";
@@ -87,7 +87,7 @@ public class OKCoDetailingController {
 			/** ==================================================
 			 * Property with the Next and Previous properties from the selected property
 			 *  ================================================== */	
-			return OKCoSelector.getPropertyWithNextAndPreviousFromSelected(uriProperty);	
+			return OKCoComponents.selector.getPropertyWithNextAndPreviousFromSelected(uriProperty);	
 		}
 		return null;
 	}

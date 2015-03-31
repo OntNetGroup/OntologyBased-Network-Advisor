@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.equipmentstudio.controller;
+package br.com.padtec.nopen.studio.equip.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

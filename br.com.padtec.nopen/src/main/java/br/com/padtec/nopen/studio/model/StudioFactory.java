@@ -1,25 +1,21 @@
-package br.com.padtec.nopen.itustudio.core;
+package br.com.padtec.nopen.studio.model;
 
-import br.com.padtec.common.factory.FactoryUtil;
-import br.com.padtec.nopen.core.types.ConceptEnum;
-import br.com.padtec.nopen.core.types.RelationEnum;
-import br.com.padtec.okco.core.application.OKCoUploader;
 
-public class ITUStudioFactory {
+public class StudioFactory {
 
 	public static void createTransportFunction(String id, String layer)
 	{
-		FactoryUtil.createInstanceIndividual(
-			OKCoUploader.getBaseModel(), 
-			OKCoUploader.getNamespace()+id, 
-			OKCoUploader.getNamespace()+ConceptEnum.TRANSPORT_FUNCTION.toString()
-		);
-		FactoryUtil.createInstanceRelation(
-			OKCoUploader.getBaseModel(), 
-			OKCoUploader.getNamespace()+ConceptEnum.TRANSPORT_FUNCTION.toString(), 
-			OKCoUploader.getNamespace()+RelationEnum.APPLIES.toString(), 
-			OKCoUploader.getNamespace()+ConceptEnum.LAYER.toString()
-		);
+//		FactoryUtil.createInstanceIndividual(
+//			OKCoUploader.getBaseModel(), 
+//			OKCoUploader.getNamespace()+id, 
+//			OKCoUploader.getNamespace()+ConceptEnum.TRANSPORT_FUNCTION.toString()
+//		);
+//		FactoryUtil.createInstanceRelation(
+//			OKCoUploader.getBaseModel(), 
+//			OKCoUploader.getNamespace()+ConceptEnum.TRANSPORT_FUNCTION.toString(), 
+//			OKCoUploader.getNamespace()+RelationEnum.APPLIES.toString(), 
+//			OKCoUploader.getNamespace()+ConceptEnum.LAYER.toString()
+//		);
 		System.out.println("Transport Function \""+id+"\" created at layer \""+layer+"\"");
 	}
 

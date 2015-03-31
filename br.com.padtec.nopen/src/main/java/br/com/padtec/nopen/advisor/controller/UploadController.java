@@ -21,8 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import br.com.padtec.advisor.core.util.PerformanceUtil;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.reasoning.HermitReasonerImpl;
-import br.com.padtec.okco.core.application.OKCoSelector;
-import br.com.padtec.okco.core.application.OKCoUploader;
+import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionNameSpace;
@@ -39,33 +38,41 @@ public class UploadController implements ServletContextAware{
 		this.servletContext = servletContext;		
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value="/")
+	public String index(HttpSession session, HttpServletRequest request) 
+	{
+		request.getSession().removeAttribute("errorMensage");
+		request.getSession().removeAttribute("loadOk");
+		return "login";	
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value="/faq")
 	public String faq(HttpSession session, HttpServletRequest request) 
 	{
 		String login = (String)request.getSession().getAttribute("login");
-		if(login == null) login = "true";
+		if(login == null) login = "";
 		if(login.equals("true"))
 		{
 			request.getSession().removeAttribute("errorMensage");
 			request.getSession().removeAttribute("loadOk");
-			return "advisor/views/faq";
+			return "faq";
 		}else{
-			return "advisor/views/login";
+			return "login";
 		}
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/about")
 	public String about(HttpSession session, HttpServletRequest request) 
 	{
-		String login = (String)request.getSession().getAttribute("login");	
-		if(login==null) login = "true";
-		if(login.equals("true"))		
+		String login = (String)request.getSession().getAttribute("login");
+		if(login == null) login = "";
+		if(login.equals("true"))
 		{
 			request.getSession().removeAttribute("errorMensage");
 			request.getSession().removeAttribute("loadOk");
-			return "advisor/views/about";
+			return "about";
 		}else{
-			return "advisor/views/login";
+			return "login";
 		}
 	}
 	
@@ -75,10 +82,10 @@ public class UploadController implements ServletContextAware{
 		if(username.equals("advisor") && password.equals("1234"))
 		{
 			request.getSession().setAttribute("login", "true");
-			return "redirect:welcome.htm";
+			return "redirect:welcome";
 		}else{
 			request.getSession().setAttribute("login", "false");
-			return "advisor/views/login";
+			return "login";
 		}
 	}
 		
@@ -86,7 +93,7 @@ public class UploadController implements ServletContextAware{
 	public String welcome(HttpSession session, HttpServletRequest request) 
 	{	
 		String login = (String)request.getSession().getAttribute("login");
-		if(login == null) login = "true";
+		if(login == null) login = "";
 		if(login.equals("true"))
 		{
 			System.out.println("Executing /welcome and loading G800...");
@@ -103,9 +110,9 @@ public class UploadController implements ServletContextAware{
 			
 			PerformanceUtil.printExecutionTime("/welcome", beginDate);
 			
-			return "advisor/index";			
+			return "index";			
 		}else{
-			return "advisor/views/login";	
+			return "login";	
 		}
 	}
 	
@@ -123,26 +130,26 @@ public class UploadController implements ServletContextAware{
 		String resultMessage = new String();
 		try{
 
-			OKCoUploader.uploadBaseModel(g800Path,OKCoUploader.reasonOnLoading ? "on" : "off","hermit");
+			OKCoComponents.repository.uploadBaseModel(g800Path,OKCoComponents.repository.isReasonOnLoading() ? "on" : "off","hermit");
 			
 		}catch (InconsistentOntologyException e){
 			resultMessage = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";						
-			OKCoUploader.rollBack(false);			
+			OKCoComponents.repository.rollBack(false);			
 		}catch (OKCoExceptionInstanceFormat e){
 			resultMessage = "Entity format error: " + e.getMessage();			
-			OKCoUploader.clear();			
+			OKCoComponents.repository.clear();			
 		}catch (OKCoExceptionNameSpace e){			
 			resultMessage = "File namespace error: " + e.getMessage();			
-			OKCoUploader.clear();				
+			OKCoComponents.repository.clear();				
 		}catch (OKCoExceptionReasoner e){
 			resultMessage = "Reasoner error: " + e.getMessage();			
-			OKCoUploader.clear();				
+			OKCoComponents.repository.clear();				
 		}catch (IOException e){
 			resultMessage = "File not found."+e.getMessage();			
-			OKCoUploader.clear();	
+			OKCoComponents.repository.clear();	
 		}catch (Exception e){
 			resultMessage = e.getLocalizedMessage();
-			OKCoUploader.clear();				
+			OKCoComponents.repository.clear();				
 		}			
 		
 		return resultMessage;
@@ -160,56 +167,56 @@ public class UploadController implements ServletContextAware{
 		System.out.println("Executing /uploadOwl...");
 		Date beginDate = new Date();
 		
-		try{			
+		try{
 			
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile file = multipartRequest.getFile("file");
 			if(!file.getOriginalFilename().endsWith(".owl")) throw new OKCoExceptionFileFormat("Please select owl file.");
 			InputStream in = file.getInputStream();			
 			
-			OKCoUploader.uploadBaseModel(in,OKCoUploader.reasonOnLoading ? "on" : "off", (OKCoUploader.reasoner instanceof HermitReasonerImpl) ? "hermit" : "pellet");	
+			OKCoComponents.repository.uploadBaseModel(in,OKCoComponents.repository.isReasonOnLoading() ? "on" : "off", (OKCoComponents.repository.getReasoner() instanceof HermitReasonerImpl) ? "hermit" : "pellet");	
 			
 		}catch (InconsistentOntologyException e){
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 			request.getSession().setAttribute("errorMensage", error);			
-			OKCoUploader.rollBack(false);			
-			return "advisor/index";			
+			OKCoComponents.repository.rollBack(false);			
+			return "index";			
 		}catch (OKCoExceptionInstanceFormat e){			
 			String error = "Entity format error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			OKCoUploader.clear();
-			return "advisor/index";			
+			OKCoComponents.repository.clear();
+			return "index";			
 		}catch (OKCoExceptionFileFormat e){			
 			String error = "File format error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			OKCoUploader.clear();		
-			return "advisor/index";			
+			OKCoComponents.repository.clear();		
+			return "index";			
 		}catch (IOException e){
 			String error = "File not found.";
 			request.getSession().setAttribute("errorMensage", error);
-			OKCoUploader.clear();	
-			return "advisor/index";			
+			OKCoComponents.repository.clear();	
+			return "index";			
 		}catch (OKCoExceptionNameSpace e){			
 			String error = "File namespace error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			OKCoUploader.clear();
-			return "advisor/index";			
+			OKCoComponents.repository.clear();
+			return "index";			
 		}catch (OKCoExceptionReasoner e){
 			String error = "Reasoner error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			OKCoUploader.clear();
-			return "advisor/index";
+			OKCoComponents.repository.clear();
+			return "index";
 		} catch (Exception e){
 			String error = e.getLocalizedMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			OKCoUploader.clear();
-			return "advisor/index";
+			OKCoComponents.repository.clear();
+			return "index";
 		}	 
 		
 		PerformanceUtil.printExecutionTime("/uploadOwl", beginDate);
 		
 		request.getSession().removeAttribute("errorMensage");  
-		return "redirect:okco-list.htm";
+		return "redirect:okco-list";
 	}	
 	
 	@RequestMapping(method = RequestMethod.GET, value="/getModel")
@@ -218,15 +225,15 @@ public class UploadController implements ServletContextAware{
 		/** ==================================================
 		*  Get the base model which was uploaded as a string text 
 		*  =================================================== */
-		if(OKCoUploader.isBaseModelUploaded())
+		if(OKCoComponents.repository.isBaseModelUploaded())
 		{
 			request.getSession().removeAttribute("loadOk");
-			request.getSession().setAttribute("model", OKCoUploader.getBaseModelAsString());
-			return "advisor/views/okco-model";
+			request.getSession().setAttribute("model", OKCoComponents.repository.getBaseModelAsString());
+			return "okco-model";
 		}else{				
 			request.getSession().removeAttribute("model");
 			request.getSession().setAttribute("loadOk", "false");
-		    return "advisor/views/okco-index";
+		    return "okco-index";
 		}
 	}
 	
@@ -239,14 +246,8 @@ public class UploadController implements ServletContextAware{
 		/** ==================================================
 		*  Saves the base model which was uploaded
 		*  =================================================== */
-		dto.setIsSucceed(OKCoUploader.saveBaseModel());
+		dto.setIsSucceed(OKCoComponents.repository.saveBaseModel());
 		
 		return dto;
 	}	
-	
-	public static void clearOKCoUploader()
-	{
-		OKCoUploader.clear(); 
-		OKCoSelector.clearSelected();	
-	}
 }

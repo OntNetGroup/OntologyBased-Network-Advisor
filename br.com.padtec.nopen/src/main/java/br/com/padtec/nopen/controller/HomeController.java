@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.nopen.core.application.Initializator;
-import br.com.padtec.nopen.core.queries.NOpenQueryUtil;
+import br.com.padtec.nopen.model.NOpenQueries;
+import br.com.padtec.nopen.service.NOpenInitializer;
 
 @Controller
 public class HomeController {
@@ -17,11 +17,10 @@ public class HomeController {
 	@RequestMapping(method = RequestMethod.GET, value="/init")
 	public String index(HttpServletRequest request) throws Exception 
 	{		
-		String errorMsg = Initializator.run();
-		if(!errorMsg.isEmpty()) { request.getSession().removeAttribute("errorMensage"); throw new Exception(errorMsg); }
-		
-		request.getSession().setAttribute("techs", NOpenQueryUtil.getTechnologiesNames());
-		request.getSession().setAttribute("layers", NOpenQueryUtil.getLayerNames());
+		NOpenInitializer.run();
+				
+		request.getSession().setAttribute("techs", NOpenQueries.getTechnologiesNames());
+		request.getSession().setAttribute("layers", NOpenQueries.getLayerNames());
 		
 		return "welcome";
 	}

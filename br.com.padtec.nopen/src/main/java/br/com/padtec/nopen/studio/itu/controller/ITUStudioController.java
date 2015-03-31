@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.itustudio.controller;
+package br.com.padtec.nopen.studio.itu.controller;
 
 import java.io.IOException;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.nopen.itustudio.core.ITUStudioFactory;
-import br.com.padtec.nopen.itustudio.core.ITUStudioSerializator;
+import br.com.padtec.nopen.studio.model.StudioFactory;
+import br.com.padtec.nopen.studio.model.StudioSerializator;
 
 @Controller
 public class ITUStudioController {
@@ -26,7 +26,7 @@ public class ITUStudioController {
 		/**===========================================================
 		 * Create Transport Function
 		 * =========================================================== */
-		ITUStudioFactory.createTransportFunction(id,layer);
+		StudioFactory.createTransportFunction(id,layer);
 		
 		return new String();
 	}
@@ -41,7 +41,7 @@ public class ITUStudioController {
 		/**===========================================================
 		 * Delete Transport Function
 		 * =========================================================== */
-		ITUStudioFactory.deleteTransportFunction(id);
+		StudioFactory.deleteTransportFunction(id);
 		
 		return new String();
 	}
@@ -59,7 +59,7 @@ public class ITUStudioController {
 		/**===========================================================
 		 * Create Port
 		 * =========================================================== */
-		ITUStudioFactory.createPort(portID, transportFunctionID);
+		StudioFactory.createPort(portID, transportFunctionID);
 		
 		return new String();
 	}
@@ -74,7 +74,7 @@ public class ITUStudioController {
 		/**===========================================================
 		 * Delete Port
 		 * =========================================================== */
-		ITUStudioFactory.deletePort(id);
+		StudioFactory.deletePort(id);
 		
 		return new String();		
 	}
@@ -106,7 +106,7 @@ public class ITUStudioController {
 		/**===========================================================
 		 * Delete Link
 		 * =========================================================== */
-		ITUStudioFactory.deleteLink(id);
+		StudioFactory.deleteLink(id);
 		
 		return new String();	
 	}
@@ -125,7 +125,7 @@ public class ITUStudioController {
 			/**===========================================================
 			 * Serialize JSON
 			 * =========================================================== */			
-			ITUStudioSerializator.serialize(graphJSON, fileName);
+			StudioSerializator.serialize(graphJSON, fileName);
 		} catch (IOException e) {
 			errorMsg = "Serialize JOINT Error: "+ e.getMessage();	
 		}		
@@ -145,7 +145,7 @@ public class ITUStudioController {
 			/**===========================================================
 			 * Deserialize JSON
 			 * =========================================================== */
-			json = ITUStudioSerializator.deserialize(fileName);
+			json = StudioSerializator.deserialize(fileName);
 		
 		} catch (IOException e) {
 			errorMsg = "Serialize JOINT Error: "+ e.getMessage();	

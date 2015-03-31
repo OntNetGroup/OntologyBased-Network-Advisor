@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.core.types;
+package br.com.padtec.nopen.model;
 
 public enum RelationEnum {
 

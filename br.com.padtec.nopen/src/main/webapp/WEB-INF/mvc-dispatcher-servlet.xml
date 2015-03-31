@@ -11,13 +11,13 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
 	<context:component-scan base-package="
-		br.com.padtec.nopen.controller, 
+		br.com.padtec.nopen.controller,				 
+		br.com.padtec.nopen.provisioning.controller,
+		br.com.padtec.nopen.studio.equip.controller,
+		br.com.padtec.nopen.studio.itu.controller,
+		br.com.padtec.nopen.topology.controller,
 		br.com.padtec.nopen.advisor.controller, 
-		br.com.padtec.nopen.advisor.okco.controller, 
-		br.com.padtec.nopen.topology.controller, 
-		br.com.padtec.nopen.equipmentstudio.controller,
-		br.com.padtec.nopen.itustudio.controller,
-		br.com.padtec.nopen.provisioning.controller"
+		br.com.padtec.nopen.advisor.okco.controller"		
 	/>
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 	<bean

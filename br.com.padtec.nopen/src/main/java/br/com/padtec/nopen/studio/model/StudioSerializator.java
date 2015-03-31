@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.itustudio.core;
+package br.com.padtec.nopen.studio.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-public class ITUStudioSerializator {
+public class StudioSerializator {
 
 	public static void serialize(String graphJSON, String fileName) throws IOException 
 	{
