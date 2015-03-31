@@ -1,8 +1,9 @@
-MyPool = joint.dia.Element.extend({
+// bpmn.Pool without blackbox-label
+Layer = joint.dia.Element.extend({
 
     markup: ['<g class="rotatable">',
              '<g class="scalable"><rect class="body"/></g>',
-             '<svg overflow="hidden" class="blackbox-wrap"><text class="blackbox-label"/></svg>',
+             '<svg overflow="hidden" class="blackbox-wrap"/>',
              '<rect class="header"/><text class="label"/>',
              '<g class="lanes"/>',
              '</g>'].join(''),
@@ -12,6 +13,7 @@ MyPool = joint.dia.Element.extend({
     defaults: joint.util.deepSupplement({
 
         type: 'bpmn.Pool',
+        subtype: '',
         size: {
             width: 600,
             height: 300
@@ -22,7 +24,7 @@ MyPool = joint.dia.Element.extend({
                 stroke: '#000000',
                 width: 500,
                 height: 200,
-                'pointer-events': 'stroke'
+                'pointer-events': 'visiblePainted'
             },
             '.header': {
                 fill:'#ffffff',
@@ -45,7 +47,7 @@ MyPool = joint.dia.Element.extend({
             '.lane-body': {
                 fill:'#ffffff',
                 stroke: '#000000',
-                'pointer-events': 'stroke'
+                'pointer-events': 'visiblePainted'
             },
             '.lane-header': {
                 fill:'#ffffff',
@@ -62,13 +64,6 @@ MyPool = joint.dia.Element.extend({
                 ref: '.body',
                 'ref-width': 1,
                 'ref-height': 1
-            },
-            '.blackbox-label': {
-                text: 'Black Box',
-                dx: '50%',
-                dy: '50%',
-                'text-anchor': 'middle',
-                transform: 'translate(0,-7)'
             }
         }
 

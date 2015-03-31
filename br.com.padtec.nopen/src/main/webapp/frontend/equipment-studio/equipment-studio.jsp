@@ -4,7 +4,7 @@
         <meta charset="utf8"/>
 <!--        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/> -->
 
-        <title>DENADAI STUDIO</title>
+        <title>EQUIPMENT STUDIO</title>
 
         <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css" />
 
@@ -24,7 +24,7 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/header.css" />
     </head>
     <body>
-        <h1 style="margin-top:40px;">DENADAI STUDIO</h1>
+        <h1 style="margin-top:40px;">EQUIPMENT STUDIO</h1>
 		
        	<%@include file="templates/header.jsp"%>
         <div class="toolbar-container">
@@ -33,6 +33,7 @@
             <button id="btn-clear" class="btn" data-tooltip="Clear Paper"><img src="/nopen/frontend/equipment-studio/img/clear.png" alt="Clear"/></button>
             <button id="btn-svg" class="btn" data-tooltip="Open as SVG in a New Window">open as SVG</button>
             <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window">open as PNG</button>
+			<button id="btn-print-file" class="btn" data-tooltip="Save all imgs index in a file">save index to file</button>
             <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/equipment-studio/img/print.png" alt="Print"/></button>
             <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="/nopen/frontend/equipment-studio/img/zoomin.png" alt="Zoom in"/></button>
             <button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out"><img src="/nopen/frontend/equipment-studio/img/zoomout.png" alt="Zoom out"/></button>
