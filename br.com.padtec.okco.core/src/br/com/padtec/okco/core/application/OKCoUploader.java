@@ -39,6 +39,7 @@ public class OKCoUploader {
 	public boolean isReasonOnLoading()  { return reasonOnLoading; }
 	public void setIsReasonOnLoading(boolean value)  { reasonOnLoading=value; }
 	public OntologyReasoner getReasoner() { return reasoner; }
+	public void setReasoner(OntologyReasoner r) { reasoner = r; }
 	
 	/**
 	 * Upload the base model ontology in OWL. The user might opt for not using the reasoner at the upload.
