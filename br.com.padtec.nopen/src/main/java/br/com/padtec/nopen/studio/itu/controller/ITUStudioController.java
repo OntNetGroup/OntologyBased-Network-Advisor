@@ -17,7 +17,7 @@ public class ITUStudioController {
 	/* ----- CRUD for Transport Function ----- */
 	/**
 	 * @param id: identificador do transport function a ser criado
-	 * @param layer: camada sobre a qual o transport function deve ser criado
+	 * @param layer: camada sobre a qual o transport function deve ser criado (pode ser nulo)
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
@@ -29,6 +29,16 @@ public class ITUStudioController {
 		StudioFactory.createTransportFunction(id,layer);
 		
 		return "success";
+	}
+	
+	/**
+	 * @param id
+	 * @param layer
+	 * @return
+	 */
+	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
+	public @ResponseBody boolean canCreateTransportFunction(@RequestParam("id") String id, @RequestParam("layer") String layer) {
+		return true;
 	}
 	
 	/**
@@ -99,7 +109,7 @@ public class ITUStudioController {
 	/** Check if it's possible to create a link between the transport functions sourceTFunctionID and targetTFunctionID
 	 * @param sourceTFunctionID
 	 * @param targetTFunctionID
-	 * @return: "true" or "false"
+	 * @return
 	 */
 	@RequestMapping(value = "/canCreateLinkBtwn", method = RequestMethod.POST)
 	public @ResponseBody boolean canCreateLinkBtwn(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) {

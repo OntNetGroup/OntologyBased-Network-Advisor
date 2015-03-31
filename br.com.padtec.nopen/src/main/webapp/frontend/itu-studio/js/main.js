@@ -141,11 +141,13 @@ var Rappid = Backbone.Router.extend({
         		// Prevent loop linking
         		if(cellViewS === cellViewT) return false;
         		
-        		/*
-        		 * TODO: se transport function tenta se conectar a transport function, consulta ontologia
-        		*/
+        		// TODO: se transport function tenta se conectar a transport function, consulta ontologia
+        		var sourceTFunctionID = cellViewS.model.id;
+        		var targetTFunctionID = cellViewT.model.id;
+        		console.log('try to connect ' +sourceTFunctionID+ ' and ' +targetTFunctionID);
         		
-            	return true;
+//        		return canCreateLinkBtwn(sourceTFunctionID, targetTFunctionID);
+        		return true;
             },
             
 	         // RF: Inserir 'containmnet rules' aos nós
@@ -160,7 +162,11 @@ var Rappid = Backbone.Router.extend({
         		if(childView.model instanceof joint.shapes.basic.Path) {
         			// TODO: se transport function tenta ser colocado sobre camada, consulta ontologia
         			if(parentView.model instanceof Layer) {
+        				var id = childView.model.id;
+        				var layer = parentView.model.get('subtype');
+        				console.log('try to insert ' +id+ ' on layer ' +layer);
         				
+//        				return canCreateTransportFunction(id, layer);
         				return true;
         			}
         			
@@ -658,24 +664,32 @@ var Rappid = Backbone.Router.extend({
 						return next('Please, add the port over a transport function.');
 					} else { // elemento abaixo é um transport function
 
-		    			// TODO: consultar ontologia
-						console.log('elemento abaixo é um transport function');
+		    			// TODO: consultar ontologia para criação de uma porta
+						var portID = cell.id;
+						var transportFunctionID = parent.id;
+						console.log('try to create port ' +portID+ ' of TF ' +transportFunctionID);
+//						var result = createPort(portID, transportFunctionID);
+						var result = 'success';
 						
-						var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: cell.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
-		    			this.graph.addCell(newLink);
-		    			
-		    			// Move the port to the superior (in port) or inferior (out port) bar
-		    			if(cellType === 'basic.Circle') {
-		    				cell.transition('position/x', 10, {});
-		    				cell.transition('position/y', 15, {});
-		    			}
-		    			else {
-		    				cell.transition('position/x', 10, {});
-		    				cell.transition('position/y', 955, {});
-		    			}
-		    			
-		    			
-						next(err);
+						if(result === 'success') {
+						
+							var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: cell.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
+			    			this.graph.addCell(newLink);
+			    			
+			    			// Move the port to the superior (in port) or inferior (out port) bar
+			    			if(cellType === 'basic.Circle') {
+			    				cell.transition('position/x', 10, {});
+			    				cell.transition('position/y', 15, {});
+			    			}
+			    			else {
+			    				cell.transition('position/x', 10, {});
+			    				cell.transition('position/y', 955, {});
+			    			}
+			    			
+							return next(err);
+						} else {
+							return next(result);
+						}
 					}
 					
 				} else { // nenhum elemento abaixo
@@ -683,31 +697,43 @@ var Rappid = Backbone.Router.extend({
 				}
 			
 			} else if(cellType === 'bpmn.Pool') { // elemento é uma camada
-				
-				if(parent) { // existe algum elemento abaixo
-					return next('Another element in the way!');
-				} else {
-	    			// TODO: consultar ontologia
-				}
+    			// TODO: consultar ontologia para inserção de camada???
+				// TODO: remover esta camada do stencil
 			
 			} else if(cellType === 'basic.Path') { // elemento é um transport function
 				
 				if(parent) { // existe algum elemento abaixo
 					var parentType = parent.get('type');
+					
 					if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
-		    			// TODO: consultar ontologia
-						console.log('elemento abaixo é uma camada');
+		    			// TODO: consultar ontologia para inserção de transport function na camada
+						var id = cell.id;
+						var layer = parent.get('subtype');
+						console.log('try to create TF ' +id+ ' in layer ' +layer);
+//						var result = createTransportFunction(id, layer);
+						var result = 'success';
 						
-						parent.embed(cell);
-						
-						next(err);						
-					} else { // elemento abaixo não é uma camada
-						return next('Transport function or port in the way!.');
+						if(result === 'success') {						
+							parent.embed(cell);
+							return next(err);
+						} else {
+							return next(result);
+						}
+											
 					}
 				} else { // não existe elemento abaixo
-	    			// TODO: consultar ontologia
-					console.log('não existe elemento abaixo');
-					next(err);
+					// TODO: consultar ontologia para inserção de transport function
+					var id = cell.id;
+					var layer = '';
+					console.log('try to create TF ' +id);
+//					var result = createTransportFunction(id, layer);
+					var result = 'success';
+					
+					if(result === 'success') {
+						return next(err);
+					} else {
+						return next(result);
+					}
 				}
 				
 			}

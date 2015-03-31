@@ -72,6 +72,7 @@
         <script src="/nopen/frontend/itu-studio/js/inspector.js"></script>
 		<script src="/nopen/frontend/itu-studio/js/layer.js"></script>
         <script src="/nopen/frontend/itu-studio/js/stencil.js"></script>
+        <script src="/nopen/frontend/itu-studio/js/ajax.js"></script>
         <script src="/nopen/frontend/itu-studio/js/main.js"></script>
 		
 		
