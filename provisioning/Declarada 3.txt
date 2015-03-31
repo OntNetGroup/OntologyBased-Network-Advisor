@@ -326,7 +326,7 @@ maps:	(deq_odu_so1_in, 		  af_odu_so1_in			   ),
 		(deq_oms_sk1_out, 		  af_oms_sk1_out		   ),
 		(deq_oms_sk2_out1, 		  af_oms_sk2_out1		   ),
 		(deq_oms_sk2_out2, 		  af_oms_sk2_out2		   ),
-        (deq_ots_sk_out1,		  af_ots_sk_out1	       ),
+        (deq_ots_sk_out1,		  af_ots_sk_out1	       );		
         (deq_ots_sk_out2,		  af_ots_sk_out2	       );
 					
 ***

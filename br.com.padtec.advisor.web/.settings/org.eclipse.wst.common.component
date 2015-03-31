@@ -8,9 +8,6 @@
         <dependent-module archiveName="advisor-core-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.advisor.core/br.com.padtec.advisor.core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="padtec-sindel2owl-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.transformation.sindel/br.com.padtec.transformation.sindel">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="padtec-common-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/br.com.padtec.common/br.com.padtec.common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
