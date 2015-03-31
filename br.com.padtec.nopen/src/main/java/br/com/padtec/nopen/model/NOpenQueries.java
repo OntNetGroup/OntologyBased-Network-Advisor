@@ -1,6 +1,16 @@
 package br.com.padtec.nopen.model;
 
+import java.util.HashSet;
 import java.util.List;
+
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.studio.service.StudioComponents;
@@ -53,6 +63,31 @@ public class NOpenQueries {
 			result[i]= getLayerNames(s);
 			i++;
 		}
+		return result;
+	}
+	
+	public static HashSet<String> getAllTemplateEquipment(InfModel model){
+		HashSet<String> result = new HashSet<String>();
+		String queryString = ""
+		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+		+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#>" 
+		+ "SELECT ?subject "
+		+  " WHERE { ?subject rdf:type ont:Equipment }" ;
+		
+		Query query = QueryFactory.create(queryString); 
+  		
+  		// Execute the query and obtain results
+  		QueryExecution qe = QueryExecutionFactory.create(query, model);
+  		ResultSet results = qe.execSelect();
+  		//ResultSetFormatter.out(System.out, results, query);
+  		
+  		while (results.hasNext()) {
+  			QuerySolution row = results.next();
+  		    
+  		    RDFNode rdfY = row.get("subject");
+  	    	result.add(rdfY.toString());
+  		}
+  		
 		return result;
 	}
 }
