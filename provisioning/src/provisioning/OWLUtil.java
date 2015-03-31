@@ -135,7 +135,11 @@ public class OWLUtil {
 					if(newTgt == null || newTgt.equals("")){
 						newTgt = tgt;
 					}					
-					FactoryUtil.createInstanceRelation(Main.model, Main.ns+newSrc, Main.ns+relation, Main.ns+newTgt, false, false, false);
+					try{
+						FactoryUtil.createInstanceRelation(Main.model, Main.ns+newSrc, Main.ns+relation, Main.ns+newTgt, false, false, true);
+					}catch(Exception e){
+						System.out.println();
+					}
 				}
 			}
 		}

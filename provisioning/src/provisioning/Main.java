@@ -24,7 +24,7 @@ public class Main {
 			OWLUtil.createInstances(aBoxFile);
 			
 			//#4
-			//OWLUtil.runReasoner(true, true, true);
+			OWLUtil.runReasoner(true, true, true);
 			
 			//#7 and #8
 			Provisioning.verifiyMinimumEquipment();
@@ -52,7 +52,7 @@ public class Main {
 			Provisioning.verifiyMinimumEquipWithPM();
 			
 			//#14
-			OWLUtil.runReasoner(true, true, true);
+			OWLUtil.runReasoner(false, true, true);
 			
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 			Character option = 'A';
