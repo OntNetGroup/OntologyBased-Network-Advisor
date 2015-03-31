@@ -28,7 +28,7 @@ public class ITUStudioController {
 		 * =========================================================== */
 		StudioFactory.createTransportFunction(id,layer);
 		
-		return new String();
+		return "success";
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class ITUStudioController {
 		 * =========================================================== */
 		StudioFactory.deleteTransportFunction(id);
 		
-		return new String();
+		return "success";
 	}
 	
 	
@@ -61,7 +61,7 @@ public class ITUStudioController {
 		 * =========================================================== */
 		StudioFactory.createPort(portID, transportFunctionID);
 		
-		return new String();
+		return "success";
 	}
 	
 	/**
@@ -76,7 +76,7 @@ public class ITUStudioController {
 		 * =========================================================== */
 		StudioFactory.deletePort(id);
 		
-		return new String();		
+		return "success";		
 	}
 	
 	/* ----- CRUD for link ----- */
@@ -93,7 +93,17 @@ public class ITUStudioController {
 		 * Create Link
 		 * =========================================================== */
 		
-		return new String();	
+		return new String();
+	}
+	
+	/** Check if it's possible to create a link between the transport functions sourceTFunctionID and targetTFunctionID
+	 * @param sourceTFunctionID
+	 * @param targetTFunctionID
+	 * @return: "true" or "false"
+	 */
+	@RequestMapping(value = "/canCreateLinkBtwn", method = RequestMethod.POST)
+	public @ResponseBody boolean canCreateLinkBtwn(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) {
+		return true;
 	}
 	
 	/**
@@ -108,7 +118,7 @@ public class ITUStudioController {
 		 * =========================================================== */
 		StudioFactory.deleteLink(id);
 		
-		return new String();	
+		return "success";	
 	}
 	
 	/* ----- Save/Load graph  ----- */

@@ -79,7 +79,7 @@ Stencil.shapes = {
 	ports: [
 		//porta de entrada
 		new joint.shapes.basic.Circle({
-			subtype: 'out',
+			subtype: 'in',
 		    attrs: {
 		        circle: { fill: '#f1c40f' },
 		        text: { text: 'in', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
@@ -88,7 +88,7 @@ Stencil.shapes = {
 		
 		// porta de saída
 		new joint.shapes.basic.Rect({
-			subtype: 'in',
+			subtype: 'out',
 		    attrs: {
 		        rect: {
 		            rx: 2, ry: 2,
