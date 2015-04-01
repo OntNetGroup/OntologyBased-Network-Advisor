@@ -14,6 +14,12 @@ import br.com.padtec.nopen.studio.model.StudioSerializator;
 @Controller
 public class ITUStudioController {
 	
+	//REMOVER DEPOIS QUE TIVER TERMINADO
+	@RequestMapping("/itu-studio")
+	public String networkTopologyRequest() {
+		return "itu-studio/itu-studio";
+	}
+	
 	/* ----- CRUD for Layer ----- */
 	/**
 	 * @param id: identificador da camada a ser criada
@@ -35,28 +41,28 @@ public class ITUStudioController {
 	
 	/* ----- CRUD for Transport Function ----- */
 	/**
-	 * @param transportFunctionID: identificador do transport function a ser criado
-	 * @param layerID: id da camada sobre a qual o transport function deve ser criado (pode ser nulo)
+	 * @param id: identificador do transport function a ser criado
+	 * @param layer: camada sobre a qual o transport function deve ser criado (pode ser nulo)
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String createTransportFunction(@RequestParam("transportFunctionID") String transportFunctionID, @RequestParam("layerID") String layerID) 
+	public @ResponseBody String createTransportFunction(@RequestParam("id") String id, @RequestParam("layer") String layer) 
 	{
 		/**===========================================================
 		 * Create Transport Function
 		 * =========================================================== */
-		StudioFactory.createTransportFunction(transportFunctionID,layerID);
+		StudioFactory.createTransportFunction(id,layer);
 		
 		return "success";
 	}
 	
 	/**
-	 * @param transportFunctionID
-	 * @param layerID
+	 * @param id
+	 * @param layer
 	 * @return
 	 */
 	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody boolean canCreateTransportFunction(@RequestParam("transportFunctionID") String transportFunctionID, @RequestParam("layerID") String layerID) {
+	public @ResponseBody boolean canCreateTransportFunction(@RequestParam("id") String transportFunctionID, @RequestParam("layer") String layerID) {
 		return true;
 	}
 	
