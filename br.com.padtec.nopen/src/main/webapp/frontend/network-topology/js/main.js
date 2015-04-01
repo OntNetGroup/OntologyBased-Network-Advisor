@@ -168,7 +168,7 @@ var Rappid = Backbone.Router.extend({
 
                 new joint.ui.Tooltip({
                     target: '.stencil [model-id="' + cell.id + '"]',
-                    content: cell.get('type').split('.').join(' '),
+                    content: cell.get('subtype').split('.').join(' '),
                     left: '.stencil',
                     direction: 'left'
                 });
@@ -311,6 +311,7 @@ var Rappid = Backbone.Router.extend({
             // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
             // handles nicely spread around the elements.
             //halo.removeHandle('resize');
+            halo.removeHandle('fork');
             halo.removeHandle('clone');
             halo.removeHandle('rotate');
             //halo.changeHandle('clone', { position: 'se' });

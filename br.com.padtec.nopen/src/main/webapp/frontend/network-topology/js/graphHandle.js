@@ -63,6 +63,24 @@ function graphHandle(graph){
 		      close: function() { }
 		});
 		
+		$("#dialog").append('<form>')
+		
+		for(var i = Object.keys(data).length-1; i >= 0; i--){
+
+			if(i == Object.keys(data).length-1){
+				$("#dialog").append('<input type="radio" name="equipment" value="' + data[i].equipment + '" checked>' + data[i].equipment + '<br>');
+			}
+			else{
+				$("#dialog").append('<input type="radio" name="equipment" value="' + data[i].equipment + '">' + data[i].equipment + '<br>');
+			}
+
+		}
+		
+		$("#dialog").append('</form>') 
+		
+		$("#dialog").dialog("open");
+		
+		
 		function matchEquipmentToNode(){
 			
 			var equipment = $('input[name=equipment]:checked', '#dialog').val();
@@ -90,22 +108,7 @@ function graphHandle(graph){
 		};
 		
 
-		$("#dialog").append('<form>')
 		
-		for(var i = Object.keys(data).length-1; i >= 0; i--){
-
-			if(i == Object.keys(data).length-1){
-				$("#dialog").append('<input type="radio" name="equipment" value="' + data[i].equipment + '" checked>' + data[i].equipment + '<br>');
-			}
-			else{
-				$("#dialog").append('<input type="radio" name="equipment" value="' + data[i].equipment + '">' + data[i].equipment + '<br>');
-			}
-
-		}
-		
-		$("#dialog").append('</form>') 
-		
-		$("#dialog").dialog("open");
 		
 	}
 	

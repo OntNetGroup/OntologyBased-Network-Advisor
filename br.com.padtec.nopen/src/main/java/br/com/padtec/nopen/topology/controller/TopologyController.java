@@ -1,7 +1,9 @@
 package br.com.padtec.nopen.topology.controller;
 
+import java.io.File;
 import java.util.HashSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.topology.service.TopologyExporter;
+import br.com.padtec.nopen.topology.service.TopologyFile;
 import br.com.padtec.nopen.topology.service.TopologyImporter;
 
 import com.google.gson.JsonArray;
@@ -47,6 +50,59 @@ public class TopologyController {
 			
 		TopologyImporter topology = new TopologyImporter();
 		return topology.getTopologyId(request);
+	}
+	
+	@RequestMapping(value = "/checkTopologyFile", method = RequestMethod.POST)
+	protected @ResponseBody String checkTopologyFile(@RequestParam("filename") String filename, HttpServletRequest request){
+
+		ServletContext sc = request.getSession().getServletContext();
+		String path =  "/backend/topology/" ;
+
+		File f = new File(sc.getRealPath(path) + "/" + filename + ".json");
+
+		if(f.exists()){
+			return "exist";
+		}
+		
+		return null;
+	}
+	
+	
+	@RequestMapping(value = "/saveTopology", method = RequestMethod.POST)
+	protected @ResponseBody void saveTopology(@RequestParam("filename") String filename, @RequestParam("graph") String graph, HttpServletRequest request){
+			
+		TopologyFile topologyFile = new TopologyFile();
+		topologyFile.saveTopology(filename, graph, request);
+		
+	}
+	
+	@RequestMapping(value = "/getAllTopologies", method = RequestMethod.GET)
+	protected @ResponseBody String getAllTopologies(HttpServletRequest request){
+			
+		TopologyFile topologyFile = new TopologyFile();
+		HashSet<String> topologies = topologyFile.getAllTopologies(request);
+		
+		JsonArray json = new JsonArray();
+
+		for(String topology : topologies){
+			JsonObject j = new JsonObject();
+			j.addProperty("topology", topology);
+			
+			json.add(j);
+		}
+		
+		return json.toString();
+		
+	}
+	
+	@RequestMapping(value = "/openTopology", method = RequestMethod.POST)
+	protected @ResponseBody String openTopology(@RequestParam("filename") String filename, HttpServletRequest request){
+			
+		TopologyFile topologyFile = new TopologyFile();
+		String graph = topologyFile.openTopology(filename, request);
+		
+		return graph;
+		
 	}
 	
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)

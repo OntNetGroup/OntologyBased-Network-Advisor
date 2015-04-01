@@ -1,4 +1,6 @@
 <div class="toolbar-container">
+	 <button id="btn-save" class="btn" data-tooltip="Save"><img src="/nopen/frontend/network-topology/img/save.png" alt="Save"/></button>
+	 <button id="btn-open" class="btn" data-tooltip="Open"><img src="/nopen/frontend/network-topology/img/open.png" alt="Open"/></button>
      <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/network-topology/img/undo.png" alt="Undo"/></button>
      <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/network-topology/img/redo.png" alt="Redo"/></button>
      <button id="btn-import-xml" class="btn" data-tooltip="Import XML file"><img src="/nopen/frontend/network-topology/img/import.png" alt="Import XML"/> import XML</button>

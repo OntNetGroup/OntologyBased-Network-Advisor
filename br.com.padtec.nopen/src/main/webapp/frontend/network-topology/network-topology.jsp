@@ -48,6 +48,8 @@
         
         <script src="/nopen/plugins/topology-exporter.js"></script>
         <script src="/nopen/plugins/topology-importer.js"></script>
+        <script src="/nopen/plugins/save-topology.js"></script>
+        <script src="/nopen/plugins/open-topology.js"></script>
 
 		<!-- JS -->
 		
@@ -78,7 +80,11 @@
 	<![endif]-->
 
 		
-		
+		<div id="save-dialog" title="Save Topology" style="display:none">
+			File name: <input type="text" id="save-filename" />
+		</div>
+
+		<div id="open-dialog" title="Open Topology" style="display:none"></div>
 
 		<div id="dialog" title="Match Equipment" style="display:none"></div>
 
@@ -95,6 +101,14 @@
             
             var uuid = joint.util.uuid();
 
+            $('#btn-save').click(function(){
+            	generateSaveTopologyDialog(app.graph);
+            });
+            
+            $('#btn-open').click(function(){
+            	getTopologies(app.graph);
+            });
+            
             $('#btn-import-xml').click(function(){
             	$('#file').click();
 			});
