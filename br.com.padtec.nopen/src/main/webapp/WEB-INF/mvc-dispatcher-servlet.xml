@@ -32,9 +32,7 @@
 	
 	<bean
 		class="br.com.padtec.nopen.service.util.NOpenFileUtil">
-		<property name="repository" value ="/Users/lucas/Documents/Padtec/Development/repository" />
-		<property name="topologyFileFolder" value ="/topology/" />
-		<property name="owlFileFolder" value ="/owl/" />
+		<property name="path" value ="C:\\Users\\missael\\repository\\" />
 	</bean>
 
 	<mvc:resources mapping="/js/**" location="/resource/" />

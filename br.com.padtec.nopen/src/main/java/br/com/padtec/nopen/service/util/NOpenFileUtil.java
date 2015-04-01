@@ -12,25 +12,20 @@ import com.google.gson.JsonObject;
 
 public class NOpenFileUtil {
 
-	public static String repository;
+	public static String path;
 	public static String topologyFileFolder;
 	public static String owlFileFolder;
 	
-	public void setRepository(String repository) {
-		NOpenFileUtil.repository = repository;
-	}
-
-	public void setTopologyFileFolder(String topologyFileFolder) {
-		NOpenFileUtil.topologyFileFolder = NOpenFileUtil.repository + topologyFileFolder;
+	public void setPath(String path) {
+		NOpenFileUtil.path = path;
+		NOpenFileUtil.topologyFileFolder = NOpenFileUtil.path + "topology";
+		NOpenFileUtil.owlFileFolder = NOpenFileUtil.path + "owl";
+		
 		NOpenFileUtil.createRepoitory(NOpenFileUtil.topologyFileFolder);
-	}
-	
-	public void setOwlFileFolder(String owlFileFolder) {
-		NOpenFileUtil.owlFileFolder = NOpenFileUtil.repository + owlFileFolder;
 		NOpenFileUtil.createRepoitory(NOpenFileUtil.owlFileFolder);
 	}
-	
-	public static void createRepoitory(String path){
+
+	private static void createRepoitory(String path){
 		
 		File file = new File(path);
 		if (!file.exists()) {
@@ -100,7 +95,7 @@ public class NOpenFileUtil {
     	return getAllFiles(NOpenFileUtil.owlFileFolder, "owl");    	
     }
     
-    public static HashSet<String> getAllFiles(String path, String extension){
+    private static HashSet<String> getAllFiles(String path, String extension){
     	
     	File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
