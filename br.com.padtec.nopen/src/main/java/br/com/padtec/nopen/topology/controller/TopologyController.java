@@ -76,7 +76,7 @@ public class TopologyController {
 	@RequestMapping(value = "/getAllTopologies", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTopologies(){
 			
-		HashSet<String> topologies = NOpenFileUtil.getAllTopplogyFiles();
+		HashSet<String> topologies = NOpenFileUtil.getAllTopplogyFilesName();
 		return NOpenFileUtil.parseHashSetToJSON("topology", topologies);
 		
 	}
@@ -84,7 +84,7 @@ public class TopologyController {
 	@RequestMapping(value = "/openTopology", method = RequestMethod.POST)
 	protected @ResponseBody String openTopology(@RequestParam("filename") String filename){
 			
-		return NOpenFileUtil.openTopologyFile(filename + ".json");
+		return NOpenFileUtil.openTopologyFileAsString(filename + ".json");
 		
 	}
 	

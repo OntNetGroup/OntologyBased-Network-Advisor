@@ -88,14 +88,14 @@ public class NOpenFileUtil {
 		printStream.close();				
    	}
     
-    public static HashSet<String> getAllTopplogyFiles(){
-    	return getAllFiles(NOpenFileUtil.topologyFileFolder, "json");
+    public static HashSet<String> getAllTopplogyFilesName(){
+    	return getAllFilesName(NOpenFileUtil.topologyFileFolder, "json");
     }
     public static HashSet<String> getAllOWLFiles(){
-    	return getAllFiles(NOpenFileUtil.owlFileFolder, "owl");    	
+    	return getAllFilesName(NOpenFileUtil.owlFileFolder, "owl");    	
     }
     
-    private static HashSet<String> getAllFiles(String path, String extension){
+    private static HashSet<String> getAllFilesName(String path, String extension){
     	
     	File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
@@ -121,15 +121,15 @@ public class NOpenFileUtil {
     	
     }
     
-    public static String openTopologyFile(String filename){
-    	return openFile(NOpenFileUtil.topologyFileFolder, filename);
+    public static String openTopologyFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.topologyFileFolder, filename);
     }
     
-    public static String openOWLFile(String filename){
-    	return openFile(NOpenFileUtil.owlFileFolder, filename);
+    public static String openOWLFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.owlFileFolder, filename);
     }
 	
-    public static String openFile(String path, String filename){
+    public static String openFileAsString(String path, String filename){
     	
     	String content = "";
     	
