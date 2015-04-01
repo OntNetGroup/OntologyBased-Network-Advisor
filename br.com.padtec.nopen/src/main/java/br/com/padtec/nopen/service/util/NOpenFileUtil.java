@@ -21,11 +21,15 @@ public class NOpenFileUtil {
 		NOpenFileUtil.topologyFileFolder = NOpenFileUtil.path + "topology";
 		NOpenFileUtil.owlFileFolder = NOpenFileUtil.path + "owl";
 		
-		NOpenFileUtil.createRepoitory(NOpenFileUtil.topologyFileFolder);
-		NOpenFileUtil.createRepoitory(NOpenFileUtil.owlFileFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.topologyFileFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.owlFileFolder);
 	}
 
-	private static void createRepoitory(String path){
+	/**
+	 * Procedure to create folders if they do not exist.
+	 * @param path
+	 */
+	private static void createRepository(String path){
 		
 		File file = new File(path);
 		if (!file.exists()) {
@@ -38,16 +42,26 @@ public class NOpenFileUtil {
 		
 	}
 	
+	/**
+	 * Procedure to check if topology file already exist in repository.
+	 * @param filename
+	 * @return
+	 */
 	public static Boolean checkTopologyFileExist(String filename){
 		
-		if(NOpenFileUtil.fileExist(NOpenFileUtil.topologyFileFolder + filename)){
+		if(NOpenFileUtil.checkFileExist(NOpenFileUtil.topologyFileFolder + filename)){
 			return true;
 		}
 		
 		return false;
 	}
 	
-	private static Boolean fileExist(String path){
+	/**
+	 * Generic procedure to check if file already exist in repository.
+	 * @param filename
+	 * @return
+	 */
+	private static Boolean checkFileExist(String path){
 		
 		File f = new File(path);
 		if(f.exists()){
@@ -57,16 +71,30 @@ public class NOpenFileUtil {
 		return false;
 	}
 	
-	
+	/**
+	 * Procedure for create a OWL file. 
+	 * @param filename 
+	 * @return
+	 */
 	public static File createOWLFile(String filename){
-		return createFile(NOpenFileUtil.owlFileFolder, filename);
+		return createFile(NOpenFileUtil.owlFileFolder, filename + ".owl");
 	}
 	
-	public static File createTopologyFile(String filename){
-		return createFile(NOpenFileUtil.topologyFileFolder, filename);
+	/**
+	 * Procedure for create a Topology JSON file.
+	 * @param filename 
+	 * @return
+	 */
+	public static File createTopologyJSONFile(String filename){
+		return createFile(NOpenFileUtil.topologyFileFolder, filename + ".json");
 	}
 
-	/** Procedure for creating a File */	
+	/** 
+	 * Generic Procedure for creating a File.
+	 * @param path
+	 * @param filename
+	 * @return
+	 */
     private static File createFile (String path, String filename) 
     {    	
 		File file = new File(path + filename);		
@@ -80,7 +108,12 @@ public class NOpenFileUtil {
 		return file;
 	}
 	
-    
+    /**
+     * Procedure for write a String content in a File.
+     * @param file
+     * @param content
+     * @throws IOException
+     */
     public static void writeToFile (File file, String content) throws IOException
    	{
     	PrintStream printStream = new PrintStream(file);
@@ -88,14 +121,30 @@ public class NOpenFileUtil {
 		printStream.close();				
    	}
     
-    public static HashSet<String> getAllTopplogyFilesName(){
-    	return getAllFilesName(NOpenFileUtil.topologyFileFolder, "json");
-    }
-    public static HashSet<String> getAllOWLFiles(){
-    	return getAllFilesName(NOpenFileUtil.owlFileFolder, "owl");    	
+    /**
+     * Procedure to get all topology JSON file names. 
+     * @return
+     */
+    public static HashSet<String> getAllTopplogyJSONFileNames(){
+    	return getAllFileNames(NOpenFileUtil.topologyFileFolder, "json");
     }
     
-    private static HashSet<String> getAllFilesName(String path, String extension){
+    /**
+     * Procedure to get all topology OWL file names. 
+     * @return
+     */
+    public static HashSet<String> getAllOWLFileNames(){
+    	return getAllFileNames(NOpenFileUtil.owlFileFolder, "owl");    	
+    }
+    
+    
+    /**
+     * Generic procedure to gett all file names
+     * @param path
+     * @param extension
+     * @return
+     */
+    private static HashSet<String> getAllFileNames(String path, String extension){
     	
     	File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
@@ -121,15 +170,30 @@ public class NOpenFileUtil {
     	
     }
     
+    /**
+     * Procedure to open a topology file as String.
+     * @param filename
+     * @return
+     */
     public static String openTopologyFileAsString(String filename){
     	return openFileAsString(NOpenFileUtil.topologyFileFolder, filename);
     }
     
+    /**
+     * Procedure to open a OWL file as String.
+     * @param filename
+     * @return
+     */
     public static String openOWLFileAsString(String filename){
     	return openFileAsString(NOpenFileUtil.owlFileFolder, filename);
     }
 	
-    public static String openFileAsString(String path, String filename){
+    /**
+     * Generic procedure to open a file as String.
+     * @param filename
+     * @return
+     */
+    private static String openFileAsString(String path, String filename){
     	
     	String content = "";
     	
@@ -152,6 +216,11 @@ public class NOpenFileUtil {
     	
     }
     
+    /**
+     * Procedure to parse a HashSet<String> to JSON String file.
+     * @param filename
+     * @return
+     */
     public static String parseHashSetToJSON(String property, HashSet<String> hashSet){
     	
     	JsonArray json = new JsonArray();

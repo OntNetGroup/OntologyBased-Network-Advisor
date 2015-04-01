@@ -64,7 +64,7 @@ public class TopologyController {
 	protected @ResponseBody void saveTopology(@RequestParam("filename") String filename, @RequestParam("graph") String graph){
 			
 		try {
-			File file = NOpenFileUtil.createTopologyFile(filename + ".json");
+			File file = NOpenFileUtil.createTopologyJSONFile(filename);
 			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -76,7 +76,7 @@ public class TopologyController {
 	@RequestMapping(value = "/getAllTopologies", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTopologies(){
 			
-		HashSet<String> topologies = NOpenFileUtil.getAllTopplogyFilesName();
+		HashSet<String> topologies = NOpenFileUtil.getAllTopplogyJSONFileNames();
 		return NOpenFileUtil.parseHashSetToJSON("topology", topologies);
 		
 	}
