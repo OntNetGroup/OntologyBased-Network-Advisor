@@ -42,7 +42,7 @@ public class ITUStudioController {
 	}
 	
 	/* ----- CRUD for Transport Function ----- */
-	/** Cria um tranport function transportFunctionID na camada layer, ou diretamente no card (layer=null)
+	/** Cria um tranport function transportFunctionID na camada layer
 	 * @param id: identificador do transport function a ser criado
 	 * @param layer: camada sobre a qual o transport function deve ser criado (pode ser nulo)
 	 * @return: success or error
@@ -58,7 +58,7 @@ public class ITUStudioController {
 		return "success";
 	}
 	
-	/** Verifica se é possível criar um tranport function transportFunctionID na camada layer, ou diretamente no card (layer=null)
+	/** Verifica se é possível criar um tranport function transportFunctionID na camada layer
 	 * @param id
 	 * @param layer (pode ser nulo)
 	 * @return

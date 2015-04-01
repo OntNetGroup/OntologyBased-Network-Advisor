@@ -1,13 +1,4 @@
 var Rappid = Backbone.Router.extend({
-
-	// identificadores das barras inferior e superior, e seus respectivos rótulos
-	// isto serve para impedir que sejam removidos quando o usuário clicar no botão 'Clear Paper'
-	// serve também para organizar as portas contidas nas barras
-	// pode dar problema no futuro caso seja gerado algum elemento com algum destes id's
-	barInID: 1,
-	barOutID: 2,
-	labelInID: 3,
-	labelOutID: 4,
 	
     routes: {
         '*path': 'home'
@@ -627,8 +618,7 @@ var Rappid = Backbone.Router.extend({
         }, this));
         
         
-        // validar inserção de transport functions
-        // validar que portas sejam inseridas somente sobre elementos ITU 
+        // validar inserção de elementos no grafo
         this.validator.validate('add', this.isNotLink, _.bind(function(err, command, next) {
         	        	
         	var cell = this.graph.getCell(command.data.id);
@@ -656,18 +646,14 @@ var Rappid = Backbone.Router.extend({
 				if(parent) { // existe algum elemento abaixo
 					var parentType = parent.get('type');
 					
-					if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
-						return next('Please, add the port over a transport function.');
-					} else { // elemento abaixo é um transport function
+					if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
 
-		    			// TODO: consultar ontologia para criação de uma porta
 						var portID = cell.id;
 						var transportFunctionID = parent.id;
 						console.log('try to create port ' +portID+ ' of TF ' +transportFunctionID);
-//						var result = createPort(portID, transportFunctionID);
-						var result = 'success';
+						var result = createPort(portID, transportFunctionID);
 						
-						if(result === 'success') {
+						if(result === "success") {
 						
 							var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: cell.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
 			    			this.graph.addCell(newLink);
@@ -686,6 +672,8 @@ var Rappid = Backbone.Router.extend({
 						} else {
 							return next(result);
 						}
+					} else { // elemento abaixo é uma camada 
+						return next('Please, add the port over a transport function.');
 					}
 					
 				} else { // nenhum elemento abaixo
@@ -693,8 +681,17 @@ var Rappid = Backbone.Router.extend({
 				}
 			
 			} else if(cellType === 'bpmn.Pool') { // elemento é uma camada
-    			// TODO: consultar ontologia para inserção de camada???
-				// TODO: remover esta camada do stencil
+    			// TODO: consultar ontologia para inserção de camada no card
+				var layer = cellSubType;
+				var cardID = 666; // TODO: get cardID 
+				var result = insertLayer(layer, cardID);
+				
+				if(result === "success") {
+					// TODO: remover camada do stencil
+					return next(err);
+				} else {
+					return next(result);
+				}
 			
 			} else if(cellType === 'basic.Path') { // elemento é um transport function
 				
@@ -702,14 +699,12 @@ var Rappid = Backbone.Router.extend({
 					var parentType = parent.get('type');
 					
 					if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
-		    			// TODO: consultar ontologia para inserção de transport function na camada
 						var id = cell.id;
 						var layer = parent.get('subtype');
 						console.log('try to create TF ' +id+ ' in layer ' +layer);
-//						var result = createTransportFunction(id, layer);
-						var result = 'success';
+						var result = createTransportFunction(id, layer);
 						
-						if(result === 'success') {						
+						if(result === "success") {						
 							parent.embed(cell);
 							return next(err);
 						} else {
@@ -718,14 +713,13 @@ var Rappid = Backbone.Router.extend({
 											
 					}
 				} else { // não existe elemento abaixo
-					// TODO: consultar ontologia para inserção de transport function
+					// TODO: consultar ontologia para inserção de transport function diretamente no card
 					var id = cell.id;
 					var layer = '';
 					console.log('try to create TF ' +id);
-//					var result = createTransportFunction(id, layer);
-					var result = 'success';
+					var result = createTransportFunction(id, layer);
 					
-					if(result === 'success') {
+					if(result === "success") {
 						return next(err);
 					} else {
 						return next(result);
@@ -733,6 +727,26 @@ var Rappid = Backbone.Router.extend({
 				}
 				
 			}
+        }, this));
+        
+        // validar inserção de links no grafo
+        this.validator.validate('change:target add', this.isLink, _.bind(function(err, command, next) {
+        	
+        	var link = this.graph.getCell(command.data.id).toJSON();
+        	var sourceTFunctionID = link.source.id;
+            var targetTFunctionID = link.target.id;
+            
+            if (sourceTFunctionID && targetTFunctionID) {
+            	var result = createLink(sourceTFunctionID, targetTFunctionID);
+            	
+            	if(result === "success") {
+					return next(err);
+				} else {
+					return next(result);
+				}
+            } else {
+            	return next('Please, connect to a transport function');
+            }
         }, this));
     },
 
@@ -881,7 +895,6 @@ var Rappid = Backbone.Router.extend({
     initializePortsBar: function() {
     	// barra superior das portas de entrada
     	var barIn = new joint.shapes.basic.Rect({
-    					id: this.barInID,
 						subtype: 'barIn',
 						position: {x: 0, y: 0},
 						size: {width: 900, height: 60},
@@ -895,7 +908,6 @@ var Rappid = Backbone.Router.extend({
 					});
     	// barra inferior das portas de saída
     	var barOut = new joint.shapes.basic.Rect({
-    				id: this.barOutID,
 					subtype: 'barOut',
 					magnet: false,
 					position: {x: 0, y: 940},
@@ -911,7 +923,6 @@ var Rappid = Backbone.Router.extend({
     	
     	// rótulo da barra superior
     	var labelIn = new joint.shapes.basic.Rect({
-    					id: this.labelInID,
 						subtype: 'labelIn',
 						position: {x: 900, y: 0},
 						size: {width: 100, height: 60},
@@ -926,7 +937,6 @@ var Rappid = Backbone.Router.extend({
 					});
     	// rótulo da barra inferior    	
     	var labelOut = new joint.shapes.basic.Rect({
-						id: this.labelOutID,
 						subtype: 'labelOut',
 						position: {x: 900, y: 940},
 						size: {width: 100, height: 60},
@@ -981,6 +991,12 @@ var Rappid = Backbone.Router.extend({
         if (command.data.type !== 'link') {
         	return next(err);
         }
+        // otherwise stop validating (don't call next validation function)
+    },
+    
+    // Check if cell in command is a link. Continue validating if yes, otherwise stop.
+    isLink: function(err, command, next) {
+        if (command.data.type === 'link') return next(err);
         // otherwise stop validating (don't call next validation function)
     }
     
