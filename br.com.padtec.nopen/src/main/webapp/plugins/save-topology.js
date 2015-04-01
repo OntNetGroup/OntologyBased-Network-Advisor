@@ -1,3 +1,17 @@
+function checkNodeEquipments(graph){
+	
+	var elements = graph.getElements();
+	
+	for(var i = 0; i < elements.length; i++){
+		if(elements[i].attr('equipment/template') == ""){
+			alert("all nodes need to be matched to an equipment.")
+			return false;
+		}
+	}
+	
+	return true;
+}
+
 function generateSaveTopologyDialog(graph){
 	
 	dialog = $("#save-dialog").dialog({

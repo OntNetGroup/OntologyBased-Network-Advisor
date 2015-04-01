@@ -1,9 +1,9 @@
 package br.com.padtec.nopen.topology.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.topology.service.TopologyExporter;
-import br.com.padtec.nopen.topology.service.TopologyFile;
 import br.com.padtec.nopen.topology.service.TopologyImporter;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 @Controller
 public class TopologyController {
@@ -53,63 +50,48 @@ public class TopologyController {
 	}
 	
 	@RequestMapping(value = "/checkTopologyFile", method = RequestMethod.POST)
-	protected @ResponseBody String checkTopologyFile(@RequestParam("filename") String filename, HttpServletRequest request){
+	protected @ResponseBody String checkTopologyFile(@RequestParam("filename") String filename){
 
-		ServletContext sc = request.getSession().getServletContext();
-		String path =  "/backend/topology/" ;
-
-		File f = new File(sc.getRealPath(path) + "/" + filename + ".json");
-
-		if(f.exists()){
+		if(NOpenFileUtil.checkTopologyFileExist(filename + ".json")){
 			return "exist";
 		}
 		
 		return null;
 	}
 	
-	
 	@RequestMapping(value = "/saveTopology", method = RequestMethod.POST)
-	protected @ResponseBody void saveTopology(@RequestParam("filename") String filename, @RequestParam("graph") String graph, HttpServletRequest request){
+	protected @ResponseBody void saveTopology(@RequestParam("filename") String filename, @RequestParam("graph") String graph){
 			
-		TopologyFile topologyFile = new TopologyFile();
-		topologyFile.saveTopology(filename, graph, request);
+		try {
+			File file = NOpenFileUtil.createTopologyFile(filename + ".json");
+			NOpenFileUtil.writeToFile(file, graph);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
 	@RequestMapping(value = "/getAllTopologies", method = RequestMethod.GET)
-	protected @ResponseBody String getAllTopologies(HttpServletRequest request){
+	protected @ResponseBody String getAllTopologies(){
 			
-		TopologyFile topologyFile = new TopologyFile();
-		HashSet<String> topologies = topologyFile.getAllTopologies(request);
-		
-		JsonArray json = new JsonArray();
-
-		for(String topology : topologies){
-			JsonObject j = new JsonObject();
-			j.addProperty("topology", topology);
-			
-			json.add(j);
-		}
-		
-		return json.toString();
+		HashSet<String> topologies = NOpenFileUtil.getAllTopplogyFiles();
+		return NOpenFileUtil.parseHashSetToJSON("topology", topologies);
 		
 	}
 	
 	@RequestMapping(value = "/openTopology", method = RequestMethod.POST)
-	protected @ResponseBody String openTopology(@RequestParam("filename") String filename, HttpServletRequest request){
+	protected @ResponseBody String openTopology(@RequestParam("filename") String filename){
 			
-		TopologyFile topologyFile = new TopologyFile();
-		String graph = topologyFile.openTopology(filename, request);
-		
-		return graph;
+		return NOpenFileUtil.openTopologyFile(filename + ".json");
 		
 	}
 	
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
 		
-		 ManagerTopology managerTopology = new ManagerTopology();
-		 HashSet<String> equipments2 = managerTopology.getAllTemplateEquipment();
+//		 ManagerTopology managerTopology = new ManagerTopology();
+//		 HashSet<String> equipments2 = managerTopology.getAllTemplateEquipment();
 		
 		HashSet<String> equipments = new HashSet<String>();
 		equipments.add("Equipment1");
@@ -122,16 +104,7 @@ public class TopologyController {
 		equipments.add("Equipment8");
 		equipments.add("Equipment9");
 		
-		JsonArray json = new JsonArray();
-
-		for(String equipment : equipments){
-			JsonObject j = new JsonObject();
-			j.addProperty("equipment", equipment);
-			
-			json.add(j);
-		}
-		
-		return json.toString();
+		return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
 	}
 	
 	@RequestMapping(value = "/matchEquipmentToNode", method = RequestMethod.POST)

@@ -102,11 +102,13 @@
             var uuid = joint.util.uuid();
 
             $('#btn-save').click(function(){
-            	generateSaveTopologyDialog(app.graph);
+            	if(checkNodeEquipments(app.graph)){
+            		generateSaveTopologyDialog(app.graph);
+            	}
             });
             
-            $('#btn-open').click(function(){
-            	getTopologies(app.graph);
+            $('#btn-open').click(function(){	
+            	getTopologies(app.graph);      	
             });
             
             $('#btn-import-xml').click(function(){

@@ -1,15 +1,17 @@
 <div class="toolbar-container">
 	 <button id="btn-save" class="btn" data-tooltip="Save"><img src="/nopen/frontend/network-topology/img/save.png" alt="Save"/></button>
 	 <button id="btn-open" class="btn" data-tooltip="Open"><img src="/nopen/frontend/network-topology/img/open.png" alt="Open"/></button>
-     <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/network-topology/img/undo.png" alt="Undo"/></button>
-     <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/network-topology/img/redo.png" alt="Redo"/></button>
-     <button id="btn-import-xml" class="btn" data-tooltip="Import XML file"><img src="/nopen/frontend/network-topology/img/import.png" alt="Import XML"/> import XML</button>
+
+     <button id="btn-import-xml" class="btn" data-tooltip="Import XML File"><img src="/nopen/frontend/network-topology/img/import.png" alt="Import XML"/></button>
      <input type="file" id="file" accept=".xml" style="display:none" />
 
      <button id="btn-pre" class="btn" data-tooltip="Preview XML"><img src="/nopen/frontend/network-topology/img/preview.png" alt="Preview XML"/></button>
      <button id="btn-export-xml" class="btn" data-tooltip="Export to XML"><img src="/nopen/frontend/network-topology/img/export.png" alt="Export to XML"/></button>
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window"><img src="/nopen/frontend/network-topology/img/pngfile.png" alt="PNG"/></button>
      <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/network-topology/img/print.png" alt="Print"/></button>
+     
+     <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/network-topology/img/undo.png" alt="Undo"/></button>
+     <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/network-topology/img/redo.png" alt="Redo"/></button>
      <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="/nopen/frontend/network-topology/img/zoomin.png" alt="Zoom in"/></button>
      <button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out"><img src="/nopen/frontend/network-topology/img/zoomout.png" alt="Zoom out"/></button>
      <div class="panel">
