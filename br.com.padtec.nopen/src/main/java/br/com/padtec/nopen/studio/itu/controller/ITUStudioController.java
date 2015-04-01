@@ -22,11 +22,12 @@ public class ITUStudioController {
 	
 	/* ----- CRUD for Layer ----- */
 	/**
-	 * @param id: identificador da camada a ser criada
+	 * @param layer: camada a ser inserida
+	 * @param cardID: identificador do card que deverá ser composto da camada
 	 * @return: success or error
 	 */
-	@RequestMapping(value = "/createLayer", method = RequestMethod.POST)
-	public @ResponseBody String createLayer(@RequestParam("id") String id) {
+	@RequestMapping(value = "/insertLayer", method = RequestMethod.POST)
+	public @ResponseBody String insertLayer(@RequestParam("layer") String layer, @RequestParam("cardID") String cardID) {
 		return "success";
 	}
 	
@@ -62,8 +63,8 @@ public class ITUStudioController {
 	 * @return
 	 */
 	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody boolean canCreateTransportFunction(@RequestParam("id") String transportFunctionID, @RequestParam("layer") String layerID) {
-		return true;
+	public @ResponseBody String canCreateTransportFunction(@RequestParam("id") String transportFunctionID, @RequestParam("layer") String layerID) {
+		return "true";
 	}
 	
 	/**
@@ -137,8 +138,8 @@ public class ITUStudioController {
 	 * @return
 	 */
 	@RequestMapping(value = "/canCreateLink", method = RequestMethod.POST)
-	public @ResponseBody boolean canCreateLink(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) {
-		return true;
+	public @ResponseBody String canCreateLink(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) {
+		return "true";
 	}
 	
 	/**
