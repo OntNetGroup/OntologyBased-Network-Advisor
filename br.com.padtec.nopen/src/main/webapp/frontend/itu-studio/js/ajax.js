@@ -26,9 +26,9 @@ function canCreateTransportFunction(id, layer) {
 		   success: function(data){ 		   
 			   return true;
 		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
+		   error: function (request, status, error) {
+		        alert(request.responseText);
+		    }
 		});
 };
 
