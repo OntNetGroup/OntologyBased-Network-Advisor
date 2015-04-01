@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-<<<<<<< HEAD
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
-=======
 import br.com.padtec.nopen.model.NOpenFactory;
 import br.com.padtec.nopen.studio.service.StudioComponents;
->>>>>>> 2ad58acf0236b79be5cdd9f2e41dd8957ac50448
+
 import br.com.padtec.nopen.topology.service.TopologyExporter;
 import br.com.padtec.nopen.topology.service.TopologyImporter;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -95,48 +93,22 @@ public class TopologyController {
 	
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
-<<<<<<< HEAD
 		
 //		 ManagerTopology managerTopology = new ManagerTopology();
 //		 HashSet<String> equipments2 = managerTopology.getAllTemplateEquipment();
 		
-		HashSet<String> equipments = new HashSet<String>();
-=======
-		 NOpenFactory.createEquipment(StudioComponents.studioRepository);
-		 ManagerTopology managerTopology = new ManagerTopology();
-		 HashSet<String> equipments = managerTopology.getAllTemplateEquipment();
-
-		 for(String eq : equipments){
-			 System.out.println(eq.toString());
-		 }
+//		 NOpenFactory.createEquipment(StudioComponents.studioRepository);
+//		 
+//		 ManagerTopology managerTopology = new ManagerTopology();
+//		 HashSet<String> equipments = managerTopology.getAllTemplateEquipment();
 		 
-		/*HashSet<String> equipments = new HashSet<String>();
->>>>>>> 2ad58acf0236b79be5cdd9f2e41dd8957ac50448
-		equipments.add("Equipment1");
-		equipments.add("Equipment2");
-		equipments.add("Equipment3");
-		equipments.add("Equipment4");
-		equipments.add("Equipment5");
-		equipments.add("Equipment6");
-		equipments.add("Equipment7");
-		equipments.add("Equipment8");
-		equipments.add("Equipment9");
-<<<<<<< HEAD
-		
-		return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
-=======
-		*/
-		JsonArray json = new JsonArray();
-
-		for(String equipment : equipments){
-			JsonObject j = new JsonObject();
-			j.addProperty("equipment", equipment);
-			
-			json.add(j);
-		}
-		
-		return json.toString();
->>>>>>> 2ad58acf0236b79be5cdd9f2e41dd8957ac50448
+		 HashSet<String> equipments = new HashSet<String>();
+		 equipments.add("Equipment1");
+		 equipments.add("Equipment2");
+		 equipments.add("Equipment3");
+		 
+		 return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
+		 
 	}
 	
 	@RequestMapping(value = "/matchEquipmentToNode", method = RequestMethod.POST)
