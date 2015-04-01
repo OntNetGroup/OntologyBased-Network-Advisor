@@ -17,9 +17,26 @@ public class NOpenFileUtil {
 	public static String owlFileFolder;
 	
 	public void setPath(String path) {
-		NOpenFileUtil.path = path;
-		NOpenFileUtil.topologyFileFolder = NOpenFileUtil.path + "topology";
-		NOpenFileUtil.owlFileFolder = NOpenFileUtil.path + "owl";
+		
+		NOpenFileUtil.path = System.getProperty("user.home") + path;
+		NOpenFileUtil.topologyFileFolder = NOpenFileUtil.path + "/nopen/repository/topology/";
+		NOpenFileUtil.owlFileFolder = NOpenFileUtil.path + "/nopen/repository/owl/";
+		
+		System.out.println(System.getProperty("os.name"));
+
+		// if SO = Windows
+		if(System.getProperty("os.name").contains("Windows")){
+			
+			NOpenFileUtil.topologyFileFolder = NOpenFileUtil.topologyFileFolder.replaceAll("/", "\\\\");
+			NOpenFileUtil.topologyFileFolder = "C:" + NOpenFileUtil.topologyFileFolder;
+			
+			NOpenFileUtil.owlFileFolder = NOpenFileUtil.owlFileFolder.replaceAll("/", "\\\\");
+			NOpenFileUtil.owlFileFolder = "C:" + NOpenFileUtil.owlFileFolder;
+			
+		}
+		
+		System.out.println(NOpenFileUtil.topologyFileFolder);
+		System.out.println(NOpenFileUtil.owlFileFolder);
 		
 		NOpenFileUtil.createRepository(NOpenFileUtil.topologyFileFolder);
 		NOpenFileUtil.createRepository(NOpenFileUtil.owlFileFolder);

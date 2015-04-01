@@ -32,7 +32,11 @@
 	
 	<bean
 		class="br.com.padtec.nopen.service.util.NOpenFileUtil">
-		<property name="path" value ="C:\\Users\\missael\\repository\\" />
+		<!-- 
+			Defaul: /User/{username}  
+			Put in the value the path inside your {username} if you want, ( e.g., /example/sub1/sub2 ) 
+		-->
+		<property name="path" value =""/>
 	</bean>
 
 	<mvc:resources mapping="/js/**" location="/resource/" />
