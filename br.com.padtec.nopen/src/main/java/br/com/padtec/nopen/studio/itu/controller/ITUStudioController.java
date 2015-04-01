@@ -111,8 +111,8 @@ public class ITUStudioController {
 	 * @param targetTFunctionID
 	 * @return
 	 */
-	@RequestMapping(value = "/canCreateLinkBtwn", method = RequestMethod.POST)
-	public @ResponseBody boolean canCreateLinkBtwn(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) {
+	@RequestMapping(value = "/canCreateLink", method = RequestMethod.POST)
+	public @ResponseBody boolean canCreateLink(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) {
 		return true;
 	}
 	

@@ -146,7 +146,7 @@ var Rappid = Backbone.Router.extend({
         		var targetTFunctionID = cellViewT.model.id;
         		console.log('try to connect ' +sourceTFunctionID+ ' and ' +targetTFunctionID);
         		
-//        		return canCreateLinkBtwn(sourceTFunctionID, targetTFunctionID);
+//        		return canCreateLink(sourceTFunctionID, targetTFunctionID);
         		return true;
             },
             
@@ -166,8 +166,8 @@ var Rappid = Backbone.Router.extend({
         				var layer = parentView.model.get('subtype');
         				console.log('try to insert ' +id+ ' on layer ' +layer);
         				
-//        				return canCreateTransportFunction(id, layer);
-        				return true;
+        				return canCreateTransportFunction(id, layer);
+//        				return true;
         			}
         			
         			return false;

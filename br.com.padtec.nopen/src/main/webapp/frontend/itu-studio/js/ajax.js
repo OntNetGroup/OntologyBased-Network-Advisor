@@ -1,7 +1,7 @@
-function canCreateLinkBtwn(sourceTFunctionID, targetTFunctionID) {
+function canCreateLink(sourceTFunctionID, targetTFunctionID) {
 	$.ajax({
 		   type: "POST",
-		   url: "canCreateLinkBtwn.htm",
+		   url: "canCreateLink.htm",
 		   data: {
 			   'sourceTFunctionID': sourceTFunctionID,
 			   'targetTFunctionID': targetTFunctionID
