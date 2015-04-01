@@ -21,7 +21,7 @@ public class StudioInitializer {
 	public static String uploadEquipStudioTBox(boolean runReasoner)
 	{
 		Date beginDate = new Date();
-		InputStream s = StudioInitializer.class.getResourceAsStream("/br/com/padtec/nopen/resources/EquipStudio.owl");
+		InputStream s = StudioInitializer.class.getResourceAsStream("/model/EquipStudio.owl");
 		
 		String msg = NOpenUtilities.uploadTBOx(s, runReasoner, StudioComponents.studioRepository);
 		

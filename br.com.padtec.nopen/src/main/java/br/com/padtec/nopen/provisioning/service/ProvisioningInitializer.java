@@ -23,7 +23,7 @@ public class ProvisioningInitializer {
 	public static String uploadProvisioningTBox(boolean runReasoner)
 	{
 		Date beginDate = new Date();
-		InputStream s = NOpenInitializer.class.getResourceAsStream("/br/com/padtec/nopen/resources/Provisioning.owl");
+		InputStream s = NOpenInitializer.class.getResourceAsStream("/model/Provisioning.owl");
 		
 		String msg =  NOpenUtilities.uploadTBOx(s, runReasoner, ProvisioningComponents.provisioningRepository);
 		
