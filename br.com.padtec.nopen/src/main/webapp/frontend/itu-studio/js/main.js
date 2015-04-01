@@ -141,13 +141,11 @@ var Rappid = Backbone.Router.extend({
         		// Prevent loop linking
         		if(cellViewS === cellViewT) return false;
         		
-        		// TODO: se transport function tenta se conectar a transport function, consulta ontologia
         		var sourceTFunctionID = cellViewS.model.id;
         		var targetTFunctionID = cellViewT.model.id;
         		console.log('try to connect ' +sourceTFunctionID+ ' and ' +targetTFunctionID);
         		
         		return canCreateLink(sourceTFunctionID, targetTFunctionID);
-//        		return true;
             },
             
 	         // RF: Inserir 'containmnet rules' aos nós
@@ -160,14 +158,12 @@ var Rappid = Backbone.Router.extend({
         		
         		
         		if(childView.model instanceof joint.shapes.basic.Path) {
-        			// TODO: se transport function tenta ser colocado sobre camada, consulta ontologia
         			if(parentView.model instanceof Layer) {
         				var id = childView.model.id;
         				var layer = parentView.model.get('subtype');
         				console.log('try to insert ' +id+ ' on layer ' +layer);
         				
         				return canCreateTransportFunction(id, layer);
-//        				return true;
         			}
         			
         			return false;

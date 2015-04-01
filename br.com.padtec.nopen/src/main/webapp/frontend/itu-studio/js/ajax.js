@@ -1,14 +1,13 @@
-function canCreateLink(sourceTFunctionID, targetTFunctionID) {
+function createTransportFunction(id, layer) {
 	$.ajax({
 		   type: "POST",
-		   url: "canCreateLink.htm",
+		   url: "createTransportFunction.htm",
 		   data: {
-			   'sourceTFunctionID': sourceTFunctionID,
-			   'targetTFunctionID': targetTFunctionID
+			   'id': id,
+			   'layer': layer
 		   },
-		   success: function(data){
-			   alert(data);
-			   return true;
+		   success: function(data){ 		   
+			   return data;
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
@@ -25,8 +24,7 @@ function canCreateTransportFunction(id, layer) {
 			   'layer': layer
 		   },
 		   success: function(data){ 
-			   alert(data);
-			   return true;
+			   return data === "true" ? true : false;
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
@@ -43,7 +41,7 @@ function createPort(portID, transportFunctionID) {
 			   'transportFunctionID': transportFunctionID
 		   },
 		   success: function(data){ 		   
-			   return true;
+			   return data;
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
@@ -51,19 +49,20 @@ function createPort(portID, transportFunctionID) {
 		});
 };
 
-function createTransportFunction(id, layer) {
+function canCreateLink(sourceTFunctionID, targetTFunctionID) {
 	$.ajax({
 		   type: "POST",
-		   url: "createTransportFunction.htm",
+		   url: "canCreateLink.htm",
 		   data: {
-			   'id': id,
-			   'layer': layer
+			   'sourceTFunctionID': sourceTFunctionID,
+			   'targetTFunctionID': targetTFunctionID
 		   },
-		   success: function(data){ 		   
-			   return true;
+		   success: function(data){
+			   return data === "true" ? true : false;
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
 		   }
 		});
 };
+
