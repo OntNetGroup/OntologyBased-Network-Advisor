@@ -49,7 +49,11 @@ var Rappid = Backbone.Router.extend({
 				this.inspector.updateCell();
 				this.commandManager.listen();
 				this.inspector.$('[data-attribute]:first').focus();
-
+                 
+				//addshelf(args); | args -> "rack0" | "rack0","slot1"
+				console.log(cell.parent);
+				//var gambiMethod = "add"+subType+"("+args+");";
+				
 				// Identificações temporarias
 
 				//console.log(cell.attributes.type);
@@ -98,6 +102,8 @@ var Rappid = Backbone.Router.extend({
 
 		// when a cell is added on another one, it should be embedded
 		this.graph.on('add', function(cell) {
+			
+		
 
 			//console.log(JSON.stringify(cell));
 			if(cell.get('type') === 'link') return;
@@ -107,60 +113,59 @@ var Rappid = Backbone.Router.extend({
 			var area = g.rect(position.x, position.y, size.width, size.height);
 
 			var parent;			
-			_.each(this.graph.getElements(), function(e) {
+		_.each(this.graph.getElements(), function(e) {
 
-				var position = e.get('position');
-				var size = e.get('size');
-				if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-					parent = e;
-				}
-			});
+			var position = e.get('position');
+			var size = e.get('size');
+			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+				parent = e;
+			}
+		});
 
-			// See if the cell can connect with the parent : true or false
+		// See if the cell can connect with the parent : true or false
 
 
-			if(parent) {
+		if(parent) {
 
-				//other equipments already conected
-				var filhos = parent.getEmbeddedCells().length;
+			//outros equipamentos conectados
+			var filhos = parent.getEmbeddedCells().length;
 				var soa = parent.getEmbeddedCells('0') ;
-				console.log(soa);
-				console.log('numero de filhos ' ,filhos);
+
+			//	console.log(soa);
+			//	console.log('numero de filhos ' ,filhos);
 
 				//parent position and size
 				var pposition = parent.get('position');
-				//console.log(pposition);
-				var psize = parent.get('size');
-				//console.log(psize);
+			//console.log(pposition);
+			var psize = parent.get('size');
+			//console.log(psize);
 
 				//child position and size
 				var cposition = cell.get('position');
-				//console.log(cposition);	
+//				//console.log(cposition);	
 				var csize = cell.get('size');
-				//console.log(csize)
+//				//console.log(csize)
 
-				//Aumento de tamanho e re posicionamento
+
 				if(parent.get('subType') === 'rack') {
-					var increasew = (psize.width) ;
-					//console.log('aumento do parent width ' ,increasew);
-					var increaseh = (psize.height + csize.height ) ;
-					//console.log('aumento do parent height ' ,increaseh);
-					var newpositionx = pposition.x + 15 ;
-					//console.log('nova posição da cell em x ' , newpositionx);
-					var nempositiony;
-
+//					//Aumento de tamanho e re posicionamento
+				var newpositionx = pposition.x + 15 ;
+//				//console.log('nova posição da cell em x ' , newpositionx);
+				var nempositiony;
+//
 					if (parent.getEmbeddedCells().length === '0'){
 						nempositiony = pposition.y + 20 ;
-						//console.log('nova posição da cell em y ' , nempositiony);
-					}else {
+					//console.log('nova posição da cell em y ' , nempositiony);
+				}else {
 						nempositiony = pposition.y + 20 + ((filhos) * (80));
-						//console.log('nova posição da cell em y sendo o segundo ' , nempositiony);
+					//console.log('nova posição da cell em y sendo o segundo ' , nempositiony);
 					};
 					parent.embed(cell);
-					parent.set('size' , { 
-						width: increasew  ,
-						height:	increaseh});
 
+					parent.set('size' , { 
+						width: psize.width  ,
+						height:	240 + ((parent.getEmbeddedCells().length - (1) ) * 70)
+					});
 					cell.set('position', {
 						x: newpositionx  ,
 						y: nempositiony 
@@ -173,34 +178,34 @@ var Rappid = Backbone.Router.extend({
 					if(parent.get('subType') === 'shelf'){
 
 						// selecionar o rack
-						var parentId = parent.get('parent');
-						if (!parentId) return;
+						var grandparentId = parent.get('parent');
+						if (!grandparentId) return;
 
-						var grandparent = this.graph.getCell(parentId);
-
+						var grandparent = this.graph.getCell(grandparentId);
+                        console.log(grandparent);
+                        
 						//aumento de tamanho do parent
-						var increasew = (psize.width + 60 ) ;
-						console.log(increasew);
-						var increaseh = (psize.height) ;
-						console.log(increaseh);
-
+						var increasew = (psize.width + 80 ) ;
+						//console.log(increasew);
+						
 						//reposicionamento da cell
 						var newpositiony = pposition.y + 7 ;
 						//console.log('nova posição da cell em y ' , newpositiony);
 						var nempositionx;
-						if (parent.getEmbeddedCells().length === '1'){
+						if (parent.getEmbeddedCells().length === '0'){
 							nempositionx = pposition.x + 10;
 							//	console.log('nova posição da cell em x ' , nempositionx);
 						}else {
-							nempositionx = pposition.x + 20 + ((filhos) * (66));
+							nempositionx = pposition.x + 20 + ((filhos) * (73));
 							//	console.log('nova posição da cell em x sendo o segundo ' , nempositionx);
 						};
 
 						//parent resize , grandparent resize and cell new position
 						parent.embed(cell);
+						
 						parent.set('size' , { 
-							width: increasew  ,
-							height:	increaseh});
+							width: 240 + ((parent.getEmbeddedCells().length - (1) ) * 70) ,
+							height:	parent.get('size').height});
 
 						cell.set('position', {
 							x: nempositionx,
@@ -249,9 +254,9 @@ var Rappid = Backbone.Router.extend({
 						cell.set('position' , {
 							x : newpositionx ,
 							y : newpositiony
-						});
+					});
 
-						// Prototype : check order
+//					// Prototype : check order
 						this.embedOrConnect(parent, cell);
 					}else{
 						if(parent.get('subType') === 'card' || 'supervisor' ){
@@ -261,18 +266,55 @@ var Rappid = Backbone.Router.extend({
 					}
 
 				}
-				//aumento do modelo
-				/*var increasew = (psize.width + 0.25*( psize.width - csize.width )) ;
-				console.log(increasew);
-				var increaseh = (psize.height + 0.25*( psize.height - csize.height )) ;
-				console.log(increaseh);
-				parent.set('size' , { 
-					width: increasew  ,
-					height:	increaseh
-				});*/ 
+//				//aumento do modelo
+//				/*var increasew = (psize.width + 0.25*( psize.width - csize.width )) ;
+//				console.log(increasew);
+//				var increaseh = (psize.height + 0.25*( psize.height - csize.height )) ;
+//				console.log(increaseh);
+//				parent.set('size' , { 
+//					width: increasew  ,
+//					height:	increaseh
+//				});*/ 
 
 			}
 		}, this);
+
+		this.graph.on('remove' , function (cell) {
+			
+			var parentId = cell.get('parent');
+			//console.log(parentId);
+			if (!parentId) return;
+            
+			var parent = this.graph.getCell(parentId);
+           // console.log(parent);
+			
+			if(parent.get('subType') === 'rack') {
+
+				//console.log(parent.getEmbeddedCells().length);
+				
+				parent.set('size' , { 
+					width: parent.get('size').width  ,
+					height:	240 + ((parent.getEmbeddedCells().length - (2) ) * 70)
+				});
+				//console.log(parent.get('size'));
+			
+			}else{
+				if(parent.get('subType') === 'shelf'){
+
+				}else{
+					if(parent.get('subType') === 'slot'){
+
+					}if(parent.get('subType') === 'card' || 'supervisor' ) {
+
+					}
+				}
+			}
+
+		},this); 
+		
+//		this.graph.on('all' , function( a) {
+//			console.log(a);
+//		},this);
 
 		this.graph.on('change:size', function(cell, newPosition, opt) {
 

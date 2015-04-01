@@ -19916,14 +19916,17 @@ joint.dia.Cell = Backbone.Model.extend({
         // First, unembed this cell from its parent cell if there is one.
         var parentCellId = this.get('parent');
         if (parentCellId) {
-            
-            var parentCell = this.collection && this.collection.get(parentCellId);
-            parentCell.unembed(this);
+        var parentCell = this.collection && this.collection.get(parentCellId);
         }
         
         _.invoke(this.getEmbeddedCells(), 'remove', options);
-        
         this.trigger('remove', this, this.collection, options);
+        
+        if (parentCellId) {
+            parentCell.unembed(this);
+        }
+        
+        
 
 	if (collection) {
 	    collection.trigger('batch:stop');
