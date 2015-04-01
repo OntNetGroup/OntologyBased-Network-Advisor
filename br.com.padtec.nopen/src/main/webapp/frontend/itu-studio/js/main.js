@@ -146,8 +146,8 @@ var Rappid = Backbone.Router.extend({
         		var targetTFunctionID = cellViewT.model.id;
         		console.log('try to connect ' +sourceTFunctionID+ ' and ' +targetTFunctionID);
         		
-//        		return canCreateLink(sourceTFunctionID, targetTFunctionID);
-        		return true;
+        		return canCreateLink(sourceTFunctionID, targetTFunctionID);
+//        		return true;
             },
             
 	         // RF: Inserir 'containmnet rules' aos nós

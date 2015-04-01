@@ -23,12 +23,13 @@ function canCreateTransportFunction(id, layer) {
 			   'id': id,
 			   'layer': layer
 		   },
-		   success: function(data){ 		   
+		   success: function(data){ 
+			   alert(data);
 			   return true;
 		   },
-		   error: function (request, status, error) {
-		        alert(request.responseText);
-		    }
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
 		});
 };
 
