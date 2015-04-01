@@ -25,14 +25,9 @@ public class NOpenFileUtil {
 		System.out.println(System.getProperty("os.name"));
 
 		// if SO = Windows
-		if(System.getProperty("os.name").contains("Windows")){
-			
+		if(System.getProperty("os.name").contains("Windows")){		
 			NOpenFileUtil.topologyFileFolder = NOpenFileUtil.topologyFileFolder.replaceAll("/", "\\\\");
-			NOpenFileUtil.topologyFileFolder = "C:" + NOpenFileUtil.topologyFileFolder;
-			
-			NOpenFileUtil.owlFileFolder = NOpenFileUtil.owlFileFolder.replaceAll("/", "\\\\");
-			NOpenFileUtil.owlFileFolder = "C:" + NOpenFileUtil.owlFileFolder;
-			
+			NOpenFileUtil.owlFileFolder = NOpenFileUtil.owlFileFolder.replaceAll("/", "\\\\");	
 		}
 		
 		System.out.println(NOpenFileUtil.topologyFileFolder);
