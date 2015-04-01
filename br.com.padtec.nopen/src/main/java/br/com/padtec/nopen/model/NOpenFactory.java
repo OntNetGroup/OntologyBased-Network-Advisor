@@ -20,7 +20,7 @@ public class NOpenFactory {
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), odukURI, layerURI);
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), otukURI, layerURI);
 		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.COMPONENTOF3.toString();
+		String techToLayerURI = repository.getNamespace()+RelationEnum.COMPONENTOF_TECH_LAYER.toString();
 				
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),otnURI, techToLayerURI, poukURI);
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),otnURI, techToLayerURI, odukURI);
@@ -40,9 +40,21 @@ public class NOpenFactory {
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), menURI, layerURI);
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), subscribersURI, layerURI);
 		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.COMPONENTOF3.toString();
+		String techToLayerURI = repository.getNamespace()+RelationEnum.COMPONENTOF_TECH_LAYER.toString();
 				
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),mefURI, techToLayerURI, menURI);
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),mefURI, techToLayerURI, subscribersURI);
-	}	
+	}
+	
+	public static void createEquipment(OKCoUploader repository){
+		String eq1URI = repository.getNamespace()+"Equipment1";
+		String eq2URI = repository.getNamespace()+"Equipment2";
+		String eq3URI = repository.getNamespace()+"Equipment3";
+		String equipmentURI = repository.getNamespace()+ConceptEnum.EQUIPMENT.toString();
+		
+		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq1URI,equipmentURI);
+		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq2URI,equipmentURI);
+		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq3URI,equipmentURI);
+
+	}
 }

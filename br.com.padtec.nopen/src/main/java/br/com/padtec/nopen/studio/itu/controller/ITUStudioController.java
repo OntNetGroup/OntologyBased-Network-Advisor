@@ -14,30 +14,49 @@ import br.com.padtec.nopen.studio.model.StudioSerializator;
 @Controller
 public class ITUStudioController {
 	
+	/* ----- CRUD for Layer ----- */
+	/**
+	 * @param id: identificador da camada a ser criada
+	 * @return: success or error
+	 */
+	@RequestMapping(value = "/createLayer", method = RequestMethod.POST)
+	public @ResponseBody String createLayer(@RequestParam("id") String id) {
+		return "success";
+	}
+	
+	/**
+	 * @param id: identificador da camada a ser criada
+	 * @return: success or error
+	 */
+	@RequestMapping(value = "/deleteLayer", method = RequestMethod.POST)
+	public @ResponseBody String deleteLayer(@RequestParam("id") String id) {
+		return "success";
+	}
+	
 	/* ----- CRUD for Transport Function ----- */
 	/**
-	 * @param id: identificador do transport function a ser criado
-	 * @param layer: camada sobre a qual o transport function deve ser criado (pode ser nulo)
+	 * @param transportFunctionID: identificador do transport function a ser criado
+	 * @param layerID: id da camada sobre a qual o transport function deve ser criado (pode ser nulo)
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String createTransportFunction(@RequestParam("id") String id, @RequestParam("layer") String layer) 
+	public @ResponseBody String createTransportFunction(@RequestParam("transportFunctionID") String transportFunctionID, @RequestParam("layerID") String layerID) 
 	{
 		/**===========================================================
 		 * Create Transport Function
 		 * =========================================================== */
-		StudioFactory.createTransportFunction(id,layer);
+		StudioFactory.createTransportFunction(transportFunctionID,layerID);
 		
 		return "success";
 	}
 	
 	/**
-	 * @param id
-	 * @param layer
+	 * @param transportFunctionID
+	 * @param layerID
 	 * @return
 	 */
 	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody boolean canCreateTransportFunction(@RequestParam("id") String id, @RequestParam("layer") String layer) {
+	public @ResponseBody boolean canCreateTransportFunction(@RequestParam("transportFunctionID") String transportFunctionID, @RequestParam("layerID") String layerID) {
 		return true;
 	}
 	
@@ -111,8 +130,8 @@ public class ITUStudioController {
 	 * @param targetTFunctionID
 	 * @return
 	 */
-	@RequestMapping(value = "/canCreateLinkBtwn", method = RequestMethod.POST)
-	public @ResponseBody boolean canCreateLinkBtwn(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) {
+	@RequestMapping(value = "/canCreateLink", method = RequestMethod.POST)
+	public @ResponseBody boolean canCreateLink(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) {
 		return true;
 	}
 	
