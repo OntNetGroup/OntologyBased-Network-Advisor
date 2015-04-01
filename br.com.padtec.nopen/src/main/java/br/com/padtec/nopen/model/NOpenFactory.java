@@ -4,7 +4,7 @@ import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class NOpenFactory {
-
+	
 	public static void createOTNTech(OKCoUploader repository)
 	{
 		String otnURI = repository.getNamespace()+"OTN";		
@@ -45,16 +45,31 @@ public class NOpenFactory {
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),mefURI, techToLayerURI, menURI);
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),mefURI, techToLayerURI, subscribersURI);
 	}
+		
+	public static void createServices(OKCoUploader repository)
+	{
+		String simpleConnURI = repository.getNamespace()+"SimpleConnection";	
+		String Conn1_1URI = repository.getNamespace()+"1Plus1Connection";
+		String Conn11URI = repository.getNamespace()+"1To1Connection";				
+		String Conn1NURI = repository.getNamespace()+"1ToNConnection";
+		String servURI = repository.getNamespace()+ConceptEnum.SERVICE.toString();
+		
+		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), simpleConnURI,servURI);
+		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), Conn1_1URI, servURI);
+		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), Conn11URI, servURI);
+		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), Conn1NURI, servURI);		
+	}
 	
-	public static void createEquipment(OKCoUploader repository){
+	public static void createEquipments(OKCoUploader repository)
+	{
 		String eq1URI = repository.getNamespace()+"Equipment1";
 		String eq2URI = repository.getNamespace()+"Equipment2";
 		String eq3URI = repository.getNamespace()+"Equipment3";
+		
 		String equipmentURI = repository.getNamespace()+ConceptEnum.EQUIPMENT.toString();
 		
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq1URI,equipmentURI);
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq2URI,equipmentURI);
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq3URI,equipmentURI);
-
 	}
 }

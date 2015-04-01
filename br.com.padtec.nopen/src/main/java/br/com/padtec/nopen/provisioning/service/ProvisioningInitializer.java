@@ -34,12 +34,12 @@ public class ProvisioningInitializer {
 	public static void registerDefaultTechnologies()
 	{
 		Date beginDate = new Date();		
-		NOpenFactory.createMEFTech(ProvisioningComponents.provisioningRepository);		
-		PerformanceUtil.printExecutionTime("Provisioning: MEF Technology registered.", beginDate);
 		
-		beginDate = new Date();		
+		NOpenFactory.createMEFTech(ProvisioningComponents.provisioningRepository);
 		NOpenFactory.createOTNTech(ProvisioningComponents.provisioningRepository);
-		PerformanceUtil.printExecutionTime("Provisioning: OTN Technology registered.", beginDate);
+		NOpenFactory.createServices(ProvisioningComponents.provisioningRepository);
+		
+		PerformanceUtil.printExecutionTime("Provisioning: Technologies, Layers and Services registered.", beginDate);
 	}
 	
 	public static void runInference(boolean runReasoner)

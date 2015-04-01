@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
-import br.com.padtec.nopen.model.NOpenFactory;
-import br.com.padtec.nopen.studio.service.StudioComponents;
-
 import br.com.padtec.nopen.topology.service.TopologyExporter;
 import br.com.padtec.nopen.topology.service.TopologyImporter;
-import br.com.padtec.okco.core.application.OKCoUploader;
 
 @Controller
 public class TopologyController {

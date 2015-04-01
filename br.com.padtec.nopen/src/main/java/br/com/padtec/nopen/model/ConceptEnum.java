@@ -5,7 +5,8 @@ public enum ConceptEnum {
 	TRANSPORT_FUNCTION("Transport_Function"), 
 	LAYER("Layer"),
 	TECHNOLOGY("Technology"),
-	EQUIPMENT("Equipment");
+	EQUIPMENT("Equipment"),
+	SERVICE("Service");
 	
 	private String concept;
 	

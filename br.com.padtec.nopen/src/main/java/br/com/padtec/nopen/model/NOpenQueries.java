@@ -45,6 +45,11 @@ public class NOpenQueries {
 		return getIndividualsNames(StudioComponents.studioRepository.getNamespace()+ConceptEnum.TECHNOLOGY.toString());		
 	}
 	
+	public static String[] getServicesNames()
+	{
+		return getIndividualsNames(StudioComponents.studioRepository.getNamespace()+ConceptEnum.SERVICE.toString());		
+	}
+	
 	public static String[] getLayerNames(String techName)
 	{
 		return  getIndividualsNamesAtObjectPropertyRange(

@@ -21,6 +21,7 @@ public class HomeController {
 				
 		request.getSession().setAttribute("techs", NOpenQueries.getTechnologiesNames());
 		request.getSession().setAttribute("layers", NOpenQueries.getLayerNames());
+		request.getSession().setAttribute("allServices", NOpenQueries.getServicesNames());
 		
 		return "welcome";
 	}

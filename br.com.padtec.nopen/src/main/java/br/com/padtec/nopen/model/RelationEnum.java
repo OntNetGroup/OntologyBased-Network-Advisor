@@ -3,7 +3,8 @@ package br.com.padtec.nopen.model;
 public enum RelationEnum {
 
 	APPLIES("applies"),
-	COMPONENTOF_TECH_LAYER("ComponentOf5");
+	COMPONENTOF_TECH_LAYER("ComponentOf5"),
+	IMPLEMENTS_LAYER_SERVICE("implements.Layer.Service");
 	
 	private String relation;
 	private String domain = new String();

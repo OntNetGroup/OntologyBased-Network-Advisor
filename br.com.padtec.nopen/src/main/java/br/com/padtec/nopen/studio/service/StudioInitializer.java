@@ -15,6 +15,7 @@ public class StudioInitializer {
 		if(!eMsg.isEmpty()) {throw new Exception(eMsg); }
 		
 		StudioInitializer.registerDefaultTechnologies();
+		
 		StudioInitializer.runInference(runInference);
 	}
 	
@@ -32,12 +33,12 @@ public class StudioInitializer {
 	public static void registerDefaultTechnologies()
 	{
 		Date beginDate = new Date();		
-		NOpenFactory.createMEFTech(StudioComponents.studioRepository);				
-		PerformanceUtil.printExecutionTime("Equip Studio: MEF Technology registered.", beginDate);
+				
+		NOpenFactory.createMEFTech(StudioComponents.studioRepository);
+		NOpenFactory.createOTNTech(StudioComponents.studioRepository);		
+		NOpenFactory.createServices(StudioComponents.studioRepository);
 		
-		beginDate = new Date();
-		NOpenFactory.createOTNTech( StudioComponents.studioRepository);		
-		PerformanceUtil.printExecutionTime("Equip Studio: OTN Technology registered.", beginDate);
+		PerformanceUtil.printExecutionTime("Equip Studio: Technologies, Layers and Services registered.", beginDate);
 	}
 	
 	public static void runInference(boolean runReasoner)

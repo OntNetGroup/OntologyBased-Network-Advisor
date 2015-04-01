@@ -4,6 +4,7 @@
 	//Get the parameters from controller
 	String[] techs = (String[]) request.getSession().getAttribute("techs");
 	String[][] layers = (String[][]) request.getSession().getAttribute("layers");
+	String[] allServices = (String[]) request.getSession().getAttribute("allServices");
 %>
 
 <script src="frontend/template/js/jquery.nestable.min.js"></script>
@@ -13,8 +14,8 @@
 		<div class="box">
  			
 			<!-- ======================================================================= -->				
-			<div class="box-header">
-				<h2><i class="icon-laptop"></i>Configure: Technologies, Layers and Services</h2>
+			<div class="box-header" >
+				<h2><i class="icon-laptop"></i>Services</h2>
 				<div class="box-icon">
 					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>								
 				</div>
@@ -23,27 +24,9 @@
 				
 			<!-- ======================================================================= -->	
 			<div class="box-content clearfix">				
-				
-			<p>Services:</p>
-			<div class="box-content">							
-				<form class="form-horizontal">							
-						<div class="form-group">
-							<!-- <label class="control-label" for="selectError10">Service of Selected Layer</label> -->
-							<div class="controls">
-							  	<select id="selectError10" class="form-control" multiple data-rel="chosen">
-									<option>Service 1</option>
-									<option selected>Service 2</option>
-									<option>Service 3</option>
-									<option>Service 4</option>
-									<option>Service 5</option>
-							  	</select>
-							</div>
-						</div>						
-				</form>								
-			</div>
-					
-			<p>Registered technologies and their layers:</p>									
+												
 			<div class="dd" id="nestable">
+				<p>Click at a Technology/Layer to see their available services:</p>
 	            <ol class="dd-list">
 	            	<%
 	            	//String[][] layers = {{"POUk", "ODUk","OTUk"},{"Subscribers", "MEN"}};		            	
@@ -84,7 +67,22 @@
 					<button class="btn btn-info" type="button" data-action="expand-all">Expand All</button>
 					<button class="btn btn-danger" type="button" data-action="collapse-all">Collapse All</button>
 				</menu>	
-	        </div>				
+	        </div>
+	        
+	        
+				<!-- <label class="control-label" for="selectError10">Service of Selected Layer</label> -->
+				<div class="controls" style="width:330;float:right">
+					<p>Available Services:</p>	
+				  	<select id="selectError10" class="form-control" style="width:300" multiple data-rel="chosen">
+				  	<%
+				  		for(String service: allServices){
+				  			out.println("<option>"+service+"</option>");
+				  		}
+				  	%>
+				  	</select>
+				</div>
+				
+							
 			<!-- ======================================================================= -->
 			
 		</div>		
