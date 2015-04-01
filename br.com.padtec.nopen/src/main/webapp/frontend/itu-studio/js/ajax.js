@@ -6,7 +6,8 @@ function canCreateLink(sourceTFunctionID, targetTFunctionID) {
 			   'sourceTFunctionID': sourceTFunctionID,
 			   'targetTFunctionID': targetTFunctionID
 		   },
-		   success: function(data){ 		   
+		   success: function(data){
+			   alert(data);
 			   return true;
 		   },
 		   error : function(e) {
