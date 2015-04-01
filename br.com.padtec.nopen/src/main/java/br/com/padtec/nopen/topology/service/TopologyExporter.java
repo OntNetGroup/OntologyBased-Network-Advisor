@@ -30,11 +30,10 @@ import com.google.gson.JsonParser;
 public class TopologyExporter {
 
 	/**
-	 * 
+	 *  Method to generate the Topology in a XML format
 	 * @param request
 	 * @param response
 	 * @throws IOException
-	 * Method to generate the Topology in a XML format
 	 * @throws TransformerFactoryConfigurationError 
 	 * @throws TransformerException 
 	 */

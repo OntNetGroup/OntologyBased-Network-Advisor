@@ -307,6 +307,15 @@ var Rappid = Backbone.Router.extend({
             //var freetransform = new joint.ui.FreeTransform({ graph: this.graph, paper: this.paper, cell: cellView.model });
             var halo = new joint.ui.Halo({ graph: this.graph, paper: this.paper, cellView: cellView });
 
+            halo.addHandle({ name: 'setting', position: 'ne', icon: '/nopen/frontend/network-topology/img/setting.png' });
+            halo.on('action:setting:pointerdown', function(evt) {
+            	
+            	equipmentSettings(cellView.model);
+            	
+                evt.stopPropagation();
+                //alert('My custom action.');
+            });
+            
             // As we're using the FreeTransform plugin, there is no need for an extra resize tool in Halo.
             // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
             // handles nicely spread around the elements.

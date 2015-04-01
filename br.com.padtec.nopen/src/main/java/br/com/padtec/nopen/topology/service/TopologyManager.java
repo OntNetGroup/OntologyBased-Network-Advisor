@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.topology.controller;
+package br.com.padtec.nopen.topology.service;
 
 import java.util.HashSet;
 
@@ -8,7 +8,7 @@ import br.com.padtec.nopen.model.NOpenQueries;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 
 @Controller
-public class ManagerTopology {
+public class TopologyManager {
 
 	public HashSet<String> getAllTemplateEquipment(){
 		HashSet<String> equipments = new HashSet<String>();
