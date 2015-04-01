@@ -20,7 +20,7 @@ public class NOpenFactory {
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), odukURI, layerURI);
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), otukURI, layerURI);
 		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.COMPONENTOF3.toString();
+		String techToLayerURI = repository.getNamespace()+RelationEnum.COMPONENTOF_TECH_LAYER.toString();
 				
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),otnURI, techToLayerURI, poukURI);
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),otnURI, techToLayerURI, odukURI);
@@ -40,7 +40,7 @@ public class NOpenFactory {
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), menURI, layerURI);
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), subscribersURI, layerURI);
 		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.COMPONENTOF3.toString();
+		String techToLayerURI = repository.getNamespace()+RelationEnum.COMPONENTOF_TECH_LAYER.toString();
 				
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),mefURI, techToLayerURI, menURI);
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),mefURI, techToLayerURI, subscribersURI);

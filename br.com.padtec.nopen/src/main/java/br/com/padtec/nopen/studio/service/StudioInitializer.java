@@ -14,7 +14,7 @@ public class StudioInitializer {
 		String eMsg  = StudioInitializer.uploadEquipStudioTBox(false);
 		if(!eMsg.isEmpty()) {throw new Exception(eMsg); }
 		
-		//StudioInitializer.registerDefaultTechnologies();
+		StudioInitializer.registerDefaultTechnologies();
 		StudioInitializer.runInference(runInference);
 	}
 	

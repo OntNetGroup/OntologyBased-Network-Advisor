@@ -31,7 +31,7 @@ public class NOpenQueries {
 		List<String> individualsURI = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 				StudioComponents.studioRepository.getInferredModel(), 
 				StudioComponents.studioRepository.getNamespace()+techName, 
-				StudioComponents.studioRepository.getNamespace()+RelationEnum.COMPONENTOF3.toString(), 
+				StudioComponents.studioRepository.getNamespace()+RelationEnum.COMPONENTOF_TECH_LAYER.toString(), 
 				StudioComponents.studioRepository.getNamespace()+ConceptEnum.LAYER.toString()
 		);	
 		String[] result = new String[individualsURI.size()];
@@ -49,7 +49,7 @@ public class NOpenQueries {
 	{
 		return  getIndividualsNamesAtObjectPropertyRange(
 				techName,
-				StudioComponents.studioRepository.getNamespace()+RelationEnum.COMPONENTOF3.toString(), 
+				StudioComponents.studioRepository.getNamespace()+RelationEnum.COMPONENTOF_TECH_LAYER.toString(), 
 				StudioComponents.studioRepository.getNamespace()+ConceptEnum.LAYER.toString()
 			);					
 	}

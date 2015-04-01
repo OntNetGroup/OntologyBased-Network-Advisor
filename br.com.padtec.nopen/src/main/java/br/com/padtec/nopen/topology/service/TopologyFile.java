@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashSet;
 
 import javax.servlet.ServletContext;
@@ -14,20 +17,23 @@ import javax.servlet.http.HttpServletRequest;
 public class TopologyFile {
 
 	
-	public void saveTopology(String filename, String graph, HttpServletRequest request){
+	public void saveTopology(String filename, String graph, HttpServletRequest request) {
 		
 		ServletContext sc = request.getSession().getServletContext();
-		String path =  "/backend/topology/" ;
-
+		
+		
 		try {
-
-			File f = new File(sc.getRealPath(path) + "/" + filename + ".json");
+			
+			URL resourceContent = Thread.currentThread().getContextClassLoader().getResource("model/");
+						
+			File f = new File(resourceContent.toURI()+"/teste.json");
+			System.out.println(f.getAbsolutePath());
 			
 			PrintStream printStream = new PrintStream(f);
 			printStream.print(graph);
 			printStream.close();
 
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
