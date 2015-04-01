@@ -21,8 +21,8 @@ public class ITUStudioController {
 	}
 	
 	/* ----- CRUD for Layer ----- */
-	/**
-	 * @param layer: camada a ser inserida
+	/** Insere uma camada no card cardID
+	 * @param layer: camada a ser inserida (e.g., OTS)
 	 * @param cardID: identificador do card que deverá ser composto da camada
 	 * @return: success or error
 	 */
@@ -31,17 +31,18 @@ public class ITUStudioController {
 		return "success";
 	}
 	
-	/**
-	 * @param id: identificador da camada a ser criada
+	/** Remove uma camada 
+	 * @param layer: camada a ser removida (e.g., OTS)
+	 * @param cardID: identificador do card que contém a camada
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/deleteLayer", method = RequestMethod.POST)
-	public @ResponseBody String deleteLayer(@RequestParam("id") String id) {
+	public @ResponseBody String deleteLayer(@RequestParam("layer") String layer, @RequestParam("cardID") String cardID) {
 		return "success";
 	}
 	
 	/* ----- CRUD for Transport Function ----- */
-	/**
+	/** Cria um tranport function transportFunctionID na camada layer, ou diretamente no card (layer=null)
 	 * @param id: identificador do transport function a ser criado
 	 * @param layer: camada sobre a qual o transport function deve ser criado (pode ser nulo)
 	 * @return: success or error
@@ -57,17 +58,17 @@ public class ITUStudioController {
 		return "success";
 	}
 	
-	/**
+	/** Verifica se é possível criar um tranport function transportFunctionID na camada layer, ou diretamente no card (layer=null)
 	 * @param id
-	 * @param layer
+	 * @param layer (pode ser nulo)
 	 * @return
 	 */
 	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String canCreateTransportFunction(@RequestParam("id") String transportFunctionID, @RequestParam("layer") String layerID) {
+	public @ResponseBody String canCreateTransportFunction(@RequestParam("id") String transportFunctionID, @RequestParam("layer") String layer) {
 		return "true";
 	}
 	
-	/**
+	/** Remove o transport function cujo identificador é id
 	 * @param id: identificador do transport function a ser deletado
 	 * @return: success or error
 	 */
@@ -84,9 +85,9 @@ public class ITUStudioController {
 	
 	
 	/* ----- CRUD for port ----- */
-	/**
+	/** Cria uma porta (interface) de entrada ou saída conectada a transportFunctionID
 	 * @param portID: identificador da porta a ser criada
-	 * @param transportFunctionID: id do transport function no qual a porta será adicionada
+	 * @param transportFunctionID: id do transport function no qual a porta será conectada
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/createPort", method = RequestMethod.POST)
@@ -100,7 +101,7 @@ public class ITUStudioController {
 		return "success";
 	}
 	
-	/**
+	/** Remove uma porta (interface) de entrada ou saída
 	 * @param id: identificador da porta a ser deletada
 	 * @return: success or error
 	 */
@@ -116,7 +117,7 @@ public class ITUStudioController {
 	}
 	
 	/* ----- CRUD for link ----- */
-	/**
+	/** Cria uma conexão entre sourceTFunctionID e targetTFunctionID
 	 * @param sourceTFunctionID
 	 * @param targetTFunctionID
 	 * @return: id do link criado or error
@@ -132,7 +133,7 @@ public class ITUStudioController {
 		return new String();
 	}
 	
-	/** Check if it's possible to create a link between the transport functions sourceTFunctionID and targetTFunctionID
+	/** Verifica se é possível criar uma conexão entre sourceTFunctionID e targetTFunctionID
 	 * @param sourceTFunctionID
 	 * @param targetTFunctionID
 	 * @return
@@ -142,7 +143,7 @@ public class ITUStudioController {
 		return "true";
 	}
 	
-	/**
+	/** Remove uma conexão
 	 * @param id: identificador do link a ser deletado
 	 * @return: success or error
 	 */
