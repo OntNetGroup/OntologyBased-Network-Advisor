@@ -15,7 +15,7 @@ public class ProvisioningInitializer {
 		String pMsg  = ProvisioningInitializer.uploadProvisioningTBox(false);
 		if(!pMsg.isEmpty()) {throw new Exception(pMsg); }
 		
-		ProvisioningInitializer.registerDefaultTechnologies();
+		//ProvisioningInitializer.registerDefaultTechnologies();
 		
 		ProvisioningInitializer.runInference(runInference);
 	}

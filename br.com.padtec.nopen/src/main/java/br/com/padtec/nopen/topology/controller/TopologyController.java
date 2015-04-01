@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.model.NOpenFactory;
+import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.nopen.topology.service.TopologyExporter;
 import br.com.padtec.nopen.topology.service.TopologyFile;
 import br.com.padtec.nopen.topology.service.TopologyImporter;
+import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -107,11 +110,15 @@ public class TopologyController {
 	
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
-		
+		 NOpenFactory.createEquipment(StudioComponents.studioRepository);
 		 ManagerTopology managerTopology = new ManagerTopology();
-		 HashSet<String> equipments2 = managerTopology.getAllTemplateEquipment();
-		
-		HashSet<String> equipments = new HashSet<String>();
+		 HashSet<String> equipments = managerTopology.getAllTemplateEquipment();
+
+		 for(String eq : equipments){
+			 System.out.println(eq.toString());
+		 }
+		 
+		/*HashSet<String> equipments = new HashSet<String>();
 		equipments.add("Equipment1");
 		equipments.add("Equipment2");
 		equipments.add("Equipment3");
@@ -121,7 +128,7 @@ public class TopologyController {
 		equipments.add("Equipment7");
 		equipments.add("Equipment8");
 		equipments.add("Equipment9");
-		
+		*/
 		JsonArray json = new JsonArray();
 
 		for(String equipment : equipments){
