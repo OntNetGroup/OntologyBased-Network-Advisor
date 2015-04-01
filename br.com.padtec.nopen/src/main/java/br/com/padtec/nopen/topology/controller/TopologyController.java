@@ -108,8 +108,8 @@ public class TopologyController {
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
 		
-		// ManagerTopology managerTopology = new ManagerTopology();
-		// HashSet<String> equipments = managerTopology.getAllTemplateEquipment();
+		 ManagerTopology managerTopology = new ManagerTopology();
+		 HashSet<String> equipments2 = managerTopology.getAllTemplateEquipment();
 		
 		HashSet<String> equipments = new HashSet<String>();
 		equipments.add("Equipment1");
