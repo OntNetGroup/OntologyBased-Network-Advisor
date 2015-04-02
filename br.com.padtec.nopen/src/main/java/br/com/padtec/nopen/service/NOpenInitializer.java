@@ -8,7 +8,9 @@ public class NOpenInitializer {
 	public static void run() throws Exception
 	{		
 		StudioInitializer.run(true);
-		
+
+		ProvisioningInitializer.run(false);
+
 		ProvisioningInitializer.run(true);	
 	}
 }
