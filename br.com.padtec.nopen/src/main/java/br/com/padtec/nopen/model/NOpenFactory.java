@@ -61,7 +61,7 @@ public class NOpenFactory {
 	}
 	
 	public static void createEquipments(OKCoUploader repository)
-	{
+	{ //just for test
 		String eq1URI = repository.getNamespace()+"Equipment1";
 		String eq2URI = repository.getNamespace()+"Equipment2";
 		String eq3URI = repository.getNamespace()+"Equipment3";
