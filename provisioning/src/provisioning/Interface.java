@@ -1,6 +1,6 @@
 package provisioning;
 
-public class Interface {
+public class Interface implements Comparable<Interface>{
 	private String interfaceURI;
 	private String equipmentURI;
 	
@@ -37,5 +37,10 @@ public class Interface {
 		
 		String ret = interfaceURI + " [from: " + equipmentURI + "]";
 		return ret;
+	}
+
+	public int compareTo(Interface obj) {
+		int comparison = (this.interfaceURI + this.equipmentURI).compareTo(obj.interfaceURI + obj.equipmentURI);
+		return comparison;
 	}
 }

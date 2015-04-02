@@ -15,13 +15,13 @@ import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoReasoner;
-import br.com.padtec.okco.core.application.OKCoUploader;
+import br.com.padtec.okco.core.application.OKCoSelector;
 
 public class OWLUtil {
 	public static void createTBox(String tBoxFile) throws Exception{
 		FileInputStream inTBox = new FileInputStream(new File(tBoxFile));
-		OKCoUploader.uploadBaseModel(inTBox, "off", "hermit");
-		Main.model = OKCoUploader.getBaseModel();
+		Main.okcoUploader.uploadBaseModel(inTBox, "off", "hermit");
+		Main.model = Main.okcoUploader.getBaseModel();
 		Main.ns = Main.model.getNsPrefixURI("");
 	}	
 	
@@ -47,12 +47,14 @@ public class OWLUtil {
 	
 	public static void runReasoner(boolean inferHierarchies, boolean inferAssertions, boolean inferRules) throws Exception{
 		if(!Main.runReason) return;
-		OKCoUploader.reasoner.inferAssertions = inferAssertions;
-		OKCoUploader.reasoner.inferHierarchies = inferHierarchies;
-		OKCoUploader.reasoner.inferRules = inferRules;
+		Main.okcoUploader.getReasoner().inferAssertions = inferAssertions;
+		Main.okcoUploader.getReasoner().inferHierarchies = inferHierarchies;
+		Main.okcoUploader.getReasoner().inferRules = inferRules;
 		
+		OKCoSelector selector = new OKCoSelector(Main.okcoUploader);
+		OKCoReasoner okcoReasoner = new OKCoReasoner(Main.okcoUploader, selector);
 		//OKCoUploader.reasoner.run(m);
-		DtoResult result = OKCoReasoner.runReasoner();
+		DtoResult result = okcoReasoner.runReasoner();
 		
 		if(!result.isSucceed()){
 			throw new Exception(result.getMessage());
@@ -135,11 +137,8 @@ public class OWLUtil {
 					if(newTgt == null || newTgt.equals("")){
 						newTgt = tgt;
 					}					
-					try{
-						FactoryUtil.createInstanceRelation(Main.model, Main.ns+newSrc, Main.ns+relation, Main.ns+newTgt, false, false, true);
-					}catch(Exception e){
-						System.out.println();
-					}
+					FactoryUtil.createInstanceRelation(Main.model, Main.ns+newSrc, Main.ns+relation, Main.ns+newTgt, false, false, true);
+					
 				}
 			}
 		}

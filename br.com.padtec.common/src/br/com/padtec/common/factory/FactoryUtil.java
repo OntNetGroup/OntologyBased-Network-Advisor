@@ -128,6 +128,7 @@ public class FactoryUtil {
 	 */
 	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI, boolean forceSuperTypes)
 	{			
+		System.out.println("\nExecuting createInstanceIndividual(" + individualURI + ")...");
 		//create the individualURI as from classURI
 		OntClass ontClass = model.getOntClass(classURI);
 		Individual individual = model.createIndividual(individualURI, ontClass);
@@ -188,6 +189,14 @@ public class FactoryUtil {
 	 */
 	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceSuperObjProp, boolean forceInverses, boolean forceCandSubRelation)
 	{			
+		System.out.println("\n"
+							+ "Executing createInstanceRelation(" 
+							+ indvSourceURI.replace(model.getNsPrefixURI(""), "") 
+							+ ", " 
+							+ objectPropertyURI.replace(model.getNsPrefixURI(""), "") 
+							+ ", " 
+							+ indvTargetURI.replace(model.getNsPrefixURI(""), "") 
+							+ ")...");
 		//Create an object property between two individuals
 		Individual indvSource = model.getIndividual(indvSourceURI);
 		Individual indvTarget = model.getIndividual(indvTargetURI);

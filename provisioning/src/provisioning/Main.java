@@ -4,27 +4,39 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import br.com.padtec.okco.core.application.OKCoUploader;
+
 import com.hp.hpl.jena.ontology.OntModel;
 
 public class Main {
+	static OKCoUploader okcoUploader = new OKCoUploader();
 	static boolean runReason = true;
 	static OntModel model;
 	static String ns = "";
+	static List<String> bindedInterfaces;;
 	
 	public static void main(String[] args){
 		String tBoxFile = "";
 		try {
 			//#1
-			tBoxFile = FileUtil.chooseFile("TBox", ".owl");
-			OWLUtil.createTBox(tBoxFile);
+			//tBoxFile = FileUtil.chooseFile("TBox", ".owl");
+			tBoxFile = "TBox v5.2.owl";
 			
 			//#2
-			String aBoxFile = FileUtil.chooseFile("ABox", ".txt");
+			//String aBoxFile = FileUtil.chooseFile("ABox", ".txt");
+			String aBoxFile = "Declarada 6.0a.txt";
+			//#14
+			//String possibleEquipFile = FileUtil.chooseFile("available Equipment", ".txt");
+			String possibleEquipFile = "Possiveis 6.0.txt";
+					
+			//#1
+			OWLUtil.createTBox(tBoxFile);
 			//#3
 			OWLUtil.createInstances(aBoxFile);
 			
 			//#4
-			OWLUtil.runReasoner(true, true, true);
+//			System.out.println("Reasoner pós " + aBoxFile);
+//			OWLUtil.runReasoner(true, true, true);
 			
 			//#7 and #8
 			Provisioning.verifiyMinimumEquipment();
@@ -36,23 +48,25 @@ public class Main {
 			List<String> INT_SK_LIST = Provisioning.verifyIfEquipmentMapsOutPortsInSink();
 			
 			//#10 and #11
-			int srcInt2ProvIndex = chooseOne(INT_SO_LIST, "Input Interfaces", "Input Interface that maps an Input Port from Source", 2);
-			String srcIntToProv = INT_SO_LIST.get(srcInt2ProvIndex);
-			String srcEquipToProv = INT_SO_LIST.get(srcInt2ProvIndex+1);
+			//int srcInt2ProvIndex = chooseOne(INT_SO_LIST, "Input Interfaces", "Input Interface that maps an Input Port from Source", 2);
+			int srcInt2ProvIndex = 8;
+			String interfaceFromURI = INT_SO_LIST.get(srcInt2ProvIndex);
+			String equipFromURI = INT_SO_LIST.get(srcInt2ProvIndex+1);
+			
 			//#12 and #13
-			int tgtInt2ProvIndex = chooseOne(INT_SK_LIST, "Output Interfaces", "Output Interface that maps an Output Port from Sink", 2);
-			String tgtIntToProv = INT_SK_LIST.get(tgtInt2ProvIndex);
-			String tgtEquipToProv = INT_SK_LIST.get(tgtInt2ProvIndex+1);
-			//#14
-			String possibleEquipFile = FileUtil.chooseFile("available Equipment", ".txt");
+			//int tgtInt2ProvIndex = chooseOne(INT_SK_LIST, "Output Interfaces", "Output Interface that maps an Output Port from Sink", 2);
+			int tgtInt2ProvIndex = 8;
+			String interfaceToURI = INT_SK_LIST.get(tgtInt2ProvIndex);
+			String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
+			
 			//#15
 			OWLUtil.createInstances(possibleEquipFile);
 			
 			//#16
 			Provisioning.verifiyMinimumEquipWithPM();
-			
-			//#14
-			OWLUtil.runReasoner(false, true, true);
+			bindedInterfaces = Queries.getBindedInterfaces(model);
+			//#17
+			OWLUtil.runReasoner(true, true, true);
 			
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 			Character option = 'A';
@@ -61,33 +75,27 @@ public class Main {
 				ok = true;
 				System.out.print("Do you want to proceed automatically (A) or (M) manually? ");
 				try {
-					
-					option = bufferRead.readLine().charAt(0);
+					String optionStr = bufferRead.readLine();
+					if(optionStr.length() > 1) ok = false;
+					option = optionStr.charAt(0);
 				} catch (Exception e) {
 					ok = false;
 				}			
 			} while ((!option.equals('A') || !option.equals('M') || !option.equals('a') || !option.equals('m')) && !ok);
 					
 			if(option.equals('M') || option.equals('m')){
-				String equipWithPM1 = Provisioning.callAlgorithmManual(srcIntToProv, true, "");
-				//#24????????
-				//#25 -> #28
-				String equipWithPM2 = Provisioning.callAlgorithmManual(tgtIntToProv, false, equipWithPM1);
-				
-				//#29????????
-				if(!equipWithPM1.equals(equipWithPM2)){
-					throw new Exception("Somenthing went wrong. The provisioning was made by different Physical Media.");
-				}
+				Provisioning.callAlgorithmManual(interfaceFromURI, interfaceToURI, "");
 			}else{
-				Provisioning.callAlgorithmSemiAuto(srcEquipToProv, srcIntToProv, tgtEquipToProv, tgtIntToProv);				
+				Provisioning.callAlgorithmSemiAuto(equipFromURI, interfaceFromURI, equipToURI, interfaceToURI);				
 			}
 			
+			//#23
 			OWLUtil.runReasoner(false, true, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}				
 		
-		//#30
+		//#25
 		OWLUtil.saveNewOwl(tBoxFile);
 		
 		System.out.println();
@@ -168,7 +176,7 @@ public class Main {
 			} catch (Exception e) {
 				ok = false;
 			}			
-		} while ((index < lowestOption || index > highestOption) && !ok);
+		} while ((index < lowestOption || index > highestOption) || !ok);
 		
 		return index;
 	}

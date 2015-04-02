@@ -11,6 +11,7 @@ import javax.swing.tree.TreeNode;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 
 public class Provisioning {
 	public static List<DtoInstance> verifiyMinimumEquipment() throws Exception{
@@ -62,32 +63,37 @@ public class Provisioning {
 		}		
 	}
 	
-	public static void callAlgorithmSemiAuto(String srcEquipToProv, String srcIntToProv, String tgtEquipToProv, String tgtIntToProv) throws Exception{
+	public static void callAlgorithmSemiAuto(String equipFromURI, String interfaceFromURI, String equipToURI, String interfaceToURI) throws Exception{
 		DefaultMutableTreeNode sourceRoot;
-		sourceRoot = new DefaultMutableTreeNode(new Interface(srcIntToProv, srcEquipToProv));
-        //DefaultTreeModel sourceTree = new DefaultTreeModel(sourceRoot);
-        DefaultMutableTreeNode targetRoot;
-        targetRoot = new DefaultMutableTreeNode(new Interface(tgtIntToProv, tgtEquipToProv));
-        //DefaultTreeModel targetTree = new DefaultTreeModel(targetRoot);
+		sourceRoot = new DefaultMutableTreeNode(new Interface(interfaceFromURI, equipFromURI));
         
-		List<DefaultMutableTreeNode> sourceLeafs = new ArrayList<DefaultMutableTreeNode>();
-		algorithmSemiAuto(sourceRoot, true, "", sourceLeafs);
-		List<DefaultMutableTreeNode> targetLeafs = new ArrayList<DefaultMutableTreeNode>();
-		algorithmSemiAuto(targetRoot, false, "", targetLeafs);
+//        DefaultMutableTreeNode targetRoot;
+//        targetRoot = new DefaultMutableTreeNode(new Interface(tgtIntToProv, tgtEquipToProv));
+        
+        List<String> usedInterfaces = new ArrayList<String>();
+        usedInterfaces.add(interfaceFromURI);
+		List<DefaultMutableTreeNode> leafInterfaces = new ArrayList<DefaultMutableTreeNode>();
+		algorithmSemiAuto(interfaceFromURI, sourceRoot, true, "", leafInterfaces, interfaceToURI, usedInterfaces);
+//		List<DefaultMutableTreeNode> targetLeafs = new ArrayList<DefaultMutableTreeNode>();
+//		algorithmSemiAuto(targetRoot, false, "", targetLeafs);
 		
-		ArrayList<TreeNode[]> paths = new ArrayList<TreeNode[]>(); 
-		for (DefaultMutableTreeNode srcLeaf : sourceLeafs) {
-			for (DefaultMutableTreeNode tgtLeaf : targetLeafs) {
-				String srcEquip = ((Interface) srcLeaf.getUserObject()).getEquipmentURI();
-				String tgtEquip = ((Interface) tgtLeaf.getUserObject()).getEquipmentURI();
-				if(srcEquip.equals(tgtEquip)){
-					TreeNode[] srcPath = srcLeaf.getPath();
-					TreeNode[] tgtPath = tgtLeaf.getPath();
-					paths.add(srcPath);
-					paths.add(tgtPath);
-				}
-			}
+		ArrayList<TreeNode[]> paths = new ArrayList<TreeNode[]>();
+		for (DefaultMutableTreeNode leafInterface : leafInterfaces) {
+			paths.add(leafInterface.getPath());			
 		}
+		
+//		for (DefaultMutableTreeNode srcLeaf : sourceLeafs) {
+//			for (DefaultMutableTreeNode tgtLeaf : targetLeafs) {
+//				String srcEquip = ((Interface) srcLeaf.getUserObject()).getEquipmentURI();
+//				String tgtEquip = ((Interface) tgtLeaf.getUserObject()).getEquipmentURI();
+//				if(srcEquip.equals(tgtEquip)){
+//					TreeNode[] srcPath = srcLeaf.getPath();
+//					TreeNode[] tgtPath = tgtLeaf.getPath();
+//					paths.add(srcPath);
+//					paths.add(tgtPath);
+//				}
+//			}
+//		}
 		
 		File arquivo = new File("possible.txt");  // Chamou e nomeou o arquivo txt.  
 		if(arquivo.exists()){
@@ -97,40 +103,41 @@ public class Provisioning {
 		
 		myBubbleSort(paths);
 		
-		int max = paths.size()/2;
+		int max = paths.size()/1;
 		int range = Main.getOptionFromConsole("0 for all results or the number of possibilities (max: " + max + ")", 0, max);
 		
 		if(range == 0){
 			range = paths.size();
 		}else{
-			range *= 2;
+			range *= 1;
 		}
 		
 		System.out.println("--- PATHS ---");
 		ArrayList<String> outs = new ArrayList<String>();
-		for(int i = 0; i < range; i+=2){
-			TreeNode[] srcPath = paths.get(i);
-			TreeNode[] tgtPath = paths.get(i+1);
+		for(int i = 0; i < range; i+=1){
+			TreeNode[] path = paths.get(i);
+			//TreeNode[] tgtPath = paths.get(i+1);
 			String out = "";
-			out += "size: " + (srcPath.length+tgtPath.length) + " - ";
-			int id = (i+2)/2;
+			int id = (i+1)/1;
 			out += id + " - ";
 			//System.out.print(id + " - ");
-			for (TreeNode srcNode : srcPath) {
+			for (TreeNode srcNode : path) {
 				out += srcNode;
 				out += " -> ";
 				//System.out.print(srcNode);
 				//System.out.print(" -> ");
 			}
-			for(int j = tgtPath.length - 1; j >= 0; j--){
-				out += tgtPath[j];
-				//System.out.print(tgtPath[j]);
-				if(j > 0){
-					out += " -> ";
-					//System.out.print(" -> ");
-				}								
-			}
+//			for(int j = tgtPath.length - 1; j >= 0; j--){
+//				out += tgtPath[j];
+//				//System.out.print(tgtPath[j]);
+//				if(j > 0){
+//					out += " -> ";
+//					//System.out.print(" -> ");
+//				}								
+//			}
 			out += "\n";
+			out += "\tsize: " + (path.length/*+tgtPath.length*/) + "\n";
+			
 			//System.out.println();
 			if(!outs.contains(out)){
 				outs.add(out);
@@ -143,32 +150,33 @@ public class Provisioning {
 			}
 		}
 		fos.close();
-		System.out.println("outs.size(): " + outs.size());
+		//System.out.println("outs.size(): " + outs.size());
 		//System.out.print("Choose a path: ");
-		int path = Main.getOptionFromConsole(paths, "path", 2, range/2);
-		TreeNode[] srcPath = paths.get(path);
-		TreeNode[] tgtPath = paths.get(path+1);
+		int path = Main.getOptionFromConsole(paths, "path", 1, range/1);
+//		TreeNode[] srcPath = paths.get(path);
+//		TreeNode[] tgtPath = paths.get(path+1);
 		
-		provisionSemiAuto(srcPath, tgtPath);
+		provisionSemiAuto(paths.get(path));
 	}
 	
 	public static void myBubbleSort(ArrayList<TreeNode[]> list) {
 		boolean troca = true;
 		TreeNode[] aux;
+		int inc = 1;
         while (troca) {
             troca = false;
-            for (int i = 0; i < list.size() - 2; i += 2) {
+            for (int i = 0; i < list.size() - inc; i += inc) {
 //            	String a1 = list.get(i);
 //            	String a2 = list.get(i + increment);
-            	int size1 = list.get(i).length + list.get(i+1).length;
-            	int size2 = list.get(i+2).length + list.get(i+3).length;
+            	int size1 = list.get(i).length;// + list.get(i+1).length;
+            	int size2 = list.get(i+inc).length;// + list.get(i+3).length;
             	//int comparison = list.get(i).compareTo(list.get(i + 2));
             	if(size1 > size2){
-            		for(int j = i; j < i + 2; j++){
+            		for(int j = i; j < i + inc; j++){
             			aux = list.get(j);
-            			list.set(j, list.get(j + 2));
+            			list.set(j, list.get(j + inc));
                         //list.get(j) = list.get(j + increment);
-            			list.set(j + 2, aux);
+            			list.set(j + inc, aux);
                         //list[j + increment] = aux;                        
             		}
             		troca = true;
@@ -177,76 +185,92 @@ public class Provisioning {
         }
     }
 	
-	public static void provisionSemiAuto(TreeNode[] srcPath, TreeNode[] tgtPath){
-		for (int i = 1; i < srcPath.length; i+=2) {
-			Interface from = (Interface)((DefaultMutableTreeNode)srcPath[i]).getUserObject();
-			Interface to = (Interface)((DefaultMutableTreeNode)srcPath[i+1]).getUserObject();
-
-			bindsInterfaces(from.getInterfaceURI(), to.getInterfaceURI());
-		}
-		
-		for (int i = 1; i < tgtPath.length; i+=2) {
-			Interface from = (Interface)((DefaultMutableTreeNode)tgtPath[i]).getUserObject();
-			Interface to = (Interface)((DefaultMutableTreeNode)tgtPath[i+1]).getUserObject();
-
-			bindsInterfaces(from.getInterfaceURI(), to.getInterfaceURI());
+	public static void provisionSemiAuto(TreeNode[] path){
+		boolean isSource = true;
+		for (int i = 1; i < path.length-1; i+=2) {
+			Interface from = (Interface)((DefaultMutableTreeNode)path[i]).getUserObject();
+			Interface to = (Interface)((DefaultMutableTreeNode)path[i+1]).getUserObject();
+			isSource = isStillInSource(isSource, from.getInterfaceURI());
+			System.out.println(from.getInterfaceURI());
+			System.out.println(to.getInterfaceURI());
+			System.out.println(isSource);
+			bindsInterfaces(from.getInterfaceURI(), to.getInterfaceURI(), isSource);
 		}
 	}
 	
-	public static void algorithmSemiAuto(DefaultMutableTreeNode lastInputIntNode, boolean isSource, String equipWithPM, List<DefaultMutableTreeNode> leafs) throws Exception{
-		String lastInputInt = ((Interface) lastInputIntNode.getUserObject()).getInterfaceURI();
-		String pmEquip = getEquipWithPMFromInterface(lastInputInt);
-		if(!pmEquip.equals("")){
-			leafs.add(lastInputIntNode);
-			return;
-		}
-		
-		List<String> outIntList = algorithmPart1(lastInputInt, isSource);
-		for (int i = 0; i < outIntList.size(); i+=2) {
-			DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(new Interface(outIntList.get(i), outIntList.get(i+1)));
-			lastInputIntNode.add(outIntNode);
-			
-			List<String> possibleInIntList = algorithmPart2(isSource, equipWithPM, outIntList.get(i));
-			for (int j = 0; j < possibleInIntList.size(); j+=2) {
-				DefaultMutableTreeNode possibleInIntNode = new DefaultMutableTreeNode(new Interface(possibleInIntList.get(j), possibleInIntList.get(j+1)));
-				outIntNode.add(possibleInIntNode);
+	public static void algorithmSemiAuto(String origInterfaceFromURI, DefaultMutableTreeNode lastInputIntNode, boolean isSource, String equipWithPM, List<DefaultMutableTreeNode> leafs, String interfaceToURI, List<String> usedInterfaces) throws Exception{
+		String VAR_IN = ((Interface) lastInputIntNode.getUserObject()).getInterfaceURI();
 				
-				algorithmSemiAuto(possibleInIntNode, isSource, equipWithPM, leafs);
-			}			
-		}
-		//return "";
+		List<String> INT_LIST = algorithmPart1(VAR_IN, isSource);
+		for (int i = 0; i < INT_LIST.size(); i+=2) {
+			String VAR_OUT = INT_LIST.get(i);
+			if(!usedInterfaces.contains(VAR_OUT)){
+				usedInterfaces.add(VAR_OUT);
+				
+				DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(new Interface(VAR_OUT, INT_LIST.get(i+1)));
+				lastInputIntNode.add(outIntNode);
+				
+				if(VAR_OUT.equals(interfaceToURI)){
+					leafs.add(outIntNode);
+					//System.out.println(outIntNode.getPath().length);
+					return;
+				}else{
+					List<String> listInterfacesTo = algorithmPart2(origInterfaceFromURI, isSource, equipWithPM, VAR_OUT);
+					for (int j = 0; j < listInterfacesTo.size(); j+=2) {
+						VAR_IN = listInterfacesTo.get(j);
+						
+						if(!usedInterfaces.contains(VAR_IN)){
+							List<String> newUsedInterfaces = new ArrayList<String>(); 
+							newUsedInterfaces.addAll(usedInterfaces);
+							newUsedInterfaces.add(VAR_IN);
+							
+							DefaultMutableTreeNode possibleInIntNode = new DefaultMutableTreeNode(new Interface(VAR_IN, listInterfacesTo.get(j+1)));
+							outIntNode.add(possibleInIntNode);
+							
+							algorithmSemiAuto(origInterfaceFromURI, possibleInIntNode, isSource, equipWithPM, leafs, interfaceToURI, newUsedInterfaces);
+						}						
+					}	
+				}
+			}								
+		}		
 	}
 	
-	public static String callAlgorithmManual(String lastInt, boolean isSource, String equipWithPM) throws Exception{
-		String equipWithPMRet = "";
+	public static String callAlgorithmManual(String interfaceFromURI, String interfaceToURI, String equipWithPM) throws Exception{
+		boolean isSource = true;
+		String VAR_OUT = "";
+		String VAR_IN = interfaceFromURI;		
 		do {
-			//#20 and #25
-			lastInt = algorithmManual(lastInt, isSource, equipWithPM);
+			//#19
+			isSource = isStillInSource(isSource, VAR_IN);
+			List<String> INT_LIST = algorithmPart1(VAR_IN, isSource);
 			
-			//#21 and #26
-			//runReasoner(false, true, true);
+			int chosenId = Main.chooseOne(INT_LIST, "Output Interfaces", "Available Output Interface", 2);
+			VAR_OUT = INT_LIST.get(chosenId);
 			
-			//#23 and #28
-			equipWithPMRet = getEquipWithPMFromInterface(lastInt);
-//			equipWithPMRet = Queries.EquipWithPMofInterface(model, lastInt);
-//			if(equipWithPMRet.equals("")){
-//				intPartOfEquipPM = false;
-//			}else{
-//				intPartOfEquipPM = true;
-//				return equipWithPMRet;
-//			}			
-//			equipWithPMRet = Queries.equipBindingEquipWithPM(model, lastInt);
-//			if(equipWithPMRet.equals("")){
-//				equipBindedWithPMEquip = false;
-//			}else{
-//				equipBindedWithPMEquip = true;
-//				return equipWithPMRet;
-//			}			
-			
-		//} while (!intPartOfEquipPM && !equipBindedWithPMEquip);//#23 and #28
-		} while (equipWithPMRet.equals(""));//#23 and #28
+			//#20
+			if(!VAR_OUT.equals(interfaceToURI)){
+				//#21
+				isSource = isStillInSource(isSource, VAR_OUT);
+				List<String> listInterfacesTo = algorithmPart2(interfaceFromURI, isSource, equipWithPM, VAR_OUT);
+				
+				//#D
+				int interfaceToId = Main.chooseOne(listInterfacesTo, "Input Interfaces", "Available Input Interface", 2);
+				VAR_IN = listInterfacesTo.get(interfaceToId);
+				
+				//#22
+				bindsInterfaces(VAR_OUT, VAR_IN, isSource);
+			}
+		} while (!VAR_OUT.equals(interfaceToURI));//#20
 		
-		return equipWithPMRet;
+		return VAR_OUT;
+	}
+	
+	public static boolean isStillInSource(boolean isSourceOld, String VAR_IN){
+		boolean isSource = isSourceOld;
+		if((isSourceOld && !QueryUtil.isInterfaceSource(Main.model, VAR_IN)) || (!isSourceOld && QueryUtil.isInterfaceSource(Main.model, VAR_IN))){
+			isSource  = !isSourceOld;				
+		}
+		return isSource;
 	}
 	
 	public static String getEquipWithPMFromInterface(String lastInt){
@@ -265,79 +289,82 @@ public class Provisioning {
 	public static List<String> algorithmPart1(String interfaceURI, boolean isSource) throws Exception{
 		//#A
 		String mappedTF = Queries.getMappedTFFrom(Main.model, interfaceURI);
-		List<String> bindedTFList = Queries.getLastBindedTFFrom(Main.model, mappedTF);
-		bindedTFList.add(mappedTF);
+		List<String> bindedTFList = Queries.getLastBindedTFFrom(Main.model, mappedTF, isSource);
+		System.out.println();
+		if(!bindedTFList.contains(mappedTF)){
+			bindedTFList.add(mappedTF);
+		}		
 		
 		List<String> LIST_INT = new ArrayList<String>();
 		for (String tfURI : bindedTFList) {
-			LIST_INT.addAll(Queries.getMappingInterfaceFrom(Main.model, tfURI, isSource));
+			LIST_INT.addAll(Queries.getMappingInterfaceFrom(Main.model, tfURI));
 		}
 		return LIST_INT;
 	}
 	
-	public static List<String> algorithmPart2(boolean isSource, String equipWithPM, String choosenInt2ProvURI) throws Exception{
+	public static List<String> algorithmPart2(String originalInterfaceFromURI, boolean isSource, String equipWithPM, String choosenInt2ProvURI) throws Exception{
 		//#C
-		List<String> listInterfacesTo = Queries.getInterfacesToProvision(Main.model, choosenInt2ProvURI, isSource, equipWithPM);
+		List<String> listInterfacesTo = Queries.getInterfacesToProvision(originalInterfaceFromURI, Main.model, choosenInt2ProvURI, isSource, equipWithPM);
 		
 		return listInterfacesTo;
 	}
 	
-	public static void bindsInterfaces(String interfaceURI, String inInterface){
+	public static void bindsInterfaces(String interfaceFromURI, String interfaceToURI, boolean isSource){
 		//#E
-		String outPort = Queries.getMappedPort(Main.model, interfaceURI);
-		String inPort = Queries.getMappedPort(Main.model, inInterface);
+		if(!isSource){
+			String aux = interfaceFromURI;
+			interfaceFromURI = interfaceToURI;
+			interfaceToURI = aux;
+		}
+		String outPort = Queries.getMappedPort(Main.model, interfaceFromURI);
+		String inPort = Queries.getMappedPort(Main.model, interfaceToURI);
 		FactoryUtil.createInstanceRelation(Main.model, outPort, Main.ns+"binds", inPort, false, false, true);
+		Main.bindedInterfaces.add(interfaceFromURI);
+		Main.bindedInterfaces.add(interfaceToURI);
 	}
 	
-	public static String algorithmManual(String interfaceURI, boolean isSource, String equipWithPM) throws Exception{
-		List<String> LIST_INT = algorithmPart1(interfaceURI, isSource);
-		
-		String choosenInt2ProvURI = "";
-		//#B
-		String typeFrom = "";
-		String typeTo = "";
-		if(isSource){
-			typeFrom = "Output";
-			typeTo = "Input";
-		}else{
-			typeFrom = "Input";
-			typeTo = "Input";
-		}
-		int choosenInt2Prov = Main.chooseOne(LIST_INT, typeFrom + " Interfaces", "Available " + typeFrom + " Interface", 2);
-		choosenInt2ProvURI = LIST_INT.get(choosenInt2Prov);			
-		
-		List<String> listInterfacesTo = algorithmPart2(isSource, equipWithPM, choosenInt2ProvURI);
-		
-		String inInterface = "";
-		//#D
-		int inInterfaceIndex = Main.chooseOne(listInterfacesTo, typeTo + " Interfaces", "Available " + typeTo + " Interface", 2);
-		inInterface = listInterfacesTo.get(inInterfaceIndex);
-		
-		bindsInterfaces(interfaceURI, inInterface);
-	
-//		for(int i = 0; i < LIST_INT.size(); i+=2){
-//			FactoryUtil.createInstanceRelation(model, interfaceURI, ns+"poderia_ligar", LIST_INT.get(i));
-//			for(int j = 0; j < listInterfacesTo.size(); j+=2){
-//				FactoryUtil.createInstanceRelation(model, LIST_INT.get(i), ns+"poderia_ligar", listInterfacesTo.get(j));
-//			}
+//	public static String algorithmManual(String interfaceFromURI, boolean isSource, String equipWithPM) throws Exception{
+//		List<String> INT_LIST = algorithmPart1(interfaceFromURI, isSource);
+//		
+//		String choosenURI = "";
+//		//#B
+//		String typeFrom = "";
+//		String typeTo = "";
+//		if(isSource){
+//			typeFrom = "Output";
+//			typeTo = "Input";
+//		}else{
+//			typeFrom = "Input";
+//			typeTo = "Input";
 //		}
-		
-		return inInterface;
-	}
+//		int chosenId = Main.chooseOne(INT_LIST, typeFrom + " Interfaces", "Available " + typeFrom + " Interface", 2);
+//		choosenURI = INT_LIST.get(chosenId);			
+//		
+//		List<String> listInterfacesTo = algorithmPart2(isSource, equipWithPM, choosenURI);
+//		
+//		String interfaceToURI = "";
+//		//#D
+//		int interfaceToId = Main.chooseOne(listInterfacesTo, typeTo + " Interfaces", "Available " + typeTo + " Interface", 2);
+//		interfaceToURI = listInterfacesTo.get(interfaceToId);
+//		
+//		bindsInterfaces(interfaceFromURI, interfaceToURI, isSource);
+//		
+//		return interfaceToURI;
+//	}
 	
-	public static void verifyIfEquipProvidedBySamePM(String srcEquipToProv, String tgtEquipToProv) throws Exception{
-		List<String> lastSrcEquipList = Queries.getLastBindedTFFrom(Main.model, srcEquipToProv);
-		List<String> lastTgtEquipList = Queries.getLastBindedTFFrom(Main.model, tgtEquipToProv);
-		
-		if(lastSrcEquipList.size() == 0 || lastTgtEquipList.size() == 0){
-			throw new Exception("No equipment found.");
-		}
-		
-		String lastSrcEquip = lastSrcEquipList.get(0);
-		String lastTgtEquip = lastTgtEquipList.get(0);
-		
-		if(!lastSrcEquip.equals(lastTgtEquip)){
-			throw new Exception("Something went wrong. Source and Target equipment were provisioned by different Physical Media.");
-		}
-	}
+//	public static void verifyIfEquipProvidedBySamePM(String srcEquipToProv, String tgtEquipToProv, boolean isSource) throws Exception{
+//		List<String> lastSrcEquipList = Queries.getLastBindedTFFrom(Main.model, srcEquipToProv, isSource);
+//		List<String> lastTgtEquipList = Queries.getLastBindedTFFrom(Main.model, tgtEquipToProv, isSource);
+//		
+//		if(lastSrcEquipList.size() == 0 || lastTgtEquipList.size() == 0){
+//			throw new Exception("No equipment found.");
+//		}
+//		
+//		String lastSrcEquip = lastSrcEquipList.get(0);
+//		String lastTgtEquip = lastTgtEquipList.get(0);
+//		
+//		if(!lastSrcEquip.equals(lastTgtEquip)){
+//			throw new Exception("Something went wrong. Source and Target equipment were provisioned by different Physical Media.");
+//		}
+//	}
 }

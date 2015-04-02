@@ -151,7 +151,7 @@ public class Queries {
 		
 		System.out.println("\nExecuting getEquipmentMappingPorts()...");
 		
-		List<String> bindedInterfaces = getBindedInterfaces(model);
+		//List<String> bindedInterfaces = getBindedInterfaces(model);
 		List<String> result = new ArrayList<String>();
 		String queryString = ""
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -171,7 +171,7 @@ public class Queries {
 		{			
 			QuerySolution row = results.next();
 		    RDFNode int1 = row.get("int1");	
-		   if(QueryUtil.isValidURI(int1.toString()) && !bindedInterfaces.contains(int1.toString()))
+		   if(QueryUtil.isValidURI(int1.toString()) && !Main.bindedInterfaces.contains(int1.toString()))
 		    {
 		    	System.out.println("- Class URI: "+int1.toString()); 
 		    	result.add(int1.toString()); 
@@ -214,13 +214,14 @@ public class Queries {
 		return result;
 	}
 	
-	public static List<String> getMappingInterfaceFrom(OntModel model, String tfURI, boolean isSource){
+	//public static List<String> getMappingInterfaceFrom(OntModel model, String tfURI, boolean isSource){
+	public static List<String> getMappingInterfaceFrom(OntModel model, String tfURI){
 		String tf_type = "";
-		if(isSource){
+		//if(isSource){
 			tf_type  = "Output";
-		}else{
-			tf_type = "Input";
-		}
+		//}else{
+		//	tf_type = "Input";
+		//}
 		System.out.println("\nExecuting getMappedPort()...");
 		List<String> result = new ArrayList<String>();				
 		String queryString = ""
@@ -240,14 +241,14 @@ public class Queries {
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
 		
-		List<String> bindedInterfaces = Queries.getBindedInterfaces(model);
+		//List<String> bindedInterfaces = Queries.getBindedInterfaces(model);
 		
 		while (results.hasNext()) 
 		{			
 			QuerySolution row = results.next();
 			RDFNode interface_ = row.get("interface");	
 			RDFNode equip = row.get("equip");	
-		    if(QueryUtil.isValidURI(interface_.toString()) && QueryUtil.isValidURI(equip.toString()) && !bindedInterfaces.contains(interface_.toString()))
+		    if(QueryUtil.isValidURI(interface_.toString()) && QueryUtil.isValidURI(equip.toString()) && !Main.bindedInterfaces.contains(interface_.toString()))
 		    {
 		    	System.out.println("- interface URI: "+interface_.toString()); 
 		    	result.add(interface_.toString());
@@ -347,7 +348,7 @@ public class Queries {
 		return result;
 	}
 	
-	public static List<String> getInterfacesToProvision(OntModel model, String interfaceFromURI, boolean isSource, String equipWithPM) throws Exception{
+	public static List<String> getInterfacesToProvision(String originalInterfaceFromURI, OntModel model, String interfaceFromURI, boolean isSource, String equipWithPM) throws Exception{
 		System.out.println("\nExecuting getInterfacesToProvision()...");
 		
 		String intType = "";
@@ -358,11 +359,12 @@ public class Queries {
 		
 		List<String> tfTypes = getTfTypesMappedByInterface(model, interfaceFromURI);
 		
+		intType = "Input";
 		if(isSource){
-			intType = "Input";
+			//intType = "Input";
 			srcOrSk = "Source";
 		}else{
-			intType = "Output";
+			//intType = "Output";
 			srcOrSk = "Sink";
 		}
 		
@@ -374,12 +376,20 @@ public class Queries {
 			relName1 = "ns:defines";
 			relName2 = "adapts_from";
 			tgtTFtype += "ns:TF_" + srcOrSk;
+			if(!isSource){
+				relName1 += ", ns:adapts_from";
+				tgtTFtype += ", ns:AF_Source";
+			}
 		}else if(tfTypes.contains(Main.ns+"Matrix")){
 			relName1 = "ns:adapts_from";
 			relName2 = "hasLayer";
 			tgtTFtype += "ns:AF_" + srcOrSk;
+		}else if(tfTypes.contains(Main.ns+"Physical_Media")){
+			relName1 = "ns:adapts_from";
+			relName2 = "hasLayer";
+			tgtTFtype += "ns:TF_" + srcOrSk;
 		}else{
-			throw new Exception("Something went wrong. The interface is does not mapping neither Termination_Function, Adaptation_Function and Matrix");
+			throw new Exception("Something went wrong. The interface is does not mapping neither Termination_Function, Adaptation_Function, Matrix, and Physical_Media");
 		}
 		
 		List<String> result = new ArrayList<String>();				
@@ -391,7 +401,7 @@ public class Queries {
 					+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 					+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 					+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-					+ "PREFIX ns: <http://nemo.inf.ufes.br/NewProject.owl#>\n"
+					+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 					+ "SELECT DISTINCT *\n"
 					+ "WHERE {\n"
 					+ "	?equipTo ns:componentOf ?intTo .\n"
@@ -399,6 +409,24 @@ public class Queries {
 					+ "	?intTo ns:maps ?port .\n"
 					+ "	?pm ns:componentOf ?port .\n"
 					+ "	?pm rdf:type ns:Physical_Media .\n"
+					+ "}";
+		}else if(tfTypes.contains(Main.ns+"Physical_Media")){
+			queryString = ""
+					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+					+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+					+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+					+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+					+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+					+ "SELECT DISTINCT *\n"
+					+ "WHERE {\n"
+					+ "?intTo ns:maps ?portTo .\n"
+					+ "?intTo rdf:type ?intToType .\n"
+					+ "?equipTo ns:componentOf ?intTo .\n"
+					+ "?equipTo rdf:type ns:Equipment . \n"
+					+ "FILTER(?intToType IN (ns:" + intType + "_Interface) ) .\n"
+					+ "?tfTo ns:componentOf ?portTo .\n"
+					+ "?tfTo ns:defines ?layer .\n"
+					+ "?layer ns:Layer_Network.isLast \"true\"^^<http://www.w3.org/2001/XMLSchema#boolean> .\n"
 					+ "}";
 		}else{
 			queryString = ""
@@ -417,18 +445,14 @@ public class Queries {
 					+ "	?tfTo rdf:type ?tfToType .\n"
 					+ "	?intTo ns:maps ?portTo .\n"
 					+ " ?equipTo ns:componentOf ?intTo . 	\n"
+					+ " ?intTo rdf:type ns:Input_Interface .\n"
 					+ "	FILTER( ?tfToRel IN (" + relName1 + ") ) .\n"
 					+ "	FILTER ( ?tfToType IN (" + tgtTFtype + ") )\n"
 					+ "}";
 		}
 		
-		List<String> bindedInterfaces = getBindedInterfaces(model);
-		Query query = null;
-		try{
-			query = QueryFactory.create(queryString);
-		}catch(Exception e){
-			System.out.println();
-		}		 	
+		//List<String> bindedInterfaces = getBindedInterfaces(model);
+		Query query = QueryFactory.create(queryString);
 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
@@ -437,13 +461,15 @@ public class Queries {
 			QuerySolution row = results.next();
 		    RDFNode equipTo = row.get("equipTo");	
 		    RDFNode intTo = row.get("intTo");
-		    if(QueryUtil.isValidURI(equipTo.toString()) && QueryUtil.isValidURI(intTo.toString()) && !bindedInterfaces.contains(intTo.toString()))
+		    if(QueryUtil.isValidURI(equipTo.toString()) && QueryUtil.isValidURI(intTo.toString()) && !Main.bindedInterfaces.contains(intTo.toString()))
 		    {
 		    	if((isInterfaceInTheLastLayer && equipTo.toString().equals(equipWithPM)) || !isInterfaceInTheLastLayer || equipWithPM.equals("")){
-		    		System.out.println("- intTo URI: "+intTo.toString()); 
-			    	result.add(intTo.toString());
-			    	System.out.println("- equipTo URI: "+equipTo.toString()); 
-			    	result.add(equipTo.toString());
+		    		if(!intTo.equals(originalInterfaceFromURI)){
+		    			System.out.println("- intTo URI: "+intTo.toString()); 
+				    	result.add(intTo.toString());
+				    	System.out.println("- equipTo URI: "+equipTo.toString()); 
+				    	result.add(equipTo.toString());
+		    		}		    		
 		    	}		    			
 		    }
 		}
@@ -573,7 +599,13 @@ public class Queries {
 		return results;
 	}
 	
-	public static List<String> getLastBindedTFFrom(OntModel model, String tfURI){
+	public static List<String> getLastBindedTFFrom(OntModel model, String tfURI, boolean isSource){
+//		String relName = "";
+//		if(isSource){
+//			relName = "ns:tf_binds*/ns:tf_binds";
+//		}else{
+//			relName = "ns:INV.tf_binds*/ns:INV.tf_binds";
+//		}
 		System.out.println("\nExecuting getLastBindedTFFrom()...");
 		List<String> result = new ArrayList<String>();				
 		String queryString = ""
@@ -582,28 +614,71 @@ public class Queries {
 				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-				+ "SELECT *\n"
-				+ "WHERE {\n"
-//				+ "\t{\n"
-				+ "\t<" + tfURI + "> ns:tf_binds*/ns:tf_binds ?tf2 .\n"
-//				+ "\t}\n"
-//				+ "\tUNION\n"
-//				+ "\t{\n"
-//				+ "\t\t?tf2 ns:tf_binds*/ns:tf_binds <" + tfURI + "> .\n"
-//				+ "\t}\n"
-				+ "}\n";
+				+ "SELECT DISTINCT *\n"
+				+ "WHERE {\n";
+				
+		if(isSource){
+			queryString += ""
+					+ "	{\n"
+					+ "		<" + tfURI + "> ns:tf_binds*/ns:tf_binds ?tf2 .\n"
+					+ "	}\n"
+					+ "	UNION\n"
+					+ "	{\n"
+					+ "		<" + tfURI + "> ns:tf_binds*/ns:tf_binds ?tf2 .\n"
+					+ "		?tf2 rdf:type ns:Physical_Media . \n"
+					+ "		?tf2 ns:INV.tf_binds ?tf3 .\n"
+					+ "		?tf3 rdf:type ns:TF_Sink .\n"
+					+ "		?tf3 ns:INV.tf_binds*/ns:INV.tf_binds ?tf4 .\n"
+					+ "	}\n";					
+		}else{
+			queryString += ""
+					+ "	{\n"
+					+ "		<" + tfURI + "> ns:INV.tf_binds*/ns:INV.tf_binds ?tf2 .\n"
+					+ "		?tf2 rdf:type ns:AF_Sink . \n"
+					+ "		?tf2 ns:tf_binds ?tf3 .\n"
+					+ "		?tf3 rdf:type ns:AF_Source . \n"
+					+ "		?tf3 ns:tf_binds*/ns:tf_binds ?tf4 .\n"
+					+ "	}\n"
+					+ "	UNION\n"
+					+ "	{\n"
+					+ "		<" + tfURI + "> ns:INV.tf_binds*/ns:INV.tf_binds ?tf2 .\n"
+					+ "	}\n";					
+		}
+		queryString += "}\n";
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
 		while (results.hasNext()) 
 		{			
 			QuerySolution row = results.next();
-			RDFNode tf2 = row.get("tf2");	
+			RDFNode tf2 = row.get("tf2");
+			RDFNode tf3 = row.get("tf3");
+			RDFNode tf4 = row.get("tf4");
 			if(QueryUtil.isValidURI(tf2.toString()))
 		    {
-		    	System.out.println("- tf2 URI: "+tf2.toString()); 
-		    	result.add(tf2.toString()); 
+		    	if(!result.contains(tf2.toString())){
+		    		System.out.println("- tf2 URI: "+tf2.toString()); 
+			    	result.add(tf2.toString());
+		    	}		    	 
 		    }
+			if(tf3 != null){
+				if(QueryUtil.isValidURI(tf3.toString()))
+			    {
+			    	if(!result.contains(tf3.toString())){
+			    		System.out.println("- tf3 URI: "+tf3.toString()); 
+				    	result.add(tf3.toString());
+			    	}		    	 
+			    }
+			}
+			if(tf4 != null){
+				if(QueryUtil.isValidURI(tf4.toString()))
+			    {
+			    	if(!result.contains(tf4.toString())){
+			    		System.out.println("- tf4 URI: "+tf4.toString()); 
+				    	result.add(tf4.toString());
+			    	}		    	 
+			    }
+			}
 		}
 		return result;
 	}

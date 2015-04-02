@@ -2,7 +2,6 @@ package br.com.padtec.common.queries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import br.com.padtec.common.dto.DtoInstanceRelation;
@@ -43,7 +42,38 @@ public class QueryUtil {
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
 				+ "ASK\n"
 				+ "{\n"
-				+ "\t<" + individualUri + "> rdf:type owl:NamedIndividual  ;\n"
+				+ "\t<" + individualUri + "> rdf:type ?t  ;\n"
+				+ "}\n";
+		Query query = QueryFactory.create(queryString);
+		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean exist = qe.execAsk();		
+		
+		return exist;
+	}
+	
+	/** 
+	 * Return true if an interface is mapping a port from a Termination Function Source
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public boolean isInterfaceSource(InfModel model, String interfaceUri) 
+	{		
+		System.out.println("\nExecuting isInterfaceSource()...");
+		String queryString = ""
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX ns: <http://nemo.inf.ufes.br/NewProject.owl#>\n"
+				+ "ASK\n"
+				+ "WHERE {\n"
+				+ "<" + interfaceUri + "> ns:maps ?port .\n"
+				+ "?tf ns:componentOf ?port .\n"
+				+ "?tf rdf:type ?tfType .\n"
+				+ "FILTER( ?tfType IN (ns:AF_Source, ns:TF_Source, ns:Matrix_Source) ) .\n"
 				+ "}\n";
 		Query query = QueryFactory.create(queryString);
 		
@@ -138,6 +168,53 @@ public class QueryUtil {
 		boolean hasDP = qe.execAsk();		
 		
 		return hasDP;
+	}
+	
+	/** 
+	 * Return the URI of individuals from some Class URI and related to other individual 
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param knownIndvURI
+	 * @param relationURI
+	 * @param unknownIndvClassURI
+	 * 
+	 * @author Freddy
+	 */
+	static public List<String> getIndividualFromRelation(InfModel model, String knownIndvURI, String relationURI, String unknownIndvClassURI) 
+	{		
+		System.out.println("\nExecuting getIndividualFromRelation()...");
+		List<String> result = new ArrayList<String>();				
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT *" +
+		" WHERE {\n" +		
+			"\t{" +
+			"\t\t<" + knownIndvURI + "> <" + relationURI + "> ?unknownIndv .\n " +	
+		    "\t\t?unknownIndv rdf:type <" + unknownIndvClassURI + "> .\n" +
+		    "\t}" +
+		    "\tUNION" +
+		    "\t{" +
+		    "\t\t?unknownIndv <" + relationURI + "> <" + knownIndvURI + "> .\n " +	
+		    "\t\t?unknownIndv rdf:type <" + unknownIndvClassURI + "> .\n" +
+		    "\t}" +			
+		"}";
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();		    
+		    RDFNode unknownIndv = row.get("unknownIndv");	
+		    if(isValidURI(unknownIndv.toString()))
+		    {
+		    	System.out.println("- unknownIndv URI: "+unknownIndv.toString()); 
+		    	result.add(unknownIndv.toString()); 
+		    }
+		}
+		return result;
 	}
 	
 	/** 
