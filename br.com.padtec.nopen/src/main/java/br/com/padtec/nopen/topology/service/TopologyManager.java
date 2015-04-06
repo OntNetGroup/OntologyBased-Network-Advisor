@@ -4,7 +4,6 @@ import java.util.HashSet;
 
 import org.springframework.stereotype.Controller;
 
-import br.com.padtec.advisor.core.types.RelationEnum;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.NOpenQueries;
@@ -28,9 +27,10 @@ public class TopologyManager {
 		FactoryUtil.createInstanceIndividual(StudioComponents.studioRepository.getBaseModel(), idTFURI, TFURI);
 
 		// Create relation between Transport Function and Layer
-		String relationURI = StudioComponents.studioRepository.getNamespace()+relation; //
+		String relationURI = StudioComponents.studioRepository.getNamespace()+relation; //ComponentOf7
 		String layerURI = StudioComponents.studioRepository.getNamespace()+idLayer; //
 		FactoryUtil.createInstanceRelation(StudioComponents.studioRepository.getBaseModel(),TFURI, relationURI, layerURI);
 
 	}
+	
 }

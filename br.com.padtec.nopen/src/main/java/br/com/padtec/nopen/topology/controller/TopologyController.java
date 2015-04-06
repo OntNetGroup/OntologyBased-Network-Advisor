@@ -91,12 +91,12 @@ public class TopologyController {
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
 		
-//		 ManagerTopology managerTopology = new ManagerTopology();
+//		 TopologyManager managerTopology = new TopologyManager();
 //		 HashSet<String> equipments2 = managerTopology.getAllTemplateEquipment();
 		
 //		 NOpenFactory.createEquipment(StudioComponents.studioRepository);
 //		 
-//		 ManagerTopology managerTopology = new ManagerTopology();
+//		 TopologyManager managerTopology = new TopologyManager();
 //		 HashSet<String> equipments = managerTopology.getAllTemplateEquipment();
 		 
 		 HashSet<String> equipments = new HashSet<String>();
