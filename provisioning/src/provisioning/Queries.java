@@ -381,9 +381,14 @@ public class Queries {
 				tgtTFtype += ", ns:AF_Source";
 			}
 		}else if(tfTypes.contains(Main.ns+"Matrix")){
-			relName1 = "ns:adapts_from";
+			if(isSource){
+				relName1 = "ns:adapts_from";
+				tgtTFtype += "ns:AF_" + srcOrSk;				
+			}else{
+				relName1 = "ns:defines";
+				tgtTFtype += "ns:TF_" + srcOrSk;
+			}
 			relName2 = "hasLayer";
-			tgtTFtype += "ns:AF_" + srcOrSk;
 		}else if(tfTypes.contains(Main.ns+"Physical_Media")){
 			relName1 = "ns:adapts_from";
 			relName2 = "hasLayer";
@@ -464,7 +469,7 @@ public class Queries {
 		    if(QueryUtil.isValidURI(equipTo.toString()) && QueryUtil.isValidURI(intTo.toString()) && !Main.bindedInterfaces.contains(intTo.toString()))
 		    {
 		    	if((isInterfaceInTheLastLayer && equipTo.toString().equals(equipWithPM)) || !isInterfaceInTheLastLayer || equipWithPM.equals("")){
-		    		if(!intTo.equals(originalInterfaceFromURI)){
+		    		if(!intTo.toString().equals(originalInterfaceFromURI)){
 		    			System.out.println("- intTo URI: "+intTo.toString()); 
 				    	result.add(intTo.toString());
 				    	System.out.println("- equipTo URI: "+equipTo.toString()); 

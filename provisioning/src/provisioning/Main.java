@@ -19,15 +19,15 @@ public class Main {
 		String tBoxFile = "";
 		try {
 			//#1
-			//tBoxFile = FileUtil.chooseFile("TBox", ".owl");
-			tBoxFile = "TBox v5.2.owl";
+			tBoxFile = FileUtil.chooseFile("TBox", ".owl");
+			//tBoxFile = "TBox v5.2.owl";
 			
 			//#2
-			//String aBoxFile = FileUtil.chooseFile("ABox", ".txt");
-			String aBoxFile = "Declarada 6.0a.txt";
+			String aBoxFile = FileUtil.chooseFile("ABox", ".txt");
+			//String aBoxFile = "Declarada 6.0a.txt";
 			//#14
-			//String possibleEquipFile = FileUtil.chooseFile("available Equipment", ".txt");
-			String possibleEquipFile = "Possiveis 6.0.txt";
+			String possibleEquipFile = FileUtil.chooseFile("available Equipment", ".txt");
+			//String possibleEquipFile = "Possiveis 6.0.txt";
 					
 			//#1
 			OWLUtil.createTBox(tBoxFile);
@@ -48,14 +48,14 @@ public class Main {
 			List<String> INT_SK_LIST = Provisioning.verifyIfEquipmentMapsOutPortsInSink();
 			
 			//#10 and #11
-			//int srcInt2ProvIndex = chooseOne(INT_SO_LIST, "Input Interfaces", "Input Interface that maps an Input Port from Source", 2);
-			int srcInt2ProvIndex = 8;
+			int srcInt2ProvIndex = chooseOne(INT_SO_LIST, "Input Interfaces", "Input Interface that maps an Input Port from Source", 2);
+			//int srcInt2ProvIndex = 8;
 			String interfaceFromURI = INT_SO_LIST.get(srcInt2ProvIndex);
 			String equipFromURI = INT_SO_LIST.get(srcInt2ProvIndex+1);
 			
 			//#12 and #13
-			//int tgtInt2ProvIndex = chooseOne(INT_SK_LIST, "Output Interfaces", "Output Interface that maps an Output Port from Sink", 2);
-			int tgtInt2ProvIndex = 8;
+			int tgtInt2ProvIndex = chooseOne(INT_SK_LIST, "Output Interfaces", "Output Interface that maps an Output Port from Sink", 2);
+			//int tgtInt2ProvIndex = 8;
 			String interfaceToURI = INT_SK_LIST.get(tgtInt2ProvIndex);
 			String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
 			
@@ -86,7 +86,7 @@ public class Main {
 			if(option.equals('M') || option.equals('m')){
 				Provisioning.callAlgorithmManual(interfaceFromURI, interfaceToURI, "");
 			}else{
-				Provisioning.callAlgorithmSemiAuto(equipFromURI, interfaceFromURI, equipToURI, interfaceToURI);				
+				Provisioning.callAlgorithmSemiAuto(equipFromURI, interfaceFromURI, equipToURI, interfaceToURI);
 			}
 			
 			//#23
@@ -175,7 +175,7 @@ public class Main {
 				index = Integer.valueOf(bufferRead.readLine());
 			} catch (Exception e) {
 				ok = false;
-			}			
+			}
 		} while ((index < lowestOption || index > highestOption) || !ok);
 		
 		return index;

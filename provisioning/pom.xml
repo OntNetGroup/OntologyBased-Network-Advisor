@@ -127,6 +127,11 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
+			<groupId>br.com.padtec</groupId>
+			<artifactId>advisor-core</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>br.inf.ufes.padtec</groupId>
 			<artifactId>tnokco</artifactId>
 			<version>0.0.1</version>

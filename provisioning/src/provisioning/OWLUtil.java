@@ -81,7 +81,7 @@ public class OWLUtil {
         String[] attributeDcls = fileBlocks[3].split(";");
         createAttributeInstances(attributeDcls, newMapping);
         
-        System.out.println();
+        //System.out.println();
 	}
 	
 	public static HashMap<String, String> createIndividualInstances(String[] individualDcls){
