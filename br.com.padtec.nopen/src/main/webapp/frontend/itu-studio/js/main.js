@@ -132,6 +132,7 @@ var Rappid = Backbone.Router.extend({
         		// Prevent loop linking
         		if(cellViewS === cellViewT) return false;
         		
+        		// Conexão entre dois transport functions
         		var sourceTFunctionID = cellViewS.model.id;
         		var targetTFunctionID = cellViewT.model.id;
         		console.log('try to connect ' +sourceTFunctionID+ ' and ' +targetTFunctionID);
@@ -551,17 +552,17 @@ var Rappid = Backbone.Router.extend({
 
         this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
 
-        KeyboardJS.on('ctrl + z', _.bind(function() {
-
-            this.commandManager.undo();
-            this.selectionView.cancelSelection();
-        }, this));
-        
-        KeyboardJS.on('ctrl + y', _.bind(function() {
-
-            this.commandManager.redo();
-            this.selectionView.cancelSelection();
-        }, this));
+//        KeyboardJS.on('ctrl + z', _.bind(function() {
+//
+//            this.commandManager.undo();
+//            this.selectionView.cancelSelection();
+//        }, this));
+//        
+//        KeyboardJS.on('ctrl + y', _.bind(function() {
+//
+//            this.commandManager.redo();
+//            this.selectionView.cancelSelection();
+//        }, this));
     },
 
     initializeValidator: function() {
@@ -586,6 +587,7 @@ var Rappid = Backbone.Router.extend({
 
         	console.log(command);
         	var cellType = command.data.type;
+        	var cellID = command.data.id;
         	
         	// se uma conexão for removida
         	if(cellType === 'link') {
@@ -593,26 +595,57 @@ var Rappid = Backbone.Router.extend({
         		var targetID = command.data.attributes.target.id;
         		var sourceElement = this.graph.getCell(sourceID);
         		var targetElement = this.graph.getCell(targetID);
-        		if(targetElement) {
-        			var targetElementSubtype = targetElement.get('subtype');
-        			
-        			// TODO: se target for uma porta, remover a porta ligada à conexão (consultar ontologia)
-        			if(targetElementSubtype === 'in' || targetElementSubtype === 'out') {
-                		targetElement.remove();
-                		return next(err);
-                	}
-        			// TODO: se target for um transport function, consultar ontologia para remoção da conexão
-        		}
+        		if(targetElement) var targetElementSubtype = targetElement.get('subtype');
+    			
+    			
+    			// se target for uma porta, remover a porta ligada à conexão (consultar ontologia)
+    			if(targetElementSubtype === 'in' || targetElementSubtype === 'out') {
+    				var result = deletePort(targetID);
+    				
+    				if(result === "success") {
+    					targetElement.remove();
+    					return next(err);
+    				} else {
+    					return next(result);
+    				}
+            	}
+    			
+    			// se target for um transport function, consultar ontologia para remoção da conexão
+    			if(targetElementSubtype === 'basic.Path') {
+	    			var result = deleteLink(cellID);
+	    			if(result === "success") {
+	    				return next(err);
+	    			} else {
+						return next(result);
+					}
+    			}
         	}
         	
-        	// TODO: se um transport function for removido, consultar ontologia
+        	// se um transport function for removido, consultar ontologia
         	if(cellType === 'basic.Path') {
-        		var cellSubtype = command.data.attributes.subtype;
+        		
+        		var result = deleteTransportFunction(cellID);
+        		if(result === "success") {
+    				return next(err);
+    			} else {
+					return next(result);
+				}
+        		
         	}
         	
-        	// TODO: se uma camada inteira for removida, consultar ontologia
+        	// se uma camada inteira for removida, consultar ontologia
         	if(cellType === 'bpmn.Pool') {
         		
+        		var layer = command.data.attributes.subtype;
+        		var cardID = 666; // TODO: get cardID 
+        		
+				var result = deleteLayer(layer, cardID);
+				if(result === "success") {
+					// TODO: retornar camada ao stencil
+    				return next(err);
+    			} else {
+					return next(result);
+				}
         	}
 
         }, this));
@@ -714,10 +747,10 @@ var Rappid = Backbone.Router.extend({
 					}
 				} else { // não existe elemento abaixo
 					// TODO: consultar ontologia para inserção de transport function diretamente no card
-					var id = cell.id;
-					var layer = '';
+					var transportFunctionID = cell.id;
+					var cardID = 666; // TODO: get cardID
 					console.log('try to create TF ' +id);
-					var result = createTransportFunction(id, layer);
+					var result = createTransportFunctionOnCard(transportFunctionID, cardID)
 					
 					if(result === "success") {
 						return next(err);

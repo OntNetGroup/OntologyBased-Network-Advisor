@@ -44,7 +44,7 @@ public class ITUStudioController {
 	/* ----- CRUD for Transport Function ----- */
 	/** Cria um tranport function transportFunctionID na camada layer
 	 * @param id: identificador do transport function a ser criado
-	 * @param layer: camada sobre a qual o transport function deve ser criado (pode ser nulo)
+	 * @param layer: camada sobre a qual o transport function deve ser criado
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
@@ -54,6 +54,21 @@ public class ITUStudioController {
 		 * Create Transport Function
 		 * =========================================================== */
 		StudioFactory.createTransportFunction(id,layer);
+		
+		return "success";
+	}
+	
+	/** Cria um tranport function transportFunctionID direto no card
+	 * @param transportFunctionID: identificador do transport function a ser criado
+	 * @param cardID: identificador do card
+	 * @return: success or error
+	 */
+	@RequestMapping(value = "/createTransportFunctionOnCard", method = RequestMethod.POST)
+	public @ResponseBody String createTransportFunctionOnCard(@RequestParam("transportFunctionID") String transportFunctionID, @RequestParam("cardID") String cardID) 
+	{
+		/**===========================================================
+		 * Create Transport Function
+		 * =========================================================== */
 		
 		return "success";
 	}

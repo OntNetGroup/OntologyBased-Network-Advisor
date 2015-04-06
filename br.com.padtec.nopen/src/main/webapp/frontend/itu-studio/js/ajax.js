@@ -21,6 +21,29 @@ function insertLayer(layer, cardID) {
 	return result;
 };
 
+function deleteLayer(layer, cardID) {
+	
+	var result = "error";
+	
+	$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "deleteLayer.htm",
+		   data: {
+			   'layer': layer,
+			   'cardID': cardID
+		   },
+		   success: function(data){ 		   
+			   result = data;
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+	
+	return result;
+};
+
 function createTransportFunction(id, layer) {
 	
 	var result = "error";
@@ -32,6 +55,29 @@ function createTransportFunction(id, layer) {
 		   data: {
 			   'id': id,
 			   'layer': layer
+		   },
+		   success: function(data){ 		   
+			   result = data;
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+	
+	return result;
+};
+
+function createTransportFunctionOnCard(transportFunctionID, cardID) {
+	
+	var result = "error";
+	
+	$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "createTransportFunctionOnCard.htm",
+		   data: {
+			   'transportFunctionID': transportFunctionID,
+			   'cardID': cardID
 		   },
 		   success: function(data){ 		   
 			   result = data;
@@ -67,6 +113,28 @@ function canCreateTransportFunction(id, layer) {
 	return result === "true";
 };
 
+function deleteTransportFunction(id) {
+	
+	var result = "error";
+	
+	$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "deleteTransportFunction.htm",
+		   data: {
+			   'id': id
+		   },
+		   success: function(data){ 		   
+			   result = data;
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+	
+	return result;
+};
+
 function createPort(portID, transportFunctionID) {
 
 	var result;	
@@ -90,9 +158,32 @@ function createPort(portID, transportFunctionID) {
 	return result;
 };
 
-function createLink(sourceTFunctionID, targetTFunctionID) {
+function deletePort(id) {
 
 	var result;	
+	
+	$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "deletePort.htm",
+		   data: {
+			   'id': id
+		   },
+		   success: function(data){ 		   
+			   result = data;
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+	
+	return result;
+};
+
+
+function createLink(sourceTFunctionID, targetTFunctionID) {
+
+	var result = "error";	
 	
 	$.ajax({
 		   type: "POST",
@@ -134,5 +225,28 @@ function canCreateLink(sourceTFunctionID, targetTFunctionID) {
 	});
 
 	return result === "true";
+};
+
+
+function deleteLink(id) {
+
+	var result = "error";	
+	
+	$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "deleteLink.htm",
+		   data: {
+			   'id': id
+		   },
+		   success: function(data){ 		   
+			   result = data;
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+	
+	return result;
 };
 
