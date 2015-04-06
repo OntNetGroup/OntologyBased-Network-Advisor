@@ -13,13 +13,26 @@ import com.google.gson.JsonObject;
 public class NOpenFileUtil {
 
 	public static String path;
+	
+	// JSON
 	public static String topologyFileFolder;
+	public static String equipmentFileFolder;
+	public static String provisioningFileFolder;
+	
+	// OWL
 	public static String owlFileFolder;
 	
+	/**
+	 * Procedure to set the NOpen Folders Path.
+	 * @param path
+	 */
 	public void setPath(String path) {
 		
 		NOpenFileUtil.path = System.getProperty("user.home") + path;
+		
 		NOpenFileUtil.topologyFileFolder = NOpenFileUtil.path + "/nopen/repository/topology/";
+		NOpenFileUtil.equipmentFileFolder = NOpenFileUtil.path + "/nopen/repository/equipment/";
+		NOpenFileUtil.provisioningFileFolder = NOpenFileUtil.path + "/nopen/repository/provisioning/";
 		NOpenFileUtil.owlFileFolder = NOpenFileUtil.path + "/nopen/repository/owl/";
 		
 		System.out.println(System.getProperty("os.name"));
@@ -34,6 +47,8 @@ public class NOpenFileUtil {
 		System.out.println(NOpenFileUtil.owlFileFolder);
 		
 		NOpenFileUtil.createRepository(NOpenFileUtil.topologyFileFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.equipmentFileFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningFileFolder);
 		NOpenFileUtil.createRepository(NOpenFileUtil.owlFileFolder);
 	}
 
@@ -139,6 +154,22 @@ public class NOpenFileUtil {
      */
     public static HashSet<String> getAllTopplogyJSONFileNames(){
     	return getAllFileNames(NOpenFileUtil.topologyFileFolder, "json");
+    }
+    
+    /**
+     * Procedure to get all equipment JSON file names. 
+     * @return
+     */
+    public static HashSet<String> getAllEquipmentJSONFileNames(){
+    	return getAllFileNames(NOpenFileUtil.equipmentFileFolder, "json");
+    }
+    
+    /**
+     * Procedure to get all provisioning JSON file names. 
+     * @return
+     */
+    public static HashSet<String> getAllProvisioningJSONFileNames(){
+    	return getAllFileNames(NOpenFileUtil.provisioningFileFolder, "json");
     }
     
     /**

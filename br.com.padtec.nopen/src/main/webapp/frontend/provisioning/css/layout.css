@@ -1,0 +1,63 @@
+/* Generic layout. */
+
+.menu{
+	background-color: #36a9e1;
+	height: 40px;
+	position: absolute;
+	top: 0px;
+	float: left;
+	width: 100%;
+	padding: 10px;
+}
+
+.toolbar-container {
+   position: absolute;
+   top: 40px;
+   left: 0;
+   right: 0;
+   padding-left: 246px;
+   height: 40px;
+}
+
+.stencil-container {
+   position: absolute;
+   left: 0;
+   top: 80px;   /* toolbar height */
+   bottom: 20px;  /* statusbar height */
+   width: 240px;
+}
+
+.inspector-container {
+   position: absolute;
+   top: 80px;   /* toolbar height */
+   right: 0;
+   bottom: 140px; /* statusbar height */
+   width: 240px;
+}
+.navigator-container {
+   position: absolute;
+   height: 160px;   /* toolbar height */
+   right: 0;
+   bottom: 20px; /* statusbar height */
+   width: 240px;
+}
+.paper-container {
+   position: absolute;
+   top: 80px;   /* toolbar height */
+   left: 241px;
+   right: 241px;
+   bottom: 20px; /* statusbar height */
+   overflow: hidden;
+}
+.paper-container .paper-scroller {
+   width: 100%;
+   height: 100%;
+}
+
+.statusbar-container {
+   position: absolute;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   height: 20px;
+}

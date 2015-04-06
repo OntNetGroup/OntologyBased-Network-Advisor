@@ -91,20 +91,17 @@ public class TopologyController {
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
 		
-//		 TopologyManager managerTopology = new TopologyManager();
-//		 HashSet<String> equipments2 = managerTopology.getAllTemplateEquipment();
 		
-//		 NOpenFactory.createEquipment(StudioComponents.studioRepository);
-//		 
-//		 TopologyManager managerTopology = new TopologyManager();
-//		 HashSet<String> equipments = managerTopology.getAllTemplateEquipment();
+//		HashSet<String> equipments = NOpenFileUtil.getAllEquipmentJSONFileNames();
+//		return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
+		
 		 
-		 HashSet<String> equipments = new HashSet<String>();
-		 equipments.add("Equipment1");
-		 equipments.add("Equipment2");
-		 equipments.add("Equipment3");
-		 
-		 return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
+		HashSet<String> equipments = new HashSet<String>();
+		equipments.add("Equipment1");
+		equipments.add("Equipment2");
+		equipments.add("Equipment3");
+		
+		return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
 		 
 	}
 	
