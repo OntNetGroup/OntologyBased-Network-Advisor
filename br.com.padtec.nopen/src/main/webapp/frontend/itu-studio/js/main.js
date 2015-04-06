@@ -45,7 +45,23 @@ var Rappid = Backbone.Router.extend({
                 this.inspector.$('[data-attribute]:first').focus();
             }
         }, this);
-		
+        
+        // Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
+        this.graph.on('change:position', function(cell) {
+        	
+        	var cellSubType = cell.get('subtype');        	
+            if (cellSubType !== 'in' && cellSubType !== 'out') return;
+            
+            if(cellSubType === 'in') {
+            	cell.transition('position/y', 15, {});
+            	this.barIn.embed(cell);
+            } else {
+            	cell.transition('position/y', 955, {});
+            	this.barOut.embed(cell);
+            }
+            
+        }, this);
+        
 		// some types of the elements need resizing after they are dropped
 		this.graph.on('add', function(cell, collection, opt) {
 			if (!opt.stencil) return;
@@ -148,6 +164,12 @@ var Rappid = Backbone.Router.extend({
         		if(childView.model instanceof Layer) return false;
         		
         		
+        		if(parentView.model === this.barIn) {
+        			if(childView.model.get('subtype') !== 'in') return false;
+        		}
+        		if(parentView.model === this.barOut) {
+        			if(childView.model.get('subtype') !== 'out') return false;
+        		}
         		
         		if(childView.model instanceof joint.shapes.basic.Path) {
         			if(parentView.model instanceof Layer) {
@@ -655,7 +677,7 @@ var Rappid = Backbone.Router.extend({
         this.validator.validate('add', this.isNotLink, _.bind(function(err, command, next) {
         	        	
         	var cell = this.graph.getCell(command.data.id);
-        	console.log(command.data.id);
+//        	console.log(command.data.id);
         	var cellType = cell.get('type');
         	var cellSubType = cell.get('subtype');
         	        	
@@ -693,12 +715,12 @@ var Rappid = Backbone.Router.extend({
 			    			
 			    			// Move the port to the superior (in port) or inferior (out port) bar
 			    			if(cellType === 'basic.Circle') {
-			    				cell.transition('position/x', 10, {});
 			    				cell.transition('position/y', 15, {});
+			    				this.barIn.embed(cell);
 			    			}
 			    			else {
-			    				cell.transition('position/x', 10, {});
 			    				cell.transition('position/y', 955, {});
+			    				this.barOut.embed(cell);
 			    			}
 			    			
 							return next(err);
@@ -927,8 +949,9 @@ var Rappid = Backbone.Router.extend({
     // inicializa as barras superior e inferior das portas de entrada e saída, respectivamente
     initializePortsBar: function() {
     	// barra superior das portas de entrada
-    	var barIn = new joint.shapes.basic.Rect({
+    	this.barIn = new joint.shapes.basic.Rect({
 						subtype: 'barIn',
+						embeddedPorts: 0, // qntd de portas contidas nesta barra
 						position: {x: 0, y: 0},
 						size: {width: 900, height: 60},
 					    attrs: {
@@ -939,9 +962,12 @@ var Rappid = Backbone.Router.extend({
 					        }
 					    }
 					});
+    	this.barIn.on('change:embeds', this.manageEmbeddedPorts, this.barIn);
+    	
     	// barra inferior das portas de saída
-    	var barOut = new joint.shapes.basic.Rect({
+    	this.barOut = new joint.shapes.basic.Rect({
 					subtype: 'barOut',
+					embeddedPorts: 0, // qntd de portas contidas nesta barra
 					magnet: false,
 					position: {x: 0, y: 940},
 					size: {width: 900, height: 60},
@@ -953,6 +979,7 @@ var Rappid = Backbone.Router.extend({
 				        }
 				    }
 				});
+    	this.barOut.on('change:embeds', this.manageEmbeddedPorts, this.barOut);
     	
     	// rótulo da barra superior
     	var labelIn = new joint.shapes.basic.Rect({
@@ -985,7 +1012,7 @@ var Rappid = Backbone.Router.extend({
     	
     	
     	
-    	this.graph.addCells([barIn, labelIn, barOut, labelOut]);
+    	this.graph.addCells([this.barIn, labelIn, this.barOut, labelOut]);
     },
     
 
@@ -1016,6 +1043,18 @@ var Rappid = Backbone.Router.extend({
     			else child.translate(0, 100);
     		}
     	}
+    },
+    
+    // reorganiza as portas contidas na barra
+    manageEmbeddedPorts: function(port) {
+    	// para cada porta contida na barra
+    	var embeddedPorts = this.getEmbeddedCells();
+    	var positionMultiplier = 10;
+    	
+    	_.each(embeddedPorts, function(p){
+			p.transition('position/x', positionMultiplier, {});
+			positionMultiplier += 40;
+    	});
     },
     
     /* ------- VALIDATION FUNCTIONS -------- */
