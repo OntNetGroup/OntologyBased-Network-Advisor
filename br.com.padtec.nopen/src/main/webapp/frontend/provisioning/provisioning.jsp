@@ -78,7 +78,7 @@
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
-
+            
             graphHandle(app.graph);
             
             var uuid = joint.util.uuid();

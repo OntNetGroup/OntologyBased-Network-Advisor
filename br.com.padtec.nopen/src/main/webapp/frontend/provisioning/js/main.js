@@ -181,6 +181,8 @@ var Rappid = Backbone.Router.extend({
         this.selection = new Backbone.Collection;
         this.selectionView = new joint.ui.SelectionView({ paper: this.paper, graph: this.graph, model: this.selection });
         this.selectionView.removeHandle('rotate');
+        this.selectionView.removeHandle('remove');
+        this.selectionView.removeHandle('unlink');
         
         // Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
         // Otherwise, initiate paper pan.
@@ -307,15 +309,6 @@ var Rappid = Backbone.Router.extend({
             //var freetransform = new joint.ui.FreeTransform({ graph: this.graph, paper: this.paper, cell: cellView.model });
             var halo = new joint.ui.Halo({ graph: this.graph, paper: this.paper, cellView: cellView });
 
-            halo.addHandle({ name: 'setting', position: 'ne', icon: '/nopen/frontend/network-topology/img/setting.png' });
-            halo.on('action:setting:pointerdown', function(evt) {
-            	
-            	equipmentSettings(cellView.model);
-            	
-                evt.stopPropagation();
-                //alert('My custom action.');
-            });
-            
             // As we're using the FreeTransform plugin, there is no need for an extra resize tool in Halo.
             // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
             // handles nicely spread around the elements.
@@ -323,6 +316,7 @@ var Rappid = Backbone.Router.extend({
             halo.removeHandle('fork');
             halo.removeHandle('clone');
             halo.removeHandle('rotate');
+            halo.removeHandle('remove');
             //halo.changeHandle('clone', { position: 'se' });
             
             //freetransform.render();

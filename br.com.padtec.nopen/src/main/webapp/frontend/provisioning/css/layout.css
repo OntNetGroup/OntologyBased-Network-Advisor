@@ -21,6 +21,7 @@
 
 .stencil-container {
    position: absolute;
+   display: none;
    left: 0;
    top: 80px;   /* toolbar height */
    bottom: 20px;  /* statusbar height */
@@ -44,8 +45,12 @@
 .paper-container {
    position: absolute;
    top: 80px;   /* toolbar height */
+   /*
    left: 241px;
    right: 241px;
+   */
+   left: 0px;
+   right: 0px;
    bottom: 20px; /* statusbar height */
    overflow: hidden;
 }
