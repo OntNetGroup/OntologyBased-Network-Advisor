@@ -26,8 +26,8 @@ public class Provisioning {
 		return equipList;			
 	}
 	
-	public static List<String> verifyIfEquipmentMapsOutPortsInSource() throws Exception{
-		List<String> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(Main.model, true, true);
+	public static List<Interface> verifyIfEquipmentMapsOutPortsInSource() throws Exception{
+		List<Interface> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(Main.model, true, true);
 		if(equipAndInterfaces.size() < 1){
 			throw new Exception("Is required a minimun of 1 Equipment which the Output Interface maps an Output Port from a Source component.\n");
 		}
@@ -35,24 +35,24 @@ public class Provisioning {
 		return equipAndInterfaces;
 	}
 	
-	public static List<String> verifyIfEquipmentMapsInPortsInSource() throws Exception{
-		List<String> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(Main.model, false, true);
+	public static List<Interface> verifyIfEquipmentMapsInPortsInSource() throws Exception{
+		List<Interface> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(Main.model, false, true);
 		if(equipAndInterfaces.size() < 1){
 			throw new Exception("Is required a minimum of 1 Equipment which the Input Interface maps an Input Port from a Source component.\n");
 		}
 		return equipAndInterfaces;
 	}
 	
-	public static List<String> verifyIfEquipmentMapsInPortsInSink() throws Exception{
-		List<String> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(Main.model, false, false);
+	public static List<Interface> verifyIfEquipmentMapsInPortsInSink() throws Exception{
+		List<Interface> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(Main.model, false, false);
 		if(equipAndInterfaces.size() < 1){
 			throw new Exception("Is required a minimum of 1 Equipment which the Input Interface maps an Input Port from a Sink component.\n");
 		}
 		return equipAndInterfaces;
 	}
 	
-	public static List<String> verifyIfEquipmentMapsOutPortsInSink() throws Exception{
-		List<String> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(Main.model, true, false);
+	public static List<Interface> verifyIfEquipmentMapsOutPortsInSink() throws Exception{
+		List<Interface> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(Main.model, true, false);
 		if(equipAndInterfaces.size() < 1){
 			throw new Exception("Is required a minimum of 1 Equipment which the Output Interface maps an Output Port from a Sink component.\n");
 		}
@@ -66,25 +66,29 @@ public class Provisioning {
 		}		
 	}
 	
-	public static void callAlgorithmSemiAuto(String equipFromURI, String interfaceFromURI, String equipToURI, String interfaceToURI) throws Exception{
+	public static void callAlgorithmSemiAuto(Interface interfaceFrom, Interface interfaceTo) throws Exception{
 		DefaultMutableTreeNode sourceRoot;
-		sourceRoot = new DefaultMutableTreeNode(new Interface(interfaceFromURI, equipFromURI));
+		sourceRoot = new DefaultMutableTreeNode(interfaceFrom);
         
-        List<String> usedInterfaces = new ArrayList<String>();
-        usedInterfaces.add(interfaceFromURI);
+        List<Interface> usedInterfaces = new ArrayList<Interface>();
+        usedInterfaces.add(interfaceFrom);
 		List<DefaultMutableTreeNode> leafInterfaces = new ArrayList<DefaultMutableTreeNode>();
 		
-		int qtShortPaths = Main.getOptionFromConsole("number of shortest paths (from 1 to " + Integer.MAX_VALUE + ")", 1, Integer.MAX_VALUE);
+		int qtShortPaths = Main.getOptionFromConsole("Choose the number of paths (enter 0 to show all)", 0, Integer.MAX_VALUE);
 		if(qtShortPaths == 0){
 			qtShortPaths = Integer.MAX_VALUE;
 		}
+		int maxPathSize = Main.getOptionFromConsole("Choose the maximum number of interfaces in a path (enter 0 for no limit)", 0, Integer.MAX_VALUE);
+		if(maxPathSize == 0){
+			maxPathSize = Integer.MAX_VALUE;
+		}
 		
 		Date beginDate = new Date();
-		algorithmSemiAuto(interfaceFromURI, sourceRoot, true, "", leafInterfaces, interfaceToURI, usedInterfaces, qtShortPaths);
+		algorithmSemiAuto(sourceRoot, true, leafInterfaces, interfaceTo, usedInterfaces, qtShortPaths, maxPathSize);
 		PerformanceUtil.printExecutionTime("Provisioning.callAlgorithmSemiAuto", beginDate);
 		
 		if(leafInterfaces.size() == 0){
-			throw new Exception("Something went wrong. No paths were found from " + interfaceFromURI + " to " + interfaceToURI + ".");
+			throw new Exception("Something went wrong. No paths were found from " + interfaceFrom.getInterfaceURI() + " to " + interfaceTo.getInterfaceURI() + ".");
 		}
 		
 		ArrayList<TreeNode[]> paths = new ArrayList<TreeNode[]>();
@@ -127,7 +131,7 @@ public class Provisioning {
 			}
 		}
 		fos.close();
-		int path = Main.getOptionFromConsole(paths, "path", 1, paths.size());
+		int path = Main.getOptionFromConsole(paths, "path", paths.size());
 		
 		provisionSemiAuto(paths.get(path));
 	}
@@ -167,39 +171,60 @@ public class Provisioning {
 			System.out.println(from.getInterfaceURI());
 			System.out.println(to.getInterfaceURI());
 			//System.out.println(isSource);
-			bindsInterfaces(from.getInterfaceURI(), to.getInterfaceURI(), isSource);
+			bindsInterfaces(from, to, isSource);
 		}
 	}
 	
-	public static void algorithmSemiAuto(final String origInterfaceFromURI, DefaultMutableTreeNode lastInputIntNode, boolean isSource, String equipWithPM, List<DefaultMutableTreeNode> leafs, String interfaceToURI, List<String> usedInterfaces, int qtShortPaths) throws Exception{
-		String VAR_IN = ((Interface) lastInputIntNode.getUserObject()).getInterfaceURI();
-		
+	public static boolean limitExceeded(List<DefaultMutableTreeNode> leafs, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize){
+		if(usedInterfaces.size() > maxPathSize){
+			return true;
+		}
 		if(leafs.size() >= qtShortPaths){
 			DefaultMutableTreeNode lastLeaf = leafs.get(leafs.size()-1);
 			TreeNode[] lastLeafPath = lastLeaf.getPath();
 			int lastLeafPathSize = lastLeafPath.length;
-			if(lastLeafPathSize <= usedInterfaces.size()){
-				return;
+			int qtUsedInterfaces = usedInterfaces.size();
+			if(qtUsedInterfaces%2 == 1){
+				qtUsedInterfaces += 1;
+			}
+			if(lastLeafPathSize <= qtUsedInterfaces){
+				return true;
 			}
 		}
+		return false;
+	}
+	public static void algorithmSemiAuto(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<DefaultMutableTreeNode> leafs, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize) throws Exception{
+		String VAR_IN = ((Interface) lastInputIntNode.getUserObject()).getInterfaceURI();
+		Interface in = new Interface(VAR_IN);
 		
-		List<String> INT_LIST = algorithmPart1(VAR_IN, isSource);
-		for (int i = 0; i < INT_LIST.size(); i+=2) {
-			String VAR_OUT = INT_LIST.get(i);
+		if(limitExceeded(leafs, usedInterfaces, qtShortPaths, maxPathSize)){
+			return;
+		}
+		
+		List<Interface> INT_LIST = algorithmPart1(in, isSource);
+		for (int i = 0; i < INT_LIST.size(); i+=1) {
+			String VAR_OUT = INT_LIST.get(i).getInterfaceURI();
+			Interface out = new Interface(VAR_OUT);
 			
 			if(!usedInterfaces.contains(VAR_OUT)){
 				isSource = isStillInSource(isSource, VAR_OUT);
-				List<String> newUsedInterfaces1 = new ArrayList<String>(); 
+				List<Interface> newUsedInterfaces1 = new ArrayList<Interface>(); 
 				newUsedInterfaces1.addAll(usedInterfaces);
-				newUsedInterfaces1.add(VAR_OUT);
+				newUsedInterfaces1.add(out);
 				
 				//usedInterfaces.add(VAR_OUT);
 				
-				DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(new Interface(VAR_OUT, INT_LIST.get(i+1)));
+				DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(out);
 				lastInputIntNode.add(outIntNode);
 				
-				if(VAR_OUT.equals(interfaceToURI)){
+				if(VAR_OUT.equals(interfaceTo.getInterfaceURI())){
+					if(limitExceeded(leafs, newUsedInterfaces1, qtShortPaths, maxPathSize)){
+						return;
+					}
+					
 					if(leafs.size() >= qtShortPaths){
+						TreeNode[] p = leafs.get(leafs.size()-1).getPath();
+						System.out.println(p.length);
 						leafs.remove(leafs.size()-1);
 //						DefaultMutableTreeNode lastLeaf = leafs.get(leafs.size()-1);
 //						int lfPtSize = lastLeaf.getPath().length;
@@ -212,7 +237,9 @@ public class Provisioning {
 //							return;
 //						}
 					}
-					
+					TreeNode[] p = outIntNode.getPath();
+					System.out.println(p.length);
+					System.out.println(newUsedInterfaces1.size());
 					leafs.add(outIntNode);
 					leafs.sort(new Comparator<DefaultMutableTreeNode>() {
 
@@ -231,21 +258,21 @@ public class Provisioning {
 					//System.out.println(outIntNode.getPath().length);
 					return;
 				}else{
-					List<String> listInterfacesTo = algorithmPart2(origInterfaceFromURI, isSource, equipWithPM, VAR_OUT);
-					for (int j = 0; j < listInterfacesTo.size(); j+=2) {
-						VAR_IN = listInterfacesTo.get(j);
-						
+					List<Interface> listInterfacesTo = algorithmPart2(isSource, out);
+					for (int j = 0; j < listInterfacesTo.size(); j+=1) {
+						VAR_IN = listInterfacesTo.get(j).getInterfaceURI();
+						in = new Interface(VAR_IN);
 						isSource = isStillInSource(isSource, VAR_IN);
 						
 						if(!newUsedInterfaces1.contains(VAR_IN)){
-							List<String> newUsedInterfaces2 = new ArrayList<String>(); 
+							List<Interface> newUsedInterfaces2 = new ArrayList<Interface>(); 
 							newUsedInterfaces2.addAll(newUsedInterfaces1);
-							newUsedInterfaces2.add(VAR_IN);
+							newUsedInterfaces2.add(in);
 							
-							DefaultMutableTreeNode possibleInIntNode = new DefaultMutableTreeNode(new Interface(VAR_IN, listInterfacesTo.get(j+1)));
+							DefaultMutableTreeNode possibleInIntNode = new DefaultMutableTreeNode(in);
 							outIntNode.add(possibleInIntNode);
 							
-							algorithmSemiAuto(origInterfaceFromURI, possibleInIntNode, isSource, equipWithPM, leafs, interfaceToURI, newUsedInterfaces2, qtShortPaths);
+							algorithmSemiAuto(possibleInIntNode, isSource, leafs, interfaceTo, newUsedInterfaces2, qtShortPaths, maxPathSize);
 						}						
 					}	
 				}
@@ -253,32 +280,36 @@ public class Provisioning {
 		}		
 	}
 	
-	public static String callAlgorithmManual(String interfaceFromURI, String interfaceToURI, String equipWithPM) throws Exception{
+	public static String callAlgorithmManual(Interface interfaceFrom, Interface interfaceTo) throws Exception{
 		boolean isSource = true;
 		String VAR_OUT = "";
-		String VAR_IN = interfaceFromURI;		
+		String VAR_IN = interfaceFrom.getInterfaceURI();
+		Main.bindedInterfaces.add(interfaceFrom);
 		do {
 			//#19
 			isSource = isStillInSource(isSource, VAR_IN);
-			List<String> INT_LIST = algorithmPart1(VAR_IN, isSource);
+			Interface in = new Interface(VAR_IN);
+			List<Interface> INT_LIST = algorithmPart1(in, isSource);
 			
-			int chosenId = Main.chooseOne(INT_LIST, "Output Interfaces", "Available Output Interface", 2);
-			VAR_OUT = INT_LIST.get(chosenId);
+			int chosenId = Main.chooseOne(INT_LIST, "Output Interfaces", "Available Output Interface");
+			VAR_OUT = INT_LIST.get(chosenId).getInterfaceURI();
 			
 			//#20
-			if(!VAR_OUT.equals(interfaceToURI)){
+			if(!VAR_OUT.equals(interfaceTo.getInterfaceURI())){
 				//#21
 				isSource = isStillInSource(isSource, VAR_OUT);
-				List<String> listInterfacesTo = algorithmPart2(interfaceFromURI, isSource, equipWithPM, VAR_OUT);
+				Interface out = new Interface(VAR_OUT);
+				List<Interface> listInterfacesTo = algorithmPart2(isSource, out);
 				
 				//#D
-				int interfaceToId = Main.chooseOne(listInterfacesTo, "Input Interfaces", "Available Input Interface", 2);
-				VAR_IN = listInterfacesTo.get(interfaceToId);
+				int interfaceToId = Main.chooseOne(listInterfacesTo, "Input Interfaces", "Available Input Interface");
+				VAR_IN = listInterfacesTo.get(interfaceToId).getInterfaceURI();
 				
 				//#22
-				bindsInterfaces(VAR_OUT, VAR_IN, isSource);
+				in = new Interface(VAR_IN);
+				bindsInterfaces(out, in, isSource);
 			}
-		} while (!VAR_OUT.equals(interfaceToURI));//#20
+		} while (!VAR_OUT.equals(interfaceTo.getInterfaceURI()));//#20
 		
 		return VAR_OUT;
 	}
@@ -291,54 +322,54 @@ public class Provisioning {
 		return isSource;
 	}
 	
-	public static String getEquipWithPMFromInterface(String lastInt){
-		//#23 and #28
-		String equipWithPMRet = Queries.EquipWithPMofInterface(Main.model, lastInt);
-		if(!equipWithPMRet.equals("")){
-			return equipWithPMRet;
-		}			
-		equipWithPMRet = Queries.equipBindingEquipWithPM(Main.model, lastInt);
-		if(!equipWithPMRet.equals("")){
-			return equipWithPMRet;
-		}	
-		return "";
-	}
+//	public static String getEquipWithPMFromInterface(String lastInt){
+//		//#23 and #28
+//		String equipWithPMRet = Queries.EquipWithPMofInterface(Main.model, lastInt);
+//		if(!equipWithPMRet.equals("")){
+//			return equipWithPMRet;
+//		}			
+//		equipWithPMRet = Queries.equipBindingEquipWithPM(Main.model, lastInt);
+//		if(!equipWithPMRet.equals("")){
+//			return equipWithPMRet;
+//		}	
+//		return "";
+//	}
 	
-	public static List<String> algorithmPart1(String interfaceURI, boolean isSource) throws Exception{
+	public static List<Interface> algorithmPart1(Interface inputInterface, boolean isSource) throws Exception{
 		//#A
-		String mappedTF = Queries.getMappedTFFrom(Main.model, interfaceURI);
+		String mappedTF = Queries.getMappedTFFrom(Main.model, inputInterface.getInterfaceURI());
 		List<String> bindedTFList = Queries.getLastBindedTFFrom(Main.model, mappedTF, isSource);
 		//System.out.println();
 		if(!bindedTFList.contains(mappedTF)){
 			bindedTFList.add(mappedTF);
 		}		
 		
-		List<String> LIST_INT = new ArrayList<String>();
+		List<Interface> LIST_INT = new ArrayList<Interface>();
 		for (String tfURI : bindedTFList) {
 			LIST_INT.addAll(Queries.getMappingInterfaceFrom(Main.model, tfURI));
 		}
 		return LIST_INT;
 	}
 	
-	public static List<String> algorithmPart2(String originalInterfaceFromURI, boolean isSource, String equipWithPM, String choosenInt2ProvURI) throws Exception{
+	public static List<Interface> algorithmPart2(boolean isSource, Interface outputInterface) throws Exception{
 		//#C
-		List<String> listInterfacesTo = Queries.getInterfacesToProvision(originalInterfaceFromURI, Main.model, choosenInt2ProvURI, isSource, equipWithPM);
+		List<Interface> listInterfacesTo = Queries.getInterfacesToProvision(Main.model, outputInterface.getInterfaceURI(), isSource);
 		
 		return listInterfacesTo;
 	}
 	
-	public static void bindsInterfaces(String interfaceFromURI, String interfaceToURI, boolean isSource){
+	public static void bindsInterfaces(Interface interfaceFrom, Interface interfaceTo, boolean isSource){
 		//#E
 		if(!isSource){
-			String aux = interfaceFromURI;
-			interfaceFromURI = interfaceToURI;
-			interfaceToURI = aux;
+			Interface aux = interfaceFrom;
+			interfaceFrom = interfaceTo;
+			interfaceTo = aux;
 		}
-		String outPort = Queries.getMappedPort(Main.model, interfaceFromURI);
-		String inPort = Queries.getMappedPort(Main.model, interfaceToURI);
+		String outPort = Queries.getMappedPort(Main.model, interfaceFrom.getInterfaceURI());
+		String inPort = Queries.getMappedPort(Main.model, interfaceTo.getInterfaceURI());
 		FactoryUtil.createInstanceRelation(Main.model, outPort, Main.ns+"binds", inPort, false, false, true);
-		Main.bindedInterfaces.add(interfaceFromURI);
-		Main.bindedInterfaces.add(interfaceToURI);
+		Main.bindedInterfaces.add(interfaceFrom);
+		Main.bindedInterfaces.add(interfaceTo);
 	}
 	
 //	public static String algorithmManual(String interfaceFromURI, boolean isSource, String equipWithPM) throws Exception{

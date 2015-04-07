@@ -63,7 +63,7 @@ public class FileUtil {
 //		
 //		files = (String[]) filesAux.toArray();
 		
-		Integer owlFileIndex = Main.chooseOne(filesAux, ext + " files", ext + " file containing " + fileContaining + ": ");
+		Integer owlFileIndex = Main.chooseOne(filesAux, ext + " files", ext + " file containing " + fileContaining);
 //		System.out.println("--- " + ext + " files ---");
 //		for (int i = 0; i < files.length; i++) {
 //			System.out.println((i+1) + " - " + files[i]);

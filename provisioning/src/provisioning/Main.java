@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -13,7 +14,7 @@ public class Main {
 	static boolean runReason = true;
 	static OntModel model;
 	static String ns = "";
-	static List<String> bindedInterfaces;;
+	static List<Interface> bindedInterfaces;;
 	
 	public static void main(String[] args){
 		String tBoxFile = "";
@@ -33,7 +34,7 @@ public class Main {
 			OWLUtil.createTBox(tBoxFile);
 			//#3
 			OWLUtil.createInstances(aBoxFile);
-			
+			List<String> declaredEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
 			//#4
 //			System.out.println("Reasoner pós " + aBoxFile);
 //			OWLUtil.runReasoner(true, true, true);
@@ -41,30 +42,39 @@ public class Main {
 			//#7 and #8
 			Provisioning.verifiyMinimumEquipment();
 			
+
+			bindedInterfaces = Queries.getBindedInterfaces(model);
+			
 			//#9
 			Provisioning.verifyIfEquipmentMapsOutPortsInSource();
-			List<String> INT_SO_LIST = Provisioning.verifyIfEquipmentMapsInPortsInSource();
+			List<Interface> INT_SO_LIST = Provisioning.verifyIfEquipmentMapsInPortsInSource();
+			//removeInterfaces(INT_SO_LIST, bindedInterfaces);
+			INT_SO_LIST.removeAll(bindedInterfaces);
 			Provisioning.verifyIfEquipmentMapsInPortsInSink();
-			List<String> INT_SK_LIST = Provisioning.verifyIfEquipmentMapsOutPortsInSink();
+			List<Interface> INT_SK_LIST = Provisioning.verifyIfEquipmentMapsOutPortsInSink();
+			//removeInterfaces(INT_SK_LIST, bindedInterfaces);
+			INT_SK_LIST.removeAll(bindedInterfaces);
 			
 			//#10 and #11
-			int srcInt2ProvIndex = chooseOne(INT_SO_LIST, "Input Interfaces", "Input Interface that maps an Input Port from Source", 2);
+			int srcInt2ProvIndex = chooseOne(INT_SO_LIST, "Input Interfaces", "Input Interface that maps an Input Port from Source");
 			//int srcInt2ProvIndex = 8;
-			String interfaceFromURI = INT_SO_LIST.get(srcInt2ProvIndex);
-			String equipFromURI = INT_SO_LIST.get(srcInt2ProvIndex+1);
+			Interface interfaceFrom = INT_SO_LIST.get(srcInt2ProvIndex);
+			//String equipFromURI = INT_SO_LIST.get(srcInt2ProvIndex);
 			
 			//#12 and #13
-			int tgtInt2ProvIndex = chooseOne(INT_SK_LIST, "Output Interfaces", "Output Interface that maps an Output Port from Sink", 2);
+			int tgtInt2ProvIndex = chooseOne(INT_SK_LIST, "Output Interfaces", "Output Interface that maps an Output Port from Sink");
 			//int tgtInt2ProvIndex = 8;
-			String interfaceToURI = INT_SK_LIST.get(tgtInt2ProvIndex);
-			String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
+			Interface interfaceTo = INT_SK_LIST.get(tgtInt2ProvIndex);
+			//String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
 			
 			//#15
 			OWLUtil.createInstances(possibleEquipFile);
+			bindedInterfaces = Queries.getBindedInterfaces(model);
+			List<String> possibleEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
+			possibleEquip.removeAll(declaredEquip);
 			
 			//#16
 			Provisioning.verifiyMinimumEquipWithPM();
-			bindedInterfaces = Queries.getBindedInterfaces(model);
 			//#17
 			OWLUtil.runReasoner(true, true, true);
 			
@@ -84,9 +94,9 @@ public class Main {
 			} while ((!option.equals('A') || !option.equals('M') || !option.equals('a') || !option.equals('m')) && !ok);
 					
 			if(option.equals('M') || option.equals('m')){
-				Provisioning.callAlgorithmManual(interfaceFromURI, interfaceToURI, "");
+				Provisioning.callAlgorithmManual(interfaceFrom, interfaceTo);
 			}else{
-				Provisioning.callAlgorithmSemiAuto(equipFromURI, interfaceFromURI, equipToURI, interfaceToURI);
+				Provisioning.callAlgorithmSemiAuto(interfaceFrom, interfaceTo);
 			}
 			
 			//#23
@@ -102,12 +112,17 @@ public class Main {
 		System.out.println("Done.");
 	}
 	
-	public static <T> int chooseOne(List<T> list, String listName, String message) throws Exception{
-		return chooseOne(list, listName, message, 1);
+	public static void removeInterfaces(List<String> intList, List<String> toRemove){
+		for (int i = intList.size() - 2; i >= 0; i--) {
+			if(toRemove.contains(intList.get(i))){
+				intList.remove(i+1);
+				intList.remove(i);
+			}
+		}
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T> int chooseOne(List<T> list, String listName, String message, int increment) throws Exception{
+	public static <T> int chooseOne(List<T> list, String listName, String message) throws Exception{
 		System.out.println();
 		System.out.println("--- " + listName + " ---");
 		
@@ -116,21 +131,21 @@ public class Main {
 		}
 		
 		//Collections.sort(list);
-		myBubbleSort((List<Comparable>) list, increment);
+		myBubbleSort((List<Comparable>) list);
 		
-		for (int i = 0; i < list.size(); i+=increment) {
-			String elem = "";
-			elem += ((String) list.get(i)).replace(ns, "");
+		for (int i = 0; i < list.size(); i+=1) {
+//			String elem = "";
+//			elem += ((String) list.get(i)).replace(ns, "");
+//			
+//			if(increment > 1){
+//				elem += " [from equipment: ";
+//				elem += ((String) list.get(i+1)).replace(ns, "");
+//				elem += "]";
+//			}
 			
-			if(increment > 1){
-				elem += " [from equipment: ";
-				elem += ((String) list.get(i+1)).replace(ns, "");
-				elem += "]";
-			}
+			int id = (i+1);
 			
-			int id = (i+increment)/increment;
-			
-			System.out.println(id + " - " + elem);
+			System.out.println(id + " - " + list.get(i));
 		}
 		
 //		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
@@ -149,18 +164,17 @@ public class Main {
 //				
 //		index = (index*increment)-increment;
 		
-		Integer index = getOptionFromConsole(list, message, increment);
+		Integer index = getOptionFromConsole(list, message);
 		
 		return index;
 	}
 	
-	public static <T> int getOptionFromConsole(List<T> list, String message, int increment){
-		int highestOption = list.size()/increment;
-		return getOptionFromConsole(list, message, increment, highestOption);
+	public static <T> int getOptionFromConsole(List<T> list, String message){
+		return getOptionFromConsole(list, message, list.size());
 	}
-	public static <T> int getOptionFromConsole(List<T> list, String message, int increment, int highestOption){
-		Integer index = getOptionFromConsole(message, 1, highestOption);				
-		index = (index*increment)-increment;		
+	public static <T> int getOptionFromConsole(List<T> list, String message, int highestOption){
+		Integer index = getOptionFromConsole(message, 1, highestOption);	
+		index -= 1;
 		return index;
 	}
 	
@@ -182,21 +196,21 @@ public class Main {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void myBubbleSort(List<Comparable> list, int increment) {
+	public static void myBubbleSort(List<Comparable> list) {
 		boolean troca = true;
 		Comparable aux;
         while (troca) {
             troca = false;
-            for (int i = 0; i < list.size() - increment; i += increment) {
+            for (int i = 0; i < list.size() - 1; i += 1) {
 //            	String a1 = list.get(i);
 //            	String a2 = list.get(i + increment);
-            	int comparison = list.get(i).compareTo(list.get(i + increment));
+            	int comparison = list.get(i).compareTo(list.get(i + 1));
             	if(comparison > 0){
-            		for(int j = i; j < i + increment; j++){
+            		for(int j = i; j < i + 1; j++){
             			aux = list.get(j);
-            			list.set(j, list.get(j + increment));
+            			list.set(j, list.get(j + 1));
                         //list.get(j) = list.get(j + increment);
-            			list.set(j + increment, aux);
+            			list.set(j + 1, aux);
                         //list[j + increment] = aux;
                         
             		}

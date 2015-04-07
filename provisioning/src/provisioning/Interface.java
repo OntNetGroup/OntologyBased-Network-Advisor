@@ -8,6 +8,11 @@ public class Interface implements Comparable<Interface>{
 		this.interfaceURI = interfaceURI;
 		this.equipmentURI = equipmentURI;
 	}
+	
+	public Interface(String interfaceURI) {
+		this.interfaceURI = interfaceURI;
+		this.equipmentURI = null;
+	}
 
 	public String getInterfaceURI() {
 		return interfaceURI;
@@ -27,20 +32,40 @@ public class Interface implements Comparable<Interface>{
 			interfaceURI = this.interfaceURI;
 		}
 		
-		String equipmentURI;
-		String[] equipmentURISplit = this.equipmentURI.split("#");
-		if(equipmentURISplit.length > 1){
-			equipmentURI = equipmentURISplit[1];
-		}else{
-			equipmentURI = this.equipmentURI;
-		}
+		String ret = interfaceURI;
+				
+		if(this.equipmentURI != null){
+			String equipmentURI;
+			String[] equipmentURISplit = this.equipmentURI.split("#");
+			if(equipmentURISplit.length > 1){
+				equipmentURI = equipmentURISplit[1];
+			}else{
+				equipmentURI = this.equipmentURI;
+			}
+			ret += " [from: " + equipmentURI + "]";
+		}			
 		
-		String ret = interfaceURI + " [from: " + equipmentURI + "]";
 		return ret;
 	}
 
 	public int compareTo(Interface obj) {
-		int comparison = (this.interfaceURI + this.equipmentURI).compareTo(obj.interfaceURI + obj.equipmentURI);
+		int comparison;
+		if(this.equipmentURI == null || obj.equipmentURI == null){
+			comparison = (this.interfaceURI).compareTo(obj.interfaceURI);
+		}else{
+			comparison = (this.interfaceURI + this.equipmentURI).compareTo(obj.interfaceURI + obj.equipmentURI);
+		}
 		return comparison;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Interface){
+			int compareTo = this.compareTo((Interface)obj);
+			if(compareTo == 0){
+				return true;
+			}
+		}
+		return false;
 	}
 }
