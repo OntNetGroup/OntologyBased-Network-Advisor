@@ -73,7 +73,7 @@ public class ITUStudioController {
 		return "success";
 	}
 	
-	/** Verifica se é possível criar um tranport function transportFunctionID na camada layer
+	/** Verifica se é possível criar o tranport function na camada layer
 	 * @param id
 	 * @param layer (pode ser nulo)
 	 * @return
@@ -94,6 +94,19 @@ public class ITUStudioController {
 		 * Delete Transport Function
 		 * =========================================================== */
 		StudioFactory.deleteTransportFunction(id);
+		
+		return "success";
+	}
+	
+	
+	/** Troca ou retira (layer=null) a camada do transport function
+	 * @param id: identificador do transport function cuja camada será trocada
+	 * @param layer: camada que irá conter o transport function (pode ser null)
+	 * @return: success or error
+	 */
+	@RequestMapping(value = "/changeLayer", method = RequestMethod.POST)
+	public @ResponseBody String changeLayer(@RequestParam("id") String id, @RequestParam("layer") String layer) 
+	{
 		
 		return "success";
 	}
