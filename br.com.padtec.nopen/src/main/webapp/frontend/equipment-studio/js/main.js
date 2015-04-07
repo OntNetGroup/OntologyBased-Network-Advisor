@@ -49,13 +49,12 @@ var Rappid = Backbone.Router.extend({
 				this.inspector.updateCell();
 				this.commandManager.listen();
 				this.inspector.$('[data-attribute]:first').focus();
-                 
+                
 				//addshelf(args); | args -> "rack0" | "rack0","slot1"
 				console.log(cell.parent);
 				//var gambiMethod = "add"+subType+"("+args+");";
-				
-				// Identificações temporarias
 
+				// Identificações temporarias
 				//console.log(cell.attributes.type);
 				//var subtype = cell.get('subType');
 				//console.log(subtype);
@@ -102,8 +101,6 @@ var Rappid = Backbone.Router.extend({
 
 		// when a cell is added on another one, it should be embedded
 		this.graph.on('add', function(cell) {
-			
-		
 
 			//console.log(JSON.stringify(cell));
 			if(cell.get('type') === 'link') return;
@@ -113,54 +110,45 @@ var Rappid = Backbone.Router.extend({
 			var area = g.rect(position.x, position.y, size.width, size.height);
 
 			var parent;			
-		_.each(this.graph.getElements(), function(e) {
+			_.each(this.graph.getElements(), function(e) {
 
-			var position = e.get('position');
-			var size = e.get('size');
-			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-				parent = e;
-			}
-		});
+				var position = e.get('position');
+				var size = e.get('size');
+				if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+					parent = e;
+				}
+			});
 
-		// See if the cell can connect with the parent : true or false
+			// See if the cell can connect with the parent : true or false
 
 
-		if(parent) {
+			if(parent) {
 
-			//outros equipamentos conectados
-			var filhos = parent.getEmbeddedCells().length;
-				var soa = parent.getEmbeddedCells('0') ;
-
-			//	console.log(soa);
-			//	console.log('numero de filhos ' ,filhos);
+				//outros equipamentos conectados
+				var filhos = parent.getEmbeddedCells().length;
+				var soa = parent.getEmbeddedCells() ;
 
 				//parent position and size
 				var pposition = parent.get('position');
-			//console.log(pposition);
-			var psize = parent.get('size');
-			//console.log(psize);
+				var psize = parent.get('size');
 
 				//child position and size
 				var cposition = cell.get('position');
-//				//console.log(cposition);	
 				var csize = cell.get('size');
-//				//console.log(csize)
-
 
 				if(parent.get('subType') === 'rack') {
-//					//Aumento de tamanho e re posicionamento
-				var newpositionx = pposition.x + 15 ;
-//				//console.log('nova posição da cell em x ' , newpositionx);
-				var nempositiony;
-//
+
+					//Aumento de tamanho e re posicionamento
+					var newpositionx = pposition.x + 15 ;
+					var nempositiony;
 					if (parent.getEmbeddedCells().length === '0'){
 						nempositiony = pposition.y + 20 ;
-					//console.log('nova posição da cell em y ' , nempositiony);
-				}else {
+					}else {
 						nempositiony = pposition.y + 20 + ((filhos) * (80));
-					//console.log('nova posição da cell em y sendo o segundo ' , nempositiony);
 					};
+					// Prototype : check order
 					parent.embed(cell);
+					this.embedOrConnect(parent, cell);
 
 					parent.set('size' , { 
 						width: psize.width  ,
@@ -171,8 +159,6 @@ var Rappid = Backbone.Router.extend({
 						y: nempositiony 
 					});
 
-					// Prototype : check order
-					this.embedOrConnect(parent, cell);
 				}else{
 
 					if(parent.get('subType') === 'shelf'){
@@ -182,12 +168,12 @@ var Rappid = Backbone.Router.extend({
 						if (!grandparentId) return;
 
 						var grandparent = this.graph.getCell(grandparentId);
-                        console.log(grandparent);
-                        
+						console.log(grandparent);
+
 						//aumento de tamanho do parent
 						var increasew = (psize.width + 80 ) ;
 						//console.log(increasew);
-						
+
 						//reposicionamento da cell
 						var newpositiony = pposition.y + 7 ;
 						//console.log('nova posição da cell em y ' , newpositiony);
@@ -201,10 +187,12 @@ var Rappid = Backbone.Router.extend({
 						};
 
 						//parent resize , grandparent resize and cell new position
+						// Prototype : check order
 						parent.embed(cell);
-						
+						this.embedOrConnect(parent, cell);
+
 						parent.set('size' , { 
-							width: 240 + ((parent.getEmbeddedCells().length - (1) ) * 70) ,
+							width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 70) ,
 							height:	parent.get('size').height});
 
 						cell.set('position', {
@@ -218,11 +206,6 @@ var Rappid = Backbone.Router.extend({
 							});
 						};
 
-
-
-						// Prototype : check order
-						this.embedOrConnect(parent, cell);
-
 					}if(parent.get('subType') === 'slot'){
 
 						//aumento de tamanho do parent
@@ -234,7 +217,7 @@ var Rappid = Backbone.Router.extend({
 						var newpositiony = pposition.y + 16 ;
 						//console.log('nova posição da cell em y ' , newpositiony);
 						var newpositionx;
-						if (parent.getEmbeddedCells().length === '1'){
+						if (parent.getEmbeddedCells().length === '0'){
 							newpositionx = pposition.x + 14;
 							//console.log('nova posição da cell em y ' , newpositionx);
 						}else {
@@ -243,7 +226,11 @@ var Rappid = Backbone.Router.extend({
 						};
 
 						//parent resize , grandparent resize and cell new position
+
+						// Prototype : check order
 						parent.embed(cell);
+						this.embedOrConnect(parent, cell);
+
 						parent.set('size' , { 
 							width: increasew  ,
 							height:	increaseh});
@@ -254,52 +241,43 @@ var Rappid = Backbone.Router.extend({
 						cell.set('position' , {
 							x : newpositionx ,
 							y : newpositiony
-					});
+						});
 
-//					// Prototype : check order
-						this.embedOrConnect(parent, cell);
 					}else{
 						if(parent.get('subType') === 'card' || 'supervisor' ){
 							// configurar as portas de input e output quando sair do itu
-
 						}
 					}
-
 				}
-//				//aumento do modelo
-//				/*var increasew = (psize.width + 0.25*( psize.width - csize.width )) ;
-//				console.log(increasew);
-//				var increaseh = (psize.height + 0.25*( psize.height - csize.height )) ;
-//				console.log(increaseh);
-//				parent.set('size' , { 
-//					width: increasew  ,
-//					height:	increaseh
-//				});*/ 
-
 			}
 		}, this);
 
 		this.graph.on('remove' , function (cell) {
-			
+
 			var parentId = cell.get('parent');
-			//console.log(parentId);
 			if (!parentId) return;
-            
+
 			var parent = this.graph.getCell(parentId);
-           // console.log(parent);
-			
+
+
 			if(parent.get('subType') === 'rack') {
 
 				//console.log(parent.getEmbeddedCells().length);
-				
+
 				parent.set('size' , { 
 					width: parent.get('size').width  ,
 					height:	240 + ((parent.getEmbeddedCells().length - (2) ) * 70)
 				});
 				//console.log(parent.get('size'));
-			
+
 			}else{
 				if(parent.get('subType') === 'shelf'){
+
+					var grandparentId = parent.get('parent');
+					if (!grandparentId) return;
+
+					var grandparent = this.graph.getCell(grandparentId);
+
 
 				}else{
 					if(parent.get('subType') === 'slot'){
@@ -311,9 +289,9 @@ var Rappid = Backbone.Router.extend({
 			}
 
 		},this); 
-		
+
 //		this.graph.on('all' , function( a) {
-//			console.log(a);
+//		console.log(a);
 //		},this);
 
 		this.graph.on('change:size', function(cell, newPosition, opt) {
@@ -433,6 +411,23 @@ var Rappid = Backbone.Router.extend({
 
 		this.paperScroller.center();
 
+		this.paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
+			var cellId = cellView.model.id;
+			var equipament = this.graph.getCell(cellId);
+//			console.log(equipament);
+//			console.log(equipament.get('subType'));
+//			console.log('evt ' , evt);
+//             console.log('cellView ' , selection );
+//             console.log('x ', x);
+//             console.log('y ' , y);
+//             console.log('cell ',model);
+
+			if((equipament.get('subType')) === 'card' || (equipament.get('subType')) === 'supervisor') {
+				console.log('opening ITU studio');
+			}
+		},this);
+
+
 		this.graph.on('add', this.initializeLinkTooltips, this);
 
 		$('.paper-scroller').on('mousewheel DOMMouseScroll', _.bind(function(evt) {
@@ -526,6 +521,15 @@ var Rappid = Backbone.Router.extend({
 				});
 			});
 		});
+	},
+
+
+	openITUstudioView: function() {
+
+		this.paper.on('cell:pointerdblclick', function(evt, cellView, x, y) {
+			console.log('hi there!');
+		},this);
+
 	},
 
 	initializeSelection: function() {
@@ -1026,7 +1030,7 @@ var Rappid = Backbone.Router.extend({
 					parent.embed(child);
 					console.log('embedded! parent suType: ' +parentsubType+ '; child subType: ' +childsubType);
 				}else{
-					console.log('Wrong Order!');
+					parent.unembed(child);
 				}
 
 			}
