@@ -12,6 +12,7 @@ var Rappid = Backbone.Router.extend({
     home: function() {
 
         this.initializeEditor();
+        this.cardID = joint.util.uuid();
     },
 
     initializeEditor: function() {
@@ -173,11 +174,14 @@ var Rappid = Backbone.Router.extend({
         		
         		if(childView.model instanceof joint.shapes.basic.Path) {
         			if(parentView.model instanceof Layer) {
-        				var id = childView.model.id;
-        				var layer = parentView.model.get('subtype');
-        				console.log('try to insert ' +id+ ' on layer ' +layer);
+        				var tFunctionID = childView.model.id;
+        				var tFunctionType = childView.model.get('subtype');
+        				var containerName = parentView.model.get('subtype');
+        				var containerType = 'layer';
+        				var cardID = 666; // TODO: get cardID
+        				console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ ' on layer ' +containerName+ ' inside card ' +cardID);
         				
-        				return canCreateTransportFunction(id, layer);
+        				return canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
         			}
         			
         			return false;
@@ -658,10 +662,11 @@ var Rappid = Backbone.Router.extend({
         	// se uma camada inteira for removida, consultar ontologia
         	if(cellType === 'bpmn.Pool') {
         		
-        		var layer = command.data.attributes.subtype;
-        		var cardID = 666; // TODO: get cardID 
+        		var containerName = command.data.attributes.subtype;
+        		var containerType = 'layer';
+        		var cardID = this.cardID; // TODO: get cardID
         		
-				var result = deleteLayer(layer, cardID);
+				var result = deleteContainer(containerName, containerType, cardID);
 				if(result === "success") {
 					// TODO: retornar camada ao stencil
     				return next(err);
@@ -677,7 +682,6 @@ var Rappid = Backbone.Router.extend({
         this.validator.validate('add', this.isNotLink, _.bind(function(err, command, next) {
         	        	
         	var cell = this.graph.getCell(command.data.id);
-//        	console.log(command.data.id);
         	var cellType = cell.get('type');
         	var cellSubType = cell.get('subtype');
         	        	
@@ -737,9 +741,10 @@ var Rappid = Backbone.Router.extend({
 			
 			} else if(cellType === 'bpmn.Pool') { // elemento é uma camada
     			// TODO: consultar ontologia para inserção de camada no card
-				var layer = cellSubType;
-				var cardID = 666; // TODO: get cardID 
-				var result = insertLayer(layer, cardID);
+				var containerName = cellSubType;
+				var containerType = 'layer';
+				var cardID = this.cardID; // TODO: get cardID 
+				var result = insertContainer(containerName, containerType, cardID)
 				
 				if(result === "success") {
 					// TODO: remover camada do stencil
@@ -754,10 +759,14 @@ var Rappid = Backbone.Router.extend({
 					var parentType = parent.get('type');
 					
 					if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
-						var id = cell.id;
-						var layer = parent.get('subtype');
-						console.log('try to create TF ' +id+ ' in layer ' +layer);
-						var result = createTransportFunction(id, layer);
+						var tFunctionID = cell.id;
+						var tFunctionType = cell.get('subtype');
+						var containerName = parent.get('subtype');
+						var containerType = 'layer';
+						var cardID = this.cardID; // TODO: get cardID
+						console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ 'on layer ' +containerName+ ' inside card ' +cardID);
+						
+						var result = createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
 						
 						if(result === "success") {						
 							parent.embed(cell);
@@ -769,10 +778,13 @@ var Rappid = Backbone.Router.extend({
 					}
 				} else { // não existe elemento abaixo
 					// TODO: consultar ontologia para inserção de transport function diretamente no card
-					var transportFunctionID = cell.id;
-					var cardID = 666; // TODO: get cardID
-					console.log('try to create TF ' +id);
-					var result = createTransportFunctionOnCard(transportFunctionID, cardID)
+					var tFunctionID = cell.id;
+					var tFunctionType = cell.get('subtype');
+					var containerName = '';
+					var containerType = '';
+					var cardID = this.cardID; // TODO: get cardID
+					console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ 'on layer ' +containerName+ ' inside card ' +cardID);
+					var result = createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
 					
 					if(result === "success") {
 						return next(err);
@@ -800,7 +812,7 @@ var Rappid = Backbone.Router.extend({
 					return next(result);
 				}
             } else {
-            	return next('Please, connect to a transport function');
+            	return next('Please, connect to a valid transport function');
             }
         }, this));
     },
