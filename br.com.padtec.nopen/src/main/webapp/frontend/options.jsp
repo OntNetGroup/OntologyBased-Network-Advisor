@@ -9,15 +9,29 @@
 
 <script src="frontend/template/js/jquery.nestable.min.js"></script>
 	
-<div class="row">			
-									
+<div class="row">
+
+	<div id="layer-error" class="box-content alerts" style="display:none;">
+		<div class="alert alert-danger">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Not allowed! </strong> In order to add a new layer, select first a Technology.
+		</div>
+	</div>
+
+	<div id="service-error" class="box-content alerts" style="display:none;">
+		<div class="alert alert-danger">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Not allowed!</strong> In order to add a new Service, please select first a layer
+		</div>
+	</div>
+	
 	<!-- ======================================================================= -->	
 	<div class="col-sm-3">	
 		<div class="box"> 			
 			<div class="box-header" >
 				<h2><i class="icon-laptop"></i>Technologies</h2>
 				<div class="box-icon">
-					<a href="" class="btn-plus"><i class="icon-plus"></i></a>
+					<a href="ui-nestable-list.html#" class="btn-tech-plus"><i class="icon-plus"></i></a>
 					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>													
 				</div>
 			</div>	
@@ -40,14 +54,14 @@
 	    </div>    
 	</div>
 	<!-- ======================================================================= -->
-				   
+	
 	<!-- ======================================================================= -->				   
 	<div class="col-sm-3">
 		<div class="box"> 			
 			<div class="box-header" >
 				<h2><i class="icon-laptop"></i>Layers</h2>
 				<div class="box-icon">
-					<a href="" class="btn-plus"><i class="icon-plus"></i></a>
+					<a href="ui-nestable-list.html#" class="btn-layer-plus"><i class="icon-plus"></i></a>
 					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>								
 				</div>
 			</div>
@@ -111,31 +125,59 @@
 		</div>		
 	</div><!--/col-->
 	</div>		
-</div><!--/row-->
-					
-<!--<menu id="nestable-menu"> -->
-<!--<button class="btn btn-info" type="button" data-action="expand-all">Expand All</button> -->
-<!--<button class="btn btn-danger" type="button" data-action="collapse-all">Collapse All</button> -->
-<!--</menu>	 -->
+</div><!--/row-->	
 	
-<div class="modal fade" id="myModal">
+<div class="modal fade" id="techModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Modal title</h4>
+				<h4 class="modal-title">New Technology Form</h4>
 			</div>
 			<div class="modal-body">
-				<p>Here settings can be configured...</p>
+				<div class="form-group">
+					<label class="control-label" for="focusedInput">Name:</label>
+					<div class="controls">
+					  <input class="form-control focused" id="tech-input" type="text" value="This is the technology name...">
+					</div>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-primary" id="create-tech">Add</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 	
+<div class="modal fade" id="layerModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">New Layer Form</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label class="control-label" for="focusedInput">Name:</label>
+					<div class="controls">
+					  <input class="form-control focused" id="layer-input" type="text" value="This is the layer name...">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="create-layer">Add</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--<menu id="nestable-menu"> -->
+<!--<button class="btn btn-info" type="button" data-action="expand-all">Expand All</button> -->
+<!--<button class="btn btn-danger" type="button" data-action="collapse-all">Collapse All</button> -->
+<!--</menu>	 -->
+		
 <!-- page scripts -->
 <script src="/nopen/frontend/template/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="/nopen/frontend/template/js/jquery.sparkline.min.js"></script>
@@ -145,7 +187,9 @@
 <script src="/nopen/frontend/template/js/wizard.min.js"></script>
 
 <script>
-
+	var tech = null;
+	var layer = null;
+	
 	/* ---------- FuelUX Wizard ---------- */
 	$('#myWizard').wizard();
 	
@@ -173,7 +217,7 @@
     });
 
     $('.tech').on('click', function(e) {
-		var tech = e.target.innerText;
+		tech = e.target.innerText;
 		
 		$(".x").css("display","none");
 		$("#"+tech).css("display","block");		
@@ -197,6 +241,75 @@
 	        }
 	});
 	
+	$('.btn-tech-plus').click(function(e){
+		e.preventDefault();
+		$('#techModal').modal('show');				
+	});
+	
+	$('.btn-layer-plus').click(function(e){
+		e.preventDefault();
+		if(tech == null){
+			$("#layer-error").show();
+		}else{
+			$('#layerModal').modal('show');	
+		}
+	});
+	
+	$('#create-layer').click(function(e){
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "createLayer.htm",
+		   data: {
+			   'layerName': $('#layer-input').val()
+		   },
+		   success: function(data){ 		   
+			   
+			   var appendString = ""
+			        +"<li class=\"dd-item dd3-item\" data-id=\"\">"
+      				+"      <div class=\"dd-handle dd3-handle\">Drag</div><div class=\"dd3-content\">"+$('#layer-input').val()+"</div>"
+		           	+"</li>";				         
+			  
+			  console.log(appendString);
+			  
+			   $("#layer .dd-list #"+tech).append(appendString);
+			   $('#layer-input').val("This is the layer name...");
+			   $('#layerModal').modal('hide');
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	});
+	
+	$('#create-tech').click(function(e){
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "createTech.htm",
+		   data: {
+			   'techName': $('#tech-input').val()
+		   },
+		   success: function(data){ 		   
+			   
+			   var appendString = ""				  
+			        +"<li class=\"dd-item dd3-item\" data-id=\"\">"
+      				+"      <div class=\"dd-handle dd3-handle\">Drag</div><div class=\"dd3-content tech\">"+$('#tech-input').val()+"</div>"
+		           	+"</li>";				         
+			  
+			  console.log(appendString);
+			  
+			   $("#tech .dd-list").append(appendString);
+			   $('#tech-input').val("This is the technology name...");
+			   $('#techModal').modal('hide');
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	});
 </script>
 	
 <%@include file="/frontend/template/index-bottom.jsp"%>
