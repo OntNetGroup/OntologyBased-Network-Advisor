@@ -3,7 +3,7 @@ var Stencil = {};
 Stencil.groups = {
 		layers: { index: 1, label: 'Layers'},
 		transportFunctions: { index: 2, label: 'Transport Functions' },
-		ports: { index: 3, label: 'Ports'},
+		interfaces: { index: 3, label: 'Interfaces'},
 };
 
 Stencil.shapes = {
@@ -76,7 +76,7 @@ Stencil.shapes = {
 	],
 	
 	/* RF: Inserir portas de entrada e saída aos nós */
-	ports: [
+	interfaces: [
 		//porta de entrada
 		new joint.shapes.basic.Circle({
 			subtype: 'in',

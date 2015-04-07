@@ -20,66 +20,72 @@ public class ITUStudioController {
 		return "itu-studio/itu-studio";
 	}
 	
-	/* ----- CRUD for Layer ----- */
-	/** Insere uma camada no card cardID
-	 * @param layer: camada a ser inserida (e.g., OTS)
-	 * @param cardID: identificador do card que deverá ser composto da camada
-	 * @return: success or error
+	/* ----- CRUD for Container ----- */
+	/** Insere um container no card cardID
+	 * @param containerName: nome do container
+	 * @param containerType: tipo do container
+	 * @param cardID: identificador do card que deverá ser composto do container
+	 * @return
 	 */
-	@RequestMapping(value = "/insertLayer", method = RequestMethod.POST)
-	public @ResponseBody String insertLayer(@RequestParam("layer") String layer, @RequestParam("cardID") String cardID) {
+	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
+	public @ResponseBody String insertContainer(@RequestParam("containerName") String containerName,
+											@RequestParam("containerType") String containerType, 
+											@RequestParam("cardID") String cardID) {
 		return "success";
 	}
 	
-	/** Remove uma camada 
-	 * @param layer: camada a ser removida (e.g., OTS)
+	/** Remove um container do card cardID
+	 * @param containerName: nome do container
+	 * @param containerType: tipo do container
 	 * @param cardID: identificador do card que contém a camada
 	 * @return: success or error
 	 */
-	@RequestMapping(value = "/deleteLayer", method = RequestMethod.POST)
-	public @ResponseBody String deleteLayer(@RequestParam("layer") String layer, @RequestParam("cardID") String cardID) {
+	@RequestMapping(value = "/deleteContainer", method = RequestMethod.POST)
+	public @ResponseBody String deleteContainer(@RequestParam("containerName") String containerName, @RequestParam("containerType") String containerType,
+												@RequestParam("cardID") String cardID) {
 		return "success";
 	}
 	
 	/* ----- CRUD for Transport Function ----- */
 	/** Cria um tranport function transportFunctionID na camada layer
-	 * @param id: identificador do transport function a ser criado
-	 * @param layer: camada sobre a qual o transport function deve ser criado
-	 * @return: success or error
+	 * @param tFunctionID: identificador do transport function a ser criado
+	 * @param tFunctionType: tipo do transport function a ser criado (e.g., TTF, AF etc.)
+	 * @param containerName: nome do container sobre a qual o transport function deve ser criado (can be null)
+	 * @param containerType: tipo do container sobre a qual o transport function deve ser criado (can be null)
+	 * @param cardID: identificador do card 
+	 * @return
 	 */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String createTransportFunction(@RequestParam("id") String id, @RequestParam("layer") String layer) 
+	public @ResponseBody String createTransportFunction(@RequestParam("tFunctionID") String tFunctionID,
+														@RequestParam("tFunctionType") String tFunctionType,
+														@RequestParam("containerName") String containerName,
+														@RequestParam("containerType") String containerType,
+														@RequestParam("cardID") String cardID)
 	{
 		/**===========================================================
 		 * Create Transport Function
 		 * =========================================================== */
-		StudioFactory.createTransportFunction(id,layer);
+//		TODO: StudioFactory.createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
 		
 		return "success";
 	}
 	
-	/** Cria um tranport function transportFunctionID direto no card
-	 * @param transportFunctionID: identificador do transport function a ser criado
-	 * @param cardID: identificador do card
-	 * @return: success or error
-	 */
-	@RequestMapping(value = "/createTransportFunctionOnCard", method = RequestMethod.POST)
-	public @ResponseBody String createTransportFunctionOnCard(@RequestParam("transportFunctionID") String transportFunctionID, @RequestParam("cardID") String cardID) 
-	{
-		/**===========================================================
-		 * Create Transport Function
-		 * =========================================================== */
-		
-		return "success";
-	}
 	
-	/** Verifica se é possível criar o tranport function na camada layer
-	 * @param id
-	 * @param layer (pode ser nulo)
+	/** Verifica se é possível criar o tranport function
+	 * @param tFunctionID: identificador do transport function a ser criado
+	 * @param tFunctionType: tipo do transport function a ser criado (e.g., TTF, AF etc.)
+	 * @param containerName: nome do container sobre a qual o transport function deve ser criado
+	 * @param containerType: tipo do container sobre a qual o transport function deve ser criado
+	 * @param cardID: identificador do card 
 	 * @return
 	 */
 	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String canCreateTransportFunction(@RequestParam("id") String transportFunctionID, @RequestParam("layer") String layer) {
+	public @ResponseBody String canCreateTransportFunction(	@RequestParam("tFunctionID") String tFunctionID,
+															@RequestParam("tFunctionType") String tFunctionType,
+															@RequestParam("containerName") String containerName,
+															@RequestParam("containerType") String containerType,
+															@RequestParam("cardID") String cardID)
+	{
 		return "true";
 	}
 	
@@ -99,13 +105,18 @@ public class ITUStudioController {
 	}
 	
 	
-	/** Troca ou retira (layer=null) a camada do transport function
-	 * @param id: identificador do transport function cuja camada será trocada
-	 * @param layer: camada que irá conter o transport function (pode ser null)
-	 * @return: success or error
+	/** Troca ou retira (container=null) o container do transport function
+	 * @param tFunctionID: identificador do transport function que terá container será trocado
+	 * @param containerName: nome do novo container do transport function (can be null)
+	 * @param containerType: tipo do novo container do transport function (can be null)
+	 * @param cardID: identificador do card
+	 * @return
 	 */
-	@RequestMapping(value = "/changeLayer", method = RequestMethod.POST)
-	public @ResponseBody String changeLayer(@RequestParam("id") String id, @RequestParam("layer") String layer) 
+	@RequestMapping(value = "/changeContainer", method = RequestMethod.POST)
+	public @ResponseBody String changeContainer(@RequestParam("tFunctionID") String tFunctionID,
+												@RequestParam("containerName") String containerName,
+												@RequestParam("containerType") String containerType,
+												@RequestParam("cardID") String cardID) 
 	{
 		
 		return "success";

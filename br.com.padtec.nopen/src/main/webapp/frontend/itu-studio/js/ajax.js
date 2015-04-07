@@ -1,13 +1,14 @@
-function insertLayer(layer, cardID) {
+function insertContainer(containerName, containerType, cardID) {
 	
 	var result = "error";
 	
 	$.ajax({
 		   type: "POST",
 		   async: false,
-		   url: "insertLayer.htm",
+		   url: "insertContainer.htm",
 		   data: {
-			   'layer': layer,
+			   'containerName': containerName,
+			   'containerType': containerType,
 			   'cardID': cardID
 		   },
 		   success: function(data){ 		   
@@ -21,16 +22,17 @@ function insertLayer(layer, cardID) {
 	return result;
 };
 
-function deleteLayer(layer, cardID) {
+function deleteContainer(containerName, containerType, cardID) {
 	
 	var result = "error";
 	
 	$.ajax({
 		   type: "POST",
 		   async: false,
-		   url: "deleteLayer.htm",
+		   url: "deleteContainer.htm",
 		   data: {
-			   'layer': layer,
+			   'containerName': containerName,
+			   'containerType': containerType,
 			   'cardID': cardID
 		   },
 		   success: function(data){ 		   
@@ -44,7 +46,7 @@ function deleteLayer(layer, cardID) {
 	return result;
 };
 
-function createTransportFunction(id, layer) {
+function createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID) {
 	
 	var result = "error";
 	
@@ -53,30 +55,10 @@ function createTransportFunction(id, layer) {
 		   async: false,
 		   url: "createTransportFunction.htm",
 		   data: {
-			   'id': id,
-			   'layer': layer
-		   },
-		   success: function(data){ 		   
-			   result = data;
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-	
-	return result;
-};
-
-function createTransportFunctionOnCard(transportFunctionID, cardID) {
-	
-	var result = "error";
-	
-	$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "createTransportFunctionOnCard.htm",
-		   data: {
-			   'transportFunctionID': transportFunctionID,
+			   'tFunctionID': tFunctionID,
+			   'tFunctionType': tFunctionType,
+			   'containerName': containerName,
+			   'containerType': containerType,
 			   'cardID': cardID
 		   },
 		   success: function(data){ 		   
@@ -90,7 +72,7 @@ function createTransportFunctionOnCard(transportFunctionID, cardID) {
 	return result;
 };
 
-function canCreateTransportFunction(id, layer) {
+function canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID) {
 
 	var result = "false";
 	
@@ -99,8 +81,11 @@ function canCreateTransportFunction(id, layer) {
 		   async: false,
 		   url: "canCreateTransportFunction.htm",
 		   data: {
-			   'id': id,
-			   'layer': layer
+			   'tFunctionID': tFunctionID,
+			   'tFunctionType': tFunctionType,
+			   'containerName': containerName,
+			   'containerType': containerType,
+			   'cardID': cardID
 		   },
 		   success: function(data){ 
 			   result = data;
@@ -123,6 +108,31 @@ function deleteTransportFunction(id) {
 		   url: "deleteTransportFunction.htm",
 		   data: {
 			   'id': id
+		   },
+		   success: function(data){ 		   
+			   result = data;
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+	
+	return result;
+};
+
+function changeContainer(tFunctionID, containerName, containerType, cardID) {
+	
+	var result = "error";
+	
+	$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "changeLayer.htm",
+		   data: {
+			   'tFunctionID': tFunctionID,
+			   'containerName': containerName,
+			   'containerType': containerType,
+			   'cardID': cardID
 		   },
 		   success: function(data){ 		   
 			   result = data;
