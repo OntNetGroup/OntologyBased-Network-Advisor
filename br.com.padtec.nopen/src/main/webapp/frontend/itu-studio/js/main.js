@@ -47,22 +47,6 @@ var Rappid = Backbone.Router.extend({
             }
         }, this);
         
-        // Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
-        this.graph.on('change:position', function(cell) {
-        	
-        	var cellSubType = cell.get('subtype');        	
-            if (cellSubType !== 'in' && cellSubType !== 'out') return;
-            
-            if(cellSubType === 'in') {
-            	cell.transition('position/y', 15, {});
-            	this.barIn.embed(cell);
-            } else {
-            	cell.transition('position/y', 955, {});
-            	this.barOut.embed(cell);
-            }
-            
-        }, this);
-        
 		// some types of the elements need resizing after they are dropped
 		this.graph.on('add', function(cell, collection, opt) {
 			if (!opt.stencil) return;
@@ -161,10 +145,7 @@ var Rappid = Backbone.Router.extend({
         	validateEmbedding: function(childView, parentView) {
         		console.log('validate embedding');
         		
-        		// se camada tenta ser colocado sobre algum elemento
-        		if(childView.model instanceof Layer) return false;
-        		
-        		
+        		// se alguma interface tenta ser colocada sobre algum elemento
         		if(parentView.model === this.barIn) {
         			if(childView.model.get('subtype') !== 'in') return false;
         		}
@@ -172,23 +153,40 @@ var Rappid = Backbone.Router.extend({
         			if(childView.model.get('subtype') !== 'out') return false;
         		}
         		
-        		if(childView.model instanceof joint.shapes.basic.Path) {
-        			if(parentView.model instanceof Layer) {
-        				var tFunctionID = childView.model.id;
-        				var tFunctionType = childView.model.get('subtype');
-        				var containerName = parentView.model.get('subtype');
-        				var containerType = 'layer';
-        				var cardID = 666; // TODO: get cardID
-        				console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ ' on layer ' +containerName+ ' inside card ' +cardID);
-        				
-        				return canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
-        			}
-        			
-        			return false;
-        		}
+//        		if(childView.model instanceof joint.shapes.basic.Path) {
+//        			if(parentView.model instanceof Layer) {
+//        				var tFunctionID = childView.model.id;
+//        				var tFunctionType = childView.model.get('subtype');
+//        				var containerName = parentView.model.get('subtype');
+//        				var containerType = 'layer';
+//        				var cardID = 666; // TODO: get cardID
+//        				console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ ' on layer ' +containerName+ ' inside card ' +cardID);
+//        				
+//        				return canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
+//        			}
+//        			
+//        			return false;
+//        		}
         	}
         });
 
+        // Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
+        this.paper.on('cell:pointerup', function(cellView, evt) {
+        	var cell = cellView.model;
+        	var cellSubType = cell.get('subtype');
+        	
+            if (cellSubType === 'in' || cellSubType === 'out') {
+	            
+	            if(cellSubType === 'in') {
+	            	cell.transition('position/y', 15, {});
+	            	this.barIn.embed(cell);
+	            } else {
+	            	cell.transition('position/y', 955, {});
+	            	this.barOut.embed(cell);
+	            }
+            }
+        }, this);
+        
         this.paperScroller = new joint.ui.PaperScroller({
             autoResizePaper: true,
             padding: 50,
@@ -537,41 +535,41 @@ var Rappid = Backbone.Router.extend({
 
         this.clipboard = new joint.ui.Clipboard;
         
-        KeyboardJS.on('ctrl + c', _.bind(function() {
-            // Copy all selected elements and their associated links.
-            this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
-        }, this));
-        
-        KeyboardJS.on('ctrl + v', _.bind(function() {
-
-            this.selectionView.cancelSelection();
-
-            this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
-
-            // Make sure pasted elements get selected immediately. This makes the UX better as
-            // the user can immediately manipulate the pasted elements.
-            this.clipboard.each(function(cell) {
-
-                if (cell.get('type') === 'link') return;
-
-                // Push to the selection not to the model from the clipboard but put the model into the graph.
-                // Note that they are different models. There is no views associated with the models
-                // in clipboard.
-                this.selection.add(this.graph.getCell(cell.id));
-		this.selectionView.createSelectionBox(cell.findView(this.paper));
-
-            }, this);
-
-        }, this));
-
-        KeyboardJS.on('ctrl + x', _.bind(function() {
-
-            var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
-            this.commandManager.initBatchCommand();
-            _.invoke(originalCells, 'remove');
-            this.commandManager.storeBatchCommand();
-            this.selectionView.cancelSelection();
-        }, this));
+//        KeyboardJS.on('ctrl + c', _.bind(function() {
+//            // Copy all selected elements and their associated links.
+//            this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
+//        }, this));
+//        
+//        KeyboardJS.on('ctrl + v', _.bind(function() {
+//
+//            this.selectionView.cancelSelection();
+//
+//            this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
+//
+//            // Make sure pasted elements get selected immediately. This makes the UX better as
+//            // the user can immediately manipulate the pasted elements.
+//            this.clipboard.each(function(cell) {
+//
+//                if (cell.get('type') === 'link') return;
+//
+//                // Push to the selection not to the model from the clipboard but put the model into the graph.
+//                // Note that they are different models. There is no views associated with the models
+//                // in clipboard.
+//                this.selection.add(this.graph.getCell(cell.id));
+//		this.selectionView.createSelectionBox(cell.findView(this.paper));
+//
+//            }, this);
+//
+//        }, this));
+//
+//        KeyboardJS.on('ctrl + x', _.bind(function() {
+//
+//            var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
+//            this.commandManager.initBatchCommand();
+//            _.invoke(originalCells, 'remove');
+//            this.commandManager.storeBatchCommand();
+//            this.selectionView.cancelSelection();
+//        }, this));
     },
 
     initializeCommandManager: function() {
@@ -607,9 +605,7 @@ var Rappid = Backbone.Router.extend({
         });
         
         // valida a remoção de elementos do paper
-        // impedir que as bordas superior e inferior sejam apagadas quando o paper for limpado
         this.validator.validate('remove', _.bind(function(err, command, next) {
-        	
 
         	console.log(command);
         	var cellType = command.data.type;
@@ -645,6 +641,9 @@ var Rappid = Backbone.Router.extend({
 						return next(result);
 					}
     			}
+    			
+    			// o target era uma interface que ja foi removida
+    			return next(err);
         	}
         	
         	// se um transport function for removido, consultar ontologia
@@ -675,6 +674,14 @@ var Rappid = Backbone.Router.extend({
 				}
         	}
 
+        	// então é uma interface
+			var result = deletePort(cellID);			
+			if(result === "success") {
+				return next(err);
+			} else {
+				return next(result);
+			}
+			
         }, this));
         
         
@@ -740,17 +747,22 @@ var Rappid = Backbone.Router.extend({
 				}
 			
 			} else if(cellType === 'bpmn.Pool') { // elemento é uma camada
-    			// TODO: consultar ontologia para inserção de camada no card
-				var containerName = cellSubType;
-				var containerType = 'layer';
-				var cardID = this.cardID; // TODO: get cardID 
-				var result = insertContainer(containerName, containerType, cardID)
 				
-				if(result === "success") {
-					// TODO: remover camada do stencil
-					return next(err);
+				if(parent) { // existe elemento abaixo
+					return next('Another element in the way!');
 				} else {
-					return next(result);
+					// consultar ontologia para inserção de camada no card
+					var containerName = cellSubType;
+					var containerType = 'layer';
+					var cardID = this.cardID; // TODO: get cardID 
+					var result = insertContainer(containerName, containerType, cardID)
+					
+					if(result === "success") {
+						// TODO: remover camada do stencil
+						return next(err);
+					} else {
+						return next(result);
+					}
 				}
 			
 			} else if(cellType === 'basic.Path') { // elemento é um transport function
@@ -764,7 +776,7 @@ var Rappid = Backbone.Router.extend({
 						var containerName = parent.get('subtype');
 						var containerType = 'layer';
 						var cardID = this.cardID; // TODO: get cardID
-						console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ 'on layer ' +containerName+ ' inside card ' +cardID);
+						console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ ' on layer ' +containerName+ ' inside card ' +cardID);
 						
 						var result = createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
 						
@@ -775,9 +787,11 @@ var Rappid = Backbone.Router.extend({
 							return next(result);
 						}
 											
+					} else { // elemento abaixo não é um container
+						return next('Please, add the transport function on the paper or a layer.');
 					}
 				} else { // não existe elemento abaixo
-					// TODO: consultar ontologia para inserção de transport function diretamente no card
+					// consultar ontologia para inserção de transport function diretamente no card
 					var tFunctionID = cell.id;
 					var tFunctionType = cell.get('subtype');
 					var containerName = '';
@@ -797,8 +811,9 @@ var Rappid = Backbone.Router.extend({
         }, this));
         
         // validar inserção de links no grafo
-        this.validator.validate('change:target add', this.isLink, _.bind(function(err, command, next) {
+        this.validator.validate('change:target change:source add', this.isLink, _.bind(function(err, command, next) {
         	
+        	// TODO: validar a troca de target e de source (quando o usuário arrasta uma das pontas da 'seta')
         	var link = this.graph.getCell(command.data.id).toJSON();
         	var sourceTFunctionID = link.source.id;
             var targetTFunctionID = link.target.id;
@@ -814,6 +829,120 @@ var Rappid = Backbone.Router.extend({
             } else {
             	return next('Please, connect to a valid transport function');
             }
+        }, this));
+        
+        // validate embedding
+        this.validator.validate('change:parent', _.bind(function(err, command, next) {
+
+        	console.log(command);
+        	var cell = this.graph.getCell(command.data.id);
+        	var cellType = cell.get('type');
+        	var cellSubType = cell.get('subtype');
+        	        	
+        	var position = cell.get('position');
+			var size = cell.get('size');
+			var area = g.rect(position.x, position.y, size.width, size.height);
+			
+			var parent;
+			// get all elements below the added one
+			_.each(this.graph.getElements(), function(e) {
+			
+				var position = e.get('position');
+				var size = e.get('size');
+				if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+					parent = e;
+				}
+			});
+			
+			if(cellSubType === 'out' || cellSubType === 'in') { // elemento é uma porta
+				
+//				if(parent) { // existe algum elemento abaixo
+//					var parentType = parent.get('type');
+//					
+//					if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
+//
+//						var portID = cell.id;
+//						var transportFunctionID = parent.id;
+//						console.log('try to create port ' +portID+ ' of TF ' +transportFunctionID);
+//						var result = createPort(portID, transportFunctionID);
+//						
+//						if(result === "success") {
+//						
+//							var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: cell.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
+//			    			this.graph.addCell(newLink);
+//			    			
+//			    			// Move the port to the superior (in port) or inferior (out port) bar
+//			    			if(cellType === 'basic.Circle') {
+//			    				cell.transition('position/y', 15, {});
+//			    				this.barIn.embed(cell);
+//			    			}
+//			    			else {
+//			    				cell.transition('position/y', 955, {});
+//			    				this.barOut.embed(cell);
+//			    			}
+//			    			
+//							return next(err);
+//						} else {
+//							return next(result);
+//						}
+//					} else { // elemento abaixo é uma camada 
+//						return next('Please, add the port over a transport function.');
+//					}
+//					
+//				} else { // nenhum elemento abaixo
+//					return next('Please, add the port over a transport function.');
+//				}
+			
+			} else if(cellType === 'bpmn.Pool') { // elemento é uma camada
+				
+				if(parent) { // existe elemento abaixo
+					return next('Another element in the way!');
+				}
+			
+			} else if(cellType === 'basic.Path') { // elemento é um transport function
+				
+				if(parent) { // existe algum elemento abaixo
+					var parentType = parent.get('type');
+					
+					if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
+						// consultar ontologia para troca de camada do transport function
+						var tFunctionID = cell.id;
+						var containerName = parent.get('subtype');
+						var containerType = 'layer';
+						var cardID = this.cardID; // TODO: get cardID
+						console.log('change layer of ' +tFunctionID+ ' to layer ' +containerName+ ' inside card ' +cardID);
+						
+						var result = changeContainer(tFunctionID, containerName, containerType, cardID)
+						
+						if(result === "success") {						
+							parent.embed(cell);
+							return next(err);
+						} else {
+							return next(result);
+						}
+											
+					} else { // elemento abaixo não é um container
+						return next('Please, move the transport function to the paper or a layer.');
+					}
+				} else { // não existe elemento abaixo
+					// consultar ontologia para remoção de camada do transport function
+					var tFunctionID = cell.id;
+					var containerName = '';
+					var containerType = '';
+					var cardID = this.cardID; // TODO: get cardID
+					console.log('remove layer of ' +tFunctionID+ ' inside card ' +cardID);
+					
+					var result = changeContainer(tFunctionID, containerName, containerType, cardID)
+					
+					if(result === "success") {
+						return next(err);
+					} else {
+						return next(result);
+					}
+				}
+				
+			}
+			
         }, this));
     },
 
@@ -1035,28 +1164,6 @@ var Rappid = Backbone.Router.extend({
     },
     
     /* ------ AUXILIAR FUNCTIONS ------- */
-    // decide whether the elements should be embedded or connected
-    embedOrConnect: function(parent, child) {
-    	
-    	var parentType = parent.get('type');
-    	var childType = child.get('type');
-    	
-    	if(parentType === 'bpmn.Pool' && childType === 'basic.Path') { // parent is a layer and child is an ITU element
-    		console.log(child);
-    		parent.embed(child);
-    	} else {
-    		if(parentType === 'basic.Path' && (childType === 'basic.Rect' || childType === 'basic.Circle')) { // parent is a transport function and child is a port
-
-    			var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: child.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
-    			this.graph.addCell(newLink);
-    			
-    			// Move the port a bit up (in port) or down (out port)
-    			if(childType === 'basic.Circle') child.translate(0, -60);
-    			else child.translate(0, 100);
-    		}
-    	}
-    },
-    
     // reorganiza as portas contidas na barra
     manageEmbeddedPorts: function(port) {
     	// para cada porta contida na barra

@@ -127,7 +127,7 @@ function changeContainer(tFunctionID, containerName, containerType, cardID) {
 	$.ajax({
 		   type: "POST",
 		   async: false,
-		   url: "changeLayer.htm",
+		   url: "changeContainer.htm",
 		   data: {
 			   'tFunctionID': tFunctionID,
 			   'containerName': containerName,
