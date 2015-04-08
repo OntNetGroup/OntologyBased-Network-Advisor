@@ -1,20 +1,36 @@
 package br.com.padtec.nopen.topology.service;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.codehaus.jackson.map.ObjectMapper;
 
+import br.com.padtec.nopen.topology.model.NetworkTopology;
 import br.com.padtec.nopen.topology.service.util.Util;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class TopologyImporter {
 
+	private static NetworkTopology jaxbXMLToObject(String xml) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(NetworkTopology.class);
+            Unmarshaller un = context.createUnmarshaller();
+            
+            StringReader xmlReader = new StringReader(xml);
+            NetworkTopology nt = (NetworkTopology) un.unmarshal(xmlReader);
+            return nt;
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+	
+	
 	/**
 	 * 
 	 * @param request
@@ -35,195 +51,30 @@ public class TopologyImporter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+		
+		System.out.println(xml);
+		
+		NetworkTopology nt = new NetworkTopology();
+		nt = jaxbXMLToObject(xml);
+		
+		System.out.println(nt.getTopology().getId());
 
-		Document doc = util.convertStringToDocument(xml);
-
-		JsonObject topology = new JsonObject();
-		JsonArray cells = new JsonArray();	
-		
-		// Get topology tags
-		try{
-			NodeList nodeList = doc.getElementsByTagName("node");
-			NodeList nodeIdList = doc.getElementsByTagName("node-id");
-			NodeList linkIdList = doc.getElementsByTagName("link-id");
-			NodeList linkList = doc.getElementsByTagName("link");
-			NodeList sourceList = doc.getElementsByTagName("source");
-			NodeList destList = doc.getElementsByTagName("destination");
-	
-			// Read nodes
-			for (int i = 0; i < nodeList.getLength(); i++){
-				
-				Node node = nodeList.item(i);
-				String nodeIdEName = "";
-				
-				if(nodeIdList.item(i) != null){
-					Node nodeIdItem = nodeIdList.item(i);
-					nodeIdEName = nodeIdItem.getTextContent();
-				}
-				else{
-					nodeIdEName = node.getAttributes().getNamedItem("id").getTextContent();
-				}
-				
-				JsonObject jsonNode = createNode(nodeIdEName, nodeIdEName);
-				cells.add(jsonNode);
-			}
-			
-			// Read links
-			for (int i = 0; i < linkList.getLength(); i++){
-				
-				Node link = linkList.item(i);
-				Node sourceNode = sourceList.item(i);
-				Node destNode = destList.item(i);
-				String linkId = "";
-				
-				if(linkIdList.item(i) != null){
-					Node linkIdItem = linkIdList.item(i);
-					linkId = linkIdItem.getTextContent();
-				}
-				else{
-					linkId = link.getAttributes().getNamedItem("id").getTextContent();
-				}
-				
-				String source = sourceNode.getTextContent();
-				String target = destNode.getTextContent();
-				
-				JsonObject jsonLink = createLink(linkId, source, target);
-				cells.add(jsonLink);
-			}
-		
-		}catch(Exception e){}
-		
-		topology.add("cells", cells);
-	
-		return topology.toString();
-		
-	}
-	
-	/**
-	 * 
-	 * @param nodeName
-	 * @param nodeId
-	 * @return
-	 * Method to create a Node element
-	 */
-	public JsonObject createNode(String nodeName, String nodeId){
-		
-		// Create node
-		JsonObject node = new JsonObject();
-		node.addProperty("type", "basic.Circle");
-
-		// Add node ID
-		node.addProperty("id", nodeId);
-		
-		// Add node attributes
-		JsonObject attrs = createNodeAttributes(nodeName);
-		node.add("attrs", attrs);
-		
-		return node;
-		
-	}
-	
-	public JsonObject createNodeAttributes(String nodeName){
-		
-		JsonObject attrs = new JsonObject();
-		
-		JsonObject circle = new JsonObject();
-		JsonObject text = new JsonObject();
-		
-		// Set default properties
-		circle.addProperty("fill", "#00c6ff");	
-		text.addProperty("font-size", 8);
-		
-		// Add none name
-		text.addProperty("text", nodeName);
-		
-		// Add json objects in attrs
-		attrs.add("circle", circle);
-		attrs.add("text", text);
-		
-		return attrs;
-	}
-	
-	/**
-	 * 
-	 * @param linkId
-	 * @param source
-	 * @param target
-	 * @return
-	 * Method do create a Link element
-	 */
-	public JsonObject createLink(String linkId, String source, String target){
-		
-		// Create link
-		JsonObject link = new JsonObject();
-		link.addProperty("type", "link");
-		
-		// Add source and target nodes
-		JsonObject nodeSource = new JsonObject();
-		JsonObject nodeTarget = new JsonObject();
-		
-		nodeSource.addProperty("id", source);
-		nodeTarget.addProperty("id", target);
-		
-		link.add("source", nodeSource);
-		link.add("target", nodeTarget);
-		
-		// Add link ID
-		link.addProperty("id", linkId);
-		
-		// Add link attributes
-		JsonObject attrs = createLinkAttributes();
-		link.add("attrs", attrs);
-		
-		return link;
-		
-	}
-	
-	public JsonObject createLinkAttributes(){
-		
-		JsonObject attrs = new JsonObject();
-		
-		//JsonObject markerSource = new JsonObject();
-		JsonObject markerTarget = new JsonObject();
-		
-		//markerSource.addProperty("d", "M 10 0 L 0 5 L 10 10");
-		markerTarget.addProperty("d", "M 10 0 L 0 5 L 10 10");
-		
-		//attrs.add(".marker-source", markerSource);
-		attrs.add(".marker-target", markerTarget);
-		
-		return attrs;
-	}
-	
-	
-	public String getTopologyId(HttpServletRequest request){
-		
-		// Read XML
-
-		Util util = Util.getInstance();
-		
-		String xml = "";
+		ObjectMapper mapper = new ObjectMapper();
+		 
 		try {
-			xml = util.readData(request);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+	 
+			StringWriter json = new StringWriter();
+			mapper.writeValue(json, nt);
+			
+			return json.toString();
+	 
+		} catch (Exception e) {
+	 
 			e.printStackTrace();
-		}	
-
-		Document doc = util.convertStringToDocument(xml);
-		String topologyId = "";
+		}
 		
-		try {
-			
-			NodeList topologyList = doc.getElementsByTagName("topology-id");
+		return "";
 		
-			if(topologyList.getLength() > 0){
-				topologyId = topologyList.item(0).getTextContent();
-			}
-			
-		} catch (Exception e) {}
-		
-		return topologyId;
 	}
 	
 }

@@ -8,11 +8,10 @@ function importTopology (graph) {
 	   url: "importTopology.htm",
 	   data: file,
 	   processData: false,
-	   //enctype: 'multipart/form-data',
+	   dataType: 'json',
 	   success: function(data){   
-		   graph.fromJSON(JSON.parse(data));
+		   graph.fromJSON(transformToGraph(data));
 		   $("#btn-layout").click();
-		   getUUID();
 	   },
 	   error : function(e) {
 		   alert("error: " + e.status);
@@ -21,22 +20,68 @@ function importTopology (graph) {
 	
 };
 
-function getUUID (){
+function transformToGraph(data){
 	
-	var file = $('#file').prop('files')[0]; 
+	uuid = data.topology.id;
 	
-	$.ajax({
-	   type: "POST",
-	   url: "getUUID.htm",
-	   data: file,
-	   processData: false,
-	   success: function(data){
-		   if(data != ""){
-			   uuid = data;
-		   }
-	   },
-	   error : function(e) {
-		   alert("error: " + e.status);
-	   }
+	var cellsArray = new Array();
+	
+	$.each(data.topology.nodes.node, function( index, value ) {
+
+		var circle = {
+			fill: '#00c6ff'
+		}
+		
+		var text = {
+			text : value.name,
+			'font-size' : '8px',
+		}
+		
+		var template = {
+			equipment : value.equipment	
+		}
+		
+		var attrs = {
+			circle : circle,
+			text : text,	
+			template : template
+		}
+		
+		var cell = {
+			type : "basic.Circle",
+			id : value.id,
+			attrs : attrs
+		};
+		
+		cellsArray.push(cell);
+		
 	});
+	
+	$.each(data.topology.links.link, function( index, value ) {
+		
+		var source = {
+			id : value.source,
+		}
+		
+		var target = {
+			id : value.target,
+		}
+		
+		var cell = {
+			type : "link",
+			source : source,
+			target : target,
+			id : value.id
+		};
+		
+		cellsArray.push(cell);
+		
+	});
+	
+	var cells = {
+		cells : cellsArray
+	};
+	
+	return cells;
+	
 }

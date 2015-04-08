@@ -26,10 +26,10 @@ public class TopologyController {
 	}
 	
 	@RequestMapping(value = "/exportTopology", method = RequestMethod.POST)
-	protected @ResponseBody String exportTopology(@RequestParam("json") String json, @RequestParam("uuid") String uuid){
+	protected @ResponseBody String exportTopology(@RequestParam("tnodeArray") String tnodeArray,@RequestParam("tlinkArray") String tlinkArray, @RequestParam("uuid") String uuid){
 		
 		TopologyExporter topology = new TopologyExporter();
-		String xml = topology.exportTopology(json, uuid);
+		String xml = topology.exportTopology(tnodeArray, tlinkArray, uuid);
 		
 		return xml;
 	}
@@ -41,13 +41,6 @@ public class TopologyController {
 		String json = topology.importTopology(request);
 		
 		return json;
-	}
-	
-	@RequestMapping(value = "/getUUID", method = RequestMethod.POST)
-	protected @ResponseBody String getUUID(HttpServletRequest request){
-			
-		TopologyImporter topology = new TopologyImporter();
-		return topology.getTopologyId(request);
 	}
 	
 	@RequestMapping(value = "/checkTopologyFile", method = RequestMethod.POST)

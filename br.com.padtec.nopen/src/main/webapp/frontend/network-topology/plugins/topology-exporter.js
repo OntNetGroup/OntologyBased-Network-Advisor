@@ -1,10 +1,15 @@
+
 function exportTopology (graph, uuid) {
+
+	var tnodeArray = getNodes(graph);
+	var tlinkArray = getLinks(graph);
 	
 	$.ajax({
 	   type: "POST",
 	   url: "exportTopology.htm",
 	   data : {
-		   "json": JSON.stringify(graph.toJSON()),
+		   "tnodeArray": JSON.stringify(tnodeArray),
+		   "tlinkArray": JSON.stringify(tlinkArray),
 		   "uuid": uuid
 	   },
 	   success: function(data){   	  
@@ -19,11 +24,15 @@ function exportTopology (graph, uuid) {
 
 function previewTopology (graph, uuid) {
 	
+	var tnodeArray = getNodes(graph);
+	var tlinkArray = getLinks(graph);
+	
 	$.ajax({
 	   type: "POST",
 	   url: "exportTopology.htm",
 	   data : {
-		   "json": JSON.stringify(graph.toJSON()),
+		   "tnodeArray": JSON.stringify(tnodeArray),
+		   "tlinkArray": JSON.stringify(tlinkArray),
 		   "uuid": uuid
 	   },
 	   success: function(data){   
@@ -35,6 +44,46 @@ function previewTopology (graph, uuid) {
 	});
 	
 };
+
+function getNodes(graph) {
+	
+	var tnodeArray = new Array();
+	
+	$.each(graph.getElements(), function( index, value ) {
+		
+		var tnode = {
+				id : value.id,
+				name : value.attr('text/text'),
+				equipment : value.attr('equipment/template')
+		};
+		
+		tnodeArray.push(tnode);
+		
+	});
+	
+	return tnodeArray;
+	
+}
+
+function getLinks(graph){
+	
+	var tlinkArray = new Array();
+	
+	$.each(graph.getLinks(), function( index, value ) {
+		 
+		var tlink = {
+				id : value.id,
+				source : value.get('source').id,
+				target : value.get('target').id
+		};
+		
+		tlinkArray.push(tlink);
+		
+	});
+	
+	return tlinkArray;
+}
+
 
 function openXMLWindow(content) {
 	var win = window.open(
