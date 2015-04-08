@@ -290,7 +290,7 @@ var Rappid = Backbone.Router.extend({
 
 		},this); 
 
-//		this.graph.on('all' , function( a) {
+//		this.graph.on('all' , function(a) {
 //		console.log(a);
 //		},this);
 
@@ -414,16 +414,11 @@ var Rappid = Backbone.Router.extend({
 		this.paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
 			var cellId = cellView.model.id;
 			var equipament = this.graph.getCell(cellId);
-//			console.log(equipament);
-//			console.log(equipament.get('subType'));
-//			console.log('evt ' , evt);
-//             console.log('cellView ' , selection );
-//             console.log('x ', x);
-//             console.log('y ' , y);
-//             console.log('cell ',model);
-
 			if((equipament.get('subType')) === 'card' || (equipament.get('subType')) === 'supervisor') {
+				//will create an ITU view
 				console.log('opening ITU studio');
+				createSvgDocument();
+				
 			}
 		},this);
 
@@ -524,13 +519,13 @@ var Rappid = Backbone.Router.extend({
 	},
 
 
-	openITUstudioView: function() {
-
-		this.paper.on('cell:pointerdblclick', function(evt, cellView, x, y) {
-			console.log('hi there!');
-		},this);
-
-	},
+//	openITUstudioView: function() {
+//
+//		this.paper.on('cell:pointerdblclick', function(evt, cellView, x, y) {
+//			console.log('hi there!');
+//		},this);
+//
+//	},
 
 	initializeSelection: function() {
 
