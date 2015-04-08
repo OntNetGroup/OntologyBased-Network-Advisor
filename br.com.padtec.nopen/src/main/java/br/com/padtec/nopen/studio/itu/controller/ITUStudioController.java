@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jointjs.util.JointUtilManager;
 
 import br.com.padtec.nopen.model.NOpenQueries;
-import br.com.padtec.nopen.model.DtoIElement;
+import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.studio.model.StudioFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
 
@@ -41,20 +41,13 @@ public class ITUStudioController {
 	 * @param cardID: identificador do card que deverá ser composto do container
 	 * @return
 	 */
-//	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
-//	public @ResponseBody String insertContainer(@RequestParam("containerName") String containerName, @RequestParam("containerType") String containerType, @RequestParam("cardID") String cardID) 
-//	{
-//		boolean success = StudioFactory.insertContainer(containerName, containerType, cardID);		
-//		if(success) return "success";
-//		else return "failed";
-//	}
 	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
 	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("container") String card) 
 	{
 //		boolean success = StudioFactory.insertContainer(containerName, containerType, cardID);
 		
-		DtoIElement dtoContainer = (DtoIElement) JointUtilManager.getJavaFromJSON(container, DtoIElement.class);
-		DtoIElement dtoCard = (DtoIElement) JointUtilManager.getJavaFromJSON(card, DtoIElement.class);
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		System.out.println(dtoContainer);
 		
 		

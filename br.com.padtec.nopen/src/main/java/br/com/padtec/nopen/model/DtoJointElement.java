@@ -1,20 +1,13 @@
 package br.com.padtec.nopen.model;
 
-public class DtoIElement {
+public class DtoJointElement {
 
 	private String id = null;
 	private String name = null;
 	private String type = null;
 	
-	public DtoIElement (String numberID, String name, String type)
-	{
-		this.id = numberID;
-		this.name = name;
-		this.type = type;
-	}
-	
 	//Introducing the dummy constructor
-    public DtoIElement() {
+    public DtoJointElement() {
     }
 	
 	public void setId(String numberID) { this.id = numberID;}
