@@ -417,7 +417,9 @@ var Rappid = Backbone.Router.extend({
 			if((equipament.get('subType')) === 'card' || (equipament.get('subType')) === 'supervisor') {
 				//will create an ITU view
 				console.log('opening ITU studio');
-				createSvgDocument();
+				var a = this.graph.toJSON();
+				console.log(a);
+				console.log(JSON.stringify(a));
 				
 			}
 		},this);
