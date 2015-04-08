@@ -2,36 +2,31 @@ package br.com.padtec.nopen.model;
 
 public class DtoIElement {
 
-	private String numberID = new String();
-	private String name = new String();
-	private String type;
+	private String id = null;
+	private String name = null;
+	private String type = null;
 	
-	public String getNumberID() {
-		return numberID;
-	}
-
-	public void setNumberID(String numberID) {
-		this.numberID = numberID;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public DtoIElement (String numberID, String name, String type)
 	{
-		this.numberID = numberID;
+		this.id = numberID;
 		this.name = name;
 		this.type = type;
 	}
 	
-	public String getTypeName() { return type.toString(); }	
-	public String getType() { return type; }
+	//Introducing the dummy constructor
+    public DtoIElement() {
+    }
 	
+	public void setId(String numberID) { this.id = numberID;}
+	public void setName(String name) { this.name = name;}
+	public void setType(String type) { this.type = type; }
+	
+	public String getType() { return type; }
 	public String getName() { return name; }	
-	public String getID() { return numberID; }	
+	public String getId() { return id; }	
+	
+	@Override
+	public String toString() {
+		return "{ID: "+id+";\nname: "+name+";\ntype: "+type+";}";
+	}
 }

@@ -2,12 +2,14 @@ package br.com.padtec.nopen.studio.itu.controller;
 
 import java.io.IOException;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.model.DtoIElement;
 import br.com.padtec.nopen.studio.model.StudioFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
 
@@ -28,10 +30,39 @@ public class ITUStudioController {
 	 * @param cardID: identificador do card que deverá ser composto do container
 	 * @return
 	 */
+//	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
+//	public @ResponseBody String insertContainer(@RequestParam("containerName") String containerName, @RequestParam("containerType") String containerType, @RequestParam("cardID") String cardID) 
+//	{
+//		boolean success = StudioFactory.insertContainer(containerName, containerType, cardID);		
+//		if(success) return "success";
+//		else return "failed";
+//	}
 	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
-	public @ResponseBody String insertContainer(@RequestParam("containerName") String containerName, @RequestParam("containerType") String containerType, @RequestParam("cardID") String cardID) 
+	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("card") String card) 
 	{
-		boolean success = StudioFactory.insertContainer(containerName, containerType, cardID);		
+//		boolean success = StudioFactory.insertContainer(containerName, containerType, cardID);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			
+			System.out.println("container: "+container);
+			System.out.println("card: "+card);
+			
+			// convert user object to json string, and save to a file
+			DtoIElement dtoContainer = mapper.readValue(container, DtoIElement.class);
+			DtoIElement dtoCard = mapper.readValue(card, DtoIElement.class);
+			
+			System.out.println("container: "+dtoContainer);
+			System.out.println("card: "+dtoCard);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		
+		boolean success = true;
 		if(success) return "success";
 		else return "failed";
 	}
