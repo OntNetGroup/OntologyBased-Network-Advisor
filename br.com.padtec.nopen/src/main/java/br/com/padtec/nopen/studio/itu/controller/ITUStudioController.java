@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.model.NOpenQueries;
 import br.com.padtec.nopen.model.DtoIElement;
 import br.com.padtec.nopen.studio.model.StudioFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
@@ -20,6 +21,12 @@ public class ITUStudioController {
 	@RequestMapping("/itu-studio")
 	public String networkTopologyRequest() {
 		return "itu-studio/itu-studio";
+	}
+	
+	@RequestMapping(value = "/allLayers", method = RequestMethod.POST)
+	public @ResponseBody String[][] getAllLayersNames() 
+	{
+		return NOpenQueries.getLayerNames();
 	}
 	
 	/* ----- CRUD for Container ----- */
