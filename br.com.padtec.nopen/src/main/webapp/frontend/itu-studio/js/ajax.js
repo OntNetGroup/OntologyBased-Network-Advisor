@@ -7,8 +7,9 @@ function insertContainer(containerName, containerType, cardID) {
 			"type" : containerType  
 	};
 
-	var dtoCard = {};
-	dtoCard.id = cardID;
+	var dtoCard = {
+			"id": cardID
+	};
 
 	$.ajax({
 		type: "POST",
@@ -34,14 +35,22 @@ function deleteContainer(containerName, containerType, cardID) {
 
 	var result = "error";
 
+	var dtoContainer = {
+			"name" : containerName,
+			"type" : containerType  
+	};
+
+	var dtoCard = {
+			"id": cardID
+	};
+
 	$.ajax({
 		type: "POST",
 		async: false,
 		url: "deleteContainer.htm",
 		data: {
-			'containerName': containerName,
-			'containerType': containerType,
-			'cardID': cardID
+			'container': JSON.stringify(dtoContainer),
+			'card': JSON.stringify(dtoCard)
 		},
 		success: function(data){ 		   
 			result = data;
@@ -58,16 +67,28 @@ function createTransportFunction(tFunctionID, tFunctionType, containerName, cont
 
 	var result = "error";
 
+	var dtoTransportFunction = {
+			"id" : tFunctionID,
+			"type" : tFunctionType
+	}
+	
+	var dtoContainer = {
+			"name" : containerName,
+			"type" : containerType  
+	};
+
+	var dtoCard = {
+			"id": cardID
+	};
+
 	$.ajax({
 		type: "POST",
 		async: false,
 		url: "createTransportFunction.htm",
 		data: {
-			'tFunctionID': tFunctionID,
-			'tFunctionType': tFunctionType,
-			'containerName': containerName,
-			'containerType': containerType,
-			'cardID': cardID
+			'transportFunction': JSON.stringify(dtoTransportFunction), 
+			'container': JSON.stringify(dtoContainer),
+			'card': JSON.stringify(dtoCard)
 		},
 		success: function(data){ 		   
 			result = data;

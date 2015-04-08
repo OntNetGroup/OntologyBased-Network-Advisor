@@ -161,21 +161,6 @@ var Rappid = Backbone.Router.extend({
         			if(childView.model.get('subtype') !== 'out') return false;
         		}
         		
-//        		if(childView.model instanceof joint.shapes.basic.Path) {
-//        			if(parentView.model instanceof Layer) {
-//        				var tFunctionID = childView.model.id;
-//        				var tFunctionType = childView.model.get('subtype');
-//        				var containerName = parentView.model.get('subtype');
-//        				var containerType = 'layer';
-//        				var cardID = 666; // TODO: get cardID
-//        				console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ ' on layer ' +containerName+ ' inside card ' +cardID);
-//        				
-//        				return canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
-//        			}
-//        			
-//        			return false;
-//        		}
-        		
         		return true;
         	}
         });
@@ -545,58 +530,12 @@ var Rappid = Backbone.Router.extend({
 
         this.clipboard = new joint.ui.Clipboard;
         
-//        KeyboardJS.on('ctrl + c', _.bind(function() {
-//            // Copy all selected elements and their associated links.
-//            this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
-//        }, this));
-//        
-//        KeyboardJS.on('ctrl + v', _.bind(function() {
-//
-//            this.selectionView.cancelSelection();
-//
-//            this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
-//
-//            // Make sure pasted elements get selected immediately. This makes the UX better as
-//            // the user can immediately manipulate the pasted elements.
-//            this.clipboard.each(function(cell) {
-//
-//                if (cell.get('type') === 'link') return;
-//
-//                // Push to the selection not to the model from the clipboard but put the model into the graph.
-//                // Note that they are different models. There is no views associated with the models
-//                // in clipboard.
-//                this.selection.add(this.graph.getCell(cell.id));
-//		this.selectionView.createSelectionBox(cell.findView(this.paper));
-//
-//            }, this);
-//
-//        }, this));
-//
-//        KeyboardJS.on('ctrl + x', _.bind(function() {
-//
-//            var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
-//            this.commandManager.initBatchCommand();
-//            _.invoke(originalCells, 'remove');
-//            this.commandManager.storeBatchCommand();
-//            this.selectionView.cancelSelection();
-//        }, this));
     },
 
     initializeCommandManager: function() {
 
         this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
 
-//        KeyboardJS.on('ctrl + z', _.bind(function() {
-//
-//            this.commandManager.undo();
-//            this.selectionView.cancelSelection();
-//        }, this));
-//        
-//        KeyboardJS.on('ctrl + y', _.bind(function() {
-//
-//            this.commandManager.redo();
-//            this.selectionView.cancelSelection();
-//        }, this));
     },
 
     initializeValidator: function() {
