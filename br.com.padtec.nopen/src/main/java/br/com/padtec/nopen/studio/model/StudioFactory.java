@@ -1,55 +1,119 @@
 package br.com.padtec.nopen.studio.model;
 
+<<<<<<< .mine
+import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.nopen.model.ConceptEnum;
+import br.com.padtec.nopen.model.RelationEnum;
+import br.com.padtec.nopen.studio.service.StudioComponents;
+=======
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
+>>>>>>> .r557
+
 
 public class StudioFactory {
 
-	public static void createTransportFunction(String id, String layer)
+	public static void createTTF(String ttfName)
 	{
-//		FactoryUtil.createInstanceIndividual(
-//			OKCoUploader.getBaseModel(), 
-//			OKCoUploader.getNamespace()+id, 
-//			OKCoUploader.getNamespace()+ConceptEnum.TRANSPORT_FUNCTION.toString()
-//		);
-//		FactoryUtil.createInstanceRelation(
-//			OKCoUploader.getBaseModel(), 
-//			OKCoUploader.getNamespace()+ConceptEnum.TRANSPORT_FUNCTION.toString(), 
-//			OKCoUploader.getNamespace()+RelationEnum.APPLIES.toString(), 
-//			OKCoUploader.getNamespace()+ConceptEnum.LAYER.toString()
-//		);
-		System.out.println("Transport Function \""+id+"\" created at layer \""+layer+"\"");
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+ttfName, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.TTF.toString()
+		);
+	}
+	
+	public static void createAF(String afName)
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+afName, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.TTF.toString()
+		);
+	}
+	
+	public static boolean createTransportFunction(String tFunctionID,String tFunctionType,String containerName,String containerType, String cardID)
+	{
+		if(tFunctionType.equals("ttf"))
+		{
+			if(containerType!=null && containerType.equals("layer"))
+			{		
+				//create ttf
+				createTTF(tFunctionID);
+
+				//create link tFunctionID -> containerName
+				FactoryUtil.createInstanceRelation(
+					StudioComponents.studioRepository.getBaseModel(), 
+					StudioComponents.studioRepository.getNamespace()+tFunctionID, 
+					StudioComponents.studioRepository.getNamespace()+RelationEnum.APPLIES.toString(), 
+					StudioComponents.studioRepository.getNamespace()+containerName
+				);
+			}
+			
+			System.out.println("Card: "+cardID+" - Transport Function \""+tFunctionID+"\":"+tFunctionType+" created at Container \""+containerName+"\":"+containerType);
+		}
+		if(tFunctionType.equals("af"))
+		{
+			createAF(tFunctionID);				
+			System.out.println("Card: "+cardID+" - Transport Function \""+tFunctionID+"\":"+tFunctionType+" created at Container \""+containerName+"\":"+containerType);
+		}
+		
+		return true;
+	}
+		
+	public static boolean createPort(String portID, String transportFunctionID) 
+	{
+		return true;
 	}
 
-	public static void deleteTransportFunction(String id) 
+	public static boolean deleteLink(String id) 
+	{	
+		return true;
+	}
+
+	public static boolean insertContainer(String containerName, String containerType, String cardID) 
 	{		
-		System.out.println("Transport Function \""+id+"\" deleted");
+		return true;
 	}
 
-	public static void createPort(String portID, String transportFunctionID) 
-	{
-		System.out.println("Port \""+portID+"\" created at transport function \""+transportFunctionID+"\"");
+	public static boolean deleteContainer(String containerName, String containerType, String cardID) 
+	{	
+		return true;
 	}
 
-	public static void deletePort(String id) 
+	public static boolean canCreateTransportFunction(String tFunctionID, String tFunctionType, String containerName, String containerType, String cardID) 
 	{
-		System.out.println("Port \""+id+"\" deleted");
-	}
-
-	public static void createLink(String linkID, String sourcePortID, String targetPortID) 
-	{
-		System.out.println("Link \""+linkID+"\" created between \""+sourcePortID+"\" and \""+targetPortID+"\"");
-	}
-
-	public static void deleteLink(String id) 
-	{
-		System.out.println("Link \""+id+"\" deleted");
+		return true;
 	}
 	
+	public static boolean deleteTransportFunction(String id) 
+	{	
+		return true;
+	}
+
+	public static boolean changeContainer(String tFunctionID, String containerName, String containerType, String cardID) 
+	{	
+		return true;
+	}
 	
-	public static void createEquipmentHolder(String id_EquipmentHolder, OKCoUploader repository){
+	public static boolean deletePort(String id) 
+	{				
+		return true;
+	}
+
+	public static boolean createLink(String sourceTFunctionID, String targetTFunctionID) 
+	{	
+		return false;
+	}
+
+	public static boolean canCreateLink(String sourceTFunctionID, String targetTFunctionID) 
+	{	
+		return false;
+	}
+	
+	public static void createEquipmentHolder(String id_EquipmentHolder, OKCoUploader repository)
+	{
 		String individualURI = repository.getNamespace()+id_EquipmentHolder;
 		if(!QueryUtil.individualExists(repository.getBaseModel(), individualURI)){
 			String classURI = repository.getNamespace()+ConceptEnum.EQUIPMENT_HOLDER.toString();
