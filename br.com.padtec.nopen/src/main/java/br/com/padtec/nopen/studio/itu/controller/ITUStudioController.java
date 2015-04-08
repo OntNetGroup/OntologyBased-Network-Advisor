@@ -2,12 +2,16 @@ package br.com.padtec.nopen.studio.itu.controller;
 
 import java.io.IOException;
 
+import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.jointjs.util.JointUtilManager;
 
 import br.com.padtec.nopen.model.NOpenQueries;
 import br.com.padtec.nopen.model.DtoIElement;
@@ -45,27 +49,13 @@ public class ITUStudioController {
 //		else return "failed";
 //	}
 	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
-	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("card") String card) 
+	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("container") String card) 
 	{
 //		boolean success = StudioFactory.insertContainer(containerName, containerType, cardID);
 		
-		ObjectMapper mapper = new ObjectMapper();
-		
-		try {
-			
-			System.out.println("container: "+container);
-			System.out.println("card: "+card);
-			
-			// convert user object to json string, and save to a file
-			DtoIElement dtoContainer = mapper.readValue(container, DtoIElement.class);
-			DtoIElement dtoCard = mapper.readValue(card, DtoIElement.class);
-			
-			System.out.println("container: "+dtoContainer);
-			System.out.println("card: "+dtoCard);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		DtoIElement dtoContainer = (DtoIElement) JointUtilManager.getJavaFromJSON(container, DtoIElement.class);
+		DtoIElement dtoCard = (DtoIElement) JointUtilManager.getJavaFromJSON(card, DtoIElement.class);
+		System.out.println(dtoContainer);
 		
 		
 		

@@ -2,10 +2,6 @@ function insertContainer(containerName, containerType, cardID) {
 
 	var result = "error";
 
-//	var dtoContainer = {};	
-//	dtoContainer.name = containerName;
-//	dtoContainer.type = containerType;
-
 	var dtoContainer = {
 			"name" : containerName,
 			"type" : containerType  
@@ -32,6 +28,7 @@ function insertContainer(containerName, containerType, cardID) {
 
 	return result;
 };
+
 
 function deleteContainer(containerName, containerType, cardID) {
 
