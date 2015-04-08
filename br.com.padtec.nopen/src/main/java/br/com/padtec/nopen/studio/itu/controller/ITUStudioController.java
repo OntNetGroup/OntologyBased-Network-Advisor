@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.model.DtoJointElement;
+import br.com.padtec.nopen.model.NOpenQueries;
 import br.com.padtec.nopen.studio.model.StudioFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
+
+import com.jointjs.util.JointUtilManager;
 
 @Controller
 public class ITUStudioController {
@@ -20,51 +24,73 @@ public class ITUStudioController {
 		return "itu-studio/itu-studio";
 	}
 	
+	@RequestMapping(value = "/allLayers", method = RequestMethod.POST)
+	public @ResponseBody String[][] getAllLayersNames() 
+	{
+		return NOpenQueries.getLayerNames();
+	}
+	
 	/* ----- CRUD for Container ----- */
 	
-	/** Insere um container no card cardID
-	 * @param containerName: nome do container
-	 * @param containerType: tipo do container
-	 * @param cardID: identificador do card que deverá ser composto do container
+	/** Insere um container no card
+	 * @param container
+	 * @param card
 	 * @return
 	 */
 	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
-	public @ResponseBody String insertContainer(@RequestParam("containerName") String containerName, @RequestParam("containerType") String containerType, @RequestParam("cardID") String cardID) 
+	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("container") String card) 
 	{
-		boolean success = StudioFactory.insertContainer(containerName, containerType, cardID);		
+		
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		
+
+//		TODO: boolean success = StudioFactory.insertContainer(containerName, containerType, cardID);
+		
+		boolean success = true; //TODO: remover
 		if(success) return "success";
 		else return "failed";
 	}
 	
-	/** Remove um container do card cardID
-	 * @param containerName: nome do container
-	 * @param containerType: tipo do container
-	 * @param cardID: identificador do card que contém a camada
+	/** Remove um container do card
+	 * @param container
+	 * @param card
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/deleteContainer", method = RequestMethod.POST)
-	public @ResponseBody String deleteContainer(@RequestParam("containerName") String containerName, @RequestParam("containerType") String containerType, @RequestParam("cardID") String cardID) 
+	public @ResponseBody String deleteContainer(@RequestParam("container") String container, @RequestParam("card") String card) 
 	{
-		boolean success = StudioFactory.deleteContainer(containerName, containerType, cardID);		
+		
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		
+		
+//		TODO: boolean success = StudioFactory.deleteContainer(containerName, containerType, cardID);
+		
+		boolean success = true; //TODO: remover
 		if(success) return "success";
 		else return "failed";
 	}
 	
 	/* ----- CRUD for Transport Function ----- */
 	
-	/** Cria um tranport function transportFunctionID na camada layer
-	 * @param tFunctionID: identificador do transport function a ser criado
-	 * @param tFunctionType: tipo do transport function a ser criado (e.g., TTF, AF etc.)
-	 * @param containerName: nome do container sobre a qual o transport function deve ser criado (can be null)
-	 * @param containerType: tipo do container sobre a qual o transport function deve ser criado (can be null)
-	 * @param cardID: identificador do card 
+	/** Cria um tranport function sobre uma camada ou diretamente sobre o card
+	 * @param transportFunction
+	 * @param container
+	 * @param card 
 	 * @return
 	 */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String createTransportFunction(@RequestParam("tFunctionID") String tFunctionID, @RequestParam("tFunctionType") String tFunctionType,
-	@RequestParam("containerName") String containerName, @RequestParam("containerType") String containerType, @RequestParam("cardID") String cardID)
-	{		
-		boolean success = StudioFactory.createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);		
+	public @ResponseBody String createTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container,
+	@RequestParam("card") String card)
+	{
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);		
+		
+//		TODO: boolean success = StudioFactory.createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
+		
+		boolean success = true; //TODO: remover
 		if(success) return "success";
 		else return "failed";
 	}
