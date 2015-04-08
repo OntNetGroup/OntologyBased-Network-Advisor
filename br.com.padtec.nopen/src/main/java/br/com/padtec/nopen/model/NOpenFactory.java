@@ -72,4 +72,6 @@ public class NOpenFactory {
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq2URI,equipmentURI);
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq3URI,equipmentURI);
 	}
+	
+	
 }

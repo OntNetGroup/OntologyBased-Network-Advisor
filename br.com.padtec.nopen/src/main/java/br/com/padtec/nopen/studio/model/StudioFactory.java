@@ -1,5 +1,9 @@
 package br.com.padtec.nopen.studio.model;
 
+import br.com.padtec.nopen.model.ConceptEnum;
+import br.com.padtec.okco.core.application.OKCoUploader;
+import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 
 public class StudioFactory {
 
@@ -42,5 +46,14 @@ public class StudioFactory {
 	public static void deleteLink(String id) 
 	{
 		System.out.println("Link \""+id+"\" deleted");
+	}
+	
+	
+	public static void createEquipmentHolder(String id_EquipmentHolder, OKCoUploader repository){
+		String individualURI = repository.getNamespace()+id_EquipmentHolder;
+		if(!QueryUtil.individualExists(repository.getBaseModel(), individualURI)){
+			String classURI = repository.getNamespace()+ConceptEnum.EQUIPMENT_HOLDER.toString();
+			FactoryUtil.createInstanceIndividual(repository.getBaseModel(), individualURI, classURI);
+		}
 	}
 }

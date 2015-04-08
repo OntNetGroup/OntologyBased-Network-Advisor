@@ -6,7 +6,8 @@ public enum ConceptEnum {
 	LAYER("Layer"),
 	TECHNOLOGY("Technology"),
 	EQUIPMENT("Equipment"),
-	SERVICE("Service");
+	SERVICE("Service"),
+	EQUIPMENT_HOLDER("Equipment Holder");
 	
 	private String concept;
 	
