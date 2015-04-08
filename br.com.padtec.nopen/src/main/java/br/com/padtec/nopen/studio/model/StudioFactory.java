@@ -1,16 +1,11 @@
 package br.com.padtec.nopen.studio.model;
 
-<<<<<<< .mine
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.studio.service.StudioComponents;
-=======
-import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.okco.core.application.OKCoUploader;
-import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
->>>>>>> .r557
 
 
 public class StudioFactory {

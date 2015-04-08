@@ -8,8 +8,7 @@ public enum ConceptEnum {
 	EQUIPMENT("Equipment"),
 	SERVICE("Service"),
 	TTF("Trail_Termination_Function"),
-	AF("Adaptation_Function");
-	SERVICE("Service"),
+	AF("Adaptation_Function"),
 	EQUIPMENT_HOLDER("Equipment Holder");
 	
 	private String concept;
