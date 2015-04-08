@@ -1,5 +1,13 @@
 var Rappid = Backbone.Router.extend({
 	
+	/* 
+	 * Variável indicando se a ação sendo executada é a de adição de um transport function.
+	 * Ao adicionar um TF sobre um container, é necessário chamar a função 'embed' do container.
+	 * Com isso, a aplicação chamaria a função de inserir um TF numa camada e depois a de mudar a camada do TF.
+	 * Porém, com esta variável de controle isso não ocorre. 
+	*/
+	isAddingTransportFunction: false,
+	
     routes: {
         '*path': 'home'
     },
@@ -167,6 +175,8 @@ var Rappid = Backbone.Router.extend({
 //        			
 //        			return false;
 //        		}
+        		
+        		return true;
         	}
         });
 
@@ -780,7 +790,8 @@ var Rappid = Backbone.Router.extend({
 						
 						var result = createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
 						
-						if(result === "success") {						
+						if(result === "success") {	
+							this.isAddingTransportFunction = true;
 							parent.embed(cell);
 							return next(err);
 						} else {
@@ -834,6 +845,12 @@ var Rappid = Backbone.Router.extend({
         // validate embedding
         this.validator.validate('change:parent', _.bind(function(err, command, next) {
 
+        	console.log(this.isAddingTransportFunction)
+        	if(this.isAddingTransportFunction) {
+        		this.isAddingTransportFunction = false;
+        		return next(err);
+        	}
+        	
         	console.log(command);
         	var cell = this.graph.getCell(command.data.id);
         	var cellType = cell.get('type');
