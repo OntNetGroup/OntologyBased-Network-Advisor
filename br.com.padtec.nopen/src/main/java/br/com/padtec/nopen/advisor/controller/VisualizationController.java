@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import br.com.padtec.advisor.core.application.AdvisorComponents;
 import br.com.padtec.advisor.core.application.HTMLFigureMapper;
 import br.com.padtec.advisor.core.queries.AdvisorQueryUtil;
-import br.com.padtec.advisor.core.util.PerformanceUtil;
+import br.com.padtec.common.util.PerformanceUtil;
 import br.com.padtec.okco.core.application.OKCoComponents;
 
 @Controller

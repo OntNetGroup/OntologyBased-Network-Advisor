@@ -10,10 +10,10 @@ import br.com.padtec.advisor.core.dto.DtoResultAjax;
 import br.com.padtec.advisor.core.queries.AdvisorDtoQueryUtil;
 import br.com.padtec.advisor.core.types.ConceptEnum;
 import br.com.padtec.advisor.core.types.RelationEnum;
-import br.com.padtec.advisor.core.util.PerformanceUtil;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.queries.DtoQueryUtil;
+import br.com.padtec.common.util.PerformanceUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.transformation.sindel.processor.BindsProcessor;
 

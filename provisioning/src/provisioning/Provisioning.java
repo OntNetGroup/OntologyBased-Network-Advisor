@@ -3,20 +3,22 @@ package provisioning;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import br.com.padtec.advisor.core.util.PerformanceUtil;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.util.PerformanceUtil;
 
 public class Provisioning {
+	static HashMap<String, Interface> interfaces = new HashMap<String, Interface>();
+	
 	public static List<DtoInstance> verifiyMinimumEquipment() throws Exception{
 		List<DtoInstance> equipList = DtoQueryUtil.getIndividualsFromClass(Main.model, "Equipment");
 		if(equipList.size() < 2){
@@ -80,12 +82,11 @@ public class Provisioning {
 		}
 		int maxPathSize = Main.getOptionFromConsole("Choose the maximum number of interfaces in a path (enter 0 for no limit)", 0, Integer.MAX_VALUE);
 		if(maxPathSize == 0){
-			maxPathSize = Integer.MAX_VALUE;
+			maxPathSize = 1000;
 		}
 		
 		Date beginDate = new Date();
 		algorithmSemiAuto(sourceRoot, true, leafInterfaces, interfaceTo, usedInterfaces, qtShortPaths, maxPathSize);
-		PerformanceUtil.printExecutionTime("Provisioning.callAlgorithmSemiAuto", beginDate);
 		
 		if(leafInterfaces.size() == 0){
 			throw new Exception("Something went wrong. No paths were found from " + interfaceFrom.getInterfaceURI() + " to " + interfaceTo.getInterfaceURI() + ".");
@@ -110,7 +111,6 @@ public class Provisioning {
 			TreeNode[] path = paths.get(i);
 			String out = "";
 			int id = (i+1)/1;
-			out += id + " - ";
 			
 			for (TreeNode srcNode : path) {
 				out += srcNode;
@@ -122,7 +122,12 @@ public class Provisioning {
 			
 			if(!outs.contains(out)){
 				outs.add(out);
+			}else{
+				System.out.println();
 			}
+			
+			out = id + " - " + out;
+			
 			System.out.print(out);
 			try{
 				fos.write(out.getBytes());   				  
@@ -131,6 +136,8 @@ public class Provisioning {
 			}
 		}
 		fos.close();
+		PerformanceUtil.printExecutionTime("Provisioning.callAlgorithmSemiAuto", beginDate);
+		
 		int path = Main.getOptionFromConsole(paths, "path", paths.size());
 		
 		provisionSemiAuto(paths.get(path));
@@ -167,7 +174,7 @@ public class Provisioning {
 		for (int i = 1; i < path.length-1; i+=2) {
 			Interface from = (Interface)((DefaultMutableTreeNode)path[i]).getUserObject();
 			Interface to = (Interface)((DefaultMutableTreeNode)path[i+1]).getUserObject();
-			isSource = isStillInSource(isSource, from.getInterfaceURI());
+			isSource = isStillInSource(isSource, from);
 			System.out.println(from.getInterfaceURI());
 			System.out.println(to.getInterfaceURI());
 			//System.out.println(isSource);
@@ -194,6 +201,7 @@ public class Provisioning {
 		return false;
 	}
 	public static void algorithmSemiAuto(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<DefaultMutableTreeNode> leafs, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize) throws Exception{
+		System.out.println("\nExecuting algorithmSemiAuto()...");
 		String VAR_IN = ((Interface) lastInputIntNode.getUserObject()).getInterfaceURI();
 		Interface in = new Interface(VAR_IN);
 		
@@ -206,8 +214,8 @@ public class Provisioning {
 			String VAR_OUT = INT_LIST.get(i).getInterfaceURI();
 			Interface out = new Interface(VAR_OUT);
 			
-			if(!usedInterfaces.contains(VAR_OUT)){
-				isSource = isStillInSource(isSource, VAR_OUT);
+			if(!usedInterfaces.contains(out)){
+				isSource = isStillInSource(isSource, out);
 				List<Interface> newUsedInterfaces1 = new ArrayList<Interface>(); 
 				newUsedInterfaces1.addAll(usedInterfaces);
 				newUsedInterfaces1.add(out);
@@ -217,14 +225,16 @@ public class Provisioning {
 				DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(out);
 				lastInputIntNode.add(outIntNode);
 				
+				if(containsInLeafs(leafs, outIntNode)){
+					return;
+				}
+				
 				if(VAR_OUT.equals(interfaceTo.getInterfaceURI())){
 					if(limitExceeded(leafs, newUsedInterfaces1, qtShortPaths, maxPathSize)){
 						return;
 					}
 					
 					if(leafs.size() >= qtShortPaths){
-						TreeNode[] p = leafs.get(leafs.size()-1).getPath();
-						System.out.println(p.length);
 						leafs.remove(leafs.size()-1);
 //						DefaultMutableTreeNode lastLeaf = leafs.get(leafs.size()-1);
 //						int lfPtSize = lastLeaf.getPath().length;
@@ -237,24 +247,65 @@ public class Provisioning {
 //							return;
 //						}
 					}
-					TreeNode[] p = outIntNode.getPath();
-					System.out.println(p.length);
-					System.out.println(newUsedInterfaces1.size());
-					leafs.add(outIntNode);
-					leafs.sort(new Comparator<DefaultMutableTreeNode>() {
-
-						public int compare(DefaultMutableTreeNode arg0, DefaultMutableTreeNode arg1) {
-							int pathSize0 = arg0.getPath().length;
-							int pathSize1 = arg1.getPath().length;
-							if (pathSize0 < pathSize1) {
-					            return -1;
-					        }
-					        if (pathSize0 > pathSize1) {
-					            return 1;
-					        }
-							return 0;
+//					leafs.add(outIntNode);
+//					leafs.sort(new Comparator<DefaultMutableTreeNode>() {
+//
+//						public int compare(DefaultMutableTreeNode arg0, DefaultMutableTreeNode arg1) {
+//							int pathSize0 = arg0.getPath().length;
+//							int pathSize1 = arg1.getPath().length;
+//							if (pathSize0 < pathSize1) {
+//					            return -1;
+//					        }
+//					        if (pathSize0 > pathSize1) {
+//					            return 1;
+//					        }
+//							return 0;
+//						}
+//					});
+					int x = outIntNode.getPath().length;
+					if(x > 65){
+						System.out.println();
+					}
+					int j;
+					for (j = 0; j < leafs.size(); j++) {
+						int pathSize0 = leafs.get(j).getPath().length;
+						if(outIntNode.getPath().length < pathSize0){
+							break;
 						}
-					});
+					}
+					leafs.add(j, outIntNode);
+//					for (; j < leafs.size()-1; j++) {
+//						boolean isBreak = false;
+//						TreeNode[] p1 = leafs.get(j).getPath();
+//						for (int k = j+1; k < p1.length; k++) {
+//							TreeNode[] p2 = leafs.get(k).getPath();
+//							int t1 = p1.length;
+//							int t2 = p2.length;
+//							System.out.println(t1 + " - " + t2);
+//							if(t1 == t2){
+//								for (int l = 0; l < p2.length; l++) {
+//									DefaultMutableTreeNode n1 = (DefaultMutableTreeNode) p1[l];
+//									Interface i1 = (Interface) n1.getUserObject();
+//									DefaultMutableTreeNode n2 = (DefaultMutableTreeNode) p2[l];
+//									Interface i2 = (Interface) n2.getUserObject();
+//									if(!i1.equals(i2)){
+//										isBreak = true;
+//										break;
+//									}
+//								}
+//								if(p1.equals(p2)){
+//									System.out.println();
+//								}
+//								if(leafs.contains(outIntNode)){
+//									System.out.println();
+//								}
+//								System.out.println();
+//							}else{
+//								break;
+//							}
+//							if(isBreak) break;
+//						}						
+//					}
 					//System.out.println(outIntNode.getPath().length);
 					return;
 				}else{
@@ -262,9 +313,9 @@ public class Provisioning {
 					for (int j = 0; j < listInterfacesTo.size(); j+=1) {
 						VAR_IN = listInterfacesTo.get(j).getInterfaceURI();
 						in = new Interface(VAR_IN);
-						isSource = isStillInSource(isSource, VAR_IN);
+						isSource = isStillInSource(isSource, in);
 						
-						if(!newUsedInterfaces1.contains(VAR_IN)){
+						if(!newUsedInterfaces1.contains(in)){
 							List<Interface> newUsedInterfaces2 = new ArrayList<Interface>(); 
 							newUsedInterfaces2.addAll(newUsedInterfaces1);
 							newUsedInterfaces2.add(in);
@@ -280,6 +331,52 @@ public class Provisioning {
 		}		
 	}
 	
+	public static boolean containsInLeafs(List<DefaultMutableTreeNode> leafs, DefaultMutableTreeNode outIntNode){
+		TreeNode[] p1 = outIntNode.getPath();
+//		for (int j = 0; j < leafs.size()-1; j++) {
+//			boolean isBreak = false;
+//			TreeNode[] p1 = leafs.get(j).getPath();
+			for (int k = 0; k < leafs.size(); k++) {
+				TreeNode[] p2 = leafs.get(k).getPath();
+				if(!p1.equals(p2)){
+					int t1 = p1.length;
+					int t2 = p2.length;
+					//System.out.println(t1 + " - " + t2);
+					if(t1 == t2){
+						int l;
+						boolean isBreak = false;
+						for (l = 0; l < p2.length; l++) {
+							DefaultMutableTreeNode n1 = (DefaultMutableTreeNode) p1[l];
+							Interface i1 = (Interface) n1.getUserObject();
+							DefaultMutableTreeNode n2 = (DefaultMutableTreeNode) p2[l];
+							Interface i2 = (Interface) n2.getUserObject();
+							if(!i1.equals(i2)){
+								isBreak  = true;
+								break;
+							}
+						}
+						
+						if(!isBreak){
+						
+							for (int i = 0; i < p1.length; i++) {
+								System.out.print(p1[i] + " -> ");
+							}
+							System.out.println();
+							for (int i = 0; i < p2.length; i++) {
+								System.out.print(p2[i] + " -> ");
+							}
+							return true;
+						}
+					}else if(t1 > t2){
+						break;
+					}
+				}
+				
+//				if(isBreak) break;
+//			}						
+		}
+		return false;
+	}
 	public static String callAlgorithmManual(Interface interfaceFrom, Interface interfaceTo) throws Exception{
 		boolean isSource = true;
 		String VAR_OUT = "";
@@ -287,8 +384,8 @@ public class Provisioning {
 		Main.bindedInterfaces.add(interfaceFrom);
 		do {
 			//#19
-			isSource = isStillInSource(isSource, VAR_IN);
 			Interface in = new Interface(VAR_IN);
+			isSource = isStillInSource(isSource, in);
 			List<Interface> INT_LIST = algorithmPart1(in, isSource);
 			
 			int chosenId = Main.chooseOne(INT_LIST, "Output Interfaces", "Available Output Interface");
@@ -297,8 +394,8 @@ public class Provisioning {
 			//#20
 			if(!VAR_OUT.equals(interfaceTo.getInterfaceURI())){
 				//#21
-				isSource = isStillInSource(isSource, VAR_OUT);
 				Interface out = new Interface(VAR_OUT);
+				isSource = isStillInSource(isSource, out);
 				List<Interface> listInterfacesTo = algorithmPart2(isSource, out);
 				
 				//#D
@@ -314,9 +411,10 @@ public class Provisioning {
 		return VAR_OUT;
 	}
 	
-	public static boolean isStillInSource(boolean isSourceOld, String VAR){
+	public static boolean isStillInSource(boolean isSourceOld, Interface intfc){
 		boolean isSource = isSourceOld;
-		if((isSourceOld && !QueryUtil.isInterfaceSource(Main.model, VAR)) || (!isSourceOld && QueryUtil.isInterfaceSource(Main.model, VAR))){
+		boolean isInterfaceSource = QueryUtil.isInterfaceSource(Main.model, intfc.getInterfaceURI());
+		if((isSourceOld && !isInterfaceSource) || (!isSourceOld && isInterfaceSource)){
 			isSource  = !isSourceOld;				
 		}
 		return isSource;
@@ -336,24 +434,43 @@ public class Provisioning {
 //	}
 	
 	public static List<Interface> algorithmPart1(Interface inputInterface, boolean isSource) throws Exception{
-		//#A
-		String mappedTF = Queries.getMappedTFFrom(Main.model, inputInterface.getInterfaceURI());
-		List<String> bindedTFList = Queries.getLastBindedTFFrom(Main.model, mappedTF, isSource);
-		//System.out.println();
-		if(!bindedTFList.contains(mappedTF)){
-			bindedTFList.add(mappedTF);
-		}		
-		
-		List<Interface> LIST_INT = new ArrayList<Interface>();
-		for (String tfURI : bindedTFList) {
-			LIST_INT.addAll(Queries.getMappingInterfaceFrom(Main.model, tfURI));
+		List<Interface> LIST_INT;
+		if(interfaces.containsKey(inputInterface.getInterfaceURI())){
+			Interface out = interfaces.get(inputInterface.getInterfaceURI());
+			LIST_INT = out.getCandidateInterfacesTo();
+			LIST_INT.removeAll(Main.bindedInterfaces);
+		}else{
+			//#A
+			String mappedTF = Queries.getMappedTFFrom(Main.model, inputInterface.getInterfaceURI());
+			List<String> bindedTFList = Queries.getLastBindedTFFrom(Main.model, mappedTF, isSource);
+			//System.out.println();
+			if(!bindedTFList.contains(mappedTF)){
+				bindedTFList.add(mappedTF);
+			}		
+			LIST_INT = new ArrayList<Interface>();
+			for (String tfURI : bindedTFList) {
+				LIST_INT.addAll(Queries.getMappingInterfaceFrom(Main.model, tfURI));
+			}
+			
+			inputInterface.setCandidateInterfacesTo(LIST_INT);
+			interfaces.put(inputInterface.getInterfaceURI(), inputInterface);
 		}
+		
 		return LIST_INT;
 	}
 	
 	public static List<Interface> algorithmPart2(boolean isSource, Interface outputInterface) throws Exception{
-		//#C
-		List<Interface> listInterfacesTo = Queries.getInterfacesToProvision(Main.model, outputInterface.getInterfaceURI(), isSource);
+		List<Interface> listInterfacesTo;
+		if(interfaces.containsKey(outputInterface.getInterfaceURI())){
+			Interface in = interfaces.get(outputInterface.getInterfaceURI());
+			listInterfacesTo = in.getCandidateInterfacesTo();
+			listInterfacesTo.removeAll(Main.bindedInterfaces);
+		}else{
+			//#C
+			listInterfacesTo = Queries.getInterfacesToProvision(Main.model, outputInterface.getInterfaceURI(), isSource);
+			outputInterface.setCandidateInterfacesTo(listInterfacesTo);
+			interfaces.put(outputInterface.getInterfaceURI(), outputInterface);
+		}
 		
 		return listInterfacesTo;
 	}

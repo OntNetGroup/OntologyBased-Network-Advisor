@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.semanticweb.HermiT.Configuration;
@@ -33,6 +34,7 @@ import org.semanticweb.owlapi.util.InferredSubDataPropertyAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredSubObjectPropertyAxiomGenerator;
 
 import br.com.padtec.common.persistence.BaseModelRepository;
+import br.com.padtec.common.util.PerformanceUtil;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -59,8 +61,9 @@ public class HermitReasonerImpl extends OntologyReasoner {
 	 */
 	public InfModel run(OntModel baseModel)
 	{
-		long antes = System.currentTimeMillis();  
-
+		//long antes = System.currentTimeMillis();  
+		Date beginDate = new Date();
+		
 		//Converting output stream from model to input stream		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
         baseModel.write(out, "RDF/XML");        
@@ -142,8 +145,9 @@ public class HermitReasonerImpl extends OntologyReasoner {
     	bais = new ByteArrayInputStream(baos2.toByteArray());
 		model.read(bais, null);
 		
-		long tempo = System.currentTimeMillis() - antes;        
-		System.out.printf("Hermit executed in %d miliseconds.%n", tempo);
+		PerformanceUtil.printExecutionTime("Hermit reasoning finished", beginDate );
+//		long tempo = System.currentTimeMillis() - antes;        
+//		System.out.printf("Hermit executed in %d miliseconds.%n", tempo);
 		
 		Node thingNode = Node.createURI("http://www.w3.org/2002/07/owl#Thing");
 		RDFNode thingRdfNode = model.getRDFNode(thingNode);

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import br.com.padtec.advisor.core.util.PerformanceUtil;
 import br.com.padtec.common.dto.DtoInstance;
+import br.com.padtec.common.util.PerformanceUtil;
 import br.com.padtec.okco.core.application.OKCoComponents;
 
 /**

@@ -3,7 +3,7 @@ package br.com.padtec.nopen.studio.service;
 import java.io.InputStream;
 import java.util.Date;
 
-import br.com.padtec.advisor.core.util.PerformanceUtil;
+import br.com.padtec.common.util.PerformanceUtil;
 import br.com.padtec.nopen.model.NOpenFactory;
 import br.com.padtec.nopen.service.util.NOpenUtilities;
 

@@ -1,4 +1,4 @@
-package br.com.padtec.advisor.core.util;
+package br.com.padtec.common.util;
 
 import java.util.Date;
 

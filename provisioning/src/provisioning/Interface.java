@@ -1,8 +1,13 @@
 package provisioning;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Interface implements Comparable<Interface>{
 	private String interfaceURI;
 	private String equipmentURI;
+	
+	private List<Interface> candidateInterfacesTo = new ArrayList<Interface>();
 	
 	public Interface(String interfaceURI, String equipmentURI) {
 		this.interfaceURI = interfaceURI;
@@ -22,6 +27,19 @@ public class Interface implements Comparable<Interface>{
 		return equipmentURI;
 	}
 	
+	
+	public List<Interface> getCandidateInterfacesTo() {
+		return candidateInterfacesTo;
+	}
+
+	public void setCandidateInterfacesTo(List<Interface> candidateInterfacesTo) {
+		this.candidateInterfacesTo = candidateInterfacesTo;
+	}
+
+	public void addCandidateInterfacesTo(Interface candidateInterfaceTo) {
+		this.candidateInterfacesTo.add(candidateInterfaceTo);
+	}
+
 	@Override
 	public String toString() {
 		String interfaceURI;

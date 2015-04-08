@@ -18,9 +18,9 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import br.com.padtec.advisor.core.util.PerformanceUtil;
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.reasoning.HermitReasonerImpl;
+import br.com.padtec.common.util.PerformanceUtil;
 import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
