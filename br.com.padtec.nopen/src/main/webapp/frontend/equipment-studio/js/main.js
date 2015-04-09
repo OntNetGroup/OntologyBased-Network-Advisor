@@ -146,17 +146,22 @@ var Rappid = Backbone.Router.extend({
 						nempositiony = pposition.y + 20 + ((filhos) * (80));
 					};
 					// Prototype : check order
-					parent.embed(cell);
-					this.embedOrConnect(parent, cell);
+					if(cell.get('subType') === 'shelf'){
+						parent.embed(cell);
+						this.embedOrConnect(parent, cell);
 
-					parent.set('size' , { 
-						width: psize.width  ,
-						height:	240 + ((parent.getEmbeddedCells().length - (1) ) * 70)
-					});
-					cell.set('position', {
-						x: newpositionx  ,
-						y: nempositiony 
-					});
+						parent.set('size' , { 
+							width: psize.width  ,
+							height:	240 + ((parent.getEmbeddedCells().length - (1) ) * 70)
+						});
+						cell.set('position', {
+							x: newpositionx  ,
+							y: nempositiony 
+						});
+					}else{
+						console.log('A ordem está errada');
+					}
+					
 				}else{
 					if(parent.get('subType') === 'shelf'){
 						// selecionar o rack
@@ -172,26 +177,29 @@ var Rappid = Backbone.Router.extend({
 						}else {
 							nempositionx = pposition.x + 20 + ((filhos) * (75));
 						};
-						//parent resize , grandparent resize and cell new position
-						// Prototype : check order
-						parent.embed(cell);
-						this.embedOrConnect(parent, cell);
+						if(cell.get('subType') === 'slot'){
+							parent.embed(cell);
+							this.embedOrConnect(parent, cell);
 
-						parent.set('size' , { 
-							width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 65) ,
-							height:	parent.get('size').height});
+							parent.set('size' , { 
+								width: 100 + ((parent.getEmbeddedCells().length - (1) ) * 75) ,
+								height:	parent.get('size').height});
 
-						cell.set('position', {
-							x: nempositionx,
-							y: newpositiony
-						});
-						
-						if (grandparent.get('size').width < parent.get('size').width){
-							grandparent.set ('size' , {
-								width: grandparent.get('size').width + 100 ,
-								height: grandparent.get('size').height
+							cell.set('position', {
+								x: nempositionx,
+								y: newpositiony
 							});
-						};
+							
+							if (grandparent.get('size').width < parent.get('size').width){
+								grandparent.set ('size' , {
+									width: grandparent.get('size').width + 100 ,
+									height: grandparent.get('size').height
+								});
+							};
+						}else{
+							console.log("A ordem está errada");
+						}
+						
 					}else {
 						if(parent.get('subType') === 'slot'){
 							var increasew = (psize.width + 20 ) ;
