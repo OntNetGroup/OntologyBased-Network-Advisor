@@ -102,7 +102,7 @@ public class NOpenFileUtil {
 	 * @param filename
 	 * @return
 	 */
-	private static Boolean checkEquipmentFileExist(String filename){
+	public static Boolean checkEquipmentFileExist(String filename){
 		
 		if(NOpenFileUtil.checkFileExist(NOpenFileUtil.equipmentJSONFolder + filename)){
 			return true;

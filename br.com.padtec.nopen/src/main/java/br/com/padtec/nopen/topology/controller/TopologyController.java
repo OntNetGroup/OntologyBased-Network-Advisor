@@ -57,6 +57,11 @@ public class TopologyController {
 	protected @ResponseBody void saveTopology(@RequestParam("filename") String filename, @RequestParam("graph") String graph){
 			
 		try {
+			/*
+			 * MUDAR!!!!
+			 * COLOCAR O WRITETOFILE RECEBENDO O FILENAME
+			 * 
+			 * */
 			File file = NOpenFileUtil.createTopologyJSONFile(filename);
 			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {

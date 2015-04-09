@@ -440,82 +440,77 @@ var Rappid = Backbone.Router.extend({
 				console.log(a);
 				console.log(JSON.stringify(a));
 
-				generateSaveEquipmentDialog(app.graph);
-				
-				function generateSaveEquipmentDialog(graph){
+				//generateSaveEquipmentDialog(app.graph);
 
 					dialog = $("#save-dialog").dialog({
-						autoOpen: false,
-						height: 180,
-						width: 350,
-						modal: true,
-						buttons: { 
-							"Save": checkEquipmentFile,  
-							Cancel: function() {
-								dialog.dialog( "close" );
+							autoOpen: false,
+							height: 180,
+							width: 350,
+							modal: true,
+							buttons: { 
+								"Save": checkEquipmentFile,  
+								Cancel: function() {
+									dialog.dialog( "close" );
+								}
+							},
+							close: function() { }
+						});
+
+						$("#save-dialog").dialog("open");
+
+						function checkEquipmentFile(){
+
+							if($("#save-filename").val() == ""){
+								alert("File name cannot be empty!")
 							}
-						},
-						close: function() { }
-					});
+							else{
+								$.ajax({
+									type: "POST",
+									url: "checkEquipmentFile.htm",
+									data: {
+										'filename': $("#save-filename").val(),
+									},
+									success: function(data){ 		   
+										if(data == "exist"){		   
+											if (confirm('The file already exist, do you want to replace it?')) {
+												saveEquipment();
+											} 
+										}
+										else{
+											saveEquipment();
+										}
+									},
+									error : function(e) {
+										alert("error: " + e.status);
+										$("#save-dialog").dialog("close");
+									}
+								});
+							}
 
-					$("#save-dialog").dialog("open");
+						};
 
-					function checkEquipmentFile(){
 
-						if($("#save-filename").val() == ""){
-							alert("File name cannot be empty!")
-						}
-						else{
+						function saveEquipment(){
+
 							$.ajax({
 								type: "POST",
-								url: "checkEquipmentFile.htm",
+								url: "saveEquipment.htm",
 								data: {
 									'filename': $("#save-filename").val(),
+									'graph': JSON.stringify(app.graph.toJSON()),
 								},
-								success: function(data){ 		   
-
-									if(data == "exist"){		   
-										if (confirm('The file already exist, do you want to replace it?')) {
-											saveEquipment();
-										} 
-									}
-									else{
-										saveEquipment();
-									}
+								success: function(){ 		   
+									alert($("#save-filename").val() + ' saved successfully!');
+									$("#save-dialog").dialog("close");
 								},
 								error : function(e) {
 									alert("error: " + e.status);
 									$("#save-dialog").dialog("close");
 								}
 							});
-						}
-
-					};
 
 
-					function saveEquipment(){
-
-						$.ajax({
-							type: "POST",
-							url: "saveEquipment.htm",
-							data: {
-								'filename': $("#save-filename").val(),
-								'graph': JSON.stringify(graph.toJSON()),
-							},
-							success: function(){ 		   
-								alert($("#save-filename").val() + ' saved successfully!');
-								$("#save-dialog").dialog("close");
-							},
-							error : function(e) {
-								alert("error: " + e.status);
-								$("#save-dialog").dialog("close");
-							}
-						});
-
-
-					};
-
-				}
+						};
 
 			}	
 

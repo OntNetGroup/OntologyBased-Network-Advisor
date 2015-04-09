@@ -22,6 +22,7 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/freetransform.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/style.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/header.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css"/>
     </head>
     <body>
         <h1 style="margin-top:40px;">EQUIPMENT STUDIO</h1>
@@ -63,8 +64,12 @@
         <div class="statusbar-container"><span class="rt-colab"></span></div>
 
         <script src="/nopen/core/rappid_api/js/joint.js"></script>
-
         <script src="/nopen/core/rappid_api/js/joint.all.js"></script>
+
+		<!-- JS -->
+		
+		<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
+		<script src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
 
         <script src="/nopen/frontend/equipment-studio/js/keyboard.js"></script>
 
