@@ -440,6 +440,8 @@ var Rappid = Backbone.Router.extend({
 				console.log(a);
 				console.log(JSON.stringify(a));
 
+				generateSaveEquipmentDialog(app.graph);
+				
 				function generateSaveEquipmentDialog(graph){
 
 					dialog = $("#save-dialog").dialog({
@@ -448,7 +450,7 @@ var Rappid = Backbone.Router.extend({
 						width: 350,
 						modal: true,
 						buttons: { 
-							"Save": checkGenericFile,  
+							"Save": checkEquipmentFile,  
 							Cancel: function() {
 								dialog.dialog( "close" );
 							}
@@ -498,7 +500,7 @@ var Rappid = Backbone.Router.extend({
 							url: "saveEquipment.htm",
 							data: {
 								'filename': $("#save-filename").val(),
-								'graph': (JSON.stringify(a)),
+								'graph': JSON.stringify(graph.toJSON()),
 							},
 							success: function(){ 		   
 								alert($("#save-filename").val() + ' saved successfully!');
@@ -847,60 +849,60 @@ var Rappid = Backbone.Router.extend({
 
 	initializeClipboard: function() {
 
-		this.clipboard = new joint.ui.Clipboard;
-
-		KeyboardJS.on('ctrl + c', _.bind(function() {
-			// Copy all selected elements and their associated links.
-			this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
-		}, this));
-
-		KeyboardJS.on('ctrl + v', _.bind(function() {
-
-			this.selectionView.cancelSelection();
-
-			this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
-
-			// Make sure pasted elements get selected immediately. This makes the UX better as
-			// the user can immediately manipulate the pasted elements.
-			this.clipboard.each(function(cell) {
-
-				if (cell.get('type') === 'link') return;
-
-				// Push to the selection not to the model from the clipboard but put the model into the graph.
-				// Note that they are different models. There is no views associated with the models
-				// in clipboard.
-				this.selection.add(this.graph.getCell(cell.id));
-				this.selectionView.createSelectionBox(cell.findView(this.paper));
-
-			}, this);
-
-		}, this));
-
-		KeyboardJS.on('ctrl + x', _.bind(function() {
-
-			var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
-			this.commandManager.initBatchCommand();
-			_.invoke(originalCells, 'remove');
-			this.commandManager.storeBatchCommand();
-			this.selectionView.cancelSelection();
-		}, this));
-	},
-
-	initializeCommandManager: function() {
-
-		this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
-
-		KeyboardJS.on('ctrl + z', _.bind(function() {
-
-			this.commandManager.undo();
-			this.selectionView.cancelSelection();
-		}, this));
-
-		KeyboardJS.on('ctrl + y', _.bind(function() {
-
-			this.commandManager.redo();
-			this.selectionView.cancelSelection();
-		}, this));
+//		this.clipboard = new joint.ui.Clipboard;
+//
+////		KeyboardJS.on('ctrl + c', _.bind(function() {
+////			// Copy all selected elements and their associated links.
+////			this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
+////		}, this));
+////
+////		KeyboardJS.on('ctrl + v', _.bind(function() {
+////
+////			this.selectionView.cancelSelection();
+////
+////			this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
+////
+////			// Make sure pasted elements get selected immediately. This makes the UX better as
+////			// the user can immediately manipulate the pasted elements.
+////			this.clipboard.each(function(cell) {
+////
+////				if (cell.get('type') === 'link') return;
+////
+////				// Push to the selection not to the model from the clipboard but put the model into the graph.
+////				// Note that they are different models. There is no views associated with the models
+////				// in clipboard.
+////				this.selection.add(this.graph.getCell(cell.id));
+////				this.selectionView.createSelectionBox(cell.findView(this.paper));
+////
+////			}, this);
+////
+////		}, this));
+//
+////		KeyboardJS.on('ctrl + x', _.bind(function() {
+////
+////			var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
+////			this.commandManager.initBatchCommand();
+////			_.invoke(originalCells, 'remove');
+////			this.commandManager.storeBatchCommand();
+////			this.selectionView.cancelSelection();
+////		}, this));
+////	},
+//
+//	initializeCommandManager: function() {
+//
+//		this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
+//
+////		KeyboardJS.on('ctrl + z', _.bind(function() {
+////
+////			this.commandManager.undo();
+////			this.selectionView.cancelSelection();
+////		}, this));
+//
+//		KeyboardJS.on('ctrl + y', _.bind(function() {
+//
+//			this.commandManager.redo();
+//			this.selectionView.cancelSelection();
+//		}, this));
 	},
 
 	initializeValidator: function() {

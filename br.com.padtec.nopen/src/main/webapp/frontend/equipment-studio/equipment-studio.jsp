@@ -28,12 +28,12 @@
 		
        	<%@include file="templates/header.jsp"%>
         <div class="toolbar-container">
-            <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/equipment-studio/img/undo.png" alt="Undo"/></button>
-            <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/equipment-studio/img/redo.png" alt="Redo"/></button>
+            <!-- <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/equipment-studio/img/undo.png" alt="Undo"/></button> -->
+            <!-- <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/equipment-studio/img/redo.png" alt="Redo"/></button> -->
             <button id="btn-clear" class="btn" data-tooltip="Clear Paper"><img src="/nopen/frontend/equipment-studio/img/clear.png" alt="Clear"/></button>
             <button id="btn-svg" class="btn" data-tooltip="Open as SVG in a New Window">open as SVG</button>
             <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window">open as PNG</button>
-			<button id="btn-print-file" class="btn" data-tooltip="Save all imgs index in a file">save index to file</button>
+			<!-- <button id="btn-print-file" class="btn" data-tooltip="Save all imgs index in a file">save index to file</button>  -->
             <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/equipment-studio/img/print.png" alt="Print"/></button>
             <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="/nopen/frontend/equipment-studio/img/zoomin.png" alt="Zoom in"/></button>
             <button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out"><img src="/nopen/frontend/equipment-studio/img/zoomout.png" alt="Zoom out"/></button>
@@ -74,6 +74,12 @@
 		<script src="/nopen/frontend/equipment-studio/js/mypool.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/main.js"></script>
+        
+   
+         
+        <div id="save-dialog" title="Save Equipment" style="display:none">
+			File name: <input type="text" id="save-filename" />
+		</div>
 		
 		
 	<!--[if IE 9]>
@@ -95,6 +101,15 @@
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
+            
+           // graphHandle(app.graph);
+          //  paperHandle(app.paper);
+            
+            //var uuid = joint.util.uuid();
+            
+           // $('#btn-save').click(function(){
+          //  generateSaveEquipmentDialog(app.graph);
+          	
         </script>
     </body>
 </html>
