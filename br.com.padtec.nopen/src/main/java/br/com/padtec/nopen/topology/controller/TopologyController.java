@@ -77,7 +77,7 @@ public class TopologyController {
 	@RequestMapping(value = "/openTopology", method = RequestMethod.POST)
 	protected @ResponseBody String openTopology(@RequestParam("filename") String filename){
 			
-		return NOpenFileUtil.openTopologyFileAsString(filename + ".json");
+		return NOpenFileUtil.openTopologyJSONFileAsString(filename + ".json");
 		
 	}
 	

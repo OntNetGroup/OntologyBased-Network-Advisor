@@ -34,7 +34,7 @@
         <!-- TEMPLATES -->
 
         
-		<h1 style="margin-top:40px;">Network Topology</h1>
+		
 		
        	<%@include file="templates/header.jsp"%>
         <%@include file="templates/toolbar.jsp"%>

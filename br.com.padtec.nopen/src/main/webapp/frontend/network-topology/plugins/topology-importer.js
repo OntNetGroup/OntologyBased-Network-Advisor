@@ -34,17 +34,17 @@ function transformToGraph(data){
 		
 		var text = {
 			text : value.name,
-			'font-size' : '8px',
+			'font-size' : '8',
 		}
 		
-		var template = {
-			equipment : value.equipment	
+		var equipment = {
+			template : value.equipment	
 		}
 		
 		var attrs = {
 			circle : circle,
 			text : text,	
-			template : template
+			equipment : equipment
 		}
 		
 		var cell = {

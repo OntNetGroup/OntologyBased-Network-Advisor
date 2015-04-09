@@ -15,12 +15,13 @@ public class NOpenFileUtil {
 	public static String path;
 	
 	// JSON
-	public static String topologyFileFolder;
-	public static String equipmentFileFolder;
-	public static String provisioningFileFolder;
+	public static String topologyJSONFolder;
+	public static String equipmentJSONFolder;
+	public static String provisioningJSONFolder;
 	
 	// OWL
-	public static String owlFileFolder;
+	public static String equipmentOWLFolder;
+	public static String provisioningOWLFolder;
 	
 	/**
 	 * Procedure to set the NOpen Folders Path.
@@ -30,26 +31,33 @@ public class NOpenFileUtil {
 		
 		NOpenFileUtil.path = System.getProperty("user.home") + path;
 		
-		NOpenFileUtil.topologyFileFolder = NOpenFileUtil.path + "/nopen/repository/topology/";
-		NOpenFileUtil.equipmentFileFolder = NOpenFileUtil.path + "/nopen/repository/equipment/";
-		NOpenFileUtil.provisioningFileFolder = NOpenFileUtil.path + "/nopen/repository/provisioning/";
-		NOpenFileUtil.owlFileFolder = NOpenFileUtil.path + "/nopen/repository/owl/";
+		NOpenFileUtil.topologyJSONFolder = NOpenFileUtil.path + "/nopen/repository/topology/json/";
 		
-		System.out.println(System.getProperty("os.name"));
+		NOpenFileUtil.equipmentJSONFolder = NOpenFileUtil.path + "/nopen/repository/equipment/json/";
+		NOpenFileUtil.equipmentOWLFolder = NOpenFileUtil.path + "/nopen/repository/equipment/owl/";
+		
+		NOpenFileUtil.provisioningJSONFolder = NOpenFileUtil.path + "/nopen/repository/provisioning/json/";
+		NOpenFileUtil.provisioningOWLFolder = NOpenFileUtil.path + "/nopen/repository/provisioning/owl/";
+		
 
 		// if SO = Windows
 		if(System.getProperty("os.name").contains("Windows")){		
-			NOpenFileUtil.topologyFileFolder = NOpenFileUtil.topologyFileFolder.replaceAll("/", "\\\\");
-			NOpenFileUtil.owlFileFolder = NOpenFileUtil.owlFileFolder.replaceAll("/", "\\\\");	
+			NOpenFileUtil.topologyJSONFolder = NOpenFileUtil.topologyJSONFolder.replaceAll("/", "\\\\");
+			
+			NOpenFileUtil.equipmentJSONFolder = NOpenFileUtil.equipmentJSONFolder.replaceAll("/", "\\\\");	
+			NOpenFileUtil.equipmentOWLFolder = NOpenFileUtil.equipmentOWLFolder.replaceAll("/", "\\\\");	
+			
+			NOpenFileUtil.provisioningJSONFolder = NOpenFileUtil.provisioningJSONFolder.replaceAll("/", "\\\\");	
+			NOpenFileUtil.provisioningOWLFolder = NOpenFileUtil.provisioningOWLFolder.replaceAll("/", "\\\\");	
 		}
+
+		NOpenFileUtil.createRepository(NOpenFileUtil.topologyJSONFolder);
 		
-		System.out.println(NOpenFileUtil.topologyFileFolder);
-		System.out.println(NOpenFileUtil.owlFileFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.equipmentJSONFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.equipmentOWLFolder);
 		
-		NOpenFileUtil.createRepository(NOpenFileUtil.topologyFileFolder);
-		NOpenFileUtil.createRepository(NOpenFileUtil.equipmentFileFolder);
-		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningFileFolder);
-		NOpenFileUtil.createRepository(NOpenFileUtil.owlFileFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningJSONFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningOWLFolder);
 	}
 
 	/**
@@ -76,7 +84,7 @@ public class NOpenFileUtil {
 	 */
 	public static Boolean checkTopologyFileExist(String filename){
 		
-		if(NOpenFileUtil.checkFileExist(NOpenFileUtil.topologyFileFolder + filename)){
+		if(NOpenFileUtil.checkFileExist(NOpenFileUtil.topologyJSONFolder + filename)){
 			return true;
 		}
 		
@@ -103,8 +111,8 @@ public class NOpenFileUtil {
 	 * @param filename 
 	 * @return
 	 */
-	public static File createOWLFile(String filename){
-		return createFile(NOpenFileUtil.owlFileFolder, filename + ".owl");
+	public static File createEquipmentOWLFile(String filename){
+		return createFile(NOpenFileUtil.equipmentOWLFolder, filename + ".owl");
 	}
 	
 	/**
@@ -113,7 +121,7 @@ public class NOpenFileUtil {
 	 * @return
 	 */
 	public static File createTopologyJSONFile(String filename){
-		return createFile(NOpenFileUtil.topologyFileFolder, filename + ".json");
+		return createFile(NOpenFileUtil.topologyJSONFolder, filename + ".json");
 	}
 
 	/** 
@@ -153,7 +161,7 @@ public class NOpenFileUtil {
      * @return
      */
     public static HashSet<String> getAllTopplogyJSONFileNames(){
-    	return getAllFileNames(NOpenFileUtil.topologyFileFolder, "json");
+    	return getAllFileNames(NOpenFileUtil.topologyJSONFolder, "json");
     }
     
     /**
@@ -161,7 +169,7 @@ public class NOpenFileUtil {
      * @return
      */
     public static HashSet<String> getAllEquipmentJSONFileNames(){
-    	return getAllFileNames(NOpenFileUtil.equipmentFileFolder, "json");
+    	return getAllFileNames(NOpenFileUtil.equipmentJSONFolder, "json");
     }
     
     /**
@@ -169,15 +177,15 @@ public class NOpenFileUtil {
      * @return
      */
     public static HashSet<String> getAllProvisioningJSONFileNames(){
-    	return getAllFileNames(NOpenFileUtil.provisioningFileFolder, "json");
+    	return getAllFileNames(NOpenFileUtil.provisioningJSONFolder, "json");
     }
     
     /**
      * Procedure to get all topology OWL file names. 
      * @return
      */
-    public static HashSet<String> getAllOWLFileNames(){
-    	return getAllFileNames(NOpenFileUtil.owlFileFolder, "owl");    	
+    public static HashSet<String> getAllEquipmentOWLFileNames(){
+    	return getAllFileNames(NOpenFileUtil.equipmentOWLFolder, "owl");    	
     }
     
     
@@ -218,8 +226,8 @@ public class NOpenFileUtil {
      * @param filename
      * @return
      */
-    public static String openTopologyFileAsString(String filename){
-    	return openFileAsString(NOpenFileUtil.topologyFileFolder, filename);
+    public static String openTopologyJSONFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.topologyJSONFolder, filename);
     }
     
     /**
@@ -227,8 +235,8 @@ public class NOpenFileUtil {
      * @param filename
      * @return
      */
-    public static String openOWLFileAsString(String filename){
-    	return openFileAsString(NOpenFileUtil.owlFileFolder, filename);
+    public static String openEquipmentOWLFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.equipmentOWLFolder, filename);
     }
 	
     /**
