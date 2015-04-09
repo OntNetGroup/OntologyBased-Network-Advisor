@@ -30,6 +30,16 @@ public class ITUStudioController {
 		return NOpenQueries.getLayerNames();
 	}
 	
+	/** Get layer names given a technology
+	 * @param techName
+	 * @return
+	 */
+	@RequestMapping(value = "/techLayers", method = RequestMethod.POST)
+	public @ResponseBody String[] getLayerNames(@RequestParam("techName") String techName) 
+	{
+		return NOpenQueries.getLayerNames(techName);
+	}
+	
 	/* ----- CRUD for Container ----- */
 	
 	/** Insere um container no card

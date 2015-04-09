@@ -1,3 +1,25 @@
+function getLayerNames(techName) {
+
+	var result = "error";
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "techLayers.htm",
+		data: {
+			'techName': techName
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+};
+
 function insertContainer(containerName, containerType, cardID) {
 
 	var result = "error";

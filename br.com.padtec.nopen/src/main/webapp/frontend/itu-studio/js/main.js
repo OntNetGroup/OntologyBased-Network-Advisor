@@ -7,6 +7,7 @@ var Rappid = Backbone.Router.extend({
 	 * Porém, com esta variável de controle isso não ocorre. 
 	*/
 	isAddingTransportFunction: false,
+    technology : 'OTN',
 	
     routes: {
         '*path': 'home'
@@ -223,9 +224,28 @@ var Rappid = Backbone.Router.extend({
         }
     },
 
+    initializeLayers: function() {
+    	var techName = this.technology;
+    	var layerNames = getLayerNames(techName);
+    	
+    	_.each(layerNames, function(layerName, index){
+    		var layer = new Layer({
+    			subtype: layerName,
+    			attrs: {
+    				'.': { magnet: false },
+    				'.header': { fill: '#5799DA' }
+    			},
+    			lanes: { label: layerName }
+    		});
+    		Stencil.shapes.layers[index] = layer;
+    	});
+    },
+    
     // Create and populate stencil.
     initializeStencil: function() {
 
+    	this.initializeLayers();
+    	
         this.stencil = new joint.ui.Stencil({
             graph: this.graph,
             paper: this.paper,

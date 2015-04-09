@@ -16,7 +16,7 @@ Layer = joint.dia.Element.extend({
         subtype: '',
         size: {
             width: 800,
-            height: 300
+            height: 400
         },
         attrs: {
             '.body': {
