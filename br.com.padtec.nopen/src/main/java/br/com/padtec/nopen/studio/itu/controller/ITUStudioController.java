@@ -75,7 +75,7 @@ public class ITUStudioController {
 	
 	/* ----- CRUD for Transport Function ----- */
 	
-	/** Cria um tranport function sobre uma camada ou diretamente sobre o card
+	/** Cria um transport function sobre uma camada ou diretamente sobre o card
 	 * @param transportFunction
 	 * @param container
 	 * @param card 
@@ -98,114 +98,139 @@ public class ITUStudioController {
 		return "success";
 	}
 		
-	/** Verifica se é possível criar o tranport function
-	 * @param tFunctionID: identificador do transport function a ser criado
-	 * @param tFunctionType: tipo do transport function a ser criado (e.g., TTF, AF etc.)
-	 * @param containerName: nome do container sobre a qual o transport function deve ser criado
-	 * @param containerType: tipo do container sobre a qual o transport function deve ser criado
-	 * @param cardID: identificador do card 
+	/** Verifica se é possível criar o transport function sobre uma camada ou diretamente sobre o card
+	 * @param transportFunction
+	 * @param container
+	 * @param card 
 	 * @return
 	 */
 	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String canCreateTransportFunction(	@RequestParam("tFunctionID") String tFunctionID, @RequestParam("tFunctionType") String tFunctionType,
-	@RequestParam("containerName") String containerName, @RequestParam("containerType") String containerType, @RequestParam("cardID") String cardID)
+	public @ResponseBody String canCreateTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container,
+	@RequestParam("card") String card)
 	{
-		boolean success = StudioFactory.canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);		
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		
+//		TODO: boolean success = StudioFactory.canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
+		boolean success = true; //TODO: remover
 		if(success) return "true";
 		else return "false";
 	}
 	
-	/** Remove o transport function cujo identificador é id
-	 * @param id: identificador do transport function a ser deletado
-	 * @return: success or error
+	/** Remove um transport function
+	 * @param transportFunction
+	 * @return
 	 */
 	@RequestMapping(value = "/deleteTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String deleteTransportFunction(@RequestParam("id") String id) 
+	public @ResponseBody String deleteTransportFunction(@RequestParam("transportFunction") String transportFunction) 
 	{	
-		boolean success = StudioFactory.deleteTransportFunction(id);		
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+		
+//		TODO: boolean success = StudioFactory.deleteTransportFunction(id);
+		boolean success = true; //TODO: remover
 		if(success) return "success";
 		else return "failed";
 	}
 		
 	/** Troca ou retira (container=null) o container do transport function
-	 * @param tFunctionID: identificador do transport function que terá container será trocado
-	 * @param containerName: nome do novo container do transport function (can be null)
-	 * @param containerType: tipo do novo container do transport function (can be null)
-	 * @param cardID: identificador do card
+	 * @param transportFunction
+	 * @param container
+	 * @param card 
 	 * @return
 	 */
 	@RequestMapping(value = "/changeContainer", method = RequestMethod.POST)
-	public @ResponseBody String changeContainer(@RequestParam("tFunctionID") String tFunctionID, @RequestParam("containerName") String containerName,
-	@RequestParam("containerType") String containerType, @RequestParam("cardID") String cardID) 
+	public @ResponseBody String changeContainer(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container,
+	@RequestParam("card") String card) 
 	{
-		boolean success = StudioFactory.changeContainer(tFunctionID, containerName, containerType, cardID);		
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		boolean success = true; //TODO: remover
+//		TODO: boolean success = StudioFactory.changeContainer(tFunctionID, containerName, containerType, cardID);		
 		if(success) return "success";
 		else return "failed";
 	}
 		
 	/* ----- CRUD for port ----- */
 	
-	/** Cria uma porta (interface) de entrada ou saída conectada a transportFunctionID
-	 * @param portID: identificador da porta a ser criada
-	 * @param transportFunctionID: id do transport function no qual a porta será conectada
-	 * @return: success or error
+	/** Cria uma porta (interface) de entrada ou saída conectada a um transport function
+	 * @param port
+	 * @param transportFunction
+	 * @return
 	 */
 	@RequestMapping(value = "/createPort", method = RequestMethod.POST)
-	public @ResponseBody String createPort(@RequestParam("portID") String portID, @RequestParam("transportFunctionID") String transportFunctionID) 
+	public @ResponseBody String createPort(@RequestParam("port") String port, @RequestParam("transportFunction") String transportFunction) 
 	{		
-		boolean success = StudioFactory.createPort(portID, transportFunctionID);		
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
+		boolean success = true; //TODO: remover
+//		TODO: boolean success = StudioFactory.createPort(portID, transportFunctionID);		
 		if(success) return "success";
 		else return "failed";
 	}
 		
 	/** Remove uma porta (interface) de entrada ou saída
-	 * @param id: identificador da porta a ser deletada
-	 * @return: success or error
+	 * @param port
+	 * @return
 	 */
 	@RequestMapping(value = "/deletePort", method = RequestMethod.POST)
-	public @ResponseBody String deletePort(@RequestParam("id") String id) 
+	public @ResponseBody String deletePort(@RequestParam("port") String port) 
 	{
-		boolean success = StudioFactory.deletePort(id);		
+		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
+//		TODO: boolean success = StudioFactory.deletePort(id);
+		boolean success = true; //TODO: remover
 		if(success) return "success";
 		else return "failed";	
 	}
 	
 	/* ----- CRUD for link ----- */
 	
-	/** Cria uma conexão entre sourceTFunctionID e targetTFunctionID
-	 * @param sourceTFunctionID
-	 * @param targetTFunctionID
-	 * @return: id do link criado or error
+	/** Cria uma conexão entre sourceTFunction e targetTFunction
+	 * @param sourceTFunction
+	 * @param targetTFunction
+	 * @param link
+	 * @return
 	 */
 	@RequestMapping(value = "/createLink", method = RequestMethod.POST)
-	public @ResponseBody String createLink(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) 
+	public @ResponseBody String createLink(@RequestParam("sourceTFunction") String sourceTFunction, @RequestParam("targetTFunction") String targetTFunction,
+	@RequestParam("link") String link) 
 	{
-		boolean success = StudioFactory.createLink(sourceTFunctionID,targetTFunctionID);		
+		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
+		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
+		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
+		boolean success = true; //TODO: remover
+//		TODO: boolean success = StudioFactory.createLink(sourceTFunctionID,targetTFunctionID);		
 		if(success) return "success";
 		else return "failed";
 	}
 	
-	/** Verifica se é possível criar uma conexão entre sourceTFunctionID e targetTFunctionID
-	 * @param sourceTFunctionID
-	 * @param targetTFunctionID
+	/** Verifica se é possível criar uma conexão entre sourceTFunction e targetTFunction
+	 * @param sourceTFunction
+	 * @param targetTFunction
 	 * @return
 	 */
 	@RequestMapping(value = "/canCreateLink", method = RequestMethod.POST)
-	public @ResponseBody String canCreateLink(@RequestParam("sourceTFunctionID") String sourceTFunctionID, @RequestParam("targetTFunctionID") String targetTFunctionID) 
+	public @ResponseBody String canCreateLink(@RequestParam("sourceTFunction") String sourceTFunction, @RequestParam("targetTFunction") String targetTFunction) 
 	{		
-		boolean success = StudioFactory.canCreateLink(sourceTFunctionID,targetTFunctionID);		
+		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
+		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
+		boolean success = true; //TODO: remover
+//		TODO: boolean success = StudioFactory.canCreateLink(sourceTFunctionID,targetTFunctionID);		
 		if(success) return "true";
 		else return "false";
 	}
 	
 	/** Remove uma conexão
-	 * @param id: identificador do link a ser deletado
+	 * @param link: identificador do link a ser deletado
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/deleteLink", method = RequestMethod.POST)
-	public @ResponseBody String deleteLink(@RequestParam("id") String id) 
-	{		
-		boolean success =  StudioFactory.deleteLink(id);		
+	public @ResponseBody String deleteLink(@RequestParam("link") String link) 
+	{
+		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
+		boolean success = true; //TODO: remover
+//		TODO: boolean success =  StudioFactory.deleteLink(id);		
 		if(success) return "success";
 		else return "failed";	
 	}

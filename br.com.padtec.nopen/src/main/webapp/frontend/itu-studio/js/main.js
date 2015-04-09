@@ -764,12 +764,13 @@ var Rappid = Backbone.Router.extend({
         this.validator.validate('change:target change:source add', this.isLink, _.bind(function(err, command, next) {
         	
         	// TODO: validar a troca de target e de source (quando o usuário arrasta uma das pontas da 'seta')
-        	var link = this.graph.getCell(command.data.id).toJSON();
+        	var linkID = command.data.id;
+        	var link = this.graph.getCell(linkID).toJSON();
         	var sourceTFunctionID = link.source.id;
             var targetTFunctionID = link.target.id;
             
             if (sourceTFunctionID && targetTFunctionID) {
-            	var result = createLink(sourceTFunctionID, targetTFunctionID);
+            	var result = createLink(sourceTFunctionID, targetTFunctionID, linkID);
             	
             	if(result === "success") {
 					return next(err);
