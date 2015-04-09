@@ -104,6 +104,7 @@
 	}
 	a.navbar-brand {
 		width: 18.422%;
+		min-width: 200px;
 	}	
 
 </style>
