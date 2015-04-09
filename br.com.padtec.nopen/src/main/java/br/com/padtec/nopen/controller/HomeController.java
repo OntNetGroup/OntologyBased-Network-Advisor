@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.nopen.model.NOpenQueries;
 import br.com.padtec.nopen.service.NOpenInitializer;
+import br.com.padtec.nopen.service.util.NOpenQueries;
 
 @Controller
 public class HomeController {

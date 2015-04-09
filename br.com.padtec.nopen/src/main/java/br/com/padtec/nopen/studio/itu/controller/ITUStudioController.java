@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.model.DtoJointElement;
-import br.com.padtec.nopen.model.NOpenQueries;
+import br.com.padtec.nopen.service.util.NOpenQueries;
 import br.com.padtec.nopen.studio.model.StudioFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
 

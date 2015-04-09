@@ -1,6 +1,8 @@
-package br.com.padtec.nopen.model;
+package br.com.padtec.nopen.service.util;
 
 import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.nopen.model.ConceptEnum;
+import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class NOpenFactory {

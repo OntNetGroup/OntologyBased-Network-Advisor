@@ -31,18 +31,25 @@ public class StudioFactory {
 	public static void createTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
 	{
 		String tfType = dtoTransportFunction.getType();
+		
 		String tfName = dtoTransportFunction.getName();
+		if(tfName==null) tfName = "UnNamed";
+		
 		String containerType = dtoContainer.getType();
 		String containerName = dtoContainer.getName();
+		if(containerName==null) containerName = "UnNamed";
 		
-		System.out.println(tfType);
-		System.out.println(tfName);
-		System.out.println(containerType);
-		System.out.println(containerName);		
+		if(tfType.equals("TTF")) createTTF(tfName);
+		if(tfType.equals("AF")) createTTF(tfName);
+		 
+		System.out.println("Transport Function: "+tfName+":"+tfType);
+		System.out.println("Container: "+containerName+":"+containerType);				
 	}
 		
 	public static boolean createPort(String portID, String transportFunctionID) 
 	{
+		
+		
 		return true;
 	}
 

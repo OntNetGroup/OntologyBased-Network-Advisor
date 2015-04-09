@@ -1,4 +1,4 @@
-package br.com.padtec.nopen.model;
+package br.com.padtec.nopen.service.util;
 
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +13,8 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.nopen.model.ConceptEnum;
+import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 
 public class NOpenQueries {
