@@ -129,15 +129,15 @@ var Rappid = Backbone.Router.extend({
             	console.log('validate connection');
             	if(!linkView) return false;
             	
-            	/* Prevent linking to ports already being used */
-        		var portUsed = _.find(this.model.getLinks(), function(link) {
-
-    				return ((link.id !== linkView.model.id &&
-    						link.get('target').id === cellViewT.model.id));
-        		});
-        		
-        		// if (portUsed) return false; -> doesn't work!
-        		if (!portUsed) {} else return false;
+//            	/* Prevent linking to transport functions already being used */
+//        		var transportFunctionUsed = _.find(this.model.getLinks(), function(link) {
+//
+//    				return ((link.id !== linkView.model.id &&
+//    						link.get('target').id === cellViewT.model.id));
+//        		});
+//        		
+//        		// if (portUsed) return false; -> doesn't work!
+//        		if (!transportFunctionUsed) {} else return false;
         		
         		// Prevent loop linking
         		if(cellViewS === cellViewT) return false;
@@ -223,23 +223,6 @@ var Rappid = Backbone.Router.extend({
             });
         }
     },
-
-    initializeLayers: function() {
-    	var techName = this.technology;
-    	var layerNames = getLayerNames(techName);
-    	
-    	_.each(layerNames, function(layerName, index){
-    		var layer = new Layer({
-    			subtype: layerName,
-    			attrs: {
-    				'.': { magnet: false },
-    				'.header': { fill: '#5799DA' }
-    			},
-    			lanes: { label: layerName }
-    		});
-    		Stencil.shapes.layers[index] = layer;
-    	});
-    },
     
     // Create and populate stencil.
     initializeStencil: function() {
@@ -287,6 +270,23 @@ var Rappid = Backbone.Router.extend({
         $('.stencil-container .btn-collapse').on('click', _.bind(this.stencil.closeGroups, this.stencil));
 
         this.initializeStencilTooltips();
+    },
+
+    initializeLayers: function() {
+    	var techName = this.technology;
+    	var layerNames = getLayerNames(techName);
+    	
+    	_.each(layerNames, function(layerName, index){
+    		var layer = new Layer({
+    			subtype: layerName,
+    			attrs: {
+    				'.': { magnet: false },
+    				'.header': { fill: '#5799DA' }
+    			},
+    			lanes: { label: layerName }
+    		});
+    		Stencil.shapes.layers[index] = layer;
+    	});
     },
 
     initializeStencilTooltips: function() {
@@ -787,7 +787,10 @@ var Rappid = Backbone.Router.extend({
         // validar inserção de links no grafo
         this.validator.validate('change:target change:source add', this.isLink, _.bind(function(err, command, next) {
         	
-        	// TODO: validar a troca de target e de source (quando o usuário arrasta uma das pontas da 'seta')
+        	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
+        	if(command.action === 'change:source') return next('Invalid operation!');
+        	if(command.data.previous.target.id) return next('Invalid operation!');
+        	
         	var linkID = command.data.id;
         	var link = this.graph.getCell(linkID).toJSON();
         	var sourceTFunctionID = link.source.id;
