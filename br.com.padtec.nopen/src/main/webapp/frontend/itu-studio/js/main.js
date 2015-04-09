@@ -154,11 +154,11 @@ var Rappid = Backbone.Router.extend({
         		console.log('validate embedding');
         		
         		// se alguma interface tenta ser colocada sobre algum elemento
-        		if(parentView.model === this.barIn) {
-        			if(childView.model.get('subtype') !== 'in') return false;
+        		if(childView.model.get('subtype') === 'in') {
+        			if(parentView.model !== this.barIn) return false;
         		}
-        		if(parentView.model === this.barOut) {
-        			if(childView.model.get('subtype') !== 'out') return false;
+        		if(childView.model.get('subtype') === 'out') {
+        			if(parentView.model !== this.barOut) return false;
         		}
         		
         		return true;
@@ -774,6 +774,10 @@ var Rappid = Backbone.Router.extend({
             var targetTFunctionID = link.target.id;
             
             if (sourceTFunctionID && targetTFunctionID) {
+            	var targetTFunction = this.graph.getCell(targetTFunctionID);
+            	var targetTFunctionSubtype = targetTFunction.get('subtype');
+            	if(targetTFunctionSubtype === 'in' || targetTFunctionSubtype === 'out') return next(err);
+            	
             	var result = createLink(sourceTFunctionID, targetTFunctionID, linkID);
             	
             	if(result === "success") {
@@ -815,46 +819,7 @@ var Rappid = Backbone.Router.extend({
 				}
 			});
 			
-			if(cellSubType === 'out' || cellSubType === 'in') { // elemento é uma porta
-				
-//				if(parent) { // existe algum elemento abaixo
-//					var parentType = parent.get('type');
-//					
-//					if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
-//
-//						var portID = cell.id;
-//						var transportFunctionID = parent.id;
-//						console.log('try to create port ' +portID+ ' of TF ' +transportFunctionID);
-//						var result = createPort(portID, transportFunctionID);
-//						
-//						if(result === "success") {
-//						
-//							var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: cell.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
-//			    			this.graph.addCell(newLink);
-//			    			
-//			    			// Move the port to the superior (in port) or inferior (out port) bar
-//			    			if(cellType === 'basic.Circle') {
-//			    				cell.transition('position/y', 15, {});
-//			    				this.barIn.embed(cell);
-//			    			}
-//			    			else {
-//			    				cell.transition('position/y', 955, {});
-//			    				this.barOut.embed(cell);
-//			    			}
-//			    			
-//							return next(err);
-//						} else {
-//							return next(result);
-//						}
-//					} else { // elemento abaixo é uma camada 
-//						return next('Please, add the port over a transport function.');
-//					}
-//					
-//				} else { // nenhum elemento abaixo
-//					return next('Please, add the port over a transport function.');
-//				}
-			
-			} else if(cellType === 'bpmn.Pool') { // elemento é uma camada
+			if(cellType === 'bpmn.Pool') { // elemento é uma camada
 				
 				if(parent) { // existe elemento abaixo
 					return next('Another element in the way!');
