@@ -664,9 +664,11 @@ var Rappid = Backbone.Router.extend({
 					if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
 
 						var portID = cell.id;
+						var portName = 'a name'; // TODO: get name
+						var portType = cellSubType;
 						var transportFunctionID = parent.id;
 						console.log('try to create port ' +portID+ ' of TF ' +transportFunctionID);
-						var result = createPort(portID, transportFunctionID);
+						var result = createPort(portID, portName, portType, transportFunctionID)
 						
 						if(result === "success") {
 						
@@ -674,7 +676,7 @@ var Rappid = Backbone.Router.extend({
 			    			this.graph.addCell(newLink);
 			    			
 			    			// Move the port to the superior (in port) or inferior (out port) bar
-			    			if(cellType === 'basic.Circle') {
+			    			if(cellSubType === 'in') {
 			    				cell.transition('position/y', 15, {});
 			    				this.barIn.embed(cell);
 			    			}
@@ -721,13 +723,14 @@ var Rappid = Backbone.Router.extend({
 					
 					if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
 						var tFunctionID = cell.id;
+						var tFunctionName = 'a name'; //TODO get name
 						var tFunctionType = cell.get('subtype');
 						var containerName = parent.get('subtype');
 						var containerType = 'layer';
 						var cardID = this.cardID; // TODO: get cardID
 						console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ ' on layer ' +containerName+ ' inside card ' +cardID);
 						
-						var result = createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
+						var result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
 						
 						if(result === "success") {	
 							this.isAddingTransportFunction = true;
@@ -743,12 +746,13 @@ var Rappid = Backbone.Router.extend({
 				} else { // não existe elemento abaixo
 					// consultar ontologia para inserção de transport function diretamente no card
 					var tFunctionID = cell.id;
+					var tFunctionName = 'a name'; //TODO get name
 					var tFunctionType = cell.get('subtype');
 					var containerName = '';
 					var containerType = '';
 					var cardID = this.cardID; // TODO: get cardID
 					console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ 'on layer ' +containerName+ ' inside card ' +cardID);
-					var result = createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
+					var result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
 					
 					if(result === "success") {
 						return next(err);

@@ -63,12 +63,13 @@ function deleteContainer(containerName, containerType, cardID) {
 	return result;
 };
 
-function createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID) {
+function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID) {
 
 	var result = "error";
 
 	var dtoTransportFunction = {
 			"id" : tFunctionID,
+			"name": tFunctionName,
 			"type" : tFunctionType
 	}
 	
@@ -207,7 +208,7 @@ function createPort(portID, portName, portType, transportFunctionID) {
 	var result;
 
 	var dtoTransportFunction = {
-			"id" : tFunctionID
+			"id" : transportFunctionID
 	}
 	
 	var dtoPort = {
@@ -283,9 +284,9 @@ function createLink(sourceTFunctionID, targetTFunctionID, linkID) {
 		async: false,
 		url: "createLink.htm",
 		data: {
-			'sourceTFunction': dtoSourceTFunction,
-			'targetTFunction': dtoTargetTFunction,
-			'link': dtoLink
+			'sourceTFunction': JSON.stringify(dtoSourceTFunction),
+			'targetTFunction': JSON.stringify(dtoTargetTFunction),
+			'link': JSON.stringify(dtoLink)
 		},
 		success: function(data){ 		   
 			result = data;
@@ -315,8 +316,8 @@ function canCreateLink(sourceTFunctionID, targetTFunctionID) {
 		async: false,
 		url: "canCreateLink.htm",
 		data: {
-			'sourceTFunction': dtoSourceTFunction,
-			'targetTFunction': dtoTargetTFunction
+			'sourceTFunction': JSON.stringify(dtoSourceTFunction),
+			'targetTFunction': JSON.stringify(dtoTargetTFunction)
 		},
 		success: function(data){
 			result = data;
@@ -343,7 +344,7 @@ function deleteLink(id) {
 		async: false,
 		url: "deleteLink.htm",
 		data: {
-			'link': dtoLink
+			'link': JSON.stringify(dtoLink)
 		},
 		success: function(data){ 		   
 			result = data;

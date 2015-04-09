@@ -90,7 +90,7 @@ public class ITUStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);		
 
 		try{
-			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer, dtoCard);
+//			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer, dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -199,6 +199,7 @@ public class ITUStudioController {
 		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
 		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
+		System.out.println("create link");
 		boolean success = true; //TODO: remover
 //		TODO: boolean success = StudioFactory.createLink(sourceTFunctionID,targetTFunctionID);		
 		if(success) return "success";
@@ -216,7 +217,7 @@ public class ITUStudioController {
 		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
 		boolean success = true; //TODO: remover
-//		TODO: boolean success = StudioFactory.canCreateLink(sourceTFunctionID,targetTFunctionID);		
+//		TODO: boolean success = StudioFactory.canCreateLink(sourceTFunctionID,targetTFunctionID);
 		if(success) return "true";
 		else return "false";
 	}
