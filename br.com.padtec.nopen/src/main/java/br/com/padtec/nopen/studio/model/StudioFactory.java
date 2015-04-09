@@ -1,11 +1,11 @@
 package br.com.padtec.nopen.studio.model;
 
 import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
-import br.com.padtec.nopen.model.RelationEnum;
+import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
-import br.com.padtec.common.queries.QueryUtil;
 
 
 public class StudioFactory {
@@ -24,37 +24,21 @@ public class StudioFactory {
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+afName, 
-			StudioComponents.studioRepository.getNamespace()+ConceptEnum.TTF.toString()
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.AF.toString()
 		);
 	}
 	
-	public static boolean createTransportFunction(String tFunctionID,String tFunctionType,String containerName,String containerType, String cardID)
+	public static void createTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
 	{
-		if(tFunctionType.equals("ttf"))
-		{
-			if(containerType!=null && containerType.equals("layer"))
-			{		
-				//create ttf
-				createTTF(tFunctionID);
-
-				//create link tFunctionID -> containerName
-				FactoryUtil.createInstanceRelation(
-					StudioComponents.studioRepository.getBaseModel(), 
-					StudioComponents.studioRepository.getNamespace()+tFunctionID, 
-					StudioComponents.studioRepository.getNamespace()+RelationEnum.APPLIES.toString(), 
-					StudioComponents.studioRepository.getNamespace()+containerName
-				);
-			}
-			
-			System.out.println("Card: "+cardID+" - Transport Function \""+tFunctionID+"\":"+tFunctionType+" created at Container \""+containerName+"\":"+containerType);
-		}
-		if(tFunctionType.equals("af"))
-		{
-			createAF(tFunctionID);				
-			System.out.println("Card: "+cardID+" - Transport Function \""+tFunctionID+"\":"+tFunctionType+" created at Container \""+containerName+"\":"+containerType);
-		}
+		String tfType = dtoTransportFunction.getType();
+		String tfName = dtoTransportFunction.getName();
+		String containerType = dtoContainer.getType();
+		String containerName = dtoContainer.getName();
 		
-		return true;
+		System.out.println(tfType);
+		System.out.println(tfName);
+		System.out.println(containerType);
+		System.out.println(containerName);		
 	}
 		
 	public static boolean createPort(String portID, String transportFunctionID) 
@@ -67,14 +51,14 @@ public class StudioFactory {
 		return true;
 	}
 
-	public static boolean insertContainer(String containerName, String containerType, String cardID) 
+	public static void insertContainer(DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception 
 	{		
-		return true;
+		//TODO
 	}
 
-	public static boolean deleteContainer(String containerName, String containerType, String cardID) 
+	public static void deleteContainer(DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
 	{	
-		return true;
+		//TODO
 	}
 
 	public static boolean canCreateTransportFunction(String tFunctionID, String tFunctionType, String containerName, String containerType, String cardID) 
