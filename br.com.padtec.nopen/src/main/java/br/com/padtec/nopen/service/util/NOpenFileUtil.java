@@ -98,6 +98,20 @@ public class NOpenFileUtil {
 	}
 	
 	/**
+	 * Procedure to check if equipment file already exist in repository.
+	 * @param filename
+	 * @return
+	 */
+	private static Boolean checkEquipmentFileExist(String filename){
+		
+		if(NOpenFileUtil.checkFileExist(NOpenFileUtil.equipmentJSONFolder + filename)){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Generic procedure to check if file already exist in repository.
 	 * @param filename
 	 * @return
@@ -128,6 +142,15 @@ public class NOpenFileUtil {
 	 */
 	public static File createTopologyJSONFile(String filename){
 		return createFile(NOpenFileUtil.topologyJSONFolder, filename + ".json");
+	}
+	
+	/**
+	 * Procedure for create a Equipment JSON file.
+	 * @param filename 
+	 * @return
+	 */
+	public static File createEquipmentJSONFile(String filename){
+		return createFile(NOpenFileUtil.equipmentJSONFolder, filename + ".json");
 	}
 
 	/** 
@@ -234,6 +257,15 @@ public class NOpenFileUtil {
      */
     public static String openTopologyJSONFileAsString(String filename){
     	return openFileAsString(NOpenFileUtil.topologyJSONFolder, filename);
+    }
+    
+    /**
+     * Procedure to open an equipment file as String.
+     * @param filename
+     * @return
+     */
+    public static String openEquipmentJSONFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.equipmentJSONFolder, filename);
     }
     
     /**

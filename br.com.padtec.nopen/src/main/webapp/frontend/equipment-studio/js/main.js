@@ -161,13 +161,13 @@ var Rappid = Backbone.Router.extend({
 					}else{
 						console.log('A ordem está errada');
 					}
-					
+
 				}else{
 					if(parent.get('subType') === 'shelf'){
 						// selecionar o rack
 						var grandparentId = parent.get('parent');
 						if (!grandparentId) return;
-						
+
 						var grandparent = this.graph.getCell(grandparentId);
 
 						var newpositiony = pposition.y + 7;
@@ -189,7 +189,7 @@ var Rappid = Backbone.Router.extend({
 								x: nempositionx,
 								y: newpositiony
 							});
-							
+
 							if (grandparent.get('size').width < parent.get('size').width){
 								grandparent.set ('size' , {
 									width: grandparent.get('size').width + 100 ,
@@ -199,7 +199,7 @@ var Rappid = Backbone.Router.extend({
 						}else{
 							console.log("A ordem está errada");
 						}
-						
+
 					}else {
 						if(parent.get('subType') === 'slot'){
 							var increasew = (psize.width + 20 ) ;
@@ -276,11 +276,11 @@ var Rappid = Backbone.Router.extend({
 						width: 120 + ((parent.getEmbeddedCells().length - (2) ) * 70) ,
 						height:	parent.get('size').height});
 
-                    grandparent.set('size', {
-                    	width: grandparent.get('size').width ,
-                    	height: grandparent.get('size').height
-                    });				
-					
+					grandparent.set('size', {
+						width: grandparent.get('size').width ,
+						height: grandparent.get('size').height
+					});				
+
 
 				}else{
 					if(parent.get('subType') === 'slot'){
@@ -288,18 +288,18 @@ var Rappid = Backbone.Router.extend({
 						if (!grandparentId) return;
 
 						var grandparent = this.graph.getCell(grandparentId);
-						
+
 						parent.set('size' , {
 							width: 22.5 ,
 							height: 52.5
 						});
-						
+
 //						grandparent.set('size', {
-//							width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 70),
-//							height: grandparent.get('size').height
+//						width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 70),
+//						height: grandparent.get('size').height
 //						})
-//						
-						
+
+
 
 					}if(parent.get('subType') === 'card' || 'supervisor' ) {
 
@@ -440,7 +440,83 @@ var Rappid = Backbone.Router.extend({
 				console.log(a);
 				console.log(JSON.stringify(a));
 
-			}
+				function generateSaveEquipmentDialog(graph){
+
+					dialog = $("#save-dialog").dialog({
+						autoOpen: false,
+						height: 180,
+						width: 350,
+						modal: true,
+						buttons: { 
+							"Save": checkGenericFile,  
+							Cancel: function() {
+								dialog.dialog( "close" );
+							}
+						},
+						close: function() { }
+					});
+
+					$("#save-dialog").dialog("open");
+
+					function checkEquipmentFile(){
+
+						if($("#save-filename").val() == ""){
+							alert("File name cannot be empty!")
+						}
+						else{
+							$.ajax({
+								type: "POST",
+								url: "checkEquipmentFile.htm",
+								data: {
+									'filename': $("#save-filename").val(),
+								},
+								success: function(data){ 		   
+
+									if(data == "exist"){		   
+										if (confirm('The file already exist, do you want to replace it?')) {
+											saveEquipment();
+										} 
+									}
+									else{
+										saveEquipment();
+									}
+								},
+								error : function(e) {
+									alert("error: " + e.status);
+									$("#save-dialog").dialog("close");
+								}
+							});
+						}
+
+					};
+
+
+					function saveEquipment(){
+
+						$.ajax({
+							type: "POST",
+							url: "saveEquipment.htm",
+							data: {
+								'filename': $("#save-filename").val(),
+								'graph': (JSON.stringify(a)),
+							},
+							success: function(){ 		   
+								alert($("#save-filename").val() + ' saved successfully!');
+								$("#save-dialog").dialog("close");
+							},
+							error : function(e) {
+								alert("error: " + e.status);
+								$("#save-dialog").dialog("close");
+							}
+						});
+
+
+					};
+
+				}
+
+			}	
+
 		},this);
 
 
