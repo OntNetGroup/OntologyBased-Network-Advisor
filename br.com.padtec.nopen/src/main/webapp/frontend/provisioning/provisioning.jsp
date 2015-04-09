@@ -30,11 +30,7 @@
     </head>
     <body>
         
-        
         <!-- TEMPLATES -->
-
-        
-		<h1 style="margin-top:40px;">Provisioning</h1>
 		
        	<%@include file="templates/header.jsp"%>
         <%@include file="templates/toolbar.jsp"%>

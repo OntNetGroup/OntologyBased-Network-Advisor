@@ -3,6 +3,7 @@
    border-right: 1px solid lightgray;
    background-color: hsla(220,11%,97%,.95);
    color: #bcbcbc;
+   margin-top: -40px;
 }
 .stencil-container > label {
    display: block;

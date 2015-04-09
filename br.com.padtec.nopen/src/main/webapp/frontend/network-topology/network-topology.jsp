@@ -32,9 +32,6 @@
         
         
         <!-- TEMPLATES -->
-
-        
-		
 		
        	<%@include file="templates/header.jsp"%>
         <%@include file="templates/toolbar.jsp"%>
