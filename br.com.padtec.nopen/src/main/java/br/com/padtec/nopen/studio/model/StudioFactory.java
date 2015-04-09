@@ -15,7 +15,7 @@ public class StudioFactory {
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+ttfName, 
-			StudioComponents.studioRepository.getNamespace()+ConceptEnum.TTF.toString()
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.TRAIL_TERMINATION_FUNCTION.toString()
 		);
 	}
 	
@@ -24,7 +24,7 @@ public class StudioFactory {
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+afName, 
-			StudioComponents.studioRepository.getNamespace()+ConceptEnum.AF.toString()
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.ADAPTATION_FUNCTION.toString()
 		);
 	}
 	

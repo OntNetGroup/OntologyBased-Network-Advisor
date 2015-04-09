@@ -22,6 +22,12 @@ public class NOpenFileUtil {
 	// OWL
 	public static String owlFileFolder;
 	
+	public static String convertStreamToString(java.io.InputStream is) 
+	{
+	    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+	    return s.hasNext() ? s.next() : "";
+	}
+	
 	/**
 	 * Procedure to set the NOpen Folders Path.
 	 * @param path
@@ -106,7 +112,7 @@ public class NOpenFileUtil {
 	public static File createOWLFile(String filename){
 		return createFile(NOpenFileUtil.owlFileFolder, filename + ".owl");
 	}
-	
+		
 	/**
 	 * Procedure for create a Topology JSON file.
 	 * @param filename 
@@ -122,7 +128,7 @@ public class NOpenFileUtil {
 	 * @param filename
 	 * @return
 	 */
-    private static File createFile (String path, String filename) 
+    public static File createFile (String path, String filename) 
     {    	
 		File file = new File(path + filename);		
 		if (!file.exists()) {			

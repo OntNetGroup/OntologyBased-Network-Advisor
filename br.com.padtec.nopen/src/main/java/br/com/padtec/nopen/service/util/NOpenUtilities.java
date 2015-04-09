@@ -43,34 +43,4 @@ public class NOpenUtilities {
 		return error;
 	}	
 	
-	public static String uploadTBOx(String path, boolean runReasoner, OKCoUploader repository)
-	{				
-		repository.setIsReasonOnLoading(runReasoner);
-		repository.setReasoner(new HermitReasonerImpl());
-		String error = new String();
-		try{						
-			repository.uploadBaseModel(path,repository.isReasonOnLoading() ? "on" : "off", (repository.getReasoner() instanceof HermitReasonerImpl) ? "hermit" : "pellet");			
-			
-		}catch (InconsistentOntologyException e){
-			error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";						
-			repository.rollBack(false);			
-		}catch (OKCoExceptionInstanceFormat e){			
-			error = "Entity format error: " + e.getMessage();			
-			repository.clear();			
-		}catch (IOException e){
-			error = "File not found.";			
-			repository.clear();				
-		}catch (OKCoExceptionNameSpace e){			
-			error = "File namespace error: " + e.getMessage();			
-			repository.clear();						
-		}catch (OKCoExceptionReasoner e){
-			error = "Reasoner error: " + e.getMessage();			
-			repository.clear();			
-		} catch (Exception e){
-			error = "Error: "+e.getLocalizedMessage();			
-			repository.clear();			
-		}		
-		return error;
-	}	
-
 }
