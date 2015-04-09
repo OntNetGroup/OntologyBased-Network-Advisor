@@ -49,7 +49,7 @@ var Rappid = Backbone.Router.extend({
 				this.inspector.updateCell();
 				this.commandManager.listen();
 				this.inspector.$('[data-attribute]:first').focus();
-                
+
 				//addshelf(args); | args -> "rack0" | "rack0","slot1"
 				console.log(cell.parent);
 				//var gambiMethod = "add"+subType+"("+args+");";
@@ -123,11 +123,10 @@ var Rappid = Backbone.Router.extend({
 
 
 			if(parent) {
-
 				//outros equipamentos conectados
 				var filhos = parent.getEmbeddedCells().length;
 				var soa = parent.getEmbeddedCells() ;
-
+				console.log(filhos);
 				//parent position and size
 				var pposition = parent.get('position');
 				var psize = parent.get('size');
@@ -158,94 +157,81 @@ var Rappid = Backbone.Router.extend({
 						x: newpositionx  ,
 						y: nempositiony 
 					});
-
 				}else{
-
 					if(parent.get('subType') === 'shelf'){
-
 						// selecionar o rack
 						var grandparentId = parent.get('parent');
 						if (!grandparentId) return;
-
+						
 						var grandparent = this.graph.getCell(grandparentId);
-						console.log(grandparent);
 
-						//aumento de tamanho do parent
-						var increasew = (psize.width + 80 ) ;
-						//console.log(increasew);
-
-						//reposicionamento da cell
-						var newpositiony = pposition.y + 7 ;
-						//console.log('nova posição da cell em y ' , newpositiony);
+						var newpositiony = pposition.y + 7;
 						var nempositionx;
 						if (parent.getEmbeddedCells().length === '0'){
 							nempositionx = pposition.x + 10;
-							//	console.log('nova posição da cell em x ' , nempositionx);
 						}else {
-							nempositionx = pposition.x + 20 + ((filhos) * (73));
-							//	console.log('nova posição da cell em x sendo o segundo ' , nempositionx);
+							nempositionx = pposition.x + 20 + ((filhos) * (75));
 						};
-
 						//parent resize , grandparent resize and cell new position
 						// Prototype : check order
 						parent.embed(cell);
 						this.embedOrConnect(parent, cell);
 
 						parent.set('size' , { 
-							width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 70) ,
+							width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 65) ,
 							height:	parent.get('size').height});
 
 						cell.set('position', {
 							x: nempositionx,
 							y: newpositiony
 						});
+						
 						if (grandparent.get('size').width < parent.get('size').width){
 							grandparent.set ('size' , {
-								width: parent.get('size').width + 60 ,
+								width: grandparent.get('size').width + 100 ,
 								height: grandparent.get('size').height
 							});
 						};
+					}else {
+						if(parent.get('subType') === 'slot'){
+							var increasew = (psize.width + 20 ) ;
+							var increaseh = (psize.height) ;
 
-					}if(parent.get('subType') === 'slot'){
+							//reposicionamento da cell
+							var newpositiony = pposition.y + 16 ;
+							var newpositionx;
+							if (parent.getEmbeddedCells().length === '0'){
+								newpositionx = pposition.x + 15;
+								console.log('nova posição da cell em x ' , newpositionx);
+							}else {
+								newpositionx = pposition.x + 15 + ((filhos) * (29));
+								console.log('nova posição da cell em x sendo o segundo ' , newpositionx);
+							};
 
-						//aumento de tamanho do parent
-						var increasew = (psize.width + 20 ) ;
-						//console.log(increasew);
-						var increaseh = (psize.height) ;
-						//console.log(increaseh);
-						//reposicionamento da cell
-						var newpositiony = pposition.y + 16 ;
-						//console.log('nova posição da cell em y ' , newpositiony);
-						var newpositionx;
-						if (parent.getEmbeddedCells().length === '0'){
-							newpositionx = pposition.x + 14;
-							//console.log('nova posição da cell em y ' , newpositionx);
-						}else {
-							newpositionx = pposition.x + 20 + ((filhos) * (29));
-							//console.log('nova posição da cell em y sendo o segundo ' , newpositionx);
-						};
+							// Se já possuir um card cancela;
+							console.log(parent.getEmbeddedCells().length);
+							if (parent.getEmbeddedCells().length === 1){
+								console.log("O slot já possui um card");
+							}else{
+								parent.embed(cell);
+								this.embedOrConnect(parent, cell);
 
-						//parent resize , grandparent resize and cell new position
-
-						// Prototype : check order
-						parent.embed(cell);
-						this.embedOrConnect(parent, cell);
-
-						parent.set('size' , { 
-							width: increasew  ,
-							height:	increaseh});
-						cell.set('size' , {
-							width: 12.5 ,
-							height: 20							
-						})
-						cell.set('position' , {
-							x : newpositionx ,
-							y : newpositiony
-						});
-
-					}else{
-						if(parent.get('subType') === 'card' || 'supervisor' ){
-							// configurar as portas de input e output quando sair do itu
+								parent.set('size' , { 
+									width: increasew  ,
+									height:	increaseh});
+								cell.set('size' , {
+									width: 12.5 ,
+									height: 20							
+								})
+								cell.set('position' , {
+									x : newpositionx ,
+									y : newpositiony
+								});
+							}
+						}else{
+							if(parent.get('subType') === 'card' || 'supervisor' ){
+								// configurar as portas de input e output quando sair do itu
+							}
 						}
 					}
 				}
@@ -278,9 +264,34 @@ var Rappid = Backbone.Router.extend({
 
 					var grandparent = this.graph.getCell(grandparentId);
 
+					parent.set('size' , { 
+						width: 120 + ((parent.getEmbeddedCells().length - (2) ) * 70) ,
+						height:	parent.get('size').height});
+
+                    grandparent.set('size', {
+                    	width: grandparent.get('size').width ,
+                    	height: grandparent.get('size').height
+                    });				
+					
 
 				}else{
 					if(parent.get('subType') === 'slot'){
+						var grandparentId = parent.get('parent');
+						if (!grandparentId) return;
+
+						var grandparent = this.graph.getCell(grandparentId);
+						
+						parent.set('size' , {
+							width: 22.5 ,
+							height: 52.5
+						});
+						
+//						grandparent.set('size', {
+//							width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 70),
+//							height: grandparent.get('size').height
+//						})
+//						
+						
 
 					}if(parent.get('subType') === 'card' || 'supervisor' ) {
 
@@ -420,7 +431,7 @@ var Rappid = Backbone.Router.extend({
 				var a = this.graph.toJSON();
 				console.log(a);
 				console.log(JSON.stringify(a));
-				
+
 			}
 		},this);
 
@@ -522,11 +533,11 @@ var Rappid = Backbone.Router.extend({
 
 
 //	openITUstudioView: function() {
-//
-//		this.paper.on('cell:pointerdblclick', function(evt, cellView, x, y) {
-//			console.log('hi there!');
-//		},this);
-//
+
+//	this.paper.on('cell:pointerdblclick', function(evt, cellView, x, y) {
+//	console.log('hi there!');
+//	},this);
+
 //	},
 
 	initializeSelection: function() {
@@ -1014,22 +1025,29 @@ var Rappid = Backbone.Router.extend({
 		if(parentsubType === 'rack' && childsubType === 'shelf') {
 			parent.embed(child);
 			console.log('embedded!parent suType: ' +parentsubType+ '; child subType: ' +childsubType);
-		} else {
+		}else{
 			if((parentsubType === 'shelf') && (childsubType === 'slot')) {
 				parent.embed(child);
 				console.log('embedded!parent suType: ' +parentsubType+ '; child subType: ' +childsubType);
 			}else{
-				if(parentsubType === 'slot' && (childsubType === 'card' || childsubType === 'supervisor')) {
+				if((parentsubType === 'slot') && (childsubType === 'card')) {
 					parent.embed(child);
 					console.log('embedded! parent suType: ' +parentsubType+ '; child subType: ' +childsubType);
 				}else {
-				}if((parentsubType === 'card' || parentsubType === 'supervisor' ) && (childsubType === 'in' || childsubType === 'out')) {
-					parent.embed(child);
-					console.log('embedded! parent suType: ' +parentsubType+ '; child subType: ' +childsubType);
-				}else{
-					parent.unembed(child);
+					if((parentsubType === 'slot') &&  (childsubType === 'supervisor')) {
+						parent.embed(child);
+						console.log('embedded! parent suType: ' +parentsubType+ '; child subType: ' +childsubType);
+					}else{
+						if((parentsubType === 'card') && (childsubType === 'in')){
+							parent.embed(child);
+							console.log('embedded! parent suType: ' +parentsubType+ '; child subType: ' +childsubType);
+						}else{
+							parent.unembed(child);
+							console.log("nao conectou!");	
+							//(childsubType === 'in' || childsubType === 'out')
+						}
+					}
 				}
-
 			}
 		}
 	}});
