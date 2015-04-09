@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
-import br.com.padtec.nopen.model.NOpenQueries;
+import br.com.padtec.nopen.service.util.NOpenQueries;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 
 @Controller

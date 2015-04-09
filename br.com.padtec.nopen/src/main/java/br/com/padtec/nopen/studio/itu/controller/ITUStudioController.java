@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.model.DtoJointElement;
-import br.com.padtec.nopen.model.NOpenQueries;
+import br.com.padtec.nopen.service.util.NOpenQueries;
 import br.com.padtec.nopen.studio.model.StudioFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
 
@@ -39,17 +39,17 @@ public class ITUStudioController {
 	 */
 	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
 	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("container") String card) 
-	{
-		
+	{	
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
-
-//		TODO: boolean success = StudioFactory.insertContainer(containerName, containerType, cardID);
-		
-		boolean success = true; //TODO: remover
-		if(success) return "success";
-		else return "failed";
+		try{
+			StudioFactory.insertContainer(dtoContainer, dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";		
 	}
 	
 	/** Remove um container do card
@@ -64,12 +64,13 @@ public class ITUStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
-		
-//		TODO: boolean success = StudioFactory.deleteContainer(containerName, containerType, cardID);
-		
-		boolean success = true; //TODO: remover
-		if(success) return "success";
-		else return "failed";
+		try{
+			StudioFactory.deleteContainer(dtoContainer, dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";
 	}
 	
 	/* ----- CRUD for Transport Function ----- */
@@ -87,12 +88,14 @@ public class ITUStudioController {
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);		
-		
-//		TODO: boolean success = StudioFactory.createTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
-		
-		boolean success = true; //TODO: remover
-		if(success) return "success";
-		else return "failed";
+
+		try{
+			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer, dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";
 	}
 		
 	/** Verifica se é possível criar o tranport function
