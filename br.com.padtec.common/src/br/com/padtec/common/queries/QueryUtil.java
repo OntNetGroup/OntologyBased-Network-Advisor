@@ -646,6 +646,75 @@ public class QueryUtil {
 		return result;
 	}
 	
+	static public List<String> getObjectPropertiesURI(InfModel model)
+	{
+		System.out.println("\nExecuting getPropertiesURI()...");		
+		List<String> result = new ArrayList<String>();		
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +
+			"?property " + " rdf:type " + " owl:ObjectProperty .\n " +			
+		"}";
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
+		{			
+			QuerySolution row= results.next();
+			//RDFNode source = row.get("source");
+		    RDFNode property = row.get("property");
+		    //RDFNode target = row.get("target");
+		    System.out.println("- Property URI: "+property.toString());
+		    if(isValidURI(property.toString()))
+		    {
+		    	String triple = new String();	    	
+		    	triple = property.toString();		    			    	 
+		    	result.add(triple);
+		    } 		    		    
+		}		
+		return result;
+	}
+	
+	static public List<String> getDatatypePropertiesURI(InfModel model)
+	{
+		System.out.println("\nExecuting getPropertiesURI()...");		
+		List<String> result = new ArrayList<String>();		
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
+		" SELECT DISTINCT *" +
+		" WHERE {\n" +
+			"?property " + " rdf:type " + " owl:DatatypeProperty .\n " +			
+		"}";
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		//ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
+		{			
+			QuerySolution row= results.next();
+			//RDFNode source = row.get("source");
+		    RDFNode property = row.get("property");
+		    //RDFNode target = row.get("target");
+		    System.out.println("- Property URI: "+property.toString());
+		    if(isValidURI(property.toString()))
+		    {
+		    	String triple = new String();	    	
+		    	triple = property.toString();		    			    	 
+		    	result.add(triple);
+		    } 		    		    
+		}		
+		return result;
+	}
+	
+	
 	/** 
 	 * Return the URI of all properties (both object and datatype properties) that this individual is linked to, in the ontology. This method is performed using SPARQL.
 	 * 

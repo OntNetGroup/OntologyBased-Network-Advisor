@@ -12,6 +12,12 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class ScriptEnumGenerator {
 	
+	public static boolean contains(List<String> list, String item)
+	{
+		for(String str: list){ if(str.compareTo(item)==0) return true; }
+		return false;		
+	}
+	
 	public static void main(String[] args)
 	{
 		OKCoUploader owlRepository = new OKCoUploader();
@@ -23,19 +29,40 @@ public class ScriptEnumGenerator {
 		
 		System.out.println(owlRepository.getBaseModelAsString());
 		
+		//classes
 		List<String> classesNames = new ArrayList<String>();
 		List<String> classesURI = QueryUtil.getClassesURI(owlRepository.getBaseModel());
 		for(String class_: classesURI) { classesNames.add(class_.replace(owlRepository.getNamespace(),"")); }
 
+		//relations
 		List<String> relationsNames = new ArrayList<String>();
-		//List<String> relationsURI = QueryUtil.getClassesURI(owlRepository.getBaseModel());
-		//for(String relation: relationsURI) { relationsNames.add(relation.replace(owlRepository.getNamespace(),"")); }
+		List<String[]> domainRangeNames = new ArrayList<String[]>();
+		
+		List<String> relationsURI = QueryUtil.getObjectPropertiesURI(owlRepository.getBaseModel());
+		
+		for(String relURI: relationsURI) 
+		{ 
+			String relName = relURI.replace(owlRepository.getNamespace(),"");
+			if(!contains(relationsNames,relName))
+			{
+				//store relation
+				relationsNames.add(relName);
+				
+				//store domain and range
+				String[] pair = new String[2];
+				List<String> domainList = QueryUtil.getFirstDomainURI(owlRepository.getBaseModel(), relURI);
+				List<String> rangeList = QueryUtil.getFirstRangeURI(owlRepository.getBaseModel(), relURI);
+				if(domainList.size()>0) pair[0] = domainList.get(0).replace(owlRepository.getNamespace(), "");
+				if(rangeList.size()>0) pair[1] = rangeList.get(0).replace(owlRepository.getNamespace(), "");;
+				domainRangeNames.add(pair);
+			}
+		}
 		
 		File conceptEnumFile = NOpenFileUtil.createFile("src/main/resources/model/", "ConceptEnum.java");
 		File relationEnumFile = NOpenFileUtil.createFile("src/main/resources/model/", "RelationEnum.java");
 		
 		String conceptEnum = generateConceptEnum(classesNames);
-		String relationEnum = generateRelationEnum(relationsNames);
+		String relationEnum = generateRelationEnum(relationsNames, domainRangeNames);
 		
 		try{
 			NOpenFileUtil.writeToFile(conceptEnumFile, conceptEnum);
@@ -56,7 +83,7 @@ public class ScriptEnumGenerator {
 		int i=0;
 		for(String name: conceptNames)
 		{
-			content += "\t"+name.toUpperCase().replaceAll(" ", "_");
+			content += "\t"+name.replaceAll(" ", "_");
 			content += "(\""+name+"\")";
 			if(i==conceptNames.size()-1) content += ";\n\n";
 			else content += ",\n";
@@ -89,7 +116,16 @@ public class ScriptEnumGenerator {
 		return content;
 	}
 	
-	public static String generateRelationEnum(List<String> relationNames)
+	public static boolean isJavaKeyword(String name)
+	{
+		if(name.equals("implements")) return true;
+		if(name.equals("class")) return true;
+		if(name.equals("static")) return true;
+		if(name.equals("boolean")) return true;
+		return false;
+	}
+	
+	public static String generateRelationEnum(List<String> relationNames, List<String[]> domainRangeNames)
 	{
 		String content = new String();
 	
@@ -98,10 +134,26 @@ public class ScriptEnumGenerator {
 		content += "public enum RelationEnum {\n\n";
 		
 		int i=0;
+		
 		for(String name: relationNames)
 		{
+			//defining the enum name (customized)
+			String enumName = new String(name.replaceAll("\\.","_"));
+			String domainName = domainRangeNames.get(i)[0];
+			if(domainName!=null) domainName = domainName.replaceAll(" ", "_").replaceAll("\\.","_");
+			String rangeName = domainRangeNames.get(i)[1];
+			if(rangeName!=null) rangeName = rangeName.replaceAll(" ", "_").replaceAll("\\.","_");					
+			if(domainName!=null){
+				if(!name.contains(domainName)) enumName += "_"+domainName;
+			}
+			if(rangeName!=null){
+				if(!name.contains(rangeName)) enumName += "_"+rangeName;				
+			}
+			
+			if(isJavaKeyword(name)) { enumName = enumName+"_"; }
+			
 			content += "\t";
-			content += name.toUpperCase().replaceAll(" ", "_").replaceAll(".","_");
+			content += enumName;
 			content += "(\""+name+"\")";
 			if(i==relationNames.size()-1) content += ";\n\n";
 			else content += ",\n";
@@ -135,7 +187,7 @@ public class ScriptEnumGenerator {
 		
 		content += "\tpublic static void main (String args[])\n";
 		content += "\t{\n";
-		content += "\t\tfor(tRelationEnum r: RelationEnum.values()){\n";
+		content += "\t\tfor(RelationEnum r: RelationEnum.values()){\n";
 		content += "\t\t\tSystem.out.println(r.relation);\n";
 		content += "\t\t}\n";
 		content += "\t}\n";

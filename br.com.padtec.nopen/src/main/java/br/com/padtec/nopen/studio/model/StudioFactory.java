@@ -15,7 +15,7 @@ public class StudioFactory {
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+ttfName, 
-			StudioComponents.studioRepository.getNamespace()+ConceptEnum.TRAIL_TERMINATION_FUNCTION.toString()
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Trail_Termination_Function.toString()
 		);
 	}
 	
@@ -24,7 +24,7 @@ public class StudioFactory {
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+afName, 
-			StudioComponents.studioRepository.getNamespace()+ConceptEnum.ADAPTATION_FUNCTION.toString()
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Adaptation_Function.toString()
 		);
 	}
 	
@@ -102,7 +102,7 @@ public class StudioFactory {
 	{
 		String individualURI = repository.getNamespace()+id_EquipmentHolder;
 		if(!QueryUtil.individualExists(repository.getBaseModel(), individualURI)){
-			String classURI = repository.getNamespace()+ConceptEnum.EQUIPMENT_HOLDER.toString();
+			String classURI = repository.getNamespace()+ConceptEnum.Equipment_Holder.toString();
 			FactoryUtil.createInstanceIndividual(repository.getBaseModel(), individualURI, classURI);
 		}
 	}

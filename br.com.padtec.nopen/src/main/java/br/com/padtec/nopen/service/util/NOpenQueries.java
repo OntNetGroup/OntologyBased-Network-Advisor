@@ -33,8 +33,8 @@ public class NOpenQueries {
 		List<String> individualsURI = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 				StudioComponents.studioRepository.getInferredModel(), 
 				StudioComponents.studioRepository.getNamespace()+techName, 
-				StudioComponents.studioRepository.getNamespace()+RelationEnum.COMPONENTOF_TECH_LAYER.toString(), 
-				StudioComponents.studioRepository.getNamespace()+ConceptEnum.LAYER.toString()
+				StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString(), 
+				StudioComponents.studioRepository.getNamespace()+ConceptEnum.Layer.toString()
 		);	
 		String[] result = new String[individualsURI.size()];
 		int i=0;
@@ -44,20 +44,20 @@ public class NOpenQueries {
 	
 	public static String[] getTechnologiesNames()
 	{
-		return getIndividualsNames(StudioComponents.studioRepository.getNamespace()+ConceptEnum.TECHNOLOGY.toString());		
+		return getIndividualsNames(StudioComponents.studioRepository.getNamespace()+ConceptEnum.Technology.toString());		
 	}
 	
 	public static String[] getServicesNames()
 	{
-		return getIndividualsNames(StudioComponents.studioRepository.getNamespace()+ConceptEnum.SERVICE.toString());		
+		return getIndividualsNames(StudioComponents.studioRepository.getNamespace()+ConceptEnum.Service.toString());		
 	}
 	
 	public static String[] getLayerNames(String techName)
 	{
 		return  getIndividualsNamesAtObjectPropertyRange(
 				techName,
-				StudioComponents.studioRepository.getNamespace()+RelationEnum.COMPONENTOF_TECH_LAYER.toString(), 
-				StudioComponents.studioRepository.getNamespace()+ConceptEnum.LAYER.toString()
+				StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString(), 
+				StudioComponents.studioRepository.getNamespace()+ConceptEnum.Layer.toString()
 			);					
 	}
 	

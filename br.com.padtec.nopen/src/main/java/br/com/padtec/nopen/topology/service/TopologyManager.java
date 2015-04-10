@@ -23,7 +23,7 @@ public class TopologyManager {
 	public void connectTFLayer(String idTF, String relation, String idLayer){
 		//Save Transport Function
 		String idTFURI = StudioComponents.studioRepository.getNamespace()+idTF;
-		String TFURI = StudioComponents.studioRepository.getNamespace()+ConceptEnum.TRANSPORT_FUNCTION.toString();
+		String TFURI = StudioComponents.studioRepository.getNamespace()+ConceptEnum.Transport_Function.toString();
 		FactoryUtil.createInstanceIndividual(StudioComponents.studioRepository.getBaseModel(), idTFURI, TFURI);
 
 		// Create relation between Transport Function and Layer

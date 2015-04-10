@@ -23,6 +23,7 @@ public class NOpenFileUtil {
 	public static String equipmentOWLFolder;
 	public static String provisioningOWLFolder;
 	
+	@SuppressWarnings("resource")
 	public static String convertStreamToString(java.io.InputStream is) 
 	{
 	    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
