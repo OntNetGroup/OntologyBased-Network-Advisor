@@ -11,25 +11,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import com.hp.hpl.jena.ontology.OntModel;
+
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoReasoner;
 import br.com.padtec.okco.core.application.OKCoSelector;
+import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class OWLUtil {
-	public static void createTBox(String tBoxFile) throws Exception{
+	public static OntModel createTBox(OKCoUploader okcoUploader, String tBoxFile) throws Exception{
 		FileInputStream inTBox = new FileInputStream(new File(tBoxFile));
-		Main.okcoUploader.uploadBaseModel(inTBox, "off", "hermit");
-		Main.model = Main.okcoUploader.getBaseModel();
-		Main.ns = Main.model.getNsPrefixURI("");
+		okcoUploader.uploadBaseModel(inTBox, "off", "hermit");
+		OntModel model = okcoUploader.getBaseModel();
+		//ns = model.getNsPrefixURI("");
+		return model;
 	}	
 	
-	public static void saveNewOwl(String oldName){
+	public static void saveNewOwl(OntModel model, String oldName){
 		System.out.println("Saving OWL");
 		String syntax = "RDF/XML";
 		StringWriter out = new StringWriter();
-		Main.model.write(out, syntax);
+		model.write(out, syntax);
 		String result = out.toString();
 		oldName = oldName.replace(".owl", "");
 		File arquivo = new File(oldName + "New.owl");  // Chamou e nomeou o arquivo txt.  
@@ -45,14 +49,13 @@ public class OWLUtil {
 		}
 	}
 	
-	public static void runReasoner(boolean inferHierarchies, boolean inferAssertions, boolean inferRules) throws Exception{
-		if(!Main.runReason) return;
-		Main.okcoUploader.getReasoner().inferAssertions = inferAssertions;
-		Main.okcoUploader.getReasoner().inferHierarchies = inferHierarchies;
-		Main.okcoUploader.getReasoner().inferRules = inferRules;
+	public static void runReasoner(OKCoUploader okcoUploader, boolean inferHierarchies, boolean inferAssertions, boolean inferRules) throws Exception{
+		okcoUploader.getReasoner().inferAssertions = inferAssertions;
+		okcoUploader.getReasoner().inferHierarchies = inferHierarchies;
+		okcoUploader.getReasoner().inferRules = inferRules;
 		
-		OKCoSelector selector = new OKCoSelector(Main.okcoUploader);
-		OKCoReasoner okcoReasoner = new OKCoReasoner(Main.okcoUploader, selector);
+		OKCoSelector selector = new OKCoSelector(okcoUploader);
+		OKCoReasoner okcoReasoner = new OKCoReasoner(okcoUploader, selector);
 		//OKCoUploader.reasoner.run(m);
 		DtoResult result = okcoReasoner.runReasoner();
 		
@@ -61,7 +64,7 @@ public class OWLUtil {
 		}
 	}
 	
-	public static void createInstances(String aBoxFile) throws Exception{
+	public static void createInstances(OntModel model, String aBoxFile) throws Exception{
 		FileReader reader = new FileReader(new File(aBoxFile));
         @SuppressWarnings("resource")
 		Scanner scanner = new Scanner(new BufferedReader(reader));
@@ -75,16 +78,17 @@ public class OWLUtil {
         if(fileBlocks.length < 4) throw new Exception("Incomplete ABox file.\n");
         
         String[] individualDcls = fileBlocks[1].split(";");
-        HashMap<String, String> newMapping = createIndividualInstances(individualDcls);
+        HashMap<String, String> newMapping = createIndividualInstances(model, individualDcls);
         String[] relationDcls = fileBlocks[2].split(";");
-        createRelationInstances(relationDcls, newMapping);
+        createRelationInstances(model, relationDcls, newMapping);
         String[] attributeDcls = fileBlocks[3].split(";");
-        createAttributeInstances(attributeDcls, newMapping);
+        createAttributeInstances(model, attributeDcls, newMapping);
         
         //System.out.println();
 	}
 	
-	public static HashMap<String, String> createIndividualInstances(String[] individualDcls){
+	public static HashMap<String, String> createIndividualInstances(OntModel model, String[] individualDcls){
+		String ns = model.getNsPrefixURI("");
 		HashMap<String, String> newMapping = new HashMap<String,String>();
 		List<String> newIndividuals = new ArrayList<String>();
 		for (String indvDcl : individualDcls) {
@@ -98,25 +102,26 @@ public class OWLUtil {
 				for (String indv : individuals) {
 					String oldName = indv;
 					if(!type.equals("Layer_Network")){
-						boolean indvExist = QueryUtil.individualExists(Main.model, Main.ns+indv);
+						boolean indvExist = QueryUtil.individualExists(model, ns+indv);
 						if(indvExist){
 							indv += "_eq";
 						}
 					}					
 					newMapping.put(oldName, indv);
 					
-					FactoryUtil.createInstanceIndividual(Main.model, Main.ns+indv, Main.ns+type, false);
+					FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type, false);
 					
-					newIndividuals.add(Main.ns+indv);
+					newIndividuals.add(ns+indv);
 				}
 			}
 		}
-		FactoryUtil.createAllDifferent(Main.model, newIndividuals);
+		FactoryUtil.createAllDifferent(model, newIndividuals);
 		
 		return newMapping;
 	}
 	
-	public static void createRelationInstances(String[] relationDcls, HashMap<String, String> newMapping){
+	public static void createRelationInstances(OntModel model, String[] relationDcls, HashMap<String, String> newMapping){
+		String ns = model.getNsPrefixURI("");
 		for (String relDcl : relationDcls) {
 			relDcl = relDcl.replace(" ", "").replace("\n", "");
 			String[] relDclSplit = relDcl.split(":");
@@ -137,14 +142,15 @@ public class OWLUtil {
 					if(newTgt == null || newTgt.equals("")){
 						newTgt = tgt;
 					}					
-					FactoryUtil.createInstanceRelation(Main.model, Main.ns+newSrc, Main.ns+relation, Main.ns+newTgt, false, false, true);
+					FactoryUtil.createInstanceRelation(model, ns+newSrc, ns+relation, ns+newTgt, false, false, true);
 					
 				}
 			}
 		}
 	}
 	
-	public static void createAttributeInstances(String[] attributeDcls, HashMap<String, String> newMapping){
+	public static void createAttributeInstances(OntModel model, String[] attributeDcls, HashMap<String, String> newMapping){
+		String ns = model.getNsPrefixURI("");
 		for (String attDcl : attributeDcls) {
 			attDcl = attDcl.replace(" ", "").replace("\n", "");
 			String[] attDclSplit = attDcl.split(":");
@@ -159,7 +165,7 @@ public class OWLUtil {
 					
 					indv = newMapping.get(indv);
 					
-					FactoryUtil.createInstanceAttribute(Main.model, Main.ns+indv, Main.ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type, false);
+					FactoryUtil.createInstanceAttribute(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type, false);
 				}
 			}
 		}

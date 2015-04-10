@@ -6,19 +6,21 @@ import java.util.List;
 public class Interface implements Comparable<Interface>{
 	private String interfaceURI;
 	private String equipmentURI;
+	private boolean declared;
 	
 	private List<Interface> candidateInterfacesTo = new ArrayList<Interface>();
 	
-	public Interface(String interfaceURI, String equipmentURI) {
+	public Interface(String interfaceURI, String equipmentURI, boolean declared) {
 		this.interfaceURI = interfaceURI;
 		this.equipmentURI = equipmentURI;
-	}
-	
-	public Interface(String interfaceURI) {
-		this.interfaceURI = interfaceURI;
-		this.equipmentURI = null;
+		
+		this.declared = true;
 	}
 
+	public boolean isDeclared() {
+		return declared;
+	}
+	
 	public String getInterfaceURI() {
 		return interfaceURI;
 	}
