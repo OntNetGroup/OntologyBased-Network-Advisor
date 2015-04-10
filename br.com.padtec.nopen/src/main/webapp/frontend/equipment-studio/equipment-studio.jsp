@@ -80,7 +80,13 @@
         <script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/main.js"></script>
         
-   
+        <script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
+        
+   		<!-- PLUGINS -->
+        
+        <script src="/nopen/frontend/equipment-studio/plugins/open-equipment.js"></script>
+        <script src="/nopen/frontend/equipment-studio/plugins/save-equipment.js"></script>
+         
          
         <div id="save-dialog" title="Save Equipment" style="display:none">
 			File name: <input type="text" id="save-filename" />
@@ -106,6 +112,9 @@
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
+            
+            graphHandle(app.graph);
+            equipmentHandle(app.paper, app.graph);
             
            // graphHandle(app.graph);
           //  paperHandle(app.paper);

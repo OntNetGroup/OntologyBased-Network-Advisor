@@ -71,3 +71,11 @@ h1 {
    height: 20px;
 }
 
+
+.field input[type="text"] {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;          
+}
