@@ -16,42 +16,37 @@ function getTopologies(graph){
 
 function generateOpenTopologyDialog(graph, data){
 	
-	$("#open-dialog").html('');
-	
-	dialog = $("#open-dialog").dialog({
-	      autoOpen: false,
-	      height: 300,
-	      width: 350,
-	      modal: true,
-	      buttons: { 
-	    	"Open": openTopology,  
-	        Cancel: function() {
-	          dialog.dialog( "close" );
-	        }
-	      },
-	      close: function() { }
-	});
-	
-	$("#open-dialog").append('<form>')
-	
+	var content = '<form id="open">';
 	for(var i = Object.keys(data).length-1; i >= 0; i--){
-
 		if(i == Object.keys(data).length-1){
-			$("#open-dialog").append('<input type="radio" name="topology" value="' + data[i].topology + '" checked>' + data[i].topology + '<br>');
+			content = content + '<input type="radio" name="topology" value="' + data[i].topology + '" checked>' 
+					+ '<label>' + data[i].topology + '</label> <br>';
 		}
 		else{
-			$("#open-dialog").append('<input type="radio" name="topology" value="' + data[i].topology + '">' + data[i].topology + '<br>');
+			content = content + '<input type="radio" name="topology" value="' + data[i].topology + '">' 
+					+ '<label>' + data[i].topology + '</label><br>';
 		}
 
 	}
+	content = content +  '</form>';
 	
-	$("#open-dialog").append('</form>') 
-	
-	$("#open-dialog").dialog("open");
-	
+	var dialog = new joint.ui.Dialog({
+		width: 300,
+		type: 'neutral',
+		title: 'Open Topology',
+		content: content,
+		buttons: [
+			{ action: 'cancel', content: 'Cancel', position: 'left' },
+			{ action: 'open', content: 'Open', position: 'left' }
+		]
+	});
+	dialog.on('action:open', openTopology);
+	dialog.on('action:cancel', dialog.close);
+	dialog.open();
+
 	function openTopology(){
 		
-		var filename = $('input[name=topology]:checked', '#open-dialog').val();
+		var filename = $('input[name=topology]:checked', '#open').val();
 		
 		$.ajax({
 		   type: "POST",
@@ -62,11 +57,11 @@ function generateOpenTopologyDialog(graph, data){
 		   dataType: 'json',
 		   success: function(data){ 		   
 			   graph.fromJSON(data);
-			   dialog.dialog( "close" );
+			   dialog.close();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
-			   dialog.dialog( "close" );
+			   dialog.close();
 		   }
 		});
 		

@@ -9,6 +9,7 @@
 		<!-- CSS CORE -->
 
         <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/dialog.css" />
 
 		<!-- CSS -->
 
@@ -64,15 +65,12 @@
 
 		 <!-- DIALOGS -->
 
-		<div id="save-dialog" title="Save Topology" style="display:none">
-			File name: <input type="text" id="save-filename" />
-		</div>
+		<input type="text" id="filename" style="display:none"/>
 
-		<div id="open-dialog" title="Open Topology" style="display:none"></div>
+<!-- 		<div id="save-dialog" title="Save Topology" style="display:none"> -->
+<!-- 			File name: <input type="text" id="save-filename" /> -->
+<!-- 		</div> -->
 
-		<div id="dialog" title="Match Equipment" style="display:none"></div>
-
-	
         <script>
             // Uncomment the following line and comment the line after if you
             // want to use channels.

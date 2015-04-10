@@ -79,42 +79,37 @@ function graphHandle(graph){
  */
 function generateDialog(data, cell){
 	
-	$("#dialog").html('');
-	
-	dialog = $("#dialog").dialog({
-	      autoOpen: false,
-	      height: 300,
-	      width: 350,
-	      modal: true,
-	      buttons: { 
-	    	"Match": matchEquipmentToNode,  
-	        Cancel: function() {
-	          dialog.dialog( "close" );
-	        }
-	      },
-	      close: function() { }
-	});
-	
-	$("#dialog").append('<form>')
-	
+	var content = '<form id="match">';
 	for(var i = Object.keys(data).length-1; i >= 0; i--){
-
 		if(i == Object.keys(data).length-1){
-			$("#dialog").append('<input type="radio" name="equipment" value="' + data[i].equipment + '" checked>' + data[i].equipment + '<br>');
+			content = content + '<input type="radio" name="equipment" value="' + data[i].equipment + '" checked>' 
+					+ '<label>' + data[i].equipment + '</label> <br>';
 		}
 		else{
-			$("#dialog").append('<input type="radio" name="equipment" value="' + data[i].equipment + '">' + data[i].equipment + '<br>');
+			content = content + '<input type="radio" name="equipment" value="' + data[i].equipment + '">' 
+					+ '<label>' + data[i].equipment + '</label><br>';
 		}
 
 	}
+	content = content +  '</form>';
 	
-	$("#dialog").append('</form>') 
-	$("#dialog").dialog("open");
-	
+	var dialog = new joint.ui.Dialog({
+		width: 300,
+		type: 'neutral',
+		title: 'Match Equipment to Node',
+		content: content,
+		buttons: [
+			{ action: 'cancel', content: 'Cancel', position: 'left' },
+			{ action: 'match', content: 'Match', position: 'left' }
+		]
+	});
+	dialog.on('action:match', matchEquipmentToNode);
+	dialog.on('action:cancel', dialog.close);
+	dialog.open();
 	
 	function matchEquipmentToNode(){
 		
-		var equipment = $('input[name=equipment]:checked', '#dialog').val();
+		var equipment = $('input[name=equipment]:checked', '#match').val();
 		
 		$.ajax({
 		   type: "POST",
@@ -127,7 +122,7 @@ function generateDialog(data, cell){
 			   cell.attr('equipment/template', equipment);
 			   cell.attr('text/text', equipment);
 				
-			   dialog.dialog( "close");
+			   dialog.close();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
@@ -136,10 +131,24 @@ function generateDialog(data, cell){
 
 	};
 	
+	
+//	$("#dialog").html('');
+//	
+//	dialog = $("#dialog").dialog({
+//	      autoOpen: false,
+//	      height: 300,
+//	      width: 350,
+//	      modal: true,
+//	      buttons: { 
+//	    	"Match": matchEquipmentToNode,  
+//	        Cancel: function() {
+//	          dialog.dialog( "close" );
+//	        }
+//	      },
+//	      close: function() { }
+//	});
+	
 };
-
-
-
 
 function paperHandle(paper){
 	

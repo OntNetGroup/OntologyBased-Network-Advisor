@@ -1,34 +1,28 @@
-function checkNodeEquipments(graph){
-	
-	var elements = graph.getElements();
-	
-	for(var i = 0; i < elements.length; i++){
-		if(elements[i].attr('equipment/template') == ""){
-			alert("all nodes need to be matched to an equipment.")
-			return false;
-		}
-	}
-	
-	return true;
-}
-
 function generateSaveTopologyDialog(graph){
 	
-	dialog = $("#save-dialog").dialog({
-	      autoOpen: false,
-	      height: 180,
-	      width: 350,
-	      modal: true,
-	      buttons: { 
-	    	"Save": checkTopologyFile,  
-	        Cancel: function() {
-	          dialog.dialog( "close" );
-	        }
-	      },
-	      close: function() { }
+	var content = '<div id="save-dialog" title="Save Topology">'
+		+ 'Name: <input type="text" id="save-filename" value="' + $('#filename').val() + '"/>'
+		+ '</div>';
+		
+	var dialog = new joint.ui.Dialog({
+		width: 300,
+		type: 'neutral',
+		title: 'Save Topology',
+		content: content,
+		buttons: [
+			{ action: 'cancel', content: 'Cancel', position: 'left' },
+			{ action: 'save', content: 'Save', position: 'left' }
+		]
 	});
+	
+	dialog.on('action:save', checkTopologyFile);
+	dialog.on('action:cancel', cancel);
 
-	$("#save-dialog").dialog("open");
+	dialog.open();
+	
+	function cancel(){
+		dialog.close();
+	}
 	
 	function checkTopologyFile(){
 		
@@ -55,15 +49,16 @@ function generateSaveTopologyDialog(graph){
 			   },
 			   error : function(e) {
 				   alert("error: " + e.status);
-				   $("#save-dialog").dialog("close");
+				   dialog.close();
 			   }
 			});
 		}
 		
 	};
 	
-	
 	function saveTopology(){
+		
+		$('#filename').val($("#save-filename").val());
 		
 		$.ajax({
 		   type: "POST",
@@ -74,15 +69,29 @@ function generateSaveTopologyDialog(graph){
 		   },
 		   success: function(){ 		   
 			   alert($("#save-filename").val() + ' saved successfully!');
-			   $("#save-dialog").dialog("close");
+			   dialog.close();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
-			   $("#save-dialog").dialog("close");
+			   dialog.close();
 		   }
 		});
 		
 		
 	};
 	
+}
+
+function checkNodeEquipments(graph){
+	
+	var elements = graph.getElements();
+	
+	for(var i = 0; i < elements.length; i++){
+		if(elements[i].attr('equipment/template') == ""){
+			alert("all nodes need to be matched to an equipment.")
+			return false;
+		}
+	}
+	
+	return true;
 }

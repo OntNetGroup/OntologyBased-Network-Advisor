@@ -96,6 +96,7 @@ var Rappid = Backbone.Router.extend({
         }, this));
 
         this.snapLines = new joint.ui.Snaplines({ paper: this.paper });
+          
     },
 
     initializeLinkTooltips: function(cell) {
