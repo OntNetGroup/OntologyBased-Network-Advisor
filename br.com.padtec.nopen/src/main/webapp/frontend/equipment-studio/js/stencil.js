@@ -8,26 +8,24 @@ Stencil.groups = {
 Stencil.shapes = {
 
 		equipment: [
-		            //Rack
-		            new joint.shapes.basic.Rect({
-		            	subType : 'rack' ,
-		            	size: { width:80 , height: 160 },
-
-		            	attrs: {
-		            		rect: {
-		            			rx: 2, ry: 2,
-		            			fill: '#767572'
-		            		},
-		            		//text: { text: 'rack', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
-		            	}
-		            }),
+		            
+					//Rack
+					new joint.shapes.basic.Rect({
+						subType : 'rack' ,
+						size: { width:80 , height: 160 },
+						attrs: {
+							rect: {
+								fill: '#767572'
+							},
+							//text: { text: 'rack', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
+						}
+					}),
 		            //Shelf
 		            new joint.shapes.basic.Rect({
 		            	size: { width: 60, height: 45 },
 		            	subType : 'shelf' ,
 		            	attrs: {
 		            		rect: {
-		            			rx: 2, ry: 2,
 		            			fill: '#C7C7C5'
 		            		},
 		            		//text: { text: 'shelf', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
@@ -39,7 +37,6 @@ Stencil.shapes = {
 		            	subType : 'slot' ,
 		            	attrs: {
 		            		rect: {
-		            			rx: 2, ry: 2,
 		            			fill: '#B3CBCE'
 		            		},
 		            		//text: { text: 'slot', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
@@ -51,7 +48,6 @@ Stencil.shapes = {
 		            	subType : 'card' ,
 		            	attrs: {
 		            		rect: {
-		            			rx: 2, ry: 2,
 		            			fill: '#ADC2A7'
 		            		},
 		            		//text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
@@ -61,17 +57,20 @@ Stencil.shapes = {
 		            new joint.shapes.basic.Rect({
 		            	subType : 'supervisor' ,
 		            	size: { width: 10, height: 20 },
-
 		            	attrs: {
 		            		rect: {
-		            			rx: 2, ry: 2,
 		            			fill: '#42563D'
 		            		},
 		            		//text: { text: 'supervisor card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
 		            	}
-		            }),		            
-		            ],
+		            }),		
+		          
+		            
+		  ],
 };
+
+
+
 //referencias
 /* new joint.shapes.devs.Atomic({
             size: { width: 90, height: 60 },
