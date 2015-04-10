@@ -162,3 +162,9 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	padding: 5px;
 	font-size: 14px;
 }
+
+.dialog #name-error-message{
+	margin-top: 5px;
+	display: none;
+	color: red;
+}

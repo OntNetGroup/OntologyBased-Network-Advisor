@@ -2,7 +2,8 @@ function generateSaveTopologyDialog(graph){
 	
 	var content = '<div id="save-dialog" title="Save Topology">'
 		+ 'Name: <input type="text" id="save-filename" value="' + $('#filename').val() + '"/>'
-		+ '</div>';
+		+ '</div>'
+		+ '<div id="name-error-message">' + 'Name cannot be empty!' + '</div>';
 		
 	var dialog = new joint.ui.Dialog({
 		width: 300,
@@ -27,7 +28,7 @@ function generateSaveTopologyDialog(graph){
 	function checkTopologyFile(){
 		
 		if($("#save-filename").val() == ""){
-			alert("File name cannot be empty!")
+			$('#name-error-message').show();
 		}
 		else{
 			$.ajax({
