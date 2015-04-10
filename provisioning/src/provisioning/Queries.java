@@ -1,6 +1,7 @@
 package provisioning;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.padtec.common.queries.QueryUtil;
@@ -15,7 +16,7 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class Queries {
-	public static List<Interface> getInterfacesAndEquipMappingPorts(OntModel model, boolean forOutputInterface, boolean forSourceComponent){
+	public static List<Interface> getInterfacesAndEquipMappingPorts(OntModel model, boolean forOutputInterface, boolean forSourceComponent, HashMap<String, Interface> interfaces){
 		String interfaceType = "";
 		String componentType = "";
 		if(forSourceComponent){
@@ -61,7 +62,8 @@ public class Queries {
 		    {
 		    	System.out.println("- equipment URI: "+equipment.toString()); 
 		    	System.out.println("- interface_ URI: "+interface_.toString()); 
-		    	Interface newInt = new Interface(interface_.toString(), equipment.toString());
+		    	Interface newInt = interfaces.get(interface_.toString());
+		    	//Interface newInt = new Interface(interface_.toString(), equipment.toString());
 //		    	result.add(interface_.toString());
 //		    	result.add(equipment.toString());		    	 
 		    	result.add(newInt);
@@ -69,6 +71,48 @@ public class Queries {
 		}
 		return result;
 	}
+	
+//	public static List<Interface> getInterfaces(OntModel model){
+//		System.out.println("\nExecuting getInterfaces()...");
+//		List<Interface> result = new ArrayList<Interface>();				
+//		String queryString = ""
+//				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+//				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+//				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+//				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+//				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+//				+ "SELECT *\n"
+//				+ "WHERE {\n"
+//				+ "\t?equipment rdf:type ns:Equipment .\n"
+//				+ "\t?equipment ns:componentOf ?interface .\n"
+//				+ "\t?interface rdf:type ns:Interface .\n"
+//				+ "\t?interface ns:maps ?mappedPort .\n"
+//				+ "\t?tf ns:componentOf ?mappedPort .\n"
+//				+ "\t?tf rdf:type ?tfType .\n"
+//				+ "\tFILTER( ?tfType IN (ns:AF_" + componentType + ", ns:TF_" + componentType + ", ns:Matrix_" + componentType + ")).\n"
+//				+ "}";
+//		Query query = QueryFactory.create(queryString); 		
+//		QueryExecution qe = QueryExecutionFactory.create(query, model);
+//		ResultSet results = qe.execSelect();		
+//		while (results.hasNext()) 
+//		{			
+//			QuerySolution row = results.next();
+//		    RDFNode equipment = row.get("equipment");	
+//		    RDFNode interface_ = row.get("interface");
+//		    @SuppressWarnings("unused")
+//			RDFNode mappedPort = row.get("mappedPort");
+//		    if(QueryUtil.isValidURI(equipment.toString()) && QueryUtil.isValidURI(interface_.toString()))
+//		    {
+//		    	System.out.println("- equipment URI: "+equipment.toString()); 
+//		    	System.out.println("- interface_ URI: "+interface_.toString()); 
+//		    	Interface newInt = new Interface(interface_.toString(), equipment.toString());
+////		    	result.add(interface_.toString());
+////		    	result.add(equipment.toString());		    	 
+//		    	result.add(newInt);
+//		    }
+//		}
+//		return result;
+//	}
 	
 	public static String EquipWithPMofInterface(OntModel model, String interfaceURI){
 		System.out.println("\nExecuting isEquipBindedWithPMEquip()...");
@@ -177,7 +221,7 @@ public class Queries {
 	}
 	
 	//public static List<String> getMappingInterfaceFrom(OntModel model, String tfURI, boolean isSource){
-	public static List<Interface> getMappingInterfaceFrom(OntModel model, String tfURI){
+	public static List<Interface> getMappingInterfaceFrom(OntModel model, String tfURI, HashMap<String, Interface> interfaces, HashMap<String, Interface> bindedInterfaces){
 		String tf_type = "";
 		//if(isSource){
 			tf_type  = "Output";
@@ -210,9 +254,11 @@ public class Queries {
 			QuerySolution row = results.next();
 			RDFNode interface_ = row.get("interface");	
 			RDFNode equip = row.get("equip");	
-			Interface newInt = new Interface(interface_.toString(), equip.toString());
+			
+			Interface newInt = interfaces.get(interface_.toString());
+			//Interface newInt = new Interface(interface_.toString(), equip.toString());
 	    	
-		    if(QueryUtil.isValidURI(interface_.toString()) && QueryUtil.isValidURI(equip.toString()) && !Main.bindedInterfaces.contains(newInt))
+		    if(QueryUtil.isValidURI(interface_.toString()) && QueryUtil.isValidURI(equip.toString()) && !bindedInterfaces.containsKey(newInt.getInterfaceURI()))
 		    {
 		    	System.out.println("- interface URI: "+interface_.toString()); 
 //		    	result.add(interface_.toString());
@@ -313,7 +359,7 @@ public class Queries {
 		return result;
 	}
 	
-	public static List<Interface> getInterfacesToProvision(OntModel model, String interfaceFromURI, boolean isSource) throws Exception{
+	public static List<Interface> getInterfacesToProvision(OntModel model, String interfaceFromURI, boolean isSource, HashMap<String, Interface> interfaces, HashMap<String, Interface> bindedInterfaces) throws Exception{
 		System.out.println("\nExecuting getInterfacesToProvision()...");
 		
 		String intType = "";
@@ -332,12 +378,12 @@ public class Queries {
 			//intType = "Output";
 			srcOrSk = "Sink";
 		}
-		
-		if(tfTypes.contains(Main.ns+"Termination_Function")){
+		String ns = model.getNsPrefixURI("");
+		if(tfTypes.contains(ns+"Termination_Function")){
 			relName1 = "ns:adapts_from, ns:hasLayer";
 			relName2 = "defines";
 			tgtTFtype = "ns:AF_" + srcOrSk + ", ns:Matrix_" + srcOrSk;
-		}else if(tfTypes.contains(Main.ns+"Adaptation_Function")){
+		}else if(tfTypes.contains(ns+"Adaptation_Function")){
 			relName1 = "ns:defines";
 			relName2 = "adapts_from";
 			tgtTFtype += "ns:TF_" + srcOrSk;
@@ -345,7 +391,7 @@ public class Queries {
 				relName1 += ", ns:adapts_from";
 				tgtTFtype += ", ns:AF_Source";
 			}
-		}else if(tfTypes.contains(Main.ns+"Matrix")){
+		}else if(tfTypes.contains(ns+"Matrix")){
 			if(isSource){
 				relName1 = "ns:adapts_from";
 				tgtTFtype += "ns:AF_" + srcOrSk;				
@@ -354,7 +400,7 @@ public class Queries {
 				tgtTFtype += "ns:TF_" + srcOrSk;
 			}
 			relName2 = "hasLayer";
-		}else if(tfTypes.contains(Main.ns+"Physical_Media")){
+		}else if(tfTypes.contains(ns+"Physical_Media")){
 			relName1 = "ns:adapts_from";
 			relName2 = "hasLayer";
 			tgtTFtype += "ns:TF_" + srcOrSk;
@@ -380,7 +426,7 @@ public class Queries {
 					+ "	?pm ns:componentOf ?port .\n"
 					+ "	?pm rdf:type ns:Physical_Media .\n"
 					+ "}";
-		}else if(tfTypes.contains(Main.ns+"Physical_Media")){
+		}else if(tfTypes.contains(ns+"Physical_Media")){
 			queryString = ""
 					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 					+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
@@ -431,8 +477,9 @@ public class Queries {
 			QuerySolution row = results.next();
 		    RDFNode equipTo = row.get("equipTo");	
 		    RDFNode intTo = row.get("intTo");
-		    Interface newInt = new Interface(intTo.toString(), equipTo.toString());
-		    if(QueryUtil.isValidURI(equipTo.toString()) && QueryUtil.isValidURI(intTo.toString()) && !Main.bindedInterfaces.contains(newInt))
+		    Interface newInt = interfaces.get(intTo.toString());
+		    //Interface newInt = new Interface(intTo.toString(), equipTo.toString());
+		    if(QueryUtil.isValidURI(equipTo.toString()) && QueryUtil.isValidURI(intTo.toString()) && !bindedInterfaces.containsKey(newInt.getInterfaceURI()))
 		    {
 	    		System.out.println("- intTo URI: "+intTo.toString());
     			
@@ -446,7 +493,7 @@ public class Queries {
 		return result;
 	}
 	
-	public static List<Interface> getBindedInterfaces(OntModel model){
+	public static List<Interface> getBindedInterfaces(OntModel model, HashMap<String, Interface> interfaces){
 		System.out.println("\nExecuting getBindedInterfaces()...");
 		List<Interface> result = new ArrayList<Interface>();				
 		String queryString = ""
@@ -471,7 +518,8 @@ public class Queries {
 		    if(QueryUtil.isValidURI(int1.toString()) && !result.contains(int1.toString()))
 		    {
 		    	System.out.println("- int1 URI: "+int1.toString()); 
-		    	Interface newInt = new Interface(int1.toString());
+		    	Interface newInt = interfaces.get(int1.toString());
+		    	//Interface newInt = new Interface(int1.toString());
 		    	result.add(newInt);
 //		    	result.add(int1.toString()); 
 		    }
@@ -479,7 +527,8 @@ public class Queries {
 		    if(QueryUtil.isValidURI(int2.toString()) && !result.contains(int2.toString()))
 		    {
 		    	System.out.println("- int2 URI: "+int2.toString());
-		    	Interface newInt = new Interface(int2.toString());
+		    	Interface newInt = interfaces.get(int2.toString());
+		    	//Interface newInt = new Interface(int2.toString());
 		    	result.add(newInt);
 //		    	result.add(int2.toString()); 
 		    }
