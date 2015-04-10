@@ -97,4 +97,31 @@ public class NOpenQueries {
   		
 		return result;
 	}
+	
+	public static HashSet<String> getAllComponentOFRelations(String classID, InfModel model){
+		HashSet<String> result = new HashSet<String>();
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#>"
+				+ "SELECT  *"
+				+ "WHERE { ?x rdfs:subPropertyOf ont:componentOf ."
+				+ "?x rdfs:domain ont:"+classID + "."
+				+ "?x rdfs:range ?r"
+				+  "}";
+		
+		Query query = QueryFactory.create(queryString); 
+  		
+  		// Execute the query and obtain results
+  		QueryExecution qe = QueryExecutionFactory.create(query, model);
+  		ResultSet results = qe.execSelect();
+  		//ResultSetFormatter.out(System.out, results, query);
+  		
+  		while (results.hasNext()) {
+  			QuerySolution row = results.next();
+  		    
+  		    RDFNode rdfY = row.get("r");
+  	    	result.add(rdfY.toString());
+  		}
+  		
+		return result;
+	}
 }

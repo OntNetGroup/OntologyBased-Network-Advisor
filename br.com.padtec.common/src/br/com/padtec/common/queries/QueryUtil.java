@@ -2275,5 +2275,4 @@ public class QueryUtil {
 		return result;
 	}
 	
-	
 }
