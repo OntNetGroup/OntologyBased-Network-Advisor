@@ -72,36 +72,6 @@ var Rappid = Backbone.Router.extend({
 			}
 		}, this);
 
-		// some types of the elements need resizing after they are dropped
-		this.graph.on('add', function(cell, collection, opt) {
-
-			if (!opt.stencil) return;
-
-			if(cell.get('type') === 'link') return;
-			var type = cell.get('type');
-
-			// configuration of resizing
-			var sizeMultiplier = { 	'bpmn.Pool': 6,
-					'basic.Circle': 1 ,
-					'basic.Rect': 1.5,
-					'AF':1,
-					'TTF': 1
-			}[type];
-
-			if (sizeMultiplier) {
-				var originalSize = cell.get('size');
-				cell.set('size', {
-					width: originalSize.width * sizeMultiplier,
-					height: originalSize.height * sizeMultiplier
-				});
-			}
-
-			sizeMultiplier = 0;
-		}, this);
-
-		
-
-
 		this.paper = new joint.dia.Paper({
 			width: 1000,
 			height: 1000,
@@ -191,7 +161,7 @@ var Rappid = Backbone.Router.extend({
 		var layoutOptions = {
 				columnWidth: this.stencil.options.width / 2 - 10,
 				columns: 2,
-				rowHeight: 200,
+				rowHeight: 100,
 				resizeToFit:false,
 				dy: 10,
 				dx: 10
@@ -245,7 +215,8 @@ var Rappid = Backbone.Router.extend({
 
 		this.selection = new Backbone.Collection;
 		this.selectionView = new joint.ui.SelectionView({ paper: this.paper, graph: this.graph, model: this.selection });
-
+		this.selectionView.removeHandle('rotate');
+		
 		// Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
 		// Otherwise, initiate paper pan.
 		this.paper.on('blank:pointerdown', function(evt, x, y) {
@@ -380,6 +351,10 @@ var Rappid = Backbone.Router.extend({
 
 			// descomentar para inserir a borda de redimensionamento
 			//freetransform.render();
+			halo.removeHandle('fork');
+            halo.removeHandle('clone');
+            halo.removeHandle('rotate');
+			
 			halo.render();
 
 			this.initializeHaloTooltips(halo);
@@ -464,43 +439,43 @@ var Rappid = Backbone.Router.extend({
 
 	initializeClipboard: function() {
 
-//		this.clipboard = new joint.ui.Clipboard;
+		this.clipboard = new joint.ui.Clipboard;
+
+//		KeyboardJS.on('ctrl + c', _.bind(function() {
+//			// Copy all selected elements and their associated links.
+//			this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
+//		}, this));
 //
-////		KeyboardJS.on('ctrl + c', _.bind(function() {
-////			// Copy all selected elements and their associated links.
-////			this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
-////		}, this));
-////
-////		KeyboardJS.on('ctrl + v', _.bind(function() {
-////
-////			this.selectionView.cancelSelection();
-////
-////			this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
-////
-////			// Make sure pasted elements get selected immediately. This makes the UX better as
-////			// the user can immediately manipulate the pasted elements.
-////			this.clipboard.each(function(cell) {
-////
-////				if (cell.get('type') === 'link') return;
-////
-////				// Push to the selection not to the model from the clipboard but put the model into the graph.
-////				// Note that they are different models. There is no views associated with the models
-////				// in clipboard.
-////				this.selection.add(this.graph.getCell(cell.id));
-////				this.selectionView.createSelectionBox(cell.findView(this.paper));
-////
-////			}, this);
-////
-////		}, this));
+//		KeyboardJS.on('ctrl + v', _.bind(function() {
 //
-////		KeyboardJS.on('ctrl + x', _.bind(function() {
-////
-////			var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
-////			this.commandManager.initBatchCommand();
-////			_.invoke(originalCells, 'remove');
-////			this.commandManager.storeBatchCommand();
-////			this.selectionView.cancelSelection();
-////		}, this));
+//			this.selectionView.cancelSelection();
+//
+//			this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
+//
+//			// Make sure pasted elements get selected immediately. This makes the UX better as
+//			// the user can immediately manipulate the pasted elements.
+//			this.clipboard.each(function(cell) {
+//
+//				if (cell.get('type') === 'link') return;
+//
+//				// Push to the selection not to the model from the clipboard but put the model into the graph.
+//				// Note that they are different models. There is no views associated with the models
+//				// in clipboard.
+//				this.selection.add(this.graph.getCell(cell.id));
+//				this.selectionView.createSelectionBox(cell.findView(this.paper));
+//
+//			}, this);
+//
+//		}, this));
+
+//		KeyboardJS.on('ctrl + x', _.bind(function() {
+//
+//			var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
+//			this.commandManager.initBatchCommand();
+//			_.invoke(originalCells, 'remove');
+//			this.commandManager.storeBatchCommand();
+//			this.selectionView.cancelSelection();
+//		}, this));
 	},
 
 	initializeCommandManager: function() {

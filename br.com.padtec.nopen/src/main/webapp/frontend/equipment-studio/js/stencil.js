@@ -9,17 +9,7 @@ Stencil.shapes = {
 
 		equipment: [
 		            
-					//Rack
-					new joint.shapes.basic.Rect({
-						subType : 'rack' ,
-						size: { width:80 , height: 160 },
-						attrs: {
-							rect: {
-								fill: '#767572'
-							},
-							//text: { text: 'rack', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
-						}
-					}),
+					
 		            //Shelf
 		            new joint.shapes.basic.Rect({
 		            	size: { width: 60, height: 45 },
@@ -59,12 +49,22 @@ Stencil.shapes = {
 		            	size: { width: 10, height: 20 },
 		            	attrs: {
 		            		rect: {
-		            			fill: '#42563D'
+		            			fill: '#000'
 		            		},
 		            		//text: { text: 'supervisor card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
 		            	}
 		            }),		
-		          
+		            //Rack
+					new joint.shapes.basic.Rect({
+						subType : 'rack' ,
+						size: { width:40 , height: 80 },
+						attrs: {
+							rect: {
+								fill: '#767572'
+							},
+							//text: { text: 'rack', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
+						}
+					}),
 		            
 		  ],
 };

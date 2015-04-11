@@ -1,95 +1,3 @@
-function equipmentHandle(paper, graph){
-
-	paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
-		
-		var cellId = cellView.model.id;
-		var equipament = graph.getCell(cellId);
-		if((equipament.get('subType')) === 'card' || (equipament.get('subType')) === 'supervisor') {
-			//will create an ITU view
-			console.log('opening ITU studio');
-			var a = graph.toJSON();
-			console.log(a);
-			console.log(JSON.stringify(a));
-	
-			//generateSaveEquipmentDialog(app.graph);
-	
-				dialog = $("#save-dialog").dialog({
-						autoOpen: false,
-						height: 180,
-						width: 350,
-						modal: true,
-						buttons: { 
-							"Save": checkEquipmentFile,  
-							Cancel: function() {
-								dialog.dialog( "close" );
-							}
-						},
-						close: function() { }
-					});
-	
-					$("#save-dialog").dialog("open");
-	
-					function checkEquipmentFile(){
-	
-						if($("#save-filename").val() == ""){
-							alert("File name cannot be empty!")
-						}
-						else{
-							$.ajax({
-								type: "POST",
-								url: "checkEquipmentFile.htm",
-								data: {
-									'filename': $("#save-filename").val(),
-								},
-								success: function(data){ 		   
-									if(data == "exist"){		   
-										if (confirm('The file already exist, do you want to replace it?')) {
-											saveEquipment();
-										} 
-									}
-									else{
-										saveEquipment();
-									}
-								},
-								error : function(e) {
-									alert("error: " + e.status);
-									$("#save-dialog").dialog("close");
-								}
-							});
-						}
-	
-					};
-	
-	
-					function saveEquipment(){
-	
-						$.ajax({
-							type: "POST",
-							url: "saveEquipment.htm",
-							data: {
-								'filename': $("#save-filename").val(),
-								'graph': JSON.stringify(graph.toJSON()),
-							},
-							success: function(){ 		   
-								alert($("#save-filename").val() + ' saved successfully!');
-								$("#save-dialog").dialog("close");
-							},
-							error : function(e) {
-								alert("error: " + e.status);
-								$("#save-dialog").dialog("close");
-							}
-						});
-	
-	
-					};
-	
-		}	
-	
-	},this);
-};
-
-
-
 
 function graphHandle(graph){
 	
@@ -98,6 +6,7 @@ function graphHandle(graph){
 
 		//console.log(JSON.stringify(cell));
 		if(cell.get('type') === 'link') return;
+		
 		var subtype = cell.get('subType');
 		var position = cell.get('position');
 		var size = cell.get('size');
@@ -424,4 +333,94 @@ function embedOrConnect (parent, child) {
 		}
 	}
 	
+};
+
+function equipmentHandle(paper, graph){
+
+	paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
+		
+		var cellId = cellView.model.id;
+		var equipament = graph.getCell(cellId);
+		if((equipament.get('subType')) === 'card' || (equipament.get('subType')) === 'supervisor') {
+			//will create an ITU view
+			console.log('opening ITU studio');
+			var a = graph.toJSON();
+			console.log(a);
+			console.log(JSON.stringify(a));
+	
+			//generateSaveEquipmentDialog(app.graph);
+	
+				dialog = $("#save-dialog").dialog({
+						autoOpen: false,
+						height: 180,
+						width: 350,
+						modal: true,
+						buttons: { 
+							"Save": checkEquipmentFile,  
+							Cancel: function() {
+								dialog.dialog( "close" );
+							}
+						},
+						close: function() { }
+					});
+	
+					$("#save-dialog").dialog("open");
+	
+					function checkEquipmentFile(){
+	
+						if($("#save-filename").val() == ""){
+							alert("File name cannot be empty!")
+						}
+						else{
+							$.ajax({
+								type: "POST",
+								url: "checkEquipmentFile.htm",
+								data: {
+									'filename': $("#save-filename").val(),
+								},
+								success: function(data){ 		   
+									if(data == "exist"){		   
+										if (confirm('The file already exist, do you want to replace it?')) {
+											saveEquipment();
+										} 
+									}
+									else{
+										saveEquipment();
+									}
+								},
+								error : function(e) {
+									alert("error: " + e.status);
+									$("#save-dialog").dialog("close");
+								}
+							});
+						}
+	
+					};
+	
+	
+					function saveEquipment(){
+	
+						$.ajax({
+							type: "POST",
+							url: "saveEquipment.htm",
+							data: {
+								'filename': $("#save-filename").val(),
+								'graph': JSON.stringify(graph.toJSON()),
+							},
+							success: function(){ 		   
+								alert($("#save-filename").val() + ' saved successfully!');
+								$("#save-dialog").dialog("close");
+							},
+							error : function(e) {
+								alert("error: " + e.status);
+								$("#save-dialog").dialog("close");
+							}
+						});
+	
+	
+					};
+	
+		}	
+	
+	},this);
 };

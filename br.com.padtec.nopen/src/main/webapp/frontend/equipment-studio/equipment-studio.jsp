@@ -6,8 +6,6 @@
 
         <title>EQUIPMENT STUDIO</title>
 
-        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css" />
-
         <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
 
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/layout.css" />
@@ -42,14 +40,11 @@
 		<script src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
 
         <script src="/nopen/frontend/equipment-studio/js/keyboard.js"></script>
-
-		<script src="/nopen/core/rappid_api/js/joint.shapes.devs.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/inspector.js"></script>
-		<script src="/nopen/frontend/equipment-studio/js/mymodel.js"></script>
-		<script src="/nopen/frontend/equipment-studio/js/mypool.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/main.js"></script>
         
+        <script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
         
    		<!-- PLUGINS -->
@@ -82,6 +77,8 @@
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
+            
+            resizing(app.graph);
             
             graphHandle(app.graph);
             equipmentHandle(app.paper, app.graph);
