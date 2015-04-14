@@ -4,12 +4,24 @@ import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
+import br.com.padtec.nopen.service.util.NOpenFactoryUtil;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 
 public class StudioFactory {
 
+	public static void createTechnology(String techName)
+	{
+		NOpenFactoryUtil.createTechnology(ProvisioningComponents.provisioningRepository, techName);
+	}
+	
+	public static void createLayer(OKCoUploader repository, String layerName, String techName) throws Exception
+	{
+		NOpenFactoryUtil.createLayer(ProvisioningComponents.provisioningRepository,layerName, techName);
+	}
+	
 	public static void createTTF(String ttfName)
 	{
 		FactoryUtil.createInstanceIndividual(
@@ -30,20 +42,20 @@ public class StudioFactory {
 	
 	public static void createTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
 	{
-		String tfType = dtoTransportFunction.getType();
-		
-		String tfName = dtoTransportFunction.getName();
-		if(tfName==null) tfName = "UnNamed";
-		
-		String containerType = dtoContainer.getType();
-		String containerName = dtoContainer.getName();
-		if(containerName==null) containerName = "UnNamed";
-		
-		if(tfType.equals("TTF")) createTTF(tfName);
-		if(tfType.equals("AF")) createTTF(tfName);
-		 
-		System.out.println("Transport Function: "+tfName+":"+tfType);
-		System.out.println("Container: "+containerName+":"+containerType);				
+//		String tfType = dtoTransportFunction.getType();
+//		
+//		String tfName = dtoTransportFunction.getName();
+//		if(tfName==null) tfName = "UnNamed";
+//		
+//		String containerType = dtoContainer.getType();
+//		String containerName = dtoContainer.getName();
+//		if(containerName==null) containerName = "UnNamed";
+//		
+//		if(tfType.equals("TTF")) createTTF(tfName);
+//		if(tfType.equals("AF")) createTTF(tfName);
+//		 
+//		System.out.println("Transport Function: "+tfName+":"+tfType);
+//		System.out.println("Container: "+containerName+":"+containerType);				
 	}
 		
 	public static boolean createPort(String portID, String transportFunctionID) 

@@ -17,7 +17,7 @@ import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 
-public class NOpenQueries {
+public class NOpenQueryUtil {
 
 	public static String[] getIndividualsNames(String classURI)
 	{		
@@ -63,7 +63,7 @@ public class NOpenQueries {
 	
 	public static String[][] getLayerNames()
 	{
-		String[] techs = NOpenQueries.getTechnologiesNames();
+		String[] techs = NOpenQueryUtil.getTechnologiesNames();
 		String[][] result = new String[techs.length][];
 		int i=0;
 		for(String s: techs){

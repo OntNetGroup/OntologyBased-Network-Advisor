@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.service.NOpenInitializer;
-import br.com.padtec.nopen.service.util.NOpenQueries;
+import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 
 @Controller
 public class HomeController {
@@ -19,13 +19,13 @@ public class HomeController {
 	{		
 		NOpenInitializer.run();
 				
-		request.getSession().setAttribute("techs", NOpenQueries.getTechnologiesNames());
-		request.getSession().setAttribute("layers", NOpenQueries.getLayerNames());
-		request.getSession().setAttribute("allServices", NOpenQueries.getServicesNames());
+		request.getSession().setAttribute("techs", NOpenQueryUtil.getTechnologiesNames());
+		request.getSession().setAttribute("layers", NOpenQueryUtil.getLayerNames());
+		request.getSession().setAttribute("allServices", NOpenQueryUtil.getServicesNames());
 		
 		return "welcome";
 	}
-	
+		
 	@RequestMapping("/home")
 	public String homeRequest(HttpServletRequest request) {		
 		return "welcome";

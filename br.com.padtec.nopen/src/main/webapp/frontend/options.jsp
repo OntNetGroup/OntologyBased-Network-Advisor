@@ -43,7 +43,9 @@
 	            	int i=0;
             		for(String tech: techs){           				
            				out.println("<li class=\"dd-item dd3-item\" data-id=\""+i+"\">");
-           				out.println("<div class=\"dd-handle dd3-handle\">Drag</div><div class=\"dd3-content tech\">"+(tech+"")+"</div>");
+           				out.println("<div class=\"dd-handle dd3-handle\">Drag</div>"+"<div class=\"dd3-content tech\">"+(tech+"")+
+           					//"<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+tech+"\" style=\"float:right\"></a>"+
+           					"</div>");
 			           	out.println("</li>");            			            			
 	            		i++;
             		}
@@ -72,11 +74,13 @@
 					<%
 	            	int j=0;					
 					for(String tech: techs){
-						out.println("<div id=\""+tech+"\"; class=\"x\" style=\"display:none;\">");
+						out.println("<div id=\""+tech+"\" class=\"x\" style=\"display:none;\">");
 						for(String layer: layers[j])
 						{	
-	           				out.println("<li class=\"dd-item dd3-item\" data-id=\""+j+"\">");
-	           				out.println("<div class=\"dd-handle dd3-handle\">Drag</div><div class=\"dd3-content\">"+(layer+"")+"</div>");
+	           				out.println("<li class=\"dd-item dd3-item\">");
+	           				out.println("<div class=\"dd-handle dd3-handle\">Drag</div>"+"<div class=\"dd3-content\">"+(layer+"")+
+	           						//"<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+layer+"\" style=\"float:right\"></a>"+
+	           						"</div>");
 				           	out.println("</li>");				         
 	            		}
 					  	out.println("</div>");
@@ -132,13 +136,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">New Technology Form</h4>
+				<h4 class="modal-title">New Technology</h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
 					<label class="control-label" for="focusedInput">Name:</label>
 					<div class="controls">
-					  <input class="form-control focused" id="tech-input" type="text" value="This is the technology name...">
+					  <input class="form-control focused" id="tech-input" type="text" value="">
 					</div>
 				</div>
 			</div>
@@ -155,13 +159,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">New Layer Form</h4>
+				<h4 class="modal-title">New Layer</h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
 					<label class="control-label" for="focusedInput">Name:</label>
 					<div class="controls">
-					  <input class="form-control focused" id="layer-input" type="text" value="This is the layer name...">
+					  <input class="form-control focused" id="layer-input" type="text" value="">
 					</div>
 				</div>
 			</div>
@@ -215,20 +219,13 @@
     $('#layer').nestable({
         group: 2
     });
-
+	   
     $('.tech').on('click', function(e) {
 		tech = e.target.innerText;
 		
 		$(".x").css("display","none");
 		$("#"+tech).css("display","block");		
     });
-    
-//     $('.layer').on('click', function(e) {
-// 		var layer = e.target.innerText;
-		
-// 		$(".y").css("display","none");
-// 		$("#"+layer).css("display","block");	
-//     });
     
 	$('#nestable-menu').on('click', function(e) {
 	        var target = $(e.target),
@@ -245,7 +242,7 @@
 		e.preventDefault();
 		$('#techModal').modal('show');				
 	});
-	
+
 	$('.btn-layer-plus').click(function(e){
 		e.preventDefault();
 		if(tech == null){
@@ -261,26 +258,31 @@
 		   async: false,
 		   url: "createLayer.htm",
 		   data: {
-			   'layerName': $('#layer-input').val()
+			   'layerName': $('#layer-input').val(),
+			   'techName': tech
 		   },
 		   success: function(data){ 		   
+			   alert(data);
 			   
 			   var appendString = ""
 			        +"<li class=\"dd-item dd3-item\" data-id=\"\">"
-      				+"      <div class=\"dd-handle dd3-handle\">Drag</div><div class=\"dd3-content\">"+$('#layer-input').val()+"</div>"
+      				+"      <div class=\"dd-handle dd3-handle\">Drag</div>"
+      				+"      <div class=\"dd3-content\">"+$('#layer-input').val()
+      				+"<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+$('#layer-input').val()+"\" style=\"float:right\"></a>"
+      				+"		</div>"
 		           	+"</li>";				         
-			  
-			  console.log(appendString);
-			  
+			   
 			   $("#layer .dd-list #"+tech).append(appendString);
-			   $('#layer-input').val("This is the layer name...");
+			   
+			   console.log($("#layer .dd-list"));
+			   
+			   $('#layer-input').val("");
 			   $('#layerModal').modal('hide');
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
 		   }
-		});
-		
+		});		
 	});
 	
 	$('#create-tech').click(function(e){
@@ -292,24 +294,53 @@
 			   'techName': $('#tech-input').val()
 		   },
 		   success: function(data){ 		   
+			   alert(data);
 			   
 			   var appendString = ""				  
-			        +"<li class=\"dd-item dd3-item\" data-id=\"\">"
-      				+"      <div class=\"dd-handle dd3-handle\">Drag</div><div class=\"dd3-content tech\">"+$('#tech-input').val()+"</div>"
+			        +"<li class=\"dd-item dd3-item\" data-id=\""+$('#tech-input').val()+"\">"
+      				+"      <div class=\"dd-handle dd3-handle\">Drag</div><div class=\"dd3-content tech\">"+$('#tech-input').val()
+      				+"			<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+$('#tech-input').val()+"\" style=\"float:right\"></a>"
+      				+"		</div>"
 		           	+"</li>";				         
 			  
 			  console.log(appendString);
 			  
 			   $("#tech .dd-list").append(appendString);
-			   $('#tech-input').val("This is the technology name...");
+			   $('#tech-input').val("");
 			   $('#techModal').modal('hide');
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
 		   }
-		});
-		
+		});		
 	});
+	
+	$('.icon-trash').live('click',function(e) {
+		e.preventDefault();
+		var target = $(e.target).attr("del-type");
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "deleteTechOrLayer.htm",
+		   data: {
+			   'elemName': target
+		   },
+		   success: function(data){ 	
+			   
+			   alert(data);
+			   
+			   $(this).parent().parent().remove();
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});	
+		
+		//alert(target);
+		//return false;
+    });
+	
 </script>
 	
 <%@include file="/frontend/template/index-bottom.jsp"%>

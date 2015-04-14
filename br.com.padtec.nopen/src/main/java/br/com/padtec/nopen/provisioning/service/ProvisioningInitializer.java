@@ -5,7 +5,7 @@ import java.util.Date;
 
 import br.com.padtec.common.util.PerformanceUtil;
 import br.com.padtec.nopen.service.NOpenInitializer;
-import br.com.padtec.nopen.service.util.NOpenFactory;
+import br.com.padtec.nopen.service.util.NOpenFactoryUtil;
 import br.com.padtec.nopen.service.util.NOpenUtilities;
 
 public class ProvisioningInitializer {
@@ -31,13 +31,13 @@ public class ProvisioningInitializer {
 		return msg;
 	}
 	
-	public static void registerDefaultTechnologies()
+	public static void registerDefaultTechnologies() throws Exception
 	{
 		Date beginDate = new Date();		
 		
-		NOpenFactory.createMEFTech(ProvisioningComponents.provisioningRepository);
-		NOpenFactory.createOTNTech(ProvisioningComponents.provisioningRepository);
-		NOpenFactory.createServices(ProvisioningComponents.provisioningRepository);
+		NOpenFactoryUtil.createMEFTech(ProvisioningComponents.provisioningRepository);
+		NOpenFactoryUtil.createOTNTech(ProvisioningComponents.provisioningRepository);
+		NOpenFactoryUtil.createServices(ProvisioningComponents.provisioningRepository);
 		
 		PerformanceUtil.printExecutionTime("Provisioning: Technologies, Layers and Services registered.", beginDate);
 	}

@@ -6,7 +6,7 @@ import java.util.List;
 
 import br.com.padtec.advisor.core.types.RelationEnum;
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.nopen.service.util.NOpenQueries;
+import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class ModelStructureAccessorController {
@@ -17,7 +17,7 @@ public class ModelStructureAccessorController {
 		List<String> tipoContainer = QueryUtil.getClassesURIFromIndividual(repository.getBaseModel(), repository.getNamespace()+container);
 		String tipo = tipoContainer.get(0);
 		HashSet<String> relations = new HashSet<String>();
-		relations = NOpenQueries.getAllComponentOFRelations(tipo, repository.getBaseModel()); //precisa atualizar com os filhos, caso haja
+		relations = NOpenQueryUtil.getAllComponentOFRelations(tipo, repository.getBaseModel()); //precisa atualizar com os filhos, caso haja
 		for(String relation : relations){
 			List<String[]> cardinality = null;
 			List<String[]> MaxCardinality = QueryUtil.getMaxCardinalityDefinitions(repository.getBaseModel(), repository.getNamespace()+tipo);
@@ -36,4 +36,4 @@ public class ModelStructureAccessorController {
 		}
 		return mapping;
 	}
-}
+}>>>>>>> .r609

@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 import br.com.padtec.common.util.PerformanceUtil;
-import br.com.padtec.nopen.service.util.NOpenFactory;
+import br.com.padtec.nopen.service.util.NOpenFactoryUtil;
 import br.com.padtec.nopen.service.util.NOpenUtilities;
 
 public class StudioInitializer {
@@ -30,13 +30,13 @@ public class StudioInitializer {
 		return msg;
 	}
 	
-	public static void registerDefaultTechnologies()
+	public static void registerDefaultTechnologies() throws Exception
 	{
 		Date beginDate = new Date();		
 				
-		NOpenFactory.createMEFTech(StudioComponents.studioRepository);
-		NOpenFactory.createOTNTech(StudioComponents.studioRepository);		
-		NOpenFactory.createServices(StudioComponents.studioRepository);
+		NOpenFactoryUtil.createMEFTech(StudioComponents.studioRepository);
+		NOpenFactoryUtil.createOTNTech(StudioComponents.studioRepository);		
+		NOpenFactoryUtil.createServices(StudioComponents.studioRepository);
 		
 		PerformanceUtil.printExecutionTime("Equip Studio: Technologies, Layers and Services registered.", beginDate);
 	}

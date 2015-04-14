@@ -170,9 +170,18 @@ public class FactoryUtil {
 	 * @param indvTargetURI: target individual URI
 	 * 
 	 * @author Freddy Brasileiro
+	 * @throws Exception 
 	 */
-	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI){
+	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI) throws Exception{
+		
 		createInstanceRelation(model, indvSourceURI, objectPropertyURI, indvTargetURI, true, true, true);
+	}
+	
+	static public boolean isValid(OntModel model, String elemURI) throws Exception
+	{
+		if(elemURI.equals(model.getNsURIPrefix(""))) throw new Exception("A name cannot be empty.");
+		if(elemURI.contains(" ")) throw new Exception("A name cannot have a space character: "+elemURI.replace(model.getNsURIPrefix(""),""));
+		return true;
 	}
 	
 	/**
@@ -186,9 +195,14 @@ public class FactoryUtil {
 	 * @param forceInverses: force all inverses
 	 * 
 	 * @author Freddy Brasileiro
+	 * @throws Exception 
 	 */
-	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceSuperObjProp, boolean forceInverses, boolean forceCandSubRelation)
+	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceSuperObjProp, boolean forceInverses, boolean forceCandSubRelation) throws Exception
 	{			
+		isValid(model, indvSourceURI);
+		isValid(model, indvTargetURI);
+		isValid(model, objectPropertyURI);
+
 		System.out.println("\n"
 							+ "Executing createInstanceRelation(" 
 							+ indvSourceURI.replace(model.getNsPrefixURI(""), "") 

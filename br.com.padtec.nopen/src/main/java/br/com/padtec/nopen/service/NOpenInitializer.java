@@ -9,8 +9,6 @@ public class NOpenInitializer {
 	{		
 		StudioInitializer.run(true);
 
-		ProvisioningInitializer.run(false);
-
 		ProvisioningInitializer.run(true);	
 	}
 }

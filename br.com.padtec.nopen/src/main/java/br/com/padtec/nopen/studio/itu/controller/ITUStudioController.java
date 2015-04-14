@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.model.DtoJointElement;
-import br.com.padtec.nopen.service.util.NOpenQueries;
+import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.model.StudioFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
 
@@ -27,7 +27,7 @@ public class ITUStudioController {
 	@RequestMapping(value = "/allLayers", method = RequestMethod.POST)
 	public @ResponseBody String[][] getAllLayersNames() 
 	{
-		return NOpenQueries.getLayerNames();
+		return NOpenQueryUtil.getLayerNames();
 	}
 	
 	/** Get layer names given a technology
@@ -37,7 +37,7 @@ public class ITUStudioController {
 	@RequestMapping(value = "/techLayers", method = RequestMethod.POST)
 	public @ResponseBody String[] getLayerNames(@RequestParam("techName") String techName) 
 	{
-		return NOpenQueries.getLayerNames(techName);
+		return NOpenQueryUtil.getLayerNames(techName);
 	}
 	
 	/* ----- CRUD for Container ----- */
@@ -100,7 +100,7 @@ public class ITUStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);		
 
 		try{
-//			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer, dtoCard);
+			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer, dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
