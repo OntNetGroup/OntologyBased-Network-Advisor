@@ -12,7 +12,7 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 public class ModelStructureAccessorController {
 
 	
-	public HashMap<String, String> buildContainerStructure(String container, OKCoUploader repository){
+	public static HashMap<String, String> buildContainerStructure(String container, OKCoUploader repository){
 		HashMap<String, String> mapping = new HashMap<String, String>();
 		List<String> tipoContainer = QueryUtil.getClassesURIFromIndividual(repository.getBaseModel(), repository.getNamespace()+container);
 		String tipo = tipoContainer.get(0);

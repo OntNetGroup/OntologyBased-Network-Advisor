@@ -4,18 +4,24 @@ import java.util.HashMap;
 
 import br.com.padtec.okco.core.application.OKCoUploader;
 
-public class ModelStructureAccessor {
-	HashMap<String, String> relations_mapping;
+public final class ModelStructureAccessor {
+	private static HashMap<String, String> relations_mapping = new HashMap<String, String>();
+	private static final ModelStructureAccessor instance = new ModelStructureAccessor();
 
-	public HashMap<String, String> getRelations_mapping() {
-	return relations_mapping;
-}
-
-	public void setRelations_mapping(HashMap<String, String> relations_mapping) {
-		this.relations_mapping = relations_mapping;
-	}
-
-	public void initContainerStructure(String container, OKCoUploader repository){
+	private ModelStructureAccessor(){
 		
 	}
+
+	public static ModelStructureAccessor getInstance(){
+		return instance;
+	}
+
+	public static HashMap<String, String> getRelationsMapping() {
+		return relations_mapping;
+	}
+	
+	public static void initContainerStructure(String container, OKCoUploader repository){
+		relations_mapping = ModelStructureAccessorController.buildContainerStructure(container, repository);
+	}
+
 }
