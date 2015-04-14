@@ -49,7 +49,7 @@ Stencil.shapes = {
 		            	size: { width: 10, height: 20 },
 		            	attrs: {
 		            		rect: {
-		            			fill: '#000'
+		            			fill: '#516949'
 		            		},
 		            		//text: { text: 'supervisor card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
 		            	}

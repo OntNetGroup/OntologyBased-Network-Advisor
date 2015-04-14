@@ -1,11 +1,11 @@
 function graphHandle(graph){
-	
+
 	// when a cell is added on another one, it should be embedded
 	graph.on('add', function(cell) {
 
 		//console.log(JSON.stringify(cell));
 		if(cell.get('type') === 'link') return;
-		
+
 		var subtype = cell.get('subType');
 		var position = cell.get('position');
 		var size = cell.get('size');
@@ -149,76 +149,159 @@ function graphHandle(graph){
 		}
 		else{
 			if(!(cell.get('subType') === 'rack')){
-				alert('Error!');
+
+//				*		//		var graph1 = new joint.dia.Graph;
+//				*		//		var paper1 = new joint.dia.Paper({ width: 400, height: 200, model: graph1, gridSize: 1 });
+
+				(new joint.ui.Dialog({
+					type: 'alert' ,
+					width: 420,
+					draggable: false,
+					title: 'Alert ',
+					//*		//content: paper1.$el
+					content: 'The order is wrong!'
+				})).open();
+
+				//mostrando como funciona a conexão em um paper *
+//				(new joint.shapes.basic.Rect({
+//				id: 'rack',
+//				position: { x: 0, y: 50 },
+//				size: { width: 80, height: 100 },
+//				attrs: { text: { text: 'rack' } }
+//				})).addTo(graph1);
+//				(new joint.shapes.basic.Rect({
+//				id: 'shelf',
+//				position: { x: 140, y: 50 },
+//				size: { width: 60, height: 40 },
+//				attrs: { text: { text: 'shelf' } }
+//				})).addTo(graph1);				
+//				(new joint.shapes.basic.Rect({
+//				id: 'slot',
+//				position: { x:230, y: 50 },
+//				size: { width: 15, height: 22 },
+//				attrs: { text: { text: 'slot' } }
+//				})).addTo(graph1);
+//				(new joint.shapes.basic.Rect({
+//				id: 'card',
+//				position: { x: 350 , y: 50 },
+//				size: { width: 5, height: 10 },
+//				attrs: { text: { text: 'card/supervisor' } }
+//				})).addTo(graph1);
+
+				//por link
+//				(new joint.dia.Link({
+//				source: { id: 'rack' },
+//				target: { id: 'shelf' },
+//				attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' } }
+//				})).addTo(graph1);
+//				(new joint.dia.Link({
+//				source: { id: 'shelf' },
+//				target: { id: 'slot' },
+//				attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' } }
+//				})).addTo(graph1);
+//				(new joint.dia.Link({
+//				source: { id: 'slot' },
+//				target: { id: 'card' },
+//				attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' } }
+//				})).addTo(graph1);
+
+				//conectados
+//				(graph1.getCell(rack)).embed(graph1.getCell(shelf));
+//				(graph1.getCell(shelf)).embed(graph1.getCell(slot));
+//				(graph1.getCell(slot)).embed(graph1.getCell(card));
+
+				//por html
+//				alert('Error!');
 				cell.remove();
-				return;
+//				return;
 			}
 		}
-		
-		
+
+
 	}, this);
 
 	graph.on('remove' , function (cell) {
 
-		var parentId = cell.get('parent');
-		if (!parentId) return;
+//		if((cell.get('parent') === null) && (!(cell.get('subType') === 'rack'))) {
+//
+//		}else {
+//			var dialog = new joint.ui.Dialog({
+//				type: 'warning' ,
+//				width: 400,
+//				draggable: false,
+//				title: 'Warning ',
+//				content: 'Are you sure you want to delete this equipment? Everything conected with it will be deleted.',
+//				buttons: [
+//				          { action: 'yes', content: 'Yes' },
+//				          { action: 'no', content: 'No' }
+//				          ]
+//			});
+//			dialog.on('action:yes', dialog.close, remove );
+//			dialog.on('action:no', dialog.close, dialog);
+//			dialog.open();
+//
+//			function remove (parent, cell) {
 
-		var parent = graph.getCell(parentId);
+				var parentId = cell.get('parent');
+				if (!parentId) return;
 
-
-		if(parent.get('subType') === 'rack') {
-
-			//console.log(parent.getEmbeddedCells().length);
-
-			parent.set('size' , { 
-				width: parent.get('size').width  ,
-				height:	240 + ((parent.getEmbeddedCells().length - (2) ) * 70)
-			});
-			//console.log(parent.get('size'));
-
-		}else{
-			if(parent.get('subType') === 'shelf'){
-
-				var grandparentId = parent.get('parent');
-				if (!grandparentId) return;
-
-				var grandparent = graph.getCell(grandparentId);
-
-				parent.set('size' , { 
-					width: 120 + ((parent.getEmbeddedCells().length - (2) ) * 70) ,
-					height:	parent.get('size').height});
-
-				grandparent.set('size', {
-					width: grandparent.get('size').width ,
-					height: grandparent.get('size').height
-				});				
+				var parent = graph.getCell(parentId);
 
 
-			}else{
-				if(parent.get('subType') === 'slot'){
-					var grandparentId = parent.get('parent');
-					if (!grandparentId) return;
+				if(parent.get('subType') === 'rack') {
 
-					var grandparent = graph.getCell(grandparentId);
+					//console.log(parent.getEmbeddedCells().length);
 
-					parent.set('size' , {
-						width: 22.5 ,
-						height: 52.5
+					parent.set('size' , { 
+						width: parent.get('size').width  ,
+						height:	240 + ((parent.getEmbeddedCells().length - (2) ) * 70)
 					});
+					//console.log(parent.get('size'));
 
-//					grandparent.set('size', {
-//					width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 70),
-//					height: grandparent.get('size').height
-//					})
+				}else{
+					if(parent.get('subType') === 'shelf'){
+
+						var grandparentId = parent.get('parent');
+						if (!grandparentId) return;
+
+						var grandparent = graph.getCell(grandparentId);
+
+						parent.set('size' , { 
+							width: 120 + ((parent.getEmbeddedCells().length - (2) ) * 70) ,
+							height:	parent.get('size').height});
+
+						grandparent.set('size', {
+							width: grandparent.get('size').width ,
+							height: grandparent.get('size').height
+						});				
+
+
+					}else{
+						if(parent.get('subType') === 'slot'){
+							var grandparentId = parent.get('parent');
+							if (!grandparentId) return;
+
+							var grandparent = graph.getCell(grandparentId);
+
+							parent.set('size' , {
+								width: 22.5 ,
+								height: 52.5
+							});
+
+//							grandparent.set('size', {
+//							width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 70),
+//							height: grandparent.get('size').height
+//							})
 
 
 
-				}if(parent.get('subType') === 'card' || 'supervisor' ) {
+						}if(parent.get('subType') === 'card' || 'supervisor' ) {
 
-				}
-			}
-		}
-
+						}
+					}
+				};
+//			}
+//		}	
 	},this); 
 
 //	graph.on('all' , function(a) {
@@ -305,8 +388,8 @@ function graphHandle(graph){
 			size: { width: newCornerX - newX, height: newCornerY - newY }
 		}, { skipParentHandler: true });
 	},this);
-	
-	
+
+
 };
 
 function embedOrConnect (parent, child) {
@@ -341,13 +424,13 @@ function embedOrConnect (parent, child) {
 			}
 		}
 	}
-	
+
 };
 
 function equipmentHandle(paper, graph){
 
 	paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
-		
+
 		var cellId = cellView.model.id;
 		var equipament = graph.getCell(cellId);
 		if((equipament.get('subType')) === 'card' || (equipament.get('subType')) === 'supervisor') {
@@ -356,80 +439,80 @@ function equipmentHandle(paper, graph){
 			var a = graph.toJSON();
 			console.log(a);
 			console.log(JSON.stringify(a));
-	
+
 			//generateSaveEquipmentDialog(app.graph);
-	
-				dialog = $("#save-dialog").dialog({
-						autoOpen: false,
-						height: 180,
-						width: 350,
-						modal: true,
-						buttons: { 
-							"Save": checkEquipmentFile,  
-							Cancel: function() {
-								dialog.dialog( "close" );
+			
+			dialog = $("#save-dialog").dialog({
+				autoOpen: false,
+				height: 180,
+				width: 350,
+				modal: true,
+				buttons: { 
+					"Save": checkEquipmentFile,  
+					Cancel: function() {
+						dialog.dialog( "close" );
+					}
+				},
+				close: function() { }
+			});
+
+			$("#save-dialog").dialog("open");
+
+			function checkEquipmentFile(){
+
+				if($("#save-filename").val() == ""){
+					alert("File name cannot be empty!")
+				}
+				else{
+					$.ajax({
+						type: "POST",
+						url: "checkEquipmentFile.htm",
+						data: {
+							'filename': $("#save-filename").val(),
+						},
+						success: function(data){ 		   
+							if(data == "exist"){		   
+								if (confirm('The file already exist, do you want to replace it?')) {
+									saveEquipment();
+								} 
+							}
+							else{
+								saveEquipment();
 							}
 						},
-						close: function() { }
+						error : function(e) {
+							alert("error: " + e.status);
+							$("#save-dialog").dialog("close");
+						}
 					});
-	
-					$("#save-dialog").dialog("open");
-	
-					function checkEquipmentFile(){
-	
-						if($("#save-filename").val() == ""){
-							alert("File name cannot be empty!")
-						}
-						else{
-							$.ajax({
-								type: "POST",
-								url: "checkEquipmentFile.htm",
-								data: {
-									'filename': $("#save-filename").val(),
-								},
-								success: function(data){ 		   
-									if(data == "exist"){		   
-										if (confirm('The file already exist, do you want to replace it?')) {
-											saveEquipment();
-										} 
-									}
-									else{
-										saveEquipment();
-									}
-								},
-								error : function(e) {
-									alert("error: " + e.status);
-									$("#save-dialog").dialog("close");
-								}
-							});
-						}
-	
-					};
-	
-	
-					function saveEquipment(){
-	
-						$.ajax({
-							type: "POST",
-							url: "saveEquipment.htm",
-							data: {
-								'filename': $("#save-filename").val(),
-								'graph': JSON.stringify(graph.toJSON()),
-							},
-							success: function(){ 		   
-								alert($("#save-filename").val() + ' saved successfully!');
-								$("#save-dialog").dialog("close");
-							},
-							error : function(e) {
-								alert("error: " + e.status);
-								$("#save-dialog").dialog("close");
-							}
-						});
-	
-	
-					};
-	
+				}
+
+			};
+
+
+			function saveEquipment(){
+
+				$.ajax({
+					type: "POST",
+					url: "saveEquipment.htm",
+					data: {
+						'filename': $("#save-filename").val(),
+						'graph': JSON.stringify(graph.toJSON()),
+					},
+					success: function(){ 		   
+						alert($("#save-filename").val() + ' saved successfully!');
+						$("#save-dialog").dialog("close");
+					},
+					error : function(e) {
+						alert("error: " + e.status);
+						$("#save-dialog").dialog("close");
+					}
+				});
+
+
+			};
+
 		}	
-	
+
 	},this);
 };

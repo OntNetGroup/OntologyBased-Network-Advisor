@@ -84,13 +84,14 @@
             equipmentHandle(app.paper, app.graph);
             
            // graphHandle(app.graph);
-          //  paperHandle(app.paper);
+            //paperHandle(app.paper);
             
-            //var uuid = joint.util.uuid();
+            var uuid = joint.util.uuid();
             
-           // $('#btn-save').click(function(){
-          //  generateSaveEquipmentDialog(app.graph);
-          	
+            $('#btn-save').click(function(){
+            generateSaveEquipmentDialog(app.graph);
+            });
+        
         </script>
     </body>
 </html>
