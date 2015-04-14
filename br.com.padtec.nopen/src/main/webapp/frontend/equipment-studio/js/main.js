@@ -73,6 +73,7 @@ var Rappid = Backbone.Router.extend({
 		}, this);
 
 		this.paper = new joint.dia.Paper({
+			//el: $('#paper-reparenting'),
 			width: 1000,
 			height: 1000,
 			gridSize: 10,

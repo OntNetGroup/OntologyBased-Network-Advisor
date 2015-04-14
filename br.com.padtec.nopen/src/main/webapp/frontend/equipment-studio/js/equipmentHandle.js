@@ -1,4 +1,3 @@
-
 function graphHandle(graph){
 	
 	// when a cell is added on another one, it should be embedded
@@ -146,7 +145,17 @@ function graphHandle(graph){
 					}
 				}
 			}
+
 		}
+		else{
+			if(!(cell.get('subType') === 'rack')){
+				alert('Error!');
+				cell.remove();
+				return;
+			}
+		}
+		
+		
 	}, this);
 
 	graph.on('remove' , function (cell) {
