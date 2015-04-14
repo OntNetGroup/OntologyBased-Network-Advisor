@@ -8,52 +8,52 @@ Stencil.groups = {
 
 Stencil.shapes = {
 	
-//	layers: [
-//			new Layer({
-//				subtype: 'OTS',
-//				attrs: {
-//					'.': { magnet: false },
-//					'.header': { fill: '#5799DA' }
-//				},
-//				lanes: { label: 'OTS' }
-//			}),
-//			
-//			new Layer({
-//				subtype: 'OTU',
-//				attrs: {
-//					'.': { magnet: false },
-//					'.header': { fill: '#5799DA' }
-//				},
-//				lanes: { label: 'OTU' }
-//			}),
-//			
-//			new Layer({
-//				subtype: 'ODU',
-//				attrs: {
-//					'.': { magnet: false },
-//					'.header': { fill: '#5799DA' }
-//				},
-//				lanes: { label: 'ODU' }
-//			}),
-//			
-//			new Layer({
-//				subtype: 'OCh',
-//				attrs: {
-//					'.': { magnet: false },
-//					'.header': { fill: '#5799DA' }
-//				},
-//				lanes: { label: 'OCh' }
-//			}),
-//			
-//			new Layer({
-//				subtype: 'OMS',
-//				attrs: {
-//					'.': { magnet: false },
-//					'.header': { fill: '#5799DA' }
-//				},
-//				lanes: { label: 'OMS' }
-//			})
-//	],
+	layers: [
+			new Layer({
+				subtype: 'OTS',
+				attrs: {
+					'.': { magnet: false },
+					'.header': { fill: '#5799DA' }
+				},
+				lanes: { label: 'OTS' }
+			}),
+			
+			new Layer({
+				subtype: 'OTU',
+				attrs: {
+					'.': { magnet: false },
+					'.header': { fill: '#5799DA' }
+				},
+				lanes: { label: 'OTU' }
+			}),
+			
+			new Layer({
+				subtype: 'ODU',
+				attrs: {
+					'.': { magnet: false },
+					'.header': { fill: '#5799DA' }
+				},
+				lanes: { label: 'ODU' }
+			}),
+			
+			new Layer({
+				subtype: 'OCh',
+				attrs: {
+					'.': { magnet: false },
+					'.header': { fill: '#5799DA' }
+				},
+				lanes: { label: 'OCh' }
+			}),
+			
+			new Layer({
+				subtype: 'OMS',
+				attrs: {
+					'.': { magnet: false },
+					'.header': { fill: '#5799DA' }
+				},
+				lanes: { label: 'OMS' }
+			})
+	],
 
 	transportFunctions: [
 	
@@ -100,4 +100,4 @@ Stencil.shapes = {
 	]
 };
 
-Stencil.shapes.layers = [];
+//Stencil.shapes.layers = [];

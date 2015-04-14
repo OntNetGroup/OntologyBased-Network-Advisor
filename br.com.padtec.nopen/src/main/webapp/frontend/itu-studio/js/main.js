@@ -129,15 +129,16 @@ var Rappid = Backbone.Router.extend({
             	console.log('validate connection');
             	if(!linkView) return false;
             	
-//            	/* Prevent linking to transport functions already being used */
-//        		var transportFunctionUsed = _.find(this.model.getLinks(), function(link) {
-//
-//    				return ((link.id !== linkView.model.id &&
-//    						link.get('target').id === cellViewT.model.id));
-//        		});
-//        		
-//        		// if (portUsed) return false; -> doesn't work!
-//        		if (!transportFunctionUsed) {} else return false;
+            	/* Prevent linking to ports already being used */
+        		var portUsed = _.find(this.model.getLinks(), function(link) {
+
+    				return ((link.id !== linkView.model.id &&
+    						link.get('target').id === cellViewT.model.id) &&
+    						(cellViewT.model.get('subtype') === 'in' || cellViewT.model.get('subtype') === 'out'));
+        		});
+        		
+        		// if (portUsed) return false; -> doesn't work!
+        		if (!portUsed) {} else return false;
         		
         		// Prevent loop linking
         		if(cellViewS === cellViewT) return false;
@@ -682,9 +683,35 @@ var Rappid = Backbone.Router.extend({
 					var parentType = parent.get('type');
 					
 					if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
+						
+						var inputText = "<div><p>Interface name: <input type='text' id='interfaceName' /></p> <p id='interfaceError' style='color:red; display:none;'>Define a name!</p></div>";
 
+//						var dialog = new joint.ui.Dialog({
+//						    width: 300,
+//						    title: 'Insert Interface',
+//						    content: inputText,
+//						    type: 'neutral',
+//						    closeButton: false,
+//						    buttons: [
+//						        { action: 'cancel', content: 'Cancelar', position: 'left' },
+//						        { action: 'ok', content: 'OK', position: 'left' }
+//						    ]
+//						}).open();
+//						dialog.on('action:ok', function(){
+//							if($('#interfaceName').val()){
+//								$('#interfaceError').hide();
+//								dialog.close();
+//							} else {
+//								$('#interfaceError').show();
+//							}
+//						}, dialog);
+//						dialog.on('action:cancel', function(){
+//							dialog.close();
+//							return next('Operation canceled!');
+//						}, dialog);
+						
 						var portID = cell.id;
-						var portName = 'a name'; // TODO: get name
+						var portName = 'a name';//$('#interfaceName').val(); // TODO: get name
 						var portType = cellSubType;
 						var transportFunctionID = parent.id;
 						console.log('try to create port ' +portID+ ' of TF ' +transportFunctionID);
@@ -692,7 +719,7 @@ var Rappid = Backbone.Router.extend({
 						
 						if(result === "success") {
 						
-							var newLink = new joint.dia.Link({	source: {id: parent.id}, target: {id: cell.id}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
+							var newLink = new joint.dia.Link({	source: {id: transportFunctionID}, target: {id: portID}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
 			    			this.graph.addCell(newLink);
 			    			
 			    			// Move the port to the superior (in port) or inferior (out port) bar
@@ -785,7 +812,7 @@ var Rappid = Backbone.Router.extend({
         }, this));
         
         // validar inserção de links no grafo
-        this.validator.validate('change:target change:source add', this.isLink, _.bind(function(err, command, next) {
+        this.validator.validate('change:target change:source', this.isLink, _.bind(function(err, command, next) {
         	
         	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
         	if(command.action === 'change:source') return next('Invalid operation!');
