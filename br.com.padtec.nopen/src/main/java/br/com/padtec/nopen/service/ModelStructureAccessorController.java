@@ -36,4 +36,4 @@ public class ModelStructureAccessorController {
 		}
 		return mapping;
 	}
-}>>>>>>> .r609
+}
