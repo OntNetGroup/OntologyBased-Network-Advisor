@@ -45,6 +45,8 @@
         <script src="/nopen/frontend/itu-studio/js/stencil.js"></script>
         <script src="/nopen/frontend/itu-studio/js/ajax.js"></script>
         <script src="/nopen/frontend/itu-studio/js/main.js"></script>
+        <script src="/nopen/frontend/itu-studio/js/graphHandler.js"></script>
+        <script src="/nopen/frontend/itu-studio/js/validator.js"></script>
 		
 		
 	<!--[if IE 9]>
@@ -67,6 +69,9 @@
             var app = new Rappid;
             Backbone.history.start();
     		
+            graphHandler(app.graph, app);
+            validator(app.validator, app.graph, app);
+            
         </script>
     </body>
 </html>
