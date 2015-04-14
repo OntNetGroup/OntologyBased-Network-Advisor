@@ -12,7 +12,7 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 public class ModelStructureAccessorController {
 
 	
-	public HashMap<String, String> buildContainerStructure(String container, OKCoUploader repository){
+	public static HashMap<String, String> buildContainerStructure(String container, OKCoUploader repository){
 		HashMap<String, String> mapping = new HashMap<String, String>();
 		List<String> tipoContainer = QueryUtil.getClassesURIFromIndividual(repository.getBaseModel(), repository.getNamespace()+container);
 		String tipo = tipoContainer.get(0);
@@ -26,7 +26,7 @@ public class ModelStructureAccessorController {
 			ok = cardinality.addAll(MaxCardinality);
 			ok = cardinality.addAll(MaxExactCardinality);
 			for(String[] card : cardinality){
-				//fazer uma busca no vetor pra procurar as relaï¿½ï¿½es entre o tipo e as relations que ja conheï¿½o pra pegar a cardinalidade
+				//fazer uma busca no vetor pra procurar as relações entre o tipo e as relations que ja conheço pra pegar a cardinalidade
 				if(card[0].equals(tipo) && card[1].equals(RelationEnum.COMPONENTOF.toString()) && card[3].equals(relation)){
 					String tuple = tipo+"_"+relation;
 					String c = card[2];
