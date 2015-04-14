@@ -266,7 +266,7 @@ public class Provisioning {
         }
     }
 	
-	public void provisionSemiAuto(Path path){
+	public void provisionSemiAuto(Path path) throws Exception{
 		boolean isSource = true;
 		for (int i = 1; i < path.size()-1; i+=2) {
 			Interface from = path.getInterfaceList().get(i);
@@ -524,7 +524,7 @@ public class Provisioning {
 		return listInterfacesTo;
 	}
 	
-	public void bindsInterfaces(Interface interfaceFrom, Interface interfaceTo, boolean isSource){
+	public void bindsInterfaces(Interface interfaceFrom, Interface interfaceTo, boolean isSource) throws Exception{
 		//#E
 		if(!isSource){
 			Interface aux = interfaceFrom;

@@ -120,7 +120,7 @@ public class OWLUtil {
 		return newMapping;
 	}
 	
-	public static void createRelationInstances(OntModel model, String[] relationDcls, HashMap<String, String> newMapping){
+	public static void createRelationInstances(OntModel model, String[] relationDcls, HashMap<String, String> newMapping) throws Exception{
 		String ns = model.getNsPrefixURI("");
 		for (String relDcl : relationDcls) {
 			relDcl = relDcl.replace(" ", "").replace("\n", "");
