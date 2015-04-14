@@ -3,6 +3,7 @@ package provisioning;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 public class Path {
@@ -12,7 +13,8 @@ public class Path {
 	
 	public Path(TreeNode[] treeNodes) {
 		for (TreeNode treeNode : treeNodes) {
-			Interface intfc = (Interface) treeNode;
+			DefaultMutableTreeNode mulTreeNode = (DefaultMutableTreeNode) treeNode;
+			Interface intfc = (Interface) mulTreeNode.getUserObject();
 			interfaceList.add(intfc);
 			if(intfc.isDeclared()){
 				this.qtDeclared++;

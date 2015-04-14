@@ -63,8 +63,13 @@ public class Provisioning {
 		createBindedInterfaceHash(bindedInterfaces);
 		//#16
 		verifiyMinimumEquipWithPM();
+		
 		//#17
 		OWLUtil.runReasoner(okcoUploader, true, true, true);
+	}
+	
+	public OntModel getModel() {
+		return model;
 	}
 	
 	public void provision(Interface interfaceFrom, Interface interfaceTo, Character option) throws Exception{
@@ -78,7 +83,7 @@ public class Provisioning {
 			//#23
 			OWLUtil.runReasoner(okcoUploader, false, true, true);
 		} catch (Exception e) {
-			throw new Exception(e.getMessage());
+			throw e;
 		}
 		
 		//#25
@@ -474,7 +479,7 @@ public class Provisioning {
 	}
 	
 	public List<Interface> algorithmPart1(Interface inputInterface, boolean isSource) throws Exception{
-		List<Interface> LIST_INT = inputInterface.getCandidateInterfacesTo();
+		List<Interface> LIST_INT = inputInterface.getCandidateInterfacesTo(this.bindedInterfaces);
 		
 		if(LIST_INT.size() == 0){
 			//#A
@@ -489,7 +494,7 @@ public class Provisioning {
 				LIST_INT.addAll(Queries.getMappingInterfaceFrom(model, tfURI, interfaces, bindedInterfacesHash));
 			}
 			
-			inputInterface.setCandidateInterfacesTo(LIST_INT);
+			inputInterface.setCandidateInterfacesTo(LIST_INT, this.bindedInterfaces);
 		}
 //		if(interfaces.containsKey(inputInterface.getInterfaceURI())){
 //			//Interface out = interfaces.get(inputInterface.getInterfaceURI());
@@ -504,11 +509,11 @@ public class Provisioning {
 	}
 	
 	public List<Interface> algorithmPart2(boolean isSource, Interface outputInterface) throws Exception{
-		List<Interface> listInterfacesTo = outputInterface.getCandidateInterfacesTo();
+		List<Interface> listInterfacesTo = outputInterface.getCandidateInterfacesTo(this.bindedInterfaces);
 		listInterfacesTo.removeAll(bindedInterfaces);
 		if(listInterfacesTo.size() == 0){
 			listInterfacesTo = Queries.getInterfacesToProvision(model, outputInterface.getInterfaceURI(), isSource, interfaces, bindedInterfacesHash);
-			outputInterface.setCandidateInterfacesTo(listInterfacesTo);
+			outputInterface.setCandidateInterfacesTo(listInterfacesTo, this.bindedInterfaces);
 		}
 //		if(interfaces.containsKey(outputInterface.getInterfaceURI())){
 //			Interface in = interfaces.get(outputInterface.getInterfaceURI());

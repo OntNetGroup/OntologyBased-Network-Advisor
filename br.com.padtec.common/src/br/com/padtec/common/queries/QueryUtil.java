@@ -80,6 +80,30 @@ public class QueryUtil {
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		boolean exist = qe.execAsk();		
 		
+		if(exist){
+			return exist;
+		}
+		
+		queryString = ""
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX ns: <http://nemo.inf.ufes.br/NewProject.owl#>\n"
+				+ "ASK\n"
+				+ "WHERE {\n"
+				+ "<" + interfaceUri + "> ns:maps ?port .\n"
+				+ "?tf ns:componentOf ?port .\n"
+				+ "?tf rdf:type ?tfType .\n"
+				+ "?port rdf:type ?portType .\n"
+				+ "FILTER( ?tfType IN (ns:Physical_Media) ) .\n"
+				+ "FILTER( ?portType IN (ns:Input)) . \n"
+				+ "}\n";
+		query = QueryFactory.create(queryString);
+		
+		qe = QueryExecutionFactory.create(query, model);
+		exist = qe.execAsk();
+		
 		return exist;
 	}
 	

@@ -30,11 +30,17 @@ public class Interface implements Comparable<Interface>{
 	}
 	
 	
-	public List<Interface> getCandidateInterfacesTo() {
+	public List<Interface> getCandidateInterfacesTo(List<Interface> bindedInterfaces) {
+		if(bindedInterfaces != null && bindedInterfaces.size() > 0){
+			candidateInterfacesTo.removeAll(bindedInterfaces);
+		}
 		return candidateInterfacesTo;
 	}
 
-	public void setCandidateInterfacesTo(List<Interface> candidateInterfacesTo) {
+	public void setCandidateInterfacesTo(List<Interface> candidateInterfacesTo, List<Interface> bindedInterfaces) {
+		if(bindedInterfaces != null && bindedInterfaces.size() > 0){
+			candidateInterfacesTo.removeAll(bindedInterfaces);
+		}
 		this.candidateInterfacesTo = candidateInterfacesTo;
 	}
 

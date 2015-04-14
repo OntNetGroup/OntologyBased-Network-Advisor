@@ -9,15 +9,15 @@ public class Main {
 		String tBoxFile = "";
 		try {
 			//#1
-			tBoxFile = FileUtil.chooseFile("TBox", ".owl");
-			//tBoxFile = "TBox v5.2.owl";
+			//tBoxFile = FileUtil.chooseFile("TBox", ".owl");
+			tBoxFile = "TBox v5.2.owl";
 			
 			//#2
-			String aBoxFile = FileUtil.chooseFile("ABox", ".txt");
-			//String aBoxFile = "Declarada 6.0a.txt";
+			//String aBoxFile = FileUtil.chooseFile("ABox", ".txt");
+			String aBoxFile = "Declarada 6.0a.txt";
 			//#14
-			String possibleEquipFile = FileUtil.chooseFile("available Equipment", ".txt");
-			//String possibleEquipFile = "Possiveis 6.0.txt";
+			//String possibleEquipFile = FileUtil.chooseFile("available Equipment", ".txt");
+			String possibleEquipFile = "Possiveis 6.0.txt";
 						
 			Provisioning provisioning = new Provisioning(tBoxFile, aBoxFile, possibleEquipFile);
 			
