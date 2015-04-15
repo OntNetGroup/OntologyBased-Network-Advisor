@@ -41,17 +41,17 @@ public class NOpenQueryUtil {
 		return result;
 	}
 	
-	public static String[] getTechnologiesNames(InfModel model)
+	public static String[] getAllTechnologiesNames(InfModel model)
 	{
 		return getIndividualsNames(model, ConceptEnum.Technology.toString());		
 	}
 	
-	public static String[] getServicesNames(InfModel model)
+	public static String[] getAllServicesNames(InfModel model)
 	{
 		return getIndividualsNames(model,ConceptEnum.Service.toString());		
 	}
 	
-	public static String[] getLayerNames(InfModel model, String techName)
+	public static String[] getAllLayerNames(InfModel model, String techName)
 	{
 		return  getIndividualsNamesAtObjectPropertyRange(model,
 				techName,
@@ -60,13 +60,13 @@ public class NOpenQueryUtil {
 			);					
 	}
 	
-	public static String[][] getLayerNames(InfModel model)
+	public static String[][] getAllLayerNames(InfModel model)
 	{
-		String[] techs = getTechnologiesNames(model);
+		String[] techs = getAllTechnologiesNames(model);
 		String[][] result = new String[techs.length][];
 		int i=0;
 		for(String s: techs){
-			result[i]= getLayerNames(model,s);
+			result[i]= getAllLayerNames(model,s);
 			i++;
 		}
 		return result;

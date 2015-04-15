@@ -1,10 +1,16 @@
 <%@include file="/frontend/template/index-top.jsp"%>
+<%@ page import="java.util.List"%>
 
 <%
 	//Get the parameters from controller
 	String[] techs = (String[]) request.getSession().getAttribute("techs");
+	List<String> defaultTechs = (List<String>) request.getSession().getAttribute("defaultTechs");
+
 	String[][] layers = (String[][]) request.getSession().getAttribute("layers");
-	String[] allServices = (String[]) request.getSession().getAttribute("allServices");
+	List<String> defaultLayers = (List<String>) request.getSession().getAttribute("defaultLayers");
+	
+	String[] services = (String[]) request.getSession().getAttribute("services");
+	List<String> defaultServices = (List<String>) request.getSession().getAttribute("defaultServices");
 %>
 
 <script src="frontend/template/js/jquery.nestable.min.js"></script>
@@ -43,9 +49,9 @@
 	            	int i=0;
             		for(String tech: techs){           				
            				out.println("<li class=\"dd-item dd3-item\" data-id=\""+i+"\">");
-           				out.println("<div class=\"dd-handle dd3-handle\">Drag</div>"+"<div class=\"dd3-content tech\">"+(tech+"")+
-           					//"<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+tech+"\" style=\"float:right\"></a>"+
-           					"</div>");
+           				out.print("<div class=\"dd-handle dd3-handle\">Drag</div>"+"<div class=\"dd3-content tech\">"+(tech+""));
+           				if(!defaultTechs.contains(tech)) out.print("<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+tech+"\" style=\"float:right\"></a>");
+           				out.println("</div>");
 			           	out.println("</li>");            			            			
 	            		i++;
             		}
@@ -78,9 +84,9 @@
 						for(String layer: layers[j])
 						{	
 	           				out.println("<li class=\"dd-item dd3-item\">");
-	           				out.println("<div class=\"dd-handle dd3-handle\">Drag</div>"+"<div class=\"dd3-content\">"+(layer+"")+
-	           						//"<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+layer+"\" style=\"float:right\"></a>"+
-	           						"</div>");
+	           				out.print("<div class=\"dd-handle dd3-handle\">Drag</div>"+"<div class=\"dd3-content\">"+(layer+""));
+	           				if(!defaultLayers.contains(layer)) out.print("<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+layer+"\" style=\"float:right\"></a>");
+							out.println("</div>");
 				           	out.println("</li>");				         
 	            		}
 					  	out.println("</div>");
@@ -115,7 +121,7 @@
 // 							{
 // 								out.println("<div id=\""+layer+"\"; class=\"y\" style=\"display:none;\">");
 								out.println("<select id=\"selectError10\" class=\"form-control\" style=\"width:300;height:500\" multiple data-rel=\"chosen\">");							  	
-							  	for(String service: allServices){
+							  	for(String service: services){
 							  		out.println("<option>"+service+"</option>");
 							  	}
 							  	out.println("</select>");
@@ -223,6 +229,7 @@
     $('.tech').on('click', function(e) {
 		tech = e.target.innerText;
 		
+		$('.tech')
 		$(".x").css("display","none");
 		$("#"+tech).css("display","block");		
     });

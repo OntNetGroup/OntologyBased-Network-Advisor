@@ -31,7 +31,7 @@ public class ITUStudioController {
 	public @ResponseBody String[][] getAllLayersNames() 
 	{
 		//it needs to be a base model because we will not run an inference each time the user creates a new layer.
-		return NOpenQueryUtil.getLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel());
+		return NOpenQueryUtil.getAllLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel());
 	}
 	
 	/** Get layer names given a technology
@@ -42,7 +42,7 @@ public class ITUStudioController {
 	public @ResponseBody String[] getLayerNames(@RequestParam("techName") String techName) 
 	{
 		//it needs to be a base model because we will not run an inference each time the user creates a new layer.		
-		return NOpenQueryUtil.getLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel(), techName);
+		return NOpenQueryUtil.getAllLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel(), techName);
 	}
 	
 	/* ----- CRUD for Container ----- */

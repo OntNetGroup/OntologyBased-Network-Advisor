@@ -7,13 +7,25 @@ import br.com.padtec.nopen.service.util.NOpenFactoryUtil;
 
 public class StudioRegister {
 
-	public static void registerDefaultTechnologies() throws Exception
+	public static void registerDefaultTechnologies(String[] defaultTechs, String[][] defaultLayers, String[] defaultServices) throws Exception
 	{
 		Date beginDate = new Date();		
 				
-		NOpenFactoryUtil.createMEFTech(StudioComponents.studioRepository);
-		NOpenFactoryUtil.createOTNTech(StudioComponents.studioRepository);		
-		NOpenFactoryUtil.createServices(StudioComponents.studioRepository);
+		int i=0;
+		for(String[] layers: defaultLayers)
+		{
+			registerTechnology(defaultTechs[i]);
+			for(String l: layers)
+			{
+				registerLayer(l, defaultTechs[i]);
+			}
+			i++;
+		}
+			
+		for(String service: defaultServices)
+		{
+			NOpenFactoryUtil.createService(StudioComponents.studioRepository, service, null, null);	
+		}
 		
 		PerformanceUtil.printExecutionTime("Equip Studio: Technologies, Layers and Services registered.", beginDate);
 	}
@@ -28,12 +40,12 @@ public class StudioRegister {
 		NOpenFactoryUtil.createLayer(StudioComponents.studioRepository,layerName, techName);
 	}	
 	
-	public static void unregisterLayer(String layerName)
+	public static void unregisterLayer(String layerName) throws Exception
 	{
 		NOpenFactoryUtil.deleteLayer(StudioComponents.studioRepository, layerName);
 	}
 	
-	public static void unregisterTechnology(String techName)
+	public static void unregisterTechnology(String techName) throws Exception
 	{
 		NOpenFactoryUtil.deleteTechnology(StudioComponents.studioRepository, techName);
 	}

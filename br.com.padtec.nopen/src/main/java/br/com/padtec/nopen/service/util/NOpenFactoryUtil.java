@@ -36,60 +36,20 @@ public class NOpenFactoryUtil {
 	{
 		FactoryUtil.deleteIndividual(repository.getBaseModel(), repository.getNamespace()+layerName);		
 	}
-	
-	public static void createOTNTech(OKCoUploader repository) throws Exception
+		
+	public static void createService(OKCoUploader repository, String serviceName, String layerName, String techName) throws Exception
 	{
-		String otnURI = repository.getNamespace()+"OTN";		
-		String techURI = repository.getNamespace()+ConceptEnum.Technology.toString();
+		//String indLayerURI = repository.getNamespace()+layerName;		
+		//String indTechURI = repository.getNamespace()+techName;
 		
-		String poukURI = repository.getNamespace()+"POUk";
-		String odukURI = repository.getNamespace()+"ODUk";
-		String otukURI = repository.getNamespace()+"OTUk";
-		String layerURI = repository.getNamespace()+ConceptEnum.Layer.toString();
-		
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), otnURI,techURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), poukURI, layerURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), odukURI, layerURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), otukURI, layerURI);
-		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString();
-				
-		FactoryUtil.createInstanceRelation(repository.getBaseModel(),otnURI, techToLayerURI, poukURI);
-		FactoryUtil.createInstanceRelation(repository.getBaseModel(),otnURI, techToLayerURI, odukURI);
-		FactoryUtil.createInstanceRelation(repository.getBaseModel(),otnURI, techToLayerURI, otukURI);
+		String indServURI = repository.getNamespace()+serviceName;
+		String serviceURI = repository.getNamespace()+ConceptEnum.Service.toString();		
+		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indServURI, serviceURI);		
 	}	
 	
-	public static void createMEFTech(OKCoUploader repository) throws Exception
+	public static void deleteService(OKCoUploader repository, String serviceName) 
 	{
-		String mefURI = repository.getNamespace()+"MEF";		
-		String techURI = repository.getNamespace()+ConceptEnum.Technology.toString();
-		
-		String menURI = repository.getNamespace()+"MEN";
-		String subscribersURI = repository.getNamespace()+"Subscribers";
-		String layerURI = repository.getNamespace()+ConceptEnum.Layer.toString();
-		
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), mefURI,techURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), menURI, layerURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), subscribersURI, layerURI);
-		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString();
-				
-		FactoryUtil.createInstanceRelation(repository.getBaseModel(),mefURI, techToLayerURI, menURI);
-		FactoryUtil.createInstanceRelation(repository.getBaseModel(),mefURI, techToLayerURI, subscribersURI);
-	}
-		
-	public static void createServices(OKCoUploader repository) throws Exception
-	{
-		String simpleConnURI = repository.getNamespace()+"SimpleConnection";	
-		String Conn1_1URI = repository.getNamespace()+"1Plus1Connection";
-		String Conn11URI = repository.getNamespace()+"1To1Connection";				
-		String Conn1NURI = repository.getNamespace()+"1ToNConnection";
-		String servURI = repository.getNamespace()+ConceptEnum.Service.toString();
-		
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), simpleConnURI,servURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), Conn1_1URI, servURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), Conn11URI, servURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), Conn1NURI, servURI);		
+		FactoryUtil.deleteIndividual(repository.getBaseModel(), repository.getNamespace()+serviceName);		
 	}
 	
 	/**just for test
