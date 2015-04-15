@@ -42,7 +42,7 @@
 		<script src="/nopen/core/rappid_api/js/joint.shapes.devs.js"></script>
         <script src="/nopen/frontend/itu-studio/js/inspector.js"></script>
 		<script src="/nopen/frontend/itu-studio/js/layer.js"></script>
-        <script src="/nopen/frontend/itu-studio/js/stencil.js"></script>
+       	<script src="/nopen/frontend/itu-studio/js/stencil.js"></script>
         <script src="/nopen/frontend/itu-studio/js/ajax.js"></script>
         <script src="/nopen/frontend/itu-studio/js/main.js"></script>
         <script src="/nopen/frontend/itu-studio/js/graphHandler.js"></script>
@@ -68,7 +68,14 @@
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
+            
+            //var id = getUrlParameter('id');
+            alert("ID: " + parent.cellId);
     		
+            $('#btn-save').click(function(){	
+            	parent.closeIFrame();     	
+            });
+            
             graphHandler(app.graph, app);
             validator(app.validator, app.graph, app);
             

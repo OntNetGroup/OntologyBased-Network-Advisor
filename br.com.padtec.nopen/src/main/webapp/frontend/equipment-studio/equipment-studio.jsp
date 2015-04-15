@@ -7,6 +7,8 @@
         <title>EQUIPMENT STUDIO</title>
 
         <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
+        
+		<link rel="stylesheet" type="text/css" href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css"/>
 
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/layout.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/paper.css" />
@@ -20,7 +22,7 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/freetransform.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/style.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/header.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css"/>
+        
     </head>
     <body>
 		
@@ -53,8 +55,9 @@
         <script src="/nopen/frontend/equipment-studio/plugins/save-equipment.js"></script>
          
          
-        <div id="save-dialog" title="Save Equipment" style="display:none">
-			File name: <input type="text" id="save-filename" />
+        <div id="itu-dialog" title="ITU" style="display:none">
+        	<iframe id="itu-iframe" src="" scrolling="no" ></iframe>
+			<!--  File name: <input type="text" id="save-filename" /> -->
 		</div>
 		
 		
@@ -75,13 +78,17 @@
             // Uncomment the following line and comment the line after if you
             // want to use channels.
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
+            var script = document.createElement( 'script' );
+        	script.src = '/nopen/frontend/equipment-studio/plugins/itu-iframe.js';
+        	$('#itu-dialog').prepend(script);
+            
             var app = new Rappid;
             Backbone.history.start();
-            
+
             resizing(app.graph);
             
             graphHandle(app.graph);
-            equipmentHandle(app.paper, app.graph);
+            equipmentHandle2(app.paper, app.graph);
             
            // graphHandle(app.graph);
             //paperHandle(app.paper);

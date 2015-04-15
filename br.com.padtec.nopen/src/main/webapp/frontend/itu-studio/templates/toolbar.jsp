@@ -2,6 +2,7 @@
      <!-- <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/itu-studio/img/undo.png" alt="Undo"/></button> -->
      <!-- <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/itu-studio/img/redo.png" alt="Redo"/></button> -->
      <!-- <button id="btn-clear" class="btn" data-tooltip="Clear Paper"><img src="/nopen/frontend/itu-studio/img/clear.png" alt="Clear"/></button> -->
+     <button id="btn-save" class="btn" data-tooltip="Save"><img src="/nopen/frontend/itu-studio/img/save.png" alt="Save"/></button>
      <button id="btn-svg" class="btn" data-tooltip="Open as SVG in a New Window">open as SVG</button>
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window">open as PNG</button>
      <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/itu-studio/img/print.png" alt="Print"/></button>

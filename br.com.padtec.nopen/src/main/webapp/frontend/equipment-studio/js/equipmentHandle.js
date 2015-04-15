@@ -427,92 +427,163 @@ function embedOrConnect (parent, child) {
 
 };
 
-function equipmentHandle(paper, graph){
 
+
+
+function equipmentHandle(paper, graph){
+	
 	paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
 
 		var cellId = cellView.model.id;
 		var equipament = graph.getCell(cellId);
 		if((equipament.get('subType')) === 'card' || (equipament.get('subType')) === 'supervisor') {
-			//will create an ITU view
-			console.log('opening ITU studio');
-			var a = graph.toJSON();
-			console.log(a);
-			console.log(JSON.stringify(a));
-
-			//generateSaveEquipmentDialog(app.graph);
 			
-			dialog = $("#save-dialog").dialog({
-				autoOpen: false,
-				height: 180,
-				width: 350,
-				modal: true,
-				buttons: { 
-					"Save": checkEquipmentFile,  
-					Cancel: function() {
-						dialog.dialog( "close" );
-					}
-				},
-				close: function() { }
-			});
-
-			$("#save-dialog").dialog("open");
-
-			function checkEquipmentFile(){
-
-				if($("#save-filename").val() == ""){
-					alert("File name cannot be empty!")
-				}
-				else{
-					$.ajax({
-						type: "POST",
-						url: "checkEquipmentFile.htm",
-						data: {
-							'filename': $("#save-filename").val(),
-						},
-						success: function(data){ 		   
-							if(data == "exist"){		   
-								if (confirm('The file already exist, do you want to replace it?')) {
-									saveEquipment();
-								} 
-							}
-							else{
-								saveEquipment();
-							}
-						},
-						error : function(e) {
-							alert("error: " + e.status);
-							$("#save-dialog").dialog("close");
-						}
-					});
-				}
-
-			};
-
-
-			function saveEquipment(){
-
-				$.ajax({
-					type: "POST",
-					url: "saveEquipment.htm",
-					data: {
-						'filename': $("#save-filename").val(),
-						'graph': JSON.stringify(graph.toJSON()),
-					},
-					success: function(){ 		   
-						alert($("#save-filename").val() + ' saved successfully!');
-						$("#save-dialog").dialog("close");
-					},
-					error : function(e) {
-						alert("error: " + e.status);
-						$("#save-dialog").dialog("close");
-					}
-				});
-
-
-			};
-
-		}	
-
-	},this);
+//			LeftPosition = (screen.width) ? (screen.width - 800) / 2 : 0;
+//	        TopPosition = (screen.height) ? (screen.height - 700) / 2 : 0;
+//	        var sheight = (screen.height);
+//	        var swidth = (screen.width);          
+//
+//	        settings = 'height='+ sheight + ',width='+ swidth + ',top=' + TopPosition + ',left=' + LeftPosition + ',scrollbars=yes,toolbar=no,screenx=0,screeny=0,location=no,titlebar=no,directories=no,status=no,menubar=no'
+//	        newwindow = window.open('/nopen/itu-studio.htm', '', settings);
+//			
+//			//newwindow=window.open('/nopen/itu-studio.htm','name','height=' + $(window).height(),'width=' + $(window).width());
+//			if (window.focus) {newwindow.focus()}
+//			return false;
+			
+			$("#itu-iframe").empty();
+			
+			$(function ()    {
+		        $('#itu-dialog').dialog({
+		            modal: true,
+		                  
+		            height: $(window).height(),
+					width: $(window).width(),
+		            title: 'Dynamically Loaded Page',
+		            open: function ()
+		            {
+		                //$(this).load("/nopen/itu-studio.htm");
+		                $('#itu-iframe').attr('src','/nopen/itu-studio.htm');
+		            },   
+		            close: function() {}
+		        });
+		    });
+			
+			
+			
+//			$("#save-dialog").load("/nopen/itu-studio.htm");
+//			
+//			dialog = $("#save-dialog").dialog({
+//				autoOpen: false,
+//				height: $(window).height(),
+//				width: $(window).width(),
+//				modal: true,
+//				buttons: { 
+//					Cancel: function() {
+//						$("#save-dialog").empty();
+//						
+//						dialog.dialog( "close" );
+//					}
+//				},
+//				close: function() {
+//					$("#save-dialog").empty();
+//					
+//					
+//				}
+//			});
+//			
+//			
+//			
+//			$("#save-dialog").dialog("open");
+			
+		}
+	});	
+	
+	
+	
+//	paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
+//
+//		var cellId = cellView.model.id;
+//		var equipament = graph.getCell(cellId);
+//		if((equipament.get('subType')) === 'card' || (equipament.get('subType')) === 'supervisor') {
+//			//will create an ITU view
+//			console.log('opening ITU studio');
+//			var a = graph.toJSON();
+//			console.log(a);
+//			console.log(JSON.stringify(a));
+//
+//			//generateSaveEquipmentDialog(app.graph);
+//			
+//			dialog = $("#save-dialog").dialog({
+//				autoOpen: false,
+//				height: 180,
+//				width: 350,
+//				modal: true,
+//				buttons: { 
+//					"Save": checkEquipmentFile,  
+//					Cancel: function() {
+//						dialog.dialog( "close" );
+//					}
+//				},
+//				close: function() { }
+//			});
+//
+//			$("#save-dialog").dialog("open");
+//
+//			function checkEquipmentFile(){
+//
+//				if($("#save-filename").val() == ""){
+//					alert("File name cannot be empty!")
+//				}
+//				else{
+//					$.ajax({
+//						type: "POST",
+//						url: "checkEquipmentFile.htm",
+//						data: {
+//							'filename': $("#save-filename").val(),
+//						},
+//						success: function(data){ 		   
+//							if(data == "exist"){		   
+//								if (confirm('The file already exist, do you want to replace it?')) {
+//									saveEquipment();
+//								} 
+//							}
+//							else{
+//								saveEquipment();
+//							}
+//						},
+//						error : function(e) {
+//							alert("error: " + e.status);
+//							$("#save-dialog").dialog("close");
+//						}
+//					});
+//				}
+//
+//			};
+//
+//
+//			function saveEquipment(){
+//
+//				$.ajax({
+//					type: "POST",
+//					url: "saveEquipment.htm",
+//					data: {
+//						'filename': $("#save-filename").val(),
+//						'graph': JSON.stringify(graph.toJSON()),
+//					},
+//					success: function(){ 		   
+//						alert($("#save-filename").val() + ' saved successfully!');
+//						$("#save-dialog").dialog("close");
+//					},
+//					error : function(e) {
+//						alert("error: " + e.status);
+//						$("#save-dialog").dialog("close");
+//					}
+//				});
+//
+//
+//			};
+//
+//		}	
+//
+//	},this);
 };
