@@ -15,10 +15,12 @@ public class OptionsController {
 	public @ResponseBody String deleteTechOrLayer(@RequestParam("elemName") String elemName) 
 	{
 		if(elemName.contains("tech-")){
-			NOpenRegister.unregisterTechnology(elemName.replace("tech-", ""));	
+			String techName = elemName.replace("tech-", "");
+			NOpenRegister.unregisterTechnology(techName);	
 		}
 		if(elemName.contains("layer-")){
-			NOpenRegister.unregisterLayer(elemName.replace("layer-", ""));	
+			String layerName = elemName.replace("layer-", "");
+			NOpenRegister.unregisterLayer(layerName);	
 		}
 		
 		return "Successfull Registered";

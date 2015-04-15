@@ -22,12 +22,7 @@ public class HomeController {
 	{		
 		NOpenInitializer.uploadTBoxes();
 		NOpenRegister.registerDefaultTechnologies();
-		NOpenReasoner.runInference(true);
-		
-		request.getSession().setAttribute("techs", NOpenQueryUtil.getTechnologiesNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
-		request.getSession().setAttribute("layers", NOpenQueryUtil.getLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
-		request.getSession().setAttribute("allServices", NOpenQueryUtil.getServicesNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
-		
+		NOpenReasoner.runInference(true);		
 		return "welcome";
 	}
 	
@@ -47,8 +42,11 @@ public class HomeController {
 	}		
 	
 	@RequestMapping("/options")
-	public String configRequest(HttpServletRequest request) {	
-		
+	public String configRequest(HttpServletRequest request) 
+	{		
+		request.getSession().setAttribute("techs", NOpenQueryUtil.getTechnologiesNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
+		request.getSession().setAttribute("layers", NOpenQueryUtil.getLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
+		request.getSession().setAttribute("allServices", NOpenQueryUtil.getServicesNames(ProvisioningComponents.provisioningRepository.getBaseModel()));		
 		return "options";
 	}
 		

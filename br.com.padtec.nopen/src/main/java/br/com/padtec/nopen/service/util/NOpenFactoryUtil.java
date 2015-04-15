@@ -29,7 +29,7 @@ public class NOpenFactoryUtil {
 		
 		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString();
 		
-		FactoryUtil.createInstanceRelation(repository.getBaseModel(),indURI, techToLayerURI, ind2URI);
+		FactoryUtil.createInstanceRelation(repository.getBaseModel(),ind2URI, techToLayerURI, indURI);
 	}	
 
 	public static void deleteLayer(OKCoUploader repository, String layerName) 
