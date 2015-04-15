@@ -78,9 +78,9 @@
             // Uncomment the following line and comment the line after if you
             // want to use channels.
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
-            var script = document.createElement( 'script' );
-        	script.src = '/nopen/frontend/equipment-studio/plugins/itu-iframe.js';
-        	$('#itu-dialog').prepend(script);
+            //var script = document.createElement( 'script' );
+        	//script.src = '/nopen/frontend/equipment-studio/plugins/itu-iframe.js';
+        	//$('#itu-dialog').prepend(script);
             
             var app = new Rappid;
             Backbone.history.start();
@@ -88,7 +88,7 @@
             resizing(app.graph);
             
             graphHandle(app.graph);
-            equipmentHandle2(app.paper, app.graph);
+            cardHandle(app.paper, app.graph);
             
            // graphHandle(app.graph);
             //paperHandle(app.paper);

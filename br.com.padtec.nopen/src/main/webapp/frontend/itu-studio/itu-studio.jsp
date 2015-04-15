@@ -22,6 +22,8 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/itu-studio/css/freetransform.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/itu-studio/css/style.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/itu-studio/css/header.css" />
+        
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/itu-studio/css/dialog.css" />
     </head>
     <body>
 		
@@ -68,9 +70,17 @@
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
+             
+            //check if windows is a iframe
+            if(window.self !== window.top){
+	            if(!(parent.cardArray[parent.cellId] === undefined)){
+	            	app.graph.fromJSON(parent.cardArray[parent.cellId]);
+	            }
+            }
             
-            //var id = getUrlParameter('id');
-            alert("ID: " + parent.cellId);
+            $('#btn-zoom-to-fit').click();
+            
+            //alert("ID: " + parent.cellId);
     		
             $('#btn-save').click(function(){	
             	parent.closeIFrame();     	
