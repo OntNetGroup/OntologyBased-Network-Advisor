@@ -39,4 +39,23 @@ public class Path {
 	public int size(){
 		return interfaceList.size();
 	}
+	
+	@Override
+	public String toString() {
+		String ret = "";
+		for (Interface intfc : interfaceList) {
+			ret += intfc;
+			ret += " -> ";
+		}
+		ret += "\n\t";
+		ret += "size (total = ";
+		ret += interfaceList.size();
+		ret += ", declared = ";
+		ret += this.qtDeclared;
+		ret += ", possible = ";
+		ret += this.qtPossible;
+		ret += ")\n";
+		
+		return ret;
+	}
 }

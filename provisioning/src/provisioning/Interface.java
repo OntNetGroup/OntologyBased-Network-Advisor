@@ -14,7 +14,7 @@ public class Interface implements Comparable<Interface>{
 		this.interfaceURI = interfaceURI;
 		this.equipmentURI = equipmentURI;
 		
-		this.declared = true;
+		this.declared = declared;
 	}
 
 	public boolean isDeclared() {

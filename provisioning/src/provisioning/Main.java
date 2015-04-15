@@ -2,6 +2,7 @@ package provisioning;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -33,21 +34,26 @@ public class Main {
 			Interface interfaceTo = provisioning.getINT_SK_LIST().get(tgtInt2ProvIndex);
 			//String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
 			
-			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-			Character option = 'A';
-			boolean ok;
-			do {
-				ok = true;
-				System.out.print("Do you want to proceed automatically (A) or (M) manually? ");
-				try {
-					String optionStr = bufferRead.readLine();
-					if(optionStr.length() > 1) ok = false;
-					option = optionStr.charAt(0);
-				} catch (Exception e) {
-					ok = false;
-				}			
-			} while ((!option.equals('A') || !option.equals('M') || !option.equals('a') || !option.equals('m')) && !ok);
-			
+//			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+			ArrayList<Character> options = new ArrayList<Character>();
+			options.add('A');
+			options.add('M');
+			options.add('a');
+			options.add('m');
+			Character option = getCharOptionFromConsole("Do you want to proceed automatically (A) or (M) manually? ", options);
+//			boolean ok;
+//			do {
+//				ok = true;
+//				System.out.print("Do you want to proceed automatically (A) or (M) manually? ");
+//				try {
+//					String optionStr = bufferRead.readLine();
+//					if(optionStr.length() > 1) ok = false;
+//					option = optionStr.charAt(0);
+//				} catch (Exception e) {
+//					ok = false;
+//				}			
+//			} while ((!option.equals('A') || !option.equals('M') || !option.equals('a') || !option.equals('m')) && !ok);
+//			"Do you want to proceed automatically (A) or (M) manually? "
 			provisioning.provision(interfaceFrom, interfaceTo, option);
 			
 		} catch (Exception e) {
@@ -113,6 +119,25 @@ public class Main {
 		} while ((index < lowestOption || index > highestOption) || !ok);
 		
 		return index;
+	}
+	
+	public static Character getCharOptionFromConsole(String message, List<Character> options){
+		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+		Character option = 'A';
+		boolean ok;
+		do {
+			ok = true;
+			System.out.print(message);
+			try {
+				String optionStr = bufferRead.readLine();
+				if(optionStr.length() > 1) ok = false;
+				option = optionStr.charAt(0);
+			} catch (Exception e) {
+				ok = false;
+			}			
+		} while (!options.contains(option) && !ok);
+		
+		return option;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

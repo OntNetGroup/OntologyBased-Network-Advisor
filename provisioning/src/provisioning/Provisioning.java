@@ -172,74 +172,92 @@ public class Provisioning {
 		}		
 	}
 	
+	@SuppressWarnings("resource")
 	public void callAlgorithmSemiAuto(Interface interfaceFrom, Interface interfaceTo) throws Exception{
-		DefaultMutableTreeNode sourceRoot;
-		sourceRoot = new DefaultMutableTreeNode(interfaceFrom);
-        
-        List<Interface> usedInterfaces = new ArrayList<Interface>();
-        usedInterfaces.add(interfaceFrom);
-		
-		int qtShortPaths = Main.getOptionFromConsole("Choose the number of paths (enter 0 to show all)", 0, Integer.MAX_VALUE);
-		if(qtShortPaths == 0){
-			qtShortPaths = Integer.MAX_VALUE;
-		}
-		int maxPathSize = Main.getOptionFromConsole("Choose the maximum number of interfaces in a path (enter 0 for no limit)", 0, Integer.MAX_VALUE);
-		if(maxPathSize == 0){
-			maxPathSize = 1000;
-		}
-		
-		Date beginDate = new Date();
-		List<Path> paths = new ArrayList<Path>();
-		algorithmSemiAuto(sourceRoot, true, paths , interfaceTo, usedInterfaces, qtShortPaths, maxPathSize);
-		
-		String semiAutoExecTime = PerformanceUtil.printExecutionTime("callAlgorithmSemiAuto", beginDate);
-		
-		if(paths.size() == 0){
-			throw new Exception("Something went wrong. No paths were found from " + interfaceFrom.getInterfaceURI() + " to " + interfaceTo.getInterfaceURI() + ".");
-		}
-		
-		File arquivo = new File("possible.txt");   
-		if(arquivo.exists()){
-			arquivo.delete();
-		}
-		FileOutputStream fos = new FileOutputStream(arquivo);    
-		
-		myBubbleSort(paths);
-		
-		System.out.println("--- PATHS ---");
-		ArrayList<String> outs = new ArrayList<String>();
-		for(int i = 0; i < paths.size(); i+=1){
-			//TreeNode[] path = paths.get(i);
-			List<Interface> path = paths.get(i).getInterfaceList();
-			String out = "";
-			int id = (i+1)/1;
+		int again = 0;
+		List<Path> paths;
+		do{
+			paths = new ArrayList<Path>();
+			DefaultMutableTreeNode sourceRoot;
+			sourceRoot = new DefaultMutableTreeNode(interfaceFrom);
+	        
+	        List<Interface> usedInterfaces = new ArrayList<Interface>();
+	        usedInterfaces.add(interfaceFrom);
 			
-			for (Interface intfc : path) {
-				out += intfc;
-				out += " -> ";
+			int qtShortPaths = Main.getOptionFromConsole("Choose the number of paths (enter 0 to show all)", 0, Integer.MAX_VALUE);
+			if(qtShortPaths == 0){
+				qtShortPaths = Integer.MAX_VALUE;
 			}
-
-			out += "\n";
-			out += "\tsize: " + (path.size()/*+tgtPath.length*/) + "\n";
-			
-			if(!outs.contains(out)){
-				outs.add(out);
-			}else{
-				System.out.println();
+			int maxPathSize = Main.getOptionFromConsole("Choose the maximum number of interfaces in a path (enter 0 for no limit)", 0, Integer.MAX_VALUE);
+			if(maxPathSize == 0){
+				maxPathSize = 1000;
 			}
 			
-			out = id + " - " + out;
+			ArrayList<Character> options = new ArrayList<Character>();
+			options.add('W');
+			options.add('L');
+			options.add('w');
+			options.add('l');
+			options.add('N');
+			options.add('n');
+			Character option = Main.getCharOptionFromConsole("Do you want to show paths without possible equipment (L) first or do you want to define weights (W) for both or neither (N)? ", options);
 			
-			System.out.print(out);
-			try{
-				fos.write(out.getBytes());   				  
-			}catch(Exception e){
-				e.printStackTrace();
+			int declaredWeight = 1;
+			int possibleWeight = 1;
+			boolean fewPossibleEquip = false;
+			
+			if(option.equals('W') || option.equals('w')){
+				declaredWeight = Main.getOptionFromConsole("Define the weight for declared equipment", 0, Integer.MAX_VALUE);
+				possibleWeight = Main.getOptionFromConsole("Define the weight for possible equipment", 0, Integer.MAX_VALUE);
+			}else if(option.equals('L') || option.equals('l')){
+				fewPossibleEquip = true;
 			}
-		}
-		fos.close();
+			
+			Date beginDate = new Date();
+			//List<Path> paths = new ArrayList<Path>();
+			algorithmSemiAuto(sourceRoot, true, paths , interfaceTo, usedInterfaces, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+			
+			String semiAutoExecTime = PerformanceUtil.printExecutionTime("callAlgorithmSemiAuto", beginDate);
+			
+			if(paths.size() == 0){
+				throw new Exception("Something went wrong. No paths were found from " + interfaceFrom.getInterfaceURI() + " to " + interfaceTo.getInterfaceURI() + ".");
+			}
+			
+			File arquivo = new File("possible.txt");   
+			if(arquivo.exists()){
+				arquivo.delete();
+			}
+			FileOutputStream fos = new FileOutputStream(arquivo);    
+			
+			myBubbleSort(paths);
+			
+			System.out.println("--- PATHS ---");
+			ArrayList<String> outs = new ArrayList<String>();
+			for(int i = 0; i < paths.size(); i+=1){
+				String out = "";
+				int id = (i+1)/1;
+				if(!outs.contains(out)){
+					outs.add(paths.get(i).toString());
+				}else{
+					throw new Exception("Something went wrong. A duplicated path was found.");
+				}
+				
+				out = id + " - " + paths.get(i);
+				
+				System.out.print(out);
+				try{
+					fos.write(out.getBytes());   				  
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			fos.close();
+			
+			System.out.println(semiAutoExecTime);
+			
+			again = Main.getOptionFromConsole("Do you want to execute again? 1-Yes, 0-No", 0, 1);
+		}while(again == 1);
 		
-		System.out.println(semiAutoExecTime);
 		int path = Main.getOptionFromConsole(paths, "path", paths.size());
 		
 		provisionSemiAuto(paths.get(path));
@@ -302,7 +320,7 @@ public class Provisioning {
 		return false;
 	}
 	
-	public void algorithmSemiAuto(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<Path> paths, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize) throws Exception{
+	public void algorithmSemiAuto(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<Path> paths, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize, int declaredWeight, int possibleWeight, boolean fewPossibleEquip) throws Exception{
 		System.out.println("\nExecuting algorithmSemiAuto()...");
 		String VAR_IN = ((Interface) lastInputIntNode.getUserObject()).getInterfaceURI();
 		Interface in = interfaces.get(VAR_IN);
@@ -341,7 +359,7 @@ public class Provisioning {
 					}
 
 					Path path = new Path(outIntNode.getPath());
-					int j = getOrderedIndex(paths, path, 0, 0, qtShortPaths, maxPathSize);
+					int j = getOrderedIndex(paths, path, declaredWeight, possibleWeight, fewPossibleEquip);
 					
 					paths.add(j, path);
 
@@ -362,7 +380,7 @@ public class Provisioning {
 							DefaultMutableTreeNode possibleInIntNode = new DefaultMutableTreeNode(in);
 							outIntNode.add(possibleInIntNode);
 							
-							algorithmSemiAuto(possibleInIntNode, isSource, paths, interfaceTo, newUsedInterfaces2, qtShortPaths, maxPathSize);
+							algorithmSemiAuto(possibleInIntNode, isSource, paths, interfaceTo, newUsedInterfaces2, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
 						}						
 					}	
 				}
@@ -370,12 +388,23 @@ public class Provisioning {
 		}		
 	}
 	
-	public int getOrderedIndex(List<Path> paths, Path path, int declaredWeight, int possibleWeight, int qtShortPaths, int maxPathSize){
+	public int getOrderedIndex(List<Path> paths, Path path, int declaredWeight, int possibleWeight, boolean fewPossibleEquip){
 		int i;
+		int pathSize = declaredWeight * path.getQtDeclared() + possibleWeight * path.getQtPossible();
 		for (i = 0; i < paths.size(); i++) {
-			if(path.size() < paths.get(i).size()){
-				break;
-			}
+			int pathISize = declaredWeight * paths.get(i).getQtDeclared() + possibleWeight * paths.get(i).getQtPossible();
+			if(fewPossibleEquip){
+				//int x = paths.get(i).getQtPossible();
+				if(path.getQtPossible() < paths.get(i).getQtPossible()){
+					break;
+				}else if(path.getQtPossible() == paths.get(i).getQtPossible() && pathSize < pathISize){
+					break;
+				}				
+			}else{
+				if(pathSize < pathISize){
+					break;
+				}
+			}			
 		}
 		return i;
 	}
