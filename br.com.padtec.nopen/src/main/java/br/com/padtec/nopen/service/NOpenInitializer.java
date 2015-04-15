@@ -5,10 +5,12 @@ import br.com.padtec.nopen.studio.service.StudioInitializer;
 
 public class NOpenInitializer {
 	
-	public static void run() throws Exception
+	public static void uploadTBoxes() throws Exception
 	{		
-		StudioInitializer.run(true);
-
-		ProvisioningInitializer.run(true);	
+		String eMsg  = StudioInitializer.uploadEquipStudioTBox(false);
+		if(!eMsg.isEmpty()) {throw new Exception(eMsg); }
+		
+		eMsg  = ProvisioningInitializer.uploadProvisioningTBox(false);
+		if(!eMsg.isEmpty()) {throw new Exception(eMsg); }
 	}
 }

@@ -6,29 +6,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.service.NOpenRegister;
+
 @Controller
 public class OptionsController {
-
+	
 	@RequestMapping(value = "/deleteTechOrLayer", method = RequestMethod.POST)
 	public @ResponseBody String deleteTechOrLayer(@RequestParam("elemName") String elemName) 
 	{
-		System.out.println("Deleting a Technology or Layer");
-		return "OK";
+		if(elemName.contains("tech-")){
+			NOpenRegister.unregisterTechnology(elemName.replace("tech-", ""));	
+		}
+		if(elemName.contains("layer-")){
+			NOpenRegister.unregisterLayer(elemName.replace("layer-", ""));	
+		}
+		
+		return "Successfull Registered";
 	}
 	
 	@RequestMapping(value = "/createTech", method = RequestMethod.POST)
-	public @ResponseBody String createTech(@RequestParam("techName") String techName) 
+	public @ResponseBody String createTech(@RequestParam("techName") String techName) throws Exception 
 	{
-		//NOpenRegister.registerTechnology(techName);
+		NOpenRegister.registerTechnology(techName);
 		
-		return "OK";
+		return "Successfull Registered";
 	}	
 	
 	@RequestMapping(value = "/createLayer", method = RequestMethod.POST)
 	public @ResponseBody String createLayer(@RequestParam("layerName") String layerName, @RequestParam("techName") String techName) throws Exception 
 	{
-		//NOpenRegister.registerLayer(layerName, techName);
+		NOpenRegister.registerLayer(layerName, techName);
 		
-		return "OK";
+		return "Successfull Registered";
 	}
 }

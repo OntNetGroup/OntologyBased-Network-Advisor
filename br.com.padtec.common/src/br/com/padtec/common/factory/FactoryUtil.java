@@ -85,8 +85,9 @@ public class FactoryUtil {
 	 * @param classURI: class URI
 	 * 
 	 * @author Freddy Brasileiro
+	 * @throws Exception 
 	 */
-	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI)
+	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI) throws Exception
 	{			
 		createInstanceIndividual(model, individualURI, classURI, true);		
 	}
@@ -125,9 +126,12 @@ public class FactoryUtil {
 	 * @param forceSuperTypes: force all super types
 	 * 
 	 * @author Freddy Brasileiro
+	 * @throws Exception 
 	 */
-	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI, boolean forceSuperTypes)
+	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI, boolean forceSuperTypes) throws Exception
 	{			
+		isValid(model, individualURI);
+		
 		System.out.println("\nExecuting createInstanceIndividual(" + individualURI + ")...");
 		//create the individualURI as from classURI
 		OntClass ontClass = model.getOntClass(classURI);
@@ -179,9 +183,15 @@ public class FactoryUtil {
 	
 	static public boolean isValid(OntModel model, String elemURI) throws Exception
 	{
-		if(elemURI.equals(model.getNsURIPrefix(""))) throw new Exception("A name cannot be empty.");
-		if(elemURI.contains(" ")) throw new Exception("A name cannot have a space character: "+elemURI.replace(model.getNsURIPrefix(""),""));
-		return true;
+		if(elemURI!=null){
+			String ns = model.getNsURIPrefix("");
+			if(ns!=null){
+				if(elemURI.trim().equals(ns.trim())) throw new Exception("A name cannot be empty.");
+			}
+			if(elemURI.contains(" ")) throw new Exception("A name cannot have a space character: "+elemURI.replace(model.getNsURIPrefix(""),""));
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -399,7 +409,6 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
-	@Deprecated
 	static public OntModel deleteIndividual(OntModel model, String individualURI) 
 	{
 		Individual ind = model.getIndividual(individualURI);
@@ -476,7 +485,6 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
-	@Deprecated
 	static public OntModel deleteRangeDataPropertyValue(OntModel model, String value, String individualURI, String relationURI, String rangeClassURI) 
 	{
 		Individual indInstance = model.getIndividual(individualURI);
@@ -524,7 +532,6 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
-	@Deprecated
 	static public OntModel deleteObjectProperty(OntModel model, String srcIndividual, String relationURI, String tgtIndividualURI) 
 	{
 		Individual indInstanceSource = model.getIndividual(srcIndividual);
@@ -561,7 +568,6 @@ public class FactoryUtil {
 	 * 
 	 * @author John Guerson
 	 */
-	@Deprecated
 	static public OntModel deleteIndividualOfClass(OntModel model, String individualURI, String classURI) 
 	{	
 		Individual indInstance = model.getIndividual(individualURI);

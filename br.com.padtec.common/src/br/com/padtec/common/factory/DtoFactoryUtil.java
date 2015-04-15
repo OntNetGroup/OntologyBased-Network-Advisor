@@ -148,7 +148,7 @@ public class DtoFactoryUtil {
 		}
 	}
 	
-	public static void createIndividual(OntModel model, DtoInstance individual){
+	public static void createIndividual(OntModel model, DtoInstance individual) throws Exception{
 		setSuperClassesOfIndividual(model, individual);
 		
 		for (String classURI : individual.getListClasses()) {

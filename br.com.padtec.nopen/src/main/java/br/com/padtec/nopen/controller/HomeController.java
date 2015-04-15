@@ -8,24 +8,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.NOpenInitializer;
+import br.com.padtec.nopen.service.NOpenReasoner;
+import br.com.padtec.nopen.service.NOpenRegister;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 
 @Controller
 public class HomeController {
-		
+	
 	@RequestMapping(method = RequestMethod.GET, value="/init")
 	public String index(HttpServletRequest request) throws Exception 
 	{		
-		NOpenInitializer.run();
-				
-		request.getSession().setAttribute("techs", NOpenQueryUtil.getTechnologiesNames());
-		request.getSession().setAttribute("layers", NOpenQueryUtil.getLayerNames());
-		request.getSession().setAttribute("allServices", NOpenQueryUtil.getServicesNames());
+		NOpenInitializer.uploadTBoxes();
+		NOpenRegister.registerDefaultTechnologies();
+		NOpenReasoner.runInference(true);
+		
+		request.getSession().setAttribute("techs", NOpenQueryUtil.getTechnologiesNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
+		request.getSession().setAttribute("layers", NOpenQueryUtil.getLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
+		request.getSession().setAttribute("allServices", NOpenQueryUtil.getServicesNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
 		
 		return "welcome";
 	}
-		
+	
 	@RequestMapping("/home")
 	public String homeRequest(HttpServletRequest request) {		
 		return "welcome";

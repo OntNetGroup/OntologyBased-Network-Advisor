@@ -5,6 +5,13 @@ import br.com.padtec.nopen.studio.service.StudioRegister;
 
 public class NOpenRegister {
 
+	public static void registerDefaultTechnologies() throws Exception
+	{
+		ProvisioningRegister.registerDefaultTechnologies();
+		
+		StudioRegister.registerDefaultTechnologies();		
+	}
+	
 	public static void registerLayer(String layerName, String techName) throws Exception
 	{
 		ProvisioningRegister.registerLayer(layerName, techName);
@@ -19,14 +26,14 @@ public class NOpenRegister {
 		StudioRegister.unregisterLayer(layerName);
 	}
 	
-	public static void registerTechnology(String techName)
+	public static void registerTechnology(String techName) throws Exception
 	{
 		ProvisioningRegister.registerTechnology(techName);
 		
 		StudioRegister.registerTechnology(techName);
 	}
 	
-	public static void unergisterTechnology(String techName)
+	public static void unregisterTechnology(String techName)
 	{
 		ProvisioningRegister.unregisterTechnology(techName);
 		

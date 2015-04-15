@@ -7,11 +7,16 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class NOpenFactoryUtil {
 	
-	public static void createTechnology(OKCoUploader repository, String techName)
+	public static void createTechnology(OKCoUploader repository, String techName) throws Exception
 	{
 		String indURI = repository.getNamespace()+techName;		
 		String techURI = repository.getNamespace()+ConceptEnum.Technology.toString();
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indURI,techURI);
+	}
+	
+	public static void deleteTechnology(OKCoUploader repository, String techName) 
+	{
+		FactoryUtil.deleteIndividual(repository.getBaseModel(), repository.getNamespace()+techName);	
 	}
 	
 	public static void createLayer(OKCoUploader repository, String layerName, String techName) throws Exception
@@ -25,6 +30,11 @@ public class NOpenFactoryUtil {
 		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString();
 		
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),indURI, techToLayerURI, ind2URI);
+	}	
+
+	public static void deleteLayer(OKCoUploader repository, String layerName) 
+	{
+		FactoryUtil.deleteIndividual(repository.getBaseModel(), repository.getNamespace()+layerName);		
 	}
 	
 	public static void createOTNTech(OKCoUploader repository) throws Exception
@@ -68,7 +78,7 @@ public class NOpenFactoryUtil {
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),mefURI, techToLayerURI, subscribersURI);
 	}
 		
-	public static void createServices(OKCoUploader repository)
+	public static void createServices(OKCoUploader repository) throws Exception
 	{
 		String simpleConnURI = repository.getNamespace()+"SimpleConnection";	
 		String Conn1_1URI = repository.getNamespace()+"1Plus1Connection";
@@ -82,8 +92,9 @@ public class NOpenFactoryUtil {
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), Conn1NURI, servURI);		
 	}
 	
-	/**just for test*/
-	public static void createEquipments(OKCoUploader repository)
+	/**just for test
+	 * @throws Exception */
+	public static void createEquipments(OKCoUploader repository) throws Exception
 	{ 		
 		String eq1URI = repository.getNamespace()+"Equipment1";
 		String eq2URI = repository.getNamespace()+"Equipment2";
@@ -95,18 +106,4 @@ public class NOpenFactoryUtil {
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq2URI,equipmentURI);
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq3URI,equipmentURI);
 	}
-
-	public static void deleteLayer(OKCoUploader provisioningRepository,
-			String layerName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public static void deleteTechnology(OKCoUploader provisioningRepository,
-			String techName) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
 }

@@ -3,6 +3,10 @@ package br.com.padtec.nopen.service.util;
 import java.util.HashSet;
 import java.util.List;
 
+import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.nopen.model.ConceptEnum;
+import br.com.padtec.nopen.model.RelationEnum;
+
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -12,68 +16,64 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
-import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.nopen.model.ConceptEnum;
-import br.com.padtec.nopen.model.RelationEnum;
-import br.com.padtec.nopen.studio.service.StudioComponents;
-
 public class NOpenQueryUtil {
 
-	public static String[] getIndividualsNames(String classURI)
+	public static String[] getIndividualsNames(InfModel model, String className)
 	{		
-		List<String> individualsURI = QueryUtil.getIndividualsURI(StudioComponents.studioRepository.getInferredModel(), classURI);
+		List<String> individualsURI = QueryUtil.getIndividualsURI(model, model.getNsPrefixURI("")+className);
 		String[] result = new String[individualsURI.size()];
 		int i=0;
-		for(String s: individualsURI){ result[i] = s.replace(StudioComponents.studioRepository.getNamespace(), ""); i++; }
+		for(String s: individualsURI){ result[i] = s.replace(model.getNsPrefixURI(""),""); i++; }
 		return result;
 	}
 	
-	public static String[] getIndividualsNamesAtObjectPropertyRange(String techName, String opURI, String classURI)
+	public static String[] getIndividualsNamesAtObjectPropertyRange(InfModel model, String sourceIndividualName, String propertyName, String rangeClassName)
 	{		
 		List<String> individualsURI = QueryUtil.getIndividualsURIAtObjectPropertyRange(
-				StudioComponents.studioRepository.getInferredModel(), 
-				StudioComponents.studioRepository.getNamespace()+techName, 
-				StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString(), 
-				StudioComponents.studioRepository.getNamespace()+ConceptEnum.Layer.toString()
+			model, 
+			model.getNsPrefixURI("")+sourceIndividualName, 
+			model.getNsPrefixURI("")+propertyName, 
+			model.getNsPrefixURI("")+rangeClassName
 		);	
 		String[] result = new String[individualsURI.size()];
 		int i=0;
-		for(String s: individualsURI){ result[i] = s.replace(StudioComponents.studioRepository.getNamespace(), ""); i++; }
+		for(String s: individualsURI){ result[i] = s.replace(model.getNsPrefixURI(""), ""); i++; }
 		return result;
 	}
 	
-	public static String[] getTechnologiesNames()
+	public static String[] getTechnologiesNames(InfModel model)
 	{
-		return getIndividualsNames(StudioComponents.studioRepository.getNamespace()+ConceptEnum.Technology.toString());		
+		return getIndividualsNames(model, ConceptEnum.Technology.toString());		
 	}
 	
-	public static String[] getServicesNames()
+	public static String[] getServicesNames(InfModel model)
 	{
-		return getIndividualsNames(StudioComponents.studioRepository.getNamespace()+ConceptEnum.Service.toString());		
+		return getIndividualsNames(model,ConceptEnum.Service.toString());		
 	}
 	
-	public static String[] getLayerNames(String techName)
+	public static String[] getLayerNames(InfModel model, String techName)
 	{
-		return  getIndividualsNamesAtObjectPropertyRange(
+		return  getIndividualsNamesAtObjectPropertyRange(model,
 				techName,
-				StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString(), 
-				StudioComponents.studioRepository.getNamespace()+ConceptEnum.Layer.toString()
+				RelationEnum.ComponentOf5_Technology_Layer.toString(), 
+				ConceptEnum.Layer.toString()
 			);					
 	}
 	
-	public static String[][] getLayerNames()
+	public static String[][] getLayerNames(InfModel model)
 	{
-		String[] techs = NOpenQueryUtil.getTechnologiesNames();
+		String[] techs = getTechnologiesNames(model);
 		String[][] result = new String[techs.length][];
 		int i=0;
 		for(String s: techs){
-			result[i]= getLayerNames(s);
+			result[i]= getLayerNames(model,s);
 			i++;
 		}
 		return result;
 	}
 	
-	public static HashSet<String> getAllTemplateEquipment(InfModel model){
+	public static HashSet<String> getAllTemplateEquipment(InfModel model)
+	{
 		HashSet<String> result = new HashSet<String>();
 		String queryString = ""
 		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
@@ -98,7 +98,8 @@ public class NOpenQueryUtil {
 		return result;
 	}
 	
-	public static HashSet<String> getAllComponentOFRelations(String classID, InfModel model){
+	public static HashSet<String> getAllComponentOFRelations(String classID, InfModel model)
+	{
 		HashSet<String> result = new HashSet<String>();
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#>"

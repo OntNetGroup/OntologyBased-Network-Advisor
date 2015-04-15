@@ -87,7 +87,7 @@ public class OWLUtil {
         //System.out.println();
 	}
 	
-	public static HashMap<String, String> createIndividualInstances(OntModel model, String[] individualDcls){
+	public static HashMap<String, String> createIndividualInstances(OntModel model, String[] individualDcls) throws Exception{
 		String ns = model.getNsPrefixURI("");
 		HashMap<String, String> newMapping = new HashMap<String,String>();
 		List<String> newIndividuals = new ArrayList<String>();

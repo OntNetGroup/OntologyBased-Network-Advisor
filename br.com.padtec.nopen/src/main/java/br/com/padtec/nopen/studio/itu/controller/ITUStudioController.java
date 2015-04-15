@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.model.DtoJointElement;
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.model.StudioFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
@@ -24,10 +25,13 @@ public class ITUStudioController {
 		return "itu-studio/itu-studio";
 	}
 	
+	/* ----- Search for Layers & Techs ----- */
+	
 	@RequestMapping(value = "/allLayers", method = RequestMethod.POST)
 	public @ResponseBody String[][] getAllLayersNames() 
 	{
-		return NOpenQueryUtil.getLayerNames();
+		//it needs to be a base model because we will not run an inference each time the user creates a new layer.
+		return NOpenQueryUtil.getLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel());
 	}
 	
 	/** Get layer names given a technology
@@ -37,7 +41,8 @@ public class ITUStudioController {
 	@RequestMapping(value = "/techLayers", method = RequestMethod.POST)
 	public @ResponseBody String[] getLayerNames(@RequestParam("techName") String techName) 
 	{
-		return NOpenQueryUtil.getLayerNames(techName);
+		//it needs to be a base model because we will not run an inference each time the user creates a new layer.		
+		return NOpenQueryUtil.getLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel(), techName);
 	}
 	
 	/* ----- CRUD for Container ----- */

@@ -12,7 +12,7 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class StudioFactory {
 
-	public static void createTechnology(String techName)
+	public static void createTechnology(String techName) throws Exception
 	{
 		NOpenFactoryUtil.createTechnology(ProvisioningComponents.provisioningRepository, techName);
 	}
@@ -22,7 +22,7 @@ public class StudioFactory {
 		NOpenFactoryUtil.createLayer(ProvisioningComponents.provisioningRepository,layerName, techName);
 	}
 	
-	public static void createTTF(String ttfName)
+	public static void createTTF(String ttfName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
@@ -31,7 +31,7 @@ public class StudioFactory {
 		);
 	}
 	
-	public static void createAF(String afName)
+	public static void createAF(String afName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
@@ -110,7 +110,7 @@ public class StudioFactory {
 		return false;
 	}
 	
-	public static void createEquipmentHolder(String id_EquipmentHolder, OKCoUploader repository)
+	public static void createEquipmentHolder(String id_EquipmentHolder, OKCoUploader repository) throws Exception
 	{
 		String individualURI = repository.getNamespace()+id_EquipmentHolder;
 		if(!QueryUtil.individualExists(repository.getBaseModel(), individualURI)){

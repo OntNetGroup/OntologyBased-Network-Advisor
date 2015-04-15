@@ -262,13 +262,13 @@
 			   'techName': tech
 		   },
 		   success: function(data){ 		   
-			   alert(data);
+			   //alert(data);
 			   
 			   var appendString = ""
 			        +"<li class=\"dd-item dd3-item\" data-id=\"\">"
       				+"      <div class=\"dd-handle dd3-handle\">Drag</div>"
       				+"      <div class=\"dd3-content\">"+$('#layer-input').val()
-      				+"<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+$('#layer-input').val()+"\" style=\"float:right\"></a>"
+      				+"<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+"layer-"+$('#layer-input').val()+"\" style=\"float:right\"></a>"
       				+"		</div>"
 		           	+"</li>";				         
 			   
@@ -280,7 +280,7 @@
 			   $('#layerModal').modal('hide');
 		   },
 		   error : function(e) {
-			   alert("error: " + e.status);
+			   alert("Error: " + e.status);
 		   }
 		});		
 	});
@@ -294,12 +294,12 @@
 			   'techName': $('#tech-input').val()
 		   },
 		   success: function(data){ 		   
-			   alert(data);
+			   //alert(data);
 			   
 			   var appendString = ""				  
 			        +"<li class=\"dd-item dd3-item\" data-id=\""+$('#tech-input').val()+"\">"
       				+"      <div class=\"dd-handle dd3-handle\">Drag</div><div class=\"dd3-content tech\">"+$('#tech-input').val()
-      				+"			<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+$('#tech-input').val()+"\" style=\"float:right\"></a>"
+      				+"			<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+"tech-"+$('#tech-input').val()+"\" style=\"float:right\"></a>"
       				+"		</div>"
 		           	+"</li>";				         
 			  
@@ -310,7 +310,7 @@
 			   $('#techModal').modal('hide');
 		   },
 		   error : function(e) {
-			   alert("error: " + e.status);
+			   alert("Error: " + e.status);
 		   }
 		});		
 	});
@@ -328,17 +328,14 @@
 		   },
 		   success: function(data){ 	
 			   
-			   alert(data);
+			   //alert(data);
 			   
-			   $(this).parent().parent().remove();
+			   $('.icon-trash').parent().parent().remove();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
 		   }
-		});	
-		
-		//alert(target);
-		//return false;
+		});
     });
 	
 </script>

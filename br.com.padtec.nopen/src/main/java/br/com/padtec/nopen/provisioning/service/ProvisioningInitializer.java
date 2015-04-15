@@ -5,21 +5,10 @@ import java.util.Date;
 
 import br.com.padtec.common.util.PerformanceUtil;
 import br.com.padtec.nopen.service.NOpenInitializer;
-import br.com.padtec.nopen.service.util.NOpenFactoryUtil;
 import br.com.padtec.nopen.service.util.NOpenUtilities;
 
 public class ProvisioningInitializer {
 
-	public static void run(boolean runInference) throws Exception
-	{	
-		String pMsg  = ProvisioningInitializer.uploadProvisioningTBox(false);
-		if(!pMsg.isEmpty()) {throw new Exception(pMsg); }
-		
-		ProvisioningInitializer.registerDefaultTechnologies();
-		
-		ProvisioningInitializer.runInference(runInference);
-	}
-	
 	public static String uploadProvisioningTBox(boolean runReasoner)
 	{
 		Date beginDate = new Date();
@@ -29,23 +18,5 @@ public class ProvisioningInitializer {
 		
 		PerformanceUtil.printExecutionTime("Provisioning: TBox uploaded.", beginDate);
 		return msg;
-	}
-	
-	public static void registerDefaultTechnologies() throws Exception
-	{
-		Date beginDate = new Date();		
-		
-		NOpenFactoryUtil.createMEFTech(ProvisioningComponents.provisioningRepository);
-		NOpenFactoryUtil.createOTNTech(ProvisioningComponents.provisioningRepository);
-		NOpenFactoryUtil.createServices(ProvisioningComponents.provisioningRepository);
-		
-		PerformanceUtil.printExecutionTime("Provisioning: Technologies, Layers and Services registered.", beginDate);
-	}
-	
-	public static void runInference(boolean runReasoner)
-	{
-		Date beginDate = new Date();		
-		ProvisioningComponents.provisioningReasoner.runReasoner(runReasoner);
-		PerformanceUtil.printExecutionTime("Provisioning: Inferences executed.", beginDate);
 	}	
 }
