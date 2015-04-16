@@ -133,7 +133,7 @@ public class ITUStudioController {
 			e.printStackTrace();
 			return e.getLocalizedMessage();
 		}		
-		return "sucess";
+		return "true";
 	}
 	
 	/** Remove um transport function
@@ -167,10 +167,14 @@ public class ITUStudioController {
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		boolean success = true; //TODO: remover
-//		TODO: boolean success = StudioFactory.changeContainer(tFunctionID, containerName, containerType, cardID);		
-		if(success) return "success";
-		else return "failed";
+		
+		try{
+			StudioFactory.changeContainer(dtoTransportFunction, dtoContainer, dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
+		return "success";		
 	}
 		
 	/* ----- CRUD for port ----- */
@@ -185,10 +189,14 @@ public class ITUStudioController {
 	{		
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
 		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
-		boolean success = true; //TODO: remover
-//		TODO: boolean success = StudioFactory.createPort(portID, transportFunctionID);		
-		if(success) return "success";
-		else return "failed";
+		 
+		try{
+			StudioFactory.createPort(dtoPort, dtoTransportFunction);		
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
+		return "success";		
 	}
 		
 	/** Remove uma porta (interface) de entrada ou saída
@@ -199,10 +207,13 @@ public class ITUStudioController {
 	public @ResponseBody String deletePort(@RequestParam("port") String port) 
 	{
 		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
-//		TODO: boolean success = StudioFactory.deletePort(id);
-		boolean success = true; //TODO: remover
-		if(success) return "success";
-		else return "failed";	
+		try{
+			StudioFactory.deletePort(dtoPort);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
+		return "success";			
 	}
 	
 	/* ----- CRUD for link ----- */
@@ -220,11 +231,14 @@ public class ITUStudioController {
 		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
 		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
-		System.out.println("create link");
-		boolean success = true; //TODO: remover
-//		TODO: boolean success = StudioFactory.createLink(sourceTFunctionID,targetTFunctionID);		
-		if(success) return "success";
-		else return "failed";
+		
+		try{
+			StudioFactory.createLink(dtoSourceTFunction, dtoTargetTFunction, dtoLink);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
+		return "success";		
 	}
 	
 	/** Verifica se é possível criar uma conexão entre sourceTFunction e targetTFunction
@@ -237,10 +251,14 @@ public class ITUStudioController {
 	{		
 		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
-		boolean success = true; //TODO: remover
-//		TODO: boolean success = StudioFactory.canCreateLink(sourceTFunctionID,targetTFunctionID);
-		if(success) return "true";
-		else return "false";
+		
+		try{
+			StudioFactory.canCreateLink(dtoSourceTFunction, dtoTargetTFunction);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
+		return "true";		
 	}
 	
 	/** Remove uma conexão
@@ -251,10 +269,14 @@ public class ITUStudioController {
 	public @ResponseBody String deleteLink(@RequestParam("link") String link) 
 	{
 		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
-		boolean success = true; //TODO: remover
-//		TODO: boolean success =  StudioFactory.deleteLink(id);		
-		if(success) return "success";
-		else return "failed";	
+		
+		try{
+			StudioFactory.deleteLink(dtoLink);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
+		return "success";			
 	}
 	
 	/* ----- Save/Load graph  ----- */
