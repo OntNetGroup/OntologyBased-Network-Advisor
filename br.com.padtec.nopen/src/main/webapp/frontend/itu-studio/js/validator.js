@@ -9,7 +9,7 @@ function validator(validator, graph, app) {
 		var tFunctionID = cell.id;
 		var tFunctionName = 'some_name'; //TODO get name
 		var tFunctionType = cell.get('subtype');
-		var cardID = this.cardID; // TODO: get cardID
+		var cardID = this.cardID;
 		
 		var containerName = '';
 		var containerType = '';
@@ -168,7 +168,7 @@ function validator(validator, graph, app) {
     	
 		var containerName = cellSubType;
 		var containerType = 'layer';
-		var cardID = this.cardID; // TODO: get cardID 
+		var cardID = this.cardID; 
 
     	var position = cell.get('position');
 		var size = cell.get('size');
@@ -261,7 +261,7 @@ function validator(validator, graph, app) {
 
     	var containerName = command.data.attributes.subtype;
 		var containerType = 'layer';
-		var cardID = this.cardID; // TODO: get cardID
+		var cardID = this.cardID;
 		
 		var result = deleteContainer(containerName, containerType, cardID);
 		if(result === "success") {
@@ -330,7 +330,7 @@ function validator(validator, graph, app) {
 		var containerName = '';
 		var containerType = '';
 		
-		var cardID = this.cardID; // TODO: get cardID
+		var cardID = this.cardID;
     	        	
     	var position = cell.get('position');
 		var size = cell.get('size');

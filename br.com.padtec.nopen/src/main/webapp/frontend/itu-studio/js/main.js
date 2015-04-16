@@ -21,7 +21,11 @@ var Rappid = Backbone.Router.extend({
     home: function() {
 
         this.initializeEditor();
-        this.cardID = joint.util.uuid(); // TODO: get cardID through url
+//        setCardID(joint.util.uuid()); // TODO: get cardID
+    },
+    
+    setCardID: function(id) {
+    	this.cardID = id;
     },
 
     initializeEditor: function() {

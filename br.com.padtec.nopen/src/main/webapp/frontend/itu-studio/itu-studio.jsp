@@ -93,7 +93,8 @@
             	closeType = "reject";
             	parent.closeIframe();     	
             });
-            
+
+        	app.setCardID(parent.cellId);
             graphHandler(app.graph, app);
             validator(app.validator, app.graph, app);
             
