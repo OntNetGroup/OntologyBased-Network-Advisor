@@ -1,6 +1,5 @@
 function validator(validator, graph, app) {
     
-    
     // validar inserção de transport functions no grafo
     validator.validate('add', isNotLink, isTransportFunction, _.bind(function(err, command, next) {
     	        	
@@ -193,7 +192,7 @@ function validator(validator, graph, app) {
 			var result = insertContainer(containerName, containerType, cardID)
 			
 			if(result === "success") {
-				// TODO: remover camada do stencil
+				// TODO: remover/desabilitar camada do stencil
 				return next(err);
 			} else {
 				return next(result);
@@ -203,87 +202,6 @@ function validator(validator, graph, app) {
     }, app));
     
     
-    // valida a remoção de elementos do paper
-//    validator.validate('remove', _.bind(function(err, command, next) {
-//
-//    	var cellType = command.data.type;
-//    	var cellID = command.data.id;
-//    	
-//    	// se uma conexão for removida
-//    	if(cellType === 'link') {
-//    		var sourceID = command.data.attributes.source.id;
-//    		var targetID = command.data.attributes.target.id;
-//    		var sourceElement = graph.getCell(sourceID);
-//    		var targetElement = graph.getCell(targetID);
-//    		if(targetElement) var targetElementSubtype = targetElement.get('subtype');
-//			
-//			
-//			// se target for uma porta, remover a porta ligada à conexão (consultar ontologia)
-//			if(targetElementSubtype === 'in' || targetElementSubtype === 'out') {
-//				var result = deletePort(targetID);
-//				
-//				if(result === "success") {
-//					targetElement.remove();
-//					return next(err);
-//				} else {
-//					return next(result);
-//				}
-//        	}
-//			
-//			// se target for um transport function, consultar ontologia para remoção da conexão
-//			if(targetElementSubtype === 'basic.Path') {
-//    			var result = deleteLink(cellID);
-//    			if(result === "success") {
-//    				return next(err);
-//    			} else {
-//					return next(result);
-//				}
-//			}
-//			
-//			// o target era uma interface que ja foi removida
-//			return next(err);
-//    	}
-//    	
-//    	// se um transport function for removido, consultar ontologia
-//    	if(cellType === 'basic.Path') {
-//    		
-//    		var result = deleteTransportFunction(cellID);
-//    		if(result === "success") {
-//				return next(err);
-//			} else {
-//				return next(result);
-//			}
-//    		
-//    	}
-//    	
-//    	// se uma camada inteira for removida, consultar ontologia
-//    	if(cellType === 'bpmn.Pool') {
-//    		
-//    		var containerName = command.data.attributes.subtype;
-//    		var containerType = 'layer';
-//    		var cardID = this.cardID; // TODO: get cardID
-//    		
-//			var result = deleteContainer(containerName, containerType, cardID);
-//			if(result === "success") {
-//				// TODO: retornar camada ao stencil
-//				return next(err);
-//			} else {
-//				return next(result);
-//			}
-//    	}
-//
-//    	// então é uma interface
-//		var result = deletePort(cellID);			
-//		if(result === "success") {
-//			return next(err);
-//		} else {
-//			return next(result);
-//		}
-//		
-//    }, app));
-    
-    
-
     // validar a remoção de links do grafo
     validator.validate('remove', isLink, _.bind(function(err, command, next) {
     	
@@ -347,7 +265,7 @@ function validator(validator, graph, app) {
 		
 		var result = deleteContainer(containerName, containerType, cardID);
 		if(result === "success") {
-			// TODO: retornar camada ao stencil
+			// TODO: retornar/reabilitar camada ao stencil
 			return next(err);
 		} else {
 			return next(result);
@@ -398,19 +316,21 @@ function validator(validator, graph, app) {
     }, app));
     
     
-    // validate embedding
-    validator.validate('change:parent', _.bind(function(err, command, next) {
+	// validate embedding of transport functions
+	validator.validate('change:parent', isTransportFunction, _.bind(function(err, command, next) {
 
-    	console.log(this.isAddingTransportFunction)
     	if(this.isAddingTransportFunction) {
     		this.isAddingTransportFunction = false;
     		return next(err);
     	}
     	
-    	console.log(command);
-    	var cell = graph.getCell(command.data.id);
-    	var cellType = cell.get('type');
-    	var cellSubType = cell.get('subtype');
+		var cell = graph.getCell(command.data.id);
+		var tFunctionID = cell.id;
+		
+		var containerName = '';
+		var containerType = '';
+		
+		var cardID = this.cardID; // TODO: get cardID
     	        	
     	var position = cell.get('position');
 		var size = cell.get('size');
@@ -427,57 +347,66 @@ function validator(validator, graph, app) {
 			}
 		});
 		
-		if(cellType === 'bpmn.Pool') { // elemento é uma camada
+		if(parent) { // existe algum elemento abaixo
+			var parentType = parent.get('type');
 			
-			if(parent) { // existe elemento abaixo
-				return next('Another element in the way!');
-			}
-		
-		} else if(cellType === 'basic.Path') { // elemento é um transport function
-			
-			if(parent) { // existe algum elemento abaixo
-				var parentType = parent.get('type');
-				
-				if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
-					// consultar ontologia para troca de camada do transport function
-					var tFunctionID = cell.id;
-					var containerName = parent.get('subtype');
-					var containerType = 'layer';
-					var cardID = this.cardID; // TODO: get cardID
-					console.log('change layer of ' +tFunctionID+ ' to layer ' +containerName+ ' inside card ' +cardID);
-					
-					var result = changeContainer(tFunctionID, containerName, containerType, cardID)
-					
-					if(result === "success") {						
-						parent.embed(cell);
-						return next(err);
-					} else {
-						return next(result);
-					}
-										
-				} else { // elemento abaixo não é um container
-					return next('Please, move the transport function to the paper or a layer.');
-				}
-			} else { // não existe elemento abaixo
-				// consultar ontologia para remoção de camada do transport function
-				var tFunctionID = cell.id;
-				var containerName = '';
-				var containerType = '';
-				var cardID = this.cardID; // TODO: get cardID
-				console.log('remove layer of ' +tFunctionID+ ' inside card ' +cardID);
+			if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
+				// consultar ontologia para troca de camada do transport function
+				containerName = parent.get('subtype');
+				containerType = 'layer';
+				console.log('change layer of ' +tFunctionID+ ' to layer ' +containerName+ ' inside card ' +cardID);
 				
 				var result = changeContainer(tFunctionID, containerName, containerType, cardID)
 				
-				if(result === "success") {
+				if(result === "success") {						
+					parent.embed(cell);
 					return next(err);
 				} else {
 					return next(result);
 				}
+									
+			} else { // elemento abaixo não é um container
+				return next('Please, move the transport function to the paper or a layer.');
+			}
+		} else { // não existe elemento abaixo
+			// consultar ontologia para remoção de camada do transport function
+			console.log('remove layer of ' +tFunctionID+ ' inside card ' +cardID);
+			
+			var result = changeContainer(tFunctionID, containerName, containerType, cardID)
+			
+			if(result === "success") {
+				return next(err);
+			} else {
+				return next(result);
 			}
 		}
-    }, app));
+		
+	}, app));
+	
+	// avoid embedding of layers
+	validator.validate('change:parent', isLayer, _.bind(function(err, command, next) {
+		var cell = graph.getCell(command.data.id);
+		
+    	var position = cell.get('position');
+		var size = cell.get('size');
+		var area = g.rect(position.x, position.y, size.width, size.height);
+		
+		var parent;
+		// get all elements below the added one
+		_.each(graph.getElements(), function(e) {
+		
+			var position = e.get('position');
+			var size = e.get('size');
+			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+				parent = e;
+			}
+		});
+		
+		if(parent) { // existe elemento abaixo
+			return next('Another element in the way!');
+		}
+	}, app));
 };
-
 
 
 /* ------- VALIDATION FUNCTIONS -------- */
@@ -513,4 +442,10 @@ function isInterface(err, command, next) {
 function isLayer(err, command, next) {
 	if (command.data.type === 'bpmn.Pool') return next(err);
     // otherwise stop validating (don't call next validation function)
+};
+
+//Check if the cell is being added to the graph. Continue validating if no, otherwise stop.
+function isLayer(err, command, next) {
+	if (command.data.type === 'bpmn.Pool') return next(err);
+  // otherwise stop validating (don't call next validation function)
 };
