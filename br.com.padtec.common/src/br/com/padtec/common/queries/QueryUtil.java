@@ -23,9 +23,20 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 public class QueryUtil {
 	
 	static public String w3URI  = "http://www.w3.org/";
-	static public String owlURI = "http://www.w3.org/2002/07/owl";
-	static public String rdfsURI = "http://www.w3.org/2000/01/rdf-schema";
-	static public String rdfURI = "http://www.w3.org/1999/02/22-rdf-syntax-ns";
+	static public String owl = "owl";
+	static public String owlURI = "http://www.w3.org/2002/07/owl#";
+	static public String rdfs = "rdfs";
+	static public String rdfsURI = "http://www.w3.org/2000/01/rdf-schema#";
+	static public String rdf = "rdf";
+	static public String rdfURI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+	static public String xml = "xsd";
+	static public String xmlURI = "http://www.w3.org/2001/XMLSchema#";
+	
+	static public String PREFIXES = ""
+			+ "PREFIX " + owl + ": <" + owlURI + ">\n"
+			+ "PREFIX " + rdfs + ": <" + rdfsURI + ">\n"
+			+ "PREFIX " + rdf + ": <" + rdfURI + ">\n"
+			+ "PREFIX " + xml + ": <" + xmlURI + ">\n";
 	
 	/** 
 	 * Return the URI of all classes of the ontology. This method is performed using SPARQL.
@@ -38,8 +49,7 @@ public class QueryUtil {
 	{		
 		System.out.println("\nExecuting individualExists()...");
 		String queryString = ""
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+				+ PREFIXES
 				+ "ASK\n"
 				+ "{\n"
 				+ "\t<" + individualUri + "> rdf:type ?t  ;\n"
@@ -48,61 +58,6 @@ public class QueryUtil {
 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		boolean exist = qe.execAsk();		
-		
-		return exist;
-	}
-	
-	/** 
-	 * Return true if an interface is mapping a port from a Termination Function Source
-	 * 
-	 * @param model: jena.ontology.InfModel 
-	 * 
-	 * @author Freddy Brasileiro
-	 */
-	static public boolean isInterfaceSource(InfModel model, String interfaceUri) 
-	{		
-		System.out.println("\nExecuting isInterfaceSource()...");
-		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <http://nemo.inf.ufes.br/NewProject.owl#>\n"
-				+ "ASK\n"
-				+ "WHERE {\n"
-				+ "<" + interfaceUri + "> ns:maps ?port .\n"
-				+ "?tf ns:componentOf ?port .\n"
-				+ "?tf rdf:type ?tfType .\n"
-				+ "FILTER( ?tfType IN (ns:AF_Source, ns:TF_Source, ns:Matrix_Source) ) .\n"
-				+ "}\n";
-		Query query = QueryFactory.create(queryString);
-		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		boolean exist = qe.execAsk();		
-		
-		if(exist){
-			return exist;
-		}
-		
-		queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <http://nemo.inf.ufes.br/NewProject.owl#>\n"
-				+ "ASK\n"
-				+ "WHERE {\n"
-				+ "<" + interfaceUri + "> ns:maps ?port .\n"
-				+ "?tf ns:componentOf ?port .\n"
-				+ "?tf rdf:type ?tfType .\n"
-				+ "?port rdf:type ?portType .\n"
-				+ "FILTER( ?tfType IN (ns:Physical_Media) ) .\n"
-				+ "FILTER( ?portType IN (ns:Input)) . \n"
-				+ "}\n";
-		query = QueryFactory.create(queryString);
-		
-		qe = QueryExecutionFactory.create(query, model);
-		exist = qe.execAsk();
 		
 		return exist;
 	}
@@ -120,8 +75,7 @@ public class QueryUtil {
 	{		
 		System.out.println("\nExecuting isIndividualFromClass()...");
 		String queryString = ""
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+				+ PREFIXES
 				+ "ASK\n"
 				+ "{\n"
 				+ "\t<" + individualUri + "> rdf:type <" + classURI + ">  ;\n"
@@ -148,8 +102,7 @@ public class QueryUtil {
 	{		
 		System.out.println("\nExecuting isTargetIndividualFromClass()...");
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">  \n"
+				+ PREFIXES
 				+ "ASK\n"
 				+ "{\n"
 				+ "<"+ srcIndividualUri + "> <" + relationURI + "> ?indv . \n"
@@ -177,11 +130,7 @@ public class QueryUtil {
 	{		
 		System.out.println("\nExecuting isTargetIndividualFromClass()...");
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ PREFIXES
 				+ "ASK\n"
 				+ "WHERE {\n"
 				+ "<" + srcIndividualUri + "> <" + dataPropURI + "> " + value + "\n"
@@ -208,23 +157,20 @@ public class QueryUtil {
 	{		
 		System.out.println("\nExecuting getIndividualFromRelation()...");
 		List<String> result = new ArrayList<String>();				
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT *" +
-		" WHERE {\n" +		
-			"\t{" +
-			"\t\t<" + knownIndvURI + "> <" + relationURI + "> ?unknownIndv .\n " +	
-		    "\t\t?unknownIndv rdf:type <" + unknownIndvClassURI + "> .\n" +
-		    "\t}" +
-		    "\tUNION" +
-		    "\t{" +
-		    "\t\t?unknownIndv <" + relationURI + "> <" + knownIndvURI + "> .\n " +	
-		    "\t\t?unknownIndv rdf:type <" + unknownIndvClassURI + "> .\n" +
-		    "\t}" +			
-		"}";
+		String queryString = "" 
+				+ PREFIXES
+				+ " SELECT *"
+				+ " WHERE {\n" 		
+				+	"\t{" 
+				+	"\t\t<" + knownIndvURI + "> <" + relationURI + "> ?unknownIndv .\n " 	
+				+    "\t\t?unknownIndv rdf:type <" + unknownIndvClassURI + "> .\n" 
+				+    "\t}" 
+				+    "\tUNION" 
+				+    "\t{" 
+				+    "\t\t?unknownIndv <" + relationURI + "> <" + knownIndvURI + "> .\n " 	
+				+    "\t\t?unknownIndv rdf:type <" + unknownIndvClassURI + "> .\n" 
+				+    "\t}" 
+				+ "}";
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
@@ -252,16 +198,13 @@ public class QueryUtil {
 	{		
 		System.out.println("\nExecuting getClassesURI()...");
 		List<String> result = new ArrayList<String>();				
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT *" +
-		" WHERE {\n" +		
-			" ?i rdf:type owl:Class .\n " +	
-		    " FILTER(?i NOT IN (owl:Thing, owl:Nothing)) .\n"+
-		"}";
+		String queryString = "" 
+				+ PREFIXES
+				+ " SELECT *" 
+				+ " WHERE {\n" 		
+				+ 	" ?i rdf:type owl:Class .\n " 	
+				+   " FILTER(?i NOT IN (owl:Thing, owl:Nothing)) .\n"
+				+ "}";
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
@@ -299,17 +242,14 @@ public class QueryUtil {
 			result.add(type);
 			return result;
 		}
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + "> \n" +
-		" SELECT * \n" +
-		" WHERE {\n" +		
-			" <"+individualURI+"> rdf:type ?i .\n " +
-			" ?i rdf:type owl:Class .\n" +
-			" FILTER(?i NOT IN (owl:Thing,owl:Nothing)) .\n"+
-		"}";
+		String queryString = ""
+				+ PREFIXES
+				+ " SELECT * \n" 
+				+ " WHERE {\n" 	
+				+	" <"+individualURI+"> rdf:type ?i .\n " 
+				+	" ?i rdf:type owl:Class .\n" 
+				+	" FILTER(?i NOT IN (owl:Thing,owl:Nothing)) .\n"
+				+ "}";
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
@@ -346,7 +286,7 @@ public class QueryUtil {
 		ArrayList<String> disjointClasses = getDisjointClassesURIs(model, classURI);
 		for (String strClassD : disjointClasses) {
 			if(checkingClassURI.equals(strClassD)) {
-		    	System.out.println("- Is Disjoint: false");
+		    	System.out.println("- Is Disjoint: true");
 		    	return true; 
 		    }
 		}
@@ -368,27 +308,24 @@ public class QueryUtil {
 		System.out.println("\nExecuting getDisjointClassesURIs()...");
 		System.out.println("- Class URI: "+classURI);
 		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + "> \n" +
-		" SELECT DISTINCT ?classD \n" +
-		" WHERE {\n" +		
-			"\t{\n" +
-				"\t<" + classURI + "> " + "owl:disjointWith" + " ?classD .\n " +
-			"\t}\n" + 
-			"\tUNION\n" +
-			"\t{\n" +
-				"\t?classD " + "owl:disjointWith" + " <" + classURI + "> .\n " +
-			"\t}\n" +
-			"\tUNION\n" +
-			"\t{\n" +
-				"\t?AllDisjointClassesNode rdf:type owl:AllDisjointClasses . \n" + 
-				"\t?AllDisjointClassesNode owl:members ?disjointMembersNode . \n" +
-				"\t?disjointMembersNode rdf:rest*/rdf:first ?classD . \n" +
-				"\tFILTER EXISTS { ?disjointMembersNode rdf:rest*/rdf:first <" + classURI + "> } . \n" +
-			"\t}\n" +
-		"}";		
+				PREFIXES
+				+ " SELECT DISTINCT ?classD \n" 
+				+ " WHERE {\n" 
+				+	"\t{\n" 
+				+		"\t<" + classURI + "> " + "owl:disjointWith" + " ?classD .\n " 
+				+	"\t}\n" 
+				+	"\tUNION\n" 
+				+	"\t{\n" 
+				+		"\t?classD " + "owl:disjointWith" + " <" + classURI + "> .\n " 
+				+	"\t}\n" 
+				+	"\tUNION\n" 
+				+	"\t{\n" 
+				+		"\t?AllDisjointClassesNode rdf:type owl:AllDisjointClasses . \n"  
+				+		"\t?AllDisjointClassesNode owl:members ?disjointMembersNode . \n" 
+				+		"\t?disjointMembersNode rdf:rest*/rdf:first ?classD . \n" 
+				+		"\tFILTER EXISTS { ?disjointMembersNode rdf:rest*/rdf:first <" + classURI + "> } . \n" 
+				+	"\t}\n" 
+				+ "}";		
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();
@@ -413,15 +350,12 @@ public class QueryUtil {
 	static public OntPropertyEnum getPropertyURIType(InfModel model, String propertyURI)
 	{
 		System.out.println("\nExecuting getPropertyURIType()...");
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-				"<" + propertyURI + "> " + " rdf:type " + " ?type .\n " +
-		"}";		
+		String queryString = ""
+				+ PREFIXES
+				+ " SELECT DISTINCT *" 
+				+ " WHERE {\n" 
+				+		"<" + propertyURI + "> " + " rdf:type " + " ?type .\n " 
+				+ "}";		
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
@@ -457,21 +391,18 @@ public class QueryUtil {
 		System.out.println("- Object Property URI: " + objectPropertyURI);
 		List<String> result = new ArrayList<String>();		
 		String queryString = "" 
-		+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n "
-		+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
-		+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-		+ " SELECT DISTINCT *\n"
-		+ " WHERE\n"	
-		+ "{ \n"
-		+ "\t{\n"
-		+ "\t\t<" + objectPropertyURI + "> owl:inverseOf ?inverse\n"
-		+ "\t}\n" 
-		+ "\tUNION\n"
-		+ "\t{\n"
-		+ "\t\t?inverse owl:inverseOf <" + objectPropertyURI + ">\n"
-		+ "\t}\n"
-		+ "}";
+				+ PREFIXES
+				+  " SELECT DISTINCT *\n"
+				+ " WHERE\n"	
+				+ "{ \n"
+				+ "\t{\n"
+				+ "\t\t<" + objectPropertyURI + "> owl:inverseOf ?inverse\n"
+				+ "\t}\n" 
+				+ "\tUNION\n"
+				+ "\t{\n"
+				+ "\t\t?inverse owl:inverseOf <" + objectPropertyURI + ">\n"
+				+ "\t}\n"
+				+ "}";
 		Query query = QueryFactory.create(queryString);		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();
@@ -543,45 +474,7 @@ public class QueryUtil {
 		}
 		return isDomainDisjointWithSome;
 	}
-	
-	/**
-	 * Return all the disjoint classes URI with this particular class in the ontology. This method is performed using SPARQL.
-	 * 
-	 * @param model: jena.ontology.InfModel 
-	 * @param classURI: Class URI
-	 * 
-	 * @author John Guerson
-	 */
-	/*
-	static public List<String> getClassesURIDisjointWith(InfModel model,String classURI) 
-	{		
-		System.out.println("\nExecuting getClassesURIDisjointWith()...");
-		System.out.println("- Class URI: "+classURI);
-		List<String> result = new ArrayList<String>();		
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-				"<" + classURI + "> " + "owl:disjointWith" + " ?classDisjoint .\n " +
-				" FILTER(?classDisjoint NOT IN (owl:Nothing)) .\n"+
-		"}";		
-		Query query = QueryFactory.create(queryString);		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();		
-		// ResultSetFormatter.out(System.out, results, query);		
-		while (results.hasNext()) 
-		{
-			QuerySolution row= results.next();
-		    RDFNode completeClass = row.get("classDisjoint");
-		    result.add(completeClass.toString());		    	
-		    System.out.println("- Disjoint Class URI: "+completeClass.toString());
-		}		
-		return result;
-	}
-	*/
+		
 	/**
 	 * Check if a URI is valid.
 	 * 
@@ -605,16 +498,13 @@ public class QueryUtil {
 		System.out.println("\nExecuting getDatatypePropertiesURI()...");
 		System.out.println("- Individual URI: "+individualURI);
 		List<String> result = new ArrayList<String>();		
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +		
-			"<" + individualURI + ">" + " ?property" + " ?target .\n " +
-			" ?property " + " rdf:type" + " owl:DatatypeProperty .\n " +
-		"}";
+		String queryString = "" 
+				+ PREFIXES
+				+ " SELECT DISTINCT *" 
+				+ " WHERE {\n" 
+				+	"<" + individualURI + ">" + " ?property" + " ?target .\n " 
+				+	" ?property " + " rdf:type" + " owl:DatatypeProperty .\n " 
+				+ "}";
 		Query query = QueryFactory.create(queryString);		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();
@@ -644,16 +534,13 @@ public class QueryUtil {
 		System.out.println("\nExecuting getObjectPropertiesURI()...");
 		System.out.println("- Individual URI: "+individualURI);
 		List<String> result = new ArrayList<String>();		
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +		
-			"<" + individualURI + ">" + " ?property" + " ?target .\n " +
-			" ?property " + " rdf:type" + " owl:ObjectProperty .\n " +
-		"}";
+		String queryString = ""
+				+ PREFIXES
+				+ " SELECT DISTINCT *" 
+				+ " WHERE {\n" 
+				+	"<" + individualURI + ">" + " ?property" + " ?target .\n " 
+				+	" ?property " + " rdf:type" + " owl:ObjectProperty .\n " 
+				+ "}";
 		Query query = QueryFactory.create(queryString);		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();
@@ -674,15 +561,12 @@ public class QueryUtil {
 	{
 		System.out.println("\nExecuting getPropertiesURI()...");		
 		List<String> result = new ArrayList<String>();		
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-			"?property " + " rdf:type " + " owl:ObjectProperty .\n " +			
-		"}";
+		String queryString = ""
+				+ PREFIXES
+				+ " SELECT DISTINCT *" 
+				+ " WHERE {\n" 
+				+	"?property " + " rdf:type " + " owl:ObjectProperty .\n " 			
+				+ "}";
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect(); 
@@ -708,15 +592,12 @@ public class QueryUtil {
 	{
 		System.out.println("\nExecuting getPropertiesURI()...");		
 		List<String> result = new ArrayList<String>();		
-		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +
-			"?property " + " rdf:type " + " owl:DatatypeProperty .\n " +			
-		"}";
+		String queryString = ""
+				+ PREFIXES
+				+ " SELECT DISTINCT *" 
+				+ " WHERE {\n" 
+				+	"?property " + " rdf:type " + " owl:DatatypeProperty .\n " 			
+				+ "}";
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect(); 
@@ -753,19 +634,16 @@ public class QueryUtil {
 		System.out.println("- Individual URI: "+individualURI);
 		List<String> result = new ArrayList<String>();		
 		String queryString = 
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
-		" SELECT DISTINCT *" +
-		" WHERE {\n" +		
-			"{ " + "<" + individualURI + ">" + " ?property" + " ?target .\n " +
-				" ?property " + " rdf:type" + " owl:ObjectProperty .\n " +
-			"} UNION { " +
-				"<" + individualURI + ">" + " ?property" + " ?target .\n " +
-				" ?property " + " rdf:type" + " owl:DatatypeProperty.\n " +		
-			"}" +
-		"}";
+				PREFIXES
+				+ " SELECT DISTINCT *" 
+				+ " WHERE {\n" 
+				+	"{ " + "<" + individualURI + ">" + " ?property" + " ?target .\n " 
+				+		" ?property " + " rdf:type" + " owl:ObjectProperty .\n " 
+				+	"} UNION { " 
+				+		"<" + individualURI + ">" + " ?property" + " ?target .\n " 
+				+		" ?property " + " rdf:type" + " owl:DatatypeProperty.\n " 		
+				+	"}" 
+				+ "}";
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect(); 
@@ -799,7 +677,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +		
 			"{ " + "<" + individualURI + ">" + " ?property" + " ?target .\n " +
@@ -843,7 +720,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +
 				"<" + propertyURI + "> " + "owl:propertyDisjointWith" + " ?propDisjoint .\n " +
@@ -884,7 +760,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +
 			"?subProp rdfs:subPropertyOf" + "<" + propertyURI + "> ." +
@@ -984,7 +859,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">\n" +
 		" SELECT DISTINCT *\n" +
 		" WHERE {\n" +
 			"<"+propertyURI+"> rdfs:domain ?domain .\n" +
@@ -1072,7 +946,6 @@ public class QueryUtil {
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT DISTINCT ?superClass "
 				+ "WHERE {\n"
 				+ "\t\t<" + classURI + "> rdfs:subClassOf*/rdfs:subClassOf ?superClass .\n"
@@ -1113,7 +986,6 @@ public class QueryUtil {
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX ns:<http://nemo.inf.ufes.br/NewProject.owl#>\n"
 				+ "SELECT DISTINCT ?subRelation \n"
 				+ "WHERE {\n"
 				+ "	?subRelation rdfs:subPropertyOf*/rdfs:subPropertyOf <" + relationURI + "> .\n"
@@ -1157,7 +1029,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +
 			"<"+propertyURI+"> rdfs:domain ?domain ." +
@@ -1194,7 +1065,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +
 			"<"+propertyURI+"> rdfs:range ?range ." +
@@ -1230,7 +1100,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +
 			"<"+propertyURI+"> rdfs:range ?range ." +
@@ -1315,7 +1184,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT *" +
 		" WHERE {\n" +		
 			" ?i rdf:type <" + classURI + "> .\n " +	
@@ -1352,7 +1220,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-		"PREFIX ns: <" + model.getNsPrefixURI("")  + ">\n" +
 		" SELECT DISTINCT * \n" +
 		" WHERE {\n" +		
 			"\t{ \n" + 
@@ -1403,7 +1270,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("")  + ">" +
 		" SELECT DISTINCT ?y" +
 		" WHERE {\n" +
 			"{ " + 
@@ -1449,7 +1315,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +		
 			"<" + individualURI + ">" + "<"+propertyURI+">"+ " ?target .\n "+			
@@ -1493,7 +1358,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +		
 			"<" + individualURI + ">" + "<"+propertyURI+">"+ " ?target .\n "+
@@ -1538,7 +1402,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">\n" +
 		"SELECT DISTINCT *\n" +
 		"WHERE {\n" +		
 			" ?domain " + "<"+propertyURI+"> " + "<" + individualURI + ">.\n" +
@@ -1583,7 +1446,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <"+ model.getNsPrefixURI("") + ">" +
 		"\n SELECT DISTINCT ?x" +
 		" WHERE {\n" +
 			" <" + individualURI + "> <" + propertyURI + "> ?x .\n " +
@@ -1698,7 +1560,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT ?source ?relation ?cardinality ?target" +
 		" WHERE {\n" +
 			"{ " +
@@ -1802,7 +1663,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 			" ?x " + "rdfs:subClassOf" + " ?y .\n " +
@@ -1858,7 +1718,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">\n" +
 		" SELECT DISTINCT ?source ?relation ?cardinality ?target\n" +
 		" WHERE {\n" +				
 			" \t{ \n" +
@@ -1961,7 +1820,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-		"PREFIX ns: <" + model.getNsPrefixURI("") + ">" +
 		" SELECT DISTINCT ?x ?y" +
 		" WHERE {\n" +
 			" ?x " + "rdfs:subClassOf" + " ?y .\n " +
@@ -2019,7 +1877,6 @@ public class QueryUtil {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
 		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-		"PREFIX ns: <" + infModel.getNsPrefixURI("") + ">\n" +
 		" SELECT DISTINCT ?x0 ?completeClass ?member\n" +
 		" WHERE {\n" +
 			"\t{ \n" +		

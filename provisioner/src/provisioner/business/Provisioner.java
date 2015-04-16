@@ -1,4 +1,4 @@
-package provisioning;
+package provisioner.business;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +10,11 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import provisioner.domain.Interface;
+import provisioner.domain.Path;
+import provisioner.jenaUtil.OWLUtil;
+import provisioner.jenaUtil.SPARQLQueries;
+import provisioner.util.ConsoleUtil;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
@@ -19,10 +24,11 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.hp.hpl.jena.ontology.OntModel;
 
-public class Provisioning {
+public class Provisioner {
 	HashMap<String, Interface> interfaces = new HashMap<String, Interface>();
 	List<Interface> bindedInterfaces;
-	HashMap<String, Interface> bindedInterfacesHash = new HashMap<String, Interface>();
+	List<Interface> originalBindedInterfaces = new ArrayList<Interface>();
+	HashMap<String, Interface> bindedInterfacesHash;
 	List<String> declaredEquip;
 	List<String> possibleEquip;
 	OntModel model;
@@ -31,18 +37,18 @@ public class Provisioning {
 	List<Interface> INT_SK_LIST;
 	OKCoUploader okcoUploader = new OKCoUploader();
 	
-	public Provisioning(String tBoxFile, String declaredInstancesFile, String possibleEquipFile) throws Exception {
+	public Provisioner(String tBoxFile, String declaredInstancesFile, String possibleEquipFile, int createNTimes) throws Exception {
 		//#1
 		model = OWLUtil.createTBox(this.okcoUploader, tBoxFile);
 		ns = model.getNsPrefixURI("");
 		//#3
-		OWLUtil.createInstances(model, declaredInstancesFile);
+		OWLUtil.createInstances(model, declaredInstancesFile, createNTimes);
 		this.declaredEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
 		createInterfaceHash(this.declaredEquip);
 		//#7 and #8
 		verifiyMinimumEquipment();	
 		
-		bindedInterfaces = Queries.getBindedInterfaces(model, interfaces);
+		bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
 		
 		//#9
 		verifyIfEquipmentMapsOutPortsInSource();
@@ -55,14 +61,16 @@ public class Provisioning {
 		INT_SK_LIST.removeAll(bindedInterfaces);
 		
 		//#15
-		OWLUtil.createInstances(model, possibleEquipFile);
+		OWLUtil.createInstances(model, possibleEquipFile, createNTimes);
 		this.possibleEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
 		this.possibleEquip.removeAll(this.declaredEquip);
 		createInterfaceHash(this.possibleEquip);
-		bindedInterfaces = Queries.getBindedInterfaces(model, interfaces);
+		bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
 		createBindedInterfaceHash(bindedInterfaces);
 		//#16
 		verifiyMinimumEquipWithPM();
+		
+		originalBindedInterfaces.addAll(bindedInterfaces);
 		
 		//#17
 		OWLUtil.runReasoner(okcoUploader, true, true, true);
@@ -72,12 +80,14 @@ public class Provisioning {
 		return model;
 	}
 	
-	public void provision(Interface interfaceFrom, Interface interfaceTo, Character option) throws Exception{
+	public void consoleProvisioner(Interface interfaceFrom, Interface interfaceTo, Character option) throws Exception{
 		try {
+			bindedInterfaces = new ArrayList<Interface>();
+			bindedInterfaces.addAll(originalBindedInterfaces);
 			if(option.equals('M') || option.equals('m')){
 				callAlgorithmManual(interfaceFrom, interfaceTo);
 			}else{
-				callAlgorithmSemiAuto(interfaceFrom, interfaceTo);
+				callFindPaths(interfaceFrom, interfaceTo);
 			}
 			
 			//#23
@@ -87,7 +97,7 @@ public class Provisioning {
 		}
 		
 		//#25
-		OWLUtil.saveNewOwl(model, "");
+		OWLUtil.saveNewOwl(model, "resources/output/", "");
 	}
 	
 	public List<Interface> getINT_SK_LIST() {
@@ -112,12 +122,12 @@ public class Provisioning {
 					Interface newInt = new Interface(intURI, equipURI, declared);
 					this.interfaces.put(intURI, newInt);
 				}				
-			}
-			
+			}			
 		}	
 	}
 	
 	private void createBindedInterfaceHash(List<Interface> bindedInterfaces){
+		this.bindedInterfacesHash = new HashMap<String, Interface>();
 		for (Interface interface1 : bindedInterfaces) {
 			this.bindedInterfacesHash.put(interface1.getInterfaceURI(), interface1);
 		}
@@ -133,7 +143,7 @@ public class Provisioning {
 	}
 	
 	public List<Interface> verifyIfEquipmentMapsOutPortsInSource() throws Exception{
-		List<Interface> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(model, true, true, interfaces);
+		List<Interface> equipAndInterfaces = SPARQLQueries.getInterfacesAndEquipMappingPorts(model, true, true, interfaces);
 		if(equipAndInterfaces.size() < 1){
 			throw new Exception("Is required a minimun of 1 Equipment which the Output Interface maps an Output Port from a Source component.\n");
 		}
@@ -142,7 +152,7 @@ public class Provisioning {
 	}
 	
 	public List<Interface> verifyIfEquipmentMapsInPortsInSource() throws Exception{
-		List<Interface> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(model, false, true, interfaces);
+		List<Interface> equipAndInterfaces = SPARQLQueries.getInterfacesAndEquipMappingPorts(model, false, true, interfaces);
 		if(equipAndInterfaces.size() < 1){
 			throw new Exception("Is required a minimum of 1 Equipment which the Input Interface maps an Input Port from a Source component.\n");
 		}
@@ -150,7 +160,7 @@ public class Provisioning {
 	}
 	
 	public List<Interface> verifyIfEquipmentMapsInPortsInSink() throws Exception{
-		List<Interface> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(model, false, false, interfaces);
+		List<Interface> equipAndInterfaces = SPARQLQueries.getInterfacesAndEquipMappingPorts(model, false, false, interfaces);
 		if(equipAndInterfaces.size() < 1){
 			throw new Exception("Is required a minimum of 1 Equipment which the Input Interface maps an Input Port from a Sink component.\n");
 		}
@@ -158,7 +168,7 @@ public class Provisioning {
 	}
 	
 	public List<Interface> verifyIfEquipmentMapsOutPortsInSink() throws Exception{
-		List<Interface> equipAndInterfaces = Queries.getInterfacesAndEquipMappingPorts(model, true, false, interfaces);
+		List<Interface> equipAndInterfaces = SPARQLQueries.getInterfacesAndEquipMappingPorts(model, true, false, interfaces);
 		if(equipAndInterfaces.size() < 1){
 			throw new Exception("Is required a minimum of 1 Equipment which the Output Interface maps an Output Port from a Sink component.\n");
 		}
@@ -166,33 +176,27 @@ public class Provisioning {
 	}
 	
 	public void verifiyMinimumEquipWithPM() throws Exception{
-		List<String> equipWithPm = Queries.getEquipmentWithPhysicalMedia(model);
+		List<String> equipWithPm = SPARQLQueries.getEquipmentWithPhysicalMedia(model);
 		if(equipWithPm.size() < 1){
 			throw new Exception("Is required a minimum of 1 Equipment with Physical Media.\n");
 		}		
 	}
 	
 	@SuppressWarnings("resource")
-	public void callAlgorithmSemiAuto(Interface interfaceFrom, Interface interfaceTo) throws Exception{
+	public void callFindPaths(Interface interfaceFrom, Interface interfaceTo) throws Exception{
 		int again = 0;
 		List<Path> paths;
 		do{
-			paths = new ArrayList<Path>();
-			DefaultMutableTreeNode sourceRoot;
-			sourceRoot = new DefaultMutableTreeNode(interfaceFrom);
+//			paths = new ArrayList<Path>();
+//			DefaultMutableTreeNode sourceRoot;
+//			sourceRoot = new DefaultMutableTreeNode(interfaceFrom);
 	        
-	        List<Interface> usedInterfaces = new ArrayList<Interface>();
-	        usedInterfaces.add(interfaceFrom);
+//	        List<Interface> usedInterfaces = new ArrayList<Interface>();
+//	        usedInterfaces.add(interfaceFrom);
 			
-			int qtShortPaths = Main.getOptionFromConsole("Choose the number of paths (enter 0 to show all)", 0, Integer.MAX_VALUE);
-			if(qtShortPaths == 0){
-				qtShortPaths = Integer.MAX_VALUE;
-			}
-			int maxPathSize = Main.getOptionFromConsole("Choose the maximum number of interfaces in a path (enter 0 for no limit)", 0, Integer.MAX_VALUE);
-			if(maxPathSize == 0){
-				maxPathSize = 1000;
-			}
-			
+			int qtShortPaths = ConsoleUtil.getOptionFromConsole("Choose the number of paths (enter 0 to show all)", 0, Integer.MAX_VALUE);
+			int maxPathSize = ConsoleUtil.getOptionFromConsole("Choose the maximum number of interfaces in a path (enter 0 for no limit)", 0, Integer.MAX_VALUE);
+						
 			ArrayList<Character> options = new ArrayList<Character>();
 			options.add('W');
 			options.add('L');
@@ -200,36 +204,34 @@ public class Provisioning {
 			options.add('l');
 			options.add('N');
 			options.add('n');
-			Character option = Main.getCharOptionFromConsole("Do you want to show paths without possible equipment (L) first or do you want to define weights (W) for both or neither (N)? ", options);
+			Character option = ConsoleUtil.getCharOptionFromConsole("Do you want to show paths without possible equipment (L) first or do you want to define weights (W) for both or neither (N)? ", options);
 			
 			int declaredWeight = 1;
 			int possibleWeight = 1;
 			boolean fewPossibleEquip = false;
 			
 			if(option.equals('W') || option.equals('w')){
-				declaredWeight = Main.getOptionFromConsole("Define the weight for declared equipment", 0, Integer.MAX_VALUE);
-				possibleWeight = Main.getOptionFromConsole("Define the weight for possible equipment", 0, Integer.MAX_VALUE);
+				declaredWeight = ConsoleUtil.getOptionFromConsole("Define the weight for declared equipment", 0, Integer.MAX_VALUE);
+				possibleWeight = ConsoleUtil.getOptionFromConsole("Define the weight for possible equipment", 0, Integer.MAX_VALUE);
 			}else if(option.equals('L') || option.equals('l')){
 				fewPossibleEquip = true;
 			}
 			
 			Date beginDate = new Date();
 			//List<Path> paths = new ArrayList<Path>();
-			algorithmSemiAuto(sourceRoot, true, paths , interfaceTo, usedInterfaces, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
-			
-			String semiAutoExecTime = PerformanceUtil.printExecutionTime("callAlgorithmSemiAuto", beginDate);
+			paths = findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+			//algorithmSemiAuto(sourceRoot, true, paths , interfaceTo, usedInterfaces, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+			String semiAutoExecTime = PerformanceUtil.printExecutionTime("findPaths", beginDate);
 			
 			if(paths.size() == 0){
 				throw new Exception("Something went wrong. No paths were found from " + interfaceFrom.getInterfaceURI() + " to " + interfaceTo.getInterfaceURI() + ".");
-			}
+			}			
 			
-			File arquivo = new File("possible.txt");   
+			File arquivo = new File("resources/output/possible.txt");   
 			if(arquivo.exists()){
 				arquivo.delete();
 			}
 			FileOutputStream fos = new FileOutputStream(arquivo);    
-			
-			myBubbleSort(paths);
 			
 			System.out.println("--- PATHS ---");
 			ArrayList<String> outs = new ArrayList<String>();
@@ -255,39 +257,13 @@ public class Provisioning {
 			
 			System.out.println(semiAutoExecTime);
 			
-			again = Main.getOptionFromConsole("Do you want to execute again? 1-Yes, 0-No", 0, 1);
+			again = ConsoleUtil.getOptionFromConsole("Do you want to execute again? 1-Yes, 0-No", 0, 1);
 		}while(again == 1);
 		
-		int path = Main.getOptionFromConsole(paths, "path", paths.size());
+		int path = ConsoleUtil.getOptionFromConsole(paths, "path", paths.size());
 		
 		provisionSemiAuto(paths.get(path));
 	}
-	
-	public void myBubbleSort(List<Path> paths) {
-		boolean troca = true;
-		Path aux;
-		int inc = 1;
-        while (troca) {
-            troca = false;
-            for (int i = 0; i < paths.size() - inc; i += inc) {
-//            	String a1 = list.get(i);
-//            	String a2 = list.get(i + increment);
-            	int size1 = paths.get(i).size();// + list.get(i+1).length;
-            	int size2 = paths.get(i+inc).size();// + list.get(i+3).length;
-            	//int comparison = list.get(i).compareTo(list.get(i + 2));
-            	if(size1 > size2){
-            		for(int j = i; j < i + inc; j++){
-            			aux = paths.get(j);
-            			paths.set(j, paths.get(j + inc));
-                        //list.get(j) = list.get(j + increment);
-            			paths.set(j + inc, aux);
-                        //list[j + increment] = aux;                        
-            		}
-            		troca = true;
-            	}
-            }
-        }
-    }
 	
 	public void provisionSemiAuto(Path path) throws Exception{
 		boolean isSource = true;
@@ -295,9 +271,6 @@ public class Provisioning {
 			Interface from = path.getInterfaceList().get(i);
 			Interface to = path.getInterfaceList().get(i+1);
 			isSource = isStillInSource(isSource, from);
-			System.out.println(from.getInterfaceURI());
-			System.out.println(to.getInterfaceURI());
-			//System.out.println(isSource);
 			bindsInterfaces(from, to, isSource);
 		}
 	}
@@ -320,7 +293,29 @@ public class Provisioning {
 		return false;
 	}
 	
-	public void algorithmSemiAuto(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<Path> paths, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize, int declaredWeight, int possibleWeight, boolean fewPossibleEquip) throws Exception{
+	public List<Path> findPaths(Interface interfaceFrom, Interface interfaceTo, int qtShortPaths, int maxPathSize, int declaredWeight, int possibleWeight, boolean fewPossibleEquip) throws Exception{
+		if(qtShortPaths == 0){
+			qtShortPaths = Integer.MAX_VALUE;
+		}
+		if(maxPathSize == 0){
+			maxPathSize = 1000;
+		}
+		DefaultMutableTreeNode sourceRoot;
+		sourceRoot = new DefaultMutableTreeNode(interfaceFrom);
+		
+		ArrayList<Path> paths = new ArrayList<Path>();
+		
+		List<Interface> usedInterfaces = new ArrayList<Interface>();
+        usedInterfaces.add(interfaceFrom);
+        
+        Date beginDate = new Date();
+		findPaths(sourceRoot, true, paths, interfaceTo, usedInterfaces, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+        String semiAutoExecTime = PerformanceUtil.printExecutionTime("findPaths", beginDate );
+        
+        return paths;
+	}
+	
+	public void findPaths(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<Path> paths, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize, int declaredWeight, int possibleWeight, boolean fewPossibleEquip) throws Exception{
 		System.out.println("\nExecuting algorithmSemiAuto()...");
 		String VAR_IN = ((Interface) lastInputIntNode.getUserObject()).getInterfaceURI();
 		Interface in = interfaces.get(VAR_IN);
@@ -344,10 +339,6 @@ public class Provisioning {
 				
 				DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(out);
 				lastInputIntNode.add(outIntNode);
-				
-//				if(containsInLeafs(leafs, outIntNode)){
-//					return;
-//				}
 				
 				if(VAR_OUT.equals(interfaceTo.getInterfaceURI())){
 					if(limitExceeded(paths, newUsedInterfaces1, qtShortPaths, maxPathSize)){
@@ -380,7 +371,7 @@ public class Provisioning {
 							DefaultMutableTreeNode possibleInIntNode = new DefaultMutableTreeNode(in);
 							outIntNode.add(possibleInIntNode);
 							
-							algorithmSemiAuto(possibleInIntNode, isSource, paths, interfaceTo, newUsedInterfaces2, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+							findPaths(possibleInIntNode, isSource, paths, interfaceTo, newUsedInterfaces2, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
 						}						
 					}	
 				}
@@ -467,7 +458,7 @@ public class Provisioning {
 			isSource = isStillInSource(isSource, in);
 			List<Interface> INT_LIST = algorithmPart1(in, isSource);
 			
-			int chosenId = Main.chooseOne(INT_LIST, "Output Interfaces", "Available Output Interface");
+			int chosenId = ConsoleUtil.chooseOne(INT_LIST, "Output Interfaces", "Available Output Interface");
 			VAR_OUT = INT_LIST.get(chosenId).getInterfaceURI();
 			
 			//#20
@@ -480,7 +471,7 @@ public class Provisioning {
 				List<Interface> listInterfacesTo = algorithmPart2(isSource, out);
 				
 				//#D
-				int interfaceToId = Main.chooseOne(listInterfacesTo, "Input Interfaces", "Available Input Interface");
+				int interfaceToId = ConsoleUtil.chooseOne(listInterfacesTo, "Input Interfaces", "Available Input Interface");
 				VAR_IN = listInterfacesTo.get(interfaceToId).getInterfaceURI();
 				
 				//#22
@@ -495,7 +486,7 @@ public class Provisioning {
 	
 	public boolean isStillInSource(boolean isSourceOld, Interface intfc){
 		boolean isSource = isSourceOld;
-		boolean isInterfaceSource = QueryUtil.isInterfaceSource(model, intfc.getInterfaceURI());
+		boolean isInterfaceSource = SPARQLQueries.isInterfaceSource(model, intfc.getInterfaceURI());
 		if((isSourceOld && !isInterfaceSource) || (!isSourceOld && isInterfaceSource)){
 			isSource  = !isSourceOld;				
 		}
@@ -512,15 +503,15 @@ public class Provisioning {
 		
 		if(LIST_INT.size() == 0){
 			//#A
-			String mappedTF = Queries.getMappedTFFrom(model, inputInterface.getInterfaceURI());
-			List<String> bindedTFList = Queries.getLastBindedTFFrom(model, mappedTF, isSource);
+			String mappedTF = SPARQLQueries.getMappedTFFrom(model, inputInterface.getInterfaceURI());
+			List<String> bindedTFList = SPARQLQueries.getLastBindedTFFrom(model, mappedTF, isSource);
 			//System.out.println();
 			if(!bindedTFList.contains(mappedTF)){
 				bindedTFList.add(mappedTF);
 			}		
 			LIST_INT = new ArrayList<Interface>();
 			for (String tfURI : bindedTFList) {
-				LIST_INT.addAll(Queries.getMappingInterfaceFrom(model, tfURI, interfaces, bindedInterfacesHash));
+				LIST_INT.addAll(SPARQLQueries.getMappingInterfaceFrom(model, tfURI, interfaces, bindedInterfacesHash));
 			}
 			
 			inputInterface.setCandidateInterfacesTo(LIST_INT, this.bindedInterfaces);
@@ -541,7 +532,7 @@ public class Provisioning {
 		List<Interface> listInterfacesTo = outputInterface.getCandidateInterfacesTo(this.bindedInterfaces);
 		listInterfacesTo.removeAll(bindedInterfaces);
 		if(listInterfacesTo.size() == 0){
-			listInterfacesTo = Queries.getInterfacesToProvision(model, outputInterface.getInterfaceURI(), isSource, interfaces, bindedInterfacesHash);
+			listInterfacesTo = SPARQLQueries.getInterfacesToProvision(model, outputInterface.getInterfaceURI(), isSource, interfaces, bindedInterfacesHash);
 			outputInterface.setCandidateInterfacesTo(listInterfacesTo, this.bindedInterfaces);
 		}
 //		if(interfaces.containsKey(outputInterface.getInterfaceURI())){
@@ -565,8 +556,8 @@ public class Provisioning {
 			interfaceFrom = interfaceTo;
 			interfaceTo = aux;
 		}
-		String outPort = Queries.getMappedPort(model, interfaceFrom.getInterfaceURI());
-		String inPort = Queries.getMappedPort(model, interfaceTo.getInterfaceURI());
+		String outPort = SPARQLQueries.getMappedPort(model, interfaceFrom.getInterfaceURI());
+		String inPort = SPARQLQueries.getMappedPort(model, interfaceTo.getInterfaceURI());
 		FactoryUtil.createInstanceRelation(model, outPort, ns+"binds", inPort, false, false, true);
 		bindedInterfaces.add(interfaceFrom);
 		bindedInterfaces.add(interfaceTo);

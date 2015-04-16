@@ -1,9 +1,10 @@
-package provisioning;
+package provisioner.jenaUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import provisioner.domain.Interface;
 import br.com.padtec.common.queries.QueryUtil;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -13,9 +14,10 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
-public class Queries {
+public class SPARQLQueries {
 	public static List<Interface> getInterfacesAndEquipMappingPorts(OntModel model, boolean forOutputInterface, boolean forSourceComponent, HashMap<String, Interface> interfaces){
 		String interfaceType = "";
 		String componentType = "";
@@ -33,10 +35,7 @@ public class Queries {
 		System.out.println("\nExecuting getEquipmentMappingPorts()...");
 		List<Interface> result = new ArrayList<Interface>();				
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
@@ -72,56 +71,11 @@ public class Queries {
 		return result;
 	}
 	
-//	public static List<Interface> getInterfaces(OntModel model){
-//		System.out.println("\nExecuting getInterfaces()...");
-//		List<Interface> result = new ArrayList<Interface>();				
-//		String queryString = ""
-//				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-//				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-//				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-//				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-//				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
-//				+ "SELECT *\n"
-//				+ "WHERE {\n"
-//				+ "\t?equipment rdf:type ns:Equipment .\n"
-//				+ "\t?equipment ns:componentOf ?interface .\n"
-//				+ "\t?interface rdf:type ns:Interface .\n"
-//				+ "\t?interface ns:maps ?mappedPort .\n"
-//				+ "\t?tf ns:componentOf ?mappedPort .\n"
-//				+ "\t?tf rdf:type ?tfType .\n"
-//				+ "\tFILTER( ?tfType IN (ns:AF_" + componentType + ", ns:TF_" + componentType + ", ns:Matrix_" + componentType + ")).\n"
-//				+ "}";
-//		Query query = QueryFactory.create(queryString); 		
-//		QueryExecution qe = QueryExecutionFactory.create(query, model);
-//		ResultSet results = qe.execSelect();		
-//		while (results.hasNext()) 
-//		{			
-//			QuerySolution row = results.next();
-//		    RDFNode equipment = row.get("equipment");	
-//		    RDFNode interface_ = row.get("interface");
-//		    @SuppressWarnings("unused")
-//			RDFNode mappedPort = row.get("mappedPort");
-//		    if(QueryUtil.isValidURI(equipment.toString()) && QueryUtil.isValidURI(interface_.toString()))
-//		    {
-//		    	System.out.println("- equipment URI: "+equipment.toString()); 
-//		    	System.out.println("- interface_ URI: "+interface_.toString()); 
-//		    	Interface newInt = new Interface(interface_.toString(), equipment.toString());
-////		    	result.add(interface_.toString());
-////		    	result.add(equipment.toString());		    	 
-//		    	result.add(newInt);
-//		    }
-//		}
-//		return result;
-//	}
-	
 	public static String EquipWithPMofInterface(OntModel model, String interfaceURI){
 		System.out.println("\nExecuting isEquipBindedWithPMEquip()...");
 		
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
@@ -148,14 +102,46 @@ public class Queries {
 		return "";
 	}
 	
+	public static List<String> getInterfacesFromLayer(OntModel model, String interfaceTypeURI, String srcOrSink, String layerURI){
+		System.out.println("\nExecuting isEquipBindedWithPMEquip()...");
+		
+		String queryString = ""
+				+ QueryUtil.PREFIXES
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ "SELECT DISTINCT *\n"
+				+ "WHERE {\n"
+				+ "?intfc rdf:type <" + interfaceTypeURI + "> .\n"
+				+ "?intfc ns:maps ?tfPort .\n"
+				+ "?tf ns:componentOf ?tfPort .\n"
+				+ "?tf rdf:type ?tfType .\n"
+				+ "FILTER ( ?tfType  IN (ns:AF_"+srcOrSink+", ns:TF_"+srcOrSink+", ns:Matrix_"+srcOrSink+", ns:Physical_Media) ) .\n"
+				+ "?tf ?tfRel <" + layerURI + "> .\n"
+				+ "FILTER ( ?tfRel IN (ns:defines, ns:adapts_from, ns:hasLayer) ) .\n"
+				+ "}";
+		
+		List<String> result = new ArrayList<String>();	
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();
+		    RDFNode intfc = row.get("intfc");	
+		    if(QueryUtil.isValidURI(intfc.toString()))
+		    {
+		    	System.out.println("- intfc URI: "+intfc.toString()); 
+		    	result.add(intfc.toString());		    	
+		    }
+		}
+		
+		return result;
+	}
+	
 	public static String equipBindingEquipWithPM(OntModel model, String interfaceFromURI){
 		System.out.println("\nExecuting isEquipBindedWithPMEquip()...");
 		
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
@@ -168,6 +154,7 @@ public class Queries {
 				+ "?equip2 ns:componentOf ?pm .\n"
 				+ "?equip2 rdf:type ns:Equipment .\n"
 				+ "}";
+		
 		
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -191,10 +178,7 @@ public class Queries {
 		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
 		List<String> result = new ArrayList<String>();				
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
@@ -231,10 +215,7 @@ public class Queries {
 		System.out.println("\nExecuting getMappedPort()...");
 		List<Interface> result = new ArrayList<Interface>();				
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
@@ -273,10 +254,7 @@ public class Queries {
 	public static String getMappedPort(OntModel model, String interfaceURI){
 		System.out.println("\nExecuting getMappedPort()...");
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
@@ -301,10 +279,7 @@ public class Queries {
 	public static String getMappedTFFrom(OntModel model, String interfaceURI){
 		System.out.println("\nExecuting getMappedTF()...");
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
@@ -332,10 +307,7 @@ public class Queries {
 		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
 		List<String> result = new ArrayList<String>();				
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
@@ -413,10 +385,7 @@ public class Queries {
 		boolean isInterfaceInTheLastLayer = isInterfaceInTheLastLayer(model, interfaceFromURI);
 		if(isInterfaceInTheLastLayer){
 			queryString = ""
-					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-					+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-					+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-					+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+					+ QueryUtil.PREFIXES
 					+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 					+ "SELECT DISTINCT *\n"
 					+ "WHERE {\n"
@@ -428,10 +397,7 @@ public class Queries {
 					+ "}";
 		}else if(tfTypes.contains(ns+"Physical_Media")){
 			queryString = ""
-					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-					+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-					+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-					+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+					+ QueryUtil.PREFIXES
 					+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 					+ "SELECT DISTINCT *\n"
 					+ "WHERE {\n"
@@ -446,10 +412,7 @@ public class Queries {
 					+ "}";
 		}else{
 			queryString = ""
-					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-					+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-					+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-					+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+					+ QueryUtil.PREFIXES
 					+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 					+ "SELECT DISTINCT *\n"
 					+ "WHERE {\n"
@@ -497,10 +460,7 @@ public class Queries {
 		System.out.println("\nExecuting getBindedInterfaces()...");
 		List<Interface> result = new ArrayList<Interface>();				
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT DISTINCT *\n"
 				+ "WHERE {\n"
@@ -540,10 +500,7 @@ public class Queries {
 		System.out.println("\nExecuting getEquipmentWithPhysicalMedia()...");
 		List<String> result = new ArrayList<String>();				
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT *\n"
 				+ "WHERE {\n"
@@ -571,10 +528,7 @@ public class Queries {
 		System.out.println("\nExecuting isInterfaceMappedByTF()...");
 		List<String> result = new ArrayList<String>();				
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT DISTINCT *\n"
 				+ "WHERE {\n"
@@ -602,10 +556,7 @@ public class Queries {
 	public static boolean isInterfaceInTheLastLayer(OntModel model, String interfaceURI){
 		System.out.println("\nExecuting isInterfaceInTheLastLayer()...");
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "ASK\n"
 				+ "WHERE {\n"
@@ -621,20 +572,60 @@ public class Queries {
 		return results;
 	}
 	
+	/** 
+	 * Return true if an interface is mapping a port from a Termination Function Source
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public boolean isInterfaceSource(InfModel model, String interfaceUri) 
+	{		
+		System.out.println("\nExecuting isInterfaceSource()...");
+		String queryString = ""
+				+ QueryUtil.PREFIXES
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ "ASK\n"
+				+ "WHERE {\n"
+				+ "<" + interfaceUri + "> ns:maps ?port .\n"
+				+ "?tf ns:componentOf ?port .\n"
+				+ "?tf rdf:type ?tfType .\n"
+				+ "FILTER( ?tfType IN (ns:AF_Source, ns:TF_Source, ns:Matrix_Source) ) .\n"
+				+ "}\n";
+		Query query = QueryFactory.create(queryString);
+		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean exist = qe.execAsk();		
+		
+		if(exist){
+			return exist;
+		}
+		
+		queryString = ""
+				+ QueryUtil.PREFIXES
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ "ASK\n"
+				+ "WHERE {\n"
+				+ "<" + interfaceUri + "> ns:maps ?port .\n"
+				+ "?tf ns:componentOf ?port .\n"
+				+ "?tf rdf:type ?tfType .\n"
+				+ "?port rdf:type ?portType .\n"
+				+ "FILTER( ?tfType IN (ns:Physical_Media) ) .\n"
+				+ "FILTER( ?portType IN (ns:Input)) . \n"
+				+ "}\n";
+		query = QueryFactory.create(queryString);
+		
+		qe = QueryExecutionFactory.create(query, model);
+		exist = qe.execAsk();
+		
+		return exist;
+	}
+	
 	public static List<String> getLastBindedTFFrom(OntModel model, String tfURI, boolean isSource){
-//		String relName = "";
-//		if(isSource){
-//			relName = "ns:tf_binds*/ns:tf_binds";
-//		}else{
-//			relName = "ns:INV.tf_binds*/ns:INV.tf_binds";
-//		}
 		System.out.println("\nExecuting getLastBindedTFFrom()...");
 		List<String> result = new ArrayList<String>();				
 		String queryString = ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT DISTINCT *\n"
 				+ "WHERE {\n";
