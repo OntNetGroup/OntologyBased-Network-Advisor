@@ -3,9 +3,14 @@ package br.com.padtec.common.util;
 import java.util.Date;
 
 public class PerformanceUtil {
-	public static String printExecutionTime(String functionName, Date beginDate){
+	public static long getExecutionTime(Date beginDate){
 		Date endDate = new Date();
 		long diff = endDate.getTime() - beginDate.getTime();
+		return diff;
+	}
+	
+	public static String printExecutionTime(String functionName, Date beginDate){
+		long diff = getExecutionTime(beginDate);
 		long diffHours = diff / (60 * 60 * 1000);
 		diff -= diffHours * 60 * 60 * 1000;
 		long diffMinutes = diff / (60 * 1000);         

@@ -76,6 +76,10 @@ public class Provisioner {
 		OWLUtil.runReasoner(okcoUploader, true, true, true);
 	}
 	
+	public HashMap<String, Interface> getInterfaces() {
+		return interfaces;
+	}
+	
 	public OntModel getModel() {
 		return model;
 	}
