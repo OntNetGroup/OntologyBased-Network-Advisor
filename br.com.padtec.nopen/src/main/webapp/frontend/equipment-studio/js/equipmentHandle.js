@@ -25,12 +25,14 @@ function equipmentHandle(graph){
 
 		// See if the cell can connect with the parent : true or false
 
-
 		if(parent) {
 			//outros equipamentos conectados
 			var filhos = parent.getEmbeddedCells().length;
 			var soa = parent.getEmbeddedCells() ;
 			console.log(filhos);
+			console.log(soa);
+//			var soa2 = soa2.get('id');
+//			console.log(soa2);
 			//parent position and size
 			var pposition = parent.get('position');
 			var psize = parent.get('size');
@@ -49,21 +51,28 @@ function equipmentHandle(graph){
 				}else {
 					nempositiony = pposition.y + 20 + ((filhos) * (80));
 				};
-				// Prototype : check order
+		         
 				if(cell.get('subType') === 'shelf'){
-					parent.embed(cell);
 					embedOrConnect(parent, cell);
 
 					parent.set('size' , { 
 						width: psize.width  ,
-						height:	240 + ((parent.getEmbeddedCells().length - (1) ) * 70)
+						height:	265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
 					});
+					console.log(parent.get('size').height);
+					
 					cell.set('position', {
 						x: newpositionx  ,
 						y: nempositiony 
 					});
 				}else{
-					console.log('A ordem está errada');
+					new joint.ui.Dialog({
+					    type: 'alert',
+					    width: 400,
+					    title: 'Alert',
+					    content: 'O rack s&oacute; cont&eacute;m shelfs.'
+					}).open();
+					cell.remove();
 				}
 
 			}else{
@@ -79,14 +88,13 @@ function equipmentHandle(graph){
 					if (parent.getEmbeddedCells().length === '0'){
 						nempositionx = pposition.x + 10;
 					}else {
-						nempositionx = pposition.x + 20 + ((filhos) * (75));
-					};
+						nempositionx = pposition.x + 20 + ((filhos) * (42.5));
+					};		
 					if(cell.get('subType') === 'slot'){
-						parent.embed(cell);
 						embedOrConnect(parent, cell);
-
+						
 						parent.set('size' , { 
-							width: 100 + ((parent.getEmbeddedCells().length - (1) ) * 75) ,
+							width: 105 + ((parent.getEmbeddedCells().length - (1) ) * 42.5) ,
 							height:	parent.get('size').height});
 
 						cell.set('position', {
@@ -94,51 +102,136 @@ function equipmentHandle(graph){
 							y: newpositiony
 						});
 
+							var a = grandparent.get('embeds');
+							console.log(a);
+							var i;
+							var maior = 0;
+							for (i = 0; i < a.length; i++) {
+								var shelf = graph.getCell(a[i]);
+								console.log(shelf);
+								if (maior < shelf.getEmbeddedCells().length) {
+									maior = shelf.getEmbeddedCells().length;
+									console.log(maior);
+									
+								}
+								
+									grandparent.set ('size' , {
+										width: grandparent.get('size').width + 100 ,
+										height: grandparent.get('size').height
+									});
+								
+							};
+							
 						if (grandparent.get('size').width < parent.get('size').width){
 							grandparent.set ('size' , {
-								width: grandparent.get('size').width + 100 ,
+								width: grandparent.get('size').width + 20 ,
 								height: grandparent.get('size').height
 							});
 						};
 					}else{
-						console.log("A ordem está errada");
+						new joint.ui.Dialog({
+						    type: 'alert',
+						    width: 400,
+						    title: 'Alert',
+						    content: 'Shelfs s&oacute; podem conter slots.'
+						}).open();
+						cell.remove();
 					}
 
 				}else {
 					if(parent.get('subType') === 'slot'){
-						var increasew = (psize.width + 20 ) ;
+						var increasew = (psize.width) ;
 						var increaseh = (psize.height) ;
 
 						//reposicionamento da cell
 						var newpositiony = pposition.y + 16 ;
 						var newpositionx;
 						if (parent.getEmbeddedCells().length === '0'){
-							newpositionx = pposition.x + 15;
+							newpositionx = pposition.x + 6;
 							console.log('nova posição da cell em x ' , newpositionx);
 						}else {
-							newpositionx = pposition.x + 15 + ((filhos) * (29));
+							//Um card por slot
+							newpositionx = pposition.x + 6 + ((filhos) * (29));
 							console.log('nova posição da cell em x sendo o segundo ' , newpositionx);
 						};
-
-						// Se já possuir um card cancela;
+						// Se já possuir um card
 						console.log(parent.getEmbeddedCells().length);
 						if (parent.getEmbeddedCells().length === 1){
-							console.log("O slot já possui um card");
+							if(!(cell.get('subType') === 'card')) {
+								
+								new joint.ui.Dialog({
+								    type: 'alert',
+								    width: 400,
+								    title: 'Alert',
+								    content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
+								}).open();
+								cell.remove();
+								
+							}else{
+								if(!(cell.get('subType') === 'supervisor')) {
+								
+									new joint.ui.Dialog({
+									    type: 'alert',
+									    width: 400,
+									    title: 'Alert',
+									    content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
+									}).open();
+									cell.remove();
+									
+							}else{
+								
+								new joint.ui.Dialog({
+								    type: 'alert',
+								    width: 400,
+								    title: 'Alert',
+								    content: 'Apenas um card pode ser inserido por slot.'
+								}).open();
+								cell.remove();
+								}
+							}
+							
 						}else{
-							parent.embed(cell);
 							embedOrConnect(parent, cell);
-
-							parent.set('size' , { 
-								width: increasew  ,
-								height:	increaseh});
-							cell.set('size' , {
-								width: 12.5 ,
-								height: 20							
-							})
-							cell.set('position' , {
-								x : newpositionx ,
-								y : newpositiony
-							});
+                         
+							if(cell.get('subType') === 'card') {
+								parent.set('size' , { 
+									width: increasew  ,
+									height:	increaseh});
+								
+								cell.set('size' , {
+									width: 10 ,
+									height: 20							
+								})
+								cell.set('position' , {
+									x : newpositionx ,
+									y : newpositiony
+								});
+							}else{
+								if(cell.get('subType') === 'supervisor'){
+									parent.set('size' , { 
+										width: increasew  ,
+										height:	increaseh});
+									
+									cell.set('size' , {
+										width: 10 ,
+										height: 20							
+									})
+									cell.set('position' , {
+										x : newpositionx ,
+										y : newpositiony
+									});
+								}else{
+									new joint.ui.Dialog({
+									    type: 'alert',
+									    width: 400,
+									    title: 'Alert',
+									    content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
+									}).open();
+									cell.remove();
+								}
+								
+							}
+							
 						}
 					}else{
 						if(parent.get('subType') === 'card' || 'supervisor' ){
@@ -150,73 +243,17 @@ function equipmentHandle(graph){
 
 		}
 		else{
-			if(!(cell.get('subType') === 'rack')){
-
-//				*		//		var graph1 = new joint.dia.Graph;
-//				*		//		var paper1 = new joint.dia.Paper({ width: 400, height: 200, model: graph1, gridSize: 1 });
-
-				(new joint.ui.Dialog({
-					type: 'alert' ,
-					width: 420,
-					draggable: false,
-					title: 'Alert ',
-					//*		//content: paper1.$el
-					content: 'The order is wrong!'
-				})).open();
-
-				//mostrando como funciona a conexão em um paper *
-//				(new joint.shapes.basic.Rect({
-//				id: 'rack',
-//				position: { x: 0, y: 50 },
-//				size: { width: 80, height: 100 },
-//				attrs: { text: { text: 'rack' } }
-//				})).addTo(graph1);
-//				(new joint.shapes.basic.Rect({
-//				id: 'shelf',
-//				position: { x: 140, y: 50 },
-//				size: { width: 60, height: 40 },
-//				attrs: { text: { text: 'shelf' } }
-//				})).addTo(graph1);				
-//				(new joint.shapes.basic.Rect({
-//				id: 'slot',
-//				position: { x:230, y: 50 },
-//				size: { width: 15, height: 22 },
-//				attrs: { text: { text: 'slot' } }
-//				})).addTo(graph1);
-//				(new joint.shapes.basic.Rect({
-//				id: 'card',
-//				position: { x: 350 , y: 50 },
-//				size: { width: 5, height: 10 },
-//				attrs: { text: { text: 'card/supervisor' } }
-//				})).addTo(graph1);
-
-				//por link
-//				(new joint.dia.Link({
-//				source: { id: 'rack' },
-//				target: { id: 'shelf' },
-//				attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' } }
-//				})).addTo(graph1);
-//				(new joint.dia.Link({
-//				source: { id: 'shelf' },
-//				target: { id: 'slot' },
-//				attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' } }
-//				})).addTo(graph1);
-//				(new joint.dia.Link({
-//				source: { id: 'slot' },
-//				target: { id: 'card' },
-//				attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' } }
-//				})).addTo(graph1);
-
-				//conectados
-//				(graph1.getCell(rack)).embed(graph1.getCell(shelf));
-//				(graph1.getCell(shelf)).embed(graph1.getCell(slot));
-//				(graph1.getCell(slot)).embed(graph1.getCell(card));
-
-				//por html
-//				alert('Error!');
-				cell.remove();
-//				return;
-			}
+//			if(!(cell.get('subType') === 'rack')){
+//
+//				(new joint.ui.Dialog({
+//					type: 'alert' ,
+//					width: 420,
+//					draggable: false,
+//					title: 'Alert ',
+//					content: 'O equipamento selecionado precisa ser conectado em outro equipamento!'
+//				})).open();
+//				cell.remove();
+//			}
 		}
 
 
@@ -224,7 +261,7 @@ function equipmentHandle(graph){
 
 	graph.on('remove' , function (cell) {
 
-//		if((cell.get('parent') === null) && (!(cell.get('subType') === 'rack'))) {
+//		if((cell.get('parent') === ) && (!(cell.get('subType') === 'rack'))) {
 //
 //		}else {
 //			var dialog = new joint.ui.Dialog({

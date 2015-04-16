@@ -51,7 +51,7 @@ var Rappid = Backbone.Router.extend({
 				this.inspector.$('[data-attribute]:first').focus();
 
 				//addshelf(args); | args -> "rack0" | "rack0","slot1"
-				console.log(cell.parent);
+				//console.log(cell.parent);
 				//var gambiMethod = "add"+subType+"("+args+");";
 
 				// Identificações temporarias
