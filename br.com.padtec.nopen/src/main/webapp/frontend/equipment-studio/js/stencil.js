@@ -26,7 +26,8 @@ Stencil.shapes = {
             	subType : 'slot' ,
             	attrs: {
             		rect: {
-            			fill: '#B3CBCE'
+            			//fill: '#B3CBCE'
+            			fill: '#7ad7fd'
             		},
             		//text: { text: 'slot', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
             	}
@@ -37,7 +38,8 @@ Stencil.shapes = {
             	subType : 'card' ,
             	attrs: {
             		rect: {
-            			fill: '#ADC2A7'
+            			//fill: '#ADC2A7'
+            			fill: '#fffb82'
             		},
             		//text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
             	}
@@ -49,6 +51,7 @@ Stencil.shapes = {
             	attrs: {
             		rect: {
             			fill: '#516949'
+            			//fill: '#000000'
             		},
             		//text: { text: 'supervisor card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
             	}

@@ -148,14 +148,14 @@ var Rappid = Backbone.Router.extend({
 			paper: this.paper,
 			width: 220,
 			groups: Stencil.groups,
-			search: {
-				'*': ['type','attrs/text/text','attrs/.label/text'],
-				'org.Member': ['attrs/.rank/text','attrs/.name/text']
-			}
+//			search: {
+//				'*': ['subType','attrs/text/text','attrs/.label/text'],
+//				'org.Member': ['attrs/.rank/text','attrs/.name/text']
+//			}
 		});
 
-		$('.stencil-container').append(this.stencil.render().el);
-
+		$('.stencil-container').append(this.stencil.render().el);	
+		
 		this.stencil.$el.on('contextmenu', function(evt) { evt.preventDefault(); });
 		$('.stencil-paper-drag').on('contextmenu', function(evt) { evt.preventDefault(); });
 

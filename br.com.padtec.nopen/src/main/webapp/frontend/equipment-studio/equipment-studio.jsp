@@ -6,9 +6,15 @@
 
         <title>EQUIPMENT STUDIO</title>
 
+		<!-- CSS CORE -->
+		
         <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
         
+        <!-- CSS JQUERY -->
+        
 		<link rel="stylesheet" type="text/css" href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css"/>
+
+		<!-- CSS -->
 
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/layout.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/paper.css" />
@@ -20,9 +26,9 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/toolbar.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/statusbar.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/freetransform.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/style.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/header.css" />
         
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/header.css" />   
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/dialog.css" />
         
     </head>
@@ -38,18 +44,22 @@
         <script src="/nopen/core/rappid_api/js/joint.js"></script>
         <script src="/nopen/core/rappid_api/js/joint.all.js"></script>
 
-		<!-- JS -->
-		
+		<!-- JQUERY -->
+
 		<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
 		<script src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
 
+		<!-- JS -->
+		
         <script src="/nopen/frontend/equipment-studio/js/keyboard.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/inspector.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/main.js"></script>
-        
+       
         <script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
+        <script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
+        
         
    		<!-- PLUGINS -->
         
@@ -92,8 +102,8 @@
 
             resizing(app.graph);
             
-            graphHandle(app.graph);
-            cardHandle(app.paper, app.graph);
+            equipmentHandle(app.graph);
+            ituHandle(app.paper, app.graph);
             
            // graphHandle(app.graph);
             //paperHandle(app.paper);
@@ -101,7 +111,7 @@
             var uuid = joint.util.uuid();
             
             $('#btn-save').click(function(){
-            generateSaveEquipmentDialog(app.graph);
+            	generateSaveEquipmentDialog(app.graph);
             });
         
         </script>
