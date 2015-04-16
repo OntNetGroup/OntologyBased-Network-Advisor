@@ -23,6 +23,8 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/style.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/header.css" />
         
+        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/dialog.css" />
+        
     </head>
     <body>
 		
@@ -54,6 +56,9 @@
         <script src="/nopen/frontend/equipment-studio/plugins/open-equipment.js"></script>
         <script src="/nopen/frontend/equipment-studio/plugins/save-equipment.js"></script>
          
+        <!-- DIALOGS --> 
+         
+        <input type="text" id="filename" style="display:none"/>
          
         <div id="itu-dialog" title="ITU" style="display:none">
         	<iframe id="itu-iframe" src="" scrolling="no" ></iframe>

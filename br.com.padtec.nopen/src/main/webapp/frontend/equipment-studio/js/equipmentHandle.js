@@ -2,7 +2,20 @@
 var cardArray = new Object();
 var cellId;
 
-function closeIFrame(){
+var saveDialog = new joint.ui.Dialog({
+	type: 'neutral' ,
+	width: 420,
+	draggable: false,
+	title: 'Card Saved! ',
+	//*		//content: paper1.$el
+	content: 'The card was saved!!',
+	open: function() {
+		
+	}
+});
+
+
+function closeIframe(){
 	$('#itu-dialog').dialog("close");
 };
 
@@ -27,12 +40,16 @@ function cardHandle(paper, graph){
 		            open: function ()
 		            {
 		                $('#itu-iframe').attr('src','/nopen/itu-studio.htm');
-		            },   
+		            },
 		            close: function() {
-
+		            	if($('#itu-iframe').get(0).contentWindow.closeType == "save"){
+		            		cardArray[cellId] = $('#itu-iframe').get(0).contentWindow.app.graph.toJSON();
+		            		saveDialog.open();
+		            	}
 		            	//var iFrameValue = JSON.stringify($('#itu-iframe').get(0).contentWindow.app.graph.toJSON(), null, 2);
 		            	//alert(iFrameValue);
-		            	cardArray[cellId] = $('#itu-iframe').get(0).contentWindow.app.graph.toJSON();
+		            	
+
 		            }
 		        });
 		    });

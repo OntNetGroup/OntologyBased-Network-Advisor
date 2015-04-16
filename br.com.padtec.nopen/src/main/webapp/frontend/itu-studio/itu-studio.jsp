@@ -82,8 +82,16 @@
             
             //alert("ID: " + parent.cellId);
     		
-            $('#btn-save').click(function(){	
-            	parent.closeIFrame();     	
+            var closeType;
+            
+            $('#btn-save').click(function(){
+            	closeType = "save";
+            	parent.closeIframe();     	
+            });
+            
+            $('#btn-reject').click(function(){
+            	closeType = "reject";
+            	parent.closeIframe();     	
             });
             
             graphHandler(app.graph, app);
