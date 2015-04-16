@@ -183,14 +183,17 @@ public class FactoryUtil {
 	
 	static public boolean isValid(OntModel model, String elemURI) throws Exception
 	{
-		if(elemURI!=null){
-			String ns = model.getNsURIPrefix("");
+		if(elemURI!=null && model != null){
+			String ns = model.getNsPrefixURI("");
 			if(ns!=null){
-				if(elemURI.trim().equals(ns.trim())) throw new Exception("A name cannot be empty.");
+				if(elemURI.trim().equals(ns.trim())) throw new Exception("An element name cannot be empty.");
+				if(elemURI.trim().equals(ns.trim()+"null")) throw new Exception("An element name cannot be null.");
 			}
-			if(elemURI.contains(" ")) throw new Exception("A name cannot have a space character: "+elemURI.replace(model.getNsURIPrefix(""),""));
+			if(elemURI.contains(" ")) throw new Exception("An element name cannot have a space character: "+elemURI.replace(model.getNsPrefixURI(""),""));
 			return true;
 		}
+		if(model==null) throw new Exception("No ontology recognized at the creation of a new element. ");
+		if(elemURI==null) throw new Exception("Cannot create a new element with an entire Null URI.");
 		return false;
 	}
 	
@@ -413,6 +416,7 @@ public class FactoryUtil {
 	{
 		Individual ind = model.getIndividual(individualURI);
 		ind.remove();		
+		ind = model.getIndividual(individualURI);
 		return model;
 	}
 	

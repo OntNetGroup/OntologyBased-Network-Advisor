@@ -4,6 +4,7 @@ import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
+import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.util.NOpenFactoryUtil;
 import br.com.padtec.nopen.studio.service.StudioComponents;
@@ -12,55 +13,124 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class StudioFactory {
 
-	public static void createTechnology(String techName) throws Exception
-	{
-		NOpenFactoryUtil.createTechnology(ProvisioningComponents.provisioningRepository, techName);
-	}
-	
-	public static void createLayer(OKCoUploader repository, String layerName, String techName) throws Exception
-	{
-		NOpenFactoryUtil.createLayer(ProvisioningComponents.provisioningRepository,layerName, techName);
-	}
-	
-	public static void createTTF(String ttfName) throws Exception
+	/**
+	 * @author John Guerson
+	 */
+	public static void createTTF(String ttfName, String layerName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+ttfName, 
 			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Trail_Termination_Function.toString()
 		);
+		
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+ttfName, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.applies_Trail_Termination_Function_Layer,
+			StudioComponents.studioRepository.getNamespace()+layerName
+		);
 	}
 	
-	public static void createAF(String afName) throws Exception
+	/**
+	 * @author John Guerson
+	 */
+	public static void createAF(String afName, String cardName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+afName, 
 			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Adaptation_Function.toString()
 		);
+		
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+cardName, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf_Card_Transport_Function,
+			StudioComponents.studioRepository.getNamespace()+afName
+		);
 	}
 	
+	/**
+	 * @author Jordana Salamon
+	 */
+	@SuppressWarnings("unused")
+	public static void canCreateTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
+	{
+		String tfType = dtoTransportFunction.getType();		
+		String tfName = dtoTransportFunction.getName();
+				
+		String containerType = dtoContainer.getType();
+		String containerName = dtoContainer.getName();
+
+		String cardType = dtoCard.getType();
+		String cardName = dtoCard.getName();
+						
+		if(tfType.equals("TTF") && containerType=="card")
+		{			
+			/** TODO: This connection cannot be done. 
+			 *  
+			 *  Jordana...
+			 *  throw new Execption()...
+			 *  
+			 **/ 
+		}
+		
+		if(tfType.equals("AF") && containerType=="layer") 
+		{ 
+			/** TODO: This connection cannot be done. 
+			 *  
+			 *  Jordana...
+			 *  throw new Execption()...
+			 *  
+			 **/ 
+		};
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
 	public static void createTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
 	{
-//		String tfType = dtoTransportFunction.getType();
-//		
-//		String tfName = dtoTransportFunction.getName();
-//		if(tfName==null) tfName = "UnNamed";
-//		
-//		String containerType = dtoContainer.getType();
-//		String containerName = dtoContainer.getName();
-//		if(containerName==null) containerName = "UnNamed";
-//		
-//		if(tfType.equals("TTF")) createTTF(tfName);
-//		if(tfType.equals("AF")) createTTF(tfName);
-//		 
-//		System.out.println("Transport Function: "+tfName+":"+tfType);
-//		System.out.println("Container: "+containerName+":"+containerType);				
+		String tfType = dtoTransportFunction.getType();		
+		String tfName = dtoTransportFunction.getName();
+				
+		String containerType = dtoContainer.getType();
+		String containerName = dtoContainer.getName();
+
+		String cardType = dtoCard.getType();
+		String cardName = dtoCard.getName();
+		
+		if(tfType.equals("TTF") && containerType=="layer") 
+		{
+			createTTF(tfName, containerName);
+		}
+		
+		if(tfType.equals("AF") && containerType=="card") 
+		{
+			createAF(tfName, cardName);
+		}
+				
+		System.out.println("\nCreating... ");
+		System.out.println("\tTransport Function: \""+tfName+"\"-\""+tfType+"\"");
+		System.out.println("\tat Container: \""+containerName+"\"-\""+containerType+"\"");
+		System.out.println("\tat Card: \""+cardName+"\"-\""+cardType+"\"");						
 	}
 		
+	@SuppressWarnings("unused")
+	public static void deleteTransportFunction(DtoJointElement dtoTransportFunction) throws Exception 
+	{	
+		String tfType = dtoTransportFunction.getType();		
+		String tfName = dtoTransportFunction.getName();
+		
+		FactoryUtil.deleteIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+tfName
+		);
+	}
+	
 	public static boolean createPort(String portID, String transportFunctionID) 
 	{
-		
 		
 		return true;
 	}
@@ -79,17 +149,7 @@ public class StudioFactory {
 	{	
 		//TODO
 	}
-
-	public static boolean canCreateTransportFunction(String tFunctionID, String tFunctionType, String containerName, String containerType, String cardID) 
-	{
-		return true;
-	}
 	
-	public static boolean deleteTransportFunction(String id) 
-	{	
-		return true;
-	}
-
 	public static boolean changeContainer(String tFunctionID, String containerName, String containerType, String cardID) 
 	{	
 		return true;

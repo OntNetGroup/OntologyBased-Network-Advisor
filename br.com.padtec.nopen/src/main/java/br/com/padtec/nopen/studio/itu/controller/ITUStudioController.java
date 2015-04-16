@@ -127,10 +127,13 @@ public class ITUStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
-//		TODO: boolean success = StudioFactory.canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
-		boolean success = true; //TODO: remover
-		if(success) return "true";
-		else return "false";
+		try{
+			StudioFactory.canCreateTransportFunction(dtoTransportFunction, dtoContainer, dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "sucess";
 	}
 	
 	/** Remove um transport function
@@ -142,10 +145,13 @@ public class ITUStudioController {
 	{	
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
 		
-//		TODO: boolean success = StudioFactory.deleteTransportFunction(id);
-		boolean success = true; //TODO: remover
-		if(success) return "success";
-		else return "failed";
+		try{
+			StudioFactory.deleteTransportFunction(dtoTransportFunction);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
+		return "success";		
 	}
 		
 	/** Troca ou retira (container=null) o container do transport function
