@@ -352,8 +352,9 @@ public class NOpenFileUtil {
 		try {
  
 			String line;
+			
 			BufferedReader br = new BufferedReader(new FileReader(path + filename));
- 
+			
 			while ((line = br.readLine()) != null) {
 				content = content + line;
 			}
@@ -361,7 +362,7 @@ public class NOpenFileUtil {
 			br.close();
  
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		return content;
@@ -373,7 +374,7 @@ public class NOpenFileUtil {
      * @param filename
      * @return
      */
-    public static String parseHashSetToJSON(String property, String[] elements){
+    public static String parseStringToJSON(String property, String[] elements){
     	
     	JsonArray json = new JsonArray();
 

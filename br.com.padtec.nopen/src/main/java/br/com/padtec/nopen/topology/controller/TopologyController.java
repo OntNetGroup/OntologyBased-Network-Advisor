@@ -73,7 +73,7 @@ public class TopologyController {
 	protected @ResponseBody String getAllTopologies(){
 			
 		String[] topologies = NOpenFileUtil.getAllTopplogyJSONFileNames();
-		return NOpenFileUtil.parseHashSetToJSON("topology", topologies);
+		return NOpenFileUtil.parseStringToJSON("topology", topologies);
 		
 	}
 	
@@ -94,7 +94,7 @@ public class TopologyController {
 		
 		 
 		String[] equipments = { "Equipment1", "Equipment2", "Equipment3"};
-		return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
+		return NOpenFileUtil.parseStringToJSON("equipment", equipments);
 		 
 	}
 	

@@ -111,6 +111,10 @@
             $('#btn-save').click(function(){
             	generateSaveEquipmentDialog(app.graph);
             });
+            
+            $('#btn-open').click(function(){
+            	getEquipments(app.graph);
+            });
         
         </script>
     </body>

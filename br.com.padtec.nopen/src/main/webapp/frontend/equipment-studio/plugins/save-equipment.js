@@ -41,6 +41,21 @@ function generateSaveEquipmentDialog(graph){
 				   
 				   if(data == "exist"){		   
 					   if (confirm('The file already exist, do you want to replace it?')) {
+						   
+						   $.ajax({
+							   type: "POST",
+							   assync: false,
+							   url: "deleteITUFiles.htm",
+							   data: {
+								 'filename': $("#save-filename").val(),
+							   },
+							   success: function(){},
+							   error : function(e) {
+								   alert("error: " + e.status);
+								   dialog.close();
+							   }
+							});
+						   
 						    saveEquipment();
 					   } 
 				   }
@@ -84,21 +99,24 @@ function generateSaveEquipmentDialog(graph){
 			
 			$.each(graph.getElements(), function( index, cell ) {
 				
-				if(cell.get('subType') === 'card'){
-					$.ajax({
-					   type: "POST",
-					   url: "saveITUFiles.htm",
-					   data: {
-						 'path': $("#save-filename").val(),
-						 'filename': cell.id,
-						 'graph': JSON.stringify(cell.toJSON()),
-					   },
-					   success: function(){},
-					   error : function(e) {
-						   alert("error: " + e.status);
-						   dialog.close();
-					   }
-					});	
+				if(!(cardArray[cell.id] === undefined)){
+				
+					if(cell.get('subType') === 'card'){
+						$.ajax({
+						   type: "POST",
+						   url: "saveITUFiles.htm",
+						   data: {
+							 'path': $("#save-filename").val(),
+							 'filename': cell.id,
+							 'graph': JSON.stringify(cardArray[cell.id]),
+						   },
+						   success: function(){},
+						   error : function(e) {
+							   alert("error: " + e.status);
+							   dialog.close();
+						   }
+						});	
+					}
 				}
 				
 			});
