@@ -27,7 +27,7 @@ public class NOpenFactoryUtil {
 		
 		String ind2URI = repository.getNamespace()+techName;
 		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString();
+		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf8_Technology_Layer.toString();
 		
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),ind2URI, techToLayerURI, indURI);
 	}	
@@ -52,18 +52,4 @@ public class NOpenFactoryUtil {
 		FactoryUtil.deleteIndividual(repository.getBaseModel(), repository.getNamespace()+serviceName);		
 	}
 	
-	/**just for test
-	 * @throws Exception */
-	public static void createEquipments(OKCoUploader repository) throws Exception
-	{ 		
-		String eq1URI = repository.getNamespace()+"Equipment1";
-		String eq2URI = repository.getNamespace()+"Equipment2";
-		String eq3URI = repository.getNamespace()+"Equipment3";
-		
-		String equipmentURI = repository.getNamespace()+ConceptEnum.Equipment.toString();
-		
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq1URI,equipmentURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq2URI,equipmentURI);
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), eq3URI,equipmentURI);
-	}
 }

@@ -24,7 +24,7 @@ public class StudioFactory {
 		FactoryUtil.createInstanceRelation(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+ttfName, 
-			StudioComponents.studioRepository.getNamespace()+RelationEnum.applies_Trail_Termination_Function_Layer,
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
 			StudioComponents.studioRepository.getNamespace()+layerName
 		);
 	}
@@ -43,7 +43,7 @@ public class StudioFactory {
 		FactoryUtil.createInstanceRelation(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+cardName, 
-			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf_Card_Transport_Function,
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf1_Card_TF_Card_Element,
 			StudioComponents.studioRepository.getNamespace()+afName
 		);
 	}
@@ -62,7 +62,7 @@ public class StudioFactory {
 		FactoryUtil.createInstanceRelation(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+tfName, 
-			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf12_Transport_Function_Input,
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf16_Transport_Function_Input,
 			StudioComponents.studioRepository.getNamespace()+portName
 		);
 	}
@@ -81,7 +81,7 @@ public class StudioFactory {
 		FactoryUtil.createInstanceRelation(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+tfName, 
-			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf13_Transport_Function_Output,
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf17_Transport_Function_Output,
 			StudioComponents.studioRepository.getNamespace()+portName
 		);
 	}

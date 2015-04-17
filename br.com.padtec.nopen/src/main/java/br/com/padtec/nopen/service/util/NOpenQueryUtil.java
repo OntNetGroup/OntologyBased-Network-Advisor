@@ -56,7 +56,7 @@ public class NOpenQueryUtil {
 	{
 		return  getIndividualsNamesAtObjectPropertyRange(model,
 				techName,
-				RelationEnum.ComponentOf5_Technology_Layer.toString(), 
+				RelationEnum.ComponentOf8_Technology_Layer.toString(), 
 				ConceptEnum.Layer.toString()
 			);					
 	}

@@ -7,7 +7,10 @@ var Rappid = Backbone.Router.extend({
 	 * Porém, com esta variável de controle isso não ocorre. 
 	*/
 	isAddingTransportFunction: false,
+	
+	/* technology of the card */
     technology : 'OTN',
+    
 	
     routes: {
         '*path': 'home'
@@ -21,13 +24,19 @@ var Rappid = Backbone.Router.extend({
     home: function() {
 
         this.initializeEditor();
-//        setCardID(joint.util.uuid()); // TODO: get cardID
     },
     
     setCardID: function(id) {
     	this.cardID = id;
     },
 
+    /* counters to give names for transport functions and interfaces */
+    initializeCounters: function() {
+        this.tFunctionCounter = 0;
+        this.inPortCounter = 0;
+        this.outPortCounter = 0;
+    },
+    
     initializeEditor: function() {
 
         this.inspectorClosedGroups = {};
@@ -42,6 +51,7 @@ var Rappid = Backbone.Router.extend({
         this.initializeToolbar();
         this.initializeValidator();
         this.initializePortsBar();
+        this.initializeCounters();
     },
 
     // Create a graph, paper and wrap the paper in a PaperScroller.
