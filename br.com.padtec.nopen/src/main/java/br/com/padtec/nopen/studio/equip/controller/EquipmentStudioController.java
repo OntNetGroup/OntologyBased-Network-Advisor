@@ -33,9 +33,10 @@ public class EquipmentStudioController {
 	
 	@RequestMapping("/deleteITUFiles")
 	public @ResponseBody void deleteITUFiles(@RequestParam("filename") String filename) {
-		File dir = new File(NOpenFileUtil.equipmentJSONFolder + filename + "/itu/");
-		System.out.println(NOpenFileUtil.equipmentJSONFolder + filename + "/itu/");
-
+		
+		String path = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + filename + "/itu/");
+		File dir = new File(path);
+		
 		for(File file : dir.listFiles()){ 
 			file.getName();
 			file.delete();
