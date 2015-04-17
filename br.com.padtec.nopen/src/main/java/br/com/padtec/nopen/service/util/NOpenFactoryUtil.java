@@ -27,7 +27,7 @@ public class NOpenFactoryUtil {
 		
 		String ind2URI = repository.getNamespace()+techName;
 		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf5_Technology_Layer.toString();
+		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf8_Technology_Layer.toString();
 		
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),ind2URI, techToLayerURI, indURI);
 	}	

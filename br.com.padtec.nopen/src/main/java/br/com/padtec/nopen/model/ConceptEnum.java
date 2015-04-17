@@ -2,14 +2,13 @@ package br.com.padtec.nopen.model;
 
 public enum ConceptEnum {
 
+	Input_Card("Input_Card"),
 	Input("Input"),
 	Rack("Rack"),
-	Manager_Element("Manager_Element"),
-	Output_Interface("Output_Interface"),
 	PM_Input_So("PM_Input_So"),
 	Adaptation_Function("Adaptation_Function"),
-	Input_Interface("Input_Interface"),
 	Equipment("Equipment"),
+	Supervisor("Supervisor"),
 	Matrix_Output("Matrix_Output"),
 	Slot("Slot"),
 	FEP("FEP"),
@@ -31,10 +30,12 @@ public enum ConceptEnum {
 	Technology("Technology"),
 	Matrix_Input("Matrix_Input"),
 	Transport_Function("Transport_Function"),
+	Output_Card("Output_Card"),
 	PM_Input_Sk("PM_Input_Sk"),
 	Shelf("Shelf"),
 	Service("Service"),
-	Simple_Transport_Function("Simple_Transport_Function");
+	Simple_Transport_Function("Simple_Transport_Function"),
+	TF_Card_Element("TF_Card_Element");
 
 	private String concept;
 
