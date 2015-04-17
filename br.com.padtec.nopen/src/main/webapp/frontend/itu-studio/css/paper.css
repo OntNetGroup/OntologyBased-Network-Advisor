@@ -17,6 +17,14 @@
    -webkit-svg-shadow: 1px 1px 2px gray; 
 }
 
+.element.bpmn.Pool svg {
+	display: none;
+}
+
+.element.bpmn.Pool .body {
+    pointer-events: visiblePainted;
+}
+
 /* element styling */
 .available-cell path {
     stroke: green;
