@@ -68,7 +68,7 @@ function equipmentHandle(graph){
 						type: 'alert',
 						width: 400,
 						title: 'Alert',
-						content: 'O rack s&oacute; cont&eacute;m shelfs.'
+						content: 'The rack can only contain a shelf.'
 					}).open();
 					cell.remove();
 				}
@@ -129,7 +129,7 @@ function equipmentHandle(graph){
 							type: 'alert',
 							width: 400,
 							title: 'Alert',
-							content: 'Shelfs s&oacute; podem conter slots.'
+							content: 'Shelf only contains slots.'
 						}).open();
 						cell.remove();
 					}
@@ -159,7 +159,7 @@ function equipmentHandle(graph){
 									type: 'alert',
 									width: 400,
 									title: 'Alert',
-									content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
+									content: 'Only cards(supervisor or not) can be insert into a slot.'
 								}).open();
 								cell.remove();
 
@@ -170,7 +170,7 @@ function equipmentHandle(graph){
 										type: 'alert',
 										width: 400,
 										title: 'Alert',
-										content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
+										content: 'Only cards(supervisor or not) can be insert into a slot.'
 									}).open();
 									cell.remove();
 
@@ -180,7 +180,7 @@ function equipmentHandle(graph){
 										type: 'alert',
 										width: 400,
 										title: 'Alert',
-										content: 'Apenas um card pode ser inserido por slot.'
+										content: 'A slot can only contain one card.'
 									}).open();
 									cell.remove();
 								}
@@ -221,7 +221,7 @@ function equipmentHandle(graph){
 										type: 'alert',
 										width: 400,
 										title: 'Alert',
-										content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
+										content: 'Only cards(supervisor or not) can be insert into a slot.'
 									}).open();
 									cell.remove();
 								}
@@ -241,13 +241,13 @@ function equipmentHandle(graph){
 		else{
 			//Impedir o usuario de insirir um equipamento fora de um rack
 //			if(!(cell.get('subType') === 'rack')){
-
+//
 //			(new joint.ui.Dialog({
 //			type: 'alert' ,
 //			width: 420,
 //			draggable: false,
 //			title: 'Alert ',
-//			content: 'O equipamento selecionado precisa ser conectado em outro equipamento!'
+//			content: 'The equipment selected must be connected in another equipment!'
 //			})).open();
 //			cell.remove();
 //			}
@@ -288,52 +288,50 @@ function equipmentHandle(graph){
 			var i;
 			var maior = 0;
 			console.log("to del: ", cell);
-			for (i = 0; i < d.length-1; i++) {
+			
+			
+			l = 0;
+			
+			for (i = 0; i < d.length; i++) {
 				var shelf = graph.getCell(d[i]);
-//				if (!(shelf === cell)){
+//				
 				if (shelf){
 					console.log("changed: " , shelf);
-					var l = i - 1;
-					console.log(l);
-					if (l < 0){
-						l ++;
-						i++;
-						console.log(l);
-					}else{
-						console.log(l);
-					}
+		
 					shelf.set('position', {
 						x: newpositionx ,
 						y: (pposition.y + 20 + ((l)*(80))) 
 					},{skipParentHandler: true });
+					
+					l++;
 				}
 			}
 
 			parent.set('size' , { 
 				width: psize.width  ,
-				height:	265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
-			},{skipParentHandler: true });
+				height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
+			});
 
-			var e = parent.get('embeds');
-			console.log(e);
-			var i;
-			var maior2 = 0;
-			for (i = 0; i < e.length; i++) {
-				var shelf2 = graph.getCell(e[i]);
-				console.log(shelf2);
-				if (maior2 < shelf2.getEmbeddedCells().length) {
-					maior2 = shelf2.getEmbeddedCells().length;
-					var maiorshelf2 = shelf2;
-					console.log(maiorshelf2);
-					console.log(maior2);
-
-				}
-				parent.set ('size' , {
-					width: maiorshelf2.get('size').width + 40 ,
-					height: grandparent.get('size').height
-				});
-
-			};	
+//			var e = parent.get('embeds');
+//			console.log(e);
+//			var i;
+//			var maior2 = 0;
+//			for (i = 0; i < e.length; i++) {
+//				var shelf2 = graph.getCell(e[i]);
+//				console.log(shelf2);
+//				if (maior2 < shelf2.getEmbeddedCells().length) {
+//					maior2 = shelf2.getEmbeddedCells().length;
+//					var maiorshelf2 = shelf2;
+//					console.log(maiorshelf2);
+//					console.log(maior2);
+//
+//				}
+//				parent.set ('size' , {
+//					width: maiorshelf2.get('size').width + 40 ,
+//					height: grandparent.get('size').height
+//				});
+//
+//			};	
 
 		}else{
 			if(parent.get('subType') === 'shelf'){
@@ -495,7 +493,7 @@ function embedOrConnect (parent, child) {
 							type: 'alert',
 							width: 300,
 							title: 'Alert',
-							content: 'Ordem errada'
+							content: 'Wrong Order!'
 						}).open();
 						console.log("nao conectou!");	
 						//(childsubType === 'in' || childsubType === 'out')
