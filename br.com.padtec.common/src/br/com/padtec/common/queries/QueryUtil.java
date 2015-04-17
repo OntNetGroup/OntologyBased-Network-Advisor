@@ -188,6 +188,40 @@ public class QueryUtil {
 	}
 	
 	/** 
+	 * Return the URI of types of individuals  
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param indvSourceURI
+	 * 
+	 * @author Freddy
+	 */
+	static public List<String> getIndividualTypes(InfModel model, String indvSourceURI) 
+	{		
+		System.out.println("\nExecuting getIndividualTypes()...");
+		List<String> result = new ArrayList<String>();				
+		String queryString = "" 
+				+ PREFIXES
+				+ " SELECT *"
+				+ " WHERE {\n" 		
+				+    "\t<" + indvSourceURI + "> rdf:type ?type .\n" 
+				+ "}";
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();		    
+		    RDFNode type = row.get("type");	
+		    if(isValidURI(type.toString()))
+		    {
+		    	System.out.println("- type URI: "+type.toString()); 
+		    	result.add(type.toString()); 
+		    }
+		}
+		return result;
+	}
+	
+	/** 
 	 * Return the URI of all classes of the ontology. This method is performed using SPARQL.
 	 * 
 	 * @param model: jena.ontology.InfModel 
@@ -1361,7 +1395,7 @@ public class QueryUtil {
 		" SELECT DISTINCT *" +
 		" WHERE {\n" +		
 			"<" + individualURI + ">" + "<"+propertyURI+">"+ " ?target .\n "+
-			" ?target" + " rdf:type" + " <"+ rangeClassURI + "> .\n " +
+			" ?target" + " rdf:type*/rdfs:subClassOf" + " <"+ rangeClassURI + "> .\n " +
 		"}";
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -1405,7 +1439,7 @@ public class QueryUtil {
 		"SELECT DISTINCT *\n" +
 		"WHERE {\n" +		
 			" ?domain " + "<"+propertyURI+"> " + "<" + individualURI + ">.\n" +
-			" ?domain" + " rdf:type" + " <"+ domainClassURI + "> .\n" +
+			" ?domain" + " rdf:type*/rdfs:subClassOf" + " <"+ domainClassURI + "> .\n" +
 		"}";
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
