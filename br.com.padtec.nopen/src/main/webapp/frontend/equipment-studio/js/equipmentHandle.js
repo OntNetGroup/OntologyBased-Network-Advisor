@@ -29,14 +29,9 @@ function equipmentHandle(graph){
 			//outros equipamentos conectados
 			var filhos = parent.getEmbeddedCells().length;
 			var soa = parent.getEmbeddedCells() ;
-			console.log(filhos);
-			console.log(soa);
-//			var soa2 = soa2.get('id');
-//			console.log(soa2);
 			//parent position and size
 			var pposition = parent.get('position');
 			var psize = parent.get('size');
-
 			//child position and size
 			var cposition = cell.get('position');
 			var csize = cell.get('size');
@@ -44,33 +39,36 @@ function equipmentHandle(graph){
 			if(parent.get('subType') === 'rack') {
 
 				//Aumento de tamanho e re posicionamento
-				var newpositionx = pposition.x + 15 ;
 				var nempositiony;
-				if (parent.getEmbeddedCells().length === '0'){
-					nempositiony = pposition.y + 20 ;
-				}else {
-					nempositiony = pposition.y + 20 + ((filhos) * (80));
-				};
-		         
 				if(cell.get('subType') === 'shelf'){
 					embedOrConnect(parent, cell);
+
+					var a = parent.get('embeds');
+					console.log(a);
+					var i;
+					var maior = 0;
+					for (i = 0; i < a.length; i++) {
+						var shelf = graph.getCell(a[i]);
+						console.log(shelf);					
+						var newpositionx = pposition.x + 15 ;
+
+						shelf.set('position', {
+							x: newpositionx ,
+							y: (pposition.y + 20 + (i*(80))) 
+						});
+					}
 
 					parent.set('size' , { 
 						width: psize.width  ,
 						height:	265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
 					});
-					console.log(parent.get('size').height);
-					
-					cell.set('position', {
-						x: newpositionx  ,
-						y: nempositiony 
-					});
+
 				}else{
 					new joint.ui.Dialog({
-					    type: 'alert',
-					    width: 400,
-					    title: 'Alert',
-					    content: 'O rack s&oacute; cont&eacute;m shelfs.'
+						type: 'alert',
+						width: 400,
+						title: 'Alert',
+						content: 'O rack s&oacute; cont&eacute;m shelfs.'
 					}).open();
 					cell.remove();
 				}
@@ -80,60 +78,58 @@ function equipmentHandle(graph){
 					// selecionar o rack
 					var grandparentId = parent.get('parent');
 					if (!grandparentId) return;
-
 					var grandparent = graph.getCell(grandparentId);
 
-					var newpositiony = pposition.y + 7;
-					var nempositionx;
-					if (parent.getEmbeddedCells().length === '0'){
-						nempositionx = pposition.x + 10;
-					}else {
-						nempositionx = pposition.x + 20 + ((filhos) * (42.5));
-					};		
+					var newpositiony; // = pposition.y + 7;
+					var nempositionx;	
 					if(cell.get('subType') === 'slot'){
 						embedOrConnect(parent, cell);
-						
+
+						var b = parent.get('embeds');
+						console.log(b);
+						var i;
+						var maior = 0;
+						for (i = 0; i < b.length; i++) {
+							var slot = graph.getCell(b[i]);
+							console.log(slot);					
+
+							slot.set('position', {
+								x: pposition.x + 20 + ((i) * (42.5)) ,
+								y: pposition.y + 7 
+							});
+						}
 						parent.set('size' , { 
 							width: 105 + ((parent.getEmbeddedCells().length - (1) ) * 42.5) ,
-							height:	parent.get('size').height});
-
-						cell.set('position', {
-							x: nempositionx,
-							y: newpositiony
+							height:	parent.get('size').height
 						});
 
-							var a = grandparent.get('embeds');
-							console.log(a);
-							var i;
-							var maior = 0;
-							for (i = 0; i < a.length; i++) {
-								var shelf = graph.getCell(a[i]);
-								console.log(shelf);
-								if (maior < shelf.getEmbeddedCells().length) {
-									maior = shelf.getEmbeddedCells().length;
-									console.log(maior);
-									
-								}
-								
-									grandparent.set ('size' , {
-										width: grandparent.get('size').width + 100 ,
-										height: grandparent.get('size').height
-									});
-								
-							};
-							
-						if (grandparent.get('size').width < parent.get('size').width){
+
+						var c = grandparent.get('embeds');
+						console.log(c);
+						var i;
+						var maior = 0;
+						for (i = 0; i < c.length; i++) {
+							var shelf = graph.getCell(c[i]);
+							console.log(shelf);
+							if (maior < shelf.getEmbeddedCells().length) {
+								maior = shelf.getEmbeddedCells().length;
+								var maiorshelf = shelf;
+								console.log(maiorshelf);
+								console.log(maior);
+
+							}
 							grandparent.set ('size' , {
-								width: grandparent.get('size').width + 20 ,
+								width: maiorshelf.get('size').width + 40 ,
 								height: grandparent.get('size').height
 							});
-						};
+
+						};	
 					}else{
 						new joint.ui.Dialog({
-						    type: 'alert',
-						    width: 400,
-						    title: 'Alert',
-						    content: 'Shelfs s&oacute; podem conter slots.'
+							type: 'alert',
+							width: 400,
+							title: 'Alert',
+							content: 'Shelfs s&oacute; podem conter slots.'
 						}).open();
 						cell.remove();
 					}
@@ -158,46 +154,46 @@ function equipmentHandle(graph){
 						console.log(parent.getEmbeddedCells().length);
 						if (parent.getEmbeddedCells().length === 1){
 							if(!(cell.get('subType') === 'card')) {
-								
+
 								new joint.ui.Dialog({
-								    type: 'alert',
-								    width: 400,
-								    title: 'Alert',
-								    content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
+									type: 'alert',
+									width: 400,
+									title: 'Alert',
+									content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
 								}).open();
 								cell.remove();
-								
+
 							}else{
 								if(!(cell.get('subType') === 'supervisor')) {
-								
+
 									new joint.ui.Dialog({
-									    type: 'alert',
-									    width: 400,
-									    title: 'Alert',
-									    content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
+										type: 'alert',
+										width: 400,
+										title: 'Alert',
+										content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
 									}).open();
 									cell.remove();
-									
-							}else{
-								
-								new joint.ui.Dialog({
-								    type: 'alert',
-								    width: 400,
-								    title: 'Alert',
-								    content: 'Apenas um card pode ser inserido por slot.'
-								}).open();
-								cell.remove();
+
+								}else{
+
+									new joint.ui.Dialog({
+										type: 'alert',
+										width: 400,
+										title: 'Alert',
+										content: 'Apenas um card pode ser inserido por slot.'
+									}).open();
+									cell.remove();
 								}
 							}
-							
+
 						}else{
 							embedOrConnect(parent, cell);
-                         
+
 							if(cell.get('subType') === 'card') {
 								parent.set('size' , { 
 									width: increasew  ,
 									height:	increaseh});
-								
+
 								cell.set('size' , {
 									width: 10 ,
 									height: 20							
@@ -211,7 +207,7 @@ function equipmentHandle(graph){
 									parent.set('size' , { 
 										width: increasew  ,
 										height:	increaseh});
-									
+
 									cell.set('size' , {
 										width: 10 ,
 										height: 20							
@@ -222,16 +218,16 @@ function equipmentHandle(graph){
 									});
 								}else{
 									new joint.ui.Dialog({
-									    type: 'alert',
-									    width: 400,
-									    title: 'Alert',
-									    content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
+										type: 'alert',
+										width: 400,
+										title: 'Alert',
+										content: 'Apenas cards(sendo supervirsor ou n&atilde;o) podem ser inserido em um slot.'
 									}).open();
 									cell.remove();
 								}
-								
+
 							}
-							
+
 						}
 					}else{
 						if(parent.get('subType') === 'card' || 'supervisor' ){
@@ -243,103 +239,143 @@ function equipmentHandle(graph){
 
 		}
 		else{
+			//Impedir o usuario de insirir um equipamento fora de um rack
 //			if(!(cell.get('subType') === 'rack')){
-//
-//				(new joint.ui.Dialog({
-//					type: 'alert' ,
-//					width: 420,
-//					draggable: false,
-//					title: 'Alert ',
-//					content: 'O equipamento selecionado precisa ser conectado em outro equipamento!'
-//				})).open();
-//				cell.remove();
+
+//			(new joint.ui.Dialog({
+//			type: 'alert' ,
+//			width: 420,
+//			draggable: false,
+//			title: 'Alert ',
+//			content: 'O equipamento selecionado precisa ser conectado em outro equipamento!'
+//			})).open();
+//			cell.remove();
 //			}
 		}
-
-
 	}, this);
 
 	graph.on('remove' , function (cell) {
-
+// Mensagem de confirmação do remover
 //		if((cell.get('parent') === ) && (!(cell.get('subType') === 'rack'))) {
-//
 //		}else {
-//			var dialog = new joint.ui.Dialog({
-//				type: 'warning' ,
-//				width: 400,
-//				draggable: false,
-//				title: 'Warning ',
-//				content: 'Are you sure you want to delete this equipment? Everything conected with it will be deleted.',
-//				buttons: [
-//				          { action: 'yes', content: 'Yes' },
-//				          { action: 'no', content: 'No' }
-//				          ]
-//			});
-//			dialog.on('action:yes', dialog.close, remove );
-//			dialog.on('action:no', dialog.close, dialog);
-//			dialog.open();
-//
-//			function remove (parent, cell) {
+//		var dialog = new joint.ui.Dialog({
+//		type: 'warning' ,
+//		width: 400,
+//		draggable: false,
+//		title: 'Warning ',
+//		content: 'Are you sure you want to delete this equipment? Everything conected with it will be deleted.',
+//		buttons: [
+//		{ action: 'yes', content: 'Yes' },
+//		{ action: 'no', content: 'No' }
+//		]
+//		});
+//		dialog.on('action:yes', dialog.close, remove );
+//		dialog.on('action:no', dialog.close, dialog);
+//		dialog.open();
 
-				var parentId = cell.get('parent');
-				if (!parentId) return;
+//		function remove (parent, cell) {
 
-				var parent = graph.getCell(parentId);
+		var parentId = cell.get('parent');
+		if (!parentId) return;
+		var parent = graph.getCell(parentId);
+		if(parent.get('subType') === 'rack') {
 
+			var pposition = parent.get('position');
+			var psize = parent.get('size');			
+			var newpositionx = pposition.x + 15 ;
 
-				if(parent.get('subType') === 'rack') {
-
-					//console.log(parent.getEmbeddedCells().length);
-
-					parent.set('size' , { 
-						width: parent.get('size').width  ,
-						height:	240 + ((parent.getEmbeddedCells().length - (2) ) * 70)
-					});
-					//console.log(parent.get('size'));
-
-				}else{
-					if(parent.get('subType') === 'shelf'){
-
-						var grandparentId = parent.get('parent');
-						if (!grandparentId) return;
-
-						var grandparent = graph.getCell(grandparentId);
-
-						parent.set('size' , { 
-							width: 120 + ((parent.getEmbeddedCells().length - (2) ) * 70) ,
-							height:	parent.get('size').height});
-
-						grandparent.set('size', {
-							width: grandparent.get('size').width ,
-							height: grandparent.get('size').height
-						});				
-
-
+			var d = parent.get('embeds');
+			var i;
+			var maior = 0;
+			console.log("to del: ", cell);
+			for (i = 0; i < d.length-1; i++) {
+				var shelf = graph.getCell(d[i]);
+//				if (!(shelf === cell)){
+				if (shelf){
+					console.log("changed: " , shelf);
+					var l = i - 1;
+					console.log(l);
+					if (l < 0){
+						l ++;
+						i++;
+						console.log(l);
 					}else{
-						if(parent.get('subType') === 'slot'){
-							var grandparentId = parent.get('parent');
-							if (!grandparentId) return;
-
-							var grandparent = graph.getCell(grandparentId);
-
-							parent.set('size' , {
-								width: 22.5 ,
-								height: 52.5
-							});
-
-//							grandparent.set('size', {
-//							width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 70),
-//							height: grandparent.get('size').height
-//							})
-
-
-
-						}if(parent.get('subType') === 'card' || 'supervisor' ) {
-
-						}
+						console.log(l);
 					}
-				};
-//			}
+					shelf.set('position', {
+						x: newpositionx ,
+						y: (pposition.y + 20 + ((l)*(80))) 
+					},{skipParentHandler: true });
+				}
+			}
+
+			parent.set('size' , { 
+				width: psize.width  ,
+				height:	265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
+			},{skipParentHandler: true });
+
+			var e = parent.get('embeds');
+			console.log(e);
+			var i;
+			var maior2 = 0;
+			for (i = 0; i < e.length; i++) {
+				var shelf2 = graph.getCell(e[i]);
+				console.log(shelf2);
+				if (maior2 < shelf2.getEmbeddedCells().length) {
+					maior2 = shelf2.getEmbeddedCells().length;
+					var maiorshelf2 = shelf2;
+					console.log(maiorshelf2);
+					console.log(maior2);
+
+				}
+				parent.set ('size' , {
+					width: maiorshelf2.get('size').width + 40 ,
+					height: grandparent.get('size').height
+				});
+
+			};	
+
+		}else{
+			if(parent.get('subType') === 'shelf'){
+
+				var grandparentId = parent.get('parent');
+				if (!grandparentId) return;
+
+				var grandparent = graph.getCell(grandparentId);
+
+				parent.set('size' , { 
+					width: 120 + ((parent.getEmbeddedCells().length - (2) ) * 70) ,
+					height:	parent.get('size').height});
+
+				grandparent.set('size', {
+					width: grandparent.get('size').width ,
+					height: grandparent.get('size').height
+				});				
+
+
+			}else{
+				if(parent.get('subType') === 'slot'){
+					var grandparentId = parent.get('parent');
+					if (!grandparentId) return;
+
+					var grandparent = graph.getCell(grandparentId);
+
+					parent.set('size' , {
+						width: 22.5 ,
+						height: 52.5
+					});
+
+//					grandparent.set('size', {
+//					width: 120 + ((parent.getEmbeddedCells().length - (1) ) * 70),
+//					height: grandparent.get('size').height
+//					})
+
+				}if(parent.get('subType') === 'card' || 'supervisor' ) {
+
+				}
+			}
+		};
+//		}
 //		}	
 	},this); 
 
@@ -362,26 +398,26 @@ function equipmentHandle(graph){
 
 
 	graph.on('change' , function (cell) {
+// Impedir o equipamento filho de sair da area do equipamento pai
+//		var parentId = cell.get('parent');
+//		if (!parentId) return;
 
-		var parentId = cell.get('parent');
-		if (!parentId) return;
+//		var parent = graph.getCell(parentId);
+//		var parentBbox = parent.getBBox();
+//		var cellBbox = cell.getBBox();
 
-		var parent = graph.getCell(parentId);
-		var parentBbox = parent.getBBox();
-		var cellBbox = cell.getBBox();
+//		if (parentBbox.containsPoint(cellBbox.origin()) && parentBbox.containsPoint(cellBbox.topRight()) &&
+//		parentBbox.containsPoint(cellBbox.corner()) &&
+//		parentBbox.containsPoint(cellBbox.bottomLeft())) {
 
-		if (parentBbox.containsPoint(cellBbox.origin()) && parentBbox.containsPoint(cellBbox.topRight()) &&
-				parentBbox.containsPoint(cellBbox.corner()) &&
-				parentBbox.containsPoint(cellBbox.bottomLeft())) {
-
-			return;
-		}
-		cell.set('position', cell.previous('position'));
+//		return;
+//		}
+//		cell.set('position', cell.previous('position'));
 
 	},this);
 
 	graph.on('change:position', function(cell, newPosition, opt) {
-
+		if (opt.skipRemoveHandler) return;
 		if (opt.skipParentHandler) return;
 
 		if (cell.get('embeds') && cell.get('embeds').length) {
@@ -455,7 +491,12 @@ function embedOrConnect (parent, child) {
 						parent.embed(child);
 						console.log('embedded! parent suType: ' +parentsubType+ '; child subType: ' +childsubType);
 					}else{
-						parent.unembed(child);
+						new joint.ui.Dialog({
+							type: 'alert',
+							width: 300,
+							title: 'Alert',
+							content: 'Ordem errada'
+						}).open();
 						console.log("nao conectou!");	
 						//(childsubType === 'in' || childsubType === 'out')
 					}
@@ -465,4 +506,3 @@ function embedOrConnect (parent, child) {
 	}
 
 };
-
