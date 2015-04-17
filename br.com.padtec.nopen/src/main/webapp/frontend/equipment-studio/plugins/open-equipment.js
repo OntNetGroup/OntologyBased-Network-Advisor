@@ -28,17 +28,17 @@ function getUrlParameter(sParam)
     }
 }      
 
-function openFromURL(equipment, graph){
+function openFromURL(filename, graph){
 	
 	$.ajax({
 		   type: "POST",
 		   url: "openEquipment.htm",
 		   data: {
-			   'filename' : equipment
+			   'filename' : filename
 		   },
 		   dataType: 'json',
 		   success: function(data){
-			   $("#filename").val(equipment);
+			   $("#filename").val(filename);
 			   graph.fromJSON(data);
 			   loadITUFiles(graph);
 		   },
