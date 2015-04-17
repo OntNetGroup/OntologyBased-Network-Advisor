@@ -38,42 +38,47 @@ public class Provisioner {
 	OKCoUploader okcoUploader = new OKCoUploader();
 	
 	public Provisioner(String tBoxFile, String declaredInstancesFile, String possibleEquipFile, int createNTimes) throws Exception {
-		//#1
-		model = OWLUtil.createTBox(this.okcoUploader, tBoxFile);
-		ns = model.getNsPrefixURI("");
-		//#3
-		OWLUtil.createInstances(model, declaredInstancesFile, createNTimes);
-		this.declaredEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
-		createInterfaceHash(this.declaredEquip);
-		//#7 and #8
-		verifiyMinimumEquipment();	
-		
-		bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
-		
-		//#9
-		verifyIfEquipmentMapsOutPortsInSource();
-		INT_SO_LIST = verifyIfEquipmentMapsInPortsInSource();
-		//removeInterfaces(INT_SO_LIST, bindedInterfaces);
-		INT_SO_LIST.removeAll(bindedInterfaces);
-		verifyIfEquipmentMapsInPortsInSink();
-		INT_SK_LIST = verifyIfEquipmentMapsOutPortsInSink();
-		//removeInterfaces(INT_SK_LIST, bindedInterfaces);
-		INT_SK_LIST.removeAll(bindedInterfaces);
-		
-		//#15
-		OWLUtil.createInstances(model, possibleEquipFile, createNTimes);
-		this.possibleEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
-		this.possibleEquip.removeAll(this.declaredEquip);
-		createInterfaceHash(this.possibleEquip);
-		bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
-		createBindedInterfaceHash(bindedInterfaces);
-		//#16
-		verifiyMinimumEquipWithPM();
-		
-		originalBindedInterfaces.addAll(bindedInterfaces);
-		
-		//#17
-		OWLUtil.runReasoner(okcoUploader, true, true, true);
+		try{
+			//#1
+			model = OWLUtil.createTBox(this.okcoUploader, tBoxFile);
+			ns = model.getNsPrefixURI("");
+			//#3
+			OWLUtil.createInstances(model, declaredInstancesFile, createNTimes);
+			this.declaredEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
+			createInterfaceHash(this.declaredEquip);
+			//#7 and #8
+			verifiyMinimumEquipment();	
+			
+			bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
+			
+			//#9
+			verifyIfEquipmentMapsOutPortsInSource();
+			INT_SO_LIST = verifyIfEquipmentMapsInPortsInSource();
+			//removeInterfaces(INT_SO_LIST, bindedInterfaces);
+			INT_SO_LIST.removeAll(bindedInterfaces);
+			verifyIfEquipmentMapsInPortsInSink();
+			INT_SK_LIST = verifyIfEquipmentMapsOutPortsInSink();
+			//removeInterfaces(INT_SK_LIST, bindedInterfaces);
+			INT_SK_LIST.removeAll(bindedInterfaces);
+			
+			//#15
+			OWLUtil.createInstances(model, possibleEquipFile, createNTimes);
+			this.possibleEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
+			this.possibleEquip.removeAll(this.declaredEquip);
+			createInterfaceHash(this.possibleEquip);
+			bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
+			createBindedInterfaceHash(bindedInterfaces);
+			//#16
+			verifiyMinimumEquipWithPM();
+			
+			originalBindedInterfaces.addAll(bindedInterfaces);
+			
+			//#17
+			OWLUtil.runReasoner(okcoUploader, true, true, true);
+		}catch(Exception e){
+			OWLUtil.saveNewOwl(model, "resources/output/", "");
+			throw e;
+		}		
 	}
 	
 	public HashMap<String, Interface> getInterfaces() {
@@ -95,8 +100,10 @@ public class Provisioner {
 			}
 			
 			//#23
-			OWLUtil.runReasoner(okcoUploader, false, true, true);
+			OWLUtil.runReasoner(okcoUploader, false, true, true);			
 		} catch (Exception e) {
+			//#25
+			OWLUtil.saveNewOwl(model, "resources/output/", "");
 			throw e;
 		}
 		

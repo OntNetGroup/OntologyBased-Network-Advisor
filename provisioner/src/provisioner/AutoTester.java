@@ -16,9 +16,9 @@ public class AutoTester {
 
 	public static void main(String[] args) {
 		String owlTBoxFile = "resources/owl/TBox v5.2.owl";
-		String declaredFile = "resources/declared/Declarada 6.0a.txt";
-		String possibleFile = "resources/possible/Possiveis 6.0.txt";
-		int createNTimes = 1;
+		String declaredFile = "resources/declared/Declarado_teste.txt";
+		String possibleFile = "";
+		int createNTimes = 2;
 		int qtShortPaths = 0;
 		int maxPathSize = 0;
 		int declaredWeight = 1;
@@ -27,7 +27,8 @@ public class AutoTester {
 		boolean fewPossibleEquip = false;
 		for (int i = 0; i < createNTimes; i++) {
 			try {
-				Provisioner provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, createNTimes);
+				Date beginDate = new Date();				Provisioner provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, createNTimes);
+				long createInstanceAndReasoningTimeExec = PerformanceUtil.getExecutionTime(beginDate);
 				
 				OntModel model = provisioner.getModel();
 				String ns = provisioner.getModel().getNsPrefixURI("");
@@ -42,17 +43,18 @@ public class AutoTester {
 				qtShortPaths = 0;
 				maxPathSize = 0;
 				
-				Date beginDate = new Date();
+				beginDate = new Date();
 				List<Path> pathsShorters = provisioner.findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
-				long timeExec = PerformanceUtil.getExecutionTime(beginDate);
+				long nShortPathsTimeExec = PerformanceUtil.getExecutionTime(beginDate);
 				
 				qtShortPaths = 0;
 				maxPathSize = 0;
 				beginDate = new Date();
 				List<Path> allPaths = provisioner.findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
-				timeExec = PerformanceUtil.getExecutionTime(beginDate );
+ 				long allPathsTimeExec = PerformanceUtil.getExecutionTime(beginDate );
 				
 			} catch (Exception e) {
+				System.out.println("i: " + i);
 				e.printStackTrace();
 			}
 		}

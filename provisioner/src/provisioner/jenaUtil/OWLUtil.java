@@ -65,6 +65,8 @@ public class OWLUtil {
 	}
 	
 	public static void createInstances(OntModel model, String aBoxFile, int createNTimes) throws Exception{
+		if(aBoxFile == null || aBoxFile.equals("")) return;
+		
 		FileReader reader = new FileReader(new File(aBoxFile));
         @SuppressWarnings("resource")
 		Scanner scanner = new Scanner(new BufferedReader(reader));
@@ -101,7 +103,13 @@ public class OWLUtil {
 					String type = indvDclSplit[0];
 					String[] individuals = indvDclSplit[1].split(",");
 					for (String indv : individuals) {
+						String lowerLayer = "";
 						if(createNTimes > 1){
+							if(type.equals("Layer_Network")){
+								if(j > 0){
+									lowerLayer  = indv + "_layer" + (j-1);
+								}								
+							}
 							indv += "_layer" + j;
 						}
 						String oldName = indv;
@@ -114,6 +122,10 @@ public class OWLUtil {
 						newMapping.put(oldName, indv);
 						
 						FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type, false);
+						
+						if(type.equals("Layer_Network") && j > 0){
+							FactoryUtil.createInstanceRelation(model, ns+indv, ns+"client_of", ns+lowerLayer, false, false, false);
+						}
 						
 						newIndividuals.add(ns+indv);
 					}
@@ -156,6 +168,16 @@ public class OWLUtil {
 						}					
 						FactoryUtil.createInstanceRelation(model, ns+newSrc, ns+relation, ns+newTgt, false, false, true);
 						
+						if(relation.equals("adapts_to") && j > 0){
+							List<String> serverLayerURIs = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, ns+newTgt, ns+"client_of", ns+"Layer_Network");
+							for (String serverLayerURI : serverLayerURIs) {
+								List<String> serverAfURIs = QueryUtil.getIndividualsURIAtObjectPropertyDomain(model, serverLayerURI, ns+"adapts_to", ns+"Adaptation_Function");
+								for (String serverAfURI : serverAfURIs) {
+									FactoryUtil.createInstanceRelation(model, serverAfURI, ns+"adapts_from", ns+newSrc, false, false, false);
+								}
+								System.out.println();
+							}							
+						}
 					}
 				}
 			}

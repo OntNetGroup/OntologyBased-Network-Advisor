@@ -1,6 +1,7 @@
 package br.com.padtec.nopen.service.util;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import br.com.padtec.common.queries.QueryUtil;
@@ -101,12 +102,15 @@ public class NOpenQueryUtil {
 	public static HashSet<String> getAllComponentOFRelations(String classID, InfModel model)
 	{
 		HashSet<String> result = new HashSet<String>();
+		HashSet<String> x = new HashSet<String>();
+		HashSet<String> y = new HashSet<String>();
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
 				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#>"
-				+ "SELECT  *"
+				+ "SELECT  ?r ?y"
 				+ "WHERE { ?x rdfs:subPropertyOf ont:componentOf ."
 				+ "?x rdfs:domain ont:"+classID + "."
-				+ "?x rdfs:range ?r"
+				+ "?x rdfs:range ?r ."
+				+ "	OPTIONAL { ?y rdfs:subClassOf ?r . } "
 				+  "}";
 		
 		Query query = QueryFactory.create(queryString); 
@@ -118,11 +122,20 @@ public class NOpenQueryUtil {
   		
   		while (results.hasNext()) {
   			QuerySolution row = results.next();
-  		    
-  		    RDFNode rdfY = row.get("r");
-  	    	result.add(rdfY.toString());
+  		    RDFNode rdfX = row.get("r");
+  		    x.add(rdfX.toString());
+  		    RDFNode rdfY = row.get("y");
+  		    y.add(rdfY.toString());
   		}
-  		
+  		boolean ok = false;
+  		ok = result.addAll(x);
+  		ok = result.addAll(y);
+  		Iterator<String> i = result.iterator();
+	  		while(i.hasNext()){
+	  			if(QueryUtil.hasSubClass(model, i.next())){
+	  				i.remove();
+	  			}
+	  		}
 		return result;
 	}
 }

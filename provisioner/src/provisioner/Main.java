@@ -2,14 +2,18 @@ package provisioner;
 
 import java.util.ArrayList;
 
+import com.hp.hpl.jena.ontology.OntModel;
+
 import provisioner.business.Provisioner;
 import provisioner.domain.Interface;
+import provisioner.jenaUtil.OWLUtil;
 import provisioner.util.ConsoleUtil;
 import provisioner.util.FileUtil;
 
 public class Main {
 	public static void main(String[] args){
 		String owlTBoxFile = "";
+		Provisioner provisioner = null;
 		try {
 			//#1
 			//owlTBoxFile = FileUtil.chooseFile("OWL TBox", "resources/owl/", ".owl");
@@ -17,14 +21,15 @@ public class Main {
 			
 			//#2
 			//String declaredFile = FileUtil.chooseFile("declared instances", "resources/declared/", ".txt");
-			String declaredFile = "resources/declared/Declarada 6.0a.txt";
+			String declaredFile = "resources/declared/Declarado_teste.txt";
 			
 			//#14
 			//String possibleFile = FileUtil.chooseFile("possible instances", "resources/possible/", ".txt");
-			String possibleFile = "resources/possible/Possiveis 6.0.txt";
-						
-			Provisioner provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, 1);
+			//String possibleFile = "resources/possible/Possiveis 6.0.txt";
+			String possibleFile = "";
 			
+			provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, 1);
+					
 			//#10 and #11
 			int srcInt2ProvIndex = ConsoleUtil.chooseOne(provisioner.getINT_SO_LIST(), "Input Interfaces", "Input Interface that maps an Input Port from Source");
 			//int srcInt2ProvIndex = 8;
@@ -48,7 +53,7 @@ public class Main {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}				
+		}		
 		
 		System.out.println();
 		System.out.println("Done.");
