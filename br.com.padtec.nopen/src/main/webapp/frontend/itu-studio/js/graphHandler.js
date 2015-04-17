@@ -22,7 +22,7 @@ function graphHandler(graph, app) {
 		var sizeMultiplierTypeWidth = { 	'bpmn.Pool': 5, // layers
 								'basic.Path': 1.3, // transport functions
 								}[type];			
-		var sizeMultiplierTypeHeight = { 	'bpmn.Pool': 5, // layers
+		var sizeMultiplierTypeHeight = { 	'bpmn.Pool': 3.5, // layers
 									'basic.Path': 1.3, // transport functions
 								}[type];
 

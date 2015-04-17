@@ -40,7 +40,7 @@ Layer = joint.dia.Element.extend({
                 'ref-x': 10,
                 'ref-y': .5,
                 'font-family': 'Arial',
-                'font-size': 14,
+                'font-size': 11,
                 'x-alignment': 'middle',
                 'text-anchor': 'middle'
             },
@@ -58,7 +58,7 @@ Layer = joint.dia.Element.extend({
                 transform: 'rotate(-90)',
                 'text-anchor': 'middle',
                 'font-family': 'Arial',
-                'font-size': 13
+                'font-size': 10
             },
             '.blackbox-wrap': {
                 ref: '.body',
