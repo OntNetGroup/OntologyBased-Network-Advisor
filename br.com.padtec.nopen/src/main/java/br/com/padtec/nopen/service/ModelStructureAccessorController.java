@@ -12,17 +12,18 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 public class ModelStructureAccessorController {
 
 	
-	public static HashMap<String, String> buildContainerStructure(String container, OKCoUploader repository){
+	public static HashMap<String, String> buildContainerStructure(String container, OKCoUploader studioRepository){
 		HashMap<String, String> mapping = new HashMap<String, String>();
-		List<String> tipoContainer = QueryUtil.getClassesURIFromIndividual(repository.getBaseModel(), repository.getNamespace()+container);
+		List<String> tipoContainer = QueryUtil.getClassesURIFromIndividual(studioRepository.getBaseModel(), studioRepository.getNamespace()+container);
 		String tipo = tipoContainer.get(0);
 		HashSet<String> relations = new HashSet<String>();
-		relations = NOpenQueryUtil.getAllComponentOFRelations(tipo, repository.getBaseModel()); //precisa atualizar com os filhos, caso haja
+		relations = NOpenQueryUtil.getAllComponentOFRelations(tipo, studioRepository.getBaseModel()); 
+		//precisa atualizar com os filhos, caso haja, recursivamente
+		boolean ok = false;
 		for(String relation : relations){
 			List<String[]> cardinality = null;
-			List<String[]> MaxCardinality = QueryUtil.getMaxCardinalityDefinitions(repository.getBaseModel(), repository.getNamespace()+tipo);
-			List<String[]> MaxExactCardinality = QueryUtil.getExactlyCardinalityDefinitions(repository.getBaseModel(), repository.getNamespace()+tipo);
-			boolean ok = false;
+			List<String[]> MaxCardinality = QueryUtil.getMaxCardinalityDefinitions(studioRepository.getBaseModel(), studioRepository.getNamespace()+tipo);
+			List<String[]> MaxExactCardinality = QueryUtil.getExactlyCardinalityDefinitions(studioRepository.getBaseModel(), studioRepository.getNamespace()+tipo);
 			ok = cardinality.addAll(MaxCardinality);
 			ok = cardinality.addAll(MaxExactCardinality);
 			for(String[] card : cardinality){

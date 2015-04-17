@@ -2156,4 +2156,18 @@ public class QueryUtil {
 		return result;
 	}
 	
+	public static boolean hasSubClass(InfModel model, String classID){
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#>"
+
+				+ "ASK "
+				+ "WHERE { ?subject rdfs:subClassOf ont:" + classID + " ."
+				+ "}";
+		
+		Query query = QueryFactory.create(queryString);
+		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean hasSubClass = qe.execAsk();		
+		return hasSubClass;
+	}
 }
