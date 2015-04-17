@@ -19,25 +19,42 @@ public class EquipmentStudioController {
 	}
 
 	@RequestMapping("/checkEquipmentFile")
-	public @ResponseBody String checkEquipmentFile(@RequestParam("filename") String fileName) {
+	public @ResponseBody String checkEquipmentFile(@RequestParam("filename") String filename) {
 		System.out.println("check");
-		if(NOpenFileUtil.checkEquipmentFileExist(fileName)){
-			return "OK";
+		
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
+		if(NOpenFileUtil.checkEquipmentFileExist(filename)){
+			return "exist";
 		}
-		return "exists";
+		return null;
 	}
 
 	@RequestMapping("/saveEquipment")
-	public @ResponseBody void saveEquipment(@RequestParam("filename") String fileName, @RequestParam("graph") String graphValue) {
-		/*
-		 * MUDAR!!!!
-		 * COLOCAR O WRITETOFILE RECEBENDO O FILENAME
-		 * 
-		 * */
-		System.out.println("save");
+	public @ResponseBody void saveEquipment(@RequestParam("filename") String filename, @RequestParam("graph") String graph) {
+
+		NOpenFileUtil.createEquipmentRepository(filename);
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
+		
 		try {
-			File file = NOpenFileUtil.createEquipmentJSONFile(fileName);
-			NOpenFileUtil.writeToFile(file, graphValue);
+			File file = NOpenFileUtil.createEquipmentJSONFile(filename);
+			NOpenFileUtil.writeToFile(file, graph);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	@RequestMapping("/saveITUFiles")
+	public @ResponseBody void saveITUFiles(@RequestParam("path") String path, @RequestParam("filename") String ituFilename, @RequestParam("graph") String graph) {
+		
+		path = path + "/itu/";
+		path = NOpenFileUtil.replaceSlash(path);
+		NOpenFileUtil.createEquipmentRepository(path);
+		
+		try {
+			File file = NOpenFileUtil.createEquipmentJSONFile(path + ituFilename);
+			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

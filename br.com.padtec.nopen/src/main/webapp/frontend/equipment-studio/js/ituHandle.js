@@ -23,7 +23,7 @@ function ituHandle(paper, graph){
 		cellId = cellView.model.id;
 		
 		var equipment = graph.getCell(cellId);
-		if((equipment.get('subType')) === 'card' || (equipment.get('subType')) === 'supervisor') {
+		if((equipment.get('subType')) === 'card') {
 			
 			$("#itu-iframe").empty();
 			

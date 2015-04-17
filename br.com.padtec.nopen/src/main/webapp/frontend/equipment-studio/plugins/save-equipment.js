@@ -69,6 +69,8 @@ function generateSaveEquipmentDialog(graph){
 			 'graph': JSON.stringify(graph.toJSON()),
 		   },
 		   success: function(){ 		   
+			   saveITUFiles()
+			   
 			   alert($("#save-filename").val() + ' saved successfully!');
 			   dialog.close();
 		   },
@@ -78,6 +80,31 @@ function generateSaveEquipmentDialog(graph){
 		   }
 		});
 		
+		function saveITUFiles(){
+			
+			$.each(graph.getElements(), function( index, cell ) {
+				
+				if(cell.get('subType') === 'card'){
+					$.ajax({
+					   type: "POST",
+					   url: "saveITUFiles.htm",
+					   data: {
+						 'path': $("#save-filename").val(),
+						 'filename': cell.id,
+						 'graph': JSON.stringify(cell.toJSON()),
+					   },
+					   success: function(){},
+					   error : function(e) {
+						   alert("error: " + e.status);
+						   dialog.close();
+					   }
+					});	
+				}
+				
+			});
+			
+			
+		}
 		
 	};
 	

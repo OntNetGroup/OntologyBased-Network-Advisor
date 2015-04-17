@@ -3,9 +3,9 @@ package br.com.padtec.nopen.service.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.HashSet;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -67,6 +67,36 @@ public class NOpenFileUtil {
 		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningOWLFolder);
 	}
 
+	/**
+	 * Procedure to replace slash.
+	 * @param path
+	 */
+	public static String replaceSlash(String value){
+		if(System.getProperty("os.name").contains("Windows")){		
+			return value = value.replaceAll("/", "\\\\");
+		}
+		
+		return value;
+	}
+	
+	
+	/**
+	 * Procedure to create Equipment folders if they do not exist.
+	 * @param path
+	 */
+	public static void createEquipmentRepository(String path){
+		NOpenFileUtil.createRepository(NOpenFileUtil.equipmentJSONFolder + path);	
+	}
+	
+	/**
+	 * Procedure to create Topology folders if they do not exist.
+	 * @param path
+	 */
+	public static void createTopologyRepository(String path){
+		NOpenFileUtil.createRepository(NOpenFileUtil.topologyJSONFolder + path);	
+	}
+	
+	
 	/**
 	 * Procedure to create folders if they do not exist.
 	 * @param path
@@ -163,12 +193,12 @@ public class NOpenFileUtil {
     public static File createFile (String path, String filename) 
     {    	
 		File file = new File(path + filename);		
-		if (!file.exists()) {			
+		if (!file.exists()) {	
 			try{
 				file.createNewFile();
 			}catch(IOException e){
 				e.printStackTrace();
-			}			
+			}
 		}
 		return file;
 	}
@@ -190,34 +220,62 @@ public class NOpenFileUtil {
      * Procedure to get all topology JSON file names. 
      * @return
      */
-    public static HashSet<String> getAllTopplogyJSONFileNames(){
-    	return getAllFileNames(NOpenFileUtil.topologyJSONFolder, "json");
+    public static String[] getAllTopplogyJSONFileNames(){
+    	return getAllFolderNames(NOpenFileUtil.topologyJSONFolder);
     }
     
     /**
      * Procedure to get all equipment JSON file names. 
      * @return
      */
-    public static HashSet<String> getAllEquipmentJSONFileNames(){
-    	return getAllFileNames(NOpenFileUtil.equipmentJSONFolder, "json");
+    public static String[] getAllEquipmentJSONFileNames(){
+    	return getAllFolderNames(NOpenFileUtil.equipmentJSONFolder);
     }
     
     /**
      * Procedure to get all provisioning JSON file names. 
      * @return
      */
-    public static HashSet<String> getAllProvisioningJSONFileNames(){
-    	return getAllFileNames(NOpenFileUtil.provisioningJSONFolder, "json");
+    public static String[] getAllProvisioningJSONFileNames(){
+    	return getAllFolderNames(NOpenFileUtil.provisioningJSONFolder);
     }
     
     /**
      * Procedure to get all topology OWL file names. 
      * @return
      */
-    public static HashSet<String> getAllEquipmentOWLFileNames(){
-    	return getAllFileNames(NOpenFileUtil.equipmentOWLFolder, "owl");    	
+    public static String[] getAllEquipmentOWLFileNames(){
+    	return getAllFolderNames(NOpenFileUtil.equipmentOWLFolder);    	
     }
     
+    
+    /**
+     * Generic procedure to gett all folder names
+     * @param path
+     * @param extension
+     * @return
+     */
+    private static String[] getAllFolderNames(String path){
+    	
+    	File folder = new File(path);
+    	
+    	FilenameFilter filter = new FilenameFilter(){
+    		
+			@Override
+			public boolean accept(File dir, String name) {
+				
+				if(name.substring(0, 1).equals(".") || dir.isHidden()){
+					return false;
+				}
+				
+				return true;
+			}
+    		
+    	};
+    	
+    	return folder.list(filter);
+    	
+    }
     
     /**
      * Generic procedure to gett all file names
@@ -225,11 +283,13 @@ public class NOpenFileUtil {
      * @param extension
      * @return
      */
-    private static HashSet<String> getAllFileNames(String path, String extension){
+    @SuppressWarnings("unused")
+	private static String[] getAllFileNamesWithExtension(String path, String extension){
     	
     	File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
-		HashSet<String> fileHashSet = new HashSet<String>();
+		String[] fileNames = {};
+		int count = 0;
 		
 	    for (int i = 0; i < listOfFiles.length; i++) {
 	      if (listOfFiles[i].isFile()) {
@@ -239,7 +299,8 @@ public class NOpenFileUtil {
 
 	    	  if(ext.equals(extension)){
 	    		  String name = filename.substring(0, filename.lastIndexOf("."));
-	    		  fileHashSet.add(name);
+	    		  fileNames[count] = name;
+	    		  count++;
 	    	  }
 	    	  
 	      } else if (listOfFiles[i].isDirectory()) {
@@ -247,9 +308,10 @@ public class NOpenFileUtil {
 	      }
 	    }
 		
-		return fileHashSet;
+		return fileNames;
     	
     }
+    
     
     /**
      * Procedure to open a topology file as String.
@@ -311,11 +373,11 @@ public class NOpenFileUtil {
      * @param filename
      * @return
      */
-    public static String parseHashSetToJSON(String property, HashSet<String> hashSet){
+    public static String parseHashSetToJSON(String property, String[] elements){
     	
     	JsonArray json = new JsonArray();
 
-		for(String element : hashSet){
+		for(String element : elements){
 			JsonObject j = new JsonObject();
 			j.addProperty(property, element);
 			

@@ -2,7 +2,6 @@ package br.com.padtec.nopen.topology.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,6 +45,7 @@ public class TopologyController {
 	@RequestMapping(value = "/checkTopologyFile", method = RequestMethod.POST)
 	protected @ResponseBody String checkTopologyFile(@RequestParam("filename") String filename){
 
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
 		if(NOpenFileUtil.checkTopologyFileExist(filename + ".json")){
 			return "exist";
 		}
@@ -55,13 +55,11 @@ public class TopologyController {
 	
 	@RequestMapping(value = "/saveTopology", method = RequestMethod.POST)
 	protected @ResponseBody void saveTopology(@RequestParam("filename") String filename, @RequestParam("graph") String graph){
-			
+		
+		NOpenFileUtil.createTopologyRepository(filename);
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
+		
 		try {
-			/*
-			 * MUDAR!!!!
-			 * COLOCAR O WRITETOFILE RECEBENDO O FILENAME
-			 * 
-			 * */
 			File file = NOpenFileUtil.createTopologyJSONFile(filename);
 			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {
@@ -74,14 +72,15 @@ public class TopologyController {
 	@RequestMapping(value = "/getAllTopologies", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTopologies(){
 			
-		HashSet<String> topologies = NOpenFileUtil.getAllTopplogyJSONFileNames();
+		String[] topologies = NOpenFileUtil.getAllTopplogyJSONFileNames();
 		return NOpenFileUtil.parseHashSetToJSON("topology", topologies);
 		
 	}
 	
 	@RequestMapping(value = "/openTopology", method = RequestMethod.POST)
 	protected @ResponseBody String openTopology(@RequestParam("filename") String filename){
-			
+		
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);	
 		return NOpenFileUtil.openTopologyJSONFileAsString(filename + ".json");
 		
 	}
@@ -94,11 +93,7 @@ public class TopologyController {
 //		return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
 		
 		 
-		HashSet<String> equipments = new HashSet<String>();
-		equipments.add("Equipment1");
-		equipments.add("Equipment2");
-		equipments.add("Equipment3");
-		
+		String[] equipments = { "Equipment1", "Equipment2", "Equipment3"};
 		return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
 		 
 	}
