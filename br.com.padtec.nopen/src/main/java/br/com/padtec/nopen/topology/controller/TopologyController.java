@@ -24,6 +24,13 @@ public class TopologyController {
 		return "network-topology/network-topology";
 	}
 	
+	/**
+	 * Procedure to export a Topology in a XML file.
+	 * @param tnodeArray
+	 * @param tlinkArray
+	 * @param uuid
+	 * @return
+	 */
 	@RequestMapping(value = "/exportTopology", method = RequestMethod.POST)
 	protected @ResponseBody String exportTopology(@RequestParam("tnodeArray") String tnodeArray,@RequestParam("tlinkArray") String tlinkArray, @RequestParam("uuid") String uuid){
 		
@@ -33,6 +40,11 @@ public class TopologyController {
 		return xml;
 	}
 	
+	/**
+	 * Procedure to import a XML file Topology.
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/importTopology", method = RequestMethod.POST)
 	protected @ResponseBody String importTopology(HttpServletRequest request){
 			
@@ -42,6 +54,11 @@ public class TopologyController {
 		return json;
 	}
 	
+	/**
+	 * Procedure to check if a Topology file exist.
+	 * @param filename
+	 * @return
+	 */
 	@RequestMapping(value = "/checkTopologyFile", method = RequestMethod.POST)
 	protected @ResponseBody String checkTopologyFile(@RequestParam("filename") String filename){
 
@@ -53,6 +70,11 @@ public class TopologyController {
 		return null;
 	}
 	
+	/**
+	 * Procedure to save a JSON Topology file.
+	 * @param filename
+	 * @param graph
+	 */
 	@RequestMapping(value = "/saveTopology", method = RequestMethod.POST)
 	protected @ResponseBody void saveTopology(@RequestParam("filename") String filename, @RequestParam("graph") String graph){
 		
@@ -69,6 +91,10 @@ public class TopologyController {
 		
 	}
 	
+	/**
+	 * Procedure to get all Topology saved files.
+	 * @return
+	 */
 	@RequestMapping(value = "/getAllTopologies", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTopologies(){
 			
@@ -77,6 +103,11 @@ public class TopologyController {
 		
 	}
 	
+	/**
+	 * Procedure to open a JSON Topology file.
+	 * @param filename
+	 * @return
+	 */
 	@RequestMapping(value = "/openTopology", method = RequestMethod.POST)
 	protected @ResponseBody String openTopology(@RequestParam("filename") String filename){
 		
@@ -85,19 +116,23 @@ public class TopologyController {
 		
 	}
 	
+	/**
+	 * Procedure to get all Equipment templates.
+	 * @return
+	 */
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
-		
-		
-//		HashSet<String> equipments = NOpenFileUtil.getAllEquipmentJSONFileNames();
-//		return NOpenFileUtil.parseHashSetToJSON("equipment", equipments);
-		
 		 
-		String[] equipments = { "Equipment1", "Equipment2", "Equipment3"};
+		String[] equipments = NOpenFileUtil.getAllEquipmentJSONFileNames();
 		return NOpenFileUtil.parseStringToJSON("equipment", equipments);
 		 
 	}
 	
+	/**
+	 * Procedure to march a Equipment to a Node.
+	 * @param idNode
+	 * @param idEquipment
+	 */
 	@RequestMapping(value = "/matchEquipmentToNode", method = RequestMethod.POST)
 	protected @ResponseBody void matchEquipmentToNode(@RequestParam("idNode") String idNode, @RequestParam("idEquipment") String idEquipment){
 		
@@ -108,6 +143,11 @@ public class TopologyController {
 		// managerTopology.matchEquipmentToNode(idNode, idEquipment);
 	}	
 	
+	/**
+	 * Procedure to create a Connection.
+	 * @param source
+	 * @param target
+	 */
 	@RequestMapping(value = "/createConnection", method = RequestMethod.POST)
 	protected @ResponseBody void createConnection(@RequestParam("source") String source, @RequestParam("target") String target){
 		

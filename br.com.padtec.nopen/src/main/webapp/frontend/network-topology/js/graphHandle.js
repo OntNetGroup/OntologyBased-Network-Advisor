@@ -80,8 +80,8 @@ function graphHandle(graph){
 function generateDialog(data, cell){
 	
 	var content = '<form id="match">';
-	for(var i = Object.keys(data).length-1; i >= 0; i--){
-		if(i == Object.keys(data).length-1){
+	for(var i = 0; i < Object.keys(data).length; i++){
+		if(i == 0){
 			content = content + '<input type="radio" name="equipment" value="' + data[i].equipment + '" checked>' 
 					+ '<label>' + data[i].equipment + '</label> <br>';
 		}
@@ -150,25 +150,5 @@ function generateDialog(data, cell){
 	
 };
 
-function paperHandle(paper){
-	
-	paper.on('cell:pointerdblclick', function(cellView, evt, x, y) { 
-	    alert(cellView.model.id);
-	});
-	
-	/*
-	paper.on('cell:pointerup', function(cellView, evt, x, y) { 
 
-		var link = cellView.model;
-		
-		if(link.get('type') == "link"){
-				
-			if(link.get('target').id == null){
-				alert(link.get('target').id);
-				link.remove();
-			}
-		}
-	});
-	*/
-};
 

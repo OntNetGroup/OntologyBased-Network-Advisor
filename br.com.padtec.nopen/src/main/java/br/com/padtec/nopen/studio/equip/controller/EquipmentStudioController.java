@@ -19,6 +19,12 @@ public class EquipmentStudioController {
 		return "equipment-studio/equipment-studio";
 	}
 
+	
+	/**
+	 * Procedure to check if a Equipment file exist
+	 * @param filename
+	 * @return
+	 */	
 	@RequestMapping("/checkEquipmentFile")
 	public @ResponseBody String checkEquipmentFile(@RequestParam("filename") String filename) {
 		System.out.println("check");
@@ -31,6 +37,10 @@ public class EquipmentStudioController {
 	}
 
 	
+	/**
+	 * Procedure to delete all ITU files inside of a Equipment Folder.
+	 * @param filename
+	 */	
 	@RequestMapping("/deleteITUFiles")
 	public @ResponseBody void deleteITUFiles(@RequestParam("filename") String filename) {
 		
@@ -43,6 +53,11 @@ public class EquipmentStudioController {
 		}
 	}
 	
+	/**
+	 * Procedure to save a Equipment.
+	 * @param filename
+	 * @param graph
+	 */
 	@RequestMapping("/saveEquipment")
 	public @ResponseBody void saveEquipment(@RequestParam("filename") String filename, @RequestParam("graph") String graph) {
 
@@ -62,6 +77,12 @@ public class EquipmentStudioController {
 
 	}
 	
+	/**
+	 * Procedure to savel all ITU files of a Equipment.
+	 * @param path
+	 * @param ituFilename
+	 * @param graph
+	 */
 	@RequestMapping("/saveITUFiles")
 	public @ResponseBody void saveITUFiles(@RequestParam("path") String path, @RequestParam("filename") String ituFilename, @RequestParam("graph") String graph) {
 		
@@ -79,6 +100,10 @@ public class EquipmentStudioController {
 
 	}
 	
+	/**
+	 * Procedure to get all Equipments saved.
+	 * @return
+	 */
 	@RequestMapping(value = "/getAllEquipments", method = RequestMethod.GET)
 	protected @ResponseBody String getAllEquipments(){
 			
@@ -87,6 +112,11 @@ public class EquipmentStudioController {
 		
 	}
 	
+	/**
+	 * Procedure to open a specific Equipment.
+	 * @param filename
+	 * @return
+	 */
 	@RequestMapping(value = "/openEquipment", method = RequestMethod.POST)
 	protected @ResponseBody String openEquipment(@RequestParam("filename") String filename){
 		
@@ -95,6 +125,12 @@ public class EquipmentStudioController {
 		
 	}
 	
+	/**
+	 * Procedure to open a ITU file of a Equipment.
+	 * @param path
+	 * @param ituFilename
+	 * @return
+	 */
 	@RequestMapping(value = "/openITUFile", method = RequestMethod.POST)
 	protected @ResponseBody String openITUFile(@RequestParam("path") String path, @RequestParam("filename") String ituFilename){
 		

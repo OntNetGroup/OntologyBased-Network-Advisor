@@ -103,6 +103,11 @@
             equipmentHandle(app.graph);
             ituHandle(app.paper, app.graph);
             
+            if(getUrlParameter('equipment')){
+            	var equipment = getUrlParameter('equipment');
+            	openFromURL(equipment, app.graph);
+            }
+            
             //graphHandle(app.graph);
             //paperHandle(app.paper);
             
