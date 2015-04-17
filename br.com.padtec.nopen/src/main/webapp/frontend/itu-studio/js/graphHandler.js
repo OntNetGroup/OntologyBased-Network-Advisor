@@ -48,6 +48,4 @@ function graphHandler(graph, app) {
 		sizeMultiplierWidth = 0;
 		sizeMultiplierHeight = 0;
 	});
-	
-
 };

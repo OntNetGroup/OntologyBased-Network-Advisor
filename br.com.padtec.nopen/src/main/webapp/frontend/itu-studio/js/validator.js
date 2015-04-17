@@ -1,13 +1,14 @@
 function validator(validator, graph, app) {
     
     // validar inserção de transport functions no grafo
-    validator.validate('add', isNotLink, isTransportFunction, _.bind(function(err, command, next) {
-    	        	
+    validator.validate('add', isNotLink, isTransportFunction, _.bind(function(err, command, next) {      		
     	var cell = graph.getCell(command.data.id);
     	var cellType = cell.get('type');
     	
 		var tFunctionID = cell.id;
-		var tFunctionName = 'some_name'; //TODO get name
+		
+		var tFunctionName = 'TF_' +this.tFunctionCounter;
+		
 		var tFunctionType = cell.get('subtype');
 		var cardID = this.cardID;
 		
@@ -35,13 +36,14 @@ function validator(validator, graph, app) {
 			if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
 				containerName = parent.get('subtype');
 				containerType = 'layer';
-				console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ ' on layer ' +containerName+ ' inside card ' +cardID);
+				console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
 				
 				var result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
 				
 				if(result === "success") {	
 					this.isAddingTransportFunction = true;
 					parent.embed(cell);
+					this.tFunctionCounter++;
 					return next(err);
 				} else {
 					return next(result);
@@ -52,10 +54,11 @@ function validator(validator, graph, app) {
 			}
 		} else { // não existe elemento abaixo
 			// consultar ontologia para inserção de transport function diretamente no card
-			console.log('try to insert ' +tFunctionID+ ' of type ' +tFunctionType+ 'on layer ' +containerName+ ' inside card ' +cardID);
+			console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
 			var result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
 			
 			if(result === "success") {
+				this.tFunctionCounter++;
 				return next(err);
 			} else {
 				return next(result);
@@ -69,94 +72,64 @@ function validator(validator, graph, app) {
     	var cell = graph.getCell(command.data.id);
     	var cellSubType = cell.get('subtype');
 
-//		var inputText = "<div><p>Interface name: <input type='text' id='interfaceName' /></p> <p id='interfaceError' style='color:red; display:none;'>Define a name!</p></div>";
-//		//TODO: NÃO FUNCIONA! PROBLEMA GRAVE. O next() deve ser retornado
-//		var dialog = new joint.ui.Dialog({
-//		    width: 300,
-//		    title: 'Insert Interface',
-//		    content: inputText,
-//		    type: 'neutral',
-//		    closeButton: false,
-//		    buttons: [
-//		        { action: 'cancel', content: 'Cancelar', position: 'left' },
-//		        { action: 'ok', content: 'OK', position: 'left' }
-//		    ]
-//		}).open();
-//		
-//		$('#interfaceName').focus();
-//		
-//		dialog.on('action:ok', function(){
-//			if($('#interfaceName').val()){
-//				$('#interfaceError').hide();
-//				dialog.close();
-//				return f();
-//			} else {
-//				$('#interfaceError').show();
-//			}
-//		}, dialog, f = getInterfaceName);
-//		
-//		dialog.on('action:cancel', function(){
-//			dialog.close();
-//			return next("Operation canceled");
-//		}, dialog, next);
+    	var position = cell.get('position');
+		var size = cell.get('size');
+		var area = g.rect(position.x, position.y, size.width, size.height);
 
-//		function getInterfaceName() {
-	    	var position = cell.get('position');
-			var size = cell.get('size');
-			var area = g.rect(position.x, position.y, size.width, size.height);
-	
-			var portID = cell.id;
-	//		var portName = $('#interfaceName').val(); // TODO: get name
-			var portName = 'some_name';
-			var portType = cellSubType;
+		var portID = cell.id;
+		var portType = cellSubType;
+		
+		if(portType === 'in') var portName = 'in_' +this.inPortCounter;
+		else var portName = 'out_' +this.outPortCounter;
+		
+		var parent;
+		// get all elements below the added one
+		_.each(graph.getElements(), function(e) {
+		
+			var position = e.get('position');
+			var size = e.get('size');
+			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+				parent = e;
+			}
+		});
+		
+		if(parent) { // existe algum elemento abaixo
+			var parentType = parent.get('type');
 			
-			var parent;
-			// get all elements below the added one
-			_.each(graph.getElements(), function(e) {
-			
-				var position = e.get('position');
-				var size = e.get('size');
-				if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-					parent = e;
-				}
-			});
-			
-			if(parent) { // existe algum elemento abaixo
-				var parentType = parent.get('type');
+			if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
 				
-				if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
+					var transportFunctionID = parent.id;
+					console.log('try to create port ' +portID+ ';name: ' +portName+ ';TF: ' +transportFunctionID);
+					var result = createPort(portID, portName, portType, transportFunctionID)
 					
-						var transportFunctionID = parent.id;
-						console.log('try to create port ' +portID+ ' name ' +portName+ ' of TF ' +transportFunctionID);
-						var result = createPort(portID, portName, portType, transportFunctionID)
-						
-						if(result === "success") {
-						
-							var newLink = new joint.dia.Link({	source: {id: transportFunctionID}, target: {id: portID}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
-			    			graph.addCell(newLink);
-			    			
-			    			// Move the port to the superior (in port) or inferior (out port) bar
-			    			if(cellSubType === 'in') {
-			    				cell.transition('position/y', 15, {});
-			    				app.barIn.embed(cell);
-			    			}
-			    			else {
-			    				cell.transition('position/y', 955, {});
-			    				app.barOut.embed(cell);
-			    			}
-			    			
-							return next(err);
-						} else {
-							return next(result);
-						}
-				} else { // elemento abaixo é uma camada 
-					return next('Please, add the port over a transport function.');
-				}
-				
-			} else { // nenhum elemento abaixo
+					if(result === "success") {
+					
+						var newLink = new joint.dia.Link({	source: {id: transportFunctionID}, target: {id: portID}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
+		    			graph.addCell(newLink);
+		    			
+		    			// Move the port to the superior (in port) or inferior (out port) bar
+		    			if(portType === 'in') {
+		    				cell.transition('position/y', 15, {});
+		    				app.barIn.embed(cell);
+		    				this.inPortCounter++;
+		    			}
+		    			else {
+		    				cell.transition('position/y', 955, {});
+		    				app.barOut.embed(cell);
+		    				this.outPortCounter++;
+		    			}
+		    			
+						return next(err);
+					} else {
+						return next(result);
+					}
+			} else { // elemento abaixo é uma camada 
 				return next('Please, add the port over a transport function.');
 			}
-//    	}
+			
+		} else { // nenhum elemento abaixo
+			return next('Please, add the port over a transport function.');
+		}
 		
     }, app));
     
