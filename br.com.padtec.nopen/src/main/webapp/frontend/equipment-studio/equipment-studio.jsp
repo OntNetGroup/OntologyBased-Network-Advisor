@@ -60,7 +60,6 @@
         <script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
         <script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
         
-        
    		<!-- PLUGINS -->
         
         <script src="/nopen/frontend/equipment-studio/plugins/open-equipment.js"></script>
@@ -99,13 +98,12 @@
             
             var app = new Rappid;
             Backbone.history.start();
-
-            resizing(app.graph);
             
+            resizing(app.graph);           
             equipmentHandle(app.graph);
             ituHandle(app.paper, app.graph);
             
-           // graphHandle(app.graph);
+            //graphHandle(app.graph);
             //paperHandle(app.paper);
             
             var uuid = joint.util.uuid();
