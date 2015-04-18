@@ -9,9 +9,9 @@
 		<!-- CSS CORE -->
 
         <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
+		<link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/dialog.css" />
 
 		<!-- CSS -->
-
 
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/layout.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/paper.css" />

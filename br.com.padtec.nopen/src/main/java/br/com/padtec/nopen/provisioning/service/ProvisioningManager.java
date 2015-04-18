@@ -11,7 +11,7 @@ public class ProvisioningManager {
 	
 	public String openProvisioning(String filename){
 		
-		String json = NOpenFileUtil.openTopologyJSONFileAsString(filename + ".json").replaceAll("basic.Circle", "basic.Rect");
+		String json = NOpenFileUtil.openTopologyJSONFileAsString(filename).replaceAll("basic.Circle", "basic.Rect");
 		
 		JsonParser crunhifyParser = new JsonParser();
 		JsonObject jsonObject = crunhifyParser.parse(json).getAsJsonObject();

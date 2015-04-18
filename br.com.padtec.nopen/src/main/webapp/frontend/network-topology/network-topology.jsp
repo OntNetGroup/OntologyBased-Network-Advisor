@@ -13,7 +13,6 @@
 
 		<!-- CSS -->
 
-
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/layout.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/paper.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/inspector.css" />

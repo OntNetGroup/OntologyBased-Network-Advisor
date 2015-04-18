@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
+import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
 @Controller
 public class ProvisioningController {
@@ -18,8 +19,10 @@ public class ProvisioningController {
 	}	
 	
 	@RequestMapping(value = "/openTopologyOnProvisioning", method = RequestMethod.POST)
-	protected @ResponseBody String openTopology(@RequestParam("filename") String filename){
+	protected @ResponseBody String openTopologyOnProvisioning(@RequestParam("filename") String filename){
 			
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
+		
 		ProvisioningManager provisioningManager = new ProvisioningManager();
 		String json = provisioningManager.openProvisioning(filename);
 		System.out.println(json);
