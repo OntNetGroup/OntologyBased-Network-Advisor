@@ -35,7 +35,7 @@ function equipmentHandle(graph){
 			//child position and size
 			var cposition = cell.get('position');
 			var csize = cell.get('size');
-
+			//shelf em um rack
 			if(parent.get('subType') === 'rack') {
 
 				//Aumento de tamanho e re posicionamento
@@ -44,12 +44,12 @@ function equipmentHandle(graph){
 					embedOrConnect(parent, cell);
 
 					var a = parent.get('embeds');
-					console.log(a);
+					//console.log(a);
 					var i;
 					var maior = 0;
 					for (i = 0; i < a.length; i++) {
 						var shelf = graph.getCell(a[i]);
-						console.log(shelf);					
+						//console.log(shelf);					
 						var newpositionx = pposition.x + 15 ;
 
 						shelf.set('position', {
@@ -74,6 +74,7 @@ function equipmentHandle(graph){
 				}
 
 			}else{
+				//slot em uma shelf
 				if(parent.get('subType') === 'shelf'){
 					// selecionar o rack
 					var grandparentId = parent.get('parent');
@@ -84,14 +85,14 @@ function equipmentHandle(graph){
 					var nempositionx;	
 					if(cell.get('subType') === 'slot'){
 						embedOrConnect(parent, cell);
-
+						//pegar os slots dentro da shelf
 						var b = parent.get('embeds');
-						console.log(b);
+						//console.log(b);
 						var i;
 						var maior = 0;
 						for (i = 0; i < b.length; i++) {
 							var slot = graph.getCell(b[i]);
-							console.log(slot);					
+							//console.log(slot);					
 
 							slot.set('position', {
 								x: pposition.x + 20 + ((i) * (42.5)) ,
@@ -105,23 +106,27 @@ function equipmentHandle(graph){
 
 
 						var c = grandparent.get('embeds');
-						console.log(c);
+						//console.log(c);
 						var i;
-						var maior = 0;
+						var maior = (parent.get('size').width);
+						var maiorshelf1 = parent;
 						for (i = 0; i < c.length; i++) {
-							var shelf = graph.getCell(c[i]);
-							console.log(shelf);
-							if (maior < shelf.getEmbeddedCells().length) {
-								maior = shelf.getEmbeddedCells().length;
-								var maiorshelf = shelf;
-								console.log(maiorshelf);
-								console.log(maior);
+							var shelf1 = graph.getCell(c[i]);
+							if (shelf1){							
+								//console.log(shelf1);
+								if (maior < (shelf1.get('size').width)) {
+									maior = (shelf1.get('size').width);
+									maiorshelf1 = shelf1;
+									console.log('a maior shelf :', maiorshelf1);
+									console.log('maior: ', maior);
 
+								}
+								grandparent.set ('size' , {
+									width: maiorshelf1.get('size').width + 40 ,
+									height: grandparent.get('size').height
+								});
 							}
-							grandparent.set ('size' , {
-								width: maiorshelf.get('size').width + 40 ,
-								height: grandparent.get('size').height
-							});
+
 
 						};	
 					}else{
@@ -135,6 +140,7 @@ function equipmentHandle(graph){
 					}
 
 				}else {
+					//card em um slot
 					if(parent.get('subType') === 'slot'){
 						var increasew = (psize.width) ;
 						var increaseh = (psize.height) ;
@@ -241,7 +247,7 @@ function equipmentHandle(graph){
 		else{
 			//Impedir o usuario de insirir um equipamento fora de um rack
 //			if(!(cell.get('subType') === 'rack')){
-//
+
 //			(new joint.ui.Dialog({
 //			type: 'alert' ,
 //			width: 420,
@@ -255,7 +261,7 @@ function equipmentHandle(graph){
 	}, this);
 
 	graph.on('remove' , function (cell) {
-// Mensagem de confirmação do remover
+//		Mensagem de confirmação do remover
 //		if((cell.get('parent') === ) && (!(cell.get('subType') === 'rack'))) {
 //		}else {
 //		var dialog = new joint.ui.Dialog({
@@ -278,6 +284,7 @@ function equipmentHandle(graph){
 		var parentId = cell.get('parent');
 		if (!parentId) return;
 		var parent = graph.getCell(parentId);
+		
 		if(parent.get('subType') === 'rack') {
 
 			var pposition = parent.get('position');
@@ -286,23 +293,63 @@ function equipmentHandle(graph){
 
 			var d = parent.get('embeds');
 			var i;
-			var maior = 0;
+			var maiorl = 0;
 			console.log("to del: ", cell);
-			
-			
+
+
 			l = 0;
-			
+
 			for (i = 0; i < d.length; i++) {
-				var shelf = graph.getCell(d[i]);
-//				
+				var shelf = graph.getCell(d[i]);			
 				if (shelf){
 					console.log("changed: " , shelf);
-		
+
 					shelf.set('position', {
 						x: newpositionx ,
 						y: (pposition.y + 20 + ((l)*(80))) 
-					},{skipParentHandler: true });
+					},{skipParentHandler : true});
 					
+					var sposition = shelf.get('position');
+					if ( maiorl < shelf.getEmbeddedCells().length ){
+						var shelfl = shelf;
+					}
+					
+					var reslot = shelf.get('embeds');
+					
+					var k;
+				for (k=0; k < (reslot.length); k++){
+						var inshelf = graph.getCell(reslot[k]);	
+
+						if(inshelf){
+							console.log('inshelf ' , inshelf)
+							
+//							var childId = inshelf.get('embeds');
+//                             
+//							
+//							var inslot = graph.getCell(childId);													
+//							console.log(inslot);
+							
+							
+							inshelf.set('position', {
+								y: sposition.y + 7 ,
+								x: sposition.x + 20 + ((k) * (42.5)) ,
+							});
+							
+							var slotpos = inshelf.get('position');
+							
+//							inslot.set('position', {
+//								y: slotpos.y + 16 ,
+//								x: slotpos.x + 6
+//							});
+							
+							shelf.set('size', {
+								width: shelf.get('size').width,
+								height: 67.5 },
+								{skipParentHandler : false});
+							
+							//console.log('positon ', inshelf.get('position'));
+							}
+					}
 					l++;
 				}
 			}
@@ -317,20 +364,20 @@ function equipmentHandle(graph){
 //			var i;
 //			var maior2 = 0;
 //			for (i = 0; i < e.length; i++) {
-//				var shelf2 = graph.getCell(e[i]);
-//				console.log(shelf2);
-//				if (maior2 < shelf2.getEmbeddedCells().length) {
-//					maior2 = shelf2.getEmbeddedCells().length;
-//					var maiorshelf2 = shelf2;
-//					console.log(maiorshelf2);
-//					console.log(maior2);
-//
-//				}
-//				parent.set ('size' , {
-//					width: maiorshelf2.get('size').width + 40 ,
-//					height: grandparent.get('size').height
-//				});
-//
+
+//			var shelf2 = graph.getCell(e[i]);
+//			console.log(shelf2);
+//			if (maior2 < shelf2.getEmbeddedCells().length) {
+//			maior2 = shelf2.getEmbeddedCells().length;
+//			var maiorshelf2 = shelf2;
+//			console.log(maiorshelf2);
+//			console.log(maior2);
+
+//			}
+//			parent.set ('size' , {
+//			width: maiorshelf2.get('size').width + 40 ,
+//			height: grandparent.get('size').height
+//			});
 //			};	
 
 		}else{
@@ -396,70 +443,72 @@ function equipmentHandle(graph){
 
 
 	graph.on('change' , function (cell) {
-// Impedir o equipamento filho de sair da area do equipamento pai
-//		var parentId = cell.get('parent');
-//		if (!parentId) return;
-
-//		var parent = graph.getCell(parentId);
-//		var parentBbox = parent.getBBox();
-//		var cellBbox = cell.getBBox();
-
-//		if (parentBbox.containsPoint(cellBbox.origin()) && parentBbox.containsPoint(cellBbox.topRight()) &&
-//		parentBbox.containsPoint(cellBbox.corner()) &&
-//		parentBbox.containsPoint(cellBbox.bottomLeft())) {
-
-//		return;
-//		}
-//		cell.set('position', cell.previous('position'));
-
-	},this);
-
-	graph.on('change:position', function(cell, newPosition, opt) {
-		if (opt.skipRemoveHandler) return;
-		if (opt.skipParentHandler) return;
-
-		if (cell.get('embeds') && cell.get('embeds').length) {
-			// If we're manipulating a parent element, let's store
-			// it's original position to a special property so that
-			// we can shrink the parent element back while manipulating
-			// its children.
-			cell.set('originalPosition', cell.get('position'));
-		}
-
+//		Impedir o equipamento filho de sair da area do equipamento pai
+		
 		var parentId = cell.get('parent');
 		if (!parentId) return;
 
 		var parent = graph.getCell(parentId);
 		var parentBbox = parent.getBBox();
+		var cellBbox = cell.getBBox();
 
-		if (!parent.get('originalPosition')) parent.set('originalPosition', parent.get('position'));
-		if (!parent.get('originalSize')) parent.set('originalSize', parent.get('size'));
+		if (parentBbox.containsPoint(cellBbox.origin()) && parentBbox.containsPoint(cellBbox.topRight()) &&
+		parentBbox.containsPoint(cellBbox.corner()) &&
+		parentBbox.containsPoint(cellBbox.bottomLeft())) {
 
-		var originalPosition = parent.get('originalPosition');
-		var originalSize = parent.get('originalSize');
+		return;
+		}
+		cell.set('position', cell.previous('position'));
 
-		var newX = originalPosition.x;
-		var newY = originalPosition.y;
-		var newCornerX = originalPosition.x + originalSize.width;
-		var newCornerY = originalPosition.y + originalSize.height;
+	},this);
 
-		_.each(parent.getEmbeddedCells(), function(child) {
-
-			var childBbox = child.getBBox();
-
-			if (childBbox.x < newX) { newX = childBbox.x; }
-			if (childBbox.y < newY) { newY = childBbox.y; }
-			if (childBbox.corner().x > newCornerX) { newCornerX = childBbox.corner().x; }
-			if (childBbox.corner().y > newCornerY) { newCornerY = childBbox.corner().y; }
-		});
-
-		// Note that we also pass a flag so that we know we shouldn't adjust the
-		// `originalPosition` and `originalSize` in our handlers as a reaction
-		// on the following `set()` call.
-		parent.set({
-			position: { x: newX, y: newY },
-			size: { width: newCornerX - newX, height: newCornerY - newY }
-		}, { skipParentHandler: true });
+	graph.on('change:position', function(cell, newPosition, opt) {
+//		Metodo para expandir o parent ao arrastar a child para a borda do parent
+//		if (opt.skipRemoveHandler) return;
+//		if (opt.skipParentHandler) return;
+//
+//		if (cell.get('embeds') && cell.get('embeds').length) {
+//			// If we're manipulating a parent element, let's store
+//			// it's original position to a special property so that
+//			// we can shrink the parent element back while manipulating
+//			// its children.
+//			cell.set('originalPosition', cell.get('position'));
+//		}
+//
+//		var parentId = cell.get('parent');
+//		if (!parentId) return;
+//
+//		var parent = graph.getCell(parentId);
+//		var parentBbox = parent.getBBox();
+//
+//		if (!parent.get('originalPosition')) parent.set('originalPosition', parent.get('position'));
+//		if (!parent.get('originalSize')) parent.set('originalSize', parent.get('size'));
+//
+//		var originalPosition = parent.get('originalPosition');
+//		var originalSize = parent.get('originalSize');
+//
+//		var newX = originalPosition.x;
+//		var newY = originalPosition.y;
+//		var newCornerX = originalPosition.x + originalSize.width;
+//		var newCornerY = originalPosition.y + originalSize.height;
+//
+//		_.each(parent.getEmbeddedCells(), function(child) {
+//
+//			var childBbox = child.getBBox();
+//
+//			if (childBbox.x < newX) { newX = childBbox.x; }
+//			if (childBbox.y < newY) { newY = childBbox.y; }
+//			if (childBbox.corner().x > newCornerX) { newCornerX = childBbox.corner().x; }
+//			if (childBbox.corner().y > newCornerY) { newCornerY = childBbox.corner().y; }
+//		});
+//
+//		// Note that we also pass a flag so that we know we shouldn't adjust the
+//		// `originalPosition` and `originalSize` in our handlers as a reaction
+//		// on the following `set()` call.
+//		parent.set({
+//			position: { x: newX, y: newY },
+//			size: { width: newCornerX - newX, height: newCornerY - newY }
+//		}, { skipParentHandler: true });
 	},this);
 
 
