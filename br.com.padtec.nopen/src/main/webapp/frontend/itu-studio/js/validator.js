@@ -1,70 +1,70 @@
 function validator(validator, graph, app) {
     
     // validar inserção de transport functions no grafo
-    validator.validate('add', isNotLink, isTransportFunction, _.bind(function(err, command, next) {      		
-    	var cell = graph.getCell(command.data.id);
-    	var cellType = cell.get('type');
-    	
-		var tFunctionID = cell.id;
-		
-		var tFunctionName = 'TF_' +this.tFunctionCounter;
-		
-		var tFunctionType = cell.get('subtype');
-		var cardID = this.cardID;
-		
-		var containerName = '';
-		var containerType = '';
-    	        	
-    	var position = cell.get('position');
-		var size = cell.get('size');
-		var area = g.rect(position.x, position.y, size.width, size.height);
-		
-		var parent;
-		// get all elements below the added one
-		_.each(graph.getElements(), function(e) {
-		
-			var position = e.get('position');
-			var size = e.get('size');
-			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-				parent = e;
-			}
-		});
-		
-		if(parent) { // existe algum elemento abaixo
-			var parentType = parent.get('type');
-			
-			if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
-				containerName = parent.get('subtype');
-				containerType = 'layer';
-				console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
-				
-				var result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
-				
-				if(result === "success") {	
-					this.isAddingTransportFunction = true;
-					parent.embed(cell);
-					this.tFunctionCounter++;
-					return next(err);
-				} else {
-					return next(result);
-				}
-									
-			} else { // elemento abaixo não é um container
-				return next('Please, add the transport function on the paper or a layer.');
-			}
-		} else { // não existe elemento abaixo
-			// consultar ontologia para inserção de transport function diretamente no card
-			console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
-			var result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
-			
-			if(result === "success") {
-				this.tFunctionCounter++;
-				return next(err);
-			} else {
-				return next(result);
-			}
-		}
-    }, app));
+//    validator.validate('add', isNotLink, isTransportFunction, _.bind(function(err, command, next) {      		
+//    	var cell = graph.getCell(command.data.id);
+//    	var cellType = cell.get('type');
+//    	
+//		var tFunctionID = cell.id;
+//		
+//		var tFunctionName = 'TF_' +this.tFunctionCounter;
+//		
+//		var tFunctionType = cell.get('subtype');
+//		var cardID = this.cardID;
+//		
+//		var containerName = '';
+//		var containerType = '';
+//    	        	
+//    	var position = cell.get('position');
+//		var size = cell.get('size');
+//		var area = g.rect(position.x, position.y, size.width, size.height);
+//		
+//		var parent;
+//		// get all elements below the added one
+//		_.each(graph.getElements(), function(e) {
+//		
+//			var position = e.get('position');
+//			var size = e.get('size');
+//			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+//				parent = e;
+//			}
+//		});
+//		
+//		if(parent) { // existe algum elemento abaixo
+//			var parentType = parent.get('type');
+//			
+//			if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
+//				containerName = parent.get('subtype');
+//				containerType = 'layer';
+//				console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
+//				
+//				var result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+//				
+//				if(result === "success") {	
+//					this.isAddingTransportFunction = true;
+//					parent.embed(cell);
+//					this.tFunctionCounter++;
+//					return next(err);
+//				} else {
+//					return next(result);
+//				}
+//									
+//			} else { // elemento abaixo não é um container
+//				return next('Please, add the transport function on the paper or a layer.');
+//			}
+//		} else { // não existe elemento abaixo
+//			// consultar ontologia para inserção de transport function diretamente no card
+//			console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
+//			var result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+//			
+//			if(result === "success") {
+//				this.tFunctionCounter++;
+//				return next(err);
+//			} else {
+//				return next(result);
+//			}
+//		}
+//    }, app));
     
     // validar inserção de interfaces no grafo
     validator.validate('add', isNotLink, isInterface, _.bind(function(err, command, next) {
@@ -216,48 +216,49 @@ function validator(validator, graph, app) {
     
 
     // validar a remoção de transport functions do grafo
-    validator.validate('remove', isTransportFunction, _.bind(function(err, command, next) {
-
-    	var cellID = command.data.id;
-    	
-		var result = deleteTransportFunction(cellID);
-		if(result === "success") {
-			return next(err);
-		} else {
-			return next(result);
-		}
-    }, app));
+//    validator.validate('remove', isTransportFunction, _.bind(function(err, command, next) {
+//
+//    	var cellID = command.data.id;
+//    	var tFunctionType = command.data.attributes.subtype;
+//    	
+//		var result = deleteTransportFunction(cellID, tFunctionType);
+//		if(result === "success") {
+//			return next(err);
+//		} else {
+//			return next(result);
+//		}
+//    }, app));
     
 
     // validar a remoção de camadas do grafo
-    validator.validate('remove', isLayer, _.bind(function(err, command, next) {
-
-    	var containerName = command.data.attributes.subtype;
-		var containerType = 'layer';
-		var cardID = this.cardID;
-		
-		var result = deleteContainer(containerName, containerType, cardID);
-		if(result === "success") {
-			// TODO: retornar/reabilitar camada ao stencil
-			return next(err);
-		} else {
-			return next(result);
-		}
-    }, app));
+//    validator.validate('remove', isLayer, _.bind(function(err, command, next) {
+//
+//    	var containerName = command.data.attributes.subtype;
+//		var containerType = 'layer';
+//		var cardID = this.cardID;
+//		
+//		var result = deleteContainer(containerName, containerType, cardID);
+//		if(result === "success") {
+//			// TODO: retornar/reabilitar camada ao stencil
+//			return next(err);
+//		} else {
+//			return next(result);
+//		}
+//    }, app));
     
 
     // validar a remoção de interfaces do grafo
-    validator.validate('remove', isInterface, _.bind(function(err, command, next) {
-    	
-    	var cellID = command.data.id;
-    	
-    	var result = deletePort(cellID);			
-		if(result === "success") {
-			return next(err);
-		} else {
-			return next(result);
-		}
-    }, app));
+//    validator.validate('remove', isInterface, _.bind(function(err, command, next) {
+//    	
+//    	var cellID = command.data.id;
+//    	
+//    	var result = deletePort(cellID);			
+//		if(result === "success") {
+//			return next(err);
+//		} else {
+//			return next(result);
+//		}
+//    }, app));
 
     // validar inserção de links no grafo
     validator.validate('change:target change:source', isLink, _.bind(function(err, command, next) {

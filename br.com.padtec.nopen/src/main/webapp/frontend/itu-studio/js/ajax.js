@@ -162,12 +162,13 @@ function canCreateTransportFunction(tFunctionID, tFunctionType, containerName, c
 	return result === "true";
 };
 
-function deleteTransportFunction(id) {
+function deleteTransportFunction(id, type) {
 
 	var result = "error";
 
 	var dtoTransportFunction = {
-			"id" : id
+			"id" : id,
+			"type" : type
 	}
 
 	$.ajax({
