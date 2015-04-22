@@ -21,14 +21,14 @@ public class Main {
 			
 			//#2
 			//String declaredFile = FileUtil.chooseFile("declared instances", "resources/declared/", ".txt");
-			String declaredFile = "resources/declared/Declarado_teste.txt";
+			String declaredFile = "resources/declared/Possível 2.1 - 2 Layer.txt";
 			
 			//#14
 			//String possibleFile = FileUtil.chooseFile("possible instances", "resources/possible/", ".txt");
 			//String possibleFile = "resources/possible/Possiveis 6.0.txt";
-			String possibleFile = "";
+			String possibleFile = "resources/possible/Declarado 2.1 - Base.txt";
 			
-			provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, 1);
+			provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, 1, 1);
 					
 			//#10 and #11
 			int srcInt2ProvIndex = ConsoleUtil.chooseOne(provisioner.getINT_SO_LIST(), "Input Interfaces", "Input Interface that maps an Input Port from Source");

@@ -49,7 +49,7 @@ public class OWLUtil {
 		}
 	}
 	
-	public static void runReasoner(OKCoUploader okcoUploader, boolean inferHierarchies, boolean inferAssertions, boolean inferRules) throws Exception{
+	public static long runReasoner(OKCoUploader okcoUploader, boolean inferHierarchies, boolean inferAssertions, boolean inferRules) throws Exception{
 		okcoUploader.getReasoner().inferAssertions = inferAssertions;
 		okcoUploader.getReasoner().inferHierarchies = inferHierarchies;
 		okcoUploader.getReasoner().inferRules = inferRules;
@@ -62,6 +62,8 @@ public class OWLUtil {
 		if(!result.isSucceed()){
 			throw new Exception(result.getMessage());
 		}
+		
+		return okcoReasoner.getLastReasoningTimeExec();
 	}
 	
 	public static void createInstances(OntModel model, String aBoxFile, int createNTimes) throws Exception{
@@ -84,7 +86,7 @@ public class OWLUtil {
         String[] relationDcls = fileBlocks[2].split(";");
         createRelationInstances(model, relationDcls, newMapping, createNTimes);
         String[] attributeDcls = fileBlocks[3].split(";");
-        createAttributeInstances(model, attributeDcls, newMapping, createNTimes);
+        createAttributeInstances(model, attributeDcls, newMapping, 1);
         
         //System.out.println();
 	}
@@ -93,24 +95,24 @@ public class OWLUtil {
 		String ns = model.getNsPrefixURI("");
 		HashMap<String, String> newMapping = new HashMap<String,String>();
 		List<String> newIndividuals = new ArrayList<String>();
-		for (int j = 0; j < createNTimes; j++) {
+		for (int j = 1; j <= createNTimes; j++) {
 			for (String indvDcl : individualDcls) {
 				indvDcl = indvDcl.replace(" ", "").replace("\n", "");
 				String[] indvDclSplit = indvDcl.split(":");
 				
 				if(indvDclSplit.length >= 2){
-				
 					String type = indvDclSplit[0];
+					
 					String[] individuals = indvDclSplit[1].split(",");
 					for (String indv : individuals) {
 						String lowerLayer = "";
 						if(createNTimes > 1){
 							if(type.equals("Layer_Network")){
-								if(j > 0){
-									lowerLayer  = indv + "_layer" + (j-1);
+								if(j > 1){
+									lowerLayer  = indv + (j-1);
 								}								
 							}
-							indv += "_layer" + j;
+							indv += j;
 						}
 						String oldName = indv;
 						if(!type.equals("Layer_Network")){
@@ -123,7 +125,7 @@ public class OWLUtil {
 						
 						FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type, false);
 						
-						if(type.equals("Layer_Network") && j > 0){
+						if(type.equals("Layer_Network") && j > 1){
 							FactoryUtil.createInstanceRelation(model, ns+indv, ns+"client_of", ns+lowerLayer, false, false, false);
 						}
 						
@@ -153,8 +155,12 @@ public class OWLUtil {
 						String tgt = individuals[i+1].replace(")", "").replace("\t", "");
 						
 						if(createNTimes > 1){
-							src += "_layer" + j;
-							tgt += "_layer" + j;
+							if(!src.equals("layer0")){
+								src += (j+1);
+							}
+							if(!tgt.equals("layer0")){
+								tgt += (j+1);
+							}
 						}
 						
 						String newSrc = newMapping.get(src);
@@ -168,7 +174,7 @@ public class OWLUtil {
 						}					
 						FactoryUtil.createInstanceRelation(model, ns+newSrc, ns+relation, ns+newTgt, false, false, true);
 						
-						if(relation.equals("adapts_to") && j > 0){
+						if(relation.equals("adapts_to")){
 							List<String> serverLayerURIs = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, ns+newTgt, ns+"client_of", ns+"Layer_Network");
 							for (String serverLayerURI : serverLayerURIs) {
 								List<String> serverAfURIs = QueryUtil.getIndividualsURIAtObjectPropertyDomain(model, serverLayerURI, ns+"adapts_to", ns+"Adaptation_Function");

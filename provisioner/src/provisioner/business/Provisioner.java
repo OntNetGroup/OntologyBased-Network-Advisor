@@ -36,14 +36,19 @@ public class Provisioner {
 	List<Interface> INT_SO_LIST;
 	List<Interface> INT_SK_LIST;
 	OKCoUploader okcoUploader = new OKCoUploader();
+	long reasoningTimeExecPostInstances = 0;
 	
-	public Provisioner(String tBoxFile, String declaredInstancesFile, String possibleEquipFile, int createNTimes) throws Exception {
+	public long getReasoningTimeExecPostInstances() {
+		return reasoningTimeExecPostInstances;
+	}
+	
+	public Provisioner(String tBoxFile, String declaredInstancesFile, String possibleEquipFile, int declaredReplications, int possibleReplications) throws Exception {
 		try{
 			//#1
 			model = OWLUtil.createTBox(this.okcoUploader, tBoxFile);
 			ns = model.getNsPrefixURI("");
 			//#3
-			OWLUtil.createInstances(model, declaredInstancesFile, createNTimes);
+			OWLUtil.createInstances(model, declaredInstancesFile, declaredReplications);
 			this.declaredEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
 			createInterfaceHash(this.declaredEquip);
 			//#7 and #8
@@ -62,7 +67,7 @@ public class Provisioner {
 			INT_SK_LIST.removeAll(bindedInterfaces);
 			
 			//#15
-			OWLUtil.createInstances(model, possibleEquipFile, createNTimes);
+			OWLUtil.createInstances(model, possibleEquipFile, possibleReplications);
 			this.possibleEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
 			this.possibleEquip.removeAll(this.declaredEquip);
 			createInterfaceHash(this.possibleEquip);
@@ -74,7 +79,7 @@ public class Provisioner {
 			originalBindedInterfaces.addAll(bindedInterfaces);
 			
 			//#17
-			OWLUtil.runReasoner(okcoUploader, true, true, true);
+			reasoningTimeExecPostInstances = OWLUtil.runReasoner(okcoUploader, true, true, true);
 		}catch(Exception e){
 			OWLUtil.saveNewOwl(model, "resources/output/", "");
 			throw e;
@@ -232,6 +237,7 @@ public class Provisioner {
 			//List<Path> paths = new ArrayList<Path>();
 			paths = findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
 			//algorithmSemiAuto(sourceRoot, true, paths , interfaceTo, usedInterfaces, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+			long semiAutoExecTimeLong = PerformanceUtil.getExecutionTime(beginDate);
 			String semiAutoExecTime = PerformanceUtil.printExecutionTime("findPaths", beginDate);
 			
 			if(paths.size() == 0){
@@ -243,26 +249,34 @@ public class Provisioner {
 				arquivo.delete();
 			}
 			FileOutputStream fos = new FileOutputStream(arquivo);    
-			
-			System.out.println("--- PATHS ---");
-			ArrayList<String> outs = new ArrayList<String>();
-			for(int i = 0; i < paths.size(); i+=1){
-				String out = "";
-				int id = (i+1)/1;
-				if(!outs.contains(out)){
-					outs.add(paths.get(i).toString());
-				}else{
-					throw new Exception("Something went wrong. A duplicated path was found.");
-				}
+			try{
+				String reasonerExec = "Reasoning execution: " + this.reasoningTimeExecPostInstances + "ms\n";
+				String pathsExec = "Find paths execution: " + semiAutoExecTimeLong + "ms\n";
 				
-				out = id + " - " + paths.get(i);
-				
-				System.out.print(out);
-				try{
-					fos.write(out.getBytes());   				  
-				}catch(Exception e){
-					e.printStackTrace();
+				fos.write(reasonerExec.getBytes());
+				fos.write(pathsExec.getBytes());
+				System.out.println("--- PATHS ---");
+				ArrayList<String> outs = new ArrayList<String>();
+				for(int i = 0; i < paths.size(); i+=1){
+					String out = "";
+					int id = (i+1)/1;
+					if(!outs.contains(out)){
+						outs.add(paths.get(i).toString());
+					}else{
+						throw new Exception("Something went wrong. A duplicated path was found.");
+					}
+					
+					out = id + " - " + paths.get(i);
+					
+					System.out.print(out);
+//					try{
+						fos.write(out.getBytes());   				  
+//					}catch(Exception e){
+//						e.printStackTrace();
+//					}
 				}
+			}catch(Exception e){
+				e.printStackTrace();
 			}
 			fos.close();
 			

@@ -116,7 +116,7 @@ public class SPARQLQueries {
 				+ "?tf rdf:type ?tfType .\n"
 				+ "FILTER ( ?tfType  IN (ns:AF_"+srcOrSink+", ns:TF_"+srcOrSink+", ns:Matrix_"+srcOrSink+", ns:Physical_Media) ) .\n"
 				+ "?tf ?tfRel <" + layerURI + "> .\n"
-				+ "FILTER ( ?tfRel IN (ns:defines, ns:adapts_from, ns:hasLayer) ) .\n"
+				+ "FILTER ( ?tfRel IN (ns:defines, ns:adapts_to, ns:hasLayer) ) .\n"
 				+ "}";
 		
 		List<String> result = new ArrayList<String>();	
@@ -354,18 +354,21 @@ public class SPARQLQueries {
 		if(tfTypes.contains(ns+"Termination_Function")){
 			relName1 = "ns:adapts_from, ns:hasLayer";
 			relName2 = "defines";
-			tgtTFtype = "ns:AF_" + srcOrSk + ", ns:Matrix_" + srcOrSk;
+			tgtTFtype = "ns:AF_" + srcOrSk;
+			if(isSource){
+				tgtTFtype += ", ns:Matrix_" + srcOrSk;
+			}			
 		}else if(tfTypes.contains(ns+"Adaptation_Function")){
 			relName1 = "ns:defines";
 			relName2 = "adapts_from";
 			tgtTFtype += "ns:TF_" + srcOrSk;
 			if(!isSource){
-				relName1 += ", ns:adapts_from";
-				tgtTFtype += ", ns:AF_Source";
+				relName1 += ", ns:adapts_from, ns:hasLayer";
+				tgtTFtype += ", ns:AF_Source" + ", ns:Matrix_" + srcOrSk;
 			}
 		}else if(tfTypes.contains(ns+"Matrix")){
 			if(isSource){
-				relName1 = "ns:adapts_from";
+				relName1 = "ns:adapts_to";
 				tgtTFtype += "ns:AF_" + srcOrSk;				
 			}else{
 				relName1 = "ns:defines";

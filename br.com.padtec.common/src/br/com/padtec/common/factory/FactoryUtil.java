@@ -212,6 +212,10 @@ public class FactoryUtil {
 	 */
 	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceSuperObjProp, boolean forceInverses, boolean forceCandSubRelation) throws Exception
 	{			
+		if(model == null){
+			throw new Exception("The model is null.");
+		}
+		
 		isValid(model, indvSourceURI);
 		isValid(model, indvTargetURI);
 		isValid(model, objectPropertyURI);
@@ -228,11 +232,15 @@ public class FactoryUtil {
 		Individual indvSource = model.getIndividual(indvSourceURI);
 		Individual indvTarget = model.getIndividual(indvTargetURI);
 		ObjectProperty objProp = model.getObjectProperty(objectPropertyURI);
-		
-		if(indvSource == null || indvTarget == null || objProp == null || model == null){
-			System.out.println();
-			System.out.println();
+		String ns = model.getNsPrefixURI("");
+		if(indvSource == null){
+			throw new Exception("Check your specification. The individual " + indvSourceURI.replace(ns, "") + " is UNDECLARED.");
+		}else if(indvTarget == null){
+			throw new Exception("Check your specification. The individual " + indvTargetURI.replace(ns, "") + " is UNDECLARED.");
+		}else if(objProp == null){
+			throw new Exception("Check your specification. The relation " + objectPropertyURI.replace(ns, "") + " is UNDECLARED.");
 		}
+		
 		Statement stmt = model.createStatement(indvSource, objProp, indvTarget);
 		model.add(stmt);
 		

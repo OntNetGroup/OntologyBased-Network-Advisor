@@ -145,7 +145,8 @@ public class HermitReasonerImpl extends OntologyReasoner {
     	bais = new ByteArrayInputStream(baos2.toByteArray());
 		model.read(bais, null);
 		
-		PerformanceUtil.printExecutionTime("Hermit reasoning finished", beginDate );
+		this.reasoningTimeExec = PerformanceUtil.getExecutionTime(beginDate);
+		PerformanceUtil.printExecutionTime("Hermit reasoning finished", beginDate );		
 //		long tempo = System.currentTimeMillis() - antes;        
 //		System.out.printf("Hermit executed in %d miliseconds.%n", tempo);
 		

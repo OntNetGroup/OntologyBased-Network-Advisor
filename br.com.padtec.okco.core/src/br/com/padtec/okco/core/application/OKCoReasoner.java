@@ -6,6 +6,11 @@ public class OKCoReasoner {
 	
 	protected OKCoUploader repository; 
 	protected OKCoSelector selector; 
+	long lastReasoningTimeExec = 0;
+	
+	public long getLastReasoningTimeExec() {
+		return lastReasoningTimeExec;
+	}
 	
 	public OKCoReasoner(OKCoUploader repository, OKCoSelector selector)
 	{
@@ -30,7 +35,8 @@ public class OKCoReasoner {
 			/** Storing a temporary model... */
 			repository.storeTemporaryModelFromBaseModel();
 			/** Running reasoner... */
-			repository.substituteInferredModelFromBaseModel(useInference);			
+			repository.substituteInferredModelFromBaseModel(useInference);	
+			this.lastReasoningTimeExec = repository.getLastReasoningTimeExec();
 			/** Clean List of modified individuals */
 			selector.clearModified();
 		}

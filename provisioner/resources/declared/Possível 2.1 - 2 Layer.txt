@@ -1,0 +1,319 @@
+***
+
+Layer_Network:	L0, 
+				L1,
+				L2;
+
+Equipment:	eq_L2_so1, eq_L2_so2, 
+			eq_L2_sk1, eq_L2_sk2, 
+
+			eq_L1_so1, eq_L1_so2, 
+			eq_L1_sk1, eq_L1_sk2; 
+			
+Input_Interface:	eq_L2_so1_in, eq_L2_so2_in,
+					eq_L2_sk1_in1, eq_L2_sk1_in2, eq_L2_sk2_in1, eq_L2_sk2_in2,
+
+					eq_L1_so1_in, eq_L1_so2_in,
+					eq_L1_sk1_in1, eq_L1_sk1_in2, eq_L1_sk2_in1, eq_L1_sk2_in2;
+					
+Output_Interface:	eq_L2_so1_out1, eq_L2_so1_out2, eq_L2_so2_out1, eq_L2_so2_out2,
+					eq_L2_sk1_out, eq_L2_sk2_out,
+
+					eq_L1_so1_out1, eq_L1_so1_out2, eq_L1_so2_out1, eq_L1_so2_out2,
+					eq_L1_sk1_out, eq_L1_sk2_out;
+					
+AF_Source:	af_L2_so1,
+			af_L2_so2,
+			
+			af_L1_so1,
+			af_L1_so2;
+			
+TF_Source:	tf_L2_so1,
+			tf_L2_so2,
+
+			tf_L1_so1,
+			tf_L1_so2;
+			
+Matrix_Source: 	m_L2_so1,
+				m_L2_so2,
+
+				m_L1_so1,
+				m_L1_so2;
+
+AF_Sink:	af_L2_sk1,
+			af_L2_sk2,
+
+			af_L1_sk1,
+			af_L1_sk2;
+			
+TF_Sink:	tf_L2_sk1,
+			tf_L2_sk2,
+
+			tf_L1_sk1,
+			tf_L1_sk2;
+			
+Matrix_Sink: 	m_L2_sk1,
+				m_L2_sk2,
+
+				m_L1_sk1,
+				m_L1_sk2;
+
+Input:	tf_L2_so1_in,
+		af_L2_so1_in,
+		m_L2_so1_in,
+		tf_L2_so2_in,
+		af_L2_so2_in,
+		m_L2_so2_in,
+		tf_L2_sk1_in,
+		af_L2_sk1_in,
+		m_L2_sk1_in1,
+		m_L2_sk1_in2,
+		tf_L2_sk2_in,
+		af_L2_sk2_in,
+		m_L2_sk2_in1,
+		m_L2_sk2_in2,
+
+		tf_L1_so1_in,
+		af_L1_so1_in,
+		m_L1_so1_in,
+		tf_L1_so2_in,
+		af_L1_so2_in,
+		m_L1_so2_in,
+		tf_L1_sk1_in,
+		af_L1_sk1_in,
+		m_L1_sk1_in1,
+		m_L1_sk1_in2,
+		tf_L1_sk2_in,
+		af_L1_sk2_in,
+		m_L1_sk2_in1,
+		m_L1_sk2_in2;
+		
+Output:	tf_L2_so1_out,
+		af_L2_so1_out,
+		m_L2_so1_out1,
+		m_L2_so1_out2,
+		tf_L2_so2_out,
+		af_L2_so2_out,
+		m_L2_so2_out1,
+		m_L2_so2_out2,
+		tf_L2_sk1_out,
+		af_L2_sk1_out,
+		m_L2_sk1_out,
+		tf_L2_sk2_out,
+		af_L2_sk2_out,
+		m_L2_sk2_out,
+		
+		tf_L1_so1_out,
+		af_L1_so1_out,
+		m_L1_so1_out1,
+		m_L1_so1_out2,
+		tf_L1_so2_out,
+		af_L1_so2_out,
+		m_L1_so2_out1,
+		m_L1_so2_out2,
+		tf_L1_sk1_out,
+		af_L1_sk1_out,
+		m_L1_sk1_out,
+		tf_L1_sk2_out,
+		af_L1_sk2_out,
+		m_L1_sk2_out;
+		
+***
+
+client_of:	(L2	,	L1	),
+			(L1	,	L0	);
+
+componentOf:	(eq_L2_so1	,	eq_L2_so1_in	),
+				(eq_L2_so1	,	eq_L2_so1_out1	),
+				(eq_L2_so1	,	eq_L2_so1_out2	),
+				(eq_L2_so2	,	eq_L2_so2_in	),
+				(eq_L2_so2	,	eq_L2_so2_out1	),
+				(eq_L2_so2	,	eq_L2_so2_out2	),
+				(eq_L2_sk1	,	eq_L2_sk1_in1	),
+				(eq_L2_sk1	,	eq_L2_sk1_in2	),
+				(eq_L2_sk1	,	eq_L2_sk1_out	),
+				(eq_L2_sk2	,	eq_L2_sk2_in1	),
+				(eq_L2_sk2	,	eq_L2_sk2_in2	),
+				(eq_L2_sk2	,	eq_L2_sk2_out	),
+				
+				(eq_L1_so1	,	eq_L1_so1_in	),
+				(eq_L1_so1	,	eq_L1_so1_out1	),
+				(eq_L1_so1	,	eq_L1_so1_out2	),
+				(eq_L1_so2	,	eq_L1_so2_in	),
+				(eq_L1_so2	,	eq_L1_so2_out1	),
+				(eq_L1_so2	,	eq_L1_so2_out2	),
+				(eq_L1_sk1	,	eq_L1_sk1_in1	),
+				(eq_L1_sk1	,	eq_L1_sk1_in2	),
+				(eq_L1_sk1	,	eq_L1_sk1_out	),
+				(eq_L1_sk2	,	eq_L1_sk2_in1	),
+				(eq_L1_sk2	,	eq_L1_sk2_in2	),
+				(eq_L1_sk2	,	eq_L1_sk2_out	);
+				
+adapts_from:	(af_L1_so1	,	L2	),
+				(af_L1_so2	,	L2	),
+				(af_L1_sk1	,	L2	),
+				(af_L1_sk2	,	L2	);
+				
+adapts_to:		(af_L2_so1	,	L2	),
+				(af_L2_so2	,	L2	),
+				(af_L2_sk1	,	L2	),
+				(af_L2_sk2	,	L2	),
+				
+				(af_L1_so1	,	L1	),
+				(af_L1_so2	,	L1	),
+				(af_L1_sk1	,	L1	),
+				(af_L1_sk2	,	L1	);
+				
+defines:		(tf_L2_so1	,	L2	),
+				(tf_L2_so2	,	L2	),
+				(tf_L2_sk1	,	L2	),
+				(tf_L2_sk2	,	L2	),
+				
+				(tf_L1_so1	,	L1	),
+				(tf_L1_so2	,	L1	),
+				(tf_L1_sk1	,	L1	),
+				(tf_L1_sk2	,	L1	);
+				
+hasLayer:		(m_L2_so1	,	L2	),
+				(m_L2_so2	,	L2	),
+				(m_L2_sk1	,	L2	),
+				(m_L2_sk2	,	L2	),
+				
+				(m_L1_so1	,	L1	),
+				(m_L1_so2	,	L1	),
+				(m_L1_sk1	,	L1	),
+				(m_L1_sk2	,	L1	);
+				
+componentOf:	(eq_L2_so1	,	af_L2_so1	),
+				(eq_L2_so1	,	tf_L2_so1	),
+				(eq_L2_so1	,	m_L2_so1	),
+				(eq_L2_so2	,	af_L2_so2	),
+				(eq_L2_so2	,	tf_L2_so2	),
+				(eq_L2_so2	,	m_L2_so2	),
+				(eq_L2_sk1	,	af_L2_sk1	),
+				(eq_L2_sk1	,	tf_L2_sk1	),
+				(eq_L2_sk1	,	m_L2_sk1	),
+				(eq_L2_sk2	,	af_L2_sk2	),
+				(eq_L2_sk2	,	tf_L2_sk2	),
+				(eq_L2_sk2	,	m_L2_sk2	),
+				
+				(eq_L1_so1	,	af_L1_so1	),
+				(eq_L1_so1	,	tf_L1_so1	),
+				(eq_L1_so1	,	m_L1_so1	),
+				(eq_L1_so2	,	af_L1_so2	),
+				(eq_L1_so2	,	tf_L1_so2	),
+				(eq_L1_so2	,	m_L1_so2	),
+				(eq_L1_sk1	,	af_L1_sk1	),
+				(eq_L1_sk1	,	tf_L1_sk1	),
+				(eq_L1_sk1	,	m_L1_sk1	),
+				(eq_L1_sk2	,	af_L1_sk2	),
+				(eq_L1_sk2	,	tf_L1_sk2	),
+				(eq_L1_sk2	,	m_L1_sk2	);
+				
+componentOf:	(af_L2_so1	,	af_L2_so1_in	),
+				(af_L2_so1	,	af_L2_so1_out	),
+				(tf_L2_so1	,	tf_L2_so1_in	),
+				(tf_L2_so1	,	tf_L2_so1_out	),
+				(m_L2_so1	,	m_L2_so1_in		),
+				(m_L2_so1	,	m_L2_so1_out1	),
+				(m_L2_so1	,	m_L2_so1_out2	),
+				(af_L2_so2	,	af_L2_so2_in	),
+				(af_L2_so2	,	af_L2_so2_out	),
+				(tf_L2_so2	,	tf_L2_so2_in	),
+				(tf_L2_so2	,	tf_L2_so2_out	),
+				(m_L2_so2	,	m_L2_so2_in		),
+				(m_L2_so2	,	m_L2_so2_out1	),
+				(m_L2_so2	,	m_L2_so2_out2	),
+				(af_L2_sk1	,	af_L2_sk1_in	),
+				(af_L2_sk1	,	af_L2_sk1_out	),
+				(tf_L2_sk1	,	tf_L2_sk1_in	),
+				(tf_L2_sk1	,	tf_L2_sk1_out	),
+				(m_L2_sk1	,	m_L2_sk1_in1	),
+				(m_L2_sk1	,	m_L2_sk1_in2	),
+				(m_L2_sk1	,	m_L2_sk1_out	),
+				(af_L2_sk2	,	af_L2_sk2_in	),
+				(af_L2_sk2	,	af_L2_sk2_out	),
+				(tf_L2_sk2	,	tf_L2_sk2_in	),
+				(tf_L2_sk2	,	tf_L2_sk2_out	),
+				(m_L2_sk2	,	m_L2_sk2_in1	),
+				(m_L2_sk2	,	m_L2_sk2_in2	),
+				(m_L2_sk2	,	m_L2_sk2_out	),
+				
+				(af_L1_so1	,	af_L1_so1_in	),
+				(af_L1_so1	,	af_L1_so1_out	),
+				(tf_L1_so1	,	tf_L1_so1_in	),
+				(tf_L1_so1	,	tf_L1_so1_out	),
+				(m_L1_so1	,	m_L1_so1_in		),
+				(m_L1_so1	,	m_L1_so1_out1	),
+				(m_L1_so1	,	m_L1_so1_out2	),
+				(af_L1_so2	,	af_L1_so2_in	),
+				(af_L1_so2	,	af_L1_so2_out	),
+				(tf_L1_so2	,	tf_L1_so2_in	),
+				(tf_L1_so2	,	tf_L1_so2_out	),
+				(m_L1_so2	,	m_L1_so2_in		),
+				(m_L1_so2	,	m_L1_so2_out1	),
+				(m_L1_so2	,	m_L1_so2_out2	),
+				(af_L1_sk1	,	af_L1_sk1_in	),
+				(af_L1_sk1	,	af_L1_sk1_out	),
+				(tf_L1_sk1	,	tf_L1_sk1_in	),
+				(tf_L1_sk1	,	tf_L1_sk1_out	),
+				(m_L1_sk1	,	m_L1_sk1_in1	),
+				(m_L1_sk1	,	m_L1_sk1_in2	),
+				(m_L1_sk1	,	m_L1_sk1_out	),
+				(af_L1_sk2	,	af_L1_sk2_in	),
+				(af_L1_sk2	,	af_L1_sk2_out	),
+				(tf_L1_sk2	,	tf_L1_sk2_in	),
+				(tf_L1_sk2	,	tf_L1_sk2_out	),
+				(m_L1_sk2	,	m_L1_sk2_in1	),
+				(m_L1_sk2	,	m_L1_sk2_in2	),
+				(m_L1_sk2	,	m_L1_sk2_out	);
+				
+binds:	(af_L2_so1_out	,	tf_L2_so1_in	),
+		(tf_L2_so1_out	,	m_L2_so1_in		),
+		(af_L2_so2_out	,	tf_L2_so2_in	),
+		(tf_L2_so2_out	,	m_L2_so2_in		),
+		(af_L2_sk1_in	,	tf_L2_sk1_out	),
+		(tf_L2_sk1_in	,	m_L2_sk1_out	),
+		(af_L2_sk2_in	,	tf_L2_sk2_out	),
+		(tf_L2_sk2_in	,	m_L2_sk2_out	),
+		
+		(af_L1_so1_out	,	tf_L1_so1_in	),
+		(tf_L1_so1_out	,	m_L1_so1_in		),
+		(af_L1_so2_out	,	tf_L1_so2_in	),
+		(tf_L1_so2_out	,	m_L1_so2_in		),
+		(af_L1_sk1_in	,	tf_L1_sk1_out	),
+		(tf_L1_sk1_in	,	m_L1_sk1_out	),
+		(af_L1_sk2_in	,	tf_L1_sk2_out	),
+		(tf_L1_sk2_in	,	m_L1_sk2_out	);
+		
+maps:	(eq_L2_so1_in	,	af_L2_so1_in	),
+		(eq_L2_so2_in	,	af_L2_so2_in	),
+		(eq_L2_sk1_in1	,	m_L2_sk1_in1	),
+		(eq_L2_sk1_in2	,   m_L2_sk1_in2	),
+		(eq_L2_sk2_in1	,	m_L2_sk2_in1	),
+		(eq_L2_sk2_in2	,   m_L2_sk2_in2	),
+		(eq_L2_so1_out1	,	m_L2_so1_out1	),
+		(eq_L2_so1_out2	,	m_L2_so1_out2	),
+		(eq_L2_so2_out1	,	m_L2_so2_out1	),
+		(eq_L2_so2_out2	,   m_L2_so2_out2	),
+		(eq_L2_sk1_out	,	af_L2_sk1_out	),
+		(eq_L2_sk2_out	, 	af_L2_sk2_out	),
+		
+		(eq_L1_so1_in	,	af_L1_so1_in	),
+		(eq_L1_so2_in	,	af_L1_so2_in	),
+		(eq_L1_sk1_in1	,	m_L1_sk1_in1	),
+		(eq_L1_sk1_in2	,   m_L1_sk1_in2	),
+		(eq_L1_sk2_in1	,	m_L1_sk2_in1	),
+		(eq_L1_sk2_in2	,   m_L1_sk2_in2	),
+		(eq_L1_so1_out1	,	m_L1_so1_out1	),
+		(eq_L1_so1_out2	,	m_L1_so1_out2	),
+		(eq_L1_so2_out1	,	m_L1_so2_out1	),
+		(eq_L1_so2_out2	,   m_L1_so2_out2	),
+		(eq_L1_sk1_out	,	af_L1_sk1_out	),
+		(eq_L1_sk2_out	, 	af_L1_sk2_out	);
+		
+***
+
+Layer_Network.isLast: (L0, true, boolean);
+
+***

@@ -9,7 +9,11 @@ public abstract class OntologyReasoner {
 	public boolean inferHierarchies = true;
 	public boolean inferAssertions = true;
 	public boolean inferRules = true;
+	long reasoningTimeExec = 0;
 	
 	public abstract InfModel run(BaseModelRepository baseRepository);
 	public abstract InfModel run(OntModel baseModel);
+	public long getReasoningTimeExec(){
+		return this.reasoningTimeExec;
+	}
 }
