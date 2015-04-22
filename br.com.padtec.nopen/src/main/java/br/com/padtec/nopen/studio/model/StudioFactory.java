@@ -14,7 +14,7 @@ public class StudioFactory {
 	 * @author John Guerson
 	 */
 	public static void createTTF(String ttfId, String layerId) throws Exception
-	{
+	{		
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+ttfId, 
@@ -27,6 +27,9 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
 			StudioComponents.studioRepository.getNamespace()+layerId
 		);
+		
+		System.out.println("Creating TTF: "+ttfId);
+		System.out.println("At Layer: "+layerId);
 	}
 	
 	/**
@@ -46,6 +49,22 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf1_Card_TF_Card_Element,
 			StudioComponents.studioRepository.getNamespace()+afId
 		);
+		
+		System.out.println("Creating AF: "+afId);
+		System.out.println("At Card: "+cardId);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void deleteTF(String tfId)
+	{
+		FactoryUtil.deleteIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+tfId
+		);
+		
+		System.out.println("Deleting TF: "+tfId);		
 	}
 	
 	/**
@@ -65,6 +84,9 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf16_Transport_Function_Input,
 			StudioComponents.studioRepository.getNamespace()+portId
 		);
+		
+		System.out.println("Creating IN: "+portId);	
+		System.out.println("At TF: "+tfId);
 	}
 	
 	/**
@@ -84,9 +106,60 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf17_Transport_Function_Output,
 			StudioComponents.studioRepository.getNamespace()+portId
 		);
+		
+		System.out.println("Creating OUT: "+portId);	
+		System.out.println("At TF: "+tfId);	
 	}
 	
 	/**
+	 * @author John Guerson
+	 */
+	public static void deletePort(String portId)
+	{
+		FactoryUtil.deleteIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+portId
+		);
+		
+		System.out.println("Deleting Port (IN|OUT): "+portId);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void insertLayer(String containerId, String cardId) throws Exception 
+	{
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+cardId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
+			StudioComponents.studioRepository.getNamespace()+containerId
+		);		
+		
+		System.out.println("Creating Layer: "+containerId);
+		System.out.println("At Card: "+cardId);
+	}
+		
+	/**
+	 * @author John Guerson
+	 */
+	public static void deleteLayer(String containerId, String cardId)
+	{
+		FactoryUtil.deleteObjectProperty(
+			StudioComponents.studioRepository.getBaseModel(),
+			StudioComponents.studioRepository.getNamespace()+cardId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
+			StudioComponents.studioRepository.getNamespace()+containerId
+		);
+		
+		System.out.println("Deleting Layer: "+containerId);
+		System.out.println("At Card: "+cardId);
+	}
+	
+	//=============================================================================================
+	
+	/**
+	 * @author John Guerson
 	 * @author Jordana Salamon
 	 */
 	@SuppressWarnings("unused")
@@ -103,12 +176,12 @@ public class StudioFactory {
 						
 		if(tfType.equals("TTF") && containerType=="card")
 		{			
-
+			throw new Exception("You cannot create a Trail Transport Function into a Card");
 		}
 		
 		if(tfType.equals("AF") && containerType=="layer") 
 		{ 
-
+			throw new Exception("You cannot create an Adaptation Function into a Layer");
 		};
 	}
 	
@@ -130,16 +203,16 @@ public class StudioFactory {
 		{
 			createTTF(tfId, containerId);
 		}
-		
-		if(tfType.equals("AF") && containerType.equals("card")) 
+		else if(tfType.equals("AF") && containerType.equals("card")) 
 		{
 			createAF(tfId, cardId);
-		}
-				
-		System.out.println("\nCreating... ");
-		System.out.println("\tTransport Function: \""+tfId+"\"-\""+tfType+"\"");
-		System.out.println("\tat Container: \""+containerId+"\"-\""+containerType+"\"");
-		System.out.println("\tat Card: \""+cardId+"\"-\""+cardType+"\"");						
+			
+		} else {
+			System.out.println("\nCreating... ");
+			System.out.println("\tTransport Function: \""+tfId+"\"-\""+tfType+"\"");
+			System.out.println("\tat Container: \""+containerId+"\"-\""+containerType+"\"");
+			System.out.println("\tat Card: \""+cardId+"\"-\""+cardType+"\"");	
+		}								
 	}
 		
 	public static void deleteTransportFunction(DtoJointElement dtoTransportFunction) throws Exception 
@@ -147,13 +220,14 @@ public class StudioFactory {
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();
 		
-		FactoryUtil.deleteIndividual(
-			StudioComponents.studioRepository.getBaseModel(), 
-			StudioComponents.studioRepository.getNamespace()+tfId
-		);
-		
-		System.out.println("\nDeleting... ");
-		System.out.println("\tTransport Function: \""+tfId+"\"-\""+tfType+"\"");		
+		if(tfType.equals("TTF") || tfType.equals("AF"))
+		{
+			deleteTF(tfId);
+			
+		} else {
+			System.out.println("\nDeleting... ");
+			System.out.println("\tTransport Function: \""+tfId+"\"-\""+tfType+"\"");	
+		}			
 	}
 	
 	public static void createPort(DtoJointElement dtoPort, DtoJointElement dtoTransportFunction) throws Exception 
@@ -168,15 +242,17 @@ public class StudioFactory {
 		{
 			createIN(portId, tfId);
 		}
-		
-		if(portType.equals("out")) 
+		else  if(portType.equals("out")) 
 		{
 			createOUT(portId, tfId);
+		
+		
+		} else {
+			System.out.println("\nCreating... ");
+			System.out.println("\tPort: \""+portId+"\"-\""+portType+"\"");
+			System.out.println("\tat Transport Function: \""+tfId+"\"-\""+tfType+"\"");	
 		}
 		
-		System.out.println("\nCreating... ");
-		System.out.println("\tPort: \""+portId+"\"-\""+portType+"\"");
-		System.out.println("\tat Transport Function: \""+tfId+"\"-\""+tfType+"\"");
 	}
 
 	public static void deletePort(DtoJointElement dtoPort) throws Exception 
@@ -184,13 +260,15 @@ public class StudioFactory {
 		String portType = dtoPort.getType();		
 		String portId = dtoPort.getId();
 		
-		FactoryUtil.deleteIndividual(
-			StudioComponents.studioRepository.getBaseModel(), 
-			StudioComponents.studioRepository.getNamespace()+portId
-		);
+		if(portType.equals("in") || portType.equals("out"))
+		{
+			deletePort(portId);
+		}
 		
-		System.out.println("\nDeleting... ");
-		System.out.println("\tPort: \""+portId+"\"-\""+portType+"\"");		
+		else{
+			System.out.println("\nDeleting... ");
+			System.out.println("\tPort: \""+portId+"\"-\""+portType+"\"");
+		}		
 	}
 	
 	public static void insertContainer(DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception 
@@ -201,9 +279,16 @@ public class StudioFactory {
 		String cardType = dtoCard.getType();
 		String cardId = dtoCard.getId();
 		
-		System.out.println("\nInserting... ");
-		System.out.println("\tContainer: \""+containerId+"\"-\""+containerType+"\"");
-		System.out.println("\tat Card: \""+cardId+"\"-\""+cardType+"\"");
+		if(containerType.equals("layer"))
+		{
+			insertLayer(containerId, cardId);
+		}
+		
+		else{
+			System.out.println("\nInserting... ");
+			System.out.println("\tContainer: \""+containerId+"\"-\""+containerType+"\"");
+			System.out.println("\tat Card: \""+cardId+"\"-\""+cardType+"\"");
+		}
 	}
 
 	public static void deleteContainer(DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
@@ -214,9 +299,16 @@ public class StudioFactory {
 		String cardType = dtoCard.getType();
 		String cardId = dtoCard.getId();
 		
-		System.out.println("\nDeleting... ");
-		System.out.println("\tContainer: \""+containerId+"\"-\""+containerType+"\"");
-		System.out.println("\tat Card: \""+cardId+"\"-\""+cardType+"\"");
+		if(containerType.equals("layer"))
+		{
+			deleteLayer(containerId, cardId);
+		}
+		
+		else{
+			System.out.println("\nDeleting... ");
+			System.out.println("\tContainer: \""+containerId+"\"-\""+containerType+"\"");
+			System.out.println("\tat Card: \""+cardId+"\"-\""+cardType+"\"");
+		}
 	}
 	
 	public static void changeContainer(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer, DtoJointElement dtoCard)  throws Exception

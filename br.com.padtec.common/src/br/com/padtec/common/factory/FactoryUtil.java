@@ -193,7 +193,7 @@ public class FactoryUtil {
 			return true;
 		}
 		if(model==null) throw new Exception("No ontology recognized at the creation of a new element. ");
-		if(elemURI==null) throw new Exception("Cannot create a new element with an entire Null URI.");
+		if(elemURI==null) throw new Exception("Cannot create a new element with a Null URI.");
 		return false;
 	}
 	

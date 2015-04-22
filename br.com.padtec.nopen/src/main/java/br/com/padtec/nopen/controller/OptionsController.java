@@ -42,7 +42,7 @@ public class OptionsController {
 			NOpenRegister.unregisterLayer(layerName);	
 		}
 		
-		return "Successfull Registered";
+		return "Successfully Registered";
 	}
 	
 	@RequestMapping(value = "/createTech", method = RequestMethod.POST)
@@ -50,7 +50,7 @@ public class OptionsController {
 	{
 		NOpenRegister.registerTechnology(techName);
 		
-		return "Successfull Registered";
+		return "Successfully Registered";
 	}	
 	
 	@RequestMapping(value = "/createLayer", method = RequestMethod.POST)
@@ -58,6 +58,6 @@ public class OptionsController {
 	{
 		NOpenRegister.registerLayer(layerName, techName);
 		
-		return "Successfull Registered";
+		return "Successfully Registered";
 	}
 }

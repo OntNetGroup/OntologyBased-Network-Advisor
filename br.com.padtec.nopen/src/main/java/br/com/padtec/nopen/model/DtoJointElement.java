@@ -6,7 +6,7 @@ public class DtoJointElement {
 	private String name = null;
 	private String type = null;
 	
-	//Introducing the dummy constructor
+	//Introducing dummy constructor
     public DtoJointElement() {
     }
 	
