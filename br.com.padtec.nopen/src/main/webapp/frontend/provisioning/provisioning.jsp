@@ -73,6 +73,11 @@
             
             graphHandle(app.graph);
             
+            if(getUrlParameter('provisioning')){
+            	var provisioning = getUrlParameter('provisioning');
+            	openFromURL(provisioning, app.graph);
+            }
+            
             var uuid = joint.util.uuid();
 
             $('#btn-save').click(function(){

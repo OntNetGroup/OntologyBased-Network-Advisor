@@ -1,11 +1,11 @@
-function getTopologies(){
+function getEquipments(){
 	
 	var content
 	
 	$.ajax({
 	   type: "GET",
 	   async: false,
-	   url: "getAllTopologies.htm",
+	   url: "getAllEquipments.htm",
 	   dataType: 'json',
 	   success: function(data){ 		   
 		   generateOptionsContent(data)
@@ -26,12 +26,11 @@ function getTopologies(){
 			}
 			
 			content = content + '<div class="btn-group">'
-									+ '<a class="btn" title="Edit" href="network-topology.htm?topology=' + data[i].topology + '"><i class="icon-edit"></i></a>' 
-									+ '<a class="btn" title="Delete" onclick="deleteTopology(\'' + data[i].topology + '\')"><i class="icon-trash"></i></a>'
-									+ '<span class="name">' + data[i].topology + '</span>'
+									+ '<a class="btn" title="Edit" href="equipment-studio.htm?equipment=' + data[i].equipment + '"><i class="icon-edit"></i></a>' 
+									+ '<a class="btn" title="Delete" onclick="deleteEquipment(\'' + data[i].equipment + '\')"><i class="icon-trash"></i></a>'
+									+ '<span class="name">' + data[i].equipment + '</span>'
 								+ '</div>'
 								+ '<br/><hr/>'
-
 		}
 		
 	}
@@ -40,14 +39,14 @@ function getTopologies(){
 
 };
 
-function deleteTopology(filename){
+function deleteEquipment(filename){
 	
 	if (confirm('Are you sure you want to delete this file?')) {
 	
 		$.ajax({
 		   type: "POST",
 		   async: false,
-		   url: "deleteTopology.htm",
+		   url: "deleteEquipment.htm",
 		   data: {
 			   'filename' : filename
 		   },

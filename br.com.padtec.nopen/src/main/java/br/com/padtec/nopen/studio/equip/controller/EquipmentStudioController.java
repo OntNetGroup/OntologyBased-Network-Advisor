@@ -47,9 +47,10 @@ public class EquipmentStudioController {
 		String path = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + filename + "/itu/");
 		File dir = new File(path);
 		
-		for(File file : dir.listFiles()){ 
-			file.getName();
-			file.delete();
+		if(dir.exists()){
+			for(File file : dir.listFiles()){ 
+				file.delete();
+			}
 		}
 	}
 	

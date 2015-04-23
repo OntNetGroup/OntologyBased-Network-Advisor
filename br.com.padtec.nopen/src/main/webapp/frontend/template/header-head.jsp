@@ -106,5 +106,19 @@
 		width: 18.422%;
 		min-width: 200px;
 	}	
-
+	@media only screen and (max-width: 991px) and (min-width: 768px){
+		a#main-menu-toggle {
+			  margin-left: 0%;
+		}
+	}
+	
+	@media only screen and (max-width: 767px){	
+		.navbar-collapse {
+			max-height: 767px;
+		}
+		
+		.container #sidebar-left {
+		  width: 90%;
+		}
+	}
 </style>
