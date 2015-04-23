@@ -2191,11 +2191,11 @@ public class QueryUtil {
 	}
 	
 	public static boolean hasSubClass(InfModel model, String classID){
-		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#>"
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
 
 				+ "ASK "
-				+ "WHERE { ?subject rdfs:subClassOf ont:" + classID + " ."
+				+ "WHERE { ?subject rdfs:subClassOf <" + classID + "> ."
 				+ "}";
 		
 		Query query = QueryFactory.create(queryString);
@@ -2203,5 +2203,27 @@ public class QueryUtil {
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		boolean hasSubClass = qe.execAsk();		
 		return hasSubClass;
+	}
+	
+	public static ArrayList<String> SubClass(InfModel model, String classID){
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+
+				+ "SELECT ?subject "
+				+ "WHERE { ?subject rdfs:subClassOf <" + classID + "> ."
+				+ "}";
+		
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		
+		ArrayList<String> SubClass = new ArrayList<String>();
+		while (results.hasNext())	
+		{			
+			QuerySolution row= results.next();
+		    RDFNode x = row.get("subject");	
+		    	SubClass.add(x.toString());
+		}			
+		return SubClass;
 	}
 }

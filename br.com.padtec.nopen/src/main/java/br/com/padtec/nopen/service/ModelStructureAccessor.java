@@ -1,7 +1,9 @@
 package br.com.padtec.nopen.service;
 
 import java.util.HashMap;
+
 import br.com.padtec.nopen.studio.service.StudioComponents;
+import br.com.padtec.okco.core.application.OKCoUploader;
 
 public final class ModelStructureAccessor {
 	private static HashMap<String, String> relations_mapping = new HashMap<String, String>();
@@ -19,8 +21,8 @@ public final class ModelStructureAccessor {
 		return relations_mapping;
 	}
 	
-	public static void initContainerStructure(String container){
-		relations_mapping = ModelStructureAccessorController.buildContainerStructure(container, StudioComponents.studioRepository);
+	public static void initContainerStructure(String container, OKCoUploader repository){
+		relations_mapping = ModelStructureAccessorController.buildContainerStructure(container, repository);
 	}
 
 }

@@ -1,5 +1,6 @@
 package br.com.padtec.nopen.service.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -104,11 +105,11 @@ public class NOpenQueryUtil {
 		HashSet<String> result = new HashSet<String>();
 		HashSet<String> x = new HashSet<String>();
 		HashSet<String> y = new HashSet<String>();
-		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#>"
-				+ "SELECT  ?r ?y"
-				+ "WHERE { ?x rdfs:subPropertyOf ont:componentOf ."
-				+ "?x rdfs:domain ont:"+classID + "."
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "SELECT  ?r ?y "
+				+ "WHERE { ?x rdfs:subPropertyOf ont:componentOf . "
+				+ "?x rdfs:domain ont:"+ classID + ". "
 				+ "?x rdfs:range ?r ."
 				+ "	OPTIONAL { ?y rdfs:subClassOf ?r . } "
 				+  "}";
@@ -132,7 +133,10 @@ public class NOpenQueryUtil {
   		ok = result.addAll(y);
   		Iterator<String> i = result.iterator();
 	  		while(i.hasNext()){
-	  			if(QueryUtil.hasSubClass(model, i.next())){
+	  			ArrayList<String> subclasses = new ArrayList<String>();
+				subclasses = QueryUtil.SubClass(model, i.next().toString());
+				
+	  			if(subclasses.size()>1){//se só tem uma subclasse, então a subclasse é a própria classe
 	  				i.remove();
 	  			}
 	  		}

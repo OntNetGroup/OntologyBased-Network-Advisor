@@ -59,4 +59,11 @@ public class NOpenFactoryUtil {
 		System.out.println("Service Deleted: "+serviceName);
 	}
 	
+	public static void createCard(OKCoUploader repository, String cardName) throws Exception
+	{
+		String indURI = repository.getNamespace()+cardName;		
+		String cardURI = repository.getNamespace()+ConceptEnum.Card.toString();
+		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indURI,cardURI);
+	}
+	
 }
