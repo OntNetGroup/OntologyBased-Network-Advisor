@@ -42,7 +42,7 @@ public class OptionsController {
 			NOpenRegister.unregisterLayer(layerName);	
 		}
 		
-		return "Successfully Registered";
+		return "Successfully Deleted";
 	}
 	
 	@RequestMapping(value = "/createTech", method = RequestMethod.POST)

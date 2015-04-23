@@ -44,13 +44,13 @@
 			<div class="box-content clearfix" style="">																
 				<div class="dd" id="tech" style="width:330">
 				<p>Registered:</p>
-				<ol class="dd-list">
+				<ol id="tech-dd-list" class="dd-list">
 					<%		            	
 	            	int i=0;
             		for(String tech: techs){           				
            				out.println("<li class=\"dd-item dd3-item\" data-id=\""+i+"\">");
            				out.print("<div class=\"dd-handle dd3-handle\">Drag</div>"+"<div class=\"dd3-content tech\">"+(tech+""));
-           				if(!defaultTechs.contains(tech)) out.print("<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+tech+"\" style=\"float:right\"></a>");
+           				/*if(!defaultTechs.contains(tech))*/ out.print("<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\"tech-"+tech+"\" style=\"float:right\"></a>");
            				out.println("</div>");
 			           	out.println("</li>");            			            			
 	            		i++;
@@ -76,16 +76,16 @@
 			<div class="box-content clearfix" style="">																
 				<div class="dd" id="layer" style="width:330">
 				<p>Registered:</p>
-				<ol class="dd-list">					
+				<ol id="layer-dd-list" class="dd-list">					
 					<%
 	            	int j=0;					
 					for(String tech: techs){
 						out.println("<div id=\""+tech+"\" class=\"x\" style=\"display:none;\">");
 						for(String layer: layers[j])
 						{	
-	           				out.println("<li class=\"dd-item dd3-item\">");
+	           				out.println("<li class=\"dd-item dd3-item\"  data-id=\""+j+"\" >");
 	           				out.print("<div class=\"dd-handle dd3-handle\">Drag</div>"+"<div class=\"dd3-content\">"+(layer+""));
-	           				if(!defaultLayers.contains(layer)) out.print("<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+layer+"\" style=\"float:right\"></a>");
+	           				/*if(!defaultLayers.contains(layer))*/ out.print("<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\"layer-"+layer+"\" style=\"float:right\"></a>");
 							out.println("</div>");
 				           	out.println("</li>");				         
 	            		}
@@ -148,7 +148,7 @@
 				<div class="form-group">
 					<label class="control-label" for="focusedInput">Name:</label>
 					<div class="controls">
-					  <input class="form-control focused" id="tech-input" type="text" value="">
+					  <input class="form-control focused" id="tech-input" type="text" value="" autofocus>
 					</div>
 				</div>
 			</div>
@@ -171,7 +171,7 @@
 				<div class="form-group">
 					<label class="control-label" for="focusedInput">Name:</label>
 					<div class="controls">
-					  <input class="form-control focused" id="layer-input" type="text" value="">
+					  <input class="form-control focused" id="layer-input" type="text" value="" autofocus>
 					</div>
 				</div>
 			</div>
@@ -226,14 +226,22 @@
         group: 2
     });
 	   
-    $('.tech').on('click', function(e) {
-		tech = e.target.innerText;
-		
-		$('.tech')
+    $('.tech').live('click', function(e) {
+		tech = e.target.innerText;		
+		//$('div #+tech').css( "background-color", "red" );
+					
 		$(".x").css("display","none");
-		$("#"+tech).css("display","block");		
+		$("#"+tech).css("display","inline");		
     });
     
+    $('#layerModal').on('shown.bs.modal', function () {
+   	  $('#layer-input').focus()
+   	});
+    
+    $('#techModal').on('shown.bs.modal', function () {
+   	  $('#tech-input').focus()
+   	});
+    	
 	$('#nestable-menu').on('click', function(e) {
 	        var target = $(e.target),
 	            action = target.data('action');
@@ -247,15 +255,17 @@
 	
 	$('.btn-tech-plus').click(function(e){
 		e.preventDefault();
-		$('#techModal').modal('show');				
+		$('#tech-input').val("");
+		$('#techModal').modal('show');	
 	});
-
+	
 	$('.btn-layer-plus').click(function(e){
 		e.preventDefault();
 		if(tech == null){
 			$("#layer-error").show();
 		}else{
-			$('#layerModal').modal('show');	
+			$('#layer-input').val("");
+			$('#layerModal').modal('show');
 		}
 	});
 	
@@ -272,16 +282,14 @@
 			   //alert(data);
 			   
 			   var appendString = ""
-			        +"<li class=\"dd-item dd3-item\" data-id=\"\">"
+			        +"<li class=\"dd-item dd3-item\" data-id=\""+$('#layer-dd-list li').size()+"\">"
       				+"      <div class=\"dd-handle dd3-handle\">Drag</div>"
-      				+"      <div class=\"dd3-content\">"+$('#layer-input').val()
-      				+"<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+"layer-"+$('#layer-input').val()+"\" style=\"float:right\"></a>"
+      				+"      <div class=\"dd3-content\">"+$('#layer-input').val()+"<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+"layer-"+$('#layer-input').val()+"\" style=\"float:right\"></a>"
       				+"		</div>"
 		           	+"</li>";				         
 			   
-			   $("#layer .dd-list #"+tech).append(appendString);
-			   
-			   console.log($("#layer .dd-list"));
+			   $("#"+tech).append(appendString);
+			   $("#"+tech).css("display","inline");
 			   
 			   $('#layer-input').val("");
 			   $('#layerModal').modal('hide');
@@ -303,8 +311,9 @@
 		   success: function(data){ 		   
 			   //alert(data);
 			   
+			   console.log("size: "+$('#tech-dd-list li').size());
 			   var appendString = ""				  
-			        +"<li class=\"dd-item dd3-item\" data-id=\""+$('#tech-input').val()+"\">"
+			        +"<li class=\"dd-item dd3-item\" data-id=\""+$('#tech-dd-list li').size()+"\">"
       				+"      <div class=\"dd-handle dd3-handle\">Drag</div><div class=\"dd3-content tech\">"+$('#tech-input').val()
       				+"			<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\""+"tech-"+$('#tech-input').val()+"\" style=\"float:right\"></a>"
       				+"		</div>"
@@ -313,6 +322,10 @@
 			  console.log(appendString);
 			  
 			   $("#tech .dd-list").append(appendString);
+			   
+			   var layerAppend = "<div id=\""+$('#tech-input').val()+"\" class=\"x\" style=\"display:none;\"> </div>";
+			   $("#layer-dd-list").append(layerAppend);
+			   
 			   $('#tech-input').val("");
 			   $('#techModal').modal('hide');
 		   },
@@ -334,10 +347,7 @@
 			   'elemName': target
 		   },
 		   success: function(data){ 	
-			   
-			   //alert(data);
-			   
-			   $('.icon-trash').parent().parent().remove();
+			   $(e.target).parent().parent().remove();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);

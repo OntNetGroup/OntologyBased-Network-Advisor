@@ -14,7 +14,10 @@ public class StudioFactory {
 	 * @author John Guerson
 	 */
 	public static void createTTF(String ttfId, String layerId) throws Exception
-	{		
+	{	
+		System.out.println("Creating TTF: "+ttfId);
+		System.out.println("At Layer: "+layerId);
+		
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+ttfId, 
@@ -26,10 +29,7 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+ttfId, 
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
 			StudioComponents.studioRepository.getNamespace()+layerId
-		);
-		
-		System.out.println("Creating TTF: "+ttfId);
-		System.out.println("At Layer: "+layerId);
+		);		
 	}
 	
 	/**
@@ -37,6 +37,9 @@ public class StudioFactory {
 	 */
 	public static void createAF(String afId, String cardId) throws Exception
 	{
+		System.out.println("Creating AF: "+afId);
+		System.out.println("At Card: "+cardId);
+		
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+afId, 
@@ -49,9 +52,6 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf1_Card_TF_Card_Element,
 			StudioComponents.studioRepository.getNamespace()+afId
 		);
-		
-		System.out.println("Creating AF: "+afId);
-		System.out.println("At Card: "+cardId);
 	}
 	
 	/**
@@ -59,12 +59,13 @@ public class StudioFactory {
 	 */
 	public static void deleteTF(String tfId)
 	{
+		System.out.println("Deleting TF: "+tfId);
+		
 		FactoryUtil.deleteIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+tfId
 		);
-		
-		System.out.println("Deleting TF: "+tfId);		
+					
 	}
 	
 	/**
@@ -72,6 +73,9 @@ public class StudioFactory {
 	 */
 	public static void createIN(String portId, String tfId) throws Exception
 	{
+		System.out.println("Creating IN: "+portId);	
+		System.out.println("At TF: "+tfId);
+		
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+portId, 
@@ -84,9 +88,6 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf16_Transport_Function_Input,
 			StudioComponents.studioRepository.getNamespace()+portId
 		);
-		
-		System.out.println("Creating IN: "+portId);	
-		System.out.println("At TF: "+tfId);
 	}
 	
 	/**
@@ -94,6 +95,9 @@ public class StudioFactory {
 	 */
 	public static void createOUT(String portId, String tfId) throws Exception
 	{
+		System.out.println("Creating OUT: "+portId);	
+		System.out.println("At TF: "+tfId);	
+		
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+portId, 
@@ -106,9 +110,7 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf17_Transport_Function_Output,
 			StudioComponents.studioRepository.getNamespace()+portId
 		);
-		
-		System.out.println("Creating OUT: "+portId);	
-		System.out.println("At TF: "+tfId);	
+
 	}
 	
 	/**
@@ -116,12 +118,12 @@ public class StudioFactory {
 	 */
 	public static void deletePort(String portId)
 	{
+		System.out.println("Deleting Port (IN|OUT): "+portId);
+		
 		FactoryUtil.deleteIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+portId
-		);
-		
-		System.out.println("Deleting Port (IN|OUT): "+portId);
+		);		
 	}
 	
 	/**
@@ -129,15 +131,15 @@ public class StudioFactory {
 	 */
 	public static void insertLayer(String containerId, String cardId) throws Exception 
 	{
+		System.out.println("Inserting Layer: "+containerId);
+		System.out.println("At Card: "+cardId);
+		
 		FactoryUtil.createInstanceRelation(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+cardId, 
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
 			StudioComponents.studioRepository.getNamespace()+containerId
 		);		
-		
-		System.out.println("Creating Layer: "+containerId);
-		System.out.println("At Card: "+cardId);
 	}
 		
 	/**
@@ -145,15 +147,15 @@ public class StudioFactory {
 	 */
 	public static void deleteLayer(String containerId, String cardId)
 	{
+		System.out.println("Removing Layer: "+containerId);
+		System.out.println("At Card: "+cardId);
+		
 		FactoryUtil.deleteObjectProperty(
 			StudioComponents.studioRepository.getBaseModel(),
 			StudioComponents.studioRepository.getNamespace()+cardId, 
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
 			StudioComponents.studioRepository.getNamespace()+containerId
 		);
-		
-		System.out.println("Deleting Layer: "+containerId);
-		System.out.println("At Card: "+cardId);
 	}
 	
 	//=============================================================================================
