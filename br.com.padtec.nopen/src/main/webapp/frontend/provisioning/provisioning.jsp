@@ -42,7 +42,8 @@
 
 		<!-- PLUGINS -->
         
-        <script src="/nopen/frontend/network-topology/plugins/save-topology.js"></script>
+        <script src="/nopen/frontend/provisioning/plugins/save-provisioning.js"></script>
+        <script src="/nopen/frontend/provisioning/plugins/open-provisioning.js"></script>
         <script src="/nopen/frontend/provisioning/plugins/open-topology.js"></script>
 
 		<!-- JS -->
@@ -61,12 +62,7 @@
          
         <!-- DIALOGS -->
 		
-		<div id="save-dialog" title="Save Topology" style="display:none">
-			File name: <input type="text" id="save-filename" />
-		</div>
-
-		<div id="open-dialog" title="Open Topology" style="display:none"></div>
-
+		<input type="text" id="filename" style="display:none"/>
 	
         <script>
             // Uncomment the following line and comment the line after if you
@@ -80,12 +76,14 @@
             var uuid = joint.util.uuid();
 
             $('#btn-save').click(function(){
-            	if(checkNodeEquipments(app.graph)){
-            		generateSaveTopologyDialog(app.graph);
-            	}
+            	generateSaveProvisioningDialog(app.graph);   	
             });
             
             $('#btn-open').click(function(){	
+            	getProvisioning(app.graph);      	
+            });
+            
+            $('#btn-open-topology').click(function(){	
             	getTopologies(app.graph);      	
             });
 

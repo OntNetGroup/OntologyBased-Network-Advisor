@@ -1,6 +1,7 @@
 <div class="toolbar-container">
 	 <button id="btn-save" class="btn" data-tooltip="Save"><img src="/nopen/frontend/provisioning/img/save.png" alt="Save"/></button>
-	 <button id="btn-open" class="btn" data-tooltip="Open"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open"/> Open Topology</button>
+	 <button id="btn-open" class="btn" data-tooltip="Open"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open"/></button>
+	 <button id="btn-open-topology" class="btn" data-tooltip="Open Topology"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open Topology"/> Open Topology</button>
 
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window"><img src="/nopen/frontend/provisioning/img/pngfile.png" alt="PNG"/></button>
      <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/provisioning/img/print.png" alt="Print"/></button>

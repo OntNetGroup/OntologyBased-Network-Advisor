@@ -62,8 +62,8 @@ public class TopologyController {
 	@RequestMapping(value = "/checkTopologyFile", method = RequestMethod.POST)
 	protected @ResponseBody String checkTopologyFile(@RequestParam("filename") String filename){
 
-		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
-		if(NOpenFileUtil.checkTopologyFileExist(filename + ".json")){
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
+		if(NOpenFileUtil.checkTopologyFileExist(filename)){
 			return "exist";
 		}
 		
@@ -111,8 +111,8 @@ public class TopologyController {
 	@RequestMapping(value = "/openTopology", method = RequestMethod.POST)
 	protected @ResponseBody String openTopology(@RequestParam("filename") String filename){
 		
-		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);	
-		return NOpenFileUtil.openTopologyJSONFileAsString(filename + ".json");
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
+		return NOpenFileUtil.openTopologyJSONFileAsString(filename);
 		
 	}
 	

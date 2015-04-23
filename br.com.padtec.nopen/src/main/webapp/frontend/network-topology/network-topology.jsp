@@ -81,6 +81,11 @@
             graphHandle(app.graph);
             paperHandle(app.paper);
             
+            if(getUrlParameter('topology')){
+            	var topology = getUrlParameter('topology');
+            	openFromURL(topology, app.graph);
+            }
+            
             var uuid = joint.util.uuid();
 
             $('#btn-save').click(function(){

@@ -96,6 +96,13 @@ public class NOpenFileUtil {
 		NOpenFileUtil.createRepository(NOpenFileUtil.topologyJSONFolder + path);	
 	}
 	
+	/**
+	 * Procedure to create Provisioning folders if they do not exist.
+	 * @param path
+	 */
+	public static void createProvisioningRepository(String path){
+		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningJSONFolder + path);	
+	}
 	
 	/**
 	 * Procedure to create folders if they do not exist.
@@ -112,6 +119,20 @@ public class NOpenFileUtil {
 			}
 		}
 		
+	}
+	
+	/**
+	 * Procedure to check if provisioning file already exist in repository.
+	 * @param filename
+	 * @return
+	 */
+	public static Boolean checkProvisioningFileExist(String filename){
+		
+		if(NOpenFileUtil.checkFileExist(NOpenFileUtil.provisioningJSONFolder + filename)){
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -182,6 +203,15 @@ public class NOpenFileUtil {
 	 */
 	public static File createEquipmentJSONFile(String filename){
 		return createFile(NOpenFileUtil.equipmentJSONFolder, filename + ".json");
+	}
+	
+	/**
+	 * Procedure for create a Provisioning JSON file.
+	 * @param filename 
+	 * @return
+	 */
+	public static File createProvisioningJSONFile(String filename){
+		return createFile(NOpenFileUtil.provisioningJSONFolder, filename + ".json");
 	}
 
 	/** 
@@ -314,7 +344,7 @@ public class NOpenFileUtil {
     
     
     /**
-     * Procedure to open a topology file as String.
+     * Procedure to open a Topology file as String.
      * @param filename
      * @return
      */
@@ -323,12 +353,21 @@ public class NOpenFileUtil {
     }
     
     /**
-     * Procedure to open an equipment file as String.
+     * Procedure to open an Equipment file as String.
      * @param filename
      * @return
      */
     public static String openEquipmentJSONFileAsString(String filename){
     	return openFileAsString(NOpenFileUtil.equipmentJSONFolder, filename);
+    }
+    
+    /**
+     * Procedure to open an Provisioning file as String.
+     * @param filename
+     * @return
+     */
+    public static String openProvisioningJSONFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.provisioningJSONFolder, filename);
     }
     
     /**

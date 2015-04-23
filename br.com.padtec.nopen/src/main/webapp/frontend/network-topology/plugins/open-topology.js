@@ -14,6 +14,41 @@ function getTopologies(graph){
 	
 }
 
+function getUrlParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return sParameterName[1];
+        }
+    }
+}      
+
+function openFromURL(filename, graph){
+	
+	$.ajax({
+	   type: "POST",
+	   url: "openTopology.htm",
+	   data: {
+		   'filename' : filename
+	   },
+	   dataType: 'json',
+	   success: function(data){
+		   $("#filename").val(filename);
+		   graph.fromJSON(data);
+	   },
+	   error : function(e) {
+		   //alert("error: " + e.status);
+	   }
+	});
+	
+}
+
+
 function generateOpenTopologyDialog(graph, data){
 	
 	var content = '<form id="open">';

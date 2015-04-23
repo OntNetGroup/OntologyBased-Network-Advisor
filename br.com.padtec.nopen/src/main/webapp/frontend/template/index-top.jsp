@@ -23,7 +23,7 @@
 						<li>
 						<a class="dropmenu drop" href="#"><i class="icon-edit"></i><span class="hidden-sm">&nbsp;&nbsp; Edit</span> <span class="label"></span></a>
 						<ul class="dropmenuLevel1">									
-							<li><a  class="submenu" href="network-topology.htm" class=""><b class="">(NT)</b><span class="hidden-sm">&nbsp;&nbsp; Network Topology</span></a></li>
+							<li><a  class="submenu" href="nt-options.htm" class=""><b class="">(NT)</b><span class="hidden-sm">&nbsp;&nbsp; Network Topology</span></a></li>
 							<li><a  class="submenu" href="equipment-studio.htm" class=""><b class="">(ES)</b><span class="hidden-sm">&nbsp;&nbsp; Equipment Studio</span></a></li>
 							<li><a  class="submenu" href="itu-studio.htm" class=""><b class="">(IS)</b><span class="hidden-sm">&nbsp;&nbsp; ITU Studio</span></a></li>
 							<li><a  class="submenu" href="provisioning.htm" class=""><b class="">(PR)</b><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
