@@ -8,6 +8,13 @@ var Rappid = Backbone.Router.extend({
 	*/
 	isAddingTransportFunction: false,
 	
+	/*
+	 * Quando a adição de um elemento for negada, mas no graph.on('add') o elemento já foi adicionado, portanto ele é removido
+	 * Neste momento, é chamado o handler graph.on('remove'). Dentro desse handler a remoção do elemento da ontologia deve ser ignorado, uma vez
+	 * que ele não chegou a ser criado
+	*/
+	skipOntologyRemoveHandler: false,
+	
 	/* technology of the card */
     technology : 'OTN',
     

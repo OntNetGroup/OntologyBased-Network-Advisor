@@ -165,7 +165,7 @@ public class StudioFactory {
 	 * @author Jordana Salamon
 	 */
 	@SuppressWarnings("unused")
-	public static void canCreateTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
+	public static void canCreateTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer) throws Exception
 	{
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();
@@ -173,9 +173,6 @@ public class StudioFactory {
 		String containerType = dtoContainer.getType();
 		String containerId = dtoContainer.getId();
 
-		String cardType = dtoCard.getType();
-		String cardId = dtoCard.getId();
-						
 		if(tfType.equals("TTF") && containerType=="card")
 		{			
 			throw new Exception("You cannot create a Trail Transport Function into a Card");
@@ -190,7 +187,7 @@ public class StudioFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
+	public static void createTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer) throws Exception
 	{
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();
@@ -198,22 +195,18 @@ public class StudioFactory {
 		String containerType = dtoContainer.getType();
 		String containerId = dtoContainer.getId();
 
-		String cardType = dtoCard.getType();
-		String cardId = dtoCard.getId();
-		
 		if(tfType.equals("TTF") && containerType.equals("layer")) 
 		{
 			createTTF(tfId, containerId);
 		}
 		else if(tfType.equals("AF") && containerType.equals("card")) 
 		{
-			createAF(tfId, cardId);
+			createAF(tfId, containerId);
 			
 		} else {
 			System.out.println("\nCreating... ");
 			System.out.println("\tTransport Function: \""+tfId+"\"-\""+tfType+"\"");
 			System.out.println("\tat Container: \""+containerId+"\"-\""+containerType+"\"");
-			System.out.println("\tat Card: \""+cardId+"\"-\""+cardType+"\"");	
 		}								
 	}
 		

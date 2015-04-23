@@ -1,7 +1,5 @@
 function graphHandler(graph, app) {
 
-	var skipOntologyRemoveHandler = false;
-	
     graph.on('add', function(cell, collection, opt) {
         if (opt.stencil) {
             this.createInspector(cell);
@@ -57,102 +55,138 @@ function graphHandler(graph, app) {
 		if(isLink(cell)) return;
 		if(isNotTransportFunction(cell)) return;
 		
-		var tFunctionID = cell.id;
-		var tFunctionName = 'TF_' +this.tFunctionCounter;
+		var inputText = "<div><p>Transport Function name: <input type='text' id='tFunctionName' /></p> <p id='tFunctionError' style='color:red; display:none;'>Define a name!</p></div>";
+		var dialog = new joint.ui.Dialog({
+		    width: 300,
+		    title: 'Insert Transport Function',
+		    content: inputText,
+		    type: 'neutral',
+		    closeButton: false,
+		    buttons: [
+		        { action: 'cancel', content: 'Cancel', position: 'left' },
+		        { action: 'ok', content: 'OK', position: 'left' }
+		    ]
+		}).open();
 		
-		var tFunctionType = cell.get('subtype');
-		var cardID = this.cardID;
+		$('#tFunctionName').focus();
 		
-		var containerName = '';
-		var containerType = '';
-    	        	
-    	var position = cell.get('position');
-		var size = cell.get('size');
-		var area = g.rect(position.x, position.y, size.width, size.height);
-		
-		var parent;
-		// get all elements below the added one
-		_.each(graph.getElements(), function(e) {
-		
-			var position = e.get('position');
-			var size = e.get('size');
-			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-				parent = e;
-			}
-		});
-		
-		if(parent) { // existe algum elemento abaixo
-			
-			if(isLayer(parent)){ // elemento abaixo é uma camada
-				containerName = parent.get('subtype');
-				containerType = 'layer';
-				console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
+		dialog.on('action:ok', function(){
+			var name = $('#tFunctionName').val();
+			if($('#tFunctionName').val()){
+				$('#tFunctionError').hide();
+				var tFunctionID = cell.id;
+				var tFunctionName = $('#tFunctionName').val();
+				dialog.close();
 				
-				var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
-				if(result === true) {
-					result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+				var tFunctionType = cell.get('subtype');
+				var cardID = this.cardID;
+				
+				var containerName = '';
+				var containerType = 'card';
+		    	        	
+		    	var position = cell.get('position');
+				var size = cell.get('size');
+				var area = g.rect(position.x, position.y, size.width, size.height);
+				
+				var parent;
+				// get all elements below the added one
+				_.each(graph.getElements(), function(e) {
+				
+					var position = e.get('position');
+					var size = e.get('size');
+					if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+						parent = e;
+					}
+				});
+				
+				if(parent) { // existe algum elemento abaixo
 					
-					if(result === "success") {	
-						this.isAddingTransportFunction = true;
-						parent.embed(cell);
-						this.tFunctionCounter++;
+					if(isLayer(parent)){ // elemento abaixo é uma camada
+						containerName = parent.get('subtype');
+						containerType = 'layer';
+						console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
+						
+						var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+						if(result === true) {
+							result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+							
+							if(result === "success") {	
+								this.isAddingTransportFunction = true;
+								parent.embed(cell);
+								this.tFunctionCounter++;
+							} else {
+								alert(result);
+								this.skipOntologyRemoveHandler = true;
+								cell.remove();
+							}
+						}
+											
+					} else { // elemento abaixo não é um container
+						alert('Please, add the transport function on the paper or a layer.');
+						this.skipOntologyRemoveHandler = true;
+						cell.remove();
+					}
+				} else { // não existe elemento abaixo
+					// consultar ontologia para inserção de transport function diretamente no card
+					console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
+					var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+					
+					if(result === true) {
+						result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+						
+						if(result === "success") {	
+							this.tFunctionCounter++;
+						} else {
+							alert(result);
+							this.skipOntologyRemoveHandler = true;
+							cell.remove();
+						}
+						
 					} else {
 						alert(result);
-						skipOntologyRemoveHandler = true;
+						this.skipOntologyRemoveHandler = true;
 						cell.remove();
-						skipOntologyRemoveHandler = false;
 					}
 				}
-									
-			} else { // elemento abaixo não é um container
-				alert('Please, add the transport function on the paper or a layer.');
-				skipOntologyRemoveHandler = true;
-				cell.remove();
-				skipOntologyRemoveHandler = false;
-			}
-		} else { // não existe elemento abaixo
-			// consultar ontologia para inserção de transport function diretamente no card
-			console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
-			var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
-			
-			if(result === true) {
-				result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
-				
-				if(result === "success") {	
-					this.tFunctionCounter++;
-				} else {
-					alert(result);
-					skipOntologyRemoveHandler = true;
-					cell.remove();
-					skipOntologyRemoveHandler = false;
-				}
-				
 			} else {
-				alert(result);
-				skipOntologyRemoveHandler = true;
-				cell.remove();
-				skipOntologyRemoveHandler = false;
+				$('#tFunctionError').show();
 			}
-		}
+		}, app);
+		
+		dialog.on('action:cancel', function(){
+			dialog.close();
+			this.skipOntologyRemoveHandler = true;
+			cell.remove();
+			
+			alert('Operation canceled');
+		}, app);
+		
 	}, app);
 	
 	// validar a remoção de transport functions do grafo
-	graph.on('remove', function(cell) {
-		
-		if(isLink(cell)) return;
-		if(isNotTransportFunction(cell)) return;
-		
-		if(skipOntologyRemoveHandler) return;
-		var cellID = cell.id;
-		var tFunctionType = cell.get('subtype');
+    graph.on('remove', function(cell) {
+    	
+    	var cellID = cell.id;
+    	var tFunctionType = cell.get('subtype');
+    	
+    	if(this.skipOntologyRemoveHandler) {
+    		this.skipOntologyRemoveHandler = false;
+    		return;
+    	}
+    	
 		var result = deleteTransportFunction(cellID, tFunctionType);
 		if(result === "success") {
-			console.log('removeu');
+			return;
 		} else {
 			alert(result);
+			cell.set({skipOntologyRemoveHandler : true});
 		}
-	}, app);
-
+    }, app);
+    
+    graph.on('all', function(args) {
+    	console.log(args);
+    }, app);
+	
     /* ------ AUXILIAR FUNCTIONS ------- */
 	// Check if cell is not a link
 	function isNotLink(cell) {

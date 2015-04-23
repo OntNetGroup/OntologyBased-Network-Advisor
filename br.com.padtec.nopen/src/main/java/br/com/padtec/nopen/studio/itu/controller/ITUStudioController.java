@@ -93,19 +93,16 @@ public class ITUStudioController {
 	/** Cria um transport function sobre uma camada ou diretamente sobre o card
 	 * @param transportFunction
 	 * @param container
-	 * @param card 
 	 * @return
 	 */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String createTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container,
-	@RequestParam("card") String card)
+	public @ResponseBody String createTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container)
 	{
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);		
 
 		try{
-			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer, dtoCard);
+			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -116,19 +113,16 @@ public class ITUStudioController {
 	/** Verifica se é possível criar o transport function sobre uma camada ou diretamente sobre o card
 	 * @param transportFunction
 	 * @param container
-	 * @param card 
 	 * @return
 	 */
 	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String canCreateTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container,
-	@RequestParam("card") String card)
+	public @ResponseBody String canCreateTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container)
 	{
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		try{
-			StudioFactory.canCreateTransportFunction(dtoTransportFunction, dtoContainer, dtoCard);
+			StudioFactory.canCreateTransportFunction(dtoTransportFunction, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();

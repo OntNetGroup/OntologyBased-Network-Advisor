@@ -13,7 +13,7 @@ function validator(validator, graph, app) {
 //		var cardID = this.cardID;
 //		
 //		var containerName = '';
-//		var containerType = '';
+//		var containerType = 'card';
 //    	        	
 //    	var position = cell.get('position');
 //		var size = cell.get('size');
@@ -218,6 +218,8 @@ function validator(validator, graph, app) {
     // validar a remoção de transport functions do grafo
 //    validator.validate('remove', isTransportFunction, _.bind(function(err, command, next) {
 //
+//    	if(this.skipOntologyHandler) return next(err);
+//    	
 //    	var cellID = command.data.id;
 //    	var tFunctionType = command.data.attributes.subtype;
 //    	
@@ -231,34 +233,34 @@ function validator(validator, graph, app) {
     
 
     // validar a remoção de camadas do grafo
-//    validator.validate('remove', isLayer, _.bind(function(err, command, next) {
-//
-//    	var containerName = command.data.attributes.subtype;
-//		var containerType = 'layer';
-//		var cardID = this.cardID;
-//		
-//		var result = deleteContainer(containerName, containerType, cardID);
-//		if(result === "success") {
-//			// TODO: retornar/reabilitar camada ao stencil
-//			return next(err);
-//		} else {
-//			return next(result);
-//		}
-//    }, app));
+    validator.validate('remove', isLayer, _.bind(function(err, command, next) {
+
+    	var containerName = command.data.attributes.subtype;
+		var containerType = 'layer';
+		var cardID = this.cardID;
+		
+		var result = deleteContainer(containerName, containerType, cardID);
+		if(result === "success") {
+			// TODO: retornar/reabilitar camada ao stencil
+			return next(err);
+		} else {
+			return next(result);
+		}
+    }, app));
     
 
     // validar a remoção de interfaces do grafo
-//    validator.validate('remove', isInterface, _.bind(function(err, command, next) {
-//    	
-//    	var cellID = command.data.id;
-//    	
-//    	var result = deletePort(cellID);			
-//		if(result === "success") {
-//			return next(err);
-//		} else {
-//			return next(result);
-//		}
-//    }, app));
+    validator.validate('remove', isInterface, _.bind(function(err, command, next) {
+    	
+    	var cellID = command.data.id;
+    	
+    	var result = deletePort(cellID);			
+		if(result === "success") {
+			return next(err);
+		} else {
+			return next(result);
+		}
+    }, app));
 
     // validar inserção de links no grafo
     validator.validate('change:target change:source', isLink, _.bind(function(err, command, next) {

@@ -96,12 +96,9 @@ function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, cont
 	}
 	
 	var dtoContainer = {
+			"id": cardID,
 			"name" : containerName,
 			"type" : containerType  
-	};
-
-	var dtoCard = {
-			"id": cardID
 	};
 
 	$.ajax({
@@ -110,8 +107,7 @@ function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, cont
 		url: "createTransportFunction.htm",
 		data: {
 			'transportFunction': JSON.stringify(dtoTransportFunction), 
-			'container': JSON.stringify(dtoContainer),
-			'card': JSON.stringify(dtoCard)
+			'container': JSON.stringify(dtoContainer)
 		},
 		success: function(data){ 		   
 			result = data;
@@ -134,12 +130,9 @@ function canCreateTransportFunction(tFunctionID, tFunctionType, containerName, c
 	}
 	
 	var dtoContainer = {
+			"id": cardID,
 			"name" : containerName,
 			"type" : containerType  
-	};
-
-	var dtoCard = {
-			"id": cardID
 	};
 
 	$.ajax({
@@ -148,8 +141,7 @@ function canCreateTransportFunction(tFunctionID, tFunctionType, containerName, c
 		url: "canCreateTransportFunction.htm",
 		data: {
 			'transportFunction': JSON.stringify(dtoTransportFunction), 
-			'container': JSON.stringify(dtoContainer),
-			'card': JSON.stringify(dtoCard)
+			'container': JSON.stringify(dtoContainer)
 		},
 		success: function(data){ 
 			result = data;
