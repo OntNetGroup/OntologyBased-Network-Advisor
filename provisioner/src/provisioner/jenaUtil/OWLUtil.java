@@ -105,31 +105,36 @@ public class OWLUtil {
 					
 					String[] individuals = indvDclSplit[1].split(",");
 					for (String indv : individuals) {
-						String lowerLayer = "";
-						if(createNTimes > 1){
-							if(type.equals("Layer_Network")){
-								if(j > 1){
-									lowerLayer  = indv + (j-1);
-								}								
+						if(!indv.equals("layer0") || !newIndividuals.contains("layer0")){
+							String lowerLayer = "";
+							if(createNTimes > 1 && !indv.equals("layer0")){
+								if(type.equals("Layer_Network")){
+									if(j > 1){
+										lowerLayer  = indv + (j-1);
+									}									
+								}else{
+									indv += "_layer";
+								}
+								indv += j;
 							}
-							indv += j;
-						}
-						String oldName = indv;
-						if(!type.equals("Layer_Network")){
-							boolean indvExist = QueryUtil.individualExists(model, ns+indv);
-							if(indvExist){
-								indv += "_eq";
+							String oldName = indv;
+							if(!type.equals("Layer_Network")){
+								boolean indvExist = QueryUtil.individualExists(model, ns+indv);
+								if(indvExist){
+									indv += "_eq";
+								}
+							}					
+							newMapping.put(oldName, indv);
+							
+							FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type, false);
+							
+							if(type.equals("Layer_Network") && j > 1 && !indv.equals("layer0")){
+								FactoryUtil.createInstanceRelation(model, ns+indv, ns+"client_of", ns+lowerLayer, false, false, false);
 							}
-						}					
-						newMapping.put(oldName, indv);
-						
-						FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type, false);
-						
-						if(type.equals("Layer_Network") && j > 1){
-							FactoryUtil.createInstanceRelation(model, ns+indv, ns+"client_of", ns+lowerLayer, false, false, false);
+							
+							newIndividuals.add(ns+indv);
 						}
 						
-						newIndividuals.add(ns+indv);
 					}
 				}
 			}
@@ -155,12 +160,35 @@ public class OWLUtil {
 						String tgt = individuals[i+1].replace(")", "").replace("\t", "");
 						
 						if(createNTimes > 1){
-							if(!src.equals("layer0")){
+							if(src.equals("layer0")){
+								src = "layer" + j;
+							}else {
+								if(!src.equals("layer")){
+									src += "_layer";
+								}
 								src += (j+1);
 							}
-							if(!tgt.equals("layer0")){
+							
+							if(tgt.equals("layer0")){
+								tgt = "layer" + j;
+							}else {
+								if(!tgt.equals("layer")){
+									tgt += "_layer";
+								}
 								tgt += (j+1);
 							}
+							
+							
+//							if(!src.equals("layer0")){
+//								src += (j+1);								
+//							}else{
+//								src = "layer" + j;
+//							}
+//							if(!tgt.equals("layer0")){
+//								tgt += (j+1);								
+//							}else{
+//								src = "layer" + j;
+//							}
 						}
 						
 						String newSrc = newMapping.get(src);
@@ -203,15 +231,27 @@ public class OWLUtil {
 					String[] dcl = attDclSplit[1].split(",");
 					for (int i = 0; i < dcl.length; i+=3) {
 						String indv = dcl[i].replace("(", "");
-						if(createNTimes > 1){
-							indv += "_layer" + j;
+						if(!indv.equals("layer0") || createNTimes <= 1){
+							if(createNTimes > 1){
+								if(indv.equals("layer0")){
+									indv = "layer" + j;
+								}else {
+									if(!indv.equals("layer")){
+										indv += "_layer";
+									}
+									indv += (j+1);
+								}
+								
+								indv += "_layer" + j;
+							}
+							String val = dcl[i+1].replace("", "");
+							String type = dcl[i+2].replace(")", "");
+							
+							indv = newMapping.get(indv);
+							
+							FactoryUtil.createInstanceAttribute(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type, false);
 						}
-						String val = dcl[i+1].replace("", "");
-						String type = dcl[i+2].replace(")", "");
 						
-						indv = newMapping.get(indv);
-						
-						FactoryUtil.createInstanceAttribute(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type, false);
 					}
 				}
 			}

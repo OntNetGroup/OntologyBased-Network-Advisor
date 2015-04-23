@@ -9,8 +9,7 @@ public class PerformanceUtil {
 		return diff;
 	}
 	
-	public static String printExecutionTime(String functionName, Date beginDate){
-		long diff = getExecutionTime(beginDate);
+	public static String getExecutionMessage(String functionName, long diff){
 		long diffHours = diff / (60 * 60 * 1000);
 		diff -= diffHours * 60 * 60 * 1000;
 		long diffMinutes = diff / (60 * 1000);         
@@ -19,7 +18,14 @@ public class PerformanceUtil {
 		diff -= diffSeconds * 1000;
 		long diffMiliSeconds = diff;
 		
-		String message = functionName + " Execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s " + diffMiliSeconds + "ms";
+		String message = functionName + " had execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s " + diffMiliSeconds + "ms";
+		
+		return message;
+	}
+	public static String printExecutionTime(String functionName, Date beginDate){
+		long diff = getExecutionTime(beginDate);
+		
+		String message = getExecutionMessage(functionName, diff);
 		System.out.println(message);
 		
 		return message;

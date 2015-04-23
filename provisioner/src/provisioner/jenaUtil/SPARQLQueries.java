@@ -103,7 +103,7 @@ public class SPARQLQueries {
 	}
 	
 	public static List<String> getInterfacesFromLayer(OntModel model, String interfaceTypeURI, String srcOrSink, String layerURI){
-		System.out.println("\nExecuting isEquipBindedWithPMEquip()...");
+		System.out.println("\nExecuting getInterfacesFromLayer()...");
 		
 		String queryString = ""
 				+ QueryUtil.PREFIXES
@@ -116,7 +116,7 @@ public class SPARQLQueries {
 				+ "?tf rdf:type ?tfType .\n"
 				+ "FILTER ( ?tfType  IN (ns:AF_"+srcOrSink+", ns:TF_"+srcOrSink+", ns:Matrix_"+srcOrSink+", ns:Physical_Media) ) .\n"
 				+ "?tf ?tfRel <" + layerURI + "> .\n"
-				+ "FILTER ( ?tfRel IN (ns:defines, ns:adapts_to, ns:hasLayer) ) .\n"
+				+ "FILTER ( ?tfRel IN (ns:defines, ns:adapts_to, ns:adapts_from, ns:hasLayer) ) .\n"
 				+ "}";
 		
 		List<String> result = new ArrayList<String>();	
@@ -127,7 +127,7 @@ public class SPARQLQueries {
 		{			
 			QuerySolution row = results.next();
 		    RDFNode intfc = row.get("intfc");	
-		    if(QueryUtil.isValidURI(intfc.toString()))
+		    if(QueryUtil.isValidURI(intfc.toString()) && !result.contains(result))
 		    {
 		    	System.out.println("- intfc URI: "+intfc.toString()); 
 		    	result.add(intfc.toString());		    	
@@ -368,7 +368,7 @@ public class SPARQLQueries {
 			}
 		}else if(tfTypes.contains(ns+"Matrix")){
 			if(isSource){
-				relName1 = "ns:adapts_to";
+				relName1 = "ns:adapts_from";
 				tgtTFtype += "ns:AF_" + srcOrSk;				
 			}else{
 				relName1 = "ns:defines";

@@ -2,31 +2,39 @@ package provisioner;
 
 import java.util.ArrayList;
 
-import com.hp.hpl.jena.ontology.OntModel;
+import javax.swing.SwingUtilities;
 
 import provisioner.business.Provisioner;
 import provisioner.domain.Interface;
-import provisioner.jenaUtil.OWLUtil;
 import provisioner.util.ConsoleUtil;
 import provisioner.util.FileUtil;
 
 public class Main {
 	public static void main(String[] args){
+		FileUtil.createDirs();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				autoTester();
+			}
+		});	
+	}
+	
+	private static void autoTester(){
 		String owlTBoxFile = "";
 		Provisioner provisioner = null;
 		try {
 			//#1
-			//owlTBoxFile = FileUtil.chooseFile("OWL TBox", "resources/owl/", ".owl");
-			owlTBoxFile = "resources/owl/TBox v5.2.owl";
+			owlTBoxFile = FileUtil.chooseFile("OWL TBox", "resources/owl/", ".owl");
+			//owlTBoxFile = "resources/owl/TBox v5.2.owl";
 			
 			//#2
-			//String declaredFile = FileUtil.chooseFile("declared instances", "resources/declared/", ".txt");
-			String declaredFile = "resources/declared/Possível 2.1 - 2 Layer.txt";
+			String declaredFile = FileUtil.chooseFile("declared instances", "resources/declared/", ".txt");
+			//String declaredFile = "resources/declared/Possível 2.1 - 1 Layer.txt";
 			
 			//#14
-			//String possibleFile = FileUtil.chooseFile("possible instances", "resources/possible/", ".txt");
+			String possibleFile = FileUtil.chooseFile("possible instances", "resources/possible/", ".txt");
 			//String possibleFile = "resources/possible/Possiveis 6.0.txt";
-			String possibleFile = "resources/possible/Declarado 2.1 - Base.txt";
+			//String possibleFile = "resources/possible/Declarado 2.1 - Base.txt";
 			
 			provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, 1, 1);
 					
