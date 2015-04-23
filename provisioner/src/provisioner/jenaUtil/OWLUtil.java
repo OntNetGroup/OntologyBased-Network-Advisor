@@ -174,16 +174,16 @@ public class OWLUtil {
 						}					
 						FactoryUtil.createInstanceRelation(model, ns+newSrc, ns+relation, ns+newTgt, false, false, true);
 						
-						if(relation.equals("adapts_to")){
-							List<String> serverLayerURIs = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, ns+newTgt, ns+"client_of", ns+"Layer_Network");
-							for (String serverLayerURI : serverLayerURIs) {
-								List<String> serverAfURIs = QueryUtil.getIndividualsURIAtObjectPropertyDomain(model, serverLayerURI, ns+"adapts_to", ns+"Adaptation_Function");
-								for (String serverAfURI : serverAfURIs) {
-									FactoryUtil.createInstanceRelation(model, serverAfURI, ns+"adapts_from", ns+newSrc, false, false, false);
-								}
-								System.out.println();
-							}							
-						}
+//						if(relation.equals("adapts_to")){
+//							List<String> serverLayerURIs = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, ns+newTgt, ns+"client_of", ns+"Layer_Network");
+//							for (String serverLayerURI : serverLayerURIs) {
+//								List<String> serverAfURIs = QueryUtil.getIndividualsURIAtObjectPropertyDomain(model, serverLayerURI, ns+"adapts_to", ns+"Adaptation_Function");
+//								for (String serverAfURI : serverAfURIs) {
+//									FactoryUtil.createInstanceRelation(model, serverAfURI, ns+"adapts_from", ns+newSrc, false, false, false);
+//								}
+//								System.out.println();
+//							}							
+//						}
 					}
 				}
 			}

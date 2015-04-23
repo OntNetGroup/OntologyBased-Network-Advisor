@@ -5,11 +5,15 @@ import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
 
+import com.hp.hpl.jena.ontology.OntModel;
+
 import provisioner.business.Provisioner;
 import provisioner.domain.Interface;
 import provisioner.domain.Path;
 import provisioner.jenaUtil.OWLUtil;
 import provisioner.jenaUtil.SPARQLQueries;
+import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.PerformanceUtil;
 
 public class AutoTester {
@@ -50,11 +54,24 @@ public class AutoTester {
 					
 					Date beginDate = new Date();				
 					provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, i+1, possibleReplications);
+					String ns = provisioner.getModel().getNsPrefixURI("");
+					
+					OntModel model = provisioner.getModel();
+					List<String> afURIs = QueryUtil.getIndividualsURI(model, ns+"Adaptation_source");
+					for (String afURI : afURIs) {
+						List<String> serverLayerURIS = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, afURI, ns+"adapts_to", ns+"Layer_Network");
+						for (String serverLayerURI : serverLayerURIS) {
+							List<String> clientLayerURIs = QueryUtil.getIndividualsURIAtObjectPropertyDomain(model, serverLayerURI, ns+"client_of", ns+"Layer_Network");
+							for (String clientLayerURI : clientLayerURIs) {
+								FactoryUtil.createInstanceRelation(model, afURI, ns+"adapts_from", clientLayerURI, false, false, false);
+							}
+						}
+					}
+					
 					long reasoningTimeExecPostInstances = provisioner.getReasoningTimeExecPostInstances();
 					String reasonerExec = "Reasoning execution: " + reasoningTimeExecPostInstances + "ms\n";
 					fosExecTime.write(reasonerExec.getBytes());
 					
-					String ns = provisioner.getModel().getNsPrefixURI("");
 					String layer = ns+"layer";
 					if(i>0){
 						layer+=i;
