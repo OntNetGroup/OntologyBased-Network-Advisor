@@ -28,6 +28,7 @@ function equipmentHandle(graph){
 		if(parent) {
 			//outros equipamentos conectados
 			var filhos = parent.getEmbeddedCells().length;
+			console.log('filhos ' , filhos);
 			var soa = parent.getEmbeddedCells() ;
 			//parent position and size
 			var pposition = parent.get('position');
@@ -280,22 +281,24 @@ function equipmentHandle(graph){
 //		dialog.open();
 
 //		function remove (parent, cell) {
+//		if(opt.skipRemove : true) return;
 
 		var parentId = cell.get('parent');
 		if (!parentId) return;
 		var parent = graph.getCell(parentId);
-		
+
 		if(parent.get('subType') === 'rack') {
 
 			var pposition = parent.get('position');
 			var psize = parent.get('size');			
 			var newpositionx = pposition.x + 15 ;
 
+			console.log("to del: ", cell);
 			var d = parent.get('embeds');
 			var i;
 			var maiorl = 0;
-			console.log("to del: ", cell);
-
+			var shelfw;
+			var sons;
 
 			l = 0;
 
@@ -308,96 +311,158 @@ function equipmentHandle(graph){
 						x: newpositionx ,
 						y: (pposition.y + 20 + ((l)*(80))) 
 					},{skipParentHandler : true});
-					
+
 					var sposition = shelf.get('position');
-					if ( maiorl < shelf.getEmbeddedCells().length ){
-						var shelfl = shelf;
+
+					sons = shelf.getEmbeddedCells().length;
+					console.log(sons);
+
+					if ( maiorl < sons ){
+						maiorl = sons;
+						console.log(maiorl);
+						shelfw = shelf.get('size').width;
+						console.log(shelfw);
 					}
 					
 					var reslot = shelf.get('embeds');
-					
 					var k;
-				for (k=0; k < (reslot.length); k++){
+					for (k=0; k < (reslot.length); k++){
 						var inshelf = graph.getCell(reslot[k]);	
-
 						if(inshelf){
-							console.log('inshelf ' , inshelf)
-							
-//							var childId = inshelf.get('embeds');
-//                             
-//							
-//							var inslot = graph.getCell(childId);													
-//							console.log(inslot);
-							
-							
+							//console.log('inshelf ' , inshelf)					
+							var childId = inshelf.get('embeds');	
+							var inslot = graph.getCell(childId);													
+//							console.log(inslot);												
 							inshelf.set('position', {
 								y: sposition.y + 7 ,
 								x: sposition.x + 20 + ((k) * (42.5)) ,
 							});
-							
+
 							var slotpos = inshelf.get('position');
-							
-//							inslot.set('position', {
-//								y: slotpos.y + 16 ,
-//								x: slotpos.x + 6
-//							});
-							
+
+							if(inslot){
+								inslot.set('position', {
+									y: slotpos.y + 16 ,
+									x: slotpos.x + 6
+								});
+							};
 							shelf.set('size', {
 								width: shelf.get('size').width,
 								height: 67.5 },
-								{skipParentHandler : false});
-							
+								{skipParentHandler : false});		
 							//console.log('positon ', inshelf.get('position'));
-							}
+						}
 					}
 					l++;
 				}
 			}
-
-			parent.set('size' , { 
-				width: psize.width  ,
-				height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
-			});
-
-//			var e = parent.get('embeds');
-//			console.log(e);
-//			var i;
-//			var maior2 = 0;
-//			for (i = 0; i < e.length; i++) {
-
-//			var shelf2 = graph.getCell(e[i]);
-//			console.log(shelf2);
-//			if (maior2 < shelf2.getEmbeddedCells().length) {
-//			maior2 = shelf2.getEmbeddedCells().length;
-//			var maiorshelf2 = shelf2;
-//			console.log(maiorshelf2);
-//			console.log(maior2);
-
-//			}
-//			parent.set ('size' , {
-//			width: maiorshelf2.get('size').width + 40 ,
-//			height: grandparent.get('size').height
-//			});
-//			};	
-
+			if (maiorl === 0){
+				parent.set('size' , { 
+					width: 120   ,
+					height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
+				});
+			}else{
+				parent.set('size' , { 
+					width: (shelfw) + 40  ,
+					height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
+				});
+			} 			
 		}else{
 			if(parent.get('subType') === 'shelf'){
-
+				//selecionar o rack
 				var grandparentId = parent.get('parent');
 				if (!grandparentId) return;
-
 				var grandparent = graph.getCell(grandparentId);
+				var pposition = parent.get('position');
+				var e = parent.get('embeds');
+				var j;
+				var l = 0;
+				for(j=0; j < e.length;j++){
+					var inshelf = graph.getCell(e[j]);
+					if(inshelf){              	
 
+						inshelf.set('position', {
+							x: pposition.x + 20 + ((l) * (42.5)) ,
+							y: pposition.y + 7 
+						});
+
+						var childId = inshelf.get('embeds');	
+						var inslot = graph.getCell(childId);	
+
+						var slotpos = inshelf.get('position');
+
+						if(inslot){
+							inslot.set('position', {
+								y: slotpos.y + 16 ,
+								x: slotpos.x + 6
+							});
+						};
+						l++;
+					}
+				}
 				parent.set('size' , { 
-					width: 120 + ((parent.getEmbeddedCells().length - (2) ) * 70) ,
+					width: 105 + ((parent.getEmbeddedCells().length - (2) ) * 42.5) ,
 					height:	parent.get('size').height});
+                
+				parent.unembed(cell);
+				
+				var i;
+				var maior = (parent.get('size').width);
+				var maiorshelf1 = parent;
+				var c = 0;
+				for (i = 0; i < c.length; i++) {
+					var inrack = graph.getCell(c[i]);
+					var inrackw = inrack.get('size').width;
+					console.log(inrack);
+					console.log(inrackw);
+				
+					if (inrack){							
+						//console.log(shelf1);
+						if (maior < inrackw) {
+							maior = inrackw;
+							maiorshelf1 = inrack;
+							console.log('a maior shelf do remo :', maiorshelf1);
+							console.log('maior do remo: ', maior);
+						}	
+					}
+					grandparent.set ('size' , {
+						width: maiorshelf1.get('size').width + 40 ,
+						height: grandparent.get('size').height
+					});
+                    
 
-				grandparent.set('size', {
-					width: grandparent.get('size').width ,
-					height: grandparent.get('size').height
-				});				
-
-
+				};
+				
+//				var t = grandparent.get('embeds');
+//				var p;
+//				var k=0;
+//				var maiorl = 0;
+//				var inrackw;
+//				var sons=0;
+//
+//				for(p=0; p < t.length; p++){
+//					var inrack = graph.getCell(t[p]);
+//					
+//					sons = inrack.getEmbeddedCells().length;
+//
+//					if ( maiorl < sons ){
+//						maiorl = sons;
+//						//console.log(maiorl);
+//						inrackw = inrack.get('size').width;
+//						//console.log(shelfw);
+//					}   
+//				}	
+//				if(maiorl === 0){
+//					grandparent.set('size' , {
+//						width: 120 ,
+//					    height : 265 + ((parent.getEmbeddedCells().length ) * 77.5)
+//					})
+//				}
+//				grandparent.set('size' , { 
+//					width: (inrackw) + 40  ,
+//					height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
+//				});	
+				
 			}else{
 				if(parent.get('subType') === 'slot'){
 					var grandparentId = parent.get('parent');
@@ -444,7 +509,7 @@ function equipmentHandle(graph){
 
 	graph.on('change' , function (cell) {
 //		Impedir o equipamento filho de sair da area do equipamento pai
-		
+
 		var parentId = cell.get('parent');
 		if (!parentId) return;
 
@@ -453,10 +518,10 @@ function equipmentHandle(graph){
 		var cellBbox = cell.getBBox();
 
 		if (parentBbox.containsPoint(cellBbox.origin()) && parentBbox.containsPoint(cellBbox.topRight()) &&
-		parentBbox.containsPoint(cellBbox.corner()) &&
-		parentBbox.containsPoint(cellBbox.bottomLeft())) {
+				parentBbox.containsPoint(cellBbox.corner()) &&
+				parentBbox.containsPoint(cellBbox.bottomLeft())) {
 
-		return;
+			return;
 		}
 		cell.set('position', cell.previous('position'));
 
@@ -466,48 +531,48 @@ function equipmentHandle(graph){
 //		Metodo para expandir o parent ao arrastar a child para a borda do parent
 //		if (opt.skipRemoveHandler) return;
 //		if (opt.skipParentHandler) return;
-//
+
 //		if (cell.get('embeds') && cell.get('embeds').length) {
-//			// If we're manipulating a parent element, let's store
-//			// it's original position to a special property so that
-//			// we can shrink the parent element back while manipulating
-//			// its children.
-//			cell.set('originalPosition', cell.get('position'));
+//		// If we're manipulating a parent element, let's store
+//		// it's original position to a special property so that
+//		// we can shrink the parent element back while manipulating
+//		// its children.
+//		cell.set('originalPosition', cell.get('position'));
 //		}
-//
+
 //		var parentId = cell.get('parent');
 //		if (!parentId) return;
-//
+
 //		var parent = graph.getCell(parentId);
 //		var parentBbox = parent.getBBox();
-//
+
 //		if (!parent.get('originalPosition')) parent.set('originalPosition', parent.get('position'));
 //		if (!parent.get('originalSize')) parent.set('originalSize', parent.get('size'));
-//
+
 //		var originalPosition = parent.get('originalPosition');
 //		var originalSize = parent.get('originalSize');
-//
+
 //		var newX = originalPosition.x;
 //		var newY = originalPosition.y;
 //		var newCornerX = originalPosition.x + originalSize.width;
 //		var newCornerY = originalPosition.y + originalSize.height;
-//
+
 //		_.each(parent.getEmbeddedCells(), function(child) {
-//
-//			var childBbox = child.getBBox();
-//
-//			if (childBbox.x < newX) { newX = childBbox.x; }
-//			if (childBbox.y < newY) { newY = childBbox.y; }
-//			if (childBbox.corner().x > newCornerX) { newCornerX = childBbox.corner().x; }
-//			if (childBbox.corner().y > newCornerY) { newCornerY = childBbox.corner().y; }
+
+//		var childBbox = child.getBBox();
+
+//		if (childBbox.x < newX) { newX = childBbox.x; }
+//		if (childBbox.y < newY) { newY = childBbox.y; }
+//		if (childBbox.corner().x > newCornerX) { newCornerX = childBbox.corner().x; }
+//		if (childBbox.corner().y > newCornerY) { newCornerY = childBbox.corner().y; }
 //		});
-//
+
 //		// Note that we also pass a flag so that we know we shouldn't adjust the
 //		// `originalPosition` and `originalSize` in our handlers as a reaction
 //		// on the following `set()` call.
 //		parent.set({
-//			position: { x: newX, y: newY },
-//			size: { width: newCornerX - newX, height: newCornerY - newY }
+//		position: { x: newX, y: newY },
+//		size: { width: newCornerX - newX, height: newCornerY - newY }
 //		}, { skipParentHandler: true });
 	},this);
 
