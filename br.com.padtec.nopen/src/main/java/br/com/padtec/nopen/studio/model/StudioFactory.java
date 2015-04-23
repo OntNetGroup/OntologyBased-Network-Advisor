@@ -173,12 +173,12 @@ public class StudioFactory {
 		String containerType = dtoContainer.getType();
 		String containerId = dtoContainer.getId();
 
-		if(tfType.equals("TTF") && containerType=="card")
+		if(tfType.equals("TTF") && containerType.equals("card"))
 		{			
 			throw new Exception("You cannot create a Trail Transport Function into a Card");
 		}
 		
-		if(tfType.equals("AF") && containerType=="layer") 
+		if(tfType.equals("AF") && containerType.equals("layer")) 
 		{ 
 			throw new Exception("You cannot create an Adaptation Function into a Layer");
 		};

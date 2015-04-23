@@ -25,7 +25,7 @@ function insertContainer(containerName, containerType, cardID) {
 	var result = "error";
 
 	var dtoContainer = {
-			"name" : containerName,
+			"id" : containerName,
 			"type" : containerType  
 	};
 
@@ -151,7 +151,7 @@ function canCreateTransportFunction(tFunctionID, tFunctionType, containerName, c
 		}
 	});
 
-	return result === "true";
+	return result;
 };
 
 function deleteTransportFunction(id, type) {

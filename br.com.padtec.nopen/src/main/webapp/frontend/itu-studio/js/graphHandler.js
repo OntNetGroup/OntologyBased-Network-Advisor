@@ -106,8 +106,8 @@ function graphHandler(graph, app) {
 						containerType = 'layer';
 						console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
 						
-						var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
-						if(result === true) {
+						var result = canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
+						if(result === "true") {
 							result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
 							
 							if(result === "success") {	
@@ -129,9 +129,9 @@ function graphHandler(graph, app) {
 				} else { // não existe elemento abaixo
 					// consultar ontologia para inserção de transport function diretamente no card
 					console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
-					var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+					var result = canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
 					
-					if(result === true) {
+					if(result === "true") {
 						result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
 						
 						if(result === "success") {	
@@ -163,8 +163,79 @@ function graphHandler(graph, app) {
 		
 	}, app);
 	
+	// validar inserção de interfaces no grafo
+    graph.on('add', function(cell) {
+
+		if(isLink(cell)) return;
+		if(isNotInterface(cell)) return;
+		
+    	var cellSubType = cell.get('subtype');
+
+    	var position = cell.get('position');
+		var size = cell.get('size');
+		var area = g.rect(position.x, position.y, size.width, size.height);
+
+		var portID = cell.id;
+		var portType = cellSubType;
+		
+		if(portType === 'in') var portName = 'in_' +this.inPortCounter;
+		else var portName = 'out_' +this.outPortCounter;
+		
+		var parent;
+		// get all elements below the added one
+		_.each(graph.getElements(), function(e) {
+		
+			var position = e.get('position');
+			var size = e.get('size');
+			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+				parent = e;
+			}
+		});
+		
+		if(parent) { // existe algum elemento abaixo
+			var parentType = parent.get('type');
+			
+			if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
+				
+					var transportFunctionID = parent.id;
+					console.log('try to create port ' +portID+ ';name: ' +portName+ ';TF: ' +transportFunctionID);
+					var result = createPort(portID, portName, portType, transportFunctionID)
+					
+					if(result === "success") {
+					
+						var newLink = new joint.dia.Link({	source: {id: transportFunctionID}, target: {id: portID}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
+		    			graph.addCell(newLink);
+		    			
+		    			// Move the port to the superior (in port) or inferior (out port) bar
+		    			if(portType === 'in') {
+		    				cell.transition('position/y', 15, {});
+		    				this.barIn.embed(cell);
+		    				this.inPortCounter++;
+		    			}
+		    			else {
+		    				cell.transition('position/y', 955, {});
+		    				this.barOut.embed(cell);
+		    				this.outPortCounter++;
+		    			}
+		    			
+						return next(err);
+					} else {
+						return next(result);
+					}
+			} else { // elemento abaixo é uma camada 
+				return next('Please, add the port over a transport function.');
+			}
+			
+		} else { // nenhum elemento abaixo
+			return next('Please, add the port over a transport function.');
+		}
+		
+    }, app);
+	
 	// validar a remoção de transport functions do grafo
     graph.on('remove', function(cell) {
+    	
+		if(isNotTransportFunction(cell)) return;
     	
     	var cellID = cell.id;
     	var tFunctionType = cell.get('subtype');
@@ -211,8 +282,13 @@ function graphHandler(graph, app) {
 	//Check if cell is an interface
 	function isInterface(cell) {
 		var cellSubType = cell.get('subtype');
-
 		if(cellSubType === 'out' || cellSubType === 'in') return true;
+	};
+
+	//Check if cell is not an interface
+	function isNotInterface(cell) {
+		var cellSubType = cell.get('subtype');
+		if(cellSubType !== 'out' && cellSubType !== 'in') return true;
 	};
 
 	//Check if cell is a layer

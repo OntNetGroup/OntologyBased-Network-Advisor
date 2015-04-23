@@ -53,7 +53,7 @@ public class ITUStudioController {
 	 * @return
 	 */
 	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
-	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("container") String card) 
+	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("card") String card) 
 	{	
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);

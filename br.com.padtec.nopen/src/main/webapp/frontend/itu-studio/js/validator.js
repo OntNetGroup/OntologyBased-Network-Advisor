@@ -67,71 +67,71 @@ function validator(validator, graph, app) {
 //    }, app));
     
     // validar inserção de interfaces no grafo
-    validator.validate('add', isNotLink, isInterface, _.bind(function(err, command, next) {
-    	        	
-    	var cell = graph.getCell(command.data.id);
-    	var cellSubType = cell.get('subtype');
-
-    	var position = cell.get('position');
-		var size = cell.get('size');
-		var area = g.rect(position.x, position.y, size.width, size.height);
-
-		var portID = cell.id;
-		var portType = cellSubType;
-		
-		if(portType === 'in') var portName = 'in_' +this.inPortCounter;
-		else var portName = 'out_' +this.outPortCounter;
-		
-		var parent;
-		// get all elements below the added one
-		_.each(graph.getElements(), function(e) {
-		
-			var position = e.get('position');
-			var size = e.get('size');
-			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-				parent = e;
-			}
-		});
-		
-		if(parent) { // existe algum elemento abaixo
-			var parentType = parent.get('type');
-			
-			if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
-				
-					var transportFunctionID = parent.id;
-					console.log('try to create port ' +portID+ ';name: ' +portName+ ';TF: ' +transportFunctionID);
-					var result = createPort(portID, portName, portType, transportFunctionID)
-					
-					if(result === "success") {
-					
-						var newLink = new joint.dia.Link({	source: {id: transportFunctionID}, target: {id: portID}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
-		    			graph.addCell(newLink);
-		    			
-		    			// Move the port to the superior (in port) or inferior (out port) bar
-		    			if(portType === 'in') {
-		    				cell.transition('position/y', 15, {});
-		    				app.barIn.embed(cell);
-		    				this.inPortCounter++;
-		    			}
-		    			else {
-		    				cell.transition('position/y', 955, {});
-		    				app.barOut.embed(cell);
-		    				this.outPortCounter++;
-		    			}
-		    			
-						return next(err);
-					} else {
-						return next(result);
-					}
-			} else { // elemento abaixo é uma camada 
-				return next('Please, add the port over a transport function.');
-			}
-			
-		} else { // nenhum elemento abaixo
-			return next('Please, add the port over a transport function.');
-		}
-		
-    }, app));
+//    validator.validate('add', isNotLink, isInterface, _.bind(function(err, command, next) {
+//    	        	
+//    	var cell = graph.getCell(command.data.id);
+//    	var cellSubType = cell.get('subtype');
+//
+//    	var position = cell.get('position');
+//		var size = cell.get('size');
+//		var area = g.rect(position.x, position.y, size.width, size.height);
+//
+//		var portID = cell.id;
+//		var portType = cellSubType;
+//		
+//		if(portType === 'in') var portName = 'in_' +this.inPortCounter;
+//		else var portName = 'out_' +this.outPortCounter;
+//		
+//		var parent;
+//		// get all elements below the added one
+//		_.each(graph.getElements(), function(e) {
+//		
+//			var position = e.get('position');
+//			var size = e.get('size');
+//			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+//				parent = e;
+//			}
+//		});
+//		
+//		if(parent) { // existe algum elemento abaixo
+//			var parentType = parent.get('type');
+//			
+//			if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
+//				
+//					var transportFunctionID = parent.id;
+//					console.log('try to create port ' +portID+ ';name: ' +portName+ ';TF: ' +transportFunctionID);
+//					var result = createPort(portID, portName, portType, transportFunctionID)
+//					
+//					if(result === "success") {
+//					
+//						var newLink = new joint.dia.Link({	source: {id: transportFunctionID}, target: {id: portID}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
+//		    			graph.addCell(newLink);
+//		    			
+//		    			// Move the port to the superior (in port) or inferior (out port) bar
+//		    			if(portType === 'in') {
+//		    				cell.transition('position/y', 15, {});
+//		    				app.barIn.embed(cell);
+//		    				this.inPortCounter++;
+//		    			}
+//		    			else {
+//		    				cell.transition('position/y', 955, {});
+//		    				app.barOut.embed(cell);
+//		    				this.outPortCounter++;
+//		    			}
+//		    			
+//						return next(err);
+//					} else {
+//						return next(result);
+//					}
+//			} else { // elemento abaixo é uma camada 
+//				return next('Please, add the port over a transport function.');
+//			}
+//			
+//		} else { // nenhum elemento abaixo
+//			return next('Please, add the port over a transport function.');
+//		}
+//		
+//    }, app));
     
     // validar inserção de camadas no grafo
     validator.validate('add', isNotLink, isLayer, _.bind(function(err, command, next) {
