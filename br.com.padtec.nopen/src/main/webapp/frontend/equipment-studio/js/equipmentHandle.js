@@ -373,6 +373,7 @@ function equipmentHandle(graph){
 				var grandparentId = parent.get('parent');
 				if (!grandparentId) return;
 				var grandparent = graph.getCell(grandparentId);
+				
 				var pposition = parent.get('position');
 				var e = parent.get('embeds');
 				var j;
@@ -400,70 +401,84 @@ function equipmentHandle(graph){
 						l++;
 					}
 				}
-				parent.set('size' , { 
-					width: 105 + ((parent.getEmbeddedCells().length - (2) ) * 42.5) ,
-					height:	parent.get('size').height});
-                
-				parent.unembed(cell);
 				
-				var i;
-				var maior = (parent.get('size').width);
-				var maiorshelf1 = parent;
-				var c = 0;
-				for (i = 0; i < c.length; i++) {
-					var inrack = graph.getCell(c[i]);
-					var inrackw = inrack.get('size').width;
-					console.log(inrack);
-					console.log(inrackw);
+				if( parent.getEmbeddedCells().length === 1){
+					parent.set('size' , { 
+						width: 105 + ((parent.getEmbeddedCells().length - (1) ) * 42.5) ,
+						height:	parent.get('size').height});
+				}else{
+					parent.set('size' , { 
+						width: 105 + ((parent.getEmbeddedCells().length - (2) ) * 42.5) ,
+						height:	parent.get('size').height});
+				}
+		
 				
-					if (inrack){							
-						//console.log(shelf1);
-						if (maior < inrackw) {
-							maior = inrackw;
-							maiorshelf1 = inrack;
-							console.log('a maior shelf do remo :', maiorshelf1);
-							console.log('maior do remo: ', maior);
-						}	
-					}
-					grandparent.set ('size' , {
-						width: maiorshelf1.get('size').width + 40 ,
-						height: grandparent.get('size').height
-					});
-                    
-
-				};
-				
-//				var t = grandparent.get('embeds');
-//				var p;
-//				var k=0;
-//				var maiorl = 0;
+//				var i;
+//				var maior = 0;
+//				var maiorinrack;
 //				var inrackw;
-//				var sons=0;
-//
-//				for(p=0; p < t.length; p++){
-//					var inrack = graph.getCell(t[p]);
-//					
-//					sons = inrack.getEmbeddedCells().length;
-//
-//					if ( maiorl < sons ){
-//						maiorl = sons;
-//						//console.log(maiorl);
-//						inrackw = inrack.get('size').width;
-//						//console.log(shelfw);
-//					}   
-//				}	
-//				if(maiorl === 0){
-//					grandparent.set('size' , {
+//				var c = grandparent.get('embeds');
+//				for (i = 0; i < c.length; i++) {					
+//					var inrack = graph.getCell(c[i]);
+//					inracksons = inrack.getEmbeddedCells().length;
+//				
+//					if(inrack){							
+//						if(maior < inracksons) {
+//							maior = inracksons;
+//							maiorshelf1 = inrack;
+//							inrackw = inrack.get('size').width;
+//							console.log('a maior shelf do remo :', inrackw);
+//							console.log('maior do remo: ', inrack);
+//						}	
+//					}
+//				};
+//				if(maior === 0){
+//					grandparent.set ('size' , {
 //						width: 120 ,
-//					    height : 265 + ((parent.getEmbeddedCells().length ) * 77.5)
-//					})
+//						heigth: 265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
+//					});
+//				}else{
+//					grandparent.set ('size' , {
+//						width: inrackw + 40 ,
+//						heigth: 265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
+//					});
 //				}
-//				grandparent.set('size' , { 
-//					width: (inrackw) + 40  ,
-//					height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
-//				});	
+				
+				
+				var t = grandparent.get('embeds');
+				var p;
+				var k=0;
+				var maiorl = 0;
+				var inrackw;
+				var sons=0;
+
+				for(p=0; p < t.length; p++){
+					var inrack = graph.getCell(t[p]);
+					
+					sons = inrack.getEmbeddedCells().length;
+
+					if ( maiorl < sons ){
+						maiorl = sons;
+						//console.log(maiorl);
+						inrackw = inrack.get('size').width;
+						//console.log(shelfw);
+					}   
+				}	
+				if(maiorl === 0){
+					grandparent.set('size' , {
+						width: 120 ,
+					    height : 265 + ((grandparent.getEmbeddedCells().length - (2) ) * 77.5)
+					})
+				}else{
+					grandparent.set('size' , { 
+						width: (inrackw) + 40  ,
+						height:	265 + ((grandparent.getEmbeddedCells().length - (2) ) * 77.5)
+					});	
+				}
+				
 				
 			}else{
+				
 				if(parent.get('subType') === 'slot'){
 					var grandparentId = parent.get('parent');
 					if (!grandparentId) return;
