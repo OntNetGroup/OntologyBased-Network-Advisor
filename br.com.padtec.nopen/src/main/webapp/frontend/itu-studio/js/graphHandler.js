@@ -115,14 +115,14 @@ function graphHandler(graph, app) {
 								parent.embed(cell);
 								this.tFunctionCounter++;
 							} else {
-								alert(result);
+								this.generateAlertDialog(result);
 								this.skipOntologyRemoveHandler = true;
 								cell.remove();
 							}
 						}
 											
 					} else { // elemento abaixo não é um container
-						alert('Please, add the transport function on the paper or a layer.');
+						this.generateAlertDialog('Please, add the transport function on the paper or a layer.');
 						this.skipOntologyRemoveHandler = true;
 						cell.remove();
 					}
@@ -137,13 +137,13 @@ function graphHandler(graph, app) {
 						if(result === "success") {	
 							this.tFunctionCounter++;
 						} else {
-							alert(result);
+							this.generateAlertDialog(result);
 							this.skipOntologyRemoveHandler = true;
 							cell.remove();
 						}
 						
 					} else {
-						alert(result);
+						this.generateAlertDialog(result);
 						this.skipOntologyRemoveHandler = true;
 						cell.remove();
 					}
@@ -158,7 +158,7 @@ function graphHandler(graph, app) {
 			this.skipOntologyRemoveHandler = true;
 			cell.remove();
 			
-			alert('Operation canceled');
+			this.generateAlertDialog('Operation canceled by user');
 		}, app);
 		
 	}, app);
@@ -249,14 +249,14 @@ function graphHandler(graph, app) {
 		if(result === "success") {
 			return;
 		} else {
-			alert(result);
+			this.generateAlertDialog(result);
 			cell.set({skipOntologyRemoveHandler : true});
 		}
     }, app);
     
-    graph.on('all', function(args) {
-    	console.log(args);
-    }, app);
+//    graph.on('all', function(eventName, cell) {
+//    	console.log(arguments);
+//    }, app);
 	
     /* ------ AUXILIAR FUNCTIONS ------- */
 	// Check if cell is not a link

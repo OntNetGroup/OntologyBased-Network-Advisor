@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jointjs.util.JointUtilManager;
+
+import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
 @Controller
@@ -52,6 +55,14 @@ public class EquipmentStudioController {
 				file.delete();
 			}
 		}
+	}
+	
+	@RequestMapping("/insertCard")
+	public @ResponseBody String insertCard(@RequestParam("card") String card)
+	{
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		
+		return "success";
 	}
 	
 	/**

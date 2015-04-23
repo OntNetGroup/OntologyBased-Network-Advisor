@@ -766,5 +766,14 @@ var Rappid = Backbone.Router.extend({
 			p.transition('position/x', positionMultiplier, {});
 			positionMultiplier += 40;
     	});
-    }    
+    },
+    
+    generateAlertDialog: function(alertMsg) {
+    	new joint.ui.Dialog({
+			type: 'alert',
+			width: 400,
+			title: 'Alert',
+			content: alertMsg
+		}).open();
+    }
 });
