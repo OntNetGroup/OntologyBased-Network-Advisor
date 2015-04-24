@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jointjs.util.JointUtilManager;
-
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
+
+import com.jointjs.util.JointUtilManager;
 
 @Controller
 public class EquipmentStudioController {

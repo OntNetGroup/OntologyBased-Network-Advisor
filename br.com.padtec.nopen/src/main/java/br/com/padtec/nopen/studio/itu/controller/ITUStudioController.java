@@ -163,7 +163,7 @@ public class ITUStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		try{
-			StudioFactory.changeContainer(dtoTransportFunction, dtoContainer, dtoCard);
+			StudioFactory.changeContainer(dtoTransportFunction, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();

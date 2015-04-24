@@ -1,6 +1,7 @@
 package br.com.padtec.nopen.service.util;
 
 import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -66,4 +67,18 @@ public class NOpenFactoryUtil {
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indURI,cardURI);
 	}
 	
+	//=============================================================================================
+	// Equipment Holder
+	//=============================================================================================
+	
+	public static void createEquipmentHolder(String id_EquipmentHolder, OKCoUploader repository) throws Exception
+	{
+		String individualURI = repository.getNamespace()+id_EquipmentHolder;
+		if(!QueryUtil.individualExists(repository.getBaseModel(), individualURI))
+		{
+			String classURI = repository.getNamespace()+ConceptEnum.Equipment_Holder.toString();
+			
+			FactoryUtil.createInstanceIndividual(repository.getBaseModel(), individualURI, classURI);
+		}
+	}
 }
