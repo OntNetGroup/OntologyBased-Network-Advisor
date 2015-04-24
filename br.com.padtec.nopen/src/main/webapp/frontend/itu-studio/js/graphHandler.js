@@ -15,7 +15,6 @@ function graphHandler(graph, app) {
 		if(isLink(cell)) return;
 		if (!opt.stencil) return;
 
-		if(cell.get('type') === 'link') return;
 		var type = cell.get('type');
 		var subtype = cell.get('subtype');
 		

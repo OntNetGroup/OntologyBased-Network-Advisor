@@ -360,8 +360,8 @@ var Rappid = Backbone.Router.extend({
             var inspectorDefs = InspectorDefs[cell.get('type')];
 
             this.inspector = new joint.ui.Inspector({
-                inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,
-                groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,
+                inputs: inspectorDefs.inputs,
+                groups: inspectorDefs.groups,
                 cell: cell
             });
 
