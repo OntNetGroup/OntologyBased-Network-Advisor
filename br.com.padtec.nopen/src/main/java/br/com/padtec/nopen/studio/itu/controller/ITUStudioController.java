@@ -162,6 +162,9 @@ public class ITUStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
+		// TODO (MISSAEL)
+		// John: I need both source and target containers in order to change the TF from one to another.
+		
 		try{
 			StudioFactory.changeContainer(dtoTransportFunction, dtoContainer);
 		}catch(Exception e){
@@ -263,6 +266,9 @@ public class ITUStudioController {
 	public @ResponseBody String deleteLink(@RequestParam("link") String link) 
 	{
 		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
+	
+		// TODO (MISSAEL)
+		// John: I need both source and target TF's in order to delete the object property linking them.
 		
 		try{
 			StudioFactory.deleteLink(dtoLink);

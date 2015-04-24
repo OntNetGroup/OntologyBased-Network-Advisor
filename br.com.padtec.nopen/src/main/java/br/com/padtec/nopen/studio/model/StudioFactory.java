@@ -149,6 +149,29 @@ public class StudioFactory {
 		NOpenLog.appendLine("Layer Removed: "+containerId+" at Card: "+cardId);
 	}
 	
+	/**
+	 * @author John Guerson
+	 * @throws Exception 
+	 */
+	public static void changeLayerOfTTF(String ttfId, String srcLayerId, String tgtLayerId) throws Exception
+	{	
+		FactoryUtil.deleteObjectProperty(
+			StudioComponents.studioRepository.getBaseModel(),
+			StudioComponents.studioRepository.getNamespace()+ttfId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
+			StudioComponents.studioRepository.getNamespace()+srcLayerId
+		);
+		
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+ttfId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
+			StudioComponents.studioRepository.getNamespace()+tgtLayerId
+		);
+		
+		NOpenLog.appendLine("TTF's Layer Changed From "+srcLayerId+" to: "+tgtLayerId);
+	}
+	
 	//=============================================================================================
 	// Transport Function
 	//=============================================================================================
@@ -329,8 +352,17 @@ public class StudioFactory {
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();		
 		
-		NOpenLog.appendLine("Error: Unexpected change of container "+containerType+" \""+containerId+"\" at "+tfType+" \""+tfId+"\"");
-		throw new Exception("Unexpected change of container "+containerType+" \""+containerId+"\" at "+tfType+" \""+tfId+"\"");	
+		if(containerType.equals("layer"))
+		{
+			if(tfType.equals("TTF")) 
+			{
+				changeLayerOfTTF(tfId, containerId, "");
+			}
+		}		
+		else{
+			NOpenLog.appendLine("Error: Unexpected change of container "+containerType+" \""+containerId+"\" from "+tfType+" \""+tfId+"\"");
+			throw new Exception("Unexpected change of container "+containerType+" \""+containerId+"\" from "+tfType+" \""+tfId+"\"");
+		}
 	}
 
 	//=============================================================================================
@@ -344,6 +376,13 @@ public class StudioFactory {
 	{	
 		String linkType = dtoLink.getType();
 		String linkId = dtoLink.getId();
+				
+//		FactoryUtil.deleteObjectProperty(
+//			StudioComponents.studioRepository.getBaseModel(),
+//			StudioComponents.studioRepository.getNamespace()+ttfId, 
+//			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
+//			StudioComponents.studioRepository.getNamespace()+srcLayerId
+//		);
 		
 		NOpenLog.appendLine("Error: Unexpected deletion of link "+linkType+" \""+linkId+"\"");
 		throw new Exception("Unexpected deletion of link "+linkType+" \""+linkId+"\"");		
@@ -363,14 +402,24 @@ public class StudioFactory {
 		String tgtTfType = dtoSourceTFunction.getType();		
 		String tgtTfId = dtoSourceTFunction.getId();
 		
-		NOpenLog.appendLine("Error: Unexpected creation of link "+linkType+" \""+linkId+"\" from "+srcTfType+" \""+srcTfId+"\" "+"to "+tgtTfType+" \""+tgtTfId+"\"");
-		throw new Exception("Unexpected creation of link "+linkType+" \""+linkId+"\" from "+srcTfType+" \""+srcTfId+"\" "+"to "+tgtTfType+" \""+tgtTfId+"\"");			
+		if(srcTfType.equals("TTF") && tgtTfType.equals("AF"))
+		{
+			
+		}
+		
+		else if(srcTfType.equals("AF") && tgtTfType.equals("TTF"))
+		{
+			
+		}
+		else{
+			NOpenLog.appendLine("Error: Unexpected creation of link "+linkType+" \""+linkId+"\" from "+srcTfType+" \""+srcTfId+"\" "+"to "+tgtTfType+" \""+tgtTfId+"\"");
+			throw new Exception("Unexpected creation of link "+linkType+" \""+linkId+"\" from "+srcTfType+" \""+srcTfId+"\" "+"to "+tgtTfType+" \""+tgtTfId+"\"");			
+		}			
 	}
 
 	/**
 	 * @author John Guerson
 	 */
-	@SuppressWarnings("unused")
 	public static void canCreateLink(DtoJointElement dtoSourceTFunction, DtoJointElement dtoTargetTFunction) throws Exception
 	{	
 		String srcTfType = dtoSourceTFunction.getType();		
@@ -378,5 +427,17 @@ public class StudioFactory {
 		
 		String tgtTfType = dtoSourceTFunction.getType();		
 		String tgtTfId = dtoSourceTFunction.getId();
+		
+		if(srcTfType.equals("TTF") && tgtTfType.equals("TTF"))
+		{
+			NOpenLog.appendLine("Error: Cannot create a link from "+srcTfType+" \""+srcTfId+"\" to "+tgtTfType+" \""+tgtTfId+"\"");
+			throw new Exception("Cannot create a link from a "+srcTfType.toUpperCase()+" to a "+tgtTfType.toUpperCase());	
+		}
+		
+		if(srcTfType.equals("AF") && tgtTfType.equals("AF"))
+		{
+			NOpenLog.appendLine("Error: Cannot create a link from "+srcTfType+" \""+srcTfId+"\" to "+tgtTfType+" \""+tgtTfId+"\"");
+			throw new Exception("Cannot create a link from a "+srcTfType.toUpperCase()+" to a "+tgtTfType.toUpperCase());	
+		}
 	}		
 }
