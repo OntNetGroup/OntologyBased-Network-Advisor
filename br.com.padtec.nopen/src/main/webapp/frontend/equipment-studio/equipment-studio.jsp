@@ -1,80 +1,98 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf8"/>
+<head>
+<meta charset="utf8" />
 <!--        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/> -->
 
-        <title>EQUIPMENT STUDIO</title>
+<title>EQUIPMENT STUDIO</title>
 
-		<!-- CSS CORE -->
-		
-        <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
-        
-        <!-- CSS JQUERY -->
-        
-		<link rel="stylesheet" type="text/css" href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css"/>
+<!-- CSS CORE -->
 
-		<!-- CSS -->
+<link rel="stylesheet" type="text/css"
+	href="/nopen/core/rappid_api/css/joint.all.css" />
 
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/layout.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/paper.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/inspector.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/navigator.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/stencil.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/halo.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/selection.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/toolbar.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/statusbar.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/freetransform.css" />
-        
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/style.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/header.css" />   
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/equipment-studio/css/dialog.css" />
-        
-    </head>
-    <body>
-		
-		<!-- TEMPLATES -->
-		
-       	<%@include file="templates/header.jsp"%>
-        <%@include file="templates/toolbar.jsp"%>
+<!-- CSS JQUERY -->
 
-		<!-- JS CORE -->
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css" />
 
-        <script src="/nopen/core/rappid_api/js/joint.js"></script>
-        <script src="/nopen/core/rappid_api/js/joint.all.js"></script>
+<!-- CSS -->
 
-		<!-- JQUERY -->
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/layout.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/paper.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/inspector.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/navigator.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/stencil.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/halo.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/selection.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/toolbar.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/statusbar.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/freetransform.css" />
 
-		<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
-		<script src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/header.css" />
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/dialog.css" />
 
-		<!-- JS -->
-		
-        <script src="/nopen/frontend/equipment-studio/js/keyboard.js"></script>
-        <script src="/nopen/frontend/equipment-studio/js/inspector.js"></script>
-        <script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
-        <script src="/nopen/frontend/equipment-studio/js/main.js"></script>
-       
-        <script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
-        <script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
-        <script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
-        
-   		<!-- PLUGINS -->
-        
-        <script src="/nopen/frontend/equipment-studio/plugins/open-equipment.js"></script>
-        <script src="/nopen/frontend/equipment-studio/plugins/save-equipment.js"></script>
-         
-        <!-- DIALOGS --> 
-         
-        <input type="text" id="filename" style="display:none"/>
-         
-        <div id="itu-dialog" title="ITU" style="display:none">
-        	<iframe id="itu-iframe" src="" scrolling="no" ></iframe>
-			<!--  File name: <input type="text" id="save-filename" /> -->
-		</div>
-		
-		
+</head>
+<body>
+
+	<!-- TEMPLATES -->
+
+	<%@include file="templates/header.jsp"%>
+	<%@include file="templates/toolbar.jsp"%>
+
+	<!-- JS CORE -->
+
+	<script src="/nopen/core/rappid_api/js/joint.js"></script>
+	<script src="/nopen/core/rappid_api/js/joint.all.js"></script>
+
+	<!-- JQUERY -->
+
+	<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
+	<script
+		src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
+
+	<!-- JS -->
+
+	<script src="/nopen/frontend/equipment-studio/js/keyboard.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/inspector.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/main.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/equipmentAjax.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
+
+	<!-- PLUGINS -->
+
+	<script
+		src="/nopen/frontend/equipment-studio/plugins/open-equipment.js"></script>
+	<script
+		src="/nopen/frontend/equipment-studio/plugins/save-equipment.js"></script>
+
+	<!-- DIALOGS -->
+
+	<input type="text" id="filename" style="display: none" />
+
+	<div id="itu-dialog" title="ITU" style="display: none">
+		<iframe id="itu-iframe" src="" scrolling="no"></iframe>
+		<!--  File name: <input type="text" id="save-filename" /> -->
+	</div>
+
+
 	<!--[if IE 9]>
 	    <script src="./lib/base64.js"></script>
 	    <script type="text/javascript">
@@ -88,7 +106,7 @@
 	      document.onselectstart = function() { return false; };
 	    </script>
 	<![endif]-->
-        <script>
+	<script>
             // Uncomment the following line and comment the line after if you
             // want to use channels.
             //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
@@ -122,5 +140,5 @@
             });
         
         </script>
-    </body>
+</body>
 </html>
