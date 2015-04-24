@@ -108,6 +108,9 @@ function graphHandler(graph, app) {
 						this.isAddingTransportFunction = true;
 						parent.embed(cell);
 					}
+					cell.attr({
+						text: {text: tFunctionName}
+					});
 					nextName(tFunctionType);
 				} else {
 					this.generateAlertDialog(result);
@@ -168,6 +171,9 @@ function graphHandler(graph, app) {
 		    				cell.transition('position/y', 955, {});
 		    				this.barOut.embed(cell);
 		    			}
+						cell.attr({
+							text: {text: portName}
+						});
 		    			nextName(portType);
 					} else {
 						this.generateAlertDialog(result);

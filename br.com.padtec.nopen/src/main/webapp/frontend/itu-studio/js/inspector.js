@@ -59,7 +59,12 @@ var InspectorDefs = {
     'basic.Rect': {
 
     	inputs: {
-    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } },
+//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } }
+    		attrs: {
+				text: {
+					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+				}
+    		}
     	},
     	groups: CommonInspectorGroups
     },
@@ -67,7 +72,12 @@ var InspectorDefs = {
     'basic.Circle': {
 
     	inputs: {
-    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } },
+//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } }
+			attrs: {
+				text: {
+					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+				}
+			}
     	},
     	groups: CommonInspectorGroups
     },
@@ -77,7 +87,22 @@ var InspectorDefs = {
     
     'basic.Path': {
     	inputs: {
-    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } },
+//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } }
+			attrs: {
+				text: {
+					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+				}
+			}
+    	},
+    	groups: CommonInspectorGroups
+    },
+
+    // Layer
+    // -----
+    
+    'bpmn.Pool': {
+    	inputs: {
+//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } }
     	},
     	groups: CommonInspectorGroups
     }

@@ -53,7 +53,6 @@ var Rappid = Backbone.Router.extend({
         this.initializeStencil();
         this.initializeSelection();
         this.initializeHaloAndInspector();
-        this.initializeNavigator();
         this.initializeClipboard();
         this.initializeCommandManager();
         this.initializeToolbar();
@@ -451,19 +450,6 @@ var Rappid = Backbone.Router.extend({
 
             this.createInspector(cellView);
         }, this);
-    },
-
-    initializeNavigator: function() {
-
-        var navigator = this.navigator = new joint.ui.Navigator({
-            width: 240,
-            height: 115,
-            paperScroller: this.paperScroller,
-            zoomOptions: { max: 5, min: 0.2 }
-        });
-
-        navigator.$el.appendTo('.navigator-container');
-        navigator.render();
     },
 
     initializeHaloTooltips: function(halo) {
