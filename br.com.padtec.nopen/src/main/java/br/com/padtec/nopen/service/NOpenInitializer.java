@@ -19,10 +19,10 @@ public class NOpenInitializer {
 		 //Testing
 		  NOpenFactoryUtil.createCard(StudioComponents.studioRepository, "Card1");
 		
-		ModelStructureAccessor.initContainerStructure("Card1", StudioComponents.studioRepository);
-		for(String s : ModelStructureAccessor.getRelationsMapping().keySet()){
+		ModelStructureAccessorController.initContainerStructure("Card1", StudioComponents.studioRepository);
+		for(String s : ModelStructureAccessorController.getRelationsMapping().keySet()){
 			System.out.println(s);
-			System.out.println(ModelStructureAccessor.getRelationsMapping().get(s));
+			System.out.println(ModelStructureAccessorController.getRelationsMapping().get(s));
 			System.out.println("------------------");
 		}
 	}

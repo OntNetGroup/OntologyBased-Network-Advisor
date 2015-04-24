@@ -108,7 +108,7 @@ public class NOpenQueryUtil {
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
 				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
 				+ "SELECT  ?r ?y "
-				+ "WHERE { ?x rdfs:subPropertyOf ont:componentOf . "
+				+ "WHERE { ?x rdfs:subPropertyOf ont:INV.componentOf . "
 				+ "?x rdfs:domain ont:"+ classID + ". "
 				+ "?x rdfs:range ?r ."
 				+ "	OPTIONAL { ?y rdfs:subClassOf ?r . } "
