@@ -39,7 +39,8 @@ var Rappid = Backbone.Router.extend({
 
     /* counters to give names for transport functions and interfaces */
     initializeCounters: function() {
-        this.tFunctionCounter = 0;
+        this.TTFCounter = 0;
+        this.AFCounter = 0;
         this.inPortCounter = 0;
         this.outPortCounter = 0;
     },
@@ -348,8 +349,8 @@ var Rappid = Backbone.Router.extend({
             if (this.inspector) {
 
                 this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {
-		    return $(g).attr('data-name');
-		});
+                	return $(g).attr('data-name');
+                });
                 
                 // Clean up the old inspector if there was one.
                 this.inspector.updateCell();
@@ -371,7 +372,7 @@ var Rappid = Backbone.Router.extend({
 
             if (this.inspectorClosedGroups[cell.id]) {
 
-		_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);
+            	_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);
 
             } else {
                 this.inspector.$('.group:not(:first-child)').addClass('closed');

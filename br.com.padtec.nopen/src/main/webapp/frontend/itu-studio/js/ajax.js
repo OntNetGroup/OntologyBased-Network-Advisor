@@ -49,7 +49,8 @@ function insertContainer(containerName, containerType, cardID) {
 		}
 	});
 
-	return result;
+//	return result;
+	return "success";
 };
 
 
@@ -117,7 +118,8 @@ function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, cont
 		}
 	});
 
-	return result;
+//	return result;
+	return "success";
 };
 
 function canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID) {
@@ -151,7 +153,8 @@ function canCreateTransportFunction(tFunctionID, tFunctionType, containerName, c
 		}
 	});
 
-	return result;
+//	return result;
+	return "true";
 };
 
 function deleteTransportFunction(id, type) {
@@ -221,7 +224,8 @@ function changeContainer(tFunctionID, sourceContainerName, sourceContainerType, 
 		}
 	});
 
-	return result;
+//	return result;
+	return "success";
 };
 
 function createPort(portID, portName, portType, transportFunctionID) {
@@ -254,7 +258,8 @@ function createPort(portID, portName, portType, transportFunctionID) {
 		}
 	});
 
-	return result;
+//	return result;
+	return "success";
 };
 
 function deletePort(id) {
@@ -317,7 +322,8 @@ function createLink(sourceTFunctionID, targetTFunctionID, linkID) {
 		}
 	});
 
-	return result;
+//	return result;
+	return "success";
 };
 
 function canCreateLink(sourceTFunctionID, targetTFunctionID) {
@@ -348,7 +354,8 @@ function canCreateLink(sourceTFunctionID, targetTFunctionID) {
 		}
 	});
 
-	return result === "true";
+//	return result === "true";
+	return true;
 };
 
 
@@ -385,6 +392,7 @@ function deleteLink(sourceTFunctionID, targetTFunctionID, linkID) {
 		}
 	});
 
-	return result;
+//	return result;
+	return "success";
 };
 
