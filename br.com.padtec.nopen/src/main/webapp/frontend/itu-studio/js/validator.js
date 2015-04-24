@@ -69,7 +69,7 @@ function validator(validator, graph, app) {
 		
 		// se target for um transport function, consultar ontologia para remoção da conexão
 		if(targetElementSubtype === 'basic.Path') {
-			var result = deleteLink(cellID);
+			var result = deleteLink(sourceID, targetID, cellID);
 			if(result === "success") {
 				return next(err);
 			} else {
@@ -84,25 +84,32 @@ function validator(validator, graph, app) {
     
 
     // validar a remoção de transport functions do grafo
-//    validator.validate('remove', isTransportFunction, _.bind(function(err, command, next) {
-//
-//    	if(this.skipOntologyHandler) return next(err);
-//    	
-//    	var cellID = command.data.id;
-//    	var tFunctionType = command.data.attributes.subtype;
-//    	
-//		var result = deleteTransportFunction(cellID, tFunctionType);
-//		if(result === "success") {
-//			return next(err);
-//		} else {
-//			return next(result);
-//		}
-//    }, app));
+    validator.validate('remove', isTransportFunction, _.bind(function(err, command, next) {
+
+    	if(this.skipOntologyRemoveHandler) {
+    		this.skipOntologyRemoveHandler = false;
+    		return next(err);
+    	}
+    	
+    	var cellID = command.data.id;
+    	var tFunctionType = command.data.attributes.subtype;
+    	
+		var result = deleteTransportFunction(cellID, tFunctionType);
+		if(result === "success") {
+			return next(err);
+		} else {
+			return next(result);
+		}
+    }, app));
     
 
     // validar a remoção de camadas do grafo
     validator.validate('remove', isLayer, _.bind(function(err, command, next) {
-
+    	
+    	if(this.skipOntologyRemoveHandler) {
+    		this.skipOntologyRemoveHandler = false;
+    		return next(err);
+    	}
     	var containerName = command.data.attributes.subtype;
 		var containerType = 'layer';
 		var cardID = this.cardID;
@@ -119,6 +126,11 @@ function validator(validator, graph, app) {
 
     // validar a remoção de interfaces do grafo
     validator.validate('remove', isInterface, _.bind(function(err, command, next) {
+
+    	if(this.skipOntologyRemoveHandler) {
+    		this.skipOntologyRemoveHandler = false;
+    		return next(err);
+    	}
     	
     	var cellID = command.data.id;
     	
@@ -199,7 +211,7 @@ function validator(validator, graph, app) {
 				containerName = parent.get('subtype');
 				containerType = 'layer';
 				console.log('change layer of ' +tFunctionID+ ' to layer ' +containerName+ ' inside card ' +cardID);
-				
+				//TODO: tratar source e target containers
 				var result = changeContainer(tFunctionID, containerName, containerType, cardID)
 				
 				if(result === "success") {						
@@ -215,7 +227,7 @@ function validator(validator, graph, app) {
 		} else { // não existe elemento abaixo
 			// consultar ontologia para remoção de camada do transport function
 			console.log('remove layer of ' +tFunctionID+ ' inside card ' +cardID);
-			
+			//TODO: tratar source e target containers
 			var result = changeContainer(tFunctionID, containerName, containerType, cardID)
 			
 			if(result === "success") {

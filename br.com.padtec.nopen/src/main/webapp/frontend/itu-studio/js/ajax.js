@@ -181,17 +181,22 @@ function deleteTransportFunction(id, type) {
 	return result;
 };
 
-function changeContainer(tFunctionID, containerName, containerType, cardID) {
+function changeContainer(tFunctionID, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID) {
 
 	var result = "error";
 
 	var dtoTransportFunction = {
 			"id" : tFunctionID
-	}
+	};
 	
-	var dtoContainer = {
-			"name" : containerName,
-			"type" : containerType  
+	var dtoSourceContainer = {
+			"name" : sourceContainerName,
+			"type" : sourceContainerType  
+	};
+	
+	var dtoTargetContainer = {
+			"name" : targetContainerName,
+			"type" : targetContainerType  
 	};
 
 	var dtoCard = {
@@ -204,7 +209,8 @@ function changeContainer(tFunctionID, containerName, containerType, cardID) {
 		url: "changeContainer.htm",
 		data: {
 			'transportFunction': JSON.stringify(dtoTransportFunction), 
-			'container': JSON.stringify(dtoContainer),
+			'sourceContainer': JSON.stringify(dtoSourceContainer), 
+			'targetContainer': JSON.stringify(dtoTargetContainer),
 			'card': JSON.stringify(dtoCard)
 		},
 		success: function(data){ 		   
@@ -346,12 +352,20 @@ function canCreateLink(sourceTFunctionID, targetTFunctionID) {
 };
 
 
-function deleteLink(id) {
+function deleteLink(sourceTFunctionID, targetTFunctionID, linkID) {
 
-	var result = "error";	
+	var result = "error";
+
+	var dtoSourceTFunction = {
+			"id" : sourceTFunctionID
+	}
+
+	var dtoTargetTFunction = {
+			"id" : targetTFunctionID
+	}
 	
 	var dtoLink = {
-			"id" : id
+			"id" : linkID
 	};
 
 	$.ajax({
@@ -359,6 +373,8 @@ function deleteLink(id) {
 		async: false,
 		url: "deleteLink.htm",
 		data: {
+			'sourceTFunction': JSON.stringify(dtoSourceTFunction),
+			'targetTFunction': JSON.stringify(dtoTargetTFunction),
 			'link': JSON.stringify(dtoLink)
 		},
 		success: function(data){ 		   

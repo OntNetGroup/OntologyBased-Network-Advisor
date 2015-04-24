@@ -150,23 +150,22 @@ public class ITUStudioController {
 		
 	/** Troca ou retira (container=null) o container do transport function
 	 * @param transportFunction
-	 * @param container
+	 * @param sourceContainer
+	 * @param targetContainer
 	 * @param card 
 	 * @return
 	 */
 	@RequestMapping(value = "/changeContainer", method = RequestMethod.POST)
-	public @ResponseBody String changeContainer(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container,
-	@RequestParam("card") String card) 
+	public @ResponseBody String changeContainer(@RequestParam("transportFunction") String transportFunction, @RequestParam("sourceContainer") String sourceContainer,
+	@RequestParam("targetContainer") String targetContainer, @RequestParam("card") String card) 
 	{
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
-		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
+		DtoJointElement dtoSourceContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceContainer, DtoJointElement.class);
+		DtoJointElement dtoTargetContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetContainer, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
-		// TODO (MISSAEL)
-		// John: I need both source and target containers in order to change the TF from one to another.
-		
 		try{
-			StudioFactory.changeContainer(dtoTransportFunction, dtoContainer);
+			StudioFactory.changeContainer(dtoTransportFunction, dtoTargetContainer); //TODO: passar o source container
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -259,19 +258,21 @@ public class ITUStudioController {
 	}
 	
 	/** Remove uma conexão
+	 * @param sourceTFunction
+	 * @param targetTFunction
 	 * @param link: identificador do link a ser deletado
 	 * @return: success or error
 	 */
 	@RequestMapping(value = "/deleteLink", method = RequestMethod.POST)
-	public @ResponseBody String deleteLink(@RequestParam("link") String link) 
+	public @ResponseBody String deleteLink(@RequestParam("sourceTFunction") String sourceTFunction, @RequestParam("targetTFunction") String targetTFunction,
+	@RequestParam("link") String link) 
 	{
+		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
+		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
 		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
 	
-		// TODO (MISSAEL)
-		// John: I need both source and target TF's in order to delete the object property linking them.
-		
 		try{
-			StudioFactory.deleteLink(dtoLink);
+			StudioFactory.deleteLink(dtoLink); //TODO: passar os outros dtos
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();

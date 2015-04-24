@@ -217,42 +217,46 @@ function graphHandler(graph, app) {
 		    				this.barOut.embed(cell);
 		    				this.outPortCounter++;
 		    			}
-		    			
-						return next(err);
 					} else {
-						return next(result);
+						this.generateAlertDialog(result);
+						this.skipOntologyRemoveHandler = true;
+						cell.remove();
 					}
-			} else { // elemento abaixo é uma camada 
-				return next('Please, add the port over a transport function.');
+			} else { // elemento abaixo não é um transport function uma camada 
+				this.generateAlertDialog('Please, add the port over a transport function.');
+				this.skipOntologyRemoveHandler = true;
+				cell.remove();
 			}
 			
 		} else { // nenhum elemento abaixo
-			return next('Please, add the port over a transport function.');
+			this.generateAlertDialog('Please, add the port over a transport function.');
+			this.skipOntologyRemoveHandler = true;
+			cell.remove();
 		}
 		
     }, app);
 	
 	// validar a remoção de transport functions do grafo
-    graph.on('remove', function(cell) {
-    	
-		if(isNotTransportFunction(cell)) return;
-    	
-    	var cellID = cell.id;
-    	var tFunctionType = cell.get('subtype');
-    	
-    	if(this.skipOntologyRemoveHandler) {
-    		this.skipOntologyRemoveHandler = false;
-    		return;
-    	}
-    	
-		var result = deleteTransportFunction(cellID, tFunctionType);
-		if(result === "success") {
-			return;
-		} else {
-			this.generateAlertDialog(result);
-			cell.set({skipOntologyRemoveHandler : true});
-		}
-    }, app);
+//    graph.on('remove', function(cell) {
+//    	
+//		if(isNotTransportFunction(cell)) return;
+//    	
+//    	var cellID = cell.id;
+//    	var tFunctionType = cell.get('subtype');
+//    	
+//    	if(this.skipOntologyRemoveHandler) {
+//    		this.skipOntologyRemoveHandler = false;
+//    		return;
+//    	}
+//    	
+//		var result = deleteTransportFunction(cellID, tFunctionType);
+//		if(result === "success") {
+//			return;
+//		} else {
+//			this.generateAlertDialog(result);
+//			cell.set({skipOntologyRemoveHandler : true});
+//		}
+//    }, app);
     
 //    graph.on('all', function(eventName, cell) {
 //    	console.log(arguments);
