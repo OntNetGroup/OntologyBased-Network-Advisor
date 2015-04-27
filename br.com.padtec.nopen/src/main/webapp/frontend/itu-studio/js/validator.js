@@ -4,23 +4,23 @@ function validator(validator, graph, app) {
     // validar inserção de camadas no grafo
     validator.validate('add', isNotLink, isLayer, _.bind(function(err, command, next) {
     	        	
-    	var cell = graph.getCell(command.data.id);
-    	var cellSubType = cell.get('subtype');
+    	var cell = command.data.attributes;
+    	var cellSubType = cell.subtype;
     	
 		var containerName = cellSubType;
 		var containerType = 'layer';
 		var cardID = this.cardID; 
 
-    	var position = cell.get('position');
-		var size = cell.get('size');
+		var position = cell.position;
+		var size = cell.size;
 		var area = g.rect(position.x, position.y, size.width, size.height);
 		
 		var parent;
 		// get all elements below the added one
 		_.each(graph.getElements(), function(e) {
 		
-			var position = e.get('position');
-			var size = e.get('size');
+			var position = e.attributes.position;
+			var size = e.attributes.size;
 			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
 				parent = e;
 			}
@@ -53,7 +53,7 @@ function validator(validator, graph, app) {
 		var sourceElement = graph.getCell(sourceID);
 		var targetElement = graph.getCell(targetID);
 		
-		if(targetElement) var targetElementSubtype = targetElement.get('subtype');
+		if(targetElement) var targetElementSubtype = targetElement.attributes.subtype;
 		
 		// se target for uma porta, remover a porta ligada à conexão (consultar ontologia)
 		if(targetElementSubtype === 'in' || targetElementSubtype === 'out') {
@@ -156,7 +156,9 @@ function validator(validator, graph, app) {
         
         if (sourceTFunctionID && targetTFunctionID) {
         	var targetTFunction = graph.getCell(targetTFunctionID);
-        	var targetTFunctionSubtype = targetTFunction.get('subtype');
+        	var targetTFunctionSubtype = targetTFunction.attributes.subtype;
+        	
+        	// se target for uma interface, cria a conexão
         	if(targetTFunctionSubtype === 'in' || targetTFunctionSubtype === 'out') return next(err);
         	
         	var result = createLink(sourceTFunctionID, targetTFunctionID, linkID);
@@ -182,55 +184,62 @@ function validator(validator, graph, app) {
     	
 		var cell = graph.getCell(command.data.id);
 		var tFunctionID = cell.id;
+		var tFunctionName = cell.attributes.attrs.text.text;
+		var sourceContainerName = '';
+		var sourceContainerType = '';
+		var targetContainerName = '';
+		var targetContainerType = '';
 		
-		var containerName = '';
-		var containerType = '';
+		var sourceContainer = graph.getCell(command.data.previous.parent);
+		if(sourceContainer) {
+			sourceContainerName = sourceContainer.attributes.subtype;
+		}
+		
+		var targetContainer = graph.getCell(command.data.next.parent);
+		if(targetContainer) {
+			targetContainerName = targetContainer.attributes.subtype;
+		}
+		
+		// se apenas moveu o elemento dentro da camada
+		if(sourceContainer === targetContainer) return next(err);
 		
 		var cardID = this.cardID;
     	        	
-    	var position = cell.get('position');
-		var size = cell.get('size');
+    	var position = cell.attributes.position;
+    	var size = cell.attributes.size;
 		var area = g.rect(position.x, position.y, size.width, size.height);
 		
 		var parent;
 		// get all elements below the added one
 		_.each(graph.getElements(), function(e) {
 		
-			var position = e.get('position');
-			var size = e.get('size');
+			var position = e.attributes.position;
+			var size = e.attributes.size;
 			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
 				parent = e;
 			}
 		});
 		
 		if(parent) { // existe algum elemento abaixo
-			var parentType = parent.get('type');
+			var parentType = parent.attributes.type;
 			
 			if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
 				// consultar ontologia para troca de camada do transport function
-				containerName = parent.get('subtype');
-				containerType = 'layer';
-				console.log('change layer of ' +tFunctionID+ ' to layer ' +containerName+ ' inside card ' +cardID);
-				//TODO: tratar source e target containers
-				var result = changeContainer(tFunctionID, containerName, containerType, cardID)
-				
-				if(result === "success") {						
-					parent.embed(cell);
-					return next(err);
-				} else {
-					return next(result);
-				}
+				setContainer();
 									
 			} else { // elemento abaixo não é um container
 				return next('Please, move the transport function to the paper or a layer.');
 			}
 		} else { // não existe elemento abaixo
 			// consultar ontologia para remoção de camada do transport function
-			console.log('remove layer of ' +tFunctionID+ ' inside card ' +cardID);
-			//TODO: tratar source e target containers
-			var result = changeContainer(tFunctionID, containerName, containerType, cardID)
-			
-			if(result === "success") {
+			setContainer();
+		}
+		
+		function setContainer() {
+			console.log('move TF: ' +tFunctionName+ '; from layer: ' +sourceContainerName+ '; to layer: ' +targetContainerName+ '; inside card ' +cardID);
+			var result = changeContainer(tFunctionID, tFunctionName, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID);
+			if(result === "success") {						
+				if(parent) parent.embed(cell);
 				return next(err);
 			} else {
 				return next(result);
@@ -241,18 +250,18 @@ function validator(validator, graph, app) {
 	
 	// avoid embedding of layers
 	validator.validate('change:parent', isLayer, _.bind(function(err, command, next) {
-		var cell = graph.getCell(command.data.id);
+		var cell = graph.getCell(command.data.id).attributes;
 		
-    	var position = cell.get('position');
-		var size = cell.get('size');
+    	var position = cell.position;
+		var size = cell.size;
 		var area = g.rect(position.x, position.y, size.width, size.height);
 		
 		var parent;
 		// get all elements below the added one
 		_.each(graph.getElements(), function(e) {
 		
-			var position = e.get('position');
-			var size = e.get('size');
+			var position = e.attributes.position;
+			var size = e.attributes.size;
 			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
 				parent = e;
 			}

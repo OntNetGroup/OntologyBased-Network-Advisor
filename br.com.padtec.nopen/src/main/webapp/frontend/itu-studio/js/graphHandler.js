@@ -15,8 +15,8 @@ function graphHandler(graph, app) {
 		if(isLink(cell)) return;
 		if (!opt.stencil) return;
 
-		var type = cell.get('type');
-		var subtype = cell.get('subtype');
+		var type = cell.attributes.type;
+		var subtype = cell.attributes.subtype;
 		
 		// configuration of resizing
 		var sizeMultiplierTypeWidth = { 	'bpmn.Pool': 5, // layers
@@ -37,7 +37,7 @@ function graphHandler(graph, app) {
 		var sizeMultiplierWidth = sizeMultiplierSubtypeWidth ? sizeMultiplierSubtypeWidth : sizeMultiplierTypeWidth;
 		var sizeMultiplierHeight = sizeMultiplierSubTypeHeight ? sizeMultiplierSubTypeHeight : sizeMultiplierTypeHeight;
 					
-		var originalSize = cell.get('size');
+		var originalSize = cell.attributes.size;
 		if (sizeMultiplierWidth && sizeMultiplierHeight) {
 			cell.set('size', {
 				width: originalSize.width * sizeMultiplierWidth,
@@ -56,23 +56,23 @@ function graphHandler(graph, app) {
 		
 		var tFunctionID = cell.id;
 
-		var tFunctionType = cell.get('subtype');
+		var tFunctionType = cell.attributes.subtype;
 		var cardID = this.cardID;
 		var tFunctionName = getName(tFunctionType);
 
 		var containerName = '';
 		var containerType = 'card';
 
-		var position = cell.get('position');
-		var size = cell.get('size');
+		var position = cell.attributes.position;
+		var size = cell.attributes.size;
 		var area = g.rect(position.x, position.y, size.width, size.height);
 
 		var parent;
 		// get all elements below the added one
 		_.each(graph.getElements(), function(e) {
 
-			var position = e.get('position');
-			var size = e.get('size');
+			var position = e.attributes.position;
+			var size = e.attributes.size;
 			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
 				parent = e;
 			}
@@ -81,10 +81,10 @@ function graphHandler(graph, app) {
 		if(parent) { // existe algum elemento abaixo
 
 			if(isLayer(parent)){ // elemento abaixo é uma camada
-				containerName = parent.get('subtype');
+				containerName = parent.attributes.subtype;
 				containerType = 'layer';
 				// consultar ontologia para inserção de transport function no layer
-				insertTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+				insertTransportFunction();
 
 			} else { // elemento abaixo não é um container
 				this.generateAlertDialog('Please, add the transport function on the paper or a layer.');
@@ -93,10 +93,10 @@ function graphHandler(graph, app) {
 			}
 		} else { // não existe elemento abaixo
 			// consultar ontologia para inserção de transport function diretamente no card
-			insertTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+			insertTransportFunction();
 		}
 		
-		function insertTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID) {
+		function insertTransportFunction() {
 			console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
 			
 			var result = canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
@@ -127,10 +127,10 @@ function graphHandler(graph, app) {
 		if(isLink(cell)) return;
 		if(isNotInterface(cell)) return;
 		
-    	var cellSubType = cell.get('subtype');
+    	var cellSubType = cell.attributes.subtype;
 
-    	var position = cell.get('position');
-		var size = cell.get('size');
+    	var position = cell.attributes.position;
+		var size = cell.attributes.size;
 		var area = g.rect(position.x, position.y, size.width, size.height);
 
 		var portID = cell.id;
@@ -141,15 +141,15 @@ function graphHandler(graph, app) {
 		// get all elements below the added one
 		_.each(graph.getElements(), function(e) {
 		
-			var position = e.get('position');
-			var size = e.get('size');
+			var position = e.attributes.position;
+			var size = e.attributes.size;
 			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
 				parent = e;
 			}
 		});
 		
 		if(parent) { // existe algum elemento abaixo
-			var parentType = parent.get('type');
+			var parentType = parent.attributes.type;
 			
 			if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
 				
@@ -194,68 +194,42 @@ function graphHandler(graph, app) {
 		
     }, app);
 	
-	// validar a remoção de transport functions do grafo
-//    graph.on('remove', function(cell) {
-//    	
-//		if(isNotTransportFunction(cell)) return;
-//    	
-//    	var cellID = cell.id;
-//    	var tFunctionType = cell.get('subtype');
-//    	
-//    	if(this.skipOntologyRemoveHandler) {
-//    		this.skipOntologyRemoveHandler = false;
-//    		return;
-//    	}
-//    	
-//		var result = deleteTransportFunction(cellID, tFunctionType);
-//		if(result === "success") {
-//			return;
-//		} else {
-//			this.generateAlertDialog(result);
-//			cell.set({skipOntologyRemoveHandler : true});
-//		}
-//    }, app);
-    
-//    graph.on('all', function(eventName, cell) {
-//    	console.log(arguments);
-//    }, app);
-	
     /* ------ AUXILIAR FUNCTIONS ------- */
 	// Check if cell is not a link
 	function isNotLink(cell) {
-	    if (cell.get('type') !== 'link') return true;
+	    if (cell.attributes.type !== 'link') return true;
 	};
 
 	// Check if cell is a link
 	function isLink(cell) {
-	    if (cell.get('type') === 'link') return true;
+	    if (cell.attributes.type === 'link') return true;
 	};
 
 	// Check if cell is a transport function
 	function isTransportFunction(cell) {
-		if (cell.get('type') === 'basic.Path') return true;
+		if (cell.attributes.type === 'basic.Path') return true;
 	};
 	
 	// Check if cell is not a transport function
 	function isNotTransportFunction(cell) {
-		if (cell.get('type') !== 'basic.Path') return true;
+		if (cell.attributes.type !== 'basic.Path') return true;
 	};
 
 	//Check if cell is an interface
 	function isInterface(cell) {
-		var cellSubType = cell.get('subtype');
+		var cellSubType = cell.attributes.subtype;
 		if(cellSubType === 'out' || cellSubType === 'in') return true;
 	};
 
 	//Check if cell is not an interface
 	function isNotInterface(cell) {
-		var cellSubType = cell.get('subtype');
+		var cellSubType = cell.attributes.subtype;
 		if(cellSubType !== 'out' && cellSubType !== 'in') return true;
 	};
 
 	//Check if cell is a layer
 	function isLayer(cell) {
-		if (cell.get('type') === 'bpmn.Pool') return true;
+		if (cell.attributes.type === 'bpmn.Pool') return true;
 	};
 	
 	// Get name for properly element being added

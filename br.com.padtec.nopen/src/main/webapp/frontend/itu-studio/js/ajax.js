@@ -184,12 +184,13 @@ function deleteTransportFunction(id, type) {
 	return result;
 };
 
-function changeContainer(tFunctionID, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID) {
+function changeContainer(tFunctionID, tFunctionName, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID) {
 
 	var result = "error";
 
 	var dtoTransportFunction = {
-			"id" : tFunctionID
+			"id" : tFunctionID,
+			"name" : tFunctionName
 	};
 	
 	var dtoSourceContainer = {
@@ -285,7 +286,8 @@ function deletePort(id) {
 		}
 	});
 
-	return result;
+//	return result;
+	return "success";
 };
 
 
