@@ -63,47 +63,89 @@ public class StudioFactory {
 					
 		NOpenLog.appendLine("TF Deleted: "+tfId);
 	}
-	
+		
 	/**
 	 * @author John Guerson
 	 */
-	public static void createIN(String portId, String tfId) throws Exception
+	public static void createAFOutput(String outputId, String afId) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
-			StudioComponents.studioRepository.getNamespace()+portId, 
-			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Input.toString()
+			StudioComponents.studioRepository.getNamespace()+outputId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Adaptation_Output.toString()
 		);
 		
 		FactoryUtil.createInstanceRelation(
 			StudioComponents.studioRepository.getBaseModel(), 
-			StudioComponents.studioRepository.getNamespace()+tfId, 
-			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf16_Transport_Function_Input,
-			StudioComponents.studioRepository.getNamespace()+portId
+			StudioComponents.studioRepository.getNamespace()+afId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf15_Adaptation_Function_Adaptation_Output,
+			StudioComponents.studioRepository.getNamespace()+outputId
 		);
 		
-		NOpenLog.appendLine("IN Created: "+portId+" at TF: "+tfId);
+		NOpenLog.appendLine("Adaptation Output Created: "+outputId+" at AF: "+afId);
 	}
 	
 	/**
 	 * @author John Guerson
 	 */
-	public static void createOUT(String portId, String tfId) throws Exception
+	public static void createAFInput(String inputId, String afId) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			StudioComponents.studioRepository.getBaseModel(), 
-			StudioComponents.studioRepository.getNamespace()+portId, 
-			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Output.toString()
+			StudioComponents.studioRepository.getNamespace()+inputId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Adaptation_Input.toString()
 		);
 		
 		FactoryUtil.createInstanceRelation(
 			StudioComponents.studioRepository.getBaseModel(), 
-			StudioComponents.studioRepository.getNamespace()+tfId, 
-			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf17_Transport_Function_Output,
-			StudioComponents.studioRepository.getNamespace()+portId
+			StudioComponents.studioRepository.getNamespace()+afId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf14_Adaptation_Function_Adaptation_Input,
+			StudioComponents.studioRepository.getNamespace()+inputId
 		);
-
-		NOpenLog.appendLine("OUT Created: "+portId+" at TF: "+tfId);
+		
+		NOpenLog.appendLine("Adaptation Input Created: "+inputId+" at AF: "+afId);
+	}
+		
+	/**
+	 * @author John Guerson
+	 */
+	public static void createTTFOutput(String outputId, String ttfId) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+outputId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Trail_Termination_Output.toString()
+		);
+		
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+ttfId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf20_Trail_Termination_Function_Trail_Termination_Output,
+			StudioComponents.studioRepository.getNamespace()+outputId
+		);
+		
+		NOpenLog.appendLine("Trail Termination Output Created: "+outputId+" at TTF: "+ttfId);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createTTFInput(String inputId, String ttfId) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+inputId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Trail_Termination_Input.toString()
+		);
+		
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+ttfId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf21_Trail_Termination_Function_Trail_Termination_Input,
+			StudioComponents.studioRepository.getNamespace()+inputId
+		);
+		
+		NOpenLog.appendLine("Trail Termination Input Created: "+inputId+" at TTF: "+ttfId);
 	}
 	
 	/**
@@ -170,6 +212,34 @@ public class StudioFactory {
 		);
 		
 		NOpenLog.appendLine("TTF's Layer Changed From "+srcLayerId+" to: "+tgtLayerId);
+	}
+	
+	/**
+	 * @author John Guerson
+	 * @throws Exception 
+	 */
+	public static void createLinkFromTTFToAF(String ttfId, String afId) throws Exception
+	{
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+ttfId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_binds_Adaptation_Function_Trail_Termination_Function,
+			StudioComponents.studioRepository.getNamespace()+afId
+		);
+	}
+	
+	/**
+	 * @author John Guerson
+	 * @throws Exception 
+	 */
+	public static void createLinkFromAFToTTF(String afId, String ttfId) throws Exception
+	{
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+afId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.binds_Adaptation_Function_Trail_Termination_Function,
+			StudioComponents.studioRepository.getNamespace()+ttfId
+		);
 	}
 	
 	//=============================================================================================
@@ -263,11 +333,13 @@ public class StudioFactory {
 		
 		if(portType.equals("in")) 
 		{
-			createIN(portId, tfId);
+			if(tfType.equals("AF"))	createAFInput(portId, tfId);
+			if(tfType.equals("TTF")) createTTFInput(portId, tfId);
 		}
-		else  if(portType.equals("out")) 
+		else if(portType.equals("out")) 
 		{
-			createOUT(portId, tfId);		
+			if(tfType.equals("AF")) createAFOutput(portId, tfId);		
+			if(tfType.equals("TTF")) createTTFOutput(portId, tfId);
 		
 		} else {
 			
@@ -344,24 +416,27 @@ public class StudioFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void changeContainer(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer)  throws Exception
+	public static void changeContainer(DtoJointElement dtoTransportFunction, DtoJointElement srcContainer, DtoJointElement tgtContainer, DtoJointElement dtoCard)  throws Exception
 	{	
-		String containerType = dtoContainer.getType();
-		String containerId = dtoContainer.getId();
+		String srcContainerType = srcContainer.getType();
+		String srcContainerId = srcContainer.getId();
 
+		String tgtContainerType = srcContainer.getType();
+		String tgtContainerId = srcContainer.getId();
+		
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();		
 		
-		if(containerType.equals("layer"))
+		if(srcContainerType.equals("layer") || tgtContainerType.equals("layer"))
 		{
 			if(tfType.equals("TTF")) 
 			{
-				changeLayerOfTTF(tfId, containerId, "");
+				changeLayerOfTTF(tfId, srcContainerId, tgtContainerId);
 			}
 		}		
 		else{
-			NOpenLog.appendLine("Error: Unexpected change of container "+containerType+" \""+containerId+"\" from "+tfType+" \""+tfId+"\"");
-			throw new Exception("Unexpected change of container "+containerType+" \""+containerId+"\" from "+tfType+" \""+tfId+"\"");
+			NOpenLog.appendLine("Error: Unexpected change of container "+srcContainerType+" \""+srcContainerId+"\" from "+tfType+" \""+tfId+"\"");
+			throw new Exception("Unexpected change of container "+srcContainerType+" \""+srcContainerId+"\" from "+tfType+" \""+tfId+"\"");
 		}
 	}
 
@@ -372,20 +447,29 @@ public class StudioFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void deleteLink(DtoJointElement dtoLink)  throws Exception
+	public static void deleteLink(DtoJointElement dtoLink, DtoJointElement srcTFunction, DtoJointElement tgtTFunction)  throws Exception
 	{	
-		String linkType = dtoLink.getType();
 		String linkId = dtoLink.getId();
-				
-//		FactoryUtil.deleteObjectProperty(
-//			StudioComponents.studioRepository.getBaseModel(),
-//			StudioComponents.studioRepository.getNamespace()+ttfId, 
-//			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
-//			StudioComponents.studioRepository.getNamespace()+srcLayerId
-//		);
+			
+		String srcType = srcTFunction.getType();
+		String srcId = srcTFunction.getId();
 		
-		NOpenLog.appendLine("Error: Unexpected deletion of link "+linkType+" \""+linkId+"\"");
-		throw new Exception("Unexpected deletion of link "+linkType+" \""+linkId+"\"");		
+		String tgtType = tgtTFunction.getType();
+		String tgtId = tgtTFunction.getId();
+		
+		if((tgtType.equals("TTF") || tgtType.equals("AF")) && srcType.equals("TTF") || srcType.equals("AF"))
+		{
+			FactoryUtil.deleteObjectProperty(
+				StudioComponents.studioRepository.getBaseModel(),
+				StudioComponents.studioRepository.getNamespace()+srcId, 
+				StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
+				StudioComponents.studioRepository.getNamespace()+tgtId
+			);
+		}
+		else{
+			NOpenLog.appendLine("Error: Unexpected deletion of link \""+linkId+"\" from "+srcType+" \""+srcId+"\" to "+tgtType+" \""+tgtId+"\"");
+			throw new Exception("Unexpected deletion of link \""+linkId+"\" from "+srcType+" \""+srcId+"\" to "+tgtType+" \""+tgtId+"\"");
+		}
 	}
 	
 	/**
@@ -404,12 +488,12 @@ public class StudioFactory {
 		
 		if(srcTfType.equals("TTF") && tgtTfType.equals("AF"))
 		{
-			
+			createLinkFromTTFToAF(srcTfId, tgtTfId);
 		}
 		
 		else if(srcTfType.equals("AF") && tgtTfType.equals("TTF"))
 		{
-			
+			createLinkFromAFToTTF(srcTfId, tgtTfId);
 		}
 		else{
 			NOpenLog.appendLine("Error: Unexpected creation of link "+linkType+" \""+linkId+"\" from "+srcTfType+" \""+srcTfId+"\" "+"to "+tgtTfType+" \""+tgtTfId+"\"");
@@ -439,5 +523,55 @@ public class StudioFactory {
 			NOpenLog.appendLine("Error: Cannot create a link from "+srcTfType+" \""+srcTfId+"\" to "+tgtTfType+" \""+tgtTfId+"\"");
 			throw new Exception("Cannot create a link from a "+srcTfType.toUpperCase()+" to a "+tgtTfType.toUpperCase());	
 		}
+	}
+
+	//=============================================================================================
+	// Equipment Holder
+	//=============================================================================================
+	
+	public static void insertEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) 
+	{
+			
+	}
+
+	public static void removeEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) 
+	{
+			
+	}
+
+	//=============================================================================================
+	// Shelf
+	//=============================================================================================
+	
+	public static void removeShelf(DtoJointElement dtoShelf) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//=============================================================================================
+	// Slot
+	//=============================================================================================
+	
+	public static void removeSlot(DtoJointElement dtoSlot) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//=============================================================================================
+	// Card
+	//=============================================================================================
+	
+	public static void removeCard(DtoJointElement dtoCard) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//=============================================================================================
+	// Supervisor
+	//=============================================================================================
+	
+	public static void removeSupervisor(DtoJointElement dtoSupervisor) {
+		// TODO Auto-generated method stub
+		
 	}		
 }

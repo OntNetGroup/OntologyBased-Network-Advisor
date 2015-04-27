@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
+import br.com.padtec.nopen.studio.model.StudioFactory;
 
 import com.jointjs.util.JointUtilManager;
 
@@ -18,7 +19,8 @@ import com.jointjs.util.JointUtilManager;
 public class EquipmentStudioController {
 
 	@RequestMapping("/equipment-studio")
-	public String equipmentStudioRequest() {
+	public String equipmentStudioRequest() 
+	{
 		return "equipment-studio/equipment-studio";
 	}
 
@@ -33,9 +35,13 @@ public class EquipmentStudioController {
 		DtoJointElement dtoEquipmentholder = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipmentholder, DtoJointElement.class);
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		
-		
-		//
-		return "success";
+		try{
+			StudioFactory.insertEquipmentholder(dtoEquipmentholder, dtoContainer);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";		
 	}
 	
 	/** Procedure to remove an Equipment
@@ -48,11 +54,16 @@ public class EquipmentStudioController {
 	{
 		DtoJointElement dtoEquipmentholder = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipment, DtoJointElement.class);
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-		//
+
+		try{
+			StudioFactory.removeEquipmentholder(dtoEquipmentholder, dtoContainer);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
 		return "success";
 	}
-	
-	
+		
 	/** Procedure to remove a shelf
 	 * @param shelf
 	 * @param ?
@@ -62,11 +73,16 @@ public class EquipmentStudioController {
 	public @ResponseBody String removeShelf(@RequestParam("shelf") String shelf)
 	{
 		DtoJointElement dtoShelf = (DtoJointElement) JointUtilManager.getJavaFromJSON(shelf, DtoJointElement.class);
-		//
+		
+		try{
+			StudioFactory.removeShelf(dtoShelf);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
 		return "success";
 	}
-	
-	
+		
 	/** Procedure to remove a slot
 	 * @param slot
 	 * @param ?
@@ -76,7 +92,13 @@ public class EquipmentStudioController {
 	public @ResponseBody String removeSlot(@RequestParam("slot") String slot)
 	{
 		DtoJointElement dtoSlot = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
-		//
+		
+		try{
+			StudioFactory.removeSlot(dtoSlot);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
 		return "success";
 	}
 	
@@ -90,7 +112,13 @@ public class EquipmentStudioController {
 	public @ResponseBody String removeCard(@RequestParam("card") String card)
 	{
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		//
+		
+		try{
+			StudioFactory.removeCard(dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
 		return "success";
 	}
 	
@@ -104,27 +132,31 @@ public class EquipmentStudioController {
 	public @ResponseBody String removeSupervisor(@RequestParam("supervisor") String supervisor)
 	{
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		//
+		
+		try{
+			StudioFactory.removeSupervisor(dtoSupervisor);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
 		return "success";
 	}
-	
-	
+		
 	/**
 	 * Procedure to check if a Equipment file exist
 	 * @param filename
 	 * @return
 	 */	
 	@RequestMapping("/checkEquipmentFile")
-	public @ResponseBody String checkEquipmentFile(@RequestParam("filename") String filename) {
-		System.out.println("check");
-		
+	public @ResponseBody String checkEquipmentFile(@RequestParam("filename") String filename) 
+	{				
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
-		if(NOpenFileUtil.checkEquipmentFileExist(filename)){
+		if(NOpenFileUtil.checkEquipmentFileExist(filename))
+		{
 			return "exist";
 		}
 		return null;
 	}
-
 	
 	/**
 	 * Procedure to delete all ITU files inside of a Equipment Folder.
@@ -134,15 +166,15 @@ public class EquipmentStudioController {
 	public @ResponseBody void deleteITUFiles(@RequestParam("filename") String filename) {
 		
 		String path = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + filename + "/itu/");
-		File dir = new File(path);
-		
-		if(dir.exists()){
-			for(File file : dir.listFiles()){ 
+		File dir = new File(path);		
+		if(dir.exists())
+		{
+			for(File file : dir.listFiles())
+			{ 
 				file.delete();
 			}
 		}
 	}
-
 	
 	/**
 	 * Procedure to save a Equipment.
@@ -150,8 +182,8 @@ public class EquipmentStudioController {
 	 * @param graph
 	 */
 	@RequestMapping("/saveEquipment")
-	public @ResponseBody void saveEquipment(@RequestParam("filename") String filename, @RequestParam("graph") String graph) {
-
+	public @ResponseBody void saveEquipment(@RequestParam("filename") String filename, @RequestParam("graph") String graph) 
+	{
 		NOpenFileUtil.createEquipmentRepository(filename);
 		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
@@ -160,12 +192,8 @@ public class EquipmentStudioController {
 			File file = NOpenFileUtil.createEquipmentJSONFile(filename);
 			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-
 	}
 	
 	/**
@@ -175,17 +203,15 @@ public class EquipmentStudioController {
 	 * @param graph
 	 */
 	@RequestMapping("/saveITUFiles")
-	public @ResponseBody void saveITUFiles(@RequestParam("path") String path, @RequestParam("filename") String ituFilename, @RequestParam("graph") String graph) {
-		
+	public @ResponseBody void saveITUFiles(@RequestParam("path") String path, @RequestParam("filename") String ituFilename, @RequestParam("graph") String graph) 
+	{		
 		path = path + "/itu/";
 		path = NOpenFileUtil.replaceSlash(path);
-		NOpenFileUtil.createEquipmentRepository(path);
-		
+		NOpenFileUtil.createEquipmentRepository(path);		
 		try {
 			File file = NOpenFileUtil.createEquipmentJSONFile(path + ituFilename);
 			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -196,11 +222,10 @@ public class EquipmentStudioController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getAllEquipments", method = RequestMethod.GET)
-	protected @ResponseBody String getAllEquipments(){
-			
+	protected @ResponseBody String getAllEquipments()
+	{			
 		String[] equipments = NOpenFileUtil.getAllEquipmentJSONFileNames();
-		return NOpenFileUtil.parseStringToJSON("equipment", equipments);
-		
+		return NOpenFileUtil.parseStringToJSON("equipment", equipments);		
 	}
 	
 	/**
@@ -209,8 +234,8 @@ public class EquipmentStudioController {
 	 * @return
 	 */
 	@RequestMapping(value = "/openEquipment", method = RequestMethod.POST)
-	protected @ResponseBody String openEquipment(@RequestParam("filename") String filename){
-		
+	protected @ResponseBody String openEquipment(@RequestParam("filename") String filename)
+	{		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
 		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
 		
@@ -223,13 +248,11 @@ public class EquipmentStudioController {
 	 * @return
 	 */
 	@RequestMapping(value = "/openITUFile", method = RequestMethod.POST)
-	protected @ResponseBody String openITUFile(@RequestParam("path") String path, @RequestParam("filename") String ituFilename){
-		
+	protected @ResponseBody String openITUFile(@RequestParam("path") String path, @RequestParam("filename") String ituFilename)
+	{		
 		path = path + "/itu/" + ituFilename + ".json";
-		path = NOpenFileUtil.replaceSlash(path);	
-		
-		return NOpenFileUtil.openEquipmentJSONFileAsString(path);
-		
+		path = NOpenFileUtil.replaceSlash(path);		
+		return NOpenFileUtil.openEquipmentJSONFileAsString(path);		
 	}
 
 }

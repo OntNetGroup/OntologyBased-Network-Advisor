@@ -165,7 +165,7 @@ public class ITUStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		try{
-			StudioFactory.changeContainer(dtoTransportFunction, dtoTargetContainer); //TODO: passar o source container
+			StudioFactory.changeContainer(dtoTransportFunction, dtoSourceContainer, dtoTargetContainer, dtoCard); 
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -272,7 +272,7 @@ public class ITUStudioController {
 		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
 	
 		try{
-			StudioFactory.deleteLink(dtoLink); //TODO: passar os outros dtos
+			StudioFactory.deleteLink(dtoLink, dtoSourceTFunction, dtoTargetTFunction); 
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
