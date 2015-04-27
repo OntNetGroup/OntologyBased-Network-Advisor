@@ -142,4 +142,18 @@ public class NOpenQueryUtil {
 	  		}
 		return result;
 	}
+	
+	public static boolean cardHasSupervisor(String card, InfModel model){
+		String queryString = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "ASK "
+				+ "WHERE { ont:" + card + "rdf:type ont:Card . "
+				+ "?subject rdf:type ont:Supervisor . "
+				+ "ont:" + card + "ont:ComponentOf6 ?subject . "
+				+ "}" ;
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean result = qe.execAsk();			
+		return result;
+	}
 }
