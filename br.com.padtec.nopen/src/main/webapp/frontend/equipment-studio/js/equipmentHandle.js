@@ -40,8 +40,9 @@ function equipmentHandle(graph){
 
 			if(parent.get('subType') === 'rack') {                   
 				// consultar ontologia para inserção de camada no card
-				//var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID)
+				//var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
 				var result = "success";
+				//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);
 
 				if(result === "success") {
 					parent.embed(cell);
@@ -80,9 +81,9 @@ function equipmentHandle(graph){
 					var containerType = parent.get('subType');
 					var containerID = parent.get('id');
 
-					//var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID)
-					//var result = "success";
-					var result = "";
+					//var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
+					var result = "success";
+					//var result = "";
 					if(result === "success") {
 						parent.embed(cell)
 						var b = parent.get('embeds');
@@ -143,7 +144,7 @@ function equipmentHandle(graph){
 							newpositionx = pposition.x + 6 + ((filhos) * (29));
 							console.log('nova posição da cell em x sendo o segundo ' , newpositionx);
 						};
-						//var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID)
+						//var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
 						var result = "success";
 						//var result = "";
 						if(result === "success") {
@@ -159,7 +160,10 @@ function equipmentHandle(graph){
                                 return;
 							}else{
 								parent.embed(cell);
-							
+								
+								var resultados = getTechnologies();
+                                console.log(resultados);
+                                
 								cell.set('size' , {
 									width: 10 ,
 									height: 20							

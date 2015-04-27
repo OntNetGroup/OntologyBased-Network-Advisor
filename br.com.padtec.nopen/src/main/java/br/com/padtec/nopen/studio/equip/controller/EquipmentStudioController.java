@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.model.DtoJointElement;
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
+import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.model.StudioFactory;
+import br.com.padtec.nopen.studio.service.StudioComponents;
 
 import com.jointjs.util.JointUtilManager;
 
@@ -24,17 +27,17 @@ public class EquipmentStudioController {
 		return "equipment-studio/equipment-studio";
 	}
 
-	/** Procedure to create an Equipment
+	/** Procedure to create an Equipmentholder inside another equipment or a rack
 	 * @param equipmentholder
 	 * @param container
 	 * @return
 	 */
-	@RequestMapping(value = "/insertEqupmentholder", method = RequestMethod.POST)
+	@RequestMapping(value = "/insertEquipmentholder", method = RequestMethod.POST)
 	public @ResponseBody String insertEquipmentholder(@RequestParam("equipmentholder") String equipmentholder,@RequestParam("container") String container )
 	{
 		DtoJointElement dtoEquipmentholder = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipmentholder, DtoJointElement.class);
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-		
+		//NOpenQueryUtil.
 		try{
 			StudioFactory.insertEquipmentholder(dtoEquipmentholder, dtoContainer);
 		}catch(Exception e){
@@ -44,9 +47,64 @@ public class EquipmentStudioController {
 		return "success";		
 	}
 	
-	/** Procedure to remove an Equipment
-	 * @param rack
-	 * @param ?
+	
+	/** Procedure to get all the technologies
+	 * @param techName
+	 * @return
+	 */
+	@RequestMapping(value = "/getTechnologies", method = RequestMethod.POST)
+	public @ResponseBody String[] getTechnologies()
+	{   String[] test = NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());
+	        System.out.println("teste");
+		return test;		
+	}
+	
+	
+	/** Procedure to create a Supervisor
+	 * @param card
+	 * @param slot
+	 * @return
+	 */
+	@RequestMapping(value = "/insertSupervisor", method = RequestMethod.POST)
+	public @ResponseBody String insertSupervisor(@RequestParam("supervisor") String supervisor,@RequestParam("slot") String slot )
+	{
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		DtoJointElement dtoSlot = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
+		NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());
+//		try{
+//			StudioFactory.insertSupervisor(dtoSupervisor, dtoSlot);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			return e.getLocalizedMessage();
+//		}		
+		return "success";		
+	}
+	
+	
+	/** Procedure to create a Card
+	 * @param supervisor
+	 * @param slot
+	 * @return
+	 */
+	@RequestMapping(value = "/insertCard", method = RequestMethod.POST)
+	public @ResponseBody String insertCard(@RequestParam("card") String card,@RequestParam("slot") String slot )
+	{
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
+		//NOpenQueryUtil.
+//		try{
+//			StudioFactory.insertEquipmentholder(dtoEquipmentholder, dtoContainer);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			return e.getLocalizedMessage();
+//		}		
+		return "success";		
+	}
+	
+	
+	/** Procedure to remove an Equipmentholder
+	 * @param equipment
+	 * @param container
 	 * @return
 	 */
 	@RequestMapping(value = "/removeEquipmentholder", method = RequestMethod.POST)
