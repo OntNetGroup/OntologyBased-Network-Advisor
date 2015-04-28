@@ -134,7 +134,8 @@ var InspectorDefs = {
                     'stroke-dasharray': { group: 'presentation', index: 3 },
                     rx: { group: 'presentation', index: 4 },
                     ry: { group: 'presentation', index: 5 }
-                })
+                }),
+    
             }
         }, CommonInspectorInputs),
         groups: CommonInspectorGroups

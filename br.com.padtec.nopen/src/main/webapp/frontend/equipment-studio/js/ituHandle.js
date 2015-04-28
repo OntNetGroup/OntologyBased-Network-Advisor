@@ -23,6 +23,15 @@ function ituHandle(paper, graph){
 		cellId = cellView.model.id;
 		
 		var equipment = graph.getCell(cellId);
+		if((equipment.get('subType')) === 'supervisor'){
+			new joint.ui.Dialog({
+					type: 'alert',
+					width: 400,
+					title: 'Technology',
+					content: equipment.get('tech')
+				}).open();	
+		};
+		
 		if((equipment.get('subType')) === 'card') {
 			
 			$("#itu-iframe").empty();

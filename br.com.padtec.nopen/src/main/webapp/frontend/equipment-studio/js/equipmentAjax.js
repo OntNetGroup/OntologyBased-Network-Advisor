@@ -97,12 +97,13 @@ function insertSupervisor( supervisorName , supervisorType, supervisorID , slotN
 		} ,
 		success: function(data){ 		   
 			result = data;
+			console.log(data);
 		},
 		error : function(e) {
 			alert("error: " + e.status);
 		}
 	});
-
+    console.log(result);
 	return result;
 };
 
@@ -111,42 +112,18 @@ function getTechnologies(){
 	
 	var result;
 	
-//	var content = '<div class ="checkbox"' 
-//		
-//	var dialog = new joint.ui.Dialog({
-//		width: 300,
-//		type: 'neutral',
-//		title: 'Save Equipment',
-//		content: content,
-//		buttons: [
-//			{ action: 'cancel', content: 'Cancel', position: 'left' },
-//			{ action: 'save', content: 'Save', position: 'left' }
-//		]
-//	});
-//	
-//	dialog.on('action:save', dialog.close);
-//	dialog.on('action:cancel', cancel);
-//
-//	dialog.open();
-//	
-//	function cancel(){
-//		dialog.close();
-//	}
-	
 	$.ajax({
 		type: "POST",
 		async: false,
 		url: "getTechnologies.htm",		
-		success: function(){ 		   
+		success: function(data){ 		   
 			result = data;
-			return data;
 		},
 		error : function(e) {
-			alert("error: " + e.status);
-			
-		}
+			alert("error: " + e.status);			
+		}		 
 	});
-
+ 
 	return result;
 	
 };

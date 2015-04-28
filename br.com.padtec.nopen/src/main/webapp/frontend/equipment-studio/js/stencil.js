@@ -7,8 +7,7 @@ Stencil.groups = {
 Stencil.shapes = {
 
 		equipment: [
-		            
-			
+		            			
             //Shelf
             new joint.shapes.basic.Rect({
             	size: { width: 60, height: 45 },
@@ -36,6 +35,7 @@ Stencil.shapes = {
             new joint.shapes.basic.Rect({
             	size: { width: 10, height: 20 },
             	subType : 'card' ,
+            	supervisor: '' ,
             	attrs: {
             		rect: {
             			//fill: '#ADC2A7'
@@ -47,6 +47,7 @@ Stencil.shapes = {
             //Supervisor
             new joint.shapes.basic.Rect({
             	subType : 'supervisor' ,
+            	tech : '' ,
             	size: { width: 10, height: 20 },
             	attrs: {
             		rect: {

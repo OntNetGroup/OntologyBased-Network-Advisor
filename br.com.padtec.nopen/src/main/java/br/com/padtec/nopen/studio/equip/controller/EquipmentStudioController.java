@@ -27,7 +27,7 @@ public class EquipmentStudioController {
 		return "equipment-studio/equipment-studio";
 	}
 
-	/** Procedure to create an Equipmentholder inside another equipment or a rack
+	/** Procedure to create an Equipment holder inside another equipment or a rack
 	 * @param equipmentholder
 	 * @param container
 	 * @return
@@ -37,7 +37,7 @@ public class EquipmentStudioController {
 	{
 		DtoJointElement dtoEquipmentholder = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipmentholder, DtoJointElement.class);
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-		//NOpenQueryUtil.
+
 		try{
 			StudioFactory.insertEquipmentholder(dtoEquipmentholder, dtoContainer);
 		}catch(Exception e){
@@ -48,15 +48,15 @@ public class EquipmentStudioController {
 	}
 	
 	
+	
 	/** Procedure to get all the technologies
-	 * @param techName
+	 * @param 
 	 * @return
 	 */
 	@RequestMapping(value = "/getTechnologies", method = RequestMethod.POST)
 	public @ResponseBody String[] getTechnologies()
-	{   String[] test = NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());
-	        System.out.println("teste");
-		return test;		
+	{   
+		return NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());		
 	}
 	
 	
