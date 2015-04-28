@@ -30,10 +30,11 @@ function validator(validator, graph, app) {
 			return next('Another element in the way!');
 		} else {
 			// consultar ontologia para inserção de camada no card
-			var result = insertContainer(containerName, containerType, cardID)
+			var result = insertContainer(containerName, containerType, cardID);
+			var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +containerName+ '"]';
 			
 			if(result === "success") {
-				// TODO: remover/desabilitar camada do stencil
+				$(element).hide();
 				return next(err);
 			} else {
 				return next(result);
@@ -121,10 +122,11 @@ function validator(validator, graph, app) {
     	var containerName = command.data.attributes.subtype;
 		var containerType = 'layer';
 		var cardID = this.cardID;
+		var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +containerName+ '"]';
 		
 		var result = deleteContainer(containerName, containerType, cardID);
 		if(result === "success") {
-			// TODO: retornar/reabilitar camada ao stencil
+			$(element).show();
 			return next(err);
 		} else {
 			return next(result);

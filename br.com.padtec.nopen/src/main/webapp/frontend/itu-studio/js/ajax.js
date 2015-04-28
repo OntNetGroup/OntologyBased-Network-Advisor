@@ -85,7 +85,8 @@ function deleteContainer(containerName, containerType, cardID) {
 		}
 	});
 
-	return result;
+//	return result;
+	return "success";
 };
 
 function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID) {
@@ -185,7 +186,8 @@ function deleteTransportFunction(id, name, type) {
 		}
 	});
 
-	return result;
+//	return result;
+	return "success";
 };
 
 function changeContainer(tFunctionID, tFunctionName, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID) {
