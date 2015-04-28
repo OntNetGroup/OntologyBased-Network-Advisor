@@ -409,29 +409,30 @@ var Rappid = Backbone.Router.extend({
 			// descomentar para inserir a borda de redimensionamento
             //var freetransform = new joint.ui.FreeTransform({ graph: this.graph, paper: this.paper, cell: cellView.model });
             var halo = new joint.ui.Halo({ 	graph: this.graph,
-            								paper: this.paper, cellView: cellView,
+            								paper: this.paper,
+            								cellView: cellView,
             								// tooltip shows only the subtype
             								boxContent: function(cellView) {
             									return cellView.model.get('subtype');
             								}
             });
 
-            var cellSubtype = cellView.model.get('subtype');
+            var cellSubtype = cellView.model.attributes.subtype;
+            var cellType = cellView.model.attributes.type;
             
             // As we're using the FreeTransform plugin, there is no need for an extra resize tool in Halo.
             // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
             // handles nicely spread around the elements.
-			// descomentar para remover a ferramenta de redimensionamento ao Halo
-            //halo.removeHandle('resize');
             halo.removeHandle('fork');
             halo.removeHandle('clone');
             halo.removeHandle('rotate');
+        	halo.removeHandle('unlink');
             
             if(_.contains(['in', 'out'], cellSubtype)) {
-            	halo.removeHandle('resize');
-            	halo.removeHandle('unlink');
             	halo.removeHandle('link');
             }
+            
+            if(cellType !== TypeEnum.LAYER) halo.removeHandle('resize'); 
             
 			// descomentar para inserir a borda de redimensionamento
             // freetransform.render();
@@ -536,9 +537,6 @@ var Rappid = Backbone.Router.extend({
 
         this.initializeToolbarTooltips();
         
-        $('#btn-undo').on('click', _.bind(this.commandManager.undo, this.commandManager));
-        $('#btn-redo').on('click', _.bind(this.commandManager.redo, this.commandManager));
-        $('#btn-clear').on('click', _.bind(this.graph.clear, this.graph));
         $('#btn-svg').on('click', _.bind(this.paper.openAsSVG, this.paper));
         $('#btn-png').on('click', _.bind(this.paper.openAsPNG, this.paper));
         $('#btn-zoom-in').on('click', _.bind(function() { this.paperScroller.zoom(0.2, { max: 5, grid: 0.2 }); }, this));
@@ -553,19 +551,6 @@ var Rappid = Backbone.Router.extend({
         }, this));
         $('#btn-fullscreen').on('click', _.bind(this.toggleFullscreen, this));
         $('#btn-print').on('click', _.bind(this.paper.print, this.paper));
-
-        // toFront/toBack must be registered on mousedown. SelectionView empties the selection
-        // on document mouseup which happens before the click event. @TODO fix SelectionView?
-        $('#btn-to-front').on('mousedown', _.bind(function(evt) { this.selection.invoke('toFront'); }, this));
-        $('#btn-to-back').on('mousedown', _.bind(function(evt) { this.selection.invoke('toBack'); }, this));
-
-        $('#btn-layout').on('click', _.bind(this.layoutDirectedGraph, this));
-        
-        $('#input-gridsize').on('change', _.bind(function(evt) {
-            var gridSize = parseInt(evt.target.value, 10);
-            $('#output-gridsize').text(gridSize);
-            this.setGrid(gridSize);
-        }, this));
 
         $('#snapline-switch').change(_.bind(function(evt) {
             if (evt.target.checked) {
