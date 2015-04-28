@@ -53,7 +53,10 @@ function validator(validator, graph, app) {
 		var sourceElement = graph.getCell(sourceID);
 		var targetElement = graph.getCell(targetID);
 		
-		if(targetElement) var targetElementSubtype = targetElement.attributes.subtype;
+		if(targetElement) {
+			var targetElementSubtype = targetElement.attributes.subtype;
+			var targetElementType = targetElement.attributes.type;
+		}
 		
 		// se target for uma porta, remover a porta ligada à conexão (consultar ontologia)
 		if(targetElementSubtype === 'in' || targetElementSubtype === 'out') {
@@ -68,7 +71,7 @@ function validator(validator, graph, app) {
     	}
 		
 		// se target for um transport function, consultar ontologia para remoção da conexão
-		if(targetElementSubtype === 'basic.Path') {
+		if(targetElementType === TypeEnum.TRANSPORT_FUNCTION) {
 			var result = deleteLink(sourceID, targetID, cellID);
 			if(result === "success") {
 				return next(err);
@@ -223,7 +226,7 @@ function validator(validator, graph, app) {
 		if(parent) { // existe algum elemento abaixo
 			var parentType = parent.attributes.type;
 			
-			if(parentType === 'bpmn.Pool'){ // elemento abaixo é uma camada
+			if(parentType === TypeEnum.LAYER){ // elemento abaixo é uma camada
 				// consultar ontologia para troca de camada do transport function
 				setContainer();
 									
@@ -291,7 +294,7 @@ function isLink(err, command, next) {
 
 // Check if cell in command is a transport function. Continue validating if yes, otherwise stop.
 function isTransportFunction(err, command, next) {
-	if (command.data.type === 'basic.Path') return next(err);
+	if (command.data.type === TypeEnum.TRANSPORT_FUNCTION) return next(err);
     // otherwise stop validating (don't call next validation function)
 };
 
@@ -305,12 +308,12 @@ function isInterface(err, command, next) {
 
 //Check if cell in command is a layer. Continue validating if yes, otherwise stop.
 function isLayer(err, command, next) {
-	if (command.data.type === 'bpmn.Pool') return next(err);
+	if (command.data.type === TypeEnum.LAYER) return next(err);
     // otherwise stop validating (don't call next validation function)
 };
 
 //Check if the cell is being added to the graph. Continue validating if no, otherwise stop.
 function isLayer(err, command, next) {
-	if (command.data.type === 'bpmn.Pool') return next(err);
+	if (command.data.type === TypeEnum.LAYER) return next(err);
   // otherwise stop validating (don't call next validation function)
 };

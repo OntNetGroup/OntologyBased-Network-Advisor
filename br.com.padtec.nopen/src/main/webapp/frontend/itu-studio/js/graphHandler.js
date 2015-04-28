@@ -151,7 +151,7 @@ function graphHandler(graph, app) {
 		if(parent) { // existe algum elemento abaixo
 			var parentType = parent.attributes.type;
 			
-			if(parentType === 'basic.Path'){ // elemento abaixo é um transport function
+			if(parentType === TypeEnum.TRANSPORT_FUNCTION){ // elemento abaixo é um transport function
 				
 					var transportFunctionID = parent.id;
 					console.log('try to create port ' +portID+ ';name: ' +portName+ ';TF: ' +transportFunctionID);
@@ -207,12 +207,12 @@ function graphHandler(graph, app) {
 
 	// Check if cell is a transport function
 	function isTransportFunction(cell) {
-		if (cell.attributes.type === 'basic.Path') return true;
+		if (cell.attributes.type === TypeEnum.TRANSPORT_FUNCTION) return true;
 	};
 	
 	// Check if cell is not a transport function
 	function isNotTransportFunction(cell) {
-		if (cell.attributes.type !== 'basic.Path') return true;
+		if (cell.attributes.type !== TypeEnum.TRANSPORT_FUNCTION) return true;
 	};
 
 	//Check if cell is an interface
@@ -229,7 +229,7 @@ function graphHandler(graph, app) {
 
 	//Check if cell is a layer
 	function isLayer(cell) {
-		if (cell.attributes.type === 'bpmn.Pool') return true;
+		if (cell.attributes.type === TypeEnum.LAYER) return true;
 	};
 	
 	// Get name for properly element being added
