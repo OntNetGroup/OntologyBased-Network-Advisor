@@ -49,18 +49,22 @@ function validator(validator, graph, app) {
     	var cellID = command.data.id;
     	
 		var sourceID = command.data.attributes.source.id;
-		var targetID = command.data.attributes.target.id;
 		var sourceElement = graph.getCell(sourceID);
+		var sourceElementSubtype = sourceElement.attributes.subtype;
+		var sourceElementName = sourceElement.attributes.attrs.text.text;
+
+		var targetID = command.data.attributes.target.id;
 		var targetElement = graph.getCell(targetID);
 		
 		if(targetElement) {
 			var targetElementSubtype = targetElement.attributes.subtype;
+			var targetElementName = targetElement.attributes.attrs.text.text;
 			var targetElementType = targetElement.attributes.type;
 		}
 		
-		// se target for uma porta, remover a porta ligada à conexão (consultar ontologia)
+		// se target for uma interface, remover a interface ligada à conexão (consultar ontologia)
 		if(targetElementSubtype === 'in' || targetElementSubtype === 'out') {
-			var result = deletePort(targetID);
+			var result = deletePort(targetID, targetElementName, targetElementSubtype);
 			
 			if(result === "success") {
 				targetElement.remove();
@@ -72,7 +76,7 @@ function validator(validator, graph, app) {
 		
 		// se target for um transport function, consultar ontologia para remoção da conexão
 		if(targetElementType === TypeEnum.TRANSPORT_FUNCTION) {
-			var result = deleteLink(sourceID, targetID, cellID);
+			var result = deleteLink(sourceID, sourceElementName, sourceElementSubtype, targetID, targetElementName, targetElementSubtype, cellID);
 			if(result === "success") {
 				return next(err);
 			} else {
@@ -80,7 +84,7 @@ function validator(validator, graph, app) {
 			}
 		}
 		
-		// o target era uma interface que ja foi removida
+		// o target era uma interface que ja foi removida (usuário removeu a interface)
 		return next(err);
     	
     }, app));
@@ -95,9 +99,10 @@ function validator(validator, graph, app) {
     	}
     	
     	var cellID = command.data.id;
+    	var tFunctionName = command.data.attributes.attrs.text.text;
     	var tFunctionType = command.data.attributes.subtype;
     	
-		var result = deleteTransportFunction(cellID, tFunctionType);
+		var result = deleteTransportFunction(cellID, tFunctionName, tFunctionType);
 		if(result === "success") {
 			return next(err);
 		} else {
@@ -136,8 +141,10 @@ function validator(validator, graph, app) {
     	}
     	
     	var cellID = command.data.id;
+    	var name = command.data.attributes.attrs.text.text;
+    	var type = command.data.attributes.subtype;
     	
-    	var result = deletePort(cellID);			
+    	var result = deletePort(cellID, name, type);			
 		if(result === "success") {
 			return next(err);
 		} else {
@@ -159,12 +166,17 @@ function validator(validator, graph, app) {
         
         if (sourceTFunctionID && targetTFunctionID) {
         	var targetTFunction = graph.getCell(targetTFunctionID);
-        	var targetTFunctionSubtype = targetTFunction.attributes.subtype;
+        	var targetTFunctionName = targetTFunction.attributes.attrs.text.text;
+        	var targetTFunctionType = targetTFunction.attributes.subtype;
+
+        	var sourceTFunction = graph.getCell(sourceTFunctionID);
+        	var sourceTFunctionName = sourceTFunction.attributes.attrs.text.text;
+        	var sourceTFunctionType = sourceTFunction.attributes.subtype;
         	
         	// se target for uma interface, cria a conexão
         	if(targetTFunctionSubtype === 'in' || targetTFunctionSubtype === 'out') return next(err);
         	
-        	var result = createLink(sourceTFunctionID, targetTFunctionID, linkID);
+        	var result = createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID);
         	
         	if(result === "success") {
 				return next(err);

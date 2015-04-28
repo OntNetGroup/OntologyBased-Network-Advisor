@@ -26,6 +26,7 @@ function insertContainer(containerName, containerType, cardID) {
 
 	var dtoContainer = {
 			"id" : containerName,
+			"name" : containerName,
 			"type" : containerType  
 	};
 
@@ -59,6 +60,7 @@ function deleteContainer(containerName, containerType, cardID) {
 	var result = "error";
 
 	var dtoContainer = {
+			"id" : containerName,
 			"name" : containerName,
 			"type" : containerType  
 	};
@@ -122,12 +124,13 @@ function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, cont
 	return "success";
 };
 
-function canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID) {
+function canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID) {
 
 	var result = "false";
 
 	var dtoTransportFunction = {
 			"id" : tFunctionID,
+			"name" : tFunctionName,
 			"type" : tFunctionType
 	}
 	
@@ -157,12 +160,13 @@ function canCreateTransportFunction(tFunctionID, tFunctionType, containerName, c
 	return "true";
 };
 
-function deleteTransportFunction(id, type) {
+function deleteTransportFunction(id, name, type) {
 
 	var result = "error";
 
 	var dtoTransportFunction = {
 			"id" : id,
+			"name" : name,
 			"type" : type
 	}
 
@@ -194,11 +198,13 @@ function changeContainer(tFunctionID, tFunctionName, sourceContainerName, source
 	};
 	
 	var dtoSourceContainer = {
+			"id" : sourceContainerName,
 			"name" : sourceContainerName,
 			"type" : sourceContainerType  
 	};
 	
 	var dtoTargetContainer = {
+			"id" : targetContainerName,
 			"name" : targetContainerName,
 			"type" : targetContainerType  
 	};
@@ -229,12 +235,14 @@ function changeContainer(tFunctionID, tFunctionName, sourceContainerName, source
 	return "success";
 };
 
-function createPort(portID, portName, portType, transportFunctionID) {
+function createPort(portID, portName, portType, transportFunctionID, tFunctionName, tFunctionType) {
 
 	var result;
 
 	var dtoTransportFunction = {
-			"id" : transportFunctionID
+			"id" : transportFunctionID,
+			"name" : tFunctionName,
+			"type" : tFunctionType
 	}
 	
 	var dtoPort = {
@@ -263,12 +271,14 @@ function createPort(portID, portName, portType, transportFunctionID) {
 	return "success";
 };
 
-function deletePort(id) {
+function deletePort(id, name, type) {
 
 	var result;	
 	
 	var dtoPort = {
-			"id" : id
+			"id" : id,
+			"name" : name,
+			"type" : type
 	};
 
 	$.ajax({
@@ -291,20 +301,26 @@ function deletePort(id) {
 };
 
 
-function createLink(sourceTFunctionID, targetTFunctionID, linkID) {
+function createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
 
 	var result = "error";
 
 	var dtoSourceTFunction = {
-			"id" : sourceTFunctionID
+			"id" : sourceTFunctionID,
+			"name" : sourceTFunctionName,
+			"type" : sourceTFunctionType
 	}
 
 	var dtoTargetTFunction = {
-			"id" : targetTFunctionID
+			"id" : targetTFunctionID,
+			"name" : targetTFunctionName,
+			"type" : targetTFunctionType
 	}
 	
 	var dtoLink = {
-			"id" : linkID
+			"id" : linkID,
+			"name" : linkID,
+			"type": 'link'
 	};
 
 	$.ajax({
@@ -328,16 +344,20 @@ function createLink(sourceTFunctionID, targetTFunctionID, linkID) {
 	return "success";
 };
 
-function canCreateLink(sourceTFunctionID, targetTFunctionID) {
+function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType) {
 
 	var result = "false";
 
 	var dtoSourceTFunction = {
-			"id" : sourceTFunctionID
+			"id" : sourceTFunctionID,
+			"name" : sourceTFunctionName,
+			"type" : sourceTFunctionType
 	}
 
 	var dtoTargetTFunction = {
-			"id" : targetTFunctionID
+			"id" : targetTFunctionID,
+			"name" : targetTFunctionName,
+			"type" : targetTFunctionType
 	}
 
 	$.ajax({
@@ -361,20 +381,26 @@ function canCreateLink(sourceTFunctionID, targetTFunctionID) {
 };
 
 
-function deleteLink(sourceTFunctionID, targetTFunctionID, linkID) {
+function deleteLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
 
 	var result = "error";
 
 	var dtoSourceTFunction = {
-			"id" : sourceTFunctionID
+			"id" : sourceTFunctionID,
+			"name" : sourceTFunctionName,
+			"type" : sourceTFunctionType
 	}
 
 	var dtoTargetTFunction = {
-			"id" : targetTFunctionID
+			"id" : targetTFunctionID,
+			"name" : targetTFunctionName,
+			"type" : targetTFunctionType
 	}
 	
 	var dtoLink = {
-			"id" : linkID
+			"id" : linkID,
+			"name" : linkID,
+			"type": 'link'
 	};
 
 	$.ajax({

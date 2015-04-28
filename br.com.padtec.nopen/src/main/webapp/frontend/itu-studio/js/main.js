@@ -16,7 +16,7 @@ var Rappid = Backbone.Router.extend({
 	skipOntologyRemoveHandler: false,
 	
 	/* technology of the card */
-    technology : 'OTN',
+    technology : 'MEF',
     
 	
     routes: {
@@ -115,10 +115,15 @@ var Rappid = Backbone.Router.extend({
         		
         		// Conexão entre dois transport functions
         		var sourceTFunctionID = cellViewS.model.id;
+        		var sourceTFunctionName = cellViewS.model.attributes.attrs.text.text;
+        		var sourceTFunctionType = cellViewS.model.attributes.subtype;
+        		
         		var targetTFunctionID = cellViewT.model.id;
+        		var targetTFunctionName = cellViewT.model.attributes.attrs.text.text;
+        		var targetTFunctionType = cellViewT.model.attributes.subtype;
         		console.log('try to connect ' +sourceTFunctionID+ ' and ' +targetTFunctionID);
         		
-        		return canCreateLink(sourceTFunctionID, targetTFunctionID);
+        		return canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType);
             },
             
 	         // RF: Inserir 'containmnet rules' aos nós

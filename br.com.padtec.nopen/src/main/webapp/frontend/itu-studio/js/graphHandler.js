@@ -99,7 +99,7 @@ function graphHandler(graph, app) {
 		function insertTransportFunction() {
 			console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
 			
-			var result = canCreateTransportFunction(tFunctionID, tFunctionType, containerName, containerType, cardID);
+			var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
 			if(result === "true") {
 				result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
 				
@@ -154,8 +154,10 @@ function graphHandler(graph, app) {
 			if(parentType === TypeEnum.TRANSPORT_FUNCTION){ // elemento abaixo é um transport function
 				
 					var transportFunctionID = parent.id;
+					var tFunctionName = parent.attributes.attrs.text.text;
+					var tFunctionType = parent.attributes.subtype;
 					console.log('try to create port ' +portID+ ';name: ' +portName+ ';TF: ' +transportFunctionID);
-					var result = createPort(portID, portName, portType, transportFunctionID)
+					var result = createPort(portID, portName, portType, transportFunctionID, tFunctionName, tFunctionType)
 					
 					if(result === "success") {
 					
