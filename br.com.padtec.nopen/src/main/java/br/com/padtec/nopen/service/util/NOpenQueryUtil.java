@@ -145,7 +145,7 @@ public class NOpenQueryUtil {
 	
 	public static boolean cardHasSupervisor(String card, InfModel model){
 		String queryString = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewlProject.owl#> "
 				+ "ASK "
 				+ "WHERE { ont:" + card + "rdf:type ont:Card . "
 				+ "?subject rdf:type ont:Supervisor . "
