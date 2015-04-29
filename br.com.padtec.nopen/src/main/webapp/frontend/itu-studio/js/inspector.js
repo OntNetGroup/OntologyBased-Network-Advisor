@@ -90,9 +90,10 @@ var InspectorDefs = {
 //    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } }
 			attrs: {
 				text: {
-					text: { type: 'text', group: 'data', defaultValue: '' ,label: 'Name', index: 1 }
+					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
 				}
-			}
+			},
+    		subtype: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'} } }
     	},
     	groups: CommonInspectorGroups
     },
@@ -102,12 +103,9 @@ var InspectorDefs = {
     
     'bpmn.Pool': {
     	inputs: {
-//    		name: { type: 'text', group: 'data', index: 2, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } },
-    		attrs: {
-				text: {
-					text: { type: 'text', group: 'data', defaultValue: '' ,label: 'Name', index: 1 }
-				}
-			}
+    		lanes: {
+				label: { type: 'text', group: 'data', label: 'Layer', index: 1, attrs: { 'input': {'disabled' : 'disabled'} } }
+    		}
     	},
     	groups: CommonInspectorGroups
     }
