@@ -70,13 +70,12 @@ public class OWLUtil {
 		if(aBoxFile == null || aBoxFile.equals("")) return;
 		
 		FileReader reader = new FileReader(new File(aBoxFile));
-        @SuppressWarnings("resource")
-		Scanner scanner = new Scanner(new BufferedReader(reader));
+        Scanner scanner = new Scanner(new BufferedReader(reader));
         String txtABox = "";
         while (scanner.hasNextLine()){
         	txtABox += scanner.nextLine()+"\n";
         }
-        
+        scanner.close();
         String[] fileBlocks = txtABox.replace("\t", "").split("\\*\\*\\*");
         
         if(fileBlocks.length < 4) throw new Exception("Incomplete ABox file.\n");

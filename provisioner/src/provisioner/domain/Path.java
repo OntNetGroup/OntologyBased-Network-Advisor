@@ -40,6 +40,18 @@ public class Path {
 		return interfaceList.size();
 	}
 	
+	public String sizeToString(){
+		String ret = "size (total = ";
+		ret += interfaceList.size();
+		ret += ", declared = ";
+		ret += this.qtDeclared;
+		ret += ", possible = ";
+		ret += this.qtPossible;
+		ret += ");";
+		
+		return ret;
+	}
+	
 	@Override
 	public String toString() {
 		String ret = "";
@@ -48,13 +60,8 @@ public class Path {
 			ret += " -> ";
 		}
 		ret += "\n\t";
-		ret += "size (total = ";
-		ret += interfaceList.size();
-		ret += ", declared = ";
-		ret += this.qtDeclared;
-		ret += ", possible = ";
-		ret += this.qtPossible;
-		ret += ")\n";
+		ret += sizeToString();
+		ret += "\n";
 		
 		return ret;
 	}

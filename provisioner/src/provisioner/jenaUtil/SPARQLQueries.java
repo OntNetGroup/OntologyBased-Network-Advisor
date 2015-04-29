@@ -102,10 +102,41 @@ public class SPARQLQueries {
 		return "";
 	}
 	
-	public static List<String> getInterfacesFromLayer(OntModel model, String interfaceTypeURI, String srcOrSink, String layerURI){
+	public static List<String> getInterfacesFromTopLayer(OntModel model, String interfaceTypeURI, String srcOrSink) throws Exception{
 		System.out.println("\nExecuting getInterfacesFromLayer()...");
 		
 		String queryString = ""
+				+ QueryUtil.PREFIXES
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ "SELECT DISTINCT *\n"
+				+ "WHERE {\n"
+				+ "?serverLayer ns:client_of ?clientLayer . \n"
+				+ "}";
+		
+		List<String> clientLayers = new ArrayList<String>();	
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();
+		    RDFNode clientLayer = row.get("clientLayer");	
+		    if(QueryUtil.isValidURI(clientLayer.toString()))
+		    {
+		    	System.out.println("- clientLayer URI: "+clientLayer.toString()); 
+		    	clientLayers.add(clientLayer.toString());		    	
+		    }
+		}
+		
+		List<String> allLayers = QueryUtil.getIndividualsURI(model, model.getNsPrefixURI("")+"Layer_Network");
+		allLayers.removeAll(clientLayers);
+		
+		if(allLayers.size() != 1){
+			throw new Exception("Something went wrong. More than one top layer were found.");
+		}
+		String topLayer = allLayers.get(0);
+		
+		queryString = ""
 				+ QueryUtil.PREFIXES
 				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
 				+ "SELECT DISTINCT *\n"
@@ -115,19 +146,19 @@ public class SPARQLQueries {
 				+ "?tf ns:componentOf ?tfPort .\n"
 				+ "?tf rdf:type ?tfType .\n"
 				+ "FILTER ( ?tfType  IN (ns:AF_"+srcOrSink+", ns:TF_"+srcOrSink+", ns:Matrix_"+srcOrSink+", ns:Physical_Media) ) .\n"
-				+ "?tf ?tfRel <" + layerURI + "> .\n"
-				+ "FILTER ( ?tfRel IN (ns:defines, ns:adapts_to, ns:adapts_from, ns:hasLayer) ) .\n"
+				+ "?tf ?tfRel <" + topLayer + "> .\n"
+				+ "FILTER ( ?tfRel IN (ns:defines, ns:adapts_to, ns:hasLayer) ) .\n"
 				+ "}";
 		
 		List<String> result = new ArrayList<String>();	
-		Query query = QueryFactory.create(queryString); 		
-		QueryExecution qe = QueryExecutionFactory.create(query, model);
-		ResultSet results = qe.execSelect();		
+		query = QueryFactory.create(queryString); 		
+		qe = QueryExecutionFactory.create(query, model);
+		results = qe.execSelect();		
 		while (results.hasNext()) 
 		{			
 			QuerySolution row = results.next();
 		    RDFNode intfc = row.get("intfc");	
-		    if(QueryUtil.isValidURI(intfc.toString()) && !result.contains(result))
+		    if(QueryUtil.isValidURI(intfc.toString()))
 		    {
 		    	System.out.println("- intfc URI: "+intfc.toString()); 
 		    	result.add(intfc.toString());		    	
