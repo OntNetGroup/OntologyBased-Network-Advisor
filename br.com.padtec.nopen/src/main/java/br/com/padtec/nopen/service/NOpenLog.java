@@ -22,6 +22,12 @@ public class NOpenLog {
 	
 	public static void append(String message)
 	{		
+		log.append(message);
+		System.out.println(message);
+	}
+	
+	public static void appendWithTime(String message)
+	{		
 		log.append("["+getTime()+"] "+message);
 		System.out.println("["+getTime()+"] "+message);
 	}

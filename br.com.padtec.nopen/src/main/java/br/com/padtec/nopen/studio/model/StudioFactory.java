@@ -26,8 +26,6 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
 			StudioComponents.studioRepository.getNamespace()+layerId
 		);
-		
-		NOpenLog.appendLine("TTF Created: "+ttfId+" at Layer: "+layerId);
 	}
 	
 	/**
@@ -47,8 +45,6 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf1_Card_TF_Card_Element,
 			StudioComponents.studioRepository.getNamespace()+afId
 		);
-		
-		NOpenLog.appendLine("AF Created: "+afId+" at Card: "+cardId);
 	}
 	
 	/**
@@ -60,8 +56,6 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+tfId
 		);
-					
-		NOpenLog.appendLine("TF Deleted: "+tfId);
 	}
 		
 	/**
@@ -80,9 +74,7 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+afId, 
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf15_Adaptation_Function_Adaptation_Output,
 			StudioComponents.studioRepository.getNamespace()+outputId
-		);
-		
-		NOpenLog.appendLine("Adaptation Output Created: "+outputId+" at AF: "+afId);
+		);		
 	}
 	
 	/**
@@ -101,9 +93,7 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+afId, 
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf14_Adaptation_Function_Adaptation_Input,
 			StudioComponents.studioRepository.getNamespace()+inputId
-		);
-		
-		NOpenLog.appendLine("Adaptation Input Created: "+inputId+" at AF: "+afId);
+		);		
 	}
 		
 	/**
@@ -122,9 +112,7 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+ttfId, 
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf20_Trail_Termination_Function_Trail_Termination_Output,
 			StudioComponents.studioRepository.getNamespace()+outputId
-		);
-		
-		NOpenLog.appendLine("Trail Termination Output Created: "+outputId+" at TTF: "+ttfId);
+		);		
 	}
 	
 	/**
@@ -143,9 +131,7 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+ttfId, 
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf21_Trail_Termination_Function_Trail_Termination_Input,
 			StudioComponents.studioRepository.getNamespace()+inputId
-		);
-		
-		NOpenLog.appendLine("Trail Termination Input Created: "+inputId+" at TTF: "+ttfId);
+		);		
 	}
 	
 	/**
@@ -157,8 +143,6 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+portId
 		);		
-		
-		NOpenLog.appendLine("Port Deleted: "+portId);
 	}
 	
 	/**
@@ -171,9 +155,7 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+cardId, 
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
 			StudioComponents.studioRepository.getNamespace()+containerId
-		);		
-		
-		NOpenLog.appendLine("Layer Inserted: "+containerId+" at Card: "+cardId);
+		);
 	}
 		
 	/**
@@ -186,9 +168,7 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+cardId, 
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
 			StudioComponents.studioRepository.getNamespace()+containerId
-		);
-		
-		NOpenLog.appendLine("Layer Removed: "+containerId+" at Card: "+cardId);
+		);		
 	}
 	
 	/**
@@ -210,8 +190,6 @@ public class StudioFactory {
 			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
 			StudioComponents.studioRepository.getNamespace()+tgtLayerId
 		);
-		
-		NOpenLog.appendLine("TTF's Layer Changed From "+srcLayerId+" to: "+tgtLayerId);
 	}
 	
 	/**
@@ -223,7 +201,7 @@ public class StudioFactory {
 		FactoryUtil.createInstanceRelation(
 			StudioComponents.studioRepository.getBaseModel(), 
 			StudioComponents.studioRepository.getNamespace()+ttfId, 
-			StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_binds_Adaptation_Function_Trail_Termination_Function,
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.binds_Trail_Termination_Function_Adaptation_Function,
 			StudioComponents.studioRepository.getNamespace()+afId
 		);
 	}
@@ -242,6 +220,147 @@ public class StudioFactory {
 		);
 	}
 	
+	
+	public static void deleteLinkFromTTFToAF(String srcTTF, String tgtAF)
+	{
+		FactoryUtil.deleteObjectProperty(
+			StudioComponents.studioRepository.getBaseModel(),
+			StudioComponents.studioRepository.getNamespace()+srcTTF, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.binds_Trail_Termination_Function_Adaptation_Function,
+			StudioComponents.studioRepository.getNamespace()+tgtAF
+		);
+	}
+	
+	public static void deleteLinkFromAFToTTF(String srcAF, String tgtTTF)
+	{
+		FactoryUtil.deleteObjectProperty(
+			StudioComponents.studioRepository.getBaseModel(),
+			StudioComponents.studioRepository.getNamespace()+srcAF, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.binds_Adaptation_Function_Trail_Termination_Function,
+			StudioComponents.studioRepository.getNamespace()+tgtTTF
+		);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createRack(String rackId) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+rackId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Rack.toString()
+		);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createShelf(String shelfId, String rackId) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+shelfId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Shelf.toString()
+		);
+
+
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+rackId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf9_Rack_Shelf,
+			StudioComponents.studioRepository.getNamespace()+shelfId
+		);		
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createSlot(String slotId, String shelfId) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+slotId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Slot.toString()
+		);
+
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+shelfId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf10_Shelf_Slot,
+			StudioComponents.studioRepository.getNamespace()+slotId
+		);	
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createSubSlot(String subslotId, String slotId) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+subslotId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Subslot.toString()
+		);
+
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+slotId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf11_Slot_Subslot,
+			StudioComponents.studioRepository.getNamespace()+subslotId
+		);	
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createCardAtSlot(String cardId, String slotId) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+cardId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Card.toString()
+		);
+
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+slotId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf4_Slot_Card,
+			StudioComponents.studioRepository.getNamespace()+cardId
+		);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createCardAtSubSlot(String cardId, String subslotId) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+cardId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Card.toString()
+		);
+
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+subslotId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf5_Subslot_Card,
+			StudioComponents.studioRepository.getNamespace()+cardId
+		);
+	}
+	
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void deleteEquipment(String holderId, String holderType) throws Exception
+	{
+		FactoryUtil.deleteIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+holderId			
+		);		
+	}
+	
 	//=============================================================================================
 	// Transport Function
 	//=============================================================================================
@@ -255,20 +374,22 @@ public class StudioFactory {
 	{
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();
-				
+		String tfName = dtoTransportFunction.getName();
+		
 		String containerType = dtoContainer.getType();
 		String containerId = dtoContainer.getId();
-
+		String containerName = dtoContainer.getName();
+		
 		if(tfType.equals("TTF") && containerType.equals("card"))
 		{			
-			NOpenLog.appendLine("Error: You cannot create a Trail Transport Function in a Card");
-			throw new Exception("You cannot create a Trail Transport Function in a Card");
+			NOpenLog.appendLine("Error: A TTF should not be put into a Card (TTF::"+tfName+", Card::"+containerName+")");
+			throw new Exception("A TTF should not be put into a Card (TTF::"+tfName+", Card::"+containerName+")");
 		}
 		
 		if(tfType.equals("AF") && containerType.equals("layer")) 
 		{ 
-			NOpenLog.appendLine("Error: You cannot create an Adaptation Function in a Layer");
-			throw new Exception("You cannot create an Adaptation Function in a Layer");
+			NOpenLog.appendLine("Error: An AF should not be put into a layer (AF::"+tfName+", Layer::"+containerName+")");
+			throw new Exception("An AF should not be put into a Layer (AF::"+tfName+", Layer::"+containerName+")");
 		};
 	}
 	
@@ -279,22 +400,25 @@ public class StudioFactory {
 	{
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();
-				
+		String tfName = dtoTransportFunction.getName();
+		
 		String containerType = dtoContainer.getType();
 		String containerId = dtoContainer.getId();
-
+		String containerName = dtoContainer.getName();
+		
 		if(tfType.equals("TTF") && containerType.equals("layer")) 
 		{
 			createTTF(tfId, containerId);
+			NOpenLog.appendLine("TTF Created: "+tfName+" at Layer: "+containerName);			
 		}
 		else if(tfType.equals("AF") && containerType.equals("card")) 
 		{
 			createAF(tfId, containerId);
-			
+			NOpenLog.appendLine("AF Created: "+tfName+" at Card: "+containerName);			
 		}else{
 			
-			NOpenLog.appendLine("Error: Unexpected creation of transport function "+tfType+" \""+tfId+"\" within "+containerType+" \""+containerId+"\"");
-			throw new Exception("Unexpected creation of transport function "+tfType+" \""+tfId+"\" within "+containerType+" \""+containerId+"\"");			
+			NOpenLog.appendLine("Error: Unexpected creation of Transport Function "+tfType+"::"+tfName+" at "+containerType+"::"+containerName+"");
+			throw new Exception("Unexpected creation of Transport Function "+tfType+"::"+tfName+" at "+containerType+"::"+containerName+"");			
 		}								
 	}
 		
@@ -305,14 +429,16 @@ public class StudioFactory {
 	{	
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();
+		String tfName = dtoTransportFunction.getName();
 		
 		if(tfType.equals("TTF") || tfType.equals("AF"))
 		{
 			deleteTF(tfId);			
+			NOpenLog.appendLine("TF "+tfType+" Deleted: "+tfName);			
 		}
 		else {			
-			NOpenLog.appendLine("Error: Unexpected deletion of transport function "+tfType+" \""+tfId);
-			throw new Exception("Unexpected deletion of transport function "+tfType+" \""+tfId);	
+			NOpenLog.appendLine("Error: Unexpected deletion of Transport Function "+tfType+"::"+tfName);
+			throw new Exception("Unexpected deletion of Transport Function "+tfType+"::"+tfName);	
 		}			
 	}
 	
@@ -327,24 +453,42 @@ public class StudioFactory {
 	{
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();		
+		String tfName = dtoTransportFunction.getName();
 		
 		String portType = dtoPort.getType();		
 		String portId = dtoPort.getId();		
+		String portName = dtoPort.getName();
 		
 		if(portType.equals("in")) 
 		{
-			if(tfType.equals("AF"))	createAFInput(portId, tfId);
-			if(tfType.equals("TTF")) createTTFInput(portId, tfId);
+			if(tfType.equals("AF"))	
+			{
+				createAFInput(portId, tfId);				
+				NOpenLog.appendLine("Adaptation Input Created: "+portName+" at AF: "+tfName);				
+			}
+			if(tfType.equals("TTF")) 
+			{
+				createTTFInput(portId, tfId);				
+				NOpenLog.appendLine("Trail Termination Input Created: "+portName+" at TTF: "+tfName);
+			}
 		}
 		else if(portType.equals("out")) 
 		{
-			if(tfType.equals("AF")) createAFOutput(portId, tfId);		
-			if(tfType.equals("TTF")) createTTFOutput(portId, tfId);
+			if(tfType.equals("AF"))
+			{
+				createAFOutput(portId, tfId);
+				NOpenLog.appendLine("Adaptation Output Created: "+portName+" at AF: "+tfName);
+			}
+			if(tfType.equals("TTF"))
+			{
+				createTTFOutput(portId, tfId);
+				NOpenLog.appendLine("Trail Termination Output Created: "+portName+" at TTF: "+tfName);				
+			}
 		
 		} else {
 			
-			NOpenLog.appendLine("Error: Unexpected creation of port "+portType+" \""+portId+"\" within "+tfType+" \""+tfId+"\"");
-			throw new Exception("Unexpected creation of port "+portType+" \""+portId+"\" within "+tfType+" \""+tfId+"\"");	
+			NOpenLog.appendLine("Error: Unexpected creation of Port "+portType+"::"+portName+" at "+tfType+"::"+tfName+"");
+			throw new Exception("Unexpected creation of Port "+portType+"::"+portName+" at "+tfType+"::"+tfName+"");	
 		}		
 	}
 
@@ -355,14 +499,16 @@ public class StudioFactory {
 	{				
 		String portType = dtoPort.getType();		
 		String portId = dtoPort.getId();
+		String portName = dtoPort.getName();
 		
 		if(portType.equals("in") || portType.equals("out"))
 		{
 			deletePort(portId);
+			NOpenLog.appendLine("Port "+portType+"Deleted: "+portName);			
 		}		
 		else{			
-			NOpenLog.appendLine("Error: Unexpected deletion of port "+portType+" \""+portId);
-			throw new Exception("Unexpected deletion of port "+portType+" \""+portId);
+			NOpenLog.appendLine("Error: Unexpected deletion of Port "+portType+"::"+portName);
+			throw new Exception("Unexpected deletion of Port "+portType+"::"+portName);
 		}		
 	}
 	
@@ -377,17 +523,20 @@ public class StudioFactory {
 	{		
 		String containerType = dtoContainer.getType();
 		String containerId = dtoContainer.getId();
-
+		String containerName = dtoContainer.getName();
+		
 		String cardType = dtoCard.getType();
 		String cardId = dtoCard.getId();
+		String cardName = dtoCard.getName();
 		
 		if(containerType.equals("layer"))
 		{
 			insertLayer(containerId, cardId);
+			NOpenLog.appendLine("Layer Inserted: "+containerId+" at Card: "+cardId);			
 		}		
 		else{			
-			NOpenLog.appendLine("Error: Unexpected insertion of container "+containerType+" \""+containerId+"\" within "+cardType+" \""+cardId+"\"");
-			throw new Exception("Unexpected insertion of container "+containerType+" \""+containerId+"\" within "+cardType+" \""+cardId+"\"");			
+			NOpenLog.appendLine("Error: Unexpected insertion of Container "+containerType+"::"+containerName+" at "+cardType+"::"+cardName+"");
+			throw new Exception("Unexpected insertion of Container "+containerType+"::"+containerName+" at "+cardType+"::"+cardName+"");			
 		}
 	}
 
@@ -398,18 +547,21 @@ public class StudioFactory {
 	{	
 		String containerType = dtoContainer.getType();
 		String containerId = dtoContainer.getId();
-
+		String containerName = dtoContainer.getName();
+		
 		String cardType = dtoCard.getType();
 		String cardId = dtoCard.getId();
+		String cardName = dtoCard.getName();
 		
 		if(containerType.equals("layer"))
 		{
 			deleteLayer(containerId, cardId);
+			NOpenLog.appendLine("Layer Removed: "+containerId+" at Card: "+cardId);			
 		}		
 		else{
 			
-			NOpenLog.appendLine("Error: Unexpected deletion of container "+containerType+" \""+containerId+"\" within "+cardType+" \""+cardId+"\"");
-			throw new Exception("Unexpected deletion of container "+containerType+" \""+containerId+"\" within "+cardType+" \""+cardId+"\"");			
+			NOpenLog.appendLine("Error: Unexpected deletion of Container "+containerType+"::"+containerName+" at "+cardType+"::"+cardName+"");
+			throw new Exception("Unexpected deletion of Container "+containerType+"::"+containerName+" at "+cardType+"::"+cardName+"");			
 		}
 	}
 	
@@ -420,23 +572,27 @@ public class StudioFactory {
 	{	
 		String srcContainerType = srcContainer.getType();
 		String srcContainerId = srcContainer.getId();
-
-		String tgtContainerType = srcContainer.getType();
-		String tgtContainerId = srcContainer.getId();
+		String srcContainerName = srcContainer.getName();
+		
+		String tgtContainerType = tgtContainer.getType();
+		String tgtContainerId = tgtContainer.getId();
+		String tgtContainerName = tgtContainer.getName();
 		
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();		
+		String tfName = dtoTransportFunction.getName();
 		
 		if(srcContainerType.equals("layer") || tgtContainerType.equals("layer"))
 		{
 			if(tfType.equals("TTF")) 
 			{
 				changeLayerOfTTF(tfId, srcContainerId, tgtContainerId);
+				NOpenLog.appendLine("TTF's Layer Changed From "+srcContainerName+" to "+tgtContainerName);				
 			}
 		}		
 		else{
-			NOpenLog.appendLine("Error: Unexpected change of container "+srcContainerType+" \""+srcContainerId+"\" from "+tfType+" \""+tfId+"\"");
-			throw new Exception("Unexpected change of container "+srcContainerType+" \""+srcContainerId+"\" from "+tfType+" \""+tfId+"\"");
+			NOpenLog.appendLine("Error: Unexpected change of Container of "+tfType+"::"+tfName+". From "+srcContainerType+"::"+srcContainerName+" to "+tgtContainerType+"::"+tgtContainerName+"");
+			throw new Exception("Unexpected change of Container of "+tfType+"::"+tfName+". From "+srcContainerType+"::"+srcContainerName+" to "+tgtContainerType+"::"+tgtContainerName+"");
 		}
 	}
 
@@ -448,27 +604,29 @@ public class StudioFactory {
 	 * @author John Guerson
 	 */
 	public static void deleteLink(DtoJointElement dtoLink, DtoJointElement srcTFunction, DtoJointElement tgtTFunction)  throws Exception
-	{	
-		String linkId = dtoLink.getId();
-			
+	{		
 		String srcType = srcTFunction.getType();
 		String srcId = srcTFunction.getId();
+		String srcName = srcTFunction.getName();
 		
 		String tgtType = tgtTFunction.getType();
 		String tgtId = tgtTFunction.getId();
+		String tgtName = tgtTFunction.getName();
 		
-		if((tgtType.equals("TTF") || tgtType.equals("AF")) && srcType.equals("TTF") || srcType.equals("AF"))
+		if(srcType.equals("TTF") && tgtType.equals("AF"))
 		{
-			FactoryUtil.deleteObjectProperty(
-				StudioComponents.studioRepository.getBaseModel(),
-				StudioComponents.studioRepository.getNamespace()+srcId, 
-				StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
-				StudioComponents.studioRepository.getNamespace()+tgtId
-			);
+			deleteLinkFromTTFToAF(srcId, tgtId);
+			NOpenLog.appendLine("Link Deleted from TTF to AF: "+srcName+" -> "+tgtName);			
+		}
+		
+		else if(srcType.equals("AF") && tgtType.equals("TTF"))
+		{
+			deleteLinkFromAFToTTF(srcId, tgtId);
+			NOpenLog.appendLine("Link Deleted from AF to TTF: "+srcName+" -> "+tgtName);			
 		}
 		else{
-			NOpenLog.appendLine("Error: Unexpected deletion of link \""+linkId+"\" from "+srcType+" \""+srcId+"\" to "+tgtType+" \""+tgtId+"\"");
-			throw new Exception("Unexpected deletion of link \""+linkId+"\" from "+srcType+" \""+srcId+"\" to "+tgtType+" \""+tgtId+"\"");
+			NOpenLog.appendLine("Error: Unexpected deletion of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");
+			throw new Exception("Unexpected deletion of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");
 		}
 	}
 	
@@ -477,27 +635,28 @@ public class StudioFactory {
 	 */
 	public static void createLink(DtoJointElement dtoSourceTFunction, DtoJointElement dtoTargetTFunction, DtoJointElement dtoLink) throws Exception
 	{	
-		String linkType = dtoLink.getType();
-		String linkId = dtoLink.getId();
-		
 		String srcTfType = dtoSourceTFunction.getType();		
 		String srcTfId = dtoSourceTFunction.getId();		
+		String srcName = dtoSourceTFunction.getName();
 		
-		String tgtTfType = dtoSourceTFunction.getType();		
-		String tgtTfId = dtoSourceTFunction.getId();
+		String tgtTfType = dtoTargetTFunction.getType();		
+		String tgtTfId = dtoTargetTFunction.getId();
+		String tgtName = dtoTargetTFunction.getName();
 		
 		if(srcTfType.equals("TTF") && tgtTfType.equals("AF"))
 		{
 			createLinkFromTTFToAF(srcTfId, tgtTfId);
+			NOpenLog.appendLine("Link Created from TTF to AF: "+srcName+" -> "+tgtName);			
 		}
 		
 		else if(srcTfType.equals("AF") && tgtTfType.equals("TTF"))
 		{
 			createLinkFromAFToTTF(srcTfId, tgtTfId);
+			NOpenLog.appendLine("Link Created from AD to TTF: "+srcName+" -> "+tgtName);			
 		}
 		else{
-			NOpenLog.appendLine("Error: Unexpected creation of link "+linkType+" \""+linkId+"\" from "+srcTfType+" \""+srcTfId+"\" "+"to "+tgtTfType+" \""+tgtTfId+"\"");
-			throw new Exception("Unexpected creation of link "+linkType+" \""+linkId+"\" from "+srcTfType+" \""+srcTfId+"\" "+"to "+tgtTfType+" \""+tgtTfId+"\"");			
+			NOpenLog.appendLine("Error: Unexpected creation of Link from "+srcTfType+"::"+srcName+" to "+tgtTfType+"::"+tgtName+"");
+			throw new Exception("Unexpected creation of Link from "+srcTfType+"::"+srcName+" to "+tgtTfType+"::"+tgtName+"");			
 		}			
 	}
 
@@ -506,22 +665,22 @@ public class StudioFactory {
 	 */
 	public static void canCreateLink(DtoJointElement dtoSourceTFunction, DtoJointElement dtoTargetTFunction) throws Exception
 	{	
-		String srcTfType = dtoSourceTFunction.getType();		
-		String srcTfId = dtoSourceTFunction.getId();		
+		String srcTfType = dtoSourceTFunction.getType();				
+		String srcTfName = dtoSourceTFunction.getName();
 		
-		String tgtTfType = dtoSourceTFunction.getType();		
-		String tgtTfId = dtoSourceTFunction.getId();
+		String tgtTfType = dtoTargetTFunction.getType();		
+		String tgtTfName = dtoTargetTFunction.getName();
 		
 		if(srcTfType.equals("TTF") && tgtTfType.equals("TTF"))
 		{
-			NOpenLog.appendLine("Error: Cannot create a link from "+srcTfType+" \""+srcTfId+"\" to "+tgtTfType+" \""+tgtTfId+"\"");
-			throw new Exception("Cannot create a link from a "+srcTfType.toUpperCase()+" to a "+tgtTfType.toUpperCase());	
+			NOpenLog.appendLine("Error: A TTF cannot be linked to another TTF ("+srcTfName+" -> "+tgtTfName+")");
+			throw new Exception("A TTF cannot be linked to another TTF ("+srcTfName+" -> "+tgtTfName+")");
 		}
 		
 		if(srcTfType.equals("AF") && tgtTfType.equals("AF"))
 		{
-			NOpenLog.appendLine("Error: Cannot create a link from "+srcTfType+" \""+srcTfId+"\" to "+tgtTfType+" \""+tgtTfId+"\"");
-			throw new Exception("Cannot create a link from a "+srcTfType.toUpperCase()+" to a "+tgtTfType.toUpperCase());	
+			NOpenLog.appendLine("Error: An AF cannot be linked to another AF  ("+srcTfName+" -> "+tgtTfName+")");
+			throw new Exception("An AF cannot be linked to another AF  ("+srcTfName+" -> "+tgtTfName+")");	
 		}
 	}
 
@@ -529,49 +688,156 @@ public class StudioFactory {
 	// Equipment Holder
 	//=============================================================================================
 	
-	public static void insertEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) 
+	public static void insertEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
 	{
-			
+		String holderType = dtoEquipmentholder.getType();		
+		String holderId = dtoEquipmentholder.getId();		
+		String holderName = dtoEquipmentholder.getName();
+		
+		String containerType = dtoContainer.getType();		
+		String containerId = dtoContainer.getId();	
+		String containerName = dtoContainer.getName();
+		
+		if(holderType.equals("card") && containerType.equals("slot"))
+		{
+			createCardAtSlot(holderId, containerId);
+			NOpenLog.appendLine("Card Created: "+holderName+" at Slot: "+containerName);
+		}
+		else if(holderType.equals("card") && containerType.equals("subslot"))
+		{
+			createCardAtSubSlot(holderId, containerId);
+			NOpenLog.appendLine("Card Created: "+holderName+" at SubSlot: "+containerName);			
+		}		
+		else if(holderType.equals("slot") && containerType.equals("shelf"))
+		{
+			createSlot(holderId, containerId);
+			NOpenLog.appendLine("Slot Created: "+holderName+" at Shelf: "+containerName);			
+		}
+		else if(holderType.equals("subslot") && containerType.equals("slot"))
+		{
+			createSubSlot(holderId, containerId);
+			NOpenLog.appendLine("SubSlot Created: "+holderName+" at Slot: "+containerName);			
+		}
+		else if(holderType.equals("shelf")  && containerType.equals("rack"))
+		{
+			createShelf(holderId, containerId);
+			NOpenLog.appendLine("Shelf Created: "+holderName+" at Rack: "+containerName);			
+		}
+		else if(holderType.equals("rack"))
+		{
+			createRack(holderId);
+			NOpenLog.appendLine("Rack Created: "+holderName);			
+		}
+		else {
+			NOpenLog.appendLine("Error: Unexpected creation of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
+			throw new Exception("Unexpected creation of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
+		}
 	}
 
-	public static void removeEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) 
+	public static void removeEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
 	{
-			
+		String holderType = dtoEquipmentholder.getType();		
+		String holderId = dtoEquipmentholder.getId();		
+		String holderName = dtoEquipmentholder.getName();
+		
+		String containerType = dtoContainer.getType();		
+		String containerName = dtoContainer.getName();
+		
+		if(holderType.equals("card")) {
+			deleteEquipment(holderId, holderType);
+			NOpenLog.appendLine("Card Deleted: "+holderId);
+		}
+		else if(holderType.equals("slot"))
+		{
+			deleteEquipment(holderId, holderType);	
+			NOpenLog.appendLine("Slot Deleted: "+holderId);
+		}
+		else if(holderType.equals("subslot"))
+		{
+			deleteEquipment(holderId, holderType);	
+			NOpenLog.appendLine("SubSlot Deleted: "+holderId);
+		}
+		else if(holderType.equals("shelf")) 
+		{
+			deleteEquipment(holderId, holderType);		
+			NOpenLog.appendLine("Shelf Deleted: "+holderId);
+		}
+		else if(holderType.equals("rack"))
+		{
+			deleteEquipment(holderId, holderType);		
+			NOpenLog.appendLine("Rack Deleted: "+holderId);
+		}
+		else {
+			NOpenLog.appendLine("Error: Unexpected deletion of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
+			throw new Exception("Unexpected deletion of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
+		}
 	}
 
 	//=============================================================================================
 	// Shelf
 	//=============================================================================================
 	
-	public static void removeShelf(DtoJointElement dtoShelf) {
-		// TODO Auto-generated method stub
+	public static void removeShelf(DtoJointElement dtoShelf) throws Exception 
+	{	
+		String holderId = dtoShelf.getId();		
+		String holderName = dtoShelf.getName();
 		
+		FactoryUtil.deleteIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+holderId			
+		);
+			
+		NOpenLog.appendLine("Shelf Deleted: "+holderName);	
 	}
 
 	//=============================================================================================
 	// Slot
 	//=============================================================================================
 	
-	public static void removeSlot(DtoJointElement dtoSlot) {
-		// TODO Auto-generated method stub
-		
+	public static void removeSlot(DtoJointElement dtoSlot) throws Exception 
+	{				
+		String holderId = dtoSlot.getId();		
+		String holderName = dtoSlot.getName();		
+				
+		FactoryUtil.deleteIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+holderId			
+		);
+			
+		NOpenLog.appendLine("Slot Deleted: "+holderName);
 	}
 
 	//=============================================================================================
 	// Card
 	//=============================================================================================
 	
-	public static void removeCard(DtoJointElement dtoCard) {
-		// TODO Auto-generated method stub
-		
+	public static void removeCard(DtoJointElement dtoCard) 
+	{
+		String holderId = dtoCard.getId();		
+		String holderName = dtoCard.getName();		
+				
+		FactoryUtil.deleteIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+holderId			
+		);
+			
+		NOpenLog.appendLine("Card Deleted: "+holderName);
 	}
 
 	//=============================================================================================
 	// Supervisor
 	//=============================================================================================
 	
-	public static void removeSupervisor(DtoJointElement dtoSupervisor) {
-		// TODO Auto-generated method stub
-		
+	public static void removeSupervisor(DtoJointElement dtoSupervisor) 
+	{
+		String holderId = dtoSupervisor.getId();		
+		String holderName = dtoSupervisor.getName();		
+				
+		FactoryUtil.deleteIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+holderId			
+		);
+			
+		NOpenLog.appendLine("Supervisor Deleted: "+holderName);		
 	}		
 }
