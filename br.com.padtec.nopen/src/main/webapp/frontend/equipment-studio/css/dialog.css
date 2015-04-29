@@ -166,3 +166,7 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	display: none;
 	color: red;
 }
+
+.btn-close{
+	display: none;
+}

@@ -90,7 +90,7 @@ var InspectorDefs = {
 //    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } }
 			attrs: {
 				text: {
-					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+					text: { type: 'text', group: 'data', defaultValue: '' ,label: 'Name', index: 1 }
 				}
 			}
     	},
@@ -102,7 +102,12 @@ var InspectorDefs = {
     
     'bpmn.Pool': {
     	inputs: {
-//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } }
+//    		name: { type: 'text', group: 'data', index: 2, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } },
+    		attrs: {
+				text: {
+					text: { type: 'text', group: 'data', defaultValue: '' ,label: 'Name', index: 1 }
+				}
+			}
     	},
     	groups: CommonInspectorGroups
     }

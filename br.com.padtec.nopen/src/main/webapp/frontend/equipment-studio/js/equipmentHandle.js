@@ -13,21 +13,52 @@ function showTechnologyWindow(techs , cell){
 		type: 'neutral',
 		title: 'Set Supervisor Technology',
 		content: content,
+		modal: true ,
 		buttons: [
 		          { action: 'save', content: 'Save', position: 'left' }
-		          ]
+		          ],	          
 	});
 
+	($('#btn-close')).hide();
+	
 	dialog.on('action:save', function(){
 		//$('#selected').val($("#tech-dialog").val());
 		//console.log($('#selected').val($("#tech-dialog").val()));
 		//console.log($('#tech-dialog').find(":selected").val());
 		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
-        dialog.close();
-
+		
+		
+		result = setTechnology(supervisorType, supervisorID , tech);
+		if(result === "sucess"){
+			dialog.close();
+		}else{
+			dialog.close();
+		}
+		setTechnology(supervisorType, supervisorID , tech);
+		//
+        
+		dialog.close();
 	});
 	dialog.open();
-} 
+}; 
+
+function selectSupervisorWindow(){
+	var content;
+	
+	var dialog = new joint.ui.Dialog({
+		width: 450,
+		type: 'neutral',
+		title: 'Set card Supervisor',
+		content: content,
+		buttons:[
+		        {action:'save', content: 'Save', position:'left'} 
+		         ]
+	});
+	
+	
+	
+};
+
 function equipmentHandle(graph){
 
 	// when a cell is added on another one, it should be embedded
@@ -179,14 +210,41 @@ function equipmentHandle(graph){
  								}).open();
  								cell.remove();
                                  return;
- 							}else{
- 								parent.embed(cell);							
-								
+ 							}else{									
  								if (cell.get('subType') === 'supervisor'){									
+ 									parent.embed(cell);
  									showTechnologyWindow(getTechnologies() , cell);
- 									console.log(cell.get('tech'));
+ 									
+ 									
+// 									
+// 									if(cell.get('tech') === ""){
+// 										showTechnologyWindow(getTechnologies() , cell);
+//									};
+									cell.set('size' , {
+	 									width: 10 ,
+	 									height: 20							
+	 								});
+	 								cell.set('position' , {
+	 									x : newpositionx ,
+	 									y : ((pposition.y) + 16)
+	 								});
  								};
-                                
+ 							    
+ 								if (cell.get('subType') === 'card'){									
+ 									parent.embed(cell);	
+ 								
+ 									cell.set('size' , {
+ 	 									width: 10 ,
+ 	 									height: 20							
+ 	 								});
+ 	 								cell.set('position' , {
+ 	 									x : newpositionx ,
+ 	 									y : ((pposition.y) + 16)
+ 	 								});
+ 	 								
+ 								};
+ 							
+ 								
  								cell.set('size' , {
  									width: 10 ,
  									height: 20							

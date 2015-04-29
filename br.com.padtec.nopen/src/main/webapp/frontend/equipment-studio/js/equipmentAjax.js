@@ -32,6 +32,38 @@ function insertEquipmentholder( equipmentType, equipmentID , containerType , con
 	return result;
 };
 
+function setTechnology( supervisorType, supervisorID , tech) {
+
+	var result = "error";
+
+
+	var dtoSupervisor = {
+			"id": supervisorID ,
+			"type": supervisorType 
+	};
+	
+//	var dtoTech = {
+//          			
+//	};
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "setTechnology.htm",
+		data: {
+			'supervisor': JSON.stringify(dtoEquipmentholder),
+			'tech': JSON.stringify(tech)
+		} ,
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+};
 
 function insertCard( cardName , cardType, cardID , slotName , slotType , slotID) {
 

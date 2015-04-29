@@ -52,7 +52,7 @@ var Rappid = Backbone.Router.extend({
 
 				//addshelf(args); | args -> "rack0" | "rack0","slot1"
 				//console.log(cell.parent);
-				//var gambiMethod = "add"+subType+"("+args+");";
+				//var gMethod = "add"+subType+"("+args+");";
 
 				// Identificações temporarias
 				//console.log(cell.attributes.type);
@@ -125,10 +125,17 @@ var Rappid = Backbone.Router.extend({
 		this.snapLines = new joint.ui.Snaplines({ paper: this.paper });
 	},
 
+//	initializeSupervisorTooltips: function(cell){
+//		
+//	
+//		
+//	},
+	
+	
 	initializeLinkTooltips: function(cell) {
 
 		if (cell instanceof joint.dia.Link) {
-
+			console.log("achou");
 			var linkView = this.paper.findViewByModel(cell);
 			new joint.ui.Tooltip({
 				className: 'tooltip small',
@@ -136,6 +143,7 @@ var Rappid = Backbone.Router.extend({
 				content: 'Click to open Inspector for this link',
 				left: linkView.$('.tool-options'),
 				direction: 'left'
+				
 			});
 		}
 	},
@@ -204,14 +212,6 @@ var Rappid = Backbone.Router.extend({
 	},
 
 
-//	openITUstudioView: function() {
-
-//	this.paper.on('cell:pointerdblclick', function(evt, cellView, x, y) {
-//	console.log('hi there!');
-//	},this);
-
-//	},
-
 	initializeSelection: function() {
 
 		this.selection = new Backbone.Collection;
@@ -273,7 +273,7 @@ var Rappid = Backbone.Router.extend({
 	},
 
 	createInspector: function(cellView) {
-
+        console.log("achou2");
 		var cell = cellView.model || cellView;
 
 		// No need to re-render inspector if the cellView didn't change.
@@ -291,7 +291,7 @@ var Rappid = Backbone.Router.extend({
 			}
 
 			var inspectorDefs = InspectorDefs[cell.get('type')];
-
+			//changed type(model) to subType
 			this.inspector = new joint.ui.Inspector({
 				inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,
 						groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,

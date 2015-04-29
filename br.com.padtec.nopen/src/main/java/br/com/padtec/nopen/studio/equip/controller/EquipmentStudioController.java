@@ -47,7 +47,25 @@ public class EquipmentStudioController {
 		return "success";		
 	}
 	
-	
+	/** Procedure to select the supervisors technology
+	 * @param supervisor
+	 * @param technology
+	 * @return
+	 */
+	@RequestMapping(value = "/setTechnology", method = RequestMethod.POST)
+	public @ResponseBody String setTechnology(@RequestParam("supervisor") String supervisor,@RequestParam("technology") String technology )
+	{
+		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		
+
+//		try{
+//			StudioFactory.setTechnology(dtosupervisor);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			return e.getLocalizedMessage();
+//		}		
+		return "success";		
+	}
 	
 	/** Procedure to get all the technologies
 	 * @param 
