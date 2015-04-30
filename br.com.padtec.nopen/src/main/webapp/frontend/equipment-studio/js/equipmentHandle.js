@@ -300,20 +300,20 @@ function equipmentHandle(graph){
 			//Only the rack can be inserted into the graph without an equipment holder	
 			 var containerType;
 			 var containerID;
-			 if(cell.get('subType') === 'rack'){
-				
+			
 				 var result = insertEquipmentholder(equipmentType, equipmentID);
 					if(result === "success") {    
 						return;
 					}else{
-					   alert(result);
-					}	 
-			 }else{
-	
-						
-			 }
-		
-			 
+						console.log(result);
+					 	new joint.ui.Dialog({
+								type: 'alert',
+								width: 400,
+								title: 'Error',
+								content: (result),
+							}).open();	
+						cell.remove();
+					}	 			 
 		}
 	}, this);
 

@@ -24,7 +24,6 @@ function insertEquipmentholder(equipmentType, equipmentID , containerType , cont
 		} ,
 		success: function(data){ 		   
 			result = data;
-
 		},
 		error : function(e) {
 			alert("error: " + e.status);
@@ -94,6 +93,7 @@ function insertCard( cardName , cardType, cardID , slotName , slotType , slotID)
 		},
 		error : function(e) {
 			alert("error: " + e.status);
+			result = ("error: " + e.status);
 		}
 	});
 
