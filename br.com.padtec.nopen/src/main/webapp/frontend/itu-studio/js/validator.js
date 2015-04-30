@@ -9,7 +9,9 @@ function validator(validator, graph, app) {
     	
 		var containerName = cellSubType;
 		var containerType = 'layer';
-		var cardID = this.cardID; 
+		var cardID = this.cardID;
+		var cardName = this.cardName;
+		var cardType = this.cardType;
 
 		var position = cell.position;
 		var size = cell.size;
@@ -30,7 +32,7 @@ function validator(validator, graph, app) {
 			return next('Another element in the way!');
 		} else {
 			// consultar ontologia para inserção de camada no card
-			var result = insertContainer(containerName, containerType, cardID);
+			var result = insertContainer(containerName, containerType, cardID, cardName, cardType);
 			var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +containerName+ '"]';
 			
 			if(result === "success") {
@@ -122,9 +124,12 @@ function validator(validator, graph, app) {
     	var containerName = command.data.attributes.subtype;
 		var containerType = 'layer';
 		var cardID = this.cardID;
+		var cardName = this.cardName;
+		var cardType = this.cardType;
+		
 		var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +containerName+ '"]';
 		
-		var result = deleteContainer(containerName, containerType, cardID);
+		var result = deleteContainer(containerName, containerType, cardID, cardName, cardType);
 		if(result === "success") {
 			$(element).show();
 			return next(err);
@@ -201,6 +206,7 @@ function validator(validator, graph, app) {
     	
 		var cell = graph.getCell(command.data.id);
 		var tFunctionID = cell.id;
+		var tFunctionType = cell.attributes.subtype;
 		var tFunctionName = cell.attributes.attrs.text.text;
 		var sourceContainerName = '';
 		var sourceContainerType = '';
@@ -221,6 +227,8 @@ function validator(validator, graph, app) {
 		if(sourceContainer === targetContainer) return next(err);
 		
 		var cardID = this.cardID;
+		var cardName = this.cardName;
+		var cardType = this.cardType;
     	        	
     	var position = cell.attributes.position;
     	var size = cell.attributes.size;
@@ -254,7 +262,7 @@ function validator(validator, graph, app) {
 		
 		function setContainer() {
 			console.log('move TF: ' +tFunctionName+ '; from layer: ' +sourceContainerName+ '; to layer: ' +targetContainerName+ '; inside card ' +cardID);
-			var result = changeContainer(tFunctionID, tFunctionName, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID);
+			var result = changeContainer(tFunctionID, tFunctionName, tFunctionType, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID, cardName, cardType);
 			if(result === "success") {						
 				if(parent) parent.embed(cell);
 				return next(err);

@@ -15,10 +15,6 @@ var Rappid = Backbone.Router.extend({
 	*/
 	skipOntologyRemoveHandler: false,
 	
-	/* technology of the card */
-    technology : 'MEF',
-    
-	
     routes: {
         '*path': 'home'
     },
@@ -35,6 +31,14 @@ var Rappid = Backbone.Router.extend({
     
     setCardID: function(id) {
     	this.cardID = id;
+    },
+    
+    setCardName: function(name) {
+    	this.cardName = name;
+    },
+    
+    setCardTech: function(tech) {
+    	this.cardTech = tech;
     },
 
     /* counters to give names for transport functions and interfaces */

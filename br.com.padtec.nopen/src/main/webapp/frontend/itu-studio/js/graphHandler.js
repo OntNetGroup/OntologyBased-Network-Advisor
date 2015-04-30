@@ -60,7 +60,7 @@ function graphHandler(graph, app) {
 		var cardID = this.cardID;
 		var tFunctionName = getName(tFunctionType);
 
-		var containerName = '';
+		var containerName = this.cardName;
 		var containerType = 'card';
 
 		var position = cell.attributes.position;
