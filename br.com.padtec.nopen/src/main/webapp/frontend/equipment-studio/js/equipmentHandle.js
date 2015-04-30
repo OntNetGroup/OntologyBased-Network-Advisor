@@ -28,7 +28,7 @@ function showTechnologyWindow(techs , cell){
 		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
 		
 		
-		result = setTechnology(supervisorType, supervisorID , tech);
+		var result = setTechnology(supervisorType, supervisorID , tech);
 		if(result === "sucess"){
 			dialog.close();
 		}else{
@@ -42,8 +42,38 @@ function showTechnologyWindow(techs , cell){
 	dialog.open();
 }; 
 
-function selectSupervisorWindow(){
-	var content;
+function selectSupervisorWindow(card ){
+		for(var i = 0;i < elementos.length; i++){
+			var element = elementos[i];
+			var check = elementos[i].attributes.subType;
+			
+			
+			if(check === "supervisor"){
+				var supervi = graph.getCell(element.id);
+				console.log(supervi);
+				console.log(supervi.get('tech'));
+				console.log(supervi.get('id'));
+				
+			}
+		}
+	
+	
+	var elementos = graph.getElements();
+	console.log(elementos);
+	
+	var content = '<div id="card-supervisor" title="Set Card Supervisor">'
+		+ 'Supervisor: <select>';
+	for(var i = 0; i < elementos.length; i++){
+		var element = elementos[i];
+		var checktype = elementos[i].attributes.subType;
+		if(checktype === "supervisor"){
+			var supervi;
+			content += '<option value="'+elemntos[i]+'">'+elementos[i]+'</option>';
+		}
+		
+	}
+	content += '</select>';
+	+ '</div>'
 	
 	var dialog = new joint.ui.Dialog({
 		width: 450,
@@ -68,8 +98,9 @@ function equipmentHandle(graph){
 		if(cell.get('type') === 'link') return;
 
 		var equipmentID = cell.get('id');
+//		console.log(equipmentID);
 		var equipmentType = cell.get('subType');
-		
+//		console.log(equipmentType);
 		var position = cell.get('position');
 		var size = cell.get('size');
 		var area = g.rect(position.x, position.y, size.width, size.height);
@@ -98,9 +129,8 @@ function equipmentHandle(graph){
 			if(parent.get('subType') === 'rack') {                   
 				//equipamento em um rack
 				// consultar ontologia para inserção 
-				var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
-				console.log(result);
-				//var result = "success";
+				
+				var result = insertEquipmentholder(equipmentType, equipmentID , containerType , containerID);
 				//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);
 				if(result === "success") {
 					parent.embed(cell);
@@ -139,9 +169,6 @@ function equipmentHandle(graph){
 					var containerID = parent.get('id');
 
 					var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
-					//var result = "success";
-					//var result = "";
-					console.log(result);
 					if(result === "success") {
 						parent.embed(cell)
 						var b = parent.get('embeds');
@@ -197,8 +224,6 @@ function equipmentHandle(graph){
  							newpositionx = pposition.x + 6 + ((filhos) * (29));
  						};
 						var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
- 						//var result = "success";
- 						//var result = "";
  						if(result === "success") {
  							// Se já possuir um card (confirmar o metodo para card e supervisor)
  							if (parent.getEmbeddedCells().length === 1){
@@ -255,12 +280,13 @@ function equipmentHandle(graph){
  								});
  							}
  						}else{
+ 							
  							cell.remove();
  							return 	new joint.ui.Dialog({
  								type: 'alert',
  								width: 400,
  								title: 'Alert',
- 								content: 'Only cards(supervisor or not) can be insert into a slot.'
+ 								content: result
  							}).open();	
  						}
 					}else{
@@ -272,25 +298,22 @@ function equipmentHandle(graph){
 			}
 		}else{
 			//Only the rack can be inserted into the graph without an equipment holder	
-//			 var containerType;
-//			 var containerID;
-//			 
-//			var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
-//			//var result = "success";
-//			//var result = "";
-//			if(result === "success") {
-//			     
-//				return;
-//			}else{
-//			   new joint.ui.Dialog({
-//			type: 'alert' ,
-//			width: 420,
-//			draggable: false,
-//			title: 'Alert ',
-//			content: 'The equipment selected must be connected in another equipment!'
-//			}).open();
-//			cell.remove();
-//			}
+			 var containerType;
+			 var containerID;
+			 if(cell.get('subType') === 'rack'){
+				
+				 var result = insertEquipmentholder(equipmentType, equipmentID);
+					if(result === "success") {    
+						return;
+					}else{
+					   alert(result);
+					}	 
+			 }else{
+	
+						
+			 }
+		
+			 
 		}
 	}, this);
 

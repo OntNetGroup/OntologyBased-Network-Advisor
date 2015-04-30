@@ -1,14 +1,15 @@
-function insertEquipmentholder( equipmentType, equipmentID , containerType , containerID) {
+function insertEquipmentholder(equipmentType, equipmentID , containerType , containerID) {
 
 	var result = "error";
 
-
 	var dtoEquipmentholder = {
+			"name": equipmentID ,
 			"id": equipmentID ,
 			"type": equipmentType 
 	};
 	
 	var dtoContainer = {
+			"name": containerID ,
 			"id": containerID ,
 			"type": containerType 
 	};
@@ -23,12 +24,14 @@ function insertEquipmentholder( equipmentType, equipmentID , containerType , con
 		} ,
 		success: function(data){ 		   
 			result = data;
+
 		},
 		error : function(e) {
 			alert("error: " + e.status);
 		}
 	});
-
+	
+	
 	return result;
 };
 
@@ -42,10 +45,6 @@ function setTechnology( supervisorType, supervisorID , tech) {
 			"type": supervisorType 
 	};
 	
-//	var dtoTech = {
-//          			
-//	};
-
 	$.ajax({
 		type: "POST",
 		async: false,
@@ -135,7 +134,7 @@ function insertSupervisor( supervisorName , supervisorType, supervisorID , slotN
 			alert("error: " + e.status);
 		}
 	});
-    console.log(result);
+
 	return result;
 };
 
