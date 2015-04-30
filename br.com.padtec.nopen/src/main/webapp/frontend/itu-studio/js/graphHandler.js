@@ -105,7 +105,7 @@ function graphHandler(graph, app) {
 				
 				if(result === "success") {	
 					if(parent) {
-						this.isAddingTransportFunction = true;
+						Util.isAddingTransportFunction = true;
 						parent.embed(cell);
 					}
 					cell.attr({

@@ -24,8 +24,8 @@ function insertContainer(containerName, containerType, cardID, cardName, cardTyp
 
 	var result = "error";
 
-	var dtoContainer = createDtoElement(containerName, containerName, containerType);
-	var dtoCard = createDtoElement(cardID, cardName, cardType);
+	var dtoContainer = Util.createDtoElement(containerName, containerName, containerType);
+	var dtoCard = Util.createDtoElement(cardID, cardName, cardType);
 
 	$.ajax({
 		type: "POST",
@@ -52,8 +52,8 @@ function deleteContainer(containerName, containerType, cardID, cardName, cardTyp
 
 	var result = "error";
 
-	var dtoContainer = createDtoElement(containerName, containerName, containerType);
-	var dtoCard = createDtoElement(cardID, cardName, cardType);
+	var dtoContainer = Util.createDtoElement(containerName, containerName, containerType);
+	var dtoCard = Util.createDtoElement(cardID, cardName, cardType);
 
 	$.ajax({
 		type: "POST",
@@ -79,8 +79,8 @@ function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, cont
 
 	var result = "error";
 
-	var dtoTransportFunction = createDtoElement(tFunctionID, tFunctionName, tFunctionType);
-	var dtoContainer = createDtoElement(cardID, containerName, containerType);
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+	var dtoContainer = Util.createDtoElement(cardID, containerName, containerType);
 
 	$.ajax({
 		type: "POST",
@@ -106,8 +106,8 @@ function canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, c
 
 	var result = "false";
 
-	var dtoTransportFunction = createDtoElement(tFunctionID, tFunctionName, tFunctionType);
-	var dtoContainer = createDtoElement(cardID, containerName, containerType);
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+	var dtoContainer = Util.createDtoElement(cardID, containerName, containerType);
 
 	$.ajax({
 		type: "POST",
@@ -133,7 +133,7 @@ function deleteTransportFunction(id, name, type) {
 
 	var result = "error";
 
-	var dtoTransportFunction = createDtoElement(id, name, type);
+	var dtoTransportFunction = Util.createDtoElement(id, name, type);
 
 	$.ajax({
 		type: "POST",
@@ -158,10 +158,10 @@ function changeContainer(tFunctionID, tFunctionName, tFunctionType, sourceContai
 
 	var result = "error";
 
-	var dtoTransportFunction = createDtoElement(tFunctionID, tFunctionName, tFunctionType);
-	var dtoSourceContainer = createDtoElement(sourceContainerName, sourceContainerName, sourceContainerType);
-	var dtoTargetContainer = createDtoElement(targetContainerName, targetContainerName, targetContainerType);
-	var dtoCard = createDtoElement(cardID, cardName, cardType);
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+	var dtoSourceContainer = Util.createDtoElement(sourceContainerName, sourceContainerName, sourceContainerType);
+	var dtoTargetContainer = Util.createDtoElement(targetContainerName, targetContainerName, targetContainerType);
+	var dtoCard = Util.createDtoElement(cardID, cardName, cardType);
 
 	$.ajax({
 		type: "POST",
@@ -189,8 +189,8 @@ function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFun
 
 	var result;
 
-	var dtoTransportFunction = createDtoElement(tFunctionID, tFunctionName, tFunctionType);
-	var dtoPort = createDtoElement(portID, portName, portType);
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+	var dtoPort = Util.createDtoElement(portID, portName, portType);
 
 	$.ajax({
 		type: "POST",
@@ -216,7 +216,7 @@ function deletePort(id, name, type) {
 
 	var result;	
 	
-	var dtoPort = createDtoElement(id, name, type);
+	var dtoPort = Util.createDtoElement(id, name, type);
 
 	$.ajax({
 		type: "POST",
@@ -242,9 +242,9 @@ function createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType,
 
 	var result = "error";
 
-	var dtoSourceTFunction = createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
-	var dtoTargetTFunction = createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
-	var dtoLink = createDtoElement(linkID, linkID, 'link');
+	var dtoSourceTFunction = Util.createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
+	var dtoTargetTFunction = Util.createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
+	var dtoLink = Util.createDtoElement(linkID, linkID, 'link');
 
 	$.ajax({
 		type: "POST",
@@ -271,8 +271,8 @@ function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionTy
 
 	var result = "false";
 
-	var dtoSourceTFunction = createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
-	var dtoTargetTFunction = createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
+	var dtoSourceTFunction = Util.createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
+	var dtoTargetTFunction = Util.createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
 
 	$.ajax({
 		type: "POST",
@@ -299,9 +299,9 @@ function deleteLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType,
 
 	var result = "error";
 
-	var dtoSourceTFunction = createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
-	var dtoTargetTFunction = createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
-	var dtoLink = createDtoElement(linkID, linkID, 'link');
+	var dtoSourceTFunction = Util.createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
+	var dtoTargetTFunction = Util.createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
+	var dtoLink = Util.createDtoElement(linkID, linkID, 'link');
 
 	$.ajax({
 		type: "POST",
@@ -322,15 +322,4 @@ function deleteLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType,
 
 //	return result;
 	return "success";
-};
-
-
-function createDtoElement(id, name, type) {
-	var dtoElement = {
-			"id" : id,
-			"name" : name,
-			"type": type
-	};
-	
-	return dtoElement;
 };

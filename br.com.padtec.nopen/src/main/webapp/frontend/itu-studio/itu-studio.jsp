@@ -43,6 +43,7 @@
         
 		<script src="/nopen/core/rappid_api/js/joint.shapes.devs.js"></script>
 		<script src="/nopen/frontend/itu-studio/js/typeEnum.js"></script>
+		<script src="/nopen/frontend/itu-studio/js/util.js"></script>
         <script src="/nopen/frontend/itu-studio/js/inspector.js"></script>
 		<script src="/nopen/frontend/itu-studio/js/layer.js"></script>
        	<script src="/nopen/frontend/itu-studio/js/stencil.js"></script>
@@ -81,8 +82,6 @@
             
             $('#btn-zoom-to-fit').click();
             
-            //alert("ID: " + parent.cellId);
-    		
             var closeType;
             
             $('#btn-save').click(function(){

@@ -199,8 +199,8 @@ function validator(validator, graph, app) {
 	// validate embedding of transport functions
 	validator.validate('change:parent', isTransportFunction, _.bind(function(err, command, next) {
 
-    	if(this.isAddingTransportFunction) {
-    		this.isAddingTransportFunction = false;
+    	if(Util.isAddingTransportFunction) {
+    		Util.isAddingTransportFunction = false;
     		return next(err);
     	}
     	
