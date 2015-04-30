@@ -113,10 +113,14 @@ function graphHandler(graph, app) {
 					});
 					nextName(tFunctionType);
 				} else {
-					this.generateAlertDialog(result);
-					this.skipOntologyRemoveHandler = true;
+					app.generateAlertDialog(result);
+					app.skipOntologyRemoveHandler = true;
 					cell.remove();
 				}
+			} else {
+				app.generateAlertDialog(result);
+				app.skipOntologyRemoveHandler = true;
+				cell.remove();
 			}
 		};
 	}, app);

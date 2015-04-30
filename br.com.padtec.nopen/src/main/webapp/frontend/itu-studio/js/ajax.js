@@ -43,8 +43,8 @@ function insertContainer(containerName, containerType, cardID, cardName, cardTyp
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
 
 
@@ -71,8 +71,8 @@ function deleteContainer(containerName, containerType, cardID, cardName, cardTyp
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
 
 function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID) {
@@ -98,8 +98,8 @@ function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, cont
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
 
 function canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID) {
@@ -125,8 +125,8 @@ function canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, c
 		}
 	});
 
-//	return result;
-	return "true";
+	return result;
+//	return "true";
 };
 
 function deleteTransportFunction(id, name, type) {
@@ -150,8 +150,8 @@ function deleteTransportFunction(id, name, type) {
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
 
 function changeContainer(tFunctionID, tFunctionName, tFunctionType, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID, cardName, cardType) {
@@ -181,8 +181,8 @@ function changeContainer(tFunctionID, tFunctionName, tFunctionType, sourceContai
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
 
 function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFunctionType) {
@@ -208,8 +208,8 @@ function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFun
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
 
 function deletePort(id, name, type) {
@@ -233,8 +233,8 @@ function deletePort(id, name, type) {
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
 
 
@@ -263,8 +263,8 @@ function createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType,
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
 
 function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType) {
@@ -290,8 +290,8 @@ function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionTy
 		}
 	});
 
-//	return result === "true";
-	return true;
+	return result === "true";
+//	return true;
 };
 
 
@@ -320,6 +320,6 @@ function deleteLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType,
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
