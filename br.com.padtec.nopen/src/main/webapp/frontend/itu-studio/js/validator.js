@@ -52,13 +52,14 @@ function validator(validator, graph, app) {
     	var cellID = command.data.id;
     	
 		var sourceID = command.data.attributes.source.id;
-		var sourceElement = graph.getCell(sourceID);
-		var sourceElementSubtype = sourceElement.attributes.subtype;
-		var sourceElementName = sourceElement.attributes.attrs.text.text;
+		var sourceElement = graph.getCell(sourceID);	
+		if(sourceElement) {
+			var sourceElementSubtype = sourceElement.attributes.subtype;
+			var sourceElementName = sourceElement.attributes.attrs.text.text;
+		}
 
 		var targetID = command.data.attributes.target.id;
 		var targetElement = graph.getCell(targetID);
-		
 		if(targetElement) {
 			var targetElementSubtype = targetElement.attributes.subtype;
 			var targetElementName = targetElement.attributes.attrs.text.text;
@@ -168,22 +169,22 @@ function validator(validator, graph, app) {
     	
     	var linkID = command.data.id;
     	var link = graph.getCell(linkID).toJSON();
-    	var sourceTFunctionID = link.source.id;
-        var targetTFunctionID = link.target.id;
+    	var sourceID = link.source.id;
+        var targetID = link.target.id;
         
-        if (sourceTFunctionID && targetTFunctionID) {
-        	var targetTFunction = graph.getCell(targetTFunctionID);
-        	var targetTFunctionName = targetTFunction.attributes.attrs.text.text;
-        	var targetTFunctionType = targetTFunction.attributes.subtype;
+        if (sourceID && targetID) {
+        	var targetElement = graph.getCell(targetID);
+        	var targetName = targetElement.attributes.attrs.text.text;
+        	var targetSubtype = targetElement.attributes.subtype;
 
-        	var sourceTFunction = graph.getCell(sourceTFunctionID);
-        	var sourceTFunctionName = sourceTFunction.attributes.attrs.text.text;
-        	var sourceTFunctionType = sourceTFunction.attributes.subtype;
+        	var sourceElement = graph.getCell(sourceID);
+        	var sourceName = sourceElement.attributes.attrs.text.text;
+        	var sourceSubtype = sourceElement.attributes.subtype;
         	
         	// se target for uma interface, cria a conexão
-        	if(targetTFunctionSubtype === 'in' || targetTFunctionSubtype === 'out') return next(err);
+        	if(targetSubtype === 'in' || targetSubtype === 'out') return next(err);
         	
-        	var result = createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID);
+        	var result = createLink(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
         	
         	if(result === "success") {
 				return next(err);
