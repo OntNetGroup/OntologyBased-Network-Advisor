@@ -86,12 +86,12 @@
             
             $('#btn-save').click(function(){
             	closeType = "save";
-            	parent.closeIframe();     	
+            	parent.closeIframe();
             });
             
             $('#btn-reject').click(function(){
             	closeType = "reject";
-            	parent.closeIframe();     	
+            	parent.closeIframe();
             });
 
         	app.setCardID(parent.cellId);

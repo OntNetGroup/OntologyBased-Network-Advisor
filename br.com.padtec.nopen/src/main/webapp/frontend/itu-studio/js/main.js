@@ -225,11 +225,21 @@ var Rappid = Backbone.Router.extend({
             dy: 10,
             dx: 10
         };
+        
+        var layersLayoutOptions = {
+            columnWidth: this.stencil.options.width - 10,
+            columns: 1,
+            rowHeight: 80,
+            resizeToFit: true,
+            dy: 10,
+            dx: 10
+        };
 
         _.each(Stencil.groups, function(group, name) {
             
             this.stencil.load(Stencil.shapes[name], name);
-            joint.layout.GridLayout.layout(this.stencil.getGraph(name), layoutOptions);
+            if(name === 'layers') joint.layout.GridLayout.layout(this.stencil.getGraph(name), layersLayoutOptions);
+            else joint.layout.GridLayout.layout(this.stencil.getGraph(name), layoutOptions);
             this.stencil.getPaper(name).fitToContent(1, 1, 10);
 
         }, this);
@@ -242,6 +252,29 @@ var Rappid = Backbone.Router.extend({
         $('.stencil-container .btn-collapse').on('click', _.bind(this.stencil.closeGroups, this.stencil));
 
         this.initializeStencilTooltips();
+        this.hideLayersAlreadyOnPaper();
+    },
+    
+    hideLayersAlreadyOnPaper: function() {
+    	var layersOnPaper = this.getLayersOnPaper();
+    	_.each(layersOnPaper, function(layer) {
+    		var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layer+ '"]';
+    		$(element).hide();
+    	});
+    },
+    
+    // retorna a lista de camadas ja inseridas no paper
+    getLayersOnPaper: function() {
+    	var allElements = this.graph.getElements();
+    	var layersOnPaper = [];
+    	
+    	_.each(allElements, function(element, index) {
+    		if(element.attributes.type === TypeEnum.LAYER) {
+    			layersOnPaper[index] = element.attributes.subtype;
+    		}
+    	});
+    	
+    	return layersOnPaper;
     },
 
     initializeLayers: function() {
@@ -262,7 +295,7 @@ var Rappid = Backbone.Router.extend({
     		Stencil.shapes.layers[index] = layer;
     	});
     },
-
+    
     initializeStencilTooltips: function() {
 
         // Create tooltips for all the shapes in stencil.
