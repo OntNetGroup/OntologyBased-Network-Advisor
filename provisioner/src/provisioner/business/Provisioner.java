@@ -35,7 +35,7 @@ public class Provisioner {
 	String ns;
 	List<Interface> INT_SO_LIST;
 	List<Interface> INT_SK_LIST;
-	OKCoUploader okcoUploader = new OKCoUploader();
+	OKCoUploader okcoUploader = new OKCoUploader("Provisioner");
 	long reasoningTimeExecPostInstances = 0;
 	
 	public long getReasoningTimeExecPostInstances() {

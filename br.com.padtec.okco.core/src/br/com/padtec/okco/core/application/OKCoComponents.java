@@ -2,7 +2,7 @@ package br.com.padtec.okco.core.application;
 
 public class OKCoComponents {
 
-	public static OKCoUploader repository = new OKCoUploader();
+	public static OKCoUploader repository = new OKCoUploader("OKCo");
 	public static OKCoSelector selector = new OKCoSelector(repository);
 	public static OKCoVisualizer visualizer = new OKCoVisualizer(repository);
 	public static OKCoReasoner reasoner = new OKCoReasoner(repository, selector);
