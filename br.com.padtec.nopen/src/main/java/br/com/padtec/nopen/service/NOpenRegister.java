@@ -14,9 +14,9 @@ public class NOpenRegister {
 	
 	public static void registerLayer(String layerName, String techName) throws Exception
 	{
-		ProvisioningRegister.registerLayer(layerName, techName);
+		ProvisioningRegister.registerLayer(layerName, techName, true);
 
-		StudioRegister.registerLayer(layerName, techName);
+		StudioRegister.registerLayer(layerName, techName, true);
 	}
 	
 	public static void unregisterLayer(String layerName) throws Exception
@@ -28,9 +28,9 @@ public class NOpenRegister {
 	
 	public static void registerTechnology(String techName) throws Exception
 	{	
-		ProvisioningRegister.registerTechnology(techName);
+		ProvisioningRegister.registerTechnology(techName, true);
 		
-		StudioRegister.registerTechnology(techName);
+		StudioRegister.registerTechnology(techName, true);
 	}
 	
 	public static void unregisterTechnology(String techName) throws Exception
