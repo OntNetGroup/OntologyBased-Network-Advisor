@@ -115,7 +115,7 @@ public class KAO {
 		
 	}
 	
-	public ArrayList<IndividualInstance> getAllIndividualInstances(Boolean getClassesEagerly, Boolean getObjectPropertiesEagerly, Boolean getDataPropertiesEagerly) throws Exception {
+	public ArrayList<IndividualInstance> getAllIndividualInstances(boolean getClassesEagerly, boolean getObjectPropertiesEagerly, boolean getDataPropertiesEagerly) throws Exception {
 		ArrayList<IndividualInstance> individualInstanceList = new ArrayList<IndividualInstance>();
 		
 		ResultSet resSetIndividuals = getAllIndividuals();

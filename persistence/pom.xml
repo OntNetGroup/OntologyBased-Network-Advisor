@@ -31,14 +31,9 @@
 		<version>2.8.7</version>
 	</dependency>
 	<dependency>
-		<groupId>org.openrdf.sesame</groupId>
-		<artifactId>sesame-runtime</artifactId>
-		<version>2.7.9</version>
-	</dependency>
-	<dependency>
-		<groupId>ch.qos.logback</groupId>
-		<artifactId>logback-classic</artifactId>
-		<version>1.0.13</version>
+		<groupId>br.com.padtec</groupId>
+		<artifactId>nopen</artifactId>
+		<version>1.0</version>
 	</dependency>
   </dependencies>
 </project>
