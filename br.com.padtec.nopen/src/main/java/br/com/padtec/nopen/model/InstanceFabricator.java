@@ -352,6 +352,20 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
+	public static void createCard(OKCoUploader repository, String cardName) throws Exception
+	{		
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+cardName,
+			repository.getNamespace()+ConceptEnum.Card.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Card "+cardName+" created");		
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
 	public static void createCardAtSlot(OKCoUploader repository, String cardId, String cardName, String slotId, String slotName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
@@ -554,7 +568,10 @@ public class InstanceFabricator {
 		String indServURI = repository.getNamespace()+serviceName;
 		String serviceURI = repository.getNamespace()+ConceptEnum.Service.toString();
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indServURI, serviceURI);		
-		FactoryUtil.createInstanceRelation(repository.getBaseModel(),indLayerURI, RelationEnum.implements_Layer_Service.toString(), indServURI);		
+		
+		//Exception thrown: relation is UNDECLARED. This is weird...
+		//FactoryUtil.createInstanceRelation(repository.getBaseModel(),indLayerURI, RelationEnum.implements_Layer_Service.toString(), indServURI);		
+		
 		NOpenLog.appendLine(repository.getName()+": Service "+serviceName+" created for Layer "+layerName+" and Tech "+techName);
 	}	
 	
@@ -566,18 +583,7 @@ public class InstanceFabricator {
 		FactoryUtil.deleteIndividual(repository.getBaseModel(), repository.getNamespace()+serviceName);
 		NOpenLog.appendLine(repository.getName()+": Service "+serviceName+" deleted");
 	}
-	
-	/**
-	 * @author John Guerson
-	 */
-	public static void createCard(OKCoUploader repository, String cardName) throws Exception
-	{
-		String indURI = repository.getNamespace()+cardName;		
-		String cardURI = repository.getNamespace()+ConceptEnum.Card.toString();
-		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indURI,cardURI);
-		NOpenLog.appendLine(repository.getName()+": Card "+cardName+" created");		
-	}
-		
+			
 	/**
 	 * @author John Guerson
 	 */

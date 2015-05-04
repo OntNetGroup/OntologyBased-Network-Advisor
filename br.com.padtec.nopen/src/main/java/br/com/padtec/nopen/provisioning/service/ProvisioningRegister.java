@@ -21,12 +21,12 @@ public class ProvisioningRegister extends DefaultRegister {
 				registerLayer(l, defaultTechs[i], false);
 				for(String service: defaultServices)
 				{
-					//InstanceFabricator.createService(ProvisioningComponents.provisioningRepository, service, l, defaultTechs[i]);
+					InstanceFabricator.createService(ProvisioningComponents.provisioningRepository, service, l, defaultTechs[i]);
 				}
 			}
 			i++;
 		}
-				
+
 		PerformanceUtil.printExecutionTime("Provisioning: Technologies, Layers and Services registered.", beginDate);
 	}
 	
