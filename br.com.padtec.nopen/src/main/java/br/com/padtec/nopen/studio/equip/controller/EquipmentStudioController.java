@@ -69,6 +69,7 @@ public class EquipmentStudioController {
 	/** Procedure to select the supervisors technology
 	 * @param supervisor
 	 * @param technology
+	 * @param slot
 	 * @return
 	 */
 	@RequestMapping(value = "/setTechnology", method = RequestMethod.POST)

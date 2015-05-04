@@ -1,115 +1,138 @@
 var Stencil = {};
 
 Stencil.groups = {
-		equipment: { index: 1, label: 'Equipment Holder' }
+		equipment: { index: 1, label: 'Equipment Holder' },
+		card: { index: 2, label: 'Card'  }
 };
 
 Stencil.shapes = {
 
 		equipment: [
-		            			
-            //Shelf
-            new joint.shapes.basic.Rect({
-            	size: { width: 60, height: 45 },
-            	subType : 'shelf' ,
-            	attrs: {
-            		rect: {
-            			fill: '#C7C7C5'
-            		},
-            		//text: { text: 'shelf', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
-            	}
-            }),
-            //Slot
-            new joint.shapes.basic.Rect({
-            	size: { width: 15, height: 35 },
-            	subType : 'slot' ,
-            	attrs: {
-            		rect: {
-            			//fill: '#B3CBCE'
-            			fill: '#7ad7fd'
-            		},
-            		//text: { text: 'slot', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
-            	}
-            }),
-            //Card
-            new joint.shapes.basic.Rect({
-            	size: { width: 10, height: 20 },
-            	subType : 'card' ,
-            	supervisor: '' ,
-            	attrs: {
-            		rect: {
-            			//fill: '#ADC2A7'
-            			fill: '#fffb82'
-            		},
-            		//text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
-            	}
-            }),
-            //Supervisor
-            new joint.shapes.basic.Rect({
-            	subType : 'supervisor' ,
-            	tech : '' ,
-            	size: { width: 10, height: 20 },
-            	attrs: {
-            		rect: {
-            			fill: '#516949'
-            			//fill: '#000000'
-            		},
-            		//text: { text: 'supervisor card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
-            	}
-            }),		
-            //Rack
-			new joint.shapes.basic.Rect({
-				subType : 'rack' ,
-				size: { width:40 , height: 80 },
-				attrs: {
-					rect: {
-						fill: '#767572'
-					},
-					//text: { text: 'rack', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
-				}
-			}),
-		            
-		  ],
-  
-		  interfaces: [
-		       		//porta de entrada
-		       		new joint.shapes.basic.Circle({
-		       			subtype: 'in',
-		       		    attrs: {
-		       		        circle: { fill: '#f1c40f' },
-		       		        text: { text: 'in', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
-		       		    }
-		       		}),
-		       		
-		       		// porta de saída
-		       		new joint.shapes.basic.Rect({
-		       			subtype: 'out',
-		       		    attrs: {
-		       		        rect: {
-		       		            rx: 2, ry: 2,
-		       		            fill: '#e9967a'
-		       		        },
-		       		        text: { text: 'out', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
-		       		    }
-		       		})
-		       	]
+
+		            //Shelf
+		            new joint.shapes.basic.Rect({
+		            	size: { width: 60, height: 45 },
+		            	subType : 'shelf' ,
+		            	supervisor: '' ,
+		            	attrs: {
+		            		rect: {
+		            			fill: '#C7C7C5'
+		            		},
+		            		//text: { text: 'shelf', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
+		            	}
+		            }),
+		            //Slot
+		            new joint.shapes.basic.Rect({
+		            	size: { width: 15, height: 35 },
+		            	subType : 'slot' ,
+		            	supervisor: '' ,
+		            	attrs: {
+		            		rect: {
+		            			//fill: '#B3CBCE'
+		            			fill: '#7ad7fd'
+		            		},
+		            		//text: { text: 'slot', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
+		            	}
+		            }),
+		            //Card
+		            new joint.shapes.basic.Rect({
+		            	size: { width: 10, height: 20 },
+		            	subType : 'card' ,
+		            	supervisor: '' ,
+		            	attrs: {
+		            		rect: {
+		            			//fill: '#ADC2A7'
+		            			fill: '#fffb82'
+		            		},
+		            		//text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
+		            	}
+		            }),
+		            //Supervisor
+		            new joint.shapes.basic.Rect({
+		            	subType : 'supervisor' ,
+		            	tech : '' ,
+		            	size: { width: 10, height: 20 },
+		            	attrs: {
+		            		rect: {
+		            			fill: '#516949'
+		            				//fill: '#000000'
+		            		},
+		            		//text: { text: 'supervisor card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
+		            	}
+		            }),		
+		            //Rack
+		            new joint.shapes.basic.Rect({
+		            	subType : 'rack' ,
+		            	supervisor: '' ,
+		            	size: { width:40 , height: 80 },
+		            	attrs: {
+		            		rect: {
+		            			fill: '#767572'
+		            		},
+		            		//text: { text: 'rack', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
+		            	}
+		            }),
+
+		            ],
+
+		            interfaces: [
+		                         //porta de entrada
+		                         new joint.shapes.basic.Circle({
+		                        	 subtype: 'in',
+		                        	 attrs: {
+		                        		 circle: { fill: '#f1c40f' },
+		                        		 text: { text: 'in', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
+		                        	 }
+		                         }),
+
+		                         // porta de saída
+		                         new joint.shapes.basic.Rect({
+		                        	 subtype: 'out',
+		                        	 attrs: {
+		                        		 rect: {
+		                        			 rx: 2, ry: 2,
+		                        			 fill: '#e9967a'
+		                        		 },
+		                        		 text: { text: 'out', fill: '#000000', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 }
+		                        	 }
+		                         })
+		                         ],
+
+		            card: [
+		                    new joint.shapes.devs.Model({
+		                               	subType: 'card',
+		                               	supervisor: '' ,
+		                               	size: { width: 10, height: 20 },
+		                               	inPorts: ['in'],
+		                               	outPorts: ['out'],
+		                               	attrs: {
+		                               		rect: { fill: '#8e44ad', rx: 2, ry: 2 },
+		                               		text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 },
+//		                               		'.label': { text: 'model', fill: '#ffffff', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 },
+		                               		'.inPorts circle': { fill: '#f1c40f', r : 4 , opacity: 0.2 },
+		                              		'.outPorts circle': { fill: '#e9967a', r:4, opacity: 0.2 },
+		                               		'.inPorts text, .outPorts text': { 'font-size': 9 }
+		                            	}
+		                       })
+		                   ]
 };
 
 
 
+
 //referencias
-/* new joint.shapes.devs.Atomic({
-            size: { width: 90, height: 60 },
-            inPorts: ['in1','in2'],
-            outPorts: ['out'],
-            attrs: {
-	        rect: { fill: '#8e44ad', rx: 2, ry: 2 },
-                '.label': { text: 'model', fill: '#ffffff', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 },
-				'.inPorts circle': { fill: '#f1c40f', opacity: 0.9 },
-                '.outPorts circle': { fill: '#f1c40f', opacity: 0.9 },
-				'.inPorts text, .outPorts text': { 'font-size': 9 }
-            }
-        }),*/
+//new joint.shapes.devs.Atomic({
+//size: { width: 90, height: 60 },
+//inPorts: ['in1','in2'],
+//outPorts: ['out'],
+//attrs: {
+//rect: { fill: '#8e44ad', rx: 2, ry: 2 },
+//'.label': { text: 'model', fill: '#ffffff', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 },
+//'.inPorts circle': { fill: '#f1c40f', opacity: 0.9 },
+//'.outPorts circle': { fill: '#f1c40f', opacity: 0.9 },
+//'.inPorts text, .outPorts text': { 'font-size': 9 }
+//}
+//}),
 
 
 /*new joint.shapes.bpmn.Pool({

@@ -14,12 +14,24 @@ function showTechnologyWindow(techs , cell){
 		title: 'Set Supervisor Technology',
 		content: content,
 		modal: true ,
+		closeButton: false ,
+		close: CloseFunction,
 		buttons: [
 		          { action: 'save', content: 'Save', position: 'left' }
 		          ],	          
 	});
 
-	($('#btn-close')).hide();
+	function CloseFunction(){
+		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
+		dialog.close();
+	};
+	
+	($('#tech-dialog').on( "dialogclose", function(dialogclose) {
+		console.log("hi there");
+	     cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
+	} ));
+
+
 	
 	dialog.on('action:save', function(){
 		//$('#selected').val($("#tech-dialog").val());
@@ -28,16 +40,14 @@ function showTechnologyWindow(techs , cell){
 		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
 		
 		
-		var result = setTechnology(supervisorType, supervisorID , tech);
+		//var result = setTechnology(supervisorType, supervisorID , tech);
+		var result = "success";
 		if(result === "sucess"){
 			dialog.close();
 		}else{
+			cell.set('tech' ,($('#tech-dialog').find(":selected").val()));
 			dialog.close();
 		}
-		setTechnology(supervisorType, supervisorID , tech);
-		//
-        
-		dialog.close();
 	});
 	dialog.open();
 }; 
@@ -216,6 +226,7 @@ function equipmentHandle(graph){
  						var containerType = parent.get('subType');
  						var containerID = parent.get('id');
  
+ 					
  						var newpositionx;
  						if (parent.getEmbeddedCells().length === '0'){
  							newpositionx = pposition.x + 6;
@@ -224,9 +235,10 @@ function equipmentHandle(graph){
  							newpositionx = pposition.x + 6 + ((filhos) * (29));
  						};
 						var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
- 						if(result === "success") {
+						if(result === "success") {
  							// Se já possuir um card (confirmar o metodo para card e supervisor)
- 							if (parent.getEmbeddedCells().length === 1){
+ 							
+ 							if (parent.getEmbeddedCells().length === 1){	
  								new joint.ui.Dialog({
  									type: 'alert',
  									width: 400,
@@ -236,24 +248,23 @@ function equipmentHandle(graph){
  								cell.remove();
                                  return;
  							}else{									
- 								if (cell.get('subType') === 'supervisor'){									
- 									parent.embed(cell);
- 									showTechnologyWindow(getTechnologies() , cell);
- 									
- 									
+// 								if (cell.get('subType') === 'supervisor'){									
 // 									
-// 									if(cell.get('tech') === ""){
-// 										showTechnologyWindow(getTechnologies() , cell);
-//									};
-									cell.set('size' , {
-	 									width: 10 ,
-	 									height: 20							
-	 								});
-	 								cell.set('position' , {
-	 									x : newpositionx ,
-	 									y : ((pposition.y) + 16)
-	 								});
- 								};
+// 									parent.embed(cell);
+// 									showTechnologyWindow(getTechnologies() , cell);									
+//// 									
+//// 									if(cell.get('tech') === ""){
+//// 										showTechnologyWindow(getTechnologies() , cell);
+////									};
+//									cell.set('size' , {
+//	 									width: 10 ,
+//	 									height: 20							
+//	 								});
+//	 								cell.set('position' , {
+//	 									x : newpositionx ,
+//	 									y : ((pposition.y) + 16)
+//	 								});
+// 								};
  							    
  								if (cell.get('subType') === 'card'){									
  									parent.embed(cell);	
@@ -281,13 +292,22 @@ function equipmentHandle(graph){
  							}
  						}else{
  							
- 							cell.remove();
- 							return 	new joint.ui.Dialog({
- 								type: 'alert',
- 								width: 400,
- 								title: 'Alert',
- 								content: result
- 							}).open();	
+ 							var result = insertSupervisor( equipmentType, equipmentID , containerType , containerID);
+ 							if (result === "success"){
+ 								parent.embed(cell);
+									showTechnologyWindow(getTechnologies() , cell);
+									
+									cell.set('size' , {
+	 									width: 10 ,
+	 									height: 20							
+	 								});
+	 								cell.set('position' , {
+	 									x : newpositionx ,
+	 									y : ((pposition.y) + 16)
+	 								});
+ 							}else{
+ 								
+ 							}
  						}
 					}else{
 						if(parent.get('subType') === 'card' || 'supervisor' ){

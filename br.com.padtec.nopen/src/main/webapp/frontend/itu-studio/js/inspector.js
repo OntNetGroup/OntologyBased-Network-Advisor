@@ -1,4 +1,7 @@
+
+
 var CommonInspectorGroups = {
+		
     data: { label: 'Data', index: 1 }
 };
 

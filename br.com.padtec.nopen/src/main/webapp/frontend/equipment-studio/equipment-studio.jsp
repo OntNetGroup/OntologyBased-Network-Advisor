@@ -75,6 +75,8 @@
 	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/mymodel.js"></script>
+
 
 	<!-- PLUGINS -->
 

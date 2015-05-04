@@ -101,19 +101,19 @@ function insertCard( cardName , cardType, cardID , slotName , slotType , slotID)
 };
 
 
-function insertSupervisor( supervisorName , supervisorType, supervisorID , slotName , slotType , slotID) {
+function insertSupervisor( supervisorType, supervisorID , slotType , slotID) {
 
 	var result = "error";
 
 
 	var dtoSupervisor = {
-			"name" : supervisorName ,
+			"name" : supervisorID ,
 			"id": supervisorID ,
 			"type": supervisorType 
 	};
 	
 	var dtoSlot = {
-			"name": slotName ,
+			"name": slotID ,
 			"id": slotID ,
 			"type": slotType 
 	};
