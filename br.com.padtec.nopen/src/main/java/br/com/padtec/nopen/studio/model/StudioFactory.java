@@ -361,6 +361,22 @@ public class StudioFactory {
 		);		
 	}
 	
+	public static void insertSupervisor(String supervisorId, String holderId) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+supervisorId, 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Supervisor.toString()
+		);
+		
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+holderId, 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf6_Equipment_Holder_Supervisor,
+			StudioComponents.studioRepository.getNamespace()+supervisorId
+		);
+	}
+	
 	//=============================================================================================
 	// Transport Function
 	//=============================================================================================
@@ -827,6 +843,30 @@ public class StudioFactory {
 	//=============================================================================================
 	// Supervisor
 	//=============================================================================================
+	
+	public static void insertSupervisor(DtoJointElement dtoSupervisor, DtoJointElement dtoHolder) throws Exception 
+	{
+		String supervisorId = dtoSupervisor.getId();		
+		String supervisorName = dtoSupervisor.getName();		
+			
+		String holderId = dtoSupervisor.getId();		
+		String holderName = dtoSupervisor.getName();	
+		
+		FactoryUtil.createInstanceIndividual(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+supervisorId,			 
+			StudioComponents.studioRepository.getNamespace()+ConceptEnum.Supervisor.toString()			
+		);
+			
+		FactoryUtil.createInstanceRelation(
+			StudioComponents.studioRepository.getBaseModel(), 
+			StudioComponents.studioRepository.getNamespace()+holderId,			 
+			StudioComponents.studioRepository.getNamespace()+RelationEnum.ComponentOf6_Equipment_Holder_Supervisor,
+			StudioComponents.studioRepository.getNamespace()+supervisorId
+		);
+		
+		NOpenLog.appendLine("Supervisor "+supervisorName+" inserted at Equipment Holder "+holderName);		
+	}	
 	
 	public static void removeSupervisor(DtoJointElement dtoSupervisor) 
 	{

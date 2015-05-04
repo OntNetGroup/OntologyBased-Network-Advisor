@@ -20,7 +20,7 @@ public class ScriptEnumGenerator {
 	
 	public static void main(String[] args)
 	{
-		OKCoUploader owlRepository = new OKCoUploader();
+		OKCoUploader owlRepository = new OKCoUploader("EnumGenerator");
 		
 		InputStream s = ScriptEnumGenerator.class.getResourceAsStream("/model/EquipStudio.owl");
 				

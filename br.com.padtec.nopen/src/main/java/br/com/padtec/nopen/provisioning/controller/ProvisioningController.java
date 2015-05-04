@@ -65,10 +65,8 @@ public class ProvisioningController {
 			File file = NOpenFileUtil.createProvisioningJSONFile(filename);
 			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 	
 	/**

@@ -100,6 +100,7 @@ public class NOpenQueryUtil {
 		return result;
 	}
 	
+	@SuppressWarnings("unused")
 	public static HashSet<String> getAllComponentOFRelations(String classID, InfModel model)
 	{
 		HashSet<String> result = new HashSet<String>();

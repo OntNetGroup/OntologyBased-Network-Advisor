@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
+import br.com.padtec.nopen.provisioning.service.ProvisioningRegister;
 import br.com.padtec.nopen.service.NOpenRegister;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 
@@ -19,13 +20,13 @@ public class OptionsController {
 	public String configRequest(HttpServletRequest request) 
 	{		
 		request.getSession().setAttribute("techs", NOpenQueryUtil.getAllTechnologiesNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
-		request.getSession().setAttribute("defaultTechs", NOpenRegister.getDefaultTechs());
+		request.getSession().setAttribute("defaultTechs", ProvisioningRegister.getDefaultTechs());
 		
 		request.getSession().setAttribute("layers", NOpenQueryUtil.getAllLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel()));
-		request.getSession().setAttribute("defaultLayers", NOpenRegister.getDefaultLayers());
+		request.getSession().setAttribute("defaultLayers", ProvisioningRegister.getDefaultLayers());
 		
 		request.getSession().setAttribute("services", NOpenQueryUtil.getAllServicesNames(ProvisioningComponents.provisioningRepository.getBaseModel()));		
-		request.getSession().setAttribute("defaultServices", NOpenRegister.getDefaultServices());
+		request.getSession().setAttribute("defaultServices", ProvisioningRegister.getDefaultServices());
 		
 		return "options";
 	}

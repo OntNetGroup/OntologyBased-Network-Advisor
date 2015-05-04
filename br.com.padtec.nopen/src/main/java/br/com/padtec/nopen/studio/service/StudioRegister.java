@@ -3,11 +3,12 @@ package br.com.padtec.nopen.studio.service;
 import java.util.Date;
 
 import br.com.padtec.common.util.PerformanceUtil;
-import br.com.padtec.nopen.service.util.NOpenFactoryUtil;
+import br.com.padtec.nopen.model.DefaultRegister;
+import br.com.padtec.nopen.model.InstanceFabricator;
 
-public class StudioRegister {
+public class StudioRegister extends DefaultRegister {
 
-	public static void registerDefaultTechnologies(String[] defaultTechs, String[][] defaultLayers, String[] defaultServices) throws Exception
+	public static void registerDefaultTechnologies() throws Exception
 	{
 		Date beginDate = new Date();		
 				
@@ -24,7 +25,7 @@ public class StudioRegister {
 			
 		for(String service: defaultServices)
 		{
-			NOpenFactoryUtil.createService(StudioComponents.studioRepository, service, null, null);	
+			InstanceFabricator.createService(StudioComponents.studioRepository, service, null, null);	
 		}
 		
 		PerformanceUtil.printExecutionTime("Equip Studio: Technologies, Layers and Services registered.", beginDate);
@@ -32,21 +33,27 @@ public class StudioRegister {
 	
 	public static void registerTechnology(String techName) throws Exception
 	{
-		NOpenFactoryUtil.createTechnology(StudioComponents.studioRepository, techName);
+		/** validation */
+		validateTechnology(techName);
+		
+		InstanceFabricator.createTechnology(StudioComponents.studioRepository, techName);
 	}
 	
 	public static void registerLayer(String layerName, String techName) throws Exception
 	{
-		NOpenFactoryUtil.createLayer(StudioComponents.studioRepository,layerName, techName);
+		/** validation */
+		validateLayer(layerName);
+		
+		InstanceFabricator.createLayer(StudioComponents.studioRepository,layerName, techName);
 	}	
 	
 	public static void unregisterLayer(String layerName) throws Exception
 	{
-		NOpenFactoryUtil.deleteLayer(StudioComponents.studioRepository, layerName);
+		InstanceFabricator.deleteLayer(StudioComponents.studioRepository, layerName);
 	}
 	
 	public static void unregisterTechnology(String techName) throws Exception
 	{
-		NOpenFactoryUtil.deleteTechnology(StudioComponents.studioRepository, techName);
+		InstanceFabricator.deleteTechnology(StudioComponents.studioRepository, techName);
 	}
 }

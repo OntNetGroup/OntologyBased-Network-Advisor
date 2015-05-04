@@ -75,13 +75,15 @@ public class EquipmentStudioController {
 	public @ResponseBody String setTechnology(@RequestParam("supervisor") String supervisor,@RequestParam("technology") String technology )
 	{
 		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		DtoJointElement dtotech = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
+		//TODO (To Gabriel/Missael) I need of the specific equipment in which this supervisor is linked to (John)
 		
-//		try{
-//			StudioFactory.setTechnology(dtosupervisor);
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			return e.getLocalizedMessage();
-//		}		
+		try{
+			//StudioFactory.setTechnology(dtosupervisor, dtotech, dtoquip);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
 		return "success";		
 	}
 	
@@ -106,13 +108,13 @@ public class EquipmentStudioController {
 	{
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
 		DtoJointElement dtoSlot = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
-		NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());
-//		try{
-//			StudioFactory.insertSupervisor(dtoSupervisor, dtoSlot);
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			return e.getLocalizedMessage();
-//		}		
+				
+		try{
+			StudioFactory.insertSupervisor(dtoSupervisor, dtoSlot);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
 		return "success";		
 	}
 	

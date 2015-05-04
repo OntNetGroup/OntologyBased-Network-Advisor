@@ -34,6 +34,8 @@ public class OKCoUploader {
 	/** Temporary Model used to rool back */
 	protected OntModel tempModel;
 	
+	protected String name = new String();
+	
 	protected boolean reasonOnLoading = false;
 	
 	public boolean isReasonOnLoading()  { return reasonOnLoading; }
@@ -45,6 +47,15 @@ public class OKCoUploader {
 	public long getLastReasoningTimeExec() {
 		return lastReasoningTimeExec;
 	}
+	
+	public String getName(){ return name; }
+	private void setName(String name){ this.name = name; }
+	
+	public OKCoUploader(String name)
+	{
+		setName(name);
+	}
+	
 	/**
 	 * Upload the base model ontology in OWL. The user might opt for not using the reasoner at the upload.
 	 * 

@@ -1,7 +1,7 @@
 package br.com.padtec.nopen.service;
 
+import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.provisioning.service.ProvisioningInitializer;
-import br.com.padtec.nopen.service.util.NOpenFactoryUtil;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.nopen.studio.service.StudioInitializer;
 
@@ -17,7 +17,7 @@ public class NOpenInitializer {
 		
 		
 		 //Testing
-		  NOpenFactoryUtil.createCard(StudioComponents.studioRepository, "Card1");
+		  InstanceFabricator.createCard(StudioComponents.studioRepository, "Card1");
 		
 		ModelStructureAccessorController.initContainerStructure("Card1", StudioComponents.studioRepository);
 		for(String s : ModelStructureAccessorController.getRelationsMapping().keySet()){
