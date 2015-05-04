@@ -168,7 +168,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		try{
-			StudioFactory.removeCard(dtoCard);
+			StudioFactory.deleteCard(dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -188,7 +188,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoShelf = (DtoJointElement) JointUtilManager.getJavaFromJSON(shelf, DtoJointElement.class);
 		
 		try{
-			StudioFactory.removeShelf(dtoShelf);
+			StudioFactory.deleteShelf(dtoShelf);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -207,7 +207,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoSlot = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
 		
 		try{
-			StudioFactory.removeSlot(dtoSlot);
+			StudioFactory.deleteSlot(dtoSlot);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
