@@ -123,9 +123,9 @@
             equipmentHandle(app.graph);
             ituHandle(app.paper, app.graph);
             
-            if(getUrlParameter('equipment')){
-            	var equipment = getUrlParameter('equipment');
-            	openFromURL(equipment, app.graph);
+            if(getUrlParameter('template')){
+            	var template = getUrlParameter('template');
+            	openFromURL(template, app.graph);
             }
             
             //graphHandle(app.graph);
@@ -134,11 +134,11 @@
             var uuid = joint.util.uuid();
             
             $('#btn-save').click(function(){
-            	generateSaveEquipmentDialog(app.graph);
+            	generateSaveTemplateDialog(app.graph);
             });
             
             $('#btn-open').click(function(){
-            	getEquipments(app.graph);
+            	getTemplates(app.graph);
             });
         
         </script>

@@ -123,7 +123,7 @@ public class TopologyController {
 	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTemplateEquipment(){
 		 
-		String[] equipments = NOpenFileUtil.getAllEquipmentJSONFileNames();
+		String[] equipments = NOpenFileUtil.getAllTemplateJSONFileNames();
 		return NOpenFileUtil.parseStringToJSON("equipment", equipments);
 		 
 	}

@@ -47,13 +47,13 @@ public class StudioController {
 	}
 	
 	/**
-	 * Procedure to delete Equipment.
+	 * Procedure to delete a Template.
 	 * @param filename
 	 */	
-	@RequestMapping("/deleteEquipment")
-	public @ResponseBody void deleteEquipment(@RequestParam("filename") String filename) {
+	@RequestMapping("/deleteTemplate")
+	public @ResponseBody void deleteTemplate(@RequestParam("filename") String filename) {
 		
-		String ituPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + filename + "/itu/");
+		String ituPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + filename + "/itu/");
 		File ituDir = new File(ituPath);
 		
 		if(ituDir.exists()){
@@ -64,7 +64,7 @@ public class StudioController {
 			ituDir.delete();
 		}
 		
-		String path = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + filename + "/");
+		String path = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + filename + "/");
 		File dir = new File(path);
 		
 		for(File file : dir.listFiles()){ 

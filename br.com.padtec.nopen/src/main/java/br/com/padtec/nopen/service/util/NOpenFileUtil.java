@@ -16,11 +16,11 @@ public class NOpenFileUtil {
 	
 	// JSON
 	public static String topologyJSONFolder;
-	public static String equipmentJSONFolder;
+	public static String templateJSONFolder;
 	public static String provisioningJSONFolder;
 	
 	// OWL
-	public static String equipmentOWLFolder;
+	public static String templateOWLFolder;
 	public static String provisioningOWLFolder;
 	
 	@SuppressWarnings("resource")
@@ -40,8 +40,8 @@ public class NOpenFileUtil {
 		
 		NOpenFileUtil.topologyJSONFolder = NOpenFileUtil.path + "/nopen/repository/topology/json/";
 		
-		NOpenFileUtil.equipmentJSONFolder = NOpenFileUtil.path + "/nopen/repository/equipment/json/";
-		NOpenFileUtil.equipmentOWLFolder = NOpenFileUtil.path + "/nopen/repository/equipment/owl/";
+		NOpenFileUtil.templateJSONFolder = NOpenFileUtil.path + "/nopen/repository/template/json/";
+		NOpenFileUtil.templateOWLFolder = NOpenFileUtil.path + "/nopen/repository/template/owl/";
 		
 		NOpenFileUtil.provisioningJSONFolder = NOpenFileUtil.path + "/nopen/repository/provisioning/json/";
 		NOpenFileUtil.provisioningOWLFolder = NOpenFileUtil.path + "/nopen/repository/provisioning/owl/";
@@ -51,8 +51,8 @@ public class NOpenFileUtil {
 		if(System.getProperty("os.name").contains("Windows")){		
 			NOpenFileUtil.topologyJSONFolder = NOpenFileUtil.topologyJSONFolder.replaceAll("/", "\\\\");
 			
-			NOpenFileUtil.equipmentJSONFolder = NOpenFileUtil.equipmentJSONFolder.replaceAll("/", "\\\\");	
-			NOpenFileUtil.equipmentOWLFolder = NOpenFileUtil.equipmentOWLFolder.replaceAll("/", "\\\\");	
+			NOpenFileUtil.templateJSONFolder = NOpenFileUtil.templateJSONFolder.replaceAll("/", "\\\\");	
+			NOpenFileUtil.templateOWLFolder = NOpenFileUtil.templateOWLFolder.replaceAll("/", "\\\\");	
 			
 			NOpenFileUtil.provisioningJSONFolder = NOpenFileUtil.provisioningJSONFolder.replaceAll("/", "\\\\");	
 			NOpenFileUtil.provisioningOWLFolder = NOpenFileUtil.provisioningOWLFolder.replaceAll("/", "\\\\");	
@@ -60,8 +60,8 @@ public class NOpenFileUtil {
 
 		NOpenFileUtil.createRepository(NOpenFileUtil.topologyJSONFolder);
 		
-		NOpenFileUtil.createRepository(NOpenFileUtil.equipmentJSONFolder);
-		NOpenFileUtil.createRepository(NOpenFileUtil.equipmentOWLFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.templateJSONFolder);
+		NOpenFileUtil.createRepository(NOpenFileUtil.templateOWLFolder);
 		
 		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningJSONFolder);
 		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningOWLFolder);
@@ -81,11 +81,11 @@ public class NOpenFileUtil {
 	
 	
 	/**
-	 * Procedure to create Equipment folders if they do not exist.
+	 * Procedure to create Template folders if they do not exist.
 	 * @param path
 	 */
-	public static void createEquipmentRepository(String path){
-		NOpenFileUtil.createRepository(NOpenFileUtil.equipmentJSONFolder + path);	
+	public static void createTemplateRepository(String path){
+		NOpenFileUtil.createRepository(NOpenFileUtil.templateJSONFolder + path);	
 	}
 	
 	/**
@@ -150,13 +150,13 @@ public class NOpenFileUtil {
 	}
 	
 	/**
-	 * Procedure to check if equipment file already exist in repository.
+	 * Procedure to check if Template file already exist in repository.
 	 * @param filename
 	 * @return
 	 */
-	public static Boolean checkEquipmentFileExist(String filename){
+	public static Boolean checkTemplateFileExist(String filename){
 		
-		if(NOpenFileUtil.checkFileExist(NOpenFileUtil.equipmentJSONFolder + filename)){
+		if(NOpenFileUtil.checkFileExist(NOpenFileUtil.templateJSONFolder + filename)){
 			return true;
 		}
 		
@@ -179,12 +179,12 @@ public class NOpenFileUtil {
 	}
 	
 	/**
-	 * Procedure for create a OWL file. 
+	 * Procedure for create a Template OWL file. 
 	 * @param filename 
 	 * @return
 	 */
-	public static File createEquipmentOWLFile(String filename){
-		return createFile(NOpenFileUtil.equipmentOWLFolder, filename + ".owl");
+	public static File createTemplateOWLFile(String filename){
+		return createFile(NOpenFileUtil.templateOWLFolder, filename + ".owl");
 	}
 		
 	/**
@@ -197,12 +197,12 @@ public class NOpenFileUtil {
 	}
 	
 	/**
-	 * Procedure for create a Equipment JSON file.
+	 * Procedure for create a Template JSON file.
 	 * @param filename 
 	 * @return
 	 */
-	public static File createEquipmentJSONFile(String filename){
-		return createFile(NOpenFileUtil.equipmentJSONFolder, filename + ".json");
+	public static File createTemplateJSONFile(String filename){
+		return createFile(NOpenFileUtil.templateJSONFolder, filename + ".json");
 	}
 	
 	/**
@@ -255,11 +255,11 @@ public class NOpenFileUtil {
     }
     
     /**
-     * Procedure to get all equipment JSON file names. 
+     * Procedure to get all template JSON file names. 
      * @return
      */
-    public static String[] getAllEquipmentJSONFileNames(){
-    	return getAllFolderNames(NOpenFileUtil.equipmentJSONFolder);
+    public static String[] getAllTemplateJSONFileNames(){
+    	return getAllFolderNames(NOpenFileUtil.templateJSONFolder);
     }
     
     /**
@@ -271,11 +271,11 @@ public class NOpenFileUtil {
     }
     
     /**
-     * Procedure to get all topology OWL file names. 
+     * Procedure to get all template OWL file names. 
      * @return
      */
-    public static String[] getAllEquipmentOWLFileNames(){
-    	return getAllFolderNames(NOpenFileUtil.equipmentOWLFolder);    	
+    public static String[] getAllTemplateOWLFileNames(){
+    	return getAllFolderNames(NOpenFileUtil.templateOWLFolder);    	
     }
     
     
@@ -353,12 +353,12 @@ public class NOpenFileUtil {
     }
     
     /**
-     * Procedure to open an Equipment file as String.
+     * Procedure to open an Template file as String.
      * @param filename
      * @return
      */
-    public static String openEquipmentJSONFileAsString(String filename){
-    	return openFileAsString(NOpenFileUtil.equipmentJSONFolder, filename);
+    public static String openTemplateJSONFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.templateJSONFolder, filename);
     }
     
     /**
@@ -371,12 +371,12 @@ public class NOpenFileUtil {
     }
     
     /**
-     * Procedure to open a OWL file as String.
+     * Procedure to open a Template OWL file as String.
      * @param filename
      * @return
      */
-    public static String openEquipmentOWLFileAsString(String filename){
-    	return openFileAsString(NOpenFileUtil.equipmentOWLFolder, filename);
+    public static String openTemplateOWLFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.templateOWLFolder, filename);
     }
 	
     /**
@@ -409,7 +409,7 @@ public class NOpenFileUtil {
     }
     
     /**
-     * Procedure to parse a HashSet<String> to JSON String file.
+     * Procedure to parse a String[] to a JSON String file.
      * @param filename
      * @return
      */

@@ -1,11 +1,11 @@
-function getEquipments(graph){
+function getTemplates(graph){
 	
 	$.ajax({
 	   type: "GET",
-	   url: "getAllEquipments.htm",
+	   url: "getAllTemplates.htm",
 	   dataType: 'json',
 	   success: function(data){ 		   
-		   generateOpenEquipmentDialog(graph, data)
+		   generateOpenTemplateDialog(graph, data)
 	   },
 	   error : function(e) {
 		   alert("error: " + e.status);
@@ -32,7 +32,7 @@ function openFromURL(filename, graph){
 	
 	$.ajax({
 		   type: "POST",
-		   url: "openEquipment.htm",
+		   url: "openTemplate.htm",
 		   data: {
 			   'filename' : filename
 		   },
@@ -76,17 +76,17 @@ function openFromURL(filename, graph){
 	
 }
 
-function generateOpenEquipmentDialog(graph, data){
+function generateOpenTemplateDialog(graph, data){
 	
 	var content = '<form id="open">';
 	for(var i = 0; i < Object.keys(data).length; i++){
 		if(i == 0){
-			content = content + '<input type="radio" name="equipment" value="' + data[i].equipment + '" checked>' 
-					+ '<label>' + data[i].equipment + '</label> <br>';
+			content = content + '<input type="radio" name="template" value="' + data[i].template + '" checked>' 
+					+ '<label>' + data[i].template + '</label> <br>';
 		}
 		else{
-			content = content + '<input type="radio" name="equipment" value="' + data[i].equipment + '">' 
-					+ '<label>' + data[i].equipment + '</label><br>';
+			content = content + '<input type="radio" name="template" value="' + data[i].template + '">' 
+					+ '<label>' + data[i].template + '</label><br>';
 		}
 
 	}
@@ -95,24 +95,24 @@ function generateOpenEquipmentDialog(graph, data){
 	var dialog = new joint.ui.Dialog({
 		width: 300,
 		type: 'neutral',
-		title: 'Open Equipment',
+		title: 'Open Template',
 		content: content,
 		buttons: [
 			{ action: 'cancel', content: 'Cancel', position: 'left' },
 			{ action: 'open', content: 'Open', position: 'left' }
 		]
 	});
-	dialog.on('action:open', openEquipment);
+	dialog.on('action:open', openTemplate);
 	dialog.on('action:cancel', dialog.close);
 	dialog.open();
 
-	function openEquipment(){
+	function openTemplate(){
 		
-		var filename = $('input[name=equipment]:checked', '#open').val();
+		var filename = $('input[name=template]:checked', '#open').val();
 		
 		$.ajax({
 		   type: "POST",
-		   url: "openEquipment.htm",
+		   url: "openTemplate.htm",
 		   data: {
 			   'filename' : filename
 		   },

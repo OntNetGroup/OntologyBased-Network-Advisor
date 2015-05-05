@@ -1,11 +1,11 @@
-function getEquipments(){
+function getTemplates(){
 	
 	var content
 	
 	$.ajax({
 	   type: "GET",
 	   async: false,
-	   url: "getAllEquipments.htm",
+	   url: "getAllTemplates.htm",
 	   dataType: 'json',
 	   success: function(data){ 		   
 		   generateOptionsContent(data)
@@ -26,9 +26,9 @@ function getEquipments(){
 			}
 			
 			content = content + '<div class="btn-group">'
-									+ '<a class="btn" title="Edit" href="equipment-studio.htm?equipment=' + data[i].equipment + '"><i class="icon-edit"></i></a>' 
-									+ '<a class="btn" title="Delete" onclick="deleteEquipment(\'' + data[i].equipment + '\')"><i class="icon-trash"></i></a>'
-									+ '<span class="name">' + data[i].equipment + '</span>'
+									+ '<a class="btn" title="Edit" href="equipment-studio.htm?template=' + data[i].template + '"><i class="icon-edit"></i></a>' 
+									+ '<a class="btn" title="Delete" onclick="deleteTemplate(\'' + data[i].template + '\')"><i class="icon-trash"></i></a>'
+									+ '<span class="name">' + data[i].template + '</span>'
 								+ '</div>'
 								+ '<br/><hr/>'
 		}
@@ -39,14 +39,14 @@ function getEquipments(){
 
 };
 
-function deleteEquipment(filename){
+function deleteTemplate(filename){
 	
 	if (confirm('Are you sure you want to delete this file?')) {
 	
 		$.ajax({
 		   type: "POST",
 		   async: false,
-		   url: "deleteEquipment.htm",
+		   url: "deleteTemplate.htm",
 		   data: {
 			   'filename' : filename
 		   },

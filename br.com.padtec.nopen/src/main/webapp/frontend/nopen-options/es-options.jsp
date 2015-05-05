@@ -28,9 +28,9 @@
 	<div class="col-sm-12">	
 		<div class="box"> 			
 			<div class="box-header" >
-				<h2><i class="icon-laptop"></i>Equipment Studio</h2>
+				<h2><i class="icon-laptop"></i>Equipment Studio &#155; Templates</h2>
 				<div class="box-icon">
-					<a href="equipment-studio.htm#" class="btn-tech-plus" title="New Equipment"><i class="icon-plus"></i></a>
+					<a href="equipment-studio.htm#" class="btn-tech-plus" title="New Template"><i class="icon-plus"></i></a>
 					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>													
 				</div>
 			</div>
@@ -38,11 +38,32 @@
 			<div class="box-content clearfix" style="">
 				<div class="col-sm-12">
 					
-					<a class="btn" id="new" title="New Equipment" href="equipment-studio.htm"><i class="icon-plus"></i><span class="name">New Equipment </span></a>
+					<a class="btn" id="new" title="New Equipment" href="equipment-studio.htm"><i class="icon-plus"></i><span class="name">New Template </span></a>
 					
 					<div class="btn-toolbar">
 						<script type="text/javascript">
-							getEquipments();
+							getTemplates();
+						</script>
+					</div>
+				</div>
+			</div>
+	    </div>    
+	</div>
+	
+	<div class="col-sm-12">	
+		<div class="box"> 			
+			<div class="box-header" >
+				<h2><i class="icon-laptop"></i>Equipment Studio &#155; Equipments</h2>
+				<div class="box-icon">
+					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>													
+				</div>
+			</div>
+			
+			<div class="box-content clearfix" style="">
+				<div class="col-sm-12">
+					<div class="btn-toolbar-equipments">
+						<script type="text/javascript">
+							//getEquipments();
 						</script>
 					</div>
 				</div>

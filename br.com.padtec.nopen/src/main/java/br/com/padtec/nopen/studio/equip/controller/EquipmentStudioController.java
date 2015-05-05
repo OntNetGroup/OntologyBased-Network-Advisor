@@ -225,11 +225,11 @@ public class EquipmentStudioController {
 	 * @param filename
 	 * @return
 	 */	
-	@RequestMapping("/checkEquipmentFile")
-	public @ResponseBody String checkEquipmentFile(@RequestParam("filename") String filename) 
+	@RequestMapping("/checkTemplateFile")
+	public @ResponseBody String checkTemplateFile(@RequestParam("filename") String filename) 
 	{				
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
-		if(NOpenFileUtil.checkEquipmentFileExist(filename))
+		if(NOpenFileUtil.checkTemplateFileExist(filename))
 		{
 			return "exist";
 		}
@@ -243,7 +243,7 @@ public class EquipmentStudioController {
 	@RequestMapping("/deleteITUFiles")
 	public @ResponseBody void deleteITUFiles(@RequestParam("filename") String filename) {
 		
-		String path = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + filename + "/itu/");
+		String path = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + filename + "/itu/");
 		File dir = new File(path);		
 		if(dir.exists())
 		{
@@ -255,19 +255,19 @@ public class EquipmentStudioController {
 	}
 	
 	/**
-	 * Procedure to save a Equipment.
+	 * Procedure to save a Template.
 	 * @param filename
 	 * @param graph
 	 */
-	@RequestMapping("/saveEquipment")
-	public @ResponseBody void saveEquipment(@RequestParam("filename") String filename, @RequestParam("graph") String graph) 
+	@RequestMapping("/saveTemplate")
+	public @ResponseBody void saveTemplate(@RequestParam("filename") String filename, @RequestParam("graph") String graph) 
 	{
-		NOpenFileUtil.createEquipmentRepository(filename);
+		NOpenFileUtil.createTemplateRepository(filename);
 		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
 		
 		try {
-			File file = NOpenFileUtil.createEquipmentJSONFile(filename);
+			File file = NOpenFileUtil.createTemplateJSONFile(filename);
 			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -285,9 +285,9 @@ public class EquipmentStudioController {
 	{		
 		path = path + "/itu/";
 		path = NOpenFileUtil.replaceSlash(path);
-		NOpenFileUtil.createEquipmentRepository(path);		
+		NOpenFileUtil.createTemplateRepository(path);		
 		try {
-			File file = NOpenFileUtil.createEquipmentJSONFile(path + ituFilename);
+			File file = NOpenFileUtil.createTemplateJSONFile(path + ituFilename);
 			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -296,31 +296,31 @@ public class EquipmentStudioController {
 	}
 	
 	/**
-	 * Procedure to get all Equipments saved.
+	 * Procedure to get all Templates saved.
 	 * @return
 	 */
-	@RequestMapping(value = "/getAllEquipments", method = RequestMethod.GET)
-	protected @ResponseBody String getAllEquipments()
+	@RequestMapping(value = "/getAllTemplates", method = RequestMethod.GET)
+	protected @ResponseBody String getAllTemplates()
 	{			
-		String[] equipments = NOpenFileUtil.getAllEquipmentJSONFileNames();
-		return NOpenFileUtil.parseStringToJSON("equipment", equipments);		
+		String[] templates = NOpenFileUtil.getAllTemplateJSONFileNames();
+		return NOpenFileUtil.parseStringToJSON("template", templates);		
 	}
 	
 	/**
-	 * Procedure to open a specific Equipment.
+	 * Procedure to open a specific Template.
 	 * @param filename
 	 * @return
 	 */
-	@RequestMapping(value = "/openEquipment", method = RequestMethod.POST)
-	protected @ResponseBody String openEquipment(@RequestParam("filename") String filename)
+	@RequestMapping(value = "/openTemplate", method = RequestMethod.POST)
+	protected @ResponseBody String openTemplate(@RequestParam("filename") String filename)
 	{		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
-		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
+		return NOpenFileUtil.openTemplateJSONFileAsString(filename);
 		
 	}
 	
 	/**
-	 * Procedure to open a ITU file of a Equipment.
+	 * Procedure to open a ITU file of a Template.
 	 * @param path
 	 * @param ituFilename
 	 * @return
@@ -330,7 +330,7 @@ public class EquipmentStudioController {
 	{		
 		path = path + "/itu/" + ituFilename + ".json";
 		path = NOpenFileUtil.replaceSlash(path);		
-		return NOpenFileUtil.openEquipmentJSONFileAsString(path);		
+		return NOpenFileUtil.openTemplateJSONFileAsString(path);		
 	}
 
 }

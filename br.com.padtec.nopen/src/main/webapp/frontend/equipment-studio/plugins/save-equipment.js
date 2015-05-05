@@ -1,6 +1,6 @@
-function generateSaveEquipmentDialog(graph){
+function generateSaveTemplateDialog(graph){
 	
-	var content = '<div id="save-dialog" title="Save Equipment">'
+	var content = '<div id="save-dialog" title="Save Template">'
 		+ 'Name: <input type="text" id="save-filename" value="' + $('#filename').val() + '"/>'
 		+ '</div>'
 		+ '<div id="name-error-message">' + 'Name cannot be empty!' + '</div>';
@@ -8,7 +8,7 @@ function generateSaveEquipmentDialog(graph){
 	var dialog = new joint.ui.Dialog({
 		width: 300,
 		type: 'neutral',
-		title: 'Save Equipment',
+		title: 'Save Template',
 		content: content,
 		buttons: [
 			{ action: 'cancel', content: 'Cancel', position: 'left' },
@@ -16,7 +16,7 @@ function generateSaveEquipmentDialog(graph){
 		]
 	});
 	
-	dialog.on('action:save', checkEquipmentFile);
+	dialog.on('action:save', checkTemplateFile);
 	dialog.on('action:cancel', cancel);
 
 	dialog.open();
@@ -25,7 +25,7 @@ function generateSaveEquipmentDialog(graph){
 		dialog.close();
 	}
 	
-	function checkEquipmentFile(){
+	function checkTemplateFile(){
 		
 		if($("#save-filename").val() == ""){
 			$('#name-error-message').show();
@@ -33,7 +33,7 @@ function generateSaveEquipmentDialog(graph){
 		else{
 			$.ajax({
 			   type: "POST",
-			   url: "checkEquipmentFile.htm",
+			   url: "checkTemplateFile.htm",
 			   data: {
 				 'filename': $("#save-filename").val(),
 			   },
@@ -56,11 +56,11 @@ function generateSaveEquipmentDialog(graph){
 							   }
 							});
 						   
-						    saveEquipment();
+						    saveTemplate();
 					   } 
 				   }
 				   else{
-					   saveEquipment();
+					   saveTemplate();
 				   }
 			   },
 			   error : function(e) {
@@ -72,13 +72,13 @@ function generateSaveEquipmentDialog(graph){
 		
 	};
 	
-	function saveEquipment(){
+	function saveTemplate(){
 		
 		$('#filename').val($("#save-filename").val());
 		
 		$.ajax({
 		   type: "POST",
-		   url: "saveEquipment.htm",
+		   url: "saveTemplate.htm",
 		   data: {
 			 'filename': $("#save-filename").val(),
 			 'graph': JSON.stringify(graph.toJSON()),
