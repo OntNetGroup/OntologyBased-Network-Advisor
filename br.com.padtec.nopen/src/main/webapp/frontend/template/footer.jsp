@@ -11,7 +11,7 @@
 					<span class="hidden-phone" style="text-align:right;float:right;color:white">
 						Powered by: 
 						<a href="http://www.ontnetgroup.com">
-							<img src="/nopen/frontend/template/img/LogoOntNetGroup.png" alt="OntNet Group" width="92">
+							<img src="/nopen/frontend/template/img/LogoOntNetGroup_branca.png" alt="OntNet Group" width="92">
 						</a>
 					</span>
 				</td>
