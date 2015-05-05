@@ -67,9 +67,6 @@
 	    </script>
 	<![endif]-->
         <script>
-            // Uncomment the following line and comment the line after if you
-            // want to use channels.
-            //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
             var app = new Rappid;
             Backbone.history.start();
              

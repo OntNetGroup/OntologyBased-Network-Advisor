@@ -3,7 +3,7 @@ var Stencil = {};
 Stencil.groups = {
 		layers: { index: 1, label: 'Layers'},
 		transportFunctions: { index: 2, label: 'Transport Functions' },
-		interfaces: { index: 3, label: 'Interfaces'},
+		interfaces: { index: 3, label: 'Interfaces'}
 };
 
 Stencil.shapes = {

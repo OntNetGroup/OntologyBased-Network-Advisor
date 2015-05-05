@@ -2,9 +2,9 @@
 MyModel = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
 
 	// definicao do svg do elemento
-    markup: '<g class="rotatable"><g class="scalable"><path class="body"/></g><text class="label"/><g class="inPorts"/><g class="outPorts"/></g>',
+    markup: '<g class="rotatable"><g class="scalable"><rect class="body"/></g><text class="label"/><g class="inPorts"/><g class="outPorts"/></g>',
 	// definicao do svg das portas
-    portMarkup: '<g class="port<%= id %>"><circle class="port-body"/><text class="port-label"/></g>',
+    portMarkup: '<g class="port<%= id %>"><path class="port-body"/><text class="port-label"/></g>',
 
     defaults: joint.util.deepSupplement({
 
@@ -17,24 +17,22 @@ MyModel = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.Port
         outPorts: [],
 
         attrs: {
-            '.': { magnet: false }, // para impedir que links sejam conectados ao elemento, mas somente as suas portas
+            '.': { magnet: false },
             '.body': {
+                width: 150, height: 250,
                 stroke: '#000000'
             },
             '.port-body': {
-                r: 7,
                 magnet: true,
-                stroke: '#000000',
-				bandwidth: 0
+                stroke: '#000000'
             },
             text: {
                 'pointer-events': 'none'
             },
-            '.label': { 'ref-x': .5, 'ref-y': 10, ref: '.body', 'text-anchor': 'middle', fill: '#000000' },
+            '.label': { text: 'Model', 'ref-x': .5, 'ref-y': 10, ref: '.body', 'text-anchor': 'middle', fill: '#000000' },
+			'.inPorts circle, .outPorts circle': { fill: '#f1c40f', opacity: 0.9 },
             '.inPorts .port-label': { x:-15, dy: 4, 'text-anchor': 'end', fill: '#000000' },
-            '.outPorts .port-label':{ x: 10, dy: 4, fill: '#000000' },
-			'.inPorts circle': { /* descomentar para impedir que estas portas sejam source magnet: 'passive', */ type: 'input'},
-			'.outPorts circle': {type: 'output'}
+            '.outPorts .port-label':{ x: 15, dy: 4, fill: '#000000' }
         }
 
     }, joint.shapes.basic.Generic.prototype.defaults),
