@@ -30,9 +30,10 @@ MyModel = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.Port
                 'pointer-events': 'none'
             },
             '.label': { text: 'Model', 'ref-x': .5, 'ref-y': 10, ref: '.body', 'text-anchor': 'middle', fill: '#000000' },
-			'.inPorts circle, .outPorts circle': { fill: '#f1c40f', opacity: 0.9 },
-            '.inPorts .port-label': { x:-15, dy: 4, 'text-anchor': 'end', fill: '#000000' },
-            '.outPorts .port-label':{ x: 15, dy: 4, fill: '#000000' }
+            '.inPorts .port-label': { x: 15, dy: 4, fill: '#000000' },
+            '.outPorts .port-label':{ x: 15, dy: 4, fill: '#000000' },
+			'.inPorts .port-body':{ 'ref-y': -5 },
+			'.outPorts .port-body':{ 'ref-y': -5 }
         }
 
     }, joint.shapes.basic.Generic.prototype.defaults),
@@ -49,7 +50,7 @@ MyModel = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.Port
 
         attrs[portLabelSelector] = { text: portName };
         attrs[portBodySelector] = { port: { id: portName || _.uniqueId(type) , type: type } };
-        attrs[portSelector] = { ref: '.body', 'ref-x': (index + 0.5) * (1 / total) };
+        attrs[portSelector] = { ref: '.body', 'ref-x': (index + 0.35) * (1 / total) };
 
         if (selector === '.outPorts') { attrs[portSelector]['ref-dy'] = 0; }
 

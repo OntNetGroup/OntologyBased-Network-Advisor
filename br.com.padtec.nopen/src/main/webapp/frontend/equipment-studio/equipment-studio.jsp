@@ -67,6 +67,7 @@
 
 	<!-- JS -->
 
+	<script src="/nopen/frontend/equipment-studio/js/mymodel.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/keyboard.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/inspector.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
@@ -75,7 +76,6 @@
 	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
-	<script src="/nopen/frontend/equipment-studio/js/mymodel.js"></script>
 
 
 	<!-- PLUGINS -->
