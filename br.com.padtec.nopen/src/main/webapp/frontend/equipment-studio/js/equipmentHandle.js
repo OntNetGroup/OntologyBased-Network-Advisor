@@ -52,52 +52,127 @@ function showTechnologyWindow(techs , cell){
 	dialog.open();
 }; 
 
-function selectSupervisorWindow(card ){
-		for(var i = 0;i < elementos.length; i++){
-			var element = elementos[i];
-			var check = elementos[i].attributes.subType;
-			
-			
-			if(check === "supervisor"){
-				var supervi = graph.getCell(element.id);
-				console.log(supervi);
-				console.log(supervi.get('tech'));
-				console.log(supervi.get('id'));
-				
-			}
-		}
+function selectSupervisorWindow(supervisor, graph){
 	
+//	for(var i = 0;i < elementos.length; i++){
+//			var element = elementos[i];
+//			var check = elementos[i].attributes.subType;
+//			
+//			
+//			if(check === "supervisor"){
+//				var supervi = graph.getCell(element.id);
+//				console.log(supervi);
+//				console.log(supervi.get('tech'));
+//				console.log(supervi.get('id'));
+//				
+//			}
+//		}
 	
-	var elementos = graph.getElements();
-	console.log(elementos);
+	supervisor.get('parent');
+	var slot = graph.getCell(supervisor.get('parent'));
+	var shelf = graph.getCell(slot.get('parent'));
+	var rack = graph.getCell(shelf.get('parent'));
 	
-	var content = '<div id="card-supervisor" title="Set Card Supervisor">'
-		+ 'Supervisor: <select>';
-	for(var i = 0; i < elementos.length; i++){
-		var element = elementos[i];
-		var checktype = elementos[i].attributes.subType;
-		if(checktype === "supervisor"){
-			var supervi;
-			content += '<option value="'+elemntos[i]+'">'+elementos[i]+'</option>';
-		}
+	var p = rack.get('embeds');
+	
+	console.log(p);
+	console.log(p.length);
+	for(var i = 0; i < p.length;i++){
 		
-	}
-	content += '</select>';
-	+ '</div>'
+		var checkit = graph.getCell(p[i]);
+		console.log(checkit);
+//		if(checkit.get('embeds') === ""){
+//			console.log("prateleira vazia ="  , checkit);
+//		}else{
+//			console.log("prateleira cheia = " , checkit);
+//		}
+	};
 	
-	var dialog = new joint.ui.Dialog({
+//	var content = '<div id="card-supervisor" title="Set Card Supervisor">'
+//		+ 'Supervisor: <select>';
+//	for(var i = 0; i < elementos.length; i++){
+//		var element = elementos[i];
+//		var checktype = elementos[i].attributes.subType;
+//		if(checktype === "supervisor"){
+//			var supervi=graph.getCell(element.id);
+//			
+//			content += '<option value="'+elementos[i]+'">'+elementos[i]+'</option>';
+//		}
+//	}
+//	content += '</select>';
+//	+ '</div>'
+//	
+	
+	
+	content = "<table style='width:370px;'>"
+     + '<tr>' 
+    +   "<td style='width:160px;'>"
+    +   '<b>Supervised:</b><br/>'
+     +      '<select multiple="multiple" id="lstBox1">' 
+           +   '<option value="ajax">Ajax</option>' 
+           +  '<option value="jquery">jQuery</option>'
+           +   '<option value="javascript">JavaScript</option>'
+           +   '<option value="mootool">MooTools</option>'
+           +   '<option value="prototype">Prototype</option>'
+          +    '<option value="dojo">Dojo</option>'
+      + ' </select>'
+    + '</td>'
+   + "<td style='width:50px;text-align:center;vertical-align:middle;'>"
+         +"<input type='button' id='btnRight' value ='  >  '/>"
+         + "<br/><input type='button' id='btnLeft' value ='  <  '/>"
+   + "</td>" 
+ +   '<td style="width:160px;">'
+ +      ' <b>Not Supervised: </b><br/>'
+ +       '<select multiple="multiple" id="lstBox2">'
+ +        '<option value="asp">ASP.NET</option>' 
+ +        '<option value="c#">C#</option>' 
+ +        '<option value="vb">VB.NET</option>' 
+ +        '<option value="java">Java</option>' 
+ +        '<option value="php">PHP</option>' 
+ +        '<option value="python">Python</option>'   
+ +      ' </select>'
+ +  '</td>' 
++'</tr>'
++'</table>'
+	
+	
+var dialog = new joint.ui.Dialog({
 		width: 450,
 		type: 'neutral',
 		title: 'Set card Supervisor',
 		content: content,
 		buttons:[
-		        {action:'save', content: 'Save', position:'left'} 
+		        {action:'ok', content: 'OK', position:'rigth'}		        
 		         ]
 	});
 	
-	
+	dialog.open();
 	
 };
+
+$('#btnRight').on(function(e) {
+    var selectedOpts = $('#lstBox1 option:selected');
+    if (selectedOpts.length == 0) {
+        alert("Nothing to move.");
+       e.preventDefault();
+    }
+
+    $('#lstBox2').append($(selectedOpts).clone());
+    $(selectedOpts).remove();
+    e.preventDefault();
+});
+
+$('#btnLeft').on(function(e) {
+    var selectedOpts = $('#lstBox2 option:selected');
+    if (selectedOpts.length == 0) {
+        alert("Nothing to move.");
+        e.preventDefault();
+    }
+
+    $('#lstBox1').append($(selectedOpts).clone());
+    $(selectedOpts).remove();
+    e.preventDefault();
+});
 
 function equipmentHandle(graph){
 

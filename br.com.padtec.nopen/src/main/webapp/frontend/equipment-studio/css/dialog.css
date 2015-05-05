@@ -167,3 +167,7 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	color: red;
 }
 
+#lstBox1, #lstBox2{
+	width : 150px;
+    height:100px;
+}
