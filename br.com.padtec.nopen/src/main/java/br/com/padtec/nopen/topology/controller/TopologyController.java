@@ -98,7 +98,7 @@ public class TopologyController {
 	@RequestMapping(value = "/getAllTopologies", method = RequestMethod.GET)
 	protected @ResponseBody String getAllTopologies(){
 			
-		String[] topologies = NOpenFileUtil.getAllTopplogyJSONFileNames();
+		String[] topologies = NOpenFileUtil.getAllTopologyJSONFileNames();
 		return NOpenFileUtil.parseStringToJSON("topology", topologies);
 		
 	}
