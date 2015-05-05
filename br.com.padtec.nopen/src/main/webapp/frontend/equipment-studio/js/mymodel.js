@@ -29,11 +29,10 @@ MyModel = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.Port
             text: {
                 'pointer-events': 'none'
             },
-            '.label': { text: 'Model', 'ref-x': .5, 'ref-y': 10, ref: '.body', 'text-anchor': 'middle', fill: '#000000' },
             '.inPorts .port-label': { x: 15, dy: 4, fill: '#000000' },
             '.outPorts .port-label':{ x: 15, dy: 4, fill: '#000000' },
-			'.inPorts .port-body':{ 'ref-y': -5 },
-			'.outPorts .port-body':{ 'ref-y': -5 }
+//			'.inPorts .port-body':{ 'ref-y': -5 },
+			'.outPorts .port-body':{ 'ref-x': 0 }
         }
 
     }, joint.shapes.basic.Generic.prototype.defaults),

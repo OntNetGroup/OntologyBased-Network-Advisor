@@ -99,34 +99,19 @@ Stencil.shapes = {
 		                         ],
 
 		            card: [
-		                   new joint.shapes.devs.Model({
-		                	   subType: 'card',
-		                	   supervisor: '' ,
-		                	   size: { width: 10, height: 20 },
-		                	   inPorts: ['in'],
-		                	   outPorts: ['out'],
-		                	   attrs: {
-		                		   rect: { fill: '#8e44ad', rx: 2, ry: 2 },
-		                		   text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 },
-//		                		   '.label': { text: 'model', fill: '#ffffff', 'font-size': 10, stroke: '#000000', 'stroke-width': 0 },
-		                		   '.inPorts circle': { fill: '#f1c40f', r : 4 , opacity: 0.2 },
-		                		   '.outPorts circle': { fill: '#e9967a', r:4, opacity: 0.2 },
-		                		   '.inPorts text, .outPorts text': { 'font-size': 9 }
-		                	   }
-		                   }),
 
 		                   new MyModel({
-		                	   subType: 'Card',
+		                	   subType: 'card',
+		                	   supervisor: '' ,
 		                	   position: { x: 85, y: 20 },
-		                	   size: { width: 50, height: 50 },
+		                	   size: { width: 10, height: 20 },
 		                	   inPorts: ['in'],
 		                	   outPorts: ['out'],
 		                	   attrs: {
 		                		   // definicao da cor e forma geometrica do elemento
 		                		   rect: { fill: '#8e44ad', rx: 2, ry: 2 },
-		                		   '.label': { text: 'AF', fill: 'white', 'font-size': 10 },
-		                		   '.outPorts path': { fill: '#e9967a', opacity: 0.9, d: 'M 0 0 L 15 0 L 15 15 L 0 15 Z' },
-		                		   '.inPorts path': { fill: '#f1c40f', opacity: 0.9, d: circlePath(7,7,9) },
+		                		   '.inPorts path': { fill: '#f1c40f', opacity: 0.9, d: circlePath(1,1,4) },
+		                		   '.outPorts path': { fill: '#e9967a', opacity: 0.9, d: squarePath(8) },
 		                		   '.inPorts text, .outPorts text': { 'font-size': 9 }
 		                	   }
 		                   })
@@ -137,6 +122,10 @@ Stencil.shapes = {
 
 function circlePath(cx, cy, r){
     return 'M '+cx+' '+cy+' m -'+r+', 0 a '+r+','+r+' 0 1,0 '+(r*2)+',0 a '+r+','+r+' 0 1,0 -'+(r*2)+',0';
+};
+
+function squarePath(size) {
+	return 'M 0 0 L ' +size+ ' 0 L ' +size+ ' ' +size+ ' L 0 ' +size+ ' Z';
 };
 
 

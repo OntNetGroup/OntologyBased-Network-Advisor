@@ -355,6 +355,8 @@ var Rappid = Backbone.Router.extend({
 			halo.removeHandle('fork');
             halo.removeHandle('clone');
             halo.removeHandle('rotate');
+        	halo.removeHandle('link');
+        	halo.removeHandle('unlink');
 			
 			halo.render();
 
