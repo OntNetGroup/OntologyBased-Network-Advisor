@@ -32,7 +32,7 @@
 	</div>
 	
 	<!-- ======================================================================= -->	
-	<div class="col-sm-3">	
+	<div class="col-sm-4">	
 		<div class="box"> 			
 			<div class="box-header" >
 				<h2><i class="icon-laptop"></i>Technologies</h2>
@@ -42,7 +42,7 @@
 				</div>
 			</div>	
 			<div class="box-content clearfix" style="">																
-				<div class="dd" id="tech" style="width:330">
+				<div class="dd" id="tech" style="width:100%">
 				<p>Registered:</p>
 				<ol id="tech-dd-list" class="dd-list">
 					<%		            	
@@ -64,7 +64,7 @@
 	<!-- ======================================================================= -->
 	
 	<!-- ======================================================================= -->				   
-	<div class="col-sm-3">
+	<div class="col-sm-4">
 		<div class="box"> 			
 			<div class="box-header" >
 				<h2><i class="icon-laptop"></i>Layers</h2>
@@ -74,7 +74,7 @@
 				</div>
 			</div>
 			<div class="box-content clearfix" style="">																
-				<div class="dd" id="layer" style="width:330">
+				<div class="dd" id="layer" style="width:100%">
 				<p>Registered:</p>
 				<ol id="layer-dd-list" class="dd-list">					
 					<%
@@ -101,7 +101,7 @@
 	<!-- ======================================================================= -->
 
 	<!-- ======================================================================= -->
-    <div class="col-sm-3">	
+    <div class="col-sm-4">	
 		<div class="box"> 			
 			<div class="box-header" >
 				<h2><i class="icon-laptop"></i>Services</h2>
@@ -112,7 +112,7 @@
 			</div>
 			<div class="box-content clearfix" style="">			
 				<!-- <label class="control-label" for="selectError10">Service of Selected Layer</label> -->
-				<div class="controls" style="width:330;float:right">
+				<div class="controls" style="width:100%;float:right">
 					<p>All available services:</p>	
 					<%
 // 	            		int k=0;					
@@ -120,7 +120,7 @@
 // 							for(String layer: layers[k])
 // 							{
 // 								out.println("<div id=\""+layer+"\"; class=\"y\" style=\"display:none;\">");
-								out.println("<select id=\"selectError10\" class=\"form-control\" style=\"width:300;height:500\" multiple data-rel=\"chosen\">");							  	
+								out.println("<select id=\"selectError10\" class=\"form-control\" style=\"width:100%;height:500\" multiple data-rel=\"chosen\">");							  	
 							  	for(String service: services){
 							  		out.println("<option>"+service+"</option>");
 							  	}
