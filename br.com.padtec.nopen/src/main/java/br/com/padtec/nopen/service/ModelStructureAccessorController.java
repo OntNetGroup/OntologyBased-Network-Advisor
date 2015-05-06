@@ -23,7 +23,7 @@ public final class ModelStructureAccessorController {
 	
 	//fazer try/catch
 	public static void initContainerStructure(String container, OKCoUploader repository) throws Exception {
-		relations_mapping = ModelStructureAccessor.buildContainerStructure(container, repository);
+		//relations_mapping = ModelStructureAccessor.buildContainerStructure(container, repository);
 	}
 
 }

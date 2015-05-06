@@ -4,7 +4,7 @@
 <meta charset="utf8" />
 <!--        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/> -->
 
-<title>EQUIPMENT STUDIO</title>
+<title>Equipment Studio</title>
 
 <!-- CSS CORE -->
 
@@ -81,9 +81,9 @@
 	<!-- PLUGINS -->
 
 	<script
-		src="/nopen/frontend/equipment-studio/plugins/open-equipment.js"></script>
+		src="/nopen/frontend/equipment-studio/plugins/open-template.js"></script>
 	<script
-		src="/nopen/frontend/equipment-studio/plugins/save-equipment.js"></script>
+		src="/nopen/frontend/equipment-studio/plugins/save-template.js"></script>
 
 	<!-- DIALOGS -->
 

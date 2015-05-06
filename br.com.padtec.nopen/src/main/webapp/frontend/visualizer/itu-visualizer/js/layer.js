@@ -24,7 +24,6 @@ Layer = joint.dia.Element.extend({
                 stroke: '#000000',
                 width: 500,
                 height: 200,
-//                'pointer-events': 'visiblePainted'
             },
             '.header': {
                 fill:'#ffffff',
@@ -32,7 +31,6 @@ Layer = joint.dia.Element.extend({
                 width: 20,
                 ref: '.body',
                 'ref-height': 1,
-//                'pointer-events': 'visiblePainted'
             },
             '.label': {
                 transform: 'rotate(-90)' ,
@@ -47,12 +45,10 @@ Layer = joint.dia.Element.extend({
             '.lane-body': {
                 fill:'#ffffff',
                 stroke: '#000000',
-//                'pointer-events': 'visiblePainted'
             },
             '.lane-header': {
                 fill:'#ffffff',
                 stroke: '#000000',
-//                'pointer-events': 'visiblePainted'
             },
             '.lane-label': {
                 transform: 'rotate(-90)',

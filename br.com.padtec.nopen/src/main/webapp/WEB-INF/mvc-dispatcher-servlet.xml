@@ -16,6 +16,7 @@
 		br.com.padtec.nopen.studio.equip.controller,
 		br.com.padtec.nopen.studio.itu.controller,
 		br.com.padtec.nopen.topology.controller,
+		br.com.padtec.nopen.visualizer.controller,
 		br.com.padtec.nopen.advisor.controller, 
 		br.com.padtec.nopen.advisor.okco.controller"		
 	/>
