@@ -53,6 +53,7 @@
 
 	<%@include file="templates/header.jsp"%>
 	<%@include file="templates/toolbar.jsp"%>
+	<%@include file="templates/supervisorPanelList.jsp" %>
 
 	<!-- JS CORE -->
 
@@ -74,9 +75,8 @@
 	<script src="/nopen/frontend/equipment-studio/js/main.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentAjax.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
-	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
-
+	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
 
 	<!-- PLUGINS -->
 
@@ -108,39 +108,68 @@
 	      document.onselectstart = function() { return false; };
 	    </script>
 	<![endif]-->
+	
+	
+	
 	<script>
-            // Uncomment the following line and comment the line after if you
-            // want to use channels.
-            //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
-            //var script = document.createElement( 'script' );
-        	//script.src = '/nopen/frontend/equipment-studio/plugins/itu-iframe.js';
-        	//$('#itu-dialog').prepend(script);
-            
-            var app = new Rappid;
-            Backbone.history.start();
-            
-            resizing(app.graph);           
-            equipmentHandle(app.graph);
-            ituHandle(app.paper, app.graph);
-            
-            if(getUrlParameter('template')){
-            	var template = getUrlParameter('template');
-            	openFromURL(template, app.graph);
-            }
-            
-            //graphHandle(app.graph);
-            //paperHandle(app.paper);
-            
-            var uuid = joint.util.uuid();
-            
-            $('#btn-save').click(function(){
-            	generateSaveTemplateDialog(app.graph);
-            });
-            
-            $('#btn-open').click(function(){
-            	getTemplates(app.graph);
-            });
-        
-        </script>
+		// Uncomment the following line and comment the line after if you
+		// want to use channels.
+		//var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
+		//var script = document.createElement( 'script' );
+		//script.src = '/nopen/frontend/equipment-studio/plugins/itu-iframe.js';
+		//$('#itu-dialog').prepend(script);
+
+		var app = new Rappid;
+		Backbone.history.start();
+
+		resizing(app.graph);
+		equipmentHandle(app.graph);
+		ituHandle(app.paper, app.graph);
+
+		if (getUrlParameter('template')) {
+			var template = getUrlParameter('template');
+			openFromURL(template, app.graph);
+		}
+
+		//graphHandle(app.graph);
+		//paperHandle(app.paper);
+
+		var uuid = joint.util.uuid();
+
+		$('#btn-save').click(function() {
+			generateSaveTemplateDialog(app.graph);
+		});
+
+		$('#btn-open').click(function() {
+			getTemplates(app.graph);
+		});
+
+		$('#btnRight').on('click', function(e) {
+			var selectedOpts = $('#lstBox1 option:selected');
+			if (selectedOpts.length == 0) {
+				alert("Nothing to move.");
+				e.preventDefault();
+			}
+
+			$('#lstBox2').append($(selectedOpts).clone());
+			$(selectedOpts).remove();
+			e.preventDefault();
+		});
+
+		$('#btnLeft').on('click', function(e) {
+			var selectedOpts = $('#lstBox2 option:selected');
+			if (selectedOpts.length == 0) {
+				alert("Nothing to move.");
+				e.preventDefault();
+			}
+
+			$('#lstBox1').append($(selectedOpts).clone());
+			$(selectedOpts).remove();
+			e.preventDefault();
+		});
+	</script>
+
+	
+
 </body>
 </html>

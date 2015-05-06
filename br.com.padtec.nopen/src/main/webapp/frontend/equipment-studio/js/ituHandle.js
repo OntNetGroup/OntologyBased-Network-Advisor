@@ -26,6 +26,7 @@ function ituHandle(paper, graph){
 		
 		if((equipment.get('subType')) === 'supervisor'){
 		
+			$("supervisorDialog").dialog();
 			selectSupervisorWindow(equipment,graph);
 			
 //			new joint.ui.Dialog({
@@ -38,13 +39,13 @@ function ituHandle(paper, graph){
 		
 		if((equipment.get('subType')) === 'card') {
 			
-			if((equipment.get('supervisor')) === ""){
-				
-				
-				//selectSupervisorWindow(equipment,graph);
-				
-				
-			}else{
+//			if((equipment.get('supervisor')) === ""){
+//				
+////				$("supervisorDialog").open();
+//				selectSupervisorWindow(equipment,graph);
+//				
+//				
+//			}else{
 				$("#itu-iframe").empty();
 				
 				$(function ()    {
@@ -70,7 +71,7 @@ function ituHandle(paper, graph){
 			            }
 			        });
 			    });
-			}
+//			}
 			/*$("#itu-iframe").empty();
 			
 			$(function ()    {
