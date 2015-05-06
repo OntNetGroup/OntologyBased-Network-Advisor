@@ -166,6 +166,20 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	display: none;
 	color: red;
 }
+.dialog #supervisorDialog{
+    width: 80%;
+    margin: 0 auto;
+    top: 100px;
+    left: 0;
+    right: 0;
+    z-index: 10001;
+    position: absolute;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+   	
+}
 
 #lstBox1, #lstBox2{
 	width : 150px;

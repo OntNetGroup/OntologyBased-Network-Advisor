@@ -25,21 +25,21 @@ function showTechnologyWindow(techs , cell){
 		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
 		dialog.close();
 	};
-	
+
 	($('#tech-dialog').on( "dialogclose", function(dialogclose) {
 		console.log("hi there");
-	     cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
+		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
 	} ));
 
 
-	
+
 	dialog.on('action:save', function(){
 		//$('#selected').val($("#tech-dialog").val());
 		//console.log($('#selected').val($("#tech-dialog").val()));
 		//console.log($('#tech-dialog').find(":selected").val());
 		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
-		
-		
+
+
 		//var result = setTechnology(supervisorType, supervisorID , tech);
 		var result = "success";
 		if(result === "sucess"){
@@ -53,126 +53,79 @@ function showTechnologyWindow(techs , cell){
 }; 
 
 function selectSupervisorWindow(supervisor, graph){
-	
+	//ref
 //	for(var i = 0;i < elementos.length; i++){
-//			var element = elementos[i];
-//			var check = elementos[i].attributes.subType;
-//			
-//			
-//			if(check === "supervisor"){
-//				var supervi = graph.getCell(element.id);
-//				console.log(supervi);
-//				console.log(supervi.get('tech'));
-//				console.log(supervi.get('id'));
-//				
-//			}
-//		}
-	
-	supervisor.get('parent');
-	var slot = graph.getCell(supervisor.get('parent'));
-	var shelf = graph.getCell(slot.get('parent'));
-	var rack = graph.getCell(shelf.get('parent'));
-	
-	var p = rack.get('embeds');
-	
-	console.log(p);
-	console.log(p.length);
-	for(var i = 0; i < p.length;i++){
-		
-		var checkit = graph.getCell(p[i]);
-		console.log(checkit);
-//		if(checkit.get('embeds') === ""){
-//			console.log("prateleira vazia ="  , checkit);
-//		}else{
-//			console.log("prateleira cheia = " , checkit);
-//		}
-	};
-	
+//	var element = elementos[i];
+//	var check = elementos[i].attributes.subType;
+
+
+//	if(check === "supervisor"){
+//	var supervi = graph.getCell(element.id);
+//	console.log(supervi);
+//	console.log(supervi.get('tech'));
+//	console.log(supervi.get('id'));
+
+//	}
+//	}
+
+//	supervisor.get('parent');
+//	var slot = graph.getCell(supervisor.get('parent'));
+//	var shelf = graph.getCell(slot.get('parent'));
+//	var rack = graph.getCell(shelf.get('parent'));
+
+//	var p = rack.get('embeds');
+
+//	console.log(p);
+//	console.log(p.length);
+//	for(var i = 0; i < p.length;i++){
+
+//	var checkit = graph.getCell(p[i]);
+//	console.log(checkit);
+////	if(checkit.get('embeds') === ""){
+////	console.log("prateleira vazia ="  , checkit);
+////	}else{
+////	console.log("prateleira cheia = " , checkit);
+////	}
+//	};
+
+	//ref
 //	var content = '<div id="card-supervisor" title="Set Card Supervisor">'
-//		+ 'Supervisor: <select>';
+//	+ 'Supervisor: <select>';
 //	for(var i = 0; i < elementos.length; i++){
-//		var element = elementos[i];
-//		var checktype = elementos[i].attributes.subType;
-//		if(checktype === "supervisor"){
-//			var supervi=graph.getCell(element.id);
-//			
-//			content += '<option value="'+elementos[i]+'">'+elementos[i]+'</option>';
-//		}
+//	var element = elementos[i];
+//	var checktype = elementos[i].attributes.subType;
+//	if(checktype === "supervisor"){
+//	var supervi=graph.getCell(element.id);
+
+//	content += '<option value="'+elementos[i]+'">'+elementos[i]+'</option>';
+//	}
 //	}
 //	content += '</select>';
 //	+ '</div>'
-//	
+
+
+
+//	var supervisorlist = $.get("../template/supervisorPanelList.html");
+//	console.log(supervisorlist);
+//	var dialog = new joint.ui.Dialog({
+//		width: 450,
+//		type: 'neutral',
+//		title: 'Set card Supervisor',
+//		content: supervisorlist,
+//		buttons:[
+//		         {action:'ok', content: 'OK', position:'rigth'}		        
+//		         ]
+//	});
+//
+//	dialog.open();
 	
+
 	
-	content = "<table style='width:370px;'>"
-     + '<tr>' 
-    +   "<td style='width:160px;'>"
-    +   '<b>Supervised:</b><br/>'
-     +      '<select multiple="multiple" id="lstBox1">' 
-           +   '<option value="ajax">Ajax</option>' 
-           +  '<option value="jquery">jQuery</option>'
-           +   '<option value="javascript">JavaScript</option>'
-           +   '<option value="mootool">MooTools</option>'
-           +   '<option value="prototype">Prototype</option>'
-          +    '<option value="dojo">Dojo</option>'
-      + ' </select>'
-    + '</td>'
-   + "<td style='width:50px;text-align:center;vertical-align:middle;'>"
-         +"<input type='button' id='btnRight' value ='  >  '/>"
-         + "<br/><input type='button' id='btnLeft' value ='  <  '/>"
-   + "</td>" 
- +   '<td style="width:160px;">'
- +      ' <b>Not Supervised: </b><br/>'
- +       '<select multiple="multiple" id="lstBox2">'
- +        '<option value="asp">ASP.NET</option>' 
- +        '<option value="c#">C#</option>' 
- +        '<option value="vb">VB.NET</option>' 
- +        '<option value="java">Java</option>' 
- +        '<option value="php">PHP</option>' 
- +        '<option value="python">Python</option>'   
- +      ' </select>'
- +  '</td>' 
-+'</tr>'
-+'</table>'
-	
-	
-var dialog = new joint.ui.Dialog({
-		width: 450,
-		type: 'neutral',
-		title: 'Set card Supervisor',
-		content: content,
-		buttons:[
-		        {action:'ok', content: 'OK', position:'rigth'}		        
-		         ]
-	});
-	
-	dialog.open();
-	
+	$("#supervisorDialog").dialog();
+     
 };
 
-$('#btnRight').on(function(e) {
-    var selectedOpts = $('#lstBox1 option:selected');
-    if (selectedOpts.length == 0) {
-        alert("Nothing to move.");
-       e.preventDefault();
-    }
 
-    $('#lstBox2').append($(selectedOpts).clone());
-    $(selectedOpts).remove();
-    e.preventDefault();
-});
-
-$('#btnLeft').on(function(e) {
-    var selectedOpts = $('#lstBox2 option:selected');
-    if (selectedOpts.length == 0) {
-        alert("Nothing to move.");
-        e.preventDefault();
-    }
-
-    $('#lstBox1').append($(selectedOpts).clone());
-    $(selectedOpts).remove();
-    e.preventDefault();
-});
 
 function equipmentHandle(graph){
 
@@ -214,7 +167,7 @@ function equipmentHandle(graph){
 			if(parent.get('subType') === 'rack') {                   
 				//equipamento em um rack
 				// consultar ontologia para inserção 
-				
+
 				var result = insertEquipmentholder(equipmentType, equipmentID , containerType , containerID);
 				//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);
 				if(result === "success") {
@@ -245,7 +198,7 @@ function equipmentHandle(graph){
 				}
 			}else{
 				if(parent.get('subType') === 'shelf'){
-                    //equipamento em uma shelf
+					//equipamento em uma shelf
 					var grandparentId = parent.get('parent');
 					if (!grandparentId) return;
 					var grandparent = graph.getCell(grandparentId);
@@ -297,93 +250,93 @@ function equipmentHandle(graph){
 					}
 				}else {
 					if(parent.get('subType') === 'slot'){
-                       //equipamento em um slot
- 						var containerType = parent.get('subType');
- 						var containerID = parent.get('id');
- 
- 					
- 						var newpositionx;
- 						if (parent.getEmbeddedCells().length === '0'){
- 							newpositionx = pposition.x + 6;
- 						}else {
- 							//Um card por slot
- 							newpositionx = pposition.x + 6 + ((filhos) * (29));
- 						};
+						//equipamento em um slot
+						var containerType = parent.get('subType');
+						var containerID = parent.get('id');
+
+
+						var newpositionx;
+						if (parent.getEmbeddedCells().length === '0'){
+							newpositionx = pposition.x + 6;
+						}else {
+							//Um card por slot
+							newpositionx = pposition.x + 6 + ((filhos) * (29));
+						};
 						var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
 						if(result === "success") {
- 							// Se já possuir um card (confirmar o metodo para card e supervisor)
- 							
- 							if (parent.getEmbeddedCells().length === 1){	
- 								new joint.ui.Dialog({
- 									type: 'alert',
- 									width: 400,
- 									title: 'Alert',
- 									content: 'A slot can only contain one card.'
- 								}).open();
- 								cell.remove();
-                                 return;
- 							}else{									
-// 								if (cell.get('subType') === 'supervisor'){									
-// 									
-// 									parent.embed(cell);
-// 									showTechnologyWindow(getTechnologies() , cell);									
-//// 									
-//// 									if(cell.get('tech') === ""){
-//// 										showTechnologyWindow(getTechnologies() , cell);
-////									};
-//									cell.set('size' , {
-//	 									width: 10 ,
-//	 									height: 20							
-//	 								});
-//	 								cell.set('position' , {
-//	 									x : newpositionx ,
-//	 									y : ((pposition.y) + 16)
-//	 								});
-// 								};
- 							    
- 								if (cell.get('subType') === 'card'){									
- 									parent.embed(cell);	
- 								
- 									cell.set('size' , {
- 	 									width: 10 ,
- 	 									height: 20							
- 	 								});
- 	 								cell.set('position' , {
- 	 									x : newpositionx ,
- 	 									y : ((pposition.y) + 16)
- 	 								});
- 	 								
- 								};
- 							
- 								
- 								cell.set('size' , {
- 									width: 10 ,
- 									height: 20							
- 								});
- 								cell.set('position' , {
- 									x : newpositionx ,
- 									y : ((pposition.y) + 16)
- 								});
- 							}
- 						}else{
- 							
- 							var result = insertSupervisor( equipmentType, equipmentID , containerType , containerID);
- 							if (result === "success"){
- 								parent.embed(cell);
-									showTechnologyWindow(getTechnologies() , cell);
-									
+							// Se já possuir um card (confirmar o metodo para card e supervisor)
+
+							if (parent.getEmbeddedCells().length === 1){	
+								new joint.ui.Dialog({
+									type: 'alert',
+									width: 400,
+									title: 'Alert',
+									content: 'A slot can only contain one card.'
+								}).open();
+								cell.remove();
+								return;
+							}else{									
+//								if (cell.get('subType') === 'supervisor'){									
+
+//								parent.embed(cell);
+//								showTechnologyWindow(getTechnologies() , cell);									
+
+////								if(cell.get('tech') === ""){
+////								showTechnologyWindow(getTechnologies() , cell);
+////								};
+//								cell.set('size' , {
+//								width: 10 ,
+//								height: 20							
+//								});
+//								cell.set('position' , {
+//								x : newpositionx ,
+//								y : ((pposition.y) + 16)
+//								});
+//								};
+
+								if (cell.get('subType') === 'card'){									
+									parent.embed(cell);	
+
 									cell.set('size' , {
-	 									width: 10 ,
-	 									height: 20							
-	 								});
-	 								cell.set('position' , {
-	 									x : newpositionx ,
-	 									y : ((pposition.y) + 16)
-	 								});
- 							}else{
- 								
- 							}
- 						}
+										width: 10 ,
+										height: 20							
+									});
+									cell.set('position' , {
+										x : newpositionx ,
+										y : ((pposition.y) + 16)
+									});
+
+								};
+
+
+								cell.set('size' , {
+									width: 10 ,
+									height: 20							
+								});
+								cell.set('position' , {
+									x : newpositionx ,
+									y : ((pposition.y) + 16)
+								});
+							}
+						}else{
+
+							var result = insertSupervisor( equipmentType, equipmentID , containerType , containerID);
+							if (result === "success"){
+								parent.embed(cell);
+								showTechnologyWindow(getTechnologies() , cell);
+
+								cell.set('size' , {
+									width: 10 ,
+									height: 20							
+								});
+								cell.set('position' , {
+									x : newpositionx ,
+									y : ((pposition.y) + 16)
+								});
+							}else{
+
+							}
+						}
 					}else{
 						if(parent.get('subType') === 'card' || 'supervisor' ){
 							// configurar as portas de input e output quando sair do itu
@@ -393,22 +346,22 @@ function equipmentHandle(graph){
 			}
 		}else{
 			//Only the rack can be inserted into the graph without an equipment holder	
-			 var containerType;
-			 var containerID;
-			
-				 var result = insertEquipmentholder(equipmentType, equipmentID);
-					if(result === "success") {    
-						return;
-					}else{
-						console.log(result);
-					 	new joint.ui.Dialog({
-								type: 'alert',
-								width: 400,
-								title: 'Error',
-								content: (result),
-							}).open();	
-						cell.remove();
-					}	 			 
+			var containerType;
+			var containerID;
+
+			var result = insertEquipmentholder(equipmentType, equipmentID);
+			if(result === "success") {    
+				return;
+			}else{
+				console.log(result);
+				new joint.ui.Dialog({
+					type: 'alert',
+					width: 400,
+					title: 'Error',
+					content: (result),
+				}).open();	
+				cell.remove();
+			}	 			 
 		}
 	}, this);
 
@@ -585,13 +538,13 @@ function equipmentHandle(graph){
 	graph.on('change:size', function(cell, newPosition, opt) {
 
 //		if (opt.skipParentHandler) return;
-//
+
 //		if (cell.get('embeds') && cell.get('embeds').length) {
-//			// If we're manipulating a parent element, let's store
-//			// it's original size to a special property so that
-//			// we can shrink the parent element back while manipulating
-//			// its children.
-//			cell.set('originalSize', cell.get('size'));
+//		// If we're manipulating a parent element, let's store
+//		// it's original size to a special property so that
+//		// we can shrink the parent element back while manipulating
+//		// its children.
+//		cell.set('originalSize', cell.get('size'));
 //		}
 	});
 
