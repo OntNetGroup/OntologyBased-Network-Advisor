@@ -7,7 +7,14 @@
 
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="/nopen/frontend/nopen-options/css/options.css" />
-	
+
+<!-- DIALOG -->
+<div id="equipment-dialog" title="ITU" style="display: none">
+	<iframe id="equipment-iframe" src="" scrolling="no"></iframe>
+	<!--  File name: <input type="text" id="save-filename" /> -->
+</div>
+
+
 <div class="row">
 
 	<div id="layer-error" class="box-content alerts" style="display:none;">
@@ -63,7 +70,7 @@
 				<div class="col-sm-12">
 					<div class="btn-toolbar-equipments">
 						<script type="text/javascript">
-							//getEquipments();
+							getEquipments();
 						</script>
 					</div>
 				</div>

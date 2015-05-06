@@ -28822,7 +28822,7 @@ joint.shapes.bpmn.Pool = joint.dia.Element.extend({
                 stroke: '#000000',
                 width: 500,
                 height: 200,
-                'pointer-events': 'stroke'
+//                'pointer-events': 'stroke'
             },
             '.header': {
                 fill:'#ffffff',
@@ -28830,7 +28830,7 @@ joint.shapes.bpmn.Pool = joint.dia.Element.extend({
                 width: 20,
                 ref: '.body',
                 'ref-height': 1,
-                'pointer-events': 'visiblePainted'
+//                'pointer-events': 'visiblePainted'
             },
             '.label': {
                 transform: 'rotate(-90)' ,
@@ -28850,7 +28850,7 @@ joint.shapes.bpmn.Pool = joint.dia.Element.extend({
             '.lane-header': {
                 fill:'#ffffff',
                 stroke: '#000000',
-                'pointer-events': 'visiblePainted'
+//                'pointer-events': 'visiblePainted'
             },
             '.lane-label': {
                 transform: 'rotate(-90)',

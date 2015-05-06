@@ -26,7 +26,12 @@
 </head>
 <body>
 
-
+	<div class="toolbar-container">
+	     <button id="btn-back" class="btn" data-tooltip="Close"><img src="/nopen/frontend/visualizer/itu-visualizer/img/reject.png" alt="Close"/> Close </button>
+	     <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="/nopen/frontend/itu-studio/img/zoomin.png" alt="Zoom in"/></button>
+	     <button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out"><img src="/nopen/frontend/itu-studio/img/zoomout.png" alt="Zoom out"/></button>
+	     <button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom To Fit"><img src="/nopen/frontend/visualizer/itu-visualizer/img/zoomtofit.png" alt="Zoom To Fit"/></button>
+	</div>
 	<div class="stencil-container" style="display:none">
 		<label>Stencil</label>
 		<button class="btn-expand" title="Expand all">+</button>
@@ -69,12 +74,19 @@
             var app = new Rappid;
             Backbone.history.start();
             
-            ituHandle(app.paper, app.graph);
-            
             if(getUrlParameter('equipment')){
             	var equipment = getUrlParameter('equipment');
             	openFromURL(equipment, app.graph);
             }
+            
+            $('#btn-zoom-to-fit').click();
+			
+            $('#btn-back').click(function(){
+            	parent.closeIframe();
+            });
+            
+            ituHandle(app.paper, app.graph);
+            
 
         
         </script>

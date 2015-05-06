@@ -1,5 +1,56 @@
-svg {
-/* 	pointer-events: none; */
+html, body {
+   margin: 0;
+   padding: 0;
+}
+
+body {
+   -webkit-user-select: none;
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   font-family: Arial;
+   font-family: "Source Sans Pro", sans-serif;
+}
+
+.toolbar-container{
+	margin-left: 10px;
+}
+
+.btn {
+   padding: 4px 8px;
+   font-size: 11px;
+   line-height: 30px;
+   border: 1px solid #ccc;
+   border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+   margin: 0;
+   margin-left: -5px;
+   cursor: pointer;
+}
+.btn:hover {
+   opacity: .9;
+}
+.btn > img {
+   vertical-align: middle;
+   height: 20px;
+}
+
+.paper-scroller {
+   background-color: hsla(220,11%,97%,.95);
+}
+.paper-scroller > .paper {
+   /* Grid background image */
+   background-color: white;
+   box-shadow: 0 0 2px lightgray;
+}
+
+.paper-scroller{
+	
+	height: 500px;
+	width: 500px;
+  	padding-left: 0px;
+  	padding-top: 0px;
+	
 }
 
 #itu-dialog{

@@ -30,7 +30,7 @@
 }
 
 .element.bpmn.Pool .body {
-    pointer-events: visiblePainted;
+/*     pointer-events: visiblePainted; */
 }
 
 /* element styling */

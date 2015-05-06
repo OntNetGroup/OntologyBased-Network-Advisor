@@ -53,7 +53,7 @@
 
 	<%@include file="templates/header.jsp"%>
 	<%@include file="templates/toolbar.jsp"%>
-	<%@include file="templates/supervisorPanelList.jsp" %>
+<%-- 	<%@include file="templates/supervisorPanelList.jsp" %> --%>
 
 	<!-- JS CORE -->
 

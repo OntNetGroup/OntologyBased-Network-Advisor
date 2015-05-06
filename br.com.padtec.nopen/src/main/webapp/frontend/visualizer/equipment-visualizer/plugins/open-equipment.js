@@ -14,15 +14,16 @@ function getUrlParameter(sParam)
 
 function openFromURL(filename, graph){
 	
-	$.ajax({
+		$.ajax({
 		   type: "POST",
+		   async: false,
 		   url: "openEquipment.htm",
 		   data: {
 			   'filename' : filename
 		   },
 		   dataType: 'json',
 		   success: function(data){
-			   graph.fromJSON(data);
+			   graph.fromJSON(data)
 			   loadITUFiles(graph);
 		   },
 		   error : function(e) {
@@ -37,6 +38,7 @@ function openFromURL(filename, graph){
 				if(cell.get('subType') === 'card'){
 					$.ajax({
 					   type: "POST",
+					   async: false,
 					   url: "openITUFile.htm",
 					   data: {
 						   'path': filename,
@@ -53,6 +55,7 @@ function openFromURL(filename, graph){
 				}
 				
 			});	
+			
 		}	
 }
 
