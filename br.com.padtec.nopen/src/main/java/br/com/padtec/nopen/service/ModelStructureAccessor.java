@@ -21,75 +21,39 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 public class ModelStructureAccessor {
 
 	
-	public static HashMap<String, String> buildContainerStructure(String container, OKCoUploader studioRepository){
+	public static ArrayList<String[]> buildContainerStructure(String container, OKCoUploader studioRepository){
 		NOpenReasoner.runInference(true);
-		HashMap<String, String> mapping = new HashMap<String, String>();
-		//obtendo classe do container
-		List<String> tipoContainer = QueryUtil.getClassesURIFromIndividual(studioRepository.getBaseModel(), studioRepository.getNamespace()+container);
-		System.out.println("--------------------");
-
-		Iterator<String> i = tipoContainer.iterator();
-		while(i.hasNext()){ //eliminando classes que tenham subclasse
-			ArrayList<String> subclasses = new ArrayList<String>();
-			subclasses = QueryUtil.SubClass(studioRepository.getBaseModel(), i.next().toString());
+		ArrayList<String[]> mapping = new ArrayList<String[]>();
+		//primeira coisa: pegar o subtipo da classe e colocar numa lista de coisas, mais especificos possiveis
+		//ver se essas coisas tem componentOf
+		//segunda:se os subtipos dele tem componentOf e assim sucessivamente
+		//container é classe
+		//pegar as subclasses da container
+		//se basear na classe especifica
+		
+		ArrayList<String> subclass = new ArrayList<String>();
+		subclass = QueryUtil.SubClass(studioRepository.getBaseModel(), container);
 			
-  			if(subclasses.size()>1){ //se só tem uma subclasse, então a subclasse é a própria classe
-  				i.remove();
-  			}
-  		}
-		String tipo = tipoContainer.get(0);
-		System.out.println("--------------------");
-		
-		
-		HashSet<String> relations = new HashSet<String>();
-		//obtendo relações de componentOf
-		relations = NOpenQueryUtil.getAllComponentOFRelations(tipo.substring(tipo.indexOf("#")+1), studioRepository.getBaseModel()); 
-		//obtendo cardinalidades
-		
-		System.out.println( "== Non-Q MaxRestrictions ==");
-		for ( ExtendedIterator<Restriction> rs = studioRepository.getBaseModel().listRestrictions(); rs.hasNext() ; ) {
-			Restriction r = rs.next();
-			if ( r.isMaxCardinalityRestriction() ) {
-				MaxCardinalityRestriction mcr = r.asMaxCardinalityRestriction();
-				System.out.println( "(1)  on property:     " + mcr.getOnProperty() );
-				System.out.println( "(2a) max cardinality: " + mcr.getMaxCardinality() );
-				System.out.println( "(2b) max cardinality: " + mcr.getPropertyValue( OWL.maxCardinality ));
+		for(String sub : subclass){
+			HashSet<String> ranges = new HashSet<String>();
+			//obtendo relações de componentOf
+			ranges = NOpenQueryUtil.getAllComponentOFRelations(sub.substring(sub.indexOf("#")+1), studioRepository.getBaseModel());
+			String domain, relation;
+			domain = sub;
+			relation = "componentOf";
+			for(String range : ranges){
+				String tripla[] = new String[3];
+				tripla[0] = domain;
+				tripla[1] = relation;
+				tripla[2] = range;
+				boolean ok = false;
+				ok = mapping.add(tripla);
+				mapping = buildContainerStructure(range, studioRepository);
 			}
+			
+			
 		}
 		
-		System.out.println( "== Q MaxRestrictions ==" );
-		for ( ResIterator it = studioRepository.getBaseModel().listSubjectsWithProperty(OWL2.maxQualifiedCardinality ); it.hasNext() ; ) {
-			// Making r a restriction lets us use Restriction#getOnProperty as 		in (1a), but
-			// we could also just make r a resource and use Resource#getPropertyValue(),
-			// as in (1b,2,3).
-			Restriction r = it.next().as( Restriction.class );
-			System.out.println( "(1a) on property:     " + r.getOnProperty() );
-			System.out.println( "(1b) on property:     " + r.getPropertyValue(OWL2.onProperty ));
-			System.out.println( "(2)  max cardinality: " + r.getPropertyValue(OWL2.maxQualifiedCardinality ));
-			System.out.println( "(3)  on class:        " + r.getPropertyValue(OWL2.onClass ));
-		}
-
-		
-		
-	/*	ArrayList<String[]> cardinality = new ArrayList<String[]>();
-		//métodos problemáticos
-		List<String[]> MaxCardinality = null;//QueryUtil.getMaxCardinalityDefinitions(studioRepository.getBaseModel(), tipo);
-		List<String[]> MaxExactCardinality = null;//QueryUtil.getExactlyCardinalityDefinitions(studioRepository.getBaseModel(), tipo);
-		
-		boolean ok = false;
-		ok = cardinality.addAll(MaxCardinality);
-		ok = cardinality.addAll(MaxExactCardinality);*/
-		/*for(String relation : relations){
-			// Montando o mapeamento entre relações de componentOf de uma classe do container	
-			for(String[] card : cardinality){
-				//fazer uma busca no vetor pra procurar as relações entre o tipo e as relations que ja conheço pra pegar a cardinalidade
-				if(card[0].equals(tipo) && card[1].equals(RelationEnum.COMPONENTOF.toString()) && card[3].equals(relation)){
-					String tuple = tipo+"_"+relation;
-					String c = card[2];
-					mapping.put(tuple, c);
-				}
-			}
-		}*/
 		return mapping;
 	}
 }

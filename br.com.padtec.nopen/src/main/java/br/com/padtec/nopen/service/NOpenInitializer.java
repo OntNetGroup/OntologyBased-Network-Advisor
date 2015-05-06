@@ -15,15 +15,5 @@ public class NOpenInitializer {
 		eMsg  = ProvisioningInitializer.uploadProvisioningTBox(false);
 		if(!eMsg.isEmpty()) {throw new Exception(eMsg); }
 		
-		
-		 //Testing
-		  InstanceFabricator.createCard(StudioComponents.studioRepository, "Card1");
-		
-		ModelStructureAccessorController.initContainerStructure("Card1", StudioComponents.studioRepository);
-		for(String s : ModelStructureAccessorController.getRelationsMapping().keySet()){
-			System.out.println(s);
-			System.out.println(ModelStructureAccessorController.getRelationsMapping().get(s));
-			System.out.println("------------------");
-		}
 	}
 }
