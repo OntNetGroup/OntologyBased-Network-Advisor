@@ -441,7 +441,7 @@ public class StudioFactory {
 		String holderId = dtoSupervisor.getId();		
 		String holderName = dtoSupervisor.getName();	
 		
-		InstanceFabricator.insertSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName, holderId, holderName);
+		InstanceFabricator.createSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName, holderId, holderName);
 	}	
 	
 	public static void removeSupervisor(DtoJointElement dtoSupervisor) 

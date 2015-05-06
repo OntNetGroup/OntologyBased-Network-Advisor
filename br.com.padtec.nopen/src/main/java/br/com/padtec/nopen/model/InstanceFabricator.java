@@ -417,26 +417,7 @@ public class InstanceFabricator {
 		
 		NOpenLog.appendLine(repository.getName()+": Equipment Holder "+holderType+"-"+holderName+" deleted");
 	}
-	
-	/**
-	 * @author John Guerson
-	 */
-	public static void insertSupervisor(OKCoUploader repository, String supervisorId, String supervisorName, String holderId, String holderName) throws Exception
-	{
-		FactoryUtil.createInstanceIndividual(
-			repository.getBaseModel(), 
-			repository.getNamespace()+supervisorId, 
-			repository.getNamespace()+ConceptEnum.Supervisor.toString()
-		);
 		
-		FactoryUtil.createInstanceRelation(
-			repository.getBaseModel(), 
-			repository.getNamespace()+holderId, 
-			repository.getNamespace()+RelationEnum.ComponentOf6_Equipment_Holder_Supervisor,
-			repository.getNamespace()+supervisorId
-		);
-	}
-	
 	/**
 	 * @author John Guerson
 	 */
