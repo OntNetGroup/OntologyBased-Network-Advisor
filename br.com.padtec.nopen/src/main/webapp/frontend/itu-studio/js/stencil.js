@@ -10,12 +10,14 @@ Stencil.shapes = {
 	
 	layers: [],
 
+	/* ----- STENCIL RESTRICTION ----- */
+	/* all transport functions, and only transport functions, must be of type 'basic.Path' */
 	transportFunctions: [
 	
 		new joint.shapes.basic.Path({
 			subtype: 'AF',
 			attrs: {
-			        path: { d: 'M 50 0 L 0 0 L 25 50 L 75 50 L 100 0  z', fill: '#8e44ad' },
+			        path: { d: 'M 50 0 L 0 0 L 25 50 L 75 50 L 100 0  z', fill: 'slateblue' },
 			    	text: { text: 'AF', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
 			}
 		}),
@@ -23,10 +25,26 @@ Stencil.shapes = {
 		new joint.shapes.basic.Path({
 			subtype: 'TTF',
 			attrs: {
-			        path: { d: 'M 0 0 L 0.5 1 L 1 0 z', fill: '#8e44ad' },
+			        path: { d: 'M 0 0 L 0.5 1 L 1 0 z', fill: 'tomato' },
 			    	text: { text: 'TTF', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
 			}
+		}),
+		
+		new joint.shapes.basic.Path({
+			subtype: 'Matrix',
+			attrs: {
+			        path: { d: squarePath(50), fill: 'green' },
+			    	text: { text: 'Matrix', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
+			}
 		})
+		
+//		new joint.shapes.basic.Path({
+//			subtype: 'PhysicalMedia',
+//			attrs: {
+//			        path: { transform: 'rotate(90 40 40)', d: 'M 0 0 A 50 10 0 0 0 100 0 A 50 10 0 0 0 0 0 M 100 0 L 100 100 A 50 10 0 0 1 0 100 L 0 0 A 50 10 0 0 0 100 0', fill: 'gray' },
+//			    	text: { text: 'Physical Media', 'font-size': 12, display: '', 'ref-y': .5, fill: 'black'  }
+//			}
+//		})
 		
 	],
 	
@@ -55,4 +73,8 @@ Stencil.shapes = {
 		    }
 		})
 	]
+};
+
+function squarePath(size) {
+	return 'M 0 0 L ' +size+ ' 0 L ' +size+ ' ' +size+ ' L 0 ' +size+ ' Z';
 };

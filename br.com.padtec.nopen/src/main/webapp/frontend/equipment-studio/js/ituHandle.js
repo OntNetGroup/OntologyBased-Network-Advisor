@@ -67,11 +67,11 @@ function ituHandle(paper, graph){
 		}
 	});
 	
-	
+	// valida a criação de links no grafo
 	graph.on('change:source change:target add', function(cell) {
 		if(isNotLink(cell)) return;
 		
-		console.log('eh loop!');
+		var card = graph.getCell(cell.attributes.source.id);
 	});
 	
     /* ------ AUXILIAR FUNCTIONS ------- */
