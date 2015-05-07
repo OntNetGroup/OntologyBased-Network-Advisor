@@ -14,9 +14,13 @@ public class PerformBind {
 	
 	
 	/*
-	 * this method apply binds between tfs.
+	 * this method apply binds between tfs and between ports and tfs. 
+	 * creates an output for the id_source 
+	 * creates an input for the id_target and the component of 
+	 * discover the rp for the binds and the component of
+	 * 
 	 */
-	public boolean applyBinds(String id_source, String name_source, String id_target, String name_target){
+	public boolean applyBinds(String id_source, String name_source, String id_target, String name_target, String tipo_source, String tipo_target){
 		
 		return true;
 	}
@@ -27,6 +31,15 @@ public class PerformBind {
 
 	public void setRepository(OKCoUploader repository) {
 		this.repository = repository;
+	}
+	
+	/*
+	 * given two ports discover the rp between them.
+	 */
+	private String discoverRPBetweenPorts(String uri_type_output, String uri_type_input){
+		
+		
+		return null;
 	}
 	
 }
