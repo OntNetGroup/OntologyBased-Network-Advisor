@@ -81,9 +81,11 @@ public class Provisioner {
 			//#17
 			reasoningTimeExecPostInstances = OWLUtil.runReasoner(okcoUploader, true, true, true);
 		}catch(Exception e){
-			OWLUtil.saveNewOwl(model, "resources/output/", "");
+//			OWLUtil.saveNewOwl(model, "resources/output/", "");
 			throw e;
-		}		
+		}finally{
+			OWLUtil.saveNewOwl(model, "resources/output/", "");
+		}
 	}
 	
 	public HashMap<String, Interface> getInterfaces() {
@@ -108,12 +110,12 @@ public class Provisioner {
 			OWLUtil.runReasoner(okcoUploader, false, true, true);			
 		} catch (Exception e) {
 			//#25
-			OWLUtil.saveNewOwl(model, "resources/output/", "");
+//			OWLUtil.saveNewOwl(model, "resources/output/", "");
 			throw e;
-		}
-		
-		//#25
-		OWLUtil.saveNewOwl(model, "resources/output/", "");
+		} finally{
+			//#25
+			OWLUtil.saveNewOwl(model, "resources/output/", "");
+		}		
 	}
 	
 	public List<Interface> getINT_SK_LIST() {
