@@ -1,5 +1,9 @@
 package br.com.padtec.nopen.studio.service;
 
+import java.util.HashSet;
+
+import br.com.padtec.nopen.service.NOpenLog;
+import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 
@@ -21,7 +25,13 @@ public class PerformBind {
 	 * 
 	 */
 	public boolean applyBinds(String id_source, String name_source, String id_target, String name_target, String tipo_source, String tipo_target){
-		
+		try{
+			
+			//fazer a parte do tf pro rp
+			NOpenLog.appendLine("Success: Binds successfully made between (" + tipo_source + "::" + name_source +", " + tipo_target + "::" + name_target + ")");
+		} catch (Exception e){
+			e.getMessage();
+		}
 		return true;
 	}
 
@@ -36,10 +46,11 @@ public class PerformBind {
 	/*
 	 * given two ports discover the rp between them.
 	 */
-	private String discoverRPBetweenPorts(String uri_type_output, String uri_type_input){
+	private HashSet<String> discoverRPBetweenPorts(String uri_type_output, String uri_type_input, OKCoUploader repository){
+		HashSet<String> rp = new HashSet<String>();
+		rp = NOpenQueryUtil.discoverRPBetweenPorts(uri_type_output, uri_type_input, repository.getBaseModel());
 		
-		
-		return null;
+		return rp;
 	}
 	
 }

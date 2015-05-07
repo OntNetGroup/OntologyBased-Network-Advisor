@@ -1,12 +1,13 @@
 package br.com.padtec.nopen.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public final class ModelStructureAccessorController {
-	private static HashMap<String, String> relations_mapping = new HashMap<String, String>();
+	private static ArrayList<String[]> relations_mapping = new ArrayList<String[]>();
 	private static final ModelStructureAccessorController instance = new ModelStructureAccessorController();
 
 	private ModelStructureAccessorController(){
@@ -17,7 +18,7 @@ public final class ModelStructureAccessorController {
 		return instance;
 	}
 
-	public static HashMap<String, String> getRelationsMapping() {
+	public static ArrayList<String[]> getRelationsMapping() {
 		return relations_mapping;
 	}
 	
