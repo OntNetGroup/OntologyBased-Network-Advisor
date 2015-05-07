@@ -30,7 +30,6 @@
 			<div class="box-header" >
 				<h2><i class="icon-laptop"></i>Provisioning</h2>
 				<div class="box-icon">
-					<a href="provisioning.htm#" class="btn-tech-plus" title="New Provisioning"><i class="icon-plus"></i></a>
 					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>													
 				</div>
 			</div>

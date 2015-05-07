@@ -24,9 +24,9 @@ public class StudioController {
 		return "nopen-options/es-options";
 	}
 	
-	@RequestMapping("/pv-options")
-	public String pvOptionRequest(HttpServletRequest request) {		
-		return "nopen-options/pv-options";
+	@RequestMapping("/pr-options")
+	public String prOptionRequest(HttpServletRequest request) {		
+		return "nopen-options/pr-options";
 	}
 	
 	/**

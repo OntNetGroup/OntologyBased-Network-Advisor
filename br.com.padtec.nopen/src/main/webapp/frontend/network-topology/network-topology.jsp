@@ -26,6 +26,7 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/style.css" />  
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/header.css" />
 
+		<link rel="stylesheet" type="text/css" href="/nopen/frontend/network-topology/css/iframe.css" />
 		<link rel="stylesheet" type="text/css" href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css"/>
     </head>
     <body>
@@ -66,6 +67,11 @@
 		 <!-- DIALOGS -->
 
 		<input type="text" id="filename" style="display:none"/>
+
+		<div id="equipment-dialog" title="ITU" style="display: none">
+			<iframe id="equipment-iframe" src="" scrolling="no"></iframe>
+		</div>
+		
 
 <!-- 		<div id="save-dialog" title="Save Topology" style="display:none"> -->
 <!-- 			File name: <input type="text" id="save-filename" /> -->

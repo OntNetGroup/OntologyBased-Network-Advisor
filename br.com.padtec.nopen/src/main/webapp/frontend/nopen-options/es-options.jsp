@@ -37,7 +37,6 @@
 			<div class="box-header" >
 				<h2><i class="icon-laptop"></i>Equipment Studio &#155; Templates</h2>
 				<div class="box-icon">
-					<a href="equipment-studio.htm#" class="btn-tech-plus" title="New Template"><i class="icon-plus"></i></a>
 					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>													
 				</div>
 			</div>

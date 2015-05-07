@@ -26,7 +26,7 @@
 							<li><a  class="submenu" href="nt-options.htm" class=""><b class="">(NT)</b><span class="hidden-sm">&nbsp;&nbsp; Network Topology</span></a></li>
 							<li><a  class="submenu" href="es-options.htm" class=""><b class="">(ES)</b><span class="hidden-sm">&nbsp;&nbsp; Equipment Studio</span></a></li>
 							<!-- <li><a  class="submenu" href="itu-studio.htm" class=""><b class="">(IS)</b><span class="hidden-sm">&nbsp;&nbsp; ITU Studio</span></a></li>  -->
-							<li><a  class="submenu" href="pv-options.htm" class=""><b class="">(PR)</b><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
+							<li><a  class="submenu" href="pr-options.htm" class=""><b class="">(PR)</b><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
 							<li><a  class="submenu" href="advisor.htm" class=""><b class="">(NA)</b><span class="hidden-sm">&nbsp;&nbsp; Network Advisor</span></a></li>
 						</ul>	
 						</li>												
