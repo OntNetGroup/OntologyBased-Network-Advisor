@@ -7,6 +7,7 @@
 
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="/nopen/frontend/nopen-options/css/options.css" />
+<link rel="stylesheet" type="text/css" href="/nopen/frontend/nopen-options/css/iframe.css" />
 
 <!-- DIALOG -->
 <div id="equipment-dialog" title="ITU" style="display: none">

@@ -79,6 +79,8 @@
             	openFromURL(equipment, app.graph);
             }
             
+            $('.toolbar-container').append('<div style="display: inline;margin-left:10px">&#155; ' + equipment + '</div>');
+            
             $('#btn-zoom-to-fit').click();
 			
             $('#btn-back').click(function(){
