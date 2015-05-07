@@ -66,7 +66,7 @@ public class EquipmentStudioController {
 		return "success";
 	}
 	
-	/** Procedure to select the supervisors technology
+	/** Procedure to select the supervisor technology
 	 * @param supervisor
 	 * @param technology
 	 * @param slot
@@ -275,7 +275,7 @@ public class EquipmentStudioController {
 	}
 	
 	/**
-	 * Procedure to savel all ITU files of a Equipment.
+	 * Procedure to save all ITU files of a Equipment.
 	 * @param path
 	 * @param ituFilename
 	 * @param graph
