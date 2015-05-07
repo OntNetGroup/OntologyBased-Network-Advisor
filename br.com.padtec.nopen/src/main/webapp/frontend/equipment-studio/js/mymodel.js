@@ -23,7 +23,7 @@ MyModel = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.Port
                 stroke: '#000000'
             },
             '.port-body': {
-                magnet: true,
+                magnet: false,
                 stroke: '#000000'
             },
             text: {

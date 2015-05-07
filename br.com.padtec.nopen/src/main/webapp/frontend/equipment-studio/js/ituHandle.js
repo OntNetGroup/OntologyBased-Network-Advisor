@@ -100,4 +100,17 @@ function ituHandle(paper, graph){
 		*/	
 		}
 	});
+	
+	
+	graph.on('change:source change:target add', function(cell) {
+		if(isNotLoop(cell)) return;
+		
+		console.log('eh loop!');
+	});
+	
+    /* ------ AUXILIAR FUNCTIONS ------- */
+	// Check if cell is not a link
+	function isNotLink(cell) {
+	    if (cell.attributes.type !== 'link') return true;
+	};
 };
