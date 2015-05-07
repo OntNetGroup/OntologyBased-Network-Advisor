@@ -1,4 +1,4 @@
-function selectSupervisorWindow(supervisor, scards , nscards){
+function selectSupervisorWindow(supervisor, graph){
 	//ref
 //	for(var i = 0;i < elementos.length; i++){
 //	var element = elementos[i];
@@ -78,6 +78,8 @@ function supervisorHandle(paper, graph){
    paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
    
 	   cellId = cellView.model.id;
+		graph;
+	   
 		
 		var supervisor = graph.getCell(cellId);
 		
@@ -87,9 +89,27 @@ function supervisorHandle(paper, graph){
 			
 		}else{
 			
+			var elementos = graph.getElements();
+			console.log(elementos);
+			var c = [ ];
+			var nscards = [];
+			var scards =[];
+			
+			for(var i = 0; i < elementos.length; i++){
+				if((elementos[i].attributes.subType) === 'card'){
+					c.push(graph.getCell(elementos[i].id));
+				}
+			};
+			
+			for(var i= 0;i < c.length; i++){
+				if((c[i].attributes.supervisor) === ''){
+					nscards.push(graph.getCell(c[i].id))
+				}
+			}
+			
 //			$("supervisorDialog").dialog();
 //			selectSupervisorWindow(equipment,graph);
-			selectSupervisorWindow(supervisor, cards);
+			selectSupervisorWindow(supervisor, graph);
 			
 		}
 		

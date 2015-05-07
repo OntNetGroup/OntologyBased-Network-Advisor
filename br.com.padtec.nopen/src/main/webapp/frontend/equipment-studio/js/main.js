@@ -22,7 +22,7 @@ var Rappid = Backbone.Router.extend({
 		this.initializeStencil();
 		this.initializeSelection();
 		this.initializeHaloAndInspector();
-		this.initializeNavigator();
+//		this.initializeNavigator();
 		this.initializeClipboard();
 		this.initializeCommandManager();
 		this.initializeToolbar();
@@ -568,7 +568,7 @@ var Rappid = Backbone.Router.extend({
 		$('#btn-clear').on('click', _.bind(this.graph.clear, this.graph));
 		$('#btn-svg').on('click', _.bind(this.paper.openAsSVG, this.paper));
 		$('#btn-png').on('click', _.bind(this.paper.openAsPNG, this.paper));
-		$('#btn-print-file').on('click', _.bind(this.testFunction, this));
+		//$('#btn-print-file').on('click', _.bind(this.testFunction, this));
 		$('#btn-zoom-in').on('click', _.bind(function() { this.paperScroller.zoom(0.2, { max: 5, grid: 0.2 }); }, this));
 		$('#btn-zoom-out').on('click', _.bind(function() { this.paperScroller.zoom(-0.2, { min: 0.2, grid: 0.2 }); }, this));
 		$('#btn-zoom-to-fit').on('click', _.bind(function() {
@@ -579,8 +579,8 @@ var Rappid = Backbone.Router.extend({
 				maxScale: 5
 			});
 		}, this));
-		$('#btn-fullscreen').on('click', _.bind(this.toggleFullscreen, this));
-		$('#btn-print').on('click', _.bind(this.paper.print, this.paper));
+	//	$('#btn-fullscreen').on('click', _.bind(this.toggleFullscreen, this));
+	//	$('#btn-print').on('click', _.bind(this.paper.print, this.paper));
 
 		// toFront/toBack must be registered on mousedown. SelectionView empties the selection
 		// on document mouseup which happens before the click event. @TODO fix SelectionView?
@@ -589,11 +589,11 @@ var Rappid = Backbone.Router.extend({
 
 		$('#btn-layout').on('click', _.bind(this.layoutDirectedGraph, this));
 
-		$('#input-gridsize').on('change', _.bind(function(evt) {
-			var gridSize = parseInt(evt.target.value, 10);
-			$('#output-gridsize').text(gridSize);
-			this.setGrid(gridSize);
-		}, this));
+//		$('#input-gridsize').on('change', _.bind(function(evt) {
+//			var gridSize = parseInt(evt.target.value, 10);
+//			$('#output-gridsize').text(gridSize);
+//			this.setGrid(gridSize);
+//		}, this));
 
 		$('#snapline-switch').change(_.bind(function(evt) {
 			if (evt.target.checked) {
@@ -627,28 +627,28 @@ var Rappid = Backbone.Router.extend({
 		console.log(modelo);
 	},
 
-	toggleFullscreen: function() {
-
-		var el = document.body;
-
-		function prefixedResult(el, prop) {
-
-			var prefixes = ['webkit', 'moz', 'ms', 'o', ''];
-			for (var i = 0; i < prefixes.length; i++) {
-				var prefix = prefixes[i];
-				var propName = prefix ? (prefix + prop) : (prop.substr(0, 1).toLowerCase() + prop.substr(1));
-				if (!_.isUndefined(el[propName])) {
-					return _.isFunction(el[propName]) ? el[propName]() : el[propName];
-				}
-			}
-		}
-
-		if (prefixedResult(document, 'FullScreen') || prefixedResult(document, 'IsFullScreen')) {
-			prefixedResult(document, 'CancelFullScreen');
-		} else {
-			prefixedResult(el, 'RequestFullScreen');
-		}
-	},
+//	toggleFullscreen: function() {
+//
+//		var el = document.body;
+//
+//		function prefixedResult(el, prop) {
+//
+//			var prefixes = ['webkit', 'moz', 'ms', 'o', ''];
+//			for (var i = 0; i < prefixes.length; i++) {
+//				var prefix = prefixes[i];
+//				var propName = prefix ? (prefix + prop) : (prop.substr(0, 1).toLowerCase() + prop.substr(1));
+//				if (!_.isUndefined(el[propName])) {
+//					return _.isFunction(el[propName]) ? el[propName]() : el[propName];
+//				}
+//			}
+//		}
+//
+//		if (prefixedResult(document, 'FullScreen') || prefixedResult(document, 'IsFullScreen')) {
+//			prefixedResult(document, 'CancelFullScreen');
+//		} else {
+//			prefixedResult(el, 'RequestFullScreen');
+//		}
+//	},
 
 	setGrid: function(gridSize) {
 

@@ -350,7 +350,7 @@ public class InstanceFabricator {
 	}
 	
 	/**
-	 * @author John Guerson
+	 * @author John Guerson and Jordana Salamon
 	 */
 	public static void createCard(OKCoUploader repository, String cardName) throws Exception
 	{		

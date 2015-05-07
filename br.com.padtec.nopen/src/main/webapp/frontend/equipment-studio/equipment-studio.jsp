@@ -24,8 +24,8 @@
 	href="/nopen/frontend/equipment-studio/css/paper.css" />
 <link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/equipment-studio/css/inspector.css" />
-<link rel="stylesheet" type="text/css"
-	href="/nopen/frontend/equipment-studio/css/navigator.css" />
+<!-- <link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/navigator.css" /> -->
 <link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/equipment-studio/css/stencil.css" />
 <link rel="stylesheet" type="text/css"
@@ -53,7 +53,7 @@
 
 	<%@include file="templates/header.jsp"%>
 	<%@include file="templates/toolbar.jsp"%>
-<%-- 	<%@include file="templates/supervisorPanelList.jsp" %> --%>
+    <%@include file="templates/supervisorPanelList.jsp" %>
 
 	<!-- JS CORE -->
 
@@ -77,6 +77,7 @@
 	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/supervisorHandle.js"></script>
 
 	<!-- PLUGINS -->
 
@@ -125,7 +126,8 @@
 		resizing(app.graph);
 		equipmentHandle(app.graph);
 		ituHandle(app.paper, app.graph);
-
+        supervisorHandle(app.paper , app.graph);
+        
 		if (getUrlParameter('template')) {
 			var template = getUrlParameter('template');
 			openFromURL(template, app.graph);
@@ -144,29 +146,29 @@
 			getTemplates(app.graph);
 		});
 
-		$('#btnRight').on('click', function(e) {
-			var selectedOpts = $('#lstBox1 option:selected');
-			if (selectedOpts.length == 0) {
-				alert("Nothing to move.");
-				e.preventDefault();
-			}
-
-			$('#lstBox2').append($(selectedOpts).clone());
-			$(selectedOpts).remove();
+	 	$('#btnRight').on('click', function(e) {
+		var selectedOpts = $('#lstBox1 option:selected');
+		if (selectedOpts.length == 0) {
+			alert("Nothing to move.");
 			e.preventDefault();
-		});
+		}
 
-		$('#btnLeft').on('click', function(e) {
-			var selectedOpts = $('#lstBox2 option:selected');
-			if (selectedOpts.length == 0) {
-				alert("Nothing to move.");
-				e.preventDefault();
-			}
+		$('#lstBox2').append($(selectedOpts).clone());
+		$(selectedOpts).remove();
+		e.preventDefault();
+	});
 
-			$('#lstBox1').append($(selectedOpts).clone());
-			$(selectedOpts).remove();
+	$('#btnLeft').on('click', function(e) {
+		var selectedOpts = $('#lstBox2 option:selected');
+		if (selectedOpts.length == 0) {
+			alert("Nothing to move.");
 			e.preventDefault();
-		});
+		}
+
+		$('#lstBox1').append($(selectedOpts).clone());
+		$(selectedOpts).remove();
+		e.preventDefault();
+	});
 	</script>
 
 	

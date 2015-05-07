@@ -157,4 +157,34 @@ public class NOpenQueryUtil {
 		boolean result = qe.execAsk();			
 		return result;
 	}
+	
+	public static HashSet<String> discoverRPBetweenPorts(String uri_type_output, String uri_type_input, InfModel model){
+		HashSet<String> result = new HashSet<String>();
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "SELECT ?y "
+				+ "WHERE { ?x rdfs:subPropertyOf ont:INV.links_output . "
+				+ "?x rdfs:domain <" + uri_type_output + "> . "
+				+ "?x rdfs:range ?y . "
+				+ "?z rdfs:subPropertyOf ont:links_input . "
+				+ "?z rdfs:range <" + uri_type_input + "> . "
+				+ "?z rdfs:domain ?y . "
+				+ "}";
+		
+		Query query = QueryFactory.create(queryString); 
+  		
+  		// Execute the query and obtain results
+  		QueryExecution qe = QueryExecutionFactory.create(query, model);
+  		ResultSet results = qe.execSelect();
+  		//ResultSetFormatter.out(System.out, results, query);
+  		
+  		while (results.hasNext()) {
+  			QuerySolution row = results.next();
+  		    
+  		    RDFNode rdfY = row.get("y");
+  	    	result.add(rdfY.toString());
+  		}
+  		
+		return result;
+	}
 }
