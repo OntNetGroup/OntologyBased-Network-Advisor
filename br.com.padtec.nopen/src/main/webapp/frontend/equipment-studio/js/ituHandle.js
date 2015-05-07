@@ -103,7 +103,7 @@ function ituHandle(paper, graph){
 	
 	
 	graph.on('change:source change:target add', function(cell) {
-		if(isNotLoop(cell)) return;
+		if(isNotLink(cell)) return;
 		
 		console.log('eh loop!');
 	});
