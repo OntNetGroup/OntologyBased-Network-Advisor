@@ -24,29 +24,16 @@ function ituHandle(paper, graph){
 		
 		var equipment = graph.getCell(cellId);
 		
-		if((equipment.get('subType')) === 'supervisor'){
-		
-			$("supervisorDialog").dialog();
-			selectSupervisorWindow(equipment,graph);
-			
-//			new joint.ui.Dialog({
-//					type: 'alert',
-//					width: 400,
-//					title: 'Technology',
-//					content: equipment.get('tech')
-//				}).open();	
-		};
 		
 		if((equipment.get('subType')) === 'card') {
 			
-//			if((equipment.get('supervisor')) === ""){
-//				
-////				$("supervisorDialog").open();
-//				selectSupervisorWindow(equipment,graph);
-//				
-//				
-//			}else{
-				$("#itu-iframe").empty();
+			//var result = isSupervisioned(cardID, cardName , cardType);
+				result = "success";
+			
+			if(result === "success"){
+				
+
+	$("#itu-iframe").empty();
 				
 				$(function ()    {
 			        $('#itu-dialog').dialog({
@@ -71,33 +58,12 @@ function ituHandle(paper, graph){
 			            }
 			        });
 			    });
-//			}
-			/*$("#itu-iframe").empty();
-			
-			$(function ()    {
-		        $('#itu-dialog').dialog({
-		            modal: true,
-		            //show: 'scale',
-		            height: $(window).height(),
-					width: $(window).width(),
-		            title: 'Dynamically Loaded Page',
-		            open: function ()
-		            {
-		                $('#itu-iframe').attr('src','/nopen/itu-studio.htm');
-		            },
-		            close: function() {
-		            	if($('#itu-iframe').get(0).contentWindow.closeType == "save"){
-		            		cardArray[cellId] = $('#itu-iframe').get(0).contentWindow.app.graph.toJSON();
-		            		saveDialog.open();		            		
-		            	}
-		            	//var iFrameValue = JSON.stringify($('#itu-iframe').get(0).contentWindow.app.graph.toJSON(), null, 2);
-		            	//alert(iFrameValue);
-		            	
-
-		            }
-		        });
-		    });
-		*/	
+				
+			}else{
+				
+////			$("supervisorDialog").open();
+//				selectSupervisorWindow(equipment,graph);
+			}
 		}
 	});
 	

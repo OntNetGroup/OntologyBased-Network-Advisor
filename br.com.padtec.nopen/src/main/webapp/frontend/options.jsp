@@ -334,7 +334,7 @@
 		   }
 		});		
 	});
-	
+
 	$('.icon-trash').live('click',function(e) {
 		e.preventDefault();
 		var target = $(e.target).attr("del-type");

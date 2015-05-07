@@ -176,5 +176,10 @@ joint.ui.Dialog = Backbone.View.extend({
     onDragEnd: function() {
 
 	this._dragging = false;
+    },
+    
+    appendButton : function(btn){
+    	$fg.append(btn);
+    	
     }
 });
