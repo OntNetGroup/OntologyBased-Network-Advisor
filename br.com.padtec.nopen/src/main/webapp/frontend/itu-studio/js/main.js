@@ -205,11 +205,12 @@ var Rappid = Backbone.Router.extend({
             graph: this.graph,
             paper: this.paper,
             width: 240,
-            groups: Stencil.groups,
-            search: {
-                '*': ['type','attrs/text/text','attrs/.label/text', 'subtype'],
-                'org.Member': ['attrs/.rank/text','attrs/.name/text']
-            }
+            groups: Stencil.groups
+            /* Uncomment to turn the stencil searchable */
+//            search: {
+//                '*': ['type','attrs/text/text','attrs/.label/text', 'subtype'],
+//                'org.Member': ['attrs/.rank/text','attrs/.name/text']
+//            }
         });
 
         $('.stencil-container').append(this.stencil.render().el);

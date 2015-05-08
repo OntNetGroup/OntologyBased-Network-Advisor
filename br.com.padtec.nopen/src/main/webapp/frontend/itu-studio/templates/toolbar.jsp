@@ -25,8 +25,8 @@
  </div>
  <div class="stencil-container">
      <label>Stencil</label>
-     <button class="btn-expand" title="Expand all">+</button>
-     <button class="btn-collapse" title="Collapse all">-</button>
+     <!-- <button class="btn-expand" title="Expand all">+</button> -->
+     <!-- <button class="btn-collapse" title="Collapse all">-</button> -->
  </div>
  <div class="paper-container"></div>
  <div class="inspector-container"></div>
