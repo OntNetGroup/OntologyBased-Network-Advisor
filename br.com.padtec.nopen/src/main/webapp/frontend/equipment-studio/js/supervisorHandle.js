@@ -67,7 +67,7 @@ function selectSupervisorWindow(supervisor, graph){
 	
 
 	
-	$("#supervisorDialog").dialog();
+//	$("#supervisorDialog").dialog();
      
 };
 

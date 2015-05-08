@@ -25,6 +25,19 @@ public class ITUStudioController {
 		return "itu-studio/itu-studio";
 	}
 	
+	/** Verify if there is any elements without connection in the given card
+	 * @param card
+	 * @return names of elements without connection
+	 */
+	@RequestMapping(value = "/verifyElementsOnCard", method = RequestMethod.POST)
+	public @ResponseBody String[] verifyElementsOnCard(@RequestParam("card") String card)
+	{
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		
+		//TODO
+		return new String[]{"ttf_1", "ttf_2"};
+	}
+	
 	/* ----- Search for Layers & Techs ----- */
 	
 	@RequestMapping(value = "/allLayers", method = RequestMethod.POST)

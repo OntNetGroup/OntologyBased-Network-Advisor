@@ -573,6 +573,22 @@ var Rappid = Backbone.Router.extend({
 
         this.initializeToolbarTooltips();
         
+        var closeType;
+        
+//        $('#btn-save').click(function(){
+        $('#btn-save').on('click', _.bind(function(){
+        	if(this.allElementsAreConnected()) {
+	        	closeType = "save";
+	        	parent.closeIframe();
+	        	console.log('saving...');
+        	}
+        }, this));
+        $('#btn-reject').click(function(){
+        	closeType = "reject";
+        	
+        	parent.closeIframe();
+        	console.log('closing...');
+        });
         $('#btn-svg').on('click', _.bind(this.paper.openAsSVG, this.paper));
         $('#btn-png').on('click', _.bind(this.paper.openAsPNG, this.paper));
         $('#btn-zoom-in').on('click', _.bind(function() { this.paperScroller.zoom(0.2, { max: 5, grid: 0.2 }); }, this));
@@ -602,6 +618,24 @@ var Rappid = Backbone.Router.extend({
         });
     },
 
+    allElementsAreConnected: function() {
+    	var disconnectedElements = verifyElementsOnCard(this.cardID, this.cardName, this.cardTech);
+    	
+    	if(disconnectedElements) {
+    		var alertMsg = 'The following elements are disconnected: <br>';
+    		
+    		_.each(disconnectedElements, function(element) {
+    			alertMsg = alertMsg + element + '<br>';
+    		});
+    		alertMsg = alertMsg + 'Please, remove them to continue.'
+    		
+    		Util.generateAlertDialog(alertMsg);
+    		
+    		return false;
+    	}
+    	return true;
+    },
+    
     initializeToolbarTooltips: function() {
         
         $('.toolbar-container [data-tooltip]').each(function() {
@@ -774,14 +808,5 @@ var Rappid = Backbone.Router.extend({
 			p.transition('position/x', positionMultiplier, {});
 			positionMultiplier += 40;
     	});
-    },
-    
-    generateAlertDialog: function(alertMsg) {
-    	new joint.ui.Dialog({
-			type: 'alert',
-			width: 400,
-			title: 'Alert',
-			content: alertMsg
-		}).open();
     }
 });

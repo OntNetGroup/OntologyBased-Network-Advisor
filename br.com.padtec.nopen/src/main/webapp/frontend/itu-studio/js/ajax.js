@@ -1,3 +1,26 @@
+function verifyElementsOnCard(cardID, cardName, cardType) {
+
+	var result = "error";
+	var dtoCard = Util.createDtoElement(cardID, cardName, cardType);
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "verifyElementsOnCard.htm",
+		data: {
+			'card': JSON.stringify(dtoCard)
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+};
+
 function getLayerNames(techName) {
 
 	var result = "error";

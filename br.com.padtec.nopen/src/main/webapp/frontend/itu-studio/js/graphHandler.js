@@ -87,7 +87,7 @@ function graphHandler(graph, app) {
 				insertTransportFunction();
 
 			} else { // elemento abaixo não é um container
-				this.generateAlertDialog('Please, add the transport function on the paper or a layer.');
+				Util.generateAlertDialog('Please, add the transport function on the paper or a layer.');
 				this.skipOntologyRemoveHandler = true;
 				cell.remove();
 			}
@@ -113,12 +113,12 @@ function graphHandler(graph, app) {
 					});
 					nextName(tFunctionType);
 				} else {
-					app.generateAlertDialog(result);
+					Util.generateAlertDialog(result);
 					app.skipOntologyRemoveHandler = true;
 					cell.remove();
 				}
 			} else {
-				app.generateAlertDialog(result);
+				Util.generateAlertDialog(result);
 				app.skipOntologyRemoveHandler = true;
 				cell.remove();
 			}
@@ -182,18 +182,18 @@ function graphHandler(graph, app) {
 						});
 		    			nextName(portType);
 					} else {
-						this.generateAlertDialog(result);
+						Util.generateAlertDialog(result);
 						this.skipOntologyRemoveHandler = true;
 						cell.remove();
 					}
 			} else { // elemento abaixo não é um transport function uma camada 
-				this.generateAlertDialog('Please, add the port over a transport function.');
+				Util.generateAlertDialog('Please, add the port over a transport function.');
 				this.skipOntologyRemoveHandler = true;
 				cell.remove();
 			}
 			
 		} else { // nenhum elemento abaixo
-			this.generateAlertDialog('Please, add the port over a transport function.');
+			Util.generateAlertDialog('Please, add the port over a transport function.');
 			this.skipOntologyRemoveHandler = true;
 			cell.remove();
 		}
