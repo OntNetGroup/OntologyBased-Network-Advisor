@@ -6,7 +6,7 @@
     margin-top: -40px;
 }
 .stencil-container > label {
-   display: block;
+   display: none;
    text-align: center;
    background-color: #333;   
    font-size: 10px;
@@ -16,6 +16,7 @@
 }
 .stencil-container > .btn-expand,
 .stencil-container > .btn-collapse {
+  display:none;
    position: absolute;
    top: 2px;
    left: 2px;
@@ -32,11 +33,12 @@
    border: 1px solid #4f4f4f;
 }
 .stencil-container > .btn-collapse {
+  display:none;
    left: 25px;
 }
 
 .stencil {
-   top: 20px;
+   top: 0px;
    background: #333;
 }
 

@@ -1,76 +1,35 @@
-function selectSupervisorWindow(supervisor, graph){
-	//ref
-//	for(var i = 0;i < elementos.length; i++){
-//	var element = elementos[i];
-//	var check = elementos[i].attributes.subType;
+function selectSupervisorWindow(supervisor,nscards,scards, graph){
 
-
-//	if(check === "supervisor"){
-//	var supervi = graph.getCell(element.id);
-//	console.log(supervi);
-//	console.log(supervi.get('tech'));
-//	console.log(supervi.get('id'));
-
-//	}
-//	}
-
-//	supervisor.get('parent');
-//	var slot = graph.getCell(supervisor.get('parent'));
-//	var shelf = graph.getCell(slot.get('parent'));
-//	var rack = graph.getCell(shelf.get('parent'));
-
-//	var p = rack.get('embeds');
-
-//	console.log(p);
-//	console.log(p.length);
-//	for(var i = 0; i < p.length;i++){
-
-//	var checkit = graph.getCell(p[i]);
-//	console.log(checkit);
-////	if(checkit.get('embeds') === ""){
-////	console.log("prateleira vazia ="  , checkit);
-////	}else{
-////	console.log("prateleira cheia = " , checkit);
-////	}
-//	};
-
-	//ref
-//	var content = '<div id="card-supervisor" title="Set Card Supervisor">'
-//	+ 'Supervisor: <select>';
-//	for(var i = 0; i < elementos.length; i++){
-//	var element = elementos[i];
-//	var checktype = elementos[i].attributes.subType;
-//	if(checktype === "supervisor"){
-//	var supervi=graph.getCell(element.id);
-
-//	content += '<option value="'+elementos[i]+'">'+elementos[i]+'</option>';
-//	}
-//	}
-//	content += '</select>';
-//	+ '</div>'
-
-
-
-//	var supervisorlist = $.get("../template/supervisorPanelList.html");
-//	console.log(supervisorlist);
-//	var dialog = new joint.ui.Dialog({
-//		width: 450,
-//		type: 'neutral',
-//		title: 'Set card Supervisor',
-//		content: supervisorlist,
-//		buttons:[
-//		         {action:'ok', content: 'OK', position:'rigth'}		        
-//		         ]
-//	});
-//
-//	dialog.open();
-	
-
-	
-//	$("#supervisorDialog").dialog();
+	console.log(nscards);
+     console.log(scards);
+     console.log(supervisor);
      
-};
+    
+    
+     $("#supervisorDialog").dialog("open");
+     
+     $("#supervisorDialog").on("dialogopen", function(){
 
+    	 for(var i = 0; i<scards.length;i++){    		 
+ 			$("#lstBox1").append('<option value="'+scards[i].id+'">'+scards[i].name+'</option>');			
+ 		}
+ 			
+ 		for(var i = 0; i<nscards.length;i++){
+ 				console.log(nscards[i]);
+ 				$("#lstBox2").append('<option value="'+nscards[i].id+'">'+nscards[i].id+'</option>');
+ 			};
+ 		
+ 	} )
+
+	//	$("#supervisorDialog").dialog(
+//			modal:true,
+//			 height: $(window).height(),
+//				width: $(window).width(),
+//              title: 'Select the cards to supervise',
+//              open: function(){},
+//              close: function(){},
+//      )};
+}
 
 
 function supervisorHandle(paper, graph){
@@ -82,6 +41,8 @@ function supervisorHandle(paper, graph){
 	   
 		
 		var supervisor = graph.getCell(cellId);
+		
+		
 		
 		if((supervisor.get('tech')) === ''){
 			
@@ -104,12 +65,23 @@ function supervisorHandle(paper, graph){
 			for(var i= 0;i < c.length; i++){
 				if((c[i].attributes.supervisor) === ''){
 					nscards.push(graph.getCell(c[i].id))
+				}else{
+					if((c[i].attributes.supervisor) ===  (supervisor.get('id'))){
+						c.push(graph.getCell(c[i].id))
+					}
+					
 				}
 			}
 			
+			if(!((supervisor.get('subType')) === 'supervisor')){
+				return;
+			}else{
+				selectSupervisorWindow(supervisor,nscards,scards, graph);
+			}
+//			document.getElementById("#supervisorDialog").style.display = "block";
 //			$("supervisorDialog").dialog();
 //			selectSupervisorWindow(equipment,graph);
-			selectSupervisorWindow(supervisor, graph);
+		//	selectSupervisorWindow(supervisor,nscards,scards, graph);
 			
 		}
 		

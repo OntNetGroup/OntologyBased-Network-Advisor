@@ -273,7 +273,7 @@ var Rappid = Backbone.Router.extend({
 	},
 
 	createInspector: function(cellView) {
-        console.log("achou2");
+
 		var cell = cellView.model || cellView;
 
 		// No need to re-render inspector if the cellView didn't change.
@@ -348,7 +348,7 @@ var Rappid = Backbone.Router.extend({
 			// Therefore, remove the resize tool handle and reposition the clone tool handle to make the
 			// handles nicely spread around the elements.
 			// descomentar para remover a ferramenta de redimensionamento ao Halo
-			//halo.removeHandle('resize');
+			halo.removeHandle('resize');
 
 			// descomentar para inserir a borda de redimensionamento
 			//freetransform.render();
@@ -374,19 +374,19 @@ var Rappid = Backbone.Router.extend({
 			this.createInspector(cellView);
 		}, this);
 	},
-
-	initializeNavigator: function() {
-
-		var navigator = this.navigator = new joint.ui.Navigator({
-			width: 240,
-			height: 115,
-			paperScroller: this.paperScroller,
-			zoomOptions: { max: 5, min: 0.2 }
-		});
-
-		navigator.$el.appendTo('.navigator-container');
-		navigator.render();
-	},
+//
+//	initializeNavigator: function() {
+//
+//		var navigator = this.navigator = new joint.ui.Navigator({
+//			width: 240,
+//			height: 115,
+//			paperScroller: this.paperScroller,
+//			zoomOptions: { max: 5, min: 0.2 }
+//		});
+//
+//		navigator.$el.appendTo('.navigator-container');
+//		navigator.render();
+//	},
 
 	initializeHaloTooltips: function(halo) {
 
@@ -568,7 +568,6 @@ var Rappid = Backbone.Router.extend({
 		$('#btn-clear').on('click', _.bind(this.graph.clear, this.graph));
 		$('#btn-svg').on('click', _.bind(this.paper.openAsSVG, this.paper));
 		$('#btn-png').on('click', _.bind(this.paper.openAsPNG, this.paper));
-		//$('#btn-print-file').on('click', _.bind(this.testFunction, this));
 		$('#btn-zoom-in').on('click', _.bind(function() { this.paperScroller.zoom(0.2, { max: 5, grid: 0.2 }); }, this));
 		$('#btn-zoom-out').on('click', _.bind(function() { this.paperScroller.zoom(-0.2, { min: 0.2, grid: 0.2 }); }, this));
 		$('#btn-zoom-to-fit').on('click', _.bind(function() {
@@ -620,11 +619,6 @@ var Rappid = Backbone.Router.extend({
 				direction: 'top'
 			});
 		});
-	},
-
-	testFunction: function(){
-		var modelo = paper-container.getGraph();
-		console.log(modelo);
 	},
 
 //	toggleFullscreen: function() {

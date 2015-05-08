@@ -33,7 +33,7 @@ function ituHandle(paper, graph){
 			if(result === "success"){
 				
 
-	$("#itu-iframe").empty();
+	    $("#itu-iframe").empty();
 				
 				$(function ()    {
 			        $('#itu-dialog').dialog({

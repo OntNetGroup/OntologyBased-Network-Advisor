@@ -72,3 +72,28 @@ h1 {
 rect[stroke-width]:hover{
 	stroke-width: 2;
 }
+
+#supervisorDialog{
+    color: #FFF;
+    text-shadow: none;
+    margin: 0;
+    left: 0;
+    right: 0;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+	
+}
+
+#supervisorDialog .titlebar {
+    display: block;
+    background-color: #7c68fc;
+    padding: 10px;
+    color: white;
+    text-shadow: 0 0 1px black;
+    text-rendering: optimizeLegibility;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom: 2px solid #dcddee;
+}

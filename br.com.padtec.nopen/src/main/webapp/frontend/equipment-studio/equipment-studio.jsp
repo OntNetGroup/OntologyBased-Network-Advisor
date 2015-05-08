@@ -144,8 +144,20 @@
 
 		$('#btn-open').click(function() {
 			getTemplates(app.graph);
-		});
+		});		
+		
+	$("#supervisorDialog").dialog({
+  	  autoOpen: false,
+  	  modal: true,
+  	  title: 'Select the cards to supervise',
+  	  buttons: {
+  		  "Ok": function() {},
+  	    "Cancel": function() { 
 
+  	    	$("#supervisorDialog").dialog("close")  }
+  	  }
+  	});	
+	
 	 	$('#btnRight').on('click', function(e) {
 		var selectedOpts = $('#lstBox1 option:selected');
 		if (selectedOpts.length == 0) {
