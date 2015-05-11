@@ -590,14 +590,7 @@ var Rappid = Backbone.Router.extend({
         	console.log('closing...');
         });
         $('#btn-svg').on('click', _.bind(this.paper.openAsSVG, this.paper));
-//        $('#btn-png').on('click', _.bind(this.paper.openAsPNG, this.paper));
-        $('#btn-png').on('click', _.bind(function() {
-        	var windowFeatures = 'menubar=no,location=no,resizable=yes,scrollbars=yes,status=no';
-            var windowName = _.uniqueId('png_output');
-            var pngWindow = window.open('', windowName, windowFeatures);
-
-            pngWindow.document.write(this.paper.openAsPNG);
-        }, this));
+        $('#btn-png').on('click', _.bind(this.paper.openAsPNG, this.paper));
         $('#btn-zoom-in').on('click', _.bind(function() { this.paperScroller.zoom(0.2, { max: 5, grid: 0.2 }); }, this));
         $('#btn-zoom-out').on('click', _.bind(function() { this.paperScroller.zoom(-0.2, { min: 0.2, grid: 0.2 }); }, this));
         $('#btn-zoom-to-fit').on('click', _.bind(function() {

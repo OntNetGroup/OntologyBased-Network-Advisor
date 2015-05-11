@@ -46621,10 +46621,12 @@ joint.dia.Paper.prototype.toJPEG = function(callback, options) {
     this.toDataURL(callback, options);
 };
 
-// Just a little helper for quick-opening the paper as PNG in a new browser window.
+// /* Just a little helper for quick-opening the paper as PNG in a new browser window. */
+// MODIFIED TO: Just a little helper for quick-opening the paper as PNG in a new pop up window.
 joint.dia.Paper.prototype.openAsPNG = function(opt) {
 
-    var windowFeatures = 'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes';
+//    var windowFeatures = 'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes';
+	var windowFeatures = 'menubar=no,location=no,resizable=yes,scrollbars=yes,status=no'; // modified for project purpose. Now it is opened in a pop up window
     var windowName = _.uniqueId('png_output');
 
     this.toPNG(function(dataURL) {
