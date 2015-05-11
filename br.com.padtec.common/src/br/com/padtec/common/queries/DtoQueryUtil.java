@@ -562,5 +562,68 @@ public class DtoQueryUtil {
 			if(dtoInstance!=null) result.add(dtoInstance);
 		}
 		return result;
-	}		
+	}	
+	
+	/**
+	 * Return all class' cardinality definitions 
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param classURI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	public static ArrayList<String> getCardDefFromClasses(InfModel model, String classURI){
+		return getCardDefFromClasses(model, classURI, "");
+	}
+	
+	/**
+	 * Return all class' cardinality definitions, filtering by a property 
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param classURI
+	 * @param propertyURI: Property URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	public static ArrayList<String> getCardDefFromClasses(InfModel model, String classURI, String propertyURI){
+		if(propertyURI == null || propertyURI.equals("")){
+			propertyURI = "?property";
+		}else{
+			propertyURI = "<" + propertyURI + ">";
+		}
+		
+		String queryString = QueryUtil.PREFIXES
+				+ "SELECT * \n"
+				+ "WHERE { \n"
+				+ "	<" + classURI + "> owl:equivalentClass/(owl:intersectionOf/rdf:rest*/rdf:first)* ?restricion . \n"
+				+ "	?restricion owl:onProperty " + propertyURI + " . \n"
+				+ " OPTIONAL{ \n"
+				+ "		?restricion ?restricionType ?cardinalityValue . \n"
+				+ "		FILTER ( ?restricionType IN (owl:qualifiedCardinality, owl:minQualifiedCardinality, owl:maxQualifiedCardinality) ) . \n"
+				+ "		OPTIONAL{ \n"
+				+ "			?restricion owl:onClass ?onType . \n"
+				+ "		} \n"
+				+ "		OPTIONAL{ \n"
+				+ "			?restricion owl:onDataRange ?onType . \n"
+				+ "		} \n"
+				+ "	} \n"
+				+ "	OPTIONAL{ \n"
+				+ "		?restricion ?restricionType ?onType . \n"
+				+ "		FILTER ( ?restricionType IN (owl:someValuesFrom) ) . \n"
+				+ "	} \n"
+				+ "} \n";
+		
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		
+		ArrayList<String> SubClass = new ArrayList<String>();
+		while (results.hasNext())	
+		{			
+			QuerySolution row= results.next();
+		    RDFNode x = row.get("subject");	
+		    	SubClass.add(x.toString());
+		}			
+		return SubClass;
+	}
 }
