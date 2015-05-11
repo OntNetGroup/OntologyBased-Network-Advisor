@@ -72,19 +72,17 @@
 	<script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/main.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentAjax.js"></script>
-	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>	
+	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/supervisorHandle.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
 
 	<!-- PLUGINS -->
 
-	<script
-		src="/nopen/frontend/equipment-studio/plugins/open-template.js"></script>
-	<script
-		src="/nopen/frontend/equipment-studio/plugins/save-template.js"></script>
+	<script src="/nopen/frontend/equipment-studio/plugins/open-template.js"></script>
+	<script src="/nopen/frontend/equipment-studio/plugins/save-template.js"></script>
 
-    <%@include file="templates/supervisorPanelList.jsp" %>
+	<%@include file="templates/supervisorPanelList.jsp"%>
 
 	<!-- DIALOGS -->
 
@@ -109,9 +107,9 @@
 	      document.onselectstart = function() { return false; };
 	    </script>
 	<![endif]-->
-	
-	
-	
+
+
+
 	<script>
 		// Uncomment the following line and comment the line after if you
 		// want to use channels.
@@ -149,7 +147,7 @@
 
 	</script>
 
-	
+
 
 </body>
 </html>

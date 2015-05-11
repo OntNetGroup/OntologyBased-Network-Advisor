@@ -1,10 +1,10 @@
-<div id="supervisorDialog" title="Select cards to supervise" style=" width: 450px; heigth: 300px">
+<div id="supervisorDialog" title="Select cards to supervise" style=" width: 1000px; heigth: 300px">
 		 
 		<table style='width: 370px;'>
 			<tr>
 				<td style='width: 160px;'><a>Supervised Cards:</a><br /> <select
 					multiple="multiple" id='lstBox1'>
-					<option value="CardExemplo2" class="supervised">CardExemplo2</option>
+<!-- 					<option value="CardExemplo2" class="supervised">CardExemplo2</option> -->
 	
 					
 				</select></td>
@@ -14,7 +14,7 @@
 				</td>
 				<td style='width: 160px;'><a>Cards without supervisor: </a><br /> <select
 					multiple="multiple" id='lstBox2'>
-				   <option value="CardExemplo2" class="unsupervised">CardExemplo2</option>
+<!-- 				   <option value="CardExemplo2" class="unsupervised">CardExemplo2</option> -->
 	
 				</select></td>
 			</tr>
@@ -27,22 +27,19 @@
 // 	$('.supervised').remove()
 // });
 
-$("#supervisorDialog").dialog({
-	  autoOpen: false,
-	  modal: true,
-	  title: 'Select the cards to supervise',
-	  buttons: {
-		  "Ok": function() {
-			$('.supervised').remove();
-			$('.unsupervised').remove();
-// 			dialog.close();
-		  },
-// 	    "Cancel": function() { 
-//           $("#1stBox1").find('option').remove().end();
-//           $("#1stBox2").empty();
-// 	    	$("#supervisorDialog").dialog("close")  }
-	  }
-	});	
+		$("#supervisorDialog").dialog({
+			  autoOpen: false,
+			  modal: true,
+			  title: 'Select the cards to supervise',
+		      width: 450,
+			  buttons: {
+				  "Ok": function() {
+					$('.supervised').remove();
+					$('.unsupervised').remove();
+		 			$(this).dialog('close');
+				  }
+			  }
+			});	
 	
 	 	$('#btnRight').on('click', function(e) {
 		var selectedOpts = $('#lstBox1 option:selected');

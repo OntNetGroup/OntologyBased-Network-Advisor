@@ -24,11 +24,7 @@ function selectSupervisorWindow(supervisor,nscards,scards, graph){
      
     supervisord = supervisor;
     
-     $("#supervisorDialog").dialog("open");
-     
-     $("#supervisorDialog").ready();
-     
-     $("#supervisorDialog").on("dialogopen", function(){
+//     $("#supervisorDialog").dialog("open");
 
     	 for(var i = 0; i<scards.length;i++){    		 
  			$("#lstBox1").append('<option value="'+scards[i].id+'" class = "supervised">'+scards[i].name+'</option>');			
@@ -38,9 +34,8 @@ function selectSupervisorWindow(supervisor,nscards,scards, graph){
  				console.log(nscards[i]);
  				$("#lstBox2").append('<option value="'+nscards[i].id+'" class = "unsupervised">'+nscards[i].id+'</option>');
  			};
- 		
- 	} )
-
+ 			
+ 			$("#supervisorDialog").dialog("open");	
 }
 
 
@@ -77,6 +72,7 @@ function supervisorHandle(paper, graph){
 			if(!((supervisor.get('subType')) === 'supervisor')){
 				return;
 			}else{
+				//selectSupervisorWindow(supervisor,getallnotsupervisedCards(),getsupervisedCards(), graph);
 				selectSupervisorWindow(supervisor,nscards,scards, graph);
 			}
 		}

@@ -169,15 +169,15 @@ public class EquipmentStudioController {
 		return getsupervisedCards;		
 	}
 	
-	/** Procedure to get all cards 
-	 * @param card
+	/** Procedure to get all cards unsupervised 
+	 * @param 
 	 * @return
 	 */
-	@RequestMapping(value = "/getAllnotsupervisedCards", method = RequestMethod.POST)
-	public @ResponseBody String[] getAllnotSupervisedCards()
+	@RequestMapping(value = "/getallnotsupervisedCards", method = RequestMethod.POST)
+	public @ResponseBody String[] getallnotsupervisedCards()
 	{
 		
-		return getAllnotSupervisedCards();		
+		return getallnotsupervisedCards();		
 	}
 	
 	/* ----- Insert/Remove equipments  ----- */
@@ -321,6 +321,27 @@ public class EquipmentStudioController {
 	}
 	
 	/**
+	 * Procedure to save all ITU files of a Equipment.
+	 * @param path
+	 * @param ituFilename
+	 * @param graph
+	 */
+	@RequestMapping("/saveITUFiles")
+	public @ResponseBody void saveITUFiles(@RequestParam("path") String path, @RequestParam("filename") String ituFilename, @RequestParam("graph") String graph) 
+	{		
+		path = path + "/itu/";
+		path = NOpenFileUtil.replaceSlash(path);
+		NOpenFileUtil.createTemplateRepository(path);		
+		try {
+			File file = NOpenFileUtil.createTemplateJSONFile(path + ituFilename);
+			NOpenFileUtil.writeToFile(file, graph);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	/**
 	 * Procedure to get all Templates saved.
 	 * @return
 	 */
@@ -344,6 +365,18 @@ public class EquipmentStudioController {
 		
 	}
 	
-	
+	/**
+	 * Procedure to open a ITU file of a Template.
+	 * @param path
+	 * @param ituFilename
+	 * @return
+	 */
+	@RequestMapping(value = "/openITUFile", method = RequestMethod.POST)
+	protected @ResponseBody String openITUFile(@RequestParam("path") String path, @RequestParam("filename") String ituFilename)
+	{		
+		path = path + "/itu/" + ituFilename + ".json";
+		path = NOpenFileUtil.replaceSlash(path);		
+		return NOpenFileUtil.openTemplateJSONFileAsString(path);		
+	}
 
 }
