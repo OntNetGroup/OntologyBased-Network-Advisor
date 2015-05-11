@@ -18,9 +18,9 @@ function ituHandle(paper, graph){
 			$("#itu-iframe").empty();
 			
 			if($('#filename').val() == ""){
-        		if (confirm('You need save the Template before edit the card. Do you like to do it?')) {
-        			generateSaveTemplateDialog();
-			   } 
+				if (confirm('You need save the Template before edit the card. Do you like to do it?')) {
+        			generateSaveTemplateDialog(graph);
+				} 
         	}
         	else{
 				$(function ()    {
