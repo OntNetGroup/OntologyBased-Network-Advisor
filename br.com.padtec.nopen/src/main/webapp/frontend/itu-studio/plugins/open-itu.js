@@ -16,6 +16,7 @@ function openFromURL(equipment, filename, graph){
 
 	$.ajax({
 		type: "POST",
+		async: false,
 		url: "openITUFile.htm",
 		data: {
 			'path' : equipment,

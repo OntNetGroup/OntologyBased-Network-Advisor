@@ -68,26 +68,26 @@
     			card = getUrlParameter('card');
     			openFromURL(equipment, card, app.graph);
     		}
-            
+			
             $('#btn-save').click( function(){
             	if(equipment != undefined && card != undefined){
             		saveITUFile(equipment, card, app.graph);
+            		$('#btn-save').prop('disabled', true);
             	}
             });
             
             $('#btn-return').click( function(){
             	if(parent){
-            		parent.closeIframe();
+            		if(!$('#btn-save').is(':disabled')){
+                		if(confirm('Discard unsaved changed?')){
+                			parent.closeIframe();
+                		}
+                	}
+            		else{
+            			parent.closeIframe();
+            		}
             	}
             });
-            
-            
-//             //check if windows is a iframe
-//             if(window.self !== window.top){
-// 	            if(!(parent.cardArray[parent.cellId] === undefined)){
-// 	            	app.graph.fromJSON(parent.cardArray[parent.cellId]);
-// 	            }
-//             }
             
             $('#btn-zoom-to-fit').click();
             
@@ -96,6 +96,13 @@
         	app.setCardTech('MEF'); //TODO: passar a tecnologia do card, vinda do Equipment Studio
             graphHandler(app.graph, app);
             validator(app.validator, app.graph, app);
+            
+          	//Enable Save Button when paper change
+            $('.paper-container').bind("DOMSubtreeModified",function(){
+            	$('#btn-save').prop('disabled', false);
+           	});
+            //Start with Save Button disabled
+			$('#btn-save').prop('disabled', true);
             
         </script>
     </body>

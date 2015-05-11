@@ -44,6 +44,10 @@ h1 {
 .btn:hover {
    opacity: .9;
 }
+.btn:disabled {
+	opacity: .9;
+}
+
 .btn > img {
    vertical-align: middle;
    height: 20px;
