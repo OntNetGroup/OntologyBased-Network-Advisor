@@ -1,14 +1,13 @@
-var saveDialog = new joint.ui.Dialog({
-	type: 'neutral' ,
-	width: 420,
-	draggable: false,
-	title: 'Card Saved! ',
-	content: 'The card was saved!!',
-	open: function() {}
-});
-
-
 function saveITUFile(equipment, filename, graph){
+	
+	var saveDialog = new joint.ui.Dialog({
+		type: 'neutral' ,
+		width: 420,
+		draggable: false,
+		title: 'Card Saved! ',
+		content: 'The card was saved!!',
+		open: function() {}
+	});
 	
 	$.ajax({
 		type: "POST",
@@ -18,8 +17,7 @@ function saveITUFile(equipment, filename, graph){
 			'filename' : filename,
 			'graph': JSON.stringify(graph.toJSON()),
 		},
-		dataType: 'json',
-		success: function(data){
+		success: function(){
 			saveDialog.open();
 		},
 		error : function(e) {

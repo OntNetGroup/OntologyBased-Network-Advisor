@@ -1,4 +1,5 @@
-
+var deletedITUFiles = [];
+var index = 0;
 
 function closeIframe(){
 	$('#itu-dialog').dialog("close");
@@ -14,25 +15,41 @@ function ituHandle(paper, graph){
 		
 		if((equipment.get('subType')) === 'card') {
 			
-
 			$("#itu-iframe").empty();
 			
-			$(function ()    {
-		        $('#itu-dialog').dialog({
-		            modal: true,
-		            //show: 'scale',
-		            height: $(window).height(),
-					width: $(window).width(),
-		            title: 'Dynamically Loaded Page',
-		            open: function ()
-		            {
-		                $('#itu-iframe').attr('src','/nopen/itu-studio.htm?equipment=' + $("#filename").val() + '&card=' + cellId);
-		            },
-		            close: function() {}
-		        });
-		    });
-			
+			if($('#filename').val() == ""){
+        		if (confirm('You need save the Template before edit the card. Do you like to do it?')) {
+        			generateSaveTemplateDialog();
+			   } 
+        	}
+        	else{
+				$(function ()    {
+			        $('#itu-dialog').dialog({
+			            modal: true,
+			            //show: 'scale',
+			            height: $(window).height(),
+						width: $(window).width(),
+			            title: 'Dynamically Loaded Page',
+			            open: function ()
+			            {
+		            		$('#itu-iframe').attr('src','/nopen/itu-studio.htm?equipment=' + $("#filename").val() + '&card=' + cellId);
+			            },
+			            close: function() {}
+			        });
+			    });
+        	}
 		}
+	});
+	
+	graph.on('remove', function(cell){
+		
+		console.log(cell.get('subType'));
+		
+		if(cell.get('subType') === 'card'){
+			deletedITUFiles[index] = cell.id;
+			index++;
+		}
+		
 	});
 	
 	// valida a criação de links no grafo

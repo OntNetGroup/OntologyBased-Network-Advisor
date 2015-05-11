@@ -3,6 +3,7 @@ package br.com.padtec.nopen.studio.itu.controller;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -352,8 +353,8 @@ public class ITUStudioController {
 	 * @param ituFilename
 	 * @param graph
 	 */
-	@RequestMapping("/saveITUFiles")
-	public @ResponseBody void saveITUFiles(@RequestParam("path") String path, @RequestParam("filename") String filename, @RequestParam("graph") String graph) 
+	@RequestMapping("/saveITUFile")
+	public @ResponseBody void saveITUFile(@RequestParam("path") String path, @RequestParam("filename") String filename, @RequestParam("graph") String graph) 
 	{		
 		path = path + "/itu/";
 		path = NOpenFileUtil.replaceSlash(path);
@@ -365,5 +366,56 @@ public class ITUStudioController {
 			e.printStackTrace();
 		}
 
+	}
+	
+	/**
+	 * Procedure to delete a ITU file inside of a Equipment Folder.
+	 * @param filename
+	 */	
+	@RequestMapping("/deleteITUFile")
+	public @ResponseBody void deleteITUFile(@RequestParam("path") String path, @RequestParam("filename") String filename) {
+		
+		String ituPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + path + "/itu/" + filename + ".json");
+		File ituFile = new File(ituPath);
+		
+		if(ituFile.exists()){
+			ituFile.delete();
+		}
+		
+	}
+	
+	/**
+	 * Procedure to copy ITU files inside of a Equipment Folder.
+	 * @param filename
+	 */	
+	@RequestMapping("/copyITUFiles")
+	public @ResponseBody void copyITUFiles(@RequestParam("oldPath") String oldPath, @RequestParam("newPath") String newPath) {
+		
+		String ituOldPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + oldPath + "/itu/");
+		String ituNewPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + newPath);
+		NOpenFileUtil.createTemplateRepository(newPath);
+		
+		//DELETE ITU FILES IN NEW PATH
+		String ituFilesInNewPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + newPath + "/itu/");
+		File dir = new File(ituFilesInNewPath);
+		if(dir.exists())
+		{
+			for(File file : dir.listFiles())
+			{ 
+				file.delete();
+			}
+		}
+		
+		File source = new File(ituOldPath);
+		File dest = new File(ituNewPath);
+				
+		try {
+			if(source.exists()){
+				FileUtils.copyDirectoryToDirectory(source, dest);
+			}
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		
 	}
 }

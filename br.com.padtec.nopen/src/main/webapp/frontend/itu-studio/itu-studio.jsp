@@ -54,6 +54,7 @@
 		
 		<!-- PLUGINS -->
 		<script src="/nopen/frontend/itu-studio/plugins/open-itu.js"></script>
+		<script src="/nopen/frontend/itu-studio/plugins/save-itu.js"></script>
 
         <script>
             var app = new Rappid;

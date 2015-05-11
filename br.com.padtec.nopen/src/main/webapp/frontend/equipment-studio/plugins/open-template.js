@@ -40,42 +40,14 @@ function openFromURL(filename, graph){
 		success: function(data){
 			$("#filename").val(filename);
 			graph.fromJSON(data);
-			//loadITUFiles(graph);
-			loadEquipments(graph);
+			loadEquipments();
 		},
 		error : function(e) {
 			//alert("error: " + e.status);
 		}
 	});
 
-	function loadITUFiles(graph){
-
-		$.each(graph.getElements(), function( index, cell ) {
-
-			if(cell.get('subType') === 'card'){
-				$.ajax({
-					type: "POST",
-					url: "openITUFile.htm",
-					data: {
-						'path': filename,
-						'filename': cell.id
-					},
-					dataType: 'json',
-					success: function(data){
-						cardArray[cell.id] = data;
-					},
-					error : function(e) {
-						//alert("error: " + e.status);
-					}
-				});
-			}
-
-
-		});
-
-	}
-
-	function loadEquipments(graph){
+	function loadEquipments(){
 
 		$.each(graph.getElements(), function(index, cell){
 
@@ -191,8 +163,7 @@ function generateOpenTemplateDialog(graph, data){
 			success: function(data){
 				$("#filename").val(filename);
 				graph.fromJSON(data);
-				loadITUFiles(graph);
-				loadEquipments(graph);
+				loadEquipments();
 				dialog.close();
 			},
 			error : function(e) {
@@ -201,37 +172,9 @@ function generateOpenTemplateDialog(graph, data){
 			}
 		});
 
-		function loadITUFiles(graph){
+		function loadEquipments(){
 
-			$.each(graph.getElements(), function( index, cell ) {
-
-				if(cell.get('subType') === 'card'){
-					$.ajax({
-						type: "POST",
-						url: "openITUFile.htm",
-						data: {
-							'path': filename,
-							'filename': cell.id
-						},
-						dataType: 'json',
-						success: function(data){
-							cardArray[cell.id] = data;
-						},
-						error : function(e) {
-							//alert("error: " + e.status);
-							dialog.close();
-						}
-					});
-				}
-
-
-			});
-
-		}
-
-		function loadEquipments(graph){
-
-			$.each(graph.getElements(), function(cell){
+			$.each(graph.getElements(), function(index, cell){
 
 				if(cell.get('subType') === 'rack'){
 
@@ -267,7 +210,7 @@ function generateOpenTemplateDialog(graph, data){
 
 				}
 
-				if(cell.get('subType')=== 'card'){
+				if(cell.get('subType') === 'card'){
 
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
@@ -280,7 +223,7 @@ function generateOpenTemplateDialog(graph, data){
 					insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
 
 				}
-				if(cell.get('subType')=== 'supervisor'){
+				if(cell.get('subType') === 'supervisor'){
 
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');

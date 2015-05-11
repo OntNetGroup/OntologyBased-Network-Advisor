@@ -41,10 +41,14 @@ function generateSaveTemplateDialog(graph){
 				   
 				   if(data == "exist"){		   
 					   if (confirm('The file already exist, do you want to replace it?')) {
+						   	copyITUFiles();
+						   	deleteITUFiles();
 						    saveTemplate();
 					   } 
 				   }
 				   else{
+					   //copyITUFiles();
+					   //deleteITUFiles();
 					   saveTemplate();
 				   }
 			   },
@@ -57,12 +61,61 @@ function generateSaveTemplateDialog(graph){
 		
 	};
 	
+	function copyITUFiles(){
+		
+		if($("#filename").val() != $("#save-filename").val()){
+			$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "copyITUFiles.htm",
+			   data: {
+				 'oldPath': $("#filename").val(),
+				 'newPath': $("#save-filename").val(),
+			   },
+			   success: function(){
+				   deletedITUFiles = [];
+				   index = 0;
+			   },
+			   error : function(e) {
+				   //alert("error: " + e.status);
+			   }
+			});
+		}
+		
+	}
+	
+	function deleteITUFiles(){
+		
+		$.each(deletedITUFiles, function(index, value){
+			
+			$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "deleteITUFile.htm",
+			   data: {
+				 'path': $("#save-filename").val(),
+				 'filename': value,
+			   },
+			   success: function(){
+				   deletedITUFiles = [];
+				   index = 0;
+			   },
+			   error : function(e) {
+				   //alert("error: " + e.status);
+			   }
+			});
+			
+		});
+		
+	}
+	
 	function saveTemplate(){
 		
 		$('#filename').val($("#save-filename").val());
 		
 		$.ajax({
 		   type: "POST",
+		   async: false,
 		   url: "saveTemplate.htm",
 		   data: {
 			 'filename': $("#save-filename").val(),

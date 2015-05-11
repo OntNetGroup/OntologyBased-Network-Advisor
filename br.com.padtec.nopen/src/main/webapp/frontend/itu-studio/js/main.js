@@ -576,19 +576,6 @@ var Rappid = Backbone.Router.extend({
         
         var closeType;
         
-        $('#btn-save').on('click', _.bind(function(){
-        	if(this.allElementsAreConnected()) {
-	        	closeType = "save";
-	        	parent.closeIframe();
-	        	console.log('saving...');
-        	}
-        }, this));
-        $('#btn-reject').click(function(){
-        	closeType = "reject";
-        	
-        	parent.closeIframe();
-        	console.log('closing...');
-        });
         $('#btn-svg').on('click', _.bind(this.paper.openAsSVG, this.paper));
 //        $('#btn-png').on('click', _.bind(this.paper.openAsPNG, this.paper));
         $('#btn-png').on('click', _.bind(function() {
