@@ -35,7 +35,7 @@ public class ITUStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		//TODO
-		return new String[]{"ttf_1", "ttf_2"};
+		return null;
 	}
 	
 	/* ----- Search for Layers & Techs ----- */
