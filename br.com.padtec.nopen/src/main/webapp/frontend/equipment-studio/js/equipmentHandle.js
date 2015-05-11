@@ -221,7 +221,8 @@ function equipmentHandle(graph){
 
 								if (cell.get('subType') === 'card'){									
 									parent.embed(cell);	
-
+									nscards.push(cell);
+									console.log(nscards);
 									cell.set('size' , {
 										width: 10 ,
 										height: 20							
@@ -259,6 +260,8 @@ function equipmentHandle(graph){
 									y : ((pposition.y) + 16)
 								});
 							}else{
+								
+								//inserir dialogo do erro
 
 							}
 						}

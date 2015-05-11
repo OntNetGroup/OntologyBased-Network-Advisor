@@ -160,6 +160,46 @@ function getTechnologies(){
 };
 
 
+function getsupervisedCards(){
+	
+	var result;
+	
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "getsupervisedCards.htm",		
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);			
+		}		 
+	});
+ 
+	return result;
+	
+};
+
+function getallnotsupervisedCards(){
+	
+	var result;
+	
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "getallnotsupervisedCards.htm",		
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);			
+		}		 
+	});
+ 
+	return result;
+	
+};
+
 function removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID) {
 
 	var result = "error";

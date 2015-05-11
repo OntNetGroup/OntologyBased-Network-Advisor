@@ -160,13 +160,13 @@ public class EquipmentStudioController {
 	
 	/** Procedure to get all Cards supervised by a supervisor
 	 * @param supervisor
-	 * @param 
 	 * @return
 	 */
-	@RequestMapping(value = "/getSupervisedCards", method = RequestMethod.POST)
-	public @ResponseBody String[] getSupervisedCards()
-	{		
-		return getSupervisedCards();		
+	@RequestMapping(value = "/getsupervisedCards", method = RequestMethod.POST)
+	public @ResponseBody String[] getsupervisedCards(@RequestParam("supervisor") String supervisor ,String[]getsupervisedCards) 
+	{	
+		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		return getsupervisedCards;		
 	}
 	
 	/** Procedure to get all cards 

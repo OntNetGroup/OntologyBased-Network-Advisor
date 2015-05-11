@@ -53,8 +53,6 @@
 
 	<%@include file="templates/header.jsp"%>
 	<%@include file="templates/toolbar.jsp"%>
-    <%@include file="templates/supervisorPanelList.jsp" %>
-
 	<!-- JS CORE -->
 
 	<script src="/nopen/core/rappid_api/js/joint.js"></script>
@@ -74,10 +72,10 @@
 	<script src="/nopen/frontend/equipment-studio/js/stencil.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/main.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentAjax.js"></script>
-	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
-	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>	
 	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/supervisorHandle.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
 
 	<!-- PLUGINS -->
 
@@ -85,6 +83,8 @@
 		src="/nopen/frontend/equipment-studio/plugins/open-template.js"></script>
 	<script
 		src="/nopen/frontend/equipment-studio/plugins/save-template.js"></script>
+
+    <%@include file="templates/supervisorPanelList.jsp" %>
 
 	<!-- DIALOGS -->
 
@@ -146,41 +146,7 @@
 			getTemplates(app.graph);
 		});		
 		
-	$("#supervisorDialog").dialog({
-  	  autoOpen: false,
-  	  modal: true,
-  	  title: 'Select the cards to supervise',
-  	  buttons: {
-  		  "Ok": function() {},
-  	    "Cancel": function() { 
 
-  	    	$("#supervisorDialog").dialog("close")  }
-  	  }
-  	});	
-	
-	 	$('#btnRight').on('click', function(e) {
-		var selectedOpts = $('#lstBox1 option:selected');
-		if (selectedOpts.length == 0) {
-			alert("Nothing to move.");
-			e.preventDefault();
-		}
-
-		$('#lstBox2').append($(selectedOpts).clone());
-		$(selectedOpts).remove();
-		e.preventDefault();
-	});
-
-	$('#btnLeft').on('click', function(e) {
-		var selectedOpts = $('#lstBox2 option:selected');
-		if (selectedOpts.length == 0) {
-			alert("Nothing to move.");
-			e.preventDefault();
-		}
-
-		$('#lstBox1').append($(selectedOpts).clone());
-		$(selectedOpts).remove();
-		e.preventDefault();
-	});
 	</script>
 
 	
