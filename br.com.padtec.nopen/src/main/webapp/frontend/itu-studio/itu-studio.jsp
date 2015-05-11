@@ -62,11 +62,14 @@
              
             var equipment = undefined;
             var card = undefined;
+        	app.setCardID(parent.cellId);
+        	app.setCardName('myCard'); //TODO: passar o nome do card, vindo do Equipment Studio
+        	app.setCardTech('MEF'); //TODO: passar a tecnologia do card, vinda do Equipment Studio
             
             if (getUrlParameter('equipment') && getUrlParameter('card')){
             	equipment = getUrlParameter('equipment');
     			card = getUrlParameter('card');
-    			openFromURL(equipment, card, app.graph);
+    			openFromURL(equipment, card, app.graph, app);
     		}
 			
             $('#btn-save').click( function(){
@@ -91,9 +94,6 @@
             
             $('#btn-zoom-to-fit').click();
             
-        	app.setCardID(parent.cellId);
-        	app.setCardName('myCard'); //TODO: passar o nome do card, vindo do Equipment Studio
-        	app.setCardTech('MEF'); //TODO: passar a tecnologia do card, vinda do Equipment Studio
             graphHandler(app.graph, app);
             validator(app.validator, app.graph, app);
             

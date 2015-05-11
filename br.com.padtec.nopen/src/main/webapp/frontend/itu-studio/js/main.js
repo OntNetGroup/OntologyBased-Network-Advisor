@@ -31,7 +31,7 @@ var Rappid = Backbone.Router.extend({
     
     setCardTech: function(tech) {
     	this.cardTech = tech;
-        this.initializeStencil();
+//        this.initializeStencil();
     },
 
     /* counters to give names for transport functions and interfaces */

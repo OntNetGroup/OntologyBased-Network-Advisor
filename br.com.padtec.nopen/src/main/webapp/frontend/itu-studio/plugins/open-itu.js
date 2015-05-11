@@ -12,7 +12,7 @@ function getUrlParameter(sParam)
 	}
 }      
 
-function openFromURL(equipment, filename, graph){
+function openFromURL(equipment, filename, graph, app){
 
 	$.ajax({
 		type: "POST",
@@ -25,9 +25,25 @@ function openFromURL(equipment, filename, graph){
 		dataType: 'json',
 		success: function(data){
 			graph.fromJSON(data);
+			loadElements(graph);
 		},
 		error : function(e) {
 			//alert("error: " + e.status);
 		}
 	});
+	
+	function loadElements(graph) {
+		
+		$.each(graph.getElements(), function(index, element){
+			console.log(element.attributes.subtype);
+			
+			var elementID = element.attributes.id;
+			var elementType = element.attributes.type;
+			var elementSubtype = element.attributes.attrs.subtype;
+			
+			if(elementType === TypeEnum.LAYER) {
+				
+			}
+		});
+	}
 }
