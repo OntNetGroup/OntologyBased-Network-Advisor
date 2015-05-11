@@ -576,7 +576,6 @@ var Rappid = Backbone.Router.extend({
         
         var closeType;
         
-//        $('#btn-save').click(function(){
         $('#btn-save').on('click', _.bind(function(){
         	if(this.allElementsAreConnected()) {
 	        	closeType = "save";
