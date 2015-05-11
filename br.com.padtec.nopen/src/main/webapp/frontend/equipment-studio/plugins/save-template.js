@@ -41,21 +41,6 @@ function generateSaveTemplateDialog(graph){
 				   
 				   if(data == "exist"){		   
 					   if (confirm('The file already exist, do you want to replace it?')) {
-						   
-						   $.ajax({
-							   type: "POST",
-							   assync: false,
-							   url: "deleteITUFiles.htm",
-							   data: {
-								 'filename': $("#save-filename").val(),
-							   },
-							   success: function(){},
-							   error : function(e) {
-								   alert("error: " + e.status);
-								   dialog.close();
-							   }
-							});
-						   
 						    saveTemplate();
 					   } 
 				   }
@@ -84,8 +69,6 @@ function generateSaveTemplateDialog(graph){
 			 'graph': JSON.stringify(graph.toJSON()),
 		   },
 		   success: function(){ 		   
-			   saveITUFiles()
-			   
 			   alert($("#save-filename").val() + ' saved successfully!');
 			   dialog.close();
 		   },
@@ -94,35 +77,6 @@ function generateSaveTemplateDialog(graph){
 			   dialog.close();
 		   }
 		});
-		
-		function saveITUFiles(){
-			
-			$.each(graph.getElements(), function( index, cell ) {
-				
-				if(!(cardArray[cell.id] === undefined)){
-				
-					if(cell.get('subType') === 'card'){
-						$.ajax({
-						   type: "POST",
-						   url: "saveITUFiles.htm",
-						   data: {
-							 'path': $("#save-filename").val(),
-							 'filename': cell.id,
-							 'graph': JSON.stringify(cardArray[cell.id]),
-						   },
-						   success: function(){},
-						   error : function(e) {
-							   alert("error: " + e.status);
-							   dialog.close();
-						   }
-						});	
-					}
-				}
-				
-			});
-			
-			
-		}
 		
 	};
 	

@@ -40,7 +40,7 @@ function openFromURL(filename, graph){
 		success: function(data){
 			$("#filename").val(filename);
 			graph.fromJSON(data);
-			loadITUFiles(graph);
+			//loadITUFiles(graph);
 			loadEquipments(graph);
 		},
 		error : function(e) {

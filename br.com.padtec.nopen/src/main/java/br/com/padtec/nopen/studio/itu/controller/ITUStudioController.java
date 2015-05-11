@@ -1,5 +1,6 @@
 package br.com.padtec.nopen.studio.itu.controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
+import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.model.StudioFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
@@ -123,7 +125,7 @@ public class ITUStudioController {
 		return "success";
 	}
 		
-	/** Verifica se é possível criar o transport function sobre uma camada ou diretamente sobre o card
+	/** Verifica se ï¿½ possï¿½vel criar o transport function sobre uma camada ou diretamente sobre o card
 	 * @param transportFunction
 	 * @param container
 	 * @return
@@ -188,7 +190,7 @@ public class ITUStudioController {
 		
 	/* ----- CRUD for port ----- */
 	
-	/** Cria uma porta (interface) de entrada ou saída conectada a um transport function
+	/** Cria uma porta (interface) de entrada ou saï¿½da conectada a um transport function
 	 * @param port
 	 * @param transportFunction
 	 * @return
@@ -208,7 +210,7 @@ public class ITUStudioController {
 		return "success";		
 	}
 		
-	/** Remove uma porta (interface) de entrada ou saída
+	/** Remove uma porta (interface) de entrada ou saï¿½da
 	 * @param port
 	 * @return
 	 */
@@ -227,7 +229,7 @@ public class ITUStudioController {
 	
 	/* ----- CRUD for link ----- */
 	
-	/** Cria uma conexão entre sourceTFunction e targetTFunction
+	/** Cria uma conexï¿½o entre sourceTFunction e targetTFunction
 	 * @param sourceTFunction
 	 * @param targetTFunction
 	 * @param link
@@ -250,7 +252,7 @@ public class ITUStudioController {
 		return "success";		
 	}
 	
-	/** Verifica se é possível criar uma conexão entre sourceTFunction e targetTFunction
+	/** Verifica se ï¿½ possï¿½vel criar uma conexï¿½o entre sourceTFunction e targetTFunction
 	 * @param sourceTFunction
 	 * @param targetTFunction
 	 * @return
@@ -270,7 +272,7 @@ public class ITUStudioController {
 		return "true";		
 	}
 	
-	/** Remove uma conexão
+	/** Remove uma conexï¿½o
 	 * @param sourceTFunction
 	 * @param targetTFunction
 	 * @param link: identificador do link a ser deletado
@@ -295,7 +297,7 @@ public class ITUStudioController {
 	
 	/* ----- Save/Load graph  ----- */
 	/**
-	 * @param graphJSON: conteúdo do grafo no formato JSON
+	 * @param graphJSON: conteï¿½do do grafo no formato JSON
 	 * @param fileName: nome do arquivo no qual deve ser salvo o grafo (nome do card sendo editado, no caso)
 	 * @return: success or error
 	 */
@@ -313,7 +315,7 @@ public class ITUStudioController {
 	
 	/**
 	 * @param fileName: nome do arquivo contendo o grafo desejado no formato JSON (nome do card que se deseja abrir, no caso)
-	 * @return: conteúdo do grafo no formato JSON or error
+	 * @return: conteï¿½do do grafo no formato JSON or error
 	 */
 	@RequestMapping(value = "/loadGraphJSON", method = RequestMethod.POST)
 	public @ResponseBody String loadGraphJSON(@RequestParam("fileName") String fileName) 
@@ -328,5 +330,40 @@ public class ITUStudioController {
 			return errorMsg;
 		}		
 		return json;	
+	}
+	
+	/**
+	 * Procedure to open a ITU file of a Template.
+	 * @param path
+	 * @param ituFilename
+	 * @return
+	 */
+	@RequestMapping(value = "/openITUFile", method = RequestMethod.POST)
+	protected @ResponseBody String openITUFile(@RequestParam("path") String path, @RequestParam("filename") String ituFilename)
+	{		
+		path = path + "/itu/" + ituFilename + ".json";
+		path = NOpenFileUtil.replaceSlash(path);		
+		return NOpenFileUtil.openTemplateJSONFileAsString(path);		
+	}
+	
+	/**
+	 * Procedure to save all ITU files of a Equipment.
+	 * @param path
+	 * @param ituFilename
+	 * @param graph
+	 */
+	@RequestMapping("/saveITUFiles")
+	public @ResponseBody void saveITUFiles(@RequestParam("path") String path, @RequestParam("filename") String filename, @RequestParam("graph") String graph) 
+	{		
+		path = path + "/itu/";
+		path = NOpenFileUtil.replaceSlash(path);
+		NOpenFileUtil.createTemplateRepository(path);		
+		try {
+			File file = NOpenFileUtil.createTemplateJSONFile(path + filename);
+			NOpenFileUtil.writeToFile(file, graph);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

@@ -2,8 +2,8 @@
      <!-- <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/itu-studio/img/undo.png" alt="Undo"/></button> -->
      <!-- <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/itu-studio/img/redo.png" alt="Redo"/></button> -->
      <!-- <button id="btn-clear" class="btn" data-tooltip="Clear Paper"><img src="/nopen/frontend/itu-studio/img/clear.png" alt="Clear"/></button> -->
-     <button id="btn-save" class="btn" data-tooltip="Save"><img src="/nopen/frontend/itu-studio/img/ok.png" alt="Save and Return"/> Save</button>
-     <button id="btn-reject" class="btn" data-tooltip="Return"><img src="/nopen/frontend/itu-studio/img/reject.png" alt="Reject and Return"/> Return </button>
+     <button id="btn-save" class="btn" data-tooltip="Save"><img src="/nopen/frontend/itu-studio/img/save.png" alt="Save"/></button>
+     <button id="btn-return" class="btn" data-tooltip="Return"><img src="/nopen/frontend/itu-studio/img/back_arrow.png" alt="Return"/> Return </button>
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window"><img src="/nopen/frontend/itu-studio/img/pngfile.png" alt="PNG"/></button>
      <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/itu-studio/img/print.png" alt="Print"/></button>
      <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="/nopen/frontend/itu-studio/img/zoomin.png" alt="Zoom in"/></button>

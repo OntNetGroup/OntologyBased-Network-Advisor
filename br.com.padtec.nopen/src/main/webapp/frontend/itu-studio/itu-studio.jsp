@@ -52,30 +52,41 @@
         <script src="/nopen/frontend/itu-studio/js/graphHandler.js"></script>
         <script src="/nopen/frontend/itu-studio/js/validator.js"></script>
 		
-		
-	<!--[if IE 9]>
-	    <script src="./lib/base64.js"></script>
-	    <script type="text/javascript">
-	      // SVG Export requires window.btoa/atoa extension to convert binary data (the `b`)
-	      // to base64 (ascii, the `a`). Unfortunately it is not available in IE9.
-	      // To get it working under IE9 you may include compatible solution like `stringencoders`
-	      // (`https://code.google.com/p/stringencoders/source/browse/trunk/javascript/base64.js`)
-	      // and create a global alias `btoa`.
-	      window.btoa = base64.encode
-	      // `-ms-user-select: none` doesn't work in IE9
-	      document.onselectstart = function() { return false; };
-	    </script>
-	<![endif]-->
+		<!-- PLUGINS -->
+		<script src="/nopen/frontend/itu-studio/plugins/open-itu.js"></script>
+
         <script>
             var app = new Rappid;
             Backbone.history.start();
              
-            //check if windows is a iframe
-            if(window.self !== window.top){
-	            if(!(parent.cardArray[parent.cellId] === undefined)){
-	            	app.graph.fromJSON(parent.cardArray[parent.cellId]);
-	            }
-            }
+            var equipment = undefined;
+            var card = undefined;
+            
+            if (getUrlParameter('equipment') && getUrlParameter('card')){
+            	equipment = getUrlParameter('equipment');
+    			card = getUrlParameter('card');
+    			openFromURL(equipment, card, app.graph);
+    		}
+            
+            $('#btn-save').click( function(){
+            	if(equipment != undefined && card != undefined){
+            		saveITUFile(equipment, card, app.graph);
+            	}
+            });
+            
+            $('#btn-return').click( function(){
+            	if(parent){
+            		parent.closeIframe();
+            	}
+            });
+            
+            
+//             //check if windows is a iframe
+//             if(window.self !== window.top){
+// 	            if(!(parent.cardArray[parent.cellId] === undefined)){
+// 	            	app.graph.fromJSON(parent.cardArray[parent.cellId]);
+// 	            }
+//             }
             
             $('#btn-zoom-to-fit').click();
             
