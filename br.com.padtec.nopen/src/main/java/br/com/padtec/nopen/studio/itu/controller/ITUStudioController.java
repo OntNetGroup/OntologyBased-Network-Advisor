@@ -25,7 +25,7 @@ public class ITUStudioController {
 		return "itu-studio/itu-studio";
 	}
 	
-	/** Verify if there is any elements without connection in the given card
+	/** Verify if there are any elements without connection in the given card
 	 * @param card
 	 * @return names of elements without connection
 	 */
