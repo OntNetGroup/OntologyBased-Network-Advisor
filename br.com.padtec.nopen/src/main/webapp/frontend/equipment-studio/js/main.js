@@ -290,7 +290,7 @@ var Rappid = Backbone.Router.extend({
 				this.inspector.remove();
 			}
 
-			var inspectorDefs = InspectorDefs[cell.get('type')];
+			var inspectorDefs = InspectorDefs[cell.get('subType')];
 			//changed type(model) to subType
 			this.inspector = new joint.ui.Inspector({
 				inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,

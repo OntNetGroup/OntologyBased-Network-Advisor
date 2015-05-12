@@ -1,5 +1,5 @@
-<div id="supervisorDialog" title="Select cards to supervise" style=" width: 1000px; heigth: 300px">
-		 
+<div id="supervisorDialog" title="Select cards to supervise"  style=" width: 1000px; heigth: 300px">
+	<p class="ui-dialog-titlebar">Select cards to supervise:</p>	 
 		<table style='width: 370px;'>
 			<tr>
 				<td style='width: 160px;'><a>Supervised Cards:</a><br /> <select
@@ -44,7 +44,12 @@
 	 	$('#btnRight').on('click', function(e) {
 		var selectedOpts = $('#lstBox1 option:selected');
 		if (selectedOpts.length == 0) {
-			alert("Nothing to move.");
+			new joint.ui.Dialog({
+				type: 'alert',
+				width: 400,
+				title: 'Error',
+				content: "Select something to move.",
+			}).open();	
 			e.preventDefault();
 		}
       //result = IsCardempty();
@@ -63,7 +68,12 @@
 	$('#btnLeft').on('click', function(e) {
 		var selectedOpts = $('#lstBox2 option:selected');
 		if (selectedOpts.length == 0) {
-			alert("Nothing to move.");
+			new joint.ui.Dialog({
+				type: 'alert',
+				width: 400,
+				title: 'Error',
+				content: "Select something to move.",
+			}).open();	
 			e.preventDefault();
 		}
 		 //result = IsCardempty();
