@@ -26,57 +26,65 @@ function transformToGraph(data){
 	
 	var cellsArray = new Array();
 	
-	$.each(data.topology.nodes.node, function( index, value ) {
-
-		var circle = {
-			fill: '#00c6ff'
-		}
-		
-		var text = {
-			text : value.name,
-			'font-size' : '8',
-		}
-		
-		var equipment = {
-			template : value.equipment	
-		}
-		
-		var attrs = {
-			circle : circle,
-			text : text,	
-			equipment : equipment
-		}
-		
-		var cell = {
-			type : "basic.Circle",
-			id : value.id,
-			attrs : attrs
-		};
-		
-		cellsArray.push(cell);
-		
-	});
+	if(data.topology.nodes.node){
 	
-	$.each(data.topology.links.link, function( index, value ) {
+		$.each(data.topology.nodes.node, function( index, value ) {
+	
+			var circle = {
+				fill: '#00c6ff'
+			}
+			
+			var text = {
+				text : value.name,
+				'font-size' : '8',
+			}
+			
+			var equipment = {
+				template : value.equipment	
+			}
+			
+			var attrs = {
+				circle : circle,
+				text : text,	
+				equipment : equipment
+			}
+			
+			var cell = {
+				type : "basic.Circle",
+				id : value.id,
+				attrs : attrs
+			};
+			
+			cellsArray.push(cell);
+			
+		});
+	}
 		
-		var source = {
-			id : value.source,
-		}
+	if(data.topology.links.link){
 		
-		var target = {
-			id : value.target,
-		}
+		$.each(data.topology.links.link, function( index, value ) {
+			
+			var source = {
+				id : value.source,
+			}
+			
+			var target = {
+				id : value.target,
+			}
+			
+			var cell = {
+				type : "link",
+				source : source,
+				target : target,
+				id : value.id
+			};
+			
+			cellsArray.push(cell);
+			
+		});
 		
-		var cell = {
-			type : "link",
-			source : source,
-			target : target,
-			id : value.id
-		};
-		
-		cellsArray.push(cell);
-		
-	});
+	}
+	
 	
 	var cells = {
 		cells : cellsArray
