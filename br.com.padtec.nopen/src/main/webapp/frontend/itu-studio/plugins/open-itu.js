@@ -43,13 +43,15 @@ function openFromURL(equipment, filename, graph, app){
 		var layers = [];
 		var transportFunctions = [];
 		
-		$.each(graph.getElements(), function(element){
+		$.each(graph.getElements(), function(index, element){
 			var elementType = element.attributes.type;
 			if(elementType === TypeEnum.LAYER) {
-				layers.append(element);
+//				layers.append(element);
+				layers[layers.length] = element;
 			}
 			if(elementType === TypeEnum.TRANSPORT_FUNCTION) {
-				transportFunctions.append(element);
+//				transportFunctions.append(element);
+				transportFunctions[transportFunctions.length] = element;
 			}
 		});
 		
@@ -59,8 +61,8 @@ function openFromURL(equipment, filename, graph, app){
 	
 	function loadLayers(layers, graph, app) {
 
-		$.each(layers, function(layer){
-			var layerSubtype = element.attributes.attrs.subtype;
+		$.each(layers, function(index, layer){
+			var layerSubtype = layer.attributes.subtype;
 			insertContainer(layerSubtype, 'layer', app.cardID, app.cardName, app.cardTech);
 			app.hideLayer(layerSubtype);
 		});
@@ -68,11 +70,11 @@ function openFromURL(equipment, filename, graph, app){
 	
 	function loadTransportFunctions(transportFunctions, graph, app) {
 		
-		$.each(transportFunctions, function(transportFunction){
+		$.each(transportFunctions, function(index, transportFunction){
 			
 			var tFunctionID = transportFunction.attributes.id;
 			var tFunctionName = transportFunction.attributes.attrs.text.text;
-			var tFunctionType = transportFunction.attributes.attrs.subtype;
+			var tFunctionType = transportFunction.attributes.subtype;
 			
 			var parentID = transportFunction.attributes.parent;
 			var parent = graph.getCell(parentID);
@@ -87,7 +89,7 @@ function openFromURL(equipment, filename, graph, app){
 	}
 	
 	function loadLinks(graph) {
-		$.each(graph.getLinks(), function(link){
+		$.each(graph.getLinks(), function(index, link){
 			var linkID = link.attributes.id;
 			
 			var sourceID = link.attributes.source.id;

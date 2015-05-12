@@ -31,6 +31,7 @@ var Rappid = Backbone.Router.extend({
     
     setCardTech: function(tech) {
     	this.cardTech = tech;
+        this.initializeStencil();
     },
 
     /* counters to give names for transport functions and interfaces */
@@ -45,7 +46,6 @@ var Rappid = Backbone.Router.extend({
 
         this.inspectorClosedGroups = {};
 
-        this.initializeStencil();
         this.initializePaper();
         this.initializeSelection();
         this.initializeHaloAndInspector();
@@ -735,7 +735,7 @@ var Rappid = Backbone.Router.extend({
 					        }
 					    }
 					});
-    	this.barIn.on('change:embeds', this.manageEmbeddedPorts, this.barIn);
+    	this.barIn.on('change:embeds', this.manageEmbeddedPorts, this);
     	
     	// barra inferior das portas de saída
     	this.barOut = new joint.shapes.basic.Rect({
@@ -752,7 +752,7 @@ var Rappid = Backbone.Router.extend({
 				        }
 				    }
 				});
-    	this.barOut.on('change:embeds', this.manageEmbeddedPorts, this.barOut);
+    	this.barOut.on('change:embeds', this.manageEmbeddedPorts, this);
     	
     	// rótulo da barra superior
     	var labelIn = new joint.shapes.basic.Rect({
@@ -790,14 +790,15 @@ var Rappid = Backbone.Router.extend({
     
     /* ------ AUXILIAR FUNCTIONS ------- */
     // reorganiza as portas contidas na barra
-    manageEmbeddedPorts: function(port) {
+    manageEmbeddedPorts: function(bar) {
     	// para cada porta contida na barra
-    	var embeddedPorts = this.getEmbeddedCells();
+    	var embeddedPortsIDs = bar.attributes.embeds;
     	var positionMultiplier = 10;
     	
-    	_.each(embeddedPorts, function(p){
+    	_.each(embeddedPortsIDs, function(embeddedPortID){
+    		var p = this.graph.getCell(embeddedPortID);
 			p.transition('position/x', positionMultiplier, {});
 			positionMultiplier += 40;
-    	});
+    	}, this);
     }
 });
