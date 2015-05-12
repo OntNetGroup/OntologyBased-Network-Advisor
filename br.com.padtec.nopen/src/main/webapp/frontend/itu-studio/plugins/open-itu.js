@@ -25,59 +25,88 @@ function openFromURL(equipment, filename, graph, app){
 		dataType: 'json',
 		success: function(data){
 			graph.fromJSON(data);
-			loadElements(graph, app);
+			loadCells(graph, app);
 		},
 		error : function(e) {
 			//alert("error: " + e.status);
 		}
 	});
 
-	var cardID = app.cardID;
-	var cardName = app.cardName;
-	var cardTech = app.cardTech;
+	function loadCells(graph, app) {
+		
+		loadElements(graph, app);
+		loadLinks(graph);
+	}
 	
 	function loadElements(graph, app) {
+
+		var layers = [];
+		var transportFunctions = [];
 		
-		$.each(graph.getElements(), function(index, element){
-			console.log(element.attributes.subtype);
-			
-			var elementID = element.attributes.id;
+		$.each(graph.getElements(), function(element){
 			var elementType = element.attributes.type;
-			var elementSubtype = element.attributes.attrs.subtype;
-			var elementParentID = element.attributes.parent;
-			
 			if(elementType === TypeEnum.LAYER) {
-				insertContainer(elementSubtype, 'layer', cardID, cardName, cardTech);
-				//TODO: hide layer from stencil
+				layers.append(element);
 			}
 			if(elementType === TypeEnum.TRANSPORT_FUNCTION) {
-				var elementParent = graph.getCell(elementParentID);
-				var elementName = element.attributes.attrs.text.text;
-				if(elementParent) {
-					var elementParentSubtype = elementParent.attributes.subtype;
-					createTransportFunction(elementID, elementName, elementSubtype, elementParentSubtype, 'layer', cardID);
-				} else {
-					createTransportFunction(elementID, elementName, elementSubtype, cardName, cardTech, cardID);
-				}
+				transportFunctions.append(element);
 			}
-			if(elementSubtype === 'in' || elementSubtype === 'out') {
-				var elementName = element.attributes.attrs.text.text;
-				createPort(elementID, elementName, elementSubtype, tFunctionID, tFunctionName, tFunctionType);
+		});
+		
+		loadLayers(layers, graph, app);
+		loadTransportFunctions(transportFunctions, graph, app);
+	}
+	
+	function loadLayers(layers, graph, app) {
+
+		$.each(layers, function(layer){
+			var layerSubtype = element.attributes.attrs.subtype;
+			insertContainer(layerSubtype, 'layer', app.cardID, app.cardName, app.cardTech);
+			app.hideLayer(layerSubtype);
+		});
+	}
+	
+	function loadTransportFunctions(transportFunctions, graph, app) {
+		
+		$.each(transportFunctions, function(transportFunction){
+			
+			var tFunctionID = transportFunction.attributes.id;
+			var tFunctionName = transportFunction.attributes.attrs.text.text;
+			var tFunctionType = transportFunction.attributes.attrs.subtype;
+			
+			var parentID = transportFunction.attributes.parent;
+			var parent = graph.getCell(parentID);
+			
+			if(parent) {
+				var parentSubtype = parent.attributes.subtype;
+				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, parentSubtype, 'layer', app.cardID);
+			} else {
+				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, app.cardName, app.cardTech, app.cardID);
+			}
+		});
+	}
+	
+	function loadLinks(graph) {
+		$.each(graph.getLinks(), function(link){
+			var linkID = link.attributes.id;
+			
+			var sourceID = link.attributes.source.id;
+			var source = graph.getCell(sourceID);
+			var sourceName = source.attributes.attrs.text.text;
+			var sourceType = source.attributes.type;
+			var sourceSubtype = source.attributes.subtype;
+			
+			var targetID = link.attributes.target.id;
+			var target = graph.getCell(targetID);
+			var targetName = target.attributes.attrs.text.text;
+			var targetType = target.attributes.type;
+			var targetSubtype = target.attributes.subtype;
+			
+			if(targetType === TypeEnum.TRANSPORT_FUNCTION) {
+				createLink(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
+			} else {
+				createPort(targetID, targetName, targetSubtype, sourceID, sourceName, sourceSubtype);
 			}
 		});
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

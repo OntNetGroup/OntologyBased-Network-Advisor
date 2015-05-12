@@ -31,7 +31,6 @@ var Rappid = Backbone.Router.extend({
     
     setCardTech: function(tech) {
     	this.cardTech = tech;
-//        this.initializeStencil();
     },
 
     /* counters to give names for transport functions and interfaces */
@@ -46,6 +45,7 @@ var Rappid = Backbone.Router.extend({
 
         this.inspectorClosedGroups = {};
 
+        this.initializeStencil();
         this.initializePaper();
         this.initializeSelection();
         this.initializeHaloAndInspector();
@@ -253,15 +253,19 @@ var Rappid = Backbone.Router.extend({
         $('.stencil-container .btn-collapse').on('click', _.bind(this.stencil.closeGroups, this.stencil));
 
         this.initializeStencilTooltips();
-        this.hideLayersAlreadyOnPaper();
     },
     
-    hideLayersAlreadyOnPaper: function() {
-    	var layersOnPaper = this.getLayersOnPaper();
-    	_.each(layersOnPaper, function(layer) {
-    		var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layer+ '"]';
-    		$(element).hide();
-    	});
+//    hideLayersAlreadyOnPaper: function() {
+//    	var layersOnPaper = this.getLayersOnPaper();
+//    	_.each(layersOnPaper, function(layer) {
+//    		var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layer+ '"]';
+//    		$(element).hide();
+//    	});
+//    },
+    
+    hideLayer: function(layer) {
+    	var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layer+ '"]';
+		$(element).hide();
     },
     
     // retorna a lista de camadas ja inseridas no paper
