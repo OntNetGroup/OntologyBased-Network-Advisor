@@ -24,7 +24,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf6_Trail_Termination_Function_Layer,
 			repository.getNamespace()+layerId
 		);
 		
@@ -73,13 +73,13 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
 			repository.getNamespace()+outputId, 
-			repository.getNamespace()+ConceptEnum.Adaptation_Output.toString()
+			repository.getNamespace()+ConceptEnum.Adaptation_Function_Output.toString()
 		);
 		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+afId, 
-			repository.getNamespace()+RelationEnum.ComponentOf15_Adaptation_Function_Adaptation_Output,
+			repository.getNamespace()+RelationEnum.ComponentOf15_Adaptation_Function_Adaptation_Function_Output,
 			repository.getNamespace()+outputId
 		);		
 		
@@ -94,13 +94,13 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
 			repository.getNamespace()+inputId, 
-			repository.getNamespace()+ConceptEnum.Adaptation_Input.toString()
+			repository.getNamespace()+ConceptEnum.Adaptation_Function_Input.toString()
 		);
 		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+afId, 
-			repository.getNamespace()+RelationEnum.ComponentOf14_Adaptation_Function_Adaptation_Input,
+			repository.getNamespace()+RelationEnum.ComponentOf14_Adaptation_Function_Adaptation_Function_Input,
 			repository.getNamespace()+inputId
 		);		
 		
@@ -115,13 +115,13 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
 			repository.getNamespace()+outputId, 
-			repository.getNamespace()+ConceptEnum.Trail_Termination_Output.toString()
+			repository.getNamespace()+ConceptEnum.Trail_Termination_Function_Output.toString()
 		);
 		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.ComponentOf20_Trail_Termination_Function_Trail_Termination_Output,
+			repository.getNamespace()+RelationEnum.ComponentOf20_Trail_Termination_Function_Trail_Termination_Function_Output,
 			repository.getNamespace()+outputId
 		);		
 		
@@ -136,13 +136,13 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
 			repository.getNamespace()+inputId, 
-			repository.getNamespace()+ConceptEnum.Trail_Termination_Input.toString()
+			repository.getNamespace()+ConceptEnum.Trail_Termination_Function_Input.toString()
 		);
 		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.ComponentOf21_Trail_Termination_Function_Trail_Termination_Input,
+			repository.getNamespace()+RelationEnum.ComponentOf21_Trail_Termination_Function_Trail_Termination_Function_Input,
 			repository.getNamespace()+inputId
 		);		
 		
@@ -201,14 +201,14 @@ public class InstanceFabricator {
 		FactoryUtil.deleteObjectProperty(
 			repository.getBaseModel(),
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf6_Trail_Termination_Function_Layer,
 			repository.getNamespace()+srcLayerId
 		);
 		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Layer,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf6_Trail_Termination_Function_Layer,
 			repository.getNamespace()+tgtLayerId
 		);
 		
@@ -300,7 +300,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+rackId, 
-			repository.getNamespace()+RelationEnum.ComponentOf9_Rack_Shelf,
+			repository.getNamespace()+RelationEnum.ComponentOf8_Rack_Shelf,
 			repository.getNamespace()+shelfId
 		);		
 		
@@ -321,7 +321,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+shelfId, 
-			repository.getNamespace()+RelationEnum.ComponentOf10_Shelf_Slot,
+			repository.getNamespace()+RelationEnum.ComponentOf9_Shelf_Slot,
 			repository.getNamespace()+slotId
 		);	
 		
@@ -467,11 +467,11 @@ public class InstanceFabricator {
 			repository.getNamespace()+supervisorId,			 
 			repository.getNamespace()+ConceptEnum.Supervisor.toString()			
 		);
-			
+		//Fix-me	
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+holderId,			 
-			repository.getNamespace()+RelationEnum.ComponentOf6_Equipment_Holder_Supervisor,
+			repository.getNamespace()+RelationEnum.ComponentOf10_Slot_Supervisor,
 			repository.getNamespace()+supervisorId
 		);
 		
@@ -524,7 +524,7 @@ public class InstanceFabricator {
 		
 		String ind2URI = repository.getNamespace()+techName;
 		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf8_Technology_Layer.toString();
+		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf7_Technology_Layer.toString();
 		
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),ind2URI, techToLayerURI, indURI);
 		
