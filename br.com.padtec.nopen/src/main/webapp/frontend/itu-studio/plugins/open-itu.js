@@ -46,11 +46,9 @@ function openFromURL(equipment, filename, graph, app){
 		$.each(graph.getElements(), function(index, element){
 			var elementType = element.attributes.type;
 			if(elementType === TypeEnum.LAYER) {
-//				layers.append(element);
 				layers[layers.length] = element;
 			}
 			if(elementType === TypeEnum.TRANSPORT_FUNCTION) {
-//				transportFunctions.append(element);
 				transportFunctions[transportFunctions.length] = element;
 			}
 		});

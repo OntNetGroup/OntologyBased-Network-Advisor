@@ -154,6 +154,13 @@ function validator(validator, graph, app) {
     	
     	var result = deletePort(cellID, name, type);			
 		if(result === "success") {
+			if(type === 'in') {
+				var index = this.barIn.attributes.embeddedPorts.indexOf(cellID);
+				this.barIn.attributes.embeddedPorts.splice(index, 1);
+			} else {
+				var index = this.barOut.attributes.embeddedPorts.indexOf(cellID);
+				this.barOut.attributes.embeddedPorts.splice(index, 1);
+			}
 			return next(err);
 		} else {
 			return next(result);
@@ -333,10 +340,4 @@ function isInterface(err, command, next) {
 function isLayer(err, command, next) {
 	if (command.data.type === TypeEnum.LAYER) return next(err);
     // otherwise stop validating (don't call next validation function)
-};
-
-//Check if the cell is being added to the graph. Continue validating if no, otherwise stop.
-function isLayer(err, command, next) {
-	if (command.data.type === TypeEnum.LAYER) return next(err);
-  // otherwise stop validating (don't call next validation function)
 };

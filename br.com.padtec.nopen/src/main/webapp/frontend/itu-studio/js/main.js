@@ -38,6 +38,7 @@ var Rappid = Backbone.Router.extend({
     initializeCounters: function() {
         this.TTFCounter = 0;
         this.AFCounter = 0;
+        this.MatrixCounter = 0;
         this.inPortCounter = 0;
         this.outPortCounter = 0;
     },
@@ -122,10 +123,7 @@ var Rappid = Backbone.Router.extend({
         		return canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType);
             },
             
-	         // RF: Inserir 'containmnet rules' aos nós
         	validateEmbedding: function(childView, parentView) {
-        		console.log('validate embedding');
-        		
         		// se alguma interface tenta ser colocada sobre algum elemento
         		if(childView.model.get('subtype') === 'in') {
         			if(parentView.model !== this.barIn) return false;
@@ -147,10 +145,10 @@ var Rappid = Backbone.Router.extend({
 	            
 	            if(cellSubType === 'in') {
 	            	cell.transition('position/y', 15, {});
-	            	this.barIn.embed(cell);
+	            	this.manageEmbeddedPorts(this.barIn);
 	            } else {
 	            	cell.transition('position/y', 955, {});
-	            	this.barOut.embed(cell);
+	            	this.manageEmbeddedPorts(this.barOut);
 	            }
             }
         }, this);
@@ -724,7 +722,7 @@ var Rappid = Backbone.Router.extend({
     	// barra superior das portas de entrada
     	this.barIn = new joint.shapes.basic.Rect({
 						subtype: 'barIn',
-						embeddedPorts: 0, // qntd de portas contidas nesta barra
+						embeddedPorts: [], // qntd de portas contidas nesta barra
 						position: {x: 0, y: 0},
 						size: {width: 900, height: 60},
 					    attrs: {
@@ -735,12 +733,11 @@ var Rappid = Backbone.Router.extend({
 					        }
 					    }
 					});
-    	this.barIn.on('change:embeds', this.manageEmbeddedPorts, this);
     	
     	// barra inferior das portas de saída
     	this.barOut = new joint.shapes.basic.Rect({
 					subtype: 'barOut',
-					embeddedPorts: 0, // qntd de portas contidas nesta barra
+					embeddedPorts: [], // qntd de portas contidas nesta barra
 					magnet: false,
 					position: {x: 0, y: 940},
 					size: {width: 900, height: 60},
@@ -752,7 +749,6 @@ var Rappid = Backbone.Router.extend({
 				        }
 				    }
 				});
-    	this.barOut.on('change:embeds', this.manageEmbeddedPorts, this);
     	
     	// rótulo da barra superior
     	var labelIn = new joint.shapes.basic.Rect({
@@ -792,8 +788,8 @@ var Rappid = Backbone.Router.extend({
     // reorganiza as portas contidas na barra
     manageEmbeddedPorts: function(bar) {
     	// para cada porta contida na barra
-    	var embeddedPortsIDs = bar.attributes.embeds;
     	var positionMultiplier = 10;
+    	var embeddedPortsIDs = bar.attributes.embeddedPorts;
     	
     	_.each(embeddedPortsIDs, function(embeddedPortID){
     		var p = this.graph.getCell(embeddedPortID);

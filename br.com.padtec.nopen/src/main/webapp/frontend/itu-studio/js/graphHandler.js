@@ -171,11 +171,13 @@ function graphHandler(graph, app) {
 		    			// Move the port to the superior (in port) or inferior (out port) bar
 		    			if(portType === 'in') {
 		    				cell.transition('position/y', 15, {});
-		    				this.barIn.embed(cell);
+		    				this.barIn.attributes.embeddedPorts[this.barIn.attributes.embeddedPorts.length] = portID;
+		    				this.manageEmbeddedPorts(this.barIn);
 		    			}
 		    			else {
 		    				cell.transition('position/y', 955, {});
-		    				this.barOut.embed(cell);
+		    				this.barOut.attributes.embeddedPorts[this.barOut.attributes.embeddedPorts.length] = portID;
+		    				this.manageEmbeddedPorts(this.barOut);
 		    			}
 						cell.attr({
 							text: {text: portName}
@@ -244,6 +246,7 @@ function graphHandler(graph, app) {
 		if(elementSubtype === 'out') return 'out_' +app.outPortCounter;
 		if(elementSubtype === 'AF') return 'AF_' +app.AFCounter;
 		if(elementSubtype === 'TTF') return 'TTF_' +app.TTFCounter;
+		if(elementSubtype === 'Matrix') return 'Matrix_' +app.MatrixCounter;
 	};
 	
 	// Increment the counter of the properly element
@@ -252,5 +255,6 @@ function graphHandler(graph, app) {
 		if(elementSubtype === 'out') app.outPortCounter++;
 		if(elementSubtype === 'AF') app.AFCounter++;
 		if(elementSubtype === 'TTF') app.TTFCounter++;
+		if(elementSubtype === 'Matrix') app.MatrixCounter++;
 	};
 };
