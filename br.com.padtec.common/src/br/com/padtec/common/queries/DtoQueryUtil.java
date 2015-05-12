@@ -3,11 +3,14 @@ package br.com.padtec.common.queries;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import br.com.padtec.common.dto.CardinalityDef;
 import br.com.padtec.common.dto.DtoDefinitionClass;
 import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.dto.DtoInstanceRelation;
+import br.com.padtec.common.dto.RelationDef;
 import br.com.padtec.common.types.OntCardinalityEnum;
 import br.com.padtec.common.types.OntPropertyEnum;
 
@@ -572,8 +575,8 @@ public class DtoQueryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	public static ArrayList<String> getCardDefFromClasses(InfModel model, String classURI){
-		return getCardDefFromClasses(model, classURI, "");
+	public static HashMap<String, CardinalityDef> getCardDefFromClasses(InfModel model, String classURI){
+		return getCardDefFromClasses(model, classURI, "", "");
 	}
 	
 	/**
@@ -585,30 +588,38 @@ public class DtoQueryUtil {
 	 * 
 	 * @author Freddy Brasileiro
 	 */
-	public static ArrayList<String> getCardDefFromClasses(InfModel model, String classURI, String propertyURI){
+	public static HashMap<String, CardinalityDef> getCardDefFromClasses(InfModel model, String domainClassURI, String propertyURI, String rangeTypeURI){
+		String propertyStr;
 		if(propertyURI == null || propertyURI.equals("")){
-			propertyURI = "?property";
+			propertyStr = "?property";
 		}else{
-			propertyURI = "<" + propertyURI + ">";
+			propertyStr = "<" + propertyURI + ">";
 		}
 		
+		String rangeTypeStr;
+		if(rangeTypeURI == null || rangeTypeURI.equals("")){
+			rangeTypeStr = "?onType";
+		}else{
+			rangeTypeStr = "<" + rangeTypeURI + ">";
+		}
+				
 		String queryString = QueryUtil.PREFIXES
 				+ "SELECT * \n"
 				+ "WHERE { \n"
-				+ "	<" + classURI + "> owl:equivalentClass/(owl:intersectionOf/rdf:rest*/rdf:first)* ?restricion . \n"
-				+ "	?restricion owl:onProperty " + propertyURI + " . \n"
+				+ "	<" + domainClassURI + "> owl:equivalentClass/(owl:intersectionOf/rdf:rest*/rdf:first)* ?restricion . \n"
+				+ "	?restricion owl:onProperty " + propertyStr + " . \n"
 				+ " OPTIONAL{ \n"
 				+ "		?restricion ?restricionType ?cardinalityValue . \n"
 				+ "		FILTER ( ?restricionType IN (owl:qualifiedCardinality, owl:minQualifiedCardinality, owl:maxQualifiedCardinality) ) . \n"
 				+ "		OPTIONAL{ \n"
-				+ "			?restricion owl:onClass ?onType . \n"
+				+ "			?restricion owl:onClass " + rangeTypeStr + " . \n"
 				+ "		} \n"
 				+ "		OPTIONAL{ \n"
-				+ "			?restricion owl:onDataRange ?onType . \n"
+				+ "			?restricion owl:onDataRange " + rangeTypeStr + " . \n"
 				+ "		} \n"
 				+ "	} \n"
 				+ "	OPTIONAL{ \n"
-				+ "		?restricion ?restricionType ?onType . \n"
+				+ "		?restricion ?restricionType " + rangeTypeStr + " . \n"
 				+ "		FILTER ( ?restricionType IN (owl:someValuesFrom) ) . \n"
 				+ "	} \n"
 				+ "} \n";
@@ -617,13 +628,124 @@ public class DtoQueryUtil {
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();
 		
-		ArrayList<String> SubClass = new ArrayList<String>();
+		HashMap<String, CardinalityDef> result = new HashMap<String, CardinalityDef>();
+//		ArrayList<CardinalityDef> result = new ArrayList<CardinalityDef>();
+		while (results.hasNext())	
+		{	
+			QuerySolution row= results.next();
+			
+			RDFNode property = row.get("property");
+			if(property != null){
+				propertyURI = property.toString();
+			}
+			
+			RDFNode onType = row.get("onType");
+			if(onType != null){
+				rangeTypeURI = onType.toString();
+			}
+			
+			String key = domainClassURI + propertyStr + rangeTypeURI;
+			
+			CardinalityDef cardDef;
+			if(result.containsKey(key)){
+				cardDef = result.get(key);
+			}else{
+				cardDef = new CardinalityDef();
+			}
+			
+			cardDef.setDomainClass(domainClassURI);
+			cardDef.setObjectProperty(propertyStr);			
+			cardDef.setRangeType(onType.toString());
+			
+			RDFNode restricionType = row.get("restricionType");
+			RDFNode cardinalityValue = row.get("cardinalityValue");
+			int bound;
+			if(cardinalityValue == null){
+				bound = -1;
+			}else{
+				bound = Integer.valueOf(cardinalityValue.toString());
+			}
+			cardDef.setBounds(restricionType.toString(), bound);
+			
+			if(!result.containsKey(key)){
+				result.put(key, cardDef);
+			}
+		}	
+		
+		return result;
+	}
+	
+	/**
+	 * Return all possible instantiations of a relation combining its sub-relations
+	 * and combining the sub-classes of the domain and range  
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param propertyURI: Property URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	public static HashMap<String, RelationDef> getPossibleInstantiationsOfRelation(InfModel model, String propertyURI){
+		String queryString = QueryUtil.PREFIXES
+				+ "SELECT * \n"
+				+ "WHERE \n"
+				+ "{ \n"
+				+ "	?property rdfs:subPropertyOf* <" + propertyURI + "> . \n"
+				+ "	?property rdfs:domain ?originalDomain . \n"
+				+ "	?property rdfs:range ?originalRange . \n"
+				+ "	?possibleDomain rdfs:subClassOf* ?originalDomain. \n"
+				+ " ?possibleRange rdfs:subClassOf* ?originalRange . \n"
+				+ "}";
+		
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		
+		HashMap<String, CardinalityDef> cardDefinitions = new HashMap<String, CardinalityDef>();
+		
+		HashMap<String, RelationDef> result = new HashMap<String, RelationDef>();
 		while (results.hasNext())	
 		{			
 			QuerySolution row= results.next();
-		    RDFNode x = row.get("subject");	
-		    	SubClass.add(x.toString());
+		    
+			RelationDef relDef = new RelationDef();
+			
+			RDFNode possibleDomain = row.get("possibleDomain");
+			relDef.setPossibleDomain(possibleDomain.toString());
+			RDFNode property = row.get("property");
+			relDef.setObjectProperty(property.toString());
+			RDFNode possibleRange = row.get("possibleRange");
+			relDef.setPossibleRange(possibleRange.toString());
+			RDFNode originalDomain = row.get("originalDomain");
+			relDef.setOriginalDomain(originalDomain.toString());
+			RDFNode originalRange = row.get("originalRange");
+			relDef.setOriginalRange(originalRange.toString());
+			
+			String cardDefKey;
+			cardDefKey = originalDomain.toString() + property.toString() + originalRange.toString();
+			if(!cardDefinitions.containsKey(cardDefKey)){
+				HashMap<String, CardinalityDef> newCardDefs = getCardDefFromClasses(model, originalDomain.toString(), property.toString(), originalRange.toString());
+				cardDefinitions.putAll(newCardDefs);
+			}
+			CardinalityDef cardDef;
+			cardDef = cardDefinitions.get(cardDefKey);
+			relDef.setCardOnRange(cardDef);
+			
+			List<String> inverseURIs = QueryUtil.getAllInverseOfURIs(model, propertyURI);
+			for (String invURI : inverseURIs) {
+				cardDefKey = originalRange.toString() + invURI + originalDomain.toString();
+				if(!cardDefinitions.containsKey(cardDefKey)){
+					HashMap<String, CardinalityDef> newCardDefs = getCardDefFromClasses(model, originalRange.toString(), invURI, originalDomain.toString());
+					cardDefinitions.putAll(newCardDefs);
+				}
+				cardDef = cardDefinitions.get(cardDefKey);
+				relDef.setCardOnRange(cardDef);
+				break;
+			}
+			
+			String key = possibleDomain.toString() + property.toString() + possibleRange.toString();
+			
+			result.put(key, relDef);
 		}			
-		return SubClass;
+		return result;
 	}
 }
