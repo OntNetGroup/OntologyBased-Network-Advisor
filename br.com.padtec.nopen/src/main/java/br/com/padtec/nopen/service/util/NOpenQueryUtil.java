@@ -163,12 +163,14 @@ public class NOpenQueryUtil {
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
 				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
 				+ "SELECT ?y "
-				+ "WHERE { ?x rdfs:subPropertyOf ont:INV.links_output . "
+				+ "WHERE { ?w rdfs:subPropertyOf ont:INV.links_output . "
+				+ "?x rdfs:subPropertyOf ?w . " 
 				+ "?x rdfs:domain <" + uri_type_output + "> . "
 				+ "?x rdfs:range ?y . "
 				+ "?z rdfs:subPropertyOf ont:links_input . "
-				+ "?z rdfs:range <" + uri_type_input + "> . "
-				+ "?z rdfs:domain ?y . "
+				+ "?v rdfs:subPropertyOf ?z . " 
+				+ "?v rdfs:range <" + uri_type_input + "> . "
+				+ "?v rdfs:domain ?y . "
 				+ "}";
 		
 		Query query = QueryFactory.create(queryString); 

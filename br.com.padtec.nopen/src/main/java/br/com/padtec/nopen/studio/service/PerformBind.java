@@ -46,11 +46,12 @@ public class PerformBind {
 	/*
 	 * given two ports discover the rp between them.
 	 */
-	private HashSet<String> discoverRPBetweenPorts(String uri_type_output, String uri_type_input, OKCoUploader repository){
+	static HashSet<String> discoverRPBetweenPorts(String uri_type_output, String uri_type_input, OKCoUploader repository){
 		HashSet<String> rp = new HashSet<String>();
 		rp = NOpenQueryUtil.discoverRPBetweenPorts(uri_type_output, uri_type_input, repository.getBaseModel());
 		
 		return rp;
 	}
+
 	
 }

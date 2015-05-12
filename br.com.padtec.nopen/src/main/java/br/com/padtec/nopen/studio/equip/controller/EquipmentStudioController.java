@@ -365,18 +365,6 @@ public class EquipmentStudioController {
 		
 	}
 	
-	/**
-	 * Procedure to open a ITU file of a Template.
-	 * @param path
-	 * @param ituFilename
-	 * @return
-	 */
-	@RequestMapping(value = "/openITUFile", method = RequestMethod.POST)
-	protected @ResponseBody String openITUFile(@RequestParam("path") String path, @RequestParam("filename") String ituFilename)
-	{		
-		path = path + "/itu/" + ituFilename + ".json";
-		path = NOpenFileUtil.replaceSlash(path);		
-		return NOpenFileUtil.openTemplateJSONFileAsString(path);		
-	}
+	
 
 }
