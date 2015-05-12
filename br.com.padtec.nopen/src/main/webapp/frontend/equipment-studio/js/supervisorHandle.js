@@ -3,18 +3,60 @@ nscards = [];
 scards =[];
 supervisord = "";
 
-function setSupervisor(graph,card){
-//    console.log(card);   
-//    console.log(card.val());
-//	console.log(graph);
-//	console.log(supervisord);
+function setSupervisor(graph,cards){
+//    console.log('os cards' , cards);   
+//    console.log('val' , cards.val());
+//	console.log('grafico' , graph);
+//	console.log('supervisor' , supervisord);
 //	console.log('esse' , supervisord.id);
-	
-//	var card = graph.getCell(card.val());
+//	console.log(cards.length);
+//	for(var i = 0; i < cards.length; i++){
+//		console.log(cards[i].value);	
+//	}
+		console.log(nscards);
+		
+	var card;
 //	card.set("supervisor" , (supervisord.id));
-
+     
+	if (cards.length === 1) {
+		
+		card = graph.getCell(cards.val());
+		card.set("supervisor" , (supervisord.id));
+	}else{
+		for(var i = 0; i < cards.length; i++){
+			
+			card = graph.getCell(cards[i].value);
+			card.set("supervisor" , (supervisord.id));	
+		}
+	}
 }
 
+function setSupervisornull(graph,cards){
+//  console.log('os cards' , cards);   
+//  console.log('val' , cards.val());
+//	console.log('grafico' , graph);
+//	console.log('supervisor' , supervisord);
+//	console.log('esse' , supervisord.id);
+//	console.log(cards.length);
+//	for(var i = 0; i < cards.length; i++){
+//		console.log(cards[i].value);	
+//	}
+		
+	var card;
+//	card.set("supervisor" , (supervisord.id));
+   
+	if (cards.length === 1) {
+		
+		card = graph.getCell(cards.val());
+		card.set("supervisor" , '');
+	}else{
+		for(var i = 0; i < cards.length; i++){
+			
+			card = graph.getCell(cards[i].value);
+			card.set("supervisor" , '');	
+		}
+	}
+}
 
 function selectSupervisorWindow(supervisor,nscards,scards, graph){
 

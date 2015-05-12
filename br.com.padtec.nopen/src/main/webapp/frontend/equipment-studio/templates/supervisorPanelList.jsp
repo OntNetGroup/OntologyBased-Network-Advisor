@@ -50,8 +50,8 @@
       //result = IsCardempty();
       var result = "success";
       if (result === "success"){
-      	setSupervisor(app.graph,selectedOpts,supervisord);
-  		$('#lstBox2').append($(selectedOpts).clone());
+    	setSupervisornull(app.graph,selectedOpts);
+  		$('#lstBox2').append($(selectedOpts).clone());	
   		$(selectedOpts).remove();
   		e.preventDefault();	
       }else{
@@ -69,7 +69,7 @@
 		 //result = IsCardempty();
       var result = "success";
       if (result === "success"){
-      	setSupervisor(app.graph,selectedOpts);
+    	  setSupervisor(app.graph,selectedOpts);
       	$('#lstBox1').append($(selectedOpts).clone());
   		$(selectedOpts).remove();
   		e.preventDefault();
