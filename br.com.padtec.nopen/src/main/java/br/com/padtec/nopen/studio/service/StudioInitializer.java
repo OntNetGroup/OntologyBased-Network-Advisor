@@ -19,7 +19,7 @@ public class StudioInitializer {
 		PerformanceUtil.printExecutionTime("Equip Studio: TBox uploaded.", beginDate);
 		
 		HashSet<String> result = new HashSet<String>();
-		result = PerformBind.discoverRPBetweenPorts("http://nemo.inf.ufes.br/NewProject.owl#Trail_Termination_Function_Input", "http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function_Input", StudioComponents.studioRepository);
+		result = PerformBind.discoverRPBetweenPorts("http://nemo.inf.ufes.br/NewProject.owl#Trail_Termination_Function_Output", "http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function_Input", StudioComponents.studioRepository);
 	
 		
 		return msg;

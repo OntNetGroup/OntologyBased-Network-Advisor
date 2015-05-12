@@ -183,6 +183,7 @@ public class NOpenQueryUtil {
   		while (results.hasNext()) {
   			QuerySolution row = results.next();
   		    
+  		    //RDFNode rdfY = row.get("x");
   		    RDFNode rdfY = row.get("y");
   	    	result.add(rdfY.toString());
   		}
