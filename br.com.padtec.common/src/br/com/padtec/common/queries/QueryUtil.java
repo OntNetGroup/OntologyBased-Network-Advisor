@@ -188,6 +188,40 @@ public class QueryUtil {
 	}
 	
 	/** 
+	 * Return the number of occurrences of an individual with some property 
+	 * 
+	 * @param model: jena.ontology.InfModel
+	 * @param srcIndivURI
+	 * @param propertyURI
+	 * @param tgtClassURI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public int getNumberOfOccurrences(InfModel model, String srcIndivURI, String propertyURI, String tgtClassURI) 
+	{		
+		System.out.println("\nExecuting getIndividualFromRelation()...");
+		String queryString = "" 
+				+ PREFIXES
+				+ " SELECT (COUNT(*) AS ?count) \n"
+				+ " {\n"
+				+ "<" + srcIndivURI + "> <" + propertyURI + "> ?o ."
+				+ " ?o rdf:type <" + tgtClassURI + "> . " 		
+				+ "}";
+		
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();		    
+		    RDFNode count = row.get("count");	
+	    	System.out.println("- count: "+count.toString()); 
+	    	return Integer.valueOf(count.toString());
+		}
+		return 0;
+	}
+	
+	/** 
 	 * Return the URI of types of individuals  
 	 * 
 	 * @param model: jena.ontology.InfModel
