@@ -24,8 +24,8 @@
 	href="/nopen/frontend/equipment-studio/css/paper.css" />
 <link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/equipment-studio/css/inspector.css" />
-<!-- <link rel="stylesheet" type="text/css"
-	href="/nopen/frontend/equipment-studio/css/navigator.css" /> -->
+ <link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/equipment-studio/css/navigator.css" /> 
 <link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/equipment-studio/css/stencil.css" />
 <link rel="stylesheet" type="text/css"

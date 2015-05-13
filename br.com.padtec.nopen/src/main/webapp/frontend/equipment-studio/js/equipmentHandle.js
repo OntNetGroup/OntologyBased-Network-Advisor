@@ -60,10 +60,12 @@ function equipmentHandle(graph){
 		//console.log(JSON.stringify(cell));
 		if(cell.get('type') === 'link') return;
 
+	//	console.log(cell);
+	//	console.log(cell.attr);
 		var equipmentID = cell.get('id');
-//		console.log(equipmentID);
 		var equipmentType = cell.get('subType');
-//		console.log(equipmentType);
+		var equipmentName = getName(equipmentType);
+		
 		var position = cell.get('position');
 		var size = cell.get('size');
 		var area = g.rect(position.x, position.y, size.width, size.height);
@@ -87,26 +89,35 @@ function equipmentHandle(graph){
 
 			var containerType = parent.get('subType');
 			var containerID = parent.get('id');
-
+            var containerName = parent.attributes.attrs.name.text;
+            console.log(containerName);
 
 			if(parent.get('subType') === 'rack') {                   
 				//equipamento em um rack
 				// consultar ontologia para inserção 
-
-				var result = insertEquipmentholder(equipmentType, equipmentID , containerType , containerID);
+               // var equipmentName = getName(equipmentType);
+                
+				var result = insertEquipmentholder(equipmentName , equipmentType, equipmentID ,containerName , containerType , containerID);
 				//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);
 				if(result === "success") {
+					
 					parent.embed(cell);
-
+					cell.attr({
+						name: { text: equipmentName},
+					});
+					nextName(equipmentType);
+					
 					var a = parent.get('embeds');
 					var maior = 0;
 					for (var i = 0; i < a.length; i++) {
 						var shelf = graph.getCell(a[i]);
-
+                        
 						shelf.set('position', {
 							x: ((pposition.x) + 15) ,
 							y: (pposition.y + 20 + (i*(80))) 
 						});
+						
+						
 					}
 					parent.set('size' , { 
 						width: psize.width  ,
@@ -118,7 +129,7 @@ function equipmentHandle(graph){
 						type: 'alert',
 						width: 400,
 						title: 'Alert',
-						content: 'The rack can only contain a shelf.'
+						content: result,
 					}).open();		
 				}
 			}else{
@@ -131,9 +142,15 @@ function equipmentHandle(graph){
 					var containerType = parent.get('subType');
 					var containerID = parent.get('id');
 
-					var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
+					var result = insertEquipmentholder( equipmentName , equipmentType, equipmentID ,containerName, containerType , containerID);
 					if(result === "success") {
 						parent.embed(cell)
+						
+						cell.attr({
+							name: { text: equipmentName},
+						});
+						nextName(equipmentType);
+						
 						var b = parent.get('embeds');
 						var maior = 0;
 						for (var i = 0; i < b.length; i++) {
@@ -142,6 +159,7 @@ function equipmentHandle(graph){
 								x: pposition.x + 20 + ((i) * (42.5)) ,
 								y: pposition.y + 7 
 							});
+							
 						}
 						parent.set('size' , { 
 							width: 105 + ((parent.getEmbeddedCells().length - (1) ) * 42.5) ,
@@ -170,7 +188,7 @@ function equipmentHandle(graph){
 							type: 'alert',
 							width: 400,
 							title: 'Alert',
-							content: 'Shelf only contains slots.'
+							content: result,
 						}).open();	
 					}
 				}else {
@@ -187,10 +205,11 @@ function equipmentHandle(graph){
 							//Um card por slot
 							newpositionx = pposition.x + 6 + ((filhos) * (29));
 						};
-						var result = insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
+						var result = insertEquipmentholder( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 						if(result === "success") {
 							// Se já possuir um card (confirmar o metodo para card e supervisor)
-
+                                 
+							
 							if (parent.getEmbeddedCells().length === 1){	
 								new joint.ui.Dialog({
 									type: 'alert',
@@ -222,7 +241,7 @@ function equipmentHandle(graph){
 								if (cell.get('subType') === 'card'){									
 									parent.embed(cell);	
 									nscards.push(cell);
-									console.log(nscards);
+									//console.log(nscards);
 									cell.set('size' , {
 										width: 10 ,
 										height: 20							
@@ -231,22 +250,17 @@ function equipmentHandle(graph){
 										x : newpositionx ,
 										y : ((pposition.y) + 16)
 									});
+									
+									cell.attr({
+										name: { text: equipmentName},
+									});
+									nextName(equipmentType);
 
 								};
-
-
-								cell.set('size' , {
-									width: 10 ,
-									height: 20							
-								});
-								cell.set('position' , {
-									x : newpositionx ,
-									y : ((pposition.y) + 16)
-								});
 							}
 						}else{
 
-							var result = insertSupervisor( equipmentType, equipmentID , containerType , containerID);
+							var result = insertSupervisor( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 							if (result === "success"){
 								parent.embed(cell);
 								showTechnologyWindow(getTechnologies() , cell);
@@ -259,9 +273,21 @@ function equipmentHandle(graph){
 									x : newpositionx ,
 									y : ((pposition.y) + 16)
 								});
+								
+								cell.attr({
+									name: { text: equipmentName},
+								});
+								nextName(equipmentType);
+								
 							}else{
 								
-								//inserir dialogo do erro
+								new joint.ui.Dialog({
+									type: 'alert',
+									width: 400,
+									title: 'Alert',
+									content: result,
+								}).open();
+								cell.remove();
 
 							}
 						}
@@ -276,9 +302,16 @@ function equipmentHandle(graph){
 			//Only the rack can be inserted into the graph without an equipment holder	
 			var containerType;
 			var containerID;
-
-			var result = insertEquipmentholder(equipmentType, equipmentID);
+			
+			
+			var result = insertEquipmentholder(equipmentName , equipmentType, equipmentID);
 			if(result === "success") {    
+				
+				cell.attr({
+					name: { text: equipmentName},
+				});
+				nextName(equipmentType);
+				
 				return;
 			}else{
 				console.log(result);
@@ -494,5 +527,21 @@ function equipmentHandle(graph){
 		cell.set('position', cell.previous('position'));
 
 	},this);
+	
+	function getName(equipmentSubtype) {
+		if(equipmentSubtype === 'rack') return 'Rack_' +app.RackCounter;
+		if(equipmentSubtype === 'shelf') return 'Shelf_' +app.ShelfCounter;
+		if(equipmentSubtype === 'slot') return 'Slot_' +app.SlotCounter;
+		if(equipmentSubtype === 'card') return 'Card_' +app.CardCounter;
+		if(equipmentSubtype === 'supervisor') return 'Supervisor_' +app.SupervisorCounter;
+	};
+	
+	function nextName(equipmentSubtype) {
+		if(equipmentSubtype === 'rack') app.RackCounter++;
+		if(equipmentSubtype === 'shelf') app.ShelfCounter++;
+		if(equipmentSubtype === 'slot') app.SlotCounter++;
+		if(equipmentSubtype === 'card') app.CardCounter++;
+		if(equipmentSubtype === 'supervisor') app.SupervisorCounter++;
+	};
 
 };

@@ -1,9 +1,7 @@
 .navigator-container {
-    display: none;
     border: 1px solid hsla(220,11%,97%,.95);;
     border-left-color: lightgray;
-    color:  #bcbcbc;
-    background-color: #333;
+    display: none;
 }
 .navigator > .paper {
     background-color: #ffffff;

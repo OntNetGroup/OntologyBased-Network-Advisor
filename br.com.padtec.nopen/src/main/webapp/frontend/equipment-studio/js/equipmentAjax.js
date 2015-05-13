@@ -1,15 +1,15 @@
-function insertEquipmentholder(equipmentType, equipmentID , containerType , containerID) {
+function insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID) {
 
 	var result = "error";
 
 	var dtoEquipmentholder = {
-			"name": equipmentID ,
+			"name": equipmentName ,
 			"id": equipmentID ,
 			"type": equipmentType 
 	};
 	
 	var dtoContainer = {
-			"name": containerID ,
+			"name": containerName  ,
 			"id": containerID ,
 			"type": containerType 
 	};
@@ -101,19 +101,19 @@ function insertCard( cardName , cardType, cardID , slotName , slotType , slotID)
 };
 
 
-function insertSupervisor( supervisorType, supervisorID , slotType , slotID) {
+function insertSupervisor( supervisorName, supervisorType, supervisorID ,slotName, slotType , slotID) {
 
 	var result = "error";
 
 
 	var dtoSupervisor = {
-			"name" : supervisorID ,
+			"name" : supervisorName ,
 			"id": supervisorID ,
 			"type": supervisorType 
 	};
 	
 	var dtoSlot = {
-			"name": slotID ,
+			"name": slotName ,
 			"id": slotID ,
 			"type": slotType 
 	};

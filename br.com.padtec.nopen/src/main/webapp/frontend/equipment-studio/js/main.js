@@ -13,6 +13,14 @@ var Rappid = Backbone.Router.extend({
 
 		this.initializeEditor();
 	},
+	
+	  initializeCounters: function() {
+	        this.RackCounter = 0;
+	        this.ShelfCounter = 0;
+	        this.SlotCounter = 0;
+	        this.CardCounter = 0;
+	        this.SupervisorCounter = 0;
+	    },
 
 	initializeEditor: function() {
 
@@ -26,9 +34,8 @@ var Rappid = Backbone.Router.extend({
 		this.initializeClipboard();
 		this.initializeCommandManager();
 		this.initializeToolbar();
-		// Intentionally commented out. See the `initializeValidator()` method for reasons.
-		// Uncomment for demo purposes.
 		this.initializeValidator();
+		this.initializeCounters();
 		// Commented out by default. You need to run `node channelHub.js` in order to make
 		// channels working. See the documentation to the joint.com.Channel plugin for details.
 		//this.initializeChannel('ws://jointjs.com:4141');

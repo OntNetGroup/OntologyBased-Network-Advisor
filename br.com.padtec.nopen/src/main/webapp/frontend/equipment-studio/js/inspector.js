@@ -70,10 +70,13 @@ var InspectorDefs = {
 
 		'rack': {
 			inputs: {
-				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the rack.' } } },
+				//name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the rack.' } } },
 				attrs: {
+					name: {
+						text: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' } } },
+					}
 //					text: {
-//					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+//					text: { type: 'text', group: 'data', label: 'Name', index: 1 , attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' }} }
 //					}
 				},
 				subType: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Type of the equipment.' } } },
@@ -85,12 +88,15 @@ var InspectorDefs = {
 
 		'shelf': {
 			inputs: {
-				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the shelf.' } } },
-//				attrs: {
-//				text: {
-//				text: { type: 'text', group: 'data', label: 'Name', index: 1 }
-//				}
-//				},
+//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the shelf.' } } },
+				attrs: {
+					name: {
+						text: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' } } },
+					}
+//				   text: {
+//				       text: { type: 'text', group: 'data', label: 'Name', index: 1 , attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' }}}
+//				      }
+				    },
 				subType: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Type of the equipment.' } } },
 				id: { type: 'text', group: 'data', index: 3, label: 'ID', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'ID of the equipment.' } } }
 			},
@@ -100,12 +106,15 @@ var InspectorDefs = {
 
 		'slot' : {
 			inputs: {
-				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the slot.' } } },
-//				attrs: {
+//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the slot.' } } },
+				attrs: {
+					name: {
+						text: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' } } },
+					}
 //				text: {
-//				text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+//				text: { type: 'text', group: 'data', label: 'Name', index: 1 , attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' }} }
 //				}
-//				},
+				},
 				subType: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Type of the equipment.' } } },
 				id: { type: 'text', group: 'data', index: 3, label: 'ID', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'ID of the equipment.' } } }
 			},
@@ -115,12 +124,15 @@ var InspectorDefs = {
 
 		'card': {
 			inputs: {
-				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the card.' } } },
-//				attrs: {
+//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the card.' } } },
+				attrs: {
+					name: {
+						text: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' } } },
+					}
 //				text: {
-//				text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+//				text: { type: 'text', group: 'data', label: 'Name', index: 1 , attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' }}}
 //				}
-//				},
+				},
 				subType: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Type of the equipment.' } } },
 				supervisor: {type: 'text', group: 'specific', index: 3, label: 'Supervisor', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Name of the supervisor of the card.' } }},
 				id: { type: 'text', group: 'data', index: 3, label: 'ID', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'ID of the equipment.' } } },
@@ -131,12 +143,15 @@ var InspectorDefs = {
 
 		'supervisor': {
 			inputs: {
-				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the supervisor.' } } },
-//				attrs: {
+//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the supervisor.' } } },
+				attrs: {
+					name: {
+						text: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' } } },
+					}
 //				text: {
-//				text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+//				text: { type: 'text', group: 'data', label: 'Name', index: 1 , attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' }} }
 //				}
-//				},
+				},
 				subType: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Type of the equipment.' } } },
 				tech: { type : 'text' , group: 'specific', index: 3, label: 'Technology', attrs: {'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Technology of the supervisor.' }}},
 				id: { type: 'text', group: 'data', index: 3, label: 'ID', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'ID of the equipment.' } } }
