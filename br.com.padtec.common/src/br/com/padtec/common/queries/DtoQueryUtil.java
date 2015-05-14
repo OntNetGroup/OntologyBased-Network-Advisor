@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import br.com.padtec.common.dto.CardinalityDef;
 import br.com.padtec.common.dto.DtoDefinitionClass;
@@ -22,7 +23,9 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import com.hp.hpl.jena.vocabulary.XSD;
 
 public class DtoQueryUtil {
 
@@ -589,6 +592,10 @@ public class DtoQueryUtil {
 	 * @author Freddy Brasileiro
 	 */
 	public static HashMap<String, CardinalityDef> getCardDefFromClasses(InfModel model, String domainClassURI, String propertyURI, String rangeTypeURI){
+		System.out.println("\nExecuting getCardDefFromClasses()...");
+		System.out.println("domainClassURI: " + domainClassURI);
+		System.out.println("propertyURI: " + propertyURI);
+		System.out.println("rangeTypeURI: " + rangeTypeURI);
 		String propertyStr;
 		if(propertyURI == null || propertyURI.equals("")){
 			propertyStr = "?property";
@@ -604,11 +611,13 @@ public class DtoQueryUtil {
 		}
 				
 		String queryString = QueryUtil.PREFIXES
-				+ "SELECT * \n"
+				+ "SELECT DISTINCT ?property ?onType ?restricionType ?cardinalityValue   \n"
 				+ "WHERE { \n"
-				+ "	<" + domainClassURI + "> owl:equivalentClass/(owl:intersectionOf/rdf:rest*/rdf:first)* ?restricion . \n"
+				+ "	<" + domainClassURI + "> ?p ?o . \n"
+				+ "	?o (owl:intersectionOf/rdf:rest*/rdf:first)* ?restricion . \n"
+				+ "	FILTER( ?p IN (owl:equivalentClass, rdfs:subClassOf) ) . "
 				+ "	?restricion owl:onProperty " + propertyStr + " . \n"
-				+ " OPTIONAL{ \n"
+				+ "	OPTIONAL{ \n"
 				+ "		?restricion ?restricionType ?cardinalityValue . \n"
 				+ "		FILTER ( ?restricionType IN (owl:qualifiedCardinality, owl:minQualifiedCardinality, owl:maxQualifiedCardinality) ) . \n"
 				+ "		OPTIONAL{ \n"
@@ -620,7 +629,7 @@ public class DtoQueryUtil {
 				+ "	} \n"
 				+ "	OPTIONAL{ \n"
 				+ "		?restricion ?restricionType " + rangeTypeStr + " . \n"
-				+ "		FILTER ( ?restricionType IN (owl:someValuesFrom) ) . \n"
+//				+ "		FILTER ( ?restricionType IN (owl:someValuesFrom) ) . \n"
 				+ "	} \n"
 				+ "} \n";
 		
@@ -629,9 +638,15 @@ public class DtoQueryUtil {
 		ResultSet results = qe.execSelect();
 		
 		HashMap<String, CardinalityDef> result = new HashMap<String, CardinalityDef>();
+		String key = domainClassURI + propertyStr + rangeTypeURI;
+		key = key.replace("<", "").replace(">", "");
 //		ArrayList<CardinalityDef> result = new ArrayList<CardinalityDef>();
+		int j = 0;
+		
 		while (results.hasNext())	
 		{	
+			j++;
+			System.out.println("j: " + j);
 			QuerySolution row= results.next();
 			
 			RDFNode property = row.get("property");
@@ -644,8 +659,8 @@ public class DtoQueryUtil {
 				rangeTypeURI = onType.toString();
 			}
 			
-			String key = domainClassURI + propertyStr + rangeTypeURI;
-			
+			key = domainClassURI + propertyStr + rangeTypeURI;
+			key = key.replace("<", "").replace(">", "");
 			CardinalityDef cardDef;
 			if(result.containsKey(key)){
 				cardDef = result.get(key);
@@ -655,22 +670,35 @@ public class DtoQueryUtil {
 			
 			cardDef.setDomainClass(domainClassURI);
 			cardDef.setObjectProperty(propertyStr);			
-			cardDef.setRangeType(onType.toString());
+			cardDef.setRangeType(rangeTypeURI);
 			
 			RDFNode restricionType = row.get("restricionType");
 			RDFNode cardinalityValue = row.get("cardinalityValue");
-			int bound;
+			int bound = 0;
 			if(cardinalityValue == null){
 				bound = -1;
 			}else{
-				bound = Integer.valueOf(cardinalityValue.toString());
+				String valueStr = cardinalityValue.toString();
+				valueStr = valueStr.replace(XSD.nonNegativeInteger.toString(), "").replace("^^", "");
+//				bound = Integer.valueOf(valueStr);
 			}
 			cardDef.setBounds(restricionType.toString(), bound);
+			
+			System.out.println(cardDef);
 			
 			if(!result.containsKey(key)){
 				result.put(key, cardDef);
 			}
 		}	
+		
+		if(result.isEmpty()){
+			System.out.println();
+			CardinalityDef cardDef = new CardinalityDef();
+			cardDef.setDomainClass(domainClassURI);
+			cardDef.setRangeType(propertyURI);
+			cardDef.setObjectProperty(rangeTypeURI);
+			result.put(key, cardDef);
+		}
 		
 		return result;
 	}
@@ -686,7 +714,7 @@ public class DtoQueryUtil {
 	 */
 	public static HashMap<String, RelationDef> getPossibleInstantiationsOfRelation(InfModel model, String propertyURI){
 		String queryString = QueryUtil.PREFIXES
-				+ "SELECT * \n"
+				+ "SELECT DISTINCT * \n"
 				+ "WHERE \n"
 				+ "{ \n"
 				+ "	?property rdfs:subPropertyOf* <" + propertyURI + "> . \n"
@@ -703,6 +731,7 @@ public class DtoQueryUtil {
 		HashMap<String, CardinalityDef> cardDefinitions = new HashMap<String, CardinalityDef>();
 		
 		HashMap<String, RelationDef> result = new HashMap<String, RelationDef>();
+		
 		while (results.hasNext())	
 		{			
 			QuerySolution row= results.next();
@@ -720,32 +749,40 @@ public class DtoQueryUtil {
 			RDFNode originalRange = row.get("originalRange");
 			relDef.setOriginalRange(originalRange.toString());
 			
+			String key = possibleDomain.toString() + property.toString() + possibleRange.toString();
+			
+			result.put(key, relDef);
+		}		
+		System.out.println();
+		int i = 0;
+		for (Entry<String, RelationDef> relDefEntry : result.entrySet()) {
+			i++;
+			System.out.println("i: " + i);
+			RelationDef relDef = relDefEntry.getValue();
 			String cardDefKey;
-			cardDefKey = originalDomain.toString() + property.toString() + originalRange.toString();
+			cardDefKey = relDef.getOriginalDomain() + relDef.getObjectProperty() + relDef.getOriginalRange();
+			System.out.println(cardDefKey.replace("http://nemo.inf.ufes.br/NewProject.owl#", "->"));
 			if(!cardDefinitions.containsKey(cardDefKey)){
-				HashMap<String, CardinalityDef> newCardDefs = getCardDefFromClasses(model, originalDomain.toString(), property.toString(), originalRange.toString());
+				HashMap<String, CardinalityDef> newCardDefs = getCardDefFromClasses(model, relDef.getOriginalDomain(), relDef.getObjectProperty(), relDef.getOriginalRange());
 				cardDefinitions.putAll(newCardDefs);
 			}
 			CardinalityDef cardDef;
 			cardDef = cardDefinitions.get(cardDefKey);
 			relDef.setCardOnRange(cardDef);
 			
-			List<String> inverseURIs = QueryUtil.getAllInverseOfURIs(model, propertyURI);
+			List<String> inverseURIs = QueryUtil.getAllInverseOfURIs(model, relDef.getObjectProperty());
 			for (String invURI : inverseURIs) {
-				cardDefKey = originalRange.toString() + invURI + originalDomain.toString();
+				cardDefKey = relDef.getOriginalRange() + invURI + relDef.getOriginalDomain();
 				if(!cardDefinitions.containsKey(cardDefKey)){
-					HashMap<String, CardinalityDef> newCardDefs = getCardDefFromClasses(model, originalRange.toString(), invURI, originalDomain.toString());
+					HashMap<String, CardinalityDef> newCardDefs = getCardDefFromClasses(model, relDef.getOriginalRange(), invURI, relDef.getOriginalDomain());
 					cardDefinitions.putAll(newCardDefs);
 				}
 				cardDef = cardDefinitions.get(cardDefKey);
 				relDef.setCardOnRange(cardDef);
 				break;
 			}
-			
-			String key = possibleDomain.toString() + property.toString() + possibleRange.toString();
-			
-			result.put(key, relDef);
-		}			
+		}
+		
 		return result;
 	}
 }
