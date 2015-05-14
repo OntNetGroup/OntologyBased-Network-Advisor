@@ -5,6 +5,7 @@
 <!--        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/> -->
 
         <title>ITU Studio</title>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
         <!--<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css" />-->
 
@@ -27,19 +28,33 @@
     </head>
     <body>
 		
+		<div id="msg" style="font-size:largest;">
+		<!-- you can set whatever style you want on this -->
+		Loading, please wait...
+		</div>
+				
 		<!-- TEMPLATES -->
-		
+		<div id="body" style="opacity:0"> 
        	<%@include file="templates/header.jsp"%>
         <%@include file="templates/toolbar.jsp"%>
-
+        </div>
+        
 		<!-- JS CORE -->
 
         <script src="/nopen/core/rappid_api/js/joint.js"></script>
         <script src="/nopen/core/rappid_api/js/joint.all.js"></script>
 
 		<!-- JS -->
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script>
 
-        <script src="/nopen/frontend/itu-studio/js/keyboard.js"></script>
+		$(document).ready(function() {
+		    $('#body').css('opacity', 1);
+ 		    $('#msg').hide();
+		});
+		</script>
+		<script src="/nopen/frontend/itu-studio/js/keyboard.js"></script>
         
 		<script src="/nopen/core/rappid_api/js/joint.shapes.devs.js"></script>
 		<script src="/nopen/frontend/itu-studio/js/typeEnum.js"></script>
