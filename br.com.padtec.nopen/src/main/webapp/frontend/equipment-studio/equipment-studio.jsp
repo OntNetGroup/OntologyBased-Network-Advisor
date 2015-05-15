@@ -75,6 +75,7 @@
 	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/supervisorHandle.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/validator.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
 
 	<!-- PLUGINS -->

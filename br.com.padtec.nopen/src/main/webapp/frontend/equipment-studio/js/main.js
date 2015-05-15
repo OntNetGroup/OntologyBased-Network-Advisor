@@ -512,31 +512,17 @@ var Rappid = Backbone.Router.extend({
 
 		this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
 
-		
-//		this.validator.validate('remove',_.bind(function(err,command,next){
-//			//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
-//			var cell = command.data.attributes;
-//			var equipmentName = "";
-//			var equipmentType = cell.subType;
-//			var equipmentID = cell.parent;
-//			console.log(equipmentID);
-//			console.log(cell);
-//			console.log(equipmentID);
-//			var child = cell.data.child;
-//			var containerName = "";
-//			var containerType = child.subType;
-//			var containerType = "";
-//			console.log(containerType);
-//			var parent = cell.parent;
-//			console.log(containerType);
-//			
-//			if (cell.subType === 'rack'){
-//				
-//				
-//				return next("nao pode remover o rack");
-//			}
-//			return next(err);
-//		}));
+		 this.validator.on('invalid',function(message) {
+	            
+	            $('.statusbar-container').text(message).addClass('error');
+
+	            _.delay(function() {
+
+	                $('.statusbar-container').text('').removeClass('error');
+	                
+	            }, 3000);
+	        });
+
 		
 		// this.validator.validate('change:position change:size add', _.bind(function(err, command, next) {
 
@@ -554,16 +540,6 @@ var Rappid = Backbone.Router.extend({
 		// })) return next("Another cell in the way!");
 		// }, this));
 
-		this.validator.on('invalid',function(message) {
-
-			$('.statusbar-container').text(message).addClass('error');
-
-			_.delay(function() {
-
-				$('.statusbar-container').text('').removeClass('error');
-
-			}, 1500);
-		});
 	},
 
 	initializeToolbar: function() {
