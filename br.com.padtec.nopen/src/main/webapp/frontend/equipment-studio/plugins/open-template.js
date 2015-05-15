@@ -55,33 +55,41 @@ function openFromURL(filename, graph){
 
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
+				var equipmentName = cell.attributes.attrs.name.text;
+				nextName(equipmentType);
 
-				insertEquipmentholder(equipmentType, equipmentID);
+				insertEquipmentholder(equipmentName , equipmentType, equipmentID);
 
 			};
 			if(cell.get('subType') === 'shelf'){
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
-
+				var equipmentName = cell.attributes.attrs.name.text;
+				nextName(equipmentType);
+				
 				var parentID = cell.get('parent');
 				var parent = graph.getCell(parentID);
 				var containerType = parent.get('subType');
 				var containerID = parent.get('id');
-
-				insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
+				var containerName = parent.attributes.attrs.name.text;
+				
+				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 			}
 			if(cell.get('subType') === 'slot'){
 
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
-
+				var equipmentName = cell.attributes.attrs.name.text;
+				nextName(equipmentType);
+				
 				var parentID = cell.get('parent');
 				var parent = graph.getCell(parentID);
 				var containerType = parent.get('subType');
 				var containerID = parent.get('id');
-
-				insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
+				var containerName = parent.attributes.attrs.name.text;
+				
+				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 			}
 
@@ -89,27 +97,33 @@ function openFromURL(filename, graph){
 
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
-
+				var equipmentName = cell.attributes.attrs.name.text;
+				nscards.push(cell);
+				nextName(equipmentType);
+				
 				var parentID = cell.get('parent');
 				var parent = graph.getCell(parentID);
 				var containerType = parent.get('subType');
 				var containerID = parent.get('id');
-
-				insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
+				var containerName = parent.attributes.attrs.name.text;
+				
+				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 			}
 			if(cell.get('subType')=== 'supervisor'){
 
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
-				var tech = cell.get('tech');
-
+				var equipmentName = cell.attributes.attrs.name.text;
+				nextName(equipmentType);
+				
 				var parentID = cell.get('parent');
 				var parent = graph.getCell(parentID);
 				var containerType = parent.get('subType');
 				var containerID = parent.get('id');
-
-				insertSupervisor( equipmentType, equipmentID , containerType , containerID);
+				var containerName = parent.attributes.attrs.name.text;
+				
+				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 				//setTechnology(equipmentType, equipmentID , tech);
 
