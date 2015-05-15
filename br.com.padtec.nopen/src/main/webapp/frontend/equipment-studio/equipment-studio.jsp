@@ -75,8 +75,8 @@
 	<script src="/nopen/frontend/equipment-studio/js/resizing.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/ituHandle.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/supervisorHandle.js"></script>
-	<script src="/nopen/frontend/equipment-studio/js/validator.js"></script>
 	<script src="/nopen/frontend/equipment-studio/js/equipmentHandle.js"></script>
+	<script src="/nopen/frontend/equipment-studio/js/validator.js"></script>
 
 	<!-- PLUGINS -->
 
@@ -126,6 +126,7 @@
 		equipmentHandle(app.graph);
 		ituHandle(app.paper, app.graph);
         supervisorHandle(app.paper , app.graph);
+        validator(app.validator, app.graph, app);
         
 		if (getUrlParameter('template')) {
 			var template = getUrlParameter('template');

@@ -2,7 +2,7 @@ function validator(validator, graph, app) {
 	
 	
 	
-	this.validator.validate('remove',isRack,_.bind(function(err,command,next){
+	validator.validate('remove',isRack,_.bind(function(err,command,next){
 	//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
 	
 		if(this.skipOntologyRemoveHandler) {
@@ -15,19 +15,58 @@ function validator(validator, graph, app) {
 	    var equipmentType = command.data.attributes.subType;
 	   // var equipmentID = cell.parent;
 	    console.log(equipmentID);
-	    console.log(cell);
 	    console.log(equipmentName);
 	    console.log(equipmentType);
 	    console.log(command);
+	    var containerName= '';
+	    	var containerType= '';
+	    		var containerID= '';
 	    
-	    var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
-	    
-	    if(result === "sucess"){
+	    //var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
+	    result = "success";
+	    if(result === "success"){
 	    	return next(err);
 	    }else{
 	    	return next(result);	
 	    }
 }, app));
+	
+	
+	validator.validate('remove',isShelf,_.bind(function(err,command,next){
+		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
+		
+			if(this.skipOntologyRemoveHandler) {
+	    		this.skipOntologyRemoveHandler = false;
+	    		return next(err);
+	    	}
+			
+			var equipmentID = command.data.id;
+			var equipmentName = command.data.attributes.attrs.name.text;
+		    var equipmentType = command.data.attributes.subType;
+		   // var equipmentID = cell.parent;
+		    console.log(equipmentID);
+		    console.log(equipmentName);
+		    console.log(equipmentType);
+		    console.log(command);
+		    console.log(command.data.attributes.parent);
+		    var holderID = command.data.attributes.parent;
+		    console.log('i' ,holderID);
+		    var holder =  graph.getCell(holderID);
+		   // console.log(container);
+		    var holderName= holder.data.attributes.attrs.name.text;
+//		    var holderType= holder.data.attributes.subType;
+//		    var holderID= holder.data.id;
+		    console.log(containerID);
+		    console.log(containerName);
+		    console.log(containerType);
+		    //var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
+		    result = "success";
+		    if(result === "success"){
+		    	return next(err);
+		    }else{
+		    	return next(result);	
+		    }
+	}, app));
 }
 
 
