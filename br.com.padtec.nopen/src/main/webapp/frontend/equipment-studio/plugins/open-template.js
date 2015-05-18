@@ -124,7 +124,7 @@ function openFromURL(filename, graph){
 				var containerID = parent.get('id');
 				var containerName = parent.attributes.attrs.name.text;
 				
-				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 				//setTechnology(equipmentType, equipmentID , tech);
 
