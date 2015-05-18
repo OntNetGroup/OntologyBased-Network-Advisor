@@ -124,6 +124,7 @@ function equipmentHandle(graph){
 						height:	265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
 					});
 				} else {
+					this.skipOntologyRemoveHandler = true;
 					cell.remove();
 					return new joint.ui.Dialog({
 						type: 'alert',
@@ -183,6 +184,7 @@ function equipmentHandle(graph){
 							}
 						};
 					}else{
+						this.skipOntologyRemoveHandler = true;
 						cell.remove();
 						return new joint.ui.Dialog({
 							type: 'alert',
@@ -217,6 +219,7 @@ function equipmentHandle(graph){
 									title: 'Alert',
 									content: 'A slot can only contain one card.'
 								}).open();
+								this.skipOntologyRemoveHandler = true;
 								cell.remove();
 								return;
 							}else{									
@@ -287,6 +290,7 @@ function equipmentHandle(graph){
 									title: 'Alert',
 									content: result,
 								}).open();
+								this.skipOntologyRemoveHandler = true;
 								cell.remove();
 
 							}
@@ -320,7 +324,8 @@ function equipmentHandle(graph){
 					width: 400,
 					title: 'Error',
 					content: (result),
-				}).open();	
+				}).open();
+				this.skipOntologyRemoveHandler = true;
 				cell.remove();
 			}	 			 
 		}

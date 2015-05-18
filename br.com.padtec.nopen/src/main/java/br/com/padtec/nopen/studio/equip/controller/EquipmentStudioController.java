@@ -26,7 +26,12 @@ public class EquipmentStudioController {
 		return "equipment-studio/equipment-studio";
 	}
 
-	/* ----- Supervisor/Tech/Card  ----- */
+	
+
+	
+	//=============================================================================================
+	// Supervisor and technology
+	//=============================================================================================
 	
 	/** Procedure to create a Supervisor
 	 * @param card
@@ -99,6 +104,11 @@ public class EquipmentStudioController {
 	{   
 		return NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());		
 	}
+	
+	
+	//=============================================================================================
+	// Card
+	//=============================================================================================
 	
 	/** Procedure to remove a card
 	 * @param card
@@ -180,7 +190,10 @@ public class EquipmentStudioController {
 		return getallnotsupervisedCards();		
 	}
 	
-	/* ----- Insert/Remove equipments  ----- */
+	
+	//=============================================================================================
+	// Generic equipment
+	//=============================================================================================
 	
 	/** Procedure to create an Equipment holder inside another equipment or a rack
 	 * @param equipmentholder
@@ -202,7 +215,7 @@ public class EquipmentStudioController {
 		return "success";		
 	}
 	
-	/** Procedure to remove an Equipmentholder
+	/** Procedure to remove an Equipment holder
 	 * @param equipment
 	 * @param container
 	 * @return
@@ -222,11 +235,13 @@ public class EquipmentStudioController {
 		return "success";
 	}	
 	
-	
+	//=============================================================================================
+	// Shelf
+	//=============================================================================================
 	
 	/** Procedure to remove a shelf
 	 * @param shelf
-	 * @param ?
+	 * @param 
 	 * @return
 	 */
 	@RequestMapping(value = "/removeShelf", method = RequestMethod.POST)
@@ -243,6 +258,10 @@ public class EquipmentStudioController {
 		return "success";
 	}
 		
+	//=============================================================================================
+	// Slot
+	//=============================================================================================
+	
 	/** Procedure to remove a slot
 	 * @param slot
 	 * @param ?

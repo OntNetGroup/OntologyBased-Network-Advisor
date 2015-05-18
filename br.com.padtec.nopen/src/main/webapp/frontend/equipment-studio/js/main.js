@@ -1,5 +1,8 @@
 var Rappid = Backbone.Router.extend({
 
+	
+	skipOntologyRemoveHandler: false,
+	
 	routes: {
 		'*path': 'home'
 	},
