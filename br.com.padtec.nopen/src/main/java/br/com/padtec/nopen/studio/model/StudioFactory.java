@@ -85,6 +85,11 @@ public class StudioFactory {
 		}			
 	}
 	
+	public static void setTransportFunctionName(DtoJointElement dtoTransportFunction) 
+	{
+			
+	}
+	
 	//=============================================================================================
 	// Port
 	//=============================================================================================
@@ -149,6 +154,11 @@ public class StudioFactory {
 			throw new Exception("Unexpected deletion of Port "+portType+"::"+portName);
 		}		
 	}
+	
+	public static void setPortName(DtoJointElement dtoPort) 
+	{
+			
+	}	
 	
 	//=============================================================================================
 	// Container
@@ -429,6 +439,12 @@ public class StudioFactory {
 		InstanceFabricator.deleteCard(StudioComponents.studioRepository,holderId,holderName);
 	}
 
+	public static String[] elementsWithNoConnection(DtoJointElement dtoCard) 
+	{	
+		//TODO
+		return null;
+	}
+	
 	//=============================================================================================
 	// Supervisor
 	//=============================================================================================
@@ -450,5 +466,9 @@ public class StudioFactory {
 		String supervisorName = dtoSupervisor.getName();		
 				
 		InstanceFabricator.deleteSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName);
-	}		
+	}
+
+	
+
+		
 }

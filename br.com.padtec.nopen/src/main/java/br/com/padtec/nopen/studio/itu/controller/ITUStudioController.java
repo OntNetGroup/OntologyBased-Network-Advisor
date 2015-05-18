@@ -37,8 +37,8 @@ public class ITUStudioController {
 	{
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
-		//TODO
-		return null;
+		String[] result = StudioFactory.elementsWithNoConnection(dtoCard);		
+		return result;
 	}
 	
 	/* ----- Search for Layers & Techs ----- */
@@ -198,7 +198,12 @@ public class ITUStudioController {
 	{
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
 
-		//TODO
+		try{
+			StudioFactory.setTransportFunctionName(dtoTransportFunction);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
 		return "success";
 	}
 	
@@ -250,7 +255,12 @@ public class ITUStudioController {
 	{		
 		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
 		 
-		//TODO
+		try{
+			StudioFactory.setPortName(dtoPort);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
 		return "success";		
 	}
 	
