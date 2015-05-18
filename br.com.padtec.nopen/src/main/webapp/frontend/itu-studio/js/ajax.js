@@ -208,6 +208,31 @@ function changeContainer(tFunctionID, tFunctionName, tFunctionType, sourceContai
 //	return "success";
 };
 
+function setTransportFunctionName(tFunctionID, tFunctionName, tFunctionType) {
+
+	var result = "error";
+
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "setTransportFunctionName.htm",
+		data: {
+			'transportFunction': JSON.stringify(dtoTransportFunction), 
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+//	return "success";
+};
+
 function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFunctionType) {
 
 	var result;
@@ -260,6 +285,30 @@ function deletePort(id, name, type) {
 //	return "success";
 };
 
+function setPortName(portID, portName, portType) {
+
+	var result;
+
+	var dtoPort = Util.createDtoElement(portID, portName, portType);
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "setPortName.htm",
+		data: {
+			'port': JSON.stringify(dtoPort)
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+//	return "success";
+};
 
 function createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
 
