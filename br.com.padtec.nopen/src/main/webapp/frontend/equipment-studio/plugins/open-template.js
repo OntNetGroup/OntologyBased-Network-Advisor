@@ -52,12 +52,13 @@ function openFromURL(filename, graph){
 		$.each(graph.getElements(), function(index, cell){
 
 			if(cell.get('subType') === 'rack'){
-
+                console.log(cell.attributes);
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
 				var equipmentName = cell.attributes.attrs.name.text;
-				nextName(equipmentType);
-
+				//nextName(equipmentType);
+				app.RackCounter++
+				
 				insertEquipmentholder(equipmentName , equipmentType, equipmentID);
 
 			};
@@ -65,7 +66,7 @@ function openFromURL(filename, graph){
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
 				var equipmentName = cell.attributes.attrs.name.text;
-				nextName(equipmentType);
+				app.ShelfCounter++;
 				
 				var parentID = cell.get('parent');
 				var parent = graph.getCell(parentID);
@@ -81,7 +82,7 @@ function openFromURL(filename, graph){
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
 				var equipmentName = cell.attributes.attrs.name.text;
-				nextName(equipmentType);
+				app.SlotCounter++;
 				
 				var parentID = cell.get('parent');
 				var parent = graph.getCell(parentID);
@@ -99,7 +100,7 @@ function openFromURL(filename, graph){
 				var equipmentType = cell.get('subType');
 				var equipmentName = cell.attributes.attrs.name.text;
 				nscards.push(cell);
-				nextName(equipmentType);
+				app.CardCounter++;
 				
 				var parentID = cell.get('parent');
 				var parent = graph.getCell(parentID);
@@ -115,7 +116,7 @@ function openFromURL(filename, graph){
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
 				var equipmentName = cell.attributes.attrs.name.text;
-				nextName(equipmentType);
+				app.SupervisorCounter++;
 				
 				var parentID = cell.get('parent');
 				var parent = graph.getCell(parentID);

@@ -90,7 +90,7 @@ function equipmentHandle(graph){
 			var containerType = parent.get('subType');
 			var containerID = parent.get('id');
             var containerName = parent.attributes.attrs.name.text;
-            console.log(containerName);
+     //       console.log(containerName);
 
 			if(parent.get('subType') === 'rack') {                   
 				//equipamento em um rack
