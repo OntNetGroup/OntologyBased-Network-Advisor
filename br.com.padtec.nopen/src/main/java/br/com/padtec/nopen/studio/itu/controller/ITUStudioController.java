@@ -188,7 +188,20 @@ public class ITUStudioController {
 		}
 		return "success";		
 	}
-		
+	
+	/** Modifica o nome de um transport function
+	 * @param transportFunction
+	 * @return
+	 */
+	@RequestMapping(value = "/setTransportFunctionName", method = RequestMethod.POST)
+	public @ResponseBody String setTransportFunctionName(@RequestParam("transportFunction") String transportFunction)
+	{
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+
+		//TODO
+		return "success";
+	}
+	
 	/* ----- CRUD for port ----- */
 	
 	/** Cria uma porta (interface) de entrada ou sa�da conectada a um transport function
@@ -226,6 +239,19 @@ public class ITUStudioController {
 			return e.getLocalizedMessage();
 		}
 		return "success";			
+	}
+	
+	/** Modifica o nome de uma interface
+	 * @param port
+	 * @return
+	 */
+	@RequestMapping(value = "/setPortName", method = RequestMethod.POST)
+	public @ResponseBody String setPortName(@RequestParam("port") String port) 
+	{		
+		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
+		 
+		//TODO
+		return "success";		
 	}
 	
 	/* ----- CRUD for link ----- */

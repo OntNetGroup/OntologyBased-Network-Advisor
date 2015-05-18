@@ -10,6 +10,10 @@ function graphHandler(graph, app) {
         }
     }, app);
     
+    graph.on('all', function(eventName, cell) {
+    	console.log(arguments);
+    });
+    
 	// some types of the elements need resizing after they are dropped
 	graph.on('add', function(cell, collection, opt) {
 		if(isLink(cell)) return;

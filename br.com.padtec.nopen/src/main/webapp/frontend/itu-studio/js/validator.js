@@ -130,7 +130,8 @@ function validator(validator, graph, app) {
 		
 		var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +containerName+ '"]';
 		
-		var result = deleteContainer(containerName, containerType, cardID, cardName, cardType);
+//		var result = deleteContainer(containerName, containerType, cardID, cardName, cardType);
+		var result = "error";
 		if(result === "success") {
 			$(element).show();
 			return next(err);
