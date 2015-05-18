@@ -16,13 +16,18 @@ public class ProvisioningRegister extends DefaultRegister {
 		for(String[] layers: defaultLayers)
 		{
 			registerTechnology(defaultTechs[i], false);
+			int j=0;
 			for(String l: layers)
 			{
 				registerLayer(l, defaultTechs[i], false);
+				
+				if(j>0) InstanceFabricator.createIsClientOf(ProvisioningComponents.provisioningRepository, layers[j-1], l);
+				
 				for(String service: defaultServices)
 				{
 					InstanceFabricator.createService(ProvisioningComponents.provisioningRepository, service, l, defaultTechs[i]);
 				}
+				j++;
 			}
 			i++;
 		}

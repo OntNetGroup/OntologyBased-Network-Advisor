@@ -522,15 +522,23 @@ public class InstanceFabricator {
 		String layerURI = repository.getNamespace()+ConceptEnum.Layer.toString();
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indURI, layerURI);
 		
-		String ind2URI = repository.getNamespace()+techName;
-		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf7_Technology_Layer.toString();
-		
+		String ind2URI = repository.getNamespace()+techName;		
+		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf7_Technology_Layer.toString();		
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),ind2URI, techToLayerURI, indURI);
 		
 		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" created for Technology "+techName);
 	}	
 
+	public static void createIsClientOf(OKCoUploader repository, String clientLayerName, String serverLayerName) throws Exception
+	{
+		String clientURI = repository.getNamespace()+clientLayerName;
+		String serverURI = repository.getNamespace()+serverLayerName;
+		String isClientURI = repository.getNamespace()+RelationEnum.is_client_Layer_Layer.toString();	
+		FactoryUtil.createInstanceRelation(repository.getBaseModel(),clientURI, isClientURI, serverURI);
+		
+		NOpenLog.appendLine(repository.getName()+": Layer "+clientLayerName+" is client of Layer "+serverLayerName);
+	}
+		
 	/**
 	 * @author John Guerson
 	 */

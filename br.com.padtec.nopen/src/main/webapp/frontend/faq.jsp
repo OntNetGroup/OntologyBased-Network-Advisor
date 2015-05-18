@@ -44,9 +44,10 @@
 				
 				<!-- Write the content of the page here... -->
 				<ol class="list-questions">
-					<li><a class="question" href="#">What is the "Network Topology" functionality?</a> <div class="answer">Coming soon...</div> </li>					 
-					<li><a class="question" href="#">What is the "Equipment Studio" functionality?</a> <div class="answer">Coming soon...</div> </li>					  
-					<li><a class="question" href="#">What is the "Provisioning" functionality?</a> <div class="answer">Coming soon...</div> </li>					
+					<li><a class="question" href="#">What is Network Topology?</a> <div class="answer">Should be more of a description here...</div> </li>					 
+					<li><a class="question" href="#">What is Equipment Studio?</a> <div class="answer">Should be more of a description here...</div> </li>					  
+					<li><a class="question" href="#">What is Provisioning?</a> <div class="answer">Should be more of a description here...</div> </li>		
+					<li><a class="question" href="#">What is Network Advisor?</a> <div class="answer">Should be more of a description here...</div> </li>			
 				</ol>
 				
 			</div>

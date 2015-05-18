@@ -30,7 +30,8 @@
 							<li><a  class="submenu" href="advisor.htm" class=""><b class="">(NA)</b><span class="hidden-sm">&nbsp;&nbsp; Network Advisor</span></a></li>
 						</ul>	
 						</li>												
-						<li><a class="" href="options.htm"><b class="icon-wrench"></b><span class="hidden-sm">&nbsp;&nbsp; Configure</span> <span class="label"></span></a></li>																																						
+						<li><a class="" href="options.htm"><i class="icon-wrench"></i><span class="hidden-sm">&nbsp;&nbsp; Technology</span> <span class="label"></span></a></li>																																						
+						<li><a class="" href="reasoner.htm"><i class="icon-wrench"></i><span class="hidden-sm">&nbsp;&nbsp; Reasoner</span> <span class="label"></span></a></li>
 						<li>
 						<a class="dropmenu drop" href="#"><i class="icon-question-sign"></i><span class="hidden-sm">&nbsp;&nbsp; Help</span> <span class="label"></span></a>
 						<ul class="dropmenuLevel1">									

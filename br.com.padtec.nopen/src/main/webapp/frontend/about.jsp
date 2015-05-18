@@ -27,7 +27,14 @@
 			<div class="box-content">
 				
 				<!-- Write the content of the page here... -->
-				<i>NOPEn</i><br><i>March 19th 2015</i><br><br>								
+				<i>Compilation Date: May 11th 2015</i><br><br>	
+				
+				<p align="justify"> 
+					Network Ontology-based Provisioning Environment (NOPEn) is an application developed by members of the NEMO Research Group at the Federal University of Espírito Santo (UFES).
+					The project was sponsored by Padtec S.A. in collaboration with UFES. 
+					We thank Padtec's employees and all researchers who have contributed to the development of this application. 
+				</p>
+											
 				<p>Project Members (Current):</p>
 				<ul style="margin-top:5px">
 					<li>Prof. PhD. Anilton Salles Garcia (coordinator)	{anilton@inf.ufes.br} </li>

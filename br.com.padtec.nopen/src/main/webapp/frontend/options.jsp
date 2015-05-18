@@ -42,8 +42,7 @@
 				</div>
 			</div>	
 			<div class="box-content clearfix" style="">																
-				<div class="dd" id="tech" style="width:100%">
-				<p>Registered:</p>
+				<div class="dd" id="tech" style="width:100%">				
 				<ol id="tech-dd-list" class="dd-list">
 					<%		            	
 	            	int i=0;
@@ -75,7 +74,9 @@
 			</div>
 			<div class="box-content clearfix" style="">																
 				<div class="dd" id="layer" style="width:100%">
-				<p>Registered:</p>
+				<p>These are the registered layers regarding who is client/server of whom.</p>
+				<p>- The down arrow &darr; means "is Client Of".</p> 
+				<p>- The upper arrow &uarr; means "is Server Of".</p>				
 				<ol id="layer-dd-list" class="dd-list">					
 					<%
 	            	int j=0;					
@@ -85,7 +86,7 @@
 						{	
 	           				out.println("<li class=\"dd-item dd3-item\"  data-id=\""+j+"\" >");
 	           				out.print("<div class=\"dd-handle dd3-handle\">Drag</div>"+"<div class=\"dd3-content\">"+(layer+""));
-	           				/*if(!defaultLayers.contains(layer))*/ out.print("<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\"layer-"+layer+"\" style=\"float:right\"></a>");
+	           				/*if(!defaultLayers.contains(layer))*/ out.print("<a href=\"ui-nestable-list.html#\" class=\"icon-trash\" del-type=\"layer-"+layer+"\" style=\"float:right\"></a>");	           				
 							out.println("</div>");
 				           	out.println("</li>");				         
 	            		}
@@ -106,7 +107,6 @@
 			<div class="box-header" >
 				<h2><i class="icon-laptop"></i>Services</h2>
 				<div class="box-icon">
-					<a href="" class="btn-plus"><i class="icon-plus"></i></a>
 					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>								
 				</div>
 			</div>
