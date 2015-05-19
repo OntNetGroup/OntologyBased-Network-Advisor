@@ -60,25 +60,6 @@ var Rappid = Backbone.Router.extend({
 				this.commandManager.listen();
 				this.inspector.$('[data-attribute]:first').focus();
 
-				//addshelf(args); | args -> "rack0" | "rack0","slot1"
-				//console.log(cell.parent);
-				//var gMethod = "add"+subType+"("+args+");";
-
-				// Identificações temporarias
-				//console.log(cell.attributes.type);
-				//var subtype = cell.get('subType');
-				//console.log(subtype);
-				//var type = cell.get('type');
-				//console.log(type);
-				//if(type === 'bpmn.Pool' ){
-				//	console.log(cell.attributes.lanes.label , " was just added. ");
-				//}else{"A/An ", cell.a
-				//	if(type === 'devs.Atomic'){
-				//		console.log("A/An", cell.attributes.attrs, " was just added. ");
-				//	}else{
-				//		console.log("A/An", cell.attributes.attrs.text.text, " was just added. ");
-				//	}
-				//}
 			}
 		}, this);
 
@@ -261,7 +242,7 @@ var Rappid = Backbone.Router.extend({
 		// This prevents from context menu being shown when selecting individual elements with Ctrl in OS X.
 		this.paper.el.oncontextmenu = function(evt) { evt.preventDefault(); };
 
-		KeyboardJS.on('delete, backspace', _.bind(function(evt, keys) {
+		KeyboardJS.on('delete', _.bind(function(evt, keys) {
 
 			if (!$.contains(evt.target, this.paper.el)) {
 				// remove selected elements from the paper only if the target is the paper

@@ -1,3 +1,5 @@
+/* ----- Equipament Holders  ----- */
+
 function insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID) {
 
 	var result = "error";
@@ -34,72 +36,45 @@ function insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,contai
 	return result;
 };
 
-function setTechnology( supervisorType, supervisorID , tech) {
+function removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID) {
 
 	var result = "error";
 
-
-	var dtoSupervisor = {
-			"id": supervisorID ,
-			"type": supervisorType 
+	var dtoContainer = {
+			"name" : containerName,
+			"type" : containerType ,
+			"id" : containerID
 	};
-	
+
+	var dtoEquipmentholder = {
+			"id": equipmentID ,
+			"name": equipmentName,
+			"type" : equipmentType
+	};
+
 	$.ajax({
 		type: "POST",
 		async: false,
-		url: "setTechnology.htm",
+		url: "removeEquipmentholder.htm",
 		data: {
-			'supervisor': JSON.stringify(dtoEquipmentholder),
-			'tech': JSON.stringify(tech)
-		} ,
+			'container': JSON.stringify(dtoContainer),
+			'equipmentholder': JSON.stringify(dtoEquipmentholder)
+		},
 		success: function(data){ 		   
+			console.log(data);
 			result = data;
+			
 		},
 		error : function(e) {
 			alert("error: " + e.status);
+		
 		}
 	});
 
 	return result;
 };
 
-function insertCard( cardName , cardType, cardID , slotName , slotType , slotID) {
-
-	var result = "error";
-
-
-	var dtoCard = {
-			"name" : cardName ,
-			"id": cardID ,
-			"type": cardType 
-	};
-	
-	var dtoSlot = {
-			"name": slotName ,
-			"id": slotID ,
-			"type": slotType 
-	};
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "insertCard.htm",
-		data: {
-			'card': JSON.stringify(dtoCard),
-			'slot': JSON.stringify(dtoSlot)
-		} ,
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-			result = ("error: " + e.status);
-		}
-	});
-
-	return result;
-};
-
+/* ----- Supervisor  ----- */
 
 function insertSupervisor( supervisorName, supervisorType, supervisorID ,slotName, slotType , slotID) {
 
@@ -138,7 +113,6 @@ function insertSupervisor( supervisorName, supervisorType, supervisorID ,slotNam
 	return result;
 };
 
-
 function getTechnologies(){
 	
 	var result;
@@ -157,6 +131,77 @@ function getTechnologies(){
  
 	return result;
 	
+};
+
+
+function setTechnology( supervisorName ,supervisorType, supervisorID , tech) {
+
+	var result = "error";
+      
+    var technology = tech;
+    
+	var dtoSupervisor = {
+			"name": supervisorName ,
+			"id": supervisorID ,
+			"type": supervisorType 
+	};
+	
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "setTechnology.htm",
+		data: {
+			'supervisor': JSON.stringify(dtoEquipmentholder),
+			'technology': JSON.stringify(technology)
+		} ,
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+};
+
+/* ----- Card  ----- */
+
+function insertCard( cardName , cardType, cardID , slotName , slotType , slotID) {
+
+	var result = "error";
+
+
+	var dtoCard = {
+			"name" : cardName ,
+			"id": cardID ,
+			"type": cardType 
+	};
+	
+	var dtoSlot = {
+			"name": slotName ,
+			"id": slotID ,
+			"type": slotType 
+	};
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "insertCard.htm",
+		data: {
+			'card': JSON.stringify(dtoCard),
+			'slot': JSON.stringify(dtoSlot)
+		} ,
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+			result = ("error: " + e.status);
+		}
+	});
+
+	return result;
 };
 
 
@@ -200,41 +245,4 @@ function getallnotsupervisedCards(){
 	
 };
 
-function removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID) {
-
-	var result = "error";
-
-	var dtoContainer = {
-			"name" : containerName,
-			"type" : containerType ,
-			"id" : containerID
-	};
-
-	var dtoEquipmentholder = {
-			"id": equipmentID ,
-			"name": equipmentName,
-			"type" : equipmentType
-	};
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "removeEquipmentholder.htm",
-		data: {
-			'container': JSON.stringify(dtoContainer),
-			'equipmentholder': JSON.stringify(dtoEquipmentholder)
-		},
-		success: function(data){ 		   
-			console.log(data);
-			result = data;
-			
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		
-		}
-	});
-
-	return result;
-};
 

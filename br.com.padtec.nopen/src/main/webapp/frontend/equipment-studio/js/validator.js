@@ -19,11 +19,11 @@ function validator(validator, graph, app) {
 	    var containerID= '';
 	    
 	 //  var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
-	    result = "success";
+	    result = "successss!";
 	    if(result === "success"){
 	    	return next(err);
-	    }else{
-	    	return next(result);	
+	    }else{	    
+	    	return next(result);		    	
 	    }
 }, app));
 	

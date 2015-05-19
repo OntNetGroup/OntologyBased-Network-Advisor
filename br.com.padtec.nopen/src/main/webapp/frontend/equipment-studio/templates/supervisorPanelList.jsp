@@ -23,14 +23,10 @@
 	</div>	
 	<script>
 
-// $("#dosomething").on("click", function(){
-// 	$('.supervised').remove()
-// });
-
 		$("#supervisorDialog").dialog({
 			  autoOpen: false,
 			  modal: true,
-			  title: 'Select the cards to supervise',
+			  titlebar: 'Select the cards to supervise',
 		      width: 450,
 			  buttons: {
 				  "Ok": function() {

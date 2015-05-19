@@ -13,7 +13,6 @@ Stencil.shapes = {
 		            new joint.shapes.basic.Rect({
 		            	size: { width: 60, height: 45 },
 		            	subType : 'shelf' ,
-		            	supervisor: '' ,
 		            	attrs: {
 		            		rect: {
 		            			fill: '#C7C7C5'
@@ -25,7 +24,6 @@ Stencil.shapes = {
 		            new joint.shapes.basic.Rect({
 		            	size: { width: 15, height: 35 },
 		            	subType : 'slot' ,
-		            	supervisor: '' ,
 		            	attrs: {
 		            		rect: {
 		            			//fill: '#B3CBCE'
@@ -39,6 +37,7 @@ Stencil.shapes = {
 		            	size: { width: 10, height: 20 },
 		            	subType : 'card' ,
 		            	supervisor: '' ,
+		            	supervisorID: '' ,
 		            	attrs: {
 		            		rect: {
 		            			//fill: '#ADC2A7'
@@ -63,7 +62,6 @@ Stencil.shapes = {
 		            //Rack
 		            new joint.shapes.basic.Rect({
 		            	subType : 'rack' ,
-		            	supervisor: '' ,
 		            	size: { width:40 , height: 80 },
 		            	attrs: {
 		            		rect: {
@@ -103,6 +101,7 @@ Stencil.shapes = {
 		                   new MyModel({
 		                	   subType: 'card',
 		                	   supervisor: '' ,
+		                	   supervisorID: '' ,
 		                	   position: { x: 85, y: 20 },
 		                	   size: { width: 10, height: 20 },
 		                	   inPorts: ['in'],

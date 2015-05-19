@@ -21,12 +21,14 @@ function setSupervisor(graph,cards){
 	if (cards.length === 1) {
 		
 		card = graph.getCell(cards.val());
-		card.set("supervisor" , (supervisord.id));
+		card.set("supervisorID" , (supervisord.id));
+		card.set("supervisor" , (supervisord.attributes.attrs.name.text));
 	}else{
 		for(var i = 0; i < cards.length; i++){
 			
 			card = graph.getCell(cards[i].value);
-			card.set("supervisor" , (supervisord.id));	
+			card.set("supervisorID" , (supervisord.id));
+			card.set("supervisor" , (supervisord.attributes.attrs.name.text));	
 		}
 	}
 }
@@ -74,7 +76,7 @@ function selectSupervisorWindow(supervisor,nscards,scards, graph){
  			
  		for(var i = 0; i<nscards.length;i++){
  				console.log(nscards[i]);
- 				$("#lstBox2").append('<option value="'+nscards[i].id+'" class = "unsupervised">'+nscards[i].id+'</option>');
+ 				$("#lstBox2").append('<option value="'+nscards[i].id+'" class = "unsupervised">'+nscards[i].attributes.attrs.name.text+'</option>');
  			};
  			
  			$("#supervisorDialog").dialog("open");	
