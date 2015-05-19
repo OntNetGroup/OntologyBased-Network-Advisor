@@ -305,6 +305,32 @@ function validator(validator, graph, app) {
 			return next('Another element in the way!');
 		}
 	}, app));
+    
+    // when a transport function or interface have their name changed
+    validator.validate('change:attrs', _.bind(function(err, command, next) {
+    	var previousName = command.data.previous.attrs.text.text;
+    	
+    	if(_.contains(['AF', 'TTF', 'Matrix', 'IN', 'OUT'], previousName)) { // verify if it's the first change of name (element being added)
+    		return next(err);
+    	}
+    	
+    	var cellID = command.data.id;
+    	var cell = this.graph.getCell(cellID);
+    	var cellName = command.data.next.attrs.text.text;
+    	var cellType = cell.attributes.type;
+    	var cellSubtype = cell.attributes.subtype;
+    	
+    	if(cellType === TypeEnum.TRANSPORT_FUNCTION) {
+    		var result = setTransportFunctionName(cellID, cellName, cellSubtype);
+    	} else {
+    		var result = setPortName(cellID, cellName, cellSubtype);
+    	}
+    	if(result === "success") {
+    		return next(err);
+    	} else {
+    		next(result);
+    	}
+    }, app));
 };
 
 

@@ -205,19 +205,6 @@ function graphHandler(graph, app) {
 		}
 		
     }, app);
-    
-    // when an element has its name changed
-    graph.on('change:attrs', function(cell) {
-    	console.log(cell);
-    	var previousName = cell._previousAttributes.attrs.text.text;
-    	
-    	if(_.contains(['AF', 'TTF', 'Matrix', 'IN', 'OUT'], previousName)) { // verify if it's the first change of name (element being added)
-    		return true;
-    	}
-    	
-    	var result = setTransportFunctionName(tFunctionID, tFunctionName, tFunctionType);
-    	//TODO: terminar
-    });
 	
     /* ------ AUXILIAR FUNCTIONS ------- */
 	// Check if cell is not a link
