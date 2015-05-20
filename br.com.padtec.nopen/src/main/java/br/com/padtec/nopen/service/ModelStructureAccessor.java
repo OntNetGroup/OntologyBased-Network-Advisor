@@ -37,7 +37,7 @@ public class ModelStructureAccessor {
 		for(String sub : subclass){
 			HashSet<String> ranges = new HashSet<String>();
 			//obtendo relações de componentOf
-			ranges = NOpenQueryUtil.getAllComponentOFRelations(sub.substring(sub.indexOf("#")+1), studioRepository.getBaseModel());
+			//ranges = NOpenQueryUtil.getAllComponentOFRelations(sub.substring(sub.indexOf("#")+1), studioRepository.getBaseModel());
 			String domain, relation;
 			domain = sub;
 			relation = "componentOf";
