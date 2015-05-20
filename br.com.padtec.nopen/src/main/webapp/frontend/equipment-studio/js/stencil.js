@@ -15,7 +15,7 @@ Stencil.shapes = {
 		            	subType : 'shelf' ,
 		            	attrs: {
 		            		rect: {
-		            			fill: '#C7C7C5'
+		            			fill: '#C7C7C5',
 		            		},
 		            		//text: { text: 'shelf', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
 		            	}
@@ -27,7 +27,7 @@ Stencil.shapes = {
 		            	attrs: {
 		            		rect: {
 		            			//fill: '#B3CBCE'
-		            			fill: '#7ad7fd'
+		            			fill: '#7ad7fd',
 		            		},
 		            		//text: { text: 'slot', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
 		            	}

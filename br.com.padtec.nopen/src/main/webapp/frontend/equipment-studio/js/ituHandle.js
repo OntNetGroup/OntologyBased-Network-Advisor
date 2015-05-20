@@ -37,8 +37,10 @@ function ituHandle(paper, graph){
 			            close: function() {
 			            	
 			            	var cell = graph.getCell(cellId);
-			            	cell.attr('.inPort/fill', '#000000');
-			            	cell.attr('.outPort/fill', '#000000');
+			            	cell.attr('.inPort/fill', '#1AFF00');
+			            	cell.attr('.inPort/stroke', '#000000');
+			            	cell.attr('.outPort/fill', '#1AFF00');
+			            	cell.attr('.outPort/stroke', '#000000');
 			            	
 			            },
 			        });

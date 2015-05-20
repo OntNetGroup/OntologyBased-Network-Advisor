@@ -35,14 +35,17 @@ joint.shapes.equipment.Card = joint.shapes.basic.Generic.extend({
 	        	fill: 'none',
 	        },
 	        '.inPort circle': {
-	        	magnet: true,
+	        	magnet: 'passive',
+	        	type: 'input',
 	        },
 	        '.outPort rect': {
 	        	magnet: true,
+	        	type: 'output'
 	        },
         }
         
-    }, joint.shapes.basic.Generic.prototype.defaults)
+    }, joint.shapes.basic.Generic.prototype.defaults),
+    
     
 });
 joint.shapes.equipment.CardView = joint.shapes.basic.GenericView; 

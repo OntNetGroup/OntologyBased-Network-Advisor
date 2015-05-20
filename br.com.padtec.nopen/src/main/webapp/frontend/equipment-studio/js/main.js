@@ -79,14 +79,24 @@ var Rappid = Backbone.Router.extend({
 			defaultLink: new joint.dia.Link({
 				attrs: {
 					// @TODO: scale(0) fails in Firefox
-					'.marker-source': { d: 'M 10 0 L 0 5 L 10 10 z', transform: 'scale(0.001)' },
-					'.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' },
+					'.marker-source': { d: 'M 2 0 L 0 1 L 2 2 z', transform: 'scale(0.001)' },
+					'.marker-target': { d: 'M 2 0 L 0 1 L 2 2 z' },
 					'.connection': {
 						stroke: 'black'
 							// filter: { name: 'dropShadow', args: { dx: 1, dy: 1, blur: 2 } }
 					}
 				}
-			})
+			}),
+			validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+				//console.log('Ma: ' + magnetT + " " + magnetT.getAttribute('type'));
+//	            if (magnetS && magnetS.getAttribute('type') === 'input') return false;
+//	            if (cellViewS === cellViewT) return false;
+	            return magnetT && magnetT.getAttribute('type') === 'input';
+	        },
+	        validateMagnet: function(cellView, magnet) {
+	        	console.log('M: ' + magnet.getAttribute('magnet'));
+	            return magnet.getAttribute('magnet') !== 'passive';
+	        },
 		});
 
 		this.paperScroller = new joint.ui.PaperScroller({
