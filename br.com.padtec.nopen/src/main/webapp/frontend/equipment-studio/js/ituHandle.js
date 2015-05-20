@@ -29,7 +29,7 @@ function ituHandle(paper, graph){
 			            //show: 'scale',
 			            height: $(window).height(),
 						width: $(window).width(),
-			            title: 'Dynamically Loaded Page',
+			            //title: 'Dynamically Loaded Page',
 			            open: function ()
 			            {
 		            		$('#itu-iframe').attr('src','/nopen/itu-studio.htm?equipment=' + $("#filename").val() + '&card=' + cellId);

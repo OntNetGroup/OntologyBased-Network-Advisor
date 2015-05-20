@@ -4,31 +4,35 @@ scards =[];
 supervisord = "";
 
 function setSupervisor(graph,cards){
-//    console.log('os cards' , cards);   
-//    console.log('val' , cards.val());
-//	console.log('grafico' , graph);
-//	console.log('supervisor' , supervisord);
-//	console.log('esse' , supervisord.id);
-//	console.log(cards.length);
-//	for(var i = 0; i < cards.length; i++){
-//		console.log(cards[i].value);	
-//	}
-		console.log(nscards);
-		
+    
+	console.log(nscards);
 	var card;
-//	card.set("supervisor" , (supervisord.id));
      
 	if (cards.length === 1) {
 		
 		card = graph.getCell(cards.val());
-		card.set("supervisorID" , (supervisord.id));
-		card.set("supervisor" , (supervisord.attributes.attrs.name.text));
-	}else{
-		for(var i = 0; i < cards.length; i++){
-			
-			card = graph.getCell(cards[i].value);
+//		var result=superviseCard( supervisord.attributes.attrs.name.text, supervisord.id ,card.attributes.attrs.name.text, card.id);
+//		if(result="success"){
 			card.set("supervisorID" , (supervisord.id));
-			card.set("supervisor" , (supervisord.attributes.attrs.name.text));	
+			card.set("supervisor" , (supervisord.attributes.attrs.name.text));
+//		}else{
+//			//msg de erro
+//			return;
+//		}
+		
+		
+	}else{
+		for(var i = 0; i < cards.length; i++){			
+			card = graph.getCell(cards[i].value);
+			
+//			var result=superviseCard( supervisord.attributes.attrs.name.text, supervisord.id ,card.attributes.attrs.name.text, card.id);
+//			if(result="success"){
+				card.set("supervisorID" , (supervisord.id));
+				card.set("supervisor" , (supervisord.attributes.attrs.name.text));
+//			}else{
+//				//msg de erro
+//				return;
+//			}	
 		}
 	}
 }

@@ -1,5 +1,4 @@
-<div id="supervisorDialog" title="Select cards to supervise"  style=" width: 1000px; heigth: 300px">
-	<p class="ui-dialog-titlebar">Select cards to supervise:</p>	 
+<div id="supervisorDialog" title="Select cards to supervise"  style=" width: 1000px; heigth: 300px"> 
 		<table style='width: 370px;'>
 			<tr>
 				<td style='width: 160px;'><a>Supervised Cards:</a><br /> <select

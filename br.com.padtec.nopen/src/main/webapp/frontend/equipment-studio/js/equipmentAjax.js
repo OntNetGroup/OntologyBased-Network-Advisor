@@ -165,6 +165,81 @@ function setTechnology( supervisorName ,supervisorType, supervisorID , tech) {
 	return result;
 };
 
+function superviseCard( supervisorName, supervisorType, supervisorID ,cardName, cardType , cardID) {
+
+	var result = "error";
+
+
+	var dtoSupervisor = {
+			"name" : supervisorName ,
+			"id": supervisorID ,
+			"type": supervisorType 
+	};
+	
+	var dtoCard = {
+			"name": cardName ,
+			"id": cardID ,
+			"type": cardType 
+	};
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "superviseCard.htm",
+		data: {
+			'supervisor': JSON.stringify(dtoSupervisor),
+			'card': JSON.stringify(dtoCard)
+		} ,
+		success: function(data){ 		   
+			result = data;
+		
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+};
+
+function unsuperviseCard( supervisorName, supervisorType, supervisorID ,cardName, cardType , cardID) {
+
+	var result = "error";
+
+
+	var dtoSupervisor = {
+			"name" : supervisorName ,
+			"id": supervisorID ,
+			"type": supervisorType 
+	};
+	
+	var dtoCard = {
+			"name": cardName ,
+			"id": cardID ,
+			"type": cardType 
+	};
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "unsuperviseCard.htm",
+		data: {
+			'supervisor': JSON.stringify(dtoSupervisor),
+			'card': JSON.stringify(dtoCard)
+		} ,
+		success: function(data){ 		   
+			result = data;
+		
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+};
+
+
 /* ----- Card  ----- */
 
 function insertCard( cardName , cardType, cardID , slotName , slotType , slotID) {

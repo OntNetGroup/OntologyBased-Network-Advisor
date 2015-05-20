@@ -72,6 +72,45 @@ public class EquipmentStudioController {
 		return "success";
 	}
 	
+	/** Procedure to supervise a card
+	 * @param card
+	 * @param supervisor
+	 * @return
+	 */
+	@RequestMapping(value = "/superviseCard", method = RequestMethod.POST)
+	public @ResponseBody String superviseCard(@RequestParam("supervisor") String supervisor,@RequestParam("card") String card )
+	{
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+				
+//		try{
+//			StudioFactory.superviseCard(dtoSupervisor, dtoCard);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			return e.getLocalizedMessage();
+//		}		
+		return "success";		
+	}
+	
+	/** Procedure to unsupervise a card
+	 * @param card
+	 * @param supervisor
+	 * @return
+	 */
+	@RequestMapping(value = "/unsuperviseCard", method = RequestMethod.POST)
+	public @ResponseBody String unsuperviseCard(@RequestParam("supervisor") String supervisor,@RequestParam("card") String card )
+	{
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+				
+//		try{
+//			StudioFactory.unsuperviseCard(dtoSupervisor, dtoCard);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			return e.getLocalizedMessage();
+//		}		
+		return "success";		
+	}
 	
 	/** Procedure to select the supervisor technology
 	 * @param supervisor
@@ -79,11 +118,13 @@ public class EquipmentStudioController {
 	 * @param slot
 	 * @return
 	 */
+	
+	
 	@RequestMapping(value = "/setTechnology", method = RequestMethod.POST)
 	public @ResponseBody String setTechnology(@RequestParam("supervisor") String supervisor,@RequestParam("technology") String technology )
 	{
 		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		DtoJointElement dtotech = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
+//		DtoJointElement dtotech = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
 		//TODO (To Gabriel/Missael) I need of the specific equipment in which this supervisor is linked to (John)
 		
 		try{
@@ -112,7 +153,7 @@ public class EquipmentStudioController {
 	
 	/** Procedure to remove a card
 	 * @param card
-	 * @param ?
+	 * @param 
 	 * @return
 	 */
 	@RequestMapping(value = "/removeCard", method = RequestMethod.POST)
