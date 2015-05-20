@@ -1,11 +1,11 @@
 //Global
-nscards = [];
-scards =[];
+//nscards = [];
+//scards =[];
 supervisord = "";
 
 function setSupervisor(graph,cards){
     
-	console.log(nscards);
+//	console.log(nscards);
 	var card;
      
 	if (cards.length === 1) {
@@ -55,31 +55,32 @@ function setSupervisornull(graph,cards){
 		
 		card = graph.getCell(cards.val());
 		card.set("supervisor" , '');
+		card.set("supervisorID" , '');
 	}else{
 		for(var i = 0; i < cards.length; i++){
 			
 			card = graph.getCell(cards[i].value);
 			card.set("supervisor" , '');	
+			card.set("supervisorID" , '');
 		}
 	}
 }
 
 function selectSupervisorWindow(supervisor,nscards,scards, graph){
 
-	console.log(nscards);
-     console.log(scards);
-     console.log(supervisor);
+//	console.log(nscards);
+//     console.log(scards);
+//     console.log(supervisor);
      
     supervisord = supervisor;
-    
-//     $("#supervisorDialog").dialog("open");
+       
 
     	 for(var i = 0; i<scards.length;i++){    		 
- 			$("#lstBox1").append('<option value="'+scards[i].id+'" class = "supervised">'+scards[i].name+'</option>');			
+ 			$("#lstBox1").append('<option value="'+scards[i].id+'" class = "supervised">'+scards[i].attributes.attrs.name.text+'</option>');			
  		}
  			
  		for(var i = 0; i<nscards.length;i++){
- 				console.log(nscards[i]);
+ 			//	console.log(nscards[i]);
  				$("#lstBox2").append('<option value="'+nscards[i].id+'" class = "unsupervised">'+nscards[i].attributes.attrs.name.text+'</option>');
  			};
  			
@@ -97,26 +98,29 @@ function supervisorHandle(paper, graph){
 		
 		if((supervisor.get('tech')) === ''){
 			
-			showTechnologyWindow(techs , supervisor);
+			showTechnologyWindow(getTechnologies() , supervisor);
 			
 		}else{
 			
 			var elementos = graph.getElements();
-			console.log(elementos);
+			console.log('elementos' , elementos);
 			var c = [ ];
-
+            var nscards = [];
+            var scards = [];
 			
 			for(var i = 0; i < elementos.length; i++){
-				if((elementos[i].attributes.subType) === 'card'){
-					c.push(graph.getCell(elementos[i].id));
+				var check = elementos[i];
+				if((check.attributes.subType) === 'card'){
+                   if((check.get('supervisorID') === (supervisor.id))){
+                	   scards.push(check);
+                   }else{
+                	   if((check.get('supervisorID') === '')){
+                    	   nscards.push(check);
+                       }
+                   }
 				}
 			};
 			
-			for(var i= 0;i < c.length; i++){
-					if((c[i].attributes.supervisor) ===  (supervisor.get('id'))){
-						c.push(graph.getCell(c[i].id))
-					}			
-			}
 			if(!((supervisor.get('subType')) === 'supervisor')){
 				return;
 			}else{

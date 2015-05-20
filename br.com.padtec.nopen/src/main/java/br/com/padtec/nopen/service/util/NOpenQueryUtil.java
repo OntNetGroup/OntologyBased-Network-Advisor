@@ -1,6 +1,7 @@
 package br.com.padtec.nopen.service.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -100,49 +101,7 @@ public class NOpenQueryUtil {
 		return result;
 	}
 	
-	@SuppressWarnings("unused")
-	public static HashSet<String> getAllComponentOFRelations(String classID, InfModel model)
-	{
-		HashSet<String> result = new HashSet<String>();
-		HashSet<String> x = new HashSet<String>();
-		HashSet<String> y = new HashSet<String>();
-		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
-				+ "SELECT  ?r ?y "
-				+ "WHERE { ?x rdfs:subPropertyOf ont:componentOf . "
-				+ "?x rdfs:domain ont:"+ classID + ". "
-				+ "?x rdfs:range ?r ."
-				+ "	OPTIONAL { ?y rdfs:subClassOf ?r . } "
-				+  "}";
-		
-		Query query = QueryFactory.create(queryString); 
-  		
-  		// Execute the query and obtain results
-  		QueryExecution qe = QueryExecutionFactory.create(query, model);
-  		ResultSet results = qe.execSelect();
-  		//ResultSetFormatter.out(System.out, results, query);
-  		
-  		while (results.hasNext()) {
-  			QuerySolution row = results.next();
-  		    RDFNode rdfX = row.get("r");
-  		    x.add(rdfX.toString());
-  		    RDFNode rdfY = row.get("y");
-  		    y.add(rdfY.toString());
-  		}
-  		boolean ok = false;
-  		ok = result.addAll(x);
-  		ok = result.addAll(y);
-  		Iterator<String> i = result.iterator();
-	  		while(i.hasNext()){
-	  			ArrayList<String> subclasses = new ArrayList<String>();
-				subclasses = QueryUtil.SubClass(model, i.next().toString());
-				
-	  			if(subclasses.size()>1){//se só tem uma subclasse, então a subclasse é a própria classe
-	  				i.remove();
-	  			}
-	  		}
-		return result;
-	}
+	
 	
 	public static boolean cardHasSupervisor(String card, InfModel model){
 		String queryString = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
@@ -186,6 +145,52 @@ public class NOpenQueryUtil {
   	    	result.add(rdfY.toString());
   		}
   		
+		return result;
+	}
+	
+	public static HashMap<String, String> getAllComponentOFRelations(String classID, InfModel model)
+	{
+		HashMap<String, String> result = new HashMap<String, String>();
+		HashSet<String> r = new HashSet<String>();
+		HashSet<String> y = new HashSet<String>();
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "SELECT  ?r ?y "
+				+ "WHERE { ?x rdfs:subPropertyOf ont:componentOf . "
+				+ "?x rdfs:domain <" + classID + "> . "
+				+ "?x rdfs:range ?r ."
+				+ "	OPTIONAL { ?y rdfs:subClassOf ?r . } "
+				+  "}";
+		
+		Query query = QueryFactory.create(queryString); 
+  		
+  		// Execute the query and obtain results
+  		QueryExecution qe = QueryExecutionFactory.create(query, model);
+  		ResultSet results = qe.execSelect();
+  		//ResultSetFormatter.out(System.out, results, query);
+  		
+  		while (results.hasNext()) {
+  			QuerySolution row = results.next();
+  		    RDFNode rdfr = row.get("r");
+  		    r.add(rdfr.toString());
+  		    RDFNode rdfY = row.get("y");
+  		    y.add(rdfY.toString());
+  		}
+  		Iterator<String> i = y.iterator();
+		while (i.hasNext()) {
+			ArrayList<String> subclasses = new ArrayList<String>();
+			subclasses = QueryUtil.SubClass(model, i.next().toString());
+			if (subclasses.size() > 1) {// se só tem uma subclasse, então a subclasse é a própria classe
+				i.remove();
+			}
+		}
+		
+		for(String relation : r){
+			for(String target : y){
+				result.put(target, relation);
+			}
+		}
+		
 		return result;
 	}
 }

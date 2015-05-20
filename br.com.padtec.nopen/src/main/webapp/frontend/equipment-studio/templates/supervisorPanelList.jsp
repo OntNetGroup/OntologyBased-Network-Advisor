@@ -25,6 +25,7 @@
 		$("#supervisorDialog").dialog({
 			  autoOpen: false,
 			  modal: true,
+			  closeButton: false ,
 			  titlebar: 'Select the cards to supervise',
 		      width: 450,
 			  buttons: {

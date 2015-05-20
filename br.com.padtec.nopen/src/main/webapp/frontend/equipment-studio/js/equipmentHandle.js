@@ -243,7 +243,7 @@ function equipmentHandle(graph){
 
 								if (cell.get('subType') === 'card'){									
 									parent.embed(cell);	
-									nscards.push(cell);
+									//nscards.push(cell);
 									//console.log(nscards);
 									cell.set('size' , {
 										width: 10 ,
