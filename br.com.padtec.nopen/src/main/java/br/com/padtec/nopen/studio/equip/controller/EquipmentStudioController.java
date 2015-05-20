@@ -191,46 +191,6 @@ public class EquipmentStudioController {
 		return "success";		
 	}
 			
-	/** Procedure to get a Card supervisor
-	 * @param card
-	 * @param supervisor
-	 * @param tech
-	 * @return
-	 */
-	@RequestMapping(value = "/getcardSupervisor", method = RequestMethod.POST)
-	public @ResponseBody String getcardSupervisor(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor ,@RequestParam("tech") String tech)
-	{
-		DtoJointElement dtocard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-
-		
-		return "cardsupervisor.id";		
-	}
-	
-	
-	
-	/** Procedure to get all Cards supervised by a supervisor
-	 * @param supervisor
-	 * @return
-	 */
-	@RequestMapping(value = "/getsupervisedCards", method = RequestMethod.POST)
-	public @ResponseBody String[] getsupervisedCards(@RequestParam("supervisor") String supervisor ,String[]getsupervisedCards) 
-	{	
-		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		return getsupervisedCards;		
-	}
-	
-	/** Procedure to get all cards unsupervised 
-	 * @param 
-	 * @return
-	 */
-	@RequestMapping(value = "/getallnotsupervisedCards", method = RequestMethod.POST)
-	public @ResponseBody String[] getallnotsupervisedCards()
-	{
-		
-		return getallnotsupervisedCards();		
-	}
-	
 	
 	//=============================================================================================
 	// Generic equipment
