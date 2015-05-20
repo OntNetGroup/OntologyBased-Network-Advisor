@@ -76,9 +76,6 @@ var Rappid = Backbone.Router.extend({
 			// RF: Ao selecionar uma porta, destacar portas disponíveis para conexão com aquela
 			markAvailable: true,
 			
-			// RF: Inserir 'snap link' às conexões
-			snapLinks: { radius: 50 },
-			
             defaultLink: new joint.dia.Link({
                 attrs: {
                     // @TODO: scale(0) fails in Firefox
