@@ -34,7 +34,13 @@ function ituHandle(paper, graph){
 			            {
 		            		$('#itu-iframe').attr('src','/nopen/itu-studio.htm?equipment=' + $("#filename").val() + '&card=' + cellId);
 			            },
-			            close: function() {}
+			            close: function() {
+			            	
+			            	var cell = graph.getCell(cellId);
+			            	cell.attr('.inPort/fill', '#000000');
+			            	cell.attr('.outPort/fill', '#000000');
+			            	
+			            },
 			        });
 			    });
         	}

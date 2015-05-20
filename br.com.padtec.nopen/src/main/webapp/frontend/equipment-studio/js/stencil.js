@@ -98,23 +98,26 @@ Stencil.shapes = {
 
 		            card: [
 
-		                   new MyModel({
-		                	   subType: 'card',
-		                	   supervisor: '' ,
-		                	   supervisorID: '' ,
-		                	   position: { x: 85, y: 20 },
-		                	   size: { width: 10, height: 20 },
-		                	   inPorts: ['in'],
-		                	   outPorts: ['out'],
-		                	   attrs: {
-		                		   // definicao da cor e forma geometrica do elemento
-		                		   rect: { fill: '#8e44ad', rx: 2, ry: 2 },
-		                		   '.inPorts path': { fill: '#f1c40f', opacity: 0.9, d: circlePath(1,1,4) },
-		                		   '.outPorts path': { fill: '#e9967a', opacity: 0.9, d: squarePath(8) },
-		                		   '.inPorts text, .outPorts text': { 'font-size': 9 }
-		                	   }
-		                   })
-		                   ]
+						new joint.shapes.equipment.Card({
+							size: { width: 10, height: 20 },
+							subType : 'card' ,
+							supervisor: '' ,
+							supervisorID: '' ,
+							attrs: {
+								'.body': {
+									//fill: '#ADC2A7'
+									fill: '#fffb82'
+								},
+								'.inPort': {
+						            //fill: 'none',
+						        },
+						        '.outPort': {
+						        	//fill: 'none',
+						        },
+								//text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
+							}
+}),
+		            ]
 };
 
 

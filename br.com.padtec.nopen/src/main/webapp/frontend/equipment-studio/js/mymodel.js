@@ -1,58 +1,49 @@
-// definicao de uma forma geometrica contendo portas de input e output
-MyModel = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
+joint.shapes.equipment = {};
 
-	// definicao do svg do elemento
-    markup: '<g class="rotatable"><g class="scalable"><rect class="body"/></g><text class="label"/><g class="inPorts"/><g class="outPorts"/></g>',
-	// definicao do svg das portas
-    portMarkup: '<g class="port<%= id %>"><path class="port-body"/><text class="port-label"/></g>',
+joint.shapes.equipment.Card = joint.shapes.basic.Generic.extend({
+
+	markup: [
+	         '<g class="rotatable">',
+	         	'<g class="scalable">',
+	         		'<rect class="body"/>',
+	         	'</g>',
+	    		'<g class="inPort">',
+	    			'<circle r="4" />',
+	    		'</g>',
+	    		'<g class="outPort">',
+	    			'<rect width="7" height="7" />',
+	    		'</g>',
+	         	'<text/>',
+	         '</g>',
+	].join(''),
 
     defaults: joint.util.deepSupplement({
-
-        type: 'devs.Model',
-		// atributo que sera referencia para restricoes de conexao e 'containment'
-		subType: '',
-        size: { width: 1, height: 1 },
-        
-        inPorts: [],
-        outPorts: [],
-
+    
+        type: 'equipment.Card',
         attrs: {
-            '.': { magnet: false },
-            '.body': {
-                width: 150, height: 250,
-                stroke: '#000000'
-            },
-            '.port-body': {
-                magnet: false,
-                stroke: '#000000'
-            },
-            text: {
-                'pointer-events': 'none'
-            },
-            '.inPorts .port-label': { x: 15, dy: 4, fill: '#000000' },
-            '.outPorts .port-label':{ x: 15, dy: 4, fill: '#000000' },
-//			'.inPorts .port-body':{ 'ref-y': -5 },
-			'.outPorts .port-body':{ 'ref-x': 0 }
+            '.body': { fill: '#FFFFFF', stroke: 'black', width: 100, height: 60 },
+            'text': { 'font-size': 14, text: '', 'ref-x': .5, 'ref-y': .5, ref: '.body', 'y-alignment': 'middle', 'x-alignment': 'middle', fill: 'black', 'font-family': 'Arial, helvetica, sans-serif' },
+	        '.inPort': {
+	            'ref': '.body',
+	            'ref-x': .5,
+	            fill: 'none',
+	        },
+	        '.outPort': {
+	        	'ref': '.body',
+	        	'ref-y': .8,
+	        	'ref-x': .15,
+	        	fill: 'none',
+	        },
+	        '.inPort circle': {
+	        	magnet: true,
+	        },
+	        '.outPort rect': {
+	        	magnet: true,
+	        },
         }
+        
+    }, joint.shapes.basic.Generic.prototype.defaults)
+    
+});
+joint.shapes.equipment.CardView = joint.shapes.basic.GenericView; 
 
-    }, joint.shapes.basic.Generic.prototype.defaults),
-
-	// funcao obrigatoria em classes que contenham portas
-    getPortAttrs: function(portName, index, total, selector, type) {
-
-        var attrs = {};
-
-        var portClass = 'port' + index;
-        var portSelector = selector + '>.' + portClass;
-        var portLabelSelector = portSelector + '>.port-label';
-        var portBodySelector = portSelector + '>.port-body';
-
-        attrs[portLabelSelector] = { text: portName };
-        attrs[portBodySelector] = { port: { id: portName || _.uniqueId(type) , type: type } };
-        attrs[portSelector] = { ref: '.body', 'ref-x': (index + 0.35) * (1 / total) };
-
-        if (selector === '.outPorts') { attrs[portSelector]['ref-dy'] = 0; }
-
-        return attrs;
-    }
-}));
