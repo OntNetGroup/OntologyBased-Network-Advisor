@@ -40,17 +40,18 @@ public class PerformBind {
 			String relation_source = null;
 			HashMap<String, String> source_componentOfs = new HashMap<String, String>();
 			
-			String inputId = tipo_source + "_Input" + id_source;
-			String tipo_input = tipo_source + "_Input";
+			String inputId = tipo_target + "_Input" + id_target;
+			String tipo_input = tipo_target + "_Input";
 			String relation_target = null;
 			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
 			
+			//Integer numberOfAlreadyBoundPorts = 0;
 			
 			//create the Reference Point if exists and the relation between reference point and ports
 			HashSet<String> rps_between_ports = new HashSet<String>();
 			rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, repository);
 
-			if(rps_between_ports.size() > 0){
+			if((rps_between_ports.size() > 0) /*&& (numberOfAlreadyBoundPorts < cardinality_input_target)*/){ //segunda parte: incluir cardinalidade
 				String tipo_rp;
 				String rp_name;
 				tipo_rp = rps_between_ports.iterator().next();
@@ -99,51 +100,48 @@ public class PerformBind {
 				
 								
 				source_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_source, repository.getBaseModel());
-				if (source_componentOfs.containsKey(tipo_source + "_Output")) {
+				target_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_target, repository.getBaseModel());
+
+				if ((source_componentOfs.containsKey(tipo_source + "_Output")) && (target_componentOfs.containsKey(tipo_target + "_Input"))) {
 					relation_source = source_componentOfs.get(tipo_source + "_Output");
-					
+					relation_target = target_componentOfs.get(tipo_target + "_Input");
 					//create the relation between tf and output
 					FactoryUtil.createInstanceRelation( 
 							repository.getBaseModel(), 
 							repository.getNamespace()+id_source, 
 							relation_source,
 							repository.getNamespace()+outputId
-						);		
-						
-						NOpenLog.appendLine(repository.getName()+":  Output "+outputId+" created at "+ tipo_source + ": "+name_source);
+							);		
+					
+					NOpenLog.appendLine(repository.getName()+":  Output "+outputId+" created at "+ tipo_source + ": "+name_source);
 					
 					
-				}
-				
-				
-				
-				
-				//create the relation between tf and input
-				target_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_target, repository.getBaseModel());
-				/*for(String c : target_componentOfs){
-					if(c.equals(tipo_target+"_Input")){
-						relation_target = c;
-					}
-				}*/
-				FactoryUtil.createInstanceRelation(
-					repository.getBaseModel(), 
-					repository.getNamespace()+id_target, 
-					repository.getNamespace()+relation_target,
-					repository.getNamespace()+inputId
-				);	
-				
-				NOpenLog.appendLine(repository.getName()+":  Input "+inputId+" created at "+ tipo_target + ": "+name_target);
+					//create the relation between tf and input
+					FactoryUtil.createInstanceRelation(
+						repository.getBaseModel(), 
+						repository.getNamespace()+id_target, 
+						repository.getNamespace()+relation_target,
+						repository.getNamespace()+inputId
+					);
+					
+					NOpenLog.appendLine(repository.getName()+":  Input "+inputId+" created at "+ tipo_target + ": "+name_target);
 
-				NOpenLog.appendLine("Success: Binds successfully made between (" + tipo_source + "::" + name_source +", " + tipo_target + "::" + name_target + ")");
+					NOpenLog.appendLine("Success: Binds successfully made between (" + tipo_source + "::" + name_source +", " + tipo_target + "::" + name_target + ")");
+
+					return true;
+				}	
+
 			}else {
-				
+				NOpenLog.appendLine("Error: The Adaptation Function " + name_source + "cannot be bound to " + name_target);
+				throw new Exception("Error: Unexpected bind between " + name_source + "and " + name_target);
 			}
-			
 			
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-		return true;
+	
+		return false;
+
 	}
 
 	public OKCoUploader getRepository() {
