@@ -89,6 +89,33 @@ public class QueryUtil {
 	}
 	
 	/** 
+	 * Return true if an property is subproperty of another
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param individualUri: individual URI 
+	 * @param propertyURI1
+	 * @param propertyURI2
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public boolean isSubProperty(InfModel model, String propertyURI1, String propertyURI2) 
+	{		
+		System.out.println("\nExecuting isIndividualFromClass()...");
+		String queryString = ""
+				+ PREFIXES
+				+ "ASK\n"
+				+ "{\n"
+				+ "\t<" + propertyURI1 + "> rdfs:subPropertyOf* <" + propertyURI2 + ">  ;\n"
+				+ "}\n";
+		Query query = QueryFactory.create(queryString);
+		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean isSubProperty = qe.execAsk();		
+		
+		return isSubProperty;
+	}
+	
+	/** 
 	 * Return true if an individual has a relation with another individual from a specific class
 	 * 
 	 * @param model: jena.ontology.InfModel 

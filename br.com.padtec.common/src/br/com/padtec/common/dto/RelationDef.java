@@ -8,6 +8,7 @@ public class RelationDef {
 	CardinalityDef cardOnRange;
 	String possibleDomain;
 	String possibleRange;
+	
 	public String getObjectProperty() {
 		return objectProperty;
 	}

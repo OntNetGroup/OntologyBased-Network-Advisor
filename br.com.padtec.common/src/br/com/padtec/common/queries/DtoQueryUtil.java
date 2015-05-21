@@ -749,9 +749,18 @@ public class DtoQueryUtil {
 			RDFNode originalRange = row.get("originalRange");
 			relDef.setOriginalRange(originalRange.toString());
 			
-			String key = possibleDomain.toString() + property.toString() + possibleRange.toString();
+			//String key = possibleDomain.toString() + property.toString() + possibleRange.toString();
+			String key = possibleDomain.toString() + propertyURI + possibleRange.toString();
 			
-			result.put(key, relDef);
+			if(result.containsKey(key)){
+				RelationDef existente = result.get(key);
+				boolean isSubProperty = QueryUtil.isSubProperty(model, property.toString(), existente.getObjectProperty());
+				if(isSubProperty){
+					result.put(key, relDef);
+				}
+			}else{
+				result.put(key, relDef);
+			}			
 		}		
 		System.out.println();
 		int i = 0;
