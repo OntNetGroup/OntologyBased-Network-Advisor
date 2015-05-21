@@ -51,7 +51,7 @@ function ituHandle(paper, graph){
 	
 	graph.on('remove', function(cell){
 		
-		console.log(cell.get('subType'));
+		//console.log(cell.get('subType'));
 		
 		if(cell.get('subType') === 'card'){
 			deletedITUFiles[index] = cell.id;
