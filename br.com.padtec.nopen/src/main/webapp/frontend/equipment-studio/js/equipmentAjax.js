@@ -61,7 +61,7 @@ function removeEquipmentholder(equipmentName, equipmentType, equipmentID , conta
 			'equipmentholder': JSON.stringify(dtoEquipmentholder)
 		},
 		success: function(data){ 		   
-			console.log(data);
+		//	console.log(data);
 			result = data;
 			
 		},
@@ -103,7 +103,7 @@ function insertSupervisor( supervisorName, supervisorType, supervisorID ,slotNam
 		} ,
 		success: function(data){ 		   
 			result = data;
-			console.log(data);
+		//	console.log(data);
 		},
 		error : function(e) {
 			alert("error: " + e.status);
