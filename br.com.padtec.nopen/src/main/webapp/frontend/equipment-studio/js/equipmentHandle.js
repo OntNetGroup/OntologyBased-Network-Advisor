@@ -27,26 +27,21 @@ function showTechnologyWindow(techs , cell){
 	};
 
 	($('#tech-dialog').on( "dialogclose", function(dialogclose) {
-		console.log("hi there");
-		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
+		cell.set('tech' ,($('#tech-dialog').find(":selected").val()));
+		dialog.close();
 	} ));
 
 
 
 	dialog.on('action:save', function(){
-		//$('#selected').val($("#tech-dialog").val());
-		//console.log($('#selected').val($("#tech-dialog").val()));
-		//console.log($('#tech-dialog').find(":selected").val());
 		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
-
-
 		//var result = setTechnology(supervisorType, supervisorID , tech);
 		var result = "success";
-		if(result === "sucess"){
+		if(result === "success"){
 			dialog.close();
 		}else{
-			cell.set('tech' ,($('#tech-dialog').find(":selected").val()));
-			dialog.close();
+			//cell.set('tech' ,($('#tech-dialog').find(":selected").val()));
+			alert("alert");
 		}
 	});
 	dialog.open();
@@ -90,12 +85,10 @@ function equipmentHandle(graph){
 			var containerType = parent.get('subType');
 			var containerID = parent.get('id');
             var containerName = parent.attributes.attrs.name.text;
-     //       console.log(containerName);
 
 			if(parent.get('subType') === 'rack') {                   
 				//equipamento em um rack
 				// consultar ontologia para inserção 
-               // var equipmentName = getName(equipmentType);
                 
 				var result = insertEquipmentholder(equipmentName , equipmentType, equipmentID ,containerName , containerType , containerID);
 				//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);
@@ -318,7 +311,7 @@ function equipmentHandle(graph){
 				
 				return;
 			}else{
-				console.log(result);
+			//	console.log(result);
 				new joint.ui.Dialog({
 					type: 'alert',
 					width: 400,
@@ -343,7 +336,7 @@ function equipmentHandle(graph){
 			var psize = parent.get('size');			
 			var newpositionx = pposition.x + 15 ;
 
-			console.log("to del: ", cell);
+		//	console.log("to del: ", cell);
 			var d = parent.get('embeds');
 			var i;
 			var maiorl = 0;
@@ -355,12 +348,12 @@ function equipmentHandle(graph){
 			for (i = 0; i < d.length; i++) {
 				var shelf = graph.getCell(d[i]);			
 				if (shelf){
-					console.log("changed: " , shelf);
+				//	console.log("changed: " , shelf);
 
 					shelf.set('position', {
 						x: newpositionx ,
 						y: (pposition.y + 20 + ((l)*(80))) 
-					},{skipParentHandler : true});
+					});
 
 					var sposition = shelf.get('position');
 

@@ -38,11 +38,11 @@ function setSupervisor(graph,cards){
 }
 
 function setSupervisornull(graph,cards){
-//  console.log('os cards' , cards);   
-//  console.log('val' , cards.val());
-//	console.log('grafico' , graph);
-//	console.log('supervisor' , supervisord);
-//	console.log('esse' , supervisord.id);
+//  console.log(cards);   
+//  console.log(cards.val());
+//	console.log(graph);
+//	console.log(supervisord);
+//	console.log(supervisord.id);
 //	console.log(cards.length);
 //	for(var i = 0; i < cards.length; i++){
 //		console.log(cards[i].value);	
@@ -67,14 +67,9 @@ function setSupervisornull(graph,cards){
 }
 
 function selectSupervisorWindow(supervisor,nscards,scards, graph){
-
-//	console.log(nscards);
-//     console.log(scards);
-//     console.log(supervisor);
      
     supervisord = supervisor;
        
-
     	 for(var i = 0; i<scards.length;i++){    		 
  			$("#lstBox1").append('<option value="'+scards[i].id+'" class = "supervised">'+scards[i].attributes.attrs.name.text+'</option>');			
  		}
@@ -103,7 +98,7 @@ function supervisorHandle(paper, graph){
 		}else{
 			
 			var elementos = graph.getElements();
-			console.log('elementos' , elementos);
+			//console.log('elementos' , elementos);
 			var c = [ ];
             var nscards = [];
             var scards = [];

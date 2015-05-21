@@ -18,7 +18,6 @@
 				</select></td>
 			</tr>
 		</table>	
-<!-- 		<button id='dosomething' value="click me"></button>		 -->
 	</div>	
 	<script>
 
@@ -37,6 +36,11 @@
 			  }
 			});	
 	
+		$("#supervisorDialog").on('dialogclose', function(){
+			$('.supervised').remove();
+			$('.unsupervised').remove();
+		});
+		
 	 	$('#btnRight').on('click', function(e) {
 		var selectedOpts = $('#lstBox1 option:selected');
 		if (selectedOpts.length == 0) {

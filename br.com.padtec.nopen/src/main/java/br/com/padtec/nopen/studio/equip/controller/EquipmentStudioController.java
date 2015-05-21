@@ -235,6 +235,20 @@ public class EquipmentStudioController {
 		}		
 		return "success";
 	}	
+
+	
+	/** Procedure to rename an Equipment
+	 * @param equipment
+	 * @return
+	 */
+	@RequestMapping(value = "/setEquipmentName", method = RequestMethod.POST)
+	public @ResponseBody String setEquipmentName(@RequestParam("equipment") String equipment)
+	{
+		DtoJointElement dtoEquipment = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipment, DtoJointElement.class);
+		
+		
+		return "success";
+	}	
 	
 	//=============================================================================================
 	// Shelf

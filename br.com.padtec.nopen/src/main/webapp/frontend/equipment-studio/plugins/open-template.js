@@ -52,11 +52,10 @@ function openFromURL(filename, graph){
 		$.each(graph.getElements(), function(index, cell){
 
 			if(cell.get('subType') === 'rack'){
-                console.log(cell.attributes);
+            //    console.log(cell.attributes);
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;
-				//nextName(equipmentType);
+				var equipmentName = cell.attributes.attrs.name.text;				
 				app.RackCounter++
 				
 				insertEquipmentholder(equipmentName , equipmentType, equipmentID);
@@ -99,7 +98,6 @@ function openFromURL(filename, graph){
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
 				var equipmentName = cell.attributes.attrs.name.text;
-				nscards.push(cell);
 				app.CardCounter++;
 				
 				var parentID = cell.get('parent');
@@ -192,64 +190,77 @@ function generateOpenTemplateDialog(graph, data){
 			$.each(graph.getElements(), function(index, cell){
 
 				if(cell.get('subType') === 'rack'){
-
+	                console.log(cell.attributes);
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
+					var equipmentName = cell.attributes.attrs.name.text;				
+					app.RackCounter++
+					
+					insertEquipmentholder(equipmentName , equipmentType, equipmentID);
 
-					insertEquipmentholder(equipmentType, equipmentID);
-
-				}
+				};
 				if(cell.get('subType') === 'shelf'){
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
-
+					var equipmentName = cell.attributes.attrs.name.text;
+					app.ShelfCounter++;
+					
 					var parentID = cell.get('parent');
 					var parent = graph.getCell(parentID);
 					var containerType = parent.get('subType');
 					var containerID = parent.get('id');
-
-					insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
+					var containerName = parent.attributes.attrs.name.text;
+					
+					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 				}
 				if(cell.get('subType') === 'slot'){
 
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
-
+					var equipmentName = cell.attributes.attrs.name.text;
+					app.SlotCounter++;
+					
 					var parentID = cell.get('parent');
 					var parent = graph.getCell(parentID);
 					var containerType = parent.get('subType');
 					var containerID = parent.get('id');
-
-					insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
+					var containerName = parent.attributes.attrs.name.text;
+					
+					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 				}
 
-				if(cell.get('subType') === 'card'){
+				if(cell.get('subType')=== 'card'){
 
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
-
+					var equipmentName = cell.attributes.attrs.name.text;
+					app.CardCounter++;
+					
 					var parentID = cell.get('parent');
 					var parent = graph.getCell(parentID);
 					var containerType = parent.get('subType');
 					var containerID = parent.get('id');
-
-					insertEquipmentholder( equipmentType, equipmentID , containerType , containerID);
+					var containerName = parent.attributes.attrs.name.text;
+					
+					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 				}
-				if(cell.get('subType') === 'supervisor'){
+				if(cell.get('subType')=== 'supervisor'){
 
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
-					var tech = cell.get('tech');
-
+					var equipmentName = cell.attributes.attrs.name.text;
+					app.SupervisorCounter++;
+					
 					var parentID = cell.get('parent');
 					var parent = graph.getCell(parentID);
 					var containerType = parent.get('subType');
 					var containerID = parent.get('id');
-
-					insertSupervisor( equipmentType, equipmentID , containerType , containerID);
+					var containerName = parent.attributes.attrs.name.text;
+					
+					insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 					//setTechnology(equipmentType, equipmentID , tech);
 
