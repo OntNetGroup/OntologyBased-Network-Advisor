@@ -55,7 +55,7 @@ public class PerformBind {
 				String tipo_rp;
 				String rp_name;
 				tipo_rp = rps_between_ports.iterator().next();
-				rp_name = tipo_rp + "_" + tipo_output + "_" + tipo_input;
+				rp_name = tipo_rp + "_" + tipo_output.substring(tipo_output.indexOf("#")+1) + "_" + tipo_input.substring(tipo_input.indexOf("#")+1);
 				String rpId = tipo_rp + rp_name;
 				
 				ArrayList<String> relationOutRp = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), tipo_output, tipo_rp, RelationEnum.INV_links_output.toString());

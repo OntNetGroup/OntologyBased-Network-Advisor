@@ -1,6 +1,8 @@
 package br.com.padtec.nopen.studio.service;
 
 import java.util.HashMap;
+
+import br.com.padtec.nopen.service.NOpenReasoner;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class BuildBindStructure {
@@ -15,9 +17,10 @@ public class BuildBindStructure {
 	
 	public static void createBindStructure(String relation){
 		//Create a mapping with all bind relations of the model and their cardinalities
+		NOpenReasoner.runInference(true);
 		
 		/*
-		 * NOpenReasoner.runInference(true);
+		 * 
 		ArrayList<String[]> mapping = new ArrayList<String[]>();
 		//primeira coisa: pegar o subtipo da classe e colocar numa lista de coisas, mais especificos possiveis
 		//ver se essas coisas tem componentOf
