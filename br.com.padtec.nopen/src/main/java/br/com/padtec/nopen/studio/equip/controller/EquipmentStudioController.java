@@ -172,7 +172,7 @@ public class EquipmentStudioController {
 	
 	
 	/** Procedure to create a Card
-	 * @param supervisor
+	 * @param card
 	 * @param slot
 	 * @return
 	 */
@@ -190,7 +190,35 @@ public class EquipmentStudioController {
 		}		
 		return "success";		
 	}
+	
+	/** Procedure to check if card can be supervised
+	 * @param supervisor
+	 * @param card
+	 * @return
+	 */
+	@RequestMapping(value = "/canSupervise",method = RequestMethod.POST)
+	public @ResponseBody String canSupervise(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor)
+	{
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		
+		return "true";
+	}
 			
+	
+	/** Procedure to check if card can be supervised
+	 * @param supervisor
+	 * @param card
+	 * @return
+	 */
+	@RequestMapping(value = "/canUnsupervise",method = RequestMethod.POST)
+	public @ResponseBody String canUnsupervise(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor)
+	{
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		
+		return "true";
+	}
 	
 	//=============================================================================================
 	// Generic equipment

@@ -1,11 +1,8 @@
 //Global
-//nscards = [];
-//scards =[];
 supervisord = "";
 
 function setSupervisor(graph,cards){
     
-//	console.log(nscards);
 	var card;
      
 	if (cards.length === 1) {
