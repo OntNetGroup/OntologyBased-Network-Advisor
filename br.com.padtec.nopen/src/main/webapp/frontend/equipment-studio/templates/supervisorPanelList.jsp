@@ -80,7 +80,7 @@
 			    //result = canUnsupervise(cardID);
 			    var result = "true";
 			      if (result === "true"){
-			    	setSupervisornull(app.graph,selectedOpts[i]);
+			    	setSupervisornull(app.graph,selectedOpts);
 			  		$('#lstBox2').append($(selectedOpts[i]).clone());	
 			  		$(selectedOpts).remove();
 			  		e.preventDefault();	
@@ -108,8 +108,8 @@
 			e.preventDefault();
 		}
 		if (selectedOpts.length == 1){
-			var card = app.graph.getCell(selectedOpts.val());
-			var cardID = card.id;
+// 			var card = app.graph.getCell(selectedOpts.val());
+// 			var cardID = selectedOpts.val();
 			var supervisorID = supervisord.id;
 			//result = canSupervise(cardID , supervisorID);
 		      var result = "true";
@@ -129,14 +129,14 @@
 			
 		}else{
 			for(var i = 0; i < selectedOpts.length;i++ ){
-				var card = app.graph.getCell(selectedOpts[i].value);
-				var cardID = card.id;
+// 				var card = app.graph.getCell(selectedOpts[i].value);
+				var cardID = selectedOpts[i].value;
 				var supervisorID = supervisord.id;
 				
 				//result = canSupervise(cardID , supervisorID);
 			      var result = "true";
 			      if (result === "true"){
-			    	  setSupervisor(app.graph,selectedOpts[i]);
+			    	  setSupervisor(app.graph,selectedOpts);
 			      	$('#lstBox1').append($(selectedOpts[i]).clone());
 			  		$(selectedOpts).remove();
 			  		e.preventDefault();
