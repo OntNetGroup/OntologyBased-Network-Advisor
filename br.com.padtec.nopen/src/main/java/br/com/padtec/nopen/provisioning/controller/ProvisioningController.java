@@ -101,7 +101,7 @@ public class ProvisioningController {
 	 * @return: array containing the names of the services
 	 */
 	@RequestMapping(value = "/getTechnologyServices", method = RequestMethod.GET)
-	protected @ResponseBody String[] getLayerServices(@RequestParam("tech") String tech){
+	protected @ResponseBody String[] getTechnologyServices(@RequestParam("tech") String tech){
 		return null; //TODO
 	}
 }
