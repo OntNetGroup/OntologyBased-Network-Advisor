@@ -31,7 +31,7 @@
    position: absolute;
    top: 80px;   /* toolbar height */
    right: 0;
-   bottom: 140px; /* statusbar height */
+   bottom: 0px; /* statusbar height */
    width: 240px;
 }
 .navigator-container {
