@@ -77,6 +77,8 @@
              
             var equipment = undefined;
             var card = undefined;
+            var discardChanges = false;
+            
         	app.setCardID(parent.cellId);
         	app.setCardName('myCard'); //TODO: passar o nome do card, vindo do Equipment Studio
         	app.setCardTech('MEF'); //TODO: passar a tecnologia do card, vinda do Equipment Studio
@@ -98,6 +100,7 @@
             	if(parent){
             		if(!$('#btn-save').is(':disabled')){
                 		if(confirm('Discard unsaved changed?')){
+                			discardChanges = true;
                 			parent.closeIframe();
                 		}
                 	}

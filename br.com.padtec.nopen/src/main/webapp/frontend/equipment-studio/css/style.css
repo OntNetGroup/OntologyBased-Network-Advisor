@@ -135,3 +135,9 @@ rect[stroke-width]:hover{
 	font-weight: bold;
 	heigth: 50px;
 }
+
+.link-tools .tool-remove { display: none }
+.link-tools .tool-options { display: none }
+.link, .connection-wrap { 
+	pointer-events: none; 
+}
