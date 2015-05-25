@@ -16,7 +16,7 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/layout.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/paper.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/inspector.css" />
-        <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/navigator.css" />
+<!--         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/navigator.css" /> -->
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/stencil.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/halo.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/selection.css" />

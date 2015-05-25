@@ -1,7 +1,7 @@
 <div class="toolbar-container">
-	 <button id="btn-save" class="btn" data-tooltip="Save"><img src="/nopen/frontend/provisioning/img/save.png" alt="Save"/></button>
-	 <button id="btn-open" class="btn" data-tooltip="Open"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open"/></button>
-	 <button id="btn-open-topology" class="btn" data-tooltip="Open Topology"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open Topology"/> Open Topology</button>
+	 <button id="btn-save" class="btn" data-tooltip="Save provisioning"><img src="/nopen/frontend/provisioning/img/save.png" alt="Save"/>Save provisioning</button>
+	 <button id="btn-open" class="btn" data-tooltip="Open provisioning"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open"/>Open provisioning</button>
+	 <button id="btn-open-topology" class="btn" data-tooltip="Import Topology"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open Topology"/> Import Topology</button>
 
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window"><img src="/nopen/frontend/provisioning/img/pngfile.png" alt="PNG"/></button>
      <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/provisioning/img/print.png" alt="Print"/></button>
@@ -13,9 +13,9 @@
        <span>%</span>
      </div>
      <button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom To Fit"><img src="/nopen/frontend/provisioning/img/zoomtofit.png" alt="Zoom To Fit"/></button>
-     <button id="btn-fullscreen" class="btn" data-tooltip="Toggle Fullscreen Mode"><img src="/nopen/frontend/provisioning/img/fullscreen.png" alt="Fullscreen"/></button>
-     <button id="btn-to-front" class="btn" data-tooltip="Bring Object to Front">to front</button>
-     <button id="btn-to-back" class="btn" data-tooltip="Send Object to Back">to back</button>
+<!--      <button id="btn-fullscreen" class="btn" data-tooltip="Toggle Fullscreen Mode"><img src="/nopen/frontend/provisioning/img/fullscreen.png" alt="Fullscreen"/></button> -->
+<!--      <button id="btn-to-front" class="btn" data-tooltip="Bring Object to Front">to front</button> -->
+<!--      <button id="btn-to-back" class="btn" data-tooltip="Send Object to Back">to back</button> -->
      <button id="btn-layout" class="btn" data-tooltip="Auto-layout Graph">layout</button>
      <label data-tooltip="Change Grid Size">Grid size:</label>
      <input type="range" value="10" min="1" max="50" step="1" id="input-gridsize" />
@@ -23,11 +23,11 @@
      <label data-tooltip="Enable/Disable Snaplines">Snaplines:</label>
      <input type="checkbox" id="snapline-switch" checked/>
  </div>
- <div class="stencil-container">
-     <label>Stencil</label>
-     <button class="btn-expand" title="Expand all">+</button>
-     <button class="btn-collapse" title="Collapse all">-</button>
- </div>
+<!--  <div class="stencil-container"> -->
+<!--      <label>Stencil</label> -->
+<!--      <button class="btn-expand" title="Expand all">+</button> -->
+<!--      <button class="btn-collapse" title="Collapse all">-</button> -->
+<!--  </div> -->
  <div class="paper-container"></div>
  <div class="inspector-container"></div>
  <div class="navigator-container"></div>
