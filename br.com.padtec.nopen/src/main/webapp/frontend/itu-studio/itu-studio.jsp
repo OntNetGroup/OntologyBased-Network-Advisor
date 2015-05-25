@@ -102,6 +102,7 @@
                 		if(confirm('Discard unsaved changed?')){
                 			discardChanges = true;
                 			parent.closeIframe();
+                			
                 		}
                 	}
             		else{

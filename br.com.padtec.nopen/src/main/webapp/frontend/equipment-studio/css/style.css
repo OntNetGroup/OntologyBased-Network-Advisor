@@ -141,3 +141,31 @@ rect[stroke-width]:hover{
 .link, .connection-wrap { 
 	pointer-events: none; 
 }
+
+
+.connectionInOut, .connectionIn, .connectionIn tbody, .connectionIn th, .connectionIn tr, .connectionIn td, .connectionOut, .connectionOut tbody, .connectionOut th, .connectionOut tr, .connectionOut td {
+	width: 100%;
+}
+
+.connectionIn th, .connectionIn td, .connectionOut th, .connectionOut td {
+	padding: 5px;
+}
+
+.connectionIn, .connectionOut {
+	display: table;
+	float: left;
+}
+
+.connectionInOut td, .connectionInOut th {
+	vertical-align: top;
+}
+
+.connectionOut td, .connectionIn td {
+	cursor: pointer;
+	vertical-align: top;
+}
+
+.connectionOut td:hover, .connectionIn td:hover, .connectionOut td.active, .connectionIn td.active {
+	background-color: #EEE;
+}
+

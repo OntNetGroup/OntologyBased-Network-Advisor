@@ -5,32 +5,11 @@ function closeIframe(){
 	$('#itu-dialog').dialog("close");
 };
 
-function ituHandle(paper, graph){
+function ituHandle(paper, graph, validator){
 
-	
-	
-	paper.on('cell:mouseover', function( cellView , evt, x, y) {
-		
-		cellId = cellView.model.id;
-		var cell = graph.getCell(cellId);
-		
-		if(cell.get('subType') === 'card') {
-			
-			$('.outPort').mouseenter(function() {
-				cell.attr('.outPort/fill', '#15D200');
-			});
-			
-			$('.outPort').mouseleave(function() {
-				cell.attr('.outPort/fill', '#1AFF00');
-			});
-		}
-		
-	});
-	
 	paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
 	
-		cellId = cellView.model.id;
-		
+		var cellId = cellView.model.id;
 		var equipment = graph.getCell(cellId);
 		
 		if((equipment.get('subType')) === 'card') {
@@ -123,11 +102,101 @@ function ituHandle(paper, graph){
 		
 	});
 	
-	// valida a criação de links no grafo
-	graph.on('change:source change:target add', function(cell) {
+	//create a dialog connection only if exist a target
+	validator.validate('change:target change:source', function(err, command, next) {
+
+		var cell = graph.getCell(command.data.id);
+		
 		if(isNotLink(cell)) return;
 		
-		var card = graph.getCell(cell.attributes.source.id);
+		if(!cell.attributes.target.id){
+			cell.remove();
+			return;
+		}
+		
+		var source = graph.getCell(cell.attributes.source.id);
+		var target = graph.getCell(cell.attributes.target.id);
+		
+		console.log('source ID: ' + source.attr('name/text'));
+		console.log('target ID: ' + target.id);
+		
+		createConnectionDialog(cell, source, target);
+		
+	});
+	
+	function createConnectionDialog(cell, source, target) {
+		
+		var content = '<table class="connectionInOut"><tr><td>' +
+		 				'<table class="connectionOut">' + 
+							'<tr>' +
+								'<th>out: ' + source.attr('name/text') + '</th></tr>';
+		
+		$.each(source.attributes.outPorts, function(index, value){
+			content = content + '<tr><td id="'+ index + '">' + source.attributes.outPorts[index] + '</td></tr>';
+		});
+			
+		content = content +  '</table></td>';
+		
+		content = content + '<td><table class="connectionIn">' + 
+								'<tr><th>in: ' + target.attr('name/text') + '</th></tr>' + 
+							'</table></td></tr></table>';
+		
+		var dialog = new joint.ui.Dialog({
+			width: 500,
+			type: 'neutral',
+			title: 'Create Connection',
+			content: content,
+			buttons: [
+			          { action: 'cancel', content: 'Cancel', position: 'left' },
+			          ]
+		});
+		dialog.on('action:cancel', cancel);
+		dialog.on('action:close', cancel);
+		dialog.open();
+		
+		function cancel() {
+			cell.remove();
+			dialog.close();
+		};
+		
+		$('.connectionOut td').click(function(){
+			
+			$('.connectionOut td').removeClass('active');
+			
+			$(this).toggleClass('active');
+			var index = $(this).attr('id');
+			
+			var content = '';
+			$.each(target.attributes.inPorts, function(index, value){
+				content = content + '<tr><td id="'+ index + '">' + target.attributes.inPorts[index] + '</td></tr>';
+			});
+			
+			$(".connectionIn").find("tr:gt(0)").remove();
+			$(".connectionIn").append(content);
+			
+			console.log("SHOW: " + target.attr('name/text'));
+			console.log("ID: " + index);
+			console.log("NAME: " + source.attributes.outPorts[index]);
+		});
+		
+		$('.connectionIn').delegate('td', 'click', function() {
+			
+			var sourceIndex = $('.connectionOut td.active').attr('id');
+			var targetIndex = $(this).attr('id');
+			
+			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
+			dialog.close();
+			
+		});
+		
+	}
+	
+	
+	
+	
+	// valida a criação de links no grafo
+	graph.on('change:source change:target add', function(cell) {
+		
 	});
 	
     /* ------ AUXILIAR FUNCTIONS ------- */

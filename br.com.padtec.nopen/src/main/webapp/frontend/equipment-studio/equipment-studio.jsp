@@ -124,7 +124,7 @@
 
 		resizing(app.graph);
 		equipmentHandle(app.graph);
-		ituHandle(app.paper, app.graph);
+		ituHandle(app.paper, app.graph, app.validator);
         supervisorHandle(app.paper , app.graph);
         validator(app.validator, app.graph, app);
         
