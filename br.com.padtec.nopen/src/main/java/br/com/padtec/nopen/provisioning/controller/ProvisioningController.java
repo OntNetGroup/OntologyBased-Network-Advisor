@@ -95,12 +95,13 @@ public class ProvisioningController {
 	}
 	
 	/**
-	 * Return all services provided by the layer
-	 * @param layer: layer's name
+	 * The services provided by a technology are the services implemented in the uppermost layer of that technology.
+	 * This procedure returns all services provided by the technology
+	 * @param technology: technology's name
 	 * @return: array containing the names of the services
 	 */
-	@RequestMapping(value = "/getLayerServices", method = RequestMethod.GET)
-	protected @ResponseBody String[] getLayerServices(@RequestParam("layer") String layer){
+	@RequestMapping(value = "/getTechnologyServices", method = RequestMethod.GET)
+	protected @ResponseBody String[] getLayerServices(@RequestParam("tech") String tech){
 		return null; //TODO
 	}
 }
