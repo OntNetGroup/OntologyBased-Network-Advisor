@@ -93,4 +93,14 @@ public class ProvisioningController {
 		return NOpenFileUtil.openProvisioningJSONFileAsString(filename);
 		
 	}
+	
+	/**
+	 * Return all services provided by the layer
+	 * @param layer: layer's name
+	 * @return: array containing the names of the services
+	 */
+	@RequestMapping(value = "/getLayerServices", method = RequestMethod.GET)
+	protected @ResponseBody String[] getLayerServices(@RequestParam("layer") String layer){
+		return null; //TODO
+	}
 }
