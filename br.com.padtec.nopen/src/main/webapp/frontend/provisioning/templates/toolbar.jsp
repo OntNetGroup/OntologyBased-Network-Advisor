@@ -17,9 +17,9 @@
 <!--      <button id="btn-to-front" class="btn" data-tooltip="Bring Object to Front">to front</button> -->
 <!--      <button id="btn-to-back" class="btn" data-tooltip="Send Object to Back">to back</button> -->
 <!--      <button id="btn-layout" class="btn" data-tooltip="Auto-layout Graph">layout</button> -->
-     <label data-tooltip="Change grid size">Grid size:</label>
-     <input type="range" value="10" min="1" max="50" step="1" id="input-gridsize" />
-     <output id="output-gridsize">10</output>
+<!--      <label data-tooltip="Change grid size">Grid size:</label> -->
+<!--      <input type="range" value="10" min="1" max="50" step="1" id="input-gridsize" /> -->
+<!--      <output id="output-gridsize">10</output> -->
      <label data-tooltip="Enable/Disable Snaplines">Snaplines:</label>
      <input type="checkbox" id="snapline-switch" checked/>
  </div>
