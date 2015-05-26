@@ -62,7 +62,6 @@ var InspectorDefs = {
     'basic.Rect': {
 
     	inputs: {
-//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } }
     		attrs: {
 				text: {
 					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
@@ -75,7 +74,6 @@ var InspectorDefs = {
     'basic.Circle': {
 
     	inputs: {
-//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } }
 			attrs: {
 				text: {
 					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
@@ -90,7 +88,6 @@ var InspectorDefs = {
     
     'basic.Path': {
     	inputs: {
-//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } }
 			attrs: {
 				text: {
 					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
