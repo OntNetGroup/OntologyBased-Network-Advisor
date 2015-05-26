@@ -20,9 +20,10 @@ public class StudioInitializer {
 		
 		
 		//---------------------------------------Testing Methods-----------------------------------------------//
-		PerformBind bind = new PerformBind();
+		
 		try {
-			FactoryUtil.createInstanceIndividual(
+			PerformBind bind = new PerformBind();
+			  FactoryUtil.createInstanceIndividual(
 					StudioComponents.studioRepository.getBaseModel(), 
 					StudioComponents.studioRepository.getNamespace()+"ttf1", 
 					StudioComponents.studioRepository.getNamespace()+"Trail_Termination_Function"
@@ -32,8 +33,10 @@ public class StudioInitializer {
 					StudioComponents.studioRepository.getNamespace()+"af1", 
 					StudioComponents.studioRepository.getNamespace()+"Adaptation_Function"
 				);
-			boolean result = bind.applyBinds( "ttf1",  "ttf1",  "ttf1",  "af1",  "http://nemo.inf.ufes.br/NewProject.owl#Trail_Termination_Function",  "http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function",  StudioComponents.studioRepository);
+			boolean result = bind.applyBinds( "ttf1",  "ttf1",  "af1",  "af1",  "http://nemo.inf.ufes.br/NewProject.owl#Trail_Termination_Function",  "http://nemo.inf.ufes.br/NewProject.owl#Adaptation_Function",  StudioComponents.studioRepository);
 			System.out.println(result);
+			//------------------------------------------------
+			//BuildBindStructure.createBindStructure("http://nemo.inf.ufes.br/NewProject.owl#binds");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -646,7 +646,7 @@ public class DtoQueryUtil {
 		while (results.hasNext())	
 		{	
 			j++;
-			System.out.println("j: " + j);
+			//System.out.println("j: " + j);
 			QuerySolution row= results.next();
 			
 			RDFNode property = row.get("property");
@@ -680,12 +680,12 @@ public class DtoQueryUtil {
 			}else{
 				String valueStr = cardinalityValue.toString();
 				valueStr = valueStr.replace(XSD.nonNegativeInteger.toString(), "").replace("^^", "");
-				System.out.println();
+				//System.out.println(valueStr);
 				bound = Integer.valueOf(valueStr);
 			}
 			cardDef.setBounds(restricionType.toString(), bound);
 			
-			System.out.println(cardDef);
+			//System.out.println(cardDef);
 			
 			if(!result.containsKey(key)){
 				result.put(key, cardDef);

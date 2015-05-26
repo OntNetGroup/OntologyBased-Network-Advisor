@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.hp.hpl.jena.vocabulary.XSD;
-
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.RelationEnum;
@@ -48,14 +46,10 @@ public class PerformBind {
 			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
 			String propertyURI = repository.getNamespace()+ "binds";
 			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(repository.getBaseModel(), name_source, propertyURI, tipo_target );
-			
-			String number = numberOfAlreadyBoundPorts.toString();
-			number.replace(XSD.nonNegativeInteger.toString(), "").replace("^^", "");
-			numberOfAlreadyBoundPorts = Integer.parseInt(number);
-			
+	
 			BuildBindStructure.createBindStructure(propertyURI);
 			
-			String key = null;
+			String key = tipo_source + propertyURI + tipo_target;
 			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 			Integer cardinality_input_target = Integer.parseInt(cardinality);
 			//create the Reference Point if exists and the relation between reference point and ports
@@ -77,8 +71,8 @@ public class PerformBind {
 				// create reference point
 				FactoryUtil.createInstanceIndividual(
 						repository.getBaseModel(), 
-						repository.getNamespace()+rp_name, 
-						repository.getNamespace()+tipo_rp
+						rp_name, 
+						tipo_rp
 					);
 				
 				//create output
@@ -92,28 +86,28 @@ public class PerformBind {
 				FactoryUtil.createInstanceIndividual(
 						repository.getBaseModel(), 
 						repository.getNamespace()+inputId, 
-						repository.getNamespace()+tipo_input
+						tipo_input
 					);
 				
 				//create relation between output and reference point
 				FactoryUtil.createInstanceRelation(
 						repository.getBaseModel(), 
 						repository.getNamespace()+id_source, 
-						repository.getNamespace()+relationOutRp.get(0),
-						repository.getNamespace()+rpId
+						relationOutRp.get(0),
+						rpId
 					);
 				
 				//create relation between input and reference point
 				FactoryUtil.createInstanceRelation(
 						repository.getBaseModel(), 
 						repository.getNamespace()+id_target, 
-						repository.getNamespace()+relationInRp.get(0),
-						repository.getNamespace()+rpId
+						relationInRp.get(0),
+						rpId
 					);
 				
 								
-				source_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_source, repository.getBaseModel());
-				target_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_target, repository.getBaseModel());
+				source_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_source, repository.getBaseModel()); 
+				target_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_target, repository.getBaseModel()); 
 
 				if ((source_componentOfs.containsKey(tipo_source + "_Output")) && (target_componentOfs.containsKey(tipo_target + "_Input"))) {
 					relation_source = source_componentOfs.get(tipo_source + "_Output");

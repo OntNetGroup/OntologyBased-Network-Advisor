@@ -27,7 +27,8 @@ public class BuildBindStructure {
 		
 		Iterator<Entry<String, RelationDef>> it = possibleInstants.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry pairs = (Map.Entry)it.next();
+	        @SuppressWarnings("rawtypes")
+			Map.Entry pairs = (Map.Entry)it.next();
 	        RelationDef relation = (RelationDef) pairs.getValue();
 	        CardinalityDef card = relation.getCardOnRange();
 	        Integer valueUp = card.getUpperBound();

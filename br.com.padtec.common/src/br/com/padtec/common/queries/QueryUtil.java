@@ -19,6 +19,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.vocabulary.XSD;
 
 public class QueryUtil {
 	
@@ -242,8 +243,9 @@ public class QueryUtil {
 		{			
 			QuerySolution row = results.next();		    
 		    RDFNode count = row.get("count");	
-	    	System.out.println("- count: "+count.toString()); 
-	    	return Integer.valueOf(count.toString());
+	    	System.out.println("- count: "+count.toString());
+	    	String s = count.toString().replace("^^http://www.w3.org/2001/XMLSchema#integer", "");
+	    	return Integer.valueOf(s);
 		}
 		return 0;
 	}
