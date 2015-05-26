@@ -21,7 +21,7 @@ public class StudioRegister extends DefaultRegister {
 			{
 				registerLayer(l, defaultTechs[i], false);
 				
-				if(j>0) InstanceFabricator.createIsClientOf(StudioComponents.studioRepository, layers[j-1], l);
+				if(j>0) InstanceFabricator.createIsClientOf(StudioComponents.studioRepository, l, layers[j-1]);
 				
 				for(String service: defaultServices)
 				{					

@@ -1,7 +1,5 @@
 package br.com.padtec.nopen.controller;
 
-import java.util.HashMap;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -10,11 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hp.hpl.jena.ontology.OntModel;
-
-import br.com.padtec.common.dto.RelationDef;
-import br.com.padtec.common.queries.DtoQueryUtil;
-import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.NOpenInitializer;
 import br.com.padtec.nopen.service.NOpenReasoner;
 import br.com.padtec.nopen.service.NOpenRegister;

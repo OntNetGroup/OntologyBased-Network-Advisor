@@ -3,17 +3,17 @@
 
 <%
 	//Get the parameters from controller
-// 	String[] techs = (String[]) request.getSession().getAttribute("techs");
-// 	List<String> defaultTechs = (List<String>) request.getSession().getAttribute("defaultTechs");
+ 	String reasoner = (String) request.getSession().getAttribute("defaultReasoner");
 
-// 	String[][] layers = (String[][]) request.getSession().getAttribute("layers");
-// 	List<String> defaultLayers = (List<String>) request.getSession().getAttribute("defaultLayers");
-	
-// 	String[] services = (String[]) request.getSession().getAttribute("services");
-// 	List<String> defaultServices = (List<String>) request.getSession().getAttribute("defaultServices");
 %>
 
 <script src="frontend/template/js/jquery.nestable.min.js"></script>
+
+<script>	
+	$('#selectReasoner').change(function(){
+		alert(this.options[this.selectedIndex].value);	
+	});
+</script>
 			
 <div class="row">
 
@@ -28,12 +28,16 @@
 			<div class="box-content clearfix" style="">			
 				<h2>Default reasoning used for running inferences:</h2>								
 			    <div class="form-group">
-					<label class="control-label" for="selectError3"></label>
+					<label class="control-label" for="selectReasoner"></label>
 					<div class="controls">
-					  <select id="selectError3" class="form-control">
-						<option>Hermit</option>
-						<option>Pellet</option>						
-					  </select>
+					<select id="selectReasoner" class="form-control">
+					<%						
+						if(reasoner.equals("hermit")) out.println("<option value=\"hermit\" selected> Hermit</option>");
+						else out.println("<option value=\"hermit\"> Hermit</option>");
+						if(reasoner.equals("pellet")) out.println("<option value=\"pellet\" selected> Pellet</option>");
+						else out.println("<option value=\"pellet\"> Pellet</option>");		
+					%>
+					</select>  
 					</div>
 				 </div>
 				 <h2>About reasoners...</h2>		

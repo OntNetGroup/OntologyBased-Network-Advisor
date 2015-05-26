@@ -21,7 +21,7 @@ public class ProvisioningRegister extends DefaultRegister {
 			{
 				registerLayer(l, defaultTechs[i], false);
 				
-				if(j>0) InstanceFabricator.createIsClientOf(ProvisioningComponents.provisioningRepository, layers[j-1], l);
+				if(j>0) InstanceFabricator.createIsClientOf(ProvisioningComponents.provisioningRepository, l, layers[j-1]);
 				
 				for(String service: defaultServices)
 				{

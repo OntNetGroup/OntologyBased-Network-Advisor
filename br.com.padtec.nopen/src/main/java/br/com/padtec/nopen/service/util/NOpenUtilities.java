@@ -15,8 +15,7 @@ public class NOpenUtilities {
 
 	public static String uploadTBOx(InputStream s, boolean runReasoner, OKCoUploader repository)
 	{				
-		repository.setIsReasonOnLoading(runReasoner);
-		repository.setReasoner(new HermitReasonerImpl());
+		repository.setIsReasonOnLoading(runReasoner);		
 		String error = new String();
 		try{						
 			repository.uploadBaseModel(s,repository.isReasonOnLoading() ? "on" : "off", (repository.getReasoner() instanceof HermitReasonerImpl) ? "hermit" : "pellet");			

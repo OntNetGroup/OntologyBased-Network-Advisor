@@ -74,9 +74,9 @@
 			</div>
 			<div class="box-content clearfix" style="">																
 				<div class="dd" id="layer" style="width:100%">
-				<p>These are the registered layers regarding who is client/server of whom.</p>
-				<p>- The down arrow &darr; means "is Client Of".</p> 
-				<p>- The upper arrow &uarr; means "is Server Of".</p>				
+				<p>These are the registered layers ordered regarding who is client/server of whom.
+				   The top layer is client of the layer beneath it and thus successively. 								
+				   Conversely, the bottom layer is server of the layer above it and thus successively. </p>
 				<ol id="layer-dd-list" class="dd-list">					
 					<%
 	            	int j=0;					
@@ -113,7 +113,7 @@
 			<div class="box-content clearfix" style="">			
 				<!-- <label class="control-label" for="selectError10">Service of Selected Layer</label> -->
 				<div class="controls" style="width:100%;float:right">
-					<p>All available services:</p>	
+					<p></p>	
 					<%
 // 	            		int k=0;					
 // 						for(String tech: techs){							
@@ -122,7 +122,7 @@
 // 								out.println("<div id=\""+layer+"\"; class=\"y\" style=\"display:none;\">");
 								out.println("<select id=\"selectError10\" class=\"form-control\" style=\"width:100%;height:500\" multiple data-rel=\"chosen\">");							  	
 							  	for(String service: services){
-							  		out.println("<option>"+service+"</option>");
+							  		out.println("<option value=\""+service+"\" selected>"+service+"</option>");
 							  	}
 							  	out.println("</select>");
 // 							  	out.println("</div>");

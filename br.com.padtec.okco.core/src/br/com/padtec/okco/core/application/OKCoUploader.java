@@ -54,6 +54,7 @@ public class OKCoUploader {
 	public OKCoUploader(String name)
 	{
 		setName(name);
+		reasoner = new HermitReasonerImpl();
 	}
 	
 	/**
