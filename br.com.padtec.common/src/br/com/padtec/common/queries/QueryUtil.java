@@ -2292,9 +2292,9 @@ public class QueryUtil {
 		String queryString =  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
 				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
 				+ "SELECT ?x WHERE { "
-				+ "	?x rdfs:subPropertyOf " + superProperty + " . "
-				+ "	?x rdfs:domain " + classSourceId + " . "
-				+ "	?x rdfs:range " + classTargetId + " . "
+				+ "	?x rdfs:subPropertyOf <" + superProperty + "> . "
+				+ "	?x rdfs:domain <" + classSourceId + "> . "
+				+ "	?x rdfs:range <" + classTargetId + "> . "
 				+ "}";
 		
 		Query query = QueryFactory.create(queryString);

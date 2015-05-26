@@ -680,7 +680,8 @@ public class DtoQueryUtil {
 			}else{
 				String valueStr = cardinalityValue.toString();
 				valueStr = valueStr.replace(XSD.nonNegativeInteger.toString(), "").replace("^^", "");
-//				bound = Integer.valueOf(valueStr);
+				System.out.println();
+				bound = Integer.valueOf(valueStr);
 			}
 			cardDef.setBounds(restricionType.toString(), bound);
 			
@@ -766,11 +767,11 @@ public class DtoQueryUtil {
 		int i = 0;
 		for (Entry<String, RelationDef> relDefEntry : result.entrySet()) {
 			i++;
-			System.out.println("i: " + i);
+			//System.out.println("i: " + i);
 			RelationDef relDef = relDefEntry.getValue();
 			String cardDefKey;
 			cardDefKey = relDef.getOriginalDomain() + relDef.getObjectProperty() + relDef.getOriginalRange();
-			System.out.println(cardDefKey.replace("http://nemo.inf.ufes.br/NewProject.owl#", "->"));
+			//System.out.println(cardDefKey.replace("http://nemo.inf.ufes.br/NewProject.owl#", "->"));
 			if(!cardDefinitions.containsKey(cardDefKey)){
 				HashMap<String, CardinalityDef> newCardDefs = getCardDefFromClasses(model, relDef.getOriginalDomain(), relDef.getObjectProperty(), relDef.getOriginalRange());
 				cardDefinitions.putAll(newCardDefs);

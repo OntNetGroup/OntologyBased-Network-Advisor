@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.hp.hpl.jena.vocabulary.XSD;
+
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.RelationEnum;
@@ -40,26 +42,37 @@ public class PerformBind {
 			String relation_source = null;
 			HashMap<String, String> source_componentOfs = new HashMap<String, String>();
 			
-			String inputId = tipo_target + "_Input" + id_target;
+			String inputId = id_target + "_Input" ;
 			String tipo_input = tipo_target + "_Input";
 			String relation_target = null;
 			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
+			String propertyURI = repository.getNamespace()+ "binds";
+			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(repository.getBaseModel(), name_source, propertyURI, tipo_target );
 			
-			//Integer numberOfAlreadyBoundPorts = 0;
+			String number = numberOfAlreadyBoundPorts.toString();
+			number.replace(XSD.nonNegativeInteger.toString(), "").replace("^^", "");
+			numberOfAlreadyBoundPorts = Integer.parseInt(number);
 			
+			BuildBindStructure.createBindStructure(propertyURI);
+			
+			String key = null;
+			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
+			Integer cardinality_input_target = Integer.parseInt(cardinality);
 			//create the Reference Point if exists and the relation between reference point and ports
 			HashSet<String> rps_between_ports = new HashSet<String>();
 			rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, repository);
 
-			if((rps_between_ports.size() > 0) /*&& (numberOfAlreadyBoundPorts < cardinality_input_target)*/){ //segunda parte: incluir cardinalidade
+			
+			
+			if((rps_between_ports.size() > 0) && ((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1))){ //segunda parte: incluir cardinalidade
 				String tipo_rp;
 				String rp_name;
 				tipo_rp = rps_between_ports.iterator().next();
 				rp_name = tipo_rp + "_" + tipo_output.substring(tipo_output.indexOf("#")+1) + "_" + tipo_input.substring(tipo_input.indexOf("#")+1);
-				String rpId = tipo_rp + rp_name;
+				String rpId = rp_name;
 				
-				ArrayList<String> relationOutRp = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), tipo_output, tipo_rp, RelationEnum.INV_links_output.toString());
-				ArrayList<String> relationInRp = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), tipo_rp, tipo_input, RelationEnum.links_input.toString());
+				ArrayList<String> relationOutRp = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), tipo_output, tipo_rp, repository.getNamespace()+RelationEnum.INV_links_output.toString());
+				ArrayList<String> relationInRp = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), tipo_rp, tipo_input, repository.getNamespace()+RelationEnum.links_input.toString());
 				
 				// create reference point
 				FactoryUtil.createInstanceIndividual(
