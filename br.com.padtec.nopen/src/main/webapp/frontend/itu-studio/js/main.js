@@ -56,6 +56,11 @@ var Rappid = Backbone.Router.extend({
         this.initializeValidator();
         this.initializePortsBar();
         this.initializeCounters();
+        this.initializeTTFAttributes();
+    },
+    
+    initializeTTFAttributes: function() {
+    	var TTFAttributes = loadTTFAttributes('874.1'); 
     },
 
     // Create a graph, paper and wrap the paper in a PaperScroller.

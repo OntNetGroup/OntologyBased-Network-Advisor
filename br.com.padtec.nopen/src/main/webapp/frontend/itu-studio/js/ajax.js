@@ -395,3 +395,25 @@ function deleteLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType,
 	return result;
 //	return "success";
 };
+
+
+function loadTTFAttributes(reference) {
+	var result = "error";
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "loadTTFAttributes.htm",
+		data: {
+			'reference': reference
+		},
+		success: function(data){
+			console.log(data);
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+}

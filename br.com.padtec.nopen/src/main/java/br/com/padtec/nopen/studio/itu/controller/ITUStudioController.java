@@ -351,6 +351,19 @@ public class ITUStudioController {
 	}
 	
 	/**
+	 * @param fileName: nome do arquivo contendo os atributos de TTF
+	 * @return: atributos de TTF, para cada camada, no formato JSON
+	 */
+	@RequestMapping(value = "/loadTTFAttributes", method = RequestMethod.POST)
+	public @ResponseBody String loadTTFAttributes(@RequestParam("reference") String reference)
+	{
+		String path = "itu-" + reference + "/ttf.json";
+		path = NOpenFileUtil.replaceSlash(path);		
+		return NOpenFileUtil.openItuConfigurationJSONFileAsString(path);		
+
+	}
+	
+	/**
 	 * @param fileName: nome do arquivo contendo o grafo desejado no formato JSON (nome do card que se deseja abrir, no caso)
 	 * @return: conte�do do grafo no formato JSON or error
 	 */

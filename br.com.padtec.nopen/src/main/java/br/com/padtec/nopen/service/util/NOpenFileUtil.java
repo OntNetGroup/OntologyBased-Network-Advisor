@@ -20,6 +20,13 @@ public class NOpenFileUtil {
 	public static String equipmentJSONFolder;
 	public static String provisioningJSONFolder;
 	
+	/* 
+	 * path for the transport function attributes
+	 * each filename is the name of a layer
+	 * each file is a JSON which contains the attributes definition for a TTF inside that layer
+	 */	
+	public static String ituConfigurationJSONFolder;
+	
 	// OWL
 	public static String templateOWLFolder;
 	public static String equipmentOWLFolder;
@@ -51,6 +58,8 @@ public class NOpenFileUtil {
 		NOpenFileUtil.provisioningJSONFolder = NOpenFileUtil.path + "/nopen/repository/provisioning/json/";
 		NOpenFileUtil.provisioningOWLFolder = NOpenFileUtil.path + "/nopen/repository/provisioning/owl/";
 		
+		NOpenFileUtil.ituConfigurationJSONFolder = NOpenFileUtil.path + "/nopen/repository/data-object/json/";
+		
 
 		// if SO = Windows
 		if(System.getProperty("os.name").contains("Windows")){		
@@ -64,6 +73,8 @@ public class NOpenFileUtil {
 			
 			NOpenFileUtil.provisioningJSONFolder = NOpenFileUtil.provisioningJSONFolder.replaceAll("/", "\\\\");	
 			NOpenFileUtil.provisioningOWLFolder = NOpenFileUtil.provisioningOWLFolder.replaceAll("/", "\\\\");	
+			
+			NOpenFileUtil.ituConfigurationJSONFolder = NOpenFileUtil.ituConfigurationJSONFolder.replaceAll("/", "\\\\");
 		}
 
 		NOpenFileUtil.createRepository(NOpenFileUtil.topologyJSONFolder);
@@ -76,6 +87,8 @@ public class NOpenFileUtil {
 		
 		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningJSONFolder);
 		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningOWLFolder);
+		
+		NOpenFileUtil.createRepository(NOpenFileUtil.ituConfigurationJSONFolder);
 	}
 
 	/**
@@ -442,6 +455,16 @@ public class NOpenFileUtil {
     	return openFileAsString(NOpenFileUtil.provisioningJSONFolder, filename);
     }
 	
+    /**
+     * Procedure to open an ITU configuration file as String.
+     * @param filename
+     * @return
+     */
+    public static String openItuConfigurationJSONFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.ituConfigurationJSONFolder, filename);
+    }
+	
+    
     /**
      * Generic procedure to open a file as String.
      * @param filename
