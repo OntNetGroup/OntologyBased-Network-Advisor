@@ -407,7 +407,6 @@ function loadTTFAttributes(reference) {
 			'reference': reference
 		},
 		success: function(data){
-			console.log(data);
 			result = data;
 		},
 		error : function(e) {

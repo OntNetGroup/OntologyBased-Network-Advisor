@@ -29,11 +29,6 @@ var Rappid = Backbone.Router.extend({
     	this.cardName = name;
     },
     
-    setCardTech: function(tech) {
-    	this.cardTech = tech;
-        this.initializeStencil();
-    },
-
     /* counters to give names for transport functions and interfaces */
     initializeCounters: function() {
         this.TTFCounter = 0;
@@ -56,11 +51,21 @@ var Rappid = Backbone.Router.extend({
         this.initializeValidator();
         this.initializePortsBar();
         this.initializeCounters();
-        this.initializeTTFAttributes();
     },
     
-    initializeTTFAttributes: function() {
-    	var TTFAttributes = loadTTFAttributes('874.1'); 
+    initializeTFunctionAttributes: function(ref) {
+    	this.initializeTTFAttributes(ref);
+    	this.initializeAFAttributes(ref);
+    },
+    
+    initializeTTFAttributes: function(reference) {
+    	var TTFAttributes = loadTTFAttributes(reference);
+    	this.TTFAttributesJSON = JSON.parse(TTFAttributes);
+    },
+    
+    initializeAFAttributes: function(reference) {
+//    	var AFAttributes = loadAFAttributes(reference);
+//    	this.AFAttributesJSON = JSON.parse(AFAttributes);
     },
 
     // Create a graph, paper and wrap the paper in a PaperScroller.
@@ -197,7 +202,8 @@ var Rappid = Backbone.Router.extend({
     },
     
     // Create and populate stencil.
-    initializeStencil: function() {
+    initializeStencil: function(tech) {
+    	this.cardTech = tech;
 
     	this.initializeLayers();
     	
