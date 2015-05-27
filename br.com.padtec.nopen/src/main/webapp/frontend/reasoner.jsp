@@ -17,10 +17,10 @@
 			
 <div class="row">
 
-	<div class="col-sm-4">	
+	<div class="col-sm-8">	
 		<div class="box"> 			
 			<div class="box-header" >
-				<h2><i class="icon-laptop"></i>Inference Settings</h2>
+				<h2><i class="icon-cogs"></i>Inference Settings</h2>
 				<div class="box-icon">					
 					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>													
 				</div>

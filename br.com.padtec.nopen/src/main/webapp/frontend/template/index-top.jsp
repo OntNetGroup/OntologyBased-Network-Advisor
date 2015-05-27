@@ -31,11 +31,20 @@
 						</ul>	
 						</li>												
 						<li><a class="" href="options.htm"><i class="icon-wrench"></i><span class="hidden-sm">&nbsp;&nbsp; Technology</span> <span class="label"></span></a></li>																																						
-						<li><a class="" href="reasoner.htm"><i class="icon-wrench"></i><span class="hidden-sm">&nbsp;&nbsp; Reasoner</span> <span class="label"></span></a></li>
+						<li><a class="" href="reasoner.htm"><i class="icon-cogs"></i><span class="hidden-sm">&nbsp;&nbsp; Reasoner</span> <span class="label"></span></a></li>
+																
+						<li>
+						<a class="dropmenu drop" href="#"><i class="icon-globe"></i><span class="hidden-sm">&nbsp;&nbsp; Ontology</span> <span class="label"></span></a>
+						<ul class="dropmenuLevel1">									
+							<li><a  class="submenu" href="getStudioOntology.htm" class=""><i class="icon-file-text"></i><span class="hidden-sm">&nbsp;&nbsp; Studio (OWL)</span></a></li>
+							<li><a  class="submenu" href="getProvisioningOntology.htm" class=""><i class="icon-file-text"></i><span class="hidden-sm">&nbsp;&nbsp; Provisioning (OWL)</span></a></li>
+						</ul>	
+						</li>
+						
 						<li>
 						<a class="dropmenu drop" href="#"><i class="icon-question-sign"></i><span class="hidden-sm">&nbsp;&nbsp; Help</span> <span class="label"></span></a>
 						<ul class="dropmenuLevel1">									
-							<li><a  class="submenu" href="info.htm" class=""><i class="icon-exclamation-sign"></i><span class="hidden-sm">&nbsp;&nbsp; About</span></a></li>
+							<li><a  class="submenu" href="info.htm" class=""><i class="icon-question-sign"></i><span class="hidden-sm">&nbsp;&nbsp; About</span></a></li>
 							<li><a  class="submenu" href="questions.htm" class=""><i class="icon-question-sign"></i><span class="hidden-sm">&nbsp;&nbsp; Frequently Asked Questions (FAQ)</span></a></li>
 						</ul>	
 						</li>												

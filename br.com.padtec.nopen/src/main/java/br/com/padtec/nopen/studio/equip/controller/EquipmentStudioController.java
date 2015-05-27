@@ -25,9 +25,6 @@ public class EquipmentStudioController {
 	{
 		return "equipment-studio/equipment-studio";
 	}
-
-	
-
 	
 	//=============================================================================================
 	// Supervisor and technology

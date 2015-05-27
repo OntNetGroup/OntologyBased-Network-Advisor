@@ -1,6 +1,9 @@
 package br.com.padtec.nopen.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.NOpenInitializer;
 import br.com.padtec.nopen.service.NOpenReasoner;
 import br.com.padtec.nopen.service.NOpenRegister;
+import br.com.padtec.nopen.studio.service.StudioComponents;
 
 @Controller
 public class HomeController {
@@ -48,6 +53,42 @@ public class HomeController {
 		return "advisor/index";
 	}
 	
+	/** Get the base model from studio as a string text */	
+	@RequestMapping(method = RequestMethod.GET, value="/getStudioOntology")
+	public String getStudioOntology(HttpSession session, HttpServletRequest request) throws IOException 
+	{	     
+		if(StudioComponents.studioRepository.isBaseModelUploaded())
+		{
+			request.getSession().removeAttribute("loadOk");
+			request.getSession().setAttribute("ontology", StudioComponents.studioRepository.getBaseModelAsString());
+			request.getSession().setAttribute("name", "Studio");
+			return "ontology";
+		}else{				
+			request.getSession().removeAttribute("ontology");
+			request.getSession().removeAttribute("name");
+			request.getSession().setAttribute("loadOk", "false");
+		    return "welcome";
+		}
+	}
+	
+	/** Get the base model from provisioning as a string text */	
+	@RequestMapping(method = RequestMethod.GET, value="/getProvisioningOntology")
+	public String getProvisioningOntology(HttpSession session, HttpServletRequest request) throws IOException 
+	{	     
+		if(ProvisioningComponents.provisioningRepository.isBaseModelUploaded())
+		{
+			request.getSession().removeAttribute("loadOk");
+			request.getSession().setAttribute("ontology", ProvisioningComponents.provisioningRepository.getBaseModelAsString());
+			request.getSession().setAttribute("name", "Provisioning");
+			return "ontology";
+		}else{				
+			request.getSession().removeAttribute("ontology");
+			request.getSession().removeAttribute("name");
+			request.getSession().setAttribute("loadOk", "false");
+		    return "welcome";
+		}
+	}
+		
 	//==========================================================================
 			
 	@RequestMapping("/dashboard")
