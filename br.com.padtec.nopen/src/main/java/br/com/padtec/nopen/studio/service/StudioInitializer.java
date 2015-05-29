@@ -17,6 +17,10 @@ public class StudioInitializer {
 		
 		PerformanceUtil.printExecutionTime("Equip Studio: TBox uploaded.", beginDate);		
 		
+		BuildBindStructure.createBindStructure(StudioComponents.studioRepository.getNamespace() + "binds");
+		
+		PerformanceUtil.printExecutionTime("Equip Studio: Binding structure created.", beginDate);	
+		
 		return msg;
 	}	
 	
