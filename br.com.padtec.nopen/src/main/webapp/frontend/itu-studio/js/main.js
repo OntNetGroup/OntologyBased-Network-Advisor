@@ -53,9 +53,9 @@ var Rappid = Backbone.Router.extend({
         this.initializeCounters();
     },
     
-    initializeTFunctionAttributes: function(ref) {
-    	this.initializeTTFAttributes(ref);
-    	this.initializeAFAttributes(ref);
+    initializeTFunctionAttributes: function(reference) {
+    	this.initializeTTFAttributes(reference);
+    	this.initializeAFAttributes(reference);
     },
     
     initializeTTFAttributes: function(reference) {
@@ -261,14 +261,6 @@ var Rappid = Backbone.Router.extend({
         this.initializeStencilTooltips();
     },
     
-//    hideLayersAlreadyOnPaper: function() {
-//    	var layersOnPaper = this.getLayersOnPaper();
-//    	_.each(layersOnPaper, function(layer) {
-//    		var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layer+ '"]';
-//    		$(element).hide();
-//    	});
-//    },
-    
     hideLayer: function(layer) {
     	var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layer+ '"]';
 		$(element).hide();
@@ -388,6 +380,12 @@ var Rappid = Backbone.Router.extend({
     createInspector: function(cellView) {
 
         var cell = cellView.model || cellView;
+        var cellSubtype = cell.attributes.subtype;
+        var cellParent = this.graph.getCell(cell.attributes.parent);
+        var cellParentSubtype;
+        if(cellParent) {
+            cellParentSubtype = cellParent.attributes.subtype;
+        }
 
         // No need to re-render inspector if the cellView didn't change.
         if (!this.inspector || this.inspector.options.cell !== cell) {
@@ -403,14 +401,21 @@ var Rappid = Backbone.Router.extend({
                 this.inspector.remove();
             }
 
-            var inspectorDefs = InspectorDefs[cell.get('type')];
-
+        	var inspectorDefs = InspectorDefs[cell.get('type')];
+        	var inspectorInputs = inspectorDefs.inputs;
+        	var inspectorGroups = inspectorDefs.groups;
+        	
+            if(cellSubtype === 'TTF' && this.TTFAttributesJSON[cellParentSubtype]) {
+            	inspectorInputs = this.TTFAttributesJSON[cellParentSubtype];
+            }
+            
+            
             this.inspector = new joint.ui.Inspector({
-                inputs: inspectorDefs.inputs,
-                groups: inspectorDefs.groups,
+                inputs: inspectorInputs,
+                groups: inspectorGroups,
                 cell: cell
             });
-
+            
             this.initializeInspectorTooltips();
             
             this.inspector.render();
