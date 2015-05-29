@@ -13,5 +13,7 @@ public class NOpenInitializer {
 		eMsg  = ProvisioningInitializer.uploadProvisioningTBox(false);
 		if(!eMsg.isEmpty()) {throw new Exception(eMsg); }
 		
+		ContainerStructure.buildContainerStructure(ContainerStructure.getInstance().getRepository().getNamespace() + "componentOf");
+		
 	}
 }
