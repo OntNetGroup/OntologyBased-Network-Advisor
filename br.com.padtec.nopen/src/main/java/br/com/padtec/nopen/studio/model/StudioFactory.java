@@ -8,6 +8,130 @@ import br.com.padtec.nopen.studio.service.StudioComponents;
 public class StudioFactory {
 	
 	//=============================================================================================
+	// General
+	//=============================================================================================
+	
+	/**
+	 * @author John Guerson
+	 */
+	@SuppressWarnings("unused")
+	public static void createElement(DtoJointElement dtoElement, DtoJointElement dtoContainer) throws Exception
+	{		
+		String elemType = dtoElement.getType();		
+		String elemId = dtoElement.getId();
+		String elemName = dtoElement.getName();
+		
+		String containerType = dtoContainer.getType();
+		String containerId = dtoContainer.getId();
+		String containerName = dtoContainer.getName();
+		
+		if(elemType.compareToIgnoreCase("TTF")==0 || elemType.compareToIgnoreCase("AF")==0){ 
+			canCreateTransportFunction(dtoElement, dtoContainer);
+			createTransportFunction(dtoElement, dtoContainer);
+		}
+		
+		else if(elemType.compareToIgnoreCase("IN")==0 || elemType.compareToIgnoreCase("OUT")==0) createPort(dtoElement, dtoContainer);
+		
+		else if(elemType.compareToIgnoreCase("LAYER")==0) insertContainer(dtoElement, dtoContainer);
+		
+		else if(elemType.compareToIgnoreCase("CARD")==0) createEquipmentholder(dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("SLOT")==0)createEquipmentholder(dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("SUBSLOT")==0) createEquipmentholder(dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("SHELF")==0) createEquipmentholder(dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("RACK")==0) createEquipmentholder(dtoElement, dtoContainer);
+		
+		else if (elemType.compareToIgnoreCase("SUPERVISOR")==0) createSupervisor(dtoElement, dtoContainer);
+		
+		else {
+			NOpenLog.appendLine("Error: Unexpected creation of element "+elemType+"::"+elemName+" at container "+containerType+"::"+containerName+"");
+			throw new Exception("Unexpected creation of element "+elemType+"::"+elemName+" at container "+containerType+"::"+containerName+"");			
+		}		
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	@SuppressWarnings("unused")
+	public static void deleteElement(DtoJointElement dtoElement, DtoJointElement dtoContainer) throws Exception
+	{		
+		String elemType = dtoElement.getType();		
+		String elemId = dtoElement.getId();
+		String elemName = dtoElement.getName();		
+		
+		String containerType = dtoContainer.getType();
+		String containerId = dtoContainer.getId();
+		String containerName = dtoContainer.getName();
+		
+		if(elemType.compareToIgnoreCase("TTF")==0 || elemType.compareToIgnoreCase("AF")==0) deleteTransportFunction(dtoElement);
+		
+		else if(elemType.compareToIgnoreCase("IN")==0 || elemType.compareToIgnoreCase("OUT")==0) deletePort(dtoElement);
+		
+		else if(elemType.compareToIgnoreCase("LAYER")==0) deleteContainer(dtoElement, dtoContainer);
+		
+		else if(elemType.compareToIgnoreCase("CARD")==0) deleteEquipmentholder(dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("SLOT")==0)deleteEquipmentholder(dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("SUBSLOT")==0) deleteEquipmentholder(dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("SHELF")==0) deleteEquipmentholder(dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("RACK")==0) deleteEquipmentholder(dtoElement, dtoContainer);
+		
+		else if (elemType.compareToIgnoreCase("SUPERVISOR")==0) deleteSupervisor(dtoElement);
+		
+		else {
+			NOpenLog.appendLine("Error: Unexpected deletion of element "+elemType+"::"+elemName+" at container "+containerType+"::"+containerName+"");
+			throw new Exception("Unexpected deletion of element "+elemType+"::"+elemName+" at container "+containerType+"::"+containerName+"");			
+		}	
+		
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	@SuppressWarnings("unused")
+	public static void createConnection(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement, DtoJointElement dtoConnection) throws Exception
+	{
+		String srcType = dtoSourceElement.getType();		
+		String srcId = dtoSourceElement.getId();		
+		String srcName = dtoSourceElement.getName();
+		
+		String tgtType = dtoTargetElement.getType();		
+		String tgtId = dtoTargetElement.getId();
+		String tgtName = dtoTargetElement.getName();
+		
+		canCreateLink(dtoSourceElement, dtoTargetElement);
+		
+		if(srcType.compareToIgnoreCase("TTF")==0 && tgtType.compareToIgnoreCase("AF")==0) createLink(dtoSourceElement, dtoTargetElement, dtoConnection);		
+		else if(srcType.compareToIgnoreCase("AF")==0 && tgtType.compareToIgnoreCase("TTF")==0) createLink(dtoSourceElement, dtoTargetElement, dtoConnection);
+		
+		else {
+			NOpenLog.appendLine("Error: Unexpected creation of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");
+			throw new Exception("Unexpected creation of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");				
+		}
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	@SuppressWarnings("unused")
+	public static void deleteConnection(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement, DtoJointElement dtoConnection) throws Exception
+	{
+		String srcType = dtoSourceElement.getType();		
+		String srcId = dtoSourceElement.getId();		
+		String srcName = dtoSourceElement.getName();
+		
+		String tgtType = dtoTargetElement.getType();		
+		String tgtId = dtoTargetElement.getId();
+		String tgtName = dtoTargetElement.getName();
+		
+		if(srcType.compareToIgnoreCase("TTF")==0 && tgtType.compareToIgnoreCase("AF")==0) deleteLink(dtoSourceElement, dtoTargetElement, dtoConnection);		
+		else if(srcType.compareToIgnoreCase("AF")==0 && tgtType.compareToIgnoreCase("TTF")==0) deleteLink(dtoSourceElement, dtoTargetElement, dtoConnection);
+		
+		else {
+			NOpenLog.appendLine("Error: Unexpected deletion of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");
+			throw new Exception("Unexpected deletion of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");				
+		}
+	}
+	
+	//=============================================================================================
 	// Transport Function
 	//=============================================================================================
 	
@@ -87,7 +211,7 @@ public class StudioFactory {
 	
 	public static void setTransportFunctionName(DtoJointElement dtoTransportFunction) 
 	{
-			
+		//we won't need this, as it does not make sense.
 	}
 	
 	//=============================================================================================
@@ -157,7 +281,7 @@ public class StudioFactory {
 	
 	public static void setPortName(DtoJointElement dtoPort) 
 	{
-			
+		//we won't need this, as it does not make sense.
 	}	
 	
 	//=============================================================================================
@@ -242,6 +366,149 @@ public class StudioFactory {
 	}
 
 	//=============================================================================================
+	// Equipment Holder
+	//=============================================================================================
+	
+	public static void createEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
+	{
+		String holderType = dtoEquipmentholder.getType();		
+		String holderId = dtoEquipmentholder.getId();		
+		String holderName = dtoEquipmentholder.getName();
+		
+		String containerType = dtoContainer.getType();		
+		String containerId = dtoContainer.getId();	
+		String containerName = dtoContainer.getName();
+		
+		if(holderType.equals("card") && containerType.equals("slot"))
+		{
+			InstanceFabricator.createCardAtSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);			
+		}
+		else if(holderType.equals("card") && containerType.equals("subslot"))
+		{
+			InstanceFabricator.createCardAtSubSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);			
+		}		
+		else if(holderType.equals("slot") && containerType.equals("shelf"))
+		{
+			InstanceFabricator.createSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
+		}
+		else if(holderType.equals("subslot") && containerType.equals("slot"))
+		{
+			InstanceFabricator.createSubSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
+		}
+		else if(holderType.equals("shelf")  && containerType.equals("rack"))
+		{
+			InstanceFabricator.createShelf(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
+		}
+		else if(holderType.equals("rack"))
+		{
+			InstanceFabricator.createRack(StudioComponents.studioRepository,holderId, holderName);						
+		}
+		else {
+			NOpenLog.appendLine("Error: Unexpected creation of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
+			throw new Exception("Unexpected creation of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
+		}
+	}
+
+	public static void deleteEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
+	{
+		String holderType = dtoEquipmentholder.getType();		
+		String holderId = dtoEquipmentholder.getId();		
+		String holderName = dtoEquipmentholder.getName();
+		
+		String containerType = dtoContainer.getType();		
+		String containerName = dtoContainer.getName();
+		
+		if(holderType.equals("card")) {
+			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);			
+		}
+		else if(holderType.equals("slot"))
+		{
+			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);	
+		}
+		else if(holderType.equals("subslot"))
+		{
+			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);	
+		}
+		else if(holderType.equals("shelf")) 
+		{
+			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);		
+		}
+		else if(holderType.equals("rack"))
+		{
+			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);		
+		}
+		else {
+			NOpenLog.appendLine("Error: Unexpected deletion of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
+			throw new Exception("Unexpected deletion of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
+		}
+	}
+
+	//=============================================================================================
+	// Shelf
+	//=============================================================================================
+	
+	public static void deleteShelf(DtoJointElement dtoShelf) throws Exception 
+	{	
+		String holderId = dtoShelf.getId();		
+		String holderName = dtoShelf.getName();
+		
+		InstanceFabricator.deleteShelf(StudioComponents.studioRepository,holderId,holderName);	
+	}
+
+	//=============================================================================================
+	// Slot
+	//=============================================================================================
+	
+	public static void deleteSlot(DtoJointElement dtoSlot) throws Exception 
+	{				
+		String holderId = dtoSlot.getId();		
+		String holderName = dtoSlot.getName();		
+				
+		InstanceFabricator.deleteSlot(StudioComponents.studioRepository,holderId,holderName);
+	}
+
+	//=============================================================================================
+	// Card
+	//=============================================================================================
+	
+	public static void deleteCard(DtoJointElement dtoCard) 
+	{
+		String holderId = dtoCard.getId();		
+		String holderName = dtoCard.getName();		
+				
+		InstanceFabricator.deleteCard(StudioComponents.studioRepository,holderId,holderName);
+	}
+
+	public static String[] elementsWithNoConnection(DtoJointElement dtoCard) 
+	{	
+		//TODO
+		return null;
+	}
+	
+	//=============================================================================================
+	// Supervisor
+	//=============================================================================================
+	
+	public static void createSupervisor(DtoJointElement dtoSupervisor, DtoJointElement dtoHolder) throws Exception 
+	{
+		String supervisorId = dtoSupervisor.getId();		
+		String supervisorName = dtoSupervisor.getName();		
+			
+		String holderId = dtoSupervisor.getId();		
+		String holderName = dtoSupervisor.getName();	
+		
+		InstanceFabricator.createSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName, holderId, holderName);
+	}	
+	
+	public static void deleteSupervisor(DtoJointElement dtoSupervisor) 
+	{
+		String supervisorId = dtoSupervisor.getId();		
+		String supervisorName = dtoSupervisor.getName();		
+				
+		InstanceFabricator.deleteSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName);
+	}
+		
+	//=============================================================================================
 	// Link
 	//=============================================================================================
 	
@@ -325,150 +592,4 @@ public class StudioFactory {
 		}
 	}
 
-	//=============================================================================================
-	// Equipment Holder
-	//=============================================================================================
-	
-	public static void insertEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
-	{
-		String holderType = dtoEquipmentholder.getType();		
-		String holderId = dtoEquipmentholder.getId();		
-		String holderName = dtoEquipmentholder.getName();
-		
-		String containerType = dtoContainer.getType();		
-		String containerId = dtoContainer.getId();	
-		String containerName = dtoContainer.getName();
-		
-		if(holderType.equals("card") && containerType.equals("slot"))
-		{
-			InstanceFabricator.createCardAtSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);			
-		}
-		else if(holderType.equals("card") && containerType.equals("subslot"))
-		{
-			InstanceFabricator.createCardAtSubSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);			
-		}		
-		else if(holderType.equals("slot") && containerType.equals("shelf"))
-		{
-			InstanceFabricator.createSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
-		}
-		else if(holderType.equals("subslot") && containerType.equals("slot"))
-		{
-			InstanceFabricator.createSubSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
-		}
-		else if(holderType.equals("shelf")  && containerType.equals("rack"))
-		{
-			InstanceFabricator.createShelf(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
-		}
-		else if(holderType.equals("rack"))
-		{
-			InstanceFabricator.createRack(StudioComponents.studioRepository,holderId, holderName);						
-		}
-		else {
-			NOpenLog.appendLine("Error: Unexpected creation of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
-			throw new Exception("Unexpected creation of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
-		}
-	}
-
-	public static void removeEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
-	{
-		String holderType = dtoEquipmentholder.getType();		
-		String holderId = dtoEquipmentholder.getId();		
-		String holderName = dtoEquipmentholder.getName();
-		
-		String containerType = dtoContainer.getType();		
-		String containerName = dtoContainer.getName();
-		
-		if(holderType.equals("card")) {
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);			
-		}
-		else if(holderType.equals("slot"))
-		{
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);	
-		}
-		else if(holderType.equals("subslot"))
-		{
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);	
-		}
-		else if(holderType.equals("shelf")) 
-		{
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);		
-		}
-		else if(holderType.equals("rack"))
-		{
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);		
-		}
-		else {
-			NOpenLog.appendLine("Error: Unexpected deletion of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
-			throw new Exception("Unexpected deletion of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
-		}
-	}
-
-	//=============================================================================================
-	// Shelf
-	//=============================================================================================
-	
-	public static void deleteShelf(DtoJointElement dtoShelf) throws Exception 
-	{	
-		String holderId = dtoShelf.getId();		
-		String holderName = dtoShelf.getName();
-		
-		InstanceFabricator.deleteShelf(StudioComponents.studioRepository,holderId,holderName);	
-	}
-
-	//=============================================================================================
-	// Slot
-	//=============================================================================================
-	
-	public static void deleteSlot(DtoJointElement dtoSlot) throws Exception 
-	{				
-		String holderId = dtoSlot.getId();		
-		String holderName = dtoSlot.getName();		
-				
-		InstanceFabricator.deleteSlot(StudioComponents.studioRepository,holderId,holderName);
-	}
-
-	//=============================================================================================
-	// Card
-	//=============================================================================================
-	
-	public static void deleteCard(DtoJointElement dtoCard) 
-	{
-		String holderId = dtoCard.getId();		
-		String holderName = dtoCard.getName();		
-				
-		InstanceFabricator.deleteCard(StudioComponents.studioRepository,holderId,holderName);
-	}
-
-	public static String[] elementsWithNoConnection(DtoJointElement dtoCard) 
-	{	
-		//TODO
-		return null;
-	}
-	
-	//=============================================================================================
-	// Supervisor
-	//=============================================================================================
-	
-	public static void insertSupervisor(DtoJointElement dtoSupervisor, DtoJointElement dtoHolder) throws Exception 
-	{
-		String supervisorId = dtoSupervisor.getId();		
-		String supervisorName = dtoSupervisor.getName();		
-			
-		String holderId = dtoSupervisor.getId();		
-		String holderName = dtoSupervisor.getName();	
-		
-		InstanceFabricator.createSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName, holderId, holderName);
-	}	
-	
-	public static void removeSupervisor(DtoJointElement dtoSupervisor) 
-	{
-		String supervisorId = dtoSupervisor.getId();		
-		String supervisorName = dtoSupervisor.getName();		
-				
-		InstanceFabricator.deleteSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName);
-	}
-
-	
-
-		
 }

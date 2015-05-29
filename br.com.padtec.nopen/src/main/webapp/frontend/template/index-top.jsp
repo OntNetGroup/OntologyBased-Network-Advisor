@@ -36,8 +36,8 @@
 						<li>
 						<a class="dropmenu drop" href="#"><i class="icon-globe"></i><span class="hidden-sm">&nbsp;&nbsp; Ontology</span> <span class="label"></span></a>
 						<ul class="dropmenuLevel1">									
-							<li><a  class="submenu" href="getStudioOntology.htm" class=""><i class="icon-file-text"></i><span class="hidden-sm">&nbsp;&nbsp; Studio (OWL)</span></a></li>
-							<li><a  class="submenu" href="getProvisioningOntology.htm" class=""><i class="icon-file-text"></i><span class="hidden-sm">&nbsp;&nbsp; Provisioning (OWL)</span></a></li>
+							<li><a  class="submenu" href="getStudioOntology.htm" class=""><i class="icon-file-text"></i><span class="hidden-sm">&nbsp;&nbsp; Studio</span></a></li>
+							<li><a  class="submenu" href="getProvisioningOntology.htm" class=""><i class="icon-file-text"></i><span class="hidden-sm">&nbsp;&nbsp; Provisioning</span></a></li>
 						</ul>	
 						</li>
 						

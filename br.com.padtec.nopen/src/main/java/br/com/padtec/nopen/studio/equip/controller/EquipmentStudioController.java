@@ -42,7 +42,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoSlot = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
 				
 		try{
-			StudioFactory.insertSupervisor(dtoSupervisor, dtoSlot);
+			StudioFactory.createSupervisor(dtoSupervisor, dtoSlot);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -61,7 +61,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
 		
 		try{
-			StudioFactory.removeSupervisor(dtoSupervisor);
+			StudioFactory.deleteSupervisor(dtoSupervisor);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -180,7 +180,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
 
 		try{
-			StudioFactory.insertEquipmentholder(dtoCard, dtoContainer);
+			StudioFactory.createEquipmentholder(dtoCard, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -233,7 +233,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 
 		try{
-			StudioFactory.insertEquipmentholder(dtoEquipmentholder, dtoContainer);
+			StudioFactory.createEquipmentholder(dtoEquipmentholder, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -253,7 +253,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 
 		try{
-			StudioFactory.removeEquipmentholder(dtoEquipmentholder, dtoContainer);
+			StudioFactory.deleteEquipmentholder(dtoEquipmentholder, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();

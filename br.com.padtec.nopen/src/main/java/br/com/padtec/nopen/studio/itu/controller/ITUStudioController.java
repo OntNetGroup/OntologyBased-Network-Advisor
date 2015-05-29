@@ -22,27 +22,18 @@ import com.jointjs.util.JointUtilManager;
 @Controller
 public class ITUStudioController {
 	
-	//REMOVER DEPOIS QUE TIVER TERMINADO
+	//TODO: Remove after finished the application
 	@RequestMapping("/itu-studio")
-	public String networkTopologyRequest() {
+	public String networkTopologyRequest() 
+	{
 		return "itu-studio/itu-studio";
 	}
 	
-	/** Verify if there are any elements without connection in the given card
-	 * @param card
-	 * @return names of elements without connection
-	 */
-	@RequestMapping(value = "/verifyElementsOnCard", method = RequestMethod.POST)
-	public @ResponseBody String[] verifyElementsOnCard(@RequestParam("card") String card)
-	{
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		
-		String[] result = StudioFactory.elementsWithNoConnection(dtoCard);		
-		return result;
-	}
+	/* ======================================================================================
+	 * Get
+	 * ======================================================================================*/
 	
-	/* ----- Search for Layers & Techs ----- */
-	
+	/** Get all layers name */
 	@RequestMapping(value = "/allLayers", method = RequestMethod.POST)
 	public @ResponseBody String[][] getAllLayersNames() 
 	{
@@ -50,10 +41,7 @@ public class ITUStudioController {
 		return NOpenQueryUtil.getAllLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel());
 	}
 	
-	/** Get layer names given a technology
-	 * @param techName
-	 * @return
-	 */
+	/** Get layer names given a technology */
 	@RequestMapping(value = "/techLayers", method = RequestMethod.POST)
 	public @ResponseBody String[] getLayerNames(@RequestParam("techName") String techName) 
 	{
@@ -61,13 +49,11 @@ public class ITUStudioController {
 		return NOpenQueryUtil.getAllLayerNames(ProvisioningComponents.provisioningRepository.getBaseModel(), techName);
 	}
 	
-	/* ----- CRUD for Container ----- */
+	/* ======================================================================================
+	 * Create
+	 * ======================================================================================*/
 	
-	/** Insere um container no card
-	 * @param container
-	 * @param card
-	 * @return
-	 */
+	/** Insert card on a container */
 	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
 	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("card") String card) 
 	{	
@@ -83,11 +69,64 @@ public class ITUStudioController {
 		return "success";		
 	}
 	
-	/** Remove um container do card
-	 * @param container
-	 * @param card
-	 * @return: success or error
-	 */
+	
+	/** Create a transport function on a layer or directly on a card */
+	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
+	public @ResponseBody String createTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container)
+	{
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
+
+		try{
+			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";
+	}
+		
+	
+	/** Create a port (interface) of input or output connected to a transport function */
+	@RequestMapping(value = "/createPort", method = RequestMethod.POST)
+	public @ResponseBody String createPort(@RequestParam("port") String port, @RequestParam("transportFunction") String transportFunction) 
+	{		
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
+		 
+		try{
+			StudioFactory.createPort(dtoPort, dtoTransportFunction);		
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
+		return "success";		
+	}
+		
+
+	/** Create a connection between a source transport function and a target transport function */
+	@RequestMapping(value = "/createLink", method = RequestMethod.POST)
+	public @ResponseBody String createLink(@RequestParam("sourceTFunction") String sourceTFunction, @RequestParam("targetTFunction") String targetTFunction,
+	@RequestParam("link") String link) 
+	{
+		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
+		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
+		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
+		
+		try{
+			StudioFactory.createLink(dtoSourceTFunction, dtoTargetTFunction, dtoLink);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
+		return "success";		
+	}
+	
+	/* ======================================================================================
+	 * Delete
+	 * ======================================================================================*/
+		
+	/** Remove a container of a card */
 	@RequestMapping(value = "/deleteContainer", method = RequestMethod.POST)
 	public @ResponseBody String deleteContainer(@RequestParam("container") String container, @RequestParam("card") String card) 
 	{
@@ -104,52 +143,7 @@ public class ITUStudioController {
 		return "success";
 	}
 	
-	/* ----- CRUD for Transport Function ----- */
-	
-	/** Cria um transport function sobre uma camada ou diretamente sobre o card
-	 * @param transportFunction
-	 * @param container
-	 * @return
-	 */
-	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String createTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container)
-	{
-		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
-		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-
-		try{
-			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";
-	}
-		
-	/** Verifica se � poss�vel criar o transport function sobre uma camada ou diretamente sobre o card
-	 * @param transportFunction
-	 * @param container
-	 * @return
-	 */
-	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
-	public @ResponseBody String canCreateTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container)
-	{
-		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
-		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-		
-		try{
-			StudioFactory.canCreateTransportFunction(dtoTransportFunction, dtoContainer);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "true";
-	}
-	
-	/** Remove um transport function
-	 * @param transportFunction
-	 * @return
-	 */
+	/** Remove a transport function */
 	@RequestMapping(value = "/deleteTransportFunction", method = RequestMethod.POST)
 	public @ResponseBody String deleteTransportFunction(@RequestParam("transportFunction") String transportFunction) 
 	{	
@@ -163,14 +157,78 @@ public class ITUStudioController {
 		}
 		return "success";		
 	}
+	
+	/** Remove a port (interface) of input or output */
+	@RequestMapping(value = "/deletePort", method = RequestMethod.POST)
+	public @ResponseBody String deletePort(@RequestParam("port") String port) 
+	{
+		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
+		try{
+			StudioFactory.deletePort(dtoPort);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
+		return "success";			
+	}
 		
-	/** Troca ou retira (container=null) o container do transport function
-	 * @param transportFunction
-	 * @param sourceContainer
-	 * @param targetContainer
-	 * @param card 
-	 * @return
-	 */
+	/** Remove a connection */
+	@RequestMapping(value = "/deleteLink", method = RequestMethod.POST)
+	public @ResponseBody String deleteLink(@RequestParam("sourceTFunction") String sourceTFunction, @RequestParam("targetTFunction") String targetTFunction,
+	@RequestParam("link") String link) 
+	{
+		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
+		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
+		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
+	
+		try{
+			StudioFactory.deleteLink(dtoLink, dtoSourceTFunction, dtoTargetTFunction); 
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
+		return "success";			
+	}
+		
+	/* ======================================================================================
+	 * NAME
+	 * ======================================================================================*/
+	
+	/** Modify transport function name */
+	@RequestMapping(value = "/setTransportFunctionName", method = RequestMethod.POST)
+	public @ResponseBody String setTransportFunctionName(@RequestParam("transportFunction") String transportFunction)
+	{
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+
+		try{
+			StudioFactory.setTransportFunctionName(dtoTransportFunction);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
+		return "success";
+	}
+	
+	/** Modify port name */
+	@RequestMapping(value = "/setPortName", method = RequestMethod.POST)
+	public @ResponseBody String setPortName(@RequestParam("port") String port) 
+	{		
+		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
+		 
+		try{
+			StudioFactory.setPortName(dtoPort);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
+		return "success";		
+	}
+	
+	/* ======================================================================================
+	 * CHANGE
+	 * ======================================================================================*/
+	
+	/** Change or remove (container=null) the container of a transport function */
 	@RequestMapping(value = "/changeContainer", method = RequestMethod.POST)
 	public @ResponseBody String changeContainer(@RequestParam("transportFunction") String transportFunction, @RequestParam("sourceContainer") String sourceContainer,
 	@RequestParam("targetContainer") String targetContainer, @RequestParam("card") String card) 
@@ -189,111 +247,37 @@ public class ITUStudioController {
 		return "success";		
 	}
 	
-	/** Modifica o nome de um transport function
-	 * @param transportFunction
-	 * @return
-	 */
-	@RequestMapping(value = "/setTransportFunctionName", method = RequestMethod.POST)
-	public @ResponseBody String setTransportFunctionName(@RequestParam("transportFunction") String transportFunction)
+	/* ======================================================================================
+	 * VERIFICATION
+	 * ======================================================================================*/
+		
+	/** Verify if there are any elements without connection in the given card */
+	@RequestMapping(value = "/verifyElementsOnCard", method = RequestMethod.POST)
+	public @ResponseBody String[] verifyElementsOnCard(@RequestParam("card") String card)
+	{
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		
+		String[] result = StudioFactory.elementsWithNoConnection(dtoCard);		
+		return result;
+	}
+	
+	/** Checks if it is possible to create a transport function on a layer or directly to a card */
+	@RequestMapping(value = "/canCreateTransportFunction", method = RequestMethod.POST)
+	public @ResponseBody String canCreateTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container)
 	{
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
-
-		try{
-			StudioFactory.setTransportFunctionName(dtoTransportFunction);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}	
-		return "success";
-	}
-	
-	/* ----- CRUD for port ----- */
-	
-	/** Cria uma porta (interface) de entrada ou sa�da conectada a um transport function
-	 * @param port
-	 * @param transportFunction
-	 * @return
-	 */
-	@RequestMapping(value = "/createPort", method = RequestMethod.POST)
-	public @ResponseBody String createPort(@RequestParam("port") String port, @RequestParam("transportFunction") String transportFunction) 
-	{		
-		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
-		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
-		 
-		try{
-			StudioFactory.createPort(dtoPort, dtoTransportFunction);		
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}
-		return "success";		
-	}
-		
-	/** Remove uma porta (interface) de entrada ou sa�da
-	 * @param port
-	 * @return
-	 */
-	@RequestMapping(value = "/deletePort", method = RequestMethod.POST)
-	public @ResponseBody String deletePort(@RequestParam("port") String port) 
-	{
-		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
-		try{
-			StudioFactory.deletePort(dtoPort);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}
-		return "success";			
-	}
-	
-	/** Modifica o nome de uma interface
-	 * @param port
-	 * @return
-	 */
-	@RequestMapping(value = "/setPortName", method = RequestMethod.POST)
-	public @ResponseBody String setPortName(@RequestParam("port") String port) 
-	{		
-		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
-		 
-		try{
-			StudioFactory.setPortName(dtoPort);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}	
-		return "success";		
-	}
-	
-	/* ----- CRUD for link ----- */
-	
-	/** Cria uma conex�o entre sourceTFunction e targetTFunction
-	 * @param sourceTFunction
-	 * @param targetTFunction
-	 * @param link
-	 * @return
-	 */
-	@RequestMapping(value = "/createLink", method = RequestMethod.POST)
-	public @ResponseBody String createLink(@RequestParam("sourceTFunction") String sourceTFunction, @RequestParam("targetTFunction") String targetTFunction,
-	@RequestParam("link") String link) 
-	{
-		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
-		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
-		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		
 		try{
-			StudioFactory.createLink(dtoSourceTFunction, dtoTargetTFunction, dtoLink);
+			StudioFactory.canCreateTransportFunction(dtoTransportFunction, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
-		}	
-		return "success";		
+		}		
+		return "true";
 	}
-	
-	/** Verifica se � poss�vel criar uma conex�o entre sourceTFunction e targetTFunction
-	 * @param sourceTFunction
-	 * @param targetTFunction
-	 * @return
-	 */
+		
+	/** Check if it is possible to create a connection between a source transport function and a target transport function */
 	@RequestMapping(value = "/canCreateLink", method = RequestMethod.POST)
 	public @ResponseBody String canCreateLink(@RequestParam("sourceTFunction") String sourceTFunction, @RequestParam("targetTFunction") String targetTFunction) 
 	{		
@@ -309,30 +293,10 @@ public class ITUStudioController {
 		return "true";		
 	}
 	
-	/** Remove uma conex�o
-	 * @param sourceTFunction
-	 * @param targetTFunction
-	 * @param link: identificador do link a ser deletado
-	 * @return: success or error
-	 */
-	@RequestMapping(value = "/deleteLink", method = RequestMethod.POST)
-	public @ResponseBody String deleteLink(@RequestParam("sourceTFunction") String sourceTFunction, @RequestParam("targetTFunction") String targetTFunction,
-	@RequestParam("link") String link) 
-	{
-		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
-		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
-		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
+	/* ================================================
+	 * SAVE & LOAD
+	 * ================================================*/
 	
-		try{
-			StudioFactory.deleteLink(dtoLink, dtoSourceTFunction, dtoTargetTFunction); 
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}
-		return "success";			
-	}
-	
-	/* ----- Save/Load graph  ----- */
 	/**
 	 * @param graphJSON: conte�do do grafo no formato JSON
 	 * @param fileName: nome do arquivo no qual deve ser salvo o grafo (nome do card sendo editado, no caso)
@@ -365,7 +329,7 @@ public class ITUStudioController {
 	
 	/**
 	 * @param fileName: nome do arquivo contendo o grafo desejado no formato JSON (nome do card que se deseja abrir, no caso)
-	 * @return: conte�do do grafo no formato JSON or error
+	 * @return: conteudo do grafo no formato JSON or error
 	 */
 	@RequestMapping(value = "/loadGraphJSON", method = RequestMethod.POST)
 	public @ResponseBody String loadGraphJSON(@RequestParam("fileName") String fileName) 
