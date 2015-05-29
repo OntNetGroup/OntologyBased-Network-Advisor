@@ -25,10 +25,7 @@ public class StudioFactory {
 		String containerId = dtoContainer.getId();
 		String containerName = dtoContainer.getName();
 		
-		if(elemType.compareToIgnoreCase("TTF")==0 || elemType.compareToIgnoreCase("AF")==0){ 
-			canCreateTransportFunction(dtoElement, dtoContainer);
-			createTransportFunction(dtoElement, dtoContainer);
-		}
+		if(elemType.compareToIgnoreCase("TTF")==0 || elemType.compareToIgnoreCase("AF")==0) createTransportFunction(dtoElement, dtoContainer);
 		
 		else if(elemType.compareToIgnoreCase("IN")==0 || elemType.compareToIgnoreCase("OUT")==0) createPort(dtoElement, dtoContainer);
 		
@@ -69,7 +66,7 @@ public class StudioFactory {
 		else if(elemType.compareToIgnoreCase("LAYER")==0) deleteContainer(dtoElement, dtoContainer);
 		
 		else if(elemType.compareToIgnoreCase("CARD")==0) deleteEquipmentholder(dtoElement, dtoContainer);
-		else if(elemType.compareToIgnoreCase("SLOT")==0)deleteEquipmentholder(dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("SLOT")==0) deleteEquipmentholder(dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("SUBSLOT")==0) deleteEquipmentholder(dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("SHELF")==0) deleteEquipmentholder(dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("RACK")==0) deleteEquipmentholder(dtoElement, dtoContainer);
@@ -96,8 +93,6 @@ public class StudioFactory {
 		String tgtType = dtoTargetElement.getType();		
 		String tgtId = dtoTargetElement.getId();
 		String tgtName = dtoTargetElement.getName();
-		
-		canCreateLink(dtoSourceElement, dtoTargetElement);
 		
 		if(srcType.compareToIgnoreCase("TTF")==0 && tgtType.compareToIgnoreCase("AF")==0) createLink(dtoSourceElement, dtoTargetElement, dtoConnection);		
 		else if(srcType.compareToIgnoreCase("AF")==0 && tgtType.compareToIgnoreCase("TTF")==0) createLink(dtoSourceElement, dtoTargetElement, dtoConnection);

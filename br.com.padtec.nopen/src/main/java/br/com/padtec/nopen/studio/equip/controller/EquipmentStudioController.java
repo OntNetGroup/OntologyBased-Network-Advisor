@@ -25,10 +25,21 @@ public class EquipmentStudioController {
 	{
 		return "equipment-studio/equipment-studio";
 	}
+
+	/* ======================================================================================
+	 * GET
+	 * ======================================================================================*/
 	
-	//=============================================================================================
-	// Supervisor and technology
-	//=============================================================================================
+	/** Procedure to get all the technologies */
+	@RequestMapping(value = "/getTechnologies", method = RequestMethod.POST)
+	public @ResponseBody String[] getTechnologies()
+	{   
+		return NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());		
+	}
+	
+	/* ======================================================================================
+	 * CREATE
+	 * ======================================================================================*/
 	
 	/** Procedure to create a Supervisor
 	 * @param card
@@ -49,6 +60,51 @@ public class EquipmentStudioController {
 		}		
 		return "success";		
 	}
+
+	/** Procedure to create a Card
+	 * @param card
+	 * @param slot
+	 * @return
+	 */
+	@RequestMapping(value = "/insertCard", method = RequestMethod.POST)
+	public @ResponseBody String insertCard(@RequestParam("card") String card,@RequestParam("slot") String slot )
+	{
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
+
+		try{
+			StudioFactory.createEquipmentholder(dtoCard, dtoContainer);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";		
+	}
+	
+	/** Procedure to create an Equipment holder inside another equipment or a rack
+	 * @param equipmentholder
+	 * @param container
+	 * @return
+	 */
+	@RequestMapping(value = "/insertEquipmentholder", method = RequestMethod.POST)
+	public @ResponseBody String insertEquipmentholder(@RequestParam("equipmentholder") String equipmentholder,@RequestParam("container") String container )
+	{
+		DtoJointElement dtoEquipmentholder = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipmentholder, DtoJointElement.class);
+		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
+
+		try{
+			StudioFactory.createEquipmentholder(dtoEquipmentholder, dtoContainer);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";		
+	}
+	
+	
+	/* ======================================================================================
+	 * DELETE
+	 * ======================================================================================*/
 	
 	/** Procedure to remove a supervisor
 	 * @param supervisor
@@ -69,24 +125,23 @@ public class EquipmentStudioController {
 		return "success";
 	}
 	
-	/** Procedure to supervise a card
+	/** Procedure to remove a card
 	 * @param card
-	 * @param supervisor
+	 * @param 
 	 * @return
 	 */
-	@RequestMapping(value = "/superviseCard", method = RequestMethod.POST)
-	public @ResponseBody String superviseCard(@RequestParam("supervisor") String supervisor,@RequestParam("card") String card )
+	@RequestMapping(value = "/removeCard", method = RequestMethod.POST)
+	public @ResponseBody String removeCard(@RequestParam("card") String card)
 	{
-		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-				
-//		try{
-//			StudioFactory.superviseCard(dtoSupervisor, dtoCard);
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			return e.getLocalizedMessage();
-//		}		
-		return "success";		
+		
+		try{
+			StudioFactory.deleteCard(dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";
 	}
 	
 	/** Procedure to unsupervise a card
@@ -132,59 +187,30 @@ public class EquipmentStudioController {
 		}		
 		return "success";		
 	}
-	
-	/** Procedure to get all the technologies
-	 * @param 
-	 * @return
-	 */
-	@RequestMapping(value = "/getTechnologies", method = RequestMethod.POST)
-	public @ResponseBody String[] getTechnologies()
-	{   
-		return NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());		
-	}
-	
+		
 	
 	//=============================================================================================
 	// Card
 	//=============================================================================================
 	
-	/** Procedure to remove a card
-	 * @param card
-	 * @param 
-	 * @return
-	 */
-	@RequestMapping(value = "/removeCard", method = RequestMethod.POST)
-	public @ResponseBody String removeCard(@RequestParam("card") String card)
-	{
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		
-		try{
-			StudioFactory.deleteCard(dtoCard);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";
-	}
-	
-	
-	/** Procedure to create a Card
-	 * @param card
-	 * @param slot
-	 * @return
-	 */
-	@RequestMapping(value = "/insertCard", method = RequestMethod.POST)
-	public @ResponseBody String insertCard(@RequestParam("card") String card,@RequestParam("slot") String slot )
-	{
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
 
-		try{
-			StudioFactory.createEquipmentholder(dtoCard, dtoContainer);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
+	/** Procedure to supervise a card
+	 * @param card
+	 * @param supervisor
+	 * @return
+	 */
+	@RequestMapping(value = "/superviseCard", method = RequestMethod.POST)
+	public @ResponseBody String superviseCard(@RequestParam("supervisor") String supervisor,@RequestParam("card") String card )
+	{
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+				
+//		try{
+//			StudioFactory.superviseCard(dtoSupervisor, dtoCard);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			return e.getLocalizedMessage();
+//		}		
 		return "success";		
 	}
 	
@@ -220,26 +246,6 @@ public class EquipmentStudioController {
 	//=============================================================================================
 	// Generic equipment
 	//=============================================================================================
-	
-	/** Procedure to create an Equipment holder inside another equipment or a rack
-	 * @param equipmentholder
-	 * @param container
-	 * @return
-	 */
-	@RequestMapping(value = "/insertEquipmentholder", method = RequestMethod.POST)
-	public @ResponseBody String insertEquipmentholder(@RequestParam("equipmentholder") String equipmentholder,@RequestParam("container") String container )
-	{
-		DtoJointElement dtoEquipmentholder = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipmentholder, DtoJointElement.class);
-		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-
-		try{
-			StudioFactory.createEquipmentholder(dtoEquipmentholder, dtoContainer);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";		
-	}
 	
 	/** Procedure to remove an Equipment holder
 	 * @param equipment

@@ -68,8 +68,7 @@ public class ITUStudioController {
 		}		
 		return "success";		
 	}
-	
-	
+		
 	/** Create a transport function on a layer or directly on a card */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
 	public @ResponseBody String createTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container)
