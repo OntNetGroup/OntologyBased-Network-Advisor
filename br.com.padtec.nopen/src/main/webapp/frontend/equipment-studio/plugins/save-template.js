@@ -113,6 +113,15 @@ function generateSaveTemplateDialog(graph){
 		
 		$('#filename').val($("#save-filename").val());
 		
+		var saveDialog = new joint.ui.Dialog({
+			type: 'neutral' ,
+			width: 420,
+			draggable: false,
+			title: 'Template Saved! ',
+			content: 'The template was saved!!',
+			open: function() {}
+		});
+		
 		$.ajax({
 		   type: "POST",
 		   async: false,
@@ -122,7 +131,7 @@ function generateSaveTemplateDialog(graph){
 			 'graph': JSON.stringify(graph.toJSON()),
 		   },
 		   success: function(){ 		   
-			   alert($("#save-filename").val() + ' saved successfully!');
+			   saveDialog.open();
 			   dialog.close();
 		   },
 		   error : function(e) {

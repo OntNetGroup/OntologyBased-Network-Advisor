@@ -105,6 +105,7 @@ Stencil.shapes = {
 							supervisorID: '' ,
 							inPorts: {},
 							outPorts: {},
+							connectedPorts: {},
 							attrs: {
 								'.body': {
 									//fill: '#ADC2A7'

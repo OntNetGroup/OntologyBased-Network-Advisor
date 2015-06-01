@@ -81,6 +81,33 @@ function ituHandle(paper, graph, validator){
 				            		cell.attr('.outPort/fill', 'none');
 					            	cell.attr('.outPort/stroke', 'none');
 				            	}
+				            	
+				            	//Save template
+				            	var saveDialog = new joint.ui.Dialog({
+				        			type: 'neutral' ,
+				        			width: 420,
+				        			draggable: false,
+				        			title: 'Template Saved! ',
+				        			content: 'The template was saved!!',
+				        			open: function() {}
+				        		});
+				            	
+				            	//Save template
+				            	$.ajax({
+				         		   type: "POST",
+				         		   async: false,
+				         		   url: "saveTemplate.htm",
+				         		   data: {
+				         			 'filename': $("#filename").val(),
+				         			 'graph': JSON.stringify(graph.toJSON()),
+				         		   },
+				         		   success: function(){ 	
+				         			  saveDialog.open();
+				         		   },
+				         		   error : function(e) {
+				         			   alert("error: " + e.status);
+				         		   }
+				         		});
 			            	
 			            	}
 			            	
@@ -184,6 +211,10 @@ function ituHandle(paper, graph, validator){
 			var sourceIndex = $('.connectionOut td.active').attr('id');
 			var targetIndex = $(this).attr('id');
 			
+			//outPort index -> inPort index
+			source.attributes.connectedPorts[sourceIndex] = targetIndex;
+			
+			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
 			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
 			dialog.close();
 			
