@@ -7,13 +7,13 @@ import java.util.List;
 
 public class ConsoleUtil {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T> int chooseOne(List<T> list, String listName, String message) throws Exception{
+	public static <T> int chooseOne(List<T> list, String listName, String message, int optional) throws Exception{
 		List<Comparable> comparableList = (List<Comparable>) list;
 		System.out.println();
 		System.out.println("--- " + listName + " ---");
 		
 		if(list.size() == 0){
-			throw new Exception("Something went wrong. The list is empty.");
+			throw new Exception("Provisioning could not be performed. The list of avaiable interfaces is empty. Please try again using another path.");
 		}
 		
 		Collections.sort(comparableList);
@@ -23,31 +23,37 @@ public class ConsoleUtil {
 			System.out.println(id + " - " + list.get(i));
 		}
 		
-		Integer index = getOptionFromConsole(list, message);
+		Integer index = getOptionFromConsole(list, message, optional);
 		
 		return index;
 	}
 	
-	public static <T> int getOptionFromConsole(List<T> list, String message){
-		return getOptionFromConsole(list, message, list.size());
+	public static <T> int getOptionFromConsole(List<T> list, String message, int optional){
+		return getOptionFromConsole(list, message, list.size(), optional);
 	}
-	public static <T> int getOptionFromConsole(List<T> list, String message, int highestOption){
-		Integer index = getOptionFromConsole(message, 1, highestOption);	
+	public static <T> int getOptionFromConsole(List<T> list, String message, int highestOption, int optional){
+		Integer index = getOptionFromConsole(message, 1, highestOption, optional);	
 		index -= 1;
 		return index;
 	}
 	
-	public static int getOptionFromConsole(String message, int lowestOption, int highestOption){
+	public static int getOptionFromConsole(String message, int lowestOption, int highestOption, int optional){
 		Integer index = 0;
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		boolean ok;
 		do {
 			ok = true;
 			try {
-				System.out.print("--- Choose " + message + ": ");
+				if(optional == 1 && index == 0){
+					message += "(this step is optional. Choose 0 to skip)";
+				}
+				System.out.print(message);
 				index = Integer.valueOf(bufferRead.readLine());
 			} catch (Exception e) {
 				ok = false;
+			}
+			if(optional == 1 && index == 0){
+				return index;
 			}
 		} while ((index < lowestOption || index > highestOption) || !ok);
 		

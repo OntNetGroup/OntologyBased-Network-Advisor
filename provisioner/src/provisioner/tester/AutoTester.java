@@ -50,11 +50,11 @@ public class AutoTester {
 //			}
 			
 			//String owlTBoxFile = "resources/owl/TBox v5.2.owl";
-			String owlTBoxFile = FileUtil.chooseFile("OWL TBox", "resources/owl/", ".owl");
+			String owlTBoxFile = FileUtil.chooseFile("Choose an OWL file containing a TBox: ", "resources/owl/", ".owl", "TBOX chosen file: ",0);
 			//String declaredFile = "resources/declared/Possível 2.1 - 1 Layer.txt";
-			String declaredFile = FileUtil.chooseFile("declared instances", "resources/declared/", ".txt");
+			String declaredFile = FileUtil.chooseFile("Choose a TXT file containing DECLARED instances:", "resources/declared/", ".txt", "POSSIBLE instances chosen file: ",0);
 			//String possibleFile = "resources/possible/Declarado 2.1 - Base.txt";
-			String possibleFile = FileUtil.chooseFile("possible instances", "resources/possible/", ".txt");
+			String possibleFile = FileUtil.chooseFile("Choose a TXT file containing the POSSIBLE instances: ", "resources/possible/", ".txt", "POSSIBLE instances chosen file: ",0);
 			
 			ArrayList<Test> tests = new ArrayList<Test>(); 
 			int option = 0;
@@ -67,7 +67,7 @@ public class AutoTester {
 				
 				tests.add(test);
 				
-				option = ConsoleUtil.getOptionFromConsole("Do you want to configure one more test? 1-Yes, 0-No", 0, 1);
+				option = ConsoleUtil.getOptionFromConsole("Do you want to configure one more test? 1-Yes, 0-No", 0, 1,0);
 			} while (option == 1);
 			
 //			int declaredReplications = ConsoleUtil.getOptionFromConsole("Choose the number of layer replications", 2, Integer.MAX_VALUE);
@@ -81,7 +81,7 @@ public class AutoTester {
 			int declaredWeight = 1;
 			int possibleWeight = 1;
 			
-			int createPathsFile = ConsoleUtil.getOptionFromConsole("Do you want to export found paths to a file? 1-Yes, 0-No", 0, 1);
+			int createPathsFile = ConsoleUtil.getOptionFromConsole("Do you want to export found paths to a file? 1-Yes, 0-No", 0, 1,0);
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 			Date now = new Date();
@@ -151,7 +151,7 @@ public class AutoTester {
 		Interface interfaceTo = provisioner.getInterface(outInterfaceSrcURI);
 		
 		beginDate = new Date();
-		List<Path> pathsShorters = provisioner.findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+		List<Path> pathsShorters = provisioner.findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight);
 		long nShortPathsTimeExec = PerformanceUtil.getExecutionTime(beginDate);
 		//String pathsExec = "Find paths execution for " + qtShortPaths + " paths with maximum size " + maxPathSize + ": " + nShortPathsTimeExec + "ms\n";
 		String aux2 = nShortPathsTimeExec + "\n";

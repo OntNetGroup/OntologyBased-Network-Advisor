@@ -57,16 +57,21 @@ public class FileUtil {
 		}
 	}
 	
-	public static String chooseFile(String messageOfContainment, String path, String ext) throws Exception{
+	public static String chooseFile(String message1, String path, String ext, String message2, int optional) throws Exception{
 		String[] files = FileUtil.getFileList(path, ext);
 		List<String> filesAux = Arrays.asList(files);
 		
-		Integer owlFileIndex = ConsoleUtil.chooseOne(filesAux, ext + " files", ext + " file containing " + messageOfContainment);
-                
-        System.out.println(messageOfContainment + " file choosen: " + files[owlFileIndex]);
-        System.out.println();
+		Integer owlFileIndex = ConsoleUtil.chooseOne(filesAux, ext + " files", message1, optional);
+        
+		if(optional == 1 && owlFileIndex <= 0){
+			return "";
+		}else{
+			System.out.println(message2 + files[owlFileIndex]);
+	        System.out.println();
 
-        return path + files[owlFileIndex];
+	        return path + files[owlFileIndex];
+		}
+        
 	}
 	
 	public static void createDirs(){

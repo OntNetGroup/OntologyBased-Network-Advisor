@@ -18,10 +18,11 @@ public class PerformanceUtil {
 		diff -= diffSeconds * 1000;
 		long diffMiliSeconds = diff;
 		
-		String message = functionName + " had execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s " + diffMiliSeconds + "ms";
+		String message = functionName + " with execution time: " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s " + diffMiliSeconds + "ms";
 		
 		return message;
 	}
+	
 	public static String printExecutionTime(String functionName, Date beginDate){
 		long diff = getExecutionTime(beginDate);
 		
