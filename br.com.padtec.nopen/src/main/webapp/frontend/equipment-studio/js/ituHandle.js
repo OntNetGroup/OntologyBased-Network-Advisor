@@ -159,7 +159,13 @@ function ituHandle(paper, graph, validator){
 								'<th>out: ' + source.attr('name/text') + '</th></tr>';
 		
 		$.each(source.attributes.outPorts, function(index, value){
-			content = content + '<tr><td id="'+ index + '">' + source.attributes.outPorts[index] + '</td></tr>';
+			if(source.attributes.connectedPorts[index]) {
+				var inPort = source.attributes.connectedPorts[index][1];
+				content = content + '<tr><td class="connected" id="'+ index + '">' + source.attributes.outPorts[index] + ' ( ' + inPort + ' )</td></tr>';
+			}
+			else {
+				content = content + '<tr><td class="disconnected" id="'+ index + '">' + source.attributes.outPorts[index] + '</td></tr>';
+			}
 		});
 			
 		content = content +  '</table></td>';
@@ -186,7 +192,7 @@ function ituHandle(paper, graph, validator){
 			dialog.close();
 		};
 		
-		$('.connectionOut td').click(function(){
+		$('.connectionOut td.disconnected').click(function(){
 			
 			$('.connectionOut td').removeClass('active');
 			
@@ -195,7 +201,13 @@ function ituHandle(paper, graph, validator){
 			
 			var content = '';
 			$.each(target.attributes.inPorts, function(index, value){
-				content = content + '<tr><td id="'+ index + '">' + target.attributes.inPorts[index] + '</td></tr>';
+				if(target.attributes.connectedPorts[index]) {
+					var outPort = target.attributes.connectedPorts[index][1];
+					content = content + '<tr><td class="connected" id="'+ index + '">' + target.attributes.inPorts[index] + ' ( ' + outPort + ' )</td></tr>';
+				}
+				else{
+					content = content + '<tr><td class="disconnected" id="'+ index + '">' + target.attributes.inPorts[index] + '</td></tr>';
+				}
 			});
 			
 			$(".connectionIn").find("tr:gt(0)").remove();
@@ -206,13 +218,19 @@ function ituHandle(paper, graph, validator){
 			console.log("NAME: " + source.attributes.outPorts[index]);
 		});
 		
-		$('.connectionIn').delegate('td', 'click', function() {
+		$('.connectionIn').delegate('td.disconnected', 'click', function() {
 			
 			var sourceIndex = $('.connectionOut td.active').attr('id');
 			var targetIndex = $(this).attr('id');
 			
 			//outPort index -> inPort index
-			source.attributes.connectedPorts[sourceIndex] = targetIndex;
+			source.attributes.connectedPorts[sourceIndex] = {};
+			source.attributes.connectedPorts[sourceIndex][0] = targetIndex;
+			source.attributes.connectedPorts[sourceIndex][1] = target.attributes.inPorts[targetIndex];
+			
+			target.attributes.connectedPorts[targetIndex] = {};
+			target.attributes.connectedPorts[targetIndex][0] = sourceIndex;
+			target.attributes.connectedPorts[targetIndex][1] = source.attributes.outPorts[sourceIndex];
 			
 			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
 			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")

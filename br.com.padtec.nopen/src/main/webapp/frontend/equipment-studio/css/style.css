@@ -165,6 +165,10 @@ rect[stroke-width]:hover{
 	vertical-align: top;
 }
 
+.connectionOut td.connected, .connectionIn td.connected {
+	background-color: #EEE;
+}
+
 .connectionOut td:hover, .connectionIn td:hover, .connectionOut td.active, .connectionIn td.active {
 	background-color: #EEE;
 }
