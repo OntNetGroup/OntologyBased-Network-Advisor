@@ -158,6 +158,15 @@ rect[stroke-width]:hover{
 
 .connectionInOut td, .connectionInOut th {
 	vertical-align: top;
+	width: 50%;
+}
+
+.ui-tooltip {
+	font-size: 11px;
+}
+
+.ui-tooltip-content {
+    position: relative;
 }
 
 .connectionOut td, .connectionIn td {
@@ -173,3 +182,21 @@ rect[stroke-width]:hover{
 	background-color: #EEE;
 }
 
+.connected span.tag {
+  float: right;
+  cursor:pointer;
+  display:block;
+  color:#fff;
+  background:#1e8fc6;
+  padding:5px;
+}
+.connected span.tag:hover {
+  opacity:0.7;
+}
+.connected span.tag:after {
+ content:"x";
+/*  border:1px solid; */
+ padding:0 4px;
+/*  margin:3px 0 10px 5px; */
+ font-size:12px;
+}

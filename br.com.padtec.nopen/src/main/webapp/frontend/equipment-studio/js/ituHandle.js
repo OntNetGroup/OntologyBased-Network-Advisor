@@ -43,11 +43,11 @@ function ituHandle(paper, graph, validator){
 				            	var cell = graph.getCell(cellId);
 				            	var hasIn = false, hasOut = false;
 				            	
+				            	cell.attr(".inPort/title", "");
+				            	cell.attr(".outPort/title", "");
+				            	
 				            	// Get all elements and check if exist some in or out port
 				            	$.each($('#itu-iframe').get(0).contentWindow.app.graph.getElements(), function(index, value) {
-				            		
-//				            		console.log(JSON.stringify(value));
-//				            		console.log(value.get('subtype'));
 				            		
 				            		if(value.get('subtype') === 'in') {
 				            			cell.attr('.inPort/fill', '#1AFF00');
@@ -55,6 +55,8 @@ function ituHandle(paper, graph, validator){
 						            	hasIn = true;
 						            	
 						            	cell.attributes.inPorts[value.id] = value.attr('text/text');
+						            	
+						            	cell.attr(".inPort/title", cell.attr(".inPort/title") + value.attr('text/text') + '\r\n');
 						            	
 						            	console.log("ID IN: " + value.id);
 						            	console.log("IN PORT: " + cell.attributes.inPorts[value.id]);
@@ -66,6 +68,8 @@ function ituHandle(paper, graph, validator){
 						            	hasOut = true;
 						            	
 						            	cell.attributes.outPorts[value.id] = value.attr('text/text');
+						            	
+						            	cell.attr(".outPort/title", cell.attr(".outPort/title") + value.attr('text/text') + '\r\n');
 						            	
 						            	console.log("ID OUT: " + value.id);
 						            	console.log("OUT PORT: " + cell.attributes.outPorts[value.id]);
@@ -151,6 +155,7 @@ function ituHandle(paper, graph, validator){
 		
 	});
 	
+	//Generate connection dialog when drag out port to in port
 	function createConnectionDialog(cell, source, target) {
 		
 		var content = '<table class="connectionInOut"><tr><td>' +
@@ -158,13 +163,18 @@ function ituHandle(paper, graph, validator){
 							'<tr>' +
 								'<th>out: ' + source.attr('name/text') + '</th></tr>';
 		
+		//Generate out ports
 		$.each(source.attributes.outPorts, function(index, value){
+			
+			var outPort = source.attributes.outPorts[index];
+			
 			if(source.attributes.connectedPorts[index]) {
+				var inPortIndex = source.attributes.connectedPorts[index][0];
 				var inPort = source.attributes.connectedPorts[index][1];
-				content = content + '<tr><td class="connected" id="'+ index + '">' + source.attributes.outPorts[index] + ' ( ' + inPort + ' )</td></tr>';
+				content = content + '<tr><td class="connected" id="'+ index + '">' + outPort + '<span class="tag" id="' + inPortIndex + '">' + inPort + '</span></td></tr>';
 			}
 			else {
-				content = content + '<tr><td class="disconnected" id="'+ index + '">' + source.attributes.outPorts[index] + '</td></tr>';
+				content = content + '<tr><td class="disconnected" id="'+ index + '">' + outPort + '</td></tr>';
 			}
 		});
 			
@@ -174,6 +184,7 @@ function ituHandle(paper, graph, validator){
 								'<tr><th>in: ' + target.attr('name/text') + '</th></tr>' + 
 							'</table></td></tr></table>';
 		
+		//Create dialog
 		var dialog = new joint.ui.Dialog({
 			width: 500,
 			type: 'neutral',
@@ -192,7 +203,8 @@ function ituHandle(paper, graph, validator){
 			dialog.close();
 		};
 		
-		$('.connectionOut td.disconnected').click(function(){
+		//Generate in ports
+		$('.connectionOut').delegate('td.disconnected', 'click', function() {
 			
 			$('.connectionOut td').removeClass('active');
 			
@@ -201,12 +213,16 @@ function ituHandle(paper, graph, validator){
 			
 			var content = '';
 			$.each(target.attributes.inPorts, function(index, value){
+				
+				var inPort = target.attributes.inPorts[index];
+				
 				if(target.attributes.connectedPorts[index]) {
+					var outPortIndex = target.attributes.connectedPorts[index][0];
 					var outPort = target.attributes.connectedPorts[index][1];
-					content = content + '<tr><td class="connected" id="'+ index + '">' + target.attributes.inPorts[index] + ' ( ' + outPort + ' )</td></tr>';
+					content = content + '<tr><td class="connected" id="'+ index + '">' + inPort + ' <span class="tag" id="' + outPortIndex + '">' + outPort + ' </span></td></tr>';
 				}
 				else{
-					content = content + '<tr><td class="disconnected" id="'+ index + '">' + target.attributes.inPorts[index] + '</td></tr>';
+					content = content + '<tr><td class="disconnected" id="'+ index + '">' + inPort + '</td></tr>';
 				}
 			});
 			
@@ -216,6 +232,53 @@ function ituHandle(paper, graph, validator){
 			console.log("SHOW: " + target.attr('name/text'));
 			console.log("ID: " + index);
 			console.log("NAME: " + source.attributes.outPorts[index]);
+		});
+		
+		//delete connections
+		$('.connectionInOut').delegate('span.tag', 'click', function(){
+			if(confirm("Really delete this connection?")) { 
+				$(this).parent().switchClass('connected', 'disconnected');
+				
+				var id = $(this).attr('id');
+				var idParent = $(this).parent().attr('id');
+				
+				var port1 = undefined, port2 = undefined;
+				$.each(graph.getElements(), function(index, c) {
+					
+					//delete ports
+					if(c.get('subType') === 'card') {
+						if(c.attributes.connectedPorts[id]) {
+							port1 = c.id;
+							delete c.attributes.connectedPorts[id];
+						}
+						if(c.attributes.connectedPorts[idParent]){
+							port2 = c.id;
+							delete c.attributes.connectedPorts[idParent];
+						}
+					}
+					
+				});
+				
+				$.each(graph.getLinks(), function(index, l) {
+					
+					if(l.get('source') && l.get('target') && port1 && port2) {
+						
+						if(l.get('source').id === port1 && l.get('target').id === port2) {
+							l.remove();
+						}
+						else if(l.get('target').id === port1 && l.get('source').id === port2) {
+							l.remove();
+						}
+					}
+					
+				});
+				
+				
+				console.log('ID TAG: ' + $(this).attr('id'));
+				console.log('ID TD: ' + $(this).parent().attr('id'));
+				
+				$(this).remove(); 
+			}
 		});
 		
 		$('.connectionIn').delegate('td.disconnected', 'click', function() {

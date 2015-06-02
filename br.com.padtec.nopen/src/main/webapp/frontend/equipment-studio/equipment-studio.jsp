@@ -46,6 +46,7 @@
 <link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/equipment-studio/css/dialog.css" />
 
+
 </head>
 <body>
 
@@ -53,6 +54,7 @@
 
 	<%@include file="templates/header.jsp"%>
 	<%@include file="templates/toolbar.jsp"%>
+	
 	<!-- JS CORE -->
 
 	<script src="/nopen/core/rappid_api/js/joint.js"></script>
