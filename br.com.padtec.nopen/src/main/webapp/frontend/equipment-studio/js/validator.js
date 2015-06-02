@@ -1,158 +1,167 @@
 function validator(validator, graph, app) {
 
+//	validator.validate('remove', isNotLink, _.bind(function(err, command, next) {
+//        return next("a");
+//    },app));
 
-
-	validator.validate('remove',isRack,_.bind(function(err,command,next){
-		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
-
-		if(this.skipOntologyRemoveHandler) {
-			this.skipOntologyRemoveHandler = false;
-			return next(err);
-		}
-
-		var equipmentID = command.data.id;
-		var equipmentName = command.data.attributes.attrs.name.text;
-		var equipmentType = command.data.attributes.subType;
-
-		var containerName= '';
-		var containerType= '';
-		var containerID= '';
-
-		//  var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
-		result = "successss!";
-		if(result === "success"){
-			return next(err);
-		}else{	    
-			return next(result);		    	
-		}
-	}, app));
-
-
-	validator.validate('remove',isShelf,_.bind(function(err,command,next){
-		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
-
-		if(this.skipOntologyRemoveHandler) {
-			this.skipOntologyRemoveHandler = false;
-			return next(err);
-		}
-
-		var equipmentID = command.data.id;
-		var equipmentName = command.data.attributes.attrs.name.text;
-		var equipmentType = command.data.attributes.subType;
-
-		var holderID = command.data.attributes.parent;
-		var holder =  graph.getCell(holderID);
-
-		var containerName = holder.attributes.attrs.name.text;
-		var containerType = holder.get('subType');
-		var containerID = holder.get('id');
-
+//	validator.validate('remove',isRack,_.bind(function(err,command,next){
+//		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
+//		
+//		if(this.skipOntologyRemoveHandler) {
+//			this.skipOntologyRemoveHandler = false;
+//			return next(err);
+//		}
+//        console.log(command);
+//		var equipmentID = command.data.id;
+//		var equipmentName = command.data.attributes.attrs.name.text;
+//		var equipmentType = command.data.attributes.subType;
+//        console.log(equipmentName);
+//        console.log(equipmentID);
+//        console.log(equipmentType);
+//		
+//		
+//		var containerName= '';
+//		var containerType= '';
+//		var containerID= '';
+//
+//		//  var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
+//		result = "success!";
+//		if(result === "success"){
+//			return next(err);
+//		}else{	
+//	        skipOntologyAddHandler = true;
+//			return next(result);		    	
+//		}
+//	}, app));
+//
+//
+//	validator.validate('remove',isShelf,_.bind(function(err,command,opt,next){
+//		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
+//        if(opt.skipOntologyAddHandler) return;
+//		
+//        if(this.skipOntologyRemoveHandler) {
+//			this.skipOntologyRemoveHandler = false;
+//			return next(err);
+//		}
+//        console.log('teste');
+//		var equipmentID = command.data.id;
+//		var equipmentName = command.data.attributes.attrs.name.text;
+//		var equipmentType = command.data.attributes.subType;
+//
+//		var holderID = command.data.attributes.parent;
+//		var holder =  graph.getCell(holderID);
+//
+//		var containerName = holder.attributes.attrs.name.text;
+//		var containerType = holder.get('subType');
+//		var containerID = holder.get('id');
+//
 		// var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
-		result = "success";
-		if(result === "success"){
-			return next(err);
-		}else{
-			return next(result);	
-		}
-	}, app));
-
-
-	validator.validate('remove',isSlot,_.bind(function(err,command,next){
-		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
-
-		if(this.skipOntologyRemoveHandler) {
-			this.skipOntologyRemoveHandler = false;
-			return next(err);
-		}
-
-		var equipmentID = command.data.id;
-		var equipmentName = command.data.attributes.attrs.name.text;
-		var equipmentType = command.data.attributes.subType;
-
-		var holderID = command.data.attributes.parent;
-		var holder =  graph.getCell(holderID);
-
-		var containerName = holder.attributes.attrs.name.text;
-		var containerType = holder.get('subType');
-		var containerID = holder.get('id');
-
-		//  var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
-		result = "success";
-		if(result === "success"){
-			return next(err);
-		}else{
-			return next(result);	
-		}
-	}, app));
-
-
-	validator.validate('remove',isCard,_.bind(function(err,command,next){
-		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
-
-		if(this.skipOntologyRemoveHandler) {
-			this.skipOntologyRemoveHandler = false;
-			return next(err);
-		}
-
-		var equipmentID = command.data.id;
-		var equipmentName = command.data.attributes.attrs.name.text;
-		var equipmentType = command.data.attributes.subType;
-
-		var holderID = command.data.attributes.parent;
-		var holder =  graph.getCell(holderID);
-
-		var containerName = holder.attributes.attrs.name.text;
-		var containerType = holder.get('subType');
-		var containerID = holder.get('id');
-
-		//  var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
-		result = "success";
-		if(result === "success"){
-			return next(err);
-		}else{
-			return next(result);	
-		}
-	}, app));
-
-
-	validator.validate('remove',isSupervisor,_.bind(function(err,command,next){
-		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
-
-		if(this.skipOntologyRemoveHandler) {
-			this.skipOntologyRemoveHandler = false;
-			return next(err);
-		}
-
-		var equipmentID = command.data.id;
-		var equipmentName = command.data.attributes.attrs.name.text;
-		var equipmentType = command.data.attributes.subType;
-
-		var holderID = command.data.attributes.parent;
-		var holder =  graph.getCell(holderID);
-
-		var containerName = holder.attributes.attrs.name.text;
-		var containerType = holder.get('subType');
-		var containerID = holder.get('id');
-
-		//  var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
-		result = "success";
-		if(result === "success"){
-			var elementos = graph.getElements();
-			for(var i = 0; i < elementos.length; i++){
-				var equipment = elementos[i];
-				if((equipment.attributes.subType) === 'card'){
-					if((equipment.get('supervisorID') === (equipmentID))){
-						equipment.set("supervisor" , '');
-						equipment.set("supervisorID" , '');
-					}
-				}
-			}
-			return next(err);
-		}else{
-			return next(result);	
-		}
-	}, app));
-
+//		result = "success";
+//		if(result === "success"){
+//			return next(err);
+//		}else{
+//			this.skipOntologyRemoveHandler = true;
+//			return next(result);	
+//		}
+//	}, app));
+//
+//
+//	validator.validate('remove',isSlot,_.bind(function(err,command,next){
+//		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
+//
+//		if(this.skipOntologyRemoveHandler) {
+//			this.skipOntologyRemoveHandler = false;
+//			return next(err);
+//		}
+//
+//		var equipmentID = command.data.id;
+//		var equipmentName = command.data.attributes.attrs.name.text;
+//		var equipmentType = command.data.attributes.subType;
+//
+//		var holderID = command.data.attributes.parent;
+//		var holder =  graph.getCell(holderID);
+//
+//		var containerName = holder.attributes.attrs.name.text;
+//		var containerType = holder.get('subType');
+//		var containerID = holder.get('id');
+//
+//		//  var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
+//		result = "success";
+//		if(result === "success"){
+//			return next(err);
+//		}else{
+//			return next(result);	
+//		}
+//	}, app));
+//
+//
+//	validator.validate('remove',isCard,_.bind(function(err,command,next){
+//		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
+//
+//		if(this.skipOntologyRemoveHandler) {
+//			this.skipOntologyRemoveHandler = false;
+//			return next(err);
+//		}
+//
+//		var equipmentID = command.data.id;
+//		var equipmentName = command.data.attributes.attrs.name.text;
+//		var equipmentType = command.data.attributes.subType;
+//
+//		var holderID = command.data.attributes.parent;
+//		var holder =  graph.getCell(holderID);
+//
+//		var containerName = holder.attributes.attrs.name.text;
+//		var containerType = holder.get('subType');
+//		var containerID = holder.get('id');
+//
+//		//  var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
+//		result = "success";
+//		if(result === "success"){
+//			return next(err);
+//		}else{
+//			return next(result);	
+//		}
+//	}, app));
+//
+//
+//	validator.validate('remove',isSupervisor,_.bind(function(err,command,next){
+//		//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
+//
+//		if(this.skipOntologyRemoveHandler) {
+//			this.skipOntologyRemoveHandler = false;
+//			return next(err);
+//		}
+//
+//		var equipmentID = command.data.id;
+//		var equipmentName = command.data.attributes.attrs.name.text;
+//		var equipmentType = command.data.attributes.subType;
+//
+//		var holderID = command.data.attributes.parent;
+//		var holder =  graph.getCell(holderID);
+//
+//		var containerName = holder.attributes.attrs.name.text;
+//		var containerType = holder.get('subType');
+//		var containerID = holder.get('id');
+//
+//		//  var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
+//		result = "success";
+//		if(result === "success"){
+//			var elementos = graph.getElements();
+//			for(var i = 0; i < elementos.length; i++){
+//				var equipment = elementos[i];
+//				if((equipment.attributes.subType) === 'card'){
+//					if((equipment.get('supervisorID') === (equipmentID))){
+//						equipment.set("supervisor" , '');
+//						equipment.set("supervisorID" , '');
+//					}
+//				}
+//			}
+//			return next(err);
+//		}else{
+//			return next(result);	
+//		}
+//	}, app));
+//
 	validator.validate('change:attrs', _.bind(function(err, command, next) {
 		var previousName = command.data.previous.attrs.text.text;
 
@@ -161,13 +170,13 @@ function validator(validator, graph, app) {
 		}
 
 		var cellID = command.data.id;
-		console.log('id' , cellID);
+		//console.log('id' , cellID);
 		var cell = this.graph.getCell(cellID);
-		console.log('cell' , cell);
+		//console.log('cell' , cell);
 		var cellName = command.data.next.attrs.name.text;
-		console.log('name' , cellName);
+		//console.log('name' , cellName);
 		var cellsubType = cell.attributes.subType;
-		console.log('type', cellsubType);
+		//console.log('type', cellsubType);
 
 		//var result = setEquipmentName(cellID,cellName,cellsubType);
 		var result = "success";

@@ -49,18 +49,22 @@ function showTechnologyWindow(techs , cell){
 
 function equipmentHandle(graph){
 
+//	graph.on('all' , function(a){
+//	console.log(a);
+//	});
+
 	// when a cell is added on another one, it should be embedded
 	graph.on('add', function(cell) {
 
 		//console.log(JSON.stringify(cell));
 		if(cell.get('type') === 'link') return;
 
-	//	console.log(cell);
-	//	console.log(cell.attr);
+		//	console.log(cell);
+		//	console.log(cell.attr);
 		var equipmentID = cell.get('id');
 		var equipmentType = cell.get('subType');
 		var equipmentName = getName(equipmentType);
-		
+
 		var position = cell.get('position');
 		var size = cell.get('size');
 		var area = g.rect(position.x, position.y, size.width, size.height);
@@ -84,33 +88,39 @@ function equipmentHandle(graph){
 
 			var containerType = parent.get('subType');
 			var containerID = parent.get('id');
-            var containerName = parent.attributes.attrs.name.text;
+			var containerName = parent.attributes.attrs.name.text;
 
 			if(parent.get('subType') === 'rack') {                   
 				//equipamento em um rack
 				// consultar ontologia para inserção 
-                
+
+//				if(this.skipOntologyAddHandler === true){
+//				//	console.log("WORKED");
+//				this.skipOntologyAddHandler = false;
+//				return;
+//				};
+
 				var result = insertEquipmentholder(equipmentName , equipmentType, equipmentID ,containerName , containerType , containerID);
 				//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);
 				if(result === "success") {
-					
+
 					parent.embed(cell);
 					cell.attr({
 						name: { text: equipmentName},
 					});
 					nextName(equipmentType);
-					
+
 					var a = parent.get('embeds');
 					var maior = 0;
 					for (var i = 0; i < a.length; i++) {
 						var shelf = graph.getCell(a[i]);
-                        
+
 						shelf.set('position', {
 							x: ((pposition.x) + 15) ,
 							y: (pposition.y + 20 + (i*(80))) 
 						});
-						
-						
+
+
 					}
 					parent.set('size' , { 
 						width: psize.width  ,
@@ -139,12 +149,12 @@ function equipmentHandle(graph){
 					var result = insertEquipmentholder( equipmentName , equipmentType, equipmentID ,containerName, containerType , containerID);
 					if(result === "success") {
 						parent.embed(cell)
-						
+
 						cell.attr({
 							name: { text: equipmentName},
 						});
 						nextName(equipmentType);
-						
+
 						var b = parent.get('embeds');
 						var maior = 0;
 						for (var i = 0; i < b.length; i++) {
@@ -153,7 +163,7 @@ function equipmentHandle(graph){
 								x: pposition.x + 20 + ((i) * (42.5)) ,
 								y: pposition.y + 7 
 							});
-							
+
 						}
 						parent.set('size' , { 
 							width: 105 + ((parent.getEmbeddedCells().length - (1) ) * 42.5) ,
@@ -179,12 +189,12 @@ function equipmentHandle(graph){
 					}else{
 						this.skipOntologyRemoveHandler = true;
 						cell.remove();
-						return new joint.ui.Dialog({
-							type: 'alert',
-							width: 400,
-							title: 'Alert',
-							content: result,
-						}).open();	
+//						return new joint.ui.Dialog({
+//						type: 'alert',
+//						width: 400,
+//						title: 'Alert',
+//						content: result,
+//						}).open();	
 					}
 				}else {
 					if(parent.get('subType') === 'slot'){
@@ -203,8 +213,8 @@ function equipmentHandle(graph){
 						var result = insertEquipmentholder( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 						if(result === "success") {
 							// Se já possuir um card (confirmar o metodo para card e supervisor)
-                                 
-							
+
+
 							if (parent.getEmbeddedCells().length === 1){	
 								new joint.ui.Dialog({
 									type: 'alert',
@@ -246,7 +256,7 @@ function equipmentHandle(graph){
 										x : newpositionx ,
 										y : ((pposition.y) + 16)
 									});
-									
+
 									cell.attr({
 										name: { text: equipmentName},
 									});
@@ -269,14 +279,14 @@ function equipmentHandle(graph){
 									x : newpositionx ,
 									y : ((pposition.y) + 16)
 								});
-								
+
 								cell.attr({
 									name: { text: equipmentName},
 								});
 								nextName(equipmentType);
-								
+
 							}else{
-								
+
 								new joint.ui.Dialog({
 									type: 'alert',
 									width: 400,
@@ -299,113 +309,127 @@ function equipmentHandle(graph){
 			//Only the rack can be inserted into the graph without an equipment holder	
 			var containerType;
 			var containerID;
-			
-			
+
+//			if(this.skipOntologyAddHandler === true){
+//			console.log("WORKED");
+//			this.skipOntologyAddHandler = false;
+//			return;
+//			};
+			//console.log("failed");
 			var result = insertEquipmentholder(equipmentName , equipmentType, equipmentID);
 			if(result === "success") {    
-				
+
 				cell.attr({
 					name: { text: equipmentName},
 				});
 				nextName(equipmentType);
-				
-				return;
+
+
 			}else{
-			//	console.log(result);
+				//	console.log(result);
 				new joint.ui.Dialog({
 					type: 'alert',
 					width: 400,
 					title: 'Error',
 					content: (result),
 				}).open();
-				this.skipOntologyRemoveHandler = true;
 				cell.remove();
-			}	 			 
+			}
+
 		}
+
 	}, this);
 
 	graph.on('remove' , function (cell) {
 
+		//     var copy = cell;
+		//       console.log(cell);
 		var parentId = cell.get('parent');
-		if (!parentId) return;
 		var parent = graph.getCell(parentId);
+		this.options = 1;
 
-		if(parent.get('subType') === 'rack') {
+		if (parent){
 
-			var pposition = parent.get('position');
-			var psize = parent.get('size');			
-			var newpositionx = pposition.x + 15 ;
 
-		//	console.log("to del: ", cell);
-			var d = parent.get('embeds');
-			var i;
-			var maiorl = 0;
-			var shelfw;
-			var sons;
+			if(parent.get('subType') === 'rack'){
 
-			var l = 0;
+					var pposition = parent.get('position');
+					var psize = parent.get('size');			
+					var newpositionx = pposition.x + 15 ;
 
-			for (i = 0; i < d.length; i++) {
-				var shelf = graph.getCell(d[i]);			
-				if (shelf){
-				//	console.log("changed: " , shelf);
+					//	console.log("to del: ", cell);
+					var d = parent.get('embeds');
+					var maiorl = 0;
+					var shelfw;
+					var sons;
 
-					shelf.set('position', {
-						x: newpositionx ,
-						y: (pposition.y + 20 + ((l)*(80))) 
-					});
+					var l = 0;
 
-					var sposition = shelf.get('position');
+					for (var i = 0; i < d.length; i++) {
+						var shelf = graph.getCell(d[i]);			
+						if (shelf){
+							//	console.log("changed: " , shelf);
 
-					sons = shelf.getEmbeddedCells().length;
-
-					if ( maiorl < sons ){
-						maiorl = sons;
-						shelfw = shelf.get('size').width;
-					}
-
-					var reslot = shelf.get('embeds');
-					var k;
-					for (k=0; k < (reslot.length); k++){
-						var inshelf = graph.getCell(reslot[k]);	
-						if(inshelf){			
-							var childId = inshelf.get('embeds');	
-							var inslot = graph.getCell(childId);																								
-							inshelf.set('position', {
-								y: sposition.y + 7 ,
-								x: sposition.x + 20 + ((k) * (42.5)) ,
+							shelf.set('position', {
+								x: newpositionx ,
+								y: (pposition.y + 20 + ((l)*(80))) 
 							});
 
-							var slotpos = inshelf.get('position');
+							var sposition = shelf.get('position');
 
-							if(inslot){
-								inslot.set('position', {
-									y: slotpos.y + 16 ,
-									x: slotpos.x + 6
-								});
-							};
-							shelf.set('size', {
-								width: shelf.get('size').width,
-								height: 67.5 },
-								{skipParentHandler : false});		
+							sons = shelf.getEmbeddedCells().length;
+
+							if ( maiorl < sons ){
+								maiorl = sons;
+								shelfw = shelf.get('size').width;
+							}
+
+							var reslot = shelf.get('embeds');
+							var k;
+							for (k=0; k < (reslot.length); k++){
+								var inshelf = graph.getCell(reslot[k]);	
+								if(inshelf){			
+									var childId = inshelf.get('embeds');	
+									var inslot = graph.getCell(childId);																								
+									inshelf.set('position', {
+										y: sposition.y + 7 ,
+										x: sposition.x + 20 + ((k) * (42.5)) ,
+									});
+
+									var slotpos = inshelf.get('position');
+
+									if(inslot){
+										inslot.set('position', {
+											y: slotpos.y + 16 ,
+											x: slotpos.x + 6
+										});
+									};
+									shelf.set('size', {
+										width: shelf.get('size').width,
+										height: 67.5 },
+										{skipParentHandler : false});		
+								}
+							}
+							l++;
 						}
 					}
-					l++;
-				}
-			}
-			if (maiorl === 0){
-				parent.set('size' , { 
-					width: 120   ,
-					height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
-				});
-			}else{
-				parent.set('size' , { 
-					width: (shelfw) + 40  ,
-					height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
-				});
-			} 			
-		}else{
+					if (maiorl === 0){
+						parent.set('size' , { 
+							width: 120   ,
+							height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
+						});
+					}else{
+						parent.set('size' , { 
+							width: (shelfw) + 40  ,
+							height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
+						});
+					} 			
+
+
+			};
+
 			if(parent.get('subType') === 'shelf'){
+
 				var grandparentId = parent.get('parent');
 				if (!grandparentId) return;
 				var grandparent = graph.getCell(grandparentId);
@@ -475,23 +499,204 @@ function equipmentHandle(graph){
 					});	
 				}
 
+			};
+
+			if(parent.get('subType') === 'slot'){
+				
+				var grandparentId = parent.get('parent');
+				if (!grandparentId) return;
+
+				var grandparent = graph.getCell(grandparentId);
+
+				parent.set('size' , {
+					width: 22.5 ,
+					height: 52.5
+				});
+
+			};
+
+
+		}else{
+
+			//     	console.log("a");
+			//rack
+			// var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
+			result = "success";
+			if(result === "success"){
+				return;
 			}else{
+//				this.skipOntologyAddHandler = true;
+//				var rect = cell.clone();
+//				graph.addCell(rect);
+//				rect.embed(rect);
+//				rect.embed()
 
-				if(parent.get('subType') === 'slot'){
-
-					var grandparentId = parent.get('parent');
-					if (!grandparentId) return;
-
-					var grandparent = graph.getCell(grandparentId);
-
-					parent.set('size' , {
-						width: 22.5 ,
-						height: 52.5
-					});
-				}if(parent.get('subType') === 'card' || 'supervisor' ) {
-				}
 			}
-		};
+
+		}
+
+
+		//       if(parent.get('subType') === 'rack') {
+
+//		var pposition = parent.get('position');
+//		var psize = parent.get('size');			
+//		var newpositionx = pposition.x + 15 ;
+
+//		//	console.log("to del: ", cell);
+//		var d = parent.get('embeds');
+//		var maiorl = 0;
+//		var shelfw;
+//		var sons;
+
+//		var l = 0;
+
+//		for (var i = 0; i < d.length; i++) {
+//		var shelf = graph.getCell(d[i]);			
+//		if (shelf){
+//		//	console.log("changed: " , shelf);
+
+//		shelf.set('position', {
+//		x: newpositionx ,
+//		y: (pposition.y + 20 + ((l)*(80))) 
+//		});
+
+//		var sposition = shelf.get('position');
+
+//		sons = shelf.getEmbeddedCells().length;
+
+//		if ( maiorl < sons ){
+//		maiorl = sons;
+//		shelfw = shelf.get('size').width;
+//		}
+
+//		var reslot = shelf.get('embeds');
+//		var k;
+//		for (k=0; k < (reslot.length); k++){
+//		var inshelf = graph.getCell(reslot[k]);	
+//		if(inshelf){			
+//		var childId = inshelf.get('embeds');	
+//		var inslot = graph.getCell(childId);																								
+//		inshelf.set('position', {
+//		y: sposition.y + 7 ,
+//		x: sposition.x + 20 + ((k) * (42.5)) ,
+//		});
+
+//		var slotpos = inshelf.get('position');
+
+//		if(inslot){
+//		inslot.set('position', {
+//		y: slotpos.y + 16 ,
+//		x: slotpos.x + 6
+//		});
+//		};
+//		shelf.set('size', {
+//		width: shelf.get('size').width,
+//		height: 67.5 },
+//		{skipParentHandler : false});		
+//		}
+//		}
+//		l++;
+//		}
+//		}
+//		if (maiorl === 0){
+//		parent.set('size' , { 
+//		width: 120   ,
+//		height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
+//		});
+//		}else{
+//		parent.set('size' , { 
+//		width: (shelfw) + 40  ,
+//		height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
+//		});
+//		} 			
+//		}else{
+//		if(parent.get('subType') === 'shelf'){
+//		var grandparentId = parent.get('parent');
+//		if (!grandparentId) return;
+//		var grandparent = graph.getCell(grandparentId);
+
+//		var pposition = parent.get('position');
+//		var e = parent.get('embeds');
+//		var l = 0;
+//		for(var j=0; j < e.length;j++){
+//		var inshelf = graph.getCell(e[j]);
+//		if(inshelf){              	
+
+//		inshelf.set('position', {
+//		x: pposition.x + 20 + ((l) * (42.5)) ,
+//		y: pposition.y + 7 
+//		});
+
+//		var childId = inshelf.get('embeds');	
+//		var inslot = graph.getCell(childId);	
+
+//		var slotpos = inshelf.get('position');
+
+//		if(inslot){
+//		inslot.set('position', {
+//		y: slotpos.y + 16 ,
+//		x: slotpos.x + 6
+//		});
+//		};
+//		l++;
+//		}
+//		}
+
+//		if( parent.getEmbeddedCells().length === 1){
+//		parent.set('size' , { 
+//		width: 105 + ((parent.getEmbeddedCells().length - (1) ) * 42.5) ,
+//		height:	parent.get('size').height});
+//		}else{
+//		parent.set('size' , { 
+//		width: 105 + ((parent.getEmbeddedCells().length - (2) ) * 42.5) ,
+//		height:	parent.get('size').height});
+//		}
+
+//		var t = grandparent.get('embeds');
+//		var k=0;
+//		var maiorl = 0;
+//		var inrackw;
+//		var sons=0;
+
+//		for(var p=0; p < t.length; p++){
+//		var inrack = graph.getCell(t[p]);
+
+//		sons = inrack.getEmbeddedCells().length;
+
+//		if ( maiorl < sons ){
+//		maiorl = sons;
+//		inrackw = inrack.get('size').width;
+//		}   
+//		}	
+//		if(maiorl === 0){
+//		grandparent.set('size' , {
+//		width: 120 ,
+//		height : 265 + ((grandparent.getEmbeddedCells().length - (2) ) * 77.5)
+//		})
+//		}else{
+//		grandparent.set('size' , { 
+//		width: (inrackw) + 40  ,
+//		height:	265 + ((grandparent.getEmbeddedCells().length - (2) ) * 77.5)
+//		});	
+//		}
+
+//		}else{
+
+//		if(parent.get('subType') === 'slot'){
+
+//		var grandparentId = parent.get('parent');
+//		if (!grandparentId) return;
+
+//		var grandparent = graph.getCell(grandparentId);
+
+//		parent.set('size' , {
+//		width: 22.5 ,
+//		height: 52.5
+//		});
+//		}if(parent.get('subType') === 'card' || 'supervisor' ) {
+//		}
+//		}
+//		};
 	},this); 
 
 	graph.on('change:size', function(cell, newPosition, opt) {
@@ -525,7 +730,7 @@ function equipmentHandle(graph){
 		cell.set('position', cell.previous('position'));
 
 	},this);
-	
+
 	function getName(equipmentSubtype) {
 		if(equipmentSubtype === 'rack') return 'Rack_' +app.RackCounter;
 		if(equipmentSubtype === 'shelf') return 'Shelf_' +app.ShelfCounter;
@@ -533,7 +738,7 @@ function equipmentHandle(graph){
 		if(equipmentSubtype === 'card') return 'Card_' +app.CardCounter;
 		if(equipmentSubtype === 'supervisor') return 'Supervisor_' +app.SupervisorCounter;
 	};
-	
+
 	function nextName(equipmentSubtype) {
 		if(equipmentSubtype === 'rack') app.RackCounter++;
 		if(equipmentSubtype === 'shelf') app.ShelfCounter++;

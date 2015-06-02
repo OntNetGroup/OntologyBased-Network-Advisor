@@ -1,6 +1,6 @@
 var Rappid = Backbone.Router.extend({
 
-	
+	skipOntologyAddHandler: false,
 	skipOntologyRemoveHandler: false,
 	
 	routes: {
@@ -260,7 +260,7 @@ var Rappid = Backbone.Router.extend({
 			}
 
 			this.commandManager.initBatchCommand();
-			this.selection.invoke('remove');
+			this.selection.invoke('remove', options = 1);
 			this.commandManager.storeBatchCommand();
 			this.selectionView.cancelSelection();
 
@@ -358,7 +358,9 @@ var Rappid = Backbone.Router.extend({
             halo.removeHandle('rotate');
         	halo.removeHandle('link');
         	halo.removeHandle('unlink');
-			
+        	halo.addHandle({ name: 'newremove', position: 'n', icon: '/nopen/frontend/equipment-studio/img/remove.png' });
+        	
+        	
 			halo.render();
 
 			this.initializeHaloTooltips(halo);
@@ -367,6 +369,14 @@ var Rappid = Backbone.Router.extend({
 
 			this.selectionView.cancelSelection();
 			this.selection.reset([cellView.model]);
+			
+			halo.on('action:newremove:pointerdown', function(evt) {
+			    console.log(cellView.model);
+			     var cell = cellView.model;
+			     cell.remove(true);
+			    console.log('New remove test');
+			});
+			
 
 		}, this);
 
@@ -673,4 +683,5 @@ var Rappid = Backbone.Router.extend({
 		$('.statusbar-container .rt-colab').html('Send this link to a friend to <b>collaborate in real-time</b>: <a href="' + roomUrl + '" target="_blank">' + roomUrl + '</a>');
 	}
 	
+
 });

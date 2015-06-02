@@ -43,7 +43,7 @@ function removeEquipmentholder(equipmentName, equipmentType, equipmentID , conta
 	var dtoContainer = {
 			"name" : containerName,
 			"type" : containerType ,
-			"id" : containerID
+			"id" :  containerID
 	};
 
 	var dtoEquipmentholder = {
@@ -61,7 +61,7 @@ function removeEquipmentholder(equipmentName, equipmentType, equipmentID , conta
 			'equipmentholder': JSON.stringify(dtoEquipmentholder)
 		},
 		success: function(data){ 		   
-		//	console.log(data);
+			console.log('data' , data);
 			result = data;
 			
 		},
