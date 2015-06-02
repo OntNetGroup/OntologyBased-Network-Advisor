@@ -151,7 +151,7 @@ public class AutoTester {
 		Interface interfaceTo = provisioner.getInterface(outInterfaceSrcURI);
 		
 		beginDate = new Date();
-		List<Path> pathsShorters = provisioner.findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight);
+		List<Path> pathsShorters = provisioner.findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
 		long nShortPathsTimeExec = PerformanceUtil.getExecutionTime(beginDate);
 		//String pathsExec = "Find paths execution for " + qtShortPaths + " paths with maximum size " + maxPathSize + ": " + nShortPathsTimeExec + "ms\n";
 		String aux2 = nShortPathsTimeExec + "\n";

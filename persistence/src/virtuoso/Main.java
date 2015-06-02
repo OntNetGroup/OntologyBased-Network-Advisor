@@ -50,6 +50,8 @@ public class Main {
 	        vd.setDefaultModel(m);
         }
         
+        new KAO(m.getNsPrefixURI("")).getAllIndividuals();
+        
 		System.out.println();
 //		FileInputStream s = new FileInputStream (StudioInitializer.class.getResource("/model/EquipStudio.owl").getFile());
 ////		FileInputStream s = (FileInputStream) StudioInitializer.class.getResourceAsStream("/model/EquipStudio.owl");
