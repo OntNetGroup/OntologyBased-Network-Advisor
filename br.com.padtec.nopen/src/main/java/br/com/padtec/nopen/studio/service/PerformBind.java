@@ -46,9 +46,7 @@ public class PerformBind {
 			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
 			String propertyURI = repository.getNamespace()+ "binds";
 			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(repository.getBaseModel(), name_source, propertyURI, tipo_target );
-	
-			BuildBindStructure.createBindStructure(propertyURI);
-			
+				
 			String key = tipo_source + propertyURI + tipo_target;
 			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 			Integer cardinality_input_target = Integer.parseInt(cardinality);

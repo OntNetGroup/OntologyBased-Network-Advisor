@@ -2,6 +2,7 @@ package br.com.padtec.nopen.model;
 
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.nopen.service.ContainerStructure;
 import br.com.padtec.nopen.service.NOpenLog;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -584,6 +585,28 @@ public class InstanceFabricator {
 			String classURI = repository.getNamespace()+ConceptEnum.Equipment_Holder.toString();
 			FactoryUtil.createInstanceIndividual(repository.getBaseModel(), individualURI, classURI);
 			NOpenLog.appendLine(repository.getName()+": Equipment Holder "+equipHolderId+" created");
+		}
+	}
+	
+	/**
+	 * @author Jordana Salamon
+	 * @throws Exception 
+	 */
+	public static void createComponentOfRelation(String sourceURI, String name_source, String tipo_source, String targetURI, String name_target, String tipo_target, String propertyURI, OKCoUploader repository) throws Exception{
+		//create the property relation between source and target
+		if(ContainerStructure.verifyContainerRelation(sourceURI, tipo_source, targetURI, tipo_target)){
+			FactoryUtil.createInstanceRelation(
+					repository.getBaseModel(), 
+					sourceURI,			 
+					propertyURI,
+					targetURI
+				);
+				
+			NOpenLog.appendLine(repository.getName()+": " + tipo_source.substring(tipo_source.indexOf("#"+1), tipo_source.length()) + name_source + "linked with " + tipo_target.substring(tipo_target.indexOf("#"+1), tipo_target.length()) + name_target);
+		}
+		else{
+			NOpenLog.appendLine("Error: " + name_source + "cannot be connected to " + name_target);
+			throw new Exception("Error: Unexpected relation between " + name_source + "and " + name_target);	
 		}
 	}
 }
