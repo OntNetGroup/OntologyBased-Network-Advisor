@@ -1,25 +1,6 @@
-function verifyElementsOnCard(cardID, cardName, cardType) {
-
-	var result = "error";
-	var dtoCard = Util.createDtoElement(cardID, cardName, cardType);
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "verifyElementsOnCard.htm",
-		data: {
-			'card': JSON.stringify(dtoCard)
-		},
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		}
-	});
-
-	return result;
-};
+/* ======================================================================================
+ * Get
+ * ======================================================================================*/
 
 function getLayerNames(techName) {
 
@@ -43,12 +24,15 @@ function getLayerNames(techName) {
 	return result;
 };
 
-function insertContainer(containerName, containerType, cardID, cardName, cardType) {
+
+
+/* ======================================================================================
+ * Create
+ * ======================================================================================*/
+
+function insertContainer(dtoContainer, dtoContent) {
 
 	var result = "error";
-
-	var dtoContainer = Util.createDtoElement(containerName, containerName, containerType);
-	var dtoCard = Util.createDtoElement(cardID, cardName, cardType);
 
 	$.ajax({
 		type: "POST",
@@ -56,7 +40,7 @@ function insertContainer(containerName, containerType, cardID, cardName, cardTyp
 		url: "insertContainer.htm",
 		data: {
 			'container': JSON.stringify(dtoContainer),
-			'card': JSON.stringify(dtoCard)
+			'content': JSON.stringify(dtoContent)
 		} ,
 		success: function(data){ 		   
 			result = data;
@@ -70,6 +54,124 @@ function insertContainer(containerName, containerType, cardID, cardName, cardTyp
 //	return "success";
 };
 
+function insertLayer(layerID, layerName, cardID, cardName) {
+
+//	var result = "error";
+
+	var dtoLayer = Util.createDtoElement(layerID, layerName, 'Card_Layer');
+	var dtoCard = Util.createDtoElement(cardID, cardName, 'Card');
+
+	return insertContainer(dtoCard, dtoLayer);
+//	$.ajax({
+//		type: "POST",
+//		async: false,
+//		url: "insertContainer.htm",
+//		data: {
+//			'container': JSON.stringify(dtoContainer),
+//			'card': JSON.stringify(dtoCard)
+//		} ,
+//		success: function(data){ 		   
+//			result = data;
+//		},
+//		error : function(e) {
+//			alert("error: " + e.status);
+//		}
+//	});
+//
+//	return result;
+//	return "success";
+};
+
+function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerID, containerName, containerType) {
+
+//	var result = "error";
+
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+	var dtoContainer = Util.createDtoElement(containerID, containerName, containerType);
+
+	return insertContainer(dtoContainer, dtoTransportFunction);
+//	$.ajax({
+//		type: "POST",
+//		async: false,
+//		url: "createTransportFunction.htm",
+//		data: {
+//			'transportFunction': JSON.stringify(dtoTransportFunction), 
+//			'container': JSON.stringify(dtoContainer)
+//		},
+//		success: function(data){ 		   
+//			result = data;
+//		},
+//		error : function(e) {
+//			alert("error: " + e.status);
+//		}
+//	});
+//
+//	return result;
+//	return "success";
+};
+
+function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFunctionType) {
+
+//	var result;
+
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+	var dtoPort = Util.createDtoElement(portID, portName, portType);
+
+	return insertContainer(dtoTransportFunction, dtoPort);
+//	$.ajax({
+//		type: "POST",
+//		async: false,
+//		url: "createPort.htm",
+//		data: {
+//			'transportFunction': JSON.stringify(dtoTransportFunction), 
+//			'port': JSON.stringify(dtoPort)
+//		},
+//		success: function(data){ 		   
+//			result = data;
+//		},
+//		error : function(e) {
+//			alert("error: " + e.status);
+//		}
+//	});
+//
+//	return result;
+//	return "success";
+};
+
+function createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
+
+	var result = "error";
+
+	var dtoSourceTFunction = Util.createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
+	var dtoTargetTFunction = Util.createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
+	var dtoLink = Util.createDtoElement(linkID, linkID, 'link');
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "createLink.htm",
+		data: {
+			'sourceTFunction': JSON.stringify(dtoSourceTFunction),
+			'targetTFunction': JSON.stringify(dtoTargetTFunction),
+			'link': JSON.stringify(dtoLink)
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+//	return "success";
+};
+
+
+
+/* ======================================================================================
+ * Delete
+ * ======================================================================================*/
 
 function deleteContainer(containerName, containerType, cardID, cardName, cardType) {
 
@@ -98,60 +200,6 @@ function deleteContainer(containerName, containerType, cardID, cardName, cardTyp
 //	return "success";
 };
 
-function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID) {
-
-	var result = "error";
-
-	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
-	var dtoContainer = Util.createDtoElement(cardID, containerName, containerType);
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "createTransportFunction.htm",
-		data: {
-			'transportFunction': JSON.stringify(dtoTransportFunction), 
-			'container': JSON.stringify(dtoContainer)
-		},
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		}
-	});
-
-	return result;
-//	return "success";
-};
-
-function canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID) {
-
-	var result = "false";
-
-	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
-	var dtoContainer = Util.createDtoElement(cardID, containerName, containerType);
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "canCreateTransportFunction.htm",
-		data: {
-			'transportFunction': JSON.stringify(dtoTransportFunction), 
-			'container': JSON.stringify(dtoContainer)
-		},
-		success: function(data){ 
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		}
-	});
-
-	return result;
-//	return "true";
-};
-
 function deleteTransportFunction(id, name, type) {
 
 	var result = "error";
@@ -164,89 +212,6 @@ function deleteTransportFunction(id, name, type) {
 		url: "deleteTransportFunction.htm",
 		data: {
 			'transportFunction': JSON.stringify(dtoTransportFunction)
-		},
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		}
-	});
-
-	return result;
-//	return "success";
-};
-
-function changeContainer(tFunctionID, tFunctionName, tFunctionType, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID, cardName, cardType) {
-
-	var result = "error";
-
-	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
-	var dtoSourceContainer = Util.createDtoElement(sourceContainerName, sourceContainerName, sourceContainerType);
-	var dtoTargetContainer = Util.createDtoElement(targetContainerName, targetContainerName, targetContainerType);
-	var dtoCard = Util.createDtoElement(cardID, cardName, cardType);
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "changeContainer.htm",
-		data: {
-			'transportFunction': JSON.stringify(dtoTransportFunction), 
-			'sourceContainer': JSON.stringify(dtoSourceContainer), 
-			'targetContainer': JSON.stringify(dtoTargetContainer),
-			'card': JSON.stringify(dtoCard)
-		},
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		}
-	});
-
-	return result;
-//	return "success";
-};
-
-function setTransportFunctionName(tFunctionID, tFunctionName, tFunctionType) {
-
-	var result = "error";
-
-	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "setTransportFunctionName.htm",
-		data: {
-			'transportFunction': JSON.stringify(dtoTransportFunction), 
-		},
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		}
-	});
-
-	return result;
-//	return "success";
-};
-
-function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFunctionType) {
-
-	var result;
-
-	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
-	var dtoPort = Util.createDtoElement(portID, portName, portType);
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "createPort.htm",
-		data: {
-			'transportFunction': JSON.stringify(dtoTransportFunction), 
-			'port': JSON.stringify(dtoPort)
 		},
 		success: function(data){ 		   
 			result = data;
@@ -285,6 +250,66 @@ function deletePort(id, name, type) {
 //	return "success";
 };
 
+function deleteLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
+
+	var result = "error";
+
+	var dtoSourceTFunction = Util.createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
+	var dtoTargetTFunction = Util.createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
+	var dtoLink = Util.createDtoElement(linkID, linkID, 'link');
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "deleteLink.htm",
+		data: {
+			'sourceTFunction': JSON.stringify(dtoSourceTFunction),
+			'targetTFunction': JSON.stringify(dtoTargetTFunction),
+			'link': JSON.stringify(dtoLink)
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+//	return "success";
+};
+
+
+
+/* ======================================================================================
+ * NAME
+ * ======================================================================================*/
+
+function setTransportFunctionName(tFunctionID, tFunctionName, tFunctionType) {
+
+	var result = "error";
+
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "setTransportFunctionName.htm",
+		data: {
+			'transportFunction': JSON.stringify(dtoTransportFunction), 
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+//	return "success";
+};
+
 function setPortName(portID, portName, portType) {
 
 	var result;
@@ -310,22 +335,30 @@ function setPortName(portID, portName, portType) {
 //	return "success";
 };
 
-function createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
+
+
+/* ======================================================================================
+ * CHANGE
+ * ======================================================================================*/
+
+function changeContainer(tFunctionID, tFunctionName, tFunctionType, sourceContainerName, sourceContainerType, targetContainerName, targetContainerType, cardID, cardName, cardType) {
 
 	var result = "error";
 
-	var dtoSourceTFunction = Util.createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
-	var dtoTargetTFunction = Util.createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
-	var dtoLink = Util.createDtoElement(linkID, linkID, 'link');
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+	var dtoSourceContainer = Util.createDtoElement(sourceContainerName, sourceContainerName, sourceContainerType);
+	var dtoTargetContainer = Util.createDtoElement(targetContainerName, targetContainerName, targetContainerType);
+	var dtoCard = Util.createDtoElement(cardID, cardName, cardType);
 
 	$.ajax({
 		type: "POST",
 		async: false,
-		url: "createLink.htm",
+		url: "changeContainer.htm",
 		data: {
-			'sourceTFunction': JSON.stringify(dtoSourceTFunction),
-			'targetTFunction': JSON.stringify(dtoTargetTFunction),
-			'link': JSON.stringify(dtoLink)
+			'transportFunction': JSON.stringify(dtoTransportFunction), 
+			'sourceContainer': JSON.stringify(dtoSourceContainer), 
+			'targetContainer': JSON.stringify(dtoTargetContainer),
+			'card': JSON.stringify(dtoCard)
 		},
 		success: function(data){ 		   
 			result = data;
@@ -337,6 +370,62 @@ function createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType,
 
 	return result;
 //	return "success";
+};
+
+
+
+/* ======================================================================================
+ * VERIFICATION
+ * ======================================================================================*/
+
+function verifyElementsOnCard(cardID, cardName, cardType) {
+
+	var result = "error";
+	var dtoCard = Util.createDtoElement(cardID, cardName, cardType);
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "verifyElementsOnCard.htm",
+		data: {
+			'card': JSON.stringify(dtoCard)
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+};
+
+function canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID) {
+
+	var result = "false";
+
+	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
+	var dtoContainer = Util.createDtoElement(cardID, containerName, containerType);
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "canCreateTransportFunction.htm",
+		data: {
+			'transportFunction': JSON.stringify(dtoTransportFunction), 
+			'container': JSON.stringify(dtoContainer)
+		},
+		success: function(data){ 
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+//	return "true";
 };
 
 function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType) {
@@ -367,35 +456,10 @@ function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionTy
 };
 
 
-function deleteLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
 
-	var result = "error";
-
-	var dtoSourceTFunction = Util.createDtoElement(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType);
-	var dtoTargetTFunction = Util.createDtoElement(targetTFunctionID, targetTFunctionName, targetTFunctionType);
-	var dtoLink = Util.createDtoElement(linkID, linkID, 'link');
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "deleteLink.htm",
-		data: {
-			'sourceTFunction': JSON.stringify(dtoSourceTFunction),
-			'targetTFunction': JSON.stringify(dtoTargetTFunction),
-			'link': JSON.stringify(dtoLink)
-		},
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		}
-	});
-
-	return result;
-//	return "success";
-};
-
+/* ================================================
+ * SAVE & LOAD
+ * ================================================*/
 
 function loadTTFAttributes(reference) {
 	var result = "error";

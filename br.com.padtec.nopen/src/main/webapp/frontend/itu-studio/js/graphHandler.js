@@ -59,13 +59,12 @@ function graphHandler(graph, app) {
 		if(isNotTransportFunction(cell)) return;
 		
 		var tFunctionID = cell.id;
-
-		var tFunctionType = cell.attributes.subtype;
-		var cardID = this.cardID;
 		var tFunctionName = getName(tFunctionType);
+		var tFunctionType = cell.attributes.subtype;
 
+		var containerID = this.cardID;
 		var containerName = this.cardName;
-		var containerType = 'card';
+		var containerType = 'Card';
 
 		var position = cell.attributes.position;
 		var size = cell.attributes.size;
@@ -85,8 +84,9 @@ function graphHandler(graph, app) {
 		if(parent) { // existe algum elemento abaixo
 
 			if(isLayer(parent)){ // elemento abaixo é uma camada
+				containerID = parent.id;
 				containerName = parent.attributes.subtype;
-				containerType = 'layer';
+				containerType = 'Card_Layer';
 				// consultar ontologia para inserção de transport function no layer
 				insertTransportFunction();
 
@@ -105,7 +105,7 @@ function graphHandler(graph, app) {
 			
 			var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
 			if(result === "true") {
-				result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+				result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerID, containerName, containerType);
 				
 				if(result === "success") {	
 					if(parent) {

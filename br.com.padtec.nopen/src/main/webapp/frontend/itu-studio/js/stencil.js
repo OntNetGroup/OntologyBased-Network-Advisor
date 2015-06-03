@@ -15,7 +15,7 @@ Stencil.shapes = {
 	transportFunctions: [
 	
 		new joint.shapes.basic.Path({
-			subtype: 'AF',
+			subtype: 'Adaptation_Function',
 			attrs: {
 			        path: { d: 'M 50 0 L 0 0 L 25 50 L 75 50 L 100 0  z', fill: 'slateblue' },
 			    	text: { text: 'AF', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
@@ -23,7 +23,7 @@ Stencil.shapes = {
 		}),
 
 		new joint.shapes.basic.Path({
-			subtype: 'TTF',
+			subtype: 'Trail_Termination_Function',
 			attrs: {
 			        path: { d: 'M 0 0 L 0.5 1 L 1 0 z', fill: 'tomato' },
 			    	text: { text: 'TTF', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
@@ -39,7 +39,7 @@ Stencil.shapes = {
 		})
 		
 //		new joint.shapes.basic.Path({
-//			subtype: 'PhysicalMedia',
+//			subtype: 'Physical_Media',
 //			attrs: {
 //			        path: { transform: 'rotate(90 40 40)', d: 'M 0 0 A 50 10 0 0 0 100 0 A 50 10 0 0 0 0 0 M 100 0 L 100 100 A 50 10 0 0 1 0 100 L 0 0 A 50 10 0 0 0 100 0', fill: 'gray' },
 //			    	text: { text: 'Physical Media', 'font-size': 12, display: '', 'ref-y': .5, fill: 'black'  }
@@ -52,7 +52,7 @@ Stencil.shapes = {
 	interfaces: [
 		//porta de entrada
 		new joint.shapes.basic.Circle({
-			subtype: 'in',
+			subtype: 'Input',
 		    attrs: {
 				'.': { magnet: true },
 		        circle: { fill: '#f1c40f' },
@@ -62,7 +62,7 @@ Stencil.shapes = {
 		
 		// porta de saída
 		new joint.shapes.basic.Rect({
-			subtype: 'out',
+			subtype: 'Output',
 		    attrs: {
 				'.': { magnet: true },
 		        rect: {

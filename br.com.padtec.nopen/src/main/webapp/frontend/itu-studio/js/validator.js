@@ -7,11 +7,10 @@ function validator(validator, graph, app) {
     	var cell = command.data.attributes;
     	var cellSubType = cell.subtype;
     	
-		var containerName = cellSubType;
-		var containerType = 'layer';
+		var layerID = command.data.id;
+    	var layerName = cellSubType;
 		var cardID = this.cardID;
 		var cardName = this.cardName;
-		var cardType = this.cardType;
 
 		var position = cell.position;
 		var size = cell.size;
@@ -32,8 +31,8 @@ function validator(validator, graph, app) {
 			return next('Another element in the way!');
 		} else {
 			// consultar ontologia para inserção de camada no card
-			var result = insertContainer(containerName, containerType, cardID, cardName, cardType);
-			var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +containerName+ '"]';
+			var result = insertLayer(layerID, layerName, cardID, cardName);
+			var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layerName+ '"]';
 			
 			if(result === "success") {
 				$(element).hide();

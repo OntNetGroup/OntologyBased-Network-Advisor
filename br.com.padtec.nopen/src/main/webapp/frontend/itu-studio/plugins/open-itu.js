@@ -60,9 +60,10 @@ function openFromURL(equipment, filename, graph, app){
 	function loadLayers(layers, graph, app) {
 
 		$.each(layers, function(index, layer){
-			var layerSubtype = layer.attributes.subtype;
-			insertContainer(layerSubtype, 'layer', app.cardID, app.cardName, app.cardTech);
-			app.hideLayer(layerSubtype);
+			var layerName = layer.attributes.subtype;
+			var layerID = layer.id;
+			insertLayer(layerID, layerName, app.cardID, app.cardName);
+			app.hideLayer(layerName);
 		});
 	}
 	
@@ -79,9 +80,9 @@ function openFromURL(equipment, filename, graph, app){
 			
 			if(parent) {
 				var parentSubtype = parent.attributes.subtype;
-				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, parentSubtype, 'layer', app.cardID);
+				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, parentID, parentSubtype, 'Card_Layer');
 			} else {
-				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, app.cardName, app.cardTech, app.cardID);
+				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, app.cardID, app.cardName, 'Card');
 			}
 		});
 	}
