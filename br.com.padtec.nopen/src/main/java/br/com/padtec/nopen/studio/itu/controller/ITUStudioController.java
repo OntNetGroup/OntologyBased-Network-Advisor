@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.model.DtoJointElement;
+import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
@@ -53,15 +54,17 @@ public class ITUStudioController {
 	 * Create
 	 * ======================================================================================*/
 	
-	/** Insert card on a container */
+
+	
+	/** Insert content on a container */
 	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
-	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("card") String card) 
+	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("content") String content) 
 	{	
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		DtoJointElement dtoContent = (DtoJointElement) JointUtilManager.getJavaFromJSON(content, DtoJointElement.class);
 		
 		try{
-			StudioFactory.insertContainer(dtoContainer, dtoCard);
+			InstanceFabricator.createComponentOfRelation(dtoContainer, dtoContent);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();

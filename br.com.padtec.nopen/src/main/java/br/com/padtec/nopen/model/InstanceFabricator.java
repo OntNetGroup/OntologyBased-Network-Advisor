@@ -592,17 +592,25 @@ public class InstanceFabricator {
 	 * @author Jordana Salamon
 	 * @throws Exception 
 	 */
-	public static void createComponentOfRelation(String sourceURI, String name_source, String tipo_source, String targetURI, String name_target, String tipo_target, String propertyURI, OKCoUploader repository) throws Exception{
+	public static void createComponentOfRelation(DtoJointElement dtoContainer, DtoJointElement dtoContent) throws Exception{
 		//create the property relation between source and target
+		
+		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
+		String name_source = dtoContainer.getName();
+		String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoContainer.getType();
+		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
+		String name_target = dtoContent.getName();
+		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
+		String propertyURI = StudioComponents.studioRepository.getNamespace() + "componentOf";
 		if(ContainerStructure.verifyContainerRelation(sourceURI, tipo_source, targetURI, tipo_target)){
 			FactoryUtil.createInstanceRelation(
-					repository.getBaseModel(), 
+					StudioComponents.studioRepository.getBaseModel(), 
 					sourceURI,			 
 					propertyURI,
 					targetURI
 				);
 				
-			NOpenLog.appendLine(repository.getName()+": " + tipo_source.substring(tipo_source.indexOf("#"+1), tipo_source.length()) + name_source + "linked with " + tipo_target.substring(tipo_target.indexOf("#"+1), tipo_target.length()) + name_target);
+			NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + dtoContainer.getType() + name_source + "linked with " + dtoContent.getType() + name_target);
 		}
 		else{
 			NOpenLog.appendLine("Error: " + name_source + "cannot be connected to " + name_target);
