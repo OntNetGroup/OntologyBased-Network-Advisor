@@ -20161,7 +20161,6 @@ joint.dia.Cell = Backbone.Model.extend({
     },
 
     isEmbeddedIn: function(cell, opt) {
-    	console.log("test");
         var cellId = _.isString(cell) ? cell : cell.id;
 
         opt = _.defaults({ deep: true }, opt);
