@@ -248,14 +248,14 @@ public class EquipmentStudioController {
 	//=============================================================================================
 	
 	/** Procedure to remove an Equipment holder
-	 * @param equipment
+	 * @param equipmentholder
 	 * @param container
 	 * @return
 	 */
-	@RequestMapping(value = "/removeEquipmentholder", method = RequestMethod.POST)
-	public @ResponseBody String removeEquipmentholder(@RequestParam("equipment") String equipment , @RequestParam("container") String container )
+	@RequestMapping(value = "/deleteEquipmentholder", method = RequestMethod.POST)
+	public @ResponseBody String deleteEquipmentholder(@RequestParam("equipmentholder") String equipmentholder , @RequestParam("container") String container )
 	{
-		DtoJointElement dtoEquipmentholder = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipment, DtoJointElement.class);
+		DtoJointElement dtoEquipmentholder = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipmentholder, DtoJointElement.class);
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 
 		try{
@@ -267,7 +267,6 @@ public class EquipmentStudioController {
 		return "success";
 	}	
 
-	
 	/** Procedure to rename an Equipment
 	 * @param equipment
 	 * @return
@@ -281,51 +280,8 @@ public class EquipmentStudioController {
 		return "success";
 	}	
 	
-	//=============================================================================================
-	// Shelf
-	//=============================================================================================
 	
-	/** Procedure to remove a shelf
-	 * @param shelf
-	 * @param 
-	 * @return
-	 */
-	@RequestMapping(value = "/removeShelf", method = RequestMethod.POST)
-	public @ResponseBody String removeShelf(@RequestParam("shelf") String shelf)
-	{
-		DtoJointElement dtoShelf = (DtoJointElement) JointUtilManager.getJavaFromJSON(shelf, DtoJointElement.class);
-		
-		try{
-			StudioFactory.deleteShelf(dtoShelf);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";
-	}
-		
-	//=============================================================================================
-	// Slot
-	//=============================================================================================
 	
-	/** Procedure to remove a slot
-	 * @param slot
-	 * @param ?
-	 * @return
-	 */
-	@RequestMapping(value = "/removeSlot", method = RequestMethod.POST)
-	public @ResponseBody String removeSlot(@RequestParam("slot") String slot)
-	{
-		DtoJointElement dtoSlot = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
-		
-		try{
-			StudioFactory.deleteSlot(dtoSlot);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";
-	}
 			
 	
 	/* ----- Save/Load graph  ----- */

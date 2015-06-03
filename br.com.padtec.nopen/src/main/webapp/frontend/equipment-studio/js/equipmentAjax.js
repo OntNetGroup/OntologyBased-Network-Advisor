@@ -36,7 +36,7 @@ function insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,contai
 	return result;
 };
 
-function removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID) {
+function deleteEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID) {
 
 	var result = "error";
 
@@ -47,31 +47,30 @@ function removeEquipmentholder(equipmentName, equipmentType, equipmentID , conta
 	};
 
 	var dtoEquipmentholder = {
-			"id": equipmentID ,
 			"name": equipmentName,
-			"type" : equipmentType
+			"type" : equipmentType,
+			"id": equipmentID
 	};
 
 	$.ajax({
 		type: "POST",
 		async: false,
-		url: "removeEquipmentholder.htm",
+		url: "deleteEquipmentholder.htm",
 		data: {
-			'container': JSON.stringify(dtoContainer),
-			'equipmentholder': JSON.stringify(dtoEquipmentholder)
+			'equipmentholder': JSON.stringify(dtoEquipmentholder),
+			'container': JSON.stringify(dtoContainer)
 		},
 		success: function(data){ 		   
-			console.log('data' , data);
 			result = data;
 			
 		},
 		error : function(e) {
-			alert("error: " + e.status);
-		
+			alert("error: " + e.responseText);
+
 		}
 	});
-
-	return result;
+      return "success";
+	//return result;
 };
 
 /* ----- Supervisor  ----- */

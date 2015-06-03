@@ -346,7 +346,6 @@ function equipmentHandle(graph){
 		//       console.log(cell);
 		var parentId = cell.get('parent');
 		var parent = graph.getCell(parentId);
-		this.options = 1;
 
 		if (parent){
 

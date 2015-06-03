@@ -19906,96 +19906,98 @@ joint.dia.Cell = Backbone.Model.extend({
     },
 
     remove: function(options) {
-    
+
     	//joint remove
-    if(options === undefined){
-    
-    var collection = this.collection;
-  	if (collection) {
-  	    collection.trigger('batch:start');
-  	}
+    	if(options === undefined){
 
-          // First, unembed this cell from its parent cell if there is one.
-          var parentCellId = this.get('parent');
-          if (parentCellId) {
-          var parentCell = this.collection && this.collection.get(parentCellId);
-          }
-          
-          _.invoke(this.getEmbeddedCells(), 'remove', options);
-          this.trigger('remove', this, this.collection, options);
-          
-          if (parentCellId) {
-              parentCell.unembed(this);
-          }         
+    		var collection = this.collection;
+    		if (collection) {
+    			collection.trigger('batch:start');
+    		}
 
-  	if (collection) {
-  	    collection.trigger('batch:stop');
-  	}
+    		// First, unembed this cell from its parent cell if there is one.
+    		var parentCellId = this.get('parent');
+    		if (parentCellId) {
+    			var parentCell = this.collection && this.collection.get(parentCellId);
+    		}
 
-  	return this;
-  	
-    }else{
-    	
-    	//ontology remove
-    	var collection = this.collection;
-        console.log(collection);
-    	if (collection) {
-    	    collection.trigger('batch:start');
-    	}
-    	
-    	var containerName = "";
-    	var containerType = "";
-    	var containerID = "";
-    	
-            // First, unembed this cell from its parent cell if there is one.
-            var parentCellId = this.get('parent');
-            if (parentCellId) {
-            var containerID = parentCellId;
-            var parentCell = this.collection && this.collection.get(parentCellId);
-            console.log('parent' , parentCell);
-            var containerName = parentCell.attributes.attrs.name.text;
-            var containerType = parentCell.attributes.subType;
-            }
-            
-            
-            //console.log(JSON.stringify(options));
-            var cellid = this.id;
-            var cell = app.graph.getCell(cellid);
-            console.log('cell' , cell);
-            var equipmentName = cell.attributes.attrs.name.text;
-            console.log(equipmentName);
-            var equipmentType = this.attributes.subType;
-            var equipmentID = this.id;
-            
-           
-            //console.log(cellView.model);
-           // console.log(this.attributes.attrs);
-     //    var result = removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
-    
-          var result = "success";
-            if(result === "success"){
-            	_.invoke(this.getEmbeddedCells(), 'remove', options);
-                this.trigger('remove', this, this.collection, options);
-               // console.log(this);
-                
-                if (parentCellId) {
-                	//console.log(this);
-                    parentCell.unembed(this);
-                }
-            }else{
-            	//error msg
-            	console.log(result);
-            	
-            }
-            
-    	if (collection) {
-    	    collection.trigger('batch:stop');
+    		_.invoke(this.getEmbeddedCells(), 'remove', options);
+    		this.trigger('remove', this, this.collection, options);
+
+    		if (parentCellId) {
+    			parentCell.unembed(this);
+    		}         
+
+    		if (collection) {
+    			collection.trigger('batch:stop');
+    		}
+
+    		return this;
+
     	}
 
-    	return this;	
-    	
-    }
-	
+    	if(options === true){
+    		
+    		//ontology remove
+    		var collection = this.collection;
+    		console.log(collection);
+    		if (collection) {
+    			collection.trigger('batch:start');
+    		}
+
+    		var containerName = "";
+    		var containerType = "";
+    		var containerID = "";
+
+    		// First, unembed this cell from its parent cell if there is one.
+    		var parentCellId = this.get('parent');
+    		if (parentCellId) {
+    			var containerID = parentCellId;
+    			var parentCell = this.collection && this.collection.get(parentCellId);
+    			console.log('parent' , parentCell);
+    			var containerName = parentCell.attributes.attrs.name.text;
+    			var containerType = parentCell.attributes.subType;
+    		}
+
+
+    		//console.log(JSON.stringify(options));
+    		var cellid = this.id;
+    		var cell = app.graph.getCell(cellid);
+    		console.log('cell' , cell);
+    		var equipmentName = cell.attributes.attrs.name.text;
+    		console.log(equipmentName);
+    		var equipmentType = this.attributes.subType;
+    		var equipmentID = this.id;
+
+
+    		//console.log(cellView.model);
+    		// console.log(this.attributes.attrs);
+
+    		var result = deleteEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID);
+
+    		//    var result = "success";
+    		if(result === "success"){
+    			_.invoke(this.getEmbeddedCells(), 'remove', options);
+    			this.trigger('remove', this, this.collection, options);
+    			// console.log(this);
+
+    			if (parentCellId) {
+    				//console.log(this);
+    				parentCell.unembed(this);
+    			}
+    		}else{
+    			//error msg
+    			console.log(result);
+
+    		}
+
+    		if (collection) {
+    			collection.trigger('batch:stop');
+    		}
+
+    		return this;	
+    		
+    	}    		
     },
 
 //    newremove: function(options) {
