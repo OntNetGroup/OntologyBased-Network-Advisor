@@ -59,12 +59,12 @@ function graphHandler(graph, app) {
 		if(isNotTransportFunction(cell)) return;
 		
 		var tFunctionID = cell.id;
-		var tFunctionName = getName(tFunctionType);
 		var tFunctionType = cell.attributes.subtype;
+		var tFunctionName = getName(tFunctionType);
 
 		var containerID = this.cardID;
 		var containerName = this.cardName;
-		var containerType = 'Card';
+		var containerType = TypeEnum.CARD;
 
 		var position = cell.attributes.position;
 		var size = cell.attributes.size;
@@ -86,7 +86,7 @@ function graphHandler(graph, app) {
 			if(isLayer(parent)){ // elemento abaixo é uma camada
 				containerID = parent.id;
 				containerName = parent.attributes.subtype;
-				containerType = 'Card_Layer';
+				containerType = TypeEnum.CARD_LAYER;
 				// consultar ontologia para inserção de transport function no layer
 				insertTransportFunction();
 
@@ -101,9 +101,9 @@ function graphHandler(graph, app) {
 		}
 		
 		function insertTransportFunction() {
-			console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +cardID);
+			console.log('try to insert ' +tFunctionID+ ' name: ' +tFunctionName+ ';type: ' +tFunctionType+ ';layer: ' +containerName+ ';card: ' +containerID);
 			
-			var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, cardID);
+			var result = canCreateTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerName, containerType, containerID);
 			if(result === "true") {
 				result = createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerID, containerName, containerType);
 				
@@ -209,12 +209,12 @@ function graphHandler(graph, app) {
     /* ------ AUXILIAR FUNCTIONS ------- */
 	// Check if cell is not a link
 	function isNotLink(cell) {
-	    if (cell.attributes.type !== 'link') return true;
+	    if (cell.attributes.type !== TypeEnum.LINK) return true;
 	};
 
 	// Check if cell is a link
 	function isLink(cell) {
-	    if (cell.attributes.type === 'link') return true;
+	    if (cell.attributes.type === TypeEnum.LINK) return true;
 	};
 
 	// Check if cell is a transport function
@@ -230,13 +230,13 @@ function graphHandler(graph, app) {
 	//Check if cell is an interface
 	function isInterface(cell) {
 		var cellSubType = cell.attributes.subtype;
-		if(cellSubType === 'out' || cellSubType === 'in') return true;
+		if(cellSubType === SubtypeEnum.OUTPUT || cellSubType === SubtypeEnum.INPUT) return true;
 	};
 
 	//Check if cell is not an interface
 	function isNotInterface(cell) {
 		var cellSubType = cell.attributes.subtype;
-		if(cellSubType !== 'out' && cellSubType !== 'in') return true;
+		if(cellSubType !== SubtypeEnum.OUTPUT && cellSubType !== SubtypeEnum.INPUT) return true;
 	};
 
 	//Check if cell is a layer
@@ -246,19 +246,19 @@ function graphHandler(graph, app) {
 	
 	// Get name for properly element being added
 	function getName(elementSubtype) {
-		if(elementSubtype === 'in') return 'in_' +app.inPortCounter;
-		if(elementSubtype === 'out') return 'out_' +app.outPortCounter;
-		if(elementSubtype === 'AF') return 'AF_' +app.AFCounter;
-		if(elementSubtype === 'TTF') return 'TTF_' +app.TTFCounter;
-		if(elementSubtype === 'Matrix') return 'Matrix_' +app.MatrixCounter;
+		if(elementSubtype === SubtypeEnum.INPUT) return 'in_' +app.inPortCounter;
+		if(elementSubtype === SubtypeEnum.OUTPUT) return 'out_' +app.outPortCounter;
+		if(elementSubtype === SubtypeEnum.ADAPTATION_FUNCTION) return 'AF_' +app.AFCounter;
+		if(elementSubtype === SubtypeEnum.TRAIL_TERMINATION_FUNCTION) return 'TTF_' +app.TTFCounter;
+		if(elementSubtype === SubtypeEnum.MATRIX) return 'Matrix_' +app.MatrixCounter;
 	};
 	
 	// Increment the counter of the properly element
 	function nextName(elementSubtype) {
-		if(elementSubtype === 'in') app.inPortCounter++;
-		if(elementSubtype === 'out') app.outPortCounter++;
-		if(elementSubtype === 'AF') app.AFCounter++;
-		if(elementSubtype === 'TTF') app.TTFCounter++;
-		if(elementSubtype === 'Matrix') app.MatrixCounter++;
+		if(elementSubtype === SubtypeEnum.INPUT) app.inPortCounter++;
+		if(elementSubtype === SubtypeEnum.OUTPUT) app.outPortCounter++;
+		if(elementSubtype === SubtypeEnum.ADAPTATION_FUNCTION) app.AFCounter++;
+		if(elementSubtype === SubtypeEnum.TRAIL_TERMINATION_FUNCTION) app.TTFCounter++;
+		if(elementSubtype === SubtypeEnum.MATRIX) app.MatrixCounter++;
 	};
 };

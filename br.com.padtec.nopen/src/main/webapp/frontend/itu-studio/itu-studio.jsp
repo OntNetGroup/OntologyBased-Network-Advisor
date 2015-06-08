@@ -58,6 +58,7 @@
         
 		<script src="/nopen/core/rappid_api/js/joint.shapes.devs.js"></script>
 		<script src="/nopen/frontend/itu-studio/js/typeEnum.js"></script>
+		<script src="/nopen/frontend/itu-studio/js/subtypeEnum.js"></script>
 		<script src="/nopen/frontend/itu-studio/js/util.js"></script>
         <script src="/nopen/frontend/itu-studio/js/inspector.js"></script>
 		<script src="/nopen/frontend/itu-studio/js/layer.js"></script>

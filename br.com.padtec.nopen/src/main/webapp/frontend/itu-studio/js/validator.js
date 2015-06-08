@@ -66,7 +66,7 @@ function validator(validator, graph, app) {
 		}
 		
 		// se target for uma interface, remover a interface ligada à conexão (consultar ontologia)
-		if(targetElementSubtype === 'in' || targetElementSubtype === 'out') {
+		if(targetElementSubtype === SubtypeEnum.OUTPUT || targetElementSubtype === SubtypeEnum.INPUT) {
 			var result = deletePort(targetID, targetElementName, targetElementSubtype);
 			
 			if(result === "success") {
@@ -122,7 +122,7 @@ function validator(validator, graph, app) {
     		return next(err);
     	}
     	var containerName = command.data.attributes.subtype;
-		var containerType = 'layer';
+		var containerType = TypeEnum.CARD_LAYER;
 		var cardID = this.cardID;
 		var cardName = this.cardName;
 		var cardType = this.cardType;
@@ -153,7 +153,7 @@ function validator(validator, graph, app) {
     	
     	var result = deletePort(cellID, name, type);			
 		if(result === "success") {
-			if(type === 'in') {
+			if(type === SubtypeEnum.INPUT) {
 				var index = this.barIn.attributes.embeddedPorts.indexOf(cellID);
 				this.barIn.attributes.embeddedPorts.splice(index, 1);
 			} else {
@@ -188,7 +188,7 @@ function validator(validator, graph, app) {
         	var sourceSubtype = sourceElement.attributes.subtype;
         	
         	// se target for uma interface, cria a conexão
-        	if(targetSubtype === 'in' || targetSubtype === 'out') return next(err);
+        	if(targetSubtype === SubtypeEnum.OUTPUT || targetSubtype === SubtypeEnum.INPUT) return next(err);
         	
         	var result = createLink(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
         	
@@ -335,7 +335,7 @@ function validator(validator, graph, app) {
 /* ------- VALIDATION FUNCTIONS -------- */
 // Check if cell in command is not a link. Continue validating if yes, otherwise stop.
 function isNotLink(err, command, next) {
-    if (command.data.type !== 'link') {
+    if (command.data.type !== TypeEnum.LINK) {
     	return next(err);
     }
     // otherwise stop validating (don't call next validation function)
@@ -343,7 +343,7 @@ function isNotLink(err, command, next) {
 
 // Check if cell in command is a link. Continue validating if yes, otherwise stop.
 function isLink(err, command, next) {
-    if (command.data.type === 'link') return next(err);
+    if (command.data.type === TypeEnum.LINK) return next(err);
     // otherwise stop validating (don't call next validation function)
 };
 
@@ -357,7 +357,7 @@ function isTransportFunction(err, command, next) {
 function isInterface(err, command, next) {
 	var cellSubType = command.data.attributes.subtype;
 
-	if(cellSubType === 'out' || cellSubType === 'in') return next(err);
+	if(cellSubType === SubtypeEnum.OUTPUT || cellSubType === SubtypeEnum.INPUT) return next(err);
     // otherwise stop validating (don't call next validation function)
 };
 
