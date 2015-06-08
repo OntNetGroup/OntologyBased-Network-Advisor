@@ -638,7 +638,7 @@ public class InstanceFabricator {
 			NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + dtoContainer.getType() + name_source + "linked with " + dtoContent.getType() + name_target);
 		}
 		else{
-			NOpenLog.appendLine("Error: " + name_source + "cannot be connected to " + name_target);
+			NOpenLog.appendLine("Error: " + name_source + " cannot be connected to " + name_target);
 			throw new Exception("Error: Unexpected relation between " + name_source + "and " + name_target);	
 		}
 	}
