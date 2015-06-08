@@ -46,7 +46,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+cardId, 
-			repository.getNamespace()+RelationEnum.ComponentOf1_Card_TF_Card_Element,
+			repository.getNamespace()+RelationEnum.ComponentOf2_Card_TF_Card_Element,
 			repository.getNamespace()+afId
 		);
 		
@@ -301,7 +301,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+rackId, 
-			repository.getNamespace()+RelationEnum.ComponentOf8_Rack_Shelf,
+			repository.getNamespace()+RelationEnum.ComponentOf9_Rack_Shelf,
 			repository.getNamespace()+shelfId
 		);		
 		
@@ -322,7 +322,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+shelfId, 
-			repository.getNamespace()+RelationEnum.ComponentOf9_Shelf_Slot,
+			repository.getNamespace()+RelationEnum.ComponentOf10_Shelf_Slot,
 			repository.getNamespace()+slotId
 		);	
 		
@@ -378,7 +378,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+slotId, 
-			repository.getNamespace()+RelationEnum.ComponentOf4_Slot_Card,
+			repository.getNamespace()+RelationEnum.ComponentOf5_Slot_Card,
 			repository.getNamespace()+cardId
 		);
 		
@@ -399,7 +399,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+subslotId, 
-			repository.getNamespace()+RelationEnum.ComponentOf5_Subslot_Card,
+			repository.getNamespace()+RelationEnum.ComponentOf6_Subslot_Card,
 			repository.getNamespace()+cardId
 		);
 		
@@ -520,11 +520,11 @@ public class InstanceFabricator {
 	public static void createLayer(OKCoUploader repository, String layerName, String techName) throws Exception
 	{
 		String indURI = repository.getNamespace()+layerName;		
-		String layerURI = repository.getNamespace()+ConceptEnum.Layer.toString();
+		String layerURI = repository.getNamespace()+ConceptEnum.Layer_Type.toString();
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indURI, layerURI);
 		
 		String ind2URI = repository.getNamespace()+techName;		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf7_Technology_Layer.toString();		
+		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf8_Technology_Layer_Type.toString();		
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),ind2URI, techToLayerURI, indURI);
 		
 		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" created for Technology "+techName);
@@ -534,7 +534,7 @@ public class InstanceFabricator {
 	{
 		String clientURI = repository.getNamespace()+clientLayerName;
 		String serverURI = repository.getNamespace()+serverLayerName;
-		String isClientURI = repository.getNamespace()+RelationEnum.is_client_Layer_Layer.toString();	
+		String isClientURI = repository.getNamespace()+RelationEnum.is_client_Layer_Type_Layer_Type.toString();	
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),clientURI, isClientURI, serverURI);
 		
 		NOpenLog.appendLine(repository.getName()+": Layer "+clientLayerName+" is client of Layer "+serverLayerName);
