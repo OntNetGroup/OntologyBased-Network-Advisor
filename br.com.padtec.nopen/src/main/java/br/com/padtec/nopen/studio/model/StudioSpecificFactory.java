@@ -389,14 +389,26 @@ public class StudioSpecificFactory {
 		InstanceFabricator.deleteSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName);
 	}
 		
-	public static void superviseCard(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
+	public static void superviseCard(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) throws Exception 
 	{
-		//TODO
+		String supervisorId = dtoSupervisor.getId();		
+		String supervisorName = dtoSupervisor.getName();		
+			
+		String cardId = dtoSupervisor.getId();		
+		String cardName = dtoSupervisor.getName();	
+		
+		InstanceFabricator.superviseCard(StudioComponents.studioRepository, supervisorId, supervisorName, cardId, cardName);
 	}
 	
-	public static void unsuperviseCard(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
+	public static void unsuperviseCard(DtoJointElement dtoSupervisor, DtoJointElement dtoCard)  throws Exception 
 	{
-		//TODO
+		String supervisorId = dtoSupervisor.getId();		
+		String supervisorName = dtoSupervisor.getName();		
+			
+		String cardId = dtoSupervisor.getId();		
+		String cardName = dtoSupervisor.getName();	
+		
+		InstanceFabricator.unsuperviseCard(StudioComponents.studioRepository, supervisorId, supervisorName, cardId, cardName);
 	}
 	
 	public static void canSupervise(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 

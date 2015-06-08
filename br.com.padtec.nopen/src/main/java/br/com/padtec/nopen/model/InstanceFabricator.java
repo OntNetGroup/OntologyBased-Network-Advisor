@@ -468,7 +468,6 @@ public class InstanceFabricator {
 			repository.getNamespace()+supervisorId,			 
 			repository.getNamespace()+ConceptEnum.Supervisor.toString()			
 		);
-		//Fix-me	
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+supervisorId,			 
@@ -477,6 +476,32 @@ public class InstanceFabricator {
 		);
 		
 		NOpenLog.appendLine(repository.getName()+": Supervisor "+supervisorName+" created for Equipment Holder "+holderName);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void superviseCard(OKCoUploader repository, String supervisorId, String supervisorName, String cardId, String cardName) throws Exception 
+	{		
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+cardId,			 
+			repository.getNamespace()+RelationEnum.ComponentOf_Card_Supervisor,
+			repository.getNamespace()+supervisorId
+		);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void unsuperviseCard(OKCoUploader repository, String supervisorId, String supervisorName, String cardId, String cardName) throws Exception 
+	{		
+		FactoryUtil.deleteObjectProperty(
+			repository.getBaseModel(), 
+			repository.getNamespace()+cardId,			 
+			repository.getNamespace()+RelationEnum.ComponentOf_Card_Supervisor,
+			repository.getNamespace()+supervisorId
+		);
 	}
 	
 	/**
@@ -617,4 +642,5 @@ public class InstanceFabricator {
 			throw new Exception("Error: Unexpected relation between " + name_source + "and " + name_target);	
 		}
 	}
+	
 }
