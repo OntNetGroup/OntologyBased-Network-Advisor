@@ -25,7 +25,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.INV_ComponentOf6_Trail_Termination_Function_Layer,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Card_Layer,
 			repository.getNamespace()+layerId
 		);
 		
@@ -168,14 +168,14 @@ public class InstanceFabricator {
 	 */
 	public static void insertLayerLink(OKCoUploader repository, String layerId, String layerName, String cardId, String cardName) throws Exception 
 	{
-		FactoryUtil.createInstanceRelation(
-			repository.getBaseModel(), 
-			repository.getNamespace()+cardId, 
-			repository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
-			repository.getNamespace()+layerId
-		);
-		
-		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" inserted at Card: "+cardName);
+//		FactoryUtil.createInstanceRelation(
+//			repository.getBaseModel(), 
+//			repository.getNamespace()+cardId, 
+//			repository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
+//			repository.getNamespace()+layerId
+//		);
+//		
+//		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" inserted at Card: "+cardName);
 	}
 		
 	/**
@@ -183,14 +183,14 @@ public class InstanceFabricator {
 	 */
 	public static void removeLayerLink(OKCoUploader repository, String layerId, String layerName, String cardId, String cardName)
 	{
-		FactoryUtil.deleteObjectProperty(
-			repository.getBaseModel(),
-			repository.getNamespace()+cardId, 
-			repository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
-			repository.getNamespace()+layerId
-		);		
-		
-		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" removed from Card "+cardName);
+//		FactoryUtil.deleteObjectProperty(
+//			repository.getBaseModel(),
+//			repository.getNamespace()+cardId, 
+//			repository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
+//			repository.getNamespace()+layerId
+//		);		
+//		
+//		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" removed from Card "+cardName);
 	}
 	
 	/**
@@ -202,14 +202,14 @@ public class InstanceFabricator {
 		FactoryUtil.deleteObjectProperty(
 			repository.getBaseModel(),
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.INV_ComponentOf6_Trail_Termination_Function_Layer,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Card_Layer,
 			repository.getNamespace()+srcLayerId
 		);
 		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.INV_ComponentOf6_Trail_Termination_Function_Layer,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Card_Layer,
 			repository.getNamespace()+tgtLayerId
 		);
 		
@@ -471,9 +471,9 @@ public class InstanceFabricator {
 		//Fix-me	
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
-			repository.getNamespace()+holderId,			 
-			repository.getNamespace()+RelationEnum.ComponentOf10_Slot_Supervisor,
-			repository.getNamespace()+supervisorId
+			repository.getNamespace()+supervisorId,			 
+			repository.getNamespace()+RelationEnum.supervises_Supervisor_Equipment,
+			repository.getNamespace()+holderId
 		);
 		
 		NOpenLog.appendLine(repository.getName()+": Supervisor "+supervisorName+" created for Equipment Holder "+holderName);
