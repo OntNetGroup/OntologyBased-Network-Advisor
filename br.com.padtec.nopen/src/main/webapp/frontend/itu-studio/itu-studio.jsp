@@ -77,7 +77,7 @@
              
             var equipment = undefined;
             var card = undefined;
-            var discardChanges = false;
+            var discardChanges = true;
             
         	app.setCardID(parent.cellId);
         	app.setCardName('myCard'); //TODO: passar o nome do card, vindo do Equipment Studio
@@ -120,6 +120,7 @@
           	//Enable Save Button when paper change
             $('.paper-container').bind("DOMSubtreeModified",function(){
             	$('#btn-save').prop('disabled', false);
+            	discardChanges = false;
            	});
             //Start with Save Button disabled
 			$('#btn-save').prop('disabled', true);

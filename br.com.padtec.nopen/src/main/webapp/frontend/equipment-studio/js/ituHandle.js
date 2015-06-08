@@ -134,7 +134,7 @@ function ituHandle(paper, graph, validator){
 	});
 	
 	//create a dialog connection only if exist a target
-	validator.validate('change:target change:source', function(err, command, next) {
+	validator.validate('add change:target change:source', function(err, command, next) {
 
 		var cell = graph.getCell(command.data.id);
 		
@@ -152,6 +152,13 @@ function ituHandle(paper, graph, validator){
 		console.log('target ID: ' + target.id);
 		
 		createConnectionDialog(cell, source, target);
+		
+	});
+	
+	//delete connections
+	$('.inPort').delegate(this, 'dblclick', function(){
+		
+		alert('hello!');
 		
 	});
 	
