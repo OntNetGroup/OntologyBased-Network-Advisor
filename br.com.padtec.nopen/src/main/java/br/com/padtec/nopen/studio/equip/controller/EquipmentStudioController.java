@@ -216,16 +216,15 @@ public class EquipmentStudioController {
 	@RequestMapping(value = "/setTechnology", method = RequestMethod.POST)
 	public @ResponseBody String setTechnology(@RequestParam("supervisor") String supervisor,@RequestParam("technology") String technology )
 	{
-//		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-//		DtoJointElement dtotech = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
-		//TODO (To Gabriel/Missael) I need of the specific equipment in which this supervisor is linked to (John)
+		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		DtoJointElement dtotech = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
 		
-//		try{
-//			StudioFactory.setTechnology(dtosupervisor, dtotech);
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			return e.getLocalizedMessage();
-//		}		
+		try{
+			StudioSpecificFactory.setTechnology(dtosupervisor, dtotech);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
 		return "success";		
 	}
 	

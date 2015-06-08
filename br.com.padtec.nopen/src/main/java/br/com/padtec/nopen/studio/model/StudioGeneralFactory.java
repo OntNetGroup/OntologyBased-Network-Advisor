@@ -126,15 +126,5 @@ public class StudioGeneralFactory {
 			NOpenLog.appendLine("Error: Unexpected deletion of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");
 			throw new Exception("Unexpected deletion of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");				
 		}
-	}
-	
-	//=============================================================================================
-	// General: Verification
-	//=============================================================================================
-
-	public static String[] elementsWithNoConnection(DtoJointElement dtoCard) 
-	{	
-		//TODO
-		return null;
-	}
+	}		
 }

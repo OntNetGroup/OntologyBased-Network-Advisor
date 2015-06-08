@@ -5,6 +5,12 @@
 	String name = (String)request.getSession().getAttribute("name");
 %>
 
+<div id="row" class="row" style="margin-right:0px;margin-left:0px">	
+	<form id="exportOntology" style="float:left" action="exportOntology.htm" method="POST">
+		<button id="exportOWL" type="button" class="btn btn-large btn-primary"> <i class="icon-download"></i> Export as OWL</button>				
+	</form>		
+</div>	
+		
 <div class="row">
 	<div class="col-sm-12">	
 		<div class="box"> 			
@@ -24,8 +30,7 @@
 				}
 				%>
  			</div>    
-	</div>	
-						
+	</div>							
 </div><!--/row-->	
 	
 <!-- page scripts -->

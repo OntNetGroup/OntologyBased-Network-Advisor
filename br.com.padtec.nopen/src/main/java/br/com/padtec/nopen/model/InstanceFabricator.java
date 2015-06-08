@@ -554,7 +554,7 @@ public class InstanceFabricator {
 	 */
 	public static void createService(OKCoUploader repository, String serviceName, String layerName, String techName) throws Exception
 	{
-		String indLayerURI = repository.getNamespace()+layerName;		
+		//String indLayerURI = repository.getNamespace()+layerName;		
 		String indServURI = repository.getNamespace()+serviceName;
 		String serviceURI = repository.getNamespace()+ConceptEnum.Service.toString();
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indServURI, serviceURI);		

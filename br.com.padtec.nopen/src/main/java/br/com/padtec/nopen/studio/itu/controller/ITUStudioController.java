@@ -15,9 +15,8 @@ import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
-import br.com.padtec.nopen.studio.model.StudioGeneralFactory;
-import br.com.padtec.nopen.studio.model.StudioSpecificFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
+import br.com.padtec.nopen.studio.model.StudioSpecificFactory;
 
 import com.jointjs.util.JointUtilManager;
 
@@ -258,7 +257,7 @@ public class ITUStudioController {
 	{
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
-		String[] result = StudioGeneralFactory.elementsWithNoConnection(dtoCard);		
+		String[] result = StudioSpecificFactory.elementsWithNoConnection(dtoCard);		
 		return result;
 	}
 	

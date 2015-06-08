@@ -360,6 +360,12 @@ public class StudioSpecificFactory {
 		InstanceFabricator.deleteCard(StudioComponents.studioRepository,holderId,holderName);
 	}
 	
+	public static String[] elementsWithNoConnection(DtoJointElement dtoCard) 
+	{	
+		//TODO
+		return null;
+	}
+	
 	//=============================================================================================
 	// Specific: Supervisor
 	//=============================================================================================
@@ -399,6 +405,11 @@ public class StudioSpecificFactory {
 	}
 
 	public static void canUnsupervise(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
+	{
+		//TODO
+	}
+	
+	public static void setTechnology(DtoJointElement dtoSupervisor, DtoJointElement dtoTechnology) 
 	{
 		//TODO
 	}
