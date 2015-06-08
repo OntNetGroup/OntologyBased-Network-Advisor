@@ -15,7 +15,7 @@ import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
-import br.com.padtec.nopen.studio.model.StudioFactory;
+import br.com.padtec.nopen.studio.model.StudioSpecificFactory;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
 
 import com.jointjs.util.JointUtilManager;
@@ -53,9 +53,7 @@ public class ITUStudioController {
 	/* ======================================================================================
 	 * Create
 	 * ======================================================================================*/
-	
-
-	
+		
 	/** Insert content on a container */
 	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
 	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("content") String content) 
@@ -80,7 +78,7 @@ public class ITUStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 
 		try{
-			StudioFactory.createTransportFunction(dtoTransportFunction, dtoContainer);
+			StudioSpecificFactory.createTransportFunction(dtoTransportFunction, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -97,7 +95,7 @@ public class ITUStudioController {
 		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
 		 
 		try{
-			StudioFactory.createPort(dtoPort, dtoTransportFunction);		
+			StudioSpecificFactory.createPort(dtoPort, dtoTransportFunction);		
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -116,7 +114,7 @@ public class ITUStudioController {
 		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
 		
 		try{
-			StudioFactory.createLink(dtoSourceTFunction, dtoTargetTFunction, dtoLink);
+			StudioSpecificFactory.createLink(dtoSourceTFunction, dtoTargetTFunction, dtoLink);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -137,7 +135,7 @@ public class ITUStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		try{
-			StudioFactory.deleteContainer(dtoContainer, dtoCard);
+			StudioSpecificFactory.deleteContainer(dtoContainer, dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -152,7 +150,7 @@ public class ITUStudioController {
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
 		
 		try{
-			StudioFactory.deleteTransportFunction(dtoTransportFunction);
+			StudioSpecificFactory.deleteTransportFunction(dtoTransportFunction);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -166,7 +164,7 @@ public class ITUStudioController {
 	{
 		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
 		try{
-			StudioFactory.deletePort(dtoPort);
+			StudioSpecificFactory.deletePort(dtoPort);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -184,7 +182,7 @@ public class ITUStudioController {
 		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
 	
 		try{
-			StudioFactory.deleteLink(dtoLink, dtoSourceTFunction, dtoTargetTFunction); 
+			StudioSpecificFactory.deleteLink(dtoLink, dtoSourceTFunction, dtoTargetTFunction); 
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -203,7 +201,7 @@ public class ITUStudioController {
 		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
 
 		try{
-			StudioFactory.setTransportFunctionName(dtoTransportFunction);
+			StudioSpecificFactory.setTransportFunctionName(dtoTransportFunction);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -218,7 +216,7 @@ public class ITUStudioController {
 		DtoJointElement dtoPort = (DtoJointElement) JointUtilManager.getJavaFromJSON(port, DtoJointElement.class);
 		 
 		try{
-			StudioFactory.setPortName(dtoPort);
+			StudioSpecificFactory.setPortName(dtoPort);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -241,7 +239,7 @@ public class ITUStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		try{
-			StudioFactory.changeContainer(dtoTransportFunction, dtoSourceContainer, dtoTargetContainer, dtoCard); 
+			StudioSpecificFactory.changeContainer(dtoTransportFunction, dtoSourceContainer, dtoTargetContainer, dtoCard); 
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -259,7 +257,7 @@ public class ITUStudioController {
 	{
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
-		String[] result = StudioFactory.elementsWithNoConnection(dtoCard);		
+		String[] result = StudioSpecificFactory.elementsWithNoConnection(dtoCard);		
 		return result;
 	}
 	
@@ -271,7 +269,7 @@ public class ITUStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		
 		try{
-			StudioFactory.canCreateTransportFunction(dtoTransportFunction, dtoContainer);
+			StudioSpecificFactory.canCreateTransportFunction(dtoTransportFunction, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -287,7 +285,7 @@ public class ITUStudioController {
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
 		
 		try{
-			StudioFactory.canCreateLink(dtoSourceTFunction, dtoTargetTFunction);
+			StudioSpecificFactory.canCreateLink(dtoSourceTFunction, dtoTargetTFunction);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();

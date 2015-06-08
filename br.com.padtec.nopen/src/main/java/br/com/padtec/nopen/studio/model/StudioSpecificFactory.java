@@ -5,7 +5,7 @@ import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.service.NOpenLog;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 
-public class StudioFactory {
+public class StudioSpecificFactory {
 	
 	//=============================================================================================
 	// General
@@ -126,8 +126,14 @@ public class StudioFactory {
 		}
 	}
 	
+	public static String[] elementsWithNoConnection(DtoJointElement dtoCard) 
+	{	
+		//TODO
+		return null;
+	}
+	
 	//=============================================================================================
-	// Transport Function
+	// Specific: Transport Function
 	//=============================================================================================
 	
 	/**
@@ -206,11 +212,11 @@ public class StudioFactory {
 	
 	public static void setTransportFunctionName(DtoJointElement dtoTransportFunction) 
 	{
-		//we won't need this, as it does not make sense.
+		//we won't need this (in OWL we store the ID of the element, not the name)
 	}
 	
 	//=============================================================================================
-	// Port
+	// Specific: Port
 	//=============================================================================================
 	
 	/**
@@ -276,11 +282,11 @@ public class StudioFactory {
 	
 	public static void setPortName(DtoJointElement dtoPort) 
 	{
-		//we won't need this, as it does not make sense.
+		//we won't need this (in OWL we store the ID of the element, not the name)
 	}	
 	
 	//=============================================================================================
-	// Container
+	// Specific: Container
 	//=============================================================================================
 	
 	/**
@@ -361,7 +367,7 @@ public class StudioFactory {
 	}
 
 	//=============================================================================================
-	// Equipment Holder
+	// Specific: Equipment Holder
 	//=============================================================================================
 	
 	public static void createEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
@@ -440,11 +446,11 @@ public class StudioFactory {
 
 	public static void setEquipmentName(DtoJointElement dtoEquipment) 
 	{
-		//we won't need this, as it does not make sense.
+		//we won't need this (in OWL we store the ID of the element, not the name)
 	}
 	
 	//=============================================================================================
-	// Shelf
+	// Specific: Shelf
 	//=============================================================================================
 	
 	public static void deleteShelf(DtoJointElement dtoShelf) throws Exception 
@@ -456,7 +462,7 @@ public class StudioFactory {
 	}
 
 	//=============================================================================================
-	// Slot
+	// Specific: Slot
 	//=============================================================================================
 	
 	public static void deleteSlot(DtoJointElement dtoSlot) throws Exception 
@@ -468,7 +474,7 @@ public class StudioFactory {
 	}
 
 	//=============================================================================================
-	// Card
+	// Specific: Card
 	//=============================================================================================
 	
 	public static void deleteCard(DtoJointElement dtoCard) 
@@ -478,15 +484,9 @@ public class StudioFactory {
 				
 		InstanceFabricator.deleteCard(StudioComponents.studioRepository,holderId,holderName);
 	}
-
-	public static String[] elementsWithNoConnection(DtoJointElement dtoCard) 
-	{	
-		//TODO
-		return null;
-	}
 	
 	//=============================================================================================
-	// Supervisor
+	// Specific: Supervisor
 	//=============================================================================================
 	
 	public static void createSupervisor(DtoJointElement dtoSupervisor, DtoJointElement dtoHolder) throws Exception 
@@ -518,20 +518,18 @@ public class StudioFactory {
 		//TODO
 	}
 	
-	public static void canSupervise(DtoJointElement dtoSupervisor,
-			DtoJointElement dtoCard) {
-		// TODO Auto-generated method stub
-		
+	public static void canSupervise(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
+	{
+		//TODO
 	}
 
-	public static void canUnsupervise(DtoJointElement dtoSupervisor,
-			DtoJointElement dtoCard) {
-		// TODO Auto-generated method stub
-		
+	public static void canUnsupervise(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
+	{
+		//TODO
 	}
 	
 	//=============================================================================================
-	// Link
+	// Specific: Link
 	//=============================================================================================
 	
 	/**

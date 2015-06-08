@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
-import br.com.padtec.nopen.studio.model.StudioFactory;
+import br.com.padtec.nopen.studio.model.StudioSpecificFactory;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 
 import com.jointjs.util.JointUtilManager;
@@ -38,7 +38,7 @@ public class EquipmentStudioController {
 	}
 	
 	/* ======================================================================================
-	 * CREATE
+	 * Create
 	 * ======================================================================================*/
 	
 	/** Procedure to create a Supervisor
@@ -53,7 +53,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoSlot = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
 				
 		try{
-			StudioFactory.createSupervisor(dtoSupervisor, dtoSlot);
+			StudioSpecificFactory.createSupervisor(dtoSupervisor, dtoSlot);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -73,7 +73,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
 
 		try{
-			StudioFactory.createEquipmentholder(dtoCard, dtoContainer);
+			StudioSpecificFactory.createEquipmentholder(dtoCard, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -93,7 +93,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 
 		try{
-			StudioFactory.createEquipmentholder(dtoEquipmentholder, dtoContainer);
+			StudioSpecificFactory.createEquipmentholder(dtoEquipmentholder, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -103,7 +103,7 @@ public class EquipmentStudioController {
 	
 	
 	/* ======================================================================================
-	 * DELETE
+	 * Delete
 	 * ======================================================================================*/
 	
 	/** Procedure to remove a supervisor
@@ -117,7 +117,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
 		
 		try{
-			StudioFactory.deleteSupervisor(dtoSupervisor);
+			StudioSpecificFactory.deleteSupervisor(dtoSupervisor);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -136,116 +136,13 @@ public class EquipmentStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		try{
-			StudioFactory.deleteCard(dtoCard);
+			StudioSpecificFactory.deleteCard(dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
 		}		
 		return "success";
 	}
-	
-	/** Procedure to unsupervise a card
-	 * @param card
-	 * @param supervisor
-	 * @return
-	 */
-	@RequestMapping(value = "/unsuperviseCard", method = RequestMethod.POST)
-	public @ResponseBody String unsuperviseCard(@RequestParam("supervisor") String supervisor,@RequestParam("card") String card )
-	{
-		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-				
-//		try{
-//			StudioFactory.unsuperviseCard(dtoSupervisor, dtoCard);
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			return e.getLocalizedMessage();
-//		}		
-		return "success";		
-	}
-	
-	/** Procedure to select the supervisor technology
-	 * @param supervisor
-	 * @param technology
-	 * @param slot
-	 * @return
-	 */
-	
-	
-	@RequestMapping(value = "/setTechnology", method = RequestMethod.POST)
-	public @ResponseBody String setTechnology(@RequestParam("supervisor") String supervisor,@RequestParam("technology") String technology )
-	{
-		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-//		DtoJointElement dtotech = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
-		//TODO (To Gabriel/Missael) I need of the specific equipment in which this supervisor is linked to (John)
-		
-		try{
-			//StudioFactory.setTechnology(dtosupervisor, dtotech, dtoquip);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";		
-	}
-		
-	
-	//=============================================================================================
-	// Card
-	//=============================================================================================
-	
-
-	/** Procedure to supervise a card
-	 * @param card
-	 * @param supervisor
-	 * @return
-	 */
-	@RequestMapping(value = "/superviseCard", method = RequestMethod.POST)
-	public @ResponseBody String superviseCard(@RequestParam("supervisor") String supervisor,@RequestParam("card") String card )
-	{
-		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-				
-//		try{
-//			StudioFactory.superviseCard(dtoSupervisor, dtoCard);
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			return e.getLocalizedMessage();
-//		}		
-		return "success";		
-	}
-	
-	/** Procedure to check if card can be supervised
-	 * @param supervisor
-	 * @param card
-	 * @return
-	 */
-	@RequestMapping(value = "/canSupervise",method = RequestMethod.POST)
-	public @ResponseBody String canSupervise(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor)
-	{
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		
-		return "true";
-	}
-			
-	
-	/** Procedure to check if card can be supervised
-	 * @param supervisor
-	 * @param card
-	 * @return
-	 */
-	@RequestMapping(value = "/canUnsupervise",method = RequestMethod.POST)
-	public @ResponseBody String canUnsupervise(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor)
-	{
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		
-		return "true";
-	}
-	
-	//=============================================================================================
-	// Generic equipment
-	//=============================================================================================
 	
 	/** Procedure to remove an Equipment holder
 	 * @param equipmentholder
@@ -259,14 +156,128 @@ public class EquipmentStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 
 		try{
-			StudioFactory.deleteEquipmentholder(dtoEquipmentholder, dtoContainer);
+			StudioSpecificFactory.deleteEquipmentholder(dtoEquipmentholder, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
 		}		
 		return "success";
 	}	
-
+		
+	//=============================================================================================
+	// Link
+	//=============================================================================================
+	
+	/** Procedure to supervise a card
+	 * @param card
+	 * @param supervisor
+	 * @return
+	 */
+	@RequestMapping(value = "/superviseCard", method = RequestMethod.POST)
+	public @ResponseBody String superviseCard(@RequestParam("supervisor") String supervisor,@RequestParam("card") String card )
+	{
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+				
+		try{
+			StudioSpecificFactory.superviseCard(dtoSupervisor, dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";		
+	}
+	
+	/** Procedure to unsupervise a card
+	 * @param card
+	 * @param supervisor
+	 * @return
+	 */
+	@RequestMapping(value = "/unsuperviseCard", method = RequestMethod.POST)
+	public @ResponseBody String unsuperviseCard(@RequestParam("supervisor") String supervisor,@RequestParam("card") String card )
+	{
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+				
+		try{
+			StudioSpecificFactory.unsuperviseCard(dtoSupervisor, dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+		return "success";		
+	}
+	
+	/** Procedure to select the supervisor technology
+	 * @param supervisor
+	 * @param technology
+	 * @param slot
+	 * @return
+	 */	
+	@RequestMapping(value = "/setTechnology", method = RequestMethod.POST)
+	public @ResponseBody String setTechnology(@RequestParam("supervisor") String supervisor,@RequestParam("technology") String technology )
+	{
+//		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+//		DtoJointElement dtotech = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
+		//TODO (To Gabriel/Missael) I need of the specific equipment in which this supervisor is linked to (John)
+		
+//		try{
+//			StudioFactory.setTechnology(dtosupervisor, dtotech);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			return e.getLocalizedMessage();
+//		}		
+		return "success";		
+	}
+	
+	//=============================================================================================
+	// Verification
+	//=============================================================================================
+	
+	/** Procedure to check if card can be supervised
+	 * @param supervisor
+	 * @param card
+	 * @return
+	 */
+	@RequestMapping(value = "/canSupervise",method = RequestMethod.POST)
+	public @ResponseBody String canSupervise(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor)
+	{
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		
+		try{
+			StudioSpecificFactory.canSupervise(dtoSupervisor, dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
+		return "true";
+	}
+				
+	/** Procedure to check if card can be supervised
+	 * @param supervisor
+	 * @param card
+	 * @return
+	 */
+	@RequestMapping(value = "/canUnsupervise",method = RequestMethod.POST)
+	public @ResponseBody String canUnsupervise(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor)
+	{
+		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
+		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
+		
+		try{
+			StudioSpecificFactory.canUnsupervise(dtoSupervisor, dtoCard);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
+		return "true";
+	}
+	
+	//=============================================================================================
+	// Name
+	//=============================================================================================
+	
 	/** Procedure to rename an Equipment
 	 * @param equipment
 	 * @return
@@ -276,17 +287,19 @@ public class EquipmentStudioController {
 	{
 		DtoJointElement dtoEquipment = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipment, DtoJointElement.class);
 		
-		
+		try{
+			StudioSpecificFactory.setEquipmentName(dtoEquipment);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
 		return "success";
 	}	
-	
-	
-	
-			
-	
-	/* ----- Save/Load graph  ----- */
-	
-	
+		
+	//=============================================================================================
+	// Save & Load
+	//=============================================================================================
+				
 	/**
 	 * Procedure to check if a Equipment file exist
 	 * @param filename
