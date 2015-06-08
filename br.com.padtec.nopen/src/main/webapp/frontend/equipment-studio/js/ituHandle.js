@@ -203,7 +203,7 @@ function ituHandle(paper, graph, validator){
 			dialog.close();
 		};
 		
-		//Generate in ports
+		//Generate in ports when click on out port
 		$('.connectionOut').delegate('td.disconnected', 'click', function() {
 			
 			$('.connectionOut td').removeClass('active');
@@ -259,28 +259,27 @@ function ituHandle(paper, graph, validator){
 					
 				});
 				
+				var removed = false;
 				$.each(graph.getLinks(), function(index, l) {
-					
-					if(l.get('source') && l.get('target') && port1 && port2) {
-						
+					//check if link already removed
+					if(!removed) {
 						if(l.get('source').id === port1 && l.get('target').id === port2) {
 							l.remove();
+							removed = true;
 						}
 						else if(l.get('target').id === port1 && l.get('source').id === port2) {
 							l.remove();
+							removed = true;
 						}
 					}
-					
 				});
 				
-				
-				console.log('ID TAG: ' + $(this).attr('id'));
-				console.log('ID TD: ' + $(this).parent().attr('id'));
-				
+				//remove tag
 				$(this).remove(); 
 			}
 		});
 		
+		//handle with in connections
 		$('.connectionIn').delegate('td.disconnected', 'click', function() {
 			
 			var sourceIndex = $('.connectionOut td.active').attr('id');
