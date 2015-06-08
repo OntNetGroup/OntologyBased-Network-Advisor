@@ -193,7 +193,7 @@ public class ITUStudioController {
 	}
 		
 	/* ======================================================================================
-	 * NAME
+	 * Name
 	 * ======================================================================================*/
 	
 	/** Modify transport function name */
@@ -227,7 +227,7 @@ public class ITUStudioController {
 	}
 	
 	/* ======================================================================================
-	 * CHANGE
+	 * Change
 	 * ======================================================================================*/
 	
 	/** Change or remove (container=null) the container of a transport function */
@@ -250,7 +250,7 @@ public class ITUStudioController {
 	}
 	
 	/* ======================================================================================
-	 * VERIFICATION
+	 * Verification
 	 * ======================================================================================*/
 		
 	/** Verify if there are any elements without connection in the given card */
@@ -296,7 +296,7 @@ public class ITUStudioController {
 	}
 	
 	/* ================================================
-	 * SAVE & LOAD
+	 * Save & Load
 	 * ================================================*/
 	
 	/**

@@ -438,6 +438,11 @@ public class StudioFactory {
 		}
 	}
 
+	public static void setEquipmentName(DtoJointElement dtoEquipment) 
+	{
+		//we won't need this, as it does not make sense.
+	}
+	
 	//=============================================================================================
 	// Shelf
 	//=============================================================================================
@@ -503,6 +508,28 @@ public class StudioFactory {
 		InstanceFabricator.deleteSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName);
 	}
 		
+	public static void superviseCard(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
+	{
+		//TODO
+	}
+	
+	public static void unsuperviseCard(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
+	{
+		//TODO
+	}
+	
+	public static void canSupervise(DtoJointElement dtoSupervisor,
+			DtoJointElement dtoCard) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void canUnsupervise(DtoJointElement dtoSupervisor,
+			DtoJointElement dtoCard) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	//=============================================================================================
 	// Link
 	//=============================================================================================
@@ -586,5 +613,4 @@ public class StudioFactory {
 			throw new Exception("An AF cannot be linked to another AF  ("+srcTfName+" -> "+tgtTfName+")");	
 		}
 	}
-
 }

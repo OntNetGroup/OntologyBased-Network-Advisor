@@ -10,9 +10,13 @@
 <script src="frontend/template/js/jquery.nestable.min.js"></script>
 
 <script>	
-	$('#selectReasoner').change(function(){
-		alert(this.options[this.selectedIndex].value);	
-	});
+	$("#selectReasoner").change(function() {
+	    var str = "";
+	    $( "select option:selected" ).each(function() {
+	      str += $(this).text() + " ";
+	    });
+	    $("div").text(str);
+	  })	  
 </script>
 			
 <div class="row">
