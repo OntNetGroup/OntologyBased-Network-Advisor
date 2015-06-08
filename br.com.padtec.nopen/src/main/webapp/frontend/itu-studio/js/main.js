@@ -108,7 +108,7 @@ var Rappid = Backbone.Router.extend({
 
     				return ((link.id !== linkView.model.id &&
     						link.get('target').id === cellViewT.model.id) &&
-    						(cellViewT.model.get('subtype') === 'in' || cellViewT.model.get('subtype') === 'out'));
+    						(cellViewT.model.get('subtype') === SubtypeEnum.INPUT || cellViewT.model.get('subtype') === SubtypeEnum.OUTPUT));
         		});
         		
         		// if (portUsed) return false; -> doesn't work!
@@ -132,10 +132,10 @@ var Rappid = Backbone.Router.extend({
             
         	validateEmbedding: function(childView, parentView) {
         		// se alguma interface tenta ser colocada sobre algum elemento
-        		if(childView.model.get('subtype') === 'in') {
+        		if(childView.model.get('subtype') === SubtypeEnum.INPUT) {
         			if(parentView.model !== this.barIn) return false;
         		}
-        		if(childView.model.get('subtype') === 'out') {
+        		if(childView.model.get('subtype') === SubtypeEnum.OUTPUT) {
         			if(parentView.model !== this.barOut) return false;
         		}
         		
@@ -148,9 +148,9 @@ var Rappid = Backbone.Router.extend({
         	var cell = cellView.model;
         	var cellSubType = cell.get('subtype');
         	
-            if (cellSubType === 'in' || cellSubType === 'out') {
+            if (cellSubType === SubtypeEnum.INPUT || cellSubType === SubtypeEnum.OUTPUT) {
 	            
-	            if(cellSubType === 'in') {
+	            if(cellSubType === SubtypeEnum.INPUT) {
 	            	cell.transition('position/y', 15, {});
 	            	this.manageEmbeddedPorts(this.barIn);
 	            } else {
@@ -405,7 +405,7 @@ var Rappid = Backbone.Router.extend({
         	var inspectorInputs = inspectorDefs.inputs;
         	var inspectorGroups = inspectorDefs.groups;
         	
-            if(cellSubtype === 'TTF' && this.TTFAttributesJSON[cellParentSubtype]) {
+            if(cellSubtype === SubtypeEnum.TRAIL_TERMINATION_FUNCTION && this.TTFAttributesJSON[cellParentSubtype]) {
             	inspectorInputs = this.TTFAttributesJSON[cellParentSubtype];
             }
             
@@ -480,7 +480,7 @@ var Rappid = Backbone.Router.extend({
             halo.removeHandle('rotate');
         	halo.removeHandle('unlink');
             
-            if(_.contains(['in', 'out'], cellSubtype)) {
+            if(cellSubtype === SubtypeEnum.INPUT || cellSubtype === SubtypeEnum.OUTPUT) {
             	halo.removeHandle('link');
             }
             
