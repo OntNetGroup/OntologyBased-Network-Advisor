@@ -136,7 +136,6 @@ var Rappid = Backbone.Router.extend({
 	initializeLinkTooltips: function(cell) {
 
 		if (cell instanceof joint.dia.Link) {
-			console.log("achou");
 			var linkView = this.paper.findViewByModel(cell);
 			new joint.ui.Tooltip({
 				className: 'tooltip small',
@@ -218,6 +217,7 @@ var Rappid = Backbone.Router.extend({
 		this.selection = new Backbone.Collection;
 		this.selectionView = new joint.ui.SelectionView({ paper: this.paper, graph: this.graph, model: this.selection });
 		this.selectionView.removeHandle('rotate');
+		this.selectionView.removeHandle('remove');
 		
 		// Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
 		// Otherwise, initiate paper pan.
@@ -260,7 +260,7 @@ var Rappid = Backbone.Router.extend({
 			}
 
 			this.commandManager.initBatchCommand();
-			this.selection.invoke('remove', options = 1);
+			this.selection.invoke('newremove');
 			this.commandManager.storeBatchCommand();
 			this.selectionView.cancelSelection();
 
@@ -358,7 +358,8 @@ var Rappid = Backbone.Router.extend({
             halo.removeHandle('rotate');
         	halo.removeHandle('link');
         	halo.removeHandle('unlink');
-        	halo.addHandle({ name: 'newremove', position: 'n', icon: '/nopen/frontend/equipment-studio/img/remove.png' });
+        	halo.removeHandle('remove');
+        	halo.addHandle({ name: 'newremove', position: 'nw', icon: '/nopen/frontend/equipment-studio/img/remove.png' });
         	
         	
 			halo.render();
@@ -371,10 +372,9 @@ var Rappid = Backbone.Router.extend({
 			this.selection.reset([cellView.model]);
 			
 			halo.on('action:newremove:pointerdown', function(evt) {
-			    console.log(cellView.model);
+	//		    console.log(cellView.model);
 			     var cell = cellView.model;
 			     cell.remove(true);
-			    console.log('New remove test');
 			});
 			
 
