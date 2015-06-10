@@ -23,6 +23,7 @@ var Rappid = Backbone.Router.extend({
     
     setCardID: function(id) {
     	this.cardID = id;
+    	console.log(parent);
     },
     
     setCardName: function(name) {

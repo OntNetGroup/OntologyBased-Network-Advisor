@@ -106,6 +106,14 @@ public class NOpenFileUtil {
 	
 	
 	/**
+	 * Procedure to create ITU configuration folders if they do not exist.
+	 * @param path
+	 */
+	public static void createITUConfigurationRepository(String path){
+		NOpenFileUtil.createRepository(NOpenFileUtil.ituConfigurationJSONFolder + path);	
+	}
+	
+	/**
 	 * Procedure to create Topology folders if they do not exist.
 	 * @param path
 	 */

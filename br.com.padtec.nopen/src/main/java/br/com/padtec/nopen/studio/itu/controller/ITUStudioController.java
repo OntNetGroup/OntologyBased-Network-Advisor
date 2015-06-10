@@ -2,8 +2,11 @@ package br.com.padtec.nopen.studio.itu.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -321,10 +324,29 @@ public class ITUStudioController {
 	@RequestMapping(value = "/loadTTFAttributes", method = RequestMethod.POST)
 	public @ResponseBody String loadTTFAttributes(@RequestParam("reference") String reference)
 	{
-		String path = "itu-" + reference + "/ttf.json";
-		path = NOpenFileUtil.replaceSlash(path);		
-		return NOpenFileUtil.openItuConfigurationJSONFileAsString(path);		
+		String path = "itu-" + reference + "/";
+		path = NOpenFileUtil.replaceSlash(path);
+		NOpenFileUtil.createITUConfigurationRepository(path);
+		 
+		File file = new File(path + "ttf.json");
 
+		try {
+			if(!file.exists()){
+				String pathSource = "/attributes/itu-" + reference + "/ttf.json";
+				InputStream is = ITUStudioController.class.getResourceAsStream(pathSource);
+				StringWriter writer = new StringWriter();
+				IOUtils.copy(is, writer, "UTF-8");
+				String theString = writer.toString();
+				
+				File f = NOpenFileUtil.createFile(NOpenFileUtil.ituConfigurationJSONFolder + path, "ttf.json");
+				NOpenFileUtil.writeToFile(f, theString);
+			}
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		
+		return NOpenFileUtil.openItuConfigurationJSONFileAsString(path + "ttf.json");
+		
 	}
 	
 	/**
@@ -336,7 +358,7 @@ public class ITUStudioController {
 	{
 		String errorMsg = new String();
 		String json = new String();
-		try {			
+		try {
 			json = StudioSerializator.deserialize(fileName);
 		
 		} catch (IOException e) {

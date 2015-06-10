@@ -1,0 +1,117 @@
+{
+	"no-layer": 
+	{
+		"attrs":
+		{
+			"text": 
+			{
+				"text": 
+				{ 
+					"type": "text",
+					"label": "Name"
+				}
+			}
+    	},
+		"subtype": 
+		{ 
+			"type": "text",
+			"label": "Type",
+			"attrs": 
+			{ 
+				"input": 
+				{
+					"disabled" : "disabled"
+				}
+			} 
+		},
+		"flowType":
+		{
+            "type": "select",
+            "options": ["default", "conditional","normal","message","association","conversation"],
+            "label": "Flow Type"
+        }
+	},
+	
+	"OTUk": 
+	{
+		"attrs":
+		{
+			"text": 
+			{
+				"text": 
+				{ 
+					"type": "text",
+					"label": "Name"
+				}
+			}
+    	},
+		"subtype": 
+		{ 
+			"type": "text",
+			"label": "Type",
+			"attrs": 
+			{ 
+				"input": 
+				{
+					"disabled" : "disabled"
+				}
+			} 
+		},
+		"conversationType":
+		{
+			"type": "select",
+			"option": ["conversation", "call-conversation"],
+			"label": "Type"
+		},
+		"participants": 
+		{
+			"type": "list",
+            "label": "Particpants",
+            "item": {
+                "type": "text"
+            }
+        },
+        "content": 
+		{
+            "type": "textarea",
+            "label": "Content"
+        }
+	},
+	
+	"POUk":
+	{
+		"attrs":
+		{
+			"text": 
+			{
+				"text": 
+				{ 
+					"type": "text",
+					"label": "Name"
+				}
+			}
+    	},
+		"subtype": 
+		{ 
+			"type": "text",
+			"label": "Type",
+			"attrs": 
+			{ 
+				"input": 
+				{
+					"disabled" : "disabled"
+				}
+			} 
+		},
+		"content": 
+		{
+            "type": "textarea",
+            "label": "Content"
+        },
+        "subProcess": 
+		{
+            "type": "toggle",
+            "label": "Sub-process"
+        }
+	}
+}

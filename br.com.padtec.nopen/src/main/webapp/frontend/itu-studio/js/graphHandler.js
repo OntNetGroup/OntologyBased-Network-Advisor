@@ -30,12 +30,12 @@ function graphHandler(graph, app) {
 									'basic.Path': 1.3, // transport functions
 								}[type];
 
-		var sizeMultiplierSubtypeWidth = {  'in': 0.5, // in port
-										'out': 0.5, // out port
+		var sizeMultiplierSubtypeWidth = {  'Input': 0.5, // in port
+										'Output': 0.5, // out port
 									}[subtype];
-		var sizeMultiplierSubTypeHeight = {  'in': 0.5, // in port
-										'out': 0.5, // out port
-										'AF': 0.7, // AF transport function
+		var sizeMultiplierSubTypeHeight = {  'Input': 0.5, // in port
+										'Output': 0.5, // out port
+										'Adaptation_Function': 0.7, // AF transport function
 									}[subtype];
 		
 		var sizeMultiplierWidth = sizeMultiplierSubtypeWidth ? sizeMultiplierSubtypeWidth : sizeMultiplierTypeWidth;
@@ -173,7 +173,7 @@ function graphHandler(graph, app) {
 		    			graph.addCell(newLink);
 		    			
 		    			// Move the port to the superior (in port) or inferior (out port) bar
-		    			if(portType === 'in') {
+		    			if(portType === SubtypeEnum.INPUT) {
 		    				cell.transition('position/y', 15, {});
 		    				this.barIn.attributes.embeddedPorts[this.barIn.attributes.embeddedPorts.length] = portID;
 		    				this.manageEmbeddedPorts(this.barIn);

@@ -80,7 +80,6 @@
             var card = undefined;
             var discardChanges = true;
             
-        	app.setCardID(parent.cellId);
         	app.setCardName('myCard'); //TODO: passar o nome do card, vindo do Equipment Studio
         	app.initializeStencil('MEF'); //TODO: passar a tecnologia do card, vinda do Equipment Studio
         	app.initializeTFunctionAttributes('874.1'); //TODO: passar a referência usada, vinda do Equipment Studio
@@ -88,6 +87,7 @@
             if (getUrlParameter('equipment') && getUrlParameter('card')){
             	equipment = getUrlParameter('equipment');
     			card = getUrlParameter('card');
+            	app.setCardID(card);
     			openFromURL(equipment, card, app.graph, app);
     		}
 			

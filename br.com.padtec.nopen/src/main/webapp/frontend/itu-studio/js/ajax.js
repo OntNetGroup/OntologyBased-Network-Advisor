@@ -50,92 +50,32 @@ function insertContainer(dtoContainer, dtoContent) {
 		}
 	});
 
-	return result;
-//	return "success";
+//	return result;
+	return "success";
 };
 
 function insertLayer(layerID, layerName, cardID, cardName) {
-
-//	var result = "error";
 
 	var dtoLayer = Util.createDtoElement(layerID, layerName, 'Card_Layer');
 	var dtoCard = Util.createDtoElement(cardID, cardName, 'Card');
 
 	return insertContainer(dtoCard, dtoLayer);
-//	$.ajax({
-//		type: "POST",
-//		async: false,
-//		url: "insertContainer.htm",
-//		data: {
-//			'container': JSON.stringify(dtoContainer),
-//			'card': JSON.stringify(dtoCard)
-//		} ,
-//		success: function(data){ 		   
-//			result = data;
-//		},
-//		error : function(e) {
-//			alert("error: " + e.status);
-//		}
-//	});
-//
-//	return result;
-//	return "success";
 };
 
 function createTransportFunction(tFunctionID, tFunctionName, tFunctionType, containerID, containerName, containerType) {
-
-//	var result = "error";
 
 	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
 	var dtoContainer = Util.createDtoElement(containerID, containerName, containerType);
 
 	return insertContainer(dtoContainer, dtoTransportFunction);
-//	$.ajax({
-//		type: "POST",
-//		async: false,
-//		url: "createTransportFunction.htm",
-//		data: {
-//			'transportFunction': JSON.stringify(dtoTransportFunction), 
-//			'container': JSON.stringify(dtoContainer)
-//		},
-//		success: function(data){ 		   
-//			result = data;
-//		},
-//		error : function(e) {
-//			alert("error: " + e.status);
-//		}
-//	});
-//
-//	return result;
-//	return "success";
 };
 
 function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFunctionType) {
-
-//	var result;
 
 	var dtoTransportFunction = Util.createDtoElement(tFunctionID, tFunctionName, tFunctionType);
 	var dtoPort = Util.createDtoElement(portID, portName, portType);
 
 	return insertContainer(dtoTransportFunction, dtoPort);
-//	$.ajax({
-//		type: "POST",
-//		async: false,
-//		url: "createPort.htm",
-//		data: {
-//			'transportFunction': JSON.stringify(dtoTransportFunction), 
-//			'port': JSON.stringify(dtoPort)
-//		},
-//		success: function(data){ 		   
-//			result = data;
-//		},
-//		error : function(e) {
-//			alert("error: " + e.status);
-//		}
-//	});
-//
-//	return result;
-//	return "success";
 };
 
 function createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
@@ -197,7 +137,7 @@ function deleteContainer(containerName, containerType, cardID, cardName, cardTyp
 	});
 
 	return result;
-//	return "success";
+//	return "cannot";
 };
 
 function deleteTransportFunction(id, name, type) {
@@ -222,7 +162,7 @@ function deleteTransportFunction(id, name, type) {
 	});
 
 	return result;
-//	return "success";
+//	return "cannot";
 };
 
 function deletePort(id, name, type) {
@@ -247,7 +187,7 @@ function deletePort(id, name, type) {
 	});
 
 	return result;
-//	return "success";
+//	return "cannot";
 };
 
 function deleteLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
@@ -276,7 +216,7 @@ function deleteLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType,
 	});
 
 	return result;
-//	return "success";
+//	return "cannot";
 };
 
 
@@ -462,7 +402,7 @@ function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionTy
  * ================================================*/
 
 function loadTTFAttributes(reference) {
-	var result = "error";
+	var result = "";
 	$.ajax({
 		type: "POST",
 		async: false,

@@ -15,7 +15,7 @@ Stencil.shapes = {
 	transportFunctions: [
 	
 		new joint.shapes.basic.Path({
-			subtype: 'Adaptation_Function',
+			subtype: SubtypeEnum.ADAPTATION_FUNCTION,
 			attrs: {
 			        path: { d: 'M 50 0 L 0 0 L 25 50 L 75 50 L 100 0  z', fill: 'slateblue' },
 			    	text: { text: 'AF', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
@@ -23,7 +23,7 @@ Stencil.shapes = {
 		}),
 
 		new joint.shapes.basic.Path({
-			subtype: 'Trail_Termination_Function',
+			subtype: SubtypeEnum.TRAIL_TERMINATION_FUNCTION,
 			attrs: {
 			        path: { d: 'M 0 0 L 0.5 1 L 1 0 z', fill: 'tomato' },
 			    	text: { text: 'TTF', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
@@ -31,7 +31,7 @@ Stencil.shapes = {
 		}),
 		
 		new joint.shapes.basic.Path({
-			subtype: 'Matrix',
+			subtype: SubtypeEnum.MATRIX,
 			attrs: {
 			        path: { d: squarePath(50), fill: 'green' },
 			    	text: { text: 'Matrix', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
@@ -52,7 +52,7 @@ Stencil.shapes = {
 	interfaces: [
 		//porta de entrada
 		new joint.shapes.basic.Circle({
-			subtype: 'Input',
+			subtype: SubtypeEnum.INPUT,
 		    attrs: {
 				'.': { magnet: true },
 		        circle: { fill: '#f1c40f' },
@@ -62,7 +62,7 @@ Stencil.shapes = {
 		
 		// porta de saída
 		new joint.shapes.basic.Rect({
-			subtype: 'Output',
+			subtype: SubtypeEnum.OUTPUT,
 		    attrs: {
 				'.': { magnet: true },
 		        rect: {
