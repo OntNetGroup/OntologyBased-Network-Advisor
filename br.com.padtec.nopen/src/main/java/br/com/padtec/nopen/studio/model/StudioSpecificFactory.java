@@ -421,7 +421,7 @@ public class StudioSpecificFactory {
 		//TODO
 	}
 	
-	public static void setTechnology(DtoJointElement dtoSupervisor, DtoJointElement dtoTechnology) 
+	public static void setTechnology(DtoJointElement dtoSupervisor, String technology) 
 	{
 		//TODO
 	}

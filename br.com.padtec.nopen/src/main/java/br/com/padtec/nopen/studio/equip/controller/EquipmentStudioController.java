@@ -60,26 +60,6 @@ public class EquipmentStudioController {
 		}		
 		return "success";		
 	}
-
-	/** Procedure to create a Card
-	 * @param card
-	 * @param slot
-	 * @return
-	 */
-	@RequestMapping(value = "/insertCard", method = RequestMethod.POST)
-	public @ResponseBody String insertCard(@RequestParam("card") String card,@RequestParam("slot") String slot )
-	{
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
-
-		try{
-			StudioSpecificFactory.createEquipmentholder(dtoCard, dtoContainer);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";		
-	}
 	
 	/** Procedure to create an Equipment holder inside another equipment or a rack
 	 * @param equipmentholder
@@ -217,10 +197,10 @@ public class EquipmentStudioController {
 	public @ResponseBody String setTechnology(@RequestParam("supervisor") String supervisor,@RequestParam("technology") String technology )
 	{
 		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		DtoJointElement dtotech = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
+		 
 		
 		try{
-			StudioSpecificFactory.setTechnology(dtosupervisor, dtotech);
+			StudioSpecificFactory.setTechnology(dtosupervisor, technology);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -252,7 +232,7 @@ public class EquipmentStudioController {
 		return "true";
 	}
 				
-	/** Procedure to check if card can be supervised
+	/** Procedure to check if card can be unsupervised
 	 * @param supervisor
 	 * @param card
 	 * @return

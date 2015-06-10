@@ -507,6 +507,20 @@ function equipmentHandle(graph){
 
 				var grandparent = graph.getCell(grandparentId);
 
+				if(cell.get('subType') === 'supervisor'){
+					var cellID = cell.get('id');
+					//procurar no grafico inteiro pelo nome da supervisor
+					var elementos = graph.getElements();
+					for(var i = 0; i < elementos.length; i++){
+						var equipment = elementos[i];
+						if((equipment.attributes.subType) === 'card'){
+							if((equipment.get('supervisorID') === (cellID))){
+								equipment.set("supervisor" , '');
+								equipment.set("supervisorID" , '');
+							}
+						}
+					}
+				};
 				parent.set('size' , {
 					width: 22.5 ,
 					height: 52.5
@@ -515,171 +529,6 @@ function equipmentHandle(graph){
 			};
 
 		};
-
-
-
-
-		//       if(parent.get('subType') === 'rack') {
-
-//		var pposition = parent.get('position');
-//		var psize = parent.get('size');			
-//		var newpositionx = pposition.x + 15 ;
-
-//		//	console.log("to del: ", cell);
-//		var d = parent.get('embeds');
-//		var maiorl = 0;
-//		var shelfw;
-//		var sons;
-
-//		var l = 0;
-
-//		for (var i = 0; i < d.length; i++) {
-//		var shelf = graph.getCell(d[i]);			
-//		if (shelf){
-//		//	console.log("changed: " , shelf);
-
-//		shelf.set('position', {
-//		x: newpositionx ,
-//		y: (pposition.y + 20 + ((l)*(80))) 
-//		});
-
-//		var sposition = shelf.get('position');
-
-//		sons = shelf.getEmbeddedCells().length;
-
-//		if ( maiorl < sons ){
-//		maiorl = sons;
-//		shelfw = shelf.get('size').width;
-//		}
-
-//		var reslot = shelf.get('embeds');
-//		var k;
-//		for (k=0; k < (reslot.length); k++){
-//		var inshelf = graph.getCell(reslot[k]);	
-//		if(inshelf){			
-//		var childId = inshelf.get('embeds');	
-//		var inslot = graph.getCell(childId);																								
-//		inshelf.set('position', {
-//		y: sposition.y + 7 ,
-//		x: sposition.x + 20 + ((k) * (42.5)) ,
-//		});
-
-//		var slotpos = inshelf.get('position');
-
-//		if(inslot){
-//		inslot.set('position', {
-//		y: slotpos.y + 16 ,
-//		x: slotpos.x + 6
-//		});
-//		};
-//		shelf.set('size', {
-//		width: shelf.get('size').width,
-//		height: 67.5 },
-//		{skipParentHandler : false});		
-//		}
-//		}
-//		l++;
-//		}
-//		}
-//		if (maiorl === 0){
-//		parent.set('size' , { 
-//		width: 120   ,
-//		height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
-//		});
-//		}else{
-//		parent.set('size' , { 
-//		width: (shelfw) + 40  ,
-//		height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
-//		});
-//		} 			
-//		}else{
-//		if(parent.get('subType') === 'shelf'){
-//		var grandparentId = parent.get('parent');
-//		if (!grandparentId) return;
-//		var grandparent = graph.getCell(grandparentId);
-
-//		var pposition = parent.get('position');
-//		var e = parent.get('embeds');
-//		var l = 0;
-//		for(var j=0; j < e.length;j++){
-//		var inshelf = graph.getCell(e[j]);
-//		if(inshelf){              	
-
-//		inshelf.set('position', {
-//		x: pposition.x + 20 + ((l) * (42.5)) ,
-//		y: pposition.y + 7 
-//		});
-
-//		var childId = inshelf.get('embeds');	
-//		var inslot = graph.getCell(childId);	
-
-//		var slotpos = inshelf.get('position');
-
-//		if(inslot){
-//		inslot.set('position', {
-//		y: slotpos.y + 16 ,
-//		x: slotpos.x + 6
-//		});
-//		};
-//		l++;
-//		}
-//		}
-
-//		if( parent.getEmbeddedCells().length === 1){
-//		parent.set('size' , { 
-//		width: 105 + ((parent.getEmbeddedCells().length - (1) ) * 42.5) ,
-//		height:	parent.get('size').height});
-//		}else{
-//		parent.set('size' , { 
-//		width: 105 + ((parent.getEmbeddedCells().length - (2) ) * 42.5) ,
-//		height:	parent.get('size').height});
-//		}
-
-//		var t = grandparent.get('embeds');
-//		var k=0;
-//		var maiorl = 0;
-//		var inrackw;
-//		var sons=0;
-
-//		for(var p=0; p < t.length; p++){
-//		var inrack = graph.getCell(t[p]);
-
-//		sons = inrack.getEmbeddedCells().length;
-
-//		if ( maiorl < sons ){
-//		maiorl = sons;
-//		inrackw = inrack.get('size').width;
-//		}   
-//		}	
-//		if(maiorl === 0){
-//		grandparent.set('size' , {
-//		width: 120 ,
-//		height : 265 + ((grandparent.getEmbeddedCells().length - (2) ) * 77.5)
-//		})
-//		}else{
-//		grandparent.set('size' , { 
-//		width: (inrackw) + 40  ,
-//		height:	265 + ((grandparent.getEmbeddedCells().length - (2) ) * 77.5)
-//		});	
-//		}
-
-//		}else{
-
-//		if(parent.get('subType') === 'slot'){
-
-//		var grandparentId = parent.get('parent');
-//		if (!grandparentId) return;
-
-//		var grandparent = graph.getCell(grandparentId);
-
-//		parent.set('size' , {
-//		width: 22.5 ,
-//		height: 52.5
-//		});
-//		}if(parent.get('subType') === 'card' || 'supervisor' ) {
-//		}
-//		}
-//		};
 	},this); 
 
 	graph.on('change:size', function(cell, newPosition, opt) {

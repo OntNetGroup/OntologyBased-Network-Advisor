@@ -150,7 +150,7 @@ function setTechnology( supervisorName ,supervisorType, supervisorID , tech) {
 		async: false,
 		url: "setTechnology.htm",
 		data: {
-			'supervisor': JSON.stringify(dtoEquipmentholder),
+			'supervisor': JSON.stringify(dtoSupervisor),
 			'technology': JSON.stringify(technology)
 		} ,
 		success: function(data){ 		   
