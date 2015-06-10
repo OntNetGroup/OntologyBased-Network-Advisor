@@ -80,8 +80,6 @@
             var card = undefined;
             var discardChanges = true;
             
-        	app.initializeTFunctionAttributes('874.1'); //TODO: passar a referência usada, vinda do Equipment Studio
-            
             if (getUrlParameter('equipment') && getUrlParameter('card')){
             	equipment = getUrlParameter('equipment');
     			card = getUrlParameter('card');

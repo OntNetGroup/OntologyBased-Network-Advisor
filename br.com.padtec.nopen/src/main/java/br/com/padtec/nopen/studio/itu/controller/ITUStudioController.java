@@ -318,12 +318,12 @@ public class ITUStudioController {
 	}
 	
 	/**
-	 * @param fileName: nome do arquivo contendo os atributos de TTF
 	 * @return: atributos de TTF, para cada camada, no formato JSON
 	 */
 	@RequestMapping(value = "/loadTTFAttributes", method = RequestMethod.POST)
-	public @ResponseBody String loadTTFAttributes(@RequestParam("reference") String reference)
+	public @ResponseBody String loadTTFAttributes()
 	{
+		String reference = "874.1"; //TODO: the reference must be gotten from a configuration file
 		String path = "itu-" + reference + "/";
 		path = NOpenFileUtil.replaceSlash(path);
 		NOpenFileUtil.createITUConfigurationRepository(path);

@@ -58,20 +58,21 @@ var Rappid = Backbone.Router.extend({
         this.initializeValidator();
         this.initializePortsBar();
         this.initializeCounters();
+        this.initializeAttributes();
     },
     
-    initializeTFunctionAttributes: function(reference) {
-    	this.initializeTTFAttributes(reference);
-    	this.initializeAFAttributes(reference);
+    initializeAttributes: function() {
+    	this.initializeTTFAttributes();
+    	this.initializeAFAttributes();
     },
     
-    initializeTTFAttributes: function(reference) {
-    	var TTFAttributes = loadTTFAttributes(reference);
+    initializeTTFAttributes: function() {
+    	var TTFAttributes = loadTTFAttributes();
     	this.TTFAttributesJSON = JSON.parse(TTFAttributes);
     },
     
-    initializeAFAttributes: function(reference) {
-//    	var AFAttributes = loadAFAttributes(reference);
+    initializeAFAttributes: function() {
+//    	var AFAttributes = loadAFAttributes();
 //    	this.AFAttributesJSON = JSON.parse(AFAttributes);
     },
 

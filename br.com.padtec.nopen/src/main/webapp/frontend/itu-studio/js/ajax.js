@@ -401,15 +401,12 @@ function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionTy
  * SAVE & LOAD
  * ================================================*/
 
-function loadTTFAttributes(reference) {
+function loadTTFAttributes() {
 	var result = "";
 	$.ajax({
 		type: "POST",
 		async: false,
 		url: "loadTTFAttributes.htm",
-		data: {
-			'reference': reference
-		},
 		success: function(data){
 			result = data;
 		},
