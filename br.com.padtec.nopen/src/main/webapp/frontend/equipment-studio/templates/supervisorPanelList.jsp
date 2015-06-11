@@ -8,8 +8,8 @@
 
 			</select></td>
 			<td class="supervisorMiddlePanel">
-				<input type='button' id='btnRight' value='  <  ' /> <br /> <input
-				type='button' id='btnLeft' value='  >  ' />
+				<input type='button' id='btnLeft' value='  &#8677;  ' />
+				<input type='button' id='btnRight' value='  &#8676;  ' /> <br /> 
 			</td>
 			<td class="supervisorPanel"><a>Supervised Cards:</a><br /> <select
 				multiple="multiple" id='lstBox1'>
@@ -25,13 +25,14 @@
 			  modal: true,
 			  closeButton: false ,
 			  titlebar: 'Select the cards to supervise',
-		      width: 450,
+		      width: 460,
 			  buttons: {
 				  "OK": function() {
 					$('.supervised').remove();
 					$('.unsupervised').remove();
 		 			$(this).dialog('close');
-				  }
+				  },
+				  
 			  }
 			});	
 	
