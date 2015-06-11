@@ -142,6 +142,10 @@ function ituHandle(paper, graph, validator){
         			generateSaveTemplateDialog(graph);
 				} 
         	}
+			else if(!equipment.get('supervisorID')) {
+				alert('Error! The card needs to be connected with a supervisor');
+				return;
+			}
         	else{
 				$(function ()    {
 			        $('#itu-dialog').dialog({
