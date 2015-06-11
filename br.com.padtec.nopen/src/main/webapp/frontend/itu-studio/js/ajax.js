@@ -50,8 +50,8 @@ function insertContainer(dtoContainer, dtoContent) {
 		}
 	});
 
-//	return result;
-	return "success";
+	return result;
+//	return "success";
 };
 
 function insertLayer(layerID, layerName, cardID, cardName) {
