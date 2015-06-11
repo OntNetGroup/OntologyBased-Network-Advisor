@@ -186,18 +186,19 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
     font-size: 13px;
 }
 
-.dialog .titlebar {
-    background-color: #7c68fc;
-    padding: 10px;
-    color: white;
-    text-shadow: 0 0 1px black;
-    text-rendering: optimizeLegibility;
-/*     border-top-right-radius: 5px; */
-/*     border-top-left-radius: 5px; */
-    border-bottom: 2px solid #dcddee;
+.ui-dialog .ui-dialog-buttonset .ui-button {
+	background-color: #36A9E1;
+	background: #36A9E1;
+	border: 1px solid #6A6C8B;
+    color: #FFF;
+}
+
+.ui-dialog .ui-dialog-buttonset .ui-button:hover {
+	background-color: #1e8fc6;
 }
 
 .ui-dialog .ui-dialog-titlebar {
+	background-color: #1e8fc6;
 	padding: .4em 1em;
 	position: relative;
 	border-bottom-right-radius: 0px;
@@ -210,4 +211,19 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 /* 	width: 90%; */
 	overflow: hidden;
 /* 	text-overflow: ellipsis; */
+}
+
+.ui-widget-content {
+  border: 1px solid #1e8fc6;
+}
+
+.dialog .titlebar {
+    background-color: #1e8fc6;
+    padding: 10px;
+    color: white;
+    text-shadow: 0 0 1px black;
+    text-rendering: optimizeLegibility;
+/*     border-top-right-radius: 5px; */
+/*     border-top-left-radius: 5px; */
+    border-bottom: 2px solid #dcddee;
 }
