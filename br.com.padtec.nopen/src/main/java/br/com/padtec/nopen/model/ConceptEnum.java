@@ -32,8 +32,8 @@ public enum ConceptEnum {
 	Input("Input"),
 	Trail_Termination_Function("Trail_Termination_Function"),
 	Card_Layer("Card_Layer"),
-	FEP("FEP"),
 	Simple_Transport_Function("Simple_Transport_Function"),
+	FEP("FEP"),
 	Reference_Point("Reference_Point"),
 	Rack("Rack"),
 	Layer_Type("Layer_Type");

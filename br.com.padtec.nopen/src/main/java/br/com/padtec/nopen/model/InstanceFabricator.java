@@ -628,6 +628,12 @@ public class InstanceFabricator {
 		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
 		String propertyURI = StudioComponents.studioRepository.getNamespace() + "componentOf";
 		if(ContainerStructure.verifyContainerRelation(sourceURI, tipo_source, targetURI, tipo_target)){
+			FactoryUtil.createInstanceIndividual(
+					StudioComponents.studioRepository.getBaseModel(),
+					targetURI,
+					tipo_target,
+					true);
+			
 			FactoryUtil.createInstanceRelation(
 					StudioComponents.studioRepository.getBaseModel(), 
 					sourceURI,			 

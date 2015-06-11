@@ -70,21 +70,24 @@ public class PerformBind {
 				FactoryUtil.createInstanceIndividual(
 						repository.getBaseModel(), 
 						rp_name, 
-						tipo_rp
+						tipo_rp,
+						true
 					);
 				
 				//create output
 				FactoryUtil.createInstanceIndividual(
 						repository.getBaseModel(), 
 						repository.getNamespace()+outputId, 
-						tipo_output
+						tipo_output,
+						true
 					);
 
 				//create input
 				FactoryUtil.createInstanceIndividual(
 						repository.getBaseModel(), 
 						repository.getNamespace()+inputId, 
-						tipo_input
+						tipo_input,
+						true
 					);
 				
 				//create relation between output and reference point

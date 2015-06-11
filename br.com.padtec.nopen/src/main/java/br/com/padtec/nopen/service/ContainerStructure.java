@@ -38,22 +38,17 @@ public class ContainerStructure {
 		return instance;
 	}
 	
-	public static boolean verifyContainerRelation(String sourceURI, String tipo_source, String targetURI, String tipo_target){
-		try{
-		    			
-			String propertyURI = instance.getRepository().getNamespace() + "componentOf";			
-			Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(instance.getRepository().getBaseModel(), sourceURI, propertyURI, tipo_target );
-			
-			String key = tipo_source + propertyURI + tipo_target;
-			String cardinality = ContainerStructure.getContainerStructure().get(key);
-			if(cardinality != null ){
-				Integer cardinality_target = Integer.parseInt(cardinality);
-				if( ((numberOfRelations < cardinality_target) || (cardinality_target == -1)) ){
-					return true;
-				}
+	public static boolean verifyContainerRelation(String sourceURI, String tipo_source, String targetURI, String tipo_target) throws Exception{
+		String propertyURI = instance.getRepository().getNamespace() + "componentOf";			
+		Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(instance.getRepository().getBaseModel(), sourceURI, propertyURI, tipo_target );
+		
+		String key = tipo_source + propertyURI + tipo_target;
+		String cardinality = ContainerStructure.getContainerStructure().get(key);
+		if(cardinality != null ){
+			Integer cardinality_target = Integer.parseInt(cardinality);
+			if( ((numberOfRelations < cardinality_target) || (cardinality_target == -1)) ){
+				return true;
 			}
-		} catch (Exception e){
-			e.printStackTrace();
 		}
 		
 		return false;
