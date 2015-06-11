@@ -7,6 +7,127 @@ function closeIframe(){
 
 function ituHandle(paper, graph, validator){
 
+	//Rigth click on mouse, show connections
+	paper.$el.on('contextmenu', function(evt) { 
+	    evt.stopPropagation(); // Stop bubbling so that the paper does not handle mousedown.
+	    evt.preventDefault();  // Prevent displaying default browser context menu.
+	    var cellView = paper.findView(evt.target);
+	    if (cellView) {
+	       // The context menu was brought up when clicking a cell view in the paper.
+	       console.log(cellView.model);  // So now you have access to both the cell view and its model.
+
+	       var source = cellView.model;
+	       var target = cellView.model;
+	       
+	       if(source.get('subType') !== 'card') return;
+	       
+	       var content = '<table class="connectionInOut"><tr><td>' +
+			'<table class="connectionOut">' + 
+				'<tr>' +
+					'<th>Output</th></tr>';
+
+	       $.each(source.attributes.outPorts, function(index, value){
+
+	    	   var outPort = source.attributes.outPorts[index];
+
+	    	   if(source.attributes.connectedPorts[index]) {
+	    		   var inPortIndex = source.attributes.connectedPorts[index][0];
+	    		   var inPort = source.attributes.connectedPorts[index][1];
+	    		   content = content + '<tr><td class="connected" id="'+ index + '">' + outPort + '<span class="tag" id="' + inPortIndex + '">' + inPort + '</span></td></tr>';
+	    	   }
+	    	   else {
+	    		   content = content + '<tr><td class="disconnected" id="'+ index + '">' + outPort + '</td></tr>';
+	    	   }
+	       });
+
+	       content = content +  '</table></td><td><table class="connectionIn">' + 
+	       '<tr><th>Input</th></tr>'; 
+
+	       $.each(target.attributes.inPorts, function(index, value){
+				
+				var inPort = target.attributes.inPorts[index];
+				
+				if(target.attributes.connectedPorts[index]) {
+					var outPortIndex = target.attributes.connectedPorts[index][0];
+					var outPort = target.attributes.connectedPorts[index][1];
+					content = content + '<tr><td class="connected" id="'+ index + '">' + inPort + ' <span class="tag" id="' + outPortIndex + '">' + outPort + ' </span></td></tr>';
+				}
+				else{
+					content = content + '<tr><td class="disconnected" id="'+ index + '">' + inPort + '</td></tr>';
+				}
+			});
+			
+	       content = content + '</table></td></tr></table>';
+	       
+	       var dialog = new joint.ui.Dialog({
+	    	   width: 500,
+	    	   type: 'neutral',
+	    	   title: target.attr('name/text') + ' Connections',
+	    	   content: content,
+	    	   buttons: [
+	    	             { action: 'cancel', content: 'Close', position: 'left' },
+	    	             ]
+	       });
+	       dialog.on('action:cancel', cancel);
+	       dialog.on('action:close', cancel);
+	       dialog.open();
+
+	       function cancel() {
+	    	   dialog.close();
+	       };
+	       
+	       //delete connections
+			$('.connectionInOut').delegate('span.tag', 'click', function(){
+				if(confirm("Really delete this connection?")) { 
+					$(this).parent().switchClass('connected', 'disconnected');
+					
+					var id = $(this).attr('id');
+					var idParent = $(this).parent().attr('id');
+					
+					var port1 = undefined, port2 = undefined;
+					$.each(graph.getElements(), function(index, c) {
+						
+						//delete ports
+						if(c.get('subType') === 'card') {
+							if(c.attributes.connectedPorts[id]) {
+								port1 = c.id;
+								delete c.attributes.connectedPorts[id];
+							}
+							if(c.attributes.connectedPorts[idParent]){
+								port2 = c.id;
+								delete c.attributes.connectedPorts[idParent];
+							}
+						}
+						
+					});
+					
+					var removed = false;
+					$.each(graph.getLinks(), function(index, l) {
+						//check if link already removed
+						if(!removed) {
+							if(l.get('source').id === port1 && l.get('target').id === port2) {
+								l.remove();
+								removed = true;
+							}
+							else if(l.get('target').id === port1 && l.get('source').id === port2) {
+								l.remove();
+								removed = true;
+							}
+						}
+					});
+					
+					//remove tag
+					$('span#' + id + '.tag').remove();
+					$('span#' + idParent + '.tag').remove();
+					$('td#' + id).switchClass('connected', 'disconnected');
+					
+				}
+			});
+	       
+	    }
+	});
+	
+	//open itu studio when double click on card
 	paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
 	
 		var cellId = cellView.model.id;
@@ -49,30 +170,28 @@ function ituHandle(paper, graph, validator){
 				            	// Get all elements and check if exist some in or out port
 				            	$.each($('#itu-iframe').get(0).contentWindow.app.graph.getElements(), function(index, value) {
 				            		
-				            		if(value.get('subtype') === 'in') {
+				            		if(value.get('subtype') === 'Input') {
 				            			cell.attr('.inPort/fill', '#1AFF00');
 						            	cell.attr('.inPort/stroke', '#000000');
 						            	hasIn = true;
 						            	
 						            	cell.attributes.inPorts[value.id] = value.attr('text/text');
+//						            	cell.attr(".inPort/title", cell.attr(".inPort/title") + value.attr('text/text') + '\r\n');
 						            	
-						            	cell.attr(".inPort/title", cell.attr(".inPort/title") + value.attr('text/text') + '\r\n');
-						            	
-						            	console.log("ID IN: " + value.id);
-						            	console.log("IN PORT: " + cell.attributes.inPorts[value.id]);
+//						            	console.log("ID IN: " + value.id);
+//						            	console.log("IN PORT: " + cell.attributes.inPorts[value.id]);
 				            		}
 				            		
-				            		if(value.get('subtype') === 'out') {
+				            		if(value.get('subtype') === 'Output') {
 				            			cell.attr('.outPort/fill', '#1AFF00');
 						            	cell.attr('.outPort/stroke', '#000000');
 						            	hasOut = true;
 						            	
 						            	cell.attributes.outPorts[value.id] = value.attr('text/text');
+//						            	cell.attr(".outPort/title", cell.attr(".outPort/title") + value.attr('text/text') + '\r\n');
 						            	
-						            	cell.attr(".outPort/title", cell.attr(".outPort/title") + value.attr('text/text') + '\r\n');
-						            	
-						            	console.log("ID OUT: " + value.id);
-						            	console.log("OUT PORT: " + cell.attributes.outPorts[value.id]);
+//						            	console.log("ID OUT: " + value.id);
+//						            	console.log("OUT PORT: " + cell.attributes.outPorts[value.id]);
 				            		}
 				            		
 				            	});
@@ -124,8 +243,6 @@ function ituHandle(paper, graph, validator){
 	
 	graph.on('remove', function(cell){
 		
-		//console.log(cell.get('subType'));
-		
 		if(cell.get('subType') === 'card'){
 			deletedITUFiles[index] = cell.id;
 			index++;
@@ -133,8 +250,21 @@ function ituHandle(paper, graph, validator){
 		
 	});
 	
+	//delete link if not exist a target
+	validator.validate('add', function(err, command, next) {
+
+		var cell = graph.getCell(command.data.id);
+		
+		if(isNotLink(cell)) return;
+		
+		if(!cell.attributes.target.id){
+			cell.remove();
+		}
+		
+	});
+	
 	//create a dialog connection only if exist a target
-	validator.validate('add change:target change:source', function(err, command, next) {
+	validator.validate('change:target change:source', function(err, command, next) {
 
 		var cell = graph.getCell(command.data.id);
 		
@@ -148,17 +278,10 @@ function ituHandle(paper, graph, validator){
 		var source = graph.getCell(cell.attributes.source.id);
 		var target = graph.getCell(cell.attributes.target.id);
 		
-		console.log('source ID: ' + source.attr('name/text'));
-		console.log('target ID: ' + target.id);
+//		console.log('source ID: ' + source.attr('name/text'));
+//		console.log('target ID: ' + target.id);
 		
 		createConnectionDialog(cell, source, target);
-		
-	});
-	
-	//delete connections
-	$('.inPort').delegate(this, 'dblclick', function(){
-		
-		alert('hello!');
 		
 	});
 	
@@ -236,9 +359,9 @@ function ituHandle(paper, graph, validator){
 			$(".connectionIn").find("tr:gt(0)").remove();
 			$(".connectionIn").append(content);
 			
-			console.log("SHOW: " + target.attr('name/text'));
-			console.log("ID: " + index);
-			console.log("NAME: " + source.attributes.outPorts[index]);
+//			console.log("SHOW: " + target.attr('name/text'));
+//			console.log("ID: " + index);
+//			console.log("NAME: " + source.attributes.outPorts[index]);
 		});
 		
 		//delete connections
@@ -301,21 +424,14 @@ function ituHandle(paper, graph, validator){
 			target.attributes.connectedPorts[targetIndex][0] = sourceIndex;
 			target.attributes.connectedPorts[targetIndex][1] = source.attributes.outPorts[sourceIndex];
 			
-			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
-			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
+//			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
+//			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
 			dialog.close();
 			
 		});
 		
 	}
 	
-	
-	
-	
-	// valida a criação de links no grafo
-	graph.on('change:source change:target add', function(cell) {
-		
-	});
 	
     /* ------ AUXILIAR FUNCTIONS ------- */
 	// Check if cell is not a link

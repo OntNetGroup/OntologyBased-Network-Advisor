@@ -168,6 +168,46 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 }
 
 #lstBox1, #lstBox2{
-	width : 150px;
+	width: 190px;
     height:100px;
+    padding: 5px;
+    margin-top: 5px;
+  	border: 1px solid #5C9CCC;
+}
+
+#supervisorDialog {
+    color: #FFF;
+    text-shadow: none;
+    margin: 0;
+    left: 0;
+    right: 0;
+    width: 1000px; 
+    heigth: 300px;
+    font-size: 13px;
+}
+
+.dialog .titlebar {
+    background-color: #7c68fc;
+    padding: 10px;
+    color: white;
+    text-shadow: 0 0 1px black;
+    text-rendering: optimizeLegibility;
+/*     border-top-right-radius: 5px; */
+/*     border-top-left-radius: 5px; */
+    border-bottom: 2px solid #dcddee;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	padding: .4em 1em;
+	position: relative;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px; 
+}
+.ui-dialog .ui-dialog-title {
+	float: left;
+	margin: .1em 0;
+	white-space: nowrap;
+/* 	width: 90%; */
+	overflow: hidden;
+/* 	text-overflow: ellipsis; */
 }

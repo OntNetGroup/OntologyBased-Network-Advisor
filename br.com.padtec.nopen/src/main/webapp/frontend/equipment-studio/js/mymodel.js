@@ -7,10 +7,10 @@ joint.shapes.equipment.Card = joint.shapes.basic.Generic.extend({
 	         	'<g class="scalable">',
 	         		'<rect class="body"/>',
 	         	'</g>',
-	    		'<g class="inPort" title="test">',
+	    		'<g class="inPort">',
 	    			'<circle r="4" />',
 	    		'</g>',
-	    		'<g class="outPort" title="test">',
+	    		'<g class="outPort">',
 	    			'<rect width="7" height="7" />',
 	    		'</g>',
 	         	'<text/>',
@@ -47,7 +47,7 @@ joint.shapes.equipment.Card = joint.shapes.basic.Generic.extend({
     }, joint.shapes.basic.Generic.prototype.defaults),
     
     initialize: function() {
-    	$( document ).tooltip();
+    	
     }
     
 });

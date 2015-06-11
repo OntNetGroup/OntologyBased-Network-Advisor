@@ -81,53 +81,7 @@ rect[stroke-width]:hover{
 	stroke-width: 2;
 }
 
-#supervisorDialog{
-    color: #FFF;
-    text-shadow: none;
-    margin: 0;
-    left: 0;
-    right: 0;
-    border-radius: 5px;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-	
-}
-.dialog .titlebar {
-    background-color: #7c68fc;
-    padding: 10px;
-    color: white;
-    text-shadow: 0 0 1px black;
-    text-rendering: optimizeLegibility;
-/*     border-top-right-radius: 5px; */
-/*     border-top-left-radius: 5px; */
-    border-bottom: 2px solid #dcddee;
-}
 
-#supervisorDialog .ui-dialog-titlebar {
-    background-color: #7c68fc;
-    padding: 10px;
-    color: white;
-    text-shadow: 0 0 1px black;
-    text-rendering: optimizeLegibility;
-    border-top-right-radius: 0px;
-    border-top-left-radius: 0px;
-    border-bottom: 2px solid #dcddee;
-    heigth: 50px;
-}
-
-.ui-dialog .ui-dialog-titlebar {
-	padding: .4em 1em;
-	position: relative;
-}
-.ui-dialog .ui-dialog-title {
-	float: left;
-	margin: .1em 0;
-	white-space: nowrap;
-/* 	width: 90%; */
-	overflow: hidden;
-/* 	text-overflow: ellipsis; */
-}
 .ui-widget-header {
 	border: 1px solid #4297d7;
 	background: #5c9ccc url("images/ui-bg_gloss-wave_55_5c9ccc_500x100.png") 50% 50% repeat-x;

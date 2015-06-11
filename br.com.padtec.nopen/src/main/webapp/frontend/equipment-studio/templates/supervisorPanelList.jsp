@@ -1,21 +1,19 @@
-<div id="supervisorDialog" title="Select cards to supervise"
-	style="width: 1000px; heigth: 300px">
+<div id="supervisorDialog" title="Select cards to supervise">
 	<table style='width: 370px;'>
 		<tr>
-			<td style='width: 160px;'><a>Supervised Cards:</a><br /> <select
-				multiple="multiple" id='lstBox1'>
-					<!-- 					<option value="CardExemplo2" class="supervised">CardExemplo2</option> -->
-
-
-			</select></td>
-			<td style='width: 50px; text-align: center; vertical-align: middle;'>
-				<input type='button' id='btnRight' value='  >  ' /> <br /> <input
-				type='button' id='btnLeft' value='  <  ' />
-			</td>
-			<td style='width: 160px;'><a>Cards without supervisor: </a><br />
+			
+			<td class="supervisorPanel"><a>Unsupervised Cards: </a><br />
 				<select multiple="multiple" id='lstBox2'>
 					<!-- 				   <option value="CardExemplo2" class="unsupervised">CardExemplo2</option> -->
 
+			</select></td>
+			<td class="supervisorMiddlePanel">
+				<input type='button' id='btnRight' value='  <  ' /> <br /> <input
+				type='button' id='btnLeft' value='  >  ' />
+			</td>
+			<td class="supervisorPanel"><a>Supervised Cards:</a><br /> <select
+				multiple="multiple" id='lstBox1'>
+					<!-- 					<option value="CardExemplo2" class="supervised">CardExemplo2</option> -->
 			</select></td>
 		</tr>
 	</table>
@@ -29,7 +27,7 @@
 			  titlebar: 'Select the cards to supervise',
 		      width: 450,
 			  buttons: {
-				  "Ok": function() {
+				  "OK": function() {
 					$('.supervised').remove();
 					$('.unsupervised').remove();
 		 			$(this).dialog('close');
