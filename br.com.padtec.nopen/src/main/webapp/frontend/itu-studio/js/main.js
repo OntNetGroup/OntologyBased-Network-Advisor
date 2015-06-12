@@ -111,6 +111,9 @@ var Rappid = Backbone.Router.extend({
             	console.log('validate connection');
             	if(!linkView) return false;
             	
+        		// Prevent connect to links
+        		if(cellViewT.model.attributes.type === TypeEnum.LINK) return false;
+            	
             	/* Prevent linking to ports already being used */
         		var portUsed = _.find(this.model.getLinks(), function(link) {
 
