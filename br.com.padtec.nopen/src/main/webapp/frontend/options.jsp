@@ -63,10 +63,10 @@
 	<!-- ======================================================================= -->
 	
 	<!-- ======================================================================= -->				   
-	<div class="col-sm-4">
+	<div class="col-sm-6">
 		<div class="box"> 			
 			<div class="box-header" >
-				<h2><i class="icon-laptop"></i>Layers</h2>
+				<h2><i class="icon-laptop"></i>Layers and Services</h2>
 				<div class="box-icon">
 					<a href="ui-nestable-list.html#" class="btn-layer-plus"><i class="icon-plus"></i></a>
 					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>								
@@ -81,6 +81,7 @@
 					<%
 	            	int j=0;					
 					for(String tech: techs){
+						
 						out.println("<div id=\""+tech+"\" class=\"x\" style=\"display:none;\">");
 						for(String layer: layers[j])
 						{	
@@ -90,51 +91,29 @@
 							out.println("</div>");
 				           	out.println("</li>");				         
 	            		}
-					  	out.println("</div>");
+						
+						out.println("<select id=\"selectError10\" class=\"form-control\" style=\"width:100%;height:500\" multiple data-rel=\"chosen\">");							  	
+					  	int k=0;
+						for(String service: services){
+					  		if(k==0) out.println("<option value=\""+service+"\" selected>"+service+"</option>");
+					  		else out.println("<option value=\""+service+"\">"+service+"</option>");
+					  		k++;
+					  	}
+					  	out.println("</select>");
+					  	
+						out.println("</div>");
+						
+					  	
 						j++;
 					}
 	            	%>							       	
-			  	</ol>
-				</div>
-			</div>
+	
+				</div>				
+			</div>						
        </div>
 	</div>
 	<!-- ======================================================================= -->
-
-	<!-- ======================================================================= -->
-    <div class="col-sm-4">	
-		<div class="box"> 			
-			<div class="box-header" >
-				<h2><i class="icon-laptop"></i>Services</h2>
-				<div class="box-icon">
-					<a href="ui-nestable-list.html#" class="btn-minimize"><i class="icon-chevron-up"></i></a>								
-				</div>
-			</div>
-			<div class="box-content clearfix" style="">			
-				<!-- <label class="control-label" for="selectError10">Service of Selected Layer</label> -->
-				<div class="controls" style="width:100%;float:right">
-					<p></p>	
-					<%
-// 	            		int k=0;					
-// 						for(String tech: techs){							
-// 							for(String layer: layers[k])
-// 							{
-// 								out.println("<div id=\""+layer+"\"; class=\"y\" style=\"display:none;\">");
-								out.println("<select id=\"selectError10\" class=\"form-control\" style=\"width:100%;height:500\" multiple data-rel=\"chosen\">");							  	
-							  	for(String service: services){
-							  		out.println("<option value=\""+service+"\" selected>"+service+"</option>");
-							  	}
-							  	out.println("</select>");
-// 							  	out.println("</div>");
-// 							}
-// 							k++;
-// 						}
-					%>				  	
-				</div>							
-				<!-- ======================================================================= -->			
-		</div>		
-	</div><!--/col-->
-	</div>		
+	
 </div><!--/row-->	
 	
 <div class="modal fade" id="techModal">

@@ -4,12 +4,6 @@
 	String ontology = (String)request.getSession().getAttribute("ontology");
 	String name = (String)request.getSession().getAttribute("name");
 %>
-
-<div id="row" class="row" style="margin-right:0px;margin-left:0px">	
-	<form id="exportOntology" style="float:left" action="exportOntology.htm" method="POST">
-		<button id="exportOWL" type="button" class="btn btn-large btn-primary"> <i class="icon-download"></i> Export as OWL</button>				
-	</form>		
-</div>	
 		
 <div class="row">
 	<div class="col-sm-12">	
@@ -23,8 +17,8 @@
 			<div class="box-content clearfix" style="">		
 				<%
 				if(ontology != null && ontology != "")
-				{
-					out.println("<textarea style=\"width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 90006px;\"> "+ontology+" </textarea>");					
+				{					
+					out.println("<textarea id=\"textArea\" style=\"width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 90006px;\"> "+ontology+" </textarea>");
 				} else {					
 					out.println("<p> No ontology loaded </p>");
 				}

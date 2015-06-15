@@ -8,17 +8,7 @@
 %>
 
 <script src="frontend/template/js/jquery.nestable.min.js"></script>
-
-<script>	
-	$("#selectReasoner").change(function() {
-	    var str = "";
-	    $( "select option:selected" ).each(function() {
-	      str += $(this).text() + " ";
-	    });
-	    $("div").text(str);
-	  })	  
-</script>
-			
+		
 <div class="row">
 
 	<div class="col-sm-8">	
@@ -33,15 +23,27 @@
 				<h2>Default reasoning used for running inferences:</h2>								
 			    <div class="form-group">
 					<label class="control-label" for="selectReasoner"></label>
-					<div class="controls">
-					<select id="selectReasoner" class="form-control">
-					<%						
-						if(reasoner.equals("hermit")) out.println("<option value=\"hermit\" selected> Hermit</option>");
-						else out.println("<option value=\"hermit\"> Hermit</option>");
-						if(reasoner.equals("pellet")) out.println("<option value=\"pellet\" selected> Pellet</option>");
-						else out.println("<option value=\"pellet\"> Pellet</option>");		
-					%>
-					</select>  
+					<div class="controls">					
+						<select id="selectReasoner" class="form-control">
+						<%											
+							if(reasoner.equals("hermit")) out.println("<option id=\"hermitOption\" value=\"hermit\" selected> Hermit</option>");
+							else out.println("<option id=\"hermitOption\" value=\"hermit\"> Hermit</option>");
+							if(reasoner.equals("pellet")) out.println("<option id=\"pelet\" value=\"pellet\" selected> Pellet</option>");
+							else out.println("<option id=\"pelletOption\" value=\"pellet\"> Pellet</option>");		
+						%>
+						</select>			
+						<script>							
+							$('#selectReasoner').change(function(){
+								//alert($(this).val());
+								$.ajax({
+									url : "selectReasoner.htm",
+									type : "POST",			
+									data : {
+										"reasoner": $(this).val()
+									},			
+								});								
+							});							
+						</script>													
 					</div>
 				 </div>
 				 <h2>About reasoners...</h2>		
