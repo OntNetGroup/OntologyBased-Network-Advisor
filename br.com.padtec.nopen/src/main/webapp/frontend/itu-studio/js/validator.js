@@ -187,9 +187,6 @@ function validator(validator, graph, app) {
         	var sourceName = sourceElement.attributes.attrs.text.text;
         	var sourceSubtype = sourceElement.attributes.subtype;
         	
-        	// se target for uma interface, cria a conexão
-//        	if(targetSubtype === SubtypeEnum.OUTPUT || targetSubtype === SubtypeEnum.INPUT) return next(err);
-        	
 //        	var result = createLink(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
         	var result = performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
         	
