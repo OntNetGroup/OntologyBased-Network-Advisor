@@ -641,11 +641,11 @@ public class DtoQueryUtil {
 		String key = domainClassURI + propertyStr + rangeTypeURI;
 		key = key.replace("<", "").replace(">", "");
 //		ArrayList<CardinalityDef> result = new ArrayList<CardinalityDef>();
-		int j = 0;
+//		int j = 0;
 		
 		while (results.hasNext())	
 		{	
-			j++;
+//			j++;
 			//System.out.println("j: " + j);
 			QuerySolution row= results.next();
 			
@@ -764,9 +764,9 @@ public class DtoQueryUtil {
 			}			
 		}		
 		System.out.println();
-		int i = 0;
+//		int i = 0;
 		for (Entry<String, RelationDef> relDefEntry : result.entrySet()) {
-			i++;
+//			i++;
 			//System.out.println("i: " + i);
 			RelationDef relDef = relDefEntry.getValue();
 			String cardDefKey;
@@ -788,15 +788,19 @@ public class DtoQueryUtil {
 					cardDefinitions.putAll(newCardDefs);
 				}
 				cardDef = cardDefinitions.get(cardDefKey);
-				relDef.setCardOnRange(cardDef);
+				relDef.setCardOnDomain(cardDef);
 				break;
 			}
 		}
 		
 		for (Entry<String, RelationDef> relDefEntry : result.entrySet()) {
 			RelationDef relDef = relDefEntry.getValue();
-			if(relDef.getCardOnDomain() == null) relDef.setCardOnDomain(new CardinalityDef());
-			if(relDef.getCardOnRange() == null) relDef.setCardOnRange(new CardinalityDef());
+			if(relDef.getCardOnDomain() == null){
+				relDef.setCardOnDomain(new CardinalityDef());
+			}
+			if(relDef.getCardOnRange() == null){
+				relDef.setCardOnRange(new CardinalityDef());
+			}
 		}
 		return result;
 	}

@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 
 
+
 import br.com.padtec.common.dto.CardinalityDef;
 import br.com.padtec.common.dto.RelationDef;
 import br.com.padtec.common.queries.DtoQueryUtil;
@@ -67,17 +68,8 @@ public class ContainerStructure {
 	        @SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)it.next();
 	        RelationDef relation = (RelationDef) pairs.getValue();
-	        CardinalityDef card = relation.getCardOnRange(); //lembrete:cardinalidades invertidas
+	        CardinalityDef card = relation.getCardOnDomain();
 	        Integer valueUp = card.getUpperBound();
-	        System.out.println("----------------------------------");
-	        System.out.println("CHAVE -> " + (String) pairs.getKey());
-	        System.out.println("CARDINALIDADE NO DOMAIN (UPPER BOUND) -> " + Integer.toString(valueUp));
-	        System.out.println("CARDINALIDADE NO DOMAIN (LOWER BOUND) -> " + Integer.toString(card.getLowerBound()));
-	        System.out.println("DOMAIN CLASS -> " + card.getDomainClass());
-	        System.out.println("DOMAIN PROPERTY -> " + card.getObjectProperty());
-	        System.out.println("DOMAIN RANGE TYPE -> " + card.getRangeType());
-	        System.out.println("CARDINALIDADE NO RANGE (UPPER BOUND) -> " + Integer.toString(relation.getCardOnDomain().getUpperBound()));
-	        System.out.println("CARDINALIDADE NO RANGE (LOWER BOUND) -> " + Integer.toString(relation.getCardOnDomain().getLowerBound()));
 	        
 	        ContainerStructure.containerStructure.put((String) pairs.getKey(), Integer.toString(valueUp));
 	    }
