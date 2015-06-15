@@ -45,7 +45,8 @@ public class ConsoleUtil {
 			ok = true;
 			try {
 				if(optional == 1 && index == 0){
-					message += "(this step is optional. Choose 0 to skip)";
+					message.replace(":", "");
+					message += "(this step is optional. Choose 0 to skip): ";
 				}
 				System.out.print(message);
 				index = Integer.valueOf(bufferRead.readLine());

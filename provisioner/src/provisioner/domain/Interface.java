@@ -17,6 +17,10 @@ public class Interface implements Comparable<Interface>{
 		this.declared = declared;
 	}
 
+	public void clearInterfaceTo(){
+		this.candidateInterfacesTo.clear();
+	}
+	
 	public boolean isDeclared() {
 		return declared;
 	}

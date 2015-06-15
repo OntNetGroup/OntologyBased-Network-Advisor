@@ -3,10 +3,13 @@ package provisioner.jenaUtil;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -29,24 +32,25 @@ public class OWLUtil {
 		return model;
 	}	
 	
-	public static void saveNewOwl(OntModel model, String path, String oldName){
+	public static void saveNewOwl(OntModel model, String path, String oldName) throws IOException{
 		System.out.println("Saving OWL");
 		String syntax = "RDF/XML";
 		StringWriter out = new StringWriter();
 		model.write(out, syntax);
 		String result = out.toString();
 		oldName = oldName.replace(".owl", "");
-		File arquivo = new File(path + oldName + "New.owl");  // Chamou e nomeou o arquivo txt.  
+		Date dt = new Date();
+		File arquivo = new File(path + oldName + "New" + dt.toString().replaceAll(":", "") + ".owl");   
 		if(arquivo.exists()){
 			arquivo.delete();
 		}
-		try{
-			FileOutputStream fos = new FileOutputStream(arquivo);  // Perceba que estamos instanciando uma classe aqui. A FileOutputStream. Pesquise sobre ela!  
+//		try{
+			FileOutputStream fos = new FileOutputStream(arquivo);  
 			fos.write(result.getBytes());    
-			fos.close();  // Fecha o arquivo. Nunca esquecer disso.  
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+			fos.close();   
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
 	}
 	
 	public static long runReasoner(OKCoUploader okcoUploader, boolean inferHierarchies, boolean inferAssertions, boolean inferRules) throws Exception{

@@ -717,6 +717,9 @@ public class SPARQLQueries {
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		ResultSet results = qe.execSelect();		
+		
+		List<String> quebraDeAsa = new ArrayList<String>();
+		
 		while (results.hasNext()) 
 		{			
 			QuerySolution row = results.next();
@@ -736,6 +739,7 @@ public class SPARQLQueries {
 			    	if(!result.contains(tf3.toString())){
 			    		System.out.println("- tf3 URI: "+tf3.toString()); 
 				    	result.add(tf3.toString());
+				    	if(!quebraDeAsa.contains(tf3.toString())) quebraDeAsa.add(tf3.toString());
 			    	}		    	 
 			    }
 			}
@@ -745,10 +749,19 @@ public class SPARQLQueries {
 			    	if(!result.contains(tf4.toString())){
 			    		System.out.println("- tf4 URI: "+tf4.toString()); 
 				    	result.add(tf4.toString());
+				    	if(!quebraDeAsa.contains(tf4.toString())) quebraDeAsa.add(tf4.toString());
 			    	}		    	 
 			    }
 			}
 		}
+		
+		for (String tf : quebraDeAsa) {
+			List<String> newResult = getLastBindedTFFrom(model, tf, !isSource);
+			for (String newTf : newResult) {
+				if(!result.contains(newTf)) result.add(newTf);
+			}
+		}
+		
 		return result;
 	}
 }

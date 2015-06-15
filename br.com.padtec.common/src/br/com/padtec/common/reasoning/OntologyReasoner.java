@@ -4,6 +4,7 @@ import br.com.padtec.common.persistence.BaseModelRepository;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.reasoner.ValidityReport;
 
 public abstract class OntologyReasoner {
 	public boolean inferHierarchies = true;
@@ -16,4 +17,9 @@ public abstract class OntologyReasoner {
 	public long getReasoningTimeExec(){
 		return this.reasoningTimeExec;
 	}
+	
+	public boolean validadeModel(OntModel model) {
+		ValidityReport validityReport = model.validate();
+		return validityReport.isValid();
+	}	
 }

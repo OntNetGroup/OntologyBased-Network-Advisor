@@ -1,12 +1,11 @@
 package provisioner;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 import javax.swing.SwingUtilities;
 
 import provisioner.business.Provisioner;
-import provisioner.domain.Interface;
-import provisioner.util.ConsoleUtil;
+import provisioner.jenaUtil.OWLUtil;
 import provisioner.util.FileUtil;
 
 public class Main {
@@ -38,32 +37,21 @@ public class Main {
 			
 			provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, 1, 1);
 					
-			//#10 and #11
-			int srcInt2ProvIndex = ConsoleUtil.chooseOne(provisioner.getINT_SO_LIST(), "Input Interfaces", "Choose the Source Input Interface to be provisioned (INT_SOURCE): ",0);
-			//int srcInt2ProvIndex = 8;
-			Interface interfaceFrom = provisioner.getINT_SO_LIST().get(srcInt2ProvIndex);
-			//String equipFromURI = INT_SO_LIST.get(srcInt2ProvIndex);
-			
-			//#12 and #13
-			int tgtInt2ProvIndex = ConsoleUtil.chooseOne(provisioner.getINT_SK_LIST(), "Output Interfaces", "Choose the Sink Output Interface to be provisioned (INT_SINK): ",0);
-			//int tgtInt2ProvIndex = 8;
-			Interface interfaceTo = provisioner.getINT_SK_LIST().get(tgtInt2ProvIndex);
-			//String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
-			
-			ArrayList<Character> options = new ArrayList<Character>();
-			options.add('A');
-			options.add('M');
-			options.add('a');
-			options.add('m');
-			Character option = ConsoleUtil.getCharOptionFromConsole("Choose provisioning mode: Automatically (A) or Manually (M)? ", options);
-			
-			provisioner.consoleProvisioner(interfaceFrom, interfaceTo, option);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+			provisioner.consoleProvisioner();
 		
-		System.out.println();
-		System.out.println("Provisioning successfully done!");
+//			System.out.println();
+			System.out.println("Provisioning successfully done!");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+//			e.printStackTrace();
+		}
+		
+		try {
+			OWLUtil.saveNewOwl(provisioner.getModel(), "resources/output/", "");
+			System.out.println("OWL successfully saved!");
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+//			e.printStackTrace();
+		}
 	}
 }

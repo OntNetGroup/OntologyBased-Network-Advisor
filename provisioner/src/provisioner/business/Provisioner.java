@@ -43,8 +43,9 @@ public class Provisioner {
 		return reasoningTimeExecPostInstances;
 	}
 	
+	
 	public Provisioner(String tBoxFile, String declaredInstancesFile, String possibleEquipFile, int declaredReplications, int possibleReplications) throws Exception {
-		try{
+//		try{
 			this.possibleEquipFile = possibleEquipFile;
 			//#1
 			model = OWLUtil.createTBox(this.okcoUploader, tBoxFile);
@@ -82,12 +83,12 @@ public class Provisioner {
 			
 			//#17
 			reasoningTimeExecPostInstances = OWLUtil.runReasoner(okcoUploader, true, true, true);
-		}catch(Exception e){
+//		}catch(Exception e){
+////			OWLUtil.saveNewOwl(model, "resources/output/", "");
+//			throw e;
+//		}finally{
 //			OWLUtil.saveNewOwl(model, "resources/output/", "");
-			throw e;
-		}finally{
-			OWLUtil.saveNewOwl(model, "resources/output/", "");
-		}
+//		}
 	}
 	
 	public HashMap<String, Interface> getInterfaces() {
@@ -98,26 +99,61 @@ public class Provisioner {
 		return model;
 	}
 	
-	public void consoleProvisioner(Interface interfaceFrom, Interface interfaceTo, Character option) throws Exception{
-		try {
+	public void consoleProvisioner() throws Exception{
+//		try {
+			ArrayList<Character> modeOptions = new ArrayList<Character>();
+			modeOptions.add('A');
+			modeOptions.add('M');
+			modeOptions.add('a');
+			modeOptions.add('m');
+			ArrayList<Character> provisionAgainOptions = new ArrayList<Character>();
+			provisionAgainOptions.add('Y');
+			provisionAgainOptions.add('y');
+			provisionAgainOptions.add('N');
+			provisionAgainOptions.add('n');
+			
 			bindedInterfaces = new ArrayList<Interface>();
 			bindedInterfaces.addAll(originalBindedInterfaces);
-			if(option.equals('M') || option.equals('m')){
-				callAlgorithmManual(interfaceFrom, interfaceTo);
-			}else{
-				callFindPaths(interfaceFrom, interfaceTo);
-			}
-			
-			//#23
-			OWLUtil.runReasoner(okcoUploader, false, true, true);			
-		} catch (Exception e) {
-			//#25
+			Character provisionAgainOption;
+			do{
+				for (String intfc : interfaces.keySet()) {
+					Interface in = interfaces.get(intfc);
+					in.clearInterfaceTo();
+				}
+				//#10 and #11
+				int srcInt2ProvIndex = ConsoleUtil.chooseOne(this.getINT_SO_LIST(), "Input Interfaces", "Choose the Source Input Interface to be provisioned (INT_SOURCE): ",0);
+				//int srcInt2ProvIndex = 8;
+				Interface interfaceFrom = this.getINT_SO_LIST().get(srcInt2ProvIndex);
+				//String equipFromURI = INT_SO_LIST.get(srcInt2ProvIndex);
+				
+				//#12 and #13
+				int tgtInt2ProvIndex = ConsoleUtil.chooseOne(this.getINT_SK_LIST(), "Output Interfaces", "Choose the Sink Output Interface to be provisioned (INT_SINK): ",0);
+				//int tgtInt2ProvIndex = 8;
+				Interface interfaceTo = this.getINT_SK_LIST().get(tgtInt2ProvIndex);
+				//String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
+				
+				Character modeOption = ConsoleUtil.getCharOptionFromConsole("Choose provisioning mode: Automatically (A) or Manually (M)? ", modeOptions);
+				
+				
+				if(modeOption.equals('M') || modeOption.equals('m')){
+					callAlgorithmManual(interfaceFrom, interfaceTo);
+				}else{
+					callFindPaths(interfaceFrom, interfaceTo);
+				}
+				
+				//#23
+				OWLUtil.runReasoner(okcoUploader, false, true, true);
+				
+				provisionAgainOption = ConsoleUtil.getCharOptionFromConsole("Would you like to provision another path? Yes (Y) or No (N): ", provisionAgainOptions);
+			}while(provisionAgainOption.equals('Y') || provisionAgainOption.equals('y'));
+//		} catch (Exception e) {
+//			//#25
+////			OWLUtil.saveNewOwl(model, "resources/output/", "");
+//			throw e;
+//		} finally{
+//			//#25
 //			OWLUtil.saveNewOwl(model, "resources/output/", "");
-			throw e;
-		} finally{
-			//#25
-			OWLUtil.saveNewOwl(model, "resources/output/", "");
-		}		
+//		}		
 	}
 	
 	public List<Interface> getINT_SK_LIST() {
@@ -198,7 +234,7 @@ public class Provisioner {
 	public void verifiyMinimumEquipWithPM() throws Exception{
 		List<String> equipWithPm = SPARQLQueries.getEquipmentWithPhysicalMedia(model);
 		if(equipWithPm.size() < 1){
-			throw new Exception("Is required a minimum of 1 Equipment with Physical Media.\n");
+			throw new Exception("A minimum of 1 Equipment with Physical Media Is required.\n");
 		}		
 	}
 	
@@ -303,8 +339,18 @@ public class Provisioner {
 //		}while(again == 1);
 		
 		int path = ConsoleUtil.getOptionFromConsole(paths, "Choose path from list to be provisioned: ", paths.size());
-		
+//		System.out.println("bindedInterfacesHash.size() = "+this.bindedInterfacesHash.size());
+//		System.out.println("bindedInterfaces.size() = "+this.bindedInterfaces.size());
 		provisionSemiAuto(paths.get(path));
+//		System.out.println("bindedInterfacesHash.size() = "+this.bindedInterfacesHash.size());
+//		System.out.println("bindedInterfaces.size() = "+this.bindedInterfaces.size());
+		
+		bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
+		createBindedInterfaceHash(bindedInterfaces);
+//		System.out.println("bindedInterfacesHash.size() = "+this.bindedInterfacesHash.size());
+//		System.out.println("bindedInterfaces.size() = "+this.bindedInterfaces.size());
+//		System.out.println();
+		
 	}
 	
 	public void provisionSemiAuto(Path path) throws Exception{
@@ -314,6 +360,13 @@ public class Provisioner {
 			Interface to = path.getInterfaceList().get(i+1);
 			isSource = isStillInSource(isSource, from);
 			bindsInterfaces(from, to, isSource);
+			
+			if(!bindedInterfacesHash.containsKey(from.getInterfaceURI())){
+				bindedInterfacesHash.put(from.getInterfaceURI(), from);
+			}
+			if(!bindedInterfacesHash.containsKey(to.getInterfaceURI())){
+				bindedInterfacesHash.put(to.getInterfaceURI(), to);
+			}
 		}
 	}
 	
@@ -601,7 +654,7 @@ public class Provisioner {
 		String outPort = SPARQLQueries.getMappedPort(model, interfaceFrom.getInterfaceURI());
 		String inPort = SPARQLQueries.getMappedPort(model, interfaceTo.getInterfaceURI());
 		FactoryUtil.createInstanceRelation(model, outPort, ns+"binds", inPort, false, false, true);
-		bindedInterfaces.add(interfaceFrom);
-		bindedInterfaces.add(interfaceTo);
+		this.bindedInterfaces.add(interfaceFrom);
+		this.bindedInterfaces.add(interfaceTo);
 	}
 }
