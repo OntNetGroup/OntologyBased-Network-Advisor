@@ -73,6 +73,23 @@ public class ITUStudioController {
 		return "success";		
 	}
 		
+	/** Bind the source element to the target element */
+	/**
+	 * @param sourceElement: id, name and type of the source element
+	 * @param targetElement: id, name and type of the target element
+	 * @return: "success" if the binding was successful
+	 */
+	@RequestMapping(value = "/performBind", method = RequestMethod.POST)
+	public @ResponseBody String performBind(@RequestParam("sourceElement") String sourceElement, @RequestParam("targetElement") String targetElement) 
+	{	
+		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
+		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
+		
+		//TODO
+
+		return "success";		
+	}
+	
 	/** Create a transport function on a layer or directly on a card */
 	@RequestMapping(value = "/createTransportFunction", method = RequestMethod.POST)
 	public @ResponseBody String createTransportFunction(@RequestParam("transportFunction") String transportFunction, @RequestParam("container") String container)
@@ -293,6 +310,23 @@ public class ITUStudioController {
 			e.printStackTrace();
 			return e.getLocalizedMessage();
 		}	
+		return "true";		
+	}
+	
+	/** Check if a bind can be performed from the source element to the target element (just check, don't perform the bind) */
+	/**
+	 * @param sourceElement: id, name and type of the source element
+	 * @param targetElement: id, name and type of the target element
+	 * @return: "true" if a bind can be performed
+	 */
+	@RequestMapping(value = "/canPerformBind", method = RequestMethod.POST)
+	public @ResponseBody String canPerformBind(@RequestParam("sourceElement") String sourceElement, @RequestParam("targetElement") String targetElement) 
+	{		
+		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
+		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
+		
+		//TODO
+		
 		return "true";		
 	}
 	
