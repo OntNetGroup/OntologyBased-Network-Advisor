@@ -171,7 +171,7 @@ function validator(validator, graph, app) {
     	
     	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
     	if(command.action === 'change:source') return next('Invalid operation!');
-    	if(command.data.previous.target.id) return next('Invalid operation!');
+    	if(command.data.previous.target) return next('Invalid operation!');
     	
     	var linkID = command.data.id;
     	var link = graph.getCell(linkID).toJSON();
