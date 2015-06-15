@@ -78,6 +78,36 @@ function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFun
 	return insertContainer(dtoTransportFunction, dtoPort);
 };
 
+function performBind(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID) {
+
+	return createLink(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID); //TODO: apagar esta linha quando o metodo performBind do controlador estiver implementado
+	var result = "error";
+
+	var dtoSourceElement = Util.createDtoElement(sourceID, sourceName, sourceType);
+	var dtoTargetElement = Util.createDtoElement(targetID, targetName, targetType);
+	var dtoLink = Util.createDtoElement(linkID, linkID, 'link');
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "performBind.htm",
+		data: {
+			'sourceElement': JSON.stringify(dtoSourceElement),
+			'targetElement': JSON.stringify(dtoTargetElement),
+			'link': JSON.stringify(dtoLink)
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+//	return "success";
+};
+
 function createLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType, linkID) {
 
 	var result = "error";
@@ -393,6 +423,34 @@ function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionTy
 
 	return result === "true";
 //	return true;
+};
+
+function canPerformBind(sourceID, sourceName, sourceType, targetID, targetName, targetType) {
+
+	return canCreateLink(sourceID, sourceName, sourceType, targetID, targetName, targetType); //TODO: apagar esta linha quando o metodo canPerformBind do controlador estiver implementado
+	var result = "false";
+
+	var dtoSourceElement = Util.createDtoElement(sourceID, sourceName, sourceType);
+	var dtoTargetElement = Util.createDtoElement(targetID, targetName, targetType);
+	
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "canPerformBind.htm",
+		data: {
+			'sourceElement': JSON.stringify(dtoSourceElement),
+			'targetElement': JSON.stringify(dtoTargetElement)
+		} ,
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result === "true";
+//	return "success";
 };
 
 

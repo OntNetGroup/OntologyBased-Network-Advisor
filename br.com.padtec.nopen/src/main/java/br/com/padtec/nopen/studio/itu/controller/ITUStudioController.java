@@ -77,10 +77,12 @@ public class ITUStudioController {
 	/**
 	 * @param sourceElement: id, name and type of the source element
 	 * @param targetElement: id, name and type of the target element
+	 * @param bind: id, name and type of the bind (name = id, type = "link")
 	 * @return: "success" if the binding was successful
 	 */
 	@RequestMapping(value = "/performBind", method = RequestMethod.POST)
-	public @ResponseBody String performBind(@RequestParam("sourceElement") String sourceElement, @RequestParam("targetElement") String targetElement) 
+	public @ResponseBody String performBind(@RequestParam("sourceElement") String sourceElement, @RequestParam("targetElement") String targetElement,
+	@RequestParam("bind") String bind) 
 	{	
 		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
 		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
