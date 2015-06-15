@@ -6,21 +6,15 @@ import java.util.HashSet;
 
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.service.NOpenLog;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
-
-
 public class PerformBind {
 	private OKCoUploader repository = StudioComponents.studioRepository ;
-	private static PerformBind instance=new PerformBind();
-	
-	public static PerformBind getInstance(){
-		return instance;
-	}
-	
+	private static PerformBind instance = new PerformBind();
 	
 	/*
 	 * this method apply binds between tfs and between ports and tfs. 
@@ -34,7 +28,7 @@ public class PerformBind {
 			
 			//First, verify if the ports can have a RP between them
 			//if so, create the ports, RP and the relations between them
-			
+			repository.getReasoner().run(repository.getBaseModel());
 			String outputId = id_source + "_Output";
 			String tipo_output = tipo_source + "_Output";
 			String relation_source = null;
@@ -44,7 +38,7 @@ public class PerformBind {
 			String tipo_input = tipo_target + "_Input";
 			String relation_target = null;
 			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
-			String propertyURI = repository.getNamespace()+ "binds";
+			String propertyURI = repository.getNamespace() + RelationEnum.binds.toString();
 			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(repository.getBaseModel(), name_source, propertyURI, tipo_target );
 				
 			String key = tipo_source + propertyURI + tipo_target;
@@ -53,10 +47,10 @@ public class PerformBind {
 			//create the Reference Point if exists and the relation between reference point and ports
 			HashSet<String> rps_between_ports = new HashSet<String>();
 			rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, repository);
-
+			boolean isClient = false;
+			isClient = isClient(id_source, id_target, repository);
 			
-			
-			if((rps_between_ports.size() > 0) && ((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1))){ //segunda parte: incluir cardinalidade
+			if((rps_between_ports.size() > 0) && ((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1)) && (isClient)){
 				String tipo_rp;
 				String rp_name;
 				tipo_rp = rps_between_ports.iterator().next();
@@ -151,14 +145,6 @@ public class PerformBind {
 		return false;
 
 	}
-
-	public OKCoUploader getRepository() {
-		return repository;
-	}
-
-	public void setRepository(OKCoUploader repository) {
-		this.repository = repository;
-	}
 	
 	/*
 	 * given two ports discover the rp between them.
@@ -169,6 +155,52 @@ public class PerformBind {
 		
 		return rp;
 	}
+	
+	
+	/*
+	 * verify if the source's layer is client of the target's layer.
+	 */
+	static boolean isClient(String sourceURI, String targetURI, OKCoUploader repository){ //não testado
+		
+		String tgtClassURI = repository.getNamespace() + ConceptEnum.Card_Layer.toString();
+		String relationSourceURI = repository.getNamespace() + RelationEnum.intermediates_up_Transport_Function_Card_Layer.toString();
+		String relationTargetURI = repository.getNamespace() + RelationEnum.intermediates_down_Transport_Function_Card_Layer.toString();
+		
+		//verifica se o tf_source tem a relação de intermediates_up e se o tf_target tem a relação de intermediates_down
+		boolean tfSourceHasIntermediatesUpRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), sourceURI, relationSourceURI, tgtClassURI );
+		boolean tfTargetHasIntermediatesDownRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), targetURI, relationTargetURI, tgtClassURI );
+		
+		if(tfSourceHasIntermediatesUpRelation && tfTargetHasIntermediatesDownRelation){
+			//pega o card_layer do tf_source e o card_layer do tf_target
+			String cardLayerUpSource = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), sourceURI, relationSourceURI).get(0);
+			String cardLayerDownTarget = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), targetURI, relationTargetURI).get(0);
+			
+			//pega a camada do card_layer do tf_source e a camada do card_layer do tf_target
+			String layerUpSource = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), cardLayerUpSource, repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString()).get(0);
+			String layerDownTarget = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), cardLayerDownTarget, repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString()).get(0);
+			
+			//pega as relações entre as camadas
+			ArrayList<String> relationsBetweenLayerSourceAndLayerTarget = new ArrayList<String>();
+			relationsBetweenLayerSourceAndLayerTarget = QueryUtil.getRelationsBetweenIndividuals(repository.getBaseModel(), layerUpSource, layerDownTarget);
 
+			//se entre a camada do tf_source e a camada do tf_target existir a relação de is_client, então retorna true
+			if(relationsBetweenLayerSourceAndLayerTarget.contains(repository.getNamespace() + RelationEnum.is_client_Layer_Type_Layer_Type.toString())){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public OKCoUploader getRepository() {
+		return repository;
+	}
+
+	public void setRepository(OKCoUploader repository) {
+		this.repository = repository;
+	}
+
+	public static PerformBind getInstance(){
+		return instance;
+	}
 	
 }

@@ -2313,4 +2313,24 @@ public class QueryUtil {
 
 	}
 	
+	public static ArrayList<String> getRelationsBetweenIndividuals(InfModel model, String sourceURI, String targetURI){
+		String queryString = "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "SELECT ?property "
+				+ "WHERE { <" + sourceURI + "> ?property <" + targetURI + "> . "
+				+ "}";
+		
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
+		
+		ArrayList<String> relations = new ArrayList<String>();
+		while (results.hasNext())	
+		{			
+			QuerySolution row= results.next();
+		    RDFNode x = row.get("property");	
+		    relations.add(x.toString());
+		}			
+		return relations;
+
+	}
 }

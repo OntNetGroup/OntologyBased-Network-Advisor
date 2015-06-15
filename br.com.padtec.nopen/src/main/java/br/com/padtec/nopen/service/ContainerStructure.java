@@ -7,10 +7,13 @@ import java.util.Map.Entry;
 
 
 
+
+
 import br.com.padtec.common.dto.CardinalityDef;
 import br.com.padtec.common.dto.RelationDef;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
@@ -39,7 +42,7 @@ public class ContainerStructure {
 	}
 	
 	public static boolean verifyContainerRelation(String sourceURI, String tipo_source, String targetURI, String tipo_target) throws Exception{
-		String propertyURI = instance.getRepository().getNamespace() + "componentOf";			
+		String propertyURI = instance.repository.getNamespace() + RelationEnum.componentOf.toString();			
 		Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(instance.getRepository().getBaseModel(), sourceURI, propertyURI, tipo_target );
 		
 		String key = tipo_source + propertyURI + tipo_target;
@@ -64,8 +67,18 @@ public class ContainerStructure {
 	        @SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)it.next();
 	        RelationDef relation = (RelationDef) pairs.getValue();
-	        CardinalityDef card = relation.getCardOnRange();
+	        CardinalityDef card = relation.getCardOnRange(); //lembrete:cardinalidades invertidas
 	        Integer valueUp = card.getUpperBound();
+	        System.out.println("----------------------------------");
+	        System.out.println("CHAVE -> " + (String) pairs.getKey());
+	        System.out.println("CARDINALIDADE NO DOMAIN (UPPER BOUND) -> " + Integer.toString(valueUp));
+	        System.out.println("CARDINALIDADE NO DOMAIN (LOWER BOUND) -> " + Integer.toString(card.getLowerBound()));
+	        System.out.println("DOMAIN CLASS -> " + card.getDomainClass());
+	        System.out.println("DOMAIN PROPERTY -> " + card.getObjectProperty());
+	        System.out.println("DOMAIN RANGE TYPE -> " + card.getRangeType());
+	        System.out.println("CARDINALIDADE NO RANGE (UPPER BOUND) -> " + Integer.toString(relation.getCardOnDomain().getUpperBound()));
+	        System.out.println("CARDINALIDADE NO RANGE (LOWER BOUND) -> " + Integer.toString(relation.getCardOnDomain().getLowerBound()));
+	        
 	        ContainerStructure.containerStructure.put((String) pairs.getKey(), Integer.toString(valueUp));
 	    }
 	}

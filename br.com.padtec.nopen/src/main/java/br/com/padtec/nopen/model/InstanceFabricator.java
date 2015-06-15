@@ -626,7 +626,7 @@ public class InstanceFabricator {
 		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
 		String name_target = dtoContent.getName();
 		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
-		String propertyURI = StudioComponents.studioRepository.getNamespace() + "componentOf";
+		String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.componentOf.toString();
 		if(ContainerStructure.verifyContainerRelation(sourceURI, tipo_source, targetURI, tipo_target)){
 			FactoryUtil.createInstanceIndividual(
 					StudioComponents.studioRepository.getBaseModel(),

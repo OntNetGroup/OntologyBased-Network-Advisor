@@ -793,6 +793,11 @@ public class DtoQueryUtil {
 			}
 		}
 		
+		for (Entry<String, RelationDef> relDefEntry : result.entrySet()) {
+			RelationDef relDef = relDefEntry.getValue();
+			if(relDef.getCardOnDomain() == null) relDef.setCardOnDomain(new CardinalityDef());
+			if(relDef.getCardOnRange() == null) relDef.setCardOnRange(new CardinalityDef());
+		}
 		return result;
 	}
 }

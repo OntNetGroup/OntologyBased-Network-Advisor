@@ -1,11 +1,11 @@
 package br.com.padtec.common.dto;
 
-public class RelationDef {
+public class RelationDef { //cardinalidades invertidas
 	String objectProperty;
 	String originalDomain;
-	CardinalityDef cardOnDomain;
+	CardinalityDef cardOnDomain;// = new CardinalityDef();
 	String originalRange;
-	CardinalityDef cardOnRange;
+	CardinalityDef cardOnRange;// = new CardinalityDef();
 	String possibleDomain;
 	String possibleRange;
 	
