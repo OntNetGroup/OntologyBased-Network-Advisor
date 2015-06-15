@@ -167,7 +167,7 @@ function validator(validator, graph, app) {
     }, app));
 
     // validar inserção de links no grafo
-    validator.validate('change:target change:source', isLink, _.bind(function(err, command, next) {
+    validator.validate('add change:target change:source', isLink, _.bind(function(err, command, next) {
     	
     	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
     	if(command.action === 'change:source') return next('Invalid operation!');
