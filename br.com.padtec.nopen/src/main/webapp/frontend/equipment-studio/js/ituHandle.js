@@ -171,6 +171,10 @@ function ituHandle(paper, graph, validator){
 				            	cell.attr(".inPort/title", "");
 				            	cell.attr(".outPort/title", "");
 				            	
+				            	
+				            	var inIds = [];
+				            	var outIds = [];
+				            	
 				            	// Get all elements and check if exist some in or out port
 				            	$.each($('#itu-iframe').get(0).contentWindow.app.graph.getElements(), function(index, value) {
 				            		
@@ -180,10 +184,7 @@ function ituHandle(paper, graph, validator){
 						            	hasIn = true;
 						            	
 						            	cell.attributes.inPorts[value.id] = value.attr('text/text');
-//						            	cell.attr(".inPort/title", cell.attr(".inPort/title") + value.attr('text/text') + '\r\n');
-						            	
-//						            	console.log("ID IN: " + value.id);
-//						            	console.log("IN PORT: " + cell.attributes.inPorts[value.id]);
+						            	inIds.push(value.id);
 				            		}
 				            		
 				            		if(value.get('subtype') === 'Output') {
@@ -192,14 +193,76 @@ function ituHandle(paper, graph, validator){
 						            	hasOut = true;
 						            	
 						            	cell.attributes.outPorts[value.id] = value.attr('text/text');
-//						            	cell.attr(".outPort/title", cell.attr(".outPort/title") + value.attr('text/text') + '\r\n');
-						            	
-//						            	console.log("ID OUT: " + value.id);
-//						            	console.log("OUT PORT: " + cell.attributes.outPorts[value.id]);
+						            	outIds.push(value.id);
 				            		}
 				            		
 				            	});
 				        		
+				            	//delete inPort if the in port was delete in ITU studio
+				            	$.each(cell.attributes.inPorts, function(index, value) {
+				            		var deleteIndex = true;
+				            		$.each(inIds, function(i, value) {
+					            		if(index === value) {
+					            			deleteIndex = false;
+					            		}
+					            	});
+				            		if(deleteIndex) {
+				            			deleteConnectedPort(index, cell.attributes.connectedPorts[index][0]);
+				            			delete cell.attributes.inPorts[index];
+				            		}
+				            	});
+				            	
+				            	//delete outPort if the out port was delete in ITU studio
+				            	$.each(cell.attributes.outPorts, function(index, value) {
+				            		var deleteIndex = true;
+				            		$.each(outIds, function(i, value) {
+					            		if(index === value) {
+					            			deleteIndex = false;
+					            		}
+					            	});
+				            		if(deleteIndex) {
+				            			deleteConnectedPort(index, cell.attributes.connectedPorts[index][0]);
+				            			delete cell.attributes.outPorts[index];
+				            		}
+				            	});
+				            	
+				            	//delete connected ports
+				            	function deleteConnectedPort(id, idParent) {
+				            		
+				            		var port1 = undefined, port2 = undefined;
+				    				$.each(graph.getElements(), function(index, c) {
+				    					
+				    					//delete ports
+				    					if(c.get('subType') === 'card') {
+				    						if(c.attributes.connectedPorts[id]) {
+				    							port1 = c.id;
+				    							delete c.attributes.connectedPorts[id];
+				    						}
+				    						if(c.attributes.connectedPorts[idParent]){
+				    							port2 = c.id;
+				    							delete c.attributes.connectedPorts[idParent];
+				    						}
+				    					}
+				    					
+				    				});
+				    				
+				    				var removed = false;
+				    				$.each(graph.getLinks(), function(index, l) {
+				    					//check if link already removed
+				    					if(!removed) {
+				    						if(l.get('source').id === port1 && l.get('target').id === port2) {
+				    							l.remove();
+				    							removed = true;
+				    						}
+				    						else if(l.get('target').id === port1 && l.get('source').id === port2) {
+				    							l.remove();
+				    							removed = true;
+				    						}
+				    					}
+				    				});
+									
+				            	}
+				            	
 				            	if(!hasIn) {
 				            		cell.attr('.inPort/fill', 'none');
 					            	cell.attr('.inPort/stroke', 'none');

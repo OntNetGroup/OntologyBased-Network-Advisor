@@ -20,6 +20,7 @@ joint.shapes.equipment.Card = joint.shapes.basic.Generic.extend({
     defaults: joint.util.deepSupplement({
     
         type: 'equipment.Card',
+        id: '',
         attrs: {
             '.body': { fill: '#FFFFFF', stroke: 'black', width: 100, height: 60 },
             'text': { 'font-size': 14, text: '', 'ref-x': .5, 'ref-y': .5, ref: '.body', 'y-alignment': 'middle', 'x-alignment': 'middle', fill: 'black', 'font-family': 'Arial, helvetica, sans-serif' },

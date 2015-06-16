@@ -2,7 +2,6 @@ var Stencil = {};
 
 Stencil.groups = {
 		equipment: { index: 1, label: 'Equipment Holder' },
-		card: { index: 2, label: 'Card'  }
 };
 
 Stencil.shapes = {
@@ -33,19 +32,29 @@ Stencil.shapes = {
 		            	}
 		            }),
 		            //Card
-		            new joint.shapes.basic.Rect({
-		            	size: { width: 10, height: 20 },
-		            	subType : 'card' ,
-		            	supervisor: '' ,
-		            	supervisorID: '' ,
-		            	attrs: {
-		            		rect: {
-		            			//fill: '#ADC2A7'
-		            			fill: '#fffb82'
-		            		},
-		            		//text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
-		            	}
-		            }),
+		            new joint.shapes.equipment.Card({
+						size: { width: 10, height: 20 },
+						subType : 'card' ,
+						supervisor: '' ,
+						supervisorID: '' ,
+						inPorts: {},
+						outPorts: {},
+						connectedPorts: {},
+						attrs: {
+							'.body': {
+								//fill: '#ADC2A7'
+								fill: '#fffb82'
+							},
+							'.inPort': {
+					            //fill: 'none',
+					        },
+					        '.outPort': {
+					        	//fill: 'none',
+					        },
+							//text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
+						}
+					}),
+		            
 		            //Supervisor
 		            new joint.shapes.basic.Rect({
 		            	subType : 'supervisor' ,
@@ -96,31 +105,7 @@ Stencil.shapes = {
 		                         })
 		                         ],
 
-		            card: [
-
-						new joint.shapes.equipment.Card({
-							size: { width: 10, height: 20 },
-							subType : 'card' ,
-							supervisor: '' ,
-							supervisorID: '' ,
-							inPorts: {},
-							outPorts: {},
-							connectedPorts: {},
-							attrs: {
-								'.body': {
-									//fill: '#ADC2A7'
-									fill: '#fffb82'
-								},
-								'.inPort': {
-						            //fill: 'none',
-						        },
-						        '.outPort': {
-						        	//fill: 'none',
-						        },
-								//text: { text: 'card', fill: '#000000', 'font-size': 15, stroke: '#000000', 'stroke-width': 0 }
-							}
-}),
-		            ]
+		            
 };
 
 
