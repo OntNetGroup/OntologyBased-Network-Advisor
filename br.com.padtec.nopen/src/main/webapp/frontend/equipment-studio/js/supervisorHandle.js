@@ -35,15 +35,6 @@ function setSupervisor(graph,cards){
 }
 
 function setSupervisornull(graph,cards){
-//  console.log(cards);   
-//  console.log(cards.val());
-//	console.log(graph);
-//	console.log(supervisord);
-//	console.log(supervisord.id);
-//	console.log(cards.length);
-//	for(var i = 0; i < cards.length; i++){
-//		console.log(cards[i].value);	
-//	}
 		
 	var card;
 //	card.set("supervisor" , (supervisord.id));

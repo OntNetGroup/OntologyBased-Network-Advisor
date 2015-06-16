@@ -54,9 +54,15 @@
 		}
 		if (selectedOpts.length == 1){
 			var card = app.graph.getCell(selectedOpts.val());
-			var cardID = card.id;
+			var cardID = card.get('id');
+			var cardName = card.attributes.attrs.name.text;
+			console.log(card);
+			console.log(cardID);
+			console.log(cardName);
+			console.log(supervisorID);
 			
-		      //result = canUnsupervise(cardID);
+			
+		      //result = canUnsupervise(cardID, "card" ,);
 		      var result = "true";
 		      if (result === "true"){
 		    	setSupervisornull(app.graph,selectedOpts);
@@ -107,9 +113,15 @@
 			e.preventDefault();
 		}
 		if (selectedOpts.length == 1){
-// 			var card = app.graph.getCell(selectedOpts.val());
-// 			var cardID = selectedOpts.val();
+			var card = app.graph.getCell(selectedOpts.val());
+			var cardID = card.get('id');
+			var cardName = card.attributes.attrs.name.text;
 			var supervisorID = supervisord.id;
+			console.log(card);
+			console.log(cardID);
+			console.log(cardName);
+			console.log(supervisorID);
+			
 			//result = canSupervise(cardID , supervisorID);
 		      var result = "true";
 		      if (result === "true"){
