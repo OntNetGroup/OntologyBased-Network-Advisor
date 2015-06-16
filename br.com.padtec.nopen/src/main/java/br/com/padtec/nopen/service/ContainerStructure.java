@@ -68,9 +68,16 @@ public class ContainerStructure {
 	        @SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)it.next();
 	        RelationDef relation = (RelationDef) pairs.getValue();
-	        CardinalityDef card = relation.getCardOnDomain();
+	        CardinalityDef card = relation.getCardOnRange();
 	        Integer valueUp = card.getUpperBound();
-	        
+	        /*System.out.println("----------------------------");
+	        System.out.println("CARDINALITY ON DOMAIN (lower bound) -> " + Integer.toString(card.getLowerBound()));
+	        System.out.println("CARDINALITY ON DOMAIN (upper bound) -> " + Integer.toString(card.getUpperBound()));
+	        System.out.println(" DOMAIN -> " + relation.getPossibleDomain());
+	        System.out.println(" RANGE -> " + relation.getPossibleRange());
+	        System.out.println("CARDINALITY ON RANGE (lower bound) -> " + Integer.toString(relation.getCardOnRange().getLowerBound()));
+	        System.out.println("CARDINALITY ON RANGE (upper bound) -> " + Integer.toString(relation.getCardOnRange().getUpperBound()));
+	        System.out.println();*/
 	        ContainerStructure.containerStructure.put((String) pairs.getKey(), Integer.toString(valueUp));
 	    }
 	}

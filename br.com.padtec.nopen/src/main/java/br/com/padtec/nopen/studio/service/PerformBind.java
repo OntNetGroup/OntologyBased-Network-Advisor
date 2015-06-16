@@ -134,7 +134,7 @@ public class PerformBind {
 				}	
 
 			}else {
-				NOpenLog.appendLine("Error: The Adaptation Function " + name_source + "cannot be bound to " + name_target);
+				NOpenLog.appendLine("Error: The Transport Function " + name_source + "cannot be bound to " + name_target);
 				throw new Exception("Error: Unexpected bind between " + name_source + "and " + name_target);
 			}
 			
