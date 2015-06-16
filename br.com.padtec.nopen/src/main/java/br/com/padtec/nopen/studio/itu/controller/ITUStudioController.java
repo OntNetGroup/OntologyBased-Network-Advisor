@@ -386,6 +386,17 @@ public class ITUStudioController {
 	}
 	
 	/**
+	 * @param transportFunction: id, name and type of a transport function
+	 * @return: atributos of the given transport function in json format
+	 */
+	@RequestMapping(value = "/loadTransportFunctionAttributes", method = RequestMethod.POST)
+	public @ResponseBody String loadTransportFunctionAttributes(@RequestParam("transportFunction") String transportFunction)
+	{
+		DtoJointElement dtoTransportFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(transportFunction, DtoJointElement.class);
+		return new String();
+	}
+	
+	/**
 	 * @param fileName: nome do arquivo contendo o grafo desejado no formato JSON (nome do card que se deseja abrir, no caso)
 	 * @return: conteudo do grafo no formato JSON or error
 	 */
