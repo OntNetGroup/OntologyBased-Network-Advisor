@@ -38,20 +38,29 @@ public class Provisioner {
 	List<Interface> INT_SK_LIST;
 	OKCoUploader okcoUploader = new OKCoUploader("Provisioner");
 	long reasoningTimeExecPostInstances = 0;
+	long createInstancesTime = 0;
 	
 	public long getReasoningTimeExecPostInstances() {
 		return reasoningTimeExecPostInstances;
 	}
 	
 	
+	public long getCreateInstancesTime() {
+		return createInstancesTime;
+	}
+
+
 	public Provisioner(String tBoxFile, String declaredInstancesFile, String possibleEquipFile, int declaredReplications, int possibleReplications) throws Exception {
 //		try{
 			this.possibleEquipFile = possibleEquipFile;
 			//#1
 			model = OWLUtil.createTBox(this.okcoUploader, tBoxFile);
+			
 			ns = model.getNsPrefixURI("");
 			//#3
+			Date beginDate = new Date();
 			OWLUtil.createInstances(model, declaredInstancesFile, declaredReplications);
+			createInstancesTime = PerformanceUtil.getExecutionTime(beginDate);
 			this.declaredEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
 			createInterfaceHash(this.declaredEquip);
 			//#7 and #8
@@ -70,12 +79,15 @@ public class Provisioner {
 			INT_SK_LIST.removeAll(bindedInterfaces);
 			
 			//#15
+			beginDate = new Date();
 			OWLUtil.createInstances(model, possibleEquipFile, possibleReplications);
+			createInstancesTime += PerformanceUtil.getExecutionTime(beginDate);
 			this.possibleEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
 			this.possibleEquip.removeAll(this.declaredEquip);
 			createInterfaceHash(this.possibleEquip);
 			bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
 			createBindedInterfaceHash(bindedInterfaces);
+			
 			//#16
 			verifiyMinimumEquipWithPM();
 			
@@ -83,6 +95,8 @@ public class Provisioner {
 			
 			//#17
 			reasoningTimeExecPostInstances = OWLUtil.runReasoner(okcoUploader, true, true, true);
+			System.out.println(PerformanceUtil.getExecutionMessage("OWLUtil.createInstances", createInstancesTime));
+			
 //		}catch(Exception e){
 ////			OWLUtil.saveNewOwl(model, "resources/output/", "");
 //			throw e;
