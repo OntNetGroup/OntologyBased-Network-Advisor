@@ -25,7 +25,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Card_Layer,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Card_Layer.toString(),
 			repository.getNamespace()+layerId
 		);
 		
@@ -46,7 +46,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+cardId, 
-			repository.getNamespace()+RelationEnum.ComponentOf2_Card_TF_Card_Element,
+			repository.getNamespace()+RelationEnum.ComponentOf2_Card_TF_Card_Element.toString(),
 			repository.getNamespace()+afId
 		);
 		
@@ -80,7 +80,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+afId, 
-			repository.getNamespace()+RelationEnum.ComponentOf15_Adaptation_Function_Adaptation_Function_Output,
+			repository.getNamespace()+RelationEnum.ComponentOf15_Adaptation_Function_Adaptation_Function_Output.toString(),
 			repository.getNamespace()+outputId
 		);		
 		
@@ -122,7 +122,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.ComponentOf20_Trail_Termination_Function_Trail_Termination_Function_Output,
+			repository.getNamespace()+RelationEnum.ComponentOf20_Trail_Termination_Function_Trail_Termination_Function_Output.toString(),
 			repository.getNamespace()+outputId
 		);		
 		
@@ -143,7 +143,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.ComponentOf21_Trail_Termination_Function_Trail_Termination_Function_Input,
+			repository.getNamespace()+RelationEnum.ComponentOf21_Trail_Termination_Function_Trail_Termination_Function_Input.toString(),
 			repository.getNamespace()+inputId
 		);		
 		
@@ -202,14 +202,14 @@ public class InstanceFabricator {
 		FactoryUtil.deleteObjectProperty(
 			repository.getBaseModel(),
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Card_Layer,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Card_Layer.toString(),
 			repository.getNamespace()+srcLayerId
 		);
 		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Card_Layer,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf7_Trail_Termination_Function_Card_Layer.toString(),
 			repository.getNamespace()+tgtLayerId
 		);
 		
@@ -225,7 +225,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+ttfId, 
-			repository.getNamespace()+RelationEnum.binds_Trail_Termination_Function_Adaptation_Function,
+			repository.getNamespace()+RelationEnum.binds_Trail_Termination_Function_Adaptation_Function.toString(),
 			repository.getNamespace()+afId
 		);
 		
@@ -241,7 +241,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+afId, 
-			repository.getNamespace()+RelationEnum.binds_Adaptation_Function_Trail_Termination_Function,
+			repository.getNamespace()+RelationEnum.binds_Adaptation_Function_Trail_Termination_Function.toString(),
 			repository.getNamespace()+ttfId
 		);
 		
@@ -253,7 +253,7 @@ public class InstanceFabricator {
 		FactoryUtil.deleteObjectProperty(
 			repository.getBaseModel(),
 			repository.getNamespace()+srcTTFId, 
-			repository.getNamespace()+RelationEnum.binds_Trail_Termination_Function_Adaptation_Function,
+			repository.getNamespace()+RelationEnum.binds_Trail_Termination_Function_Adaptation_Function.toString(),
 			repository.getNamespace()+tgtAFId
 		);
 		
@@ -265,7 +265,7 @@ public class InstanceFabricator {
 		FactoryUtil.deleteObjectProperty(
 			repository.getBaseModel(),
 			repository.getNamespace()+srcAFId, 
-			repository.getNamespace()+RelationEnum.binds_Adaptation_Function_Trail_Termination_Function,
+			repository.getNamespace()+RelationEnum.binds_Adaptation_Function_Trail_Termination_Function.toString(),
 			repository.getNamespace()+tgtTTFId
 		);
 		
@@ -289,7 +289,49 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createShelf(OKCoUploader repository, String shelfId, String shelfName, String rackId, String rackName) throws Exception
+	public static void createRackForShelf(OKCoUploader repository, String rackId, String rackName, String shelfId, String shelfName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+rackId, 
+			repository.getNamespace()+ConceptEnum.Rack.toString()
+		);
+		
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+rackId, 
+			repository.getNamespace()+RelationEnum.ComponentOf9_Rack_Shelf.toString(),
+			repository.getNamespace()+shelfId
+		);	
+		
+		NOpenLog.appendLine(repository.getName()+": Rack "+rackName+" created for Shelf "+shelfName);
+	}	
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createShelfAtRack(OKCoUploader repository, String shelfId, String shelfName, String rackId, String rackName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+shelfId, 
+			repository.getNamespace()+ConceptEnum.Shelf.toString()
+		);
+
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+rackId, 
+			repository.getNamespace()+RelationEnum.ComponentOf9_Rack_Shelf.toString(),
+			repository.getNamespace()+shelfId
+		);		
+		
+		NOpenLog.appendLine(repository.getName()+": Shelf "+shelfName+" created at Rack: "+rackName);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createShelfForSlot(OKCoUploader repository, String shelfId, String shelfName, String slotId, String slotName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
@@ -300,18 +342,18 @@ public class InstanceFabricator {
 
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
-			repository.getNamespace()+rackId, 
-			repository.getNamespace()+RelationEnum.ComponentOf9_Rack_Shelf,
-			repository.getNamespace()+shelfId
+			repository.getNamespace()+shelfId, 
+			repository.getNamespace()+RelationEnum.ComponentOf10_Shelf_Slot.toString(),
+			repository.getNamespace()+slotId
 		);		
 		
-		NOpenLog.appendLine(repository.getName()+": Shelf "+shelfName+" created at Rack: "+rackName);
+		NOpenLog.appendLine(repository.getName()+": Shelf "+shelfName+" created for Slot: "+slotId);
 	}
 	
 	/**
 	 * @author John Guerson
 	 */
-	public static void createSlot(OKCoUploader repository, String slotId, String slotName, String shelfId, String shelfName) throws Exception
+	public static void createSlotAtShelf(OKCoUploader repository, String slotId, String slotName, String shelfId, String shelfName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
@@ -322,7 +364,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+shelfId, 
-			repository.getNamespace()+RelationEnum.ComponentOf10_Shelf_Slot,
+			repository.getNamespace()+RelationEnum.ComponentOf10_Shelf_Slot.toString(),
 			repository.getNamespace()+slotId
 		);	
 		
@@ -332,7 +374,49 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createSubSlot(OKCoUploader repository, String subslotId, String subslotName, String slotId, String slotName) throws Exception
+	public static void createSubSlotForCard(OKCoUploader repository, String subslotId, String subslotName, String cardId, String cardName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+subslotId, 
+			repository.getNamespace()+ConceptEnum.Subslot.toString()
+		);
+
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+subslotId, 
+			repository.getNamespace()+RelationEnum.ComponentOf6_Subslot_Card.toString(),
+			repository.getNamespace()+cardId
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Subslot "+subslotName+" created at Card: "+cardName);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createSlotForCard(OKCoUploader repository, String slotId, String slotName, String cardId, String cardName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+slotId, 
+			repository.getNamespace()+ConceptEnum.Slot.toString()
+		);
+
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+slotId, 
+			repository.getNamespace()+RelationEnum.ComponentOf5_Slot_Card.toString(),
+			repository.getNamespace()+cardId
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Slot "+slotName+" created at Card: "+cardName);
+	}
+
+	/**
+	 * @author John Guerson
+	 */
+	public static void createSubSlotAtSlot(OKCoUploader repository, String subslotId, String subslotName, String slotId, String slotName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
@@ -343,11 +427,22 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+slotId, 
-			repository.getNamespace()+RelationEnum.ComponentOf11_Slot_Subslot,
+			repository.getNamespace()+RelationEnum.ComponentOf11_Slot_Subslot.toString(),
 			repository.getNamespace()+subslotId
 		);	
 		
 		NOpenLog.appendLine(repository.getName()+": SubSlot "+subslotName+" created at Slot: "+slotName);
+	}
+	
+	public static void createEquipment(OKCoUploader repository, String equipmentId, String equipmentName) throws Exception
+	{			
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			equipmentId, 
+			repository.getNamespace()+ConceptEnum.Equipment.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Equipment "+equipmentName+" created");
 	}
 	
 	/**
@@ -367,6 +462,26 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
+	public static void createCardAtSupervisor(OKCoUploader repository, String cardId, String cardName, String supervisorId, String supervisorName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			cardId, 
+			repository.getNamespace()+ConceptEnum.Card.toString()
+		);
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(),
+			supervisorId,
+			repository.getNamespace()+RelationEnum.INV_ComponentOf_Supervisor_Card.toString(), 
+			cardId
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Card "+cardName+" created at Supervisor"+supervisorName);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
 	public static void createCardAtSlot(OKCoUploader repository, String cardId, String cardName, String slotId, String slotName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
@@ -378,12 +493,13 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+slotId, 
-			repository.getNamespace()+RelationEnum.ComponentOf5_Slot_Card,
+			repository.getNamespace()+RelationEnum.ComponentOf5_Slot_Card.toString(),
 			repository.getNamespace()+cardId
 		);
 		
 		NOpenLog.appendLine(repository.getName()+": Card "+cardName+" created at Slot: "+slotName);
 	}
+	
 	
 	/**
 	 * @author John Guerson
@@ -399,7 +515,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+subslotId, 
-			repository.getNamespace()+RelationEnum.ComponentOf6_Subslot_Card,
+			repository.getNamespace()+RelationEnum.ComponentOf6_Subslot_Card.toString(),
 			repository.getNamespace()+cardId
 		);
 		
@@ -461,21 +577,22 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createSupervisor(OKCoUploader repository, String supervisorId, String supervisorName, String holderId, String holderName) throws Exception
+	public static void createSupervisor(OKCoUploader repository, String supervisorId, String supervisorName, String equipmentId, String equipmentName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
 			repository.getNamespace()+supervisorId,			 
 			repository.getNamespace()+ConceptEnum.Supervisor.toString()			
 		);
+		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+supervisorId,			 
-			repository.getNamespace()+RelationEnum.supervises_Supervisor_Equipment,
-			repository.getNamespace()+holderId
+			repository.getNamespace()+RelationEnum.supervises_Supervisor_Equipment.toString(),
+			repository.getNamespace()+equipmentId
 		);
 		
-		NOpenLog.appendLine(repository.getName()+": Supervisor "+supervisorName+" created for Equipment Holder "+holderName);
+		NOpenLog.appendLine(repository.getName()+": Supervisor "+supervisorName+" created for Equipment "+equipmentName);
 	}
 	
 	/**
@@ -486,7 +603,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+cardId,			 
-			repository.getNamespace()+RelationEnum.ComponentOf_Card_Supervisor,
+			repository.getNamespace()+RelationEnum.ComponentOf_Card_Supervisor.toString(),
 			repository.getNamespace()+supervisorId
 		);
 	}
@@ -499,7 +616,7 @@ public class InstanceFabricator {
 		FactoryUtil.deleteObjectProperty(
 			repository.getBaseModel(), 
 			repository.getNamespace()+cardId,			 
-			repository.getNamespace()+RelationEnum.ComponentOf_Card_Supervisor,
+			repository.getNamespace()+RelationEnum.ComponentOf_Card_Supervisor.toString(),
 			repository.getNamespace()+supervisorId
 		);
 	}

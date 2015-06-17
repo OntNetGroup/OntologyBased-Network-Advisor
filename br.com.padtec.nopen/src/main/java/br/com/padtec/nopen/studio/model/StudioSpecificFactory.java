@@ -265,15 +265,15 @@ public class StudioSpecificFactory {
 		}		
 		else if(holderType.equals("slot") && containerType.equals("shelf"))
 		{
-			InstanceFabricator.createSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
+			InstanceFabricator.createSlotAtShelf(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
 		}
 		else if(holderType.equals("subslot") && containerType.equals("slot"))
 		{
-			InstanceFabricator.createSubSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
+			InstanceFabricator.createSubSlotAtSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
 		}
 		else if(holderType.equals("shelf")  && containerType.equals("rack"))
 		{
-			InstanceFabricator.createShelf(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
+			InstanceFabricator.createShelfAtRack(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
 		}
 		else if(holderType.equals("rack"))
 		{
