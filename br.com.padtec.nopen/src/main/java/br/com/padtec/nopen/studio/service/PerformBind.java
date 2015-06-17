@@ -38,19 +38,10 @@ public class PerformBind {
 			String tipo_input = tipo_target + "_Input";
 			String relation_target = null;
 			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
-			String propertyURI = repository.getNamespace() + RelationEnum.binds.toString();
-			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(repository.getBaseModel(), name_source, propertyURI, tipo_target );
-				
-			String key = tipo_source + propertyURI + tipo_target;
-			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
-			Integer cardinality_input_target = Integer.parseInt(cardinality);
-			//create the Reference Point if exists and the relation between reference point and ports
-			HashSet<String> rps_between_ports = new HashSet<String>();
-			rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, repository);
-			boolean isClient = false;
-			isClient = isClient(id_source, id_target, repository);
-			
-			if((rps_between_ports.size() > 0) && ((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1)) && (isClient)){
+
+			if(canCreateBind(id_source, name_source, id_target, name_target, tipo_source, tipo_target, repository )){
+				HashSet<String> rps_between_ports = new HashSet<String>();
+				rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, repository);
 				String tipo_rp;
 				String rp_name;
 				tipo_rp = rps_between_ports.iterator().next();
@@ -189,6 +180,41 @@ public class PerformBind {
 			}
 		}
 		return false;
+	}
+	
+	public boolean canCreateBind(String id_source, String name_source, String id_target, String name_target, String tipo_source, String tipo_target, OKCoUploader repository ){
+		String tipo_output = tipo_source + "_Output";
+		String tipo_input = tipo_target + "_Input";
+
+		
+		String propertyURI = repository.getNamespace() + RelationEnum.binds.toString();
+		Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(repository.getBaseModel(), name_source, propertyURI, tipo_target );
+			
+		String key = tipo_source + propertyURI + tipo_target;
+		String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
+		Integer cardinality_input_target = Integer.parseInt(cardinality);
+		//create the Reference Point if exists and the relation between reference point and ports
+		HashSet<String> rps_between_ports = new HashSet<String>();
+		rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, repository);
+		boolean isClient = false;
+		isClient = isClient(id_source, id_target, repository);
+		if(rps_between_ports.size() > 0){
+			if((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1)){
+				if(isClient){
+					return true;
+				} else{
+					NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the source layer is not client of target layer.");
+					return false;
+				}
+			} else {
+				NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the cardinality of the relation is already maximum.");
+				return false;
+			}
+		}
+		else{
+			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + "because there is no Reference Point between " + tipo_source + " and " + tipo_target + " . ");
+			return false;
+		}
 	}
 
 	public OKCoUploader getRepository() {
