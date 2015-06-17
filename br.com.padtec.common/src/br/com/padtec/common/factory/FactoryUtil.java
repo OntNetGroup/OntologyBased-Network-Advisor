@@ -1,5 +1,6 @@
 package br.com.padtec.common.factory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.padtec.common.queries.QueryUtil;
@@ -13,10 +14,25 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFList;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 public class FactoryUtil {
-
+	ArrayList<Statement> stmts = new ArrayList<Statement>();
+	List<String> newIndividuals = new ArrayList<String>();
+	
+	public List<String> getNewIndividuals() {
+		return newIndividuals;
+	}
+	
+	public boolean newIndividualsContains(String individualURI) {
+		return newIndividuals.contains(individualURI);
+	}
+	
+	public void addNewIndividual(String individualURI){
+		this.newIndividuals.add(individualURI);
+	}
 	/**
 	 * Create an Instance of Data Property as from an Individual and enforce all dataTypeURI's super DP.
 	 * 
@@ -52,6 +68,27 @@ public class FactoryUtil {
 		if(forceSuperDP){
 			enforceInstAttrSuper(model, individualURI, dataPropertyURI, value, typeURI);
 		}		
+	}
+	
+	/**
+	 * Create an Instance of Data Property as from an Individual and enforce all dataTypeURI's super DP.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * @param forceSuperTypes: force all super types
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	public void createInstanceAttributeStatement(OntModel model, String individualURI, String dataPropertyURI, String value, String typeURI)
+	{			
+		//create the individualURI as from classURI
+		Individual individual = model.getIndividual(individualURI);
+		DatatypeProperty dataProperty = model.getDatatypeProperty(dataPropertyURI);
+		Literal literal = model.createTypedLiteral(value, typeURI);
+		individual.addLiteral(dataProperty, literal);
+		Statement stmt = model.createStatement(individual, dataProperty, literal);
+		this.stmts.add(stmt);				
 	}
 	
 	/**
@@ -102,7 +139,10 @@ public class FactoryUtil {
 	 * @author Freddy Brasileiro
 	 */
 	static public void createAllDifferent(OntModel model, List<String> individualURIs)
-	{			
+	{		
+		System.out.println("\nExecuting createAllDifferent()...");
+		System.out.println("\nNumber of individuals: " + individualURIs.size() + "...");
+		
 		RDFNode[] nodes = new RDFNode[individualURIs.size()];
 				
 		for (int i = 0; i < individualURIs.size(); i++) {
@@ -112,11 +152,8 @@ public class FactoryUtil {
 		RDFList rdfList = model.createList(nodes);
 		
 		model.createAllDifferent(rdfList);
-		
-		System.out.println();
 	}
-	
-	
+		
 	/**
 	 * Create an Individual as from some classURI and from all classURI's super types.
 	 * 
@@ -140,6 +177,37 @@ public class FactoryUtil {
 		
 		if(forceSuperTypes){
 			enforceInstIndvSuperTypes(model, individualURI, classURI);
+		}		
+	}
+	
+	/**
+	 * Create an Individual as from some classURI and from all classURI's super types.
+	 * 
+	 * @param model: OntModel
+	 * @param individualURI: new Individual URI
+	 * @param classURI: class URI
+	 * @param forceSuperTypes: force all super types
+	 * 
+	 * @author Freddy Brasileiro
+	 * @throws Exception 
+	 */
+	public void createInstanceIndividualStatement(OntModel model, String individualURI, String classURI, boolean forceSuperTypes) throws Exception
+	{			
+		System.out.println("\nExecuting createInstanceIndividualStatement(" + individualURI + ")...");
+		//create the individualURI as from classURI
+		Resource ontClass = model.createResource(classURI);
+		Resource individual = model.createResource(individualURI);
+		
+		Statement stmt = model.createStatement(individual, RDF.type, ontClass);
+		this.stmts.add(stmt);
+		
+		if(forceSuperTypes){
+			List<String> superTypes = QueryUtil.getSupertypesURIs(model, classURI);
+			for (String superType : superTypes) {
+				Resource superClass = model.createResource(superType);
+				Statement stmtSuper = model.createStatement(individual, RDF.type, superClass);
+				this.stmts.add(stmtSuper);
+			}
 		}		
 	}
 	
@@ -254,6 +322,64 @@ public class FactoryUtil {
 		
 		if(forceCandSubRelation){
 			enforceSubRelCandidates(model, indvSourceURI, objectPropertyURI, indvTargetURI, forceInverses);
+		}
+	}
+	
+	/**
+	 * Create an object property between two individuals, and all super OP and all inverses between the same two individuals.
+	 * 
+	 * @param model: OntModel
+	 * @param indvSourceURI: source individual URI
+	 * @param objectPropertyURI: object property URI
+	 * @param indvTargetURI: target individual URI
+	 * @param forceSuperObjProp: force all super object properties
+	 * @param forceInverses: force all inverses
+	 * 
+	 * @author Freddy Brasileiro
+	 * @throws Exception 
+	 */
+	public void createInstanceRelationStatement(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI, boolean forceCandSubRelation) throws Exception
+	{			
+		if(model == null){
+			throw new Exception("The model is null.");
+		}
+		
+		System.out.println("\n"
+							+ "Executing createInstanceRelationStatement(" 
+							+ indvSourceURI.replace(model.getNsPrefixURI(""), "") 
+							+ ", " 
+							+ objectPropertyURI.replace(model.getNsPrefixURI(""), "") 
+							+ ", " 
+							+ indvTargetURI.replace(model.getNsPrefixURI(""), "") 
+							+ ")...");
+		//Create an object property between two individuals
+		Resource indvSource = model.createResource(indvSourceURI);
+		Resource indvTarget = model.createResource(indvTargetURI);
+		Property objProp = model.createProperty(objectPropertyURI);
+		String ns = model.getNsPrefixURI("");
+		if(indvSource == null){
+			throw new Exception("Check your specification. The individual " + indvSourceURI.replace(ns, "") + " is UNDECLARED.");
+		}else if(indvTarget == null){
+			throw new Exception("Check your specification. The individual " + indvTargetURI.replace(ns, "") + " is UNDECLARED.");
+		}else if(objProp == null){
+			throw new Exception("Check your specification. The relation " + objectPropertyURI.replace(ns, "") + " is UNDECLARED.");
+		}
+		
+		Statement stmt = model.createStatement(indvSource, objProp, indvTarget);
+//		model.add(stmt);
+		this.stmts.add(stmt);
+		
+		if(forceCandSubRelation){
+			//create all super OP between the same two individuals
+			List<String> candSubOPUris = QueryUtil.getPossibleSubRelations(model, indvSourceURI, objectPropertyURI, indvTargetURI);
+			for (String candSubOPURI : candSubOPUris) {
+				ObjectProperty candSubOP = model.getObjectProperty(candSubOPURI);
+				if(candSubOP != null){
+					Statement superStmt = model.createStatement(indvSource, candSubOP, indvTarget);
+//					model.add(superStmt);
+					this.stmts.add(superStmt);					
+				}
+			}
 		}
 	}
 	
@@ -624,5 +750,10 @@ public class FactoryUtil {
 		i1.setDifferentFrom(i2);
 		i2.setDifferentFrom(i1);		
 		return model;
+	}
+
+	public void processStatements(OntModel model) {
+		model.add(this.stmts);		
+		this.stmts.clear();
 	}	
 }

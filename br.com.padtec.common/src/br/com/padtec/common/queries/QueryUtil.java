@@ -1245,22 +1245,38 @@ public class QueryUtil {
 	 * 
 	 * @param model: jena.ontology.InfModel 
 	 * 
-	 * @author John Guerson
+	 * @author Freddy Brasileiro
 	 */
-	static public List<String> getIndividualsURIFromAllClasses(InfModel infModel)
+	static public List<String> getIndividualsURIFromAllClasses(InfModel model)
 	{	
-		List<String> individuals = new ArrayList<String>();		
-		List<String> classes = QueryUtil.getClassesURI(infModel);		
-		for (String classURI : classes) 
+		System.out.println("\nExecuting getIndividualsURIFromAllClasses()...");
+		List<String> result = new ArrayList<String>();		
+		String queryString = 
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		" SELECT *" +
+		" WHERE {\n" +
+			"{" +
+				" ?individual rdf:type ?class .\n " +
+				" ?class rdf:type owl:Class \n" +
+			"}UNION{" +
+				" ?individual rdf:type owl:NamedIndividual .\n" +
+			"}" +
+		"}";
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		// ResultSetFormatter.out(System.out, results, query);
+		while (results.hasNext()) 
 		{			
-			if(classURI != null)
-			{
-				for(String i: QueryUtil.getIndividualsURI(infModel, classURI)){				
-					if(!individuals.contains(i)) individuals.add(i);
-				}
-			}
-		}		
-		return individuals;
+			QuerySolution row = results.next();		    
+		    RDFNode individual = row.get("individual");		    
+		    result.add(individual.toString());	
+		    System.out.println("- Individual URI: "+individual.toString());
+		}
+			
+		return result;
 	}
 	
 	/**
