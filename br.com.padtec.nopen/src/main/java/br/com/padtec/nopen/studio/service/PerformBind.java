@@ -7,6 +7,7 @@ import java.util.HashSet;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
+import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.service.NOpenLog;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
@@ -23,12 +24,21 @@ public class PerformBind {
 	 * discover the rp for the binds and the component of
 	 * 
 	 */
-	public boolean applyBinds(String id_source, String name_source, String id_target, String name_target, String tipo_source, String tipo_target, OKCoUploader repository){
+	public static boolean applyBinds(DtoJointElement dtoContainer, DtoJointElement dtoContent){
 		try{
+			String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
+			String name_source = dtoContainer.getName();
+			String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoContainer.getType();
+			String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
+			String name_target = dtoContent.getName();
+			String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
+			String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.binds.toString();
+			String id_source = dtoContainer.getId();
+			String id_target = dtoContent.getId();
 			
 			//First, verify if the ports can have a RP between them
 			//if so, create the ports, RP and the relations between them
-			repository.getReasoner().run(repository.getBaseModel());
+			StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
 			String outputId = id_source + "_Output";
 			String tipo_output = tipo_source + "_Output";
 			String relation_source = null;
@@ -39,21 +49,21 @@ public class PerformBind {
 			String relation_target = null;
 			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
 
-			if(canCreateBind(id_source, name_source, id_target, name_target, tipo_source, tipo_target, repository )){
+			if(canCreateBind(dtoContainer, dtoContent/*id_source, name_source, id_target, name_target, tipo_source, tipo_target, StudioComponents.studioRepository */)){
 				HashSet<String> rps_between_ports = new HashSet<String>();
-				rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, repository);
+				rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, StudioComponents.studioRepository);
 				String tipo_rp;
 				String rp_name;
 				tipo_rp = rps_between_ports.iterator().next();
 				rp_name = tipo_rp + "_" + tipo_output.substring(tipo_output.indexOf("#")+1) + "_" + tipo_input.substring(tipo_input.indexOf("#")+1);
 				String rpId = rp_name;
 				
-				ArrayList<String> relationOutRp = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), tipo_output, tipo_rp, repository.getNamespace()+RelationEnum.INV_links_output.toString());
-				ArrayList<String> relationInRp = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), tipo_rp, tipo_input, repository.getNamespace()+RelationEnum.links_input.toString());
+				ArrayList<String> relationOutRp = QueryUtil.getRelationsBetweenClasses(StudioComponents.studioRepository.getBaseModel(), tipo_output, tipo_rp, StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_links_output.toString());
+				ArrayList<String> relationInRp = QueryUtil.getRelationsBetweenClasses(StudioComponents.studioRepository.getBaseModel(), tipo_rp, tipo_input, StudioComponents.studioRepository.getNamespace()+RelationEnum.links_input.toString());
 				
 				// create reference point
 				FactoryUtil.createInstanceIndividual(
-						repository.getBaseModel(), 
+						StudioComponents.studioRepository.getBaseModel(), 
 						rp_name, 
 						tipo_rp,
 						true
@@ -61,63 +71,63 @@ public class PerformBind {
 				
 				//create output
 				FactoryUtil.createInstanceIndividual(
-						repository.getBaseModel(), 
-						repository.getNamespace()+outputId, 
+						StudioComponents.studioRepository.getBaseModel(), 
+						StudioComponents.studioRepository.getNamespace()+outputId, 
 						tipo_output,
 						true
 					);
 
 				//create input
 				FactoryUtil.createInstanceIndividual(
-						repository.getBaseModel(), 
-						repository.getNamespace()+inputId, 
+						StudioComponents.studioRepository.getBaseModel(), 
+						StudioComponents.studioRepository.getNamespace()+inputId, 
 						tipo_input,
 						true
 					);
 				
 				//create relation between output and reference point
 				FactoryUtil.createInstanceRelation(
-						repository.getBaseModel(), 
-						repository.getNamespace()+id_source, 
+						StudioComponents.studioRepository.getBaseModel(), 
+						StudioComponents.studioRepository.getNamespace()+id_source, 
 						relationOutRp.get(0),
 						rpId
 					);
 				
 				//create relation between input and reference point
 				FactoryUtil.createInstanceRelation(
-						repository.getBaseModel(), 
-						repository.getNamespace()+id_target, 
+						StudioComponents.studioRepository.getBaseModel(), 
+						StudioComponents.studioRepository.getNamespace()+id_target, 
 						relationInRp.get(0),
 						rpId
 					);
 				
 								
-				source_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_source, repository.getBaseModel()); 
-				target_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_target, repository.getBaseModel()); 
+				source_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_source, StudioComponents.studioRepository.getBaseModel()); 
+				target_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(tipo_target, StudioComponents.studioRepository.getBaseModel()); 
 
 				if ((source_componentOfs.containsKey(tipo_source + "_Output")) && (target_componentOfs.containsKey(tipo_target + "_Input"))) {
 					relation_source = source_componentOfs.get(tipo_source + "_Output");
 					relation_target = target_componentOfs.get(tipo_target + "_Input");
 					//create the relation between tf and output
 					FactoryUtil.createInstanceRelation( 
-							repository.getBaseModel(), 
-							repository.getNamespace()+id_source, 
+							StudioComponents.studioRepository.getBaseModel(), 
+							StudioComponents.studioRepository.getNamespace()+id_source, 
 							relation_source,
-							repository.getNamespace()+outputId
+							StudioComponents.studioRepository.getNamespace()+outputId
 							);		
 					
-					NOpenLog.appendLine(repository.getName()+":  Output "+outputId+" created at "+ tipo_source + ": "+name_source);
+					NOpenLog.appendLine(StudioComponents.studioRepository.getName()+":  Output "+outputId+" created at "+ tipo_source + ": "+name_source);
 					
 					
 					//create the relation between tf and input
 					FactoryUtil.createInstanceRelation(
-						repository.getBaseModel(), 
-						repository.getNamespace()+id_target, 
-						repository.getNamespace()+relation_target,
-						repository.getNamespace()+inputId
+							StudioComponents.studioRepository.getBaseModel(), 
+							StudioComponents.studioRepository.getNamespace()+id_target, 
+							StudioComponents.studioRepository.getNamespace()+relation_target,
+						StudioComponents.studioRepository.getNamespace()+inputId
 					);
 					
-					NOpenLog.appendLine(repository.getName()+":  Input "+inputId+" created at "+ tipo_target + ": "+name_target);
+					NOpenLog.appendLine(StudioComponents.studioRepository.getName()+":  Input "+inputId+" created at "+ tipo_target + ": "+name_target);
 
 					NOpenLog.appendLine("Success: Binds successfully made between (" + tipo_source + "::" + name_source +", " + tipo_target + "::" + name_target + ")");
 
@@ -182,22 +192,31 @@ public class PerformBind {
 		return false;
 	}
 	
-	public boolean canCreateBind(String id_source, String name_source, String id_target, String name_target, String tipo_source, String tipo_target, OKCoUploader repository ){
+	public static boolean canCreateBind(DtoJointElement dtoContainer, DtoJointElement dtoContent/*String id_source, String name_source, String id_target, String name_target, String tipo_source, String tipo_target, OKCoUploader repository*/ ){
+		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
+		String name_source = dtoContainer.getName();
+		String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoContainer.getType();
+		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
+		String name_target = dtoContent.getName();
+		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
+		
+		String id_source = dtoContainer.getId();
+		String id_target = dtoContent.getId();
+		
 		String tipo_output = tipo_source + "_Output";
 		String tipo_input = tipo_target + "_Input";
-
 		
-		String propertyURI = repository.getNamespace() + RelationEnum.binds.toString();
-		Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(repository.getBaseModel(), name_source, propertyURI, tipo_target );
+		String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.binds.toString();
+		Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), name_source, propertyURI, tipo_target );
 			
 		String key = tipo_source + propertyURI + tipo_target;
 		String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 		Integer cardinality_input_target = Integer.parseInt(cardinality);
 		//create the Reference Point if exists and the relation between reference point and ports
 		HashSet<String> rps_between_ports = new HashSet<String>();
-		rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, repository);
+		rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, StudioComponents.studioRepository);
 		boolean isClient = false;
-		isClient = isClient(id_source, id_target, repository);
+		isClient = isClient(id_source, id_target, StudioComponents.studioRepository);
 		if(rps_between_ports.size() > 0){
 			if((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1)){
 				if(isClient){
