@@ -3,18 +3,14 @@ package provisioner.jenaUtil;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-
-import com.hp.hpl.jena.ontology.OntModel;
 
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.factory.FactoryUtil;
@@ -22,6 +18,8 @@ import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.okco.core.application.OKCoReasoner;
 import br.com.padtec.okco.core.application.OKCoSelector;
 import br.com.padtec.okco.core.application.OKCoUploader;
+
+import com.hp.hpl.jena.ontology.OntModel;
 
 public class OWLUtil {
 	public static OntModel createTBox(OKCoUploader okcoUploader, String tBoxFile) throws Exception{
@@ -84,20 +82,27 @@ public class OWLUtil {
         
         if(fileBlocks.length < 4) throw new Exception("Incomplete ABox file.\n");
         
+        FactoryUtil factory = new FactoryUtil();
         String[] individualDcls = fileBlocks[1].split(";");
-        HashMap<String, String> newMapping = createIndividualInstances(model, individualDcls, createNTimes);
+        HashMap<String, String> newMapping = createIndividualInstances(model, individualDcls, createNTimes, factory);
+        factory.processStatements(model);
         String[] relationDcls = fileBlocks[2].split(";");
-        createRelationInstances(model, relationDcls, newMapping, createNTimes);
+        createRelationInstances(model, relationDcls, newMapping, createNTimes, factory);
         String[] attributeDcls = fileBlocks[3].split(";");
-        createAttributeInstances(model, attributeDcls, newMapping, 1);
+        createAttributeInstances(model, attributeDcls, newMapping, 1, factory);
+        factory.processStatements(model);
+        FactoryUtil.createAllDifferent(model, factory.getNewIndividuals());
         
         //System.out.println();
 	}
 	
-	public static HashMap<String, String> createIndividualInstances(OntModel model, String[] individualDcls, int createNTimes) throws Exception{
+	public static HashMap<String, String> createIndividualInstances(OntModel model, String[] individualDcls, int createNTimes, FactoryUtil factory) throws Exception{
+		List<String> existentIndividuals = QueryUtil.getIndividualsURIFromAllClasses(model);
+		
 		String ns = model.getNsPrefixURI("");
 		HashMap<String, String> newMapping = new HashMap<String,String>();
-		List<String> newIndividuals = new ArrayList<String>();
+//		List<String> newIndividuals = new ArrayList<String>();
+		
 		for (int j = 1; j <= createNTimes; j++) {
 			for (String indvDcl : individualDcls) {
 				indvDcl = indvDcl.replace(" ", "").replace("\n", "");
@@ -108,7 +113,7 @@ public class OWLUtil {
 					
 					String[] individuals = indvDclSplit[1].split(",");
 					for (String indv : individuals) {
-						if(!indv.equals("layer0") || !newIndividuals.contains("layer0")){
+						if(!indv.equals("layer0") || !factory.newIndividualsContains("layer0")){
 							String lowerLayer = "";
 							if(createNTimes > 1 && !indv.equals("layer0")){
 								if(type.equals("Layer_Network")){
@@ -122,33 +127,34 @@ public class OWLUtil {
 							}
 							String oldName = indv;
 							if(!type.equals("Layer_Network")){
-								boolean indvExist = QueryUtil.individualExists(model, ns+indv);
+								//boolean indvExist = QueryUtil.individualExists(model, ns+indv);
+								boolean indvExist = existentIndividuals.contains(ns+indv);
 								if(indvExist){
 									indv += "_eq";
+								}else{
+									existentIndividuals.add(ns+indv);
 								}
 							}					
 							newMapping.put(oldName, indv);
 							
-							FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type, false);
-							
+//							FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type, false);
+							factory.createInstanceIndividualStatement(model, ns+indv, ns+type, false);
 							if(type.equals("Layer_Network") && j > 1 && !indv.equals("layer0")){
 								FactoryUtil.createInstanceRelation(model, ns+indv, ns+"client_of", ns+lowerLayer, false, false, false);
 							}
 							
-							newIndividuals.add(ns+indv);
+							factory.addNewIndividual(ns+indv);
 						}
 						
-					}
+					}					
 				}
 			}
 		}
 		
-		FactoryUtil.createAllDifferent(model, newIndividuals);
-		
 		return newMapping;
 	}
 	
-	public static void createRelationInstances(OntModel model, String[] relationDcls, HashMap<String, String> newMapping, int createNTimes) throws Exception{
+	public static void createRelationInstances(OntModel model, String[] relationDcls, HashMap<String, String> newMapping, int createNTimes, FactoryUtil factory) throws Exception{
 		String ns = model.getNsPrefixURI("");
 		for (int j = 0; j < createNTimes; j++) {
 			for (String relDcl : relationDcls) {
@@ -203,8 +209,8 @@ public class OWLUtil {
 						if(newTgt == null || newTgt.equals("")){
 							newTgt = tgt;
 						}					
-						FactoryUtil.createInstanceRelation(model, ns+newSrc, ns+relation, ns+newTgt, false, false, true);
-						
+//						FactoryUtil.createInstanceRelation(model, ns+newSrc, ns+relation, ns+newTgt, false, false, true);
+						factory.createInstanceRelationStatement(model, ns+newSrc, ns+relation, ns+newTgt, true);
 //						if(relation.equals("adapts_to")){
 //							List<String> serverLayerURIs = QueryUtil.getIndividualsURIAtObjectPropertyRange(model, ns+newTgt, ns+"client_of", ns+"Layer_Network");
 //							for (String serverLayerURI : serverLayerURIs) {
@@ -222,7 +228,7 @@ public class OWLUtil {
 		
 	}
 	
-	public static void createAttributeInstances(OntModel model, String[] attributeDcls, HashMap<String, String> newMapping, int createNTimes){
+	public static void createAttributeInstances(OntModel model, String[] attributeDcls, HashMap<String, String> newMapping, int createNTimes, FactoryUtil factory){
 		String ns = model.getNsPrefixURI("");
 		for (int j = 0; j < createNTimes; j++) {
 			for (String attDcl : attributeDcls) {
@@ -252,7 +258,8 @@ public class OWLUtil {
 							
 							indv = newMapping.get(indv);
 							
-							FactoryUtil.createInstanceAttribute(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type, false);
+//							FactoryUtil.createInstanceAttribute(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type, false);
+							factory.createInstanceAttributeStatement(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type);
 						}
 						
 					}

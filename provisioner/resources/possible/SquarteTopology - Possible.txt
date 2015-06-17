@@ -1,0 +1,557 @@
+***
+
+Layer_Network: ODU2e, ODUk, OTU, OCh, OMS, OTS;
+
+Equipment: 
+	POSSIBLE_CIC_P1;
+	
+Input_Interface:
+	in_int_Source_POSSIBLE_CIC_P1	,
+	in_int_Sink_POSSIBLE_CIC_P1	;
+	
+Output_Interface:
+	out_int_Source_POSSIBLE_CIC_P1	,
+	out_int_Sink_POSSIBLE_CIC_P1	;
+	
+AF_Source:
+	af_Source_POSSIBLE_CIC_P1;
+	
+AF_Sink:
+	af_Sink_POSSIBLE_CIC_P1;
+
+TF_Source:
+	tf_Source_POSSIBLE_CIC_P1;
+	
+TF_Sink:
+	tf_Sink_POSSIBLE_CIC_P1;
+	
+Input:
+	in_af_Source_POSSIBLE_CIC_P1	,
+	in_af_Sink_POSSIBLE_CIC_P1		,
+	in_tf_Source_POSSIBLE_CIC_P1	,
+	in_tf_Sink_POSSIBLE_CIC_P1		;
+
+Output:
+	out_af_Source_POSSIBLE_CIC_P1	,
+	out_af_Sink_POSSIBLE_CIC_P1		,
+	out_tf_Source_POSSIBLE_CIC_P1	,
+	out_tf_Sink_POSSIBLE_CIC_P1		;
+	
+Equipment: 
+	POSSIBLE_NIC_P1;
+	
+Input_Interface:
+	in_int01_Source_POSSIBLE_NIC_P1	,
+	in_int02_Source_POSSIBLE_NIC_P1	,
+	in_int_Sink_POSSIBLE_NIC_P1		;
+	
+Output_Interface:
+	out_int_Source_POSSIBLE_NIC_P1	,
+	out_int01_Sink_POSSIBLE_NIC_P1	,
+	out_int02_Sink_POSSIBLE_NIC_P1	;
+	
+AF_Source:
+	af_Source_ODUk_POSSIBLE_NIC_P1	,
+	af_Source_OTU_POSSIBLE_NIC_P1	,
+	af_Source_OCh_POSSIBLE_NIC_P1	;
+	
+AF_Sink:
+	af_Sink_ODUk_POSSIBLE_NIC_P1	,
+	af_Sink_OTU_POSSIBLE_NIC_P1	,
+	af_Sink_OCh_POSSIBLE_NIC_P1	;
+
+TF_Source:
+	tf_Source_ODUk_POSSIBLE_NIC_P1	,
+	tf_Source_OTU_POSSIBLE_NIC_P1	,
+	tf_Source_OCh_POSSIBLE_NIC_P1	;
+	
+TF_Sink:
+	tf_Sink_ODUk_POSSIBLE_NIC_P1	,
+	tf_Sink_OTU_POSSIBLE_NIC_P1	,
+	tf_Sink_OCh_POSSIBLE_NIC_P1	;
+	
+Input:
+	in_af01_Source_ODUk_POSSIBLE_NIC_P1	,
+	in_af02_Source_ODUk_POSSIBLE_NIC_P1	,
+	in_af_Sink_ODUk_POSSIBLE_NIC_P1	,
+	in_tf_Source_ODUk_POSSIBLE_NIC_P1	,
+	in_tf_Sink_ODUk_POSSIBLE_NIC_P1	,
+	
+	in_af_Source_OTU_POSSIBLE_NIC_P1	,
+	in_af_Sink_OTU_POSSIBLE_NIC_P1		,
+	in_tf_Source_OTU_POSSIBLE_NIC_P1	,
+	in_tf_Sink_OTU_POSSIBLE_NIC_P1		,
+	
+	in_af_Source_OCh_POSSIBLE_NIC_P1	,
+	in_af_Sink_OCh_POSSIBLE_NIC_P1		,
+	in_tf_Source_OCh_POSSIBLE_NIC_P1	,
+	in_tf_Sink_OCh_POSSIBLE_NIC_P1		;
+
+Output:
+	out_af_Source_ODUk_POSSIBLE_NIC_P1	,
+	out_af01_Sink_ODUk_POSSIBLE_NIC_P1	,
+	out_af02_Sink_ODUk_POSSIBLE_NIC_P1	,
+	out_tf_Source_ODUk_POSSIBLE_NIC_P1	,
+	out_tf_Sink_ODUk_POSSIBLE_NIC_P1	,
+	
+	out_af_Source_OTU_POSSIBLE_NIC_P1	,
+	out_af_Sink_OTU_POSSIBLE_NIC_P1		,
+	out_tf_Source_OTU_POSSIBLE_NIC_P1	,
+	out_tf_Sink_OTU_POSSIBLE_NIC_P1		,
+	
+	out_af_Source_OCh_POSSIBLE_NIC_P1	,
+	out_af_Sink_OCh_POSSIBLE_NIC_P1		,
+	out_tf_Source_OCh_POSSIBLE_NIC_P1	,
+	out_tf_Sink_OCh_POSSIBLE_NIC_P1		;
+	
+Equipment: 
+	POSSIBLE_NIC_P2;
+	
+Input_Interface:
+	in_int01_Source_POSSIBLE_NIC_P2	,
+	in_int02_Source_POSSIBLE_NIC_P2	,
+	in_int_Sink_POSSIBLE_NIC_P2		;
+	
+Output_Interface:
+	out_int_Source_POSSIBLE_NIC_P2	,
+	out_int01_Sink_POSSIBLE_NIC_P2	,
+	out_int02_Sink_POSSIBLE_NIC_P2	;
+	
+AF_Source:
+	af_Source_ODUk_POSSIBLE_NIC_P2	,
+	af_Source_OTU_POSSIBLE_NIC_P2	,
+	af_Source_OCh_POSSIBLE_NIC_P2	;
+	
+AF_Sink:
+	af_Sink_ODUk_POSSIBLE_NIC_P2	,
+	af_Sink_OTU_POSSIBLE_NIC_P2	,
+	af_Sink_OCh_POSSIBLE_NIC_P2	;
+
+TF_Source:
+	tf_Source_ODUk_POSSIBLE_NIC_P2	,
+	tf_Source_OTU_POSSIBLE_NIC_P2	,
+	tf_Source_OCh_POSSIBLE_NIC_P2	;
+	
+TF_Sink:
+	tf_Sink_ODUk_POSSIBLE_NIC_P2	,
+	tf_Sink_OTU_POSSIBLE_NIC_P2	,
+	tf_Sink_OCh_POSSIBLE_NIC_P2	;
+	
+Input:
+	in_af01_Source_ODUk_POSSIBLE_NIC_P2	,
+	in_af02_Source_ODUk_POSSIBLE_NIC_P2	,
+	in_af_Sink_ODUk_POSSIBLE_NIC_P2	,
+	in_tf_Source_ODUk_POSSIBLE_NIC_P2	,
+	in_tf_Sink_ODUk_POSSIBLE_NIC_P2	,
+	
+	in_af_Source_OTU_POSSIBLE_NIC_P2	,
+	in_af_Sink_OTU_POSSIBLE_NIC_P2		,
+	in_tf_Source_OTU_POSSIBLE_NIC_P2	,
+	in_tf_Sink_OTU_POSSIBLE_NIC_P2		,
+	
+	in_af_Source_OCh_POSSIBLE_NIC_P2	,
+	in_af_Sink_OCh_POSSIBLE_NIC_P2		,
+	in_tf_Source_OCh_POSSIBLE_NIC_P2	,
+	in_tf_Sink_OCh_POSSIBLE_NIC_P2		;
+
+Output:
+	out_af_Source_ODUk_POSSIBLE_NIC_P2	,
+	out_af01_Sink_ODUk_POSSIBLE_NIC_P2	,
+	out_af02_Sink_ODUk_POSSIBLE_NIC_P2	,
+	out_tf_Source_ODUk_POSSIBLE_NIC_P2	,
+	out_tf_Sink_ODUk_POSSIBLE_NIC_P2	,
+	
+	out_af_Source_OTU_POSSIBLE_NIC_P2	,
+	out_af_Sink_OTU_POSSIBLE_NIC_P2		,
+	out_tf_Source_OTU_POSSIBLE_NIC_P2	,
+	out_tf_Sink_OTU_POSSIBLE_NIC_P2		,
+	
+	out_af_Source_OCh_POSSIBLE_NIC_P2	,
+	out_af_Sink_OCh_POSSIBLE_NIC_P2		,
+	out_tf_Source_OCh_POSSIBLE_NIC_P2	,
+	out_tf_Sink_OCh_POSSIBLE_NIC_P2		;
+	
+Equipment: 
+	POSSIBLE_OIC_P1;
+	
+Input_Interface:
+	in_int_Source_POSSIBLE_OIC_P1	,
+	in_int_Sink_POSSIBLE_OIC_P1	;
+	
+Output_Interface:
+	out_int_Source_POSSIBLE_OIC_P1	,
+	out_int_Sink_POSSIBLE_OIC_P1	;
+	
+AF_Source:
+	af_Source_OMS_POSSIBLE_OIC_P1,
+	af_Source_OTS_POSSIBLE_OIC_P1;
+	
+AF_Sink:
+	af_Sink_OMS_POSSIBLE_OIC_P1,
+	af_Sink_OTS_POSSIBLE_OIC_P1;
+
+TF_Source:
+	tf_Source_OMS_POSSIBLE_OIC_P1,
+	tf_Source_OTS_POSSIBLE_OIC_P1;
+	
+TF_Sink:
+	tf_Sink_OMS_POSSIBLE_OIC_P1,
+	tf_Sink_OTS_POSSIBLE_OIC_P1;
+	
+Input:
+	in_af_Source_OMS_POSSIBLE_OIC_P1	,
+	in_af_Sink_OMS_POSSIBLE_OIC_P1		,
+	in_tf_Source_OMS_POSSIBLE_OIC_P1	,
+	in_tf_Sink_OMS_POSSIBLE_OIC_P1		,
+	
+	in_af_Source_OTS_POSSIBLE_OIC_P1	,
+	in_af_Sink_OTS_POSSIBLE_OIC_P1		,
+	in_tf_Source_OTS_POSSIBLE_OIC_P1	,
+	in_tf_Sink_OTS_POSSIBLE_OIC_P1		;
+
+Output:
+	out_af_Source_OMS_POSSIBLE_OIC_P1	,
+	out_af_Sink_OMS_POSSIBLE_OIC_P1		,
+	out_tf_Source_OMS_POSSIBLE_OIC_P1	,
+	out_tf_Sink_OMS_POSSIBLE_OIC_P1		,
+	
+	out_af_Source_OTS_POSSIBLE_OIC_P1	,
+	out_af_Sink_OTS_POSSIBLE_OIC_P1		,
+	out_tf_Source_OTS_POSSIBLE_OIC_P1	,
+	out_tf_Sink_OTS_POSSIBLE_OIC_P1		;
+
+***
+
+client_of: (ODU2e, ODUk), (ODUk, OTU), (OTU, OCh), (OCh, OMS), (OMS, OTS);
+
+componentOf:
+	(	POSSIBLE_CIC_P1	,	in_int_Source_POSSIBLE_CIC_P1	),
+	(	POSSIBLE_CIC_P1	,	in_int_Sink_POSSIBLE_CIC_P1	),
+	(	POSSIBLE_CIC_P1	,	out_int_Source_POSSIBLE_CIC_P1	),
+	(	POSSIBLE_CIC_P1	,	out_int_Sink_POSSIBLE_CIC_P1	);
+
+adapts_to:
+	(	af_Source_POSSIBLE_CIC_P1	,	ODU2e	)	,
+	(	af_Sink_POSSIBLE_CIC_P1		,	ODU2e	)	;
+	
+defines:
+	(	tf_Source_POSSIBLE_CIC_P1	,	ODU2e	)	,
+	(	tf_Sink_POSSIBLE_CIC_P1		,	ODU2e	)	;
+	
+componentOf:
+	(	POSSIBLE_CIC_P1	,	af_Source_POSSIBLE_CIC_P1	),
+	(	POSSIBLE_CIC_P1	,	af_Sink_POSSIBLE_CIC_P1		),
+	(	POSSIBLE_CIC_P1	,	tf_Source_POSSIBLE_CIC_P1	),
+	(	POSSIBLE_CIC_P1	,	tf_Sink_POSSIBLE_CIC_P1		);
+	
+componentOf:
+	(	af_Source_POSSIBLE_CIC_P1	,	in_af_Source_POSSIBLE_CIC_P1	)	,
+	(	af_Source_POSSIBLE_CIC_P1	,	out_af_Source_POSSIBLE_CIC_P1	)	,
+	(	af_Sink_POSSIBLE_CIC_P1  	,	in_af_Sink_POSSIBLE_CIC_P1	    )	,
+	(	af_Sink_POSSIBLE_CIC_P1  	,	out_af_Sink_POSSIBLE_CIC_P1	)	,
+	(	tf_Source_POSSIBLE_CIC_P1	,	in_tf_Source_POSSIBLE_CIC_P1	)	,
+	(	tf_Source_POSSIBLE_CIC_P1	,	out_tf_Source_POSSIBLE_CIC_P1	)	,
+	(	tf_Sink_POSSIBLE_CIC_P1  	,	in_tf_Sink_POSSIBLE_CIC_P1	    )	,
+	(	tf_Sink_POSSIBLE_CIC_P1  	,	out_tf_Sink_POSSIBLE_CIC_P1	)	;
+
+binds:
+	(	out_af_Source_POSSIBLE_CIC_P1	,	in_tf_Source_POSSIBLE_CIC_P1	),
+	(	in_af_Sink_POSSIBLE_CIC_P1		,	out_tf_Sink_POSSIBLE_CIC_P1		);
+	
+maps:
+	(	in_int_Source_POSSIBLE_CIC_P1	,	in_af_Source_POSSIBLE_CIC_P1	),
+	(	in_int_Sink_POSSIBLE_CIC_P1		,	in_tf_Sink_POSSIBLE_CIC_P1		),
+	(	out_int_Source_POSSIBLE_CIC_P1	,	out_tf_Source_POSSIBLE_CIC_P1	),
+	(	out_int_Sink_POSSIBLE_CIC_P1	,	out_af_Sink_POSSIBLE_CIC_P1		);
+	
+componentOf:
+	(	POSSIBLE_NIC_P1	,	in_int01_Source_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	in_int02_Source_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	in_int_Sink_POSSIBLE_NIC_P1		),
+	
+	(	POSSIBLE_NIC_P1	,	out_int_Source_POSSIBLE_NIC_P1		),
+	(	POSSIBLE_NIC_P1	,	out_int01_Sink_POSSIBLE_NIC_P1		),
+	(	POSSIBLE_NIC_P1	,	out_int02_Sink_POSSIBLE_NIC_P1		);
+
+adapts_from:
+	(	af_Source_ODUk_POSSIBLE_NIC_P1	,	ODU2e	)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P1	,	ODU2e	)	,
+	
+	(	af_Source_OTU_POSSIBLE_NIC_P1	,	ODUk	)	,
+	(	af_Sink_OTU_POSSIBLE_NIC_P1	,	ODUk	)	,
+	
+	(	af_Source_OCh_POSSIBLE_NIC_P1	,	OTU		)	,
+	(	af_Sink_OCh_POSSIBLE_NIC_P1	,	OTU		)	;
+	
+adapts_to:
+	(	af_Source_ODUk_POSSIBLE_NIC_P1	,	ODUk	)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P1	,	ODUk	)	,
+	
+	(	af_Source_OTU_POSSIBLE_NIC_P1	,	OTU		)	,
+	(	af_Sink_OTU_POSSIBLE_NIC_P1	,	OTU		)	,
+	
+	(	af_Source_OCh_POSSIBLE_NIC_P1	,	OCh		)	,
+	(	af_Sink_OCh_POSSIBLE_NIC_P1	,	OCh		)	;
+	
+defines:
+	(	tf_Source_ODUk_POSSIBLE_NIC_P1	,	ODUk	)	,
+	(	tf_Sink_ODUk_POSSIBLE_NIC_P1	,	ODUk	)	,
+	                                        
+	(	tf_Source_OTU_POSSIBLE_NIC_P1	,	OTU		)	,
+	(	tf_Sink_OTU_POSSIBLE_NIC_P1	,	OTU		)	,
+	                                        
+	(	tf_Source_OCh_POSSIBLE_NIC_P1	,	OCh		)	,
+	(	tf_Sink_OCh_POSSIBLE_NIC_P1	,	OCh		)	;
+	
+componentOf:
+	(	POSSIBLE_NIC_P1	,	af_Source_ODUk_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	af_Sink_ODUk_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	tf_Source_ODUk_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	tf_Sink_ODUk_POSSIBLE_NIC_P1	),
+	
+	(	POSSIBLE_NIC_P1	,	af_Source_OTU_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	af_Sink_OTU_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	tf_Source_OTU_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	tf_Sink_OTU_POSSIBLE_NIC_P1	),
+	
+	(	POSSIBLE_NIC_P1	,	af_Source_OCh_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	af_Sink_OCh_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	tf_Source_OCh_POSSIBLE_NIC_P1	),
+	(	POSSIBLE_NIC_P1	,	tf_Sink_OCh_POSSIBLE_NIC_P1	);
+	
+componentOf:
+	(	af_Source_ODUk_POSSIBLE_NIC_P1	,	in_af01_Source_ODUk_POSSIBLE_NIC_P1		)	,
+	(	af_Source_ODUk_POSSIBLE_NIC_P1	,	in_af02_Source_ODUk_POSSIBLE_NIC_P1		)	,
+	(	af_Source_ODUk_POSSIBLE_NIC_P1	,	out_af_Source_ODUk_POSSIBLE_NIC_P1		)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P1  	,	in_af_Sink_ODUk_POSSIBLE_NIC_P1			)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P1  	,	out_af01_Sink_ODUk_POSSIBLE_NIC_P1		)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P1  	,	out_af02_Sink_ODUk_POSSIBLE_NIC_P1		)	,
+	(	tf_Source_ODUk_POSSIBLE_NIC_P1	,	in_tf_Source_ODUk_POSSIBLE_NIC_P1		)	,
+	(	tf_Source_ODUk_POSSIBLE_NIC_P1	,	out_tf_Source_ODUk_POSSIBLE_NIC_P1		)	,
+	(	tf_Sink_ODUk_POSSIBLE_NIC_P1  	,	in_tf_Sink_ODUk_POSSIBLE_NIC_P1			)	,
+	(	tf_Sink_ODUk_POSSIBLE_NIC_P1  	,	out_tf_Sink_ODUk_POSSIBLE_NIC_P1		)	,
+		
+	(	af_Source_OTU_POSSIBLE_NIC_P1	,	in_af_Source_OTU_POSSIBLE_NIC_P1		)	,
+	(	af_Source_OTU_POSSIBLE_NIC_P1	,	out_af_Source_OTU_POSSIBLE_NIC_P1		)	,
+	(	af_Sink_OTU_POSSIBLE_NIC_P1  	,	in_af_Sink_OTU_POSSIBLE_NIC_P1	    	)	,
+	(	af_Sink_OTU_POSSIBLE_NIC_P1  	,	out_af_Sink_OTU_POSSIBLE_NIC_P1			)	,
+	(	tf_Source_OTU_POSSIBLE_NIC_P1	,	in_tf_Source_OTU_POSSIBLE_NIC_P1		)	,
+	(	tf_Source_OTU_POSSIBLE_NIC_P1	,	out_tf_Source_OTU_POSSIBLE_NIC_P1		)	,
+	(	tf_Sink_OTU_POSSIBLE_NIC_P1  	,	in_tf_Sink_OTU_POSSIBLE_NIC_P1	    	)	,
+	(	tf_Sink_OTU_POSSIBLE_NIC_P1  	,	out_tf_Sink_OTU_POSSIBLE_NIC_P1			)	,
+		
+	(	af_Source_OCh_POSSIBLE_NIC_P1	,	in_af_Source_OCh_POSSIBLE_NIC_P1		)	,
+	(	af_Source_OCh_POSSIBLE_NIC_P1	,	out_af_Source_OCh_POSSIBLE_NIC_P1		)	,
+	(	af_Sink_OCh_POSSIBLE_NIC_P1  	,	in_af_Sink_OCh_POSSIBLE_NIC_P1	    	)	,
+	(	af_Sink_OCh_POSSIBLE_NIC_P1  	,	out_af_Sink_OCh_POSSIBLE_NIC_P1			)	,
+	(	tf_Source_OCh_POSSIBLE_NIC_P1	,	in_tf_Source_OCh_POSSIBLE_NIC_P1		)	,
+	(	tf_Source_OCh_POSSIBLE_NIC_P1	,	out_tf_Source_OCh_POSSIBLE_NIC_P1		)	,
+	(	tf_Sink_OCh_POSSIBLE_NIC_P1  	,	in_tf_Sink_OCh_POSSIBLE_NIC_P1	    	)	,
+	(	tf_Sink_OCh_POSSIBLE_NIC_P1  	,	out_tf_Sink_OCh_POSSIBLE_NIC_P1			)	;
+
+binds:
+	(	out_af_Source_ODUk_POSSIBLE_NIC_P1	,	in_tf_Source_ODUk_POSSIBLE_NIC_P1	),
+	(	out_tf_Source_ODUk_POSSIBLE_NIC_P1	,	in_af_Source_OTU_POSSIBLE_NIC_P1	),
+	(	out_af_Source_OTU_POSSIBLE_NIC_P1	,	in_tf_Source_OTU_POSSIBLE_NIC_P1	),
+	(	out_tf_Source_OTU_POSSIBLE_NIC_P1	,	in_af_Source_OCh_POSSIBLE_NIC_P1	),
+	(	out_af_Source_OCh_POSSIBLE_NIC_P1	,	in_tf_Source_OCh_POSSIBLE_NIC_P1	),
+	
+	(	in_af_Sink_ODUk_POSSIBLE_NIC_P1		,	out_tf_Sink_ODUk_POSSIBLE_NIC_P1),
+	(	in_tf_Sink_ODUk_POSSIBLE_NIC_P1		,	out_af_Sink_OTU_POSSIBLE_NIC_P1	),
+	(	in_af_Sink_OTU_POSSIBLE_NIC_P1		,	out_tf_Sink_OTU_POSSIBLE_NIC_P1	),
+	(	in_tf_Sink_OTU_POSSIBLE_NIC_P1		,	out_af_Sink_OCh_POSSIBLE_NIC_P1	),
+	(	in_af_Sink_OCh_POSSIBLE_NIC_P1		,	out_tf_Sink_OCh_POSSIBLE_NIC_P1	);
+	
+maps:
+	(	in_int01_Source_POSSIBLE_NIC_P1	,	in_af01_Source_ODUk_POSSIBLE_NIC_P1	),
+	(	in_int02_Source_POSSIBLE_NIC_P1	,	in_af02_Source_ODUk_POSSIBLE_NIC_P1	),
+	(	in_int_Sink_POSSIBLE_NIC_P1		,	in_tf_Sink_OCh_POSSIBLE_NIC_P1		),
+	
+	(	out_int_Source_POSSIBLE_NIC_P1		,	out_tf_Source_OCh_POSSIBLE_NIC_P1		),
+	(	out_int01_Sink_POSSIBLE_NIC_P1		,	out_af01_Sink_ODUk_POSSIBLE_NIC_P1		),
+	(	out_int02_Sink_POSSIBLE_NIC_P1 		,	out_af02_Sink_ODUk_POSSIBLE_NIC_P1		);
+	
+componentOf:
+	(	POSSIBLE_NIC_P2	,	in_int01_Source_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	in_int02_Source_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	in_int_Sink_POSSIBLE_NIC_P2		),
+	
+	(	POSSIBLE_NIC_P2	,	out_int_Source_POSSIBLE_NIC_P2		),
+	(	POSSIBLE_NIC_P2	,	out_int01_Sink_POSSIBLE_NIC_P2		),
+	(	POSSIBLE_NIC_P2	,	out_int02_Sink_POSSIBLE_NIC_P2		);
+
+adapts_from:
+	(	af_Source_ODUk_POSSIBLE_NIC_P2	,	ODU2e	)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P2	,	ODU2e	)	,
+	
+	(	af_Source_OTU_POSSIBLE_NIC_P2	,	ODUk	)	,
+	(	af_Sink_OTU_POSSIBLE_NIC_P2	,	ODUk	)	,
+	
+	(	af_Source_OCh_POSSIBLE_NIC_P2	,	OTU		)	,
+	(	af_Sink_OCh_POSSIBLE_NIC_P2	,	OTU		)	;
+	
+adapts_to:
+	(	af_Source_ODUk_POSSIBLE_NIC_P2	,	ODUk	)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P2	,	ODUk	)	,
+	
+	(	af_Source_OTU_POSSIBLE_NIC_P2	,	OTU		)	,
+	(	af_Sink_OTU_POSSIBLE_NIC_P2	,	OTU		)	,
+	
+	(	af_Source_OCh_POSSIBLE_NIC_P2	,	OCh		)	,
+	(	af_Sink_OCh_POSSIBLE_NIC_P2	,	OCh		)	;
+	
+defines:
+	(	tf_Source_ODUk_POSSIBLE_NIC_P2	,	ODUk	)	,
+	(	tf_Sink_ODUk_POSSIBLE_NIC_P2	,	ODUk	)	,
+	                                        
+	(	tf_Source_OTU_POSSIBLE_NIC_P2	,	OTU		)	,
+	(	tf_Sink_OTU_POSSIBLE_NIC_P2	,	OTU		)	,
+	                                        
+	(	tf_Source_OCh_POSSIBLE_NIC_P2	,	OCh		)	,
+	(	tf_Sink_OCh_POSSIBLE_NIC_P2	,	OCh		)	;
+	
+componentOf:
+	(	POSSIBLE_NIC_P2	,	af_Source_ODUk_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	af_Sink_ODUk_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	tf_Source_ODUk_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	tf_Sink_ODUk_POSSIBLE_NIC_P2	),
+	
+	(	POSSIBLE_NIC_P2	,	af_Source_OTU_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	af_Sink_OTU_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	tf_Source_OTU_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	tf_Sink_OTU_POSSIBLE_NIC_P2	),
+	
+	(	POSSIBLE_NIC_P2	,	af_Source_OCh_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	af_Sink_OCh_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	tf_Source_OCh_POSSIBLE_NIC_P2	),
+	(	POSSIBLE_NIC_P2	,	tf_Sink_OCh_POSSIBLE_NIC_P2	);
+	
+componentOf:
+	(	af_Source_ODUk_POSSIBLE_NIC_P2	,	in_af01_Source_ODUk_POSSIBLE_NIC_P2	)	,
+	(	af_Source_ODUk_POSSIBLE_NIC_P2	,	in_af02_Source_ODUk_POSSIBLE_NIC_P2	)	,
+	(	af_Source_ODUk_POSSIBLE_NIC_P2	,	out_af_Source_ODUk_POSSIBLE_NIC_P2		)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P2  	,	in_af_Sink_ODUk_POSSIBLE_NIC_P2		)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P2  	,	out_af01_Sink_ODUk_POSSIBLE_NIC_P2		)	,
+	(	af_Sink_ODUk_POSSIBLE_NIC_P2  	,	out_af02_Sink_ODUk_POSSIBLE_NIC_P2		)	,
+	(	tf_Source_ODUk_POSSIBLE_NIC_P2	,	in_tf_Source_ODUk_POSSIBLE_NIC_P2		)	,
+	(	tf_Source_ODUk_POSSIBLE_NIC_P2	,	out_tf_Source_ODUk_POSSIBLE_NIC_P2		)	,
+	(	tf_Sink_ODUk_POSSIBLE_NIC_P2  	,	in_tf_Sink_ODUk_POSSIBLE_NIC_P2		)	,
+	(	tf_Sink_ODUk_POSSIBLE_NIC_P2  	,	out_tf_Sink_ODUk_POSSIBLE_NIC_P2		)	,
+		
+	(	af_Source_OTU_POSSIBLE_NIC_P2	,	in_af_Source_OTU_POSSIBLE_NIC_P2		)	,
+	(	af_Source_OTU_POSSIBLE_NIC_P2	,	out_af_Source_OTU_POSSIBLE_NIC_P2		)	,
+	(	af_Sink_OTU_POSSIBLE_NIC_P2  	,	in_af_Sink_OTU_POSSIBLE_NIC_P2	    	)	,
+	(	af_Sink_OTU_POSSIBLE_NIC_P2  	,	out_af_Sink_OTU_POSSIBLE_NIC_P2		)	,
+	(	tf_Source_OTU_POSSIBLE_NIC_P2	,	in_tf_Source_OTU_POSSIBLE_NIC_P2		)	,
+	(	tf_Source_OTU_POSSIBLE_NIC_P2	,	out_tf_Source_OTU_POSSIBLE_NIC_P2		)	,
+	(	tf_Sink_OTU_POSSIBLE_NIC_P2  	,	in_tf_Sink_OTU_POSSIBLE_NIC_P2	    	)	,
+	(	tf_Sink_OTU_POSSIBLE_NIC_P2  	,	out_tf_Sink_OTU_POSSIBLE_NIC_P2		)	,
+		
+	(	af_Source_OCh_POSSIBLE_NIC_P2	,	in_af_Source_OCh_POSSIBLE_NIC_P2		)	,
+	(	af_Source_OCh_POSSIBLE_NIC_P2	,	out_af_Source_OCh_POSSIBLE_NIC_P2		)	,
+	(	af_Sink_OCh_POSSIBLE_NIC_P2  	,	in_af_Sink_OCh_POSSIBLE_NIC_P2	    	)	,
+	(	af_Sink_OCh_POSSIBLE_NIC_P2  	,	out_af_Sink_OCh_POSSIBLE_NIC_P2		)	,
+	(	tf_Source_OCh_POSSIBLE_NIC_P2	,	in_tf_Source_OCh_POSSIBLE_NIC_P2		)	,
+	(	tf_Source_OCh_POSSIBLE_NIC_P2	,	out_tf_Source_OCh_POSSIBLE_NIC_P2		)	,
+	(	tf_Sink_OCh_POSSIBLE_NIC_P2  	,	in_tf_Sink_OCh_POSSIBLE_NIC_P2	    	)	,
+	(	tf_Sink_OCh_POSSIBLE_NIC_P2  	,	out_tf_Sink_OCh_POSSIBLE_NIC_P2		)	;
+
+binds:
+	(	out_af_Source_ODUk_POSSIBLE_NIC_P2	,	in_tf_Source_ODUk_POSSIBLE_NIC_P2	),
+	(	out_tf_Source_ODUk_POSSIBLE_NIC_P2	,	in_af_Source_OTU_POSSIBLE_NIC_P2	),
+	(	out_af_Source_OTU_POSSIBLE_NIC_P2	,	in_tf_Source_OTU_POSSIBLE_NIC_P2	),
+	(	out_tf_Source_OTU_POSSIBLE_NIC_P2	,	in_af_Source_OCh_POSSIBLE_NIC_P2	),
+	(	out_af_Source_OCh_POSSIBLE_NIC_P2	,	in_tf_Source_OCh_POSSIBLE_NIC_P2	),
+	
+	(	in_af_Sink_ODUk_POSSIBLE_NIC_P2		,	out_tf_Sink_ODUk_POSSIBLE_NIC_P2),
+	(	in_tf_Sink_ODUk_POSSIBLE_NIC_P2		,	out_af_Sink_OTU_POSSIBLE_NIC_P2	),
+	(	in_af_Sink_OTU_POSSIBLE_NIC_P2		,	out_tf_Sink_OTU_POSSIBLE_NIC_P2	),
+	(	in_tf_Sink_OTU_POSSIBLE_NIC_P2		,	out_af_Sink_OCh_POSSIBLE_NIC_P2	),
+	(	in_af_Sink_OCh_POSSIBLE_NIC_P2		,	out_tf_Sink_OCh_POSSIBLE_NIC_P2	);
+	
+maps:
+	(	in_int01_Source_POSSIBLE_NIC_P2	,	in_af01_Source_ODUk_POSSIBLE_NIC_P2	),
+	(	in_int02_Source_POSSIBLE_NIC_P2	,	in_af02_Source_ODUk_POSSIBLE_NIC_P2	),
+	(	in_int_Sink_POSSIBLE_NIC_P2		,	in_tf_Sink_OCh_POSSIBLE_NIC_P2		),
+	
+	(	out_int_Source_POSSIBLE_NIC_P2		,	out_tf_Source_OCh_POSSIBLE_NIC_P2	),
+	(	out_int01_Sink_POSSIBLE_NIC_P2		,	out_af01_Sink_ODUk_POSSIBLE_NIC_P2	),
+	(	out_int02_Sink_POSSIBLE_NIC_P2 		,	out_af02_Sink_ODUk_POSSIBLE_NIC_P2	);
+	
+componentOf:
+	(	POSSIBLE_OIC_P1	,	in_int_Source_POSSIBLE_OIC_P1	),
+	(	POSSIBLE_OIC_P1	,	in_int_Sink_POSSIBLE_OIC_P1	),
+	(	POSSIBLE_OIC_P1	,	out_int_Source_POSSIBLE_OIC_P1	),
+	(	POSSIBLE_OIC_P1	,	out_int_Sink_POSSIBLE_OIC_P1	);
+
+adapts_from:
+	(	af_Source_OMS_POSSIBLE_OIC_P1	,	OCh	)	,
+	(	af_Sink_OMS_POSSIBLE_OIC_P1	,	OCh	)	,
+	
+	(	af_Source_OTS_POSSIBLE_OIC_P1	,	OMS	)	,
+	(	af_Sink_OTS_POSSIBLE_OIC_P1	,	OMS	)	;
+	
+adapts_to:
+	(	af_Source_OMS_POSSIBLE_OIC_P1	,	OMS	)	,
+	(	af_Sink_OMS_POSSIBLE_OIC_P1	,	OMS	)	,
+	
+	(	af_Source_OTS_POSSIBLE_OIC_P1	,	OTS	)	,
+	(	af_Sink_OTS_POSSIBLE_OIC_P1	,	OTS	)	;
+	
+defines:
+	(	tf_Source_OMS_POSSIBLE_OIC_P1	,	OMS	)	,
+	(	tf_Sink_OMS_POSSIBLE_OIC_P1	,	OMS	)	,
+	
+	(	tf_Source_OTS_POSSIBLE_OIC_P1	,	OTS	)	,
+	(	tf_Sink_OTS_POSSIBLE_OIC_P1	,	OTS	)	;
+	
+componentOf:
+	(	POSSIBLE_OIC_P1	,	af_Source_OMS_POSSIBLE_OIC_P1	),
+	(	POSSIBLE_OIC_P1	,	af_Sink_OMS_POSSIBLE_OIC_P1	),
+	(	POSSIBLE_OIC_P1	,	tf_Source_OMS_POSSIBLE_OIC_P1	),
+	(	POSSIBLE_OIC_P1	,	tf_Sink_OMS_POSSIBLE_OIC_P1	),
+	
+	(	POSSIBLE_OIC_P1	,	af_Source_OTS_POSSIBLE_OIC_P1	),
+	(	POSSIBLE_OIC_P1	,	af_Sink_OTS_POSSIBLE_OIC_P1	),
+	(	POSSIBLE_OIC_P1	,	tf_Source_OTS_POSSIBLE_OIC_P1	),
+	(	POSSIBLE_OIC_P1	,	tf_Sink_OTS_POSSIBLE_OIC_P1	);
+	
+componentOf:
+	(	af_Source_OMS_POSSIBLE_OIC_P1	,	in_af_Source_OMS_POSSIBLE_OIC_P1	)	,
+	(	af_Source_OMS_POSSIBLE_OIC_P1	,	out_af_Source_OMS_POSSIBLE_OIC_P1	)	,
+	(	af_Sink_OMS_POSSIBLE_OIC_P1  	,	in_af_Sink_OMS_POSSIBLE_OIC_P1	    )	,
+	(	af_Sink_OMS_POSSIBLE_OIC_P1  	,	out_af_Sink_OMS_POSSIBLE_OIC_P1	)	,
+	(	tf_Source_OMS_POSSIBLE_OIC_P1	,	in_tf_Source_OMS_POSSIBLE_OIC_P1	)	,
+	(	tf_Source_OMS_POSSIBLE_OIC_P1	,	out_tf_Source_OMS_POSSIBLE_OIC_P1	)	,
+	(	tf_Sink_OMS_POSSIBLE_OIC_P1  	,	in_tf_Sink_OMS_POSSIBLE_OIC_P1	    )	,
+	(	tf_Sink_OMS_POSSIBLE_OIC_P1  	,	out_tf_Sink_OMS_POSSIBLE_OIC_P1	)	,
+	
+	(	af_Source_OTS_POSSIBLE_OIC_P1	,	in_af_Source_OTS_POSSIBLE_OIC_P1	)	,
+	(	af_Source_OTS_POSSIBLE_OIC_P1	,	out_af_Source_OTS_POSSIBLE_OIC_P1	)	,
+	(	af_Sink_OTS_POSSIBLE_OIC_P1  	,	in_af_Sink_OTS_POSSIBLE_OIC_P1	    )	,
+	(	af_Sink_OTS_POSSIBLE_OIC_P1  	,	out_af_Sink_OTS_POSSIBLE_OIC_P1	)	,
+	(	tf_Source_OTS_POSSIBLE_OIC_P1	,	in_tf_Source_OTS_POSSIBLE_OIC_P1	)	,
+	(	tf_Source_OTS_POSSIBLE_OIC_P1	,	out_tf_Source_OTS_POSSIBLE_OIC_P1	)	,
+	(	tf_Sink_OTS_POSSIBLE_OIC_P1  	,	in_tf_Sink_OTS_POSSIBLE_OIC_P1	    )	,
+	(	tf_Sink_OTS_POSSIBLE_OIC_P1  	,	out_tf_Sink_OTS_POSSIBLE_OIC_P1	)	;
+
+binds:
+	(	out_af_Source_OMS_POSSIBLE_OIC_P1	,	in_tf_Source_OMS_POSSIBLE_OIC_P1	),
+	(	out_tf_Source_OMS_POSSIBLE_OIC_P1	,	in_af_Source_OTS_POSSIBLE_OIC_P1	),
+	(	out_af_Source_OTS_POSSIBLE_OIC_P1	,	in_tf_Source_OTS_POSSIBLE_OIC_P1	),
+	
+	(	in_af_Sink_OMS_POSSIBLE_OIC_P1		,	out_tf_Sink_OMS_POSSIBLE_OIC_P1	),
+	(	in_tf_Sink_OMS_POSSIBLE_OIC_P1		,	out_af_Sink_OTS_POSSIBLE_OIC_P1	),
+	(	in_af_Sink_OTS_POSSIBLE_OIC_P1		,	out_tf_Sink_OTS_POSSIBLE_OIC_P1	);
+	
+maps:
+	(	in_int_Source_POSSIBLE_OIC_P1	,	in_af_Source_OMS_POSSIBLE_OIC_P1	),
+	(	in_int_Sink_POSSIBLE_OIC_P1		,	in_tf_Sink_OTS_POSSIBLE_OIC_P1		),
+	(	out_int_Source_POSSIBLE_OIC_P1	,	out_tf_Source_OTS_POSSIBLE_OIC_P1	),
+	(	out_int_Sink_POSSIBLE_OIC_P1	,	out_af_Sink_OMS_POSSIBLE_OIC_P1		);
+
+***
+
+Layer_Network.isLast: (OTS, true, boolean);
+
+***
