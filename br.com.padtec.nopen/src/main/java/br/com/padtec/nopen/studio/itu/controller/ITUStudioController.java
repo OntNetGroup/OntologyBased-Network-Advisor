@@ -20,6 +20,7 @@ import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.model.StudioSerializator;
 import br.com.padtec.nopen.studio.model.StudioSpecificFactory;
+import br.com.padtec.nopen.studio.service.PerformBind;
 
 import com.jointjs.util.JointUtilManager;
 
@@ -87,7 +88,12 @@ public class ITUStudioController {
 		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
 		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
 		
-		//TODO
+		try{
+			PerformBind.applyBinds(dtoSourceElement, dtoTargetElement);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
 
 		return "success";		
 	}
@@ -327,7 +333,12 @@ public class ITUStudioController {
 		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
 		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
 		
-		//TODO
+		try{
+			PerformBind.canCreateBind(dtoSourceElement, dtoTargetElement);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
 		
 		return "true";		
 	}
