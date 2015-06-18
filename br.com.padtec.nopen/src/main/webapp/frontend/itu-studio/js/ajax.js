@@ -37,7 +37,7 @@ function insertContainer(dtoContainer, dtoContent) {
 	$.ajax({
 		type: "POST",
 		async: false,
-		url: "insertContainer.htm",
+		url: "insertContainerITU.htm",
 		data: {
 			'container': JSON.stringify(dtoContainer),
 			'content': JSON.stringify(dtoContent)
@@ -80,7 +80,7 @@ function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFun
 
 function performBind(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID) {
 
-	return createLink(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID); //TODO: apagar esta linha quando o metodo performBind do controlador estiver implementado
+//	return createLink(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID); //TODO: apagar esta linha quando o metodo performBind do controlador estiver implementado
 	var result = "error";
 
 	var dtoSourceElement = Util.createDtoElement(sourceID, sourceName, sourceType);
@@ -427,7 +427,7 @@ function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionTy
 
 function canPerformBind(sourceID, sourceName, sourceType, targetID, targetName, targetType) {
 
-	return canCreateLink(sourceID, sourceName, sourceType, targetID, targetName, targetType); //TODO: apagar esta linha quando o metodo canPerformBind do controlador estiver implementado
+//	return canCreateLink(sourceID, sourceName, sourceType, targetID, targetName, targetType); //TODO: apagar esta linha quando o metodo canPerformBind do controlador estiver implementado
 	var result = "false";
 
 	var dtoSourceElement = Util.createDtoElement(sourceID, sourceName, sourceType);

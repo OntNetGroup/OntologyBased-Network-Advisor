@@ -59,7 +59,7 @@ public class ITUStudioController {
 	 * ======================================================================================*/
 		
 	/** Insert content on a container */
-	@RequestMapping(value = "/insertContainer", method = RequestMethod.POST)
+	@RequestMapping(value = "/insertContainerITU", method = RequestMethod.POST)
 	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("content") String content) 
 	{	
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
