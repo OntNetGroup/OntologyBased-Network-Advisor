@@ -80,10 +80,6 @@ function createPort(portID, portName, portType, tFunctionID, tFunctionName, tFun
 
 function performBind(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID) {
 
-<<<<<<< .mine
-=======
-//	return createLink(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID); //TODO: apagar esta linha quando o metodo performBind do controlador estiver implementado
->>>>>>> .r909
 	var result = "error";
 
 	var dtoSourceElement = Util.createDtoElement(sourceID, sourceName, sourceType);
@@ -430,10 +426,6 @@ function canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionTy
 
 function canPerformBind(sourceID, sourceName, sourceType, targetID, targetName, targetType) {
 
-<<<<<<< .mine
-=======
-//	return canCreateLink(sourceID, sourceName, sourceType, targetID, targetName, targetType); //TODO: apagar esta linha quando o metodo canPerformBind do controlador estiver implementado
->>>>>>> .r909
 	var result = "false";
 
 	var dtoSourceElement = Util.createDtoElement(sourceID, sourceName, sourceType);
