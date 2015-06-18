@@ -1,8 +1,5 @@
 package sparql.inferences;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.padtec.common.queries.QueryUtil;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -12,7 +9,6 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class sparql {
 	public static RuleList test(OntModel model){

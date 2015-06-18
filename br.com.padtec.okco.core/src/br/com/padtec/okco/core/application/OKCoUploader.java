@@ -19,6 +19,7 @@ import br.com.padtec.okco.core.exception.OKCoExceptionReasoner;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.reasoner.ValidityReport;
 
 public class OKCoUploader {
 
@@ -27,6 +28,7 @@ public class OKCoUploader {
 	
 	/** Base Model Repository */
 	protected BaseModelRepository baseRepository;
+	protected BaseModelRepository consistencyBaseRepository;
 	
 	/** Inferred Model Repository */
 	protected InferredModelRepository inferredRepository;
@@ -57,6 +59,13 @@ public class OKCoUploader {
 		reasoner = new HermitReasonerImpl();
 	}
 	
+	public boolean isConsistencyModelValid(){
+		OntModel model = consistencyBaseRepository.getBaseOntModel();
+		ValidityReport valReport = model.validate();
+		
+		return valReport.isValid();
+	}
+	
 	/**
 	 * Upload the base model ontology in OWL. The user might opt for not using the reasoner at the upload.
 	 * 
@@ -70,22 +79,18 @@ public class OKCoUploader {
 	 * @throws OKCoExceptionNameSpace
 	 * @throws OKCoExceptionReasoner
 	 * 
-	 * @author John Guerson
+	 * @author Freddy Brasileiro
 	 */
 	public void uploadBaseModel(InputStream in, String useReasoner, String optReasoner)
 	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
 	{	
-		/** Upload the base model to a base repository */
-		baseRepository = new BaseModelRepositoryImpl();		 
-		baseRepository.readBaseOntModel(in);		 		 			  
-		if(baseRepository.getNameSpace() == null) throw new OKCoExceptionNameSpace("Please select owl file with defined namespace.");
+		baseRepository = new BaseModelRepositoryImpl();
+		uploadBaseModelGenerically(in, baseRepository);
 		
-		/** Keep a temporary model for rollbacking the base model */
-		tempModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
-			
 		if(useReasoner!=null && useReasoner.equals("on")) reasonOnLoading = true;
 		else  reasonOnLoading = false;
 		
+		InfModel inferredModel;
 		/** Run the inference if required, otherwise the inferred model is a clone of the base model */
 		if(reasonOnLoading)
 		{	
@@ -93,17 +98,68 @@ public class OKCoUploader {
 			else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();				  
 			else throw new OKCoExceptionReasoner("Please select a reasoner available.");
 			
-			InfModel inferredModel = reasoner.run(baseRepository);
-			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
+			inferredModel = reasoner.run(baseRepository);
 		}else{
 			
 			if(optReasoner.equals("hermit")) reasoner = new HermitReasonerImpl();				  
 			else if(optReasoner.equals("pellet")) reasoner = new PelletReasonerImpl();	
 			else reasoner = new PelletReasonerImpl();
 			
-			InfModel inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
-			inferredRepository = new InferredModelRepositoryImpl(inferredModel);
+			inferredModel = OntModelAPI.clone(baseRepository.getBaseOntModel());
 		}
+		inferredRepository = new InferredModelRepositoryImpl(inferredModel);
+		
+	}
+	
+	/**
+	 * Upload the base model ontology in OWL. The user might opt for not using the reasoner at the upload.
+	 * 
+	 * @param in: OWL Input Stream
+	 * @param useReasoner: Use the reasoner at the uploading. "on" or "off"
+	 * @param optReasoner: Which reasoner must be used in the uploading. "hermit" or "pellet"
+	 * 
+	 * @throws InconsistentOntologyException
+	 * @throws OKCoExceptionInstanceFormat
+	 * @throws IOException
+	 * @throws OKCoExceptionNameSpace
+	 * @throws OKCoExceptionReasoner
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	public void uploadConsistencyBaseModel(InputStream in)
+	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
+	{	
+		consistencyBaseRepository = new BaseModelRepositoryImpl();
+		uploadBaseModelGenerically(in, consistencyBaseRepository);
+	}
+	
+	/**
+	 * Upload the base model ontology in OWL. The user might opt for not using the reasoner at the upload.
+	 * 
+	 * @param in: OWL Input Stream
+	 * @param useReasoner: Use the reasoner at the uploading. "on" or "off"
+	 * @param optReasoner: Which reasoner must be used in the uploading. "hermit" or "pellet"
+	 * 
+	 * @throws InconsistentOntologyException
+	 * @throws OKCoExceptionInstanceFormat
+	 * @throws IOException
+	 * @throws OKCoExceptionNameSpace
+	 * @throws OKCoExceptionReasoner
+	 * 
+	 * @author Freddy Brasileiro
+	 * @return 
+	 */
+	public void uploadBaseModelGenerically(InputStream in, BaseModelRepository baseRepositoryAux)
+	throws InconsistentOntologyException, OKCoExceptionInstanceFormat, IOException, OKCoExceptionNameSpace, OKCoExceptionReasoner
+	{	
+		/** Upload the base model to a base repository */
+//		baseRepositoryAux = new BaseModelRepositoryImpl();
+		
+		baseRepositoryAux.readBaseOntModel(in);
+		if(baseRepositoryAux.getNameSpace() == null) throw new OKCoExceptionNameSpace("Please select owl file with defined namespace.");
+		
+		/** Keep a temporary model for rollbacking the base model */
+		tempModel = OntModelAPI.clone(baseRepositoryAux.getBaseOntModel());
 	}
 		
 	/**
@@ -159,6 +215,11 @@ public class OKCoUploader {
 	public OntModel getBaseModel() 
 	{ 
 		if(baseRepository!=null) return baseRepository.getBaseOntModel(); 
+		else return null; 
+	}	
+	public OntModel getConsistencyBaseModel() 
+	{ 
+		if(consistencyBaseRepository!=null) return consistencyBaseRepository.getBaseOntModel(); 
 		else return null; 
 	}	
 	public InferredModelRepository getInferredRepository() { return inferredRepository; }	

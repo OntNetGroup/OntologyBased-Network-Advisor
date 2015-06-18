@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +24,14 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 import com.hp.hpl.jena.ontology.OntModel;
 
 public class OWLUtil {
-	public static OntModel createTBox(OKCoUploader okcoUploader, String tBoxFile) throws Exception{
-		FileInputStream inTBox = new FileInputStream(new File(tBoxFile));
-		okcoUploader.uploadBaseModel(inTBox, "off", "hermit");
-		OntModel model = okcoUploader.getBaseModel();
+	public static void createTBox(OKCoUploader okcoUploader, String baseTBoxFile, String consistencyTBoxFile) throws Exception{
+		FileInputStream inBaseTBox = new FileInputStream(new File(baseTBoxFile));
+		okcoUploader.uploadBaseModel(inBaseTBox, "off", "hermit");
+		FileInputStream inConsistencyTBox = new FileInputStream(new File(consistencyTBoxFile));
+		okcoUploader.uploadConsistencyBaseModel(inConsistencyTBox);
+//		OntModel model = okcoUploader.getBaseModel();
 		//ns = model.getNsPrefixURI("");
-		return model;
+//		return model;
 	}	
 	
 	public static void saveNewOwl(OntModel model, String path, String oldName) throws IOException{
@@ -37,18 +41,18 @@ public class OWLUtil {
 		model.write(out, syntax);
 		String result = out.toString();
 		oldName = oldName.replace(".owl", "");
-		Date dt = new Date();
-		File arquivo = new File(path + oldName + "New" + dt.toString().replaceAll(":", "") + ".owl");   
+//		Date dt = new Date();
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+		Date now = new Date();
+		String nowStr = DateFormat.getInstance().format(now).replace("/", "-").replace(":", ".");
+		
+		File arquivo = new File(path + oldName + "New " + nowStr.replaceAll(":", "") + ".owl");   
 		if(arquivo.exists()){
 			arquivo.delete();
 		}
-//		try{
 			FileOutputStream fos = new FileOutputStream(arquivo);  
 			fos.write(result.getBytes());    
 			fos.close();   
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
 	}
 	
 	public static long runReasoner(OKCoUploader okcoUploader, boolean inferHierarchies, boolean inferAssertions, boolean inferRules) throws Exception{
@@ -65,10 +69,16 @@ public class OWLUtil {
 			throw new Exception(result.getMessage());
 		}
 		
+		if(okcoUploader.isConsistencyModelValid()){
+			System.out.println("Congratulations! You have a valid model!");
+		}else{
+			throw new Exception("Something went wrong. Your model is inconsistent.");
+		}
+		
 		return okcoReasoner.getLastReasoningTimeExec();
 	}
 	
-	public static void createInstances(OntModel model, String aBoxFile, int createNTimes) throws Exception{
+	public static void createInstances(ArrayList<OntModel> models, String aBoxFile, int createNTimes) throws Exception{
 		if(aBoxFile == null || aBoxFile.equals("")) return;
 		
 		FileReader reader = new FileReader(new File(aBoxFile));
@@ -82,18 +92,24 @@ public class OWLUtil {
         
         if(fileBlocks.length < 4) throw new Exception("Incomplete ABox file.\n");
         
-        FactoryUtil factory = new FactoryUtil();
         String[] individualDcls = fileBlocks[1].split(";");
-        HashMap<String, String> newMapping = createIndividualInstances(model, individualDcls, createNTimes, factory);
-        factory.processStatements(model);
         String[] relationDcls = fileBlocks[2].split(";");
-        createRelationInstances(model, relationDcls, newMapping, createNTimes, factory);
         String[] attributeDcls = fileBlocks[3].split(";");
-        createAttributeInstances(model, attributeDcls, newMapping, 1, factory);
-        factory.processStatements(model);
-        FactoryUtil.createAllDifferent(model, factory.getNewIndividuals());
         
-        //System.out.println();
+        for (OntModel model : models) {
+        	FactoryUtil factory = new FactoryUtil();
+            HashMap<String, String> newMapping = createIndividualInstances(model, individualDcls, createNTimes, factory);
+            
+            factory.processStatements(model);
+            
+            createRelationInstances(model, relationDcls, newMapping, createNTimes, factory);
+            createAttributeInstances(model, attributeDcls, newMapping, 1, factory);
+            
+            factory.processStatements(model);
+            FactoryUtil.createAllDifferent(model, factory.getNewIndividuals());
+		}        
+        
+        System.out.println();
 	}
 	
 	public static HashMap<String, String> createIndividualInstances(OntModel model, String[] individualDcls, int createNTimes, FactoryUtil factory) throws Exception{
@@ -140,7 +156,8 @@ public class OWLUtil {
 //							FactoryUtil.createInstanceIndividual(model, ns+indv, ns+type, false);
 							factory.createInstanceIndividualStatement(model, ns+indv, ns+type, false);
 							if(type.equals("Layer_Network") && j > 1 && !indv.equals("layer0")){
-								FactoryUtil.createInstanceRelation(model, ns+indv, ns+"client_of", ns+lowerLayer, false, false, false);
+								factory.createInstanceRelationStatement(model, ns+indv, ns+"client_of", ns+lowerLayer, false);
+//								FactoryUtil.createInstanceRelation(model, ns+indv, ns+"client_of", ns+lowerLayer, false, false, false);
 							}
 							
 							factory.addNewIndividual(ns+indv);

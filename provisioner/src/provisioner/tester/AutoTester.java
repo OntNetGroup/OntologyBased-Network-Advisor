@@ -3,7 +3,6 @@ package provisioner.tester;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,11 +49,12 @@ public class AutoTester {
 //			}
 			
 			//String owlTBoxFile = "resources/owl/TBox v5.2.owl";
-			String owlTBoxFile = FileUtil.chooseFile("Choose an OWL file containing a TBox: ", "resources/owl/", ".owl", "TBOX chosen file: ",0);
+			String owlBaseTBoxFile = FileUtil.chooseFile("Choose an OWL file containing a Inference Model: ", "resources/owl/", ".owl", "TBOX chosen file: ",0);
+			String owlConsistencyTBoxFile = FileUtil.chooseFile("Choose an OWL file containing a Consistency Model: ", "resources/owl/", ".owl", "TBOX chosen file: ",0);
 			//String declaredFile = "resources/declared/Possível 2.1 - 1 Layer.txt";
 			String declaredFile = FileUtil.chooseFile("Choose a TXT file containing DECLARED instances:", "resources/declared/", ".txt", "POSSIBLE instances chosen file: ",0);
 			//String possibleFile = "resources/possible/Declarado 2.1 - Base.txt";
-			String possibleFile = FileUtil.chooseFile("Choose a TXT file containing the POSSIBLE instances: ", "resources/possible/", ".txt", "POSSIBLE instances chosen file: ",0);
+			String possibleFile = FileUtil.chooseFile("Choose a TXT file containing POSSIBLE instances: ", "resources/possible/", ".txt", "POSSIBLE instances chosen file: ",0);
 			
 			ArrayList<Test> tests = new ArrayList<Test>(); 
 			int option = 0;
@@ -83,14 +83,14 @@ public class AutoTester {
 			
 			int createPathsFile = ConsoleUtil.getOptionFromConsole("Do you want to export found paths to a file? 1-Yes, 0-No", 0, 1,0);
 			
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+//			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 			Date now = new Date();
 			String nowStr = DateFormat.getInstance().format(now).replace("/", "-").replace(":", ".");
 			
 			for (Test test : tests) {
 				String testDirStr = nowStr + "/Test " + tests.indexOf(test) + "/";
-				File testDir = new File(outTesterDir+testDirStr);
-				boolean x = testDir.mkdirs();
+//				File testDir = new File(outTesterDir+testDirStr);
+//				boolean x = testDir.mkdirs();
 				File executionTimes = new File(outTesterDir+testDirStr+"executionTimes.txt");
 				FileOutputStream fosExecutionTimes = new FileOutputStream(executionTimes);
 				String execTimes = "Include instances and reasoning execution\tFinding paths\n";
@@ -98,7 +98,7 @@ public class AutoTester {
 				
 				boolean fewPossibleEquip = false;
 				for (int i = 0; i < test.getDeclaredReplications(); i++) {
-					executeForNReplications(i, possibleFile, declaredFile, owlTBoxFile, fosExecutionTimes, declaredWeight, fewPossibleEquip, test.getQtShortPaths(), test.getMaxPathSize(), possibleWeight, createPathsFile, testDirStr);	
+					executeForNReplications(i, possibleFile, declaredFile, owlBaseTBoxFile, owlConsistencyTBoxFile, fosExecutionTimes, declaredWeight, fewPossibleEquip, test.getQtShortPaths(), test.getMaxPathSize(), possibleWeight, createPathsFile, testDirStr);	
 				}
 				fosExecutionTimes.close();
 			}			
@@ -109,7 +109,7 @@ public class AutoTester {
 		}
 	}
 	
-	private static void executeForNReplications(int i, String possibleFile, String declaredFile, String owlTBoxFile, FileOutputStream fosExecutionTimes, int declaredWeight, boolean fewPossibleEquip, int qtShortPaths, int maxPathSize, int possibleWeight, int createPathsFile, String testDir) throws Exception{
+	private static void executeForNReplications(int i, String possibleFile, String declaredFile, String owlBaseTBoxFile, String owlConsistencyTBoxFile, FileOutputStream fosExecutionTimes, int declaredWeight, boolean fewPossibleEquip, int qtShortPaths, int maxPathSize, int possibleWeight, int createPathsFile, String testDir) throws Exception{
 		int possibleReplications = 1;
 		File execTime = new File(outTesterDir + testDir + (i+1) + " replication(s)-Summary.txt");   
 		if(execTime.exists()){
@@ -118,7 +118,7 @@ public class AutoTester {
 		FileOutputStream fosExecTime = new FileOutputStream(execTime);
 		
 		Date beginDate = new Date();				
-		Provisioner provisioner = new Provisioner(owlTBoxFile, declaredFile, possibleFile, i+1, possibleReplications);
+		Provisioner provisioner = new Provisioner(owlBaseTBoxFile, owlConsistencyTBoxFile, declaredFile, possibleFile, i+1, possibleReplications);
 		String ns = provisioner.getModel().getNsPrefixURI("");
 		
 		OntModel model = provisioner.getModel();
