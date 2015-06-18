@@ -800,6 +800,14 @@ public class InstanceFabricator {
 	public static void createComponentOfRelation(DtoJointElement dtoContainer, DtoJointElement dtoContent) throws Exception{
 		//create the property relation between source and target
 		
+		if(dtoContainer == null){ //caso do rack
+			FactoryUtil.createInstanceIndividual(
+					StudioComponents.studioRepository.getBaseModel(),
+					StudioComponents.studioRepository.getNamespace() + dtoContent.getId(),
+					StudioComponents.studioRepository.getNamespace() + dtoContent.getType(),
+					true);
+		}
+		
 		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
 		String name_source = dtoContainer.getName();
 		String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoContainer.getType();
@@ -808,11 +816,24 @@ public class InstanceFabricator {
 		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
 		String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.componentOf.toString();
 		if(ContainerStructure.verifyContainerRelation(sourceURI, tipo_source, targetURI, tipo_target)){
+			
 			FactoryUtil.createInstanceIndividual(
 					StudioComponents.studioRepository.getBaseModel(),
 					targetURI,
 					tipo_target,
 					true);
+			
+			if(tipo_target.equalsIgnoreCase(StudioComponents.studioRepository.getNamespace() + ConceptEnum.Card_Layer.toString())){
+				String layerPropertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
+				String layerTypeURI = StudioComponents.studioRepository.getNamespace() + name_target;
+				FactoryUtil.createInstanceRelation(
+						StudioComponents.studioRepository.getBaseModel(), 
+						targetURI,			 
+						layerPropertyURI,
+						layerTypeURI
+					);
+			}
+			
 			
 			FactoryUtil.createInstanceRelation(
 					StudioComponents.studioRepository.getBaseModel(), 

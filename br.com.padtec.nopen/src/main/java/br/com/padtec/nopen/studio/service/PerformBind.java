@@ -231,7 +231,7 @@ public class PerformBind {
 			}
 		}
 		else{
-			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + "because there is no Reference Point between " + tipo_source + " and " + tipo_target + " . ");
+			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + "because there is no Reference Point between " + dtoContainer.getType() + " and " + dtoContent.getType() + " . ");
 			return false;
 		}
 	}
