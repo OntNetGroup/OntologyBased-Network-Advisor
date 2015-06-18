@@ -807,46 +807,47 @@ public class InstanceFabricator {
 					StudioComponents.studioRepository.getNamespace() + dtoContent.getType(),
 					true);
 		}
-		
-		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
-		String name_source = dtoContainer.getName();
-		String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoContainer.getType();
-		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
-		String name_target = dtoContent.getName();
-		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
-		String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.componentOf.toString();
-		if(ContainerStructure.verifyContainerRelation(sourceURI, tipo_source, targetURI, tipo_target)){
-			
-			FactoryUtil.createInstanceIndividual(
-					StudioComponents.studioRepository.getBaseModel(),
-					targetURI,
-					tipo_target,
-					true);
-			
-			if(tipo_target.equalsIgnoreCase(StudioComponents.studioRepository.getNamespace() + ConceptEnum.Card_Layer.toString())){
-				String layerPropertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
-				String layerTypeURI = StudioComponents.studioRepository.getNamespace() + name_target;
+		else{	
+			String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
+			String name_source = dtoContainer.getName();
+			String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoContainer.getType();
+			String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
+			String name_target = dtoContent.getName();
+			String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
+			String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.componentOf.toString();
+			if(ContainerStructure.verifyContainerRelation(sourceURI, tipo_source, targetURI, tipo_target)){
+				
+				FactoryUtil.createInstanceIndividual(
+						StudioComponents.studioRepository.getBaseModel(),
+						targetURI,
+						tipo_target,
+						true);
+				
+				if(tipo_target.equalsIgnoreCase(StudioComponents.studioRepository.getNamespace() + ConceptEnum.Card_Layer.toString())){
+					String layerPropertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
+					String layerTypeURI = StudioComponents.studioRepository.getNamespace() + name_target;
+					FactoryUtil.createInstanceRelation(
+							StudioComponents.studioRepository.getBaseModel(), 
+							targetURI,			 
+							layerPropertyURI,
+							layerTypeURI
+						);
+				}
+				
+				
 				FactoryUtil.createInstanceRelation(
 						StudioComponents.studioRepository.getBaseModel(), 
-						targetURI,			 
-						layerPropertyURI,
-						layerTypeURI
+						sourceURI,			 
+						propertyURI,
+						targetURI
 					);
+					
+				NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + dtoContainer.getType() + name_source + "linked with " + dtoContent.getType() + name_target);
 			}
-			
-			
-			FactoryUtil.createInstanceRelation(
-					StudioComponents.studioRepository.getBaseModel(), 
-					sourceURI,			 
-					propertyURI,
-					targetURI
-				);
-				
-			NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + dtoContainer.getType() + name_source + "linked with " + dtoContent.getType() + name_target);
-		}
-		else{
-			NOpenLog.appendLine("Error: " + name_source + " cannot be connected to " + name_target + "because there is no \"componentOf\" relation between " + tipo_source + "and " + tipo_target);
-			throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "because there is no \"componentOf\" relation between " + tipo_source + "and " + tipo_target);	
+			else{
+				NOpenLog.appendLine("Error: " + name_source + " cannot be connected to " + name_target + "because there is no \"componentOf\" relation between " + tipo_source + "and " + tipo_target);
+				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "because there is no \"componentOf\" relation between " + tipo_source + "and " + tipo_target);	
+			}
 		}
 	}
 	
