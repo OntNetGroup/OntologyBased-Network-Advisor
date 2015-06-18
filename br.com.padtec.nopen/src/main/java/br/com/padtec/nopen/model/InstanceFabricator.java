@@ -35,7 +35,7 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createAF(OKCoUploader repository, String afId, String afName, String cardId, String cardName) throws Exception
+	public static void createAFAtCard(OKCoUploader repository, String afId, String afName, String cardId, String cardName) throws Exception
 	{
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
@@ -51,6 +51,69 @@ public class InstanceFabricator {
 		);
 		
 		NOpenLog.appendLine(repository.getName()+": AF "+afName+" created at Card "+cardName);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createPhysicalMediaAtCard(OKCoUploader repository, String pmId, String pmName, String cardId, String cardName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+pmId, 
+			repository.getNamespace()+ConceptEnum.Physical_Media.toString()
+		);
+		
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+cardId, 
+			repository.getNamespace()+RelationEnum.ComponentOf2_Card_TF_Card_Element.toString(),
+			repository.getNamespace()+pmId
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Physical Media "+pmName+" created at Card "+cardName);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createMatrixAtCard(OKCoUploader repository, String mId, String mName, String cardId, String cardName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+mId, 
+			repository.getNamespace()+ConceptEnum.Matrix.toString()
+		);
+		
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+cardId, 
+			repository.getNamespace()+RelationEnum.ComponentOf2_Card_TF_Card_Element.toString(),
+			repository.getNamespace()+mId
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Matrix "+mName+" created at Card "+cardName);
+	}
+	
+	/**
+	 * @author John Guerson
+	 */
+	public static void createLayerAtCard(OKCoUploader repository, String layerId, String layerName, String cardId, String cardName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+layerId, 
+			repository.getNamespace()+ConceptEnum.Card_Layer.toString()
+		);
+		
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+cardId, 
+			repository.getNamespace()+RelationEnum.ComponentOf4_Card_Card_Layer.toString(),
+			repository.getNamespace()+layerId
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" created at Card "+cardName);
 	}
 	
 	/**

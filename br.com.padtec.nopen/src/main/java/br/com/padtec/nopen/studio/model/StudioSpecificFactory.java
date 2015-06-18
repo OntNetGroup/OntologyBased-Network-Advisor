@@ -58,7 +58,7 @@ public class StudioSpecificFactory {
 		}
 		else if(tfType.equals("AF") && containerType.equals("card")) 
 		{
-			InstanceFabricator.createAF(StudioComponents.studioRepository,tfId, tfName, containerId, containerName);						
+			InstanceFabricator.createAFAtCard(StudioComponents.studioRepository,tfId, tfName, containerId, containerName);						
 		}else{
 			
 			NOpenLog.appendLine("Error: Unexpected creation of Transport Function "+tfType+"::"+tfName+" at "+containerType+"::"+containerName+"");
