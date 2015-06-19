@@ -35,7 +35,7 @@ function showTechnologyWindow(techs , cell){
 
 	dialog.on('action:save', function(){
 		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
-		//var result = setTechnology(supervisorType, supervisorID , tech);
+		//var result = setTechnology(SupervisorType, SupervisorID , tech);
 		var result = "success";
 		if(result === "success"){
 			dialog.close();
@@ -90,8 +90,8 @@ function equipmentHandle(graph){
 			var containerID = parent.get('id');
 			var containerName = parent.attributes.attrs.name.text;
 
-			if(parent.get('subType') === 'rack') {                   
-				//equipamento em um rack
+			if(parent.get('subType') === 'Rack') {                   
+				//equipamento em um Rack
 				// consultar ontologia para inserção 
 
 //				if(this.skipOntologyAddHandler === true){
@@ -100,7 +100,7 @@ function equipmentHandle(graph){
 //				return;
 //				};
 
-				var result = insertEquipmentholder(equipmentName , equipmentType, equipmentID ,containerName , containerType , containerID);
+				var result = EquipStudioInsertContainer(equipmentName , equipmentType, equipmentID ,containerName , containerType , containerID);
 				//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);
 				if(result === "success") {
 
@@ -113,9 +113,9 @@ function equipmentHandle(graph){
 					var a = parent.get('embeds');
 					var maior = 0;
 					for (var i = 0; i < a.length; i++) {
-						var shelf = graph.getCell(a[i]);
+						var Shelf = graph.getCell(a[i]);
 
-						shelf.set('position', {
+						Shelf.set('position', {
 							x: ((pposition.x) + 15) ,
 							y: (pposition.y + 20 + (i*(80))) 
 						});
@@ -137,8 +137,8 @@ function equipmentHandle(graph){
 					}).open();		
 				}
 			}else{
-				if(parent.get('subType') === 'shelf'){
-					//equipamento em uma shelf
+				if(parent.get('subType') === 'Shelf'){
+					//equipamento em uma Shelf
 					var grandparentId = parent.get('parent');
 					if (!grandparentId) return;
 					var grandparent = graph.getCell(grandparentId);
@@ -146,7 +146,7 @@ function equipmentHandle(graph){
 					var containerType = parent.get('subType');
 					var containerID = parent.get('id');
 
-					var result = insertEquipmentholder( equipmentName , equipmentType, equipmentID ,containerName, containerType , containerID);
+					var result = EquipStudioInsertContainer( equipmentName , equipmentType, equipmentID ,containerName, containerType , containerID);
 					if(result === "success") {
 						parent.embed(cell)
 
@@ -158,8 +158,8 @@ function equipmentHandle(graph){
 						var b = parent.get('embeds');
 						var maior = 0;
 						for (var i = 0; i < b.length; i++) {
-							var slot = graph.getCell(b[i]);
-							slot.set('position', {
+							var Slot = graph.getCell(b[i]);
+							Slot.set('position', {
 								x: pposition.x + 20 + ((i) * (42.5)) ,
 								y: pposition.y + 7 
 							});
@@ -172,16 +172,16 @@ function equipmentHandle(graph){
 
 						var c = grandparent.get('embeds');
 						var maior = (parent.get('size').width);
-						var maiorshelf1 = parent;
+						var maiorShelf1 = parent;
 						for (var i = 0; i < c.length; i++) {
-							var shelf1 = graph.getCell(c[i]);
-							if (shelf1){							
-								if (maior < (shelf1.get('size').width)) {
-									maior = (shelf1.get('size').width);
-									maiorshelf1 = shelf1;
+							var Shelf1 = graph.getCell(c[i]);
+							if (Shelf1){							
+								if (maior < (Shelf1.get('size').width)) {
+									maior = (Shelf1.get('size').width);
+									maiorShelf1 = Shelf1;
 								}
 								grandparent.set ('size' , {
-									width: maiorshelf1.get('size').width + 40 ,
+									width: maiorShelf1.get('size').width + 40 ,
 									height: grandparent.get('size').height
 								});
 							}
@@ -197,8 +197,8 @@ function equipmentHandle(graph){
 //						}).open();	
 					}
 				}else {
-					if(parent.get('subType') === 'slot'){
-						//equipamento em um slot
+					if(parent.get('subType') === 'Slot'){
+						//equipamento em um Slot
 						var containerType = parent.get('subType');
 						var containerID = parent.get('id');
 
@@ -207,12 +207,12 @@ function equipmentHandle(graph){
 						if (parent.getEmbeddedCells().length === '0'){
 							newpositionx = pposition.x + 6;
 						}else {
-							//Um card por slot
+							//Um Card por Slot
 							newpositionx = pposition.x + 6 + ((filhos) * (29));
 						};
-						var result = insertEquipmentholder( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+						var result = EquipStudioInsertContainer( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 						if(result === "success") {
-							// Se já possuir um card (confirmar o metodo para card e supervisor)
+							// Se já possuir um Card (confirmar o metodo para Card e Supervisor)
 
 
 							if (parent.getEmbeddedCells().length === 1){	
@@ -220,13 +220,13 @@ function equipmentHandle(graph){
 									type: 'alert',
 									width: 400,
 									title: 'Alert',
-									content: 'A slot can only contain one card.'
+									content: 'A Slot can only contain one Card.'
 								}).open();
 								this.skipOntologyRemoveHandler = true;
 								cell.remove();
 								return;
 							}else{									
-//								if (cell.get('subType') === 'supervisor'){									
+//								if (cell.get('subType') === 'Supervisor'){									
 
 //								parent.embed(cell);
 //								showTechnologyWindow(getTechnologies() , cell);									
@@ -244,10 +244,10 @@ function equipmentHandle(graph){
 //								});
 //								};
 
-								if (cell.get('subType') === 'card'){									
+								if (cell.get('subType') === 'Card'){									
 									parent.embed(cell);	
-									//nscards.push(cell);
-									//console.log(nscards);
+									//nsCards.push(cell);
+									//console.log(nsCards);
 									cell.set('size' , {
 										width: 10 ,
 										height: 20							
@@ -266,7 +266,7 @@ function equipmentHandle(graph){
 							}
 						}else{
 
-							var result = insertSupervisor( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+							var result = EquipStudioInsertContainer( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 							if (result === "success"){
 								parent.embed(cell);
 								showTechnologyWindow(getTechnologies() , cell);
@@ -299,14 +299,14 @@ function equipmentHandle(graph){
 							}
 						}
 					}else{
-						if(parent.get('subType') === 'card' || 'supervisor' ){
+						if(parent.get('subType') === 'Card' || 'Supervisor' ){
 							// configurar as portas de input e output quando sair do itu
 						}
 					}
 				}
 			}
 		}else{
-			//Only the rack can be inserted into the graph without an equipment holder	
+			//Only the Rack can be inserted into the graph without an equipment holder	
 			var containerType;
 			var containerID;
 
@@ -316,7 +316,7 @@ function equipmentHandle(graph){
 //			return;
 //			};
 			//console.log("failed");
-			var result = insertEquipmentholder(equipmentName , equipmentType, equipmentID);
+			var result = EquipStudioInsertContainer(equipmentName , equipmentType, equipmentID);
 			if(result === "success") {    
 
 				cell.attr({
@@ -350,7 +350,7 @@ function equipmentHandle(graph){
 		if (parent){
 
 
-			if(parent.get('subType') === 'rack'){
+			if(parent.get('subType') === 'Rack'){
 
 				var pposition = parent.get('position');
 				var psize = parent.get('size');			
@@ -359,52 +359,52 @@ function equipmentHandle(graph){
 				//	console.log("to del: ", cell);
 				var d = parent.get('embeds');
 				var maiorl = 0;
-				var shelfw;
+				var Shelfw;
 				var sons;
 
 				var l = 0;
 
 				for (var i = 0; i < d.length; i++) {
-					var shelf = graph.getCell(d[i]);			
-					if (shelf){
-						//	console.log("changed: " , shelf);
+					var Shelf = graph.getCell(d[i]);			
+					if (Shelf){
+						//	console.log("changed: " , Shelf);
 
-						shelf.set('position', {
+						Shelf.set('position', {
 							x: newpositionx ,
 							y: (pposition.y + 20 + ((l)*(80))) 
 						});
 
-						var sposition = shelf.get('position');
+						var sposition = Shelf.get('position');
 
-						sons = shelf.getEmbeddedCells().length;
+						sons = Shelf.getEmbeddedCells().length;
 
 						if ( maiorl < sons ){
 							maiorl = sons;
-							shelfw = shelf.get('size').width;
+							Shelfw = Shelf.get('size').width;
 						}
 
-						var reslot = shelf.get('embeds');
+						var reSlot = Shelf.get('embeds');
 						var k;
-						for (k=0; k < (reslot.length); k++){
-							var inshelf = graph.getCell(reslot[k]);	
-							if(inshelf){			
-								var childId = inshelf.get('embeds');	
-								var inslot = graph.getCell(childId);																								
-								inshelf.set('position', {
+						for (k=0; k < (reSlot.length); k++){
+							var inShelf = graph.getCell(reSlot[k]);	
+							if(inShelf){			
+								var childId = inShelf.get('embeds');	
+								var inSlot = graph.getCell(childId);																								
+								inShelf.set('position', {
 									y: sposition.y + 7 ,
 									x: sposition.x + 20 + ((k) * (42.5)) ,
 								});
 
-								var slotpos = inshelf.get('position');
+								var Slotpos = inShelf.get('position');
 
-								if(inslot){
-									inslot.set('position', {
-										y: slotpos.y + 16 ,
-										x: slotpos.x + 6
+								if(inSlot){
+									inSlot.set('position', {
+										y: Slotpos.y + 16 ,
+										x: Slotpos.x + 6
 									});
 								};
-								shelf.set('size', {
-									width: shelf.get('size').width,
+								Shelf.set('size', {
+									width: Shelf.get('size').width,
 									height: 67.5 },
 									{skipParentHandler : false});		
 							}
@@ -419,7 +419,7 @@ function equipmentHandle(graph){
 					});
 				}else{
 					parent.set('size' , { 
-						width: (shelfw) + 40  ,
+						width: (Shelfw) + 40  ,
 						height:	265 + ((parent.getEmbeddedCells().length - (3) ) * 77.5)
 					});
 				} 			
@@ -427,7 +427,7 @@ function equipmentHandle(graph){
 
 			};
 
-			if(parent.get('subType') === 'shelf'){
+			if(parent.get('subType') === 'Shelf'){
 
 				var grandparentId = parent.get('parent');
 				if (!grandparentId) return;
@@ -437,23 +437,23 @@ function equipmentHandle(graph){
 				var e = parent.get('embeds');
 				var l = 0;
 				for(var j=0; j < e.length;j++){
-					var inshelf = graph.getCell(e[j]);
-					if(inshelf){              	
+					var inShelf = graph.getCell(e[j]);
+					if(inShelf){              	
 
-						inshelf.set('position', {
+						inShelf.set('position', {
 							x: pposition.x + 20 + ((l) * (42.5)) ,
 							y: pposition.y + 7 
 						});
 
-						var childId = inshelf.get('embeds');	
-						var inslot = graph.getCell(childId);	
+						var childId = inShelf.get('embeds');	
+						var inSlot = graph.getCell(childId);	
 
-						var slotpos = inshelf.get('position');
+						var Slotpos = inShelf.get('position');
 
-						if(inslot){
-							inslot.set('position', {
-								y: slotpos.y + 16 ,
-								x: slotpos.x + 6
+						if(inSlot){
+							inSlot.set('position', {
+								y: Slotpos.y + 16 ,
+								x: Slotpos.x + 6
 							});
 						};
 						l++;
@@ -473,17 +473,17 @@ function equipmentHandle(graph){
 				var t = grandparent.get('embeds');
 				var k=0;
 				var maiorl = 0;
-				var inrackw;
+				var inRackw;
 				var sons=0;
 
 				for(var p=0; p < t.length; p++){
-					var inrack = graph.getCell(t[p]);
+					var inRack = graph.getCell(t[p]);
 
-					sons = inrack.getEmbeddedCells().length;
+					sons = inRack.getEmbeddedCells().length;
 
 					if ( maiorl < sons ){
 						maiorl = sons;
-						inrackw = inrack.get('size').width;
+						inRackw = inRack.get('size').width;
 					}   
 				}	
 				if(maiorl === 0){
@@ -493,30 +493,30 @@ function equipmentHandle(graph){
 					})
 				}else{
 					grandparent.set('size' , { 
-						width: (inrackw) + 40  ,
+						width: (inRackw) + 40  ,
 						height:	265 + ((grandparent.getEmbeddedCells().length - (2) ) * 77.5)
 					});	
 				}
 
 			};
 
-			if(parent.get('subType') === 'slot'){
+			if(parent.get('subType') === 'Slot'){
 
 				var grandparentId = parent.get('parent');
 				if (!grandparentId) return;
 
 				var grandparent = graph.getCell(grandparentId);
 
-				if(cell.get('subType') === 'supervisor'){
+				if(cell.get('subType') === 'Supervisor'){
 					var cellID = cell.get('id');
-					//procurar no grafico inteiro pelo nome da supervisor
+					//procurar no grafico inteiro pelo nome da Supervisor
 					var elementos = graph.getElements();
 					for(var i = 0; i < elementos.length; i++){
 						var equipment = elementos[i];
-						if((equipment.attributes.subType) === 'card'){
-							if((equipment.get('supervisorID') === (cellID))){
-								equipment.set("supervisor" , '');
-								equipment.set("supervisorID" , '');
+						if((equipment.attributes.subType) === 'Card'){
+							if((equipment.get('SupervisorID') === (cellID))){
+								equipment.set("Supervisor" , '');
+								equipment.set("SupervisorID" , '');
 							}
 						}
 					}
@@ -564,19 +564,19 @@ function equipmentHandle(graph){
 	},this);
 
 	function getName(equipmentSubtype) {
-		if(equipmentSubtype === 'rack') return 'Rack_' +app.RackCounter;
-		if(equipmentSubtype === 'shelf') return 'Shelf_' +app.ShelfCounter;
-		if(equipmentSubtype === 'slot') return 'Slot_' +app.SlotCounter;
-		if(equipmentSubtype === 'card') return 'Card_' +app.CardCounter;
-		if(equipmentSubtype === 'supervisor') return 'Supervisor_' +app.SupervisorCounter;
+		if(equipmentSubtype === 'Rack') return 'Rack_' +app.RackCounter;
+		if(equipmentSubtype === 'Shelf') return 'Shelf_' +app.ShelfCounter;
+		if(equipmentSubtype === 'Slot') return 'Slot_' +app.SlotCounter;
+		if(equipmentSubtype === 'Card') return 'Card_' +app.CardCounter;
+		if(equipmentSubtype === 'Supervisor') return 'Supervisor_' +app.SupervisorCounter;
 	};
 
 	function nextName(equipmentSubtype) {
-		if(equipmentSubtype === 'rack') app.RackCounter++;
-		if(equipmentSubtype === 'shelf') app.ShelfCounter++;
-		if(equipmentSubtype === 'slot') app.SlotCounter++;
-		if(equipmentSubtype === 'card') app.CardCounter++;
-		if(equipmentSubtype === 'supervisor') app.SupervisorCounter++;
+		if(equipmentSubtype === 'Rack') app.RackCounter++;
+		if(equipmentSubtype === 'Shelf') app.ShelfCounter++;
+		if(equipmentSubtype === 'Slot') app.SlotCounter++;
+		if(equipmentSubtype === 'Card') app.CardCounter++;
+		if(equipmentSubtype === 'Supervisor') app.SupervisorCounter++;
 	};
 
 };

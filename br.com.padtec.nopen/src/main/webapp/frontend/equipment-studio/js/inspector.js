@@ -68,7 +68,7 @@ var CommonInspectorGroups = {
 
 var InspectorDefs = {
 
-		'rack': {
+		'Rack': {
 			inputs: {
 				//name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the rack.' } } },
 				attrs: {
@@ -86,9 +86,9 @@ var InspectorDefs = {
 
 		},
 
-		'shelf': {
+		'Shelf': {
 			inputs: {
-//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the shelf.' } } },
+//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the Shelf.' } } },
 				attrs: {
 					name: {
 						text: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' } } },
@@ -104,9 +104,9 @@ var InspectorDefs = {
 		},
 
 
-		'slot' : {
+		'Slot' : {
 			inputs: {
-//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the slot.' } } },
+//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the Slot.' } } },
 				attrs: {
 					name: {
 						text: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' } } },
@@ -122,9 +122,9 @@ var InspectorDefs = {
 		},
 
 
-		'card': {
+		'Card': {
 			inputs: {
-//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the card.' } } },
+//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the Card.' } } },
 				attrs: {
 					name: {
 						text: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' } } },
@@ -134,16 +134,16 @@ var InspectorDefs = {
 //				}
 				},
 				subType: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Type of the equipment.' } } },
-				supervisor: {type: 'text', group: 'specific', index: 3, label: 'Supervisor', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Name of the supervisor of the card.' } }},
+				Supervisor: {type: 'text', group: 'specific', index: 3, label: 'Supervisor', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Name of the Supervisor of the Card.' } }},
 				id: { type: 'text', group: 'data', index: 3, label: 'ID', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'ID of the equipment.' } } },
 			},
 			groups: CommonInspectorGroups
 
 		},
 
-		'supervisor': {
+		'Supervisor': {
 			inputs: {
-//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the supervisor.' } } },
+//				name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the Supervisor.' } } },
 				attrs: {
 					name: {
 						text: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the equipment.' } } },
@@ -153,7 +153,7 @@ var InspectorDefs = {
 //				}
 				},
 				subType: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Type of the equipment.' } } },
-				tech: { type : 'text' , group: 'specific', index: 3, label: 'Technology', attrs: {'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Technology of the supervisor.' }}},
+				tech: { type : 'text' , group: 'specific', index: 3, label: 'Technology', attrs: {'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Technology of the Supervisor.' }}},
 				id: { type: 'text', group: 'data', index: 3, label: 'ID', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'ID of the equipment.' } } }
 			},
 			groups: CommonInspectorGroups

@@ -20,14 +20,14 @@ function validator(validator, graph, app) {
 		//var result = setEquipmentName(cellID,cellName,cellsubType);
 		var result = "success";
 		if (result === "success"){			
-			if(cellsubType === "supervisor"){
-				//procurar no grafico inteiro pelo nome da supervisor
+			if(cellsubType === "Supervisor"){
+				//procurar no grafico inteiro pelo nome da Supervisor
 				var elementos = graph.getElements();
 				for(var i = 0; i < elementos.length; i++){
 					var equipment = elementos[i];
-					if((equipment.attributes.subType) === 'card'){
-						if((equipment.get('supervisorID') === (cellID))){
-							equipment.set("supervisor" , (cellName));
+					if((equipment.attributes.subType) === 'Card'){
+						if((equipment.get('SupervisorID') === (cellID))){
+							equipment.set("Supervisor" , (cellName));
 						}
 					}
 				}
@@ -58,42 +58,42 @@ function isLink(err, command, next) {
 	// otherwise stop validating (don't call next validation function)
 };
 
-//Check if cell in command is a rack. Continue validating if yes, otherwise stop.
+//Check if cell in command is a Rack. Continue validating if yes, otherwise stop.
 function isRack(err, command, next) {
 	var cellSubType = command.data.attributes.subType;
 
-	if(cellSubType === 'rack') return next(err);
+	if(cellSubType === 'Rack') return next(err);
 	// otherwise stop validating (don't call next validation function)
 };
 
-//Check if cell in command is a shelf. Continue validating if yes, otherwise stop.
+//Check if cell in command is a Shelf. Continue validating if yes, otherwise stop.
 function isShelf(err, command, next) {
 	var cellSubType = command.data.attributes.subType;
 
-	if(cellSubType === 'shelf') return next(err);
+	if(cellSubType === 'Shelf') return next(err);
 	// otherwise stop validating (don't call next validation function)
 };
 
-//Check if cell in command is a slot. Continue validating if yes, otherwise stop.
+//Check if cell in command is a Slot. Continue validating if yes, otherwise stop.
 function isSlot(err, command, next) {
 	var cellSubType = command.data.attributes.subType;
 
-	if(cellSubType === 'slot') return next(err);
+	if(cellSubType === 'Slot') return next(err);
 	// otherwise stop validating (don't call next validation function)
 };
 
-//Check if cell in command is a card. Continue validating if yes, otherwise stop.
+//Check if cell in command is a Card. Continue validating if yes, otherwise stop.
 function isCard(err, command, next) {
 	var cellSubType = command.data.attributes.subType;
 
-	if(cellSubType === 'card') return next(err);
+	if(cellSubType === 'Card') return next(err);
 	// otherwise stop validating (don't call next validation function)
 };
 
-//Check if cell in command is a shelf. Continue validating if yes, otherwise stop.
+//Check if cell in command is a Shelf. Continue validating if yes, otherwise stop.
 function isSupervisor(err, command, next) {
 	var cellSubType = command.data.attributes.subType;
 
-	if(cellSubType === 'supervisor') return next(err);
+	if(cellSubType === 'Supervisor') return next(err);
 	// otherwise stop validating (don't call next validation function)
 };

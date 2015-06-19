@@ -10,9 +10,9 @@ function resizing(graph){
 		
 		// configuration of resizing
 		var sizeMultiplier = { 	
-				'rack': 3,
-				'shelf': 1.5,
-				'slot': 1.5
+				'Rack': 3,
+				'Shelf': 1.5,
+				'Slot': 1.5
 		}[subType];
 
 		if (sizeMultiplier) {

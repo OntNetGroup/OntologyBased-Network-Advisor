@@ -19,7 +19,7 @@ function ituHandle(paper, graph, validator){
 	       var source = cellView.model;
 	       var target = cellView.model;
 	       
-	       if(source.get('subType') !== 'card') return;
+	       if(source.get('subType') !== 'Card') return;
 	       
 	       var content = '<table class="connectionInOut"><tr><td>' +
 			'<table class="connectionOut">' + 
@@ -88,7 +88,7 @@ function ituHandle(paper, graph, validator){
 					$.each(graph.getElements(), function(index, c) {
 						
 						//delete ports
-						if(c.get('subType') === 'card') {
+						if(c.get('subType') === 'Card') {
 							if(c.attributes.connectedPorts[id]) {
 								port1 = c.id;
 								delete c.attributes.connectedPorts[id];
@@ -127,23 +127,23 @@ function ituHandle(paper, graph, validator){
 	    }
 	});
 	
-	//open itu studio when double click on card
+	//open itu studio when double click on Card
 	paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
 	
 		var cellId = cellView.model.id;
 		var equipment = graph.getCell(cellId);
 		
-		if((equipment.get('subType')) === 'card') {
+		if((equipment.get('subType')) === 'Card') {
 			
 			$("#itu-iframe").empty();
 			
 			if($('#filename').val() == ""){
-				if (confirm('You need save the Template before edit the card. Do you like to do it?')) {
+				if (confirm('You need save the Template before edit the Card. Do you like to do it?')) {
         			generateSaveTemplateDialog(graph);
 				} 
         	}
-			else if(!equipment.get('supervisorID')) {
-				alert('Error! The card needs to be connected with a supervisor');
+			else if(!equipment.get('SupervisorID')) {
+				alert('Error! The Card needs to be connected with a Supervisor');
 				return;
 			}
         	else{
@@ -156,14 +156,14 @@ function ituHandle(paper, graph, validator){
 			            //title: 'Dynamically Loaded Page',
 			            open: function ()
 			            {
-		            		$('#itu-iframe').attr('src','/nopen/itu-studio.htm?equipment=' + $("#filename").val() + '&card=' + cellId);
+		            		$('#itu-iframe').attr('src','/nopen/itu-studio.htm?equipment=' + $("#filename").val() + '&Card=' + cellId);
 			            },
 			            close: function() {
 			            	
 			            	//var ituGraph = $('#itu-iframe').get(0).contentWindow.app.graph;
 			            	
-			            	//If changes were not discarded
-			            	if(!$('#itu-iframe').get(0).contentWindow.discardChanges) {
+			            	//If changes were not disCarded
+			            	if(!$('#itu-iframe').get(0).contentWindow.disCardChanges) {
 			            	
 				            	var cell = graph.getCell(cellId);
 				            	var hasIn = false, hasOut = false;
@@ -233,7 +233,7 @@ function ituHandle(paper, graph, validator){
 				    				$.each(graph.getElements(), function(index, c) {
 				    					
 				    					//delete ports
-				    					if(c.get('subType') === 'card') {
+				    					if(c.get('subType') === 'Card') {
 				    						if(c.attributes.connectedPorts[id]) {
 				    							port1 = c.id;
 				    							delete c.attributes.connectedPorts[id];
@@ -310,7 +310,7 @@ function ituHandle(paper, graph, validator){
 	
 	graph.on('remove', function(cell){
 		
-		if(cell.get('subType') === 'card'){
+		if(cell.get('subType') === 'Card'){
 			deletedITUFiles[index] = cell.id;
 			index++;
 		}
@@ -443,7 +443,7 @@ function ituHandle(paper, graph, validator){
 				$.each(graph.getElements(), function(index, c) {
 					
 					//delete ports
-					if(c.get('subType') === 'card') {
+					if(c.get('subType') === 'Card') {
 						if(c.attributes.connectedPorts[id]) {
 							port1 = c.id;
 							delete c.attributes.connectedPorts[id];

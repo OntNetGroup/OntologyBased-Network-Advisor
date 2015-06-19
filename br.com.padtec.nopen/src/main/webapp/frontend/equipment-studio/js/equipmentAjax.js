@@ -1,10 +1,47 @@
 /* ----- Equipament Holders  ----- */
 
-function insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID) {
+//function insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID) {
+//
+//	var result = "error";
+//
+//	var dtoEquipmentholder = {
+//			"name": equipmentName ,
+//			"id": equipmentID ,
+//			"type": equipmentType 
+//	};
+//	
+//	var dtoContainer = {
+//			"name": containerName  ,
+//			"id": containerID ,
+//			"type": containerType 
+//	};
+//
+//	$.ajax({
+//		type: "POST",
+//		async: false,
+//		url: "insertEquipmentholder.htm",
+//		data: {
+//			'equipmentholder': JSON.stringify(dtoEquipmentholder),
+//			'container': JSON.stringify(dtoContainer)
+//		} ,
+//		success: function(data){ 		   
+//			result = data;
+//			console.log(result);
+//		},
+//		error : function(e) {
+//			alert("error: " + e.status);
+//		}
+//	});
+//	
+//	
+//	return result;
+//};
+
+function EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID) {
 
 	var result = "error";
 
-	var dtoEquipmentholder = {
+	var dtoContent = {
 			"name": equipmentName ,
 			"id": equipmentID ,
 			"type": equipmentType 
@@ -19,13 +56,14 @@ function insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,contai
 	$.ajax({
 		type: "POST",
 		async: false,
-		url: "insertEquipmentholder.htm",
+		url: "EquipStudioInsertContainer.htm",
 		data: {
-			'equipmentholder': JSON.stringify(dtoEquipmentholder),
+			'content': JSON.stringify(dtoContent),
 			'container': JSON.stringify(dtoContainer)
 		} ,
 		success: function(data){ 		   
 			result = data;
+			console.log('data' , result);
 		},
 		error : function(e) {
 			alert("error: " + e.status);
@@ -35,6 +73,7 @@ function insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,contai
 	
 	return result;
 };
+
 
 function deleteEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID) {
 
@@ -75,15 +114,15 @@ function deleteEquipmentholder(equipmentName, equipmentType, equipmentID , conta
 
 /* ----- Supervisor  ----- */
 
-function insertSupervisor( supervisorName, supervisorType, supervisorID ,slotName, slotType , slotID) {
+function insertSupervisor( SupervisorName, SupervisorType, SupervisorID ,slotName, slotType , slotID) {
 
 	var result = "error";
 
 
 	var dtoSupervisor = {
-			"name" : supervisorName ,
-			"id": supervisorID ,
-			"type": supervisorType 
+			"name" : SupervisorName ,
+			"id": SupervisorID ,
+			"type": SupervisorType 
 	};
 	
 	var dtoSlot = {
@@ -97,7 +136,7 @@ function insertSupervisor( supervisorName, supervisorType, supervisorID ,slotNam
 		async: false,
 		url: "insertSupervisor.htm",
 		data: {
-			'supervisor': JSON.stringify(dtoSupervisor),
+			'Supervisor': JSON.stringify(dtoSupervisor),
 			'slot': JSON.stringify(dtoSlot)
 		} ,
 		success: function(data){ 		   
@@ -133,16 +172,16 @@ function getTechnologies(){
 };
 
 
-function setTechnology( supervisorName ,supervisorType, supervisorID , tech) {
+function setTechnology( SupervisorName ,SupervisorType, SupervisorID , tech) {
 
 	var result = "error";
       
     var technology = tech;
     
 	var dtoSupervisor = {
-			"name": supervisorName ,
-			"id": supervisorID ,
-			"type": supervisorType 
+			"name": SupervisorName ,
+			"id": SupervisorID ,
+			"type": SupervisorType 
 	};
 	
 	$.ajax({
@@ -150,7 +189,7 @@ function setTechnology( supervisorName ,supervisorType, supervisorID , tech) {
 		async: false,
 		url: "setTechnology.htm",
 		data: {
-			'supervisor': JSON.stringify(dtoSupervisor),
+			'Supervisor': JSON.stringify(dtoSupervisor),
 			'technology': JSON.stringify(technology)
 		} ,
 		success: function(data){ 		   
@@ -164,21 +203,21 @@ function setTechnology( supervisorName ,supervisorType, supervisorID , tech) {
 	return result;
 };
 
-function superviseCard( supervisorName, supervisorType, supervisorID ,cardName, cardType , cardID) {
+function superviseCard( SupervisorName, SupervisorType, SupervisorID ,CardName, CardType , CardID) {
 
 	var result = "error";
 
 
 	var dtoSupervisor = {
-			"name" : supervisorName ,
-			"id": supervisorID ,
-			"type": supervisorType 
+			"name" : SupervisorName ,
+			"id": SupervisorID ,
+			"type": SupervisorType 
 	};
 	
 	var dtoCard = {
-			"name": cardName ,
-			"id": cardID ,
-			"type": cardType 
+			"name": CardName ,
+			"id": CardID ,
+			"type": CardType 
 	};
 
 	$.ajax({
@@ -186,8 +225,8 @@ function superviseCard( supervisorName, supervisorType, supervisorID ,cardName, 
 		async: false,
 		url: "superviseCard.htm",
 		data: {
-			'supervisor': JSON.stringify(dtoSupervisor),
-			'card': JSON.stringify(dtoCard)
+			'Supervisor': JSON.stringify(dtoSupervisor),
+			'Card': JSON.stringify(dtoCard)
 		} ,
 		success: function(data){ 		   
 			result = data;
@@ -201,21 +240,21 @@ function superviseCard( supervisorName, supervisorType, supervisorID ,cardName, 
 	return result;
 };
 
-function unsuperviseCard( supervisorName, supervisorType, supervisorID ,cardName, cardType , cardID) {
+function unsuperviseCard( SupervisorName, SupervisorType, SupervisorID ,CardName, CardType , CardID) {
 
 	var result = "error";
 
 
 	var dtoSupervisor = {
-			"name" : supervisorName ,
-			"id": supervisorID ,
-			"type": supervisorType 
+			"name" : SupervisorName ,
+			"id": SupervisorID ,
+			"type": SupervisorType 
 	};
 	
 	var dtoCard = {
-			"name": cardName ,
-			"id": cardID ,
-			"type": cardType 
+			"name": CardName ,
+			"id": CardID ,
+			"type": CardType 
 	};
 
 	$.ajax({
@@ -223,8 +262,8 @@ function unsuperviseCard( supervisorName, supervisorType, supervisorID ,cardName
 		async: false,
 		url: "unsuperviseCard.htm",
 		data: {
-			'supervisor': JSON.stringify(dtoSupervisor),
-			'card': JSON.stringify(dtoCard)
+			'Supervisor': JSON.stringify(dtosupervisor),
+			'Card': JSON.stringify(dtoCard)
 		} ,
 		success: function(data){ 		   
 			result = data;
@@ -241,15 +280,15 @@ function unsuperviseCard( supervisorName, supervisorType, supervisorID ,cardName
 
 /* ----- Card  ----- */
 
-function insertCard( cardName , cardType, cardID , slotName , slotType , slotID) {
+function insertCard( CardName , CardType, CardID , slotName , slotType , slotID) {
 
 	var result = "error";
 
 
 	var dtoCard = {
-			"name" : cardName ,
-			"id": cardID ,
-			"type": cardType 
+			"name" : CardName ,
+			"id": CardID ,
+			"type": CardType 
 	};
 	
 	var dtoSlot = {
@@ -263,7 +302,7 @@ function insertCard( cardName , cardType, cardID , slotName , slotType , slotID)
 		async: false,
 		url: "insertCard.htm",
 		data: {
-			'card': JSON.stringify(dtoCard),
+			'Card': JSON.stringify(dtoCard),
 			'slot': JSON.stringify(dtoSlot)
 		} ,
 		success: function(data){ 		   
@@ -279,44 +318,7 @@ function insertCard( cardName , cardType, cardID , slotName , slotType , slotID)
 };
 
 
-function getsupervisedCards(){
-	
-	var result;
-	
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "getsupervisedCards.htm",		
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);			
-		}		 
-	});
- 
-	return result;
-	
-};
 
-function getallnotsupervisedCards(){
-	
-	var result;
-	
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "getallnotsupervisedCards.htm",		
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);			
-		}		 
-	});
- 
-	return result;
-	
-};
+
 
 

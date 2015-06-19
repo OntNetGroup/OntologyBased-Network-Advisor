@@ -1,17 +1,17 @@
 //Global
-supervisord = "";
+Supervisord = "";
 
-function setSupervisor(graph,cards){
+function setSupervisor(graph,Cards){
     
-	var card;
+	var Card;
      
-	if (cards.length === 1) {
+	if (Cards.length === 1) {
 		
-		card = graph.getCell(cards.val());
-//		var result=superviseCard( supervisord.attributes.attrs.name.text, supervisord.id ,card.attributes.attrs.name.text, card.id);
+		Card = graph.getCell(Cards.val());
+//		var result=superviseCard( Supervisord.attributes.attrs.name.text, Supervisord.id ,Card.attributes.attrs.name.text, Card.id);
 //		if(result="success"){
-			card.set("supervisorID" , (supervisord.id));
-			card.set("supervisor" , (supervisord.attributes.attrs.name.text));
+			Card.set("SupervisorID" , (Supervisord.id));
+			Card.set("Supervisor" , (Supervisord.attributes.attrs.name.text));
 //		}else{
 //			//msg de erro
 //			return;
@@ -19,13 +19,13 @@ function setSupervisor(graph,cards){
 		
 		
 	}else{
-		for(var i = 0; i < cards.length; i++){			
-			card = graph.getCell(cards[i].value);
+		for(var i = 0; i < Cards.length; i++){			
+			Card = graph.getCell(Cards[i].value);
 			
-//			var result=superviseCard( supervisord.attributes.attrs.name.text, supervisord.id ,card.attributes.attrs.name.text, card.id);
+//			var result=superviseCard( Supervisord.attributes.attrs.name.text, Supervisord.id ,Card.attributes.attrs.name.text, Card.id);
 //			if(result="success"){
-				card.set("supervisorID" , (supervisord.id));
-				card.set("supervisor" , (supervisord.attributes.attrs.name.text));
+				Card.set("SupervisorID" , (Supervisord.id));
+				Card.set("Supervisor" , (Supervisord.attributes.attrs.name.text));
 //			}else{
 //				//msg de erro
 //				return;
@@ -34,81 +34,81 @@ function setSupervisor(graph,cards){
 	}
 }
 
-function setSupervisornull(graph,cards){
+function setSupervisornull(graph,Cards){
 		
-	var card;
-//	card.set("supervisor" , (supervisord.id));
+	var Card;
+//	Card.set("Supervisor" , (Supervisord.id));
    
-	if (cards.length === 1) {
+	if (Cards.length === 1) {
 		
-		card = graph.getCell(cards.val());
-		card.set("supervisor" , '');
-		card.set("supervisorID" , '');
+		Card = graph.getCell(Cards.val());
+		Card.set("Supervisor" , '');
+		Card.set("SupervisorID" , '');
 	}else{
-		for(var i = 0; i < cards.length; i++){
+		for(var i = 0; i < Cards.length; i++){
 			
-			card = graph.getCell(cards[i].value);
-			card.set("supervisor" , '');	
-			card.set("supervisorID" , '');
+			Card = graph.getCell(Cards[i].value);
+			Card.set("Supervisor" , '');	
+			Card.set("SupervisorID" , '');
 		}
 	}
 }
 
-function selectSupervisorWindow(supervisor,nscards,scards, graph){
+function selectSupervisorWindow(Supervisor,nsCards,sCards, graph){
      
-    supervisord = supervisor;
+    Supervisord = Supervisor;
        
-    	 for(var i = 0; i<scards.length;i++){    		 
- 			$("#lstBox1").append('<option value="'+scards[i].id+'" class = "supervised">'+scards[i].attributes.attrs.name.text+'</option>');			
+    	 for(var i = 0; i<sCards.length;i++){    		 
+ 			$("#lstBox1").append('<option value="'+sCards[i].id+'" class = "supervised">'+sCards[i].attributes.attrs.name.text+'</option>');			
  		}
  			
- 		for(var i = 0; i<nscards.length;i++){
- 			//	console.log(nscards[i]);
- 				$("#lstBox2").append('<option value="'+nscards[i].id+'" class = "unsupervised">'+nscards[i].attributes.attrs.name.text+'</option>');
+ 		for(var i = 0; i<nsCards.length;i++){
+ 			//	console.log(nsCards[i]);
+ 				$("#lstBox2").append('<option value="'+nsCards[i].id+'" class = "unsupervised">'+nsCards[i].attributes.attrs.name.text+'</option>');
  			};
  			
- 			$("#supervisorDialog").dialog("open");	
+ 			$("#SupervisorDialog").dialog("open");	
 }
 
 
-function supervisorHandle(paper, graph){
+function SupervisorHandle(paper, graph){
    
    paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
    
 	   cellId = cellView.model.id;	   
 		
-		var supervisor = graph.getCell(cellId);
+		var Supervisor = graph.getCell(cellId);
 		
-		if((supervisor.get('tech')) === ''){
+		if((Supervisor.get('tech')) === ''){
 			
-			showTechnologyWindow(getTechnologies() , supervisor);
+			showTechnologyWindow(getTechnologies() , Supervisor);
 			
 		}else{
 			
 			var elementos = graph.getElements();
 			//console.log('elementos' , elementos);
 			var c = [ ];
-            var nscards = [];
-            var scards = [];
+            var nsCards = [];
+            var sCards = [];
 			
 			for(var i = 0; i < elementos.length; i++){
 				var check = elementos[i];
-				if((check.attributes.subType) === 'card'){
-                   if((check.get('supervisorID') === (supervisor.id))){
-                	   scards.push(check);
+				if((check.attributes.subType) === 'Card'){
+                   if((check.get('SupervisorID') === (Supervisor.id))){
+                	   sCards.push(check);
                    }else{
-                	   if((check.get('supervisorID') === '')){
-                    	   nscards.push(check);
+                	   if((check.get('SupervisorID') === '')){
+                    	   nsCards.push(check);
                        }
                    }
 				}
 			};
 			
-			if(!((supervisor.get('subType')) === 'supervisor')){
+			if(!((Supervisor.get('subType')) === 'Supervisor')){
 				return;
 			}else{
-				//selectSupervisorWindow(supervisor,getallnotsupervisedCards(),getsupervisedCards(), graph);
-				selectSupervisorWindow(supervisor,nscards,scards, graph);
+				//selectSupervisorWindow(Supervisor,getallnotsupervisedCards(),getsupervisedCards(), graph);
+				selectSupervisorWindow(Supervisor,nsCards,sCards, graph);
 			}
 		}
    });
