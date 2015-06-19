@@ -198,7 +198,7 @@ public class PerformBind {
 		return false;
 	}
 	
-	public static boolean canCreateBind(DtoJointElement dtoContainer, DtoJointElement dtoContent/*String id_source, String name_source, String id_target, String name_target, String tipo_source, String tipo_target, OKCoUploader repository*/ ){
+	public static boolean canCreateBind(DtoJointElement dtoContainer, DtoJointElement dtoContent ) throws Exception{
 		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
 		String name_source = dtoContainer.getName();
 		String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoContainer.getType();
@@ -219,7 +219,7 @@ public class PerformBind {
 		String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 		if(cardinality == null){
 			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the relation between " + dtoContainer.getType() + " and " + dtoContent.getType() + " does not exist.");
-			return false;
+			throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "because there is no \"binds\" relation between " + tipo_source + "and " + tipo_target);
 		}
 		Integer cardinality_input_target = Integer.parseInt(cardinality);
 		//create the Reference Point if exists and the relation between reference point and ports
@@ -233,17 +233,16 @@ public class PerformBind {
 					return true;
 				} else{
 					NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the source layer is not client of target layer.");
-					return false;
+					throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "because there is no \"binds\" relation between " + tipo_source + "and " + tipo_target);
 				}
 			} else {
 				NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the cardinality of the relation is already maximum.");
-				return false;
+				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "because there is no \"binds\" relation between " + tipo_source + "and " + tipo_target);
 			}
 		}
 		else{
 			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because there is no Reference Point between " + dtoContainer.getType() + " and " + dtoContent.getType() + " . ");
-			return false;
-		}
+			throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "because there is no \"binds\" relation between " + tipo_source + "and " + tipo_target);		}
 	}
 
 	public OKCoUploader getRepository() {
