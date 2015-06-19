@@ -217,6 +217,10 @@ public class PerformBind {
 			
 		String key = tipo_source + propertyURI + tipo_target;
 		String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
+		if(cardinality == null){
+			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the relation between " + dtoContainer.getType() + " and " + dtoContent.getType() + " does not exist.");
+			return false;
+		}
 		Integer cardinality_input_target = Integer.parseInt(cardinality);
 		//create the Reference Point if exists and the relation between reference point and ports
 		HashSet<String> rps_between_ports = new HashSet<String>();
@@ -237,7 +241,7 @@ public class PerformBind {
 			}
 		}
 		else{
-			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + "because there is no Reference Point between " + dtoContainer.getType() + " and " + dtoContent.getType() + " . ");
+			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because there is no Reference Point between " + dtoContainer.getType() + " and " + dtoContent.getType() + " . ");
 			return false;
 		}
 	}

@@ -93,7 +93,7 @@ function performBind(sourceID, sourceName, sourceType, targetID, targetName, tar
 		data: {
 			'sourceElement': JSON.stringify(dtoSourceElement),
 			'targetElement': JSON.stringify(dtoTargetElement),
-			'bind': JSON.stringify(dtoLink)
+			'bind': JSON.stringify(dtoBind)
 		},
 		success: function(data){ 		   
 			result = data;
