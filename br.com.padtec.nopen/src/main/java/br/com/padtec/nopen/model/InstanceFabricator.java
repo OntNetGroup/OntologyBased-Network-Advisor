@@ -799,8 +799,8 @@ public class InstanceFabricator {
 	 */
 	public static void createComponentOfRelation(DtoJointElement dtoContainer, DtoJointElement dtoContent) throws Exception{
 		//create the property relation between source and target
-		
-		if(dtoContent.getType().equalsIgnoreCase(ConceptEnum.Rack.toString().toLowerCase())){ //caso do rack
+
+		if(dtoContent.getType().equalsIgnoreCase(ConceptEnum.Rack.toString().toLowerCase()) && dtoContainer.equals(new DtoJointElement())){ //caso do rack
 			FactoryUtil.createInstanceIndividual(
 					StudioComponents.studioRepository.getBaseModel(),
 					StudioComponents.studioRepository.getNamespace() + dtoContent.getId(),
@@ -842,7 +842,9 @@ public class InstanceFabricator {
 						propertyURI,
 						targetURI
 					);
-					
+
+				StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+				
 				NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + dtoContainer.getType() + name_source + "linked with " + dtoContent.getType() + name_target);
 			}
 			else{

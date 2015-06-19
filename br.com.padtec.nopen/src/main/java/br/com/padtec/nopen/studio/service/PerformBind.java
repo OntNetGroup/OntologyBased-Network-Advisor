@@ -49,7 +49,7 @@ public class PerformBind {
 			String relation_target = null;
 			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
 
-			if(canCreateBind(dtoContainer, dtoContent/*id_source, name_source, id_target, name_target, tipo_source, tipo_target, StudioComponents.studioRepository */)){
+			if(canCreateBind(dtoContainer, dtoContent)){
 				HashSet<String> rps_between_ports = new HashSet<String>();
 				rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, StudioComponents.studioRepository);
 				String tipo_rp;
@@ -127,6 +127,8 @@ public class PerformBind {
 						StudioComponents.studioRepository.getNamespace()+inputId
 					);
 					
+					StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+					
 					NOpenLog.appendLine(StudioComponents.studioRepository.getName()+":  Input "+inputId+" created at "+ tipo_target + ": "+name_target);
 
 					NOpenLog.appendLine("Success: Binds successfully made between (" + tipo_source + "::" + name_source +", " + tipo_target + "::" + name_target + ")");
@@ -161,17 +163,21 @@ public class PerformBind {
 	/*
 	 * verify if the source's layer is client of the target's layer.
 	 */
-	static boolean isClient(String sourceURI, String targetURI, OKCoUploader repository){ //não testado
-		
+	static boolean isClient(String sourceURI, String targetURI, OKCoUploader repository){ 
+		StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
 		String tgtClassURI = repository.getNamespace() + ConceptEnum.Card_Layer.toString();
 		String relationSourceURI = repository.getNamespace() + RelationEnum.intermediates_up_Transport_Function_Card_Layer.toString();
 		String relationTargetURI = repository.getNamespace() + RelationEnum.intermediates_down_Transport_Function_Card_Layer.toString();
 		
 		//verifica se o tf_source tem a relação de intermediates_up e se o tf_target tem a relação de intermediates_down
 		boolean tfSourceHasIntermediatesUpRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), sourceURI, relationSourceURI, tgtClassURI );
+		
 		boolean tfTargetHasIntermediatesDownRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), targetURI, relationTargetURI, tgtClassURI );
 		
-		if(tfSourceHasIntermediatesUpRelation && tfTargetHasIntermediatesDownRelation){
+		if(!tfSourceHasIntermediatesUpRelation || !tfTargetHasIntermediatesDownRelation){
+			return true;
+		}
+		else if(tfSourceHasIntermediatesUpRelation && tfTargetHasIntermediatesDownRelation){
 			//pega o card_layer do tf_source e o card_layer do tf_target
 			String cardLayerUpSource = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), sourceURI, relationSourceURI).get(0);
 			String cardLayerDownTarget = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), targetURI, relationTargetURI).get(0);

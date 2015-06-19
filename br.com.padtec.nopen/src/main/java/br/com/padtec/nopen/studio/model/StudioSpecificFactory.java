@@ -375,10 +375,10 @@ public class StudioSpecificFactory {
 		String supervisorId = dtoSupervisor.getId();		
 		String supervisorName = dtoSupervisor.getName();		
 			
-		String holderId = dtoSupervisor.getId();		
-		String holderName = dtoSupervisor.getName();	
-		
-		InstanceFabricator.createSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName, holderId, holderName);
+		String holderId = dtoHolder.getId();		
+		String holderName = dtoHolder.getName();	
+		return ;
+		//InstanceFabricator.createSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName, holderId, holderName);
 	}	
 	
 	public static void deleteSupervisor(DtoJointElement dtoSupervisor) 
