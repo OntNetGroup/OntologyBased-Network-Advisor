@@ -84,7 +84,7 @@ function performBind(sourceID, sourceName, sourceType, targetID, targetName, tar
 
 	var dtoSourceElement = Util.createDtoElement(sourceID, sourceName, sourceType);
 	var dtoTargetElement = Util.createDtoElement(targetID, targetName, targetType);
-	var dtoLink = Util.createDtoElement(linkID, linkID, 'link');
+	var dtoBind = Util.createDtoElement(linkID, linkID, 'bind');
 
 	$.ajax({
 		type: "POST",
@@ -93,7 +93,7 @@ function performBind(sourceID, sourceName, sourceType, targetID, targetName, tar
 		data: {
 			'sourceElement': JSON.stringify(dtoSourceElement),
 			'targetElement': JSON.stringify(dtoTargetElement),
-			'link': JSON.stringify(dtoLink)
+			'bind': JSON.stringify(dtoLink)
 		},
 		success: function(data){ 		   
 			result = data;
@@ -447,6 +447,8 @@ function canPerformBind(sourceID, sourceName, sourceType, targetID, targetName, 
 		}
 	});
 
+	console.log(targetName);
+	console.log(result);
 	return result === "true";
 //	return "success";
 };
