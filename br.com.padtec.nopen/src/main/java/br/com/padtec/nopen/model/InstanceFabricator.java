@@ -729,7 +729,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceIndividual(repository.getBaseModel(), indURI, layerURI);
 		
 		String ind2URI = repository.getNamespace()+techName;		
-		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf8_Technology_Layer_Type.toString();		
+		String techToLayerURI = repository.getNamespace()+RelationEnum.ComponentOf7_Technology_Layer_Type.toString();		
 		FactoryUtil.createInstanceRelation(repository.getBaseModel(),ind2URI, techToLayerURI, indURI);
 		
 		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" created for Technology "+techName);
@@ -800,7 +800,7 @@ public class InstanceFabricator {
 	public static void createComponentOfRelation(DtoJointElement dtoContainer, DtoJointElement dtoContent) throws Exception{
 		//create the property relation between source and target
 
-		if(dtoContent.getType().equalsIgnoreCase(ConceptEnum.Rack.toString().toLowerCase()) && dtoContainer.equals(new DtoJointElement())){ //caso do rack
+		if(dtoContent.getType().equalsIgnoreCase(ConceptEnum.Rack.toString().toLowerCase()) && dtoContainer.getId() == null){ //caso do rack
 			FactoryUtil.createInstanceIndividual(
 					StudioComponents.studioRepository.getBaseModel(),
 					StudioComponents.studioRepository.getNamespace() + dtoContent.getId(),
@@ -848,8 +848,8 @@ public class InstanceFabricator {
 				NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + dtoContainer.getType() + name_source + "linked with " + dtoContent.getType() + name_target);
 			}
 			else{
-				NOpenLog.appendLine("Error: " + name_source + " cannot be connected to " + name_target + "because there is no \"componentOf\" relation between " + tipo_source + "and " + tipo_target);
-				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "because there is no \"componentOf\" relation between " + tipo_source + "and " + tipo_target);	
+				NOpenLog.appendLine("Error: " + name_source + " cannot be connected to " + name_target + " because there is no \"componentOf\" relation between " + tipo_source + " and " + tipo_target);
+				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because there is no \"componentOf\" relation between " + tipo_source + " and " + tipo_target);	
 			}
 		}
 	}
