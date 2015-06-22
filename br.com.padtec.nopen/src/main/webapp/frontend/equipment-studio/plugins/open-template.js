@@ -58,7 +58,8 @@ function openFromURL(filename, graph){
 				var equipmentName = cell.attributes.attrs.name.text;				
 				app.RackCounter++
 				
-				insertEquipmentholder(equipmentName , equipmentType, equipmentID);
+//				insertEquipmentholder(equipmentName , equipmentType, equipmentID);
+				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID);
 
 			};
 			if(cell.get('subType') === 'Shelf'){
@@ -73,7 +74,8 @@ function openFromURL(filename, graph){
 				var containerID = parent.get('id');
 				var containerName = parent.attributes.attrs.name.text;
 				
-				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+//				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 			}
 			if(cell.get('subType') === 'Slot'){
@@ -89,7 +91,8 @@ function openFromURL(filename, graph){
 				var containerID = parent.get('id');
 				var containerName = parent.attributes.attrs.name.text;
 				
-				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+//				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 			}
 
@@ -106,7 +109,8 @@ function openFromURL(filename, graph){
 				var containerID = parent.get('id');
 				var containerName = parent.attributes.attrs.name.text;
 				
-				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+//				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 			}
 			if(cell.get('subType')=== 'Supervisor'){
@@ -122,7 +126,8 @@ function openFromURL(filename, graph){
 				var containerID = parent.get('id');
 				var containerName = parent.attributes.attrs.name.text;
 				
-				insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+//				insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 				//setTechnology(equipmentType, equipmentID , tech);
 
