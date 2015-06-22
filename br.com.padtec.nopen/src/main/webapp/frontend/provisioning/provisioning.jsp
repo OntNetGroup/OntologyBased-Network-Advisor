@@ -40,12 +40,6 @@
         <script src="/nopen/core/rappid_api/js/joint.js"></script>
         <script src="/nopen/core/rappid_api/js/joint.all.js"></script>
 
-		<!-- PLUGINS -->
-        
-        <script src="/nopen/frontend/provisioning/plugins/save-provisioning.js"></script>
-        <script src="/nopen/frontend/provisioning/plugins/open-provisioning.js"></script>
-        <script src="/nopen/frontend/provisioning/plugins/open-topology.js"></script>
-
 		<!-- JS -->
 		
 		<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
@@ -55,6 +49,13 @@
         <script src="/nopen/frontend/provisioning/js/inspector.js"></script> 
         <script src="/nopen/frontend/provisioning/js/main.js"></script>
         <script src="/nopen/frontend/provisioning/js/graphHandle.js"></script>
+        
+        <!-- SOURCE -->
+        
+        <script src="/nopen/frontend/common/libs/nopen/nopen.js"></script>
+        <script src="/nopen/frontend/provisioning/src/nopen.provisioning.model.js"></script>
+        <script src="/nopen/frontend/provisioning/src/nopen.provisioning.file.js"></script>
+        <script src="/nopen/frontend/provisioning/src/nopen.provisioning.app.js"></script>
         
         <!-- STENCILS -->
         
@@ -71,26 +72,11 @@
             var app = new Rappid;
             Backbone.history.start();
             
-            graphHandle(app.graph);
+            //Start provisioning
+            var provisioning = new nopen.provisioning.App();
+            provisioning.start(app);
             
-            if(getUrlParameter('provisioning')){
-            	var provisioning = getUrlParameter('provisioning');
-            	openFromURL(provisioning, app.graph);
-            }
-            
-            var uuid = joint.util.uuid();
-
-            $('#btn-save').click(function(){
-            	generateSaveProvisioningDialog(app.graph);   	
-            });
-            
-            $('#btn-open').click(function(){	
-            	getProvisioning(app.graph);      	
-            });
-            
-            $('#btn-open-topology').click(function(){	
-            	getTopologies(app.graph);      	
-            });
+            //var uuid = joint.util.uuid();
 
         </script>
     </body>
