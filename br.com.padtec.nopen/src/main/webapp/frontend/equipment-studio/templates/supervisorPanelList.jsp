@@ -116,7 +116,7 @@
 			var card = app.graph.getCell(selectedOpts.val());
 			var cardID = card.get('id');
 			var cardName = card.attributes.attrs.name.text;
-			var supervisorID = supervisord.id;
+			var supervisorID = Supervisord.id;
 			console.log(card);
 			console.log(cardID);
 			console.log(cardName);

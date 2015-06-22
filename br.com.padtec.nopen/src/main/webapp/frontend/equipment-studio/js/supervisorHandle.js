@@ -67,7 +67,7 @@ function selectSupervisorWindow(Supervisor,nsCards,sCards, graph){
  				$("#lstBox2").append('<option value="'+nsCards[i].id+'" class = "unsupervised">'+nsCards[i].attributes.attrs.name.text+'</option>');
  			};
  			
- 			$("#SupervisorDialog").dialog("open");	
+ 			$("#supervisorDialog").dialog("open");	
 }
 
 
