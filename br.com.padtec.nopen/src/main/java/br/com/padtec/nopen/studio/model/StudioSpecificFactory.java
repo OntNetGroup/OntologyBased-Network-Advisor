@@ -394,8 +394,8 @@ public class StudioSpecificFactory {
 		String supervisorId = dtoSupervisor.getId();		
 		String supervisorName = dtoSupervisor.getName();		
 			
-		String cardId = dtoSupervisor.getId();		
-		String cardName = dtoSupervisor.getName();	
+		String cardId = dtoCard.getId();		
+		String cardName = dtoCard.getName();	
 		
 		InstanceFabricator.superviseCard(StudioComponents.studioRepository, supervisorId, supervisorName, cardId, cardName);
 	}

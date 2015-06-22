@@ -24,8 +24,7 @@ public class PerformBind {
 	 * discover the rp for the binds and the component of
 	 * 
 	 */
-	public static boolean applyBinds(DtoJointElement dtoContainer, DtoJointElement dtoContent){
-		try{
+	public static boolean applyBinds(DtoJointElement dtoContainer, DtoJointElement dtoContent) throws Exception {
 			String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
 			String name_source = dtoContainer.getName();
 			String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoContainer.getType();
@@ -140,11 +139,6 @@ public class PerformBind {
 				NOpenLog.appendLine("Error: The Transport Function " + name_source + "cannot be bound to " + name_target);
 				throw new Exception("Error: Unexpected bind between " + name_source + "and " + name_target);
 			}
-			
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-	
 		return false;
 
 	}
@@ -243,6 +237,56 @@ public class PerformBind {
 		else{
 			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because there is no Reference Point between " + dtoContainer.getType() + " and " + dtoContent.getType() + " . ");
 			throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "because there is no \"binds\" relation between " + tipo_source + "and " + tipo_target);		}
+	}
+	
+	public static void applyEquipmentBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception{
+		String rangeClassName = instance.repository.getNamespace() + ConceptEnum.Transport_Function.toString();
+		String sourceIndividualName = instance.repository.getNamespace() + dtoSourceElement.getId();
+		String propertyName = instance.repository.getNamespace() + RelationEnum.is_interface_of.toString();
+		String targetIndividualName = instance.repository.getNamespace() + dtoTargetElement.getId();
+		String[] tfSource = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), sourceIndividualName, propertyName, rangeClassName);
+		String[] tfTarget = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), targetIndividualName, propertyName, rangeClassName);
+		System.out.println();
+		if(tfSource == null || tfTarget == null){
+			NOpenLog.appendLine("Error: The Transport Function " + dtoSourceElement.getName() + " cannot be bound to " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio.");
+			throw new Exception("Error: Unexpected relation between " + dtoSourceElement.getName() + " and " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio. ");
+		}
+		DtoJointElement newSource = new DtoJointElement();
+		newSource.setId(tfSource[0]);
+		newSource.setName(tfSource[0]);
+		newSource.setType(rangeClassName);
+		DtoJointElement newTarget = new DtoJointElement();
+		newTarget.setId(tfTarget[0]);
+		newTarget.setName(tfTarget[0]);
+		newTarget.setType(rangeClassName);
+		System.out.println();
+		applyBinds(newSource, newTarget);
+	}
+	
+	public static boolean canCreateEquipmentBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception{
+		String rangeClassName = instance.repository.getNamespace() + ConceptEnum.Transport_Function.toString();
+		String sourceIndividualName = instance.repository.getNamespace() + dtoSourceElement.getId();
+		String propertyName = instance.repository.getNamespace() + RelationEnum.is_interface_of.toString();
+		String targetIndividualName = instance.repository.getNamespace() + dtoTargetElement.getId();
+		String[] tfSource = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), sourceIndividualName, propertyName, rangeClassName);
+		String[] tfTarget = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), targetIndividualName, propertyName, rangeClassName);
+		if(tfSource == null || tfTarget == null){
+			NOpenLog.appendLine("Error: The Transport Function " + dtoSourceElement.getName() + " cannot be bound to " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio.");
+			throw new Exception("Error: Unexpected relation between " + dtoSourceElement.getName() + " and " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio. ");
+		}
+		System.out.println();
+		DtoJointElement newSource = new DtoJointElement();
+		newSource.setId(tfSource[0]);
+		newSource.setName(tfSource[0]);
+		newSource.setType(rangeClassName);
+		DtoJointElement newTarget = new DtoJointElement();
+		newTarget.setId(tfTarget[0]);
+		newTarget.setName(tfTarget[0]);
+		newTarget.setType(rangeClassName);
+		System.out.println();
+		boolean result = canCreateBind(newSource, newTarget);
+		return result;
+		
 	}
 
 	public OKCoUploader getRepository() {

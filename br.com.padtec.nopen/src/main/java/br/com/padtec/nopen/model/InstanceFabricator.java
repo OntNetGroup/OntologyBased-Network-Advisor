@@ -800,7 +800,7 @@ public class InstanceFabricator {
 	public static void createComponentOfRelation(DtoJointElement dtoContainer, DtoJointElement dtoContent) throws Exception{
 		//create the property relation between source and target
 
-		if(dtoContent.getType().equalsIgnoreCase(ConceptEnum.Rack.toString()) && dtoContainer.getId() == null){ //caso do rack
+		if(!ContainerStructure.isTargetOfComponentOfRelation(dtoContent.getType()) && dtoContainer.getId() == null){ 
 			FactoryUtil.createInstanceIndividual(
 					StudioComponents.studioRepository.getBaseModel(),
 					StudioComponents.studioRepository.getNamespace() + dtoContent.getId(),

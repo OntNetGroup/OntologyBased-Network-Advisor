@@ -10,6 +10,13 @@ import java.util.Map.Entry;
 
 
 
+
+
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+
 import br.com.padtec.common.dto.CardinalityDef;
 import br.com.padtec.common.dto.RelationDef;
 import br.com.padtec.common.queries.DtoQueryUtil;
@@ -70,15 +77,21 @@ public class ContainerStructure {
 	        RelationDef relation = (RelationDef) pairs.getValue();
 	        CardinalityDef card = relation.getCardOnRange();
 	        Integer valueUp = card.getUpperBound();
-	        /*System.out.println("----------------------------");
-	        System.out.println("CARDINALITY ON DOMAIN (lower bound) -> " + Integer.toString(card.getLowerBound()));
-	        System.out.println("CARDINALITY ON DOMAIN (upper bound) -> " + Integer.toString(card.getUpperBound()));
-	        System.out.println(" DOMAIN -> " + relation.getPossibleDomain());
-	        System.out.println(" RANGE -> " + relation.getPossibleRange());
-	        System.out.println("CARDINALITY ON RANGE (lower bound) -> " + Integer.toString(relation.getCardOnRange().getLowerBound()));
-	        System.out.println("CARDINALITY ON RANGE (upper bound) -> " + Integer.toString(relation.getCardOnRange().getUpperBound()));
-	        System.out.println();*/
 	        ContainerStructure.containerStructure.put((String) pairs.getKey(), Integer.toString(valueUp));
 	    }
+	}
+
+	public static boolean isTargetOfComponentOfRelation(String type) {
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "ASK "
+				+ "WHERE { "
+				+ "?subject rdfs:subClassOf ont:componentOf . "
+				+ "?subject rdfs:range ont:" + type + " . "
+				+ "}" ;
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, instance.repository.getBaseModel());
+		boolean result = qe.execAsk();			
+		return result;
 	}
 }

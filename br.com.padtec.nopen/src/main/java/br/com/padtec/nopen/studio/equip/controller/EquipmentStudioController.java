@@ -14,6 +14,7 @@ import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.model.StudioSpecificFactory;
+import br.com.padtec.nopen.studio.service.PerformBind;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 
 import com.jointjs.util.JointUtilManager;
@@ -55,6 +56,30 @@ public class EquipmentStudioController {
 			e.printStackTrace();
 			return e.getLocalizedMessage();
 		}		
+		return "success";		
+	}
+	
+	/** Bind the source element to the target element */
+	/**
+	 * @param sourceElement: id, name and type of the source element
+	 * @param targetElement: id, name and type of the target element
+	 * @param bind: id, name and type of the bind (name = id, type = "link")
+	 * @return: "success" if the binding was successful
+	 */
+	@RequestMapping(value = "/EquipStudioPerformBind", method = RequestMethod.POST)
+	public @ResponseBody String performBind(@RequestParam("sourceElement") String sourceElement, @RequestParam("targetElement") String targetElement,
+	@RequestParam("bind") String bind) 
+	{	
+		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
+		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
+		
+		try{
+			PerformBind.applyEquipmentBinds(dtoSourceElement, dtoTargetElement);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}		
+
 		return "success";		
 	}
 	
@@ -228,6 +253,28 @@ public class EquipmentStudioController {
 	//=============================================================================================
 	// Verification
 	//=============================================================================================
+	
+	/** Check if a bind can be performed from the source element to the target element (just check, don't perform the bind) */
+	/**
+	 * @param sourceElement: id, name and type of the source element
+	 * @param targetElement: id, name and type of the target element
+	 * @return: "true" if a bind can be performed
+	 */
+	@RequestMapping(value = "/EquipStudioCanPerformBind", method = RequestMethod.POST)
+	public @ResponseBody String canPerformBind(@RequestParam("sourceElement") String sourceElement, @RequestParam("targetElement") String targetElement) 
+	{		
+		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
+		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
+		
+		try{
+			PerformBind.canCreateEquipmentBinds(dtoSourceElement, dtoTargetElement);
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}	
+		
+		return "true";		
+	}
 	
 	/** Procedure to check if card can be supervised
 	 * @param supervisor
