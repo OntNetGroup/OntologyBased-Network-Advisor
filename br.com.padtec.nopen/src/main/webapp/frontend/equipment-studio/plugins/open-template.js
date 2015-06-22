@@ -51,7 +51,7 @@ function openFromURL(filename, graph){
 
 		$.each(graph.getElements(), function(index, cell){
 
-			if(cell.get('subType') === 'rack'){
+			if(cell.get('subType') === 'Rack'){
             //    console.log(cell.attributes);
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
@@ -61,7 +61,7 @@ function openFromURL(filename, graph){
 				insertEquipmentholder(equipmentName , equipmentType, equipmentID);
 
 			};
-			if(cell.get('subType') === 'shelf'){
+			if(cell.get('subType') === 'Shelf'){
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
 				var equipmentName = cell.attributes.attrs.name.text;
@@ -76,7 +76,7 @@ function openFromURL(filename, graph){
 				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 			}
-			if(cell.get('subType') === 'slot'){
+			if(cell.get('subType') === 'Slot'){
 
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
@@ -93,7 +93,7 @@ function openFromURL(filename, graph){
 
 			}
 
-			if(cell.get('subType')=== 'card'){
+			if(cell.get('subType')=== 'Card'){
 
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
@@ -109,7 +109,7 @@ function openFromURL(filename, graph){
 				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 			}
-			if(cell.get('subType')=== 'supervisor'){
+			if(cell.get('subType')=== 'Supervisor'){
 
 				var equipmentID = cell.get('id');
 				var equipmentType = cell.get('subType');
@@ -189,17 +189,18 @@ function generateOpenTemplateDialog(graph, data){
 
 			$.each(graph.getElements(), function(index, cell){
 
-				if(cell.get('subType') === 'rack'){
+				if(cell.get('subType') === 'Rack'){
 	                console.log(cell.attributes);
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
 					var equipmentName = cell.attributes.attrs.name.text;				
 					app.RackCounter++
 					
-					insertEquipmentholder(equipmentName , equipmentType, equipmentID);
+//					insertEquipmentholder(equipmentName , equipmentType, equipmentID);
+					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID);
 
 				};
-				if(cell.get('subType') === 'shelf'){
+				if(cell.get('subType') === 'Shelf'){
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
 					var equipmentName = cell.attributes.attrs.name.text;
@@ -211,10 +212,11 @@ function generateOpenTemplateDialog(graph, data){
 					var containerID = parent.get('id');
 					var containerName = parent.attributes.attrs.name.text;
 					
-					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+//					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 				}
-				if(cell.get('subType') === 'slot'){
+				if(cell.get('subType') === 'Slot'){
 
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
@@ -227,11 +229,12 @@ function generateOpenTemplateDialog(graph, data){
 					var containerID = parent.get('id');
 					var containerName = parent.attributes.attrs.name.text;
 					
-					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+//					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 				}
 
-				if(cell.get('subType')=== 'card'){
+				if(cell.get('subType')=== 'Card'){
 
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
@@ -244,10 +247,11 @@ function generateOpenTemplateDialog(graph, data){
 					var containerID = parent.get('id');
 					var containerName = parent.attributes.attrs.name.text;
 					
-					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+//					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 				}
-				if(cell.get('subType')=== 'supervisor'){
+				if(cell.get('subType')=== 'Supervisor'){
 
 					var equipmentID = cell.get('id');
 					var equipmentType = cell.get('subType');
@@ -260,7 +264,8 @@ function generateOpenTemplateDialog(graph, data){
 					var containerID = parent.get('id');
 					var containerName = parent.attributes.attrs.name.text;
 					
-					insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+//					insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
 					//setTechnology(equipmentType, equipmentID , tech);
 

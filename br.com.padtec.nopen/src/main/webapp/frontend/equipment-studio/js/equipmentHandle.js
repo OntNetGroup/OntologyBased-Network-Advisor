@@ -225,24 +225,25 @@ function equipmentHandle(graph){
 								this.skipOntologyRemoveHandler = true;
 								cell.remove();
 								return;
-							}else{									
-//								if (cell.get('subType') === 'Supervisor'){									
-
-//								parent.embed(cell);
-//								showTechnologyWindow(getTechnologies() , cell);									
-
-////								if(cell.get('tech') === ""){
-////								showTechnologyWindow(getTechnologies() , cell);
-////								};
-//								cell.set('size' , {
-//								width: 10 ,
-//								height: 20							
-//								});
-//								cell.set('position' , {
-//								x : newpositionx ,
-//								y : ((pposition.y) + 16)
-//								});
-//								};
+							}else{		
+								
+								if (cell.get('subType') === 'Supervisor'){									
+	
+									parent.embed(cell);
+									showTechnologyWindow(getTechnologies() , cell);									
+	
+									if(cell.get('tech') === ""){
+										showTechnologyWindow(getTechnologies() , cell);
+									};
+									cell.set('size' , {
+										width: 10 ,
+										height: 20							
+									});
+									cell.set('position' , {
+										x : newpositionx ,
+										y : ((pposition.y) + 16)
+									});
+								};
 
 								if (cell.get('subType') === 'Card'){									
 									parent.embed(cell);	
