@@ -71,7 +71,7 @@ function selectSupervisorWindow(Supervisor,nsCards,sCards, graph){
 }
 
 
-function SupervisorHandle(paper, graph){
+function supervisorHandle(paper, graph){
    
    paper.on('cell:pointerdblclick', function( cellView , evt, x, y) {
    
