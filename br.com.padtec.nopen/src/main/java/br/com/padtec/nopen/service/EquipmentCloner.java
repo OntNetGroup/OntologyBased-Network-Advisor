@@ -30,7 +30,7 @@ public class EquipmentCloner {
 		List<String> cards = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			supervisorURI,
-			repository.getNamespace()+RelationEnum.INV_ComponentOf_Supervisor_Card.toString(), 
+			repository.getNamespace()+RelationEnum.INV_supervises_card_Card_Supervisor.toString(), 
 			repository.getNamespace()+ConceptEnum.Card.toString()
 		);
 		return cards;
@@ -42,7 +42,7 @@ public class EquipmentCloner {
 		List<String> subslots = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			cardURI,
-			repository.getNamespace()+RelationEnum.INV_ComponentOf6_Card_Subslot.toString(), 
+			repository.getNamespace()+RelationEnum.INV_ComponentOf5_Card_Subslot.toString(), 
 			repository.getNamespace()+ConceptEnum.Subslot.toString()
 		);		
 		return subslots;
@@ -54,7 +54,7 @@ public class EquipmentCloner {
 		List<String> slots = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			cardURI,
-			repository.getNamespace()+RelationEnum.INV_ComponentOf5_Card_Slot.toString(), 
+			repository.getNamespace()+RelationEnum.INV_ComponentOf4_Card_Slot.toString(), 
 			repository.getNamespace()+ConceptEnum.Slot.toString()
 		);		
 		return slots;
@@ -66,7 +66,7 @@ public class EquipmentCloner {
 		List<String> slots = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			subslotURI,
-			repository.getNamespace()+RelationEnum.INV_ComponentOf11_Subslot_Slot.toString(), 
+			repository.getNamespace()+RelationEnum.INV_ComponentOf10_Subslot_Slot.toString(), 
 			repository.getNamespace()+ConceptEnum.Slot.toString()
 		);		
 		return slots;
@@ -78,7 +78,7 @@ public class EquipmentCloner {
 		List<String> shelfs = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			slotURI,
-			repository.getNamespace()+RelationEnum.INV_ComponentOf10_Slot_Shelf.toString(), 
+			repository.getNamespace()+RelationEnum.INV_ComponentOf9_Slot_Shelf.toString(), 
 			repository.getNamespace()+ConceptEnum.Shelf.toString()
 		);		
 		return shelfs;
@@ -90,7 +90,7 @@ public class EquipmentCloner {
 		List<String> racks = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			shelfURI,
-			repository.getNamespace()+RelationEnum.INV_ComponentOf9_Shelf_Rack.toString(), 
+			repository.getNamespace()+RelationEnum.INV_ComponentOf8_Shelf_Rack.toString(), 
 			repository.getNamespace()+ConceptEnum.Rack.toString()
 		);		
 		return racks;
@@ -102,7 +102,7 @@ public class EquipmentCloner {
 		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			cardURI,
-			repository.getNamespace()+RelationEnum.ComponentOf2_Card_TF_Card_Element.toString(), 
+			repository.getNamespace()+RelationEnum.ComponentOf1_Card_TF_Card_Element.toString(), 
 			repository.getNamespace()+ConceptEnum.TF_Card_Element.toString()
 		);		
 		return elems;
@@ -114,7 +114,7 @@ public class EquipmentCloner {
 		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			cardURI,
-			repository.getNamespace()+RelationEnum.ComponentOf2_Card_TF_Card_Element.toString(), 
+			repository.getNamespace()+RelationEnum.ComponentOf1_Card_TF_Card_Element.toString(), 
 			repository.getNamespace()+ConceptEnum.Physical_Media.toString()
 		);		
 		return elems;
@@ -126,7 +126,7 @@ public class EquipmentCloner {
 		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			cardURI,
-			repository.getNamespace()+RelationEnum.ComponentOf2_Card_TF_Card_Element.toString(), 
+			repository.getNamespace()+RelationEnum.ComponentOf1_Card_TF_Card_Element.toString(), 
 			repository.getNamespace()+ConceptEnum.Matrix.toString()
 		);		
 		return elems;
@@ -138,7 +138,7 @@ public class EquipmentCloner {
 		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			cardURI,
-			repository.getNamespace()+RelationEnum.ComponentOf2_Card_TF_Card_Element.toString(), 
+			repository.getNamespace()+RelationEnum.ComponentOf1_Card_TF_Card_Element.toString(), 
 			repository.getNamespace()+ConceptEnum.Adaptation_Function.toString()
 		);		
 		return elems;
@@ -150,7 +150,7 @@ public class EquipmentCloner {
 		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
 			repository.getBaseModel(), 
 			cardURI,
-			repository.getNamespace()+RelationEnum.ComponentOf4_Card_Card_Layer.toString(), 
+			repository.getNamespace()+RelationEnum.ComponentOf3_Card_Card_Layer.toString(), 
 			repository.getNamespace()+ConceptEnum.Card_Layer.toString()
 		);		
 		return elems;

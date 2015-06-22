@@ -666,7 +666,7 @@ public class InstanceFabricator {
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
 			repository.getNamespace()+cardId,			 
-			repository.getNamespace()+RelationEnum.ComponentOf_Card_Supervisor.toString(),
+			repository.getNamespace()+RelationEnum.supervises_card_Supervisor_Card.toString(),
 			repository.getNamespace()+supervisorId
 		);
 	}
@@ -679,7 +679,7 @@ public class InstanceFabricator {
 		FactoryUtil.deleteObjectProperty(
 			repository.getBaseModel(), 
 			repository.getNamespace()+cardId,			 
-			repository.getNamespace()+RelationEnum.ComponentOf_Card_Supervisor.toString(),
+			repository.getNamespace()+RelationEnum.supervises_card_Supervisor_Card.toString(),
 			repository.getNamespace()+supervisorId
 		);
 	}
