@@ -842,8 +842,6 @@ public class InstanceFabricator {
 						propertyURI,
 						targetURI
 					);
-
-				StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
 				
 				NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + dtoContainer.getType() + name_source + "linked with " + dtoContent.getType() + name_target);
 			}
