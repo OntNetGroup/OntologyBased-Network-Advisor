@@ -140,13 +140,8 @@
 			for (var i = 0; i < selectedOpts.length; i++) {
 				// 				var card = app.graph.getCell(selectedOpts[i].value);
 				var cardID = selectedOpts[i].value;
-<<<<<<< HEAD
 				var supervisorID = Supervisord.id;
-				
-=======
-				var supervisorID = supervisord.id;
 
->>>>>>> 84188b0462ffbc7834b349b0d4442526d917f6d7
 				//result = canSupervise(cardID , supervisorID);
 				var result = "true";
 				if (result === "true") {
