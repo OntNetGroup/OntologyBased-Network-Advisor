@@ -1,16 +1,15 @@
 <div id="supervisorDialog" title="Select cards to supervise">
 	<table style='width: 370px;'>
 		<tr>
-			
-			<td class="supervisorPanel"><a>Unsupervised Cards: </a><br />
-				<select multiple="multiple" id='lstBox2'>
+
+			<td class="supervisorPanel"><a>Unsupervised Cards: </a><br /> <select
+				multiple="multiple" id='lstBox2'>
 					<!-- 				   <option value="CardExemplo2" class="unsupervised">CardExemplo2</option> -->
 
 			</select></td>
-			<td class="supervisorMiddlePanel">
-				<input type='button' id='btnLeft' value='  &#8677;  ' />
-				<input type='button' id='btnRight' value='  &#8676;  ' /> <br /> 
-			</td>
+			<td class="supervisorMiddlePanel"><input type='button'
+				id='btnLeft' value='  &#8677;  ' /> <input type='button'
+				id='btnRight' value='  &#8676;  ' /> <br /></td>
 			<td class="supervisorPanel"><a>Supervised Cards:</a><br /> <select
 				multiple="multiple" id='lstBox1'>
 					<!-- 					<option value="CardExemplo2" class="supervised">CardExemplo2</option> -->
@@ -65,7 +64,7 @@
 		      //result = canUnsupervise(cardID, "card" ,);
 		      var result = "true";
 		      if (result === "true"){
-		    	setSupervisornull(app.graph,selectedOpts);
+		    	setSupervisorNull(app.graph,selectedOpts);
 		  		$('#lstBox2').append($(selectedOpts).clone());	
 		  		$(selectedOpts).remove();
 		  		e.preventDefault();	
@@ -85,7 +84,7 @@
 			    //result = canUnsupervise(cardID);
 			    var result = "true";
 			      if (result === "true"){
-			    	setSupervisornull(app.graph,selectedOpts);
+			    	setSupervisorNull(app.graph,selectedOpts);
 			  		$('#lstBox2').append($(selectedOpts[i]).clone());	
 			  		$(selectedOpts).remove();
 			  		e.preventDefault();	
@@ -142,7 +141,7 @@
 			for(var i = 0; i < selectedOpts.length;i++ ){
 // 				var card = app.graph.getCell(selectedOpts[i].value);
 				var cardID = selectedOpts[i].value;
-				var supervisorID = supervisord.id;
+				var supervisorID = Supervisord.id;
 				
 				//result = canSupervise(cardID , supervisorID);
 			      var result = "true";

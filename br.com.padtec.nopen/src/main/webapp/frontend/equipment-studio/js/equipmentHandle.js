@@ -18,33 +18,25 @@ function showTechnologyWindow(techs , cell){
 		close: CloseFunction,
 		buttons: [
 		          { action: 'save', content: 'Save', position: 'left' }
-		          ],	          
+		],	          
 	});
-
+	dialog.open();
+	
 	function CloseFunction(){
-		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
+		cell.set('tech', ($('#tech-dialog').find(":selected").val()) );
 		dialog.close();
 	};
 
 	($('#tech-dialog').on( "dialogclose", function(dialogclose) {
-		cell.set('tech' ,($('#tech-dialog').find(":selected").val()));
+		cell.set('tech', ($('#tech-dialog').find(":selected").val()));
 		dialog.close();
 	} ));
 
-
-
 	dialog.on('action:save', function(){
-		cell.set('tech' ,($('#tech-dialog').find(":selected").val()) );
-		//var result = setTechnology(SupervisorType, SupervisorID , tech);
-		var result = "success";
-		if(result === "success"){
-			dialog.close();
-		}else{
-			//cell.set('tech' ,($('#tech-dialog').find(":selected").val()));
-			alert("alert");
-		}
+		cell.set('tech', ($('#tech-dialog').find(":selected").val()) );
+		dialog.close();
 	});
-	dialog.open();
+	
 }; 
 
 function equipmentHandle(graph){
@@ -232,9 +224,6 @@ function equipmentHandle(graph){
 									parent.embed(cell);
 									showTechnologyWindow(getTechnologies() , cell);									
 	
-									if(cell.get('tech') === ""){
-										showTechnologyWindow(getTechnologies() , cell);
-									};
 									cell.set('size' , {
 										width: 10 ,
 										height: 20							

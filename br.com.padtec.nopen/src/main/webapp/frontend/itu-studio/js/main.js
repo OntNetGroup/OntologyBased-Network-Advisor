@@ -23,13 +23,11 @@ var Rappid = Backbone.Router.extend({
     
     setCardID: function(id) {
     	this.cardID = id;
-    	var parentGraph = parent.app.graph;
-    	var thisCard = parentGraph.getCell(this.cardID);
-    	var thisCardsSupervisorID = thisCard.attributes.supervisorID;
-    	var thisCardsSupervisor = parentGraph.getCell(thisCardsSupervisorID);
+    	var card = parent.app.graph.getCell(id);
+    	var cardSupervisor = parent.app.graph.getCell(card.attributes.supervisorID);
     	
-    	this.setCardName(thisCard.attributes.attrs.name.text);
-    	this.initializeStencil(thisCardsSupervisor.attributes.tech);
+    	this.setCardName(card.attributes.attrs.name.text);
+    	this.initializeStencil(cardSupervisor.attributes.tech);
     },
     
     setCardName: function(name) {

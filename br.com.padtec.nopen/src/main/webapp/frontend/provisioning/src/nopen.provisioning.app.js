@@ -14,6 +14,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		//create model
 		this.model = new nopen.provisioning.Model;
 		
+		//initialize procedures
 		this.initializeProvisioningFileProcedures(app);
 		this.initializeTopologyProcedures(app);
 		this.initializeProvisioningGraphProcedures(app);
@@ -34,7 +35,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		var file = this.file;
 		var graph = app.graph;
 		
-		//open file from URL
+		//procedure to open a file from URL
 		if(file.getUrlParameter('provisioning')){
         	var provisioning = file.getUrlParameter('provisioning');
         	file.openFromURL(provisioning, app.graph);
