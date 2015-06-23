@@ -165,10 +165,9 @@ function graphHandler(graph, app) {
 					var tFunctionName = parent.attributes.attrs.text.text;
 					var tFunctionType = parent.attributes.subtype;
 					console.log('try to create port ' +portID+ ';name: ' +portName+ ';TF: ' +transportFunctionID);
-//					var result = createPort(portID, portName, portType, transportFunctionID, tFunctionName, tFunctionType);
+					var result = canPerformBind(transportFunctionID, tFunctionName, tFunctionType, portID, portName, portType);
 					
-					if(canPerformBind(transportFunctionID, tFunctionName, tFunctionType, portID, portName, portType)) {
-//					if(result === "success") {
+					if(result === "true") {
 					
 						var newLink = new joint.dia.Link({	source: {id: transportFunctionID}, target: {id: portID}, attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }}});
 		    			graph.addCell(newLink);
