@@ -1,41 +1,4 @@
-/* ----- Equipament Holders  ----- */
-
-//function insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID) {
-//
-//	var result = "error";
-//
-//	var dtoEquipmentholder = {
-//			"name": equipmentName ,
-//			"id": equipmentID ,
-//			"type": equipmentType 
-//	};
-//	
-//	var dtoContainer = {
-//			"name": containerName  ,
-//			"id": containerID ,
-//			"type": containerType 
-//	};
-//
-//	$.ajax({
-//		type: "POST",
-//		async: false,
-//		url: "insertEquipmentholder.htm",
-//		data: {
-//			'equipmentholder': JSON.stringify(dtoEquipmentholder),
-//			'container': JSON.stringify(dtoContainer)
-//		} ,
-//		success: function(data){ 		   
-//			result = data;
-//			console.log(result);
-//		},
-//		error : function(e) {
-//			alert("error: " + e.status);
-//		}
-//	});
-//	
-//	
-//	return result;
-//};
+/* ----- Create  ----- */
 
 function EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID) {
 
@@ -74,6 +37,36 @@ function EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,c
 	return result;
 };
 
+function performBind(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID) {
+
+	var result = "error";
+
+	var dtoSourceElement = Util.createDtoElement(sourceID, sourceName, sourceType);
+	var dtoTargetElement = Util.createDtoElement(targetID, targetName, targetType);
+	var dtoBind = Util.createDtoElement(linkID, linkID, 'bind');
+
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "performBind.htm",
+		data: {
+			'sourceElement': JSON.stringify(dtoSourceElement),
+			'targetElement': JSON.stringify(dtoTargetElement),
+			'bind': JSON.stringify(dtoBind)
+		},
+		success: function(data){ 		   
+			result = data;
+		},
+		error : function(e) {
+			alert("error: " + e.status);
+		}
+	});
+
+	return result;
+//	return "success";
+};
+
+/* ----- Delete  ----- */
 
 function deleteEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID) {
 
@@ -112,44 +105,7 @@ function deleteEquipmentholder(equipmentName, equipmentType, equipmentID , conta
 	//return result;
 };
 
-/* ----- Supervisor  ----- */
-
-function insertSupervisor( SupervisorName, SupervisorType, SupervisorID ,slotName, slotType , slotID) {
-
-	var result = "error";
-
-
-	var dtoSupervisor = {
-			"name" : SupervisorName ,
-			"id": SupervisorID ,
-			"type": SupervisorType 
-	};
-	
-	var dtoSlot = {
-			"name": slotName ,
-			"id": slotID ,
-			"type": slotType 
-	};
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "insertSupervisor.htm",
-		data: {
-			'Supervisor': JSON.stringify(dtoSupervisor),
-			'slot': JSON.stringify(dtoSlot)
-		} ,
-		success: function(data){ 		   
-			result = data;
-		//	console.log(data);
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		}
-	});
-
-	return result;
-};
+/* ----- Get  ----- */
 
 function getTechnologies(){
 	
@@ -171,6 +127,7 @@ function getTechnologies(){
 	
 };
 
+/* ----- Link  ----- */
 
 function setTechnology( SupervisorName ,SupervisorType, SupervisorID , tech) {
 
@@ -278,44 +235,6 @@ function unsuperviseCard( SupervisorName, SupervisorType, SupervisorID ,CardName
 };
 
 
-/* ----- Card  ----- */
-
-function insertCard( CardName , CardType, CardID , slotName , slotType , slotID) {
-
-	var result = "error";
-
-
-	var dtoCard = {
-			"name" : CardName ,
-			"id": CardID ,
-			"type": CardType 
-	};
-	
-	var dtoSlot = {
-			"name": slotName ,
-			"id": slotID ,
-			"type": slotType 
-	};
-
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "insertCard.htm",
-		data: {
-			'Card': JSON.stringify(dtoCard),
-			'slot': JSON.stringify(dtoSlot)
-		} ,
-		success: function(data){ 		   
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-			result = ("error: " + e.status);
-		}
-	});
-
-	return result;
-};
 
 
 

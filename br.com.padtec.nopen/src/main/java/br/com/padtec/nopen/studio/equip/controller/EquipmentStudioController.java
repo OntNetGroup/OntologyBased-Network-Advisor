@@ -81,47 +81,7 @@ public class EquipmentStudioController {
 		}		
 
 		return "success";		
-	}
-	
-	/** Procedure to create a Supervisor
-	 * @param card
-	 * @param slot
-	 * @return
-	 */
-	@RequestMapping(value = "/insertSupervisor", method = RequestMethod.POST)
-	public @ResponseBody String insertSupervisor(@RequestParam("supervisor") String supervisor,@RequestParam("slot") String slot )
-	{
-		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		DtoJointElement dtoSlot = (DtoJointElement) JointUtilManager.getJavaFromJSON(slot, DtoJointElement.class);
-				
-		try{
-			StudioSpecificFactory.createSupervisor(dtoSupervisor, dtoSlot);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";		
-	}
-	
-	/** Procedure to create an Equipment holder inside another equipment or a rack
-	 * @param equipmentholder
-	 * @param container
-	 * @return
-	 */
-	@RequestMapping(value = "/insertEquipmentholder", method = RequestMethod.POST)
-	public @ResponseBody String insertEquipmentholder(@RequestParam("equipmentholder") String equipmentholder,@RequestParam("container") String container )
-	{
-		DtoJointElement dtoEquipmentholder = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipmentholder, DtoJointElement.class);
-		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
-
-		try{
-			StudioSpecificFactory.createEquipmentholder(dtoEquipmentholder, dtoContainer);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";		
-	}
+	}	
 		
 	/* ======================================================================================
 	 * Delete
