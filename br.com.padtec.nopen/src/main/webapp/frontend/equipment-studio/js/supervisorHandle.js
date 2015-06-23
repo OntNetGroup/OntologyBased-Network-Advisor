@@ -14,33 +14,33 @@ function setSupervisor(graph, cards){
 			card.set("Supervisor", Supervisord.attributes.attrs.name.text);
 		
 	}else{
-		for(var i = 0; i < Cards.length; i++){			
-			Card = graph.getCell(Cards[i].value);
+		for(var i = 0; i < cards.length; i++){			
+			card = graph.getCell(cards[i].value);
 			
 //			var result=superviseCard( Supervisord.attributes.attrs.name.text, Supervisord.id ,Card.attributes.attrs.name.text, Card.id);
 //			if(result="success"){
-				Card.set("SupervisorID" , (Supervisord.id));
-				Card.set("Supervisor" , (Supervisord.attributes.attrs.name.text));
+				card.set("SupervisorID" , (Supervisord.id));
+				card.set("Supervisor" , (Supervisord.attributes.attrs.name.text));
 		}
 	}
 }
 
-function setSupervisorNull(graph,Cards){
+function setSupervisorNull(graph,cards){
 		
-	var Card;
+	var card;
 //	Card.set("Supervisor" , (Supervisord.id));
    
-	if (Cards.length === 1) {
+	if (cards.length === 1) {
 		
-		Card = graph.getCell(Cards.val());
-		Card.set("Supervisor" , '');
-		Card.set("SupervisorID" , '');
+		card = graph.getCell(cards.val());
+		card.set("Supervisor" , '');
+		card.set("SupervisorID" , '');
 	}else{
-		for(var i = 0; i < Cards.length; i++){
+		for(var i = 0; i < cards.length; i++){
 			
-			Card = graph.getCell(Cards[i].value);
-			Card.set("Supervisor" , '');	
-			Card.set("SupervisorID" , '');
+			card = graph.getCell(cards[i].value);
+			card.set("Supervisor" , '');	
+			card.set("SupervisorID" , '');
 		}
 	}
 }

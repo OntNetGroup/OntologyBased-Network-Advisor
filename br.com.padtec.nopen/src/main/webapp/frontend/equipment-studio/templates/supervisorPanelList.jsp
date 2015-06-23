@@ -59,7 +59,7 @@
 			console.log(card);
 			console.log(cardID);
 			console.log(cardName);
-			//console.log(supervisorID);
+		//	console.log(supervisorID);
 
 			//result = canUnsupervise(cardID, "card" ,);
 			var result = "true";
