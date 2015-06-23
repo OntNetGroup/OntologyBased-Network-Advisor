@@ -126,7 +126,7 @@ public class PerformBind {
 						StudioComponents.studioRepository.getNamespace()+inputId
 					);
 					
-					StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+					//StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
 					
 					NOpenLog.appendLine(StudioComponents.studioRepository.getName()+":  Input "+inputId+" created at "+ tipo_target + ": "+name_target);
 
