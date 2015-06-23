@@ -59,43 +59,42 @@
 			console.log(cardID);
 			console.log(cardName);
 			console.log(supervisorID);
-			
-			
-		      //result = canUnsupervise(cardID, "card" ,);
-		      var result = "true";
-		      if (result === "true"){
-		    	setSupervisorNull(app.graph,selectedOpts);
-		  		$('#lstBox2').append($(selectedOpts).clone());	
-		  		$(selectedOpts).remove();
-		  		e.preventDefault();	
-		      }else{
-		    	  new joint.ui.Dialog({
-						type: 'alert',
-						width: 400,
-						title: 'Error',
-						content: result,
-					}).open();	
-		      }
-		}else{
-			for(var i = 0; i < selectedOpts.length;i++ ){
+		      
+			//result = canUnsupervise(cardID, "card" ,);
+			var result = "true";
+			if (result === "true") {
+				setSupervisornull(app.graph, selectedOpts);
+				$('#lstBox2').append($(selectedOpts).clone());
+				$(selectedOpts).remove();
+				e.preventDefault();
+			} else {
+				new joint.ui.Dialog({
+					type : 'alert',
+					width : 400,
+					title : 'Error',
+					content : result,
+				}).open();
+			}
+		} else {
+			for (var i = 0; i < selectedOpts.length; i++) {
 				var card = app.graph.getCell(selectedOpts[i].value);
 				var cardID = card.id;
-				
-			    //result = canUnsupervise(cardID);
-			    var result = "true";
-			      if (result === "true"){
-			    	setSupervisorNull(app.graph,selectedOpts);
-			  		$('#lstBox2').append($(selectedOpts[i]).clone());	
-			  		$(selectedOpts).remove();
-			  		e.preventDefault();	
-			      }else{
-			    	  new joint.ui.Dialog({
-							type: 'alert',
-							width: 400,
-							title: 'Error',
-							content: result,
-						}).open();	
-			      }
+
+				//result = canUnsupervise(cardID);
+				var result = "true";
+				if (result === "true") {
+					setSupervisorNull(app.graph, selectedOpts);
+					$('#lstBox2').append($(selectedOpts[i]).clone());
+					$(selectedOpts).remove();
+					e.preventDefault();
+				} else {
+					new joint.ui.Dialog({
+						type : 'alert',
+						width : 400,
+						title : 'Error',
+						content : result,
+					}).open();
+				}
 			}
 		}
 	});
@@ -104,14 +103,14 @@
 		var selectedOpts = $('#lstBox2 option:selected');
 		if (selectedOpts.length == 0) {
 			new joint.ui.Dialog({
-				type: 'alert',
-				width: 400,
-				title: 'Error',
-				content: "Select something to move.",
-			}).open();	
+				type : 'alert',
+				width : 400,
+				title : 'Error',
+				content : "Select something to move.",
+			}).open();
 			e.preventDefault();
 		}
-		if (selectedOpts.length == 1){
+		if (selectedOpts.length == 1) {
 			var card = app.graph.getCell(selectedOpts.val());
 			var cardID = card.get('id');
 			var cardName = card.attributes.attrs.name.text;
@@ -120,45 +119,50 @@
 			console.log(cardID);
 			console.log(cardName);
 			console.log(supervisorID);
-			
+
 			//result = canSupervise(cardID , supervisorID);
-		      var result = "true";
-		      if (result === "true"){
-		    	  setSupervisor(app.graph,selectedOpts);
-		      	$('#lstBox1').append($(selectedOpts).clone());
-		  		$(selectedOpts).remove();
-		  		e.preventDefault();
-		      }else{
-		    	  new joint.ui.Dialog({
-						type: 'alert',
-						width: 400,
-						title: 'Error',
-						content: result,
-					}).open();	
-		      }
-			
-		}else{
-			for(var i = 0; i < selectedOpts.length;i++ ){
-// 				var card = app.graph.getCell(selectedOpts[i].value);
+			var result = "true";
+			if (result === "true") {
+				setSupervisor(app.graph, selectedOpts);
+				$('#lstBox1').append($(selectedOpts).clone());
+				$(selectedOpts).remove();
+				e.preventDefault();
+			} else {
+				new joint.ui.Dialog({
+					type : 'alert',
+					width : 400,
+					title : 'Error',
+					content : result,
+				}).open();
+			}
+
+		} else {
+			for (var i = 0; i < selectedOpts.length; i++) {
+				// 				var card = app.graph.getCell(selectedOpts[i].value);
 				var cardID = selectedOpts[i].value;
+<<<<<<< HEAD
 				var supervisorID = Supervisord.id;
 				
+=======
+				var supervisorID = supervisord.id;
+
+>>>>>>> 84188b0462ffbc7834b349b0d4442526d917f6d7
 				//result = canSupervise(cardID , supervisorID);
-			      var result = "true";
-			      if (result === "true"){
-			    	  setSupervisor(app.graph,selectedOpts);
-			      	$('#lstBox1').append($(selectedOpts[i]).clone());
-			  		$(selectedOpts).remove();
-			  		e.preventDefault();
-			      }else{
-			    	  new joint.ui.Dialog({
-							type: 'alert',
-							width: 400,
-							title: 'Error',
-							content: result,
-						}).open();	
-			      }		
+				var result = "true";
+				if (result === "true") {
+					setSupervisor(app.graph, selectedOpts);
+					$('#lstBox1').append($(selectedOpts[i]).clone());
+					$(selectedOpts).remove();
+					e.preventDefault();
+				} else {
+					new joint.ui.Dialog({
+						type : 'alert',
+						width : 400,
+						title : 'Error',
+						content : result,
+					}).open();
+				}
 			}
-		}	
+		}
 	});
-	</script>
+</script>
