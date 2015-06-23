@@ -162,8 +162,8 @@ function ituHandle(paper, graph, validator){
 			            	
 			            	//var ituGraph = $('#itu-iframe').get(0).contentWindow.app.graph;
 			            	
-			            	//If changes were not disCarded
-			            	if(!$('#itu-iframe').get(0).contentWindow.disCardChanges) {
+			            	//If changes were not discarded
+			            	if(!$('#itu-iframe').get(0).contentWindow.discardChanges) {
 			            	
 				            	var cell = graph.getCell(cellId);
 				            	var hasIn = false, hasOut = false;

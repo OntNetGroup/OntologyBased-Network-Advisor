@@ -47,8 +47,8 @@ function generateSaveTemplateDialog(graph){
 					   } 
 				   }
 				   else{
-					   //copyITUFiles();
-					   //deleteITUFiles();
+					   copyITUFiles();
+					   deleteITUFiles();
 					   saveTemplate();
 				   }
 			   },

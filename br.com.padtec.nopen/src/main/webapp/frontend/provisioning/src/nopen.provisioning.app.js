@@ -17,7 +17,20 @@ nopen.provisioning.App = Backbone.View.extend({
 		//initialize procedures
 		this.initializeProvisioningFileProcedures(app);
 		this.initializeTopologyProcedures(app);
+		
+		this.initializePreProvisioningProcedures(app);
+		
 		this.initializeProvisioningGraphProcedures(app);
+		
+	},
+	
+	//Pre Provisioning procedures
+	initializePreProvisioningProcedures : function(app) {
+		
+		var model = this.model;
+		var graph = app.graph;
+		
+		
 		
 	},
 	

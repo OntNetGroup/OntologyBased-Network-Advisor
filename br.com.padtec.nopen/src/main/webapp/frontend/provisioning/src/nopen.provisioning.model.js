@@ -1,6 +1,12 @@
 nopen.provisioning.Model = Backbone.Model.extend({
 	
-	initialize : function(){
+	initialize : function() {
+		
+	},
+	
+	startPreProvisioning : function() {
+		
+		
 		
 	},
 	
