@@ -63,7 +63,7 @@
 			//result = canUnsupervise(cardID, "card" ,);
 			var result = "true";
 			if (result === "true") {
-				setSupervisornull(app.graph, selectedOpts);
+				setSupervisorNull(app.graph, selectedOpts);
 				$('#lstBox2').append($(selectedOpts).clone());
 				$(selectedOpts).remove();
 				e.preventDefault();
