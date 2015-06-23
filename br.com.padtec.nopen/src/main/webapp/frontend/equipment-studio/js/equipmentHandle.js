@@ -39,7 +39,7 @@ function showTechnologyWindow(techs , cell){
 	
 }; 
 
-function equipmentHandle(graph){
+function equipmentHandle(app, graph){
 
 //	graph.on('all' , function(a){
 //	console.log(a);
@@ -231,6 +231,10 @@ function equipmentHandle(graph){
 									cell.set('position' , {
 										x : newpositionx ,
 										y : ((pposition.y) + 16)
+									});
+									
+									cell.attr({
+										name: { text: equipmentName},
 									});
 								};
 

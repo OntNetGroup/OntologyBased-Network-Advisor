@@ -19,39 +19,40 @@
 </div>
 <script>
 
-		$("#supervisorDialog").dialog({
-			  autoOpen: false,
-			  modal: true,
-			  closeButton: false ,
-			  titlebar: 'Select the cards to supervise',
-		      width: 460,
-			  buttons: {
-				  "OK": function() {
-					$('.supervised').remove();
-					$('.unsupervised').remove();
-		 			$(this).dialog('close');
-				  },
-				  
-			  }
-			});	
-	
-		$("#supervisorDialog").on('dialogclose', function(){
-			$('.supervised').remove();
-			$('.unsupervised').remove();
-		});
 		
-	 	$('#btnRight').on('click', function(e) {
+	$("#supervisorDialog").dialog({
+		autoOpen : false,
+		modal : true,
+		closeButton : false,
+		titlebar : 'Select the cards to supervise',
+		width : 460,
+		buttons : {
+			"OK" : function() {
+				$('.supervised').remove();
+				$('.unsupervised').remove();
+				$(this).dialog('close');
+			},
+
+		}
+	});
+
+	$("#supervisorDialog").on('dialogclose', function() {
+		$('.supervised').remove();
+		$('.unsupervised').remove();
+	});
+
+	$('#btnRight').on('click', function(e) {
 		var selectedOpts = $('#lstBox1 option:selected');
 		if (selectedOpts.length == 0) {
 			new joint.ui.Dialog({
-				type: 'alert',
-				width: 400,
-				title: 'Error',
-				content: "Select something to move.",
-			}).open();	
+				type : 'alert',
+				width : 400,
+				title : 'Error',
+				content : "Select something to move.",
+			}).open();
 			e.preventDefault();
 		}
-		if (selectedOpts.length == 1){
+		if (selectedOpts.length == 1) {
 			var card = app.graph.getCell(selectedOpts.val());
 			var cardID = card.get('id');
 			var cardName = card.attributes.attrs.name.text;
@@ -59,7 +60,7 @@
 			console.log(cardID);
 			console.log(cardName);
 			console.log(supervisorID);
-		      
+
 			//result = canUnsupervise(cardID, "card" ,);
 			var result = "true";
 			if (result === "true") {
