@@ -40,10 +40,24 @@ function EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,c
 function performBind(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID) {
 
 	var result = "error";
+	
+	var dtoSourceElement = {
+			"name": sourceName ,
+			"id": sourceID ,
+			"type": sourceType 
+	};
+	
+	var dtoTargetElement = {
+			"name": targetName  ,
+			"id": targetID ,
+			"type": targetType 
+	};
 
-	var dtoSourceElement = Util.createDtoElement(sourceID, sourceName, sourceType);
-	var dtoTargetElement = Util.createDtoElement(targetID, targetName, targetType);
-	var dtoBind = Util.createDtoElement(linkID, linkID, 'bind');
+	var dtoBind = {
+			"name": linkID,
+			"id": linkID ,
+			"type": 'bind'
+	};
 
 	$.ajax({
 		type: "POST",
