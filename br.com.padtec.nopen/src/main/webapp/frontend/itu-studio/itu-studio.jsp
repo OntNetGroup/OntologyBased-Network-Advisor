@@ -83,6 +83,9 @@
             if (getUrlParameter('equipment') && getUrlParameter('card')){
             	equipment = getUrlParameter('equipment');
     			card = getUrlParameter('card');
+    			
+    			console.log('PARENT: ' + parent.app.graph);
+    			
             	app.setCardID(card);
     			openFromURL(equipment, card, app.graph, app);
     		}

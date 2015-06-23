@@ -156,7 +156,7 @@ function ituHandle(paper, graph, validator){
 			            //title: 'Dynamically Loaded Page',
 			            open: function ()
 			            {
-		            		$('#itu-iframe').attr('src','/nopen/itu-studio.htm?equipment=' + $("#filename").val() + '&Card=' + cellId);
+		            		$('#itu-iframe').attr('src','/nopen/itu-studio.htm?equipment=' + $("#filename").val() + '&card=' + cellId);
 			            },
 			            close: function() {
 			            	
