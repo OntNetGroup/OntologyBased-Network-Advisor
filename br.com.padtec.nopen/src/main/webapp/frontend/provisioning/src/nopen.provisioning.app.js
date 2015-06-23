@@ -14,25 +14,17 @@ nopen.provisioning.App = Backbone.View.extend({
 		//create model
 		this.model = new nopen.provisioning.Model;
 		
+		//set model
+		this.file.setModel(this.model);
+		
 		//initialize procedures
 		this.initializeProvisioningFileProcedures(app);
 		this.initializeTopologyProcedures(app);
-		
-		this.initializePreProvisioningProcedures(app);
 		
 		this.initializeProvisioningGraphProcedures(app);
 		
 	},
 	
-	//Pre Provisioning procedures
-	initializePreProvisioningProcedures : function(app) {
-		
-		var model = this.model;
-		var graph = app.graph;
-		
-		
-		
-	},
 	
 	//Provisioning graph procedures
 	initializeProvisioningGraphProcedures : function(app) {
@@ -70,10 +62,12 @@ nopen.provisioning.App = Backbone.View.extend({
 	initializeTopologyProcedures : function(app) {
 		
 		var file = this.file;
+		var model = this.model;
 		var graph = app.graph;
 		
-		$('#btn-open-topology').click(function(){	
-        	file.generateImportTopologyDialog(graph);      	
+		//import topology
+		$('#btn-open-topology').click(function(){
+			file.generateImportTopologyDialog(graph);
         });
 		
 	},

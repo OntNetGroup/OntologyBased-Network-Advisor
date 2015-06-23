@@ -15,16 +15,15 @@
    top: 40px;
    left: 0;
    right: 0;
-   padding-left: 246px;
+   padding-left: 10px;
    height: 40px;
 }
 
 .stencil-container {
    position: absolute;
-   display: none;
    left: 0;
-   top: 80px;   toolbar height
-   bottom: 20px;  statusbar height
+   top: 80px;   /* toolbar height */
+   bottom: 20px;  /* statusbar height */
    width: 240px;
 }
 
@@ -32,27 +31,22 @@
    position: absolute;
    top: 80px;   /* toolbar height */
    right: 0;
-   bottom: 36px; /* statusbar height */
+   bottom: 0px; /* statusbar height */
    width: 240px;
 }
 .navigator-container {
-/*    position: absolute; */
+   position: absolute;
    height: 160px;   /* toolbar height */
    right: 0;
    bottom: 20px; /* statusbar height */
    width: 240px;
-   display:none;
 }
 .paper-container {
    position: absolute;
    top: 80px;   /* toolbar height */
-   /*
-   left: 241px;
+   left: 0;
    right: 241px;
-   */
-   left: 0px;
-   right: 0px;
-   bottom: 20px; /* statusbar height */
+   bottom: 0; /* statusbar height */
    overflow: hidden;
 }
 .paper-container .paper-scroller {

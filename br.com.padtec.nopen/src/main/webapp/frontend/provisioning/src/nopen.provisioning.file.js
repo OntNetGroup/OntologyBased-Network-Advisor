@@ -1,7 +1,13 @@
 nopen.provisioning.File = Backbone.Model.extend({
 	
+	model : undefined,
+	
 	initialize : function(){
 		
+	},
+	
+	setModel : function(model) {
+		this.model = model;
 	},
 	
 	//Method to get paramentes from url
@@ -216,6 +222,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		$.ajax({
 		   type: "GET",
+		   async: false,
 		   url: "getAllTopologies.htm",
 		   dataType: 'json',
 		   success: function(data){
@@ -249,7 +256,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 				dialog.open();
 				
 				function importTopology() {
-					$this.importTopology(graph, dialog);
+					$this.importTopology(graph);
+					dialog.close();
 				}
 			   
 		   },
@@ -261,12 +269,14 @@ nopen.provisioning.File = Backbone.Model.extend({
 	},
 	
 	//method to import topology
-	importTopology : function(graph, dialog) {
+	importTopology : function(graph) {
 		
+		var $this = this;
 		var filename = $('input[name=topology]:checked', '#open-topology').val();
 		
 		$.ajax({
 		   type: "POST",
+		   async: false,
 		   url: "openTopologyOnProvisioning.htm",
 		   data: {
 			   'filename' : filename
@@ -274,14 +284,87 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   dataType: 'json',
 		   success: function(data){ 		   
 			   graph.fromJSON(data);
-			   dialog.close();
+			   //import equipments
+			   $this.importEquipments(graph);
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
-			   dialog.close();
 		   }
 		});
 		
 	},
+	
+	//Method to import equipments
+	importEquipments : function(graph) {
+	
+		var $this = this;
+		
+		$.each(graph.getElements(), function(index, value){
+			
+			var element = graph.getCell(value.id);
+			var filename = element.attr('equipment/template');
+			$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "openEquipmentOnProvisioning.htm",
+			   data: {
+				   'filename' : filename
+			   },
+			   dataType: 'json',
+			   success: function(data){
+				   //add equipment data on element equipment data attribute
+				   element.attr('equipment/data', data)
+				   
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+			
+		});
+		
+		this.importITUFiles(graph);
+	},
+	
+	//import itu files
+	importITUFiles : function(graph) {
+		
+		var $this = this;
+		var model = this.model;
+		
+		$.each(graph.getElements(), function(index, value){
+			
+			var element = graph.getCell(value.id);
+			var cards = model.getCards(element);
+			
+			$.each(cards, function(index, card){
+				
+				var filename = card.id;
+				var equipment = element.attr('equipment/template');
+				$.ajax({
+				   type: "POST",
+				   async: false,
+				   url: "openITUOnProvisioning.htm",
+				   data: {
+					   'equipment' : equipment,
+					   'filename' : filename
+				   },
+				   dataType: 'json',
+				   success: function(data){
+					   //add ITU data in card data attribute
+					   card.attrs.data = data;
+				   },
+				   error : function(e) {
+					   alert("error: " + e.status);
+				   }
+				});
+				
+			});
+			
+		});
+		
+		//start pre provsioning
+		model.startPreProvisioning(graph);
+	}
 	
 });

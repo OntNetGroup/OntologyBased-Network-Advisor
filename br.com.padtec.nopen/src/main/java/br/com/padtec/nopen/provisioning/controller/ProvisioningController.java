@@ -34,6 +34,33 @@ public class ProvisioningController {
 		
 	}
 	
+	@RequestMapping(value = "/openEquipmentOnProvisioning", method = RequestMethod.POST)
+	protected @ResponseBody String openEquipmentOnProvisioning(@RequestParam("filename") String filename){
+			
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
+		
+		/*
+		 * ******************************
+		 * WARNING: Change to Equipment
+		 * ******************************
+		 */
+		return NOpenFileUtil.openTemplateJSONFileAsString(filename);
+		
+	}
+	
+	@RequestMapping(value = "/openITUOnProvisioning", method = RequestMethod.POST)
+	protected @ResponseBody String openITUOnProvisioning(@RequestParam("equipment") String equipment, @RequestParam("filename") String filename){
+			
+		filename = NOpenFileUtil.replaceSlash(equipment + "/itu/" + filename + ".json");
+		/*
+		 * ******************************
+		 * WARNING: Change to Equipment
+		 * ******************************
+		 */
+		return NOpenFileUtil.openTemplateJSONFileAsString(filename);
+		
+	}
+	
 	/**
 	 * Procedure to check if a Provisioning file exist.
 	 * @param filename

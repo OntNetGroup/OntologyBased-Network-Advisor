@@ -126,7 +126,7 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
     border-radius: 5px;
     height: 30px;
     padding: 0 15px;
-    margin-top: 10px;
+    margin-top: 0px;
     margin-right: 5px;
     font-size: 10pt;
     font-family: Helvetica Neue;
@@ -144,8 +144,6 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
     background-color: #1e8fc6;
     color: white;
 }
-
-/* TOPOLOGY */
 
 .dialog label{
 	line-height: 1.3;
@@ -167,4 +165,63 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	margin-top: 5px;
 	display: none;
 	color: red;
+}
+
+#lstBox1, #lstBox2{
+	width: 190px;
+    height:100px;
+    padding: 5px;
+    margin-top: 5px;
+  	border: 1px solid #5C9CCC;
+}
+
+#supervisorDialog {
+    color: #FFF;
+    text-shadow: none;
+    margin: 0;
+    left: 0;
+    right: 0;
+    font-size: 13px;
+}
+
+.ui-dialog .ui-dialog-buttonset .ui-button {
+	background-color: #36A9E1;
+	background: #36A9E1;
+	border: 1px solid #6A6C8B;
+    color: #FFF;
+}
+
+.ui-dialog .ui-dialog-buttonset .ui-button:hover {
+	background-color: #1e8fc6;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	background-color: #1e8fc6;
+	padding: .4em 1em;
+	position: relative;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px; 
+}
+.ui-dialog .ui-dialog-title {
+	float: left;
+	margin: .1em 0;
+	white-space: nowrap;
+/* 	width: 90%; */
+	overflow: hidden;
+/* 	text-overflow: ellipsis; */
+}
+
+.ui-widget-content {
+  border: 1px solid #1e8fc6;
+}
+
+.dialog .titlebar {
+    background-color: #1e8fc6;
+    padding: 10px;
+    color: white;
+    text-shadow: 0 0 1px black;
+    text-rendering: optimizeLegibility;
+/*     border-top-right-radius: 5px; */
+/*     border-top-left-radius: 5px; */
+    border-bottom: 2px solid #dcddee;
 }

@@ -1,6 +1,6 @@
 <div class="toolbar-container">
-	 <button id="btn-save" class="btn" data-tooltip="Save provisioning"><img src="/nopen/frontend/provisioning/img/save.png" alt="Save"/> Save Provisioning</button>
-	 <button id="btn-open" class="btn" data-tooltip="Open provisioning"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open"/> Open Provisioning</button>
+	 <button id="btn-save" class="btn" data-tooltip="Save"><img src="/nopen/frontend/provisioning/img/save.png" alt="Save"/> Save</button>
+	 <button id="btn-open" class="btn" data-tooltip="Open"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open"/> Open</button>
 	 <button id="btn-open-topology" class="btn" data-tooltip="Import topology"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open Topology"/> Import Topology</button>
 
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a new window"><img src="/nopen/frontend/provisioning/img/pngfile.png" alt="PNG"/></button>
@@ -24,15 +24,15 @@
 <!--      <label data-tooltip="Change grid size">Grid size:</label> -->
 <!--      <input type="range" value="10" min="1" max="50" step="1" id="input-gridsize" /> -->
 <!--      <output id="output-gridsize">10</output> -->
-     <label data-tooltip="Enable/Disable Snaplines">Snaplines:</label>
-     <input type="checkbox" id="snapline-switch" checked/>
+<!--      <label data-tooltip="Enable/Disable Snaplines">Snaplines:</label> -->
+<!--      <input type="checkbox" id="snapline-switch" checked/> -->
  </div>
-<!--  <div class="stencil-container"> -->
+<!--  <div class="stencil-container" > -->
 <!--      <label>Stencil</label> -->
 <!--      <button class="btn-expand" title="Expand all">+</button> -->
 <!--      <button class="btn-collapse" title="Collapse all">-</button> -->
 <!--  </div> -->
  <div class="paper-container"></div>
  <div class="inspector-container"></div>
- <div class="navigator-container"></div>
- <div class="statusbar-container"><span class="rt-colab"></span></div>
+<!--  <div class="navigator-container"></div> -->
+<!--  <div class="statusbar-container"><span class="rt-colab"></span></div> -->

@@ -25,28 +25,6 @@ h1 {
    text-align: center;
 }
 
-.btn-import{
-	background-color: #49afcd;
-   padding: 4px 8px;
-   color: white;
-   text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
-   font-size: 11px;
-   line-height: 30px;
-   border: 1px solid #ccc;
-   background-image: -webkit-linear-gradient(top,#5bc0de,#2f96b4);
-   background-image: -moz-linear-gradient(top,#5bc0de,#2f96b4);
-   background-image: linear-gradient(top,#5bc0de,#2f96b4);
-   border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
-   margin: 0;
-   margin-left: -5px;
-   cursor: pointer;
-}
-
-.btn-import > img {
-   vertical-align: middle;
-   height: 20px;
-}
-
 .btn {
    background-color: #49afcd;
    padding: 4px 8px;
@@ -71,3 +49,109 @@ h1 {
    height: 20px;
 }
 
+#itu-dialog{
+	padding: 0;
+	margin: 0;
+}
+
+.ui-dialog {
+	padding: 0;
+	top: 0;
+}
+
+.ui-dialog[aria-describedby="itu-dialog"] .ui-dialog-titlebar {
+	display: none;
+}
+
+.ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+
+.my-dialog {
+	display: normal;
+}
+
+#itu-iframe{
+	border: none;
+	height: 100%;
+	width: 100%;
+}
+
+rect[stroke-width]:hover{
+	stroke-width: 2;
+}
+
+
+.ui-widget-header {
+	border: 1px solid #4297d7;
+	background: #5c9ccc url("images/ui-bg_gloss-wave_55_5c9ccc_500x100.png") 50% 50% repeat-x;
+	color: #ffffff;
+	font-weight: bold;
+	heigth: 50px;
+}
+
+.link-tools .tool-remove { display: none }
+.link-tools .tool-options { display: none }
+.marker-arrowheads { display: none }
+.link, .connection-wrap { 
+	pointer-events: none; 
+}
+
+
+.connectionInOut, .connectionIn, .connectionIn tbody, .connectionIn th, .connectionIn tr, .connectionIn td, .connectionOut, .connectionOut tbody, .connectionOut th, .connectionOut tr, .connectionOut td {
+	width: 100%;
+}
+
+.connectionIn th, .connectionIn td, .connectionOut th, .connectionOut td {
+	padding: 5px;
+}
+
+.connectionIn, .connectionOut {
+	display: table;
+	float: left;
+}
+
+.connectionInOut td, .connectionInOut th {
+	vertical-align: top;
+	width: 50%;
+}
+
+.ui-tooltip {
+	font-size: 11px;
+}
+
+.ui-tooltip-content {
+    position: relative;
+}
+
+.connectionOut td, .connectionIn td {
+	cursor: pointer;
+	vertical-align: top;
+}
+
+.connectionOut td.connected, .connectionIn td.connected {
+	background-color: #EEE;
+}
+
+.connectionOut td:hover, .connectionIn td:hover, .connectionOut td.active, .connectionIn td.active {
+	background-color: #EEE;
+}
+
+.connected span.tag {
+  float: right;
+  cursor:pointer;
+  display:block;
+  color:#fff;
+  background:#1e8fc6;
+  padding:5px;
+}
+.connected span.tag:hover {
+  opacity:0.7;
+}
+.connected span.tag:after {
+ content:"x";
+/*  border:1px solid; */
+ padding:0 4px;
+/*  margin:3px 0 10px 5px; */
+ font-size:12px;
+}
