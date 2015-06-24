@@ -192,16 +192,16 @@ public class PerformBind {
 		return false;
 	}
 	
-	public static boolean canCreateBind(DtoJointElement dtoContainer, DtoJointElement dtoContent ) throws Exception{
-		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
-		String name_source = dtoContainer.getName();
-		String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoContainer.getType();
-		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
-		String name_target = dtoContent.getName();
-		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
+	public static boolean canCreateBind(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement ) throws Exception{
+		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
+		String name_source = dtoSourceElement.getName();
+		String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getType();
+		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getId();
+		String name_target = dtoTargetElement.getName();
+		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getType();
 		
-		String id_source = dtoContainer.getId();
-		String id_target = dtoContent.getId();
+		String id_source = dtoSourceElement.getId();
+		String id_target = dtoTargetElement.getId();
 		
 		String tipo_output = tipo_source + "_Output";
 		String tipo_input = tipo_target + "_Input";
@@ -212,11 +212,15 @@ public class PerformBind {
 		String key = tipo_source + propertyURI + tipo_target;
 		String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 		if(cardinality == null){
-			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the relation between " + dtoContainer.getType() + " and " + dtoContent.getType() + " does not exist.");
+			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the relation between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " does not exist.");
 			throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because there is no \"binds\" relation between " + tipo_source + " and " + tipo_target);
 		}
 		Integer cardinality_input_target = Integer.parseInt(cardinality);
 		//create the Reference Point if exists and the relation between reference point and ports
+		if(tipo_target.equals(ConceptEnum.Output_Card.toString()) || tipo_target.equals(ConceptEnum.Input_Card.toString())){
+			return true;
+		}
+		
 		HashSet<String> rps_between_ports = new HashSet<String>();
 		rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, StudioComponents.studioRepository);
 		boolean isClient = false;
@@ -235,7 +239,7 @@ public class PerformBind {
 			}
 		}
 		else{
-			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because there is no Reference Point between " + dtoContainer.getType() + " and " + dtoContent.getType() + " . ");
+			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because there is no Reference Point between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " . ");
 			throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because there is no \"binds\" relation between " + tipo_source + " and " + tipo_target);		}
 	}
 	
