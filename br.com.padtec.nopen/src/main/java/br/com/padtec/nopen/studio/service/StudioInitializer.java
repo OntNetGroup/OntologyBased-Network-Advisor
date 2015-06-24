@@ -11,15 +11,15 @@ public class StudioInitializer {
 	public static String uploadEquipStudioTBox(boolean runReasoner)
 	{
 		Date beginDate = new Date();
-		InputStream s = StudioInitializer.class.getResourceAsStream("/model/EquipStudio.owl");
+		InputStream s = StudioInitializer.class.getResourceAsStream("/model/StudioLight.owl");
 		
 		String msg = NOpenUtilities.uploadTBOx(s, runReasoner, StudioComponents.studioRepository);
 		
-		PerformanceUtil.printExecutionTime("Equip Studio: TBox uploaded.", beginDate);		
+		PerformanceUtil.printExecutionTime("Studio: TBox uploaded.", beginDate);		
 		
 		BuildBindStructure.createBindStructure(StudioComponents.studioRepository.getNamespace() + "binds");
-		
-		PerformanceUtil.printExecutionTime("Equip Studio: Binding structure created.", beginDate);	
+				
+		PerformanceUtil.printExecutionTime("Studio: Binding structure created.", beginDate);	
 		
 		return msg;
 	}	

@@ -22,7 +22,7 @@ public class ScriptEnumGenerator {
 	{
 		OKCoUploader owlRepository = new OKCoUploader("EnumGenerator");
 		
-		InputStream s = ScriptEnumGenerator.class.getResourceAsStream("/model/EquipStudio.owl");
+		InputStream s = ScriptEnumGenerator.class.getResourceAsStream("/model/NOpen.owl");
 				
 		/** Upload */				
 		NOpenUtilities.uploadTBOx(s, false, owlRepository);
@@ -144,10 +144,10 @@ public class ScriptEnumGenerator {
 			String rangeName = domainRangeNames.get(i)[1];
 			if(rangeName!=null) rangeName = rangeName.replaceAll(" ", "_").replaceAll("\\.","_");					
 			if(domainName!=null){
-				if(!name.contains(domainName)) enumName += "_"+domainName;
+				if(!name.contains(domainName) && !name.contains(domainName.replaceAll("_",""))) enumName += "_"+domainName;
 			}
 			if(rangeName!=null){
-				if(!name.contains(rangeName)) enumName += "_"+rangeName;				
+				if(!name.contains(rangeName) && !name.contains(rangeName.replaceAll("_",""))) enumName += "_"+rangeName;				
 			}
 			
 			if(isJavaKeyword(name)) { enumName = enumName+"_"; }
