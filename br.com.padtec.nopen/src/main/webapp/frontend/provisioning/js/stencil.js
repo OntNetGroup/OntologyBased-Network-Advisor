@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 var Stencil = {};
 
 
@@ -21,7 +21,7 @@ Stencil.shapes = {
 		]
 		
 }
-=======
+
 var Stencil = {
 		
 		createContainer: function(tech, upLayer) {
@@ -63,4 +63,4 @@ var Stencil = {
 			return newNode;
 		}
 };
->>>>>>> 14a696bbf46f57c03d411f0478ced219076728ee
+
