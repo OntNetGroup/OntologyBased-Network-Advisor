@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jointjs.util.JointUtilManager;
+
+import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
@@ -122,13 +125,26 @@ public class ProvisioningController {
 	}
 	
 	/**
-	 * The services provided by a technology are the services implemented in the uppermost layer of that technology.
-	 * This procedure returns all services provided by the technology
-	 * @param technology: technology's name
-	 * @return: array containing the names of the services
+	 * Procedure that returns all technologies implemented by at least one equipment
+	 * @return: array containing the names of the technologies
 	 */
-	@RequestMapping(value = "/getTechnologyServices", method = RequestMethod.GET)
-	protected @ResponseBody String[] getTechnologyServices(@RequestParam("tech") String tech){
-		return null; //TODO
+	@RequestMapping(value = "/getImplementedTechnologies", method = RequestMethod.GET)
+	protected @ResponseBody String[] getImplementedTechnologies(){
+		return new String[]{"MEF", "OTN"}; //TODO
+	}
+	
+	/**
+	 * @param technology
+	 * @return: the uppermost layer of the given technology
+	 */
+	@RequestMapping(value = "/getUppermostLayer", method = RequestMethod.GET)
+	protected @ResponseBody String getUppermostLayer(@RequestParam("technology") String technology){
+		
+		DtoJointElement dtoTechnology = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
+		String tech = dtoTechnology.getName();
+		
+		if(tech.equals("OTN")) return "MEN";
+		if(tech.equals("MEF")) return "POUk";
+		return "none";
 	}
 }

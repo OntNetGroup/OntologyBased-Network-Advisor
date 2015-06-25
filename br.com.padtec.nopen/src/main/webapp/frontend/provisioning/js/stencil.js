@@ -27,7 +27,7 @@ var Stencil = {
 		createContainer: function(tech, upLayer) {
 			var newContainer = new Container({
 		        technology: tech,
-		        upperLayer: upLayer,
+		        upmostLayer: upLayer,
 				attrs: {
 					'.': { magnet: false },
 					'.header': { fill: '#5799DA' }
