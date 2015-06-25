@@ -303,7 +303,7 @@ public class EquipmentStudioController {
 	//=============================================================================================
 				
 	/**
-	 * Procedure to check if a Equipment file exist
+	 * Procedure to check if a Template file exist
 	 * @param filename
 	 * @return
 	 */	
@@ -317,6 +317,23 @@ public class EquipmentStudioController {
 		}
 		return null;
 	}
+	
+	/**
+	 * Procedure to check if a Equipment file exist
+	 * @param filename
+	 * @return
+	 */	
+	@RequestMapping("/checkEquipmentFile")
+	public @ResponseBody String checkEquipmentFile(@RequestParam("filename") String filename) 
+	{				
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
+		if(NOpenFileUtil.checkEquipmentFileExist(filename))
+		{
+			return "exist";
+		}
+		return null;
+	}
+	
 	
 	/**
 	 * Procedure to delete all ITU files inside of a Equipment Folder.
@@ -350,6 +367,27 @@ public class EquipmentStudioController {
 		
 		try {
 			File file = NOpenFileUtil.createTemplateJSONFile(filename);
+			NOpenFileUtil.writeToFile(file, graph);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Procedure to save a Equipment.
+	 * @param filename
+	 * @param graph
+	 */
+	@RequestMapping("/saveEquipment")
+	public @ResponseBody void saveEquipment(@RequestParam("filename") String filename, @RequestParam("graph") String graph) 
+	{
+		NOpenFileUtil.createEquipmentRepository(filename);
+		
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
+		
+		System.out.println(filename);
+		try {
+			File file = NOpenFileUtil.createEquipmentJSONFile(filename);
 			NOpenFileUtil.writeToFile(file, graph);
 		} catch (IOException e) {
 			e.printStackTrace();

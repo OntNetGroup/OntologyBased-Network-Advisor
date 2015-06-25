@@ -1,8 +1,9 @@
 <div class="toolbar-container">
      <!-- <button id="btn-undo" class="btn" data-tooltip="Undo"><img src="/nopen/frontend/equipment-studio/img/undo.png" alt="Undo"/></button> -->
      <!-- <button id="btn-redo" class="btn" data-tooltip="Redo"><img src="/nopen/frontend/equipment-studio/img/redo.png" alt="Redo"/></button> -->
-     <button id="btn-save" class="btn" data-tooltip="Save"><img src="/nopen/frontend/equipment-studio/img/save.png" alt="Save"/></button>
-	 <button id="btn-open" class="btn" data-tooltip="Open"><img src="/nopen/frontend/equipment-studio/img/open.png" alt="Open"/></button>
+     <button id="btn-save" class="btn" data-tooltip="Save Template"><img src="/nopen/frontend/equipment-studio/img/save.png" alt="Save"/></button>
+	 <button id="btn-open" class="btn" data-tooltip="Open Template"><img src="/nopen/frontend/equipment-studio/img/open.png" alt="Open"/></button>
+	 <button id="btn-saveequip" class="btn" data-tooltip="Save Equipment"><img src="/nopen/frontend/equipment-studio/img/save.png" alt="Save Equipment"/></button>
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window"><img src="/nopen/frontend/equipment-studio/img/pngfile.png" alt="PNG"/></button>
 <!-- <button id="btn-print-file" class="btn" data-tooltip="Save all imgs index in a file">save index to file</button>  -->
 <!-- <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/equipment-studio/img/print.png" alt="Print"/></button> -->     

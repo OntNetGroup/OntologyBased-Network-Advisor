@@ -68,8 +68,8 @@ public class NOpenFileUtil {
 			NOpenFileUtil.templateJSONFolder = NOpenFileUtil.templateJSONFolder.replaceAll("/", "\\\\");	
 			NOpenFileUtil.templateOWLFolder = NOpenFileUtil.templateOWLFolder.replaceAll("/", "\\\\");	
 			
-			NOpenFileUtil.equipmentJSONFolder = NOpenFileUtil.templateJSONFolder.replaceAll("/", "\\\\");	
-			NOpenFileUtil.equipmentOWLFolder = NOpenFileUtil.templateOWLFolder.replaceAll("/", "\\\\");	
+			NOpenFileUtil.equipmentJSONFolder = NOpenFileUtil.equipmentJSONFolder.replaceAll("/", "\\\\");	
+			NOpenFileUtil.equipmentOWLFolder = NOpenFileUtil.equipmentOWLFolder.replaceAll("/", "\\\\");	
 			
 			NOpenFileUtil.provisioningJSONFolder = NOpenFileUtil.provisioningJSONFolder.replaceAll("/", "\\\\");	
 			NOpenFileUtil.provisioningOWLFolder = NOpenFileUtil.provisioningOWLFolder.replaceAll("/", "\\\\");	

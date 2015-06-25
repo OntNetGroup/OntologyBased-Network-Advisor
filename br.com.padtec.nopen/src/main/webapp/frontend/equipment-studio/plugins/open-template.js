@@ -125,11 +125,13 @@ function openFromURL(filename, graph){
 				var containerType = parent.get('subType');
 				var containerID = parent.get('id');
 				var containerName = parent.attributes.attrs.name.text;
+				 
+				console.log(equipmentID , equipmentType , equipmentName , parentID , containerType , containerName);
 				
 //				insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 
-				//setTechnology(equipmentType, equipmentID , tech);
+				//setTechnology(equipmentName, equipmentType, equipmentID , tech);
 
 			}
 		});

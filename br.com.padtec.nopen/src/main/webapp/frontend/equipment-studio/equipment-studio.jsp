@@ -84,7 +84,7 @@
 
 	<script src="/nopen/frontend/equipment-studio/plugins/open-template.js"></script>
 	<script src="/nopen/frontend/equipment-studio/plugins/save-template.js"></script>
-
+    <script src="/nopen/frontend/equipment-studio/plugins/save-equipment.js"></script>
 	<%@include file="templates/supervisorPanelList.jsp"%>
 
 	<!-- DIALOGS -->
@@ -148,7 +148,10 @@
 			getTemplates(app.graph);
 		});		
 		
-
+		$('#btn-saveequip').click(function() {
+			generateSaveEquipmentDialog(app.graph);
+		});
+		
 	</script>
 
 
