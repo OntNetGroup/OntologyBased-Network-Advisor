@@ -25,6 +25,9 @@ public class PerformBind {
 	 * 
 	 */
 	public static boolean applyBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception {
+			
+			StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+		
 			String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
 			String name_source = dtoSourceElement.getName();
 			String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getType();
@@ -35,7 +38,6 @@ public class PerformBind {
 			String id_source = dtoSourceElement.getId();
 			String id_target = dtoTargetElement.getId();
 			
-			StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
 			String outputId = id_source + "_Output";
 			String tipo_output = tipo_source + "_Output";
 			String relation_source = null;
@@ -84,6 +86,7 @@ public class PerformBind {
 						);
 					
 				} else {
+					//Binds entre TFs 
 					//First, verify if the ports can have a RP between them
 					//if so, create the ports, RP and the relations between them
 					
@@ -234,59 +237,57 @@ public class PerformBind {
 		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
 		String name_source = dtoSourceElement.getName();
 		String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getType();
+		String id_source = dtoSourceElement.getId();
 		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getId();
 		String name_target = dtoTargetElement.getName();
 		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getType();
-		
-		String id_source = dtoSourceElement.getId();
 		String id_target = dtoTargetElement.getId();
 		
-		String tipo_output = tipo_source + "_Output";
-		String tipo_input = tipo_target + "_Input";
-		
-		String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.binds.toString();
-		Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), name_source, propertyURI, tipo_target );
-			
-		String key = tipo_source + propertyURI + tipo_target;
-		String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
-		if(cardinality == null){
-			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the relation between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " does not exist.");
-			throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because there is no \"binds\" relation between " + tipo_source + " and " + tipo_target);
+		if(tipo_target.equals(ConceptEnum.Output_Card.toString()) || tipo_target.equals(ConceptEnum.Input_Card.toString())){ 
+			//verificar cardinalidade de input do TF
+			//se ainda não for máxima, return true
+			return true;
 		}
-		Integer cardinality_input_target = Integer.parseInt(cardinality);
-		
-		if(tipo_target.equals(ConceptEnum.Output_Card.toString()) || tipo_target.equals(ConceptEnum.Input_Card.toString())){
-			if((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1)){
-				return true;
-			}
-			else{
-				NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the cardinality of the cardinality of "+ name_source +" is already maximum ");
+		else{ //então, o binds é entre TFs
+
+			String tipo_output = tipo_source + "_Output";
+			String tipo_input = tipo_target + "_Input";
+			
+			String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.binds.toString();
+			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), name_source, propertyURI, tipo_target );
+				
+			String key = tipo_source + propertyURI + tipo_target;
+			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
+			if(cardinality == null){
+				NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the relation between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " does not exist.");
 				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because there is no \"binds\" relation between " + tipo_source + " and " + tipo_target);
 			}
-		}
-		
-		//create the Reference Point if exists and the relation between reference point and ports
-		HashSet<String> rps_between_ports = new HashSet<String>();
-		rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, StudioComponents.studioRepository);
-		boolean isClient = false;
-		isClient = isClient(id_source, id_target, StudioComponents.studioRepository);
-		if(rps_between_ports.size() > 0){
-			if((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1)){
-				if(isClient){
-					return true;
-				} else{
-					NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the source layer is not client of target layer.");
-					throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because the source layer is not client of target layer.");
+			Integer cardinality_input_target = Integer.parseInt(cardinality);
+			
+			//create the Reference Point if exists and the relation between reference point and ports
+			HashSet<String> rps_between_ports = new HashSet<String>();
+			rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, StudioComponents.studioRepository);
+			boolean isClient = false;
+			isClient = isClient(id_source, id_target, StudioComponents.studioRepository);
+			if(rps_between_ports.size() > 0){
+				if((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1)){
+					if(isClient){
+						return true;
+					} else{
+						NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the source layer is not client of target layer.");
+						throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because the source layer is not client of target layer.");
+					}
+				} else {
+					NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the cardinality of the relation is already maximum.");
+					throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because the cardinality of the relation is already maximum.");
 				}
-			} else {
-				NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the cardinality of the relation is already maximum.");
-				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because the cardinality of the relation is already maximum.");
+			}
+			else{
+				NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because there is no Reference Point between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " . ");
+				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "  because there is no Reference Point between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " . ");
 			}
 		}
-		else{
-			NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because there is no Reference Point between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " . ");
-			throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + "  because there is no Reference Point between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " . ");
-		}
+		
 	}
 	
 	public static void applyEquipmentBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception{
