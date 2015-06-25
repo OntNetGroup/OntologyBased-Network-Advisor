@@ -6,6 +6,9 @@
 
         <title>Provisioning</title>
 
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+		
+
 		<!-- CSS CORE -->
 
         <link rel="stylesheet" type="text/css" href="/nopen/core/rappid_api/css/joint.all.css" />
@@ -58,7 +61,7 @@
         
         <!-- STENCILS -->
         
-        <script src="/nopen/stencils/provisioning/js/provisioning.js"></script>
+        <script src="/nopen/frontend/provisioning/js/stencil.js"></script>
          
         <!-- DIALOGS -->
 		

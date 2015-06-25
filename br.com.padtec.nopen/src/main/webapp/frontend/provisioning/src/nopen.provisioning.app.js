@@ -20,7 +20,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		//initialize procedures
 		this.initializeProvisioningFileProcedures(app);
 		this.initializeTopologyProcedures(app);
-		
+		this.initializeToolbarProcedures(app);
 		this.initializeProvisioningGraphProcedures(app);
 		
 	},
@@ -31,6 +31,27 @@ nopen.provisioning.App = Backbone.View.extend({
 		
 		var file = this.file;
 		var graph = app.graph;
+		
+	},
+
+	//Toolbar procedures
+	initializeToolbarProcedures : function(app) {
+		
+		$('#btn-show-hide-inspector').click(function(){
+			
+			if($('.inspector-container').is(':visible')) {
+				$('.inspector-container').hide();
+				$('.paper-container').css({
+					right: 0,
+				});
+			} else {
+				$('.inspector-container').show();
+				$('.paper-container').css({
+					right: 241,
+				});
+			}
+			
+		});
 		
 	},
 	

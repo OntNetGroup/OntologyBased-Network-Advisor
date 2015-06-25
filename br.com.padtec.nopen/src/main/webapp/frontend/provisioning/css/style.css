@@ -49,109 +49,79 @@ h1 {
    height: 20px;
 }
 
-#itu-dialog{
-	padding: 0;
-	margin: 0;
+hr {
+	border: 0;
+	height: 1px;
+	background-color: #DDDDDD;
 }
 
-.ui-dialog {
-	padding: 0;
-	top: 0;
-}
-
-.ui-dialog[aria-describedby="itu-dialog"] .ui-dialog-titlebar {
-	display: none;
-}
-
-.ui-dialog-titlebar-close {
-  visibility: hidden;
-}
-
-.my-dialog {
-	display: normal;
-}
-
-#itu-iframe{
-	border: none;
-	height: 100%;
-	width: 100%;
-}
-
-rect[stroke-width]:hover{
-	stroke-width: 2;
-}
-
-
-.ui-widget-header {
-	border: 1px solid #4297d7;
-	background: #5c9ccc url("images/ui-bg_gloss-wave_55_5c9ccc_500x100.png") 50% 50% repeat-x;
-	color: #ffffff;
-	font-weight: bold;
-	heigth: 50px;
-}
-
-.link-tools .tool-remove { display: none }
-.link-tools .tool-options { display: none }
-.marker-arrowheads { display: none }
-.link, .connection-wrap { 
-	pointer-events: none; 
-}
-
-
-.connectionInOut, .connectionIn, .connectionIn tbody, .connectionIn th, .connectionIn tr, .connectionIn td, .connectionOut, .connectionOut tbody, .connectionOut th, .connectionOut tr, .connectionOut td {
-	width: 100%;
-}
-
-.connectionIn th, .connectionIn td, .connectionOut th, .connectionOut td {
-	padding: 5px;
-}
-
-.connectionIn, .connectionOut {
-	display: table;
-	float: left;
-}
-
-.connectionInOut td, .connectionInOut th {
-	vertical-align: top;
-	width: 50%;
-}
-
-.ui-tooltip {
-	font-size: 11px;
-}
-
-.ui-tooltip-content {
-    position: relative;
-}
-
-.connectionOut td, .connectionIn td {
-	cursor: pointer;
-	vertical-align: top;
-}
-
-.connectionOut td.connected, .connectionIn td.connected {
-	background-color: #EEE;
-}
-
-.connectionOut td:hover, .connectionIn td:hover, .connectionOut td.active, .connectionIn td.active {
-	background-color: #EEE;
-}
-
-.connected span.tag {
-  float: right;
-  cursor:pointer;
-  display:block;
-  color:#fff;
-  background:#1e8fc6;
-  padding:5px;
-}
-.connected span.tag:hover {
-  opacity:0.7;
-}
-.connected span.tag:after {
- content:"x";
-/*  border:1px solid; */
- padding:0 4px;
-/*  margin:3px 0 10px 5px; */
- font-size:12px;
-}
+    #listContainer {
+/*         margin:15px 0px; */
+    }
+    #expList {
+        padding-left: 10px;
+    }
+    #expList ul, li {
+        list-style: none;
+        margin:0;
+        padding:0;
+        cursor: pointer;
+    }
+    #expList p {
+        margin:0;
+        display:block;
+    }
+    #expList p:hover {
+        background-color:#121212;
+    }
+    #expList li {
+        line-height:140%;
+        text-indent:0px;
+        background-position: 1px 5px;
+        padding-left: 20px;
+        background-repeat: no-repeat;
+        margin-bottom: 5px;
+    }
+    #expList ul {
+        margin-top: 5px;
+    }
+    /* Collapsed state for list element */
+    #expList .collapsed {
+        background-image: url('https://hosted.compulite.ca/kc/MD/SiteAssets/collapsed.png');
+    }
+    /* Expanded state for list element
+    /* NOTE: This class must be located UNDER the collapsed one */
+    #expList .expanded {
+        background-image: url('https://hosted.compulite.ca/kc/MD/SiteAssets/expanded.png');
+    }
+    .active {
+        background-color: yellow;
+    }
+    #expList span:hover {
+        color:red;
+    }
+    /*List Controls*/
+    .button, .listControl {
+        margin-top: 15px;
+    }
+    .button, .listControl a {
+        border: 1px solid #555555;
+        color: #555555;
+        cursor: pointer;
+        height: 1.5em;
+        line-height: 1.5em;
+        margin-right: 5px;
+        padding: 4px 10px;
+        text-decoration: none !important;
+    }
+    .button:hover, .listControl a:hover {
+        background-color:#555555;
+        color:#FFFFFF;
+        font-weight:normal;
+    }
+    .siteTitle:hover, .siteActive {
+        color:red;
+    }
+    .siteTitle:active {
+        font-weight: bold;
+    }

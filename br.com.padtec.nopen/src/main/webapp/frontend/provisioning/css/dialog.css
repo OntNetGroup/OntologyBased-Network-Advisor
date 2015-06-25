@@ -140,6 +140,12 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
     margin-right: 5px;
 }
 
+.dialog .controls .control-button:disabled {
+	background-color: #1e8fc6;
+	opacity: .7;
+    color: white;
+}
+
 .dialog .controls .control-button:hover {
     background-color: #1e8fc6;
     color: white;

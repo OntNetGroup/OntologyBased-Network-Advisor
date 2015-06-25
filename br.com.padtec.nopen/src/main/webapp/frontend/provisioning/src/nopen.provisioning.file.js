@@ -336,11 +336,12 @@ nopen.provisioning.File = Backbone.Model.extend({
 			
 			var element = graph.getCell(value.id);
 			var cards = model.getCards(element);
+			var equipment = element.attr('equipment/template');
 			
 			$.each(cards, function(index, card){
 				
 				var filename = card.id;
-				var equipment = element.attr('equipment/template');
+				
 				$.ajax({
 				   type: "POST",
 				   async: false,
