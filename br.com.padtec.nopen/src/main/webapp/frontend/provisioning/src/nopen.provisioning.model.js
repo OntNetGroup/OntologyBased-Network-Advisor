@@ -25,29 +25,31 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				'target' : target,
 			});
 			
-			console.log('SOURCE' + index + ": " + $this.getElementName(source));
-			console.log('TARGET' + index + ": " + $this.getElementName(target));
+			//console.log('SOURCE' + index + ": " + $this.getElementName(source));
+			//console.log('TARGET' + index + ": " + $this.getElementName(target));
 			
 		});
 		
 		var dialog = new joint.ui.Dialog({
 			width: 500,
 			type: 'neutral',
+			closeButton: false,
 			title: 'Pre Provisioning',
+			clickOutside: false,
+			modal: false,
 			content: 'Unconnected links were detected, click in the <b>Next</b> button to connect them. <hr>',
 			buttons: [
 			          { action: 'next', content: 'Next', position: 'right' },
 			]
 		});
 		dialog.on('action:next', next);
-		dialog.on('action:close', cancel);
 		dialog.open();
 
-		function cancel() {
-			dialog.close();
-		};
-		
 		var currentLinkIndex = 1;
+		
+		//block outside
+		$('#black_overlay').show();
+		
 		function next() {
 			
 			//finish pre provisioning
@@ -62,10 +64,16 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			var content = '';
 			
 			var link = links[currentLinkIndex - 1];
-			var source = $this.getElementName(link.source);
-			var target = $this.getElementName(link.target);
+			
+			var source = graph.getCell(link.source.id);
+			var target = graph.getCell(link.target.id);
+			
+			var sourceName = $this.getElementName(link.source);
+			var targetName = $this.getElementName(link.target);
 			
 			if(currentLinkIndex < links.length) {
+				
+				var layers = $this.getLayers(target);
 				
 				content = createContent();
 				$('.dialog .body').html(content);
@@ -76,8 +84,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			//currentLinkIndex === links.length
 			else {
 				
-				content = source + " -> " + target;
-				
+				content = createContent();
 				$('.dialog .body').html(content);
 				$('.dialog .controls .control-button[data-action="next"]').text('Finish');
 
@@ -153,11 +160,55 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		return element.attr('text/text')
 	},
 	
+	getLayers : function(element) {
+		
+		var layers = [];
+		var cards = this.getCards(element);
+		
+		$.each(cards, function(index, card) {
+			
+			var itus = card.attrs.data.cells;
+			$.each(itus, function(index, itu) {
+			
+				
+				if(itu.parent) {
+					
+					if(itu.subtype !== "Input" || itu.subtype !== "Output") {
+						
+						var cell = graph.getCell(itu.parent);
+						console.log('CELL: ' + JSON.stringify(cell));
+						
+					}
+						
+					
+				}
+				
+				/*
+				 * WARNING: create controller to get Layers from OWL
+				 */
+				if(itu.subtype === "POUk" || itu.subtype === "OTUk" || itu.subtype === "ODUk") {
+					layers.push(itu);
+					
+				}
+				else {
+					//console.log('ITU: ' + JSON.stringify(itu));
+				}
+				
+			});
+			
+		});
+		
+		return layers;
+		
+	},
+	
 	//Method to get cards of a element
 	getCards : function(element) {
 		
 		var cards = [];
+		//var cells = element.attributes.attrs.equipment.data.cells;
 		var cells = element.attr('equipment/data').cells;
+		
 		$.each(cells, function(index, cell) {
 			
 			if(cell.subType === 'Card') {

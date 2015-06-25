@@ -1,3 +1,4 @@
+
 <div class="toolbar-container">
 	 <button id="btn-save" class="btn" data-tooltip="Save Provisioning File"><img src="/nopen/frontend/provisioning/img/save.png" alt="Save Provisioning File"/> Save</button>
 	 <button id="btn-open" class="btn" data-tooltip="Open Provisioning File"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open Provisioning File"/> Open</button>
@@ -28,6 +29,7 @@
 <!--      <label data-tooltip="Enable/Disable Snaplines">Snaplines:</label> -->
 <!--      <input type="checkbox" id="snapline-switch" checked/> -->
  </div>
+ 
 <!--  <div class="stencil-container" > -->
 <!--      <label>Stencil</label> -->
 <!--      <button class="btn-expand" title="Expand all">+</button> -->

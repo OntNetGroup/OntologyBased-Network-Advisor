@@ -34,10 +34,11 @@
     <body>
         
         <!-- TEMPLATES -->
-		
-       	<%@include file="templates/header.jsp"%>
-        <%@include file="templates/toolbar.jsp"%>
-
+		<div class="template">
+       		<%@include file="templates/header.jsp"%>
+        	<%@include file="templates/toolbar.jsp"%>
+		</div>
+		<div id="black_overlay"></div>
 		<!-- JS CORE -->
 
         <script src="/nopen/core/rappid_api/js/joint.js"></script>
