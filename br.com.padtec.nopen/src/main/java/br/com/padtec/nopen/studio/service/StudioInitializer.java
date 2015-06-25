@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 import br.com.padtec.common.util.PerformanceUtil;
+import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.service.util.NOpenUtilities;
 
 public class StudioInitializer {
@@ -17,7 +18,7 @@ public class StudioInitializer {
 		
 		PerformanceUtil.printExecutionTime("Studio: TBox uploaded.", beginDate);		
 		
-		BuildBindStructure.createBindStructure(StudioComponents.studioRepository.getNamespace() + "binds");
+		BuildBindStructure.createBindStructure(StudioComponents.studioRepository.getNamespace() + RelationEnum.binds.toString());
 				
 		PerformanceUtil.printExecutionTime("Studio: Binding structure created.", beginDate);	
 		

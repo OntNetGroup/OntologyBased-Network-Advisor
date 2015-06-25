@@ -823,7 +823,7 @@ public class InstanceFabricator {
 						targetURI,
 						tipo_target,
 						true);
-				
+
 				if(tipo_target.equalsIgnoreCase(StudioComponents.studioRepository.getNamespace() + ConceptEnum.Card_Layer.toString())){
 					String layerPropertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
 					String layerTypeURI = StudioComponents.studioRepository.getNamespace() + name_target;
@@ -835,7 +835,6 @@ public class InstanceFabricator {
 						);
 				}
 				
-				//problema??
 				FactoryUtil.createInstanceRelation(
 						StudioComponents.studioRepository.getBaseModel(), 
 						sourceURI,			 
@@ -843,7 +842,7 @@ public class InstanceFabricator {
 						targetURI
 					);
 				
-				NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + dtoContainer.getType() + name_source + " linked with " + dtoContent.getType() + name_target);
+				NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + name_source + " linked with " + name_target);
 			}
 			else{
 				NOpenLog.appendLine("Error: " + name_source + " cannot be connected to " + name_target + " because there is no \"componentOf\" relation between " + tipo_source + " and " + tipo_target);
