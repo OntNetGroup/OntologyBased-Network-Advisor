@@ -2,6 +2,8 @@ package br.com.padtec.okco.core.application;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
@@ -19,7 +21,14 @@ import br.com.padtec.okco.core.exception.OKCoExceptionReasoner;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.rdf.model.impl.StmtIteratorImpl;
 import com.hp.hpl.jena.reasoner.ValidityReport;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
+import com.hp.hpl.jena.util.iterator.Filter;
 
 public class OKCoUploader {
 
@@ -284,6 +293,8 @@ public class OKCoUploader {
 	 */
 	public void substituteInferredModelFromBaseModel(boolean runningReasoner)
 	{
+		List<Statement> modStms = getBaseModel().listStatements().toList();
+        
 		if(!runningReasoner){
 			OntModel newInferredModel = OntModelAPI.clone(getBaseModel());
 			inferredRepository.setInferredModel(newInferredModel);
@@ -291,11 +302,23 @@ public class OKCoUploader {
 			InfModel newInferredModel = reasoner.run(getBaseModel());
 			lastReasoningTimeExec = reasoner.getReasoningTimeExec();
 			inferredRepository.setInferredModel(newInferredModel);
+			
+			if(consistencyBaseRepository != null && consistencyBaseRepository.getBaseOntModel() != null){
+				List<Statement> infStms = newInferredModel.listStatements().toList();
+		        List<Statement> toAdd = new ArrayList<Statement>();
+		        for(Statement stm : infStms){
+		        	if(!modStms.contains(stm)){
+		        		toAdd.add(stm);
+		        	}
+		        }
+		        consistencyBaseRepository.getBaseOntModel().add(toAdd);
+			}
+			
 		}			
 		baseRepository.setBaseOntModel((OntModel) inferredRepository.getInferredOntModel());
 	}	
 	
-	/**
+		/**
 	 * Record a temporary model from the last valid base model in order to allow a roll back in the future.
 	 */
 	public void storeTemporaryModelFromBaseModel()

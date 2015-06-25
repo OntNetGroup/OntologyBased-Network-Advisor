@@ -50,9 +50,9 @@ public class OWLUtil {
 		if(arquivo.exists()){
 			arquivo.delete();
 		}
-			FileOutputStream fos = new FileOutputStream(arquivo);  
-			fos.write(result.getBytes());    
-			fos.close();   
+		FileOutputStream fos = new FileOutputStream(arquivo);  
+		fos.write(result.getBytes());    
+		fos.close();   
 	}
 	
 	public static long runReasoner(OKCoUploader okcoUploader, boolean inferHierarchies, boolean inferAssertions, boolean inferRules) throws Exception{
@@ -272,11 +272,13 @@ public class OWLUtil {
 							}
 							String val = dcl[i+1].replace("", "");
 							String type = dcl[i+2].replace(")", "");
-							
-							indv = newMapping.get(indv);
+							String newIndv = newMapping.get(indv);
 							
 //							FactoryUtil.createInstanceAttribute(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type, false);
-							factory.createInstanceAttributeStatement(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type);
+							if(newIndv == null){
+								System.out.println();
+							}
+							factory.createInstanceAttributeStatement(model, ns+newIndv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type);
 						}
 						
 					}

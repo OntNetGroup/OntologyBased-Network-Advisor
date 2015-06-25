@@ -86,6 +86,9 @@ public class FactoryUtil {
 		Individual individual = model.getIndividual(individualURI);
 		DatatypeProperty dataProperty = model.getDatatypeProperty(dataPropertyURI);
 		Literal literal = model.createTypedLiteral(value, typeURI);
+		if(individual == null || dataProperty == null || literal == null){
+			System.out.println();
+		}
 		individual.addLiteral(dataProperty, literal);
 		Statement stmt = model.createStatement(individual, dataProperty, literal);
 		this.stmts.add(stmt);				

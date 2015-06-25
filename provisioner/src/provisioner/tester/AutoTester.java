@@ -87,31 +87,42 @@ public class AutoTester {
 			Date now = new Date();
 			String nowStr = DateFormat.getInstance().format(now).replace("/", "-").replace(":", ".");
 			
+			File testFileDir = new File(outTesterDir+nowStr);
+			testFileDir.mkdirs();
+			
+			File testFile = new File(outTesterDir+nowStr+"/general-summary.txt");
+			FileOutputStream fosTestFile = new FileOutputStream(testFile);
+			
 			for (Test test : tests) {
-				String testDirStr = nowStr + "/Test " + tests.indexOf(test) + "/";
-//				File testDir = new File(outTesterDir+testDirStr);
-//				boolean x = testDir.mkdirs();
-				File executionTimes = new File(outTesterDir+testDirStr+"executionTimes.txt");
+				fosTestFile.write(("Test " + tests.indexOf(test) + "\n").getBytes());
+				String unitTestDirStr = outTesterDir + nowStr +"/Test " + tests.indexOf(test) + "/";
+				File unitTestDir = new File(unitTestDirStr);
+				unitTestDir.mkdirs();
+				File executionTimes = new File(unitTestDirStr+"executionTimes.txt");
 				FileOutputStream fosExecutionTimes = new FileOutputStream(executionTimes);
-				String execTimes = "Include instances and reasoning execution\tFinding paths\n";
+				String execTimes = "Include\tReasoning\tFinding paths\n";
 				fosExecutionTimes.write(execTimes.getBytes());
+				fosTestFile.write(execTimes.getBytes());
 				
 				boolean fewPossibleEquip = false;
 				for (int i = 0; i < test.getDeclaredReplications(); i++) {
-					executeForNReplications(i, possibleFile, declaredFile, owlBaseTBoxFile, owlConsistencyTBoxFile, fosExecutionTimes, declaredWeight, fewPossibleEquip, test.getQtShortPaths(), test.getMaxPathSize(), possibleWeight, createPathsFile, testDirStr);	
+					executeForNReplications(i, possibleFile, declaredFile, owlBaseTBoxFile, owlConsistencyTBoxFile, fosTestFile, fosExecutionTimes, declaredWeight, fewPossibleEquip, test.getQtShortPaths(), test.getMaxPathSize(), possibleWeight, createPathsFile, unitTestDirStr);	
 				}
 				fosExecutionTimes.close();
-			}			
+				
+				fosTestFile.write(("\n\n").getBytes());
+			}		
 			
+			fosTestFile.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			
 		}
 	}
 	
-	private static void executeForNReplications(int i, String possibleFile, String declaredFile, String owlBaseTBoxFile, String owlConsistencyTBoxFile, FileOutputStream fosExecutionTimes, int declaredWeight, boolean fewPossibleEquip, int qtShortPaths, int maxPathSize, int possibleWeight, int createPathsFile, String testDir) throws Exception{
+	private static void executeForNReplications(int i, String possibleFile, String declaredFile, String owlBaseTBoxFile, String owlConsistencyTBoxFile, FileOutputStream fosTestFile, FileOutputStream fosExecutionTimes, int declaredWeight, boolean fewPossibleEquip, int qtShortPaths, int maxPathSize, int possibleWeight, int createPathsFile, String testDir) throws Exception{
 		int possibleReplications = 1;
-		File execTime = new File(outTesterDir + testDir + (i+1) + " replication(s)-Summary.txt");   
+		File execTime = new File(testDir + (i+1) + " replication(s)-Summary.txt");   
 		if(execTime.exists()){
 			execTime.delete();
 		}
@@ -133,10 +144,15 @@ public class AutoTester {
 			}
 		}
 		
+		long includeTime = provisioner.getCreateInstancesTime();
 		long reasoningTimeExecPostInstances = provisioner.getReasoningTimeExecPostInstances();
 		//String reasonerExec = "Reasoning execution: " + reasoningTimeExecPostInstances + "ms\n";
-		String aux1 = reasoningTimeExecPostInstances + "\t";
+		String aux1 = includeTime + "\t" + reasoningTimeExecPostInstances + "\t";
 		fosExecutionTimes.write(aux1.getBytes());
+		fosTestFile.write(aux1.getBytes());
+		
+		String includeExec = PerformanceUtil.getExecutionMessage("Including instances", includeTime) + "\n";
+		fosExecTime.write(includeExec.getBytes());
 		String reasonerExec = PerformanceUtil.getExecutionMessage("Reasoning", reasoningTimeExecPostInstances) + "\n";
 		fosExecTime.write(reasonerExec.getBytes());
 		
@@ -156,6 +172,7 @@ public class AutoTester {
 		//String pathsExec = "Find paths execution for " + qtShortPaths + " paths with maximum size " + maxPathSize + ": " + nShortPathsTimeExec + "ms\n";
 		String aux2 = nShortPathsTimeExec + "\n";
 		fosExecutionTimes.write(aux2.getBytes());
+		fosTestFile.write(aux2.getBytes());
 		String pathsExec = PerformanceUtil.printExecutionTime("Finding paths for " + qtShortPaths + " paths with maximum size " + maxPathSize, beginDate) + "\n";
 		fosExecTime.write(pathsExec.getBytes());
 		String qtPaths = "Found paths: " + pathsShorters.size() +"\n";
@@ -167,7 +184,7 @@ public class AutoTester {
 		
 		fosExecTime.write(qtPaths.getBytes());
 		if(createPathsFile == 1){
-			print(outTesterDir + testDir + (i+1) + " replication(s)-n paths.txt", pathsShorters);
+			print(testDir + (i+1) + " replication(s)-n paths.txt", pathsShorters);
 		}
 		fosExecTime.close();
 		OWLUtil.saveNewOwl(provisioner.getModel(), outTesterDir, (i+1) + " ");
