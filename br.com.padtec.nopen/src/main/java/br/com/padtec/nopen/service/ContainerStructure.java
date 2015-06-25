@@ -68,7 +68,7 @@ public class ContainerStructure {
 	public static void buildContainerStructure(String relationURI){
 		//Create a mapping with all componentOf relations of the model and their cardinalities
 		HashMap<String, RelationDef> possibleInstants = new HashMap<String, RelationDef>();
-		possibleInstants = DtoQueryUtil.getPossibleInstantiationsOfRelation(instance.getRepository().getBaseModel(), relationURI);
+		possibleInstants = DtoQueryUtil.getPossibleInstantiationsOfRelation(NOpenComponents.nopenRepository.getBaseModel(), relationURI);
 		
 		Iterator<Entry<String, RelationDef>> it = possibleInstants.entrySet().iterator();
 	    while (it.hasNext()) {
