@@ -721,8 +721,8 @@ public class DtoQueryUtil {
 				+ "	?property rdfs:subPropertyOf* <" + propertyURI + "> . \n"
 				+ "	?property rdfs:domain ?originalDomain . \n"
 				+ "	?property rdfs:range ?originalRange . \n"
-				+ "	?possibleDomain rdfs:subClassOf* ?originalDomain. \n"
-				+ " ?possibleRange rdfs:subClassOf* ?originalRange . \n"
+				+ "	?possibleDomain rdfs:subClassOf*/(rdfs:subClassOf/owl:intersectionOf/rdf:rest*/rdf:first)* ?originalDomain. \n"
+				+ "	?possibleRange rdfs:subClassOf*/(rdfs:subClassOf/owl:intersectionOf/rdf:rest*/rdf:first)* ?originalRange . \n"
 				+ "}";
 		
 		Query query = QueryFactory.create(queryString);
