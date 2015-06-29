@@ -87,43 +87,6 @@ public class EquipmentStudioController {
 	 * Delete
 	 * ======================================================================================*/
 	
-	/** Procedure to remove a supervisor
-	 * @param supervisor
-	 * @param ?
-	 * @return
-	 */
-	@RequestMapping(value = "/removeSupervisor", method = RequestMethod.POST)
-	public @ResponseBody String removeSupervisor(@RequestParam("supervisor") String supervisor)
-	{
-		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		
-		try{
-			StudioSpecificFactory.deleteSupervisor(dtoSupervisor);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";
-	}
-	
-	/** Procedure to remove a card
-	 * @param card
-	 * @param 
-	 * @return
-	 */
-	@RequestMapping(value = "/removeCard", method = RequestMethod.POST)
-	public @ResponseBody String removeCard(@RequestParam("card") String card)
-	{
-		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-		
-		try{
-			StudioSpecificFactory.deleteCard(dtoCard);
-		}catch(Exception e){
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}		
-		return "success";
-	}
 	
 	/** Procedure to remove an Equipment holder
 	 * @param equipmentholder
