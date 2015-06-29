@@ -3,6 +3,7 @@ package br.com.padtec.nopen.studio.equip.controller;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,25 +32,25 @@ public class EquipmentStudioController {
 	/* ======================================================================================
 	 * GET
 	 * ======================================================================================*/
-	
+
 	/** Procedure to get all the technologies */
 	@RequestMapping(value = "/getTechnologies", method = RequestMethod.POST)
 	public @ResponseBody String[] getTechnologies()
 	{   
 		return NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());		
 	}
-	
+
 	/* ======================================================================================
 	 * Create
 	 * ======================================================================================*/
-	
+
 	/** Insert content on a container */
 	@RequestMapping(value = "/EquipStudioInsertContainer", method = RequestMethod.POST)
 	public @ResponseBody String insertContainer(@RequestParam("container") String container, @RequestParam("content") String content) 
 	{	
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 		DtoJointElement dtoContent = (DtoJointElement) JointUtilManager.getJavaFromJSON(content, DtoJointElement.class);
-		
+
 		try{
 			InstanceFabricator.createComponentOfRelation(dtoContainer, dtoContent);
 		}catch(Exception e){
@@ -58,7 +59,7 @@ public class EquipmentStudioController {
 		}		
 		return "success";		
 	}
-	
+
 	/** Bind the source element to the target element */
 	/**
 	 * @param sourceElement: id, name and type of the source element
@@ -68,11 +69,11 @@ public class EquipmentStudioController {
 	 */
 	@RequestMapping(value = "/EquipStudioPerformBind", method = RequestMethod.POST)
 	public @ResponseBody String performBind(@RequestParam("sourceElement") String sourceElement, @RequestParam("targetElement") String targetElement,
-	@RequestParam("bind") String bind) 
+			@RequestParam("bind") String bind) 
 	{	
 		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
 		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
-		
+
 		try{
 			PerformBind.applyEquipmentBinds(dtoSourceElement, dtoTargetElement);
 		}catch(Exception e){
@@ -82,12 +83,12 @@ public class EquipmentStudioController {
 
 		return "success";		
 	}	
-		
+
 	/* ======================================================================================
 	 * Delete
 	 * ======================================================================================*/
-	
-	
+
+
 	/** Procedure to remove an Equipment holder
 	 * @param equipmentholder
 	 * @param container
@@ -107,11 +108,11 @@ public class EquipmentStudioController {
 		}		
 		return "success";
 	}	
-		
+
 	//=============================================================================================
 	// Link
 	//=============================================================================================
-	
+
 	/** Procedure to supervise a card
 	 * @param card
 	 * @param supervisor
@@ -122,7 +123,7 @@ public class EquipmentStudioController {
 	{
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-				
+
 		try{
 			StudioSpecificFactory.superviseCard(dtoSupervisor, dtoCard);
 		}catch(Exception e){
@@ -131,7 +132,7 @@ public class EquipmentStudioController {
 		}		
 		return "success";		
 	}
-	
+
 	/** Procedure to unsupervise a card
 	 * @param card
 	 * @param supervisor
@@ -142,7 +143,7 @@ public class EquipmentStudioController {
 	{
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
-				
+
 		try{
 			StudioSpecificFactory.unsuperviseCard(dtoSupervisor, dtoCard);
 		}catch(Exception e){
@@ -151,7 +152,7 @@ public class EquipmentStudioController {
 		}		
 		return "success";		
 	}
-	
+
 	/** Procedure to select the supervisor technology
 	 * @param supervisor
 	 * @param technology
@@ -162,8 +163,8 @@ public class EquipmentStudioController {
 	public @ResponseBody String setTechnology(@RequestParam("supervisor") String supervisor,@RequestParam("technology") String technology )
 	{
 		DtoJointElement dtosupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		 
-		
+
+
 		try{
 			StudioSpecificFactory.setTechnology(dtosupervisor, technology);
 		}catch(Exception e){
@@ -172,11 +173,11 @@ public class EquipmentStudioController {
 		}		
 		return "success";		
 	}
-	
+
 	//=============================================================================================
 	// Verification
 	//=============================================================================================
-	
+
 	/** Check if a bind can be performed from the source element to the target element (just check, don't perform the bind) */
 	/**
 	 * @param sourceElement: id, name and type of the source element
@@ -188,17 +189,17 @@ public class EquipmentStudioController {
 	{		
 		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
 		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
-		
+
 		try{
 			PerformBind.canCreateEquipmentBinds(dtoSourceElement, dtoTargetElement);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
 		}	
-		
+
 		return "true";		
 	}
-	
+
 	/** Procedure to check if card can be supervised
 	 * @param supervisor
 	 * @param card
@@ -209,7 +210,7 @@ public class EquipmentStudioController {
 	{
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		
+
 		try{
 			StudioSpecificFactory.canSupervise(dtoSupervisor, dtoCard);
 		}catch(Exception e){
@@ -218,7 +219,7 @@ public class EquipmentStudioController {
 		}	
 		return "true";
 	}
-				
+
 	/** Procedure to check if card can be unsupervised
 	 * @param supervisor
 	 * @param card
@@ -229,7 +230,7 @@ public class EquipmentStudioController {
 	{
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
-		
+
 		try{
 			StudioSpecificFactory.canUnsupervise(dtoSupervisor, dtoCard);
 		}catch(Exception e){
@@ -238,11 +239,11 @@ public class EquipmentStudioController {
 		}	
 		return "true";
 	}
-	
+
 	//=============================================================================================
 	// Name
 	//=============================================================================================
-	
+
 	/** Procedure to rename an Equipment
 	 * @param equipment
 	 * @return
@@ -251,7 +252,7 @@ public class EquipmentStudioController {
 	public @ResponseBody String setEquipmentName(@RequestParam("equipment") String equipment)
 	{
 		DtoJointElement dtoEquipment = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipment, DtoJointElement.class);
-		
+
 		try{
 			StudioSpecificFactory.setEquipmentName(dtoEquipment);
 		}catch(Exception e){
@@ -260,11 +261,11 @@ public class EquipmentStudioController {
 		}	
 		return "success";
 	}	
-		
+
 	//=============================================================================================
 	// Save & Load
 	//=============================================================================================
-				
+
 	/**
 	 * Procedure to check if a Template file exist
 	 * @param filename
@@ -280,7 +281,7 @@ public class EquipmentStudioController {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Procedure to check if a Equipment file exist
 	 * @param filename
@@ -296,15 +297,15 @@ public class EquipmentStudioController {
 		}
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Procedure to delete all ITU files inside of a Equipment Folder.
 	 * @param filename
 	 */	
 	@RequestMapping("/deleteITUFiles")
 	public @ResponseBody void deleteITUFiles(@RequestParam("filename") String filename) {
-		
+
 		String path = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + filename + "/itu/");
 		File dir = new File(path);		
 		if(dir.exists())
@@ -315,7 +316,7 @@ public class EquipmentStudioController {
 			}
 		}
 	}
-	
+
 	/**
 	 * Procedure to save a Template.
 	 * @param filename
@@ -325,9 +326,9 @@ public class EquipmentStudioController {
 	public @ResponseBody void saveTemplate(@RequestParam("filename") String filename, @RequestParam("graph") String graph) 
 	{
 		NOpenFileUtil.createTemplateRepository(filename);
-		
+
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
-		
+
 		try {
 			File file = NOpenFileUtil.createTemplateJSONFile(filename);
 			NOpenFileUtil.writeToFile(file, graph);
@@ -335,7 +336,7 @@ public class EquipmentStudioController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Procedure to save a Equipment.
 	 * @param filename
@@ -345,9 +346,9 @@ public class EquipmentStudioController {
 	public @ResponseBody void saveEquipment(@RequestParam("filename") String filename, @RequestParam("graph") String graph) 
 	{
 		NOpenFileUtil.createEquipmentRepository(filename);
-		
+
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
-		
+
 		System.out.println(filename);
 		try {
 			File file = NOpenFileUtil.createEquipmentJSONFile(filename);
@@ -356,7 +357,7 @@ public class EquipmentStudioController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Procedure to save all ITU files of a Equipment.
 	 * @param path
@@ -377,7 +378,7 @@ public class EquipmentStudioController {
 		}
 
 	}
-	
+
 	/**
 	 * Procedure to get all Templates saved.
 	 * @return
@@ -388,7 +389,7 @@ public class EquipmentStudioController {
 		String[] templates = NOpenFileUtil.getAllTemplateJSONFileNames();
 		return NOpenFileUtil.parseStringToJSON("template", templates);		
 	}
-	
+
 	/**
 	 * Procedure to open a specific Template.
 	 * @param filename
@@ -399,9 +400,109 @@ public class EquipmentStudioController {
 	{		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
 		return NOpenFileUtil.openTemplateJSONFileAsString(filename);
-		
-	}
-	
-	
 
+	}
+
+	/**
+	 * Procedure to copy ITU files inside of a Template Folder.
+	 * @param filename
+	 */	
+	@RequestMapping("/copyITUFiles")
+	public @ResponseBody void copyITUFiles(@RequestParam("oldPath") String oldPath, @RequestParam("newPath") String newPath) {
+
+		String ituOldPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + oldPath + "/itu/");
+		String ituNewPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + newPath);
+		NOpenFileUtil.createTemplateRepository(newPath);
+
+		//DELETE ITU FILES IN NEW PATH
+		String ituFilesInNewPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + newPath + "/itu/");
+		File dir = new File(ituFilesInNewPath);
+		if(dir.exists())
+		{
+			for(File file : dir.listFiles())
+			{ 
+				file.delete();
+			}
+		}
+
+		File source = new File(ituOldPath);
+		File dest = new File(ituNewPath);
+
+		try {
+			if(source.exists()){
+				FileUtils.copyDirectoryToDirectory(source, dest);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Procedure to copy ITU files inside of a Equipment Folder.
+	 * @param filename
+	 */	
+	@RequestMapping("/copyITUEquipmentFiles")
+	public @ResponseBody void copyITUEquipmentFiles(@RequestParam("oldPath") String oldPath, @RequestParam("newPath") String newPath) {
+
+		String ituOldPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder  + oldPath + "/itu/");
+		String ituNewPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + newPath);
+		NOpenFileUtil.createTemplateRepository(newPath);
+
+		//DELETE ITU FILES IN NEW PATH
+		String ituFilesInNewPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + newPath + "/itu/");
+		File dir = new File(ituFilesInNewPath);
+		if(dir.exists())
+		{
+			for(File file : dir.listFiles())
+			{ 
+				file.delete();
+			}
+		}
+
+		File source = new File(ituOldPath);
+		File dest = new File(ituNewPath);
+
+		try {
+			if(source.exists()){
+				FileUtils.copyDirectoryToDirectory(source, dest);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Procedure to delete a ITU file inside of a Equipment Folder.
+	 * @param filename
+	 */	
+	@RequestMapping("/deleteITUFile")
+	public @ResponseBody void deleteITUFile(@RequestParam("path") String path, @RequestParam("filename") String filename) {
+
+		String ituPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + path + "/itu/" + filename + ".json");
+		File ituFile = new File(ituPath);
+
+		if(ituFile.exists()){
+			ituFile.delete();
+		}
+	}	
+
+
+	/**
+	 * Procedure to delete a ITU file inside of a Equipment Folder.
+	 * @param filename
+	 */	
+	@RequestMapping("/deleteITUEquipmentFile")
+	public @ResponseBody void deleteITUEquipmentFile(@RequestParam("path") String path, @RequestParam("filename") String filename) {
+
+		String ituPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + path + "/itu/" + filename + ".json");
+		File ituFile = new File(ituPath);
+
+		if(ituFile.exists()){
+			ituFile.delete();
+		}
+	}	
 }
+
+

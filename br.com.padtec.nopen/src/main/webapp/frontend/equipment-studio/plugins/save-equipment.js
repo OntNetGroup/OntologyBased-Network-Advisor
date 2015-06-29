@@ -56,8 +56,8 @@ function generateSaveEquipmentDialog(graph){
 				   
 				   if(data == "exist"){		   
 					   if (confirm('The file already exist, do you want to replace it?')) {
-						   	copyITUFiles();
-						   	deleteITUFiles();
+//						   	copyITUEquipmentFiles();
+//						   	deleteITUEquipmentFiles();
 						   var originalGraph = graph.toJSON();
 						   equipmentGraph()
 						   saveEquipment();
@@ -83,53 +83,53 @@ function generateSaveEquipmentDialog(graph){
 		
 	};
 	
-	function copyITUFiles(){
-		
-		if($("#filename").val() != $('#save-dialog').find(":selected").val()){
-			$.ajax({
-			   type: "POST",
-			   async: false,
-			   url: "copyITUFiles.htm",
-			   data: {
-				 'oldPath': $("#filename").val(),
-				 'newPath': $('#save-dialog').find(":selected").val(),
-			   },
-			   success: function(){
-				   deletedITUFiles = [];
-				   index = 0;
-			   },
-			   error : function(e) {
-				   //alert("error: " + e.status);
-			   }
-			});
-		}
-		
-	}
-	
-	function deleteITUFiles(){
-		
-		$.each(deletedITUFiles, function(index, value){
-			
-			$.ajax({
-			   type: "POST",
-			   async: false,
-			   url: "deleteITUFile.htm",
-			   data: {
-				 'path': $("#save-filename").val(),
-				 'filename': value,
-			   },
-			   success: function(){
-				   deletedITUFiles = [];
-				   index = 0;
-			   },
-			   error : function(e) {
-				   //alert("error: " + e.status);
-			   }
-			});
-			
-		});
-		
-	}
+//	function copyITUEquipmentFiles(){
+//		
+//		if($("#filename").val() != $('#save-dialog').find(":selected").val()){
+//			$.ajax({
+//			   type: "POST",
+//			   async: false,
+//			   url: "copyITUFiles.htm",
+//			   data: {
+//				 'oldPath': $("#filename").val(),
+//				 'newPath': $('#save-dialog').find(":selected").val(),
+//			   },
+//			   success: function(){
+//				   deletedITUFiles = [];
+//				   index = 0;
+//			   },
+//			   error : function(e) {
+//				   //alert("error: " + e.status);
+//			   }
+//			});
+//		}
+//		
+//	}
+//	
+//	function deleteITUEquipmentFiles(){
+//		
+//		$.each(deletedITUFiles, function(index, value){
+//			
+//			$.ajax({
+//			   type: "POST",
+//			   async: false,
+//			   url: "deleteITUFile.htm",
+//			   data: {
+//				 'path': $("#save-filename").val(),
+//				 'filename': value,
+//			   },
+//			   success: function(){
+//				   deletedITUFiles = [];
+//				   index = 0;
+//			   },
+//			   error : function(e) {
+//				   //alert("error: " + e.status);
+//			   }
+//			});
+//			
+//		});
+//		
+//	}
 	
 	function saveEquipment(){
 		
