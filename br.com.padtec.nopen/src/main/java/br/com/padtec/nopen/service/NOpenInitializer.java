@@ -7,8 +7,6 @@ import br.com.padtec.common.util.PerformanceUtil;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.provisioning.service.ProvisioningInitializer;
 import br.com.padtec.nopen.service.util.NOpenUtilities;
-import br.com.padtec.nopen.studio.service.BuildBindStructure;
-import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.nopen.studio.service.StudioInitializer;
 
 public class NOpenInitializer {

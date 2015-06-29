@@ -8,10 +8,11 @@ import java.util.Map.Entry;
 import br.com.padtec.common.dto.CardinalityDef;
 import br.com.padtec.common.dto.RelationDef;
 import br.com.padtec.common.queries.DtoQueryUtil;
+import br.com.padtec.nopen.service.NOpenComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class BuildBindStructure {
-	private OKCoUploader repository = StudioComponents.studioRepository ;
+	private OKCoUploader repository = NOpenComponents.nopenRepository ;
 	private static BuildBindStructure instance = new BuildBindStructure();
 	
 	private static HashMap<String, String> bindsTuple = new HashMap<String,String>();
