@@ -257,5 +257,26 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			});
 		
 		return result;
+	},
+	
+	
+	getEquipmentsByLayer : function(clientMEF) {
+		var result = "error";
+		$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "getEquipmentsByLayer.htm",
+			   data: {
+				   'clientMEF' : clientMEF
+			   },
+			   success: function(data){
+				   result = data;
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+		
+		return result;
 	}
 });

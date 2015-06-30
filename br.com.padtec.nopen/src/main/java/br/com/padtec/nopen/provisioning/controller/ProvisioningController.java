@@ -144,4 +144,16 @@ public class ProvisioningController {
 		if(technology.equals("MEF")) return "POUk";
 		return "none";
 	}
+	
+	/**
+	 * @param clientMEF: uppermost layer of some technology
+	 * @return: list of ids of equipments which implement that layer
+	 */
+	@RequestMapping(value = "/getEquipmentsByLayer", method = RequestMethod.POST)
+	protected @ResponseBody String[] getEquipmentsByLayer(@RequestParam("clientMEF") String clientMEF){
+		
+		if(clientMEF.equals("MEN")) return new String[]{"id0, id1, id2"};
+		if(clientMEF.equals("POUk")) return new String[]{"id3, id4, id5"};
+		return null;
+	}
 }
