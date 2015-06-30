@@ -32,6 +32,12 @@ nopen.provisioning.App = Backbone.View.extend({
 		var file = this.file;
 		var graph = app.graph;
 		
+		/* 
+		 * PROVISORIO
+		 * author: missael
+		 */
+		var container = Stencil.createContainer
+		
 	},
 
 	//Toolbar procedures

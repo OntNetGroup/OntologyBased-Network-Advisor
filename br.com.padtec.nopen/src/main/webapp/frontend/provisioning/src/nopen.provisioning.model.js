@@ -219,6 +219,43 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		
 		return cards;
 		
-	}
+	},
 	
+	getImplementedTechnologies : function() {
+		var result = "error";
+		$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "getImplementedTechnologies.htm",
+			   success: function(data){
+				   result = data;
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+		
+		return result;
+	},
+	
+	
+	getUppermostLayer : function(tech) {
+		var result = "error";
+		$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "getUppermostLayer.htm",
+			   data: {
+				   'technology' : tech
+			   },
+			   success: function(data){
+				   result = data;
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+		
+		return result;
+	}
 });
