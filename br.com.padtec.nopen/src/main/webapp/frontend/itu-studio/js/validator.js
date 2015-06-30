@@ -8,7 +8,8 @@ function validator(validator, graph, app) {
     	var cellSubType = cell.subtype;
     	
 		var layerID = command.data.id;
-    	var layerName = cellSubType;
+//    	var layerName = cellSubType;
+		var layerName = cell.lanes.label;
 		var cardID = this.cardID;
 		var cardName = this.cardName;
 
@@ -121,7 +122,8 @@ function validator(validator, graph, app) {
     		this.skipOntologyRemoveHandler = false;
     		return next(err);
     	}
-    	var containerName = command.data.attributes.subtype;
+//    	var containerName = command.data.attributes.subtype;
+    	var containerName = command.data.attributes.lanes.label;
 		var containerType = TypeEnum.CARD_LAYER;
 		var cardID = this.cardID;
 		var cardName = this.cardName;
@@ -221,12 +223,14 @@ function validator(validator, graph, app) {
 		
 		var sourceContainer = graph.getCell(command.data.previous.parent);
 		if(sourceContainer) {
-			sourceContainerName = sourceContainer.attributes.subtype;
+//			sourceContainerName = sourceContainer.attributes.subtype;
+			sourceContainerName = sourceContainer.attributes.lanes.label;
 		}
 		
 		var targetContainer = graph.getCell(command.data.next.parent);
 		if(targetContainer) {
-			targetContainerName = targetContainer.attributes.subtype;
+//			targetContainerName = targetContainer.attributes.subtype;
+			targetContainerName = targetContainer.attributes.lanes.label;
 		}
 		
 		// se apenas moveu o elemento dentro da camada

@@ -128,7 +128,7 @@ public class ProvisioningController {
 	 * Procedure that returns all technologies implemented by at least one equipment
 	 * @return: array containing the names of the technologies
 	 */
-	@RequestMapping(value = "/getImplementedTechnologies", method = RequestMethod.GET)
+	@RequestMapping(value = "/getImplementedTechnologies", method = RequestMethod.POST)
 	protected @ResponseBody String[] getImplementedTechnologies(){
 		return new String[]{"MEF", "OTN"}; //TODO
 	}
@@ -137,14 +137,11 @@ public class ProvisioningController {
 	 * @param technology
 	 * @return: the uppermost layer of the given technology
 	 */
-	@RequestMapping(value = "/getUppermostLayer", method = RequestMethod.GET)
+	@RequestMapping(value = "/getUppermostLayer", method = RequestMethod.POST)
 	protected @ResponseBody String getUppermostLayer(@RequestParam("technology") String technology){
 		
-		DtoJointElement dtoTechnology = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
-		String tech = dtoTechnology.getName();
-		
-		if(tech.equals("OTN")) return "MEN";
-		if(tech.equals("MEF")) return "POUk";
+		if(technology.equals("OTN")) return "MEN";
+		if(technology.equals("MEF")) return "POUk";
 		return "none";
 	}
 }

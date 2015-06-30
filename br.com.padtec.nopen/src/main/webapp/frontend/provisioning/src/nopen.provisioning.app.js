@@ -36,7 +36,18 @@ nopen.provisioning.App = Backbone.View.extend({
 		 * PROVISORIO
 		 * author: missael
 		 */
-		var container = Stencil.createContainer
+		var implementedTechnologies = this.model.getImplementedTechnologies();
+		
+		_.each(implementedTechnologies, function(technology, index) {
+			
+			var uppermostLayer = this.model.getUppermostLayer(technology);
+			var container = Stencil.createContainer(technology, uppermostLayer);
+			var subnetwork = Stencil.createSubnetwork();
+			
+			graph.addCell(container);
+			graph.addCell(subnetwork);
+			container.embed(subnetwork);
+		}, this);
 		
 	},
 
