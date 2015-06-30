@@ -16,6 +16,7 @@ import br.com.padtec.common.dto.RelationDef;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.RelationEnum;
+import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class ContainerStructure {
@@ -44,12 +45,14 @@ public class ContainerStructure {
 	
 	public static boolean verifyContainerRelation(String sourceURI, String tipo_source, String targetURI, String tipo_target) throws Exception{
 
-		String propertyURI = RelationEnum.componentOf.toString();			
-		Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(instance.getRepository().getBaseModel(), sourceURI, propertyURI, tipo_target );
+		String property = RelationEnum.componentOf.toString();
+		String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
+		String tipo_targetURI = StudioComponents.studioRepository.getNamespace() + tipo_target;
+		Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), sourceURI, propertyURI, tipo_targetURI ); // <- não está atualizando
 		Set<String> keyset = ContainerStructure.getContainerStructure().keySet();
 		String cardinality = null;
 		for(String key : keyset ){
-			if(key.contains(tipo_source) && key.contains(propertyURI) && key.contains(tipo_target)){ // <- i can do better than this
+			if(key.contains(tipo_source) && key.contains(property) && key.contains(tipo_target)){ // <- i can do better than this
 				cardinality = ContainerStructure.getContainerStructure().get(key);
 			}
 		}
