@@ -3,12 +3,14 @@ package br.com.padtec.nopen.studio.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.RelationEnum;
+import br.com.padtec.nopen.service.NOpenComponents;
 import br.com.padtec.nopen.service.NOpenLog;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -91,7 +93,7 @@ public class PerformBind {
 					//if so, create the ports, RP and the relations between them
 					
 					HashSet<String> rps_between_ports = new HashSet<String>();
-					rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, StudioComponents.studioRepository);
+					rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, NOpenComponents.nopenRepository);
 					String tipo_rp;
 					String rp_name;
 					tipo_rp = rps_between_ports.iterator().next();
@@ -236,12 +238,16 @@ public class PerformBind {
 	public static boolean canCreateBind(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement ) throws Exception{
 		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
 		String name_source = dtoSourceElement.getName();
-		String tipo_source = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getType();
+		String tipo_source = dtoSourceElement.getType();
 		String id_source = dtoSourceElement.getId();
-		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getId();
 		String name_target = dtoTargetElement.getName();
-		String tipo_target = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getType();
+		String tipo_target = dtoTargetElement.getType();
 		String id_target = dtoTargetElement.getId();
+		
+		String tipo_sourceURI = StudioComponents.studioRepository.getNamespace() + tipo_source;
+		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getId();
+		String tipo_targetURI = StudioComponents.studioRepository.getNamespace() + tipo_target;
+		
 		
 		if(tipo_target.equals(ConceptEnum.Output_Card.toString()) || tipo_target.equals(ConceptEnum.Input_Card.toString())){ 
 			//verificar cardinalidade de input do TF
@@ -252,12 +258,22 @@ public class PerformBind {
 
 			String tipo_output = tipo_source + "_Output";
 			String tipo_input = tipo_target + "_Input";
-			
-			String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.binds.toString();
-			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), name_source, propertyURI, tipo_target );
+			String tipo_outputURI = StudioComponents.studioRepository.getNamespace() + tipo_output;
+			String tipo_inputURI = StudioComponents.studioRepository.getNamespace() + tipo_input;
+			String property = RelationEnum.binds.toString();
+			String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
+			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), sourceURI, propertyURI, tipo_targetURI );
 				
-			String key = tipo_source + propertyURI + tipo_target;
-			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
+			Set<String> keyset = BuildBindStructure.getInstance().getBindsTuple().keySet();
+			String cardinality = null;
+			for(String key : keyset ){
+				if(key.contains(tipo_source) && key.contains(property) && key.contains(tipo_target)){ // <- i can do better than this
+					cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
+					break;
+				}
+			}
+			
+			//String key = tipo_source + propertyURI + tipo_target;
 			if(cardinality == null){
 				NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the relation between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " does not exist.");
 				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because there is no \"binds\" relation between " + tipo_source + " and " + tipo_target);
@@ -266,7 +282,7 @@ public class PerformBind {
 			
 			//create the Reference Point if exists and the relation between reference point and ports
 			HashSet<String> rps_between_ports = new HashSet<String>();
-			rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, StudioComponents.studioRepository);
+			rps_between_ports = discoverRPBetweenPorts( tipo_outputURI, tipo_inputURI, StudioComponents.studioRepository);
 			boolean isClient = false;
 			isClient = isClient(id_source, id_target, StudioComponents.studioRepository);
 			if(rps_between_ports.size() > 0){

@@ -54,6 +54,7 @@ public class ContainerStructure {
 		for(String key : keyset ){
 			if(key.contains(tipo_source) && key.contains(property) && key.contains(tipo_target)){ // <- i can do better than this
 				cardinality = ContainerStructure.getContainerStructure().get(key);
+				break;
 			}
 		}
 		//String key = tipo_source + propertyURI + tipo_target;
