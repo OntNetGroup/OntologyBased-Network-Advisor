@@ -465,7 +465,7 @@ public class ITUStudioController {
 	 * Procedure to delete a ITU file inside of a Equipment Folder.
 	 * @param filename
 	 */	
-	@RequestMapping("/deleteITUFile")
+	@RequestMapping("/deleteITUFileOfEquipmentFolder")
 	public @ResponseBody void deleteITUFile(@RequestParam("path") String path, @RequestParam("filename") String filename) {
 		
 		String ituPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + path + "/itu/" + filename + ".json");
@@ -481,7 +481,7 @@ public class ITUStudioController {
 	 * Procedure to copy ITU files inside of a Equipment Folder.
 	 * @param filename
 	 */	
-	@RequestMapping("/copyITUFiles")
+	@RequestMapping("/copyITUFilesOfEquipmentFolder")
 	public @ResponseBody void copyITUFiles(@RequestParam("oldPath") String oldPath, @RequestParam("newPath") String newPath) {
 		
 		String ituOldPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + oldPath + "/itu/");

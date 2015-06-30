@@ -407,7 +407,7 @@ public class EquipmentStudioController {
 	 * Procedure to copy ITU files inside of a Template Folder.
 	 * @param filename
 	 */	
-	@RequestMapping("/copyITUFiles")
+	@RequestMapping("/copyITUFilesOfTemplate")
 	public @ResponseBody void copyITUFiles(@RequestParam("oldPath") String oldPath, @RequestParam("newPath") String newPath) {
 
 		String ituOldPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder + oldPath + "/itu/");

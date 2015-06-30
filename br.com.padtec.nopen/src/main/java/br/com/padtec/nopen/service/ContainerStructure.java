@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -42,11 +43,18 @@ public class ContainerStructure {
 	}
 	
 	public static boolean verifyContainerRelation(String sourceURI, String tipo_source, String targetURI, String tipo_target) throws Exception{
-		String propertyURI = instance.repository.getNamespace() + RelationEnum.componentOf.toString();			
+
+		String propertyURI = RelationEnum.componentOf.toString();			
 		Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(instance.getRepository().getBaseModel(), sourceURI, propertyURI, tipo_target );
+		Set<String> keyset = ContainerStructure.getContainerStructure().keySet();
+		String cardinality = null;
+		for(String key : keyset ){
+			if(key.contains(tipo_source) && key.contains(propertyURI) && key.contains(tipo_target)){ // <- i can do better than this
+				cardinality = ContainerStructure.getContainerStructure().get(key);
+			}
+		}
+		//String key = tipo_source + propertyURI + tipo_target;
 		
-		String key = tipo_source + propertyURI + tipo_target;
-		String cardinality = ContainerStructure.getContainerStructure().get(key);
 		if(cardinality != null ){
 			Integer cardinality_target = Integer.parseInt(cardinality);
 			if( ((numberOfRelations < cardinality_target) || (cardinality_target == -1)) ){
