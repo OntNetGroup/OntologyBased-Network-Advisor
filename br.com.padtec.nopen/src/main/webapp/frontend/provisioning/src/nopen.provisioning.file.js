@@ -1,6 +1,7 @@
 nopen.provisioning.File = Backbone.Model.extend({
 	
 	model : undefined,
+	owl : undefined,
 	
 	initialize : function(){
 		
@@ -8,6 +9,10 @@ nopen.provisioning.File = Backbone.Model.extend({
 	
 	setModel : function(model) {
 		this.model = model;
+	},
+	
+	setOWL : function(owl) {
+		this.owl = owl;
 	},
 	
 	//Method to get paramentes from url
@@ -299,6 +304,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 	
 		var $this = this;
 		
+		//open each equipments
 		$.each(graph.getElements(), function(index, value){
 			
 			var element = graph.getCell(value.id);
@@ -334,10 +340,11 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		$.each(graph.getElements(), function(index, value){
 			
-			var element = graph.getCell(value.id);
-			var cards = model.getCards(element);
-			var equipment = element.attr('equipment/template');
+			var equipment = graph.getCell(value.id);
+			var cards = model.getCards(equipment);
+			var equipmentName = equipment.attr('equipment/template');
 			
+			//open each card
 			$.each(cards, function(index, card){
 				
 				var filename = card.id;
@@ -347,13 +354,15 @@ nopen.provisioning.File = Backbone.Model.extend({
 				   async: false,
 				   url: "openITUOnProvisioning.htm",
 				   data: {
-					   'equipment' : equipment,
+					   'equipment' : equipmentName,
 					   'filename' : filename
 				   },
 				   dataType: 'json',
 				   success: function(data){
 					   //add ITU data in card data attribute
 					   card.attrs.data = data;
+					   //create instances in OWL file
+					   $this.owl.parseCardToOWL(equipment, data);
 				   },
 				   error : function(e) {
 					   alert("error: " + e.status);

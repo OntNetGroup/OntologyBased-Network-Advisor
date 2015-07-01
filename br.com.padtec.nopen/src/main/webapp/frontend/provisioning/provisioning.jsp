@@ -59,6 +59,7 @@
         
         <script src="/nopen/frontend/common/libs/nopen/nopen.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.model.js"></script>
+        <script src="/nopen/frontend/provisioning/src/nopen.provisioning.owl.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.file.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.app.js"></script>
         

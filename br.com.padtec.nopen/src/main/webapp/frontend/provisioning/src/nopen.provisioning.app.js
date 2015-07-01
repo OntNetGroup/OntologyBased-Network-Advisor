@@ -2,6 +2,7 @@ nopen.provisioning.App = Backbone.View.extend({
 	
 	file : undefined,
 	model : undefined,
+	owl : undefined,
 	
 	initialize : function(){
 		console.log("Provisioning started!");
@@ -13,9 +14,15 @@ nopen.provisioning.App = Backbone.View.extend({
 		this.file = new nopen.provisioning.File;
 		//create model
 		this.model = new nopen.provisioning.Model;
+		//create owl
+		this.owl = new nopen.provisioning.OWL;
 		
 		//set model
 		this.file.setModel(this.model);
+		this.owl.setModel(this.model);
+		//set OWL
+		this.file.setOWL(this.owl);
+
 		
 		//initialize procedures
 		this.initializeProvisioningFileProcedures(app);
