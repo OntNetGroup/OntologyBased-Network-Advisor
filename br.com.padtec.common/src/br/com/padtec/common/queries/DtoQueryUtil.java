@@ -721,8 +721,8 @@ public class DtoQueryUtil {
 				+ "	?property rdfs:subPropertyOf* <" + propertyURI + "> . \n"
 				+ "	?property rdfs:domain ?originalDomain . \n"
 				+ "	?property rdfs:range ?originalRange . \n"
-				+ "	?possibleDomain rdfs:subClassOf* ?originalDomain. \n"
-				+ " ?possibleRange rdfs:subClassOf* ?originalRange . \n"
+				+ "	?possibleDomain rdfs:subClassOf*/(rdfs:subClassOf/owl:intersectionOf/rdf:rest*/rdf:first)* ?originalDomain. \n"
+				+ "	?possibleRange rdfs:subClassOf*/(rdfs:subClassOf/owl:intersectionOf/rdf:rest*/rdf:first)* ?originalRange . \n"
 				+ "}";
 		
 		Query query = QueryFactory.create(queryString);
@@ -734,20 +734,29 @@ public class DtoQueryUtil {
 		HashMap<String, RelationDef> result = new HashMap<String, RelationDef>();
 		
 		while (results.hasNext())	
-		{			
+		{		
 			QuerySolution row= results.next();
-		    
-			RelationDef relDef = new RelationDef();
 			
-			RDFNode possibleDomain = row.get("possibleDomain");
-			relDef.setPossibleDomain(possibleDomain.toString());
+			
 			RDFNode property = row.get("property");
-			relDef.setObjectProperty(property.toString());
+			RDFNode possibleDomain = row.get("possibleDomain");
 			RDFNode possibleRange = row.get("possibleRange");
-			relDef.setPossibleRange(possibleRange.toString());
 			RDFNode originalDomain = row.get("originalDomain");
-			relDef.setOriginalDomain(originalDomain.toString());
 			RDFNode originalRange = row.get("originalRange");
+			
+			String nsPrefix = model.getNsPrefixURI("");
+			if(!possibleDomain.toString().contains(nsPrefix) ||
+					!possibleRange.toString().contains(nsPrefix) ||
+					!originalDomain.toString().contains(nsPrefix) ||
+					!originalRange.toString().contains(nsPrefix)){
+				continue;
+			}
+			
+			RelationDef relDef = new RelationDef();
+			relDef.setPossibleDomain(possibleDomain.toString());
+			relDef.setObjectProperty(property.toString());
+			relDef.setPossibleRange(possibleRange.toString());
+			relDef.setOriginalDomain(originalDomain.toString());
 			relDef.setOriginalRange(originalRange.toString());
 			
 			//String key = possibleDomain.toString() + property.toString() + possibleRange.toString();

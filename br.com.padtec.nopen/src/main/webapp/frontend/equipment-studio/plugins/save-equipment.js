@@ -1,9 +1,26 @@
 function generateSaveEquipmentDialog(graph){
 	
+	var equipaments = graph.getElements();
+	var savedSupervisors = [];
+	for(var i = 0; i < equipaments.length; i++){	
+		if((equipaments[i].attributes.subType) === 'Supervisor'){
+		  savedSupervisors.push(equipaments[i]);
+		}
+	}
+	console.log(savedSupervisors);
+	
 	var content = '<div id="save-dialog" title="Save Equipment">'
-		+ 'Input the supervisor name of the equipment that you wish to save: <input type="text" id="save-filename" value="' + $('#filename').val() + '"/>'
-		+ '</div>'
-		+ '<div id="name-error-message">' + 'Please input a valid supervisor name!' + '</div>';
+		+ 'Equipament: <select>';
+	for(var i = 0; i < savedSupervisors.length; i++){
+		if(i == 0){
+			content += '<option value="'+savedSupervisors[i].attributes.attrs.name.text +'">'+savedSupervisors[i].attributes.attrs.name.text+'</option>';
+		}
+		else{
+			content += '<option value="'+savedSupervisors[i].attributes.attrs.name.text +'">'+savedSupervisors[i].attributes.attrs.name.text+'</option>';
+		}
+	}
+	content += '</select>';
+	+ '</div>'
 		
 	var dialog = new joint.ui.Dialog({
 		width: 300,
@@ -16,6 +33,8 @@ function generateSaveEquipmentDialog(graph){
 		]
 	});
 	
+	$("#save-filename").val($('#save-dialog').find(":selected").val());
+	
 	dialog.on('action:save', checkEquipmentFile);
 	dialog.on('action:cancel', cancel);
 
@@ -26,23 +45,19 @@ function generateSaveEquipmentDialog(graph){
 	}
 	
 	function checkEquipmentFile(){
-		
-		if($("#save-filename").val() == ""){
-			$('#name-error-message').show();
-		}
-		else{
+
 			$.ajax({
 			   type: "POST",
 			   url: "checkEquipmentFile.htm",
 			   data: {
-				 'filename': $("#save-filename").val(),
+				 'filename': $('#save-dialog').find(":selected").val(),
 			   },
 			   success: function(data){ 		   
 				   
 				   if(data == "exist"){		   
 					   if (confirm('The file already exist, do you want to replace it?')) {
-//						   	copyITUFiles();
-//						   	deleteITUFiles();
+//						   	copyITUEquipmentFiles();
+//						   	deleteITUEquipmentFiles();
 						   var originalGraph = graph.toJSON();
 						   equipmentGraph()
 						   saveEquipment();
@@ -65,20 +80,19 @@ function generateSaveEquipmentDialog(graph){
 				   dialog.close();
 			   }
 			});
-		}
 		
 	};
 	
-//	function copyITUFiles(){
+//	function copyITUEquipmentFiles(){
 //		
-//		if($("#filename").val() != $("#save-filename").val()){
+//		if($("#filename").val() != $('#save-dialog').find(":selected").val()){
 //			$.ajax({
 //			   type: "POST",
 //			   async: false,
 //			   url: "copyITUFiles.htm",
 //			   data: {
 //				 'oldPath': $("#filename").val(),
-//				 'newPath': $("#save-filename").val(),
+//				 'newPath': $('#save-dialog').find(":selected").val(),
 //			   },
 //			   success: function(){
 //				   deletedITUFiles = [];
@@ -91,8 +105,8 @@ function generateSaveEquipmentDialog(graph){
 //		}
 //		
 //	}
-	
-//	function deleteITUFiles(){
+//	
+//	function deleteITUEquipmentFiles(){
 //		
 //		$.each(deletedITUFiles, function(index, value){
 //			
@@ -136,7 +150,7 @@ function generateSaveEquipmentDialog(graph){
 		   async: false,
 		   url: "saveEquipment.htm",
 		   data: {
-			 'filename': $("#save-filename").val(),
+			 'filename': $('#save-dialog').find(":selected").val(),
 			 'graph': JSON.stringify(graph.toJSON()),
 		   },
 		   success: function(){ 		   
@@ -154,12 +168,12 @@ function generateSaveEquipmentDialog(graph){
 	function equipmentGraph(){
 		
 		//JSON.stringify(graph.toJSON())
-		console.log($("#save-filename").val());
+		console.log($('#save-dialog').find(":selected").val());
 		// originalGraph = graph.toJSON();
 		var equipament = graph;
-		console.log('equipmanet' , equipament);
+	//	console.log('equipmanet' , equipament);
 		var elementos = equipament.getElements();
-		console.log('elementos' , elementos);
+	//	console.log('elementos' , elementos);
 		var equipSupervisor;
 		var c = [];
         var movingCards = [];
@@ -168,7 +182,7 @@ function generateSaveEquipmentDialog(graph){
 			var check = elementos[i];
 			//console.log(check);
 			if((check.attributes.subType) === 'Supervisor'){
-               if((check.attributes.attrs.name.text === $("#save-filename").val())){
+               if((check.attributes.attrs.name.text === $('#save-dialog').find(":selected").val())){
 //            	   equipsupervisor = equipament.getCell(check.id);
                }else{
             	   var parent = check.attributes.parent;
@@ -183,7 +197,7 @@ function generateSaveEquipmentDialog(graph){
                }
 			}
 			if((check.attributes.subType) === 'Card'){
-				if((check.attributes.Supervisor === $("#save-filename").val())){
+				if((check.attributes.Supervisor === $('#save-dialog').find(":selected").val())){
 	            	   
 	               }else{
 	            	   var parent = check.attributes.parent;

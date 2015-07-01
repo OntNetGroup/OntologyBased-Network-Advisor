@@ -1,33 +1,13 @@
 
 var Stencil = {};
 
-
-
-Stencil.groups = {		
-    np: { index: 1, label: 'Provisioning' }
-};
-
-Stencil.shapes = {
-
-		np: [
-		     new joint.shapes.basic.Rect ({
-		    	subtype : "Node", 
-			    size: { width: 5, height: 5 },
-			    attrs: {
-			    	circle: { fill: '#00c6ff' },
-			    	text: { text: '', 'font-size': 8, display: '', 'ref-y': .5  }
-			    }
-			})
-		]
-		
-}
-
 var Stencil = {
 		
 		createContainer: function(tech, upLayer) {
 			var newContainer = new Container({
 		        technology: tech,
 		        upmostLayer: upLayer,
+				position: {x: 250, y: 100},
 				attrs: {
 					'.': { magnet: false },
 					'.header': { fill: '#5799DA' }
@@ -42,9 +22,10 @@ var Stencil = {
 		
 		createSubnetwork: function() {
 			var newSubnetwork = new joint.shapes.basic.Circle({
+				position: {x: 400, y: 140},
+				size: { width: 200, height: 120 },
 			    attrs: {
 					'.': { magnet: true },
-			        circle: { fill: '#ffffff', r: 100 },
 			        text: { text: 'Subnetwork', fill: '#000000', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
 			    }
 			});
@@ -52,8 +33,9 @@ var Stencil = {
 			return newSubnetwork;
 		},
 		
-		createNode: function() {
+		createNode: function(equipmentID) {
 			var newNode = new joint.shapes.basic.Circle({
+				id: equipmentID,
 			    attrs: {
 					'.': { magnet: true },
 			        circle: { fill: '#ffffff', r: 10 }

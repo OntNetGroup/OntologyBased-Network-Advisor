@@ -32,6 +32,29 @@ nopen.provisioning.App = Backbone.View.extend({
 		var file = this.file;
 		var graph = app.graph;
 		
+		/* 
+		 * PROVISORIO
+		 * author: missael
+		 */
+		var implementedTechnologies = this.model.getImplementedTechnologies();
+		
+		_.each(implementedTechnologies, function(technology, index) {
+			
+			var uppermostLayer = this.model.getUppermostLayer(technology);
+			var container = Stencil.createContainer(technology, uppermostLayer);
+			var subnetwork = Stencil.createSubnetwork();
+			var equipmentIDs = this.model.getEquipmentsByLayer(uppermostLayer);
+			
+			_.each(equipmentIDs, function(equipmentID, index) {
+				var node = Stencil.createNode(equipmentID);
+				graph.addCell(node);
+			}, this);
+			
+			graph.addCell(container);
+			graph.addCell(subnetwork);
+			container.embed(subnetwork);
+		}, this);
+		
 	},
 
 	//Toolbar procedures

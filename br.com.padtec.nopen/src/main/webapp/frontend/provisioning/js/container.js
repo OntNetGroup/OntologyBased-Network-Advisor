@@ -14,10 +14,10 @@ Container = joint.dia.Element.extend({
 
         type: 'bpmn.Pool',
         technology: '',
-        upmostLayer: '',
+        uppermostLayer: '',
         size: {
-            width: 800,
-            height: 400
+            width: 500,
+            height: 200
         },
         attrs: {
             '.body': {

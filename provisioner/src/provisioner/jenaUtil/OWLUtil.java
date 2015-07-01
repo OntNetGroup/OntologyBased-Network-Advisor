@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.Set;
 
 import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.factory.FactoryUtil;
@@ -183,6 +185,9 @@ public class OWLUtil {
 					String[] individuals = relDclSplit[1].split(",");
 					for (int i = 0; i < individuals.length; i+=2) {
 						String src = individuals[i].replace("(", "").replace("\t", "");
+						if(i+1 == individuals.length){
+							System.out.println();
+						}
 						String tgt = individuals[i+1].replace(")", "").replace("\t", "");
 						
 						if(createNTimes > 1){
@@ -277,6 +282,13 @@ public class OWLUtil {
 //							FactoryUtil.createInstanceAttribute(model, ns+indv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type, false);
 							if(newIndv == null){
 								System.out.println();
+								Set<Entry<String, String>> entries = newMapping.entrySet();
+								for (Entry <String,String> entry : entries) {
+									if(entry.getKey().startsWith(indv) || entry.getValue().startsWith(indv)){
+										System.out.println(entry);
+										System.out.println();
+									}
+								}
 							}
 							factory.createInstanceAttributeStatement(model, ns+newIndv, ns+attribute, val, "http://www.w3.org/2001/XMLSchema#"+type);
 						}

@@ -85,7 +85,8 @@ function graphHandler(graph, app) {
 
 			if(isLayer(parent)){ // elemento abaixo é uma camada
 				containerID = parent.id;
-				containerName = parent.attributes.subtype;
+//				containerName = parent.attributes.subtype;
+				containerName = parent.attributes.lanes.label;
 				containerType = TypeEnum.CARD_LAYER;
 				// consultar ontologia para inserção de transport function no layer
 				insertTransportFunction();

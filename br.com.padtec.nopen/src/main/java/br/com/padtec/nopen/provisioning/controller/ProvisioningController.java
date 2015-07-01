@@ -128,7 +128,7 @@ public class ProvisioningController {
 	 * Procedure that returns all technologies implemented by at least one equipment
 	 * @return: array containing the names of the technologies
 	 */
-	@RequestMapping(value = "/getImplementedTechnologies", method = RequestMethod.GET)
+	@RequestMapping(value = "/getImplementedTechnologies", method = RequestMethod.POST)
 	protected @ResponseBody String[] getImplementedTechnologies(){
 		return new String[]{"MEF", "OTN"}; //TODO
 	}
@@ -137,14 +137,23 @@ public class ProvisioningController {
 	 * @param technology
 	 * @return: the uppermost layer of the given technology
 	 */
-	@RequestMapping(value = "/getUppermostLayer", method = RequestMethod.GET)
+	@RequestMapping(value = "/getUppermostLayer", method = RequestMethod.POST)
 	protected @ResponseBody String getUppermostLayer(@RequestParam("technology") String technology){
 		
-		DtoJointElement dtoTechnology = (DtoJointElement) JointUtilManager.getJavaFromJSON(technology, DtoJointElement.class);
-		String tech = dtoTechnology.getName();
-		
-		if(tech.equals("OTN")) return "MEN";
-		if(tech.equals("MEF")) return "POUk";
+		if(technology.equals("OTN")) return "MEN";
+		if(technology.equals("MEF")) return "POUk";
 		return "none";
+	}
+	
+	/**
+	 * @param clientMEF: uppermost layer of some technology
+	 * @return: list of ids of equipments which implement that layer
+	 */
+	@RequestMapping(value = "/getEquipmentsByLayer", method = RequestMethod.POST)
+	protected @ResponseBody String[] getEquipmentsByLayer(@RequestParam("clientMEF") String clientMEF){
+		
+		if(clientMEF.equals("MEN")) return new String[]{"id0, id1, id2"};
+		if(clientMEF.equals("POUk")) return new String[]{"id3, id4, id5"};
+		return null;
 	}
 }

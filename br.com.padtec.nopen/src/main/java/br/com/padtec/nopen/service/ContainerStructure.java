@@ -4,13 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-
-
-
-
-
-
+import java.util.Set;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -27,7 +21,7 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class ContainerStructure {
 	
-	private OKCoUploader repository = StudioComponents.studioRepository ;
+	private OKCoUploader repository = NOpenComponents.nopenRepository ;
 	private static ContainerStructure instance = new ContainerStructure();
 	
 	private static HashMap<String,String> containerStructure = new HashMap<String,String>();
@@ -50,11 +44,21 @@ public class ContainerStructure {
 	}
 	
 	public static boolean verifyContainerRelation(String sourceURI, String tipo_source, String targetURI, String tipo_target) throws Exception{
-		String propertyURI = instance.repository.getNamespace() + RelationEnum.componentOf.toString();			
-		Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(instance.getRepository().getBaseModel(), sourceURI, propertyURI, tipo_target );
+
+		String property = RelationEnum.componentOf.toString();
+		String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
+		String tipo_targetURI = StudioComponents.studioRepository.getNamespace() + tipo_target;
+		Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), sourceURI, propertyURI, tipo_targetURI ); // <- não está atualizando
+		Set<String> keyset = ContainerStructure.getContainerStructure().keySet();
+		String cardinality = null;
+		for(String key : keyset ){
+			if(key.contains(tipo_source) && key.contains(property) && key.contains(tipo_target)){ // <- i can do better than this
+				cardinality = ContainerStructure.getContainerStructure().get(key);
+				break;
+			}
+		}
+		//String key = tipo_source + propertyURI + tipo_target;
 		
-		String key = tipo_source + propertyURI + tipo_target;
-		String cardinality = ContainerStructure.getContainerStructure().get(key);
 		if(cardinality != null ){
 			Integer cardinality_target = Integer.parseInt(cardinality);
 			if( ((numberOfRelations < cardinality_target) || (cardinality_target == -1)) ){
@@ -74,8 +78,8 @@ public class ContainerStructure {
 	    while (it.hasNext()) {
 	        @SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)it.next();
-	        RelationDef relation = (RelationDef) pairs.getValue();
-	        CardinalityDef card = relation.getCardOnRange();
+	        RelationDef relationdef = (RelationDef) pairs.getValue();
+	        CardinalityDef card = relationdef.getCardOnRange();
 	        Integer valueUp = card.getUpperBound();
 	        ContainerStructure.containerStructure.put((String) pairs.getKey(), Integer.toString(valueUp));
 	    }
@@ -83,7 +87,7 @@ public class ContainerStructure {
 
 	public static boolean isTargetOfComponentOfRelation(String type) {
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/NOpenModel.owl#> "
 				+ "ASK "
 				+ "WHERE { "
 				+ "?subject rdfs:subClassOf ont:componentOf . "

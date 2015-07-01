@@ -296,7 +296,7 @@ var Rappid = Backbone.Router.extend({
     	
     	_.each(layerNames, function(layerName, index){
     		var layer = new Layer({
-    			subtype: layerName,
+//    			subtype: layerName,
     			attrs: {
     				'.': { magnet: false, value: layerName },
     				'.header': { fill: '#5799DA' }
