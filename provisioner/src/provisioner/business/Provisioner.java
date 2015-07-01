@@ -256,7 +256,7 @@ public class Provisioner {
 		options.add('s');
 		
 		Character option = ' ';
-		if(this.possibleEquipFile.equals("")){
+		if(!this.possibleEquipFile.equals("")){
 			option = ConsoleUtil.getCharOptionFromConsole(""
 					+ "Choose the Path Selection Type:\n"
 					+ "S - Paths are displayed in descending order with relation to its number of interfaces\n"
@@ -596,13 +596,18 @@ public class Provisioner {
 			//#A
 			String mappedTF = SPARQLQueries.getMappedTFFrom(model, inputInterface.getInterfaceURI());
 			List<String> bindedTFList = SPARQLQueries.getLastBindedTFFrom(model, mappedTF, isSource);
+			
 			//System.out.println();
 			if(!bindedTFList.contains(mappedTF)){
 				bindedTFList.add(mappedTF);
 			}		
 			LIST_INT = new ArrayList<Interface>();
 			for (String tfURI : bindedTFList) {
-				LIST_INT.addAll(SPARQLQueries.getMappingInterfaceFrom(model, tfURI, interfaces, bindedInterfacesHash));
+				List<Interface> list = SPARQLQueries.getMappingInterfaceFrom(model, tfURI, interfaces, bindedInterfacesHash);
+				
+				list.removeAll(SPARQLQueries.getInterfacesMappingMatrixes(model, isSource, interfaces));
+				
+				LIST_INT.addAll(list);
 			}
 			
 			inputInterface.setCandidateInterfacesTo(LIST_INT, this.bindedInterfaces);
@@ -624,6 +629,7 @@ public class Provisioner {
 		listInterfacesTo.removeAll(bindedInterfaces);
 		if(listInterfacesTo.size() == 0){
 			listInterfacesTo = SPARQLQueries.getInterfacesToProvision(model, outputInterface.getInterfaceURI(), isSource, interfaces, bindedInterfacesHash);
+			listInterfacesTo.removeAll(SPARQLQueries.getInterfacesMappingMatrixes(model, isSource, interfaces));
 			outputInterface.setCandidateInterfacesTo(listInterfacesTo, this.bindedInterfaces);
 		}
 //		if(interfaces.containsKey(outputInterface.getInterfaceURI())){
