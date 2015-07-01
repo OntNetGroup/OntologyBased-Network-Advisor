@@ -263,18 +263,10 @@ public class PerformBind {
 			String property = RelationEnum.binds.toString();
 			String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
 			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), sourceURI, propertyURI, tipo_targetURI );
-				
-			Set<String> keyset = BuildBindStructure.getInstance().getBindsTuple().keySet();
-			String cardinality = null;
-			for(String key : keyset ){
-				if(key.contains(tipo_source) && key.contains(property) && key.contains(tipo_target)){ // <- i can do better than this
-					cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
-					break;
-				}
-			}
-			
-			//String key = tipo_source + propertyURI + tipo_target;
+			String key = NOpenComponents.nopenRepository.getNamespace() + tipo_source + NOpenComponents.nopenRepository.getNamespace() + property + NOpenComponents.nopenRepository.getNamespace() + tipo_target; 
+			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 			if(cardinality == null){
+				//return false;
 				NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the relation between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " does not exist.");
 				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because there is no \"binds\" relation between " + tipo_source + " and " + tipo_target);
 			}
