@@ -17,28 +17,45 @@
 	href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css" />
 
 <!-- CSS -->
-
+<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/visualizer/equipment-visualizer/css/inspector.css" />
 <link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/visualizer/equipment-visualizer/css/dialog.css" />
 <link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/visualizer/equipment-visualizer/css/style.css" />
-	
+
 </head>
 <body>
 
 	<div class="toolbar-container">
-	     <button id="btn-back" class="btn" data-tooltip="Close"><img src="/nopen/frontend/visualizer/equipment-visualizer/img/close.png" alt="Close"/> Close </button>
-	     <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomin.png" alt="Zoom in"/></button>
-	     <button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out"><img src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomout.png" alt="Zoom out"/></button>
-	     <button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom To Fit"><img src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomtofit.png" alt="Zoom To Fit"/></button>
+		<button id="btn-back" class="btn" data-tooltip="Close">
+			<img
+				src="/nopen/frontend/visualizer/equipment-visualizer/img/close.png"
+				alt="Close" /> Close
+		</button>
+		<button id="btn-zoom-in" class="btn" data-tooltip="Zoom In">
+			<img
+				src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomin.png"
+				alt="Zoom in" />
+		</button>
+		<button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out">
+			<img
+				src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomout.png"
+				alt="Zoom out" />
+		</button>
+		<button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom To Fit">
+			<img
+				src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomtofit.png"
+				alt="Zoom To Fit" />
+		</button>
 	</div>
-	<div class="stencil-container" style="display:none">
+	<div class="stencil-container" style="display: none">
 		<label>Stencil</label>
 		<button class="btn-expand" title="Expand all">+</button>
 		<button class="btn-collapse" title="Collapse all">-</button>
 	</div>
 	<div class="paper-container"></div>
-
+	<div class="inspector-container"></div>
 	<!-- JS CORE -->
 
 	<script src="/nopen/core/rappid_api/js/joint.js"></script>
@@ -47,20 +64,28 @@
 	<!-- JQUERY -->
 
 	<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
-	<script src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
+	<script
+		src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
 
 	<!-- JS -->
 
-	<script src="/nopen/frontend/visualizer/equipment-visualizer/js/mymodel.js"></script>
-	<script src="/nopen/frontend/visualizer/equipment-visualizer/js/keyboard.js"></script>
-	<script src="/nopen/frontend/visualizer/equipment-visualizer/js/inspector.js"></script>
-	<script src="/nopen/frontend/visualizer/equipment-visualizer/js/stencil.js"></script>
-	<script src="/nopen/frontend/visualizer/equipment-visualizer/js/main.js"></script>
-	<script src="/nopen/frontend/visualizer/equipment-visualizer/js/ituHandle.js"></script>
+	<script
+		src="/nopen/frontend/visualizer/equipment-visualizer/js/mymodel.js"></script>
+	<script
+		src="/nopen/frontend/visualizer/equipment-visualizer/js/keyboard.js"></script>
+	<script
+		src="/nopen/frontend/visualizer/equipment-visualizer/js/inspector.js"></script>
+	<script
+		src="/nopen/frontend/visualizer/equipment-visualizer/js/stencil.js"></script>
+	<script
+		src="/nopen/frontend/visualizer/equipment-visualizer/js/main.js"></script>
+	<script
+		src="/nopen/frontend/visualizer/equipment-visualizer/js/ituHandle.js"></script>
 
 	<!-- PLUGINS -->
 
-	<script src="/nopen/frontend/visualizer/equipment-visualizer/plugins/open-equipment.js"></script>
+	<script
+		src="/nopen/frontend/visualizer/equipment-visualizer/plugins/open-equipment.js"></script>
 
 	<!-- DIALOGS -->
 
@@ -70,27 +95,25 @@
 	</div>
 
 	<script>
-            
-            var app = new Rappid;
-            Backbone.history.start();
-            
-            if(getUrlParameter('equipment')){
-            	var equipment = getUrlParameter('equipment');
-            	openFromURL(equipment, app.graph);
-            }
-            
-            $('.toolbar-container').append('<div style="display: inline;margin-left:10px">&#155; ' + equipment + '</div>');
-            
-            $('#btn-zoom-to-fit').click();
-			
-            $('#btn-back').click(function(){
-            	parent.closeIframe();
-            });
-            
-            ituHandle(app.paper, app.graph);
-            
+		var app = new Rappid;
+		Backbone.history.start();
 
-        
-        </script>
+		if (getUrlParameter('equipment')) {
+			var equipment = getUrlParameter('equipment');
+			openFromURL(equipment, app.graph);
+		}
+
+		$('.toolbar-container').append(
+				'<div style="display: inline;margin-left:10px">&#155; '
+						+ equipment + '</div>');
+
+		$('#btn-zoom-to-fit').click();
+
+		$('#btn-back').click(function() {
+			parent.closeIframe();
+		});
+
+		ituHandle(app.paper, app.graph);
+	</script>
 </body>
 </html>
