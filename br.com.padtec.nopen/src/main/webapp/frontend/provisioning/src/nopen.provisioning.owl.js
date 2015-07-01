@@ -20,4 +20,16 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 	},
 	
+	//Method to get inputs from OWL file
+	getInputs : function() {
+		
+	},
+	
+	//Method to get outputs from OWL file
+	getOutputs : function() {
+		
+	},
+	
+	
+	
 });
