@@ -118,7 +118,7 @@ public class NOpenQueryUtil {
 	public static HashSet<String> discoverRPBetweenPorts(String uri_type_output, String uri_type_input, InfModel model){
 		HashSet<String> result = new HashSet<String>();
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/nOpenModel.owl#> "
+				+ "PREFIX ont: <http://nemo.inf.ufes.br/nOpenModel_light.owl#> "
 				+ "SELECT ?y "
 				+ "WHERE { ?x rdfs:subPropertyOf ont:INV.links_output . "
 				+ "?x rdfs:domain <" + uri_type_output + "> . "
