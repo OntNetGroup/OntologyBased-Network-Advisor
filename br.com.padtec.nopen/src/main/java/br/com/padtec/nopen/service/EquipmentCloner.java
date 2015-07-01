@@ -7,8 +7,10 @@ import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.model.RelationEnum;
-import br.com.padtec.nopen.service.util.NOpenFileUtil;
+import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.okco.core.application.OKCoUploader;
+
+import com.jointjs.util.JointUtilManager;
 
 public class EquipmentCloner {
 
@@ -158,12 +160,18 @@ public class EquipmentCloner {
 	}
 	
 	
-	public static void cloneEquipmentFromJSON(String equipmentURI, OKCoUploader tgtRepository) throws Exception
+	public static void cloneEquipmentFromJSON(String json, OKCoUploader tgtRepository) throws Exception
 	{					
-		String[] equipmentFiles = NOpenFileUtil.getAllEquipmentJSONFileNames();
+		PElement[] elems = (PElement[]) JointUtilManager.getJavaFromJSON(json, PElement[].class);
 		
-		for(String equipFile: equipmentFiles){
-			
+		for(PElement elem: elems){
+			if(elem.getType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0);
+			if(elem.getType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0);
+			if(elem.getType().compareToIgnoreCase(ConceptEnum.Card.toString())==0);
+			if(elem.getType().compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0);
+			if(elem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function.toString())==0);
+			if(elem.getType().compareToIgnoreCase(ConceptEnum.Matrix.toString())==0);
+			if(elem.getType().compareToIgnoreCase(ConceptEnum.Physical_Media.toString())==0);
 		}
 	}
 	

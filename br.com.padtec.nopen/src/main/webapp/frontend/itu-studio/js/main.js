@@ -134,10 +134,12 @@ var Rappid = Backbone.Router.extend({
         		var targetTFunctionID = cellViewT.model.id;
         		var targetTFunctionName = cellViewT.model.attributes.attrs.text.text;
         		var targetTFunctionType = cellViewT.model.attributes.subtype;
-        		console.log('try to connect ' +sourceTFunctionID+ ' and ' +targetTFunctionID);
         		
         		//return canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType);
-        		return canPerformBind(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType);
+//        		return canPerformBind(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType);
+        		var ableToPerformBind = canPerformBind(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType);
+        		console.log(ableToPerformBind);
+        		return ableToPerformBind === "true";
             },
             
         	validateEmbedding: function(childView, parentView) {

@@ -30,11 +30,11 @@ function graphHandler(graph, app) {
 									'basic.Path': 1.3, // transport functions
 								}[type];
 
-		var sizeMultiplierSubtypeWidth = {  'Input': 0.5, // in port
-										'Output': 0.5, // out port
+		var sizeMultiplierSubtypeWidth = {  'Input_Card': 0.5, // in port
+										'Output_Card': 0.5, // out port
 									}[subtype];
-		var sizeMultiplierSubTypeHeight = {  'Input': 0.5, // in port
-										'Output': 0.5, // out port
+		var sizeMultiplierSubTypeHeight = {  'Input_Card': 0.5, // in port
+										'Output_Card': 0.5, // out port
 										'Adaptation_Function': 0.7, // AF transport function
 									}[subtype];
 		

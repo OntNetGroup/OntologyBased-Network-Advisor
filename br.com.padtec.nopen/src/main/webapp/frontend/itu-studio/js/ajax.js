@@ -447,8 +447,6 @@ function canPerformBind(sourceID, sourceName, sourceType, targetID, targetName, 
 		}
 	});
 
-	console.log(targetName);
-	console.log(result);
 	return result;
 //	return "true";
 };
