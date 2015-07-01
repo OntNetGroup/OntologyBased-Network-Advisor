@@ -7,6 +7,7 @@ import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.model.RelationEnum;
+import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class EquipmentCloner {
@@ -154,6 +155,16 @@ public class EquipmentCloner {
 			repository.getNamespace()+ConceptEnum.Card_Layer.toString()
 		);		
 		return elems;
+	}
+	
+	
+	public static void cloneEquipmentFromJSON(String equipmentURI, OKCoUploader tgtRepository) throws Exception
+	{					
+		String[] equipmentFiles = NOpenFileUtil.getAllEquipmentJSONFileNames();
+		
+		for(String equipFile: equipmentFiles){
+			
+		}
 	}
 	
 	/** @author John Guerson */
