@@ -178,7 +178,7 @@ function ituHandle(paper, graph, validator){
 				            	// Get all elements and check if exist some in or out port
 				            	$.each($('#itu-iframe').get(0).contentWindow.app.graph.getElements(), function(index, value) {
 				            		
-				            		if(value.get('subtype') === 'Input') {
+				            		if(value.get('subtype') === 'Input_Card') {
 				            			cell.attr('.inPort/fill', '#1AFF00');
 						            	cell.attr('.inPort/stroke', '#000000');
 						            	hasIn = true;
@@ -187,7 +187,7 @@ function ituHandle(paper, graph, validator){
 						            	inIds.push(value.id);
 				            		}
 				            		
-				            		if(value.get('subtype') === 'Output') {
+				            		if(value.get('subtype') === 'Output_Card') {
 				            			cell.attr('.outPort/fill', '#1AFF00');
 						            	cell.attr('.outPort/stroke', '#000000');
 						            	hasOut = true;
