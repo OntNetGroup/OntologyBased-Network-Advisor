@@ -19,6 +19,14 @@ body {
 	color: #FFF;
 }
 
+.inspector-container {
+   position: absolute;
+   top: 80px;   /* toolbar height */
+   right: 0;
+   bottom: 0px; /* statusbar height */
+   width: 240px;
+}
+
 .btn {
    background-color: #36a9e1;
    padding: 4px 8px;

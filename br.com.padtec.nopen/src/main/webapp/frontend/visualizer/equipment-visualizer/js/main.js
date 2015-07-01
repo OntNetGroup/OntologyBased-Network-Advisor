@@ -49,26 +49,6 @@ var Rappid = Backbone.Router.extend({
 				this.inspector.updateCell();
 				this.commandManager.listen();
 				this.inspector.$('[data-attribute]:first').focus();
-
-				//addshelf(args); | args -> "rack0" | "rack0","slot1"
-				//console.log(cell.parent);
-				//var gMethod = "add"+subType+"("+args+");";
-
-				// Identificações temporarias
-				//console.log(cell.attributes.type);
-				//var subtype = cell.get('subType');
-				//console.log(subtype);
-				//var type = cell.get('type');
-				//console.log(type);
-				//if(type === 'bpmn.Pool' ){
-				//	console.log(cell.attributes.lanes.label , " was just added. ");
-				//}else{"A/An ", cell.a
-				//	if(type === 'devs.Atomic'){
-				//		console.log("A/An", cell.attributes.attrs, " was just added. ");
-				//	}else{
-				//		console.log("A/An", cell.attributes.attrs.text.text, " was just added. ");
-				//	}
-				//}
 			}
 		}, this);
 
@@ -135,7 +115,6 @@ var Rappid = Backbone.Router.extend({
 	initializeLinkTooltips: function(cell) {
 
 		if (cell instanceof joint.dia.Link) {
-			console.log("achou");
 			var linkView = this.paper.findViewByModel(cell);
 			new joint.ui.Tooltip({
 				className: 'tooltip small',
@@ -273,7 +252,6 @@ var Rappid = Backbone.Router.extend({
 	},
 
 	createInspector: function(cellView) {
-        console.log("achou2");
 		var cell = cellView.model || cellView;
 
 		// No need to re-render inspector if the cellView didn't change.
