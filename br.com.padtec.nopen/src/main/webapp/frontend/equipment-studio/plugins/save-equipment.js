@@ -56,7 +56,7 @@ function generateSaveEquipmentDialog(graph){
 				   
 				   if(data == "exist"){		   
 					   if (confirm('The file already exist, do you want to replace it?')) {
-//						   	copyITUEquipmentFiles();
+////						   	copyITUEquipmentFiles();
 //						   	deleteITUEquipmentFiles();
 						   var originalGraph = graph.toJSON();
 						   equipmentGraph()
@@ -66,8 +66,8 @@ function generateSaveEquipmentDialog(graph){
 					   } 
 				   }
 				   else{
-//					   copyITUFiles();
-//					   deleteITUFiles();
+//					  copyITUEquipmentFiles();
+//					  deleteITUEquipmentFiles();
 					   var originalGraph = graph.toJSON();
 					   equipmentGraph()
 					   saveEquipment();
@@ -198,7 +198,7 @@ function generateSaveEquipmentDialog(graph){
 			}
 			if((check.attributes.subType) === 'Card'){
 				if((check.attributes.Supervisor === $('#save-dialog').find(":selected").val())){
-	            	   
+	            	   movingCards.push(check.id);
 	               }else{
 	            	   var parent = check.attributes.parent;
 	            	   var grandParent = (equipament.getCell(parent)).attributes.parent;
