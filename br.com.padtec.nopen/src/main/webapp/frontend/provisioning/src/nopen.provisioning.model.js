@@ -175,11 +175,8 @@ nopen.provisioning.Model = Backbone.Model.extend({
 					
 					if(itu.subtype !== "Input" || itu.subtype !== "Output") {
 						
-						var cell = graph.getCell(itu.parent);
-						console.log('CELL: ' + JSON.stringify(cell));
 						
 					}
-						
 					
 				}
 				
