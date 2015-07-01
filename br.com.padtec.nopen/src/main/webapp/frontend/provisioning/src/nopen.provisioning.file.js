@@ -349,6 +349,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 				
 				var filename = card.id;
 				
+				console.log('CARD ID: ' + filename);
+				
 				$.ajax({
 				   type: "POST",
 				   async: false,
@@ -362,10 +364,10 @@ nopen.provisioning.File = Backbone.Model.extend({
 					   //add ITU data in card data attribute
 					   card.attrs.data = data;
 					   //create instances in OWL file
-					   $this.owl.parseCardToOWL(equipment, data);
+					   $this.owl.parseCardToOWL(equipment, card);
 				   },
 				   error : function(e) {
-					   alert("error: " + e.status);
+					   //alert("error: " + e.status);
 				   }
 				});
 				

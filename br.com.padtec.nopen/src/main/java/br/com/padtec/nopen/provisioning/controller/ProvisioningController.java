@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jointjs.util.JointUtilManager;
-
-import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
@@ -155,5 +152,18 @@ public class ProvisioningController {
 		if(clientMEF.equals("MEN")) return new String[]{"id0, id1, id2"};
 		if(clientMEF.equals("POUk")) return new String[]{"id3, id4, id5"};
 		return null;
+	}
+	
+	/**
+	 * Create card elements in OWL by a JSON file
+	 * @param elements
+	 * @param links
+	 */
+	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
+	protected @ResponseBody void parseCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
+		
+		System.out.println(elements);
+		System.out.println(links);
+		
 	}
 }
