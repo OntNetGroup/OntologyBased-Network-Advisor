@@ -159,6 +159,27 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		return equipment.attr('text/text')
 	},
 	
+	
+	//Method to get a ITU element by the id of it.
+	getITUElementByID : function(equipment, id) {
+		
+		var cards = this.getCards(equipment);
+		
+		$.each(cards, function(index, card) {
+			
+			var itus = card.attrs.data.cells;
+			$.each(itus, function(index, itu) {
+				
+				if(itu.id === id) {
+					return itu;
+				}
+				
+			});
+			
+		});
+		
+	},
+	
 	//Method do get inputs as array of object ( inputs = [{ "type" : "", "id" : "", "name" : "" },...] )
 	getInputs : function(equipment) {
 		

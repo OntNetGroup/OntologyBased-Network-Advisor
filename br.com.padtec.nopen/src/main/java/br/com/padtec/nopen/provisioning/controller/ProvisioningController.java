@@ -166,4 +166,25 @@ public class ProvisioningController {
 		System.out.println(links);
 		
 	}
+	
+	/**
+	 * Method to get Inputs from OWL
+	 * @param equipmentId
+	 * @return
+	 */
+	@RequestMapping(value = "/getInputsFromOWL", method = RequestMethod.POST)
+	protected @ResponseBody String getInputsFromOWL(@RequestParam("equipmentId") String equipmentId){
+		
+		return null;
+	}
+	
+	/**
+	 * Method to get Outputs from OWL
+	 * @param equipmentId
+	 */
+	@RequestMapping(value = "/getOutputsFromOWL", method = RequestMethod.POST)
+	protected @ResponseBody String getOutputsFromOWL(@RequestParam("equipmentId") String equipmentId){
+		
+		return null;
+	}
 }

@@ -214,6 +214,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 	},
 	
+	//Method to get element type
 	getElementType : function(elements, elementId) {
 		
 		$.each(elements, function(index, element) {
@@ -232,13 +233,41 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	},
 	
 	//Method to get inputs from OWL file
-	getInputs : function() {
-		
+	getInputsFromOWL : function(equipmentId) {
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "getInputsFromOWL.htm",
+		   data: {
+			   'equipmentId' : equipmentId,
+		   },
+		   success: function(data){
+			   console.log(data);
+			   return data;
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
 	},
 	
 	//Method to get outputs from OWL file
-	getOutputs : function() {
-		
+	getOutputsFromOWL : function(equipment) {
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "getOutputsFromOWL.htm",
+		   data: {
+			   'equipmentId' : equipmentId,
+		   },
+		   success: function(data){
+			   console.log(data);
+			   return data;
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
 	},
 	
 	
