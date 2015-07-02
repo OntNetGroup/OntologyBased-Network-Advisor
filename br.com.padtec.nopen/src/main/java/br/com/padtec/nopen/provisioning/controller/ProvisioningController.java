@@ -181,6 +181,7 @@ public class ProvisioningController {
 	/**
 	 * Method to get Outputs from OWL
 	 * @param equipmentId
+	 * @return
 	 */
 	@RequestMapping(value = "/getOutputsFromOWL", method = RequestMethod.POST)
 	protected @ResponseBody String getOutputsFromOWL(@RequestParam("equipmentId") String equipmentId){
