@@ -265,7 +265,7 @@ var Rappid = Backbone.Router.extend({
 
 				// Clean up the old inspector if there was one.
 				this.inspector.updateCell();
-				this.inspector.remove();
+//				this.inspector.remove();
 			}
 
 			var inspectorDefs = InspectorDefs[cell.get('type')];

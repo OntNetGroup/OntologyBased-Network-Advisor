@@ -23,6 +23,8 @@
 	href="/nopen/frontend/visualizer/equipment-visualizer/css/dialog.css" />
 <link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/visualizer/equipment-visualizer/css/style.css" />
+	<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/visualizer/equipment-visualizer/css/layout.css" />
 
 </head>
 <body>
@@ -49,13 +51,14 @@
 				alt="Zoom To Fit" />
 		</button>
 	</div>
-	<div class="stencil-container" style="display: none">
+	<div class="stencil-container" style="display: none" >
 		<label>Stencil</label>
 		<button class="btn-expand" title="Expand all">+</button>
 		<button class="btn-collapse" title="Collapse all">-</button>
 	</div>
 	<div class="paper-container"></div>
-	<div class="inspector-container"></div>
+	<div class="inspector-container">
+	</div>
 	<!-- JS CORE -->
 
 	<script src="/nopen/core/rappid_api/js/joint.js"></script>
@@ -74,12 +77,12 @@
 	<script
 		src="/nopen/frontend/visualizer/equipment-visualizer/js/keyboard.js"></script>
 	<script
-		src="/nopen/frontend/visualizer/equipment-visualizer/js/inspector.js"></script>
-	<script
 		src="/nopen/frontend/visualizer/equipment-visualizer/js/stencil.js"></script>
 	<script
-		src="/nopen/frontend/visualizer/equipment-visualizer/js/main.js"></script>
+		src="/nopen/frontend/visualizer/equipment-visualizer/js/inspector.js"></script>
 	<script
+		src="/nopen/frontend/visualizer/equipment-visualizer/js/main.js"></script>
+	<script	
 		src="/nopen/frontend/visualizer/equipment-visualizer/js/ituHandle.js"></script>
 
 	<!-- PLUGINS -->

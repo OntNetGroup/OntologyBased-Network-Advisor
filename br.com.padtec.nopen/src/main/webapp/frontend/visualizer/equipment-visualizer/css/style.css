@@ -19,13 +19,7 @@ body {
 	color: #FFF;
 }
 
-.inspector-container {
-   position: absolute;
-   top: 80px;   /* toolbar height */
-   right: 0;
-   bottom: 0px; /* statusbar height */
-   width: 240px;
-}
+
 
 .btn {
    background-color: #36a9e1;
@@ -87,4 +81,22 @@ body {
 
 rect[stroke-width]:hover{
 	stroke-width: 2;
+}
+
+#inspector {
+  position: absolute;
+  top: 25;
+  bottom: 0;
+  right: 40px;
+  left: 120;
+  overflow: auto;
+}
+
+.inspector {
+  position: absolute;
+  top: 25;
+  bottom: 0;
+  right: 40px;
+  left: 120;
+  overflow: auto;
 }
