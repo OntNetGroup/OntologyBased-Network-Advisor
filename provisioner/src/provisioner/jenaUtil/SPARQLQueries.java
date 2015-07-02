@@ -764,4 +764,46 @@ public class SPARQLQueries {
 		
 		return result;
 	}
+	
+	public static List<Interface> getInterfacesMappingMatrixes(OntModel model, boolean isSource, HashMap<String, Interface> interfaces){
+		System.out.println("\nExecuting getLastBindedTFFrom()...");
+		List<Interface> result = new ArrayList<Interface>();				
+		
+		String portType;
+		if(isSource){
+			portType = "Output";					
+		}else{
+			portType = "Input";					
+		}
+		String queryString = ""
+				+ QueryUtil.PREFIXES
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ "SELECT DISTINCT *\n"
+				+ "WHERE {\n"
+				+ "	?interface1 ns:maps ?port . \n"
+				+ "	?port rdf:type ns:Matrix .\n"
+				+ "	?interface1 ns:path ?interface2 .\n"
+				+ "	?interface1 rdf:type ns:" + portType + "_Interface . \n"
+				+ "}";
+				
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();
+			RDFNode interface1 = row.get("interface1");
+			if(QueryUtil.isValidURI(interface1.toString()))
+		    {
+		    	if(!result.contains(interface1.toString())){
+		    		System.out.println("- interface1 URI: "+interface1.toString());
+		    		Interface newInt = interfaces.get(interface1.toString());
+			    	result.add(newInt);
+		    	}		    	 
+		    }			
+		}
+		
+		return result;
+	}
 }

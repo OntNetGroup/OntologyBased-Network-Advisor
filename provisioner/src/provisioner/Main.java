@@ -39,7 +39,7 @@ public class Main {
 			//String possibleFile = "resources/possible/Declarado 2.1 - Base.txt";
 			
 			provisioner = new Provisioner(owlBaseTBoxFile, owlConsistencyTBoxFile, declaredFile, possibleFile, 1, 1);
-					
+//			OWLUtil.saveNewOwl(provisioner.getModel(), "resources/output/", "");
 			provisioner.consoleProvisioner();
 		
 //			System.out.println();
