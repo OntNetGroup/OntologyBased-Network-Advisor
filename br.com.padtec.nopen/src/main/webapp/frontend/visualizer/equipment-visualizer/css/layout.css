@@ -1,0 +1,11 @@
+/* Generic layout. */
+
+
+.inspector-container {
+   position: absolute;
+   top: 40px;   /* toolbar height */
+   right: 0;
+   left: 280px;
+   bottom: 0px; /* statusbar height */
+   width: 200px;
+}
