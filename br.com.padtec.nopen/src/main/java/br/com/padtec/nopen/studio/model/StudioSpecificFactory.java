@@ -54,7 +54,7 @@ public class StudioSpecificFactory {
 		
 		if(tfType.equals("TTF") && containerType.equals("layer")) 
 		{
-			InstanceFabricator.createTTF(StudioComponents.studioRepository, tfId, tfName, containerId, containerName);						
+			InstanceFabricator.createTTFAtLayer(StudioComponents.studioRepository, tfId, tfName, containerId, containerName);						
 		}
 		else if(tfType.equals("AF") && containerType.equals("card")) 
 		{

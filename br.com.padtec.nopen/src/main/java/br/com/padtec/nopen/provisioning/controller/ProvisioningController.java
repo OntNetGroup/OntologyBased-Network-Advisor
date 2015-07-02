@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
+import br.com.padtec.nopen.service.EquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
 @Controller
@@ -162,9 +164,12 @@ public class ProvisioningController {
 	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
 	protected @ResponseBody void parseCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
-		System.out.println(elements);
-		System.out.println(links);
-		
+		try {
+			EquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
+			EquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

@@ -8,6 +8,7 @@ import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
+import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.jointjs.util.JointUtilManager;
@@ -159,19 +160,102 @@ public class EquipmentCloner {
 		return elems;
 	}
 	
-	
-	public static void cloneEquipmentFromJSON(String json, OKCoUploader tgtRepository) throws Exception
+	/** @author John Guerson */
+	public static void cloneEquipmentFromJSON(String jsonEquipments, OKCoUploader tgtRepository) throws Exception
 	{					
-		PElement[] elems = (PElement[]) JointUtilManager.getJavaFromJSON(json, PElement[].class);
-		
-		for(PElement elem: elems){
-			if(elem.getType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0);
-			if(elem.getType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0);
-			if(elem.getType().compareToIgnoreCase(ConceptEnum.Card.toString())==0);
-			if(elem.getType().compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0);
-			if(elem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function.toString())==0);
-			if(elem.getType().compareToIgnoreCase(ConceptEnum.Matrix.toString())==0);
-			if(elem.getType().compareToIgnoreCase(ConceptEnum.Physical_Media.toString())==0);
+		PElement[] elems = (PElement[]) JointUtilManager.getJavaFromJSON(jsonEquipments, PElement[].class);				
+		for(PElement pElem: elems)
+		{
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0) InstanceFabricator.createEquipment(tgtRepository, pElem.getId(), pElem.getName());			
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0) InstanceFabricator.createSupervisor(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Card.toString())==0) InstanceFabricator.createCard(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0) InstanceFabricator.createCardLayer(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function.toString())==0) InstanceFabricator.createAF(tgtRepository, pElem.getId(), pElem.getName()); 
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Matrix.toString())==0) InstanceFabricator.createMatrix(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Physical_Media.toString())==0) InstanceFabricator.createPhysicalMedia(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Trail_Termination_Function.toString())==0) InstanceFabricator.createTTF(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Input_Card.toString())==0) InstanceFabricator.createInputCard(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Output_Card.toString())==0) InstanceFabricator.createOutputCard(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Output.toString())==0) InstanceFabricator.createOutput(tgtRepository, pElem.getId(), pElem.getName()); 
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Input.toString())==0) InstanceFabricator.createInput(tgtRepository, pElem.getId(), pElem.getName()); 
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function_Input.toString())==0) InstanceFabricator.createAFInput(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function_Output.toString())==0) InstanceFabricator.createAFOutput(tgtRepository, pElem.getId(), pElem.getName()); 
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Matrix_Input.toString())==0) InstanceFabricator.createMatrixInput(tgtRepository, pElem.getId(), pElem.getName()); 
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Matrix_Output.toString())==0) InstanceFabricator.createMatrixOutput(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Trail_Termination_Function_Input.toString())==0) InstanceFabricator.createTTFInput(tgtRepository, pElem.getId(), pElem.getName()); 
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Trail_Termination_Function_Output.toString())==0) InstanceFabricator.createTTFOutput(tgtRepository, pElem.getId(), pElem.getName());
+		}		
+	}
+	
+	/** @author John Guerson */
+	public static void cloneLinksFromJSON(String jsonLinks, OKCoUploader tgtRepository) throws Exception
+	{
+		PLink[] links = (PLink[]) JointUtilManager.getJavaFromJSON(jsonLinks, PLink[].class);
+		for(PLink pLink: links)
+		{
+			/** Card -> Input Card */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Input_Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
+				InstanceFabricator.createLinkFromCardToInputCard(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Input_Card.toString())==0){
+				InstanceFabricator.createLinkFromCardToInputCard(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());
+			}			
+			/** Card -> Output Card */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Output_Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
+				InstanceFabricator.createLinkFromCardToOutputCard(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Output_Card.toString())==0){
+				InstanceFabricator.createLinkFromCardToOutputCard(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());
+			}			
+			/** Equipment -> Supervisor */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0){
+				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0){
+				
+			}			
+			/** Supervisor -> Card */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
+				
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0){
+				
+			}			
+			/** Card -> Card_Layer */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0){
+				
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
+				
+			}						
+			/** Card_Layer -> Trail Termination Function */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Trail_Termination_Function.toString())==0){
+				
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Trail_Termination_Function.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0){
+				
+			}			
+			/** Card -> Adaptation Function */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Adaptation_Function.toString())==0){
+				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Adaptation_Function.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
+				
+			}			
+			/** Card -> Matrix */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Matrix.toString())==0){
+				
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Matrix.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
+				
+			}
+			/** Card -> Physical Media */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Physical_Media.toString())==0){
+				
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Physical_Media.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
+				
+			}
 		}
 	}
 	

@@ -14,7 +14,7 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createTTF(OKCoUploader repository, String ttfId, String ttfName, String layerId, String layerName) throws Exception
+	public static void createTTFAtLayer(OKCoUploader repository, String ttfId, String ttfName, String layerId, String layerName) throws Exception
 	{	
 		FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
@@ -30,6 +30,86 @@ public class InstanceFabricator {
 		);
 		
 		NOpenLog.appendLine(repository.getName()+": TTF "+ttfName+" created at Layer "+layerName);
+	}
+	
+	public static void createTTF(OKCoUploader repository, String ttfId, String ttfName) throws Exception
+	{	
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+ttfId, 
+			repository.getNamespace()+ConceptEnum.Trail_Termination_Function.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": TTF "+ttfName+" created");
+	}
+	
+	
+	public static void createInputCard(OKCoUploader repository, String inCardId, String inCardName) throws Exception
+	{	
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+inCardId, 
+			repository.getNamespace()+ConceptEnum.Input_Card.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Input Card "+inCardName+" created");
+	}
+	
+	public static void createLinkFromCardToInputCard(OKCoUploader repository, String cardId, String cardName, String inCardId, String inCardName) throws Exception
+	{	
+		FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+cardId, 
+				repository.getNamespace()+RelationEnum.A_Card_InputCard.toString(),
+				repository.getNamespace()+inCardId
+			);
+		
+		NOpenLog.appendLine(repository.getName()+": Input Card "+inCardName+" linked to Card "+cardName);
+	}
+	
+	public static void createOutputCard(OKCoUploader repository, String outCardId, String outCardName) throws Exception
+	{	
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+outCardId, 
+			repository.getNamespace()+ConceptEnum.Output_Card.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Output Card "+outCardName+" created");
+	}
+	
+	public static void createOutput(OKCoUploader repository, String outId, String outName) throws Exception
+	{	
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+outId, 
+			repository.getNamespace()+ConceptEnum.Output_Card.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Output "+outName+" created");
+	}
+	
+	public static void createInput(OKCoUploader repository, String inId, String inName) throws Exception
+	{	
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+inId, 
+			repository.getNamespace()+ConceptEnum.Output_Card.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Input "+inName+" created");
+	}
+	
+	public static void createLinkFromCardToOutputCard(OKCoUploader repository, String cardId, String cardName, String outCardId, String outCardName) throws Exception
+	{	
+		FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+cardId, 
+				repository.getNamespace()+RelationEnum.A_Card_OutputCard.toString(),
+				repository.getNamespace()+outCardId
+			);
+		
+		NOpenLog.appendLine(repository.getName()+": Output Card "+outCardName+" linked to Card "+cardName);
 	}
 	
 	/**
@@ -53,6 +133,17 @@ public class InstanceFabricator {
 		NOpenLog.appendLine(repository.getName()+": AF "+afName+" created at Card "+cardName);
 	}
 	
+	public static void createAF(OKCoUploader repository, String afId, String afName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+afId, 
+			repository.getNamespace()+ConceptEnum.Adaptation_Function.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": AF "+afName+" created");
+	}
+	
 	/**
 	 * @author John Guerson
 	 */
@@ -74,6 +165,17 @@ public class InstanceFabricator {
 		NOpenLog.appendLine(repository.getName()+": Physical Media "+pmName+" created at Card "+cardName);
 	}
 	
+	public static void createPhysicalMedia(OKCoUploader repository, String pmId, String pmName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+pmId, 
+			repository.getNamespace()+ConceptEnum.Physical_Media.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Physical Media "+pmName+" created");
+	}
+	
 	/**
 	 * @author John Guerson
 	 */
@@ -93,6 +195,40 @@ public class InstanceFabricator {
 		);
 		
 		NOpenLog.appendLine(repository.getName()+": Matrix "+mName+" created at Card "+cardName);
+	}
+	
+	 
+	public static void createMatrixInput(OKCoUploader repository, String mId, String mName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+mId, 
+			repository.getNamespace()+ConceptEnum.Matrix_Input.toString()
+		);		
+		
+		NOpenLog.appendLine(repository.getName()+": Matrix Input "+mName+" created");
+	}
+	
+	public static void createMatrixOutput(OKCoUploader repository, String mId, String mName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+mId, 
+			repository.getNamespace()+ConceptEnum.Matrix_Output.toString()
+		);		
+		
+		NOpenLog.appendLine(repository.getName()+": Matrix Output "+mName+" created");
+	}
+	
+	public static void createMatrix(OKCoUploader repository, String mId, String mName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+mId, 
+			repository.getNamespace()+ConceptEnum.Matrix.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Matrix "+mName+" created");
 	}
 	
 	/**
@@ -150,6 +286,28 @@ public class InstanceFabricator {
 		NOpenLog.appendLine(repository.getName()+": AF Output "+outputName+" created at AF: "+afName);
 	}
 	
+	public static void createAFInput(OKCoUploader repository, String inputId, String inputName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+inputId, 
+			repository.getNamespace()+ConceptEnum.Adaptation_Function_Input.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": AF Input "+inputName+" created");
+	}
+	
+	public static void createAFOutput(OKCoUploader repository, String outputId, String outputName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+outputId, 
+			repository.getNamespace()+ConceptEnum.Adaptation_Function_Output.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": AF Output "+outputName+" created");
+	}
+	
 	/**
 	 * @author John Guerson
 	 */
@@ -190,6 +348,28 @@ public class InstanceFabricator {
 		);		
 		
 		NOpenLog.appendLine(repository.getName()+": TTF Output "+outputName+" created at TTF: "+ttfName);
+	}
+	
+	public static void createTTFInput(OKCoUploader repository, String inputId, String inputName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+inputId, 
+			repository.getNamespace()+ConceptEnum.Trail_Termination_Function_Input.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": TTF Input "+inputName+" created");
+	}
+	
+	public static void createTTFOutput(OKCoUploader repository, String outputId, String outputName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+outputId, 
+			repository.getNamespace()+ConceptEnum.Trail_Termination_Function_Output.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": TTF Output "+outputName+" created");
 	}
 	
 	/**
@@ -522,6 +702,28 @@ public class InstanceFabricator {
 		NOpenLog.appendLine(repository.getName()+": Card "+cardName+" created");		
 	}
 	
+	public static void createCard(OKCoUploader repository, String cardId, String cardName) throws Exception
+	{		
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+cardId,
+			repository.getNamespace()+ConceptEnum.Card.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Card "+cardName+" created");		
+	}
+		
+	public static void createCardLayer(OKCoUploader repository, String cardLayerId, String cardLayerName) throws Exception
+	{		
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+cardLayerId,
+			repository.getNamespace()+ConceptEnum.Card_Layer.toString()
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Card Layer "+cardLayerName+" created");		
+	}
+	
 	/**
 	 * @author John Guerson
 	 */
@@ -656,6 +858,15 @@ public class InstanceFabricator {
 		);
 		
 		NOpenLog.appendLine(repository.getName()+": Supervisor "+supervisorName+" created for Equipment "+equipmentName);
+	}
+	
+	public static void createSupervisor(OKCoUploader repository, String supervisorId, String supervisorName) throws Exception
+	{
+		FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+supervisorId,			 
+			repository.getNamespace()+ConceptEnum.Supervisor.toString()			
+		);		
 	}
 	
 	/**
