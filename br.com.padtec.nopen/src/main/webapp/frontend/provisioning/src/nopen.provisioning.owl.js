@@ -160,7 +160,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				var inOut = {
 						"type" : element.subtype,
 						"id" : element.id,
-						"name" : element.subtype,
+						"name" : element.attrs.text.text,
 				}
 				elements.push(inOut);
 				

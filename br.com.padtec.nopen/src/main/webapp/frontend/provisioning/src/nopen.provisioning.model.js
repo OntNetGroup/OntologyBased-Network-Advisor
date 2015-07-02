@@ -55,6 +55,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			//finish pre provisioning
 			if (currentLinkIndex > links.length) {
 				dialog.close();
+				$('#black_overlay').hide();
 				return;
 			}
 			
@@ -68,12 +69,13 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			var source = graph.getCell(link.source.id);
 			var target = graph.getCell(link.target.id);
 			
-			var sourceName = $this.getElementName(link.source);
-			var targetName = $this.getElementName(link.target);
+			var sourceName = $this.getEquipmentName(link.source);
+			var targetName = $this.getEquipmentName(link.target);
 			
 			if(currentLinkIndex < links.length) {
 				
 				var layers = $this.getLayers(target);
+				var input = $this.getInputs(target);
 				
 				content = createContent();
 				$('.dialog .body').html(content);
@@ -84,10 +86,14 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			//currentLinkIndex === links.length
 			else {
 				
+				var layers = $this.getLayers(target);
+				var input = $this.getInputs(target);
+				
 				content = createContent();
 				$('.dialog .body').html(content);
 				$('.dialog .controls .control-button[data-action="next"]').text('Finish');
-
+				prepareList();
+				
 				currentLinkIndex++;
 			}
 			
@@ -99,9 +105,9 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			var content = 
 				'<div id="listContainer" style="overflow:auto;overflow-x:hidden;">' +
 				    '<ul id="expList" class="list">' +
-				        '<li title="Sharepoint Demo Website" value="https://hosted.compulite.ca" class="collapsed expanded">Sharepoint Demo Website' +
+				        '<li title="Layer" value="Layer" class="collapsed expanded">Layer1' +
 				            '<ul style="display: block;">' +
-				                '<li title="Academic" value="https://hosted.compulite.ca/academic" class="collapsed expanded">Academic' +
+				                '<li title="Output" value="Output" class="collapsed expanded">Out_1' +
 				                '</li>' +
 				            '</ul>' +
 				        '</li>' +
@@ -142,56 +148,103 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			$('#expList').find('li').click( function(event) {
 				
 				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
-				
-				siteUrl =  $(this).attr('value');
-				if(this.id != 'myList'){
-					RefreshSiteLists(siteUrl);
-				} else{
-					RefreshSiteLists(siteUrl);
-				}
 				return false;
 			});
 		}
 		
 	},
 	
-	//Method to get element name
-	getElementName : function(element) {
-		return element.attr('text/text')
+	//Method to get equipment name
+	getEquipmentName : function(equipment) {
+		return equipment.attr('text/text')
 	},
 	
-	getLayers : function(element) {
+	//Method do get inputs as array of object ( inputs = [{ "type" : "", "id" : "", "name" : "" },...] )
+	getInputs : function(equipment) {
 		
-		var layers = [];
-		var cards = this.getCards(element);
+		var inputs = [];
+		var cards = this.getCards(equipment);
 		
 		$.each(cards, function(index, card) {
 			
 			var itus = card.attrs.data.cells;
 			$.each(itus, function(index, itu) {
-			
 				
-				if(itu.parent) {
-					
-					if(itu.subtype !== "Input" || itu.subtype !== "Output") {
-						
-						
-					}
-					
-				}
-				
-				/*
-				 * WARNING: create controller to get Layers from OWL
-				 */
-				if(itu.subtype === "POUk" || itu.subtype === "OTUk" || itu.subtype === "ODUk") {
-					layers.push(itu);
-					
-				}
-				else {
-					//console.log('ITU: ' + JSON.stringify(itu));
+				//if Input_Card, add new object in array
+				if(itu.subtype === "Input_Card") {
+					var input = {
+						"type" : itu.subtype,	
+						"id" : itu.id,
+						"name" : itu.attrs.text.text,
+					};
+					inputs.push(input);
 				}
 				
 			});
+			
+			console.log('INPUTS: ' + JSON.stringify(inputs));
+			
+		});
+		
+		return inputs;
+		
+	},
+	
+	//Method do get outputs as array of object ( outputs = [{ "type" : "", "id" : "", "name" : "" },...] )
+	getOutputs : function(equipment) {
+		
+		var outputs = [];
+		var cards = this.getCards(equipment);
+		
+		$.each(cards, function(index, card) {
+			
+			var itus = card.attrs.data.cells;
+			$.each(itus, function(index, itu) {
+				
+				//if Output_Card, add new object in array
+				if(itu.subtype === "Output_Card") {
+					var output = {
+						"type" : itu.subtype,	
+						"id" : itu.id,
+						"name" : itu.attrs.text.text,
+					};
+					outputs.push(output);
+				}
+				
+			});
+			
+			console.log('OUTPUTS: ' + JSON.stringify(outputs));
+			
+		});
+		
+		return inputs;
+		
+	},
+	
+	//Method do get layers as array of object ( layers = [{ "type" : "", "id" : "", "name" : "" },...] )
+	getLayers : function(equipment) {
+		
+		var layers = [];
+		var cards = this.getCards(equipment);
+		
+		$.each(cards, function(index, card) {
+			
+			var itus = card.attrs.data.cells;
+			$.each(itus, function(index, itu) {
+				
+				//if Card_Layer, add new object in array
+				if(itu.subtype === "Card_Layer") {
+					var layer = {
+						"type" : itu.subtype,	
+						"id" : itu.id,
+						"name" : itu.lanes.label,
+					};
+					layers.push(layer);
+				}
+				
+			});
+			
+			console.log('LAYERS: ' + JSON.stringify(layers));
 			
 		});
 		
@@ -199,12 +252,12 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		
 	},
 	
-	//Method to get cards of a element
-	getCards : function(element) {
+	//Method to get cards of a equipment
+	getCards : function(equipment) {
 		
 		var cards = [];
 		//var cells = element.attributes.attrs.equipment.data.cells;
-		var cells = element.attr('equipment/data').cells;
+		var cells = equipment.attr('equipment/data').cells;
 		
 		$.each(cells, function(index, cell) {
 			
