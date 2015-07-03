@@ -93,7 +93,7 @@ public class PerformBind {
 					//if so, create the ports, RP and the relations between them
 					
 					HashSet<String> rps_between_ports = new HashSet<String>();
-					rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, NOpenComponents.nopenRepository);
+					rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, StudioComponents.studioRepository);
 					String tipo_rp;
 					String rp_name;
 					tipo_rp = rps_between_ports.iterator().next();
@@ -189,9 +189,9 @@ public class PerformBind {
 	/*
 	 * given two ports discover the rp between them.
 	 */
-	static HashSet<String> discoverRPBetweenPorts(String uri_type_output, String uri_type_input, OKCoUploader repository){
+	static HashSet<String> discoverRPBetweenPorts(String type_output, String type_input, OKCoUploader repository){
 		HashSet<String> rp = new HashSet<String>();
-		rp = NOpenQueryUtil.discoverRPBetweenPorts(uri_type_output, uri_type_input, repository.getBaseModel());
+		rp = NOpenQueryUtil.discoverRPBetweenPorts(type_output, type_input, repository.getBaseModel());
 		
 		return rp;
 	}
@@ -201,7 +201,7 @@ public class PerformBind {
 	 * verify if the source's layer is client of the target's layer.
 	 */
 	static boolean isClient(String sourceURI, String targetURI, OKCoUploader repository){ 
-		StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+		//StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
 		String tgtClassURI = repository.getNamespace() + ConceptEnum.Card_Layer.toString();
 		String relationSourceURI = repository.getNamespace() + RelationEnum.intermediates_up_Transport_Function_Card_Layer.toString();
 		String relationTargetURI = repository.getNamespace() + RelationEnum.intermediates_down_Transport_Function_Card_Layer.toString();
@@ -236,7 +236,6 @@ public class PerformBind {
 	}
 	
 	public static boolean canCreateBind(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement ) throws Exception{
-		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
 		String name_source = dtoSourceElement.getName();
 		String tipo_source = dtoSourceElement.getType();
 		String id_source = dtoSourceElement.getId();
@@ -244,6 +243,7 @@ public class PerformBind {
 		String tipo_target = dtoTargetElement.getType();
 		String id_target = dtoTargetElement.getId();
 		
+		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
 		String tipo_sourceURI = StudioComponents.studioRepository.getNamespace() + tipo_source;
 		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getId();
 		String tipo_targetURI = StudioComponents.studioRepository.getNamespace() + tipo_target;
@@ -266,7 +266,6 @@ public class PerformBind {
 			String key = NOpenComponents.nopenRepository.getNamespace() + tipo_source + NOpenComponents.nopenRepository.getNamespace() + property + NOpenComponents.nopenRepository.getNamespace() + tipo_target; 
 			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 			if(cardinality == null){
-				//return false;
 				NOpenLog.appendLine("Error: The Transport Function " + name_source + " cannot be bound to " + name_target + " because the relation between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " does not exist.");
 				throw new Exception("Error: Unexpected relation between " + name_source + " and " + name_target + " because there is no \"binds\" relation between " + tipo_source + " and " + tipo_target);
 			}
@@ -274,7 +273,7 @@ public class PerformBind {
 			
 			//create the Reference Point if exists and the relation between reference point and ports
 			HashSet<String> rps_between_ports = new HashSet<String>();
-			rps_between_ports = discoverRPBetweenPorts( tipo_outputURI, tipo_inputURI, StudioComponents.studioRepository);
+			rps_between_ports = discoverRPBetweenPorts( tipo_output, tipo_input, NOpenComponents.nopenRepository);
 			boolean isClient = false;
 			isClient = isClient(id_source, id_target, StudioComponents.studioRepository);
 			if(rps_between_ports.size() > 0){

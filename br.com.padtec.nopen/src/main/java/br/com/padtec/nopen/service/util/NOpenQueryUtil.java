@@ -115,19 +115,19 @@ public class NOpenQueryUtil {
 		return result;
 	}
 	
-	public static HashSet<String> discoverRPBetweenPorts(String uri_type_output, String uri_type_input, InfModel model){
+	public static HashSet<String> discoverRPBetweenPorts(String type_output, String type_input, InfModel model){
 		HashSet<String> result = new HashSet<String>();
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/nOpenModel_light.owl#> "
+				+ "PREFIX ont: <http://www.menthor.net/nOpenModel.owl#> "
 				+ "SELECT ?y "
 				+ "WHERE { ?x rdfs:subPropertyOf ont:INV.links_output . "
-				+ "?x rdfs:domain <" + uri_type_output + "> . "
+				+ "?x rdfs:domain ont:" + type_output + " . "
 				+ "?x rdfs:range ?y . "
 				+ "?z rdfs:subPropertyOf ont:links_input . "
-				+ "?z rdfs:range <" + uri_type_input + "> . "
+				+ "?z rdfs:range ont:" + type_input + " . "
 				+ "?z rdfs:domain ?y . "
 				+ "}";
-		
+		System.out.println("QUERY COM PROBLEMA -> " + queryString);
 		Query query = QueryFactory.create(queryString); 
   		
   		// Execute the query and obtain results
