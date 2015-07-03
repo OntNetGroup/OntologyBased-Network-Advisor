@@ -33,7 +33,7 @@ Stencil.shapes = {
 		new joint.shapes.basic.Path({
 			subtype: SubtypeEnum.MATRIX,
 			attrs: {
-			        path: { d: squarePath(50), fill: 'green' },
+			        path: { d: squarePath(50), fill: 'gray' },
 			    	text: { text: 'Matrix', 'font-size': 12, display: '', 'ref-y': .2, fill: 'white'  }
 			}
 		})
@@ -41,7 +41,7 @@ Stencil.shapes = {
 //		new joint.shapes.basic.Path({
 //			subtype: 'Physical_Media',
 //			attrs: {
-//			        path: { transform: 'rotate(90 40 40)', d: 'M 0 0 A 50 10 0 0 0 100 0 A 50 10 0 0 0 0 0 M 100 0 L 100 100 A 50 10 0 0 1 0 100 L 0 0 A 50 10 0 0 0 100 0', fill: 'gray' },
+//			        path: { transform: 'rotate(90 40 40)', d: 'M 0 0 A 50 10 0 0 0 100 0 A 50 10 0 0 0 0 0 M 100 0 L 100 100 A 50 10 0 0 1 0 100 L 0 0 A 50 10 0 0 0 100 0', fill: '' },
 //			    	text: { text: 'Physical Media', 'font-size': 12, display: '', 'ref-y': .5, fill: 'black'  }
 //			}
 //		})
