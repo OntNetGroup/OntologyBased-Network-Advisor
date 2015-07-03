@@ -37,7 +37,7 @@ function EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,c
 	return result;
 };
 
-function performBind(sourceID, sourceName, sourceType, targetID, targetName, targetType, linkID) {
+function EquipStudioPerformBind(sourceID, sourceName, sourceType, targetID, targetName, targetType) {
 
 	var result = "error";
 	
@@ -53,20 +53,13 @@ function performBind(sourceID, sourceName, sourceType, targetID, targetName, tar
 			"type": targetType 
 	};
 
-	var dtoBind = {
-			"name": linkID,
-			"id": linkID ,
-			"type": 'bind'
-	};
-
 	$.ajax({
 		type: "POST",
 		async: false,
-		url: "performBind.htm",
+		url: "EquipStudioPerformBind.htm",
 		data: {
 			'sourceElement': JSON.stringify(dtoSourceElement),
 			'targetElement': JSON.stringify(dtoTargetElement),
-			'bind': JSON.stringify(dtoBind)
 		},
 		success: function(data){ 		   
 			result = data;

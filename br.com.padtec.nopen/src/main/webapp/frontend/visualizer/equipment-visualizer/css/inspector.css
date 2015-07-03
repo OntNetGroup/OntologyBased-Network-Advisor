@@ -1,35 +1,7 @@
-#inspector-container {
-   position:relative;
-   top: 40px;   /* toolbar height */
-   right: 80px;
-   bottom: 0px; /* statusbar height */
-   width: 40px;
+.inspector-container {
    border: 1px solid #333;
    border-top: 1px solid #4f4f4f;
    color: #bcbcbc;
    text-shadow: 0 -1px 0 #000;
    background-color: #333;
-   position: absolute;
-   top: 80px;   /* toolbar height */
-   right: 0;
-   bottom: 0px; /* statusbar height */
-   width: 240px;
-}
-
-#inspector {
-  position: absolute;
-  top: 25;
-  bottom: 0;
-  right: 40px;
-  left: 120;
-  overflow: auto;
-}
-
-.inspector {
-  position: absolute;
-  top: 25;
-  bottom: 0;
-  right: 40px;
-  left: 120;
-  overflow: auto;
 }

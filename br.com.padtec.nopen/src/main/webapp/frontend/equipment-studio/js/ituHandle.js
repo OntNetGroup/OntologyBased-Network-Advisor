@@ -76,6 +76,7 @@ function ituHandle(paper, graph, validator){
 	    	   dialog.close();
 	       };
 	       
+	       
 	       //delete connections
 			$('.connectionInOut').delegate('span.tag', 'click', function(){
 				if(confirm("Really delete this connection?")) { 
@@ -407,7 +408,7 @@ function ituHandle(paper, graph, validator){
 			
 			$(this).toggleClass('active');
 			var index = $(this).attr('id');
-			
+			console.log($(this));
 			var content = '';
 			$.each(target.attributes.inPorts, function(index, value){
 				
@@ -426,9 +427,9 @@ function ituHandle(paper, graph, validator){
 			$(".connectionIn").find("tr:gt(0)").remove();
 			$(".connectionIn").append(content);
 			
-//			console.log("SHOW: " + target.attr('name/text'));
-//			console.log("ID: " + index);
-//			console.log("NAME: " + source.attributes.outPorts[index]);
+			console.log("SHOW: " + target.attr('name/text'));
+			console.log("ID: " + index);
+			console.log("NAME: " + source.attributes.outPorts[index]);
 		});
 		
 		//delete connections
@@ -486,14 +487,42 @@ function ituHandle(paper, graph, validator){
 			source.attributes.connectedPorts[sourceIndex] = {};
 			source.attributes.connectedPorts[sourceIndex][0] = targetIndex;
 			source.attributes.connectedPorts[sourceIndex][1] = target.attributes.inPorts[targetIndex];
+			source.attributes.connectedPorts[sourceIndex][2] = "Input_Card";
 			
 			target.attributes.connectedPorts[targetIndex] = {};
 			target.attributes.connectedPorts[targetIndex][0] = sourceIndex;
 			target.attributes.connectedPorts[targetIndex][1] = source.attributes.outPorts[sourceIndex];
+			target.attributes.connectedPorts[targetIndex][2] = "Output_Card";
 			
 //			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
 //			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
-			dialog.close();
+
+			
+//			console.log(source.attributes.connectedPorts[sourceIndex]);
+	
+			var	sourceID = source.attributes.connectedPorts[sourceIndex][0]
+			var	sourceName = source.attributes.connectedPorts[sourceIndex][1];
+			var sourceType = source.attributes.connectedPorts[sourceIndex][2];	
+			
+			var targetID = target.attributes.connectedPorts[targetIndex][0];
+			var targetName = target.attributes.connectedPorts[targetIndex][1];
+			var targetType = target.attributes.connectedPorts[targetIndex][2];
+	
+			
+			
+var result = EquipStudioPerformBind(sourceID, sourceName, sourceType, targetID, targetName, targetType);
+        	
+        	if(result === "success") {
+        		dialog.close();
+			} else {
+				return new joint.ui.Dialog({
+					type: 'alert',
+					width: 400,
+					title: 'Error',
+					content: result,
+				}).open();		
+			}
+			
 			
 		});
 		

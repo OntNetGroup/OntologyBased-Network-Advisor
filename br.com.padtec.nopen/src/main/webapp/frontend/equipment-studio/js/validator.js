@@ -38,39 +38,39 @@ function validator(validator, graph, app) {
 		}
 	}, app));
 
-validator.validate('add change:target change:source', isLink, _.bind(function(err, command, next) {
-    	
-    	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
-    	if(command.action === 'change:source') return next('Invalid operation!');
-    	if(command.data.previous.target) 
-    		if(command.data.previous.target.id) return next('Invalid operation!');
-    	
-    	var linkID = command.data.id;
-    	var link = graph.getCell(linkID).toJSON();
-    	var sourceID = link.source.id;
-        var targetID = link.target.id;
-        
-        if (sourceID && targetID) {
-        	var targetElement = graph.getCell(targetID);
-        	var targetName = targetElement.attributes.attrs.name.text;
-        	var targetSubtype = targetElement.attributes.subType;
-
-        	var sourceElement = graph.getCell(sourceID);
-        	var sourceName = sourceElement.attributes.attrs.name.text;
-        	var sourceSubtype = sourceElement.attributes.subType;
-        	
-//        	var result = createLink(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
-        	var result = performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
-        	
-        	if(result === "success") {
-				return next(err);
-			} else {
-				return next(result);
-			}
-        } else {
-        	return next('erro');
-        }
-    }, app));
+//validator.validate('add change:target change:source', isLink, _.bind(function(err, command, next) {
+//    	
+//    	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
+//    	if(command.action === 'change:source') return next('Invalid operation!');
+//    	if(command.data.previous.target) 
+//    		if(command.data.previous.target.id) return next('Invalid operation!');
+//    	
+//    	var linkID = command.data.id;
+//    	var link = graph.getCell(linkID).toJSON();
+//    	var sourceID = link.source.id;
+//        var targetID = link.target.id;
+//        
+//        if (sourceID && targetID) {
+//        	var targetElement = graph.getCell(targetID);
+//        	var targetName = targetElement.attributes.attrs.name.text;
+//        	var targetSubtype = targetElement.attributes.subType;
+//
+//        	var sourceElement = graph.getCell(sourceID);
+//        	var sourceName = sourceElement.attributes.attrs.name.text;
+//        	var sourceSubtype = sourceElement.attributes.subType;
+//        	
+////        	var result = createLink(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
+//        	var result = performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
+//        	
+//        	if(result === "success") {
+//				return next(err);
+//			} else {
+//				return next(result);
+//			}
+//        } else {
+//        	return next('erro');
+//        }
+//    }, app));
 
 }
 

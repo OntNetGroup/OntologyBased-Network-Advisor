@@ -68,8 +68,7 @@ public class EquipmentStudioController {
 	 * @return: "success" if the binding was successful
 	 */
 	@RequestMapping(value = "/EquipStudioPerformBind", method = RequestMethod.POST)
-	public @ResponseBody String performBind(@RequestParam("sourceElement") String sourceElement, @RequestParam("targetElement") String targetElement,
-			@RequestParam("bind") String bind) 
+	public @ResponseBody String performBind(@RequestParam("sourceElement") String sourceElement, @RequestParam("targetElement") String targetElement) 
 	{	
 		DtoJointElement dtoSourceElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceElement, DtoJointElement.class);
 		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
