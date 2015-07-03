@@ -52,14 +52,22 @@ nopen.provisioning.App = Backbone.View.extend({
 			var subnetwork = Stencil.createSubnetwork();
 			var equipmentIDs = this.model.getEquipmentsByLayer(uppermostLayer);
 			
-			_.each(equipmentIDs, function(equipmentID, index) {
-				var node = Stencil.createNode(equipmentID);
-				graph.addCell(node);
-			}, this);
-			
 			graph.addCell(container);
 			graph.addCell(subnetwork);
 			container.embed(subnetwork);
+			
+			_.each(equipmentIDs, function(equipmentID, index) {
+				var node = Stencil.createNode(equipmentID);
+				graph.addCell(node);
+				
+				var newLink = new joint.dia.Link({
+					source: {id: subnetwork.attributes.id},
+					target: {id: equipmentID}
+				});
+				graph.addCell(newLink);
+				container.embed(node);
+			}, this);
+			
 		}, this);
 		
 	},

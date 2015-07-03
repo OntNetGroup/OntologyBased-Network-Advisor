@@ -22,8 +22,8 @@ var Stencil = {
 		
 		createSubnetwork: function() {
 			var newSubnetwork = new joint.shapes.basic.Circle({
-				position: {x: 400, y: 140},
-				size: { width: 200, height: 120 },
+				position: {x: 440, y: 140},
+				size: { width: 120, height: 120 },
 			    attrs: {
 					'.': { magnet: true },
 			        text: { text: 'Subnetwork', fill: '#000000', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
@@ -36,9 +36,9 @@ var Stencil = {
 		createNode: function(equipmentID) {
 			var newNode = new joint.shapes.basic.Circle({
 				id: equipmentID,
+				size: { width: 20, height: 20 },
 			    attrs: {
-					'.': { magnet: true },
-			        circle: { fill: '#ffffff', r: 10 }
+					'.': { magnet: true }
 			    }
 			});
 			
