@@ -1,18 +1,13 @@
 nopen.provisioning.File = Backbone.Model.extend({
 	
-	model : undefined,
-	owl : undefined,
+	app : undefined,
 	
 	initialize : function(){
 		
 	},
 	
-	setModel : function(model) {
-		this.model = model;
-	},
-	
-	setOWL : function(owl) {
-		this.owl = owl;
+	setApp : function(app) {
+		this.app = app;
 	},
 	
 	//Method to get paramentes from url
@@ -336,7 +331,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 	importITUFiles : function(graph) {
 		
 		var $this = this;
-		var model = this.model;
+		var model = this.app.model;
+		var owl = this.app.owl;
 		
 		$.each(graph.getElements(), function(index, value){
 			
@@ -364,7 +360,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 					   //add ITU data in card data attribute
 					   card.attrs.data = data;
 					   //create instances in OWL file
-					   $this.owl.parseCardToOWL(equipment, card);
+					   owl.parseCardToOWL(equipment, card);
 				   },
 				   error : function(e) {
 					   //alert("error: " + e.status);

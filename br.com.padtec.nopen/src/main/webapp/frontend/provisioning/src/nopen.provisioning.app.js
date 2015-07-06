@@ -17,11 +17,10 @@ nopen.provisioning.App = Backbone.View.extend({
 		//create owl
 		this.owl = new nopen.provisioning.OWL;
 		
-		//set model
-		this.file.setModel(this.model);
-		this.owl.setModel(this.model);
-		//set OWL
-		this.file.setOWL(this.owl);
+		//set app
+		this.file.setApp(this);
+		this.owl.setApp(this);
+		this.model.setApp(this);
 
 		
 		//initialize procedures

@@ -1,12 +1,19 @@
 nopen.provisioning.Model = Backbone.Model.extend({
 	
+	app : undefined,
+	
 	initialize : function() {
 		
+	},
+	
+	setApp : function(app) {
+		this.app = app;
 	},
 	
 	//Method to pre provisioning
 	startPreProvisioning : function(graph) {
 		
+		var owl = this.app.owl;
 		var $this = this;
 		var links = [];
 		
@@ -74,10 +81,14 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			
 			if(currentLinkIndex < links.length) {
 				
-				var layers = $this.getLayers(target);
-				var input = $this.getInputs(target);
+				//var layers = $this.getLayers(target);
+
+				/*
+				 * CHANGE FOR A METHOD THAT GET OUTPUTS FROM OWL FILE
+				 */
+				var outputs = owl.getOutputsTest();
 				
-				content = createContent();
+				content = createContent(sourceName, targetName, outputs);
 				$('.dialog .body').html(content);
 				prepareList();
 				
@@ -86,39 +97,121 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			//currentLinkIndex === links.length
 			else {
 				
-				var layers = $this.getLayers(target);
-				var input = $this.getInputs(target);
+				//var layers = $this.getLayers(target);
+
+				/*
+				 * CHANGE FOR A METHOD THAT GET OUTPUTS FROM OWL FILE
+				 */
+				var outputs = owl.getOutputsTest();
 				
-				content = createContent();
+				content = createContent(sourceName, targetName, outputs);
 				$('.dialog .body').html(content);
 				$('.dialog .controls .control-button[data-action="next"]').text('Finish');
-				prepareList();
+				prepareList('.outputsList');
+				generateOutputEvents();
 				
 				currentLinkIndex++;
 			}
 			
 		};
 		
-		
-		function createContent() {
+		//create content
+		function createContent(sourceName, targetName, outputs) {
 			
 			var content = 
-				'<div id="listContainer" style="overflow:auto;overflow-x:hidden;">' +
-				    '<ul id="expList" class="list">' +
-				        '<li title="Layer" value="Layer" class="collapsed expanded">Layer1' +
-				            '<ul style="display: block;">' +
-				                '<li title="Output" value="Output" class="collapsed expanded">Out_1' +
-				                '</li>' +
-				            '</ul>' +
-				        '</li>' +
-				    '</ul>' +
-				'</div>';
+				'<div class="preProvisioningContainer"><div class="outputsList"><div id="listContainer">' +
+				    '<ul id="expList" class="list"> <li class="outputs">' + sourceName + '</li> ' ;
 			
+			$.each(outputs, function(layer, value) {
+				
+				content = content + 
+				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+				
+				$.each(outputs[layer], function(key, output) {
+					
+					content = content +
+						'<ul style="display: block;">' +
+			                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
+			            '</ul>';
+					
+				});
+				
+				content = content + '</li>';
+				
+			});
+			
+			content = content + '</ul></div></div>';
+			content = content + 
+				'<div class="inputsList"><div id="listContainer">' +
+			    	'<ul id="expList" class="list"> <li class="inputs">' + targetName + '</li></ul>' + 
+			    '</div></div></div>';
+			
+
 			return content;
 		}
 		
-		function prepareList() {
-			$('#expList').find('li:has(ul)').click( function(event) {
+		//generate events to outputs list
+		function generateOutputEvents() {
+			
+			$('.outputsList #expList').find('li.outputItem').click( function(event) {
+				
+				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", true);
+				
+				$('.outputsList #expList li').removeClass('active');
+				$(this).toggleClass('active');
+				
+				$('.inputsList #expList li:not(:first)').remove();
+				
+				/*
+				 * CHANGE FOR A METHOD THAT GET INPUTS FROM OWL FILE
+				 */
+				var inputs = owl.getInputsTest();
+				
+				var content = "";
+				$.each(inputs, function(layer, value) {
+					
+					content = content + 
+					    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+					
+					$.each(inputs[layer], function(key, input) {
+						
+						content = content +
+							'<ul style="display: block;">' +
+				                '<li class="inputItem" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + input.name + '</li>' +
+				            '</ul>';
+						
+					});
+					
+					content = content + '</li>';
+					
+				});
+				
+				$('.inputsList #expList').append(content);
+				prepareList('.inputsList');
+				
+				generateInputEvents();
+				
+			});
+			
+		};
+		
+		//generate events to inputs list
+		function generateInputEvents() {
+			
+			$('.inputsList #expList').find('li.inputItem').click( function(event) {
+				
+				$('.inputsList #expList li').removeClass('active');
+				$(this).toggleClass('active');
+				
+				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+				
+			});
+			
+		};
+		
+		//generate events to list
+		function prepareList(type) {
+			$(type + ' #expList').find('li:has(ul)').click( function(event) {
 				if (this == event.target) {
 					$(this).toggleClass('expanded');
 					$(this).children('ul').toggle('medium');
@@ -144,13 +237,8 @@ nopen.provisioning.Model = Backbone.Model.extend({
 					toggle = false;          
 				}
 			});
-
-			$('#expList').find('li').click( function(event) {
-				
-				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
-				return false;
-			});
 		}
+		
 		
 	},
 	
