@@ -127,9 +127,9 @@ public class FactoryUtil {
 	 * @author Freddy Brasileiro
 	 * @throws Exception 
 	 */
-	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI) throws Exception
+	static public Individual createInstanceIndividual(OntModel model, String individualURI, String classURI) throws Exception
 	{			
-		createInstanceIndividual(model, individualURI, classURI, true);		
+		return createInstanceIndividual(model, individualURI, classURI, true);		
 	}
 	
 	/**
@@ -168,7 +168,7 @@ public class FactoryUtil {
 	 * @author Freddy Brasileiro
 	 * @throws Exception 
 	 */
-	static public void createInstanceIndividual(OntModel model, String individualURI, String classURI, boolean forceSuperTypes) throws Exception
+	static public Individual createInstanceIndividual(OntModel model, String individualURI, String classURI, boolean forceSuperTypes) throws Exception
 	{			
 		isValid(model, individualURI);
 		
@@ -181,6 +181,8 @@ public class FactoryUtil {
 		if(forceSuperTypes){
 			enforceInstIndvSuperTypes(model, individualURI, classURI);
 		}		
+		
+		return individual;
 	}
 	
 	/**
