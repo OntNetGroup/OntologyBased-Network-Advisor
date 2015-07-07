@@ -47,7 +47,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		_.each(implementedTechnologies, function(technology, index) {
 			
 			var uppermostLayer = this.model.getUppermostLayer(technology);
-			var container = Stencil.createContainer(technology, uppermostLayer);
+			var container = Stencil.createLayerNetwork(technology, uppermostLayer);
 			
 			graph.addCell(container);
 			var containerX = container.attributes.position.x;
@@ -64,15 +64,15 @@ nopen.provisioning.App = Backbone.View.extend({
 			container.embed(subnetwork);
 			
 			_.each(equipmentIDs, function(equipmentID, index) {
-				var node = Stencil.createNode(equipmentID);
-				graph.addCell(node);
+				var accessGroup = Stencil.createAccessGroup(equipmentID);
+				graph.addCell(accessGroup);
 				
 				var newLink = new joint.dia.Link({
 					source: {id: subnetwork.attributes.id},
 					target: {id: equipmentID}
 				});
 				graph.addCell(newLink);
-				container.embed(node);
+				container.embed(accessGroup);
 			}, this);
 			
 		}, this);

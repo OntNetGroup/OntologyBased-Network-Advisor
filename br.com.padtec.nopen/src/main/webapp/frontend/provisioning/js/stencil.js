@@ -3,8 +3,8 @@ var Stencil = {};
 
 var Stencil = {
 		
-		createContainer: function(tech, upLayer) {
-			var newContainer = new Container({
+		createLayerNetwork: function(tech, upLayer) {
+			var newLayerNetwork = new LayerNetwork({
 		        technology: tech,
 		        upmostLayer: upLayer,
 				position: {x: 250, y: 100},
@@ -32,7 +32,7 @@ var Stencil = {
 			return newSubnetwork;
 		},
 		
-		createNode: function(equipmentID) {
+		createAccessGroup: function(equipmentID) {
 			var newNode = new joint.shapes.basic.Circle({
 				id: equipmentID,
 				size: { width: 20, height: 20 },
