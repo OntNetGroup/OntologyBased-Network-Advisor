@@ -47,32 +47,26 @@ nopen.provisioning.App = Backbone.View.extend({
 		_.each(implementedTechnologies, function(technology, index) {
 			
 			var uppermostLayer = this.model.getUppermostLayer(technology);
-			var container = Stencil.createLayerNetwork(technology, uppermostLayer);
+			var layerNetwork = Stencil.createLayerNetwork(technology, uppermostLayer);
 			
-			graph.addCell(container);
-			var containerX = container.attributes.position.x;
-			var containerY = container.attributes.position.y;
+			graph.addCell(layerNetwork);
+			var layerNetworkX = layerNetwork.attributes.position.x;
+			var layerNetworkY = layerNetwork.attributes.position.y;
+			var subnetworkX = layerNetwork.attributes.position.x + 100;
+			var subnetworkY = layerNetwork.attributes.position.y + 40;
 			
 			var subnetwork = Stencil.createSubnetwork();
 			graph.addCell(subnetwork);
-			subnetwork.attr({
-				position: {x: container.attributes.position.x + 205, y: container.attributes.position.y + 55}
-			});
-			
+			subnetwork.translate(subnetworkX, subnetworkY);
+			layerNetwork.embed(subnetwork);
+
 			var equipmentIDs = this.model.getEquipmentsByLayer(uppermostLayer);
-			
-			container.embed(subnetwork);
-			
 			_.each(equipmentIDs, function(equipmentID, index) {
 				var accessGroup = Stencil.createAccessGroup(equipmentID);
 				graph.addCell(accessGroup);
+				accessGroup.translate(subnetworkX + 140, subnetworkY - 10);
 				
-				var newLink = new joint.dia.Link({
-					source: {id: subnetwork.attributes.id},
-					target: {id: equipmentID}
-				});
-				graph.addCell(newLink);
-				container.embed(accessGroup);
+				subnetwork.embed(accessGroup);
 			}, this);
 			
 		}, this);

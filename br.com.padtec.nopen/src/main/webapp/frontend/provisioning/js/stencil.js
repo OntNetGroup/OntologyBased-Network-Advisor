@@ -17,12 +17,13 @@ var Stencil = {
 				}
 			});
 			
-			return newContainer;
+			return newLayerNetwork;
 		},
 		
 		createSubnetwork: function() {
 			var newSubnetwork = new joint.shapes.basic.Circle({
-				size: { width: 90, height: 90 },
+				subtype: 'Subnetwork',
+				size: { width: 300, height: 120 },
 			    attrs: {
 					'.': { magnet: true },
 			        text: { text: 'Subnetwork', fill: '#000000', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
@@ -33,15 +34,16 @@ var Stencil = {
 		},
 		
 		createAccessGroup: function(equipmentID) {
-			var newNode = new joint.shapes.basic.Circle({
+			var newAccessGroup = new joint.shapes.basic.Circle({
 				id: equipmentID,
+				subtype: 'Access_Group',
 				size: { width: 20, height: 20 },
 			    attrs: {
 					'.': { magnet: true }
 			    }
 			});
 			
-			return newNode;
+			return newAccessGroup;
 		}
 };
 
