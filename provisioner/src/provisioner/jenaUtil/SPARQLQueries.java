@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import provisioner.domain.IntBinds;
 import provisioner.domain.Interface;
 import br.com.padtec.common.queries.QueryUtil;
 
@@ -525,6 +526,76 @@ public class SPARQLQueries {
 		    	//Interface newInt = new Interface(int2.toString());
 		    	result.add(newInt);
 //		    	result.add(int2.toString()); 
+		    }
+		}
+		return result;
+	}
+	
+	public static List<IntBinds> getIntBinds(OntModel model, HashMap<String, Interface> interfaces){
+		System.out.println("\nExecuting getBindedInterfaces()...");
+		List<IntBinds> result = new ArrayList<IntBinds>();				
+		String queryString = ""
+				+ QueryUtil.PREFIXES
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ "SELECT DISTINCT *\n"
+				+ "WHERE {\n"
+				+ "?int1 ns:maps ?port1 .\n"
+				+ "	?int2 ns:maps ?port2 .\n"
+				+ "	?port1 ns:binds ?port2 .\n" 
+				+ "}";
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();
+		    RDFNode int1 = row.get("int1");	
+		    RDFNode int2 = row.get("int2");	
+		    if(QueryUtil.isValidURI(int1.toString()) && QueryUtil.isValidURI(int2.toString()))
+		    {
+		    	System.out.println("- int1 URI: "+int1.toString()); 
+		    	System.out.println("- int2 URI: "+int2.toString());
+		    	Interface interfaceFrom = interfaces.get(int1.toString());
+		    	Interface interfaceTo = interfaces.get(int2.toString());
+		    	IntBinds newIntBinds = new IntBinds(interfaceFrom, interfaceTo);
+		    	result.add(newIntBinds); 
+		    }
+		}
+		return result;
+	}
+	
+	public static List<IntBinds> getInternalIntBinds(OntModel model, HashMap<String, Interface> interfaces){
+		System.out.println("\nExecuting getBindedInterfaces()...");
+		List<IntBinds> result = new ArrayList<IntBinds>();				
+		String queryString = ""
+				+ QueryUtil.PREFIXES
+				+ "PREFIX ns: <" + model.getNsPrefixURI("") + ">\n"
+				+ "SELECT DISTINCT ?int1 ?int2 \n"
+				+ "WHERE {\n"
+				+ " ?int1 ns:maps ?port1 .\n"
+				+ "	?tf1 ns:componentOf ?port1 .\n"
+				+ "	?tf1 ns:tf_binds+ ?tf2 .\n"
+				+ "	?tf2 ns:componentOf ?port2 .\n"
+				+ "	?int2 ns:maps ?port2 .\n"
+				+ "	?equipment ns:componentOf ?int1 .\n"
+				+ "	?equipment ns:componentOf ?int2 .\n "
+				+ "}";
+		Query query = QueryFactory.create(queryString); 		
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();		
+		while (results.hasNext()) 
+		{			
+			QuerySolution row = results.next();
+		    RDFNode int1 = row.get("int1");	
+		    RDFNode int2 = row.get("int2");	
+		    if(QueryUtil.isValidURI(int1.toString()) && QueryUtil.isValidURI(int2.toString()))
+		    {
+		    	System.out.println("- int1 URI: "+int1.toString()); 
+		    	System.out.println("- int2 URI: "+int2.toString());
+		    	Interface interfaceFrom = interfaces.get(int1.toString());
+		    	Interface interfaceTo = interfaces.get(int2.toString());
+		    	IntBinds newIntBinds = new IntBinds(interfaceFrom, interfaceTo);
+		    	result.add(newIntBinds); 
 		    }
 		}
 		return result;
