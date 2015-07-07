@@ -55,7 +55,7 @@ var Rappid = Backbone.Router.extend({
         this.paper = new joint.dia.Paper({
             width: 1000,
             height: 1000,
-            gridSize: 10,
+            gridSize: 1,
             perpendicularLinks: true,
             model: this.graph,
             defaultLink: new joint.dia.Link({

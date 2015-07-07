@@ -48,11 +48,19 @@ nopen.provisioning.App = Backbone.View.extend({
 			
 			var uppermostLayer = this.model.getUppermostLayer(technology);
 			var container = Stencil.createContainer(technology, uppermostLayer);
-			var subnetwork = Stencil.createSubnetwork();
-			var equipmentIDs = this.model.getEquipmentsByLayer(uppermostLayer);
 			
 			graph.addCell(container);
+			var containerX = container.attributes.position.x;
+			var containerY = container.attributes.position.y;
+			
+			var subnetwork = Stencil.createSubnetwork();
 			graph.addCell(subnetwork);
+			subnetwork.attr({
+				position: {x: container.attributes.position.x + 205, y: container.attributes.position.y + 55}
+			});
+			
+			var equipmentIDs = this.model.getEquipmentsByLayer(uppermostLayer);
+			
 			container.embed(subnetwork);
 			
 			_.each(equipmentIDs, function(equipmentID, index) {

@@ -22,8 +22,7 @@ var Stencil = {
 		
 		createSubnetwork: function() {
 			var newSubnetwork = new joint.shapes.basic.Circle({
-				position: {x: 440, y: 140},
-				size: { width: 120, height: 120 },
+				size: { width: 90, height: 90 },
 			    attrs: {
 					'.': { magnet: true },
 			        text: { text: 'Subnetwork', fill: '#000000', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
