@@ -3,8 +3,8 @@ var Stencil = {};
 
 var Stencil = {
 		
-		createContainer: function(tech, upLayer) {
-			var newContainer = new Container({
+		createLayerNetwork: function(tech, upLayer) {
+			var newLayerNetwork = new LayerNetwork({
 		        technology: tech,
 		        upmostLayer: upLayer,
 				position: {x: 250, y: 100},
@@ -17,15 +17,15 @@ var Stencil = {
 				}
 			});
 			
-			return newContainer;
+			return newLayerNetwork;
 		},
 		
 		createSubnetwork: function() {
 			var newSubnetwork = new joint.shapes.basic.Circle({
-				position: {x: 440, y: 140},
-				size: { width: 120, height: 120 },
+				subtype: 'Subnetwork',
+				size: { width: 300, height: 120 },
 			    attrs: {
-					'.': { magnet: true },
+					'.': { magnet: false },
 			        text: { text: 'Subnetwork', fill: '#000000', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
 			    }
 			});
@@ -33,16 +33,17 @@ var Stencil = {
 			return newSubnetwork;
 		},
 		
-		createNode: function(equipmentID) {
-			var newNode = new joint.shapes.basic.Circle({
+		createAccessGroup: function(equipmentID) {
+			var newAccessGroup = new joint.shapes.basic.Circle({
 				id: equipmentID,
+				subtype: 'Access_Group',
 				size: { width: 20, height: 20 },
 			    attrs: {
-					'.': { magnet: true }
+					'.': { magnet: false }
 			    }
 			});
 			
-			return newNode;
+			return newAccessGroup;
 		}
 };
 

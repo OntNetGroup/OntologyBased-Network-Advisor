@@ -1,5 +1,5 @@
 // bpmn.Pool without blackbox-label
-Container = joint.dia.Element.extend({
+LayerNetwork = joint.dia.Element.extend({
 
     markup: ['<g class="rotatable">',
              '<g class="scalable"><rect class="body"/></g>',
@@ -13,6 +13,7 @@ Container = joint.dia.Element.extend({
     defaults: joint.util.deepSupplement({
 
         type: 'bpmn.Pool',
+        subtype: 'Layer_Network',
         technology: '',
         uppermostLayer: '',
         size: {
