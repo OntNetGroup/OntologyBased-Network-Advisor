@@ -189,6 +189,27 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			
 		});
 		
+		//Connected ports Output_Card > Input_Card
+		$.each(card.connectedPorts, function(key, port) {
+			
+			//if target type === Input_Card
+			if(card.connectedPorts[key]["type"] === 'Input_Card') {
+				
+				//Output_Card > Input_Card
+				var link = {
+						"sourceType" : "Output_Card",
+						"targetType" : "Input_Card",
+						"source" : key,
+						"target" : card.connectedPorts[key]["id"]
+				}
+				links.push(link);
+				
+				console.log('LINK: ' + JSON.stringify(link))
+				
+			}
+			
+		});
+		
 		//execute parse
 		$.ajax({
 		   type: "POST",

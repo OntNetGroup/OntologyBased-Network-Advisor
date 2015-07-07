@@ -371,6 +371,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 			
 		});
 		
+//		console.log(JSON.stringify(graph));
+		
 		//start pre provsioning
 		model.startPreProvisioning(graph);
 	}

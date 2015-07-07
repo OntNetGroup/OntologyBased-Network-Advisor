@@ -31,8 +31,8 @@ function ituHandle(paper, graph, validator){
 	    	   var outPort = source.attributes.outPorts[index];
 
 	    	   if(source.attributes.connectedPorts[index]) {
-	    		   var inPortIndex = source.attributes.connectedPorts[index][0];
-	    		   var inPort = source.attributes.connectedPorts[index][1];
+	    		   var inPortIndex = source.attributes.connectedPorts[index]["id"];
+	    		   var inPort = source.attributes.connectedPorts[index]["name"];
 	    		   content = content + '<tr><td class="connected" id="'+ index + '">' + outPort + '<span class="tag" id="' + inPortIndex + '">' + inPort + '</span></td></tr>';
 	    	   }
 	    	   else {
@@ -48,8 +48,8 @@ function ituHandle(paper, graph, validator){
 				var inPort = target.attributes.inPorts[index];
 				
 				if(target.attributes.connectedPorts[index]) {
-					var outPortIndex = target.attributes.connectedPorts[index][0];
-					var outPort = target.attributes.connectedPorts[index][1];
+					var outPortIndex = target.attributes.connectedPorts[index]["id"];
+					var outPort = target.attributes.connectedPorts[index]["name"];
 					content = content + '<tr><td class="connected" id="'+ index + '">' + inPort + ' <span class="tag" id="' + outPortIndex + '">' + outPort + ' </span></td></tr>';
 				}
 				else{
@@ -208,7 +208,7 @@ function ituHandle(paper, graph, validator){
 					            		}
 					            	});
 				            		if(deleteIndex) {
-				            			deleteConnectedPort(index, cell.attributes.connectedPorts[index][0]);
+				            			deleteConnectedPort(index, cell.attributes.connectedPorts[index]["id"]);
 				            			delete cell.attributes.inPorts[index];
 				            		}
 				            	});
@@ -222,7 +222,7 @@ function ituHandle(paper, graph, validator){
 					            		}
 					            	});
 				            		if(deleteIndex) {
-				            			deleteConnectedPort(index, cell.attributes.connectedPorts[index][0]);
+				            			deleteConnectedPort(index, cell.attributes.connectedPorts[index]["id"]);
 				            			delete cell.attributes.outPorts[index];
 				            		}
 				            	});
@@ -367,8 +367,8 @@ function ituHandle(paper, graph, validator){
 			var outPort = source.attributes.outPorts[index];
 			
 			if(source.attributes.connectedPorts[index]) {
-				var inPortIndex = source.attributes.connectedPorts[index][0];
-				var inPort = source.attributes.connectedPorts[index][1];
+				var inPortIndex = source.attributes.connectedPorts[index]["id"];
+				var inPort = source.attributes.connectedPorts[index]["name"];
 				content = content + '<tr><td class="connected" id="'+ index + '">' + outPort + '<span class="tag" id="' + inPortIndex + '">' + inPort + '</span></td></tr>';
 			}
 			else {
@@ -415,8 +415,8 @@ function ituHandle(paper, graph, validator){
 				var inPort = target.attributes.inPorts[index];
 				
 				if(target.attributes.connectedPorts[index]) {
-					var outPortIndex = target.attributes.connectedPorts[index][0];
-					var outPort = target.attributes.connectedPorts[index][1];
+					var outPortIndex = target.attributes.connectedPorts[index]["id"];
+					var outPort = target.attributes.connectedPorts[index]["name"];
 					content = content + '<tr><td class="connected" id="'+ index + '">' + inPort + ' <span class="tag" id="' + outPortIndex + '">' + outPort + ' </span></td></tr>';
 				}
 				else{
@@ -485,14 +485,14 @@ function ituHandle(paper, graph, validator){
 			
 			//outPort index -> inPort index
 			source.attributes.connectedPorts[sourceIndex] = {};
-			source.attributes.connectedPorts[sourceIndex][0] = targetIndex;
-			source.attributes.connectedPorts[sourceIndex][1] = target.attributes.inPorts[targetIndex];
-			source.attributes.connectedPorts[sourceIndex][2] = "Input_Card";
+			source.attributes.connectedPorts[sourceIndex]["id"] = targetIndex;
+			source.attributes.connectedPorts[sourceIndex]["name"] = target.attributes.inPorts[targetIndex];
+			source.attributes.connectedPorts[sourceIndex]["type"] = "Input_Card";
 			
 			target.attributes.connectedPorts[targetIndex] = {};
-			target.attributes.connectedPorts[targetIndex][0] = sourceIndex;
-			target.attributes.connectedPorts[targetIndex][1] = source.attributes.outPorts[sourceIndex];
-			target.attributes.connectedPorts[targetIndex][2] = "Output_Card";
+			target.attributes.connectedPorts[targetIndex]["id"] = sourceIndex;
+			target.attributes.connectedPorts[targetIndex]["name"] = source.attributes.outPorts[sourceIndex];
+			target.attributes.connectedPorts[targetIndex]["type"] = "Output_Card";
 			
 //			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
 //			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
@@ -500,13 +500,13 @@ function ituHandle(paper, graph, validator){
 			
 //			console.log(source.attributes.connectedPorts[sourceIndex]);
 	
-			var	sourceID = source.attributes.connectedPorts[sourceIndex][0]
-			var	sourceName = source.attributes.connectedPorts[sourceIndex][1];
-			var sourceType = source.attributes.connectedPorts[sourceIndex][2];	
+			var	sourceID = source.attributes.connectedPorts[sourceIndex]["id"]
+			var	sourceName = source.attributes.connectedPorts[sourceIndex]["name"];
+			var sourceType = source.attributes.connectedPorts[sourceIndex]["type"];	
 			
-			var targetID = target.attributes.connectedPorts[targetIndex][0];
-			var targetName = target.attributes.connectedPorts[targetIndex][1];
-			var targetType = target.attributes.connectedPorts[targetIndex][2];
+			var targetID = target.attributes.connectedPorts[targetIndex]["id"];
+			var targetName = target.attributes.connectedPorts[targetIndex]["name"];
+			var targetType = target.attributes.connectedPorts[targetIndex]["type"];
 	
 			
 			

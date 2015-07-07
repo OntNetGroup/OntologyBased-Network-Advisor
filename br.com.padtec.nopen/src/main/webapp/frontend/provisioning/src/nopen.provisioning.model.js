@@ -198,12 +198,31 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		//generate events to inputs list
 		function generateInputEvents() {
 			
-			$('.inputsList #expList').find('li.inputItem').click( function(event) {
+			$('.inputsList #expList').find('li.inputItem').click(function(event) {
 				
 				$('.inputsList #expList li').removeClass('active');
 				$(this).toggleClass('active');
 				
 				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+				
+			});
+			
+			$('.dialog .controls .control-button[data-action="next"]').click(function(event) {
+				
+				var output = {
+						"id": $('.outputItem.active').attr('id'),
+						"name": $('.outputItem.active').attr('value'),
+						"type": "Output_Card"
+				};
+				
+				var input = {
+						"id": $('.inputItem.active').attr('id'),
+						"name": $('.inputItem.active').attr('value'),
+						"type": "Input_Card"
+				};
+				
+				console.log('Out: ' + JSON.stringify(output));
+				console.log('In: ' + JSON.stringify(input));
 				
 			});
 			
