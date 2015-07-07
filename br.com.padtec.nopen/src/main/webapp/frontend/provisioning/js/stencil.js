@@ -25,7 +25,7 @@ var Stencil = {
 				subtype: 'Subnetwork',
 				size: { width: 300, height: 120 },
 			    attrs: {
-					'.': { magnet: true },
+					'.': { magnet: false },
 			        text: { text: 'Subnetwork', fill: '#000000', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
 			    }
 			});
@@ -39,7 +39,7 @@ var Stencil = {
 				subtype: 'Access_Group',
 				size: { width: 20, height: 20 },
 			    attrs: {
-					'.': { magnet: true }
+					'.': { magnet: false }
 			    }
 			});
 			
