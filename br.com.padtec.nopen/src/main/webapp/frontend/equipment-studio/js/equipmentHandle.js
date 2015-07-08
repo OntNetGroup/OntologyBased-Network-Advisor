@@ -33,8 +33,24 @@ function showTechnologyWindow(techs , cell){
 	} ));
 
 	dialog.on('action:save', function(){
-		cell.set('tech', ($('#tech-dialog').find(":selected").val()) );
-		dialog.close();
+		
+		console.log(cell.id);
+		console.log(cell.attributes.attrs.name.text);
+		console.log(cell.attributes.subType);
+
+		var result = setTechnology( cell.attributes.attrs.name.text ,cell.attributes.subType, cell.id , ($('#tech-dialog').find(":selected").val()));
+		if(result === "success"){
+			cell.set('tech', ($('#tech-dialog').find(":selected").val()) );
+			dialog.close();
+		}else{
+		    new joint.ui.Dialog({
+			type: 'alert',
+			width: 400,
+			title: 'Alert',
+			content: result,
+			}).open();	
+		}
+		
 	});
 	
 }; 
@@ -86,11 +102,6 @@ function equipmentHandle(app, graph){
 				//equipamento em um Rack
 				// consultar ontologia para inserção 
 
-//				if(this.skipOntologyAddHandler === true){
-//				//	console.log("WORKED");
-//				this.skipOntologyAddHandler = false;
-//				return;
-//				};
 
 				var result = EquipStudioInsertContainer(equipmentName , equipmentType, equipmentID ,containerName , containerType , containerID);
 				//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);

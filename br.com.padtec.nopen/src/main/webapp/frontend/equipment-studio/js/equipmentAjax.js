@@ -153,7 +153,7 @@ function setTechnology( SupervisorName ,SupervisorType, SupervisorID , tech) {
 		async: false,
 		url: "setTechnology.htm",
 		data: {
-			'Supervisor': JSON.stringify(dtoSupervisor),
+			'supervisor': JSON.stringify(dtoSupervisor),
 			'technology': JSON.stringify(technology)
 		} ,
 		success: function(data){ 		   
@@ -189,8 +189,8 @@ function superviseCard( SupervisorName, SupervisorType, SupervisorID ,CardName, 
 		async: false,
 		url: "superviseCard.htm",
 		data: {
-			'Supervisor': JSON.stringify(dtoSupervisor),
-			'Card': JSON.stringify(dtoCard)
+			'supervisor': JSON.stringify(dtoSupervisor),
+			'card': JSON.stringify(dtoCard)
 		} ,
 		success: function(data){ 		   
 			result = data;
