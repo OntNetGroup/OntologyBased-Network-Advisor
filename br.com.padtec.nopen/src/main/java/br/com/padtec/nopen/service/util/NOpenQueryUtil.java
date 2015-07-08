@@ -127,7 +127,6 @@ public class NOpenQueryUtil {
 				+ "?z rdfs:range ont:" + type_input + " . "
 				+ "?z rdfs:domain ?y . "
 				+ "}";
-		System.out.println("QUERY COM PROBLEMA -> " + queryString);
 		Query query = QueryFactory.create(queryString); 
   		
   		// Execute the query and obtain results
@@ -148,10 +147,10 @@ public class NOpenQueryUtil {
 	{
 		HashMap<String, String> result = new HashMap<String, String>();
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/nOpenModel.owl#> "
+				+ "PREFIX ont: <http://www.menthor.net/nOpenModel.owl#> "
 				+ "SELECT  ?relation ?target  "
 				+ "WHERE { ?relation rdfs:subPropertyOf ont:componentOf . "
-				+ "?relation rdfs:domain <" + classID + "> . "
+				+ "?relation rdfs:domain ont:" + classID + " . "
 				+ "?relation rdfs:range ?target . "
 				+  "}";
 		

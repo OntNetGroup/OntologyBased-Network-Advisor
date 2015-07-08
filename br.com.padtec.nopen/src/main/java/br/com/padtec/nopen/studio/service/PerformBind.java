@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.common.util.Util;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.RelationEnum;
@@ -36,20 +37,15 @@ public class PerformBind {
 			String idTarget = dtoTargetElement.getId();
 			String typeTarget = dtoTargetElement.getType();
 			String property =  RelationEnum.binds.toString();
-			String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
-			String typeSourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getType();
-			String targetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getId();
-			String typeTargetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getType();
-			String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.binds.toString();
 
-			
-			String outputId = idSource + "_Output";
 			String typeOutput = typeSource + "_Output";
+			String outputId = Util.generateUUID();
+			
 			String relation_source = null;
 			HashMap<String, String> source_componentOfs = new HashMap<String, String>();
 			
-			String inputId = idTarget + "_Input" ;
 			String typeInput = typeTarget + "_Input";
+			String inputId = Util.generateUUID();
 			String relation_target = null;
 			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
 
@@ -86,7 +82,7 @@ public class PerformBind {
 					FactoryUtil.createInstanceRelation(
 							StudioComponents.studioRepository.getBaseModel(), 
 							StudioComponents.studioRepository.getNamespace()+typeTarget + "_" + typeSource, 
-							StudioComponents.studioRepository.getNamespace() + RelationEnum.binds.toString(),
+							StudioComponents.studioRepository.getNamespace() + property,
 							nameTFPort
 						);
 					
@@ -95,70 +91,85 @@ public class PerformBind {
 					//First, verify if the ports can have a RP between them
 					//if so, create the ports, RP and the relations between them
 					
-					HashSet<String> rps_between_ports = new HashSet<String>();
-					rps_between_ports = discoverRPBetweenPorts( typeOutput, typeInput, StudioComponents.studioRepository);
-					String tipo_rp;
-					String rp_name;
-					tipo_rp = rps_between_ports.iterator().next();
-					rp_name = tipo_rp + "_" + typeOutput.substring(typeOutput.indexOf("#")+1) + "_" + typeInput.substring(typeInput.indexOf("#")+1);
-					String rpId = rp_name;
+					HashSet<String> rpsBetweenPorts = discoverRPBetweenPorts( typeOutput, typeInput, NOpenComponents.nopenRepository);
+					String rpTypeURI = rpsBetweenPorts.iterator().next();
+					String rpType = rpTypeURI.substring(rpTypeURI.indexOf("#")+1);
+					Integer numberOfIndividualsFromThisClass = QueryUtil.getAllOccurrencesOfIndividualsFromClass(StudioComponents.studioRepository.getBaseModel(), StudioComponents.studioRepository.getNamespace() + rpType);
+					String rpName = rpType + "_" + numberOfIndividualsFromThisClass.toString();
+					String rpId = rpName;
 					
-					ArrayList<String> relationOutRp = QueryUtil.getRelationsBetweenClasses(StudioComponents.studioRepository.getBaseModel(), typeOutput, tipo_rp, StudioComponents.studioRepository.getNamespace()+RelationEnum.INV_links_output.toString());
-					ArrayList<String> relationInRp = QueryUtil.getRelationsBetweenClasses(StudioComponents.studioRepository.getBaseModel(), tipo_rp, typeInput, StudioComponents.studioRepository.getNamespace()+RelationEnum.links_input.toString());
+					String rpTypeInNOpen = NOpenComponents.nopenRepository.getNamespace() + rpType;
+					String typeOutputNOpen = NOpenComponents.nopenRepository.getNamespace() + typeOutput;
+					String typeInputNOpen = NOpenComponents.nopenRepository.getNamespace() + typeInput;
+					String propertyOutputRPInNOpen = NOpenComponents.nopenRepository.getNamespace() + RelationEnum.INV_links_output.toString();
+					String propertyInputRPInNOpen = NOpenComponents.nopenRepository.getNamespace() + RelationEnum.links_input.toString();
+					
+					ArrayList<String> relationOutRpInNOpen = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), typeOutputNOpen, rpTypeInNOpen, propertyOutputRPInNOpen);
+					ArrayList<String> relationInRpInNOpen = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), rpTypeInNOpen, typeInputNOpen, propertyInputRPInNOpen);
+					
+					String relationOutRp = relationOutRpInNOpen.get(0);
+					relationOutRp = relationOutRp.substring(relationOutRp.indexOf("#") + 1);
+					
+					String relationInRp = relationInRpInNOpen.get(0);
+					relationInRp = relationInRp.substring(relationInRp.indexOf("#") + 1);
 					
 					// create reference point
 					FactoryUtil.createInstanceIndividual(
 							StudioComponents.studioRepository.getBaseModel(), 
-							rp_name, 
-							tipo_rp,
+							StudioComponents.studioRepository.getNamespace() + rpId, 
+							StudioComponents.studioRepository.getNamespace() + rpType,
 							true
 						);
 					
 					//create output
 					FactoryUtil.createInstanceIndividual(
 							StudioComponents.studioRepository.getBaseModel(), 
-							StudioComponents.studioRepository.getNamespace()+outputId, 
-							typeOutput,
+							StudioComponents.studioRepository.getNamespace() + outputId, 
+							StudioComponents.studioRepository.getNamespace() + typeOutput,
 							true
 						);
 	
 					//create input
 					FactoryUtil.createInstanceIndividual(
 							StudioComponents.studioRepository.getBaseModel(), 
-							StudioComponents.studioRepository.getNamespace()+inputId, 
-							typeInput,
+							StudioComponents.studioRepository.getNamespace() + inputId, 
+							StudioComponents.studioRepository.getNamespace() + typeInput,
 							true
 						);
 					
 					//create relation between output and reference point
 					FactoryUtil.createInstanceRelation(
 							StudioComponents.studioRepository.getBaseModel(), 
-							StudioComponents.studioRepository.getNamespace()+idSource, 
-							relationOutRp.get(0),
-							rpId
+							StudioComponents.studioRepository.getNamespace() + idSource, 
+							StudioComponents.studioRepository.getNamespace() + relationOutRp,
+							StudioComponents.studioRepository.getNamespace() + rpId
 						);
 					
 					//create relation between input and reference point
 					FactoryUtil.createInstanceRelation(
 							StudioComponents.studioRepository.getBaseModel(), 
-							StudioComponents.studioRepository.getNamespace()+idTarget, 
-							relationInRp.get(0),
-							rpId
+							StudioComponents.studioRepository.getNamespace() + idTarget, 
+							StudioComponents.studioRepository.getNamespace() + relationInRp,
+							StudioComponents.studioRepository.getNamespace() + rpId
 						);
 					
 									
-					source_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(typeSource, StudioComponents.studioRepository.getBaseModel()); 
-					target_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(typeTarget, StudioComponents.studioRepository.getBaseModel()); 
+					source_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(typeSource, NOpenComponents.nopenRepository.getBaseModel()); 
+					target_componentOfs = NOpenQueryUtil.getAllComponentOFRelations(typeTarget, NOpenComponents.nopenRepository.getBaseModel()); 
 	
-					if ((source_componentOfs.containsKey(typeSource + "_Output")) && (target_componentOfs.containsKey(typeTarget + "_Input"))) {
-						relation_source = source_componentOfs.get(typeSource + "_Output");
-						relation_target = target_componentOfs.get(typeTarget + "_Input");
+					if ((source_componentOfs.containsKey(NOpenComponents.nopenRepository.getNamespace() + typeSource + "_Output")) && (target_componentOfs.containsKey(NOpenComponents.nopenRepository.getNamespace() + typeTarget + "_Input"))) {
+						relation_source = source_componentOfs.get(NOpenComponents.nopenRepository.getNamespace() + typeSource + "_Output");
+						relation_target = target_componentOfs.get(NOpenComponents.nopenRepository.getNamespace() + typeTarget + "_Input");
+						
+						relation_source = relation_source.replace("http://www.menthor.net/nOpenModel.owl", "http://www.menthor.net/nOpenModel_light.owl");
+						relation_target = relation_target.replace("http://www.menthor.net/nOpenModel.owl", "http://www.menthor.net/nOpenModel_light.owl");
+						
 						//create the relation between tf and output
 						FactoryUtil.createInstanceRelation( 
 								StudioComponents.studioRepository.getBaseModel(), 
-								StudioComponents.studioRepository.getNamespace()+idSource, 
+								StudioComponents.studioRepository.getNamespace() + idSource, 
 								relation_source,
-								StudioComponents.studioRepository.getNamespace()+outputId
+								StudioComponents.studioRepository.getNamespace() + outputId
 								);		
 						
 						NOpenLog.appendLine(StudioComponents.studioRepository.getName()+":  Output "+outputId+" created at "+ typeSource + ": "+nameSource);
@@ -167,9 +178,9 @@ public class PerformBind {
 						//create the relation between tf and input
 						FactoryUtil.createInstanceRelation(
 								StudioComponents.studioRepository.getBaseModel(), 
-								StudioComponents.studioRepository.getNamespace()+idTarget, 
-								StudioComponents.studioRepository.getNamespace()+relation_target,
-							StudioComponents.studioRepository.getNamespace()+inputId
+								StudioComponents.studioRepository.getNamespace() + idTarget, 
+								relation_target,
+								StudioComponents.studioRepository.getNamespace() + inputId
 						);
 						
 						//StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
@@ -246,7 +257,8 @@ public class PerformBind {
 		String typeTarget = dtoTargetElement.getType();
 		String idTarget = dtoTargetElement.getId();
 		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
-		
+		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getId();
+
 		
 		if(typeTarget.equals(ConceptEnum.Output_Card.toString()) || typeTarget.equals(ConceptEnum.Input_Card.toString())){ 
 			//verificar cardinalidade de input do TF
@@ -259,7 +271,7 @@ public class PerformBind {
 			String typeInput = typeTarget + "_Input";
 			String property = RelationEnum.binds.toString();
 			String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
-			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), sourceURI, propertyURI, typeTarget );
+			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), targetURI, propertyURI, typeSource );
 			String key = NOpenComponents.nopenRepository.getNamespace() + typeSource + NOpenComponents.nopenRepository.getNamespace() + property + NOpenComponents.nopenRepository.getNamespace() + typeTarget; 
 			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 			if(cardinality == null){
