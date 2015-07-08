@@ -76,7 +76,7 @@ public class TopologyController {
 	 * @param graph
 	 */
 	@RequestMapping(value = "/saveTopology", method = RequestMethod.POST)
-	protected @ResponseBody void saveTopology(@RequestParam("filename") String filename, @RequestParam("graph") String graph){
+	protected @ResponseBody void saveTopology(@RequestParam("filename") String filename, @RequestParam("graph") String graph, @RequestParam("svg") String svg){
 		
 		NOpenFileUtil.createTopologyRepository(filename);
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
@@ -84,6 +84,9 @@ public class TopologyController {
 		try {
 			File file = NOpenFileUtil.createTopologyJSONFile(filename);
 			NOpenFileUtil.writeToFile(file, graph);
+			
+			file = NOpenFileUtil.createTopologySVGFile(filename);
+			NOpenFileUtil.writeToFile(file, svg);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -112,6 +115,19 @@ public class TopologyController {
 	protected @ResponseBody String openTopology(@RequestParam("filename") String filename){
 		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
+		return NOpenFileUtil.openTopologyJSONFileAsString(filename);
+		
+	}
+	
+	/**
+	 * Procedure to open a JSON Topology file.
+	 * @param filename
+	 * @return
+	 */
+	@RequestMapping(value = "/openTopologySVG", method = RequestMethod.POST)
+	protected @ResponseBody String openTopologySVG(@RequestParam("filename") String filename){
+		
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".svg");	
 		return NOpenFileUtil.openTopologyJSONFileAsString(filename);
 		
 	}

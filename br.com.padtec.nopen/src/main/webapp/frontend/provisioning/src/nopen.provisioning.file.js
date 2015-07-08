@@ -1,6 +1,7 @@
 nopen.provisioning.File = Backbone.Model.extend({
 	
 	app : undefined,
+	topologySVG : undefined,
 	
 	initialize : function(){
 		
@@ -8,6 +9,14 @@ nopen.provisioning.File = Backbone.Model.extend({
 	
 	setApp : function(app) {
 		this.app = app;
+	},
+	
+	setTopologySVG : function(svg) {
+		this.topologySVG = svg
+	},
+	
+	getTopologySVG : function() {
+		return this.topologySVG;
 	},
 	
 	//Method to get paramentes from url
@@ -286,6 +295,22 @@ nopen.provisioning.File = Backbone.Model.extend({
 			   graph.fromJSON(data);
 			   //import equipments
 			   $this.importEquipments(graph);
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "openTopologySVG.htm",
+		   data: {
+			   'filename' : filename
+		   },
+		   success: function(svg){ 		   
+			   //import equipments
+			   $this.setTopologySVG(svg);
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);

@@ -244,6 +244,15 @@ public class NOpenFileUtil {
 	}
 	
 	/**
+	 * Procedure for create a Topology SVG file.
+	 * @param filename 
+	 * @return
+	 */
+	public static File createTopologySVGFile(String filename){
+		return createFile(NOpenFileUtil.topologyJSONFolder, filename + ".svg");
+	}
+	
+	/**
 	 * Procedure for create a Template JSON file.
 	 * @param filename 
 	 * @return

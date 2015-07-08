@@ -96,7 +96,7 @@
 
             $('#btn-save').click(function(){
             	if(checkNodeEquipments(app.graph)){
-            		generateSaveTopologyDialog(app.graph);
+            		generateSaveTopologyDialog(app.paper, app.graph);
             	}
             });
             

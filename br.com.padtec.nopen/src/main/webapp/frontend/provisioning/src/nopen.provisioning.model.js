@@ -14,6 +14,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 	startPreProvisioning : function(graph) {
 		
 		var owl = this.app.owl;
+		var file = this.app.file;
 		var $this = this;
 		var links = [];
 		
@@ -92,6 +93,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				$('.dialog .body').html(content);
 				prepareList('.outputsList');
 				generateOutputEvents();
+				changeSVGColor(sourceName, targetName);
 				
 				currentLinkIndex++;
 			}
@@ -110,6 +112,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				$('.dialog .controls .control-button[data-action="next"]').text('Finish');
 				prepareList('.outputsList');
 				generateOutputEvents();
+				changeSVGColor(sourceName, targetName);
 				
 				currentLinkIndex++;
 			}
@@ -147,9 +150,25 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			    	'<ul id="expList" class="list"> <li class="inputs">' + targetName + '</li></ul>' + 
 			    '</div></div></div>';
 			
+			content = content + '<div class="image">' + file.getTopologySVG() + '</div>'
 
 			return content;
-		}
+		};
+		
+		function changeSVGColor(sourceName, targetName) {
+			
+			//Set SVG elements
+			$('.rotatable').each(function(){
+				if($(this).text() === targetName || $(this).text() === sourceName) {
+					var id = $(this).attr('id');
+					$('#' + id + ' circle').attr('fill', "#FFF200");
+				}
+				else {
+					$(this).attr('opacity', ".5")
+				}
+			})
+			
+		};
 		
 		//generate events to outputs list
 		function generateOutputEvents() {

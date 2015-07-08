@@ -1,4 +1,4 @@
-function generateSaveTopologyDialog(graph){
+function generateSaveTopologyDialog(paper, graph){
 	
 	var content = '<div id="save-dialog" title="Save Topology">'
 		+ 'Name: <input type="text" id="save-filename" value="' + $('#filename').val() + '"/>'
@@ -59,6 +59,11 @@ function generateSaveTopologyDialog(graph){
 	
 	function saveTopology(){
 		
+		var svg = "";
+		paper.toSVG( function(svgString) {
+			svg = svgString;
+		});
+		
 		$('#filename').val($("#save-filename").val());
 		
 		$.ajax({
@@ -67,6 +72,7 @@ function generateSaveTopologyDialog(graph){
 		   data: {
 			 'filename': $("#save-filename").val(),
 			 'graph': JSON.stringify(graph.toJSON()),
+			 'svg' : svg,
 		   },
 		   success: function(){ 		   
 			   alert($("#save-filename").val() + ' saved successfully!');
