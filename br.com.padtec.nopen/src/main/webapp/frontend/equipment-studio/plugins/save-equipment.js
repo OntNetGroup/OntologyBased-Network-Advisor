@@ -211,6 +211,22 @@ function generateSaveEquipmentDialog(graph){
 	            	   }
 	               }
 			} 
+			
+			if((check.attributes.subType) === 'Slot'){
+				if(check.getEmbeddedCells().length === 0){
+					var parent = check.attributes.parent;
+					(equipament.getCell(check.id)).remove();					
+					 if ((equipament.getCell(parent)).getEmbeddedCells().length === 0){
+	            		   (equipament.getCell(parent)).remove();   
+	            	   }
+				}
+			}
+			
+			if((check.attributes.subType) === 'Shelf'){
+				if(check.getEmbeddedCells().length === 0){
+					(equipament.getCell(check.id)).remove();
+				}
+			}
 		};		
 		console.log(equipament);		
 	}
