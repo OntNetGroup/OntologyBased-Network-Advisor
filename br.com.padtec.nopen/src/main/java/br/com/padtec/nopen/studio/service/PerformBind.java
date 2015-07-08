@@ -94,9 +94,7 @@ public class PerformBind {
 					HashSet<String> rpsBetweenPorts = discoverRPBetweenPorts( typeOutput, typeInput, NOpenComponents.nopenRepository);
 					String rpTypeURI = rpsBetweenPorts.iterator().next();
 					String rpType = rpTypeURI.substring(rpTypeURI.indexOf("#")+1);
-					Integer numberOfIndividualsFromThisClass = QueryUtil.getAllOccurrencesOfIndividualsFromClass(StudioComponents.studioRepository.getBaseModel(), StudioComponents.studioRepository.getNamespace() + rpType);
-					String rpName = rpType + "_" + numberOfIndividualsFromThisClass.toString();
-					String rpId = rpName;
+					String rpId = Util.generateUUID();
 					
 					String rpTypeInNOpen = NOpenComponents.nopenRepository.getNamespace() + rpType;
 					String typeOutputNOpen = NOpenComponents.nopenRepository.getNamespace() + typeOutput;
