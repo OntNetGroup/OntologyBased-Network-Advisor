@@ -10,7 +10,7 @@ function generateSaveEquipmentDialog(graph){
 	console.log(savedSupervisors);
 	
 	var content = '<div id="save-dialog" title="Save Equipment">'
-		+ 'Equipament: <select>';
+		+ 'Equipment: <select>';
 	for(var i = 0; i < savedSupervisors.length; i++){
 		if(i == 0){
 			content += '<option value="'+savedSupervisors[i].attributes.attrs.name.text +'">'+savedSupervisors[i].attributes.attrs.name.text+'</option>';

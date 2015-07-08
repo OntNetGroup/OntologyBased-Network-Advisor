@@ -90,7 +90,8 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				
 				content = createContent(sourceName, targetName, outputs);
 				$('.dialog .body').html(content);
-				prepareList();
+				prepareList('.outputsList');
+				generateOutputEvents();
 				
 				currentLinkIndex++;
 			}
