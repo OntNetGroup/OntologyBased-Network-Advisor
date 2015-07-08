@@ -335,10 +335,10 @@ var Rappid = Backbone.Router.extend({
             halo.removeHandle('rotate');
         	halo.removeHandle('link');
         	halo.removeHandle('unlink');
-			
+        	halo.removeHandle('remove');
 			halo.render();
 
-			this.initializeHaloTooltips(halo);
+//			this.initializeHaloTooltips(halo);
 
 			this.createInspector(cellView);
 
@@ -353,18 +353,18 @@ var Rappid = Backbone.Router.extend({
 		}, this);
 	},
 
-	initializeNavigator: function() {
+//	initializeNavigator: function() {
+//
+//		var navigator = this.navigator = new joint.ui.Navigator({
+//			width: 240,
+//			height: 115,
+//			paperScroller: this.paperScroller,
+//			zoomOptions: { max: 5, min: 0.2 }
+//		});
 
-		var navigator = this.navigator = new joint.ui.Navigator({
-			width: 240,
-			height: 115,
-			paperScroller: this.paperScroller,
-			zoomOptions: { max: 5, min: 0.2 }
-		});
-
-		navigator.$el.appendTo('.navigator-container');
-		navigator.render();
-	},
+//		navigator.$el.appendTo('.navigator-container');
+//		navigator.render();
+//	},
 
 	initializeHaloTooltips: function(halo) {
 
@@ -459,22 +459,22 @@ var Rappid = Backbone.Router.extend({
 //		}, this));
 	},
 
-	initializeCommandManager: function() {
-
-		this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
-
-		KeyboardJS.on('ctrl + z', _.bind(function() {
-
-			this.commandManager.undo();
-			this.selectionView.cancelSelection();
-		}, this));
-
-		KeyboardJS.on('ctrl + y', _.bind(function() {
-
-			this.commandManager.redo();
-			this.selectionView.cancelSelection();
-		}, this));
-	},
+//	initializeCommandManager: function() {
+//
+//		this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
+//
+//		KeyboardJS.on('ctrl + z', _.bind(function() {
+//
+//			this.commandManager.undo();
+//			this.selectionView.cancelSelection();
+//		}, this));
+//
+//		KeyboardJS.on('ctrl + y', _.bind(function() {
+//
+//			this.commandManager.redo();
+//			this.selectionView.cancelSelection();
+//		}, this));
+//	},
 
 	initializeValidator: function() {
 

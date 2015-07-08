@@ -56,7 +56,7 @@ function generateSaveEquipmentDialog(graph){
 				   
 				   if(data == "exist"){		   
 					   if (confirm('The file already exist, do you want to replace it?')) {
-////						   	copyITUEquipmentFiles();
+						   	copyITUEquipmentFiles();
 //						   	deleteITUEquipmentFiles();
 						   var originalGraph = graph.toJSON();
 						   equipmentGraph()
@@ -66,7 +66,7 @@ function generateSaveEquipmentDialog(graph){
 					   } 
 				   }
 				   else{
-//					  copyITUEquipmentFiles();
+					  copyITUEquipmentFiles();
 //					  deleteITUEquipmentFiles();
 					   var originalGraph = graph.toJSON();
 					   equipmentGraph()
@@ -83,28 +83,30 @@ function generateSaveEquipmentDialog(graph){
 		
 	};
 	
-//	function copyITUEquipmentFiles(){
-//		
-//		if($("#filename").val() != $('#save-dialog').find(":selected").val()){
-//			$.ajax({
-//			   type: "POST",
-//			   async: false,
-//			   url: "copyITUFiles.htm",
-//			   data: {
-//				 'oldPath': $("#filename").val(),
-//				 'newPath': $('#save-dialog').find(":selected").val(),
-//			   },
-//			   success: function(){
-//				   deletedITUFiles = [];
-//				   index = 0;
-//			   },
-//			   error : function(e) {
-//				   //alert("error: " + e.status);
-//			   }
-//			});
-//		}
-//		
-//	}
+	function copyITUEquipmentFiles(){
+		console.log($("#filename").val());
+		console.log($('#save-dialog').find(":selected").val());
+		console.log($("#save-filename").val());
+		if($("#filename").val() != $('#save-dialog').find(":selected").val()){
+			$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "copyITUEquipmentFiles.htm",
+			   data: {
+				 'oldPath': $("#filename").val(),
+				 'newPath': $('#save-dialog').find(":selected").val(),
+			   },
+			   success: function(){
+				   deletedITUFiles = [];
+				   index = 0;
+			   },
+			   error : function(e) {
+				   //alert("error: " + e.status);
+			   }
+			});
+		}
+		
+	}
 //	
 //	function deleteITUEquipmentFiles(){
 //		
@@ -211,6 +213,22 @@ function generateSaveEquipmentDialog(graph){
 	            	   }
 	               }
 			} 
+			
+			if((check.attributes.subType) === 'Slot'){
+				if(check.getEmbeddedCells().length === 0){
+					var parent = check.attributes.parent;
+					(equipament.getCell(check.id)).remove();					
+					 if ((equipament.getCell(parent)).getEmbeddedCells().length === 0){
+	            		   (equipament.getCell(parent)).remove();   
+	            	   }
+				}
+			}
+			
+			if((check.attributes.subType) === 'Shelf'){
+				if(check.getEmbeddedCells().length === 0){
+					(equipament.getCell(check.id)).remove();
+				}
+			}
 		};		
 		console.log(equipament);		
 	}

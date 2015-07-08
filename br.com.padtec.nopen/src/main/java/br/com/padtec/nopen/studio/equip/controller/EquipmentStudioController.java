@@ -446,7 +446,7 @@ public class EquipmentStudioController {
 
 		String ituOldPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.templateJSONFolder  + oldPath + "/itu/");
 		String ituNewPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + newPath);
-		NOpenFileUtil.createTemplateRepository(newPath);
+		NOpenFileUtil.createEquipmentRepository(newPath);
 
 		//DELETE ITU FILES IN NEW PATH
 		String ituFilesInNewPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + newPath + "/itu/");
@@ -473,7 +473,7 @@ public class EquipmentStudioController {
 	}
 
 	/**
-	 * Procedure to delete a ITU file inside of a Equipment Folder.
+	 * Procedure to delete a ITU file inside of a Template Folder.
 	 * @param filename
 	 */	
 	@RequestMapping("/deleteITUFile")

@@ -62,7 +62,9 @@ function generateSaveTemplateDialog(graph){
 	};
 	
 	function copyITUFiles(){
-		
+		console.log($("#filename").val());
+		console.log($('#save-dialog').find(":selected").val());
+		console.log($("#save-filename").val());
 		if($("#filename").val() != $("#save-filename").val()){
 			$.ajax({
 			   type: "POST",

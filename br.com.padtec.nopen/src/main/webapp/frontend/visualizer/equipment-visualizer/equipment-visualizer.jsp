@@ -82,6 +82,8 @@
 		src="/nopen/frontend/visualizer/equipment-visualizer/js/inspector.js"></script>
 	<script
 		src="/nopen/frontend/visualizer/equipment-visualizer/js/main.js"></script>
+		<script
+		src="/nopen/frontend/visualizer/equipment-visualizer/js/graphHandler.js"></script>
 	<script	
 		src="/nopen/frontend/visualizer/equipment-visualizer/js/ituHandle.js"></script>
 
@@ -101,11 +103,15 @@
 		var app = new Rappid;
 		Backbone.history.start();
 
+		
+		
 		if (getUrlParameter('equipment')) {
 			var equipment = getUrlParameter('equipment');
 			openFromURL(equipment, app.graph);
 		}
 
+		 graphHandler(app, app.graph);
+		
 		$('.toolbar-container').append(
 				'<div style="display: inline;margin-left:10px">&#155; '
 						+ equipment + '</div>');
