@@ -269,22 +269,25 @@ public class PerformBind {
 			String typeInput = typeTarget + "_Input";
 			String property = RelationEnum.binds.toString();
 			String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
-			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), targetURI, propertyURI, typeSource );
+			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), sourceURI, propertyURI, typeTarget );
+			//Integer numberOfAlreadyBoundPorts2 = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), targetURI, StudioComponents.studioRepository.getNamespace() + RelationEnum.INV_binds.toString(), typeSource );
+			//System.out.println("NUMBER UM -> " + numberOfAlreadyBoundPorts.toString());
+			//System.out.println("NUMBER DOIS -> "+ numberOfAlreadyBoundPorts2.toString());
 			String key = NOpenComponents.nopenRepository.getNamespace() + typeSource + NOpenComponents.nopenRepository.getNamespace() + property + NOpenComponents.nopenRepository.getNamespace() + typeTarget; 
 			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 			if(cardinality == null){
 				NOpenLog.appendLine("Error: The Transport Function " + nameSource + " cannot be bound to " + nameTarget + " because the relation between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " does not exist.");
 				throw new Exception("Error: Unexpected relation between " + nameSource + " and " + nameTarget + " because there is no \"binds\" relation between " + typeSource + " and " + typeTarget);
 			}
-			Integer cardinality_input_target = Integer.parseInt(cardinality);
+			Integer cardinalityInputTarget = Integer.parseInt(cardinality);
 			
 			//create the Reference Point if exists and the relation between reference point and ports
-			HashSet<String> rps_between_ports = new HashSet<String>();
-			rps_between_ports = discoverRPBetweenPorts( typeOutput, typeInput, NOpenComponents.nopenRepository);
+			HashSet<String> rpsBetweenPorts = new HashSet<String>();
+			rpsBetweenPorts = discoverRPBetweenPorts( typeOutput, typeInput, NOpenComponents.nopenRepository);
 			boolean isClient = false;
 			isClient = isClient(idSource, idTarget, StudioComponents.studioRepository);
-			if(rps_between_ports.size() > 0){
-				if((numberOfAlreadyBoundPorts < cardinality_input_target) || (cardinality_input_target == -1)){
+			if(rpsBetweenPorts.size() > 0){
+				if((numberOfAlreadyBoundPorts < cardinalityInputTarget) || (cardinalityInputTarget == -1)){
 					if(isClient){
 						return true;
 					} else{
