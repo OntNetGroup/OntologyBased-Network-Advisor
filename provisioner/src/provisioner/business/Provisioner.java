@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import provisioner.domain.IntBinds;
 import provisioner.domain.Interface;
 import provisioner.domain.Path;
 import provisioner.jenaUtil.OWLUtil;
@@ -40,6 +41,7 @@ public class Provisioner {
 	long reasoningTimeExecPostInstances = 0;
 	long createInstancesTime = 0;
 	OntModel consistencyModel;
+	HashMap<Interface, List<Interface>> origPaths = new HashMap<Interface, List<Interface>>();
 	
 	public long getReasoningTimeExecPostInstances() {
 		return reasoningTimeExecPostInstances;
@@ -51,55 +53,108 @@ public class Provisioner {
 
 
 	public Provisioner(String baseTBoxFile, String consistencyTBoxFile, String declaredInstancesFile, String possibleEquipFile, int declaredReplications, int possibleReplications) throws Exception {
-			this.possibleEquipFile = possibleEquipFile;
-			//#1
-			OWLUtil.createTBox(this.okcoUploader, baseTBoxFile, consistencyTBoxFile);
-			model = this.okcoUploader.getBaseModel();
-			consistencyModel = this.okcoUploader.getConsistencyBaseModel();
-			
-			ns = model.getNsPrefixURI("");
-			//#3
-			Date beginDate = new Date();
-			ArrayList<OntModel> models = new ArrayList<OntModel>();
-			models.add(model);
-			models.add(consistencyModel);
-			OWLUtil.createInstances(models, declaredInstancesFile, declaredReplications);
-			createInstancesTime = PerformanceUtil.getExecutionTime(beginDate);
-			this.declaredEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
-			createInterfaceHash(this.declaredEquip);
-			//#7 and #8
-			verifiyMinimumEquipment();	
-			
-			bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
-			
-			//#9
-			verifyIfEquipmentMapsOutPortsInSource();
-			INT_SO_LIST = verifyIfEquipmentMapsInPortsInSource();
-			//removeInterfaces(INT_SO_LIST, bindedInterfaces);
-			INT_SO_LIST.removeAll(bindedInterfaces);
-			verifyIfEquipmentMapsInPortsInSink();
-			INT_SK_LIST = verifyIfEquipmentMapsOutPortsInSink();
-			//removeInterfaces(INT_SK_LIST, bindedInterfaces);
-			INT_SK_LIST.removeAll(bindedInterfaces);
-			
-			//#15
-			beginDate = new Date();
-			OWLUtil.createInstances(models, possibleEquipFile, possibleReplications);
-			createInstancesTime += PerformanceUtil.getExecutionTime(beginDate);
-			this.possibleEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
-			this.possibleEquip.removeAll(this.declaredEquip);
-			createInterfaceHash(this.possibleEquip);
-			bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
-			createBindedInterfaceHash(bindedInterfaces);
-			
-			//#16
-			verifiyMinimumEquipWithPM();
-			
-			originalBindedInterfaces.addAll(bindedInterfaces);
-			
-			//#17
-			reasoningTimeExecPostInstances = OWLUtil.runReasoner(okcoUploader, true, true, true);
-			System.out.println(PerformanceUtil.getExecutionMessage("createInstances", createInstancesTime));			
+		this.possibleEquipFile = possibleEquipFile;
+		//#1
+		OWLUtil.createTBox(this.okcoUploader, baseTBoxFile, consistencyTBoxFile);
+		model = this.okcoUploader.getBaseModel();
+		consistencyModel = this.okcoUploader.getConsistencyBaseModel();
+		
+		ns = model.getNsPrefixURI("");
+		//#3
+		Date beginDate = new Date();
+		ArrayList<OntModel> models = new ArrayList<OntModel>();
+		models.add(model);
+		models.add(consistencyModel);
+		OWLUtil.createInstances(models, declaredInstancesFile, declaredReplications);
+		createInstancesTime = PerformanceUtil.getExecutionTime(beginDate);
+		this.declaredEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
+		createInterfaceHash(this.declaredEquip);
+		//#7 and #8
+		verifiyMinimumEquipment();	
+		
+		bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
+		
+		//#9
+		verifyIfEquipmentMapsOutPortsInSource();
+		INT_SO_LIST = verifyIfEquipmentMapsInPortsInSource();
+		//removeInterfaces(INT_SO_LIST, bindedInterfaces);
+		INT_SO_LIST.removeAll(bindedInterfaces);
+		verifyIfEquipmentMapsInPortsInSink();
+		INT_SK_LIST = verifyIfEquipmentMapsOutPortsInSink();
+		//removeInterfaces(INT_SK_LIST, bindedInterfaces);
+		INT_SK_LIST.removeAll(bindedInterfaces);
+		
+		//#15
+		beginDate = new Date();
+		OWLUtil.createInstances(models, possibleEquipFile, possibleReplications);
+		createInstancesTime += PerformanceUtil.getExecutionTime(beginDate);
+		this.possibleEquip = QueryUtil.getIndividualsURI(model, ns+"Equipment");
+		this.possibleEquip.removeAll(this.declaredEquip);
+		createInterfaceHash(this.possibleEquip);
+		bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
+		createBindedInterfaceHash(bindedInterfaces);
+		
+		//#16
+		verifiyMinimumEquipWithPM();
+		
+		originalBindedInterfaces.addAll(bindedInterfaces);
+		
+		//#17
+		reasoningTimeExecPostInstances = OWLUtil.runReasoner(okcoUploader, true, true, true);
+		System.out.println(PerformanceUtil.getExecutionMessage("createInstances", createInstancesTime));
+		
+		List<IntBinds> intBinds = SPARQLQueries.getIntBinds(model, interfaces);
+		List<IntBinds> internalIntBinds = SPARQLQueries.getInternalIntBinds(model, interfaces);
+		intBinds.addAll(internalIntBinds);
+		
+		for (IntBinds intBind : intBinds) {
+			Interface intFrom = intBind.getInterfaceFrom();
+			Interface intTo = intBind.getInterfaceTo();
+			List<Interface> listIntfcTo;
+			if(origPaths.containsKey(intFrom)){
+				listIntfcTo = origPaths.get(intFrom);
+			}else{
+				listIntfcTo = new ArrayList<Interface>();
+			}
+			listIntfcTo.add(intTo);
+			if(!origPaths.containsKey(intFrom)){
+				origPaths.put(intFrom, listIntfcTo);
+			}
+		}
+	}
+	
+	public List<Path> getOrigPaths(Interface originalInterfaceFrom, Interface originalInterfaceTo){
+		List<Path> retPaths = getOrigPathsRecursive(originalInterfaceFrom, originalInterfaceTo);
+		
+		return retPaths;
+	}
+	
+	public List<Path> getOrigPathsRecursive(Interface currentInterfaceFrom, Interface originalInterfaceTo){
+		List<Interface> listIntfcTo = origPaths.get(currentInterfaceFrom);
+		List<Path> retPaths = null;
+		for (Interface interfaceTo : listIntfcTo) {
+			if(interfaceTo.equals(originalInterfaceTo)){
+				Path path = new Path();
+				path.addInterface(currentInterfaceFrom);
+				path.addInterface(interfaceTo);
+				retPaths = new ArrayList<Path>();
+				retPaths.add(path);
+				
+//				return retPaths;
+			}else{
+				retPaths = getOrigPathsRecursive(interfaceTo, originalInterfaceTo);
+				if(retPaths == null){
+					return null;
+				}else{
+					for (Path path : retPaths) {
+//						path.addInterface(interfaceTo);
+						path.addInterfaceInBegin(currentInterfaceFrom);
+					}
+//					return retPaths;
+				}
+			}
+		}
+		return retPaths;
 	}
 	
 	public HashMap<String, Interface> getInterfaces() {
@@ -547,6 +602,8 @@ public class Provisioner {
 				//#21
 				//Interface out = new Interface(VAR_OUT);
 				out = interfaces.get(VAR_OUT);
+
+				List<Path> x = getOrigPaths(in, out);
 				
 				createPath(in, out);
 				
@@ -560,6 +617,7 @@ public class Provisioner {
 				//#22
 				//in = new Interface(VAR_IN);
 				in = interfaces.get(VAR_IN);
+				
 				bindsInterfaces(out, in, isSource);
 			}
 		} while (!VAR_OUT.equals(interfaceTo.getInterfaceURI()));//#20

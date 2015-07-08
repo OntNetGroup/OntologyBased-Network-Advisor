@@ -24,6 +24,22 @@ public class Path {
 		}		
 	}
 	
+	public Path(List<Interface> interfaceList) {
+		 this.interfaceList.addAll(interfaceList);
+	}
+	
+	public Path() {
+		
+	}
+	
+	public void addInterface(Interface intf){
+		this.interfaceList.add(intf);
+	}
+	
+	public void addInterfaceInBegin(Interface intf){
+		this.interfaceList.add(0, intf);
+	}
+	
 	public int getQtDeclared() {
 		return qtDeclared;
 	}
