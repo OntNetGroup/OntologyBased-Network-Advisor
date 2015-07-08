@@ -8,7 +8,7 @@ function setSupervisor(graph, cards){
 	if (cards.length === 1) {
 		
 		card = graph.getCell(cards.val());
-//		superviseCard( SupervisorName, SupervisorType, SupervisorID ,CardName, CardType , CardID)
+
 		var result=superviseCard( Supervisord.attributes.attrs.name.text, Supervisord.attributes.subType , Supervisord.id ,card.attributes.attrs.name.text, card.attributes.subType,card.id);
 		if(result="success"){
 			card.set("SupervisorID", Supervisord.id);
@@ -21,13 +21,14 @@ function setSupervisor(graph, cards){
 		for(var i = 0; i < cards.length; i++){			
 			card = graph.getCell(cards[i].value);
 			
-//			var result=superviseCard( Supervisord.attributes.attrs.name.text, Supervisord.id ,Card.attributes.attrs.name.text, Card.id);
-//			if(result="success"){
+			var result=superviseCard( Supervisord.attributes.attrs.name.text, Supervisord.attributes.subType , Supervisord.id ,card.attributes.attrs.name.text, card.attributes.subType,card.id);
+			if(result="success"){
 				card.set("SupervisorID" , (Supervisord.id));
 				card.set("Supervisor" , (Supervisord.attributes.attrs.name.text));
 		}
 	}
 }
+};
 
 function setSupervisorNull(graph,cards){
 		
@@ -104,5 +105,6 @@ function supervisorHandle(paper, graph){
 				selectSupervisorWindow(Supervisor, nsCards, sCards, graph);
 			}
 		}
-   });
-};
+   })
+   
+}
