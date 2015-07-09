@@ -52,39 +52,40 @@ public class PerformBind {
 			if(canCreateBind(dtoSourceElement, dtoTargetElement)){
 				
 				if(typeTarget.equals(ConceptEnum.Output_Card.toString()) || typeTarget.equals(ConceptEnum.Input_Card.toString())){
-					String nameTFPort = typeTarget.substring(0,typeTarget.indexOf("_")) + "_" + typeSource;
-					String tipoTFPort = typeTarget.substring(0,typeTarget.indexOf("_"));
-					//create Input/Output
+					String idPort = Util.generateUUID();
+					String typePort = typeSource + "_" + typeTarget.substring(0, typeTarget.indexOf("_"));
+					String relation = RelationEnum.componentOf.toString();
+					
+					//cria portas
 					FactoryUtil.createInstanceIndividual(
 							StudioComponents.studioRepository.getBaseModel(), 
-							nameTFPort, 
-							tipoTFPort,
+							StudioComponents.studioRepository.getNamespace() + idPort, 
+							StudioComponents.studioRepository.getNamespace() + typePort,
 							true
 						);
 					
-					//create Input/Output Card
 					FactoryUtil.createInstanceIndividual(
 							StudioComponents.studioRepository.getBaseModel(), 
-							typeTarget + "_" + typeSource, 
-							typeTarget,
+							StudioComponents.studioRepository.getNamespace() + idTarget, 
+							StudioComponents.studioRepository.getNamespace() + typeTarget,
 							true
 						);
 					
-					//create relation between transport function and Input/Output
 					FactoryUtil.createInstanceRelation(
 							StudioComponents.studioRepository.getBaseModel(), 
-							StudioComponents.studioRepository.getNamespace()+idSource, 
-							StudioComponents.studioRepository.getNamespace() + RelationEnum.componentOf.toString(),
-							nameTFPort
+							StudioComponents.studioRepository.getNamespace() + idPort, 
+							StudioComponents.studioRepository.getNamespace() + relation,
+							StudioComponents.studioRepository.getNamespace() + idSource
 						);
 					
-					//create relation between Input/Output and Input/Output Card
+					
 					FactoryUtil.createInstanceRelation(
 							StudioComponents.studioRepository.getBaseModel(), 
-							StudioComponents.studioRepository.getNamespace()+typeTarget + "_" + typeSource, 
+							StudioComponents.studioRepository.getNamespace() + idTarget, 
 							StudioComponents.studioRepository.getNamespace() + property,
-							nameTFPort
+							StudioComponents.studioRepository.getNamespace() + idPort
 						);
+					return true;
 					
 				} else {
 					//Binds entre TFs 
@@ -256,12 +257,28 @@ public class PerformBind {
 		String idTarget = dtoTargetElement.getId();
 		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
 		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getId();
-
 		
 		if(typeTarget.equals(ConceptEnum.Output_Card.toString()) || typeTarget.equals(ConceptEnum.Input_Card.toString())){ 
+			String property = RelationEnum.binds.toString();
+			String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
+			String typePort = typeSource + "_" + typeTarget.substring(0, typeTarget.indexOf("_"));
+
+			String key = NOpenComponents.nopenRepository.getNamespace() + typeTarget + NOpenComponents.nopenRepository.getNamespace() + property + NOpenComponents.nopenRepository.getNamespace() + typePort; 
+			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
+			if(cardinality == null){
+				NOpenLog.appendLine("Error: The Transport Function " + nameSource + " cannot be bound to " + nameTarget + " because the relation between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " does not exist.");
+				throw new Exception("Error: Unexpected relation between " + nameSource + " and " + nameTarget + " because there is no \"binds\" relation between " + typeSource + " and " + typeTarget);
+			}else{
+				Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), targetURI, propertyURI, typeSource );
+				Integer cardinalityInputTarget = Integer.parseInt(cardinality);
+				if(cardinalityInputTarget == -1 || numberOfAlreadyBoundPorts <= cardinalityInputTarget){
+					return true;
+
+				}
+
+			}
 			//verificar cardinalidade de input do TF
 			//se ainda não for máxima, return true
-			return true;
 		}
 		else{ //então, o binds é entre TFs
 
@@ -281,7 +298,6 @@ public class PerformBind {
 			}
 			Integer cardinalityInputTarget = Integer.parseInt(cardinality);
 			
-			//create the Reference Point if exists and the relation between reference point and ports
 			HashSet<String> rpsBetweenPorts = new HashSet<String>();
 			rpsBetweenPorts = discoverRPBetweenPorts( typeOutput, typeInput, NOpenComponents.nopenRepository);
 			boolean isClient = false;
@@ -304,6 +320,7 @@ public class PerformBind {
 				throw new Exception("Error: Unexpected relation between " + nameSource + " and " + nameTarget + "  because there is no Reference Point between " + dtoSourceElement.getType() + " and " + dtoTargetElement.getType() + " . ");
 			}
 		}
+		return false;
 		
 	}
 	
