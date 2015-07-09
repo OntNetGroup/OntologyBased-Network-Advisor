@@ -285,9 +285,6 @@ public class PerformBind {
 			String property = RelationEnum.binds.toString();
 			String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
 			Integer numberOfAlreadyBoundPorts = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), sourceURI, propertyURI, typeTarget );
-			//Integer numberOfAlreadyBoundPorts2 = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), targetURI, StudioComponents.studioRepository.getNamespace() + RelationEnum.INV_binds.toString(), typeSource );
-			//System.out.println("NUMBER UM -> " + numberOfAlreadyBoundPorts.toString());
-			//System.out.println("NUMBER DOIS -> "+ numberOfAlreadyBoundPorts2.toString());
 			String key = NOpenComponents.nopenRepository.getNamespace() + typeSource + NOpenComponents.nopenRepository.getNamespace() + property + NOpenComponents.nopenRepository.getNamespace() + typeTarget; 
 			String cardinality = BuildBindStructure.getInstance().getBindsTuple().get(key);
 			if(cardinality == null){

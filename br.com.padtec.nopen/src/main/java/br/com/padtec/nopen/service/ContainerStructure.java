@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -16,7 +15,6 @@ import br.com.padtec.common.dto.RelationDef;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.RelationEnum;
-import br.com.padtec.nopen.studio.service.BuildBindStructure;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
