@@ -258,7 +258,7 @@ public class PerformBind {
 		String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoSourceElement.getId();
 		String targetURI = StudioComponents.studioRepository.getNamespace() + dtoTargetElement.getId();
 		
-		if(typeTarget.equals(ConceptEnum.Output_Card.toString()) || typeTarget.equals(ConceptEnum.Input_Card.toString())){ 
+		if(typeTarget.equals(ConceptEnum.Output_Card.toString()) || typeTarget.equals(ConceptEnum.Input_Card.toString())){ //relação entre tf e porta de card
 			String property = RelationEnum.binds.toString();
 			String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
 			String typePort = typeSource + "_" + typeTarget.substring(0, typeTarget.indexOf("_"));
@@ -277,8 +277,6 @@ public class PerformBind {
 				}
 
 			}
-			//verificar cardinalidade de input do TF
-			//se ainda não for máxima, return true
 		}
 		else{ //então, o binds é entre TFs
 
