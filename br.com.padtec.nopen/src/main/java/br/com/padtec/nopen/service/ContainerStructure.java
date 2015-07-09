@@ -82,7 +82,7 @@ public class ContainerStructure {
 				+ "PREFIX ont: <http://www.menthor.net/nOpenModel.owl#> "
 				+ "ASK "
 				+ "WHERE { "
-				+ "?subject rdfs:subClassOf ont:componentOf . "
+				+ "?subject rdfs:subPropertyOf ont:componentOf . "
 				+ "?subject rdfs:range ont:" + type + " . "
 				+ "}" ;
 		Query query = QueryFactory.create(queryString);
