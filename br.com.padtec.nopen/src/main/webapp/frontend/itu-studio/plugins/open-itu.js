@@ -103,11 +103,7 @@ function openFromURL(equipment, filename, graph, app){
 			var targetType = target.attributes.type;
 			var targetSubtype = target.attributes.subtype;
 			
-			if(targetType === TypeEnum.TRANSPORT_FUNCTION) {
-				createLink(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
-			} else {
-				createPort(targetID, targetName, targetSubtype, sourceID, sourceName, sourceSubtype);
-			}
+			performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
 		});
 	}
 }
