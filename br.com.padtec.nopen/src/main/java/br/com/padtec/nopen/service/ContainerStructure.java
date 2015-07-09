@@ -79,7 +79,7 @@ public class ContainerStructure {
 
 	public static boolean isTargetOfComponentOfRelation(String type) {
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/NOpenModel.owl#> "
+				+ "PREFIX ont: <http://www.menthor.net/nOpenModel.owl#> "
 				+ "ASK "
 				+ "WHERE { "
 				+ "?subject rdfs:subClassOf ont:componentOf . "

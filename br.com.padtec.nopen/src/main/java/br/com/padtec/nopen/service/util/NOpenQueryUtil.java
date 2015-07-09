@@ -78,7 +78,7 @@ public class NOpenQueryUtil {
 		HashSet<String> result = new HashSet<String>();
 		String queryString = ""
 		+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-		+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#>" 
+		+ "PREFIX ont: <http://www.menthor.net/nOpenModel_light.owl#>" 
 		+ "SELECT ?subject "
 		+  " WHERE { ?subject rdf:type ont:Equipment }" ;
 		
@@ -103,12 +103,13 @@ public class NOpenQueryUtil {
 	
 	public static boolean cardHasSupervisor(String card, InfModel model){
 		String queryString = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewlProject.owl#> "
+				+ "PREFIX ont: <http://www.menthor.net/nOpenModel_light.owl#> "
 				+ "ASK "
-				+ "WHERE { ont:" + card + "rdf:type ont:Card . "
+				+ "WHERE { "
+				+ "ont:" + card + "rdf:type ont:Card . "
 				+ "?subject rdf:type ont:Supervisor . "
-				+ "ont:" + card + "ont:ComponentOf6 ?subject . "
-				+ "}" ;
+				+ "?subject ont:supervises_card ont:" + card + ". "
+				+ "}";
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		boolean result = qe.execAsk();			
