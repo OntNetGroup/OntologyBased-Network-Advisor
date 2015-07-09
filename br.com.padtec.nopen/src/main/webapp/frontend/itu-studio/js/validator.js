@@ -8,7 +8,6 @@ function validator(validator, graph, app) {
     	var cellSubType = cell.subtype;
     	
 		var layerID = command.data.id;
-//    	var layerName = cellSubType;
 		var layerName = cell.lanes.label;
 		var cardID = this.cardID;
 		var cardName = this.cardName;
@@ -74,6 +73,7 @@ function validator(validator, graph, app) {
 				targetElement.remove();
 				return next(err);
 			} else {
+				this.skipOntologyAddHandler = true;
 				return next(result);
 			}
     	}
@@ -84,6 +84,7 @@ function validator(validator, graph, app) {
 			if(result === "success") {
 				return next(err);
 			} else {
+				this.skipOntologyAddHandler = true;
 				return next(result);
 			}
 		}
@@ -110,6 +111,7 @@ function validator(validator, graph, app) {
 		if(result === "success") {
 			return next(err);
 		} else {
+			this.skipOntologyAddHandler = true;
 			return next(result);
 		}
     }, app));
@@ -122,7 +124,6 @@ function validator(validator, graph, app) {
     		this.skipOntologyRemoveHandler = false;
     		return next(err);
     	}
-//    	var containerName = command.data.attributes.subtype;
     	var containerName = command.data.attributes.lanes.label;
 		var containerType = TypeEnum.CARD_LAYER;
 		var cardID = this.cardID;
@@ -136,6 +137,7 @@ function validator(validator, graph, app) {
 			$(element).show();
 			return next(err);
 		} else {
+			this.skipOntologyAddHandler = true;
 			return next(result);
 		}
     }, app));
@@ -164,6 +166,7 @@ function validator(validator, graph, app) {
 			}
 			return next(err);
 		} else {
+			this.skipOntologyAddHandler = true;
 			return next(result);
 		}
     }, app));
@@ -190,7 +193,6 @@ function validator(validator, graph, app) {
         	var sourceName = sourceElement.attributes.attrs.text.text;
         	var sourceSubtype = sourceElement.attributes.subtype;
         	
-//        	var result = createLink(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
         	var result = performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
         	
         	if(result === "success") {
@@ -216,20 +218,18 @@ function validator(validator, graph, app) {
 		var tFunctionID = cell.id;
 		var tFunctionType = cell.attributes.subtype;
 		var tFunctionName = cell.attributes.attrs.text.text;
-		var sourceContainerName = '';
-		var sourceContainerType = '';
-		var targetContainerName = '';
-		var targetContainerType = '';
+		var sourceContainerName = undefined;
+		var sourceContainerType = undefined;
+		var targetContainerName = undefined;
+		var targetContainerType = undefined;
 		
 		var sourceContainer = graph.getCell(command.data.previous.parent);
 		if(sourceContainer) {
-//			sourceContainerName = sourceContainer.attributes.subtype;
 			sourceContainerName = sourceContainer.attributes.lanes.label;
 		}
 		
 		var targetContainer = graph.getCell(command.data.next.parent);
-		if(targetContainer) {
-//			targetContainerName = targetContainer.attributes.subtype;
+		if(targetContainer.attributes.lanes) { // so entra se targetContainer for um layer
 			targetContainerName = targetContainer.attributes.lanes.label;
 		}
 		

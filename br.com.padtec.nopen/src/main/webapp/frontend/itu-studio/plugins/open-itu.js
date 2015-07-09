@@ -60,7 +60,7 @@ function openFromURL(equipment, filename, graph, app){
 	function loadLayers(layers, graph, app) {
 
 		$.each(layers, function(index, layer){
-			var layerName = layer.attributes.subtype;
+			var layerName = layer.attributes.lanes.label;
 			var layerID = layer.id;
 			insertLayer(layerID, layerName, app.cardID, app.cardName);
 			app.hideLayer(layerName);

@@ -57,6 +57,10 @@ function graphHandler(graph, app) {
 	graph.on('add', function(cell, collection, opt) {
 		if(isLink(cell)) return;
 		if(isNotTransportFunction(cell)) return;
+		if(this.skipOntologyAddHandler) {
+    		this.skipOntologyAddHandler = false;
+    		return;
+    	}
 		
 		var tFunctionID = cell.id;
 		var tFunctionType = cell.attributes.subtype;
@@ -85,7 +89,6 @@ function graphHandler(graph, app) {
 
 			if(isLayer(parent)){ // elemento abaixo é uma camada
 				containerID = parent.id;
-//				containerName = parent.attributes.subtype;
 				containerName = parent.attributes.lanes.label;
 				containerType = TypeEnum.CARD_LAYER;
 				// consultar ontologia para inserção de transport function no layer
@@ -135,6 +138,10 @@ function graphHandler(graph, app) {
 
 		if(isLink(cell)) return;
 		if(isNotInterface(cell)) return;
+		if(this.skipOntologyAddHandler) {
+    		this.skipOntologyAddHandler = false;
+    		return;
+    	}
 		
     	var cellSubType = cell.attributes.subtype;
 
@@ -193,7 +200,7 @@ function graphHandler(graph, app) {
 						this.skipOntologyRemoveHandler = true;
 						cell.remove();
 					}
-			} else { // elemento abaixo não é um transport function uma camada 
+			} else { // elemento abaixo não é um transport function
 				Util.generateAlertDialog('Please, add the port over a transport function.');
 				this.skipOntologyRemoveHandler = true;
 				cell.remove();
