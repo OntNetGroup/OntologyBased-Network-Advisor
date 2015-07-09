@@ -7,7 +7,7 @@ function equipmentSettings(cell){
 	if(cell.get('type') == "basic.Circle"){
 		$.ajax({
 		   type: "GET",
-		   url: "getAllTemplateEquipment.htm",
+		   url: "getAllEquipmentsToMatch.htm",
 		   dataType: 'json',
 		   success: function(data){ 		   
 			   generateDialog(data, cell)
@@ -32,7 +32,7 @@ function graphHandle(graph){
 		if(cell.get('type') == "basic.Circle"){
 			$.ajax({
 			   type: "GET",
-			   url: "getAllTemplateEquipment.htm",
+			   url: "getAllEquipmentsToMatch.htm",
 			   dataType: 'json',
 			   success: function(data){ 		   
 				   generateDialog(data, cell)

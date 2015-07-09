@@ -388,6 +388,17 @@ public class EquipmentStudioController {
 		String[] templates = NOpenFileUtil.getAllTemplateJSONFileNames();
 		return NOpenFileUtil.parseStringToJSON("template", templates);		
 	}
+	
+	/**
+	 * Procedure to get all Templates saved.
+	 * @return
+	 */
+	@RequestMapping(value = "/getAllEquipments", method = RequestMethod.GET)
+	protected @ResponseBody String getAllEquipments()
+	{			
+		String[] equipments = NOpenFileUtil.getAllEquipmentJSONFileNames();
+		return NOpenFileUtil.parseStringToJSON("equipment", equipments);		
+	}
 
 	/**
 	 * Procedure to open a specific Template.

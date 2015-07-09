@@ -153,6 +153,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			content = content + '<div class="image">' + file.getTopologySVG() + '</div>'
 
 			return content;
+			
 		};
 		
 		function changeSVGColor(sourceName, targetName) {
@@ -164,7 +165,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 					$('#' + id + ' circle').attr('fill', "#FFF200");
 				}
 				else {
-					$(this).attr('opacity', ".5")
+//					$(this).attr('opacity', ".5")
 				}
 			})
 			

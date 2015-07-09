@@ -26,7 +26,7 @@ public class VisualizerController {
 	protected @ResponseBody String openEquipment(@RequestParam("filename") String filename)
 	{		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
-		return NOpenFileUtil.openTemplateJSONFileAsString(filename);
+		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
 		
 	}
 	

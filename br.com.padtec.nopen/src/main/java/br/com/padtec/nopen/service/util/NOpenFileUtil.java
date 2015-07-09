@@ -352,7 +352,7 @@ public class NOpenFileUtil {
      * @return
      */
     public static String[] getAllEquipmentJSONFileNames(){
-    	return getAllFolderNames(NOpenFileUtil.templateJSONFolder);
+    	return getAllFolderNames(NOpenFileUtil.equipmentJSONFolder);
     }
     
     /**
@@ -460,7 +460,7 @@ public class NOpenFileUtil {
      * @return
      */
     public static String openEquipmentJSONFileAsString(String filename){
-    	return openFileAsString(NOpenFileUtil.templateJSONFolder, filename);
+    	return openFileAsString(NOpenFileUtil.equipmentJSONFolder, filename);
     }
     
     /**

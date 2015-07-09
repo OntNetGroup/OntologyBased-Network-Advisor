@@ -136,10 +136,10 @@ public class TopologyController {
 	 * Procedure to get all Equipment templates.
 	 * @return
 	 */
-	@RequestMapping(value = "/getAllTemplateEquipment", method = RequestMethod.GET)
-	protected @ResponseBody String getAllTemplateEquipment(){
+	@RequestMapping(value = "/getAllEquipmentsToMatch", method = RequestMethod.GET)
+	protected @ResponseBody String getAllEquipmentsToMatch(){
 		 
-		String[] equipments = NOpenFileUtil.getAllTemplateJSONFileNames();
+		String[] equipments = NOpenFileUtil.getAllEquipmentJSONFileNames();
 		return NOpenFileUtil.parseStringToJSON("equipment", equipments);
 		 
 	}

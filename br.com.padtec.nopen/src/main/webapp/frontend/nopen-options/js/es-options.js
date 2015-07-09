@@ -69,7 +69,7 @@ function getEquipments(){
 	$.ajax({
 	   type: "GET",
 	   async: false,
-	   url: "getAllTemplates.htm",
+	   url: "getAllEquipments.htm",
 	   dataType: 'json',
 	   success: function(data){ 		   
 		   generateOptionsContent(data)
@@ -90,9 +90,9 @@ function getEquipments(){
 			}
 			
 			content = content + '<div class="btn-group">'
-									+ '<a class="btn" title="View" onclick="viewEquipment(\'' + data[i].template + '\')"><i class="icon-eye-open"></i></a>' 
-									+ '<a class="btn" title="Delete" onclick="deleteEquipment(\'' + data[i].template + '\')"><i class="icon-trash"></i></a>'
-									+ '<span class="name">' + data[i].template + '</span>'
+									+ '<a class="btn" title="View" onclick="viewEquipment(\'' + data[i].equipment + '\')"><i class="icon-eye-open"></i></a>' 
+									+ '<a class="btn" title="Delete" onclick="deleteEquipment(\'' + data[i].equipment + '\')"><i class="icon-trash"></i></a>'
+									+ '<span class="name">' + data[i].equipment + '</span>'
 								+ '</div>'
 								+ '<br/><hr/>'
 		}

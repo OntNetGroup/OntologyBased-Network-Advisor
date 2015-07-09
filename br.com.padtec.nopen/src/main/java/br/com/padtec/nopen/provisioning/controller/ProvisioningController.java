@@ -40,13 +40,7 @@ public class ProvisioningController {
 	protected @ResponseBody String openEquipmentOnProvisioning(@RequestParam("filename") String filename){
 			
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
-		
-		/*
-		 * ******************************
-		 * WARNING: Change to Equipment
-		 * ******************************
-		 */
-		return NOpenFileUtil.openTemplateJSONFileAsString(filename);
+		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
 		
 	}
 	
@@ -54,12 +48,7 @@ public class ProvisioningController {
 	protected @ResponseBody String openITUOnProvisioning(@RequestParam("equipment") String equipment, @RequestParam("filename") String filename){
 			
 		filename = NOpenFileUtil.replaceSlash(equipment + "/itu/" + filename + ".json");
-		/*
-		 * ******************************
-		 * WARNING: Change to Equipment
-		 * ******************************
-		 */
-		return NOpenFileUtil.openTemplateJSONFileAsString(filename);
+		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
 		
 	}
 	
