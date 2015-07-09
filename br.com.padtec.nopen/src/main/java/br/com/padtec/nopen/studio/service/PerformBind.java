@@ -335,11 +335,11 @@ public class PerformBind {
 			throw new Exception("Error: Unexpected relation between " + dtoSourceElement.getName() + " and " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio. ");
 		}
 		DtoJointElement newSource = new DtoJointElement();
-		newSource.setId(tfSource[0]);
+		newSource.setId(Util.generateUUID());
 		newSource.setName(tfSource[0]);
 		newSource.setType(rangeClassName);
 		DtoJointElement newTarget = new DtoJointElement();
-		newTarget.setId(tfTarget[0]);
+		newTarget.setId(Util.generateUUID());
 		newTarget.setName(tfTarget[0]);
 		newTarget.setType(rangeClassName);
 		System.out.println();
@@ -359,11 +359,11 @@ public class PerformBind {
 		}
 		System.out.println();
 		DtoJointElement newSource = new DtoJointElement();
-		newSource.setId(tfSource[0]);
+		newSource.setId(Util.generateUUID());
 		newSource.setName(tfSource[0]);
 		newSource.setType(rangeClassName);
 		DtoJointElement newTarget = new DtoJointElement();
-		newTarget.setId(tfTarget[0]);
+		newTarget.setId(Util.generateUUID());
 		newTarget.setName(tfTarget[0]);
 		newTarget.setType(rangeClassName);
 		System.out.println();
