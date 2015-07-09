@@ -130,14 +130,15 @@ function equipmentHandle(app, graph){
 						height:	265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
 					});
 				} else {
-					this.skipOntologyRemoveHandler = true;
-					cell.remove();
-					return new joint.ui.Dialog({
-						type: 'alert',
-						width: 400,
-						title: 'Alert',
-						content: result,
-					}).open();		
+					parent.embed(cell);
+//					 new joint.ui.Dialog({
+//						type: 'alert',
+//						width: 400,
+//						title: 'Alert',
+//						content: result,
+//					}).open();	
+//					 cell.remove(true);
+					 cell.remove();
 				}
 			}else{
 				if(parent.get('subType') === 'Shelf'){
@@ -190,14 +191,14 @@ function equipmentHandle(app, graph){
 							}
 						};
 					}else{
-						this.skipOntologyRemoveHandler = true;
+
 						cell.remove();
-//						return new joint.ui.Dialog({
-//						type: 'alert',
-//						width: 400,
-//						title: 'Alert',
-//						content: result,
-//						}).open();	
+                       new joint.ui.Dialog({
+						type: 'alert',
+						width: 400,
+						title: 'Alert',
+						content: result,
+						}).open();	
 					}
 				}else {
 					if(parent.get('subType') === 'Slot'){
@@ -302,10 +303,6 @@ function equipmentHandle(app, graph){
 								cell.remove();
 
 							}
-						}
-					}else{
-						if(parent.get('subType') === 'Card' || 'Supervisor' ){
-							// configurar as portas de input e output quando sair do itu
 						}
 					}
 				}

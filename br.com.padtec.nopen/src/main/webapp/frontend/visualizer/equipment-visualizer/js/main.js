@@ -105,13 +105,7 @@ var Rappid = Backbone.Router.extend({
 		this.snapLines = new joint.ui.Snaplines({ paper: this.paper });
 	},
 
-//	initializeSupervisorTooltips: function(cell){
-//		
-//	
-//		
-//	},
-	
-	
+		
 	initializeLinkTooltips: function(cell) {
 
 		if (cell instanceof joint.dia.Link) {
@@ -353,18 +347,18 @@ var Rappid = Backbone.Router.extend({
 		}, this);
 	},
 
-//	initializeNavigator: function() {
-//
-//		var navigator = this.navigator = new joint.ui.Navigator({
-//			width: 240,
-//			height: 115,
-//			paperScroller: this.paperScroller,
-//			zoomOptions: { max: 5, min: 0.2 }
-//		});
+	initializeNavigator: function() {
 
-//		navigator.$el.appendTo('.navigator-container');
-//		navigator.render();
-//	},
+		var navigator = this.navigator = new joint.ui.Navigator({
+			width: 240,
+			height: 115,
+			paperScroller: this.paperScroller,
+			zoomOptions: { max: 5, min: 0.2 }
+		});
+
+		navigator.$el.appendTo('.navigator-container');
+		navigator.render();
+	},
 
 	initializeHaloTooltips: function(halo) {
 

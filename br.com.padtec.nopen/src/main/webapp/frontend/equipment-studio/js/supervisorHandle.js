@@ -59,7 +59,8 @@ function selectSupervisorWindow(Supervisor, nsCards, sCards, graph){
 	}
 
 	for(var i = 0; i<nsCards.length;i++){
-		//	console.log(nsCards[i]);
+			console.log(nsCards[i]);
+			
 		$("#lstBox2").append('<option value="'+nsCards[i].id+'" class = "unsupervised">'+nsCards[i].attributes.attrs.name.text+'</option>');
 	};
 
