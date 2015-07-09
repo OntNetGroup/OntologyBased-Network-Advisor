@@ -1,0 +1,163 @@
+***
+
+Layer_Network:	layer, 
+				layer0;
+
+Equipment:	eq_L1_so1, eq_L1_so2, 
+			eq_L1_sk1, eq_L1_sk2;
+			
+Input_Interface:	eq_L1_so1_in, eq_L1_so2_in,
+					eq_L1_sk1_in1, eq_L1_sk1_in2, eq_L1_sk2_in1, eq_L1_sk2_in2;
+					
+Output_Interface:	eq_L1_so1_out1, eq_L1_so1_out2, eq_L1_so2_out1, eq_L1_so2_out2,
+					eq_L1_sk1_out, eq_L1_sk2_out;
+					
+AF_Source:	af_L1_so1,
+			af_L1_so2;
+			
+TF_Source:	tf_L1_so1,
+			tf_L1_so2;
+			
+Matrix_Source: 	m_L1_so1,
+				m_L1_so2;
+
+AF_Sink:	af_L1_sk1,
+			af_L1_sk2;
+			
+TF_Sink:	tf_L1_sk1,
+			tf_L1_sk2;
+			
+Matrix_Sink: 	m_L1_sk1,
+				m_L1_sk2;
+
+Input:	tf_L1_so1_in,
+		af_L1_so1_in,
+		m_L1_so1_in,
+		tf_L1_so2_in,
+		af_L1_so2_in,
+		m_L1_so2_in,
+		tf_L1_sk1_in,
+		af_L1_sk1_in,
+		m_L1_sk1_in1,
+		m_L1_sk1_in2,
+		tf_L1_sk2_in,
+		af_L1_sk2_in,
+		m_L1_sk2_in1,
+		m_L1_sk2_in2;
+		
+Output:	tf_L1_so1_out,
+		af_L1_so1_out,
+		m_L1_so1_out1,
+		m_L1_so1_out2,
+		tf_L1_so2_out,
+		af_L1_so2_out,
+		m_L1_so2_out1,
+		m_L1_so2_out2,
+		tf_L1_sk1_out,
+		af_L1_sk1_out,
+		m_L1_sk1_out,
+		tf_L1_sk2_out,
+		af_L1_sk2_out,
+		m_L1_sk2_out;
+		
+***
+
+client_of:	(layer	,	layer0	);
+
+componentOf:	(eq_L1_so1	,	eq_L1_so1_in	),
+				(eq_L1_so1	,	eq_L1_so1_out1	),
+				(eq_L1_so1	,	eq_L1_so1_out2	),
+				(eq_L1_so2	,	eq_L1_so2_in	),
+				(eq_L1_so2	,	eq_L1_so2_out1	),
+				(eq_L1_so2	,	eq_L1_so2_out2	),
+				(eq_L1_sk1	,	eq_L1_sk1_in1	),
+				(eq_L1_sk1	,	eq_L1_sk1_in2	),
+				(eq_L1_sk1	,	eq_L1_sk1_out	),
+				(eq_L1_sk2	,	eq_L1_sk2_in1	),
+				(eq_L1_sk2	,	eq_L1_sk2_in2	),
+				(eq_L1_sk2	,	eq_L1_sk2_out	);
+				
+adapts_to:		(af_L1_so1	,	layer	),
+				(af_L1_so2	,	layer	),
+				(af_L1_sk1	,	layer	),
+				(af_L1_sk2	,	layer	);
+				
+defines:		(tf_L1_so1	,	layer	),
+				(tf_L1_so2	,	layer	),
+				(tf_L1_sk1	,	layer	),
+				(tf_L1_sk2	,	layer	);
+				
+hasLayer:		(m_L1_so1	,	layer	),
+				(m_L1_so2	,	layer	),
+				(m_L1_sk1	,	layer	),
+				(m_L1_sk2	,	layer	);
+				
+componentOf:	(eq_L1_so1	,	af_L1_so1	),
+				(eq_L1_so1	,	tf_L1_so1	),
+				(eq_L1_so1	,	m_L1_so1	),
+				(eq_L1_so2	,	af_L1_so2	),
+				(eq_L1_so2	,	tf_L1_so2	),
+				(eq_L1_so2	,	m_L1_so2	),
+				(eq_L1_sk1	,	af_L1_sk1	),
+				(eq_L1_sk1	,	tf_L1_sk1	),
+				(eq_L1_sk1	,	m_L1_sk1	),
+				(eq_L1_sk2	,	af_L1_sk2	),
+				(eq_L1_sk2	,	tf_L1_sk2	),
+				(eq_L1_sk2	,	m_L1_sk2	);
+				
+componentOf:	(af_L1_so1	,	af_L1_so1_in	),
+				(af_L1_so1	,	af_L1_so1_out	),
+				(tf_L1_so1	,	tf_L1_so1_in	),
+				(tf_L1_so1	,	tf_L1_so1_out	),
+				(m_L1_so1	,	m_L1_so1_in		),
+				(m_L1_so1	,	m_L1_so1_out1	),
+				(m_L1_so1	,	m_L1_so1_out2	),
+				(af_L1_so2	,	af_L1_so2_in	),
+				(af_L1_so2	,	af_L1_so2_out	),
+				(tf_L1_so2	,	tf_L1_so2_in	),
+				(tf_L1_so2	,	tf_L1_so2_out	),
+				(m_L1_so2	,	m_L1_so2_in		),
+				(m_L1_so2	,	m_L1_so2_out1	),
+				(m_L1_so2	,	m_L1_so2_out2	),
+				(af_L1_sk1	,	af_L1_sk1_in	),
+				(af_L1_sk1	,	af_L1_sk1_out	),
+				(tf_L1_sk1	,	tf_L1_sk1_in	),
+				(tf_L1_sk1	,	tf_L1_sk1_out	),
+				(m_L1_sk1	,	m_L1_sk1_in1	),
+				(m_L1_sk1	,	m_L1_sk1_in2	),
+				(m_L1_sk1	,	m_L1_sk1_out	),
+				(af_L1_sk2	,	af_L1_sk2_in	),
+				(af_L1_sk2	,	af_L1_sk2_out	),
+				(tf_L1_sk2	,	tf_L1_sk2_in	),
+				(tf_L1_sk2	,	tf_L1_sk2_out	),
+				(m_L1_sk2	,	m_L1_sk2_in1	),
+				(m_L1_sk2	,	m_L1_sk2_in2	),
+				(m_L1_sk2	,	m_L1_sk2_out	);
+				
+binds:	(af_L1_so1_out	,	tf_L1_so1_in	),
+		(tf_L1_so1_out	,	m_L1_so1_in		),
+		(af_L1_so2_out	,	tf_L1_so2_in	),
+		(tf_L1_so2_out	,	m_L1_so2_in		),
+		(af_L1_sk1_in	,	tf_L1_sk1_out	),
+		(tf_L1_sk1_in	,	m_L1_sk1_out	),
+		(af_L1_sk2_in	,	tf_L1_sk2_out	),
+		(tf_L1_sk2_in	,	m_L1_sk2_out	);
+		
+maps:	(eq_L1_so1_in	,	af_L1_so1_in	),
+		(eq_L1_so2_in	,	af_L1_so2_in	),
+		(eq_L1_sk1_in1	,	m_L1_sk1_in1	),
+		(eq_L1_sk1_in2	,   m_L1_sk1_in2	),
+		(eq_L1_sk2_in1	,	m_L1_sk2_in1	),
+		(eq_L1_sk2_in2	,   m_L1_sk2_in2	),
+		(eq_L1_so1_out1	,	m_L1_so1_out1	),
+		(eq_L1_so1_out2	,	m_L1_so1_out2	),
+		(eq_L1_so2_out1	,	m_L1_so2_out1	),
+		(eq_L1_so2_out2	,   m_L1_so2_out2	),
+		(eq_L1_sk1_out	,	af_L1_sk1_out	),
+		(eq_L1_sk2_out	, 	af_L1_sk2_out	);
+		
+***
+
+Layer_Network.isLast: (layer0, true, boolean);
+
+***

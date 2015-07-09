@@ -1,0 +1,359 @@
+***
+
+Layer_Network: L4, L3, L2, L1, L0;
+
+Equipment:	peq_L3_so, peq_L3_L2_so, peq_L0_so,
+			peq_L0_so_sk, 
+			peq_L3_L2_sk1, peq_L3_L2_sk2, peq_L1_L0_sk,
+			peq_pm1, peq_pm2, peq_pm3;
+
+Input_Interface:	peq_L3_so_in, 
+					peq_L3_L2_so_in,
+					peq_L0_so_in, 
+					peq_L0_so_sk_in1, 
+					peq_L0_so_sk_in2,
+					peq_L3_L2_sk1_in, 
+					peq_L3_L2_sk2_in1,
+					peq_L3_L2_sk2_in2,
+					peq_L1_L0_sk_in,
+					peq_pm1_in, 
+					peq_pm2_in,
+					peq_pm3_in;
+
+Output_Interface:	peq_L3_so_out, 
+					peq_L3_L2_so_out1,
+					peq_L3_L2_so_out2,
+					peq_L0_so_out, 
+					peq_L0_so_sk_out1, 
+					peq_L0_so_sk_out2,
+					peq_L3_L2_sk1_out, 
+					peq_L3_L2_sk2_out,
+					peq_L1_L0_sk_out1,
+					peq_L1_L0_sk_out2,
+					peq_pm1_out, 
+					peq_pm2_out,
+					peq_pm3_out;
+
+
+TF_Source:	tf_L3_so, 
+			tf_L0_so, 
+			tf_L3_L2_so1,
+			tf_L3_L2_so2,
+			tf_L0_so_sk1; 					
+
+			
+TF_Sink: 	tf_L0_so_sk2, 
+			tf_L3_L2_sk1,
+			tf_L3_L2_sk2,
+			tf_L3_L2_sk_1,
+			tf_L3_L2_sk_2,
+			tf_L1_L0_sk;
+								
+					
+AF_Source:	af_L3_so, 				
+          	af_L0_so,
+			af_L3_L2_so1,
+			af_L3_L2_so2,
+          	af_L0_so_sk1; 					
+			
+          					
+AF_Sink:  	af_L0_so_sk2, 					
+            af_L3_L2_sk1,
+            af_L3_L2_sk2,
+			af_L3_L2_sk_1,
+			af_L3_L2_sk_2,
+			af_L1_L0_sk;
+
+
+Matrix_Source:	m_L3_L2_so;
+
+Matrix_Sink:	m_L3_L2_sk,
+				m_L1_L0_sk;
+			
+
+Physical_Media: pm1, pm2, pm3;
+		
+		
+Input:	tf_L3_so_in, 
+        tf_L0_so_in, 
+        tf_L0_so_sk1_in,                 
+        tf_L0_so_sk2_in, 
+        tf_L3_L2_sk1_in,
+        tf_L3_L2_sk2_in,        				        		
+        af_L3_so_in, 		
+        af_L0_so_in, 		
+        af_L0_so_sk1_in,                 				
+        af_L0_so_sk2_in, 
+        af_L3_L2_sk1_in,
+        af_L3_L2_sk2_in,
+		pm1_in,
+		pm2_in,
+		af_L3_L2_so1_in,
+		af_L3_L2_so2_in,
+		tf_L3_L2_so1_in,
+		tf_L3_L2_so2_in,
+		m_L3_L2_so_in,
+		af_L3_L2_sk_1_in,
+		af_L3_L2_sk_2_in,
+		tf_L3_L2_sk_1_in,
+		tf_L3_L2_sk_2_in,
+		m_L3_L2_sk_in1,
+		m_L3_L2_sk_in2,
+		m_L1_L0_sk_in,
+		af_L1_L0_sk_in,
+		tf_L1_L0_sk_in,
+		pm3_in;
+
+
+Output:	tf_L3_so_out, 				
+		tf_L0_so_out, 					
+		tf_L0_so_sk1_out, 					
+		tf_L0_so_sk2_out, 					
+		tf_L3_L2_sk1_out,					
+		tf_L3_L2_sk2_out,					
+		af_L3_so_out, 							
+		af_L0_so_out, 							
+		af_L0_so_sk1_out, 					
+		af_L0_so_sk2_out, 					
+		af_L3_L2_sk1_out,					
+		af_L3_L2_sk2_out,					
+		pm1_out,					
+		pm2_out,
+		af_L3_L2_so1_out,
+		af_L3_L2_so2_out,
+		tf_L3_L2_so1_out,
+		tf_L3_L2_so2_out,
+		m_L3_L2_so_out1,
+		m_L3_L2_so_out2,
+		af_L3_L2_sk_1_out,
+		af_L3_L2_sk_2_out,
+		tf_L3_L2_sk_1_out,
+		tf_L3_L2_sk_2_out,			
+		m_L3_L2_sk_out,
+		af_L1_L0_sk_out,
+		tf_L1_L0_sk_out,
+		m_L1_L0_sk_out1,
+		m_L1_L0_sk_out2,
+		pm3_out;
+					
+
+***
+
+client_of: (L4, L3), (L3, L2), (L2, L1), (L1, L0);
+
+componentOf: (peq_L3_so, 		peq_L3_so_in), 
+             (peq_L0_so,       peq_L0_so_in), 
+             (peq_L0_so_sk,    peq_L0_so_sk_in1), 
+             (peq_L0_so_sk,    peq_L0_so_sk_in2), 			 
+             (peq_L3_L2_sk1,   peq_L3_L2_sk1_in), 
+             (peq_pm1,          peq_pm1_in), 
+             (peq_pm2,          peq_pm2_in),
+             (peq_L3_so,       peq_L3_so_out), 
+             (peq_L0_so,       peq_L0_so_out), 
+             (peq_L0_so_sk,    peq_L0_so_sk_out1), 
+			 (peq_L0_so_sk,    peq_L0_so_sk_out2), 
+             (peq_L3_L2_sk1,   peq_L3_L2_sk1_out),
+             (peq_pm1,          peq_pm1_out), 
+             (peq_pm2,          peq_pm2_out),
+			 (peq_L3_L2_so,	peq_L3_L2_so_in),
+			 (peq_L3_L2_so,	peq_L3_L2_so_out1),
+			 (peq_L3_L2_so,	peq_L3_L2_so_out2),
+			 (peq_L3_L2_sk2,	peq_L3_L2_sk2_in1),
+			 (peq_L3_L2_sk2,	peq_L3_L2_sk2_in2),
+			 (peq_L3_L2_sk2,	peq_L3_L2_sk2_out),
+			 (peq_L1_L0_sk,	peq_L1_L0_sk_in),
+			 (peq_L1_L0_sk,	peq_L1_L0_sk_out1),
+			 (peq_L1_L0_sk,	peq_L1_L0_sk_out2),
+			 (peq_pm3,			peq_pm3_in),
+			 (peq_pm3,			peq_pm3_out);
+
+
+defines: (tf_L3_so, L3),
+         (tf_L0_so, L0),
+         (tf_L0_so_sk1, L0),              
+         (tf_L0_so_sk2, L0),
+         (tf_L3_L2_sk1, L3),
+         (tf_L3_L2_sk2, L2),
+		 (tf_L3_L2_so1, L3),
+		 (tf_L3_L2_so2, L2),
+		 (tf_L3_L2_sk_1, L3),
+		 (tf_L3_L2_sk_2, L2),
+		 (tf_L1_L0_sk, L0);
+
+adapts_from:	(af_L3_so, L4), 		
+				(af_L3_L2_sk_1, L4),
+				(af_L3_L2_so1, L4),
+                (af_L3_L2_sk1, L4),		
+				(af_L3_L2_so2, L3),
+				(af_L3_L2_sk_2, L3),
+				(af_L3_L2_sk2, L3),
+				(af_L0_so, L1), 		
+                (af_L0_so_sk1, L1),	                                				
+                (af_L0_so_sk2, L1), 	                
+				(af_L1_L0_sk, L1);
+
+
+adapts_to:		(af_L3_so, L3), 		
+				(af_L3_L2_sk_1, L3),
+				(af_L3_L2_so1, L3),
+                (af_L3_L2_sk1, L3),
+				(af_L3_L2_so2, L2),				
+				(af_L3_L2_sk_2, L2),
+				(af_L3_L2_sk2, L2),
+                (af_L0_so, L0), 		
+                (af_L0_so_sk1, L0),
+                (af_L0_so_sk2, L0), 
+				(af_L1_L0_sk, L0);
+				
+hasLayer:	(m_L3_L2_so,	L2),
+			(m_L3_L2_sk, L3),
+			(m_L1_L0_sk, L1);
+
+				
+componentOf:		(peq_L3_so, 		tf_L3_so), 
+					(peq_L0_so, 		tf_L0_so), 
+					(peq_L0_so_sk, 	tf_L0_so_sk1),                               
+					(peq_L0_so_sk, 	tf_L0_so_sk2), 
+					(peq_L3_L2_sk1, 	tf_L3_L2_sk1),
+					(peq_L3_L2_sk1, 	tf_L3_L2_sk2),              				                		
+					(peq_L3_so, 		af_L3_so), 		
+					(peq_L0_so, 		af_L0_so), 		
+					(peq_L0_so_sk, 	af_L0_so_sk1),                                 				
+					(peq_L0_so_sk, 	af_L0_so_sk2), 
+					(peq_L3_L2_sk1, 	af_L3_L2_sk1),
+					(peq_L3_L2_sk1, 	af_L3_L2_sk2),
+					(peq_pm1, 			pm1),
+					(peq_pm2, 			pm2),
+					(peq_L3_L2_so,	af_L3_L2_so1),
+					(peq_L3_L2_so,	af_L3_L2_so2),
+					(peq_L3_L2_so,	tf_L3_L2_so1),
+					(peq_L3_L2_so,	tf_L3_L2_so2),
+					(peq_L3_L2_so,	m_L3_L2_so),
+					(peq_L3_L2_sk2,	af_L3_L2_sk_1),
+					(peq_L3_L2_sk2,	af_L3_L2_sk_2),
+					(peq_L3_L2_sk2,	tf_L3_L2_sk_1),
+					(peq_L3_L2_sk2,	tf_L3_L2_sk_2),
+					(peq_L3_L2_sk2,	m_L3_L2_sk),
+					(peq_L1_L0_sk,	m_L1_L0_sk),
+					(peq_L1_L0_sk,	af_L1_L0_sk),
+					(peq_L1_L0_sk,	tf_L1_L0_sk),
+					(peq_pm3,			pm3);
+					
+					
+
+componentOf:	(tf_L3_so, 		tf_L3_so_in), 
+				(tf_L0_so,         tf_L0_so_in), 
+				(tf_L0_so_sk1,     tf_L0_so_sk1_in),  
+				(tf_L0_so_sk2,     tf_L0_so_sk2_in), 
+				(tf_L3_L2_sk1,    tf_L3_L2_sk1_in),
+				(tf_L3_L2_sk2,    tf_L3_L2_sk2_in), 
+				(af_L3_so, 	    af_L3_so_in), 		
+				(af_L0_so, 	    af_L0_so_in), 		
+				(af_L0_so_sk1,     af_L0_so_sk1_in),  
+				(af_L0_so_sk2,     af_L0_so_sk2_in), 
+				(af_L3_L2_sk1,    af_L3_L2_sk1_in),
+				(af_L3_L2_sk2,    af_L3_L2_sk2_in),
+				(pm1,               pm1_in),
+				(pm2,               pm2_in),
+				(tf_L3_so, 	    tf_L3_so_out), 		
+				(tf_L0_so, 	    tf_L0_so_out), 		
+				(tf_L0_so_sk1,     tf_L0_so_sk1_out), 
+				(tf_L0_so_sk2,     tf_L0_so_sk2_out), 
+				(tf_L3_L2_sk1,    tf_L3_L2_sk1_out),
+				(tf_L3_L2_sk2,    tf_L3_L2_sk2_out),
+				(af_L3_so, 	    af_L3_so_out), 		
+				(af_L0_so, 	    af_L0_so_out), 		
+				(af_L0_so_sk1,     af_L0_so_sk1_out), 
+				(af_L0_so_sk2,     af_L0_so_sk2_out), 
+				(af_L3_L2_sk1,    af_L3_L2_sk1_out),
+				(af_L3_L2_sk2,    af_L3_L2_sk2_out),
+				(pm1,			    pm1_out),			
+				(pm2,               pm2_out),
+				(af_L3_L2_so1,	af_L3_L2_so1_in),
+				(af_L3_L2_so1,	af_L3_L2_so1_out),
+				(af_L3_L2_so2,	af_L3_L2_so2_in),
+				(af_L3_L2_so2,	af_L3_L2_so2_out),
+				(tf_L3_L2_so1,	tf_L3_L2_so1_in),
+				(tf_L3_L2_so1,	tf_L3_L2_so1_out),
+				(tf_L3_L2_so2,	tf_L3_L2_so2_in),
+				(tf_L3_L2_so2,	tf_L3_L2_so2_out),
+				(m_L3_L2_so,		m_L3_L2_so_in),
+				(m_L3_L2_so,		m_L3_L2_so_out1),
+				(m_L3_L2_so,		m_L3_L2_so_out2),
+				(af_L3_L2_sk_1,	af_L3_L2_sk_1_in),
+				(af_L3_L2_sk_1,	af_L3_L2_sk_1_out),
+				(af_L3_L2_sk_2,	af_L3_L2_sk_2_in),
+				(af_L3_L2_sk_2,	af_L3_L2_sk_2_out),
+				(tf_L3_L2_sk_1,	tf_L3_L2_sk_1_in),
+				(tf_L3_L2_sk_1,	tf_L3_L2_sk_1_out),
+				(tf_L3_L2_sk_2,	tf_L3_L2_sk_2_in),
+				(tf_L3_L2_sk_2,	tf_L3_L2_sk_2_out),
+				(m_L3_L2_sk,		m_L3_L2_sk_in1),
+				(m_L3_L2_sk,		m_L3_L2_sk_in2),
+				(m_L3_L2_sk,		m_L3_L2_sk_out),
+				(m_L1_L0_sk,		m_L1_L0_sk_in),
+				(m_L1_L0_sk,		m_L1_L0_sk_out1),
+				(m_L1_L0_sk,		m_L1_L0_sk_out2),
+				(af_L1_L0_sk,		af_L1_L0_sk_in),
+				(af_L1_L0_sk,		af_L1_L0_sk_out),
+				(tf_L1_L0_sk,		tf_L1_L0_sk_in),
+				(tf_L1_L0_sk,		tf_L1_L0_sk_out),
+				(pm3,				pm3_in),
+				(pm3,				pm3_out);
+				
+
+
+binds:	(af_L3_so_out, 		tf_L3_so_in), 
+		(af_L0_so_out, 		tf_L0_so_in), 
+		(af_L3_L2_sk1_in, 	tf_L3_L2_sk1_out), 
+		(af_L3_L2_sk2_in, 	tf_L3_L2_sk2_out),
+		(af_L0_so_sk1_out, 	tf_L0_so_sk1_in),
+		(af_L0_so_sk2_in, 		tf_L0_so_sk2_out),
+		(tf_L0_so_sk1_out, 	pm1_in),
+		(tf_L0_so_sk2_in, 		pm1_out),
+		(tf_L3_L2_sk1_in, 	af_L3_L2_sk2_out),
+		(af_L3_L2_so1_out,	tf_L3_L2_so1_in),
+		(tf_L3_L2_so1_out,	af_L3_L2_so2_in),
+		(af_L3_L2_so2_out,	tf_L3_L2_so2_in),
+		(tf_L3_L2_so2_out,	m_L3_L2_so_in),
+		(af_L3_L2_sk_1_in,	tf_L3_L2_sk_1_out),
+		(tf_L3_L2_sk_1_in,	m_L3_L2_sk_out),
+		(m_L3_L2_sk_in1,		af_L3_L2_sk_2_out),
+		(af_L3_L2_sk_2_in,	tf_L3_L2_sk_2_out),
+		(m_L1_L0_sk_in,		af_L1_L0_sk_out),
+		(af_L1_L0_sk_in,		tf_L1_L0_sk_out);
+
+
+maps:	(peq_L3_so_in, 		af_L3_so_in),
+        (peq_L0_so_in, 		af_L0_so_in),
+        (peq_L0_so_sk_in1, 	af_L0_so_sk1_in),
+        (peq_L0_so_sk_in2, 	tf_L0_so_sk2_in),		
+        (peq_L3_L2_sk1_in, 	tf_L3_L2_sk2_in),
+        (peq_pm1_in, 			pm1_in),
+        (peq_pm2_in, 			pm2_in),
+        (peq_L3_so_out, 		tf_L3_so_out),
+        (peq_L0_so_out, 		tf_L0_so_out),
+        (peq_L0_so_sk_out1, 	tf_L0_so_sk1_out),
+		(peq_L0_so_sk_out2, 	af_L0_so_sk2_out),		
+        (peq_L3_L2_sk1_out, 	af_L3_L2_sk1_out),
+        (peq_pm1_out, 			pm1_out),
+        (peq_pm2_out, 			pm2_out),
+		(peq_L3_L2_so_in,		af_L3_L2_so1_in),
+		(peq_L3_L2_so_out1,	m_L3_L2_so_out1),
+		(peq_L3_L2_so_out2,	m_L3_L2_so_out2),
+		(peq_L3_L2_sk2_in1,	tf_L3_L2_sk_2_in),
+		(peq_L3_L2_sk2_in2,	m_L3_L2_sk_in2),
+		(peq_L3_L2_sk2_out,	af_L3_L2_sk_1_out),
+		(peq_L1_L0_sk_in,		tf_L1_L0_sk_in),
+		(peq_L1_L0_sk_out1,	m_L1_L0_sk_out1),
+		(peq_L1_L0_sk_out2,	m_L1_L0_sk_out2),
+		(peq_pm3_in,			pm3_in),
+		(peq_pm3_out,			pm3_out);
+
+
+
+***
+
+Layer_Network.isLast: (L0, true, boolean);
+
+***

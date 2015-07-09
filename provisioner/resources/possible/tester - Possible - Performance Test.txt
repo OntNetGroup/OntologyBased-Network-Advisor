@@ -1,0 +1,144 @@
+***
+
+Layer_Network:	layer0;
+
+Equipment:	eq_L0_so1, eq_L0_so2, 
+			eq_L0_sk1, eq_L0_sk2, 
+
+			eq_pm1, eq_pm2;
+
+Input_Interface:	eq_L0_so1_in, eq_L0_so2_in,
+					eq_L0_sk1_in, eq_L0_sk2_in,
+					
+					eq_pm1_in, eq_pm2_in;
+					
+Output_Interface:	eq_L0_so1_out, eq_L0_so2_out,
+					eq_L0_sk1_out, eq_L0_sk2_out, 
+										
+					eq_pm1_out, eq_pm2_out;
+					
+AF_Source:	af_L0_so1,
+			af_L0_so2;
+
+TF_Source:	tf_L0_so1,
+			tf_L0_so2;
+
+AF_Sink:	af_L0_sk1,
+			af_L0_sk2;
+
+TF_Sink:	tf_L0_sk1,
+			tf_L0_sk2;
+
+Physical_Media:	pm1, 
+				pm2;
+
+Input:	tf_L0_so1_in,
+		af_L0_so1_in,
+		tf_L0_so2_in,
+		af_L0_so2_in,
+		tf_L0_sk1_in,
+		af_L0_sk1_in,
+		tf_L0_sk2_in,
+		af_L0_sk2_in,
+		
+		pm1_in,
+		pm2_in;
+
+
+Output:	tf_L0_so1_out,
+		af_L0_so1_out,
+		tf_L0_so2_out,
+		af_L0_so2_out,
+		tf_L0_sk1_out,
+		af_L0_sk1_out,
+		tf_L0_sk2_out,
+		af_L0_sk2_out,
+		
+		pm1_out,
+		pm2_out;
+
+
+***
+
+componentOf:	(eq_L0_so1	,	eq_L0_so1_in	),
+				(eq_L0_so1	,	eq_L0_so1_out	),
+				(eq_L0_so2	,	eq_L0_so2_in	),
+				(eq_L0_so2	,	eq_L0_so2_out	),
+				(eq_L0_sk1	,	eq_L0_sk1_in	),
+				(eq_L0_sk1	,	eq_L0_sk1_out	),
+				(eq_L0_sk2	,	eq_L0_sk2_in	),
+				(eq_L0_sk2	,	eq_L0_sk2_out	),
+				
+				(eq_pm1		,	eq_pm1_in		),
+				(eq_pm1		,	eq_pm1_out		),
+				(eq_pm2		,	eq_pm2_in		),
+				(eq_pm2		,	eq_pm2_out		);
+						
+adapts_to:		(af_L0_so1	,	layer0	),
+				(af_L0_so2	,	layer0	),
+				(af_L0_sk1	,	layer0	),
+				(af_L0_sk2	,	layer0	);
+
+defines:		(tf_L0_so1	,	layer0	),
+				(tf_L0_so2	,	layer0	),
+				(tf_L0_sk1	,	layer0	),
+				(tf_L0_sk2	,	layer0	);
+				
+componentOf:	(eq_L0_so1	,	af_L0_so1	),
+				(eq_L0_so1	,	tf_L0_so1	),
+				(eq_L0_so2	,	af_L0_so2	),
+				(eq_L0_so2	,	tf_L0_so2	),
+				(eq_L0_sk1	,	af_L0_sk1	),
+				(eq_L0_sk1	,	tf_L0_sk1	),
+				(eq_L0_sk2	,	af_L0_sk2	),
+				(eq_L0_sk2	,	tf_L0_sk2	),
+				
+				(eq_pm1		,	pm1			),
+				(eq_pm2		,	pm2			);
+				
+componentOf:	(af_L0_so1	,	af_L0_so1_in	),
+				(af_L0_so1	,	af_L0_so1_out	),
+				(tf_L0_so1	,	tf_L0_so1_in	),
+				(tf_L0_so1	,	tf_L0_so1_out	),
+				(af_L0_so2	,	af_L0_so2_in	),
+				(af_L0_so2	,	af_L0_so2_out	),
+				(tf_L0_so2	,	tf_L0_so2_in	),
+				(tf_L0_so2	,	tf_L0_so2_out	),
+				(af_L0_sk1	,	af_L0_sk1_in	),
+				(af_L0_sk1	,	af_L0_sk1_out	),
+				(tf_L0_sk1	,	tf_L0_sk1_in	),
+				(tf_L0_sk1	,	tf_L0_sk1_out	),
+				(af_L0_sk2	,	af_L0_sk2_in	),
+				(af_L0_sk2	,	af_L0_sk2_out	),
+				(tf_L0_sk2	,	tf_L0_sk2_in	),
+				(tf_L0_sk2	,	tf_L0_sk2_out	),
+				
+				(pm1		,	pm1_in			),
+				(pm1		,	pm1_out			),
+				(pm2		,	pm2_in			),
+				(pm2		,	pm2_out			);
+				
+binds:	(af_L0_so1_out	,	tf_L0_so1_in	),
+		(af_L0_so2_out	,	tf_L0_so2_in	),
+		(af_L0_sk1_in	,	tf_L0_sk1_out	),
+		(af_L0_sk2_in	,	tf_L0_sk2_out	);
+		
+maps:	(eq_L0_so1_in	,	af_L0_so1_in	),
+		(eq_L0_so1_out	,	tf_L0_so1_out	),
+		(eq_L0_so2_in	,	af_L0_so2_in	),
+		(eq_L0_so2_out	,	tf_L0_so2_out	),
+		(eq_L0_sk1_out	,	af_L0_sk1_out	),
+		(eq_L0_sk1_in	,	tf_L0_sk1_in	),
+		(eq_L0_sk2_out	, 	af_L0_sk2_out	),
+		(eq_L0_sk2_in	, 	tf_L0_sk2_in	),
+
+		(eq_pm1_in		,	pm1_in			),
+		(eq_pm2_in		, 	pm2_in			),
+		(eq_pm1_out		, 	pm1_out			),
+		(eq_pm2_out		,   pm2_out			);
+
+***
+
+Layer_Network.isLast: (layer0, true, boolean);
+
+***
