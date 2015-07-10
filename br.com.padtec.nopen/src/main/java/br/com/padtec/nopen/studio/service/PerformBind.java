@@ -85,6 +85,15 @@ public class PerformBind {
 							StudioComponents.studioRepository.getNamespace() + property,
 							StudioComponents.studioRepository.getNamespace() + idPort
 						);
+					
+					//create the relation between tf and input/output card
+					FactoryUtil.createInstanceRelation(
+							StudioComponents.studioRepository.getBaseModel(), 
+							StudioComponents.studioRepository.getNamespace() + idTarget, 
+							StudioComponents.studioRepository.getNamespace() + RelationEnum.is_interface_of.toString(),
+							StudioComponents.studioRepository.getNamespace() + idSource
+					);
+					
 					return true;
 					
 				} else {
@@ -182,7 +191,7 @@ public class PerformBind {
 								StudioComponents.studioRepository.getNamespace() + inputId
 						);
 						
-						//StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+//						StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
 						
 						NOpenLog.appendLine(StudioComponents.studioRepository.getName()+":  Input "+inputId+" created at "+ typeTarget + ": "+nameTarget);
 	
@@ -320,12 +329,12 @@ public class PerformBind {
 	}
 	
 	public static void applyEquipmentBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception{
-		String rangeClassName = instance.repository.getNamespace() + ConceptEnum.Transport_Function.toString();
-		String sourceIndividualName = instance.repository.getNamespace() + dtoSourceElement.getId();
-		String propertyName = instance.repository.getNamespace() + RelationEnum.is_interface_of.toString();
-		String targetIndividualName = instance.repository.getNamespace() + dtoTargetElement.getId();
-		String[] tfSource = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), sourceIndividualName, propertyName, rangeClassName);
-		String[] tfTarget = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), targetIndividualName, propertyName, rangeClassName);
+		String rangeClassName = ConceptEnum.Transport_Function.toString();
+		String sourceIndividualId = dtoSourceElement.getId();
+		String property = RelationEnum.is_interface_of.toString();
+		String targetIndividualId = dtoTargetElement.getId();
+		String[] tfSource = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), sourceIndividualId, property, rangeClassName);
+		String[] tfTarget = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), targetIndividualId, property, rangeClassName);
 		System.out.println();
 		if(tfSource == null || tfTarget == null){
 			NOpenLog.appendLine("Error: The Transport Function " + dtoSourceElement.getName() + " cannot be bound to " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio.");
@@ -344,12 +353,12 @@ public class PerformBind {
 	}
 	
 	public static boolean canCreateEquipmentBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception{
-		String rangeClassName = instance.repository.getNamespace() + ConceptEnum.Transport_Function.toString();
-		String sourceIndividualName = instance.repository.getNamespace() + dtoSourceElement.getId();
-		String propertyName = instance.repository.getNamespace() + RelationEnum.is_interface_of.toString();
-		String targetIndividualName = instance.repository.getNamespace() + dtoTargetElement.getId();
-		String[] tfSource = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), sourceIndividualName, propertyName, rangeClassName);
-		String[] tfTarget = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), targetIndividualName, propertyName, rangeClassName);
+		String rangeClassName = ConceptEnum.Transport_Function.toString();
+		String sourceIndividualId = dtoSourceElement.getId();
+		String property = RelationEnum.is_interface_of.toString();
+		String targetIndividualId = dtoTargetElement.getId();
+		String[] tfSource = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), sourceIndividualId, property, rangeClassName);
+		String[] tfTarget = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(instance.repository.getBaseModel(), targetIndividualId, property, rangeClassName);
 		if(tfSource == null || tfTarget == null){
 			NOpenLog.appendLine("Error: The Transport Function " + dtoSourceElement.getName() + " cannot be bound to " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio.");
 			throw new Exception("Error: Unexpected relation between " + dtoSourceElement.getName() + " and " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio. ");
