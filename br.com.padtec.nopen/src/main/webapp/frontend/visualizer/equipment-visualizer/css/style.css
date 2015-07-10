@@ -83,20 +83,3 @@ rect[stroke-width]:hover{
 	stroke-width: 2;
 }
 
-#inspector {
-  position: absolute;
-  top: 25;
-  bottom: 0;
-  right: 40px;
-  left: 120;
-  overflow: auto;
-}
-
-.inspector {
-  position: absolute;
-  top: 25;
-  bottom: 0;
-  right: 40px;
-  left: 120;
-  overflow: auto;
-}

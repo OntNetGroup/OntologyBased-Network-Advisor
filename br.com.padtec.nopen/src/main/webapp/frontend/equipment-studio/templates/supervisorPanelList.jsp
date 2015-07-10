@@ -1,4 +1,4 @@
-<div id="supervisorDialog" title="Select cards to supervise">
+<div id="supervisorDialog" title="Select cards to be supervised:">
 	<table style='width: 370px;'>
 		<tr>
 
@@ -24,7 +24,7 @@
 		autoOpen : false,
 		modal : true,
 		closeButton : false,
-		titlebar : 'Select the cards to supervise',
+		titlebar : 'Select cards to be supervised',
 		width : 460,
 		buttons : {
 			"OK" : function() {

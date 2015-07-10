@@ -3,9 +3,9 @@
 
 .inspector-container {
    position: absolute;
-   top: 30px;   /* toolbar height */
+   top: 40px;   /* toolbar height */
    right: 0;
-   left: 280px;
-   bottom: 10px; /* statusbar height */
-   width: 200px;
+   left: 300px;
+   bottom: 0px; /* statusbar height */
+   width: 180px;
 }

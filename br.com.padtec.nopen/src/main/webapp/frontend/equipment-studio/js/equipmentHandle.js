@@ -42,6 +42,33 @@ function showTechnologyWindow(techs , cell){
 		if(result === "success"){
 			cell.set('tech', ($('#tech-dialog').find(":selected").val()) );
 			dialog.close();
+			
+			var Supervisor = cell;
+	
+			var elementos = (app.graph).getElements();
+			//console.log('elementos' , elementos);
+			var c = [];
+            var nsCards = [];
+            var sCards = [];
+			
+			for(var i = 0; i < elementos.length; i++){
+				var check = elementos[i];
+				if((check.attributes.subType) === 'Card'){
+                   if((check.get('SupervisorID') === (Supervisor.id))){
+                	   sCards.push(check);
+                   }else{
+                	   if((check.get('SupervisorID') === '')){
+                    	   
+                		   nsCards.push(check);
+                       }
+                   }
+				}
+			};
+			
+			if(Supervisor.get('subType') === 'Supervisor'){
+				selectSupervisorWindow(Supervisor, nsCards, sCards, app.graph);
+			}
+			
 		}else{
 		    new joint.ui.Dialog({
 			type: 'alert',
@@ -63,7 +90,7 @@ function equipmentHandle(app, graph){
 
 	// when a cell is added on another one, it should be embedded
 	graph.on('add', function(cell) {
-
+         		
 		//console.log(JSON.stringify(cell));
 		if(cell.get('type') === 'link') return;
 
@@ -226,7 +253,6 @@ function equipmentHandle(app, graph){
 									title: 'Alert',
 									content: 'A Slot can only contain one Card.'
 								}).open();
-								this.skipOntologyRemoveHandler = true;
 								cell.remove();
 								return;
 							}else{		
@@ -248,12 +274,13 @@ function equipmentHandle(app, graph){
 									cell.attr({
 										name: { text: equipmentName},
 									});
+									
+									nextName(equipmentType);
 								};
 
 								if (cell.get('subType') === 'Card'){									
 									parent.embed(cell);	
-									//nsCards.push(cell);
-									//console.log(nsCards);
+
 									cell.set('size' , {
 										width: 10 ,
 										height: 20							
@@ -293,13 +320,12 @@ function equipmentHandle(app, graph){
 
 							}else{
 
-								new joint.ui.Dialog({
+								 joint.ui.Dialog({
 									type: 'alert',
 									width: 400,
 									title: 'Alert',
 									content: result,
 								}).open();
-								this.skipOntologyRemoveHandler = true;
 								cell.remove();
 
 							}
@@ -309,15 +335,6 @@ function equipmentHandle(app, graph){
 			}
 		}else{
 			//Only the Rack can be inserted into the graph without an equipment holder	
-			var containerType;
-			var containerID;
-
-//			if(this.skipOntologyAddHandler === true){
-//			console.log("WORKED");
-//			this.skipOntologyAddHandler = false;
-//			return;
-//			};
-			//console.log("failed");
 			var result = EquipStudioInsertContainer(equipmentName , equipmentType, equipmentID);
 			if(result === "success") {    
 
@@ -328,14 +345,16 @@ function equipmentHandle(app, graph){
 
 
 			}else{
-				//	console.log(result);
-				new joint.ui.Dialog({
+				
+	
+				
+				cell.remove();
+	      new joint.ui.Dialog({
 					type: 'alert',
 					width: 400,
 					title: 'Error',
 					content: (result),
 				}).open();
-				cell.remove();
 			}
 
 		}

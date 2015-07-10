@@ -453,22 +453,11 @@ var Rappid = Backbone.Router.extend({
 //		}, this));
 	},
 
-	initializeCommandManager: function() {
-//
-//		this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
-//
-//		KeyboardJS.on('ctrl + z', _.bind(function() {
-//
-//			this.commandManager.undo();
-//			this.selectionView.cancelSelection();
-//		}, this));
-//
-//		KeyboardJS.on('ctrl + y', _.bind(function() {
-//
-//			this.commandManager.redo();
-//			this.selectionView.cancelSelection();
-//		}, this));
-	},
+	  initializeCommandManager: function() {
+
+	        this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
+
+	    },
 
 	initializeValidator: function() {
 

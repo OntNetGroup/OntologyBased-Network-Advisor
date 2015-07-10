@@ -17,7 +17,7 @@ var CommonInspectorGroups = {
     equipment: { label: 'Equipment', index: 2 },	
     presentation: { label: 'Presentation', index: 3 },
     geometry: { label: 'Geometry', index: 4 },
-    //data: { label: 'Data', index: 5 }
+    data: { label: 'Data', index: 5 }
 };
 
 var CommonInspectorTextInputs = {

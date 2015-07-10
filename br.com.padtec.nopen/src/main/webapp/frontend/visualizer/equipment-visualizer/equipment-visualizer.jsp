@@ -50,6 +50,7 @@
 				src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomtofit.png"
 				alt="Zoom To Fit" />
 		</button>
+		 <button id="btn-show-hide-inspector" class="btn" data-tooltip="Show/Hide Inspector"><img src="/nopen/frontend/provisioning/img/show_hide.png" alt="Show/Hide Inspector"/></button>
 	</div>
 	<div class="stencil-container" style="display: none" >
 		<label>Stencil</label>
@@ -123,6 +124,26 @@
 		});
 
 		ituHandle(app.paper, app.graph);
+		
+		
+		
+$('#btn-show-hide-inspector').click(function(){
+			
+			if($('.inspector-container').is(':visible')) {
+				$('.inspector-container').hide();
+				$('.paper-container').css({
+					right: 0,
+				});
+			} else {
+				$('.inspector-container').show();
+				$('.paper-container').css({
+					right: 241,
+				});
+			}
+			
+		});
+		
+		
 	</script>
 </body>
 </html>
