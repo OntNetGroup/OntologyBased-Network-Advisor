@@ -24,7 +24,7 @@ var Rappid = Backbone.Router.extend({
 		this.initializeHaloAndInspector();
 		this.initializeNavigator();
 		this.initializeClipboard();
-		this.initializeCommandManager();
+//		this.initializeCommandManager();
 		this.initializeToolbar();
 		// Intentionally commented out. See the `initializeValidator()` method for reasons.
 		// Uncomment for demo purposes.
@@ -453,7 +453,7 @@ var Rappid = Backbone.Router.extend({
 //		}, this));
 	},
 
-//	initializeCommandManager: function() {
+	initializeCommandManager: function() {
 //
 //		this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
 //
@@ -468,7 +468,7 @@ var Rappid = Backbone.Router.extend({
 //			this.commandManager.redo();
 //			this.selectionView.cancelSelection();
 //		}, this));
-//	},
+	},
 
 	initializeValidator: function() {
 
@@ -477,31 +477,6 @@ var Rappid = Backbone.Router.extend({
 
 		this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
 
-		
-//		this.validator.validate('remove',_.bind(function(err,command,next){
-//			//removeEquipmentholder(equipmentName, equipmentType, equipmentID , containerName , containerType , containerID)
-//			var cell = command.data.attributes;
-//			var equipmentName = "";
-//			var equipmentType = cell.subType;
-//			var equipmentID = cell.parent;
-//			console.log(equipmentID);
-//			console.log(cell);
-//			console.log(equipmentID);
-//			var child = cell.data.child;
-//			var containerName = "";
-//			var containerType = child.subType;
-//			var containerType = "";
-//			console.log(containerType);
-//			var parent = cell.parent;
-//			console.log(containerType);
-//			
-//			if (cell.subType === 'rack'){
-//				
-//				
-//				return next("nao pode remover o rack");
-//			}
-//			return next(err);
-//		}));
 		
 		// this.validator.validate('change:position change:size add', _.bind(function(err, command, next) {
 
