@@ -24,7 +24,7 @@ var Rappid = Backbone.Router.extend({
 		this.initializeHaloAndInspector();
 		this.initializeNavigator();
 		this.initializeClipboard();
-//		this.initializeCommandManager();
+		this.initializeCommandManager();
 		this.initializeToolbar();
 		// Intentionally commented out. See the `initializeValidator()` method for reasons.
 		// Uncomment for demo purposes.
