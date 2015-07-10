@@ -32,13 +32,13 @@ public class Main {
 			
 			//#2
 			String declaredFile;
-//			declaredFile = FileUtil.chooseFile("Choose a TXT file containing DECLARED instances: ", "resources/declared/", ".txt", "DECLARED instances chosen file: ",0);
-			declaredFile = "resources/declared/Declared Equipment - 8.0.txt";
+			declaredFile = FileUtil.chooseFile("Choose a TXT file containing DECLARED instances: ", "resources/declared/", ".txt", "DECLARED instances chosen file: ",0);
+//			declaredFile = "resources/declared/SquarteTopology - Declared - newBind.txt";
 			
 			//#14
 			String possibleFile;
-//			possibleFile = FileUtil.chooseFile("Choose a TXT file containing POSSIBLE instances: ", "resources/possible/", ".txt", "POSSIBLE instances chosen file: ",1);
-			possibleFile = "resources/possible/Possible Equipment - 8.1.txt";
+			possibleFile = FileUtil.chooseFile("Choose a TXT file containing POSSIBLE instances: ", "resources/possible/", ".txt", "POSSIBLE instances chosen file: ",1);
+//			possibleFile = "resources/possible/SquarteTopology - Possible.txt";
 			//String possibleFile = "resources/possible/Declarado 2.1 - Base.txt";
 			
 			provisioner = new Provisioner(owlBaseTBoxFile, owlConsistencyTBoxFile, declaredFile, possibleFile, 1, 1);

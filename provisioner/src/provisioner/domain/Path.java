@@ -6,21 +6,24 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-public class Path {
+public class Path implements Comparable<Path>{
 	private List<Interface> interfaceList = new ArrayList<Interface>();
 	private int qtDeclared = 0;
 	private int qtPossible = 0;
+	
+	private int bindedInterfaces = 0;
 	
 	public Path(TreeNode[] treeNodes) {
 		for (TreeNode treeNode : treeNodes) {
 			DefaultMutableTreeNode mulTreeNode = (DefaultMutableTreeNode) treeNode;
 			Interface intfc = (Interface) mulTreeNode.getUserObject();
-			interfaceList.add(intfc);
-			if(intfc.isDeclared()){
-				this.qtDeclared++;
-			}else{
-				this.qtPossible++;
-			}
+			addInterface(intfc);
+//			interfaceList.add(intfc);
+//			if(intfc.isDeclared()){
+//				this.qtDeclared++;
+//			}else{
+//				this.qtPossible++;
+//			}
 		}		
 	}
 	
@@ -32,12 +35,27 @@ public class Path {
 		
 	}
 	
+	public void addInterface(Interface intf, boolean isBinded){
+		addInterface(intf);
+		if(isBinded) bindedInterfaces++;
+	}
+	
 	public void addInterface(Interface intf){
 		this.interfaceList.add(intf);
+		if(intf.isDeclared()){
+			this.qtDeclared++;
+		}else{
+			this.qtPossible++;
+		}
 	}
 	
 	public void addInterfaceInBegin(Interface intf){
 		this.interfaceList.add(0, intf);
+	}
+	
+	public void addInterfaceInBegin(Interface intf, boolean isBinded){
+		addInterfaceInBegin(intf);
+		if(isBinded) bindedInterfaces++;
 	}
 	
 	public int getQtDeclared() {
@@ -56,9 +74,17 @@ public class Path {
 		return interfaceList.size();
 	}
 	
+	public int newBinds(){
+		int newBinds = interfaceList.size() - this.bindedInterfaces - 2;
+		if(newBinds < 0) newBinds = 0;
+		return newBinds;
+	}
+	
 	public String sizeToString(){
-		String ret = "size (total = ";
+		String ret = "size (interfaces = ";
 		ret += interfaceList.size();
+		ret += ", new bindings = ";
+		ret += newBinds();
 		ret += ", declared = ";
 		ret += this.qtDeclared;
 		ret += ", possible = ";
@@ -75,10 +101,16 @@ public class Path {
 			ret += intfc;
 			ret += " -> ";
 		}
+		int last = ret.lastIndexOf(" -> ");
+		ret = ret.substring(0, last);
 		ret += "\n\t";
 		ret += sizeToString();
 		ret += "\n";
 		
 		return ret;
+	}
+
+	public int compareTo(Path arg0) {
+		return 0;
 	}
 }

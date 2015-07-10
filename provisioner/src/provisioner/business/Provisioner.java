@@ -124,14 +124,23 @@ public class Provisioner {
 	}
 	
 	public List<Path> getOrigPaths(Interface originalInterfaceFrom, Interface originalInterfaceTo){
-		List<Path> retPaths = getOrigPathsRecursive(originalInterfaceFrom, originalInterfaceTo);
+		List<Interface> usedInterfaces = new ArrayList<Interface>();
+		usedInterfaces.add(originalInterfaceFrom);
+		List<Path> retPaths = getOrigPathsRecursive(originalInterfaceFrom, originalInterfaceTo, usedInterfaces);
 		
 		return retPaths;
 	}
 	
-	public List<Path> getOrigPathsRecursive(Interface currentInterfaceFrom, Interface originalInterfaceTo){
-		List<Interface> listIntfcTo = origPaths.get(currentInterfaceFrom);
+	public List<Path> getOrigPathsRecursive(Interface currentInterfaceFrom, Interface originalInterfaceTo, List<Interface> usedInterfaces){
 		List<Path> retPaths = null;
+//		System.out.println(currentInterfaceFrom);
+		List<Interface> listIntfcTo = origPaths.get(currentInterfaceFrom);
+		if(currentInterfaceFrom.toString().contains("out_int02_so_EQ1_WSS")){
+			System.out.println();
+		}
+		if(listIntfcTo == null) return retPaths;
+		listIntfcTo.remove(currentInterfaceFrom);
+		listIntfcTo.removeAll(usedInterfaces);
 		for (Interface interfaceTo : listIntfcTo) {
 			if(interfaceTo.equals(originalInterfaceTo)){
 				Path path = new Path();
@@ -142,18 +151,23 @@ public class Provisioner {
 				
 //				return retPaths;
 			}else{
-				retPaths = getOrigPathsRecursive(interfaceTo, originalInterfaceTo);
-				if(retPaths == null){
-					return null;
-				}else{
-					for (Path path : retPaths) {
+				List<Interface> newUsedInterfaces = new ArrayList<Interface>();
+				newUsedInterfaces.addAll(usedInterfaces);
+				newUsedInterfaces.add(interfaceTo);
+				List<Path> newRetPaths = getOrigPathsRecursive(interfaceTo, originalInterfaceTo, newUsedInterfaces);
+				if(newRetPaths != null){
+					if(retPaths == null) retPaths = new ArrayList<Path>();
+					
+					for (Path path : newRetPaths) {
 //						path.addInterface(interfaceTo);
-						path.addInterfaceInBegin(currentInterfaceFrom);
+						path.addInterfaceInBegin(currentInterfaceFrom, true);
+						
+						retPaths.add(path);
 					}
 //					return retPaths;
 				}
 			}
-		}
+		}//in_int01_so_EQ1_ODUSwitch
 		return retPaths;
 	}
 	
@@ -582,10 +596,14 @@ public class Provisioner {
 		String VAR_IN = interfaceFrom.getInterfaceURI();
 		bindedInterfaces.add(interfaceFrom);
 		Interface out = null;
+		
+		Path path = new Path();
+				
 		do {
 			//#19
 			//Interface in = new Interface(VAR_IN);
 			Interface in = interfaces.get(VAR_IN);
+			path.addInterface(in);
 			
 			if(out != null){
 				createPath(out, in);
@@ -594,16 +612,27 @@ public class Provisioner {
 			isSource = isStillInSource(isSource, in);
 			List<Interface> INT_LIST = algorithmPart1(in, isSource);
 			
+			System.out.print("\nCurrent Path: "+path);
 			int chosenId = ConsoleUtil.chooseOne(INT_LIST, "Output Interfaces", "Choose an available Output Interface (VAR_OUT): ",0);
 			VAR_OUT = INT_LIST.get(chosenId).getInterfaceURI();
+			out = interfaces.get(VAR_OUT);
+
+			List<Path> internalPaths = getOrigPaths(in, out);
+			if(internalPaths.size() > 1){
+				int internalPathId = ConsoleUtil.chooseOne(internalPaths, "Internal Paths", "Choose an available internal path: ",0);
+				List<Interface> intfcList = internalPaths.get(internalPathId).getInterfaceList();
+				for (int i = 1; i < intfcList.size()-1; i++) {
+					path.addInterface(intfcList.get(i), true);
+				}				
+			}
 			
 			//#20
 			if(!VAR_OUT.equals(interfaceTo.getInterfaceURI())){
 				//#21
 				//Interface out = new Interface(VAR_OUT);
 				out = interfaces.get(VAR_OUT);
-
-				List<Path> x = getOrigPaths(in, out);
+				path.addInterface(out);
+//				List<Path> x = getOrigPaths(in, out);
 				
 				createPath(in, out);
 				
@@ -611,6 +640,7 @@ public class Provisioner {
 				List<Interface> listInterfacesTo = algorithmPart2(isSource, out);
 				
 				//#D
+				System.out.print("\nCurrent Path: "+path);
 				int interfaceToId = ConsoleUtil.chooseOne(listInterfacesTo, "Input Interfaces", "Choose an available Input Interface (VAR_IN): ",0);
 				VAR_IN = listInterfacesTo.get(interfaceToId).getInterfaceURI();
 				
@@ -622,6 +652,8 @@ public class Provisioner {
 			}
 		} while (!VAR_OUT.equals(interfaceTo.getInterfaceURI()));//#20
 		
+//		path.addInterface(interfaceTo);
+				
 		return VAR_OUT;
 	}
 	
