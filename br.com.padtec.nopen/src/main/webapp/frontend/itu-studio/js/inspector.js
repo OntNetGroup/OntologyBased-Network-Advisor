@@ -5,7 +5,6 @@ var CommonInspectorGroups = {
     data: { label: 'Data', index: 1 }
 };
 
-
 var InspectorDefs = {
 
     'link': {
@@ -93,7 +92,7 @@ var InspectorDefs = {
 					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
 				}
 			},
-    		subtype: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'} } }
+    		subtype: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled': 'disabled'} } }
     	},
     	groups: CommonInspectorGroups
     },
