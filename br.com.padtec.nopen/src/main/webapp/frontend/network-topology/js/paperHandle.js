@@ -12,8 +12,8 @@ function paperHandle(paper){
     	$(function () {
             $('#equipment-dialog').dialog({
                 modal: true,
-                height: 500,
-    			width: 500,
+                height: 800,
+    			width: 600,
                 title: 'Dynamically Loaded Page',
                 open: function ()
                 {

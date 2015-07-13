@@ -344,8 +344,12 @@ var Rappid = Backbone.Router.extend({
 //			this.initializeHaloTooltips(halo);
 
 			this.createInspector(cellView);
-            if(cellView.attributes.subType === 'Card'){
+			console.log(cellView.model.attributes.subType);
+            if(cellView.model.attributes.subType === 'Card'){
+            	
                  	$('.inspector-container').show();
+            }else{
+            	$('.inspector-container').hide();
             }
 			this.selectionView.cancelSelection();
 			this.selection.reset([cellView.model]);
