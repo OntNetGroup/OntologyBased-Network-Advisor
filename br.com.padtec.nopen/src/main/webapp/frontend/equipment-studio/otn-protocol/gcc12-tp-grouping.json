@@ -1,0 +1,84 @@
+{   
+	"gcc12-tp-grouping": 
+	{
+		"_comment":
+			"This entity represents the function of terminating 
+			and/or originating of the GCC1 or GCC2 channels.",
+				
+		"directionality":
+		{
+			"type": "select",
+			"option": ["sink","source","bidirectional"],
+			"label": "Directionality",
+			
+			"_comment":  
+				"This attribute indicates the directionality of the 
+				termination point. Valid values are sink, source, 
+				and bidirectional. This attribute is read-only."
+		},
+			
+		"codirectional":
+		{
+			"type": "toggle",
+			"label": "Codirectional",
+			
+			"_comment":  
+				"This attribute specifies the directionality of the 
+				GCC12_TP with respect to the associated ODUk_CTP. 
+				The value of TRUE means that the sink part of the 
+				GCC12_TP terminates the same signal direction as the 
+				sink part of the ODUk_CTP. The Source part behaves 
+				similarly. This attribute is meaningful only on 
+				objects instantiated under ODUk_CTP, and at least 
+				one among ODUk_CTP and the subordinate object has 
+				Directionality equal to Bidirectional. This 
+				attribute is read-only."
+		},
+		
+		
+		"gcc-access":
+		{
+			"type": "select",
+			"option": ["gg1","gcc2","gcc1-plus-gcc2"],
+			"label": "GCC Access",
+			
+			"_comment":  
+				"This attribute indicates the GCC access represented 
+				by this entity. Valid values are:
+				1) GCC1;
+				2) GCC2;
+				3) GCC1 + GCC2.
+				This attribute is read-only."
+		},
+		
+		"gcc-pass-through":
+		{
+			"type": "toggle",
+			"label": "GCC Pass Through",
+			
+			"_comment":  
+				"This attribute controls the selected GCC overhead 
+				whether it is passed through or modified. Valid 
+				values are TRUE and FALSE. The value of TRUE means 
+				that the GCC overhead shall pass through unmodified 
+				from the ODUk CTP input to the ODUk CTP output. 
+				Otherwise shall be set to all 0s at the ODUk CTP 
+				output after the extraction of the COMMS data. This 
+				attribute is not meaningful on objects instantiated 
+				under ODUk_TTP, and on objects with Directionality 
+				equals to Source."
+		},
+		
+		"application":
+		{
+			"type": "text",
+			"label": "Application",
+			
+			"_comment":
+				"This attribute indicates the applications 
+				transported by the GCC channel. Example applications 
+				are ECC, (user data channel). Valid values are 
+				string. This attribute is read-only."
+		},		
+	}
+}

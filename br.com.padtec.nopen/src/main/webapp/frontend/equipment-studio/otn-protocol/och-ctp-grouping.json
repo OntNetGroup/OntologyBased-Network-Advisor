@@ -1,0 +1,22 @@
+{
+	"och-ctp-grouping": 
+	{
+		"_comment":
+			"This entity represents the functions of terminating 
+			and/or originating a link connection in the OCh layer 
+			network. The combining of the unidirectional sink and 
+			source function forms a bidirectional function.",
+		
+		"directionality":
+		{
+			"type": "select",
+			"option": ["sink","source","bidirectional"],
+			"label": "Directionality",
+			
+			"_comment":
+				"This attribute indicates the directionality of the 
+				termination point. Valid values are sink, source, 
+				and bidirectional. This attribute is read-only."
+		},				
+	}
+}

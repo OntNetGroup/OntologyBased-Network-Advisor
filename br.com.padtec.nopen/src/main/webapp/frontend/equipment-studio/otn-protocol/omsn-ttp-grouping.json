@@ -1,0 +1,67 @@
+{
+	"omsn-ttp-grouping": 
+	{
+		"_comment":
+			"This entity represents the OMSn trail termination 
+			function, which is responsible for the end-to-end 
+			supervision of the OMSn trail. The combining of the 
+			unidirectional sink and source function forms a 
+			bidirectional function.",
+			
+		"directionality": 
+		{ 
+			"type": "select",
+			"option": ["sink","source","bidirectional"],
+			"label": "Directionality",
+			
+			"_comment":
+				"This attribute indicates the directionality of the 
+				termination point. Valid values are sink, source, 
+				and bidirectional. This attribute is read-only."
+		},
+		
+		"operational-state":
+		{
+			"type": "select",
+			"option": ["enabled","disabled"],
+			"label": "Operational State",
+			
+			"_comment":
+				"This attribute is generally defined in ITU-T Rec. 
+				X.731 and the behaviour description for 
+				operationalState in ITU-T Rec. M.3100.
+				Possible Values – Enabled and Disabled. See ITU-T 
+				Recs. X.731 and M.3100 for details.
+				Default Value – Actual state of resource at the time 
+				the object is created. If there is a period of time 
+				during the initialization process where the 
+				operational state is unknown, then the resource will 
+				be considered disabled until initialization has 
+				completed and the state updated accordingly.
+				Constraints to Provisioning – N/A.
+				Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.
+				This attribute is read-only."
+		},
+		
+		"current-problem-list":
+		{
+			"type": "number",
+			"min": 1,
+			"max": 255,
+			"label": "Current Problem List",
+			
+			"_comment":
+				"This attribute indicates the failure conditions of 
+				the entity. Possible values of this attribute include decimal numbers between 1 and 255, representing:
+				1) no defect;
+				2) SSF-P (Server Signal Fail – Payload);
+				3) SSF-O (Server Signal Fail – Overhead);
+				4) SSF (Server Signal Fail);
+				5) BDI-P (Backward Defect Indication – Payload);
+				6) BDI-O (Backward Defect Indication – Overhead);
+				7) BDI (Backward Defect Indication);
+				8) LOS-P (Loss of Signal – Payload).
+				This attribute is read-only."
+		},
+	}
+}

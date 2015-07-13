@@ -1,0 +1,47 @@
+{
+	"och-nim-grouping": 
+	{
+		"_comment":
+			"This entity represents the OCh non-intrusive monitoring 
+			function at the OCh_CTP. This function can be activated 
+			and deactivated at the OCh_CTP.",
+		
+		"operational-state":
+		{
+			"type": "select",
+			"option": ["enabled","disabled"],
+			"label": "Operational State",
+			
+			"_comment":
+				"This attribute is generally defined in ITU-T Rec. 
+				X.731 and the behaviour description for 
+				operationalState in ITU-T Rec. M.3100.
+				Possible Values – Enabled and Disabled. See ITU-T 
+				Recs. X.731 and M.3100 for details.
+				Default Value – Actual state of resource at the time 
+				the object is created. If there is a period of time 
+				during the initialization process where the 
+				operational state is unknown, then the resource will 
+				be considered disabled until initialization has 
+				completed and the state updated accordingly.
+				Constraints to Provisioning – N/A.
+				Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.
+				This attribute is read-only."
+		},		
+		
+		"current-problem-list": 
+		{ 
+			"type": "number",
+			"min": 0,
+			"max": 2147483647,
+			"label": "Current Problem List",
+			
+			"_comment":
+				"This attribute indicates the failure conditions of 
+				the entity. Possible values of this attribute include:
+				1) no defect;
+				(other values TBD).
+				This attribute is read-only."
+		},		
+	}
+}

@@ -1,0 +1,121 @@
+{
+	"otmn-entity-grouping": 
+	{
+		"_comment":
+			"This entity represents the OTM information structure of an 
+            optical interface.",
+			
+		"order": 
+		{ 
+			"type": "number",
+			"min": 0,
+			"max": 2147483647,
+			"label": "Order",
+			
+			"_comment":  
+				"This attribute indicates the order of the OTM, 
+				which represents the maximum number of wavelengths 
+				that can be supported at the bit rate(s) supported 
+				on the interface. See ITU-T Rec. G.709/Y.1331 for 
+				details. This attribute is read-only."
+		},
+
+		"reduced": 
+		{ 
+			"type": "toggle",			
+			"label": "Reduced",
+			
+			"_comment":  
+				"This attribute indicates whether a reduced or full 
+				functionality is supported at the interface. A value 
+				of TRUE means reduced. A value of FALSE means full. 
+				See ITU-T Rec.G.709/Y.1331 for details. This 
+				attribute is read-only."
+		},		
+		
+		"bit-rate":
+		{
+			"type": "select",			
+			"option": ["1", "2", "3", "12","123","23"],
+			"label": "Bit Rate",
+			
+			"_comment":
+				"This attribute is an index used to represent the 
+				bit rate or set of bit rates supported on the 
+				interface. Valid values are 1, 2, 3, 12, 123 and 23. 
+				In the index, each digit k represents an approximate 
+				bit rate supported by the interface. k = 1 means 2.5 
+				Gbit/s, k = 2 means 10 Gbit/s, and k = 3 means 40 
+				Gbit/s. Default value of this attribute is system 	
+				specific. This attribute is read-only."
+		},
+		
+		"interface-type":
+		{
+			"type": "text",			
+			"label": "Interface Type",
+			
+			"_commment":
+				"This attribute identifies the type of interface. 
+				The value of this attribute will affect the 
+				behaviour of the OTM with respect to 
+				presence/absence of OOS processing and TCM 
+				activation. For an IrDI interface, there is no OOS 
+				processing and TCM activation is limited to n levels 
+				as specified by a TCM level threshold. 
+				Possible Values: 
+				field 1: enumeration of IrDI or IaDI; 
+				field 2: 10 character string for additional information. 
+				Default Value: 
+				field 1: IaDI; 
+				field 2: vendor and/or provider specific. 
+				Constraints to Provisioning – none identified. 
+				Effect of Change in Value – change in behaviour in 
+				accordance with value. 
+				This attribute is read-only."
+		},
+		
+		"tcm-max":
+		{		
+			"type": "range",			
+			"min": 1,
+			"max": 6,
+			"step": 1,
+			"label": "TCM Max",
+			
+			"_comment":
+				"This attribute identifies the maximum number of TCM 
+				levels allowed for any Optical Channel contained in 
+				this OTM. A new TCM activation will be rejected if 
+				the requested level is greater than the threshold. 
+				If InterfaceType for the OTM is IaDI, then this 
+				attribute is irrelevant.
+				Possible Values – integer from 0 to 6. n (IrDI), 
+				where 0 < n < 7. 
+				Default Value – Value will default to 3.
+				Constraints to Provisioning – cannot be modified to 
+				new value if new value does not support the number 
+				of currently activated TCM levels for any contained 
+				Optical Channel.
+				Effect of Change in Value – change in behaviour in 
+				accordance with value.
+				This attribute is read-write."
+		},
+		
+		"optical-reach":
+		{
+			"type": "select",			
+			"option": ["intra-office", "short-haul", "long-haul"],
+			"label": "Bit Rate",
+			
+			"_comment":
+				"This attribute indicates the length the optical 
+				signal may travel before requiring termination or 
+				regeneration. Valid values are:
+				1) intraOffice;
+				2) shortHaul;
+				3) longHaul.
+				This attribute is read-only."
+		},
+	}
+}

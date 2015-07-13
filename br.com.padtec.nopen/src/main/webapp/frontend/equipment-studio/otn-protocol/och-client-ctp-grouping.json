@@ -1,0 +1,111 @@
+{
+	"och-client-ctp-grouping": 
+	{
+		"_comment":
+			"This entity represents the OCh to client adaptation 
+			function, which performs the adaptation between the OCh 
+			layer adapted information and the client layer 
+			characteristic information. The OCh layer is the server 
+			layer. This entity can be inherited for defining the 
+			client layer CTP.",
+		
+		"adaptative-type":
+		{
+			"type": "number",
+			"min": 0,
+			"max": 15,
+			"label": "Adaptative Type",
+			
+			"_comment":
+				"This attribute indicates the type of client signal 
+				currently supported by the OCh adaptation function. 
+				Valid values are integers between 1 and 15, representing:
+				1) CBR_2G5;
+				2) CBR_10G;
+				3) CBR_40G;
+				4) RSn.
+				This attribute is read-only."
+		},			
+
+		"sink-adapt-active":
+		{
+			"type": "toggle",
+			"label": "Sink Adapt Active",
+			
+			"_comment":  
+				"This attribute allows for activation or 
+				deactivation the sink adaptation function. The value 
+				of TRUE means active. This attribute is read-write."
+		},		
+		
+		"source-adapt-active":
+		{
+			"type": "toggle",
+			"label": "Source Adapt Active",
+			
+			"_comment":
+				"This attribute allows for activation or deactivation 
+				the source adaptation function. The value of TRUE 
+				means activate. This attribute is read-write."
+		},
+		
+		"payload-type-ac":
+		{
+			"type": "number",
+			"min": 0,
+			"max": 2147483647,
+			"label": "Payload Type AC",
+			
+			"_comment":
+				"This attribute indicates the actual payload type 
+				signal received. This attribute is read-only."
+		},
+		
+		"directionality":
+		{
+			"type": "select",
+			"option": ["sink","source","bidirectional"],
+			"label": "Directionality",
+			
+			"_comment":  
+				"This attribute indicates the directionality of the 
+				termination point. Valid values are sink, source, 
+				and bidirectional. This attribute is read-only."
+		},
+		
+		"operational-state":
+		{
+			"type": "select",
+			"option": ["enabled","disabled"],
+			"label": "Operational State",
+			
+			"_comment":  
+				"This attribute is generally defined in ITU-T Rec. 
+				X.731 and the behaviour description for 
+				operationalState in ITU-T Rec. M.3100.
+				Possible Values – Enabled and Disabled. See ITU-T 
+				Recs. X.731 and M.3100 for details.
+				Default Value – Actual state of resource at the time 
+				the object is created. If there is a period of time 
+				during the initialization process where the 
+				operational state is unknown, then the resource will 
+				be considered disabled until initialization has 
+				completed and the state updated accordingly.
+				Constraints to Provisioning – N/A.
+				Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.
+				This attribute is read-only."
+		},
+		
+		"current-problem-list":
+		{
+			"type": "number",
+			"min": 0,
+			"max": 2147483647,
+			"label": "Current Problem List",
+			
+			"_comment":
+				"This attribute indicates the actual payload type 
+				signal received. This attribute is read-only."
+		},
+	}
+}

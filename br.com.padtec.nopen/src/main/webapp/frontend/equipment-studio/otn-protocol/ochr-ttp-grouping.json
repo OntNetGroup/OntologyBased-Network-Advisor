@@ -1,0 +1,90 @@
+{   
+	"ochr-ttp-grouping": 
+	{
+		"_comment":
+			"This entity represents the OChr trail termination 
+			function, which is responsible for the end-to-end 
+			supervision of the OChr trail. The combining of the 
+			unidirectional sink and source function forms a 
+			bidirectional function.",
+				
+		"directionality":
+		{
+			"type": "select",
+			"option": ["sink","source","bidirectional"],
+			"label": "Directionality",
+			
+			"_comment":  
+				"This attribute indicates the directionality of the 
+				termination point. Valid values are sink, source, 
+				and bidirectional. This attribute is read-only."
+		},
+		
+		"operational-state":
+		{
+			"type": "select",
+			"option": ["enabled","disabled"],
+			"label": "Operational State",
+			
+			"_comment":  
+				"This attribute is generally defined in ITU-T Rec. 
+				X.731 and the behaviour description for 
+				operationalState in ITU-T Rec. M.3100.
+				Possible Values – Enabled and Disabled. See ITU-T 
+				Recs. X.731 and M.3100 for details.
+				Default Value – Actual state of resource at the time 
+				the object is created. If there is a period of time 
+				during the initialization process where the 
+				operational state is unknown, then the resource will 
+				be considered disabled until initialization has 
+				completed and the state updated accordingly.
+				Constraints to Provisioning – N/A.
+				Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.
+				This attribute is read-only."
+		},
+		
+		"administrative-state":
+		{
+			"type": "select",
+			"option": ["unlocked","locked","shutting-down"],
+			"label": "Administrative State",
+			
+			"_comment":  
+				"This attribute is generally defined in ITU-T Rec. 
+				X.731 and the behaviour description for 
+				administrativeState in ITU-T Rec. M.3100.
+				Possible Values − Unlocked, Locked, and Shutting 
+				Down. See ITU-T Recs. X.731 and M.3100.
+				Default Value − Unlocked (If there is a need that 
+				can be identified for locking this resource, this 
+				decision will need to be re-evaluated).
+				Constraints to Provisioning − Constrained to 
+				Unlocked (If there is a need that can be identified 
+				for locking this resource, this decision will need 
+				to be re-evaluated).
+				Effect of Change in Value − N/A (If there is a need 
+				that can be identified for locking this resource, 
+				this decision will need to be re-evaluated).
+				This attribute is read-write."
+		},
+		
+		"current-problem-list":
+		{
+			"type": "number",
+			"min": 1,
+			"max": 63,
+			"label": "Current Problem List",
+			
+			"_comment":
+				"This attribute indicates the failure conditions of 
+				the entity. Possible values of this attribute include decimal numbers between 1 and 63, representing:
+				1) no defect;
+				2) LOS-P (Loss of Signal − Payload);
+				3) OCI (Open Connection Indicator);
+				4) SSF-P (Server Signal failure − Payload);
+				5) SSF-O (Server Signal failure − Overhead);
+				6) SSF (Server Signal failure).
+				This attribute is read-only."
+		},
+	}
+}

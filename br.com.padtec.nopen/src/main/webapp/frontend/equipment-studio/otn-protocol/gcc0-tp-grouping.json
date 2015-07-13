@@ -1,0 +1,32 @@
+{   
+	"gcc0-tp-grouping": 
+	{
+		"_comment":
+			"This entity represents the function of terminating 
+			and/or originating of the GCC0 channels.",
+										
+		"directionality":
+		{
+			"type": "select",
+			"option": ["sink","source","bidirectional"],
+			"label": "Directionality",
+			
+			"_comment":  
+				"This attribute indicates the directionality of the 
+				termination point. Valid values are sink, source, 
+				and bidirectional. This attribute is read-only."
+		},
+				
+		"application":
+		{
+			"type": "text",
+			"label": "Application",
+			
+			"_comment":  
+				"This attribute indicates the applications 
+				transported by the GCC channel. Example applications 
+				are ECC, (user data channel). Valid values are 
+				string. This attribute is read-only."
+		},		
+	}
+}

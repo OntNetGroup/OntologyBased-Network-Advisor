@@ -1,0 +1,183 @@
+{   
+	"oduk-nim-grouping": 
+	{
+		"_comment":
+			"This entity represents the non-intrusive ODUk Path 
+			monitoring function, which can be activated or 
+			deactivated at the ODUk_CTP. Bidirectional instantiation 
+			of this object is not allowed.",
+			
+		"k":
+		{		 
+			"type": "range",
+			"min": 1,
+			"max": 3,
+			"step": 1,
+			"label": "k",
+			
+			"_comment":
+				"This attribute specifies the index k that is used 
+				to represent a supported bit rate and the different 
+				versions of OPUk, ODUk and OTUk. Valid values for 
+				this attribute are integers 1, 2 and 3.
+				k = 1 represents an approximate bit rate of 2.5 Gbit/s;
+				k = 2 represents an approximate bit rate of 10 Gbit/s; and
+				k = 3 represents an approximate bit rate of 40 Gbit/s.
+				This attribute is read-only."    
+		},		
+		
+		"operational-state":
+		{
+			"type": "select",
+			"option": ["enabled","disabled"],
+			"label": "Operational State",
+			
+			"_comment":  
+				"This attribute is generally defined in ITU-T Rec. 
+				X.731 and the behaviour description for 
+				operationalState in ITU-T Rec. M.3100.
+				Possible Values – Enabled and Disabled. See ITU-T 
+				Recs. X.731 and M.3100 for details.
+				Default Value – Actual state of resource at the time 
+				the object is created. If there is a period of time 
+				during the initialization process where the 
+				operational state is unknown, then the resource will 
+				be considered disabled until initialization has 
+				completed and the state updated accordingly.
+				Constraints to Provisioning – N/A.
+				Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.
+				This attribute is read-only."
+		},
+						
+		"ex-dapi":
+		{
+			"type": "text",
+			"label": "EX DAPI",
+			
+			"_comment":
+				"The Expected Destination Access Point Identifier 
+				(ExDAPI), provisioned by the managing system, to be 
+				compared with the TTI accepted at the overhead 
+				position of the sink for the purpose of checking the 
+				integrity of connectivity. This attribute is 
+				read-write."
+		},		
+				
+		"ex-sapi":
+		{
+			"type": "text",
+			"label": "EX SAPI",
+			
+			"_comment":
+				"The Expected Source Access Point Identifier 
+				(ExSAPI), provisioned by the managing system, to be 
+				compared with the TTI accepted at the overhead 
+				position of the sink for the purpose of checking the 
+				integrity of connectivity. This attribute is 
+				read-write."
+		},
+		
+		"ac-ti":
+		{
+			"type": "text",
+			"label": "AC TI",
+			
+			"_comment":
+				"The Trail Trace Identifier (TTI) information 
+				recovered (Accepted) from the TTI overhead position 
+				at the sink of a trail. This attribute is read-only."
+		},		
+
+		"tim-det-mode":
+		{
+			"type": "select",
+			"option": ["off","dapi","sapi","both"],
+			"label": "TIM DET Mode",
+			
+			"_comment":
+				"This attribute indicates the mode of the Trace 
+				Identifier Mismatch (TIM) Detection function. Valid 
+				values are: off, dapi, sapi, both. This attribute is 
+				read-write."
+		},
+		
+		"tim-act-disabled":
+		{
+			"type": "toggle",
+            "label": "TIM ACT Disabled",
+			
+			"_comment":
+				"This attribute provides the control capability for the 
+				managing system to enable or disable the Consequent 
+				Action function when detecting Trace Identifier Mismatch 
+				(TIM) at the trail termination sink. The value of TRUE 
+				means disabled. This attribute is read-write."
+		},
+				
+		"deg-thr":
+		{
+			"type": "number",
+			"min": 0,
+			"max": 2147483647,
+			"label": "DEG THR",
+			
+			"_comment":
+				"This attribute indicates the threshold level for 
+				declaring a performance monitoring (PM) Second to be 
+				bad. A PM Second is declared bad if the percentage 
+				of detected errored blocks in that second is greater 
+				than or equal to the specified threshold level. 
+				Valid values are integers in units of percentages. 
+				This attribute is read-write."
+		},
+		
+		"deg-m":
+		{
+			"type": "number",
+			"min": 0,
+			"max": 2147483647,
+			"label": "DEG M",
+			
+			"_comment":
+				"This attribute indicates the threshold level for 
+				declaring a Degraded Signal defect (dDEG). A dDEG 
+				shall be declared if DegM consecutive bad PM Seconds 
+				are detected. This attribute is read-write."
+		},
+
+		"current-problem-list":
+		{
+			"type": "number",
+			"min": 1,
+			"max": 127,
+			"label": "Current Problem List",
+			
+			"_comment":
+				"This attribute indicates the failure conditions of 
+				the entity. Possible values of this attribute include decimal numbers between 1 and 127, representing:
+				1) no defect;
+				2) OCI (Open Connection Indication);
+				3) LCK (Locked);
+				4) TIM (Trail Trace Identifier Mismatch);
+				5) DEG (Signal Degraded);
+				6) BDI (Backward Defect Indication);
+				7) SSF (Server Signal Fail).
+				This attribute is read-only.";
+		},
+		
+		"nim-directionality":
+		{
+			"type": "select",
+			"option": ["sink","source"],
+			"label": "NIM Directionality",
+			
+			"_comment":
+				"This attribute indicates the directionality of the ODUk 
+				Path non-intrusive monitoring function. Valid values are 
+				sink and source. This attribute is significant for ODUk 
+				Path unidirectional non-intrusive monitoring when the 
+				associated ODUk_CTP is bidirectional. This attribute is 
+				read-only."
+		},
+	}
+}
