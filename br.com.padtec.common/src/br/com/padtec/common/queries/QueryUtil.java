@@ -2139,7 +2139,7 @@ public class QueryUtil {
 	
 
 	/**
-	 * It returns the end of the rdf/owl graph given the individual and the relations ahead of him 
+	 * It returns the individuals at the end of the rdf/owl graph given the individual and the relations ahead of him 
 	 * @author: Jordana Salamon
 	 * @param: individual, list of relations from individual, model
 	 */

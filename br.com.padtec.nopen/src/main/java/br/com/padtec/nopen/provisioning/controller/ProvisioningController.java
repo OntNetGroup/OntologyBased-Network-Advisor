@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.service.EquipmentCloner;
@@ -168,8 +169,13 @@ public class ProvisioningController {
 	 */
 	@RequestMapping(value = "/getInputsFromOWL", method = RequestMethod.POST)
 	protected @ResponseBody String getInputsFromOWL(@RequestParam("equipmentId") String equipmentId){
-		
-		return null;
+		String result = null;
+		try {
+			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Input", ProvisioningComponents.provisioningRepository);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	/**
@@ -179,7 +185,12 @@ public class ProvisioningController {
 	 */
 	@RequestMapping(value = "/getOutputsFromOWL", method = RequestMethod.POST)
 	protected @ResponseBody String getOutputsFromOWL(@RequestParam("equipmentId") String equipmentId){
-		
-		return null;
+		String result = null;
+		try {
+			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }
