@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+c<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf8" />
@@ -18,13 +18,13 @@
 
 <!-- CSS -->
 <link rel="stylesheet" type="text/css"
-	href="/nopen/frontend/visualizer/equipment-visualizer/css/inspector.css" />
+	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/inspector.css" />
 <link rel="stylesheet" type="text/css"
-	href="/nopen/frontend/visualizer/equipment-visualizer/css/dialog.css" />
+	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/dialog.css" />
 <link rel="stylesheet" type="text/css"
-	href="/nopen/frontend/visualizer/equipment-visualizer/css/style.css" />
+	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/style.css" />
 	<link rel="stylesheet" type="text/css"
-	href="/nopen/frontend/visualizer/equipment-visualizer/css/layout.css" />
+	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/layout.css" />
 
 </head>
 <body>
@@ -32,25 +32,25 @@
 	<div class="toolbar-container">
 		<button id="btn-back" class="btn" data-tooltip="Close">
 			<img
-				src="/nopen/frontend/visualizer/equipment-visualizer/img/close.png"
+				src="/nopen/frontend/visualizer/topology-equipment-visualizer/img/close.png"
 				alt="Close" /> Close
 		</button>
 		<button id="btn-zoom-in" class="btn" data-tooltip="Zoom In">
 			<img
-				src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomin.png"
+				src="/nopen/frontend/visualizer/topology-equipment-visualizer/img/zoomin.png"
 				alt="Zoom in" />
 		</button>
 		<button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out">
 			<img
-				src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomout.png"
+				src="/nopen/frontend/visualizer/topology-equipment-visualizer/img/zoomout.png"
 				alt="Zoom out" />
 		</button>
 		<button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom To Fit">
 			<img
-				src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomtofit.png"
+				src="/nopen/frontend/visualizer/topology-equipment-visualizer/img/zoomtofit.png"
 				alt="Zoom To Fit" />
 		</button>
-<!-- 		 <button id="btn-show-hide-inspector" class="btn" data-tooltip="Show/Hide Inspector"><img src="/nopen/frontend/provisioning/img/show_hide.png" alt="Show/Hide Inspector"/></button> -->
+		 <button id="btn-show-hide-inspector" class="btn" data-tooltip="Show/Hide Inspector"><img src="/nopen/frontend/provisioning/img/show_hide.png" alt="Show/Hide Inspector"/></button>
 	</div>
 	<div class="stencil-container" style="display: none" >
 		<label>Stencil</label>
@@ -74,24 +74,24 @@
 	<!-- JS -->
 
 	<script
-		src="/nopen/frontend/visualizer/equipment-visualizer/js/mymodel.js"></script>
+		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/mymodel.js"></script>
 	<script
-		src="/nopen/frontend/visualizer/equipment-visualizer/js/keyboard.js"></script>
+		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/keyboard.js"></script>
 	<script
-		src="/nopen/frontend/visualizer/equipment-visualizer/js/stencil.js"></script>
+		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/stencil.js"></script>
 	<script
-		src="/nopen/frontend/visualizer/equipment-visualizer/js/inspector.js"></script>
+		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/inspector.js"></script>
 	<script
-		src="/nopen/frontend/visualizer/equipment-visualizer/js/main.js"></script>
+		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/main.js"></script>
 		<script
-		src="/nopen/frontend/visualizer/equipment-visualizer/js/graphHandler.js"></script>
+		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/graphHandler.js"></script>
 	<script	
-		src="/nopen/frontend/visualizer/equipment-visualizer/js/ituHandle.js"></script>
+		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/ituHandle.js"></script>
 
 	<!-- PLUGINS -->
 
 	<script
-		src="/nopen/frontend/visualizer/equipment-visualizer/plugins/open-equipment.js"></script>
+		src="/nopen/frontend/visualizer/topology-equipment-visualizer/plugins/open-equipment.js"></script>
 
 	<!-- DIALOGS -->
 

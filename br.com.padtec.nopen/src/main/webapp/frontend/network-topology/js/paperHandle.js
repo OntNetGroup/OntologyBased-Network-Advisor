@@ -17,7 +17,7 @@ function paperHandle(paper){
                 title: 'Dynamically Loaded Page',
                 open: function ()
                 {
-                    $('#equipment-iframe').attr('src','/nopen/equipment-visualizer.htm?equipment=' + filename);
+                    $('#equipment-iframe').attr('src','/nopen/topology-equipment-visualizer.htm?equipment=' + filename);
                 },
                 close: function() {
                 }

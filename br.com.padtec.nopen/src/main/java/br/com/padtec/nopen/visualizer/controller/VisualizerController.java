@@ -17,6 +17,13 @@ public class VisualizerController {
 		return "visualizer/equipment-visualizer/equipment-visualizer";
 	}
 	
+	@RequestMapping("/topology-equipment-visualizer")
+	public String topologyequipmentVisualizerRequest() 
+	{
+		return "visualizer/topology-equipment-visualizer/topology-equipment-visualizer";
+	}
+	
+	
 	/**
 	 * Procedure to open a specific Equipment.
 	 * @param filename

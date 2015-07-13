@@ -22,7 +22,6 @@ var Rappid = Backbone.Router.extend({
 //		this.initializeStencil();
 		this.initializeSelection();
 		this.initializeHaloAndInspector();
-		$('.inspector-container').hide();
 //		this.initializeNavigator();
 		this.initializeClipboard();
 		this.initializeCommandManager();
@@ -45,7 +44,9 @@ var Rappid = Backbone.Router.extend({
 
 		this.graph.on('add', function(cell, collection, opt) {
 			if (opt.stencil) {
-				this.createInspector(cell);
+				if(cell.get('subType') === 'Card'){
+					this.createInspector(cell);
+				}				
 				this.commandManager.stopListening();
 				this.inspector.updateCell();
 				this.commandManager.listen();
@@ -264,14 +265,12 @@ var Rappid = Backbone.Router.extend({
 //				this.inspector.remove();
 			}
             if(cell.get('subType') === "Card"){
-            	$('.inspector-container').show();
             	var inspectorDefs = InspectorDefs[cell.get('subType')];
     			//changed type(model) to subType
     			this.inspector = new joint.ui.Inspector({
     				inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,
     						groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,
     								cell: cell
-    								
     			});
 
     			this.initializeInspectorTooltips();
@@ -279,7 +278,6 @@ var Rappid = Backbone.Router.extend({
     			this.inspector.render();
     			$('.inspector-container').html(this.inspector.el);
             }else{
-            	$('.inspector-container').hide();
             	return;
             }   
 		
@@ -340,13 +338,11 @@ var Rappid = Backbone.Router.extend({
         	halo.removeHandle('unlink');
         	halo.removeHandle('remove');
 			halo.render();
-            halo.remove();
+
 //			this.initializeHaloTooltips(halo);
 
 			this.createInspector(cellView);
-            if(cellView.attributes.subType === 'Card'){
-                 	$('.inspector-container').show();
-            }
+
 			this.selectionView.cancelSelection();
 			this.selection.reset([cellView.model]);
 
