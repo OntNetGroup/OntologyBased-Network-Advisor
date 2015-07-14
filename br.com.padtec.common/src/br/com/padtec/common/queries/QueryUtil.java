@@ -2215,15 +2215,18 @@ public class QueryUtil {
 		else {
 			var1 = "var";
 			int cont=1;
-			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + ".";
+			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + " . ";
 			for (int i = 1; i< relationsNameList.size(); i++) {
 				String var2 = "var";
 				int cont2=cont+1;
-				queryString = queryString + "?" + var1 + cont  + " ont:" + relationsNameList.get(i) + " ?" + var2 + cont2 + " .";
+				queryString = queryString + "?" + var1 + cont  + " ont:" + relationsNameList.get(i) + " ?" + var2 + cont2 + " . ";
 				cont++;
 			}
 			queryString = queryString + " }";
 		}
+		
+		System.out.println(queryString);
+		
 		Query query = QueryFactory.create(queryString); 
 		
 		// Execute the query and obtain results

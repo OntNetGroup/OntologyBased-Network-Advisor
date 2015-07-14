@@ -157,6 +157,8 @@ public class ProvisioningController {
 	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
 	protected @ResponseBody void parseCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
+		System.out.println(elements);
+		
 		try {
 			EquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
 			EquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
