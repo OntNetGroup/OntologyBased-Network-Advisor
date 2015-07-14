@@ -1,8 +1,12 @@
 package br.com.padtec.nopen.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.service.ContainerStructure;
+import br.com.padtec.nopen.service.NOpenComponents;
 import br.com.padtec.nopen.service.NOpenLog;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -1115,40 +1119,59 @@ public class InstanceFabricator {
 		}
 		else{	
 			String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
+			String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
+
 			String nameSource = dtoContainer.getName();
 			String typeSource = dtoContainer.getType();
-			String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
 			String nameTarget = dtoContent.getName();
-			String typeTargetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
 			String typeTarget = dtoContent.getType();
-			String propertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.componentOf.toString();
-			if(ContainerStructure.verifyContainerRelation(sourceURI, dtoContainer.getType(), targetURI, dtoContent.getType())){
-				
-				FactoryUtil.createInstanceIndividual(
-						StudioComponents.studioRepository.getBaseModel(),
-						targetURI,
-						typeTargetURI,
-						true);
 
-				if(typeTargetURI.equalsIgnoreCase(StudioComponents.studioRepository.getNamespace() + ConceptEnum.Card_Layer.toString())){
-					String layerPropertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
-					String layerTypeURI = StudioComponents.studioRepository.getNamespace() + nameTarget;
-					FactoryUtil.createInstanceRelation(
-							StudioComponents.studioRepository.getBaseModel(), 
-							targetURI,			 
-							layerPropertyURI,
-							layerTypeURI
-						);
-				}
+				if(ContainerStructure.verifyContainerRelation(sourceURI, dtoContainer.getType(), targetURI, dtoContent.getType())){
+					String typeTargetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
+					String propertyURI = NOpenComponents.nopenRepository.getNamespace() + RelationEnum.componentOf.toString();
+					ArrayList<String> specificPropertyURIs = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeSource, NOpenComponents.nopenRepository.getNamespace() + typeTarget, propertyURI);
+					String property = null;
+					if(specificPropertyURIs.isEmpty()){
+						List<String> supertypes = QueryUtil.getSupertypesURIs(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeTarget);
+						for(String s : supertypes){ 
+							if(ContainerStructure.isTargetOfComponentOfRelation(s.substring(s.indexOf("#") +1))){
+								ArrayList<String> properties = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeSource, s, propertyURI);
+								property = properties.get(0);
+							}
+						}
+					}
+					else{
+						property = specificPropertyURIs.get(0).substring(specificPropertyURIs.get(0).indexOf("#")+1);
+					}
+					
+					String specificPropertyURI = StudioComponents.studioRepository.getNamespace() + property.substring(property.indexOf("#")+1);
+	
+					
+					FactoryUtil.createInstanceIndividual(
+							StudioComponents.studioRepository.getBaseModel(),
+							targetURI,
+							typeTargetURI,
+							true);
+
+					if(typeTargetURI.equalsIgnoreCase(StudioComponents.studioRepository.getNamespace() + ConceptEnum.Card_Layer.toString())){
+						String layerPropertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
+						String layerTypeURI = StudioComponents.studioRepository.getNamespace() + nameTarget;
+						FactoryUtil.createInstanceRelation(
+								StudioComponents.studioRepository.getBaseModel(), 
+								targetURI,			 
+								layerPropertyURI,
+								layerTypeURI
+							);
+					}
 				
-				FactoryUtil.createInstanceRelation(
+					FactoryUtil.createInstanceRelation(
 						StudioComponents.studioRepository.getBaseModel(), 
 						sourceURI,			 
-						propertyURI,
+						specificPropertyURI,
 						targetURI
 					);
 				
-				NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + nameSource + " linked with " + nameTarget);
+					NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + nameSource + " linked with " + nameTarget);
 			}
 			else{
 				NOpenLog.appendLine("Error: " + nameSource + " cannot be connected to " + nameTarget + " because there is no \"componentOf\" relation between " + typeSource + " and " + typeTarget);

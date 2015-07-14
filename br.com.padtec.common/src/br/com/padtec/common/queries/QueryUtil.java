@@ -2,6 +2,7 @@ package br.com.padtec.common.queries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import br.com.padtec.common.dto.DtoInstanceRelation;
@@ -1042,9 +1043,11 @@ public class QueryUtil {
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "SELECT DISTINCT ?superClass "
+				+ "SELECT DISTINCT ?superClass \n"
 				+ "WHERE {\n"
-				+ "\t\t<" + classURI + "> rdfs:subClassOf*/rdfs:subClassOf ?superClass .\n"
+//				+ "\t\t<" + classURI + "> rdfs:subClassOf*/rdfs:subClassOf ?superClass .\n"
+				+ "\t\t<" + classURI + "> rdfs:subClassOf+/(owl:intersectionOf/rdf:rest*/rdf:first)* ?superClass . \n"
+				+ "\t\t?superClass rdf:type owl:Class .\n"
 				+ "}\n";
 		
 		Query query = QueryFactory.create(queryString);
@@ -1060,7 +1063,62 @@ public class QueryUtil {
 		    }
 		    		    
 		}		
+		
 		return result;
+	}
+	
+	/**
+	 * Return all superptypes of a this class URI (it might be more than one). This method is performed using SPARQL.
+	 * 
+	 * @param model: jena.ontology.InfModel 
+	 * @param classURI: Class URI
+	 * 
+	 * @author Freddy Brasileiro
+	 */
+	static public List<String> getAllSupertypesURIs(InfModel model, String classURI) {
+		System.out.println("\nExecuting getSupertypesURIs()...");
+		System.out.println("- Class URI: "+classURI);
+		List<String> result = new ArrayList<String>();
+		String queryString = ""
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+				+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "SELECT DISTINCT ?superClass \n"
+				+ "WHERE {\n"
+//				+ "\t\t<" + classURI + "> rdfs:subClassOf*/rdfs:subClassOf ?superClass .\n"
+				+ "\t\t<" + classURI + "> (rdfs:subClassOf+/(owl:intersectionOf/rdf:rest*/rdf:first)*)+ ?superClass . \n"
+				+ "\t\t?superClass rdf:type owl:Class .\n"
+				+ "}\n";
+		
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect(); 
+		while (results.hasNext()) 
+		{
+			QuerySolution row= results.next();
+		    RDFNode superClass = row.get("superClass");
+		    if(superClass.toString().contains(model.getNsPrefixURI("")) && !superClass.toString().equals(classURI)){
+		    	result.add(superClass.toString());
+			    System.out.println("- Domain URI: "+superClass.toString());
+		    }
+		    		    
+		}		
+		
+		return result;
+	}
+	
+	static public List<String> getTopSupertypesURIs(InfModel model, String classURI) {
+		List<String> allSupertypes = getAllSupertypesURIs( model, classURI);
+	      Iterator iterator = allSupertypes.iterator();
+	      while(iterator.hasNext()) {
+	    	  String sypertype = (String) iterator.next();
+	    	  List<String> directSupertypes = getSupertypesURIs(model, sypertype);
+				if(directSupertypes.size() > 0){
+					iterator.remove();
+				}
+	      }
+	      return allSupertypes;
 	}
 
 	/**
