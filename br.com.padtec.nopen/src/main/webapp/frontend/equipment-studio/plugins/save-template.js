@@ -69,7 +69,7 @@ function generateSaveTemplateDialog(graph){
 			$.ajax({
 			   type: "POST",
 			   async: false,
-			   url: "copyITUFiles.htm",
+			   url: "copyITUFilesOfTemplate.htm",
 			   data: {
 				 'oldPath': $("#filename").val(),
 				 'newPath': $("#save-filename").val(),
