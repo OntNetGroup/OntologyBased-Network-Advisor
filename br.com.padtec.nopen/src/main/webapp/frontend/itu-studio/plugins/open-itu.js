@@ -32,10 +32,11 @@ function openFromURL(equipment, filename, graph, app){
 		}
 	});
 
+	// actually, now this procedure is used only to hide from the stencil the layers already on canvas
 	function loadCells(graph, app) {
 		
 		loadElements(graph, app);
-		loadLinks(graph);
+//		loadLinks(graph); all instatiation was made when EquipStudio was started
 	}
 	
 	function loadElements(graph, app) {
@@ -54,7 +55,7 @@ function openFromURL(equipment, filename, graph, app){
 		});
 		
 		loadLayers(layers, graph, app);
-		loadTransportFunctions(transportFunctions, graph, app);
+//		loadTransportFunctions(transportFunctions, graph, app); all instatiation was made when EquipStudio was started
 	}
 	
 	function loadLayers(layers, graph, app) {
@@ -62,7 +63,7 @@ function openFromURL(equipment, filename, graph, app){
 		$.each(layers, function(index, layer){
 			var layerName = layer.attributes.lanes.label;
 			var layerID = layer.id;
-			insertLayer(layerID, layerName, app.cardID, app.cardName);
+//			insertLayer(layerID, layerName, app.cardID, app.cardName); all instatiation was made when EquipStudio was started
 			app.hideLayer(layerName);
 		});
 	}

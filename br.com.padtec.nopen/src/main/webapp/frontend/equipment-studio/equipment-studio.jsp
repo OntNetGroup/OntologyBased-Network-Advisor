@@ -82,6 +82,10 @@
 
 	<!-- PLUGINS -->
 
+	<script src="/nopen/frontend/itu-studio/js/typeEnum.js"></script>
+	<script src="/nopen/frontend/itu-studio/js/subtypeEnum.js"></script>
+	<script src="/nopen/frontend/itu-studio/js/util.js"></script>
+    <script src="/nopen/frontend/itu-studio/js/ajax.js"></script>
 	<script src="/nopen/frontend/equipment-studio/plugins/open-template.js"></script>
 	<script src="/nopen/frontend/equipment-studio/plugins/save-template.js"></script>
     <script src="/nopen/frontend/equipment-studio/plugins/save-equipment.js"></script>
