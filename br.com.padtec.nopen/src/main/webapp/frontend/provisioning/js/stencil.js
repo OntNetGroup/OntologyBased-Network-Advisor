@@ -1,6 +1,34 @@
 
 var Stencil = {};
 
+Stencil = {
+		
+		createLayerNetwork : function(tech, upLayer) {
+			return new joint.shapes.provisioning.Layer({
+		        technology: tech,
+		        upmostLayer: upLayer,
+				lanes: { 
+					label: tech
+				}
+			});
+		},
+
+		createSubnetwork: function(tech) {
+			return new joint.shapes.provisioning.Subnetwork({
+			    attrs: {
+			        text: { text: 'Subnetwork ' + tech }
+			    }
+			});
+		},
+		
+		createAccessGroup: function(equipmentID) {
+			return new joint.shapes.provisioning.AccessGroup ({
+				id: equipmentID,
+			});
+		}
+		
+};
+
 //var Stencil = {
 //		
 //		createLayerNetwork: function(tech, upLayer) {

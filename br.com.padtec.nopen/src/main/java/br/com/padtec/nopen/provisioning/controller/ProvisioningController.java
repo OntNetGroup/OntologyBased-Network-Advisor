@@ -141,8 +141,10 @@ public class ProvisioningController {
 	@RequestMapping(value = "/getEquipmentsByLayer", method = RequestMethod.POST)
 	protected @ResponseBody String[] getEquipmentsByLayer(@RequestParam("clientMEF") String clientMEF){
 		
-		if(clientMEF.equals("MEN")) return new String[]{"id0", "id1", "id2"};
-		if(clientMEF.equals("POUk")) return new String[]{"id3", "id4", "id5"};
+		String[] ids = new String[]{"id0", "id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8", "id9", "id10", "id11", "id12", "id13", "id14", "id15"};
+		
+		if(clientMEF.equals("MEN")) return ids;
+		if(clientMEF.equals("POUk")) return new String[]{"idPOUk0", "idPOUk1", "idPOUk2"};
 		return null;
 	}
 	

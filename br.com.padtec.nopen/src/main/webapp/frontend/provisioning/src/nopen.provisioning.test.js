@@ -14,59 +14,28 @@ nopen.provisioning.Test = Backbone.Model.extend({
 	
 	execute : function(app) {
 		
+		var $this = this;
 		var model = this.app.model;
 		var graph = app.graph;
+		var paper = app.paper;
 		
-		Stencil = {
-				
-				createLayerNetwork : function(tech, upLayer) {
-					
-					return new joint.shapes.provisioning.Layer({
-				        technology: tech,
-				        upmostLayer: upLayer,
-						position: {x: 250, y: 100},
-						attrs: {
-							'.': { magnet: false },
-							'.header': { fill: '#5799DA' }
-						},
-						lanes: { 
-							label: tech
-						}
-					});
-					
-				},
+		// Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
+		var position = undefined;
+        paper.on('cell:pointerdown', function(cellView, evt) {
+        	var cell = cellView.model;
+        	position = cell.get('position');
+        	
+        	console.log(JSON.stringify(cell.get('position')));
+        	
+	        //cell.transition('position', cell.transition('position'), {});
+	        //cell.transition('position', cell.transition('position'), {});
+        });
 		
-				createSubnetwork: function() {
-					return new joint.shapes.provisioning.Subnetwork({
-						subtype: 'Subnetwork',
-						size: { width: 400, height: 150 },
-					    attrs: {
-							'.': { magnet: false },
-					        text: { text: 'Subnetwork', fill: '#000000', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
-					    }
-					});
-				},
-				
-				createAccessGroup: function(equipmentID) {
-					return new joint.shapes.basic.Circle({
-						size: { width: 30, height: 30 },
-						id: equipmentID,
-						subtype: 'Access_Group',
-					    attrs: {
-							'.': { magnet: false }
-					    }
-					});
-					
-					return newAccessGroup;
-				}
-				
-		};
-		
-		
-		/* 
-		 * PROVISORIO
-		 * author: missael
-		 */
+        paper.on('cell:pointerup', function(cellView, evt) {
+        	var cell = cellView.model;
+        	cell.set('position', position);
+        });
+        
 		var implementedTechnologies = model.getImplementedTechnologies();
 		
 		_.each(implementedTechnologies, function(technology, index) {
@@ -74,13 +43,15 @@ nopen.provisioning.Test = Backbone.Model.extend({
 			var uppermostLayer = model.getUppermostLayer(technology);
 			var layerNetwork = Stencil.createLayerNetwork(technology, uppermostLayer);
 			
+			layerNetwork.attributes.position = $this.getLayerOffset(index);
+			
 			graph.addCell(layerNetwork);
 			var layerPosition = {
 					x : layerNetwork.attributes.position.x,
 					y : layerNetwork.attributes.position.y,
 			}
 			
-			var subnetwork = Stencil.createSubnetwork();
+			var subnetwork = Stencil.createSubnetwork(technology);
 			graph.addCell(subnetwork);
 			
 			var subnetworkPosition = {
@@ -89,53 +60,24 @@ nopen.provisioning.Test = Backbone.Model.extend({
 			}
 			
 			subnetwork.translate(subnetworkPosition.x, subnetworkPosition.y);
-			layerNetwork.embed(subnetwork);
+			//layerNetwork.embed(subnetwork);
 
-			var offset = {
-					x : undefined,
-					y : undefined,
+			var equipmentIDs = model.getEquipmentsByLayer(uppermostLayer);
+			
+			var equipmentOffset = 0;
+			if(equipmentIDs.length > 0 && equipmentIDs.length <= 16) {
+				equipmentOffset = Math.floor(16/equipmentIDs.length)
 			}
 			
-			var constraint = subnetwork;
-			
-			var equipmentIDs = model.getEquipmentsByLayer(uppermostLayer);
 			_.each(equipmentIDs, function(equipmentID, index) {
 				
-				switch(index) {
-					case 0 :
-						console.log('1 EQUIP INDEX:' + index);
-						offset.x = 185;
-						offset.y = 15;
-						break;
-					case 1 :
-						console.log('2 EQUIP INDEX:' + index);
-						offset.x = 235;
-						offset.y = 10;
-						break;
-					case 2 :
-						console.log('3 EQUIP INDEX:' + index);
-						offset.x = 285;
-						offset.y = 5;
-						break;
-					case 3 :
-						offset.x = 285;
-						offset.y = 5;
-						break;
-					default:
-						offset.x = 285;
-						offset.y = 5;
-						break;
-				}
-				
+				var offset = $this.getEquipmentOffset(index * equipmentOffset);
 				
 				var accessGroup = Stencil.createAccessGroup(equipmentID);
 				graph.addCell(accessGroup);
 				accessGroup.translate(subnetworkPosition.x + offset.x, subnetworkPosition.y - offset.y);
 				
-				
-				
-				
-				subnetwork.embed(accessGroup);
+				//subnetwork.embed(accessGroup);
 				
 			}, this);
 			
@@ -143,5 +85,120 @@ nopen.provisioning.Test = Backbone.Model.extend({
 		
 		
 	},
+	
+	getLayerOffset : function(index) {
+		
+		var offset = {
+				x : undefined,
+				y : undefined,
+		}
+		
+		switch(index) {
+			case 0 :
+				offset.x = 250;
+				offset.y = 100;
+				break;
+			case 1 :
+				offset.x = 250;
+				offset.y = 300;
+				break;
+			case 2 :
+				offset.x = 250;
+				offset.y = 500;
+				break;
+			case 3 :
+				offset.x = 250;
+				offset.y = 700;
+				break;
+			case 4 :
+				offset.x = 250;
+				offset.y = 900;
+				break;
+			default :
+				break;
+		}
+		
+		return offset;
+	},
+	
+	getEquipmentOffset : function(index) {
+	
+		var offset = {
+				x : undefined,
+				y : undefined,
+		}
+		
+		switch(index) {
+			case 0 :
+				offset.x = 185;
+				offset.y = 15;
+				break;
+			case 1 :
+				offset.x = 245;
+				offset.y = 12;
+				break;
+			case 2 :
+				offset.x = 305;
+				offset.y = 2;
+				break;
+			case 3 :
+				offset.x = 355;
+				offset.y = -20;
+				break;
+			case 4 :
+				offset.x = 385;
+				offset.y = -60;
+				break;
+			case 5 :
+				offset.x = 355;
+				offset.y = -100;
+				break;
+			case 6 :
+				offset.x = 305;
+				offset.y = -120;
+				break;
+			case 7 :
+				offset.x = 245;
+				offset.y = -132;
+				break;
+			case 8 :
+				offset.x = 185;
+				offset.y = -135;
+				break;
+			case 9 :
+				offset.x = 125;
+				offset.y = -130;
+				break;
+			case 10 :
+				offset.x = 65;
+				offset.y = -120;
+				break;
+			case 11 :
+				offset.x = 15;
+				offset.y = -100;
+				break;
+			case 12 :
+				offset.x = -15;
+				offset.y = -60;
+				break;
+			case 13 :
+				offset.x = 15;
+				offset.y = -20;
+				break;
+			case 14 :
+				offset.x = 65;
+				offset.y = 2;
+				break;
+			case 15 :
+				offset.x = 125;
+				offset.y = 12;
+				break;
+			default:
+				break;
+		}
+		
+		return offset;
+		
+	}
 	
 });

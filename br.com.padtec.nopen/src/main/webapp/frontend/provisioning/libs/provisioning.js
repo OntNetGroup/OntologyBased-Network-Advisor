@@ -1,35 +1,47 @@
 
 joint.shapes.provisioning = {}
 
-joint.shapes.provisioning.Equipment = joint.shapes.basic.Circle.extend({
+joint.shapes.provisioning.AccessGroup = joint.shapes.basic.Circle.extend({
 	
-	initialize: function() {
-		
-	},
+	markup: '<g class="rotatable"><g class="scalable"><circle/></g><text/></g>',
+	
+	defaults: joint.util.deepSupplement({
+
+		type: 'provisioning.AccessGroup',
+		subtype: 'Access_Group',
+
+		size: { width: 30, height: 30 },
+
+		attrs: {
+			'.': { magnet: true }
+		}
+
+	}, joint.shapes.basic.Circle.prototype.defaults)
+
 	
 });
 joint.shapes.provisioning.EquipmentView = joint.dia.ElementView;
 
-joint.shapes.provisioning.Subnetwork = joint.shapes.basic.Circle;
-joint.shapes.provisioning.SubnetworkView = joint.dia.ElementView.extend({
+joint.shapes.provisioning.Subnetwork = joint.shapes.basic.Circle.extend({
+	
+	defaults: joint.util.deepSupplement({
 
-    pointerdown: function(evt, x, y) {
-        var position = this.model.get('position');
-        var size = this.model.get('size');
-        var center = g.rect(position.x, position.y, size.width, size.height).center();
-        var intersection = constraint.intersectionWithLineFromCenterToPoint(center);
-        joint.dia.ElementView.prototype.pointerdown.apply(this, [evt, intersection.x, intersection.y]);
-    },
-    pointermove: function(evt, x, y) {
-        var intersection = constraint.intersectionWithLineFromCenterToPoint(g.point(x, y));
-        joint.dia.ElementView.prototype.pointermove.apply(this, [evt, intersection.x, intersection.y]);
-    }
-    
+		type: 'provisioning.Subnetwork',
+		subtype: 'Subnetwork',
+
+		size: { width: 400, height: 150 },
+	    attrs: {
+			'.': { magnet: false },
+	        text: { text: '', fill: '#000000', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
+	    }
+		
+	}, joint.shapes.basic.Circle.prototype.defaults)
+
 });
 
 joint.shapes.provisioning.Layer = joint.dia.Element.extend({
 
-    markup: ['<g class="rotatable">',
+	markup: ['<g class="rotatable">',
              '<g class="scalable"><rect class="body"/></g>',
              '<svg overflow="hidden" class="blackbox-wrap"/>',
              '<rect class="header"/><text class="label"/>',
@@ -49,6 +61,7 @@ joint.shapes.provisioning.Layer = joint.dia.Element.extend({
             height: 200
         },
         attrs: {
+        	'.': { magnet: false },
             '.body': {
                 fill: '#ffffff',
                 stroke: '#000000',
@@ -56,7 +69,7 @@ joint.shapes.provisioning.Layer = joint.dia.Element.extend({
                 height: 200,
             },
             '.header': {
-                fill:'#ffffff',
+                fill:'#5799DA',
                 stroke: '#000000',
                 width: 20,
                 ref: '.body',
