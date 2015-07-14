@@ -15,6 +15,13 @@
 			"min": 0,
 			"max": 15,
 			"label": "Adaptative Type",
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": "<hint>"
+				}
+			}
 			
 			"attrs":
 			{
