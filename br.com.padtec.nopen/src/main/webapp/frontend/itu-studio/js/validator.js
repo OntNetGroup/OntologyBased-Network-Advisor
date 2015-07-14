@@ -28,6 +28,7 @@ function validator(validator, graph, app) {
 		});
 		
 		if(parent) { // existe elemento abaixo
+			Util.generateAlertDialog('Another element in the way!');
 			return next('Another element in the way!');
 		} else {
 			// consultar ontologia para inserção de camada no card
@@ -38,6 +39,7 @@ function validator(validator, graph, app) {
 				$(element).hide();
 				return next(err);
 			} else {
+				Util.generateAlertDialog(result);
 				return next(result);
 			}
 		}
@@ -74,6 +76,7 @@ function validator(validator, graph, app) {
 				return next(err);
 			} else {
 				this.skipOntologyAddHandler = true;
+				Util.generateAlertDialog(result);
 				return next(result);
 			}
     	}
@@ -85,6 +88,7 @@ function validator(validator, graph, app) {
 				return next(err);
 			} else {
 				this.skipOntologyAddHandler = true;
+				Util.generateAlertDialog(result);
 				return next(result);
 			}
 		}
@@ -112,6 +116,7 @@ function validator(validator, graph, app) {
 			return next(err);
 		} else {
 			this.skipOntologyAddHandler = true;
+			Util.generateAlertDialog(result);
 			return next(result);
 		}
     }, app));
@@ -138,6 +143,7 @@ function validator(validator, graph, app) {
 			return next(err);
 		} else {
 			this.skipOntologyAddHandler = true;
+			Util.generateAlertDialog(result);
 			return next(result);
 		}
     }, app));
@@ -167,6 +173,7 @@ function validator(validator, graph, app) {
 			return next(err);
 		} else {
 			this.skipOntologyAddHandler = true;
+			Util.generateAlertDialog(result);
 			return next(result);
 		}
     }, app));
@@ -175,9 +182,15 @@ function validator(validator, graph, app) {
     validator.validate('add change:target change:source', isLink, _.bind(function(err, command, next) {
     	
     	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
-    	if(command.action === 'change:source') return next('Invalid operation!');
-    	if(command.data.previous.target) 
-    		if(command.data.previous.target.id) return next('Invalid operation!');
+    	if(command.action === 'change:source') {
+			Util.generateAlertDialog('Invalid operation!');
+    		return next('Invalid operation!');
+    	}
+    	if(command.data.previous.target)
+    		if(command.data.previous.target.id) {
+				Util.generateAlertDialog('Invalid operation!');
+    			return next('Invalid operation!');
+    		}
     	
     	var linkID = command.data.id;
     	var link = graph.getCell(linkID).toJSON();
@@ -198,9 +211,11 @@ function validator(validator, graph, app) {
         	if(result === "success") {
 				return next(err);
 			} else {
+				Util.generateAlertDialog(result);
 				return next(result);
 			}
         } else {
+			Util.generateAlertDialog('Please, connect to a valid transport function');
         	return next('Please, connect to a valid transport function');
         }
     }, app));
@@ -210,7 +225,6 @@ function validator(validator, graph, app) {
 	validator.validate('change:parent', isTransportFunction, _.bind(function(err, command, next) {
 
     	if(Util.isAddingTransportFunction) {
-    		Util.isAddingTransportFunction = false;
     		return next(err);
     	}
     	
@@ -263,6 +277,7 @@ function validator(validator, graph, app) {
 				setContainer();
 									
 			} else { // elemento abaixo não é um container
+				Util.generateAlertDialog('Please, move the transport function to the paper or a layer.');
 				return next('Please, move the transport function to the paper or a layer.');
 			}
 		} else { // não existe elemento abaixo
@@ -277,6 +292,7 @@ function validator(validator, graph, app) {
 				if(parent) parent.embed(cell);
 				return next(err);
 			} else {
+				Util.generateAlertDialog(result);
 				return next(result);
 			}
 		}
@@ -303,6 +319,7 @@ function validator(validator, graph, app) {
 		});
 		
 		if(parent) { // existe elemento abaixo
+			Util.generateAlertDialog('Another element in the way!');
 			return next('Another element in the way!');
 		}
 	}, app));
@@ -329,6 +346,7 @@ function validator(validator, graph, app) {
     	if(result === "success") {
     		return next(err);
     	} else {
+			Util.generateAlertDialog(result);
     		next(result);
     	}
     }, app));
