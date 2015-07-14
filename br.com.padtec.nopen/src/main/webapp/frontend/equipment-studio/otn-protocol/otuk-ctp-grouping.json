@@ -11,16 +11,22 @@
 			"max": 4,
 			"step": 1,
 			"label": "k",
-			
-			"_comment":
-				"This attribute specifies the index k that is used 
-				to represent a supported bit rate and the different 
-				versions of OPUk, ODUk and OTUk. Valid values for 
-				this attribute are integers 1, 2 and 3.
-				k = 1 represents an approximate bit rate of 2.5 Gbit/s;
-				k = 2 represents an approximate bit rate of 10 Gbit/s; and
-				k = 3 represents an approximate bit rate of 40 Gbit/s.
-				This attribute is read-only."    
+						
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute specifies the index k that is used<br> 
+						to represent a supported bit rate and the different<br> 
+						versions of OPUk, ODUk and OTUk. Valid values for<br> 
+						this attribute are integers 1, 2 and 3.<br>
+						k = 1 represents an approximate bit rate of 2.5 Gbit/s;<br>
+						k = 2 represents an approximate bit rate of 10 Gbit/s; and<br>
+						k = 3 represents an approximate bit rate of 40 Gbit/s.<br>
+						This attribute is read-only."  
+				}
+			}			  
 		},		
 		
 		"sink-adapt-active":
@@ -28,10 +34,16 @@
 			"type": "toggle",
             "label": "Sink Adapt Active",
 			
-			"_comment":
-				"This attribute allows for activation or 
-				deactivation the sink adaptation function. The value 
-				of TRUE means active. This attribute is read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute allows for activation or<br> 
+						deactivation the sink adaptation function. The value<br> 
+						of TRUE means active. This attribute is read-write." 
+				}
+			}			
 		},
 		
 		"source-adapt-active":
@@ -39,10 +51,16 @@
 			"type": "toggle",
             "label": "Source Adapt Active",
 		
-			"_comment":
-				"This attribute allows for activion or deactivation 
-				the source adaptation function. The value of TRUE 
-				means activate. This attribute is read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute allows for activion or deactivation<br> 
+						the source adaptation function. The value of TRUE<br> 
+						means activate. This attribute is read-write."
+				}
+			}			
 		},
 		
 		"fec-enabled":
@@ -50,13 +68,19 @@
 			"type": "toggle",
             "label": "FEC Enabled",
 			
-			"_comment":			
-				"If Forward Error Correction (FEC) is supported, 
-				this object indicates whether FEC at the OTUk sink 
-				adaptation function is enabled or not. This 
-				attribute is optional. Valid values are TRUE and 
-				FALSE. TRUE means FEC is enabled. This attribute is 
-				read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"If Forward Error Correction (FEC) is supported,<br> 
+						this object indicates whether FEC at the OTUk sink <br>
+						adaptation function is enabled or not. This <br>
+						attribute is optional. Valid values are TRUE and<br> 
+						FALSE. TRUE means FEC is enabled. This attribute is<br> 
+						read-write."
+				}
+			}			
 		},
 									
 		"directionality":
@@ -65,10 +89,16 @@
 			"option": ["sink","source","bidirectional"],
 			"label": "Directionality",
 			
-			"_comment":  
-				"This attribute indicates the directionality of the 
-				termination point. Valid values are sink, source, 
-				and bidirectional. This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the directionality of the<br> 
+						termination point. Valid values are sink, source,<br> 
+						and bidirectional. This attribute is read-only."
+				}
+			}			
 		},
 		
 		"current-problem-list":
@@ -77,15 +107,21 @@
 			"min": 1,
 			"max": 15,
 			"label": "Current Problem List",
-			
-			"_comment":
-				"This attribute indicates the failure conditions of 
-				the entity. Possible values of this attribute include decimal numbers between 1 and 15, representing:
-				1) no defect;
-				2) LOF (Loss of Frame);
-				3) AIS (Alarm Indication Signal);
-				4) LOM (Loss of MultiFrame).
-				This attribute is read-only."
+						
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the failure conditions of <br>
+						the entity. Possible values of this attribute include decimal numbers between 1 and 15, representing:<br>
+						1) no defect;<br>
+						2) LOF (Loss of Frame);<br>
+						3) AIS (Alarm Indication Signal);<br>
+						4) LOM (Loss of MultiFrame).<br>
+						This attribute is read-only."
+				}
+			}			
 		},
 	}
 }

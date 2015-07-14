@@ -13,10 +13,16 @@
 			"option": ["sink","source","bidirectional"],
 			"label": "Directionality",
 			
-			"_comment":  
-				"This attribute indicates the directionality of the 
-				termination point. Valid values are sink, source, 
-				and bidirectional. This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the directionality of the<br> 
+						termination point. Valid values are sink, source,<br> 
+						and bidirectional. This attribute is read-only."
+				}
+			}			
 		},
 		
 		"operational-state":
@@ -25,21 +31,27 @@
 			"option": ["enabled","disabled"],
 			"label": "Operational State",
 			
-			"_comment":  
-				"This attribute is generally defined in ITU-T Rec. 
-				X.731 and the behaviour description for 
-				operationalState in ITU-T Rec. M.3100.
-				Possible Values – Enabled and Disabled. See ITU-T 
-				Recs. X.731 and M.3100 for details.
-				Default Value – Actual state of resource at the time 
-				the object is created. If there is a period of time 
-				during the initialization process where the 
-				operational state is unknown, then the resource will 
-				be considered disabled until initialization has 
-				completed and the state updated accordingly.
-				Constraints to Provisioning – N/A.
-				Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.
-				This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute is generally defined in ITU-T Rec.<br> 
+						X.731 and the behaviour description for<br> 
+						operationalState in ITU-T Rec. M.3100.<br>
+						Possible Values – Enabled and Disabled. See ITU-T <br>
+						Recs. X.731 and M.3100 for details.<br>
+						Default Value – Actual state of resource at the time<br> 
+						the object is created. If there is a period of time<br> 
+						during the initialization process where the <br>
+						operational state is unknown, then the resource will<br> 
+						be considered disabled until initialization has<br> 
+						completed and the state updated accordingly.<br>
+						Constraints to Provisioning – N/A.<br>
+						Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>
+						This attribute is read-only."
+				}
+			}			
 		},
 		
 		"apr-status":
@@ -47,11 +59,17 @@
 			"type": "text",			
 			"label": "APR Status",
 			
-			"_comment": 
-				"This attribute indicates the status of the 
-				Automatic Power Reduction (APR) function of the 
-				entity. Valid values are on and off. This 
-				attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the status of the<br> 
+						Automatic Power Reduction (APR) function of the <br>
+						entity. Valid values are on and off. This <br>
+						attribute is read-only."
+				}
+			}			
 		},
 		
 		"apr-cntrl":
@@ -59,13 +77,19 @@
 			"type": "text",			
 			"label": "APR CNTRL",
 			
-			"_comment": 			
-				"This attribute provides for the control of the 
-				Automatic Power Reduction (APR) function of the 
-				entity. The specific APR procedures and trigger 
-				criteria of APR is outside the scope of this 
-				Recommendation. This attribute is optional. This 
-				attribute is read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute provides for the control of the<br> 
+						Automatic Power Reduction (APR) function of the<br> 
+						entity. The specific APR procedures and trigger<br> 
+						criteria of APR is outside the scope of this <br>
+						Recommendation. This attribute is optional. This <br>
+						attribute is read-write."
+				}
+			}			
 		},		
 		
 		"tx-ti":
@@ -73,12 +97,18 @@
 			"type": "text",			
 			"label": "TX TI",
 			
-			"_comment": 
-				"The Trail Trace Identifier (TTI) information, 
-				provisioned by the managing system at the 
-				termination source, to be placed in the TTI overhead 
-				position of the source of a trail for transmission. 
-				This attribute is read-write.";
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"The Trail Trace Identifier (TTI) information,<br> 
+						provisioned by the managing system at the<br> 
+						termination source, to be placed in the TTI overhead<br> 
+						position of the source of a trail for transmission.<br> 
+						This attribute is read-write.";
+				}
+			}			
 		},
 		
 		"ex-dapi":
@@ -86,13 +116,19 @@
 			"type": "text",			
 			"label": "EX DAPI",
 			
-			"_comment": 			
-				"The Expected Destination Access Point Identifier 
-				(ExDAPI), provisioned by the managing system, to be 
-				compared with the TTI accepted at the overhead 
-				position of the sink for the purpose of checking the 
-				integrity of connectivity. This attribute is 
-				read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"The Expected Destination Access Point Identifier<br> 
+						(ExDAPI), provisioned by the managing system, to be<br> 
+						compared with the TTI accepted at the overhead<br> 
+						position of the sink for the purpose of checking the<br> 
+						integrity of connectivity. This attribute is<br> 
+						read-write."
+				}
+			}			
 		},
 		
 		"ex-sapi":
@@ -100,13 +136,19 @@
 			"type": "text",			
 			"label": "EX SAPI",
 			
-			"_comment": 			
-				"The Expected Source Access Point Identifier 
-				(ExSAPI), provisioned by the managing system, to be 
-				compared with the TTI accepted at the overhead 
-				position of the sink for the purpose of checking the 
-				integrity of connectivity. This attribute is 
-				read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"The Expected Source Access Point Identifier<br> 
+						(ExSAPI), provisioned by the managing system, to be<br> 
+						compared with the TTI accepted at the overhead<br> 
+						position of the sink for the purpose of checking the<br> 
+						integrity of connectivity. This attribute is<br> 
+						read-write."
+				}
+			}			
 		},
 		
 		"ac-ti":
@@ -114,10 +156,16 @@
 			"type": "text",			
 			"label": "AC TI",
 			
-			"_comment":
-				"The Trail Trace Identifier (TTI) information 
-				recovered (Accepted) from the TTI overhead position 
-				at the sink of a trail. This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"The Trail Trace Identifier (TTI) information<br> 
+						recovered (Accepted) from the TTI overhead position<br> 
+						at the sink of a trail. This attribute is read-only."
+				}
+			}			
 		},
 		
 		"tim-det-mode":
@@ -126,11 +174,17 @@
 			"option": ["off", "dapi", "sapi","both"],
 			"label": "TIM DET Mode",
 			
-			"_comment":
-				"This attribute indicates the mode of the Trace 
-				Identifier Mismatch (TIM) Detection function. Valid 
-				values are: off, dapi, sapi, both. This attribute is 
-				read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the mode of the Trace<br> 
+						Identifier Mismatch (TIM) Detection function. Valid<br> 
+						values are: off, dapi, sapi, both. This attribute is<br> 
+						read-write."
+				}
+			}			
 		},
 		
 		"tim-act-disabled":
@@ -138,12 +192,18 @@
 			"type": "toggle",
 			"label": "TIM ACT Disabled",
 			
-			"_comment":
-				"This attribute provides the control capability for the 
-				managing system to enable or disable the Consequent 
-				Action function when detecting Trace Identifier Mismatch 
-				(TIM) at the trail termination sink. The value of TRUE 
-				means disabled. This attribute is read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute provides the control capability for the<br> 
+						managing system to enable or disable the Consequent <br>
+						Action function when detecting Trace Identifier Mismatch<br> 
+						(TIM) at the trail termination sink. The value of TRUE<br> 
+						means disabled. This attribute is read-write."
+				}
+			}			
 		},
 		
 		"current-problem-list":
@@ -155,18 +215,24 @@
 			"step": 1,
 			"label": "Current Problem List",
 			
-			"_comment":
-				"This attribute indicates the failure conditions of 
-				the entity. Possible values of this attribute include decimal numbers between 1 and 255, representing:
-				1) no defect;
-				2) BDI-P (Backward Defect Indication – Payload);
-				3) BDI-O (Backward Defect Indication – Overhead);
-				4) BDI (Backward Defect Indication);
-				5) TIM (Trail Trace Identifier Mismatch);
-				6) LOS-P (Loss of Signal – Payload);
-				7) LOS-O (Loss of Signal – Overhead);
-				8) LOS (Loss of Signal).
-				This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the failure conditions of<br> 
+						the entity. Possible values of this attribute include decimal numbers between 1 and 255, representing:<br>
+						1) no defect;<br>
+						2) BDI-P (Backward Defect Indication – Payload);<br>
+						3) BDI-O (Backward Defect Indication – Overhead);<br>
+						4) BDI (Backward Defect Indication);<br>
+						5) TIM (Trail Trace Identifier Mismatch);<br>
+						6) LOS-P (Loss of Signal – Payload);<br>
+						7) LOS-O (Loss of Signal – Overhead);<br>
+						8) LOS (Loss of Signal).<br>
+						This attribute is read-only."
+				}
+			}			
 		},
 	}
 }

@@ -12,10 +12,16 @@
 			"option": ["sink","source","bidirectional"],
 			"label": "Directionality",
 			
-			"_comment":
-				"This attribute indicates the directionality of the 
-				termination point. Valid values are sink, source, 
-				and bidirectional. This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the directionality of the<br> 
+						termination point. Valid values are sink, source,<br> 
+						and bidirectional. This attribute is read-only."	
+				}
+			}			
 		},
 		
 		"operational-state":
@@ -24,21 +30,27 @@
 			"option": ["enabled","disabled"],
 			"label": "Operational State",
 			
-			"_comment":
-				"This attribute is generally defined in ITU-T Rec. 
-				X.731 and the behaviour description for 
-				operationalState in ITU-T Rec. M.3100.
-				Possible Values – Enabled and Disabled. See ITU-T 
-				Recs. X.731 and M.3100 for details.
-				Default Value – Actual state of resource at the time 
-				the object is created. If there is a period of time 
-				during the initialization process where the 
-				operational state is unknown, then the resource will 
-				be considered disabled until initialization has 
-				completed and the state updated accordingly.
-				Constraints to Provisioning – N/A.
-				Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.
-				This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute is generally defined in ITU-T Rec.<br> 
+						X.731 and the behaviour description for <br>
+						operationalState in ITU-T Rec. M.3100.<br>
+						Possible Values – Enabled and Disabled. See ITU-T <br>
+						Recs. X.731 and M.3100 for details.<br>
+						Default Value – Actual state of resource at the time<br> 
+						the object is created. If there is a period of time<br> 
+						during the initialization process where the<br> 
+						operational state is unknown, then the resource will <br>
+						be considered disabled until initialization has<br> 
+						completed and the state updated accordingly.<br>
+						Constraints to Provisioning – N/A.<br>
+						Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>
+						This attribute is read-only."
+				}
+			}			
 		},
 		
 		"current-problem-list":
@@ -48,12 +60,18 @@
 			"max": 3,
 			"label": "Current Problem List",
 			
-			"_comment":
-				"This attribute indicates the failure conditions of 
-				the entity. Possible values of this attribute include decimal numbers between 1 and 3, representing:
-				1) no defect;
-				2) LOS (Loss of Signal).
-				This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the failure conditions of<br> 
+						the entity. Possible values of this attribute include decimal numbers between 1 and 3, representing:<br>
+						1) no defect;<br>
+						2) LOS (Loss of Signal).<br>
+						This attribute is read-only."
+				}
+			}			
 		},
 	}
 }

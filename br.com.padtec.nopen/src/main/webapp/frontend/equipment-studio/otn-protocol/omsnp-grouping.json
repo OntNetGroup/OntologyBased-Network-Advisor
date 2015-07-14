@@ -12,12 +12,18 @@
 			"option": ["1-plus-1"],
 			"label": "Oper Type",
 			
-			"_comment":
-				"This attribute indicates the trail protection 
-				schemes supported by the entity. Valid value forthis 
-				attribute is:
-				1 + 1 unidirectional. 
-				This attribute is read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the trail protection<br> 
+						schemes supported by the entity. Valid value for this<br> 
+						attribute is:<br>
+						1 + 1 unidirectional.<br> 
+						This attribute is read-write."		
+				}
+			}			
 		},
 		
 		"wait-to-restore-time":
@@ -27,14 +33,20 @@
 			"max": 2147483647,
 			"label": "Wait to Restore Time",
 			
-			"_comment":
-				"If the protection systems is revertive, this 
-				attribute specifies the amount of time, in seconds, 
-				to wait after a fault clears before restoring 
-				traffic to the protected protectionUnit that 
-				initiated the switching. Valid values for this 
-				attribute are integers. This attribute is optional. 
-				This attribute is read-write. "
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"If the protection systems is revertive, this<br> 
+						attribute specifies the amount of time, in seconds,<br>
+						to wait after a fault clears before restoring<br> 
+						traffic to the protected protectionUnit that<br> 
+						initiated the switching. Valid values for this<br> 
+						attribute are integers. This attribute is optional.<br> 
+						This attribute is read-write. "		
+				}
+			}			
 		},
 		
 		"hold-off-time":
@@ -44,12 +56,18 @@
 			"max": 2147483647,
 			"label": "Hold Off Time",
 			
-			"_comment":
-				"This attribute indicates the time, in seconds, 
-				between declaration of signal degrade or signal 
-				fail, and the initialization of the protection 
-				switching algorithm. Valid values are integers in 
-				units of seconds. This attribute is read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the time, in seconds,<br> 
+						between declaration of signal degrade or signal<br> 
+						fail, and the initialization of the protection<br> 
+						switching algorithm. Valid values are integers in<br> 
+						units of seconds. This attribute is read-write."	
+				}
+			}			
 		},
 		
 		"current-problem-list":
@@ -59,14 +77,20 @@
 			"max": 15,
 			"label": "Current Problem List",
 			
-			"_comment":
-				"This attribute indicates the failure conditions of 
-				the entity. Possible values of this attribute include decimal numbers between 1 and 15, representing:
-				1) no defect;
-				2) SSF-P (Server Signal Fail – Payload);
-				3) SSF-O (Server Signal Fail – Overhead);
-				4) SSF (Server Signal Fail).
-				This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the failure conditions of<br> 
+						the entity. Possible values of this attribute include decimal numbers between 1 and 15, representing:<br>
+						1) no defect;<br>
+						2) SSF-P (Server Signal Fail – Payload);<br>
+						3) SSF-O (Server Signal Fail – Overhead);<br>
+						4) SSF (Server Signal Fail).<br>
+						This attribute is read-only."	
+				}
+			}	
 		},
 	}
 }
