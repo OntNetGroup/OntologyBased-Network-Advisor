@@ -158,7 +158,6 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 
 .dialog form{
 	padding-bottom: 15px;
-	border-bottom: 1px solid rgb(220, 221, 238);
 }
 
 .dialog #save-filename{
@@ -252,6 +251,13 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	border-top: 1px solid #EEE;
 	border-bottom: 1px solid #EEE;
 	padding: 30px;
+	margin-top: 30px;
+	display: none;
+}
+
+.dialog .controls {
+	border-top: 1px solid #EEE;
+	padding: 10px;
 }
 
 .preProvisioningContainer, .list {

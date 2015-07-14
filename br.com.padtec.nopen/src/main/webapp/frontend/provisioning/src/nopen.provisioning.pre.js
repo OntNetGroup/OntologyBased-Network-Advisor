@@ -46,21 +46,35 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			title: 'Pre Provisioning',
 			clickOutside: false,
 			modal: false,
-			content: 'Unconnected links were detected, click in the <b>Next</b> button to connect them. <hr>',
+			content: 'Unconnected links were detected, click in the <b>Next</b> button to connect them.',
 			buttons: [
+			          { action: 'showImage', content: 'Show/Hide Image', position: 'right' },
 			          { action: 'next', content: 'Next', position: 'right' },
 			]
 		});
 		dialog.on('action:next', next);
+		dialog.on('action:showImage', showImage);
 		dialog.open();
 
 		var currentLinkIndex = 1;
 		$('.viewport').hide();
+		$('.dialog .controls .control-button[data-action="showImage"]').hide();
 		
 		//block outside
 		$('#black_overlay').show();
 		
+		function showImage() {
+			if($('.dialog .fg .image').is(':visible')) {
+				$('.dialog .fg .image').hide();
+			}
+			else {
+				$('.dialog .fg .image').show();
+			}
+		};
+		
 		function next() {
+			
+			$('.dialog .controls .control-button[data-action="showImage"]').show();
 			
 			//finish pre provisioning
 			if (currentLinkIndex > links.length) {
@@ -98,7 +112,11 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				var test = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);
+				
 				$('.dialog .body').html(content);
+				$('.dialog .fg .image').remove();
+				$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
+				
 				prepareList('.outputsList');
 				generateOutputEvents();
 				changeSVGColor(sourceName, targetName);
@@ -118,7 +136,11 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				var test = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);
+				
 				$('.dialog .body').html(content);
+				$('.dialog .fg .image').remove();
+				$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
+				
 				$('.dialog .controls .control-button[data-action="next"]').text('Finish');
 				prepareList('.outputsList');
 				generateOutputEvents();
@@ -160,7 +182,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			    	'<ul id="expList" class="list"> <li class="inputs">' + targetName + '</li></ul>' + 
 			    '</div></div></div>';
 			
-			content = content + '<div class="image">' + file.getTopologySVG() + '</div>'
+			//content = content + '<div class="image">' + file.getTopologySVG() + '</div>'
 
 			return content;
 			
