@@ -30,4 +30,4 @@
  </div>
  <div class="paper-container"></div>
  <div class="inspector-container"></div>
- <div class="statusbar-container"><span class="rt-colab"></span></div>
+<!--  <div class="statusbar-container"><span class="rt-colab"></span></div> -->
