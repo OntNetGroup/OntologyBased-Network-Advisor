@@ -1,0 +1,2004 @@
+***
+
+Layer_Network: ODU2e, ODUk, OTU, OCh, OMS, OTS;
+
+Equipment:
+	Physical_Media_12;
+	
+Input_Interface:
+	in_int01_Physical_Media_12,
+	in_int02_Physical_Media_12;
+	
+Output_Interface:
+	out_int01_Physical_Media_12,
+	out_int02_Physical_Media_12;
+	
+Physical_Media:
+	pm01_Physical_Media_12,
+	pm02_Physical_Media_12;
+	
+Input:
+	in_pm01_Physical_Media_12,
+	in_pm02_Physical_Media_12;
+	
+Output:
+	out_pm01_Physical_Media_12,
+	out_pm02_Physical_Media_12;
+	
+Equipment:
+	Physical_Media_13;
+	
+Input_Interface:
+	in_int01_Physical_Media_13,
+	in_int02_Physical_Media_13;
+	
+Output_Interface:
+	out_int01_Physical_Media_13,
+	out_int02_Physical_Media_13;
+	
+Physical_Media:
+	pm01_Physical_Media_13,
+	pm02_Physical_Media_13;
+	
+Input:
+	in_pm01_Physical_Media_13,
+	in_pm02_Physical_Media_13;
+	
+Output:
+	out_pm01_Physical_Media_13,
+	out_pm02_Physical_Media_13;
+	
+Equipment:
+	Physical_Media_24;
+	
+Input_Interface:
+	in_int01_Physical_Media_24,
+	in_int02_Physical_Media_24;
+	
+Output_Interface:
+	out_int01_Physical_Media_24,
+	out_int02_Physical_Media_24;
+	
+Physical_Media:
+	pm01_Physical_Media_24,
+	pm02_Physical_Media_24;
+	
+Input:
+	in_pm01_Physical_Media_24,
+	in_pm02_Physical_Media_24;
+	
+Output:
+	out_pm01_Physical_Media_24,
+	out_pm02_Physical_Media_24;
+	
+Equipment:
+	Physical_Media_34;
+	
+Input_Interface:
+	in_int01_Physical_Media_34,
+	in_int02_Physical_Media_34;
+	
+Output_Interface:
+	out_int01_Physical_Media_34,
+	out_int02_Physical_Media_34;
+	
+Physical_Media:
+	pm01_Physical_Media_34,
+	pm02_Physical_Media_34;
+	
+Input:
+	in_pm01_Physical_Media_34,
+	in_pm02_Physical_Media_34;
+	
+Output:
+	out_pm01_Physical_Media_34,
+	out_pm02_Physical_Media_34;
+
+Equipment: 
+	EQ1_CIC_01;
+	
+Input_Interface:
+	in_int_so_EQ1_CIC_01	,
+	in_int_sk_EQ1_CIC_01		;
+	
+Output_Interface:
+	out_int_so_EQ1_CIC_01	,
+	out_int_sk_EQ1_CIC_01		;
+	
+AF_Source:
+	af_so_EQ1_CIC_01;
+	
+AF_Sink:
+	af_sk_EQ1_CIC_01;
+
+TF_Source:
+	tf_so_EQ1_CIC_01;
+	
+TF_Sink:
+	tf_sk_EQ1_CIC_01;
+	
+Input:
+	in_af_so_EQ1_CIC_01		,
+	in_af_sk_EQ1_CIC_01		,
+	in_tf_so_EQ1_CIC_01		,
+	in_tf_sk_EQ1_CIC_01		;
+
+Output:
+	out_af_so_EQ1_CIC_01	,
+	out_af_sk_EQ1_CIC_01		,
+	out_tf_so_EQ1_CIC_01	,
+	out_tf_sk_EQ1_CIC_01		;
+	
+Equipment: 
+	EQ1_CIC_02;
+	
+Input_Interface:
+	in_int_so_EQ1_CIC_02	,
+	in_int_sk_EQ1_CIC_02		;
+	
+Output_Interface:
+	out_int_so_EQ1_CIC_02	,
+	out_int_sk_EQ1_CIC_02		;
+	
+AF_Source:
+	af_so_EQ1_CIC_02;
+	
+AF_Sink:
+	af_sk_EQ1_CIC_02;
+
+TF_Source:
+	tf_so_EQ1_CIC_02;
+	
+TF_Sink:
+	tf_sk_EQ1_CIC_02;
+	
+Input:
+	in_af_so_EQ1_CIC_02		,
+	in_af_sk_EQ1_CIC_02		,
+	in_tf_so_EQ1_CIC_02		,
+	in_tf_sk_EQ1_CIC_02		;
+
+Output:
+	out_af_so_EQ1_CIC_02	,
+	out_af_sk_EQ1_CIC_02		,
+	out_tf_so_EQ1_CIC_02	,
+	out_tf_sk_EQ1_CIC_02		;
+	
+Equipment:
+	EQ1_ODUSwitch;
+	
+Input_Interface:
+	in_int01_so_EQ1_ODUSwitch	,
+	in_int02_so_EQ1_ODUSwitch	,
+	in_int01_sk_EQ1_ODUSwitch	,
+	in_int02_sk_EQ1_ODUSwitch	;
+	
+Output_Interface:
+	out_int01_so_EQ1_ODUSwitch	,
+	out_int02_so_EQ1_ODUSwitch	,
+	out_int01_sk_EQ1_ODUSwitch	,
+	out_int02_sk_EQ1_ODUSwitch	;
+	
+Matrix_Source:
+	m_so_EQ1_ODUSwitch;
+	
+Matrix_Sink:
+	m_sk_EQ1_ODUSwitch;
+	
+Input:
+	in_m01_so_EQ1_ODUSwitch		,
+	in_m02_so_EQ1_ODUSwitch		,
+	in_m01_sk_EQ1_ODUSwitch		,
+	in_m02_sk_EQ1_ODUSwitch		;
+	
+Output:
+	out_m01_so_EQ1_ODUSwitch	,
+	out_m02_so_EQ1_ODUSwitch	,
+	out_m01_sk_EQ1_ODUSwitch		,
+	out_m02_sk_EQ1_ODUSwitch		;
+	
+Equipment: 
+	EQ1_NIC_01;
+	
+Input_Interface:
+	in_int01_so_EQ1_NIC_01	,
+	in_int02_so_EQ1_NIC_01	,
+	in_int_sk_EQ1_NIC_01		;
+	
+Output_Interface:
+	out_int_so_EQ1_NIC_01	,
+	out_int01_sk_EQ1_NIC_01	,
+	out_int02_sk_EQ1_NIC_01	;
+	
+AF_Source:
+	af_so_ODUk_EQ1_NIC_01	,
+	af_so_OTU_EQ1_NIC_01	,
+	af_so_OCh_EQ1_NIC_01	;
+	
+AF_Sink:
+	af_sk_ODUk_EQ1_NIC_01	,
+	af_sk_OTU_EQ1_NIC_01	,
+	af_sk_OCh_EQ1_NIC_01	;
+
+TF_Source:
+	tf_so_ODUk_EQ1_NIC_01	,
+	tf_so_OTU_EQ1_NIC_01	,
+	tf_so_OCh_EQ1_NIC_01	;
+	
+TF_Sink:
+	tf_sk_ODUk_EQ1_NIC_01	,
+	tf_sk_OTU_EQ1_NIC_01	,
+	tf_sk_OCh_EQ1_NIC_01	;
+	
+Input:
+	in_af01_so_ODUk_EQ1_NIC_01	,
+	in_af02_so_ODUk_EQ1_NIC_01	,
+	in_af_sk_ODUk_EQ1_NIC_01		,
+	in_tf_so_ODUk_EQ1_NIC_01	,
+	in_tf_sk_ODUk_EQ1_NIC_01		,
+	
+	in_af_so_OTU_EQ1_NIC_01		,
+	in_af_sk_OTU_EQ1_NIC_01		,
+	in_tf_so_OTU_EQ1_NIC_01		,
+	in_tf_sk_OTU_EQ1_NIC_01		,
+	
+	in_af_so_OCh_EQ1_NIC_01		,
+	in_af_sk_OCh_EQ1_NIC_01		,
+	in_tf_so_OCh_EQ1_NIC_01		,
+	in_tf_sk_OCh_EQ1_NIC_01		;
+
+Output:
+	out_af_so_ODUk_EQ1_NIC_01	,
+	out_af01_sk_ODUk_EQ1_NIC_01	,
+	out_af02_sk_ODUk_EQ1_NIC_01	,
+	out_tf_so_ODUk_EQ1_NIC_01	,
+	out_tf_sk_ODUk_EQ1_NIC_01		,
+	
+	out_af_so_OTU_EQ1_NIC_01	,
+	out_af_sk_OTU_EQ1_NIC_01		,
+	out_tf_so_OTU_EQ1_NIC_01	,
+	out_tf_sk_OTU_EQ1_NIC_01		,
+	
+	out_af_so_OCh_EQ1_NIC_01	,
+	out_af_sk_OCh_EQ1_NIC_01		,
+	out_tf_so_OCh_EQ1_NIC_01	,
+	out_tf_sk_OCh_EQ1_NIC_01		;
+
+Equipment:
+	EQ1_WSS;
+	
+Input_Interface:
+	in_int01_so_EQ1_WSS	,
+	in_int02_so_EQ1_WSS	,
+	in_int01_sk_EQ1_WSS	,
+	in_int02_sk_EQ1_WSS	;
+	
+Output_Interface:
+	out_int01_so_EQ1_WSS	,
+	out_int02_so_EQ1_WSS	,
+	out_int01_sk_EQ1_WSS		,
+	out_int02_sk_EQ1_WSS		;
+	
+Matrix_Source:
+	m_so_EQ1_WSS;
+	
+Matrix_Sink:
+	m_sk_EQ1_WSS;
+	
+Input:
+	in_m01_so_EQ1_WSS	,
+	in_m02_so_EQ1_WSS	,
+	in_m01_sk_EQ1_WSS		,
+	in_m02_sk_EQ1_WSS		;
+	
+Output:
+	out_m01_so_EQ1_WSS	,
+	out_m02_so_EQ1_WSS	,
+	out_m01_sk_EQ1_WSS	,
+	out_m02_sk_EQ1_WSS	;
+	
+Equipment: 
+	EQ1_OIC_01;
+	
+Input_Interface:
+	in_int_so_EQ1_OIC_01	,
+	in_int_sk_EQ1_OIC_01		;
+	
+Output_Interface:
+	out_int_so_EQ1_OIC_01	,
+	out_int_sk_EQ1_OIC_01		;
+	
+AF_Source:
+	af_so_OMS_EQ1_OIC_01,
+	af_so_OTS_EQ1_OIC_01;
+	
+AF_Sink:
+	af_sk_OMS_EQ1_OIC_01,
+	af_sk_OTS_EQ1_OIC_01;
+
+TF_Source:
+	tf_so_OMS_EQ1_OIC_01,
+	tf_so_OTS_EQ1_OIC_01;
+	
+TF_Sink:
+	tf_sk_OMS_EQ1_OIC_01,
+	tf_sk_OTS_EQ1_OIC_01;
+	
+Input:
+	in_af_so_OMS_EQ1_OIC_01		,
+	in_af_sk_OMS_EQ1_OIC_01		,
+	in_tf_so_OMS_EQ1_OIC_01		,
+	in_tf_sk_OMS_EQ1_OIC_01		,
+	
+	in_af_so_OTS_EQ1_OIC_01		,
+	in_af_sk_OTS_EQ1_OIC_01		,
+	in_tf_so_OTS_EQ1_OIC_01		,
+	in_tf_sk_OTS_EQ1_OIC_01		;
+
+Output:
+	out_af_so_OMS_EQ1_OIC_01	,
+	out_af_sk_OMS_EQ1_OIC_01		,
+	out_tf_so_OMS_EQ1_OIC_01	,
+	out_tf_sk_OMS_EQ1_OIC_01		,
+	
+	out_af_so_OTS_EQ1_OIC_01	,
+	out_af_sk_OTS_EQ1_OIC_01		,
+	out_tf_so_OTS_EQ1_OIC_01	,
+	out_tf_sk_OTS_EQ1_OIC_01		;
+	
+Equipment:
+	EQ2_WSS;
+	
+Input_Interface:
+	in_int01_so_EQ2_WSS	,
+	in_int02_so_EQ2_WSS	,
+	in_int01_sk_EQ2_WSS	,
+	in_int02_sk_EQ2_WSS	;
+	
+Output_Interface:
+	out_int01_so_EQ2_WSS	,
+	out_int02_so_EQ2_WSS	,
+	out_int01_sk_EQ2_WSS		,
+	out_int02_sk_EQ2_WSS		;
+	
+Matrix_Source:
+	m_so_EQ2_WSS	;
+	
+Matrix_Sink:
+	m_sk_EQ2_WSS		;
+	
+Input:
+	in_m01_so_EQ2_WSS	,
+	in_m02_so_EQ2_WSS	,
+	in_m01_sk_EQ2_WSS		,
+	in_m02_sk_EQ2_WSS		;
+	
+Output:
+	out_m01_so_EQ2_WSS	,
+	out_m02_so_EQ2_WSS	,
+	out_m01_sk_EQ2_WSS	,
+	out_m02_sk_EQ2_WSS	;
+	
+Equipment: 
+	EQ2_OIC_01;
+	
+Input_Interface:
+	in_int_so_EQ2_OIC_01	,
+	in_int_sk_EQ2_OIC_01		;
+	
+Output_Interface:
+	out_int_so_EQ2_OIC_01	,
+	out_int_sk_EQ2_OIC_01		;
+	
+AF_Source:
+	af_so_OMS_EQ2_OIC_01,
+	af_so_OTS_EQ2_OIC_01;
+	
+AF_Sink:
+	af_sk_OMS_EQ2_OIC_01,
+	af_sk_OTS_EQ2_OIC_01;
+
+TF_Source:
+	tf_so_OMS_EQ2_OIC_01,
+	tf_so_OTS_EQ2_OIC_01;
+	
+TF_Sink:
+	tf_sk_OMS_EQ2_OIC_01,
+	tf_sk_OTS_EQ2_OIC_01;
+	
+Input:
+	in_af_so_OMS_EQ2_OIC_01		,
+	in_af_sk_OMS_EQ2_OIC_01		,
+	in_tf_so_OMS_EQ2_OIC_01		,
+	in_tf_sk_OMS_EQ2_OIC_01		,
+	
+	in_af_so_OTS_EQ2_OIC_01		,
+	in_af_sk_OTS_EQ2_OIC_01		,
+	in_tf_so_OTS_EQ2_OIC_01		,
+	in_tf_sk_OTS_EQ2_OIC_01		;
+
+Output:
+	out_af_so_OMS_EQ2_OIC_01	,
+	out_af_sk_OMS_EQ2_OIC_01		,
+	out_tf_so_OMS_EQ2_OIC_01	,
+	out_tf_sk_OMS_EQ2_OIC_01		,
+	
+	out_af_so_OTS_EQ2_OIC_01	,
+	out_af_sk_OTS_EQ2_OIC_01		,
+	out_tf_so_OTS_EQ2_OIC_01	,
+	out_tf_sk_OTS_EQ2_OIC_01		;
+	
+Equipment: 
+	EQ2_OIC_02;
+	
+Input_Interface:
+	in_int_so_EQ2_OIC_02	,
+	in_int_sk_EQ2_OIC_02		;
+	
+Output_Interface:
+	out_int_so_EQ2_OIC_02	,
+	out_int_sk_EQ2_OIC_02		;
+	
+AF_Source:
+	af_so_OMS_EQ2_OIC_02,
+	af_so_OTS_EQ2_OIC_02;
+	
+AF_Sink:
+	af_sk_OMS_EQ2_OIC_02,
+	af_sk_OTS_EQ2_OIC_02;
+
+TF_Source:
+	tf_so_OMS_EQ2_OIC_02,
+	tf_so_OTS_EQ2_OIC_02;
+	
+TF_Sink:
+	tf_sk_OMS_EQ2_OIC_02,
+	tf_sk_OTS_EQ2_OIC_02;
+	
+Input:
+	in_af_so_OMS_EQ2_OIC_02		,
+	in_af_sk_OMS_EQ2_OIC_02		,
+	in_tf_so_OMS_EQ2_OIC_02		,
+	in_tf_sk_OMS_EQ2_OIC_02		,
+	
+	in_af_so_OTS_EQ2_OIC_02		,
+	in_af_sk_OTS_EQ2_OIC_02		,
+	in_tf_so_OTS_EQ2_OIC_02		,
+	in_tf_sk_OTS_EQ2_OIC_02		;
+
+Output:
+	out_af_so_OMS_EQ2_OIC_02	,
+	out_af_sk_OMS_EQ2_OIC_02		,
+	out_tf_so_OMS_EQ2_OIC_02	,
+	out_tf_sk_OMS_EQ2_OIC_02		,
+	
+	out_af_so_OTS_EQ2_OIC_02	,
+	out_af_sk_OTS_EQ2_OIC_02		,
+	out_tf_so_OTS_EQ2_OIC_02	,
+	out_tf_sk_OTS_EQ2_OIC_02		;
+	
+Equipment:
+	EQ3_AMP;
+	
+Input_Interface:
+	in_int01_EQ3_AMP,
+	in_int02_EQ3_AMP;
+	
+Output_Interface:
+	out_int01_EQ3_AMP,
+	out_int02_EQ3_AMP;
+
+AF_Source:
+	af01_so_EQ3_AMP,
+	af02_so_EQ3_AMP;
+	
+AF_Sink:
+	af01_sk_EQ3_AMP,
+	af02_sk_EQ3_AMP;
+
+TF_Source:
+	tf01_so_EQ3_AMP,
+	tf02_so_EQ3_AMP;
+	
+TF_Sink:
+	tf01_sk_EQ3_AMP,
+	tf02_sk_EQ3_AMP;
+	
+Input:
+	in_af01_so_EQ3_AMP	,
+	in_af01_sk_EQ3_AMP	,
+	in_tf01_so_EQ3_AMP	,
+	in_tf01_sk_EQ3_AMP	,
+	
+	in_af02_so_EQ3_AMP	,
+	in_af02_sk_EQ3_AMP	,
+	in_tf02_so_EQ3_AMP	,
+	in_tf02_sk_EQ3_AMP	;
+	
+Output:
+	out_af01_so_EQ3_AMP	,
+	out_af01_sk_EQ3_AMP	,
+	out_tf01_so_EQ3_AMP	,
+	out_tf01_sk_EQ3_AMP	,
+	
+	out_af02_so_EQ3_AMP	,
+	out_af02_sk_EQ3_AMP	,
+	out_tf02_so_EQ3_AMP	,
+	out_tf02_sk_EQ3_AMP	;
+	
+Equipment: 
+	EQ4_CIC_01;
+	
+Input_Interface:
+	in_int_so_EQ4_CIC_01	,
+	in_int_sk_EQ4_CIC_01		;
+	
+Output_Interface:
+	out_int_so_EQ4_CIC_01	,
+	out_int_sk_EQ4_CIC_01		;
+	
+AF_Source:
+	af_so_EQ4_CIC_01;
+	
+AF_Sink:
+	af_sk_EQ4_CIC_01;
+
+TF_Source:
+	tf_so_EQ4_CIC_01;
+	
+TF_Sink:
+	tf_sk_EQ4_CIC_01;
+	
+Input:
+	in_af_so_EQ4_CIC_01		,
+	in_af_sk_EQ4_CIC_01		,
+	in_tf_so_EQ4_CIC_01		,
+	in_tf_sk_EQ4_CIC_01		;
+
+Output:
+	out_af_so_EQ4_CIC_01	,
+	out_af_sk_EQ4_CIC_01		,
+	out_tf_so_EQ4_CIC_01	,
+	out_tf_sk_EQ4_CIC_01		;
+	
+Equipment: 
+	EQ4_CIC_02;
+	
+Input_Interface:
+	in_int_so_EQ4_CIC_02	,
+	in_int_sk_EQ4_CIC_02		;
+	
+Output_Interface:
+	out_int_so_EQ4_CIC_02	,
+	out_int_sk_EQ4_CIC_02		;
+	
+AF_Source:
+	af_so_EQ4_CIC_02;
+	
+AF_Sink:
+	af_sk_EQ4_CIC_02;
+
+TF_Source:
+	tf_so_EQ4_CIC_02;
+	
+TF_Sink:
+	tf_sk_EQ4_CIC_02;
+	
+Input:
+	in_af_so_EQ4_CIC_02		,
+	in_af_sk_EQ4_CIC_02		,
+	in_tf_so_EQ4_CIC_02		,
+	in_tf_sk_EQ4_CIC_02		;
+
+Output:
+	out_af_so_EQ4_CIC_02	,
+	out_af_sk_EQ4_CIC_02		,
+	out_tf_so_EQ4_CIC_02	,
+	out_tf_sk_EQ4_CIC_02		;
+	
+Equipment:
+	EQ4_ODUSwitch;
+	
+Input_Interface:
+	in_int01_so_EQ4_ODUSwitch	,
+	in_int02_so_EQ4_ODUSwitch	,
+	in_int01_sk_EQ4_ODUSwitch	,
+	in_int02_sk_EQ4_ODUSwitch	;
+	
+Output_Interface:
+	out_int01_so_EQ4_ODUSwitch	,
+	out_int02_so_EQ4_ODUSwitch	,
+	out_int01_sk_EQ4_ODUSwitch	,
+	out_int02_sk_EQ4_ODUSwitch	;
+	
+Matrix_Source:
+	m_so_EQ4_ODUSwitch;
+	
+Matrix_Sink:
+	m_sk_EQ4_ODUSwitch;
+	
+Input:
+	in_m01_so_EQ4_ODUSwitch		,
+	in_m02_so_EQ4_ODUSwitch		,
+	in_m01_sk_EQ4_ODUSwitch		,
+	in_m02_sk_EQ4_ODUSwitch		;
+	
+Output:
+	out_m01_so_EQ4_ODUSwitch	,
+	out_m02_so_EQ4_ODUSwitch	,
+	out_m01_sk_EQ4_ODUSwitch		,
+	out_m02_sk_EQ4_ODUSwitch		;
+	
+Equipment: 
+	EQ4_NIC_01;
+	
+Input_Interface:
+	in_int01_so_EQ4_NIC_01	,
+	in_int02_so_EQ4_NIC_01	,
+	in_int_sk_EQ4_NIC_01		;
+	
+Output_Interface:
+	out_int_so_EQ4_NIC_01	,
+	out_int01_sk_EQ4_NIC_01	,
+	out_int02_sk_EQ4_NIC_01	;
+	
+AF_Source:
+	af_so_ODUk_EQ4_NIC_01	,
+	af_so_OTU_EQ4_NIC_01	,
+	af_so_OCh_EQ4_NIC_01	;
+	
+AF_Sink:
+	af_sk_ODUk_EQ4_NIC_01	,
+	af_sk_OTU_EQ4_NIC_01	,
+	af_sk_OCh_EQ4_NIC_01	;
+
+TF_Source:
+	tf_so_ODUk_EQ4_NIC_01	,
+	tf_so_OTU_EQ4_NIC_01	,
+	tf_so_OCh_EQ4_NIC_01	;
+	
+TF_Sink:
+	tf_sk_ODUk_EQ4_NIC_01	,
+	tf_sk_OTU_EQ4_NIC_01	,
+	tf_sk_OCh_EQ4_NIC_01	;
+	
+Input:
+	in_af01_so_ODUk_EQ4_NIC_01	,
+	in_af02_so_ODUk_EQ4_NIC_01	,
+	in_af_sk_ODUk_EQ4_NIC_01		,
+	in_tf_so_ODUk_EQ4_NIC_01	,
+	in_tf_sk_ODUk_EQ4_NIC_01		,
+	
+	in_af_so_OTU_EQ4_NIC_01		,
+	in_af_sk_OTU_EQ4_NIC_01		,
+	in_tf_so_OTU_EQ4_NIC_01		,
+	in_tf_sk_OTU_EQ4_NIC_01		,
+	
+	in_af_so_OCh_EQ4_NIC_01		,
+	in_af_sk_OCh_EQ4_NIC_01		,
+	in_tf_so_OCh_EQ4_NIC_01		,
+	in_tf_sk_OCh_EQ4_NIC_01		;
+
+Output:
+	out_af_so_ODUk_EQ4_NIC_01	,
+	out_af01_sk_ODUk_EQ4_NIC_01	,
+	out_af02_sk_ODUk_EQ4_NIC_01	,
+	out_tf_so_ODUk_EQ4_NIC_01	,
+	out_tf_sk_ODUk_EQ4_NIC_01		,
+	
+	out_af_so_OTU_EQ4_NIC_01	,
+	out_af_sk_OTU_EQ4_NIC_01		,
+	out_tf_so_OTU_EQ4_NIC_01	,
+	out_tf_sk_OTU_EQ4_NIC_01		,
+	
+	out_af_so_OCh_EQ4_NIC_01	,
+	out_af_sk_OCh_EQ4_NIC_01		,
+	out_tf_so_OCh_EQ4_NIC_01	,
+	out_tf_sk_OCh_EQ4_NIC_01		;
+	
+Equipment:
+	EQ4_WSS;
+	
+Input_Interface:
+	in_int01_so_EQ4_WSS	,
+	in_int02_so_EQ4_WSS	,
+	in_int01_sk_EQ4_WSS	,
+	in_int02_sk_EQ4_WSS	;
+	
+Output_Interface:
+	out_int01_so_EQ4_WSS	,
+	out_int02_so_EQ4_WSS	,
+	out_int01_sk_EQ4_WSS		,
+	out_int02_sk_EQ4_WSS		;
+	
+Matrix_Source:
+	m_so_EQ4_WSS;
+	
+Matrix_Sink:
+	m_sk_EQ4_WSS;
+	
+Input:
+	in_m01_so_EQ4_WSS	,
+	in_m02_so_EQ4_WSS	,
+	in_m01_sk_EQ4_WSS		,
+	in_m02_sk_EQ4_WSS		;
+	
+Output:
+	out_m01_so_EQ4_WSS	,
+	out_m02_so_EQ4_WSS	,
+	out_m01_sk_EQ4_WSS	,
+	out_m02_sk_EQ4_WSS	;
+	
+Equipment: 
+	EQ4_OIC_01;
+	
+Input_Interface:
+	in_int_so_EQ4_OIC_01	,
+	in_int_sk_EQ4_OIC_01		;
+	
+Output_Interface:
+	out_int_so_EQ4_OIC_01	,
+	out_int_sk_EQ4_OIC_01		;
+	
+AF_Source:
+	af_so_OMS_EQ4_OIC_01,
+	af_so_OTS_EQ4_OIC_01;
+	
+AF_Sink:
+	af_sk_OMS_EQ4_OIC_01,
+	af_sk_OTS_EQ4_OIC_01;
+
+TF_Source:
+	tf_so_OMS_EQ4_OIC_01,
+	tf_so_OTS_EQ4_OIC_01;
+	
+TF_Sink:
+	tf_sk_OMS_EQ4_OIC_01,
+	tf_sk_OTS_EQ4_OIC_01;
+	
+Input:
+	in_af_so_OMS_EQ4_OIC_01		,
+	in_af_sk_OMS_EQ4_OIC_01		,
+	in_tf_so_OMS_EQ4_OIC_01		,
+	in_tf_sk_OMS_EQ4_OIC_01		,
+	
+	in_af_so_OTS_EQ4_OIC_01		,
+	in_af_sk_OTS_EQ4_OIC_01		,
+	in_tf_so_OTS_EQ4_OIC_01		,
+	in_tf_sk_OTS_EQ4_OIC_01		;
+
+Output:
+	out_af_so_OMS_EQ4_OIC_01	,
+	out_af_sk_OMS_EQ4_OIC_01		,
+	out_tf_so_OMS_EQ4_OIC_01	,
+	out_tf_sk_OMS_EQ4_OIC_01		,
+	
+	out_af_so_OTS_EQ4_OIC_01	,
+	out_af_sk_OTS_EQ4_OIC_01		,
+	out_tf_so_OTS_EQ4_OIC_01	,
+	out_tf_sk_OTS_EQ4_OIC_01		;
+	
+Equipment: 
+	EQ4_OIC_02;
+	
+Input_Interface:
+	in_int_so_EQ4_OIC_02	,
+	in_int_sk_EQ4_OIC_02		;
+	
+Output_Interface:
+	out_int_so_EQ4_OIC_02	,
+	out_int_sk_EQ4_OIC_02		;
+	
+AF_Source:
+	af_so_OMS_EQ4_OIC_02,
+	af_so_OTS_EQ4_OIC_02;
+	
+AF_Sink:
+	af_sk_OMS_EQ4_OIC_02,
+	af_sk_OTS_EQ4_OIC_02;
+
+TF_Source:
+	tf_so_OMS_EQ4_OIC_02,
+	tf_so_OTS_EQ4_OIC_02;
+	
+TF_Sink:
+	tf_sk_OMS_EQ4_OIC_02,
+	tf_sk_OTS_EQ4_OIC_02;
+	
+Input:
+	in_af_so_OMS_EQ4_OIC_02		,
+	in_af_sk_OMS_EQ4_OIC_02		,
+	in_tf_so_OMS_EQ4_OIC_02		,
+	in_tf_sk_OMS_EQ4_OIC_02		,
+	
+	in_af_so_OTS_EQ4_OIC_02		,
+	in_af_sk_OTS_EQ4_OIC_02		,
+	in_tf_so_OTS_EQ4_OIC_02		,
+	in_tf_sk_OTS_EQ4_OIC_02		;
+
+Output:
+	out_af_so_OMS_EQ4_OIC_02	,
+	out_af_sk_OMS_EQ4_OIC_02		,
+	out_tf_so_OMS_EQ4_OIC_02	,
+	out_tf_sk_OMS_EQ4_OIC_02		,
+	
+	out_af_so_OTS_EQ4_OIC_02	,
+	out_af_sk_OTS_EQ4_OIC_02		,
+	out_tf_so_OTS_EQ4_OIC_02	,
+	out_tf_sk_OTS_EQ4_OIC_02		;
+	
+***
+
+client_of: (ODU2e, ODUk), (ODUk, OTU), (OTU, OCh), (OCh, OMS), (OMS, OTS);
+
+componentOf:
+	(	Physical_Media_12	,	in_int01_Physical_Media_12	),
+	(	Physical_Media_12	,	in_int02_Physical_Media_12	),
+	(	Physical_Media_12	,	out_int01_Physical_Media_12	),
+	(	Physical_Media_12	,	out_int02_Physical_Media_12	);
+	
+componentOf:
+	(	Physical_Media_12	,	pm01_Physical_Media_12	),
+	(	Physical_Media_12	,	pm02_Physical_Media_12	);
+	
+componentOf:
+	(	pm01_Physical_Media_12	,	in_pm01_Physical_Media_12	),
+	(	pm01_Physical_Media_12	,	out_pm01_Physical_Media_12	),
+	(	pm02_Physical_Media_12	,	in_pm02_Physical_Media_12	),
+	(	pm02_Physical_Media_12	,	out_pm02_Physical_Media_12	);
+	
+maps:
+	(	in_int01_Physical_Media_12	,	in_pm01_Physical_Media_12	),
+	(	in_int02_Physical_Media_12	,	in_pm02_Physical_Media_12	),
+	(	out_int01_Physical_Media_12	,	out_pm01_Physical_Media_12	),
+	(	out_int02_Physical_Media_12	,	out_pm02_Physical_Media_12	);
+	
+componentOf:
+	(	Physical_Media_13	,	in_int01_Physical_Media_13	),
+	(	Physical_Media_13	,	in_int02_Physical_Media_13	),
+	(	Physical_Media_13	,	out_int01_Physical_Media_13	),
+	(	Physical_Media_13	,	out_int02_Physical_Media_13	);
+	
+componentOf:
+	(	Physical_Media_13	,	pm01_Physical_Media_13	),
+	(	Physical_Media_13	,	pm02_Physical_Media_13	);
+	
+componentOf:
+	(	pm01_Physical_Media_13	,	in_pm01_Physical_Media_13	),
+	(	pm01_Physical_Media_13	,	out_pm01_Physical_Media_13	),
+	(	pm02_Physical_Media_13	,	in_pm02_Physical_Media_13	),
+	(	pm02_Physical_Media_13	,	out_pm02_Physical_Media_13	);
+	
+maps:
+	(	in_int01_Physical_Media_13	,	in_pm01_Physical_Media_13	),
+	(	in_int02_Physical_Media_13	,	in_pm02_Physical_Media_13	),
+	(	out_int01_Physical_Media_13	,	out_pm01_Physical_Media_13	),
+	(	out_int02_Physical_Media_13	,	out_pm02_Physical_Media_13	);
+	
+componentOf:
+	(	Physical_Media_24	,	in_int01_Physical_Media_24	),
+	(	Physical_Media_24	,	in_int02_Physical_Media_24	),
+	(	Physical_Media_24	,	out_int01_Physical_Media_24	),
+	(	Physical_Media_24	,	out_int02_Physical_Media_24	);
+	
+componentOf:
+	(	Physical_Media_24	,	pm01_Physical_Media_24	),
+	(	Physical_Media_24	,	pm02_Physical_Media_24	);
+	
+componentOf:
+	(	pm01_Physical_Media_24	,	in_pm01_Physical_Media_24		),
+	(	pm01_Physical_Media_24	,	out_pm01_Physical_Media_24	),
+	(	pm02_Physical_Media_24	,	in_pm02_Physical_Media_24		),
+	(	pm02_Physical_Media_24	,	out_pm02_Physical_Media_24	);
+	
+maps:
+	(	in_int01_Physical_Media_24	,	in_pm01_Physical_Media_24	),
+	(	in_int02_Physical_Media_24	,	in_pm02_Physical_Media_24	),
+	(	out_int01_Physical_Media_24	,	out_pm01_Physical_Media_24	),
+	(	out_int02_Physical_Media_24	,	out_pm02_Physical_Media_24	);
+	
+componentOf:
+	(	Physical_Media_34	,	in_int01_Physical_Media_34	),
+	(	Physical_Media_34	,	in_int02_Physical_Media_34	),
+	(	Physical_Media_34	,	out_int01_Physical_Media_34	),
+	(	Physical_Media_34	,	out_int02_Physical_Media_34	);
+	
+componentOf:
+	(	Physical_Media_34	,	pm01_Physical_Media_34	),
+	(	Physical_Media_34	,	pm02_Physical_Media_34	);
+	
+componentOf:
+	(	pm01_Physical_Media_34	,	in_pm01_Physical_Media_34		),
+	(	pm01_Physical_Media_34	,	out_pm01_Physical_Media_34	),
+	(	pm02_Physical_Media_34	,	in_pm02_Physical_Media_34		),
+	(	pm02_Physical_Media_34	,	out_pm02_Physical_Media_34	);
+	
+maps:
+	(	in_int01_Physical_Media_34	,	in_pm01_Physical_Media_34	),
+	(	in_int02_Physical_Media_34	,	in_pm02_Physical_Media_34	),
+	(	out_int01_Physical_Media_34	,	out_pm01_Physical_Media_34	),
+	(	out_int02_Physical_Media_34	,	out_pm02_Physical_Media_34	);
+
+componentOf:
+	(	EQ1_CIC_01	,	in_int_so_EQ1_CIC_01	),
+	(	EQ1_CIC_01	,	in_int_sk_EQ1_CIC_01		),
+	(	EQ1_CIC_01	,	out_int_so_EQ1_CIC_01	),
+	(	EQ1_CIC_01	,	out_int_sk_EQ1_CIC_01		);
+
+adapts_to:
+	(	af_so_EQ1_CIC_01	,	ODU2e	)	,
+	(	af_sk_EQ1_CIC_01		,	ODU2e	)	;
+	
+defines:
+	(	tf_so_EQ1_CIC_01	,	ODU2e	)	,
+	(	tf_sk_EQ1_CIC_01		,	ODU2e	)	;
+	
+componentOf:
+	(	EQ1_CIC_01	,	af_so_EQ1_CIC_01	),
+	(	EQ1_CIC_01	,	af_sk_EQ1_CIC_01		),
+	(	EQ1_CIC_01	,	tf_so_EQ1_CIC_01	),
+	(	EQ1_CIC_01	,	tf_sk_EQ1_CIC_01		);
+	
+componentOf:
+	(	af_so_EQ1_CIC_01	,	in_af_so_EQ1_CIC_01		)	,
+	(	af_so_EQ1_CIC_01	,	out_af_so_EQ1_CIC_01	)	,
+	(	af_sk_EQ1_CIC_01  	,	in_af_sk_EQ1_CIC_01	    )	,
+	(	af_sk_EQ1_CIC_01  	,	out_af_sk_EQ1_CIC_01		)	,
+	(	tf_so_EQ1_CIC_01	,	in_tf_so_EQ1_CIC_01		)	,
+	(	tf_so_EQ1_CIC_01	,	out_tf_so_EQ1_CIC_01	)	,
+	(	tf_sk_EQ1_CIC_01  	,	in_tf_sk_EQ1_CIC_01	    )	,
+	(	tf_sk_EQ1_CIC_01  	,	out_tf_sk_EQ1_CIC_01		)	;
+
+binds:
+	(	out_af_so_EQ1_CIC_01	,	in_tf_so_EQ1_CIC_01		),
+	(	in_af_sk_EQ1_CIC_01		,	out_tf_sk_EQ1_CIC_01		);
+	
+maps:
+	(	in_int_so_EQ1_CIC_01	,	in_af_so_EQ1_CIC_01		),
+	(	in_int_sk_EQ1_CIC_01		,	in_tf_sk_EQ1_CIC_01		),
+	(	out_int_so_EQ1_CIC_01	,	out_tf_so_EQ1_CIC_01	),
+	(	out_int_sk_EQ1_CIC_01		,	out_af_sk_EQ1_CIC_01		);
+	
+componentOf:
+	(	EQ1_CIC_02	,	in_int_so_EQ1_CIC_02	),
+	(	EQ1_CIC_02	,	in_int_sk_EQ1_CIC_02		),
+	(	EQ1_CIC_02	,	out_int_so_EQ1_CIC_02	),
+	(	EQ1_CIC_02	,	out_int_sk_EQ1_CIC_02		);
+
+adapts_to:
+	(	af_so_EQ1_CIC_02	,	ODU2e	)	,
+	(	af_sk_EQ1_CIC_02		,	ODU2e	)	;
+	
+defines:
+	(	tf_so_EQ1_CIC_02	,	ODU2e	)	,
+	(	tf_sk_EQ1_CIC_02		,	ODU2e	)	;
+	
+componentOf:
+	(	EQ1_CIC_02	,	af_so_EQ1_CIC_02	),
+	(	EQ1_CIC_02	,	af_sk_EQ1_CIC_02		),
+	(	EQ1_CIC_02	,	tf_so_EQ1_CIC_02	),
+	(	EQ1_CIC_02	,	tf_sk_EQ1_CIC_02		);
+	
+componentOf:
+	(	af_so_EQ1_CIC_02	,	in_af_so_EQ1_CIC_02		)	,
+	(	af_so_EQ1_CIC_02	,	out_af_so_EQ1_CIC_02	)	,
+	(	af_sk_EQ1_CIC_02  	,	in_af_sk_EQ1_CIC_02	    )	,
+	(	af_sk_EQ1_CIC_02  	,	out_af_sk_EQ1_CIC_02		)	,
+	(	tf_so_EQ1_CIC_02	,	in_tf_so_EQ1_CIC_02		)	,
+	(	tf_so_EQ1_CIC_02	,	out_tf_so_EQ1_CIC_02	)	,
+	(	tf_sk_EQ1_CIC_02  	,	in_tf_sk_EQ1_CIC_02	    )	,
+	(	tf_sk_EQ1_CIC_02  	,	out_tf_sk_EQ1_CIC_02		)	;
+
+binds:
+	(	out_af_so_EQ1_CIC_02	,	in_tf_so_EQ1_CIC_02		),
+	(	in_af_sk_EQ1_CIC_02		,	out_tf_sk_EQ1_CIC_02		);
+	
+maps:
+	(	in_int_so_EQ1_CIC_02	,	in_af_so_EQ1_CIC_02		),
+	(	in_int_sk_EQ1_CIC_02		,	in_tf_sk_EQ1_CIC_02		),
+	(	out_int_so_EQ1_CIC_02	,	out_tf_so_EQ1_CIC_02	),
+	(	out_int_sk_EQ1_CIC_02		,	out_af_sk_EQ1_CIC_02		);
+	
+componentOf:
+	(	EQ1_ODUSwitch	,	in_int01_so_EQ1_ODUSwitch	),
+	(	EQ1_ODUSwitch	,	in_int02_so_EQ1_ODUSwitch	),
+	(	EQ1_ODUSwitch	,	in_int01_sk_EQ1_ODUSwitch	),
+	(	EQ1_ODUSwitch	,	in_int02_sk_EQ1_ODUSwitch	),
+		
+	(	EQ1_ODUSwitch	,	out_int01_so_EQ1_ODUSwitch	),
+	(	EQ1_ODUSwitch	,	out_int02_so_EQ1_ODUSwitch	),
+	(	EQ1_ODUSwitch	,	out_int01_sk_EQ1_ODUSwitch	),
+	(	EQ1_ODUSwitch	,	out_int02_sk_EQ1_ODUSwitch	);
+	
+hasLayer:
+	(	m_so_EQ1_ODUSwitch	,	ODU2e	),
+	(	m_sk_EQ1_ODUSwitch	,	ODU2e	);
+	
+componentOf:
+	(	EQ1_ODUSwitch	,	m_so_EQ1_ODUSwitch	),
+	(	EQ1_ODUSwitch	,	m_sk_EQ1_ODUSwitch	);
+	
+componentOf:
+	(	m_so_EQ1_ODUSwitch	,	in_m01_so_EQ1_ODUSwitch		),
+	(	m_so_EQ1_ODUSwitch	,	in_m02_so_EQ1_ODUSwitch		),
+	(	m_so_EQ1_ODUSwitch	,	out_m01_so_EQ1_ODUSwitch	),
+	(	m_so_EQ1_ODUSwitch	,	out_m02_so_EQ1_ODUSwitch	),
+	
+	(	m_sk_EQ1_ODUSwitch	,	in_m01_sk_EQ1_ODUSwitch	),
+	(	m_sk_EQ1_ODUSwitch	,	in_m02_sk_EQ1_ODUSwitch	),
+	(	m_sk_EQ1_ODUSwitch	,	out_m01_sk_EQ1_ODUSwitch	),
+	(	m_sk_EQ1_ODUSwitch	,	out_m02_sk_EQ1_ODUSwitch	);
+	
+maps:
+	(	in_int01_so_EQ1_ODUSwitch	,	in_m01_so_EQ1_ODUSwitch		),
+	(	in_int02_so_EQ1_ODUSwitch	,   in_m02_so_EQ1_ODUSwitch		),
+	(	in_int01_sk_EQ1_ODUSwitch		,	in_m01_sk_EQ1_ODUSwitch		),
+	(	in_int02_sk_EQ1_ODUSwitch		,   in_m02_sk_EQ1_ODUSwitch		),
+	(	out_int01_so_EQ1_ODUSwitch	,	out_m01_so_EQ1_ODUSwitch	),
+	(	out_int02_so_EQ1_ODUSwitch	,   out_m02_so_EQ1_ODUSwitch	),
+	(	out_int01_sk_EQ1_ODUSwitch	,	out_m01_sk_EQ1_ODUSwitch		),
+	(	out_int02_sk_EQ1_ODUSwitch	,   out_m02_sk_EQ1_ODUSwitch		);
+
+componentOf:
+	(	EQ1_NIC_01	,	in_int01_so_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	in_int02_so_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	in_int_sk_EQ1_NIC_01		),
+	
+	(	EQ1_NIC_01	,	out_int_so_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	out_int01_sk_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	out_int02_sk_EQ1_NIC_01	);
+
+adapts_from:
+	(	af_so_ODUk_EQ1_NIC_01	,	ODU2e	)	,
+	(	af_sk_ODUk_EQ1_NIC_01		,	ODU2e	)	,
+	
+	(	af_so_OTU_EQ1_NIC_01	,	ODUk	)	,
+	(	af_sk_OTU_EQ1_NIC_01		,	ODUk	)	,
+	
+	(	af_so_OCh_EQ1_NIC_01	,	OTU		)	,
+	(	af_sk_OCh_EQ1_NIC_01		,	OTU		)	;
+	
+adapts_to:
+	(	af_so_ODUk_EQ1_NIC_01	,	ODUk	)	,
+	(	af_sk_ODUk_EQ1_NIC_01		,	ODUk	)	,
+	
+	(	af_so_OTU_EQ1_NIC_01	,	OTU		)	,
+	(	af_sk_OTU_EQ1_NIC_01		,	OTU		)	,
+	
+	(	af_so_OCh_EQ1_NIC_01	,	OCh		)	,
+	(	af_sk_OCh_EQ1_NIC_01		,	OCh		)	;
+	
+defines:
+	(	tf_so_ODUk_EQ1_NIC_01	,	ODUk	)	,
+	(	tf_sk_ODUk_EQ1_NIC_01		,	ODUk	)	,
+	                                        
+	(	tf_so_OTU_EQ1_NIC_01	,	OTU		)	,
+	(	tf_sk_OTU_EQ1_NIC_01		,	OTU		)	,
+	                                        
+	(	tf_so_OCh_EQ1_NIC_01	,	OCh		)	,
+	(	tf_sk_OCh_EQ1_NIC_01		,	OCh		)	;
+	
+componentOf:
+	(	EQ1_NIC_01	,	af_so_ODUk_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	af_sk_ODUk_EQ1_NIC_01		),
+	(	EQ1_NIC_01	,	tf_so_ODUk_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	tf_sk_ODUk_EQ1_NIC_01		),
+	
+	(	EQ1_NIC_01	,	af_so_OTU_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	af_sk_OTU_EQ1_NIC_01		),
+	(	EQ1_NIC_01	,	tf_so_OTU_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	tf_sk_OTU_EQ1_NIC_01		),
+	
+	(	EQ1_NIC_01	,	af_so_OCh_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	af_sk_OCh_EQ1_NIC_01		),
+	(	EQ1_NIC_01	,	tf_so_OCh_EQ1_NIC_01	),
+	(	EQ1_NIC_01	,	tf_sk_OCh_EQ1_NIC_01		);
+	
+componentOf:
+	(	af_so_ODUk_EQ1_NIC_01	,	in_af01_so_ODUk_EQ1_NIC_01	)	,
+	(	af_so_ODUk_EQ1_NIC_01	,	in_af02_so_ODUk_EQ1_NIC_01	)	,
+	(	af_so_ODUk_EQ1_NIC_01	,	out_af_so_ODUk_EQ1_NIC_01	)	,
+	(	af_sk_ODUk_EQ1_NIC_01  	,	in_af_sk_ODUk_EQ1_NIC_01		)	,
+	(	af_sk_ODUk_EQ1_NIC_01  	,	out_af01_sk_ODUk_EQ1_NIC_01	)	,
+	(	af_sk_ODUk_EQ1_NIC_01  	,	out_af02_sk_ODUk_EQ1_NIC_01	)	,
+	(	tf_so_ODUk_EQ1_NIC_01	,	in_tf_so_ODUk_EQ1_NIC_01	)	,
+	(	tf_so_ODUk_EQ1_NIC_01	,	out_tf_so_ODUk_EQ1_NIC_01	)	,
+	(	tf_sk_ODUk_EQ1_NIC_01  	,	in_tf_sk_ODUk_EQ1_NIC_01		)	,
+	(	tf_sk_ODUk_EQ1_NIC_01  	,	out_tf_sk_ODUk_EQ1_NIC_01		)	,
+		
+	(	af_so_OTU_EQ1_NIC_01	,	in_af_so_OTU_EQ1_NIC_01		)	,
+	(	af_so_OTU_EQ1_NIC_01	,	out_af_so_OTU_EQ1_NIC_01	)	,
+	(	af_sk_OTU_EQ1_NIC_01  	,	in_af_sk_OTU_EQ1_NIC_01	    )	,
+	(	af_sk_OTU_EQ1_NIC_01  	,	out_af_sk_OTU_EQ1_NIC_01		)	,
+	(	tf_so_OTU_EQ1_NIC_01	,	in_tf_so_OTU_EQ1_NIC_01		)	,
+	(	tf_so_OTU_EQ1_NIC_01	,	out_tf_so_OTU_EQ1_NIC_01	)	,
+	(	tf_sk_OTU_EQ1_NIC_01  	,	in_tf_sk_OTU_EQ1_NIC_01	    )	,
+	(	tf_sk_OTU_EQ1_NIC_01  	,	out_tf_sk_OTU_EQ1_NIC_01		)	,
+		
+	(	af_so_OCh_EQ1_NIC_01	,	in_af_so_OCh_EQ1_NIC_01		)	,
+	(	af_so_OCh_EQ1_NIC_01	,	out_af_so_OCh_EQ1_NIC_01	)	,
+	(	af_sk_OCh_EQ1_NIC_01  	,	in_af_sk_OCh_EQ1_NIC_01	    )	,
+	(	af_sk_OCh_EQ1_NIC_01  	,	out_af_sk_OCh_EQ1_NIC_01		)	,
+	(	tf_so_OCh_EQ1_NIC_01	,	in_tf_so_OCh_EQ1_NIC_01		)	,
+	(	tf_so_OCh_EQ1_NIC_01	,	out_tf_so_OCh_EQ1_NIC_01	)	,
+	(	tf_sk_OCh_EQ1_NIC_01  	,	in_tf_sk_OCh_EQ1_NIC_01	    )	,
+	(	tf_sk_OCh_EQ1_NIC_01  	,	out_tf_sk_OCh_EQ1_NIC_01		)	;
+
+binds:
+	(	out_af_so_ODUk_EQ1_NIC_01	,	in_tf_so_ODUk_EQ1_NIC_01),
+	(	out_tf_so_ODUk_EQ1_NIC_01	,	in_af_so_OTU_EQ1_NIC_01	),
+	(	out_af_so_OTU_EQ1_NIC_01	,	in_tf_so_OTU_EQ1_NIC_01	),
+	(	out_tf_so_OTU_EQ1_NIC_01	,	in_af_so_OCh_EQ1_NIC_01	),
+	(	out_af_so_OCh_EQ1_NIC_01	,	in_tf_so_OCh_EQ1_NIC_01	),
+	
+	(	in_af_sk_ODUk_EQ1_NIC_01		,	out_tf_sk_ODUk_EQ1_NIC_01	),
+	(	in_tf_sk_ODUk_EQ1_NIC_01		,	out_af_sk_OTU_EQ1_NIC_01	),
+	(	in_af_sk_OTU_EQ1_NIC_01		,	out_tf_sk_OTU_EQ1_NIC_01	),
+	(	in_tf_sk_OTU_EQ1_NIC_01		,	out_af_sk_OCh_EQ1_NIC_01	),
+	(	in_af_sk_OCh_EQ1_NIC_01		,	out_tf_sk_OCh_EQ1_NIC_01	);
+	
+maps:
+	(	in_int01_so_EQ1_NIC_01	,	in_af01_so_ODUk_EQ1_NIC_01	),
+	(	in_int02_so_EQ1_NIC_01	,	in_af02_so_ODUk_EQ1_NIC_01	),
+	(	in_int_sk_EQ1_NIC_01		,	in_tf_sk_OCh_EQ1_NIC_01		),
+	
+	(	out_int_so_EQ1_NIC_01	,	out_tf_so_OCh_EQ1_NIC_01	),
+	(	out_int01_sk_EQ1_NIC_01	,	out_af01_sk_ODUk_EQ1_NIC_01	),
+	(	out_int02_sk_EQ1_NIC_01 	,	out_af02_sk_ODUk_EQ1_NIC_01	);
+	
+componentOf:
+	(	EQ1_WSS	,	in_int01_so_EQ1_WSS		),
+	(	EQ1_WSS	,	in_int02_so_EQ1_WSS		),
+	(	EQ1_WSS	,	in_int01_sk_EQ1_WSS		),
+	(	EQ1_WSS	,	in_int02_sk_EQ1_WSS		),
+		
+	(	EQ1_WSS	,	out_int01_so_EQ1_WSS	),
+	(	EQ1_WSS	,	out_int02_so_EQ1_WSS	),
+	(	EQ1_WSS	,	out_int01_sk_EQ1_WSS		),
+	(	EQ1_WSS	,	out_int02_sk_EQ1_WSS		);
+	
+hasLayer:
+	(	m_so_EQ1_WSS	,	OCh	),
+	(	m_sk_EQ1_WSS		,	OCh	);
+	
+componentOf:
+	(	EQ1_WSS	,	m_so_EQ1_WSS	),
+	(	EQ1_WSS	,	m_sk_EQ1_WSS		);
+	
+componentOf:
+	(	m_so_EQ1_WSS	,	in_m01_so_EQ1_WSS	),
+	(	m_so_EQ1_WSS	,	in_m02_so_EQ1_WSS	),
+	(	m_so_EQ1_WSS	,	out_m01_so_EQ1_WSS	),
+	(	m_so_EQ1_WSS	,	out_m02_so_EQ1_WSS	),
+	
+	(	m_sk_EQ1_WSS	,	in_m01_sk_EQ1_WSS		),
+	(	m_sk_EQ1_WSS	,	in_m02_sk_EQ1_WSS		),
+	(	m_sk_EQ1_WSS	,	out_m01_sk_EQ1_WSS	),
+	(	m_sk_EQ1_WSS	,	out_m02_sk_EQ1_WSS	);
+	
+maps:
+	(	in_int01_so_EQ1_WSS		,	in_m01_so_EQ1_WSS	),
+	(	in_int02_so_EQ1_WSS		,   in_m02_so_EQ1_WSS	),
+	(	in_int01_sk_EQ1_WSS		,	in_m01_sk_EQ1_WSS		),
+	(	in_int02_sk_EQ1_WSS		,   in_m02_sk_EQ1_WSS		),
+	(	out_int01_so_EQ1_WSS	,	out_m01_so_EQ1_WSS	),
+	(	out_int02_so_EQ1_WSS	,   out_m02_so_EQ1_WSS	),
+	(	out_int01_sk_EQ1_WSS		,	out_m01_sk_EQ1_WSS	),
+	(	out_int02_sk_EQ1_WSS		,   out_m02_sk_EQ1_WSS	);
+	
+componentOf:
+	(	EQ1_OIC_01	,	in_int_so_EQ1_OIC_01	),
+	(	EQ1_OIC_01	,	in_int_sk_EQ1_OIC_01		),
+	(	EQ1_OIC_01	,	out_int_so_EQ1_OIC_01	),
+	(	EQ1_OIC_01	,	out_int_sk_EQ1_OIC_01		);
+
+adapts_from:
+	(	af_so_OMS_EQ1_OIC_01	,	OCh	)	,
+	(	af_sk_OMS_EQ1_OIC_01		,	OCh	)	,
+	
+	(	af_so_OTS_EQ1_OIC_01	,	OMS	)	,
+	(	af_sk_OTS_EQ1_OIC_01		,	OMS	)	;
+	
+adapts_to:
+	(	af_so_OMS_EQ1_OIC_01	,	OMS	)	,
+	(	af_sk_OMS_EQ1_OIC_01		,	OMS	)	,
+	
+	(	af_so_OTS_EQ1_OIC_01	,	OTS	)	,
+	(	af_sk_OTS_EQ1_OIC_01		,	OTS	)	;
+	
+defines:
+	(	tf_so_OMS_EQ1_OIC_01	,	OMS	)	,
+	(	tf_sk_OMS_EQ1_OIC_01		,	OMS	)	,
+	
+	(	tf_so_OTS_EQ1_OIC_01	,	OTS	)	,
+	(	tf_sk_OTS_EQ1_OIC_01		,	OTS	)	;
+	
+componentOf:
+	(	EQ1_OIC_01	,	af_so_OMS_EQ1_OIC_01	),
+	(	EQ1_OIC_01	,	af_sk_OMS_EQ1_OIC_01		),
+	(	EQ1_OIC_01	,	tf_so_OMS_EQ1_OIC_01	),
+	(	EQ1_OIC_01	,	tf_sk_OMS_EQ1_OIC_01		),
+	
+	(	EQ1_OIC_01	,	af_so_OTS_EQ1_OIC_01	),
+	(	EQ1_OIC_01	,	af_sk_OTS_EQ1_OIC_01		),
+	(	EQ1_OIC_01	,	tf_so_OTS_EQ1_OIC_01	),
+	(	EQ1_OIC_01	,	tf_sk_OTS_EQ1_OIC_01		);
+	
+componentOf:
+	(	af_so_OMS_EQ1_OIC_01	,	in_af_so_OMS_EQ1_OIC_01		)	,
+	(	af_so_OMS_EQ1_OIC_01	,	out_af_so_OMS_EQ1_OIC_01	)	,
+	(	af_sk_OMS_EQ1_OIC_01  	,	in_af_sk_OMS_EQ1_OIC_01	    )	,
+	(	af_sk_OMS_EQ1_OIC_01  	,	out_af_sk_OMS_EQ1_OIC_01		)	,
+	(	tf_so_OMS_EQ1_OIC_01	,	in_tf_so_OMS_EQ1_OIC_01		)	,
+	(	tf_so_OMS_EQ1_OIC_01	,	out_tf_so_OMS_EQ1_OIC_01	)	,
+	(	tf_sk_OMS_EQ1_OIC_01  	,	in_tf_sk_OMS_EQ1_OIC_01	    )	,
+	(	tf_sk_OMS_EQ1_OIC_01  	,	out_tf_sk_OMS_EQ1_OIC_01		)	,
+	
+	(	af_so_OTS_EQ1_OIC_01	,	in_af_so_OTS_EQ1_OIC_01		)	,
+	(	af_so_OTS_EQ1_OIC_01	,	out_af_so_OTS_EQ1_OIC_01	)	,
+	(	af_sk_OTS_EQ1_OIC_01  	,	in_af_sk_OTS_EQ1_OIC_01	    )	,
+	(	af_sk_OTS_EQ1_OIC_01  	,	out_af_sk_OTS_EQ1_OIC_01		)	,
+	(	tf_so_OTS_EQ1_OIC_01	,	in_tf_so_OTS_EQ1_OIC_01		)	,
+	(	tf_so_OTS_EQ1_OIC_01	,	out_tf_so_OTS_EQ1_OIC_01	)	,
+	(	tf_sk_OTS_EQ1_OIC_01  	,	in_tf_sk_OTS_EQ1_OIC_01	    )	,
+	(	tf_sk_OTS_EQ1_OIC_01  	,	out_tf_sk_OTS_EQ1_OIC_01		)	;
+
+binds:
+	(	out_af_so_OMS_EQ1_OIC_01	,	in_tf_so_OMS_EQ1_OIC_01	),
+	(	out_tf_so_OMS_EQ1_OIC_01	,	in_af_so_OTS_EQ1_OIC_01	),
+	(	out_af_so_OTS_EQ1_OIC_01	,	in_tf_so_OTS_EQ1_OIC_01	),
+	
+	(	in_af_sk_OMS_EQ1_OIC_01	,	out_tf_sk_OMS_EQ1_OIC_01	),
+	(	in_tf_sk_OMS_EQ1_OIC_01	,	out_af_sk_OTS_EQ1_OIC_01	),
+	(	in_af_sk_OTS_EQ1_OIC_01	,	out_tf_sk_OTS_EQ1_OIC_01	);
+	
+maps:
+	(	in_int_so_EQ1_OIC_01	,	in_af_so_OMS_EQ1_OIC_01		),
+	(	in_int_sk_EQ1_OIC_01		,	in_tf_sk_OTS_EQ1_OIC_01		),
+	(	out_int_so_EQ1_OIC_01	,	out_tf_so_OTS_EQ1_OIC_01	),
+	(	out_int_sk_EQ1_OIC_01		,	out_af_sk_OMS_EQ1_OIC_01		);
+	
+componentOf:
+	(	EQ2_WSS	,	in_int01_so_EQ2_WSS		),
+	(	EQ2_WSS	,	in_int02_so_EQ2_WSS		),
+	(	EQ2_WSS	,	in_int01_sk_EQ2_WSS		),
+	(	EQ2_WSS	,	in_int02_sk_EQ2_WSS		),
+		
+	(	EQ2_WSS	,	out_int01_so_EQ2_WSS	),
+	(	EQ2_WSS	,	out_int02_so_EQ2_WSS	),
+	(	EQ2_WSS	,	out_int01_sk_EQ2_WSS		),
+	(	EQ2_WSS	,	out_int02_sk_EQ2_WSS		);
+	
+hasLayer:
+	(	m_so_EQ2_WSS	,	OCh	),
+	(	m_sk_EQ2_WSS		,	OCh	);
+	
+componentOf:
+	(	EQ2_WSS	,	m_so_EQ2_WSS	),
+	(	EQ2_WSS	,	m_sk_EQ2_WSS		);
+	
+componentOf:
+	(	m_so_EQ2_WSS	,	in_m01_so_EQ2_WSS	),
+	(	m_so_EQ2_WSS	,	in_m02_so_EQ2_WSS	),
+	(	m_so_EQ2_WSS	,	out_m01_so_EQ2_WSS	),
+	(	m_so_EQ2_WSS	,	out_m02_so_EQ2_WSS	),
+	
+	(	m_sk_EQ2_WSS	,	in_m01_sk_EQ2_WSS		),
+	(	m_sk_EQ2_WSS	,	in_m02_sk_EQ2_WSS		),
+	(	m_sk_EQ2_WSS	,	out_m01_sk_EQ2_WSS	),
+	(	m_sk_EQ2_WSS	,	out_m02_sk_EQ2_WSS	);
+	
+maps:
+	(	in_int01_so_EQ2_WSS		,	in_m01_so_EQ2_WSS	),
+	(	in_int02_so_EQ2_WSS		,   in_m02_so_EQ2_WSS	),
+	(	in_int01_sk_EQ2_WSS		,	in_m01_sk_EQ2_WSS		),
+	(	in_int02_sk_EQ2_WSS		,   in_m02_sk_EQ2_WSS		),
+	(	out_int01_so_EQ2_WSS	,	out_m01_so_EQ2_WSS	),
+	(	out_int02_so_EQ2_WSS	,   out_m02_so_EQ2_WSS	),
+	(	out_int01_sk_EQ2_WSS		,	out_m01_sk_EQ2_WSS	),
+	(	out_int02_sk_EQ2_WSS		,   out_m02_sk_EQ2_WSS	);
+	
+componentOf:
+	(	EQ2_OIC_01	,	in_int_so_EQ2_OIC_01	),
+	(	EQ2_OIC_01	,	in_int_sk_EQ2_OIC_01		),
+	(	EQ2_OIC_01	,	out_int_so_EQ2_OIC_01	),
+	(	EQ2_OIC_01	,	out_int_sk_EQ2_OIC_01		);
+
+adapts_from:
+	(	af_so_OMS_EQ2_OIC_01	,	OCh	)	,
+	(	af_sk_OMS_EQ2_OIC_01		,	OCh	)	,
+	
+	(	af_so_OTS_EQ2_OIC_01	,	OMS	)	,
+	(	af_sk_OTS_EQ2_OIC_01		,	OMS	)	;
+	
+adapts_to:
+	(	af_so_OMS_EQ2_OIC_01	,	OMS	)	,
+	(	af_sk_OMS_EQ2_OIC_01		,	OMS	)	,
+	
+	(	af_so_OTS_EQ2_OIC_01	,	OTS	)	,
+	(	af_sk_OTS_EQ2_OIC_01		,	OTS	)	;
+	
+defines:
+	(	tf_so_OMS_EQ2_OIC_01	,	OMS	)	,
+	(	tf_sk_OMS_EQ2_OIC_01		,	OMS	)	,
+	
+	(	tf_so_OTS_EQ2_OIC_01	,	OTS	)	,
+	(	tf_sk_OTS_EQ2_OIC_01		,	OTS	)	;
+	
+componentOf:
+	(	EQ2_OIC_01	,	af_so_OMS_EQ2_OIC_01	),
+	(	EQ2_OIC_01	,	af_sk_OMS_EQ2_OIC_01		),
+	(	EQ2_OIC_01	,	tf_so_OMS_EQ2_OIC_01	),
+	(	EQ2_OIC_01	,	tf_sk_OMS_EQ2_OIC_01		),
+	
+	(	EQ2_OIC_01	,	af_so_OTS_EQ2_OIC_01	),
+	(	EQ2_OIC_01	,	af_sk_OTS_EQ2_OIC_01		),
+	(	EQ2_OIC_01	,	tf_so_OTS_EQ2_OIC_01	),
+	(	EQ2_OIC_01	,	tf_sk_OTS_EQ2_OIC_01		);
+	
+componentOf:
+	(	af_so_OMS_EQ2_OIC_01	,	in_af_so_OMS_EQ2_OIC_01		)	,
+	(	af_so_OMS_EQ2_OIC_01	,	out_af_so_OMS_EQ2_OIC_01	)	,
+	(	af_sk_OMS_EQ2_OIC_01  	,	in_af_sk_OMS_EQ2_OIC_01	    )	,
+	(	af_sk_OMS_EQ2_OIC_01  	,	out_af_sk_OMS_EQ2_OIC_01		)	,
+	(	tf_so_OMS_EQ2_OIC_01	,	in_tf_so_OMS_EQ2_OIC_01		)	,
+	(	tf_so_OMS_EQ2_OIC_01	,	out_tf_so_OMS_EQ2_OIC_01	)	,
+	(	tf_sk_OMS_EQ2_OIC_01  	,	in_tf_sk_OMS_EQ2_OIC_01	    )	,
+	(	tf_sk_OMS_EQ2_OIC_01  	,	out_tf_sk_OMS_EQ2_OIC_01		)	,
+	
+	(	af_so_OTS_EQ2_OIC_01	,	in_af_so_OTS_EQ2_OIC_01		)	,
+	(	af_so_OTS_EQ2_OIC_01	,	out_af_so_OTS_EQ2_OIC_01	)	,
+	(	af_sk_OTS_EQ2_OIC_01  	,	in_af_sk_OTS_EQ2_OIC_01	    )	,
+	(	af_sk_OTS_EQ2_OIC_01  	,	out_af_sk_OTS_EQ2_OIC_01		)	,
+	(	tf_so_OTS_EQ2_OIC_01	,	in_tf_so_OTS_EQ2_OIC_01		)	,
+	(	tf_so_OTS_EQ2_OIC_01	,	out_tf_so_OTS_EQ2_OIC_01	)	,
+	(	tf_sk_OTS_EQ2_OIC_01  	,	in_tf_sk_OTS_EQ2_OIC_01	    )	,
+	(	tf_sk_OTS_EQ2_OIC_01  	,	out_tf_sk_OTS_EQ2_OIC_01		)	;
+
+binds:
+	(	out_af_so_OMS_EQ2_OIC_01	,	in_tf_so_OMS_EQ2_OIC_01	),
+	(	out_tf_so_OMS_EQ2_OIC_01	,	in_af_so_OTS_EQ2_OIC_01	),
+	(	out_af_so_OTS_EQ2_OIC_01	,	in_tf_so_OTS_EQ2_OIC_01	),
+	
+	(	in_af_sk_OMS_EQ2_OIC_01	,	out_tf_sk_OMS_EQ2_OIC_01	),
+	(	in_tf_sk_OMS_EQ2_OIC_01	,	out_af_sk_OTS_EQ2_OIC_01	),
+	(	in_af_sk_OTS_EQ2_OIC_01	,	out_tf_sk_OTS_EQ2_OIC_01	);
+	
+maps:
+	(	in_int_so_EQ2_OIC_01	,	in_af_so_OMS_EQ2_OIC_01		),
+	(	in_int_sk_EQ2_OIC_01		,	in_tf_sk_OTS_EQ2_OIC_01		),
+	(	out_int_so_EQ2_OIC_01	,	out_tf_so_OTS_EQ2_OIC_01	),
+	(	out_int_sk_EQ2_OIC_01		,	out_af_sk_OMS_EQ2_OIC_01		);
+	
+componentOf:
+	(	EQ2_OIC_02	,	in_int_so_EQ2_OIC_02	),
+	(	EQ2_OIC_02	,	in_int_sk_EQ2_OIC_02		),
+	(	EQ2_OIC_02	,	out_int_so_EQ2_OIC_02	),
+	(	EQ2_OIC_02	,	out_int_sk_EQ2_OIC_02		);
+
+adapts_from:
+	(	af_so_OMS_EQ2_OIC_02	,	OCh	)	,
+	(	af_sk_OMS_EQ2_OIC_02		,	OCh	)	,
+	
+	(	af_so_OTS_EQ2_OIC_02	,	OMS	)	,
+	(	af_sk_OTS_EQ2_OIC_02		,	OMS	)	;
+	
+adapts_to:
+	(	af_so_OMS_EQ2_OIC_02	,	OMS	)	,
+	(	af_sk_OMS_EQ2_OIC_02		,	OMS	)	,
+	
+	(	af_so_OTS_EQ2_OIC_02	,	OTS	)	,
+	(	af_sk_OTS_EQ2_OIC_02		,	OTS	)	;
+	
+defines:
+	(	tf_so_OMS_EQ2_OIC_02	,	OMS	)	,
+	(	tf_sk_OMS_EQ2_OIC_02		,	OMS	)	,
+	
+	(	tf_so_OTS_EQ2_OIC_02	,	OTS	)	,
+	(	tf_sk_OTS_EQ2_OIC_02		,	OTS	)	;
+	
+componentOf:
+	(	EQ2_OIC_02	,	af_so_OMS_EQ2_OIC_02	),
+	(	EQ2_OIC_02	,	af_sk_OMS_EQ2_OIC_02		),
+	(	EQ2_OIC_02	,	tf_so_OMS_EQ2_OIC_02	),
+	(	EQ2_OIC_02	,	tf_sk_OMS_EQ2_OIC_02		),
+	
+	(	EQ2_OIC_02	,	af_so_OTS_EQ2_OIC_02	),
+	(	EQ2_OIC_02	,	af_sk_OTS_EQ2_OIC_02		),
+	(	EQ2_OIC_02	,	tf_so_OTS_EQ2_OIC_02	),
+	(	EQ2_OIC_02	,	tf_sk_OTS_EQ2_OIC_02		);
+	
+componentOf:
+	(	af_so_OMS_EQ2_OIC_02	,	in_af_so_OMS_EQ2_OIC_02		)	,
+	(	af_so_OMS_EQ2_OIC_02	,	out_af_so_OMS_EQ2_OIC_02	)	,
+	(	af_sk_OMS_EQ2_OIC_02  	,	in_af_sk_OMS_EQ2_OIC_02	    )	,
+	(	af_sk_OMS_EQ2_OIC_02  	,	out_af_sk_OMS_EQ2_OIC_02		)	,
+	(	tf_so_OMS_EQ2_OIC_02	,	in_tf_so_OMS_EQ2_OIC_02		)	,
+	(	tf_so_OMS_EQ2_OIC_02	,	out_tf_so_OMS_EQ2_OIC_02	)	,
+	(	tf_sk_OMS_EQ2_OIC_02  	,	in_tf_sk_OMS_EQ2_OIC_02	    )	,
+	(	tf_sk_OMS_EQ2_OIC_02  	,	out_tf_sk_OMS_EQ2_OIC_02		)	,
+	
+	(	af_so_OTS_EQ2_OIC_02	,	in_af_so_OTS_EQ2_OIC_02		)	,
+	(	af_so_OTS_EQ2_OIC_02	,	out_af_so_OTS_EQ2_OIC_02	)	,
+	(	af_sk_OTS_EQ2_OIC_02  	,	in_af_sk_OTS_EQ2_OIC_02	    )	,
+	(	af_sk_OTS_EQ2_OIC_02  	,	out_af_sk_OTS_EQ2_OIC_02		)	,
+	(	tf_so_OTS_EQ2_OIC_02	,	in_tf_so_OTS_EQ2_OIC_02		)	,
+	(	tf_so_OTS_EQ2_OIC_02	,	out_tf_so_OTS_EQ2_OIC_02	)	,
+	(	tf_sk_OTS_EQ2_OIC_02  	,	in_tf_sk_OTS_EQ2_OIC_02	    )	,
+	(	tf_sk_OTS_EQ2_OIC_02  	,	out_tf_sk_OTS_EQ2_OIC_02		)	;
+
+binds:
+	(	out_af_so_OMS_EQ2_OIC_02	,	in_tf_so_OMS_EQ2_OIC_02	),
+	(	out_tf_so_OMS_EQ2_OIC_02	,	in_af_so_OTS_EQ2_OIC_02	),
+	(	out_af_so_OTS_EQ2_OIC_02	,	in_tf_so_OTS_EQ2_OIC_02	),
+	
+	(	in_af_sk_OMS_EQ2_OIC_02	,	out_tf_sk_OMS_EQ2_OIC_02	),
+	(	in_tf_sk_OMS_EQ2_OIC_02	,	out_af_sk_OTS_EQ2_OIC_02	),
+	(	in_af_sk_OTS_EQ2_OIC_02	,	out_tf_sk_OTS_EQ2_OIC_02	);
+	
+maps:
+	(	in_int_so_EQ2_OIC_02	,	in_af_so_OMS_EQ2_OIC_02		),
+	(	in_int_sk_EQ2_OIC_02		,	in_tf_sk_OTS_EQ2_OIC_02		),
+	(	out_int_so_EQ2_OIC_02	,	out_tf_so_OTS_EQ2_OIC_02	),
+	(	out_int_sk_EQ2_OIC_02		,	out_af_sk_OMS_EQ2_OIC_02		);
+	
+componentOf:
+	(	EQ3_AMP	,	in_int01_EQ3_AMP	),
+	(	EQ3_AMP	,	out_int01_EQ3_AMP	),
+	
+	(	EQ3_AMP	,	in_int02_EQ3_AMP	),
+	(	EQ3_AMP	,	out_int02_EQ3_AMP	);
+	
+adapts_from:
+	(	af01_so_EQ3_AMP		,	OMS	),
+	(	af01_sk_EQ3_AMP		,	OMS	),
+	
+	(	af02_so_EQ3_AMP		,	OMS	),
+	(	af02_sk_EQ3_AMP		,	OMS	);
+	
+adapts_to:
+	(	af01_so_EQ3_AMP		,	OTS	),
+	(	af01_sk_EQ3_AMP		,	OTS	),
+	
+	(	af02_so_EQ3_AMP		,	OTS	),
+	(	af02_sk_EQ3_AMP		,	OTS	);
+	
+defines:
+	(	tf01_so_EQ3_AMP		,	OTS	),
+	(	tf01_sk_EQ3_AMP		,	OTS	),
+	
+	(	tf02_so_EQ3_AMP		,	OTS	),
+	(	tf02_sk_EQ3_AMP		,	OTS	);
+	
+componentOf:
+	(	EQ3_AMP	,	af01_so_EQ3_AMP	),
+	(	EQ3_AMP	,	af01_sk_EQ3_AMP	),
+	(	EQ3_AMP	,	af02_so_EQ3_AMP	),
+	(	EQ3_AMP	,	af02_sk_EQ3_AMP	),
+	
+	(	EQ3_AMP	,	tf01_so_EQ3_AMP	),
+	(	EQ3_AMP	,	tf01_sk_EQ3_AMP	),
+	(	EQ3_AMP	,	tf02_so_EQ3_AMP	),
+	(	EQ3_AMP	,	tf02_sk_EQ3_AMP	);
+	
+componentOf:
+	(	af01_so_EQ3_AMP		,	in_af01_so_EQ3_AMP		),
+	(	af01_so_EQ3_AMP		,	out_af01_so_EQ3_AMP		),
+	(	af01_sk_EQ3_AMP		,	in_af01_sk_EQ3_AMP		),
+	(	af01_sk_EQ3_AMP		,	out_af01_sk_EQ3_AMP		),
+	(	tf01_so_EQ3_AMP		,	in_tf01_so_EQ3_AMP		),
+	(	tf01_so_EQ3_AMP		,	out_tf01_so_EQ3_AMP		),
+	(	tf01_sk_EQ3_AMP		,	in_tf01_sk_EQ3_AMP		),
+	(	tf01_sk_EQ3_AMP		,	out_tf01_sk_EQ3_AMP		),
+	
+	(	af02_so_EQ3_AMP		,	in_af02_so_EQ3_AMP		),
+	(	af02_so_EQ3_AMP		,	out_af02_so_EQ3_AMP		),
+	(	af02_sk_EQ3_AMP		,	in_af02_sk_EQ3_AMP		),
+	(	af02_sk_EQ3_AMP		,	out_af02_sk_EQ3_AMP		),
+	(	tf02_so_EQ3_AMP		,	in_tf02_so_EQ3_AMP		),
+	(	tf02_so_EQ3_AMP		,	out_tf02_so_EQ3_AMP		),
+	(	tf02_sk_EQ3_AMP		,	in_tf02_sk_EQ3_AMP		),
+	(	tf02_sk_EQ3_AMP		,	out_tf02_sk_EQ3_AMP		);
+
+binds:
+	(	in_af01_sk_EQ3_AMP		,	out_tf01_sk_EQ3_AMP	),
+	(	out_af01_sk_EQ3_AMP		,	in_af01_so_EQ3_AMP	),
+	(	out_af01_so_EQ3_AMP		,	in_tf01_so_EQ3_AMP	),
+	
+	(	in_af02_sk_EQ3_AMP		,	out_tf02_sk_EQ3_AMP	),
+	(	out_af02_sk_EQ3_AMP		,	in_af02_so_EQ3_AMP	),
+	(	out_af02_so_EQ3_AMP		,	in_tf02_so_EQ3_AMP	);
+
+maps:
+	(	in_int01_EQ3_AMP	,	in_tf01_sk_EQ3_AMP		),
+	(	out_int01_EQ3_AMP	,	out_tf01_so_EQ3_AMP		),
+	
+	(	in_int02_EQ3_AMP	,	in_tf02_sk_EQ3_AMP		),
+	(	out_int02_EQ3_AMP	,	out_tf02_so_EQ3_AMP		);
+	
+componentOf:
+	(	EQ4_CIC_01	,	in_int_so_EQ4_CIC_01	),
+	(	EQ4_CIC_01	,	in_int_sk_EQ4_CIC_01		),
+	(	EQ4_CIC_01	,	out_int_so_EQ4_CIC_01	),
+	(	EQ4_CIC_01	,	out_int_sk_EQ4_CIC_01		);
+
+adapts_to:
+	(	af_so_EQ4_CIC_01	,	ODU2e	)	,
+	(	af_sk_EQ4_CIC_01		,	ODU2e	)	;
+	
+defines:
+	(	tf_so_EQ4_CIC_01	,	ODU2e	)	,
+	(	tf_sk_EQ4_CIC_01		,	ODU2e	)	;
+	
+componentOf:
+	(	EQ4_CIC_01	,	af_so_EQ4_CIC_01	),
+	(	EQ4_CIC_01	,	af_sk_EQ4_CIC_01		),
+	(	EQ4_CIC_01	,	tf_so_EQ4_CIC_01	),
+	(	EQ4_CIC_01	,	tf_sk_EQ4_CIC_01		);
+	
+componentOf:
+	(	af_so_EQ4_CIC_01	,	in_af_so_EQ4_CIC_01		)	,
+	(	af_so_EQ4_CIC_01	,	out_af_so_EQ4_CIC_01	)	,
+	(	af_sk_EQ4_CIC_01  	,	in_af_sk_EQ4_CIC_01	    )	,
+	(	af_sk_EQ4_CIC_01  	,	out_af_sk_EQ4_CIC_01		)	,
+	(	tf_so_EQ4_CIC_01	,	in_tf_so_EQ4_CIC_01		)	,
+	(	tf_so_EQ4_CIC_01	,	out_tf_so_EQ4_CIC_01	)	,
+	(	tf_sk_EQ4_CIC_01  	,	in_tf_sk_EQ4_CIC_01	    )	,
+	(	tf_sk_EQ4_CIC_01  	,	out_tf_sk_EQ4_CIC_01		)	;
+
+binds:
+	(	out_af_so_EQ4_CIC_01	,	in_tf_so_EQ4_CIC_01		),
+	(	in_af_sk_EQ4_CIC_01		,	out_tf_sk_EQ4_CIC_01		);
+	
+maps:
+	(	in_int_so_EQ4_CIC_01	,	in_af_so_EQ4_CIC_01		),
+	(	in_int_sk_EQ4_CIC_01		,	in_tf_sk_EQ4_CIC_01		),
+	(	out_int_so_EQ4_CIC_01	,	out_tf_so_EQ4_CIC_01	),
+	(	out_int_sk_EQ4_CIC_01		,	out_af_sk_EQ4_CIC_01		);
+	
+componentOf:
+	(	EQ4_CIC_02	,	in_int_so_EQ4_CIC_02	),
+	(	EQ4_CIC_02	,	in_int_sk_EQ4_CIC_02		),
+	(	EQ4_CIC_02	,	out_int_so_EQ4_CIC_02	),
+	(	EQ4_CIC_02	,	out_int_sk_EQ4_CIC_02		);
+
+adapts_to:
+	(	af_so_EQ4_CIC_02	,	ODU2e	)	,
+	(	af_sk_EQ4_CIC_02		,	ODU2e	)	;
+	
+defines:
+	(	tf_so_EQ4_CIC_02	,	ODU2e	)	,
+	(	tf_sk_EQ4_CIC_02		,	ODU2e	)	;
+	
+componentOf:
+	(	EQ4_CIC_02	,	af_so_EQ4_CIC_02	),
+	(	EQ4_CIC_02	,	af_sk_EQ4_CIC_02		),
+	(	EQ4_CIC_02	,	tf_so_EQ4_CIC_02	),
+	(	EQ4_CIC_02	,	tf_sk_EQ4_CIC_02		);
+	
+componentOf:
+	(	af_so_EQ4_CIC_02	,	in_af_so_EQ4_CIC_02		)	,
+	(	af_so_EQ4_CIC_02	,	out_af_so_EQ4_CIC_02	)	,
+	(	af_sk_EQ4_CIC_02  	,	in_af_sk_EQ4_CIC_02	    )	,
+	(	af_sk_EQ4_CIC_02  	,	out_af_sk_EQ4_CIC_02		)	,
+	(	tf_so_EQ4_CIC_02	,	in_tf_so_EQ4_CIC_02		)	,
+	(	tf_so_EQ4_CIC_02	,	out_tf_so_EQ4_CIC_02	)	,
+	(	tf_sk_EQ4_CIC_02  	,	in_tf_sk_EQ4_CIC_02	    )	,
+	(	tf_sk_EQ4_CIC_02  	,	out_tf_sk_EQ4_CIC_02		)	;
+
+binds:
+	(	out_af_so_EQ4_CIC_02	,	in_tf_so_EQ4_CIC_02		),
+	(	in_af_sk_EQ4_CIC_02		,	out_tf_sk_EQ4_CIC_02		);
+	
+maps:
+	(	in_int_so_EQ4_CIC_02	,	in_af_so_EQ4_CIC_02		),
+	(	in_int_sk_EQ4_CIC_02		,	in_tf_sk_EQ4_CIC_02		),
+	(	out_int_so_EQ4_CIC_02	,	out_tf_so_EQ4_CIC_02	),
+	(	out_int_sk_EQ4_CIC_02		,	out_af_sk_EQ4_CIC_02		);
+	
+componentOf:
+	(	EQ4_ODUSwitch	,	in_int01_so_EQ4_ODUSwitch	),
+	(	EQ4_ODUSwitch	,	in_int02_so_EQ4_ODUSwitch	),
+	(	EQ4_ODUSwitch	,	in_int01_sk_EQ4_ODUSwitch		),
+	(	EQ4_ODUSwitch	,	in_int02_sk_EQ4_ODUSwitch		),
+		
+	(	EQ4_ODUSwitch	,	out_int01_so_EQ4_ODUSwitch	),
+	(	EQ4_ODUSwitch	,	out_int02_so_EQ4_ODUSwitch	),
+	(	EQ4_ODUSwitch	,	out_int01_sk_EQ4_ODUSwitch	),
+	(	EQ4_ODUSwitch	,	out_int02_sk_EQ4_ODUSwitch	);
+	
+hasLayer:
+	(	m_so_EQ4_ODUSwitch	,	ODU2e	),
+	(	m_sk_EQ4_ODUSwitch	,	ODU2e	);
+	
+componentOf:
+	(	EQ4_ODUSwitch	,	m_so_EQ4_ODUSwitch	),
+	(	EQ4_ODUSwitch	,	m_sk_EQ4_ODUSwitch	);
+	
+componentOf:
+	(	m_so_EQ4_ODUSwitch	,	in_m01_so_EQ4_ODUSwitch		),
+	(	m_so_EQ4_ODUSwitch	,	in_m02_so_EQ4_ODUSwitch		),
+	(	m_so_EQ4_ODUSwitch	,	out_m01_so_EQ4_ODUSwitch	),
+	(	m_so_EQ4_ODUSwitch	,	out_m02_so_EQ4_ODUSwitch	),
+	
+	(	m_sk_EQ4_ODUSwitch	,	in_m01_sk_EQ4_ODUSwitch	),
+	(	m_sk_EQ4_ODUSwitch	,	in_m02_sk_EQ4_ODUSwitch	),
+	(	m_sk_EQ4_ODUSwitch	,	out_m01_sk_EQ4_ODUSwitch	),
+	(	m_sk_EQ4_ODUSwitch	,	out_m02_sk_EQ4_ODUSwitch	);
+	
+maps:
+	(	in_int01_so_EQ4_ODUSwitch	,	in_m01_so_EQ4_ODUSwitch		),
+	(	in_int02_so_EQ4_ODUSwitch	,   in_m02_so_EQ4_ODUSwitch		),
+	(	in_int01_sk_EQ4_ODUSwitch		,	in_m01_sk_EQ4_ODUSwitch		),
+	(	in_int02_sk_EQ4_ODUSwitch		,   in_m02_sk_EQ4_ODUSwitch		),
+	(	out_int01_so_EQ4_ODUSwitch	,	out_m01_so_EQ4_ODUSwitch	),
+	(	out_int02_so_EQ4_ODUSwitch	,   out_m02_so_EQ4_ODUSwitch	),
+	(	out_int01_sk_EQ4_ODUSwitch	,	out_m01_sk_EQ4_ODUSwitch		),
+	(	out_int02_sk_EQ4_ODUSwitch	,   out_m02_sk_EQ4_ODUSwitch		);
+	
+componentOf:
+	(	EQ4_NIC_01	,	in_int01_so_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	in_int02_so_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	in_int_sk_EQ4_NIC_01		),
+	
+	(	EQ4_NIC_01	,	out_int_so_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	out_int01_sk_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	out_int02_sk_EQ4_NIC_01	);
+
+adapts_from:
+	(	af_so_ODUk_EQ4_NIC_01	,	ODU2e	)	,
+	(	af_sk_ODUk_EQ4_NIC_01		,	ODU2e	)	,
+	
+	(	af_so_OTU_EQ4_NIC_01	,	ODUk	)	,
+	(	af_sk_OTU_EQ4_NIC_01		,	ODUk	)	,
+	
+	(	af_so_OCh_EQ4_NIC_01	,	OTU		)	,
+	(	af_sk_OCh_EQ4_NIC_01		,	OTU		)	;
+	
+adapts_to:
+	(	af_so_ODUk_EQ4_NIC_01	,	ODUk	)	,
+	(	af_sk_ODUk_EQ4_NIC_01		,	ODUk	)	,
+	
+	(	af_so_OTU_EQ4_NIC_01	,	OTU		)	,
+	(	af_sk_OTU_EQ4_NIC_01		,	OTU		)	,
+	
+	(	af_so_OCh_EQ4_NIC_01	,	OCh		)	,
+	(	af_sk_OCh_EQ4_NIC_01		,	OCh		)	;
+	
+defines:
+	(	tf_so_ODUk_EQ4_NIC_01	,	ODUk	)	,
+	(	tf_sk_ODUk_EQ4_NIC_01		,	ODUk	)	,
+	                                        
+	(	tf_so_OTU_EQ4_NIC_01	,	OTU		)	,
+	(	tf_sk_OTU_EQ4_NIC_01		,	OTU		)	,
+	                                        
+	(	tf_so_OCh_EQ4_NIC_01	,	OCh		)	,
+	(	tf_sk_OCh_EQ4_NIC_01		,	OCh		)	;
+	
+componentOf:
+	(	EQ4_NIC_01	,	af_so_ODUk_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	af_sk_ODUk_EQ4_NIC_01		),
+	(	EQ4_NIC_01	,	tf_so_ODUk_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	tf_sk_ODUk_EQ4_NIC_01		),
+	
+	(	EQ4_NIC_01	,	af_so_OTU_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	af_sk_OTU_EQ4_NIC_01		),
+	(	EQ4_NIC_01	,	tf_so_OTU_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	tf_sk_OTU_EQ4_NIC_01		),
+	
+	(	EQ4_NIC_01	,	af_so_OCh_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	af_sk_OCh_EQ4_NIC_01		),
+	(	EQ4_NIC_01	,	tf_so_OCh_EQ4_NIC_01	),
+	(	EQ4_NIC_01	,	tf_sk_OCh_EQ4_NIC_01		);
+	
+componentOf:
+	(	af_so_ODUk_EQ4_NIC_01	,	in_af01_so_ODUk_EQ4_NIC_01	)	,
+	(	af_so_ODUk_EQ4_NIC_01	,	in_af02_so_ODUk_EQ4_NIC_01	)	,
+	(	af_so_ODUk_EQ4_NIC_01	,	out_af_so_ODUk_EQ4_NIC_01	)	,
+	(	af_sk_ODUk_EQ4_NIC_01  	,	in_af_sk_ODUk_EQ4_NIC_01		)	,
+	(	af_sk_ODUk_EQ4_NIC_01  	,	out_af01_sk_ODUk_EQ4_NIC_01	)	,
+	(	af_sk_ODUk_EQ4_NIC_01  	,	out_af02_sk_ODUk_EQ4_NIC_01	)	,
+	(	tf_so_ODUk_EQ4_NIC_01	,	in_tf_so_ODUk_EQ4_NIC_01	)	,
+	(	tf_so_ODUk_EQ4_NIC_01	,	out_tf_so_ODUk_EQ4_NIC_01	)	,
+	(	tf_sk_ODUk_EQ4_NIC_01  	,	in_tf_sk_ODUk_EQ4_NIC_01		)	,
+	(	tf_sk_ODUk_EQ4_NIC_01  	,	out_tf_sk_ODUk_EQ4_NIC_01		)	,
+		
+	(	af_so_OTU_EQ4_NIC_01	,	in_af_so_OTU_EQ4_NIC_01		)	,
+	(	af_so_OTU_EQ4_NIC_01	,	out_af_so_OTU_EQ4_NIC_01	)	,
+	(	af_sk_OTU_EQ4_NIC_01  	,	in_af_sk_OTU_EQ4_NIC_01	    )	,
+	(	af_sk_OTU_EQ4_NIC_01  	,	out_af_sk_OTU_EQ4_NIC_01		)	,
+	(	tf_so_OTU_EQ4_NIC_01	,	in_tf_so_OTU_EQ4_NIC_01		)	,
+	(	tf_so_OTU_EQ4_NIC_01	,	out_tf_so_OTU_EQ4_NIC_01	)	,
+	(	tf_sk_OTU_EQ4_NIC_01  	,	in_tf_sk_OTU_EQ4_NIC_01	    )	,
+	(	tf_sk_OTU_EQ4_NIC_01  	,	out_tf_sk_OTU_EQ4_NIC_01		)	,
+		
+	(	af_so_OCh_EQ4_NIC_01	,	in_af_so_OCh_EQ4_NIC_01		)	,
+	(	af_so_OCh_EQ4_NIC_01	,	out_af_so_OCh_EQ4_NIC_01	)	,
+	(	af_sk_OCh_EQ4_NIC_01  	,	in_af_sk_OCh_EQ4_NIC_01	    )	,
+	(	af_sk_OCh_EQ4_NIC_01  	,	out_af_sk_OCh_EQ4_NIC_01		)	,
+	(	tf_so_OCh_EQ4_NIC_01	,	in_tf_so_OCh_EQ4_NIC_01		)	,
+	(	tf_so_OCh_EQ4_NIC_01	,	out_tf_so_OCh_EQ4_NIC_01	)	,
+	(	tf_sk_OCh_EQ4_NIC_01  	,	in_tf_sk_OCh_EQ4_NIC_01	    )	,
+	(	tf_sk_OCh_EQ4_NIC_01  	,	out_tf_sk_OCh_EQ4_NIC_01		)	;
+
+binds:
+	(	out_af_so_ODUk_EQ4_NIC_01	,	in_tf_so_ODUk_EQ4_NIC_01),
+	(	out_tf_so_ODUk_EQ4_NIC_01	,	in_af_so_OTU_EQ4_NIC_01	),
+	(	out_af_so_OTU_EQ4_NIC_01	,	in_tf_so_OTU_EQ4_NIC_01	),
+	(	out_tf_so_OTU_EQ4_NIC_01	,	in_af_so_OCh_EQ4_NIC_01	),
+	(	out_af_so_OCh_EQ4_NIC_01	,	in_tf_so_OCh_EQ4_NIC_01	),
+	
+	(	in_af_sk_ODUk_EQ4_NIC_01	,	out_tf_sk_ODUk_EQ4_NIC_01	),
+	(	in_tf_sk_ODUk_EQ4_NIC_01	,	out_af_sk_OTU_EQ4_NIC_01	),
+	(	in_af_sk_OTU_EQ4_NIC_01	,	out_tf_sk_OTU_EQ4_NIC_01	),
+	(	in_tf_sk_OTU_EQ4_NIC_01	,	out_af_sk_OCh_EQ4_NIC_01	),
+	(	in_af_sk_OCh_EQ4_NIC_01	,	out_tf_sk_OCh_EQ4_NIC_01	);
+	
+maps:
+	(	in_int01_so_EQ4_NIC_01	,	in_af01_so_ODUk_EQ4_NIC_01	),
+	(	in_int02_so_EQ4_NIC_01	,	in_af02_so_ODUk_EQ4_NIC_01	),
+	(	in_int_sk_EQ4_NIC_01		,	in_tf_sk_OCh_EQ4_NIC_01		),
+	
+	(	out_int_so_EQ4_NIC_01	,	out_tf_so_OCh_EQ4_NIC_01	),
+	(	out_int01_sk_EQ4_NIC_01	,	out_af01_sk_ODUk_EQ4_NIC_01	),
+	(	out_int02_sk_EQ4_NIC_01 	,	out_af02_sk_ODUk_EQ4_NIC_01	);
+	
+componentOf:
+	(	EQ4_WSS	,	in_int01_so_EQ4_WSS		),
+	(	EQ4_WSS	,	in_int02_so_EQ4_WSS		),
+	(	EQ4_WSS	,	in_int01_sk_EQ4_WSS		),
+	(	EQ4_WSS	,	in_int02_sk_EQ4_WSS		),
+		
+	(	EQ4_WSS	,	out_int01_so_EQ4_WSS	),
+	(	EQ4_WSS	,	out_int02_so_EQ4_WSS	),
+	(	EQ4_WSS	,	out_int01_sk_EQ4_WSS		),
+	(	EQ4_WSS	,	out_int02_sk_EQ4_WSS		);
+	
+hasLayer:
+	(	m_so_EQ4_WSS	,	OCh	),
+	(	m_sk_EQ4_WSS		,	OCh	);
+	
+componentOf:
+	(	EQ4_WSS	,	m_so_EQ4_WSS	),
+	(	EQ4_WSS	,	m_sk_EQ4_WSS		);
+	
+componentOf:
+	(	m_so_EQ4_WSS	,	in_m01_so_EQ4_WSS	),
+	(	m_so_EQ4_WSS	,	in_m02_so_EQ4_WSS	),
+	(	m_so_EQ4_WSS	,	out_m01_so_EQ4_WSS	),
+	(	m_so_EQ4_WSS	,	out_m02_so_EQ4_WSS	),
+	
+	(	m_sk_EQ4_WSS	,	in_m01_sk_EQ4_WSS		),
+	(	m_sk_EQ4_WSS	,	in_m02_sk_EQ4_WSS		),
+	(	m_sk_EQ4_WSS	,	out_m01_sk_EQ4_WSS	),
+	(	m_sk_EQ4_WSS	,	out_m02_sk_EQ4_WSS	);
+	
+maps:
+	(	in_int01_so_EQ4_WSS		,	in_m01_so_EQ4_WSS	),
+	(	in_int02_so_EQ4_WSS		,   in_m02_so_EQ4_WSS	),
+	(	in_int01_sk_EQ4_WSS		,	in_m01_sk_EQ4_WSS		),
+	(	in_int02_sk_EQ4_WSS		,   in_m02_sk_EQ4_WSS		),
+	(	out_int01_so_EQ4_WSS	,	out_m01_so_EQ4_WSS	),
+	(	out_int02_so_EQ4_WSS	,   out_m02_so_EQ4_WSS	),
+	(	out_int01_sk_EQ4_WSS		,	out_m01_sk_EQ4_WSS	),
+	(	out_int02_sk_EQ4_WSS		,   out_m02_sk_EQ4_WSS	);
+	
+componentOf:
+	(	EQ4_OIC_01	,	in_int_so_EQ4_OIC_01	),
+	(	EQ4_OIC_01	,	in_int_sk_EQ4_OIC_01		),
+	(	EQ4_OIC_01	,	out_int_so_EQ4_OIC_01	),
+	(	EQ4_OIC_01	,	out_int_sk_EQ4_OIC_01		);
+
+adapts_from:
+	(	af_so_OMS_EQ4_OIC_01	,	OCh	)	,
+	(	af_sk_OMS_EQ4_OIC_01		,	OCh	)	,
+	
+	(	af_so_OTS_EQ4_OIC_01	,	OMS	)	,
+	(	af_sk_OTS_EQ4_OIC_01		,	OMS	)	;
+	
+adapts_to:
+	(	af_so_OMS_EQ4_OIC_01	,	OMS	)	,
+	(	af_sk_OMS_EQ4_OIC_01		,	OMS	)	,
+	
+	(	af_so_OTS_EQ4_OIC_01	,	OTS	)	,
+	(	af_sk_OTS_EQ4_OIC_01		,	OTS	)	;
+	
+defines:
+	(	tf_so_OMS_EQ4_OIC_01	,	OMS	)	,
+	(	tf_sk_OMS_EQ4_OIC_01		,	OMS	)	,
+	
+	(	tf_so_OTS_EQ4_OIC_01	,	OTS	)	,
+	(	tf_sk_OTS_EQ4_OIC_01		,	OTS	)	;
+	
+componentOf:
+	(	EQ4_OIC_01	,	af_so_OMS_EQ4_OIC_01	),
+	(	EQ4_OIC_01	,	af_sk_OMS_EQ4_OIC_01		),
+	(	EQ4_OIC_01	,	tf_so_OMS_EQ4_OIC_01	),
+	(	EQ4_OIC_01	,	tf_sk_OMS_EQ4_OIC_01		),
+	
+	(	EQ4_OIC_01	,	af_so_OTS_EQ4_OIC_01	),
+	(	EQ4_OIC_01	,	af_sk_OTS_EQ4_OIC_01		),
+	(	EQ4_OIC_01	,	tf_so_OTS_EQ4_OIC_01	),
+	(	EQ4_OIC_01	,	tf_sk_OTS_EQ4_OIC_01		);
+	
+componentOf:
+	(	af_so_OMS_EQ4_OIC_01	,	in_af_so_OMS_EQ4_OIC_01		)	,
+	(	af_so_OMS_EQ4_OIC_01	,	out_af_so_OMS_EQ4_OIC_01	)	,
+	(	af_sk_OMS_EQ4_OIC_01  	,	in_af_sk_OMS_EQ4_OIC_01	    )	,
+	(	af_sk_OMS_EQ4_OIC_01  	,	out_af_sk_OMS_EQ4_OIC_01		)	,
+	(	tf_so_OMS_EQ4_OIC_01	,	in_tf_so_OMS_EQ4_OIC_01		)	,
+	(	tf_so_OMS_EQ4_OIC_01	,	out_tf_so_OMS_EQ4_OIC_01	)	,
+	(	tf_sk_OMS_EQ4_OIC_01  	,	in_tf_sk_OMS_EQ4_OIC_01	    )	,
+	(	tf_sk_OMS_EQ4_OIC_01  	,	out_tf_sk_OMS_EQ4_OIC_01		)	,
+	
+	(	af_so_OTS_EQ4_OIC_01	,	in_af_so_OTS_EQ4_OIC_01		)	,
+	(	af_so_OTS_EQ4_OIC_01	,	out_af_so_OTS_EQ4_OIC_01	)	,
+	(	af_sk_OTS_EQ4_OIC_01  	,	in_af_sk_OTS_EQ4_OIC_01	    )	,
+	(	af_sk_OTS_EQ4_OIC_01  	,	out_af_sk_OTS_EQ4_OIC_01		)	,
+	(	tf_so_OTS_EQ4_OIC_01	,	in_tf_so_OTS_EQ4_OIC_01		)	,
+	(	tf_so_OTS_EQ4_OIC_01	,	out_tf_so_OTS_EQ4_OIC_01	)	,
+	(	tf_sk_OTS_EQ4_OIC_01  	,	in_tf_sk_OTS_EQ4_OIC_01	    )	,
+	(	tf_sk_OTS_EQ4_OIC_01  	,	out_tf_sk_OTS_EQ4_OIC_01		)	;
+
+binds:
+	(	out_af_so_OMS_EQ4_OIC_01	,	in_tf_so_OMS_EQ4_OIC_01	),
+	(	out_tf_so_OMS_EQ4_OIC_01	,	in_af_so_OTS_EQ4_OIC_01	),
+	(	out_af_so_OTS_EQ4_OIC_01	,	in_tf_so_OTS_EQ4_OIC_01	),
+	
+	(	in_af_sk_OMS_EQ4_OIC_01	,	out_tf_sk_OMS_EQ4_OIC_01	),
+	(	in_tf_sk_OMS_EQ4_OIC_01	,	out_af_sk_OTS_EQ4_OIC_01	),
+	(	in_af_sk_OTS_EQ4_OIC_01	,	out_tf_sk_OTS_EQ4_OIC_01	);
+	
+maps:
+	(	in_int_so_EQ4_OIC_01	,	in_af_so_OMS_EQ4_OIC_01		),
+	(	in_int_sk_EQ4_OIC_01		,	in_tf_sk_OTS_EQ4_OIC_01		),
+	(	out_int_so_EQ4_OIC_01	,	out_tf_so_OTS_EQ4_OIC_01	),
+	(	out_int_sk_EQ4_OIC_01		,	out_af_sk_OMS_EQ4_OIC_01		);
+	
+componentOf:
+	(	EQ4_OIC_02	,	in_int_so_EQ4_OIC_02	),
+	(	EQ4_OIC_02	,	in_int_sk_EQ4_OIC_02		),
+	(	EQ4_OIC_02	,	out_int_so_EQ4_OIC_02	),
+	(	EQ4_OIC_02	,	out_int_sk_EQ4_OIC_02		);
+
+adapts_from:
+	(	af_so_OMS_EQ4_OIC_02	,	OCh	)	,
+	(	af_sk_OMS_EQ4_OIC_02		,	OCh	)	,
+	
+	(	af_so_OTS_EQ4_OIC_02	,	OMS	)	,
+	(	af_sk_OTS_EQ4_OIC_02		,	OMS	)	;
+	
+adapts_to:
+	(	af_so_OMS_EQ4_OIC_02	,	OMS	)	,
+	(	af_sk_OMS_EQ4_OIC_02		,	OMS	)	,
+	
+	(	af_so_OTS_EQ4_OIC_02	,	OTS	)	,
+	(	af_sk_OTS_EQ4_OIC_02		,	OTS	)	;
+	
+defines:
+	(	tf_so_OMS_EQ4_OIC_02	,	OMS	)	,
+	(	tf_sk_OMS_EQ4_OIC_02		,	OMS	)	,
+	
+	(	tf_so_OTS_EQ4_OIC_02	,	OTS	)	,
+	(	tf_sk_OTS_EQ4_OIC_02		,	OTS	)	;
+	
+componentOf:
+	(	EQ4_OIC_02	,	af_so_OMS_EQ4_OIC_02	),
+	(	EQ4_OIC_02	,	af_sk_OMS_EQ4_OIC_02		),
+	(	EQ4_OIC_02	,	tf_so_OMS_EQ4_OIC_02	),
+	(	EQ4_OIC_02	,	tf_sk_OMS_EQ4_OIC_02		),
+	
+	(	EQ4_OIC_02	,	af_so_OTS_EQ4_OIC_02	),
+	(	EQ4_OIC_02	,	af_sk_OTS_EQ4_OIC_02		),
+	(	EQ4_OIC_02	,	tf_so_OTS_EQ4_OIC_02	),
+	(	EQ4_OIC_02	,	tf_sk_OTS_EQ4_OIC_02		);
+	
+componentOf:
+	(	af_so_OMS_EQ4_OIC_02	,	in_af_so_OMS_EQ4_OIC_02		)	,
+	(	af_so_OMS_EQ4_OIC_02	,	out_af_so_OMS_EQ4_OIC_02	)	,
+	(	af_sk_OMS_EQ4_OIC_02  	,	in_af_sk_OMS_EQ4_OIC_02	    )	,
+	(	af_sk_OMS_EQ4_OIC_02  	,	out_af_sk_OMS_EQ4_OIC_02		)	,
+	(	tf_so_OMS_EQ4_OIC_02	,	in_tf_so_OMS_EQ4_OIC_02		)	,
+	(	tf_so_OMS_EQ4_OIC_02	,	out_tf_so_OMS_EQ4_OIC_02	)	,
+	(	tf_sk_OMS_EQ4_OIC_02  	,	in_tf_sk_OMS_EQ4_OIC_02	    )	,
+	(	tf_sk_OMS_EQ4_OIC_02  	,	out_tf_sk_OMS_EQ4_OIC_02		)	,
+	
+	(	af_so_OTS_EQ4_OIC_02	,	in_af_so_OTS_EQ4_OIC_02		)	,
+	(	af_so_OTS_EQ4_OIC_02	,	out_af_so_OTS_EQ4_OIC_02	)	,
+	(	af_sk_OTS_EQ4_OIC_02  	,	in_af_sk_OTS_EQ4_OIC_02	    )	,
+	(	af_sk_OTS_EQ4_OIC_02  	,	out_af_sk_OTS_EQ4_OIC_02		)	,
+	(	tf_so_OTS_EQ4_OIC_02	,	in_tf_so_OTS_EQ4_OIC_02		)	,
+	(	tf_so_OTS_EQ4_OIC_02	,	out_tf_so_OTS_EQ4_OIC_02	)	,
+	(	tf_sk_OTS_EQ4_OIC_02  	,	in_tf_sk_OTS_EQ4_OIC_02	    )	,
+	(	tf_sk_OTS_EQ4_OIC_02  	,	out_tf_sk_OTS_EQ4_OIC_02		)	;
+
+binds:
+	(	out_af_so_OMS_EQ4_OIC_02	,	in_tf_so_OMS_EQ4_OIC_02	),
+	(	out_tf_so_OMS_EQ4_OIC_02	,	in_af_so_OTS_EQ4_OIC_02	),
+	(	out_af_so_OTS_EQ4_OIC_02	,	in_tf_so_OTS_EQ4_OIC_02	),
+	
+	(	in_af_sk_OMS_EQ4_OIC_02	,	out_tf_sk_OMS_EQ4_OIC_02	),
+	(	in_tf_sk_OMS_EQ4_OIC_02	,	out_af_sk_OTS_EQ4_OIC_02	),
+	(	in_af_sk_OTS_EQ4_OIC_02	,	out_tf_sk_OTS_EQ4_OIC_02	);
+	
+maps:
+	(	in_int_so_EQ4_OIC_02	,	in_af_so_OMS_EQ4_OIC_02		),
+	(	in_int_sk_EQ4_OIC_02		,	in_tf_sk_OTS_EQ4_OIC_02		),
+	(	out_int_so_EQ4_OIC_02	,	out_tf_so_OTS_EQ4_OIC_02	),
+	(	out_int_sk_EQ4_OIC_02		,	out_af_sk_OMS_EQ4_OIC_02		);
+	
+binds:
+	(	in_tf_sk_EQ1_CIC_01			,	out_m01_sk_EQ1_ODUSwitch		),
+	(	out_tf_so_EQ1_CIC_01		,	in_m01_so_EQ1_ODUSwitch		),
+	
+	(	in_tf_sk_EQ1_CIC_02			,	out_m02_sk_EQ1_ODUSwitch		),
+	(	out_tf_so_EQ1_CIC_02		,	in_m02_so_EQ1_ODUSwitch		),
+	
+	(	in_m01_sk_EQ1_ODUSwitch		,	out_af01_sk_ODUk_EQ1_NIC_01	),
+	(	out_m01_so_EQ1_ODUSwitch	,	in_af01_so_ODUk_EQ1_NIC_01	),
+	
+	(	in_m02_sk_EQ1_ODUSwitch		,	out_af02_sk_ODUk_EQ1_NIC_01	),
+	(	out_m02_so_EQ1_ODUSwitch	,	in_af02_so_ODUk_EQ1_NIC_01	),
+	
+	(	in_tf_sk_OCh_EQ1_NIC_01		,	out_m01_sk_EQ1_WSS			),
+	(	out_tf_so_OCh_EQ1_NIC_01	,	in_m01_so_EQ1_WSS			),
+	
+	(	in_m01_sk_EQ1_WSS				,	out_af_sk_OMS_EQ1_OIC_01		),
+	(	out_m01_so_EQ1_WSS			,	in_af_so_OMS_EQ1_OIC_01		),
+	
+	
+	(	in_m01_sk_EQ2_WSS				,	out_af_sk_OMS_EQ2_OIC_01		),
+	(	out_m01_so_EQ2_WSS			,	in_af_so_OMS_EQ2_OIC_01		),
+	
+	(	in_m02_sk_EQ2_WSS				,	out_af_sk_OMS_EQ2_OIC_02		),
+	(	out_m02_so_EQ2_WSS			,	in_af_so_OMS_EQ2_OIC_02		),
+	
+	
+	(	in_tf_sk_EQ4_CIC_01			,	out_m01_sk_EQ4_ODUSwitch		),
+	(	out_tf_so_EQ4_CIC_01		,	in_m01_so_EQ4_ODUSwitch		),
+	
+	(	in_tf_sk_EQ4_CIC_02			,	out_m02_sk_EQ4_ODUSwitch		),
+	(	out_tf_so_EQ4_CIC_02		,	in_m02_so_EQ4_ODUSwitch		),
+	
+	(	in_m01_sk_EQ4_ODUSwitch		,	out_af01_sk_ODUk_EQ4_NIC_01	),
+	(	out_m01_so_EQ4_ODUSwitch	,	in_af01_so_ODUk_EQ4_NIC_01	),
+	
+	(	in_tf_sk_OCh_EQ4_NIC_01		,	out_m01_sk_EQ4_WSS			),
+	(	out_tf_so_OCh_EQ4_NIC_01	,	in_m01_so_EQ4_WSS			),
+	
+	(	in_m01_sk_EQ4_WSS				,	out_af_sk_OMS_EQ4_OIC_01		),
+	(	out_m01_so_EQ4_WSS			,	in_af_so_OMS_EQ4_OIC_01		),
+	
+	(	in_m02_sk_EQ4_WSS				,	out_af_sk_OMS_EQ4_OIC_02		),
+	(	out_m02_so_EQ4_WSS			,	in_af_so_OMS_EQ4_OIC_02		),
+	
+	
+	(	in_tf_sk_OTS_EQ2_OIC_01		,	out_pm01_Physical_Media_12		),
+	(	out_tf_so_OTS_EQ2_OIC_01	,	in_pm02_Physical_Media_12		),
+	
+	
+	(	in_tf_sk_OTS_EQ2_OIC_02		,	out_pm02_Physical_Media_24		),
+	(	out_tf_so_OTS_EQ2_OIC_02	,	in_pm01_Physical_Media_24		),
+	
+	(	in_tf_sk_OTS_EQ4_OIC_01		,	out_pm01_Physical_Media_24		),
+	(	out_tf_so_OTS_EQ4_OIC_01	,	in_pm02_Physical_Media_24		),
+	
+	
+	(	in_tf_sk_OTS_EQ1_OIC_01		,	out_pm02_Physical_Media_13		),
+	(	out_tf_so_OTS_EQ1_OIC_01	,	in_pm01_Physical_Media_13		),
+	
+	(	in_tf01_sk_EQ3_AMP			,	out_pm01_Physical_Media_13		),
+	(	out_tf02_so_EQ3_AMP			,	in_pm02_Physical_Media_13		),
+	
+	
+	(	in_tf_sk_OTS_EQ4_OIC_02		,	out_pm01_Physical_Media_34		),
+	(	out_tf_so_OTS_EQ4_OIC_02	,	in_pm02_Physical_Media_34		),
+	
+	(	in_tf02_sk_EQ3_AMP			,	out_pm02_Physical_Media_34		),
+	(	out_tf01_so_EQ3_AMP			,	in_pm01_Physical_Media_34		);
+	
+***
+
+Layer_Network.isLast: (OTS, true, boolean);
+
+***

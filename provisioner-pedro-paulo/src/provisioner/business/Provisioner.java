@@ -51,7 +51,6 @@ public class Provisioner {
 		return createInstancesTime;
 	}
 
-
 	public Provisioner(String baseTBoxFile, String consistencyTBoxFile, String declaredInstancesFile, String possibleEquipFile, int declaredReplications, int possibleReplications) throws Exception {
 		this.possibleEquipFile = possibleEquipFile;
 		//#1
@@ -462,12 +461,12 @@ public class Provisioner {
 	public void findPaths(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<Path> paths, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize, int declaredWeight, int possibleWeight, boolean fewPossibleEquip) throws Exception{
 		System.out.println("\nExecuting algorithmSemiAuto()...");
 		String VAR_IN = ((Interface) lastInputIntNode.getUserObject()).getInterfaceURI();
+		String var_in_original = VAR_IN;
 		Interface in = interfaces.get(VAR_IN);
-		//Interface in = new Interface(VAR_IN);
-		
+		Interface in_orig = interfaces.get(VAR_IN);
 		if(limitExceeded(paths, usedInterfaces, qtShortPaths, maxPathSize)){
 			return;
-		}
+		}		
 		
 		List<Interface> INT_LIST = algorithmPart1(in, isSource);
 		for (int i = 0; i < INT_LIST.size(); i+=1) {
@@ -480,6 +479,21 @@ public class Provisioner {
 				List<Interface> newUsedInterfaces1 = new ArrayList<Interface>(); 
 				newUsedInterfaces1.addAll(usedInterfaces);
 				newUsedInterfaces1.add(out);
+				
+				if(var_in_original.contains("in_int_so_EQ1_CIC_01") && VAR_OUT.contains("out_int_sk_EQ4_CIC_01")){
+					System.out.println();
+				}
+				
+				List<Path> internalPaths = getOrigPaths(in_orig, out);
+				if(internalPaths != null){
+					if(internalPaths.size() == 1 && internalPaths.get(0).size() > 2){
+						List<Interface> intfcList = internalPaths.get(0).getInterfaceList();
+						for (int j = 1; j < intfcList.size()-1; j++) {
+							DefaultMutableTreeNode internalNode = new DefaultMutableTreeNode(intfcList.get(j));
+							lastInputIntNode.add(internalNode);
+						}
+					}
+				}
 				
 				DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(out);
 				lastInputIntNode.add(outIntNode);
@@ -494,6 +508,9 @@ public class Provisioner {
 					}
 
 					Path path = new Path(outIntNode.getPath());
+					if(path.size() == 2){
+						System.out.println();
+					}
 					int j = getOrderedIndex(paths, path, declaredWeight, possibleWeight, fewPossibleEquip);
 					
 					paths.add(j, path);
@@ -624,6 +641,11 @@ public class Provisioner {
 				for (int i = 1; i < intfcList.size()-1; i++) {
 					path.addInterface(intfcList.get(i), true);
 				}				
+			}else if(internalPaths.get(0).size() > 2){
+				List<Interface> intfcList = internalPaths.get(0).getInterfaceList();
+				for (int i = 1; i < intfcList.size()-1; i++) {
+					path.addInterface(intfcList.get(i), true);
+				}
 			}
 			
 			//#20
