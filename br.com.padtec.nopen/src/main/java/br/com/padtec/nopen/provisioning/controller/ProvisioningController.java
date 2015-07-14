@@ -28,12 +28,13 @@ public class ProvisioningController {
 	protected @ResponseBody String openTopologyOnProvisioning(@RequestParam("filename") String filename){
 			
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
+		return NOpenFileUtil.openTopologyJSONFileAsString(filename);
 		
-		ProvisioningManager provisioningManager = new ProvisioningManager();
-		String json = provisioningManager.openProvisioning(filename);
-		System.out.println(json);
-		
-		return json;
+//		ProvisioningManager provisioningManager = new ProvisioningManager();
+//		String json = provisioningManager.openProvisioning(filename);
+//		System.out.println(json);
+//		
+//		return json;
 		
 	}
 	

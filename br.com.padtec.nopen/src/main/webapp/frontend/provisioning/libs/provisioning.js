@@ -11,10 +11,13 @@ joint.shapes.provisioning.AccessGroup = joint.shapes.basic.Circle.extend({
 		subtype: 'Access_Group',
 
 		size: { width: 30, height: 30 },
-
+			
 		attrs: {
 			'.': { magnet: true }
-		}
+		},
+		
+		id : '',
+		equipment : {},
 
 	}, joint.shapes.basic.Circle.prototype.defaults)
 

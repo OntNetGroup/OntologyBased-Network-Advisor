@@ -21,9 +21,10 @@ Stencil = {
 			});
 		},
 		
-		createAccessGroup: function(equipmentID) {
+		createAccessGroup: function(equipmentID, equipment) {
 			return new joint.shapes.provisioning.AccessGroup ({
-				id: equipmentID,
+				id : equipmentID,
+				equipment : equipment,
 			});
 		}
 		

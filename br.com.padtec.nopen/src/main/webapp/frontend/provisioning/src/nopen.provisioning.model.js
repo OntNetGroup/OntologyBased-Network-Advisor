@@ -10,285 +10,22 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		this.app = app;
 	},
 	
-	//Method to pre provisioning
-	startPreProvisioning : function(graph) {
-		
-		var owl = this.app.owl;
-		var file = this.app.file;
-		var $this = this;
-		var links = [];
-		
-		$.each(graph.getLinks(), function(index, value) {
-			
-			var link = graph.getCell(value.id);
-			var source = graph.getCell(link.get('source').id);
-			var target = graph.getCell(link.get('target').id);
-			
-			var sourceCards = $this.getCards(source);
-			var targetCards = $this.getCards(target);
-			
-			links.push({
-				'link' : link,
-				'source' : source,
-				'target' : target,
-			});
-			
-			//console.log('SOURCE' + index + ": " + $this.getElementName(source));
-			//console.log('TARGET' + index + ": " + $this.getElementName(target));
-			
-		});
-		
-		var dialog = new joint.ui.Dialog({
-			width: 500,
-			type: 'neutral',
-			closeButton: false,
-			title: 'Pre Provisioning',
-			clickOutside: false,
-			modal: false,
-			content: 'Unconnected links were detected, click in the <b>Next</b> button to connect them. <hr>',
-			buttons: [
-			          { action: 'next', content: 'Next', position: 'right' },
-			]
-		});
-		dialog.on('action:next', next);
-		dialog.open();
-
-		var currentLinkIndex = 1;
-		
-		//block outside
-		$('#black_overlay').show();
-		
-		function next() {
-			
-			//finish pre provisioning
-			if (currentLinkIndex > links.length) {
-				dialog.close();
-				$('#black_overlay').hide();
-				return;
-			}
-			
-			//disable button
-			$('.dialog .controls .control-button[data-action="next"]').attr("disabled", true);
-			
-			var content = '';
-			
-			var link = links[currentLinkIndex - 1];
-			
-			var source = graph.getCell(link.source.id);
-			var target = graph.getCell(link.target.id);
-			
-			var sourceName = $this.getEquipmentName(link.source);
-			var targetName = $this.getEquipmentName(link.target);
-			
-			if(currentLinkIndex < links.length) {
-				
-				//var layers = $this.getLayers(target);
-
-				/*
-				 * CHANGE FOR A METHOD THAT GET OUTPUTS FROM OWL FILE
-				 */
-				var outputs = owl.getOutputsTest();
-				
-				var test = owl.getOutputsFromOWL(source.id);
-				
-				content = createContent(sourceName, targetName, outputs);
-				$('.dialog .body').html(content);
-				prepareList('.outputsList');
-				generateOutputEvents();
-				changeSVGColor(sourceName, targetName);
-				
-				currentLinkIndex++;
-			}
-			//currentLinkIndex === links.length
-			else {
-				
-				//var layers = $this.getLayers(target);
-
-				/*
-				 * CHANGE FOR A METHOD THAT GET OUTPUTS FROM OWL FILE
-				 */
-				var outputs = owl.getOutputsTest();
-				
-				var test = owl.getOutputsFromOWL(source.id);
-				
-				content = createContent(sourceName, targetName, outputs);
-				$('.dialog .body').html(content);
-				$('.dialog .controls .control-button[data-action="next"]').text('Finish');
-				prepareList('.outputsList');
-				generateOutputEvents();
-				changeSVGColor(sourceName, targetName);
-				
-				currentLinkIndex++;
-			}
-			
-		};
-		
-		//create content
-		function createContent(sourceName, targetName, outputs) {
-			
-			var content = 
-				'<div class="preProvisioningContainer"><div class="outputsList"><div id="listContainer">' +
-				    '<ul id="expList" class="list"> <li class="outputs">' + sourceName + '</li> ' ;
-			
-			$.each(outputs, function(layer, value) {
-				
-				content = content + 
-				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
-				
-				$.each(outputs[layer], function(key, output) {
-					
-					content = content +
-						'<ul style="display: block;">' +
-			                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
-			            '</ul>';
-					
-				});
-				
-				content = content + '</li>';
-				
-			});
-			
-			content = content + '</ul></div></div>';
-			content = content + 
-				'<div class="inputsList"><div id="listContainer">' +
-			    	'<ul id="expList" class="list"> <li class="inputs">' + targetName + '</li></ul>' + 
-			    '</div></div></div>';
-			
-			content = content + '<div class="image">' + file.getTopologySVG() + '</div>'
-
-			return content;
-			
-		};
-		
-		function changeSVGColor(sourceName, targetName) {
-			
-			//Set SVG elements
-			$('.rotatable').each(function(){
-				if($(this).text() === targetName || $(this).text() === sourceName) {
-					var id = $(this).attr('id');
-					$('#' + id + ' circle').attr('fill', "#FFF200");
-				}
-				else {
-//					$(this).attr('opacity', ".5")
-				}
-			})
-			
-		};
-		
-		//generate events to outputs list
-		function generateOutputEvents() {
-			
-			$('.outputsList #expList').find('li.outputItem').click( function(event) {
-				
-				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", true);
-				
-				$('.outputsList #expList li').removeClass('active');
-				$(this).toggleClass('active');
-				
-				$('.inputsList #expList li:not(:first)').remove();
-				
-				/*
-				 * CHANGE FOR A METHOD THAT GET INPUTS FROM OWL FILE
-				 */
-				var inputs = owl.getInputsTest();
-				
-				var content = "";
-				$.each(inputs, function(layer, value) {
-					
-					content = content + 
-					    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
-					
-					$.each(inputs[layer], function(key, input) {
-						
-						content = content +
-							'<ul style="display: block;">' +
-				                '<li class="inputItem" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + input.name + '</li>' +
-				            '</ul>';
-						
-					});
-					
-					content = content + '</li>';
-					
-				});
-				
-				$('.inputsList #expList').append(content);
-				prepareList('.inputsList');
-				
-				generateInputEvents();
-				
-			});
-			
-		};
-		
-		//generate events to inputs list
-		function generateInputEvents() {
-			
-			$('.inputsList #expList').find('li.inputItem').click(function(event) {
-				
-				$('.inputsList #expList li').removeClass('active');
-				$(this).toggleClass('active');
-				
-				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
-				
-			});
-			
-			$('.dialog .controls .control-button[data-action="next"]').click(function(event) {
-				
-				var output = {
-						"id": $('.outputItem.active').attr('id'),
-						"name": $('.outputItem.active').attr('value'),
-						"type": "Output_Card"
-				};
-				
-				var input = {
-						"id": $('.inputItem.active').attr('id'),
-						"name": $('.inputItem.active').attr('value'),
-						"type": "Input_Card"
-				};
-				
-				console.log('Out: ' + JSON.stringify(output));
-				console.log('In: ' + JSON.stringify(input));
-				
-			});
-			
-		};
-		
-		//generate events to list
-		function prepareList(type) {
-			$(type + ' #expList').find('li:has(ul)').click( function(event) {
-				if (this == event.target) {
-					$(this).toggleClass('expanded');
-					$(this).children('ul').toggle('medium');
-				}
-				return false;
-			})
-			.addClass('collapsed').children('ul').hide();
-
-			//Create the toggle 
-			var toggle = false;
-			$('#listToggle').unbind('click').click(function(){
-				if(toggle == false){
-					$('.collapsed').addClass('expanded');
-					console.log($('.collapsed').children());
-					$('.collapsed').children().show('medium');
-					$('#listToggle').text("Collapse All");
-					toggle = true;
-				}else{
-					$('.collapsed').removeClass('expanded');
-					console.log($('.collapsed').children());
-					$('.collapsed').children().hide('medium');
-					$('#listToggle').text("Expand All");
-					toggle = false;          
-				}
-			});
-		}
-		
-		
-	},
-	
 	//Method to get equipment name
 	getEquipmentName : function(equipment) {
 		return equipment.attr('text/text')
+	},
+	
+	getEquipmentTechnology : function(equipment) {
+		
+		var tech = '';
+		
+		$.each(equipment.cells, function(key, element) {
+			if(element.subType == 'Supervisor') {
+				tech = element.tech;
+			}
+		});
+		
+		return tech;
 	},
 	
 	
@@ -481,5 +218,206 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			});
 		
 		return result;
-	}
+	},
+	
+	generateProvisioning : function(app, subnetworks) {
+		
+		//console.log('SUB LEN:' + JSON.stringify(subnetworks));
+		
+		var $this = this;
+		var graph = app.graph;
+		var paper = app.paper;
+		
+		graph.clear();
+		
+		// Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
+		var position = undefined;
+        paper.on('cell:pointerdown', function(cellView, evt) {
+        	var cell = graph.getCell(cellView.model.id);
+        	if(cell.type === 'link') return;
+        	
+        	position = cell.get('position');
+        });
+		
+        paper.on('cell:pointerup', function(cellView, evt) {
+        	var cell = graph.getCell(cellView.model.id);
+        	if(cell.type === 'link') return;
+        	
+        	cell.set('position', position);
+        });
+        
+        var index = 0;
+		_.each(subnetworks, function(element, tech) {
+			
+			var uppermostLayer = $this.getUppermostLayer(tech);
+			var layerNetwork = Stencil.createLayerNetwork(tech, uppermostLayer);
+			
+			layerNetwork.attributes.position = $this.getLayerOffset(index);
+			
+			graph.addCell(layerNetwork);
+			var layerPosition = {
+					x : layerNetwork.attributes.position.x,
+					y : layerNetwork.attributes.position.y,
+			}
+			
+			var subnetwork = Stencil.createSubnetwork(tech);
+			graph.addCell(subnetwork);
+			
+			var subnetworkPosition = {
+					x : layerPosition.x + 55,
+					y : layerPosition.y + 25,
+			}
+			
+			subnetwork.translate(subnetworkPosition.x, subnetworkPosition.y);
+			//layerNetwork.embed(subnetwork);
+
+			var equipmentOffset = 0;
+			if(subnetworks[tech].length > 0 && subnetworks[tech].length <= 16) {
+				equipmentOffset = Math.floor(16/subnetworks[tech].length)
+			}
+			
+			console.log('SUB LEN:' + subnetworks[tech].length);
+			
+			var equipIndex = 0;
+			_.each(subnetworks[tech], function(equipment, equipmentID) {
+				
+				var equip = equipment.attributes.attrs.equipment;
+				var accessGroup = Stencil.createAccessGroup(equipment.id, equip);
+				graph.addCell(accessGroup);
+				
+				var offset = $this.getEquipmentOffset(equipIndex * equipmentOffset);
+				var position = {
+						x : subnetworkPosition.x + offset.x,
+						y : subnetworkPosition.y - offset.y,
+				}
+				accessGroup.set('position', position);
+				
+				equipIndex ++;
+				//subnetwork.embed(accessGroup);
+				
+			}, this);
+			
+			index++;
+			
+		}, this);
+		
+		
+		
+	},
+	
+	getLayerOffset : function(index) {
+		
+		var offset = {
+				x : undefined,
+				y : undefined,
+		}
+		
+		switch(index) {
+			case 0 :
+				offset.x = 250;
+				offset.y = 100;
+				break;
+			case 1 :
+				offset.x = 250;
+				offset.y = 320;
+				break;
+			case 2 :
+				offset.x = 250;
+				offset.y = 540;
+				break;
+			case 3 :
+				offset.x = 250;
+				offset.y = 760;
+				break;
+			case 4 :
+				offset.x = 250;
+				offset.y = 980;
+				break;
+			default :
+				break;
+		}
+		
+		return offset;
+	},
+	
+	getEquipmentOffset : function(index) {
+	
+		var offset = {
+				x : undefined,
+				y : undefined,
+		}
+		
+		switch(index) {
+			case 0 :
+				offset.x = 185;
+				offset.y = 15;
+				break;
+			case 1 :
+				offset.x = 245;
+				offset.y = 12;
+				break;
+			case 2 :
+				offset.x = 305;
+				offset.y = 2;
+				break;
+			case 3 :
+				offset.x = 355;
+				offset.y = -20;
+				break;
+			case 4 :
+				offset.x = 385;
+				offset.y = -60;
+				break;
+			case 5 :
+				offset.x = 355;
+				offset.y = -100;
+				break;
+			case 6 :
+				offset.x = 305;
+				offset.y = -120;
+				break;
+			case 7 :
+				offset.x = 245;
+				offset.y = -132;
+				break;
+			case 8 :
+				offset.x = 185;
+				offset.y = -135;
+				break;
+			case 9 :
+				offset.x = 125;
+				offset.y = -130;
+				break;
+			case 10 :
+				offset.x = 65;
+				offset.y = -120;
+				break;
+			case 11 :
+				offset.x = 15;
+				offset.y = -100;
+				break;
+			case 12 :
+				offset.x = -15;
+				offset.y = -60;
+				break;
+			case 13 :
+				offset.x = 15;
+				offset.y = -20;
+				break;
+			case 14 :
+				offset.x = 65;
+				offset.y = 2;
+				break;
+			case 15 :
+				offset.x = 125;
+				offset.y = 12;
+				break;
+			default:
+				break;
+		}
+		
+		return offset;
+		
+	},
+	
 });

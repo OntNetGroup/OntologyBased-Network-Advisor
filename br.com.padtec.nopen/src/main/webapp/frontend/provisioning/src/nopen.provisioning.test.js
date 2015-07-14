@@ -100,19 +100,19 @@ nopen.provisioning.Test = Backbone.Model.extend({
 				break;
 			case 1 :
 				offset.x = 250;
-				offset.y = 300;
+				offset.y = 320;
 				break;
 			case 2 :
 				offset.x = 250;
-				offset.y = 500;
+				offset.y = 540;
 				break;
 			case 3 :
 				offset.x = 250;
-				offset.y = 700;
+				offset.y = 760;
 				break;
 			case 4 :
 				offset.x = 250;
-				offset.y = 900;
+				offset.y = 980;
 				break;
 			default :
 				break;

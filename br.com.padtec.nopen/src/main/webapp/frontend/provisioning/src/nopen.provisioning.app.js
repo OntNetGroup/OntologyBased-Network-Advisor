@@ -3,6 +3,7 @@ nopen.provisioning.App = Backbone.View.extend({
 	file : undefined,
 	model : undefined,
 	owl : undefined,
+	preProvisioning : undefined,
 	test : undefined,
 	
 	initialize : function(){
@@ -17,6 +18,8 @@ nopen.provisioning.App = Backbone.View.extend({
 		this.model = new nopen.provisioning.Model;
 		//create owl
 		this.owl = new nopen.provisioning.OWL;
+		//create preProvisioning
+		this.preProvisioning = new nopen.provisioning.PreProvisioning;
 		
 		//create Test
 		this.test = new nopen.provisioning.Test;
@@ -25,6 +28,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		//set app
 		this.file.setApp(this);
 		this.owl.setApp(this);
+		this.preProvisioning.setApp(this);
 		this.model.setApp(this);
 
 		//initailize tests
@@ -40,7 +44,7 @@ nopen.provisioning.App = Backbone.View.extend({
 	
 	//Test procedures
 	initializeTestProcedures : function(app) {
-		this.test.execute(app);
+		//this.test.execute(app);
 	},
 	
 	
@@ -107,7 +111,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		
 		//import topology
 		$('#btn-open-topology').click(function(){
-			file.generateImportTopologyDialog(graph);
+			file.generateImportTopologyDialog(app);
         });
 		
 	},

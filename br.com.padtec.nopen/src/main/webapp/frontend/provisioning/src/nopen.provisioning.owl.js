@@ -204,8 +204,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				}
 				links.push(link);
 				
-				console.log('LINK: ' + JSON.stringify(link))
-				
 			}
 			
 		});
@@ -223,7 +221,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			   'links' : JSON.stringify(links),
 		   },
 		   success: function(){
-			   console.log('PARSE OK!')
+			   //console.log('PARSE OK!')
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
