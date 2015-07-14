@@ -86,14 +86,14 @@ public class PerformBind {
 							StudioComponents.studioRepository.getNamespace() + idPort
 						);
 					
-					//create the relation between tf and input/output card
+				/*	//create the relation between tf and input/output card
 					FactoryUtil.createInstanceRelation(
 							StudioComponents.studioRepository.getBaseModel(), 
 							StudioComponents.studioRepository.getNamespace() + idTarget, 
 							StudioComponents.studioRepository.getNamespace() + RelationEnum.is_interface_of.toString(),
 							StudioComponents.studioRepository.getNamespace() + idSource
 					);
-					
+					*/
 					return true;
 					
 				} else {
@@ -329,6 +329,10 @@ public class PerformBind {
 	}
 	
 	public static void applyEquipmentBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception{
+		
+		StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+
+		
 		String rangeClassName = ConceptEnum.Transport_Function.toString();
 		String sourceIndividualId = dtoSourceElement.getId();
 		String property = RelationEnum.is_interface_of.toString();

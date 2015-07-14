@@ -13,10 +13,16 @@
 			"option": ["sink","source","bidirectional"],
 			"label": "Directionality",
 			
-			"_comment":
-				"This attribute indicates the directionality of the 
-				termination point. Valid values are sink, source, 
-				and bidirectional. This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the directionality of the<br>
+						termination point. Valid values are sink, source,<br> 
+						and bidirectional. This attribute is read-only."
+				}
+			}			
 		},				
 	}
 }

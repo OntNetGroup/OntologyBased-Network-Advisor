@@ -11,10 +11,16 @@
 			"option": ["sink","source","bidirectional"],
 			"label": "Directionality",
 			
-			"_comment":  
-				"This attribute indicates the directionality of the 
-				termination point. Valid values are sink, source, 
-				and bidirectional. This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the directionality of the<br>
+						termination point. Valid values are sink, source,<br> 
+						and bidirectional. This attribute is read-only."
+				}
+			}
 		},
 			
 		"codirectional":
@@ -22,17 +28,23 @@
 			"type": "toggle",
 			"label": "Codirectional",
 			
-			"_comment":  
-				"This attribute specifies the directionality of the 
-				GCC12_TP with respect to the associated ODUk_CTP. 
-				The value of TRUE means that the sink part of the 
-				GCC12_TP terminates the same signal direction as the 
-				sink part of the ODUk_CTP. The Source part behaves 
-				similarly. This attribute is meaningful only on 
-				objects instantiated under ODUk_CTP, and at least 
-				one among ODUk_CTP and the subordinate object has 
-				Directionality equal to Bidirectional. This 
-				attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute specifies the directionality of the<br> 
+						GCC12_TP with respect to the associated ODUk_CTP.<br> 
+						The value of TRUE means that the sink part of the<br> 
+						GCC12_TP terminates the same signal direction as the<br> 
+						sink part of the ODUk_CTP. The Source part behaves<br> 
+						similarly. This attribute is meaningful only on<br> 
+						objects instantiated under ODUk_CTP, and at least<br> 
+						one among ODUk_CTP and the subordinate object has<br> 
+						Directionality equal to Bidirectional. This<br> 
+						attribute is read-only."
+				}
+			}
 		},
 		
 		
@@ -42,13 +54,19 @@
 			"option": ["gg1","gcc2","gcc1-plus-gcc2"],
 			"label": "GCC Access",
 			
-			"_comment":  
-				"This attribute indicates the GCC access represented 
-				by this entity. Valid values are:
-				1) GCC1;
-				2) GCC2;
-				3) GCC1 + GCC2.
-				This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the GCC access represented<br> 
+						by this entity. Valid values are:<br>
+						1) GCC1;<br>
+						2) GCC2;<br>
+						3) GCC1 + GCC2.<br>
+						This attribute is read-only."
+				}
+			}			
 		},
 		
 		"gcc-pass-through":
@@ -56,17 +74,23 @@
 			"type": "toggle",
 			"label": "GCC Pass Through",
 			
-			"_comment":  
-				"This attribute controls the selected GCC overhead 
-				whether it is passed through or modified. Valid 
-				values are TRUE and FALSE. The value of TRUE means 
-				that the GCC overhead shall pass through unmodified 
-				from the ODUk CTP input to the ODUk CTP output. 
-				Otherwise shall be set to all 0s at the ODUk CTP 
-				output after the extraction of the COMMS data. This 
-				attribute is not meaningful on objects instantiated 
-				under ODUk_TTP, and on objects with Directionality 
-				equals to Source."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute controls the selected GCC overhead<br> 
+						whether it is passed through or modified. Valid<br> 
+						values are TRUE and FALSE. The value of TRUE means<br> 
+						that the GCC overhead shall pass through unmodified<br> 
+						from the ODUk CTP input to the ODUk CTP output.<br> 
+						Otherwise shall be set to all 0s at the ODUk CTP<br> 
+						output after the extraction of the COMMS data. This<br> 
+						attribute is not meaningful on objects instantiated<br> 
+						under ODUk_TTP, and on objects with Directionality<br> 
+						equals to Source."
+				}
+			}
 		},
 		
 		"application":
@@ -74,11 +98,17 @@
 			"type": "text",
 			"label": "Application",
 			
-			"_comment":
-				"This attribute indicates the applications 
-				transported by the GCC channel. Example applications 
-				are ECC, (user data channel). Valid values are 
-				string. This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the applications<br> 
+						transported by the GCC channel. Example applications<br> 
+						are ECC, (user data channel). Valid values are<br> 
+						string. This attribute is read-only."
+				}
+			}			
 		},		
 	}
 }

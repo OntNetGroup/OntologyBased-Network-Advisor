@@ -13,21 +13,27 @@
 			"option": ["enabled","disabled"],
 			"label": "Operational State",
 			
-			"_comment":  
-				"This attribute is generally defined in ITU-T Rec. 
-				X.731 and the behaviour description for 
-				operationalState in ITU-T Rec. M.3100.
-				Possible Values – Enabled and Disabled. See ITU-T 
-				Recs. X.731 and M.3100 for details.
-				Default Value – Actual state of resource at the time 
-				the object is created. If there is a period of time 
-				during the initialization process where the 
-				operational state is unknown, then the resource will 
-				be considered disabled until initialization has 
-				completed and the state updated accordingly.
-				Constraints to Provisioning – N/A.
-				Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.
-				This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute is generally defined in ITU-T Rec.<br>
+						X.731 and the behaviour description for<br> 
+						operationalState in ITU-T Rec. M.3100.<br>
+						Possible Values – Enabled and Disabled. See ITU-T<br> 
+						Recs. X.731 and M.3100 for details.<br>
+						Default Value – Actual state of resource at the time<br> 
+						the object is created. If there is a period of time<br> 
+						during the initialization process where the<br> 
+						operational state is unknown, then the resource will<br> 
+						be considered disabled until initialization has<br> 
+						completed and the state updated accordingly.<br>
+						Constraints to Provisioning – N/A.<br>
+						Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>
+						This attribute is read-only."
+				}
+			}			
 		},
 							
 		"directionality":
@@ -36,10 +42,16 @@
 			"option": ["sink","source","bidirectional"],
 			"label": "Directionality",
 			
-			"_comment":  
-				"This attribute indicates the directionality of the 
-				termination point. Valid values are sink, source, 
-				and bidirectional. This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the directionality of the<br> 
+						termination point. Valid values are sink, source,<br> 
+						and bidirectional. This attribute is read-only."
+				}
+			}			
 		},
 				
 		"tcm-field":
@@ -49,11 +61,17 @@
 			"max": 6,
 			"step": 1,
 			"label": "TCM Field",
-			
-			"_comment":  
-				"This attribute indicates the tandem connection 
-				monitoring field of the ODUk OH. Valid values are 
-				integers from 1 to 6. This attribute is read-only."
+						
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the tandem connection<br> 
+						monitoring field of the ODUk OH. Valid values are<br> 
+						integers from 1 to 6. This attribute is read-only."
+				}
+			}			
 		},
 		
 		"tx-ti":
@@ -61,12 +79,18 @@
 			"type": "text",			
 			"label": "TX TI",
 			
-			"_comment":
-				"The Trail Trace Identifier (TTI) information, 
-				provisioned by the managing system at the 
-				termination source, to be placed in the TTI overhead 
-				position of the source of a trail for transmission. 
-				This attribute is read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"The Trail Trace Identifier (TTI) information,<br> 
+						provisioned by the managing system at the<br> 
+						termination source, to be placed in the TTI overhead<br> 
+						position of the source of a trail for transmission.<br> 
+						This attribute is read-write."
+				}
+			}			
 		},
 		
 		"ex-dapi":
@@ -74,13 +98,19 @@
 			"type": "text",
 			"label": "EX DAPI",
 			
-			"_comment":
-				"The Expected Destination Access Point Identifier 
-				(ExDAPI), provisioned by the managing system, to be 
-				compared with the TTI accepted at the overhead 
-				position of the sink for the purpose of checking the 
-				integrity of connectivity. This attribute is 
-				read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"The Expected Destination Access Point Identifier<br> 
+						(ExDAPI), provisioned by the managing system, to be<br> 
+						compared with the TTI accepted at the overhead<br> 
+						position of the sink for the purpose of checking the<br> 
+						integrity of connectivity. This attribute is<br> 
+						read-write."
+				}
+			}			
 		},		
 				
 		"ex-sapi":
@@ -88,13 +118,19 @@
 			"type": "text",
 			"label": "EX SAPI",
 			
-			"_comment":
-				"The Expected Source Access Point Identifier 
-				(ExSAPI), provisioned by the managing system, to be 
-				compared with the TTI accepted at the overhead 
-				position of the sink for the purpose of checking the 
-				integrity of connectivity. This attribute is 
-				read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"The Expected Source Access Point Identifier<br> 
+						(ExSAPI), provisioned by the managing system, to be<br> 
+						compared with the TTI accepted at the overhead<br> 
+						position of the sink for the purpose of checking the<br> 
+						integrity of connectivity. This attribute is<br> 
+						read-write."
+				}
+			}		
 		},
 		
 		"ac-ti":
@@ -102,10 +138,16 @@
 			"type": "text",
 			"label": "AC TI",
 			
-			"_comment":
-				"The Trail Trace Identifier (TTI) information 
-				recovered (Accepted) from the TTI overhead position 
-				at the sink of a trail. This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"The Trail Trace Identifier (TTI) information<br> 
+						recovered (Accepted) from the TTI overhead position<br> 
+						at the sink of a trail. This attribute is read-only."
+				}
+			}			
 		},		
 		
 		"tim-det-mode":
@@ -114,24 +156,36 @@
 			"option": ["off","dapi","sapi","both"],
 			"label": "TIM DET Mode",
 			
-			"_comment":
-				"This attribute indicates the mode of the Trace 
-				Identifier Mismatch (TIM) Detection function. Valid 
-				values are: off, dapi, sapi, both. This attribute is 
-				read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the mode of the Trace<br> 
+						Identifier Mismatch (TIM) Detection function. Valid<br> 
+						values are: off, dapi, sapi, both. This attribute is<br> 
+						read-write."
+				}
+			}			
 		},
 		
 		"tim-act-disabled":
 		{
 			"type": "toggle",
             "label": "TIM ACT Disabled",
-			
-			"_comment":
-				"This attribute provides the control capability for the 
-				managing system to enable or disable the Consequent 
-				Action function when detecting Trace Identifier Mismatch 
-				(TIM) at the trail termination sink. The value of TRUE 
-				means disabled. This attribute is read-write."
+						
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute provides the control capability for the<br> 
+						managing system to enable or disable the Consequent<br> 
+						Action function when detecting Trace Identifier Mismatch<br> 
+						(TIM) at the trail termination sink. The value of TRUE<br> 
+						means disabled. This attribute is read-write."
+				}
+			}			
 		},
 				
 		"deg-thr":
@@ -141,14 +195,20 @@
 			"max": 2147483647,
 			"label": "DEG THR",
 			
-			"_comment":
-				"This attribute indicates the threshold level for 
-				declaring a performance monitoring (PM) Second to be 
-				bad. A PM Second is declared bad if the percentage 
-				of detected errored blocks in that second is greater 
-				than or equal to the specified threshold level. 
-				Valid values are integers in units of percentages. 
-				This attribute is read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the threshold level for<br> 
+						declaring a performance monitoring (PM) Second to be<br> 
+						bad. A PM Second is declared bad if the percentage<br> 
+						of detected errored blocks in that second is greater<br> 
+						than or equal to the specified threshold level.<br> 
+						Valid values are integers in units of percentages.<br> 
+						This attribute is read-write."
+				}
+			}
 		},
 		
 		"deg-m":
@@ -158,11 +218,17 @@
 			"max": 2147483647,
 			"label": "DEG M",
 			
-			"_comment":
-				"This attribute indicates the threshold level for 
-				declaring a Degraded Signal defect (dDEG). A dDEG 
-				shall be declared if DegM consecutive bad PM Seconds 
-				are detected. This attribute is read-write."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the threshold level for<br> 
+						declaring a Degraded Signal defect (dDEG). A dDEG<br> 
+						shall be declared if DegM consecutive bad PM Seconds<br> 
+						are detected. This attribute is read-write."
+				}
+			}			
 		},
 		
 		"admin-state-source":
@@ -171,14 +237,20 @@
 			"option": ["locked","normal"],
 			"label": "Admin State Source",
 			
-			"_comment":
-				"This attribute provides the capability to provision 
-				the LOCK signal at the sink, which is one of the 
-				ODUk maintenance signals. Valid values for this 
-				attribute are Locked and Normal. When a Tandem 
-				Connection endpoint is set to admin state locked, it 
-				will insert the ODUk-LCK signal in the downstream 
-				direction."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute provides the capability to provision<br> 
+						the LOCK signal at the sink, which is one of the<br> 
+						ODUk maintenance signals. Valid values for this<br> 
+						attribute are Locked and Normal. When a Tandem <br>
+						Connection endpoint is set to admin state locked, it<br> 
+						will insert the ODUk-LCK signal in the downstream<br> 
+						direction."
+				}
+			}			
 		},
 		
 		"mode-sink":
@@ -187,9 +259,15 @@
 			"option": ["operational","monitor","transparent"],
 			"label": "Mode Sink",
 			
-			"_comment":
-				"This attribute specifies the TCM mode at the entity. 
-				Valid values are: Operational, Monitor, and Transparent."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute specifies the TCM mode at the entity.<br> 
+						Valid values are: Operational, Monitor, and Transparent."
+				}
+			}			
 		},
 		
 		"mode-source":
@@ -198,9 +276,15 @@
 			"option": ["operational","monitor","transparent"],
 			"label": "Mode Source",
 			
-			"_comment":
-				"This attribute specifies the TCM mode at the entity. 
-				Valid values are: Operational, Monitor, and Transparent."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute specifies the TCM mode at the entity.<br> 
+						Valid values are: Operational, Monitor, and Transparent."
+				}
+			}			
 		},
 		
 		"ac-status-sink":
@@ -208,11 +292,17 @@
 			"type": "select",
 			"option": ["no-source-tc","in-use-without-iae","in-use-with-ia", "reserved-for-future-internacional-standardizartion-one", 
 			"reserved-for-future-internacional-standardizartion-two","aintenance-signal-oduk-lck","maintenance-signal-oduk-oci","maintenance-signal-oduk-ais"],
-			"label": "Mode Source",
+			"label": "AC Status Sink",
 			
-			"_comment":
-				"This attribute indicates the status of the accepted 
-				TCM. This attribute is read-only"
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the status of the accepted<br> 
+						TCM. This attribute is read-only"		
+				}
+			}		
 		},
 		
 		"ac-status-source":
@@ -220,11 +310,17 @@
 			"type": "select",
 			"option": ["no-source-tc","in-use-without-iae","in-use-with-ia", "reserved-for-future-internacional-standardizartion-one", 
 			"reserved-for-future-internacional-standardizartion-two","aintenance-signal-oduk-lck","maintenance-signal-oduk-oci","maintenance-signal-oduk-ais"],
-			"label": "Mode Source",
+			"label": "AC Status Source",
 			
-			"_comment":
-				"This attribute indicates the status of the accepted 
-				TCM. This attribute is read-only"
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the status of the accepted<br> 
+						TCM. This attribute is read-only"		
+				}
+			}			
 		},
 		
 		"codirectional":
@@ -232,17 +328,23 @@
 		   "type": "toggle",
             "label": "Codirectional",
 			
-			"_comment":			
-				"This attribute specifies the directionality of the 
-				ODUkT TP with respect to the associated ODUk_CTP. 
-				The value of TRUE means that the sink part of the 
-				ODUkT TP terminates the same signal direction as the 
-				sink part of the ODUk_CTP. The Source part behaves 
-				similarly. This attribute is meaningful only on 
-				objects instantiated under ODUk_CTP, and at least 
-				one among ODUk_CTP and the subordinate object has 
-				Directionality equal to Bidirectional. This 
-				attribute is read-only. "
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute specifies the directionality of the<br> 
+						ODUkT TP with respect to the associated ODUk_CTP.<br> 
+						The value of TRUE means that the sink part of the<br> 
+						ODUkT TP terminates the same signal direction as the<br> 
+						sink part of the ODUk_CTP. The Source part behaves<br> 
+						similarly. This attribute is meaningful only on<br> 
+						objects instantiated under ODUk_CTP, and at least<br> 
+						one among ODUk_CTP and the subordinate object has<br> 
+						Directionality equal to Bidirectional. This<br> 
+						attribute is read-only. "		
+				}
+			}			
 		},
 		
 		"current-problem-list":
@@ -252,17 +354,23 @@
 			"max": 127,
 			"label": "Current Problem List",
 			
-			"_comment":
-				"This attribute indicates the failure conditions of 
-				the entity. Possible values of this attribute include decimal numbers between 1 and 127, representing:
-				1) no defect;
-				2) OCI (Open Connection Indication);
-				3) LCK (Locked);
-				4) TIM (Trail Trace Identifier Mismatch);
-				5) DEG (Signal Degraded);
-				6) BDI (Backward Defect Indication);
-				7) SSF (Server Signal Fail).
-				This attribute is read-only."
+			"attrs":
+			{
+				"input":
+				{
+					"data-tooltip": 
+						"This attribute indicates the failure conditions of<br> 
+						the entity. Possible values of this attribute include decimal numbers between 1 and 127, representing:<br>
+						1) no defect;<br>
+						2) OCI (Open Connection Indication);<br>
+						3) LCK (Locked);<br>
+						4) TIM (Trail Trace Identifier Mismatch);<br>
+						5) DEG (Signal Degraded);<br>
+						6) BDI (Backward Defect Indication);<br>
+						7) SSF (Server Signal Fail).<br>
+						This attribute is read-only."		
+				}
+			}			
 		},
 	}
 }
