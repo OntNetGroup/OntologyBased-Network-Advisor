@@ -89,6 +89,8 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				 */
 				var outputs = owl.getOutputsTest();
 				
+				var test = owl.getOutputsFromOWL(source.id);
+				
 				content = createContent(sourceName, targetName, outputs);
 				$('.dialog .body').html(content);
 				prepareList('.outputsList');
@@ -106,6 +108,8 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				 * CHANGE FOR A METHOD THAT GET OUTPUTS FROM OWL FILE
 				 */
 				var outputs = owl.getOutputsTest();
+				
+				var test = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);
 				$('.dialog .body').html(content);

@@ -3,6 +3,7 @@ nopen.provisioning.App = Backbone.View.extend({
 	file : undefined,
 	model : undefined,
 	owl : undefined,
+	test : undefined,
 	
 	initialize : function(){
 		console.log("Provisioning started!");
@@ -17,11 +18,17 @@ nopen.provisioning.App = Backbone.View.extend({
 		//create owl
 		this.owl = new nopen.provisioning.OWL;
 		
+		//create Test
+		this.test = new nopen.provisioning.Test;
+		this.test.setApp(this);
+		
 		//set app
 		this.file.setApp(this);
 		this.owl.setApp(this);
 		this.model.setApp(this);
 
+		//initailize tests
+		this.initializeTestProcedures(app);
 		
 		//initialize procedures
 		this.initializeProvisioningFileProcedures(app);
@@ -31,45 +38,18 @@ nopen.provisioning.App = Backbone.View.extend({
 		
 	},
 	
+	//Test procedures
+	initializeTestProcedures : function(app) {
+		this.test.execute(app);
+	},
+	
 	
 	//Provisioning graph procedures
 	initializeProvisioningGraphProcedures : function(app) {
 		
 		var file = this.file;
 		var graph = app.graph;
-		
-		/* 
-		 * PROVISORIO
-		 * author: missael
-		 */
-		var implementedTechnologies = this.model.getImplementedTechnologies();
-		
-		_.each(implementedTechnologies, function(technology, index) {
-			
-			var uppermostLayer = this.model.getUppermostLayer(technology);
-			var layerNetwork = Stencil.createLayerNetwork(technology, uppermostLayer);
-			
-			graph.addCell(layerNetwork);
-			var layerNetworkX = layerNetwork.attributes.position.x;
-			var layerNetworkY = layerNetwork.attributes.position.y;
-			var subnetworkX = layerNetwork.attributes.position.x + 100;
-			var subnetworkY = layerNetwork.attributes.position.y + 40;
-			
-			var subnetwork = Stencil.createSubnetwork();
-			graph.addCell(subnetwork);
-			subnetwork.translate(subnetworkX, subnetworkY);
-			layerNetwork.embed(subnetwork);
-
-			var equipmentIDs = this.model.getEquipmentsByLayer(uppermostLayer);
-			_.each(equipmentIDs, function(equipmentID, index) {
-				var accessGroup = Stencil.createAccessGroup(equipmentID);
-				graph.addCell(accessGroup);
-				accessGroup.translate(subnetworkX + 140, subnetworkY - 10);
-				
-				subnetwork.embed(accessGroup);
-			}, this);
-			
-		}, this);
+		var paper = app.paper;
 		
 	},
 

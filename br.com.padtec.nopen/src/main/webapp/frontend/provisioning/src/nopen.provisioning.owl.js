@@ -65,7 +65,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		//Supervisor (S) > Card (C)
 		var linkSC = {
 				"sourceType" : "Supervisor",
-				"targetType" : "Link",
+				"targetType" : card.subType,
 				"source" : card.SupervisorID,
 				"target" : card.id,
 		};
@@ -210,6 +210,9 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			
 		});
 		
+//		console.log('Elements: ' + JSON.stringify(elements));
+//		console.log('Links: ' + JSON.stringify(links));
+		
 		//execute parse
 		$.ajax({
 		   type: "POST",
@@ -227,8 +230,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		   }
 		});
 		
-//		console.log('Elements: ' + JSON.stringify(elements));
-//		console.log('Links: ' + JSON.stringify(links));
+		
 //		console.log('Equipment: ' + JSON.stringify(equipment));
 //		console.log('Card: ' + JSON.stringify(card));
 		
@@ -302,7 +304,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			   'equipmentId' : equipmentId,
 		   },
 		   success: function(data){
-			   console.log(data);
+			   console.log('INPUT:' + data);
 			   return data;
 		   },
 		   error : function(e) {
@@ -312,7 +314,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	},
 	
 	//Method to get outputs from OWL file
-	getOutputsFromOWL : function(equipment) {
+	getOutputsFromOWL : function(equipmentId) {
+		
 		$.ajax({
 		   type: "POST",
 		   async: false,
@@ -321,7 +324,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			   'equipmentId' : equipmentId,
 		   },
 		   success: function(data){
-			   console.log(data);
+			   console.log('OUTPUT:' + data);
 			   return data;
 		   },
 		   error : function(e) {
