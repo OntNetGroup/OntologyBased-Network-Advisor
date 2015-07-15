@@ -2448,8 +2448,7 @@ public class QueryUtil {
 				+ PREFIXES
 				+ "PREFIX ont: <http://www.menthor.net/nOpenModel_light.owl#>"
 				+ " SELECT (COUNT(*) AS ?count) \n"
-				+ "WHERE { ?subject rdfs:instanceOf ?object . "
-				+ "		?object rdf:type <" + classURI + "> . " 
+				+ "WHERE { ?subject rdf:type <" + classURI + "> . " 
 				+ "}";
 		Query query = QueryFactory.create(queryString); 		
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
