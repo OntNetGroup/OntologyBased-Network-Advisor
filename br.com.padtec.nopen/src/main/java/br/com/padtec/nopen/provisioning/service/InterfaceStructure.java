@@ -8,15 +8,11 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.RelationEnum;
+import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class InterfaceStructure {
 	
-	/*public String[] MapsToJSON(){
-		Gson gson = new Gson(); 
-		String json = gson.toJson(myObject); 
-	}
-	*/
 	
 	public static String getInterfacesFromEquipment(String equipmentId, String typePort, OKCoUploader repository){
 		return generateMappingInterfacesFromEquipment(equipmentId, typePort, repository);
@@ -54,25 +50,27 @@ public class InterfaceStructure {
 			//get Output/Input ports by layer
 			ArrayList<String> ports = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relationsNameList);
 			for(String port : ports){
+				if(!hasBinds(repository.getBaseModel(), port)){
+					//create port hash
+					HashMap<String, String> portMapping = new HashMap<String, String>();
+					
+					//replace port namespace 
+					port = port.replace(repository.getNamespace(), "");
+					
+					//get label of port
+					String label = QueryUtil.getLabelFromOWL(repository.getBaseModel(), port);
+					
+					//replace label language
+					label = label.replace("@EN", "");
+					
+					//create port object
+					portMapping.put("id", port);
+					portMapping.put("name", label);
+					
+					//add port hash in layer array
+					layerPortMapping.add(portMapping);
+				}
 				
-				//create port hash
-				HashMap<String, String> portMapping = new HashMap<String, String>();
-				
-				//replace port namespace 
-				port = port.replace(repository.getNamespace(), "");
-				
-				//get label of port
-				String label = QueryUtil.getLabelFromOWL(repository.getBaseModel(), port);
-				
-				//replace label language
-				label = label.replace("@EN", "");
-				
-				//create port object
-				portMapping.put("id", port);
-				portMapping.put("name", label);
-				
-				//add port hash in layer array
-				layerPortMapping.add(portMapping);
 				
 			}
 			
@@ -91,10 +89,12 @@ public class InterfaceStructure {
 		//transform the result mapping in a JSON string
 		Gson gson = new Gson(); 
 		String json = gson.toJson(result);
-		
-		System.out.println("STRING FINAL -> " + json);
-		
+				
 		return json;
+	}
+
+	private static boolean hasBinds(InfModel model, String port) {
+		return NOpenQueryUtil.hasBinds(model, port);
 	}
 
 	private static ArrayList<String> getLayersFromEquipment(InfModel model, String individualName) {

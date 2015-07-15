@@ -170,4 +170,12 @@ public class NOpenQueryUtil {
   		}
 		return result;
 	}
+
+	public static boolean hasBinds(InfModel model, String port) {
+		String queryString = null;
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		boolean result = qe.execAsk();			
+		return result;
+	}
 }

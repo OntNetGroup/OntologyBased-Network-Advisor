@@ -2258,7 +2258,6 @@ public class QueryUtil {
 			queryString = queryString + " }";
 		}
 		
-		System.out.println(queryString);
 		
 		Query query = QueryFactory.create(queryString); 
 		
