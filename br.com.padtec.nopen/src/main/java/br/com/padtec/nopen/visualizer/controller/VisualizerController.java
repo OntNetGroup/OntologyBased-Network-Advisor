@@ -23,6 +23,11 @@ public class VisualizerController {
 		return "visualizer/topology-equipment-visualizer/topology-equipment-visualizer";
 	}
 	
+	@RequestMapping("/otn-protocol")
+	public String otnprotocolRequest()
+	{
+		return "visualizer/topology-equipment-visualizer/otn-protocol";
+	}
 	
 	/**
 	 * Procedure to open a specific Equipment.

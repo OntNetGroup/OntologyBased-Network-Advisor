@@ -1,5 +1,13 @@
 function graphHandler(app, graph) {
 	
+	
+	$.getJSON('/otn-protocol', { get_param: 'value' }, function(data) {
+	    $.each(data, function(index, element) {
+	        $('body').append($('<div>', {
+	            text: element.name
+	        }));
+	    });
+	});
 
 graph.on('change' , function (cell) {
 		//The equipment cant be removed from inside the equipmentholder
