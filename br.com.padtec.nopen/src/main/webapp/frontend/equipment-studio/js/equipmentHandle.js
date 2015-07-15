@@ -90,7 +90,7 @@ function equipmentHandle(app, graph){
 
 	// when a cell is added on another one, it should be embedded
 	graph.on('add', function(cell) {
-         		
+       
 		//console.log(JSON.stringify(cell));
 		if(cell.get('type') === 'link') return;
 
@@ -157,13 +157,12 @@ function equipmentHandle(app, graph){
 						height:	265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
 					});
 				} else {
-					parent.embed(cell);
-//					 new joint.ui.Dialog({
-//						type: 'alert',
-//						width: 400,
-//						title: 'Alert',
-//						content: result,
-//					}).open();	
+					 new joint.ui.Dialog({
+						type: 'alert',
+						width: 400,
+						title: 'Alert',
+						content: result,
+					}).open();	
 //					 cell.remove(true);
 					 cell.remove();
 				}
@@ -254,7 +253,6 @@ function equipmentHandle(app, graph){
 									content: 'A Slot can only contain one Card.'
 								}).open();
 								cell.remove();
-								return;
 							}else{		
 								
 								if (cell.get('subType') === 'Supervisor'){									
@@ -320,7 +318,7 @@ function equipmentHandle(app, graph){
 
 							}else{
 
-								 joint.ui.Dialog({
+								new joint.ui.Dialog({
 									type: 'alert',
 									width: 400,
 									title: 'Alert',

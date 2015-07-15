@@ -19911,25 +19911,25 @@ joint.dia.Cell = Backbone.Model.extend({
     	if(options === undefined){
 
     		var collection = this.collection;
-    		if (collection) {
-    			collection.trigger('batch:start');
-    		}
-
-    		// First, unembed this cell from its parent cell if there is one.
-    		var parentCellId = this.get('parent');
-    		if (parentCellId) {
-    			var parentCell = this.collection && this.collection.get(parentCellId);
-    		}
-
-    		_.invoke(this.getEmbeddedCells(), 'remove', options);
-    		this.trigger('remove', this, this.collection, options);
-
-    		if (parentCellId) {
-    			parentCell.unembed(this);
-    		}         
 
     		if (collection) {
-    			collection.trigger('batch:stop');
+    		    collection.trigger('batch:start');
+    		}
+
+    	        // First, unembed this cell from its parent cell if there is one.
+    	        var parentCellId = this.get('parent');
+    	        if (parentCellId) {
+    	            
+    	            var parentCell = this.collection && this.collection.get(parentCellId);
+    	            parentCell.unembed(this);
+    	        }
+    	        
+    	        _.invoke(this.getEmbeddedCells(), 'remove', options);
+    	        
+    	        this.trigger('remove', this, this.collection, options);
+
+    		if (collection) {
+    		    collection.trigger('batch:stop');
     		}
 
     		return this;
@@ -19997,41 +19997,9 @@ joint.dia.Cell = Backbone.Model.extend({
 
     		return this;	
     		
-    	}    		
+    	}   		
     },
 
-//    newremove: function(options) {
-//
-//    	var collection = this.collection;
-//        console.log(collection);
-//    	if (collection) {
-//    	    collection.trigger('batch:start');
-//    	}
-//
-//            // First, unembed this cell from its parent cell if there is one.
-//            var parentCellId = this.get('parent');
-//            if (parentCellId) {
-//            var parentCell = this.collection && this.collection.get(parentCellId);
-//            console.log(parentCell);
-//            }
-//            
-//            _.invoke(this.getEmbeddedCells(), 'remove', options);
-//            this.trigger('remove', this, this.collection, options);
-//            console.log(this);
-//            
-//            if (parentCellId) {
-//            	console.log(this);
-//                parentCell.unembed(this);
-//            }
-//            
-//            
-//
-//    	if (collection) {
-//    	    collection.trigger('batch:stop');
-//    	}
-//
-//    	return this;
-//        },
     
     toFront: function(opt) {
          
@@ -29846,10 +29814,12 @@ joint.dia.CommandManager = Backbone.Model.extend({
 	for (var i = batchCommand.length - 1; i >= 0; i--)  {
 
             var cmd = batchCommand[i], cell = this.graph.getCell(cmd.data.id);
-        
+             console.log(cell);
+             console.log(cmd);
             switch (cmd.action) {
-		
+		     
             case 'add':
+ 
 		cell.remove();
 		break;
 

@@ -319,24 +319,24 @@ function ituHandle(paper, graph, validator){
 	});
 	
 	//delete link if not exist a target
-	validator.validate('add', function(err, command, next) {
-
-		var cell = graph.getCell(command.data.id);
-		
-		if(isNotLink(cell)) return;
-		
-		if(!cell.attributes.target.id){
-			cell.remove();
-		}
-		
-	});
+//	validator.validate('add', function(err, command, next) {
+//         Precisa ser refeito pois está interferindo na remoção de equipamentos tambem.
+//		var cell = graph.getCell(command.data.id);
+//		
+////		if(isNotLink(cell)) return;
+//		
+//		if(!cell.attributes.target.id){
+//			cell.remove();
+//		}
+//		
+//	});
 	
 	//create a dialog connection only if exist a target
 	validator.validate('change:target change:source', function(err, command, next) {
 
 		var cell = graph.getCell(command.data.id);
 		
-		if(isNotLink(cell)) return;
+//		if(isNotLink(cell)) return;
 		
 		if(!cell.attributes.target.id){
 			cell.remove();
@@ -530,7 +530,7 @@ var result = EquipStudioPerformBind(sourceID, sourceName, sourceType, targetID, 
 	
 	
     /* ------ AUXILIAR FUNCTIONS ------- */
-	// Check if cell is not a link
+//	 Check if cell is not a link
 	function isNotLink(cell) {
 	    if (cell.attributes.type !== 'link') return true;
 	};
