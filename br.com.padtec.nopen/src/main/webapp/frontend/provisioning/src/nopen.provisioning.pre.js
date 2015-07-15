@@ -109,6 +109,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				 */
 				var outputs = owl.getOutputsTest();
 				
+				console.log('SOURCE: ' + JSON.stringify(source));
 				var test = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);
@@ -133,6 +134,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				 */
 				var outputs = owl.getOutputsTest();
 				
+				console.log('SOURCE: ' + JSON.stringify(source));
 				var test = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);

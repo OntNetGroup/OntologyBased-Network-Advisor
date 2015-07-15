@@ -2,17 +2,12 @@ package br.com.padtec.nopen.provisioning.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
 import br.com.padtec.common.queries.QueryUtil;
-import br.com.padtec.nopen.model.ConceptEnum;
-import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.RelationEnum;
-import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class InterfaceStructure {
@@ -28,34 +23,77 @@ public class InterfaceStructure {
 	}
 	
 	public static String generateMappingInterfacesFromEquipment(String equipmentId, String typePort, OKCoUploader repository){
-		HashMap<String, ArrayList<String>> layerPortMapping = new HashMap<String, ArrayList<String>>();
+		
+		//create result hash
+		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
+
+		//get layers
 		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
-		// generate the mapping
 		for(String layer : layers){
-			System.out.println("LAYER -> " + layer);
-			ArrayList<String> result = new ArrayList<String>();
+
+			//create layer array
+			ArrayList<HashMap<String, String>> layerPortMapping = new ArrayList<HashMap<String, String>>();
+			
+			//create relations array
 			ArrayList<String> relationsNameList = new ArrayList<String>();
 			
-			relationsNameList.add(RelationEnum.intermediates_up_Transport_Function_Card_Layer.toString());
-			relationsNameList.add(RelationEnum.INV_is_interface_of.toString());
-			relationsNameList.add(RelationEnum.componentOf.toString());
+			//add Card > Card_layer relations in array  
+			relationsNameList.add(RelationEnum.INV_A_Card_CardLayer.toString());
+			
+			//add Card > Output/Input relations in array  
+			if(typePort == "Output") {
+				relationsNameList.add(RelationEnum.A_Card_OutputCard.toString());
+			}
+			else if(typePort == "Intput") {
+				relationsNameList.add(RelationEnum.A_Card_InputCard.toString());
+			}
+			else {
+				relationsNameList.add(RelationEnum.componentOf.toString());
+			}
+			
+			//get Output/Input ports by layer
 			ArrayList<String> ports = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relationsNameList);
 			for(String port : ports){
 				
-				System.out.println("PORTA -> " + port);
-				if(QueryUtil.getIndividualTypes(repository.getBaseModel(), port).contains(typePort)){
-					result.add(port);
-				}
+				//create port hash
+				HashMap<String, String> portMapping = new HashMap<String, String>();
+				
+				//replace port namespace 
+				port = port.replace(repository.getNamespace(), "");
+				
+				//get label of port
+				String label = QueryUtil.getLabelFromOWL(repository.getBaseModel(), port);
+				
+				//replace label language
+				label = label.replace("@EN", "");
+				
+				//create port object
+				portMapping.put("id", port);
+				portMapping.put("name", label);
+				
+				//add port hash in layer array
+				layerPortMapping.add(portMapping);
+				
 			}
-			if(!result.isEmpty()){
-				layerPortMapping.put(layer, result);
+			
+			//add layer in result hash
+			if(layerPortMapping.size() > 0) {
+				
+				//replace layer namespace 
+				layer = layer.replace(repository.getNamespace(), "");
+				
+				//put layer hash on result hash
+				result.put(layer, layerPortMapping);
 			}
+			
 		}
 		
-		//transform the mapping in a json string
+		//transform the result mapping in a JSON string
 		Gson gson = new Gson(); 
-		String json = gson.toJson(layerPortMapping);
+		String json = gson.toJson(result);
+		
 		System.out.println("STRING FINAL -> " + json);
+		
 		return json;
 	}
 
@@ -63,7 +101,7 @@ public class InterfaceStructure {
 		ArrayList<String> relationsNameList = new ArrayList<String>();
 		relationsNameList.add(RelationEnum.INV_supervises_Equipment_Supervisor.toString());
 		relationsNameList.add(RelationEnum.supervises_card_Supervisor_Card.toString());
-		relationsNameList.add(RelationEnum.componentOf.toString());
+		relationsNameList.add(RelationEnum.A_Card_CardLayer.toString());
 		return QueryUtil.endOfGraph(model, individualName, relationsNameList);
 	}
 }

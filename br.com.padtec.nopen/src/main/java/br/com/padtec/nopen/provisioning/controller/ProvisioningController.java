@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
-import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.service.EquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
@@ -156,8 +155,6 @@ public class ProvisioningController {
 	 */
 	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
 	protected @ResponseBody void parseCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
-		
-		System.out.println(elements);
 		
 		try {
 			EquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);

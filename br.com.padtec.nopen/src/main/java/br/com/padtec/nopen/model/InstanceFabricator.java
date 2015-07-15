@@ -753,7 +753,7 @@ public class InstanceFabricator {
 	{			
 		Individual ind = FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
-			equipmentId, 
+			repository.getNamespace()+equipmentId, 
 			repository.getNamespace()+ConceptEnum.Equipment.toString()
 		);
 		ind.setLabel(equipmentName, "EN");
@@ -971,9 +971,9 @@ public class InstanceFabricator {
 	{		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
-			repository.getNamespace()+cardId,			 
+			repository.getNamespace()+supervisorId,			 
 			repository.getNamespace()+RelationEnum.supervises_card_Supervisor_Card.toString(),
-			repository.getNamespace()+supervisorId
+			repository.getNamespace()+cardId
 		);
 	}
 	
@@ -984,9 +984,9 @@ public class InstanceFabricator {
 	{		
 		FactoryUtil.deleteObjectProperty(
 			repository.getBaseModel(), 
-			repository.getNamespace()+cardId,			 
+			repository.getNamespace()+supervisorId,			 
 			repository.getNamespace()+RelationEnum.supervises_card_Supervisor_Card.toString(),
-			repository.getNamespace()+supervisorId
+			repository.getNamespace()+cardId
 		);
 	}
 	

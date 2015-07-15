@@ -2195,7 +2195,40 @@ public class QueryUtil {
 		return result;
 	}
 	
+	/**
+	 * Procedure to get label from a individual
+	 * @param model
+	 * @param individualName
+	 * @return
+	 */
+	static public String getLabelFromOWL (InfModel model, String individualName) {
+		
+		//create query string
+		String queryString = 
+				 " PREFIX ont: <" + model.getNsPrefixURI("") + "> " 
+				 + " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " 
+							+ "SELECT ?label" 
+							+ " WHERE { ont:" + individualName + " rdfs:label ?label . }";
+		
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, model);
+		ResultSet results = qe.execSelect();
 
+		String label = "";
+		
+		//get result and put on label variable
+		while (results.hasNext()) {
+			QuerySolution row = results.next();
+		    RDFNode labelNode = row.get("label");
+		    label = labelNode.toString();
+		}
+		
+		return label;
+		
+	}
+	
 	/**
 	 * It returns the individuals at the end of the rdf/owl graph given the individual and the relations ahead of him 
 	 * @author: Jordana Salamon

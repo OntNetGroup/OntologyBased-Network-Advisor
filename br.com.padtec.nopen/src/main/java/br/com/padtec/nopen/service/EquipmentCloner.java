@@ -244,12 +244,12 @@ public class EquipmentCloner {
 				InstanceFabricator.createLinkFromCardToOutputCard(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());
 			}			
 			/** Equipment -> Supervisor */
-//			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0){
-//				InstanceFabricator.createLinkFromSupervisorToEquipment(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
-//			}
-//			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0){
-//				InstanceFabricator.createLinkFromSupervisorToEquipment(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());
-//			}			
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0){
+				InstanceFabricator.createLinkFromSupervisorToEquipment(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0){
+				InstanceFabricator.createLinkFromSupervisorToEquipment(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());
+			}			
 			/** Supervisor -> Card */
 			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
 				InstanceFabricator.superviseCard(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());

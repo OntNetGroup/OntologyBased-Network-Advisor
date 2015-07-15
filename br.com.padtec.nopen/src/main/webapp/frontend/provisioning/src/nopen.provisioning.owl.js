@@ -148,7 +148,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 						"sourceType" : card.subType,
 						"targetType" : element.subtype,
 						"source" : card.id,
-						"target" : element.subtype,
+						"target" : element.id,
 				};
 				links.push(link);
 				
@@ -168,7 +168,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 						"sourceType" : card.subType,
 						"targetType" : element.subtype,
 						"source" : card.id,
-						"target" : element.subtype,
+						"target" : element.id,
 				};
 				links.push(link);
 				
@@ -208,8 +208,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			
 		});
 		
-//		console.log('Elements: ' + JSON.stringify(elements));
-//		console.log('Links: ' + JSON.stringify(links));
+		console.log('Elements: ' + JSON.stringify(elements));
+		console.log('Links: ' + JSON.stringify(links));
 		
 		//execute parse
 		$.ajax({
