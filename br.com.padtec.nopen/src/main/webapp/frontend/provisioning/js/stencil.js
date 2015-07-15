@@ -6,7 +6,7 @@ Stencil = {
 		createLayerNetwork : function(tech, upLayer) {
 			return new joint.shapes.provisioning.Layer({
 		        technology: tech,
-		        upmostLayer: upLayer,
+		        uppermostLayer: upLayer,
 				lanes: { 
 					label: tech
 				}

@@ -22,7 +22,17 @@ var InspectorDefs = {
     
     'Access_Group': {
     	inputs: {
-    		subtype: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled': 'disabled'} } }
+    		subtype: { type: 'text', group: 'data', index: 1, label: 'Type', attrs: { 'input': {'disabled': 'disabled'} } }
+    	},
+    	groups: CommonInspectorGroups
+    },
+
+    // Subnetwork
+    // -----
+    
+    'Subnetwork': {
+    	inputs: {
+    		subtype: { type: 'text', group: 'data', index: 1, label: 'Type', attrs: { 'input': {'disabled': 'disabled'} } }
     	},
     	groups: CommonInspectorGroups
     },
@@ -30,10 +40,11 @@ var InspectorDefs = {
     // Layer Network
     // -----
     
-    'bpmn.Pool': {
+    'Layer_Network': {
     	inputs: {
+    		uppermostLayer: { type: 'text', group: 'data', index: 1, label: 'Layer', attrs: { 'input': {'disabled': 'disabled'} } },
     		lanes: {
-				label: { type: 'text', group: 'data', label: 'Layer', index: 1, attrs: { 'input': {'disabled' : 'disabled'} } }
+				label: { type: 'text', group: 'data', label: 'Technology', index: 2, attrs: { 'input': {'disabled' : 'disabled'} } }
     		}
     	},
     	groups: CommonInspectorGroups
