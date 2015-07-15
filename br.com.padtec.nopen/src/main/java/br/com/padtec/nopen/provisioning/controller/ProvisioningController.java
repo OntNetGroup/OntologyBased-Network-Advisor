@@ -128,7 +128,7 @@ public class ProvisioningController {
 	 */
 	@RequestMapping(value = "/getUppermostLayer", method = RequestMethod.POST)
 	protected @ResponseBody String getUppermostLayer(@RequestParam("technology") String technology){
-		
+		//TODO
 		if(technology.equals("OTN")) return "MEN";
 		if(technology.equals("MEF")) return "POUk";
 		return "none";
@@ -140,7 +140,7 @@ public class ProvisioningController {
 	 */
 	@RequestMapping(value = "/getEquipmentsByLayer", method = RequestMethod.POST)
 	protected @ResponseBody String[] getEquipmentsByLayer(@RequestParam("clientMEF") String clientMEF){
-		
+		//TODO
 		String[] ids = new String[]{"id0", "id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8", "id9", "id10", "id11", "id12", "id13", "id14", "id15"};
 		
 		if(clientMEF.equals("MEN")) return ids;

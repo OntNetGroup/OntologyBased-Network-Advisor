@@ -242,6 +242,12 @@ var Rappid = Backbone.Router.extend({
     createInspector: function(cellView) {
 
         var cell = cellView.model || cellView;
+        var cellSubtype = cell.attributes.subtype;
+        var cellParent = this.graph.getCell(cell.attributes.parent);
+        var cellParentSubtype;
+        if(cellParent) {
+            cellParentSubtype = cellParent.attributes.subtype;
+        }
 
         // No need to re-render inspector if the cellView didn't change.
         if (!this.inspector || this.inspector.options.cell !== cell) {
@@ -249,8 +255,8 @@ var Rappid = Backbone.Router.extend({
             if (this.inspector) {
 
                 this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {
-		    return $(g).attr('data-name');
-		});
+                	return $(g).attr('data-name');
+                });
                 
                 // Clean up the old inspector if there was one.
                 this.inspector.updateCell();
@@ -258,10 +264,12 @@ var Rappid = Backbone.Router.extend({
             }
 
             var inspectorDefs = InspectorDefs[cell.get('type')];
+        	var inspectorInputs = inspectorDefs.inputs;
+        	var inspectorGroups = inspectorDefs.groups;
 
-            this.inspector = new joint.ui.Inspector({
-                inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,
-                groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,
+        	this.inspector = new joint.ui.Inspector({
+                inputs: inspectorInputs,
+                groups: inspectorGroups,
                 cell: cell
             });
 
@@ -272,7 +280,7 @@ var Rappid = Backbone.Router.extend({
 
             if (this.inspectorClosedGroups[cell.id]) {
 
-		_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);
+            	_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);
 
             } else {
                 this.inspector.$('.group:not(:first-child)').addClass('closed');
