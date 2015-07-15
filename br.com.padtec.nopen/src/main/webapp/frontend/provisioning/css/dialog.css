@@ -321,19 +321,23 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	background-repeat: no-repeat;
 }
 
+#expList li:not(:first-child):hover {
+	background-color: #eee;
+}
+
 #expList ul {
-	margin-top: 5px;
+	background-color: white;
+	padding: 2px;
 }
 /* Collapsed state for list element */
 #expList .collapsed {
-	background-image:
-		url('https://hosted.compulite.ca/kc/MD/SiteAssets/collapsed.png');
+/* 	background-image: url('https://hosted.compulite.ca/kc/MD/SiteAssets/collapsed.png'); */
 }
 /* Expanded state for list element
     /* NOTE: This class must be located UNDER the collapsed one */
 #expList .expanded {
-	background-image:
-		url('https://hosted.compulite.ca/kc/MD/SiteAssets/expanded.png');
+	background-color: #eee;
+/*  	background-image: url('https://hosted.compulite.ca/kc/MD/SiteAssets/expanded.png'); */
 }
 
 .active {
