@@ -1110,7 +1110,7 @@ public class QueryUtil {
 	
 	static public List<String> getTopSupertypesURIs(InfModel model, String classURI) {
 		List<String> allSupertypes = getAllSupertypesURIs( model, classURI);
-	      Iterator iterator = allSupertypes.iterator();
+	      Iterator<String> iterator = allSupertypes.iterator();
 	      while(iterator.hasNext()) {
 	    	  String sypertype = (String) iterator.next();
 	    	  List<String> directSupertypes = getSupertypesURIs(model, sypertype);
@@ -2236,28 +2236,22 @@ public class QueryUtil {
 	 */
 	static public ArrayList<String> endOfGraph(InfModel model, String individualName, ArrayList<String> relationsNameList){
 		// Create a new query
-  		String var1 = null;
 		String queryString = 
 		 "PREFIX ont: <" + model.getNsPrefixURI("") + "> "
-		+ "SELECT ?var" + relationsNameList.size()
-		+ " WHERE { ";
+		+ "SELECT ?var WHERE { ";
 		if(relationsNameList.size() == 1){
-			var1 = "var"+relationsNameList.size();
-			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 + " }";
+			queryString = queryString + " ont:" + individualName + " ont:" + relationsNameList.get(0) + "?var }";
 		}
-		else {
-			var1 = "var";
-			int cont=1;
-			queryString = queryString + "ont:" + individualName.substring(individualName.indexOf("#")+1) +  " ont:" + relationsNameList.get(0) + " ?" + var1 +cont + " . ";
-			for (int i = 1; i< relationsNameList.size(); i++) {
-				String var2 = "var";
-				int cont2=cont+1;
-				queryString = queryString + "?" + var1 + cont  + " ont:" + relationsNameList.get(i) + " ?" + var2 + cont2 + " . ";
-				cont++;
+		else{
+			queryString = queryString + " ont:" + individualName + " " ;
+			for(int i = 0; i < relationsNameList.size(); i++){
+				if(i==relationsNameList.size()-1){
+					queryString = queryString + "ont:" + relationsNameList.get(i) + " ?var . }";
+				}else{
+					queryString = queryString + "ont:"+ relationsNameList.get(i) + "/";
+				}
 			}
-			queryString = queryString + " }";
 		}
-		
 		
 		Query query = QueryFactory.create(queryString); 
 		
@@ -2271,14 +2265,14 @@ public class QueryUtil {
 		while (results.hasNext()) {
 			QuerySolution row = results.next();
 		    
-		    RDFNode rdfY = row.get("var"+relationsNameList.size());
+		    RDFNode rdfY = row.get("var");
 	    	list.add(rdfY.toString());
 		}
 		return list;
 	}
 	
 	/**
-	 * It returns the end of the rdf/owl graph given the individual, the relations ahead of him and the ranges of the relations 
+	 * It returns the individuals at the end of the rdf/owl graph given the individual, the relations ahead of him and the ranges of the relations 
 	 * @author: Jordana Salamon
 	 * @param: individual, list of relations from individual, list of ranges of the relations, model
 	 */
