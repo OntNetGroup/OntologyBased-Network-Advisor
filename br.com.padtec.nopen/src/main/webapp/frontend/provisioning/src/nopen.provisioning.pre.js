@@ -104,13 +104,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 				//var layers = model.getLayers(target);
 
-				/*
-				 * CHANGE FOR A METHOD THAT GET OUTPUTS FROM OWL FILE
-				 */
-				var outputs = owl.getOutputsTest();
-				
-				console.log('SOURCE: ' + JSON.stringify(source));
-				var test = owl.getOutputsFromOWL(source.id);
+				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);
 				
@@ -129,13 +123,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 				//var layers = model.getLayers(target);
 
-				/*
-				 * CHANGE FOR A METHOD THAT GET OUTPUTS FROM OWL FILE
-				 */
-				var outputs = owl.getOutputsTest();
-				
-				console.log('SOURCE: ' + JSON.stringify(source));
-				var test = owl.getOutputsFromOWL(source.id);
+				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);
 				

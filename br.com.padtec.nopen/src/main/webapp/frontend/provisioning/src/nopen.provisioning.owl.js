@@ -294,6 +294,9 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	
 	//Method to get inputs from OWL file
 	getInputsFromOWL : function(equipmentId) {
+		
+		var inputs = {};
+		
 		$.ajax({
 		   type: "POST",
 		   async: false,
@@ -301,18 +304,22 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		   data: {
 			   'equipmentId' : equipmentId,
 		   },
+		   dataType: 'json',
 		   success: function(data){
-			   console.log('INPUT:' + data);
-			   return data;
+			   inputs = data;
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
 		   }
 		});
+		
+		return inputs;
 	},
 	
 	//Method to get outputs from OWL file
 	getOutputsFromOWL : function(equipmentId) {
+		
+		var outputs = {};
 		
 		$.ajax({
 		   type: "POST",
@@ -321,14 +328,16 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		   data: {
 			   'equipmentId' : equipmentId,
 		   },
+		   dataType: 'json',
 		   success: function(data){
-			   console.log('OUTPUT:' + data);
-			   return data;
+			   outputs = data;
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
 		   }
 		});
+		
+		return outputs;
 	},
 	
 	
