@@ -171,8 +171,15 @@ public class NOpenQueryUtil {
 		return result;
 	}
 
-	public static boolean hasBinds(InfModel model, String port) {
-		String queryString = null;
+	public static boolean hasBinds(InfModel model, String portURI) {
+		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+				+ "PREFIX ont: <http://www.menthor.net/nOpenModel_light.owl#> "
+				+ "ASK WHERE { "
+				+	"?relation3 rdfs:subPropertyOf ont:binds . "
+				+	"<" + portURI + "> ?relation ?w . "
+				+	"?w ?relation2 ?y . "
+				+	"?y ?relation3 ?x . "
+				+ " }" ;
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		boolean result = qe.execAsk();			

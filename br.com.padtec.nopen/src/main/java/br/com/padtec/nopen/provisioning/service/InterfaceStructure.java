@@ -93,8 +93,8 @@ public class InterfaceStructure {
 		return json;
 	}
 
-	private static boolean hasBinds(InfModel model, String port) {
-		return NOpenQueryUtil.hasBinds(model, port);
+	private static boolean hasBinds(InfModel model, String portId) {
+		return NOpenQueryUtil.hasBinds(model, portId);
 	}
 
 	private static ArrayList<String> getLayersFromEquipment(InfModel model, String individualName) {
