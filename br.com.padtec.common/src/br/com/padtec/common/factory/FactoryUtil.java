@@ -251,7 +251,7 @@ public class FactoryUtil {
 	 */
 	static public void createInstanceRelation(OntModel model, String indvSourceURI, String objectPropertyURI, String indvTargetURI) throws Exception{
 		
-		createInstanceRelation(model, indvSourceURI, objectPropertyURI, indvTargetURI, true, true, true);
+		createInstanceRelation(model, indvSourceURI, objectPropertyURI, indvTargetURI, true, true, false);
 	}
 	
 	static public boolean isValid(OntModel model, String elemURI) throws Exception

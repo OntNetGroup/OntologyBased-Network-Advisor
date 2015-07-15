@@ -258,10 +258,10 @@ nopen.provisioning.File = Backbone.Model.extend({
 					content: content,
 					buttons: [
 						{ action: 'cancel', content: 'Cancel', position: 'left' },
-						{ action: 'open', content: 'Open', position: 'left' }
+						{ action: 'openTopology', content: 'Open', position: 'left' }
 					]
 				});
-				dialog.on('action:open', importTopology);
+				dialog.on('action:openTopology', importTopology);
 				dialog.on('action:cancel', dialog.close);
 				dialog.open();
 				
@@ -283,11 +283,12 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		var graph = app.graph;
 		var $this = this;
+		
 		var filename = $('input[name=topology]:checked', '#open-topology').val();
 		
 		$.ajax({
 		   type: "POST",
-		   async: false,
+		   async: true,
 		   url: "openTopologyOnProvisioning.htm",
 		   data: {
 			   'filename' : filename
@@ -305,7 +306,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		$.ajax({
 		   type: "POST",
-		   async: false,
+		   async: true,
 		   url: "openTopologySVG.htm",
 		   data: {
 			   'filename' : filename

@@ -60,6 +60,14 @@ nopen.provisioning.App = Backbone.View.extend({
 	//Toolbar procedures
 	initializeToolbarProcedures : function(app) {
 		
+		$('#loading').hide();
+	    $(document).ajaxStart(function() {
+	    	$('#loading').show();
+	    })
+	    .ajaxStop(function() {
+	        $('#loading').hide();
+	    });
+		
 		$('#btn-show-hide-inspector').click(function(){
 			
 			if($('.inspector-container').is(':visible')) {
