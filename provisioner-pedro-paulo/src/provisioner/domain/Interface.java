@@ -1,22 +1,63 @@
 package provisioner.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Interface implements Comparable<Interface>{
 	private String interfaceURI;
 	private String equipmentURI;
 	private boolean declared;
+	private String mappedTfURI;
+	private List<String> lastMappedTfURI;
+	private boolean isSource;
+	private boolean isOutput;
 	
 	private List<Interface> candidateInterfacesTo = new ArrayList<Interface>();
-	
-	public Interface(String interfaceURI, String equipmentURI, boolean declared) {
+	private HashMap<Interface, List<Path>> internalPaths = new HashMap<Interface, List<Path>>();
+		
+	public Interface(String interfaceURI, String equipmentURI, boolean declared, boolean isSource, boolean isOutput) {
 		this.interfaceURI = interfaceURI;
 		this.equipmentURI = equipmentURI;
 		
 		this.declared = declared;
+		
+		this.isSource = isSource;
+		this.isOutput = isOutput;
+		
 	}
-
+	public HashMap<Interface, List<Path>> getInternalPaths() {
+		return internalPaths;
+	}
+	public void addInternalPaths(Interface intTo, List<Path> paths) {
+		this.internalPaths.put(intTo, paths);
+	}
+	public boolean isSource() {
+		return isSource;
+	}
+	public boolean isOutput() {
+		return isOutput;
+	}
+	public void setLastMappedTfURI(List<String> lastMappedTfURI) {
+		this.lastMappedTfURI = lastMappedTfURI;
+	}
+	public void setMappedTfURI(String mappedTfURI) {
+		this.mappedTfURI = mappedTfURI;
+	}
+	public List<String> getAllLastMappedTfURI() {
+		List<String> allLastMappedTfURI = new ArrayList<String>();
+		if(!lastMappedTfURI.contains(mappedTfURI)){
+			allLastMappedTfURI.add(mappedTfURI);
+		}		
+		allLastMappedTfURI.addAll(lastMappedTfURI);
+		return allLastMappedTfURI;
+	}
+	public List<String> getLastMappedTfURI() {
+		return lastMappedTfURI;
+	}
+	public String getMappedTfURI() {
+		return mappedTfURI;
+	}
 	public void clearInterfaceTo(){
 		this.candidateInterfacesTo.clear();
 	}

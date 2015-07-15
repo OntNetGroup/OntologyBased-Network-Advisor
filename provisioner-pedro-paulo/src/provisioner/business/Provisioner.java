@@ -101,14 +101,42 @@ public class Provisioner {
 		//#17
 		reasoningTimeExecPostInstances = OWLUtil.runReasoner(okcoUploader, true, true, true);
 		System.out.println(PerformanceUtil.getExecutionMessage("createInstances", createInstancesTime));
-		
 		List<IntBinds> intBinds = SPARQLQueries.getIntBinds(model, interfaces);
+		populaOrigPaths(intBinds, false);
 		List<IntBinds> internalIntBinds = SPARQLQueries.getInternalIntBinds(model, interfaces);
-		intBinds.addAll(internalIntBinds);
+		populaOrigPaths(internalIntBinds, true);
+//		intBinds.addAll(internalIntBinds);
+		refreshInterfaces();
 		
+	}
+	
+	public void populaOrigPaths(List<IntBinds> intBinds, boolean internalPath){
 		for (IntBinds intBind : intBinds) {
-			Interface intFrom = intBind.getInterfaceFrom();
-			Interface intTo = intBind.getInterfaceTo();
+			Interface intFrom = interfaces.get(intBind.getInterfaceFrom().getInterfaceURI());
+			
+			boolean fromIsSource = SPARQLQueries.isInterfaceSource(model, intFrom.getInterfaceURI());
+//			boolean fromIsSource = intFrom.isSource();
+			Interface intTo = interfaces.get(intBind.getInterfaceTo().getInterfaceURI());
+			boolean toIsSource = SPARQLQueries.isInterfaceSource(model, intTo.getInterfaceURI());
+//			boolean toIsSource = intTo.isSource();
+			
+			if(internalPath){				
+				String tfFromURI = SPARQLQueries.getMappedTFFrom(model, intFrom.getInterfaceURI());
+				List<String> tfFromURIs = SPARQLQueries.getLastBindedTFFrom(model, tfFromURI, fromIsSource);
+				tfFromURIs.add(tfFromURI);
+//				List<String> tfFromURIs = intFrom.getAllLastMappedTfURI();
+				String tfToURI = SPARQLQueries.getMappedTFFrom(model, intTo.getInterfaceURI());
+//				String tfToURI = intTo.getMappedTfURI();
+				
+				if (!tfFromURIs.contains(tfToURI)) {
+					continue;
+				}				
+			}else if(!fromIsSource && !toIsSource){
+				Interface aux = intFrom;
+				intFrom = intTo;
+				intTo = aux;
+			}
+			
 			List<Interface> listIntfcTo;
 			if(origPaths.containsKey(intFrom)){
 				listIntfcTo = origPaths.get(intFrom);
@@ -123,23 +151,39 @@ public class Provisioner {
 	}
 	
 	public List<Path> getOrigPaths(Interface originalInterfaceFrom, Interface originalInterfaceTo){
+		System.out.println("\nExecuting getOrigPaths()...");
 		List<Interface> usedInterfaces = new ArrayList<Interface>();
 		usedInterfaces.add(originalInterfaceFrom);
-		List<Path> retPaths = getOrigPathsRecursive(originalInterfaceFrom, originalInterfaceTo, usedInterfaces);
+		List<Path> retPaths;
+		if(originalInterfaceFrom.getEquipmentURI().equals(originalInterfaceTo.getEquipmentURI())){
+			Path path = new Path();
+			path.addInterface(originalInterfaceFrom);
+			path.addInterface(originalInterfaceTo);
+			retPaths = new ArrayList<Path>();
+			retPaths.add(path);
+		}else{
+			retPaths = getOrigPathsRecursive(originalInterfaceFrom, originalInterfaceTo, usedInterfaces);
+		}		
 		
 		return retPaths;
 	}
 	
 	public List<Path> getOrigPathsRecursive(Interface currentInterfaceFrom, Interface originalInterfaceTo, List<Interface> usedInterfaces){
+//		isSource = isStillInSource(isSource, from);
+		System.out.println("\nExecuting getOrigPathsRecursive()...");
 		List<Path> retPaths = null;
+		
 //		System.out.println(currentInterfaceFrom);
-		List<Interface> listIntfcTo = origPaths.get(currentInterfaceFrom);
-		if(currentInterfaceFrom.toString().contains("out_int02_so_EQ1_WSS")){
-			System.out.println();
+		List<Interface> listIntfcTo = new ArrayList<Interface>();
+		if(currentInterfaceFrom.getEquipmentURI().equals(originalInterfaceTo.getEquipmentURI())){
+			listIntfcTo.add(originalInterfaceTo);
+		}else{
+			List<Interface> aux = origPaths.get(currentInterfaceFrom);
+			if(aux != null) listIntfcTo.addAll(aux);
+			listIntfcTo.remove(currentInterfaceFrom);
+			listIntfcTo.removeAll(usedInterfaces);			
 		}
-		if(listIntfcTo == null) return retPaths;
-		listIntfcTo.remove(currentInterfaceFrom);
-		listIntfcTo.removeAll(usedInterfaces);
+		
 		for (Interface interfaceTo : listIntfcTo) {
 			if(interfaceTo.equals(originalInterfaceTo)){
 				Path path = new Path();
@@ -210,8 +254,8 @@ public class Provisioner {
 			Interface interfaceTo = this.getINT_SK_LIST().get(tgtInt2ProvIndex);
 			//String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
 			
-			Character modeOption = ConsoleUtil.getCharOptionFromConsole("Choose provisioning mode: Automatically (A) or Manually (M)? ", modeOptions);
-			
+//			Character modeOption = ConsoleUtil.getCharOptionFromConsole("Choose provisioning mode: Automatically (A) or Manually (M)? ", modeOptions);
+			Character modeOption = 'a';
 			
 			if(modeOption.equals('M') || modeOption.equals('m')){
 				callAlgorithmManual(interfaceFrom, interfaceTo);
@@ -238,6 +282,33 @@ public class Provisioner {
 		return bindedInterfaces;
 	}
 	
+	private void refreshInterfaces() {
+//		int size = this.interfaces.size();
+//		int i = 0;
+		for (Interface intfcFrom : this.interfaces.values()) {
+//			i++;
+			String mappedTfURI = SPARQLQueries.getMappedTFFrom(model, intfcFrom.getInterfaceURI());
+			List<String> lastMappedTfURI = SPARQLQueries.getLastBindedTFFrom(model, mappedTfURI, intfcFrom.isSource());
+			intfcFrom.setLastMappedTfURI(lastMappedTfURI);
+			intfcFrom.setMappedTfURI(mappedTfURI);
+//			int j = 0;
+			for (Interface intfcTo : this.interfaces.values()) {
+//				j++;
+				if(intfcFrom.equals(intfcTo) || intfcFrom.isOutput() || !intfcTo.isOutput()){
+							continue;
+				}
+				
+				List<Path> internalPath = getOrigPaths(intfcFrom, intfcTo);
+				if(internalPath != null){
+					if(internalPath.size() > 0 && internalPath.get(0).size() > 2){
+						intfcFrom.addInternalPaths(intfcTo, internalPath);
+					}
+				}
+			}
+		}
+	}
+
+	
 	private void createInterfaceHash(List<String> equips){
 		for (String equipURI : equips) {
 			List<String> intURIs = QueryUtil.getIndividualFromRelation(model, equipURI, ns+"componentOf", ns+"Interface");
@@ -245,8 +316,16 @@ public class Provisioner {
 			
 			for (String intURI : intURIs) {
 				if(!interfaces.containsKey(intURI)){
-					Interface newInt = new Interface(intURI, equipURI, declared);
-					this.interfaces.put(intURI, newInt);
+					boolean isSource = SPARQLQueries.isInterfaceSource(model, intURI);
+					List<String> types = QueryUtil.getIndividualTypes(model, intURI);
+					boolean isOutput;
+					if(types.contains(model.getNsPrefixURI("")+"Output_Interface")){
+						isOutput = true;
+					}else{
+						isOutput = false;
+					}
+					Interface newInt = new Interface(intURI, equipURI, declared, isSource, isOutput);
+					this.interfaces.put(intURI, newInt);					
 				}				
 			}			
 		}	
@@ -312,9 +391,11 @@ public class Provisioner {
 	public void callFindPaths(Interface interfaceFrom, Interface interfaceTo) throws Exception{
 //		int again = 0;
 		List<Path> paths;
-		int qtShortPaths = ConsoleUtil.getOptionFromConsole("Choose the maximum number of paths (0 for no limit): ", 0, Integer.MAX_VALUE,0);
-		int maxPathSize = ConsoleUtil.getOptionFromConsole("Choose the maximum number of interfaces in a path (0 for no limit): ", 0, Integer.MAX_VALUE,0);
-					
+//		int qtShortPaths = ConsoleUtil.getOptionFromConsole("Choose the maximum number of paths (0 for no limit): ", 0, Integer.MAX_VALUE,0);
+		int qtShortPaths = 10;
+//		int maxPathSize = ConsoleUtil.getOptionFromConsole("Choose the maximum number of interfaces in a path (0 for no limit): ", 0, Integer.MAX_VALUE,0);
+		int maxPathSize = 30;
+				
 		ArrayList<Character> options = new ArrayList<Character>();
 		options.add('W');
 		options.add('w');
@@ -325,11 +406,12 @@ public class Provisioner {
 		
 		Character option = ' ';
 		if(!this.possibleEquipFile.equals("")){
-			option = ConsoleUtil.getCharOptionFromConsole(""
-					+ "Choose the Path Selection Type:\n"
-					+ "S - Paths are displayed in descending order with relation to its number of interfaces\n"
-					+ "P - Paths are displayed in descending order with relation to its number of interfaces of possible equipment\n"
-					+ "W - Paths are displayed in descending order with relation to a weighted function\n", options);
+			option = 'S';
+//			option = ConsoleUtil.getCharOptionFromConsole(""
+//					+ "Choose the Path Selection Type:\n"
+//					+ "S - Paths are displayed in descending order with relation to its number of interfaces\n"
+//					+ "P - Paths are displayed in descending order with relation to its number of interfaces of possible equipment\n"
+//					+ "W - Paths are displayed in descending order with relation to a weighted function\n", options);
 		}
 		
 		int declaredWeight = 1;
@@ -478,22 +560,28 @@ public class Provisioner {
 				isSource = isStillInSource(isSource, out);
 				List<Interface> newUsedInterfaces1 = new ArrayList<Interface>(); 
 				newUsedInterfaces1.addAll(usedInterfaces);
-				newUsedInterfaces1.add(out);
 				
-				if(var_in_original.contains("in_int_so_EQ1_CIC_01") && VAR_OUT.contains("out_int_sk_EQ4_CIC_01")){
+				if(var_in_original.contains("in_int_Source_EQ1_CIC_01") && VAR_OUT.contains("out_int_Sink_EQ4_CIC_01")){
 					System.out.println();
 				}
-				
-				List<Path> internalPaths = getOrigPaths(in_orig, out);
+				int bindedInterfaces = 0;
+//				List<Path> internalPaths = getOrigPaths(in_orig, out);
+				List<Path> internalPaths = in_orig.getInternalPaths().get(out);
 				if(internalPaths != null){
 					if(internalPaths.size() == 1 && internalPaths.get(0).size() > 2){
 						List<Interface> intfcList = internalPaths.get(0).getInterfaceList();
 						for (int j = 1; j < intfcList.size()-1; j++) {
-							DefaultMutableTreeNode internalNode = new DefaultMutableTreeNode(intfcList.get(j));
+							bindedInterfaces++;
+							Interface internalIntfc = intfcList.get(j);
+							newUsedInterfaces1.add(intfcList.get(j));
+							DefaultMutableTreeNode internalNode = new DefaultMutableTreeNode(internalIntfc);
 							lastInputIntNode.add(internalNode);
+							lastInputIntNode = internalNode;
 						}
 					}
 				}
+				
+				newUsedInterfaces1.add(out);
 				
 				DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(out);
 				lastInputIntNode.add(outIntNode);
@@ -508,9 +596,8 @@ public class Provisioner {
 					}
 
 					Path path = new Path(outIntNode.getPath());
-					if(path.size() == 2){
-						System.out.println();
-					}
+					path.setQtBindedInterfaces(this.bindedInterfaces);
+
 					int j = getOrderedIndex(paths, path, declaredWeight, possibleWeight, fewPossibleEquip);
 					
 					paths.add(j, path);
@@ -689,7 +776,8 @@ public class Provisioner {
 
 	public boolean isStillInSource(boolean isSourceOld, Interface intfc){
 		boolean isSource = isSourceOld;
-		boolean isInterfaceSource = SPARQLQueries.isInterfaceSource(model, intfc.getInterfaceURI());
+//		boolean isInterfaceSource = SPARQLQueries.isInterfaceSource(model, intfc.getInterfaceURI());
+		boolean isInterfaceSource = intfc.isSource();
 		if((isSourceOld && !isInterfaceSource) || (!isSourceOld && isInterfaceSource)){
 			isSource  = !isSourceOld;				
 		}
@@ -706,13 +794,13 @@ public class Provisioner {
 		
 		if(LIST_INT.size() == 0){
 			//#A
-			String mappedTF = SPARQLQueries.getMappedTFFrom(model, inputInterface.getInterfaceURI());
-			List<String> bindedTFList = SPARQLQueries.getLastBindedTFFrom(model, mappedTF, isSource);
-			
+//			String mappedTF = SPARQLQueries.getMappedTFFrom(model, inputInterface.getInterfaceURI());
+//			List<String> bindedTFList = SPARQLQueries.getLastBindedTFFrom(model, mappedTF, isSource);
+			List<String> bindedTFList = inputInterface.getAllLastMappedTfURI();
 			//System.out.println();
-			if(!bindedTFList.contains(mappedTF)){
-				bindedTFList.add(mappedTF);
-			}		
+//			if(!bindedTFList.contains(mappedTF)){
+//				bindedTFList.add(mappedTF);
+//			}		
 			LIST_INT = new ArrayList<Interface>();
 			for (String tfURI : bindedTFList) {
 				List<Interface> list = SPARQLQueries.getMappingInterfaceFrom(model, tfURI, interfaces, bindedInterfacesHash);

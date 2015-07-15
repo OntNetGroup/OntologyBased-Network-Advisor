@@ -11,7 +11,7 @@ public class Path implements Comparable<Path>{
 	private int qtDeclared = 0;
 	private int qtPossible = 0;
 	
-	private int bindedInterfaces = 0;
+	private int qtBindedInterfaces = 0;
 	
 	public Path(TreeNode[] treeNodes) {
 		for (TreeNode treeNode : treeNodes) {
@@ -37,7 +37,7 @@ public class Path implements Comparable<Path>{
 	
 	public void addInterface(Interface intf, boolean isBinded){
 		addInterface(intf);
-		if(isBinded) bindedInterfaces++;
+		if(isBinded) qtBindedInterfaces++;
 	}
 	
 	public void addInterface(Interface intf){
@@ -55,7 +55,7 @@ public class Path implements Comparable<Path>{
 	
 	public void addInterfaceInBegin(Interface intf, boolean isBinded){
 		addInterfaceInBegin(intf);
-		if(isBinded) bindedInterfaces++;
+		if(isBinded) qtBindedInterfaces++;
 	}
 	
 	public int getQtDeclared() {
@@ -75,7 +75,7 @@ public class Path implements Comparable<Path>{
 	}
 	
 	public int newBinds(){
-		int newBinds = interfaceList.size() - this.bindedInterfaces - 2;
+		int newBinds = (interfaceList.size() - this.qtBindedInterfaces - 2)/2;
 		if(newBinds < 0) newBinds = 0;
 		return newBinds;
 	}
@@ -112,5 +112,12 @@ public class Path implements Comparable<Path>{
 
 	public int compareTo(Path arg0) {
 		return 0;
+	}
+	public void setQtBindedInterfaces(List<Interface> bindedInterfaces) {
+		for (Interface interface1 : interfaceList) {
+			if(bindedInterfaces.contains(interface1)){
+				this.qtBindedInterfaces++;
+			}
+		}
 	}
 }
