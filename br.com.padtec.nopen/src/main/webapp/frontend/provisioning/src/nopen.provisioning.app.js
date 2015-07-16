@@ -59,6 +59,12 @@ nopen.provisioning.App = Backbone.View.extend({
 		// validar inserção de links no grafo
 	    graph.on('add change:target change:source', function(eventName, cell) {
 	    	
+	    	console.log(cell);
+	    	console.log(eventName);
+	    	
+	    	// Check if cell is not a link
+	    	if (cell.attributes.type !== 'link') return;
+	    	
 	    	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
 //	    	if(command.action === 'change:source') {
 //	    		nopen.provisioning.Util.generateAlertDialog('Invalid operation!');
@@ -70,9 +76,6 @@ nopen.provisioning.App = Backbone.View.extend({
 //	    			return;
 //	    		}
 //	    	}
-	    	console.log(cell);
-	    	console.log(eventName);
-	    	
 	    	var linkID = cell.id;
 	    	var link = graph.getCell(linkID).toJSON();
 	    	var sourceID = link.source.id;
