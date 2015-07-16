@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ConsoleUtil {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T> int chooseOne(List<T> list, String listName, String message, int optional, boolean sortList) throws Exception{
+	public static <T> int chooseOne(List<T> list, String listName, String message, int optional, boolean sortList, boolean allowNoLimit) throws Exception{
 		List<Comparable> comparableList = (List<Comparable>) list;
 		System.out.println();
 		System.out.println("--- " + listName + " ---");
@@ -23,21 +23,21 @@ public class ConsoleUtil {
 			System.out.println(id + " - " + list.get(i));
 		}
 		
-		Integer index = getOptionFromConsole(list, message, optional);
+		Integer index = getOptionFromConsole(list, message, optional, allowNoLimit);
 		
 		return index;
 	}
 	
-	public static <T> int getOptionFromConsole(List<T> list, String message, int optional){
-		return getOptionFromConsole(list, message, list.size(), optional);
+	public static <T> int getOptionFromConsole(List<T> list, String message, int optional, boolean allowNoLimit){
+		return getOptionFromConsole(list, message, list.size(), optional, allowNoLimit);
 	}
-	public static <T> int getOptionFromConsole(List<T> list, String message, int highestOption, int optional){
-		Integer index = getOptionFromConsole(message, 1, highestOption, optional);	
+	public static <T> int getOptionFromConsole(List<T> list, String message, int highestOption, int optional, boolean allowNoLimit){
+		Integer index = getOptionFromConsole(message, 1, highestOption, optional, allowNoLimit);	
 		index -= 1;
 		return index;
 	}
 	
-	public static int getOptionFromConsole(String message, int lowestOption, int highestOption, int optional){
+	public static int getOptionFromConsole(String message, int lowestOption, int highestOption, int optional, boolean allowNoLimit){
 		Integer index = 0;
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		boolean ok;
@@ -56,7 +56,21 @@ public class ConsoleUtil {
 			if(optional == 1 && index == 0){
 				return index;
 			}
-		} while ((index < lowestOption || index > highestOption) || !ok);
+			if(((index < lowestOption || index > highestOption) && (!allowNoLimit || (allowNoLimit && index != -1))) || !ok){
+				String highestOptionText;
+				if(highestOption < Integer.MAX_VALUE){
+					highestOptionText = " to " + highestOption;
+				}else{
+					highestOptionText = "";
+				}
+				
+				System.out.print("You have to choose a number from " + lowestOption + highestOptionText);
+				if(allowNoLimit){
+					System.out.print(" or -1 for no limit");
+				}
+				System.out.println(".");
+			}
+		} while (((index < lowestOption || index > highestOption) && (!allowNoLimit || (allowNoLimit && index != -1))) || !ok);
 		
 		return index;
 	}

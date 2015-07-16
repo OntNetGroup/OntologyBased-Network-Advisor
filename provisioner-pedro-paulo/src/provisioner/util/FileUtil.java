@@ -61,7 +61,7 @@ public class FileUtil {
 		String[] files = FileUtil.getFileList(path, ext);
 		List<String> filesAux = Arrays.asList(files);
 		
-		Integer owlFileIndex = ConsoleUtil.chooseOne(filesAux, ext + " files", message1, optional, true);
+		Integer owlFileIndex = ConsoleUtil.chooseOne(filesAux, ext + " files", message1, optional, true, false);
         
 		if(optional == 1 && owlFileIndex <= 0){
 			return "";

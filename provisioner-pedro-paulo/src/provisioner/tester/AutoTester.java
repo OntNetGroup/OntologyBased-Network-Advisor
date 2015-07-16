@@ -67,7 +67,7 @@ public class AutoTester {
 				
 				tests.add(test);
 				
-				option = ConsoleUtil.getOptionFromConsole("Do you want to configure one more test? 1-Yes, 0-No", 0, 1,0);
+				option = ConsoleUtil.getOptionFromConsole("Do you want to configure one more test? 1-Yes, 0-No", 0, 1,0, false);
 			} while (option == 1);
 			
 //			int declaredReplications = ConsoleUtil.getOptionFromConsole("Choose the number of layer replications", 2, Integer.MAX_VALUE);
@@ -81,7 +81,7 @@ public class AutoTester {
 			int declaredWeight = 1;
 			int possibleWeight = 1;
 			
-			int createPathsFile = ConsoleUtil.getOptionFromConsole("Do you want to export found paths to a file? 1-Yes, 0-No", 0, 1,0);
+			int createPathsFile = ConsoleUtil.getOptionFromConsole("Do you want to export found paths to a file? 1-Yes, 0-No", 0, 1,0, false);
 			
 //			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 			Date now = new Date();
