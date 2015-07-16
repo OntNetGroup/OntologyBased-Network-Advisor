@@ -13,6 +13,23 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class InterfaceStructure {
 	
+	/*public static String getPossibleConnections(String sourceEquipmentId, String targetEquipmentId,  OKCoUploader repository){
+		
+		String relation = null;
+		ArrayList<String> layersSourceEquip = getLayersFromEquipment(repository.getBaseModel(), sourceEquipmentId);
+		ArrayList<String> layersTargetEquip = getLayersFromEquipment(repository.getBaseModel(), targetEquipmentId);
+		if((layersSourceEquip.contains(repository.getNamespace() + "OTS")) && (layersTargetEquip.contains(repository.getNamespace() + "OTS"))){
+			relation = "horizontal_links_to";
+			String typePort = "Output";
+			String result = getInterfacesFromEquipment(sourceEquipmentId, typePort, repository);
+		}
+		else{
+			relation = "vertical_links_to";
+		}
+		
+		return targetEquipmentId;
+		
+	}*/
 	
 	public static String getInterfacesFromEquipment(String equipmentId, String typePort, OKCoUploader repository){
 		return generateMappingInterfacesFromEquipment(equipmentId, typePort, repository);
@@ -48,6 +65,7 @@ public class InterfaceStructure {
 			}
 			
 			//get Output/Input ports by layer
+			layer = layer.substring(layer.indexOf("#")+1);
 			ArrayList<String> ports = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relationsNameList);
 			for(String port : ports){
 				if(!hasBinds(repository.getBaseModel(), port)){

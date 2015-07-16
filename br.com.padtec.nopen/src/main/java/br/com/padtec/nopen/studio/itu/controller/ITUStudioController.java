@@ -89,7 +89,7 @@ public class ITUStudioController {
 		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
 		
 		try{
-			PerformBind.applyBinds(dtoSourceElement, dtoTargetElement);
+			PerformBind.applyBinds(dtoSourceElement, dtoTargetElement, "ITU");
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
