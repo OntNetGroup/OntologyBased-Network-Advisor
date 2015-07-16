@@ -243,14 +243,14 @@ public class Provisioner {
 				in.clearInterfaceTo();
 			}
 			//#10 and #11
-			int srcInt2ProvIndex = ConsoleUtil.chooseOne(this.getINT_SO_LIST(), "Input Interfaces", "Choose the Source Input Interface to be provisioned (INT_SOURCE): ",0);
-			//int srcInt2ProvIndex = 8;
+//			int srcInt2ProvIndex = ConsoleUtil.chooseOne(this.getINT_SO_LIST(), "Input Interfaces", "Choose the Source Input Interface to be provisioned (INT_SOURCE): ",0, true);
+			int srcInt2ProvIndex = 6;
 			Interface interfaceFrom = this.getINT_SO_LIST().get(srcInt2ProvIndex);
 			//String equipFromURI = INT_SO_LIST.get(srcInt2ProvIndex);
 			
 			//#12 and #13
-			int tgtInt2ProvIndex = ConsoleUtil.chooseOne(this.getINT_SK_LIST(), "Output Interfaces", "Choose the Sink Output Interface to be provisioned (INT_SINK): ",0);
-			//int tgtInt2ProvIndex = 8;
+//			int tgtInt2ProvIndex = ConsoleUtil.chooseOne(this.getINT_SK_LIST(), "Output Interfaces", "Choose the Sink Output Interface to be provisioned (INT_SINK): ",0, true);
+			int tgtInt2ProvIndex = 8;
 			Interface interfaceTo = this.getINT_SK_LIST().get(tgtInt2ProvIndex);
 			//String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
 			
@@ -396,17 +396,18 @@ public class Provisioner {
 //		int maxPathSize = ConsoleUtil.getOptionFromConsole("Choose the maximum number of interfaces in a path (0 for no limit): ", 0, Integer.MAX_VALUE,0);
 		int maxPathSize = 30;
 				
-		ArrayList<Character> options = new ArrayList<Character>();
-		options.add('W');
-		options.add('w');
-		options.add('P');
-		options.add('p');
-		options.add('S');
-		options.add('s');
-		
-		Character option = ' ';
+		ArrayList<String> options = new ArrayList<String>();
+		options.add("minimum number of interfaces");
+		options.add("minimum number of new bindings");
 		if(!this.possibleEquipFile.equals("")){
-			option = 'S';
+			options.add("minimum number of interfaces of possible equipment");
+		}
+		
+		int option = ConsoleUtil.chooseOne(options, "Priority", "Choose the Priority:", 0, false);
+		
+		if(!this.possibleEquipFile.equals("")){
+//			option = 'S';
+			
 //			option = ConsoleUtil.getCharOptionFromConsole(""
 //					+ "Choose the Path Selection Type:\n"
 //					+ "S - Paths are displayed in descending order with relation to its number of interfaces\n"
@@ -414,25 +415,25 @@ public class Provisioner {
 //					+ "W - Paths are displayed in descending order with relation to a weighted function\n", options);
 		}
 		
-		int declaredWeight = 1;
-		int possibleWeight = 1;
-		boolean fewPossibleEquip = false;
+//		int declaredWeight = 1;
+//		int possibleWeight = 1;
+//		boolean fewPossibleEquip = false;
 		
-		if(option.equals('W') || option.equals('w') || this.possibleEquipFile.equals("")){
-			if(this.possibleEquipFile.equals("")){
-				System.out.println("The paths will be displayed in descending order considering its number of interfaces.");
-			}else{
-				System.out.println("The paths will be selected according the function: X*NumOfDeclaredInterfaces + Y*NumOfPossibleInterfaces (in descending order).");
-				declaredWeight = ConsoleUtil.getOptionFromConsole("Choose the value of X: ", 0, Integer.MAX_VALUE,0);
-				possibleWeight = ConsoleUtil.getOptionFromConsole("Choose the value of Y: ", 0, Integer.MAX_VALUE,0);
-			}
-		}else if(option.equals('P') || option.equals('p')){
-			fewPossibleEquip = true;
-		}
+//		if(option.equals('W') || option.equals('w') || this.possibleEquipFile.equals("")){
+//			if(this.possibleEquipFile.equals("")){
+//				System.out.println("The paths will be displayed in descending order considering its number of interfaces.");
+//			}else{
+//				System.out.println("The paths will be selected according the function: X*NumOfDeclaredInterfaces + Y*NumOfPossibleInterfaces (in descending order).");
+//				declaredWeight = ConsoleUtil.getOptionFromConsole("Choose the value of X: ", 0, Integer.MAX_VALUE,0);
+//				possibleWeight = ConsoleUtil.getOptionFromConsole("Choose the value of Y: ", 0, Integer.MAX_VALUE,0);
+//			}
+//		}else if(option.equals('P') || option.equals('p')){
+//			fewPossibleEquip = true;
+//		}
 		
 		Date beginDate = new Date();
 		//List<Path> paths = new ArrayList<Path>();
-		paths = findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+		paths = findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, option);
 		//algorithmSemiAuto(sourceRoot, true, paths , interfaceTo, usedInterfaces, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
 		long semiAutoExecTimeLong = PerformanceUtil.getExecutionTime(beginDate);
 //			String semiAutoExecTime = PerformanceUtil.printExecutionTime("findPaths", beginDate);
@@ -499,27 +500,45 @@ public class Provisioner {
 		}
 	}
 	
-	public boolean limitExceeded(List<Path> paths, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize){
-		if(usedInterfaces.size() > maxPathSize){
+	public boolean limitExceeded(List<Path> paths, Path actualPath, int qtShortPaths, int maxPathSize, int priorityOption){
+		if(actualPath.size() > maxPathSize){
 			return true;
 		}
 		
 		if(paths.size() >= qtShortPaths){
 			Path lastPath = paths.get(paths.size()-1);
-			int qtUsedInterfaces = usedInterfaces.size();
+			int qtUsedInterfaces = actualPath.size();
 			if(qtUsedInterfaces%2 == 1){
 				qtUsedInterfaces += 1;
 			}
-			if(lastPath.size() <= qtUsedInterfaces){
-				return true;
+			switch (priorityOption) {
+			case 0:
+				if(lastPath.size() <= qtUsedInterfaces && lastPath.size() <= actualPath.size()){
+					return true;
+				}
+				break;
+			case 1:
+				if(lastPath.newBinds() <= actualPath.newBinds()){
+					return true;
+				}
+				break;
+			case 2:
+				if(lastPath.getQtPossible() <= actualPath.getQtPossible()){
+					return true;
+				}
+				break;
 			}
+//			if(lastPath.size() <= qtUsedInterfaces){
+//				return true;
+//			}
 		}
 		
 		return false;
 	}
 	
-	public List<Path> findPaths(Interface interfaceFrom, Interface interfaceTo, int qtShortPaths, int maxPathSize, int declaredWeight, int possibleWeight, boolean fewPossibleEquip) throws Exception{
-		if(qtShortPaths == 0){
+//	public List<Path> findPaths(Interface interfaceFrom, Interface interfaceTo, int qtShortPaths, int maxPathSize, int declaredWeight, int possibleWeight, boolean fewPossibleEquip) throws Exception{
+	public List<Path> findPaths(Interface interfaceFrom, Interface interfaceTo, int qtShortPaths, int maxPathSize, int priorityOption) throws Exception{
+			if(qtShortPaths == 0){
 			qtShortPaths = Integer.MAX_VALUE;
 		}
 		if(maxPathSize == 0){
@@ -534,24 +553,28 @@ public class Provisioner {
         usedInterfaces.add(interfaceFrom);
         
         Date beginDate = new Date();
-		findPaths(sourceRoot, true, paths, interfaceTo, usedInterfaces, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+		findPaths(sourceRoot, true, paths, interfaceTo, usedInterfaces, qtShortPaths, maxPathSize, priorityOption);
         PerformanceUtil.printExecutionTime("findPaths", beginDate );
         
         return paths;
 	}
 	
-	public void findPaths(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<Path> paths, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize, int declaredWeight, int possibleWeight, boolean fewPossibleEquip) throws Exception{
+//	public void findPaths(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<Path> paths, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize, int declaredWeight, int possibleWeight, boolean fewPossibleEquip) throws Exception{
+	public void findPaths(DefaultMutableTreeNode lastInputIntNode, boolean isSource, List<Path> paths, Interface interfaceTo, List<Interface> usedInterfaces, int qtShortPaths, int maxPathSize, int priorityOption) throws Exception{
 		System.out.println("\nExecuting algorithmSemiAuto()...");
 		String VAR_IN = ((Interface) lastInputIntNode.getUserObject()).getInterfaceURI();
-		String var_in_original = VAR_IN;
+//		String var_in_original = VAR_IN;
 		Interface in = interfaces.get(VAR_IN);
 		Interface in_orig = interfaces.get(VAR_IN);
-		if(limitExceeded(paths, usedInterfaces, qtShortPaths, maxPathSize)){
+		Path auxPath = new Path(lastInputIntNode.getPath());
+		if(limitExceeded(paths, auxPath, qtShortPaths, maxPathSize, priorityOption)){
 			return;
 		}		
 		
 		List<Interface> INT_LIST = algorithmPart1(in, isSource);
 		for (int i = 0; i < INT_LIST.size(); i+=1) {
+			DefaultMutableTreeNode newLastInputIntNode = (DefaultMutableTreeNode) lastInputIntNode.clone();
+			
 			String VAR_OUT = INT_LIST.get(i).getInterfaceURI();
 			//Interface out = new Interface(VAR_OUT);
 			Interface out = interfaces.get(VAR_OUT);
@@ -560,23 +583,22 @@ public class Provisioner {
 				isSource = isStillInSource(isSource, out);
 				List<Interface> newUsedInterfaces1 = new ArrayList<Interface>(); 
 				newUsedInterfaces1.addAll(usedInterfaces);
-				
-				if(var_in_original.contains("in_int_Source_EQ1_CIC_01") && VAR_OUT.contains("out_int_Sink_EQ4_CIC_01")){
+				if(in_orig.getInterfaceURI().contains("in_int_Source_EQ1_CIC_01") && out.getInterfaceURI().contains("out_int_Sink_EQ4_CIC_01")){
 					System.out.println();
 				}
-				int bindedInterfaces = 0;
+//				int bindedInterfaces = 0;
 //				List<Path> internalPaths = getOrigPaths(in_orig, out);
 				List<Path> internalPaths = in_orig.getInternalPaths().get(out);
 				if(internalPaths != null){
 					if(internalPaths.size() == 1 && internalPaths.get(0).size() > 2){
 						List<Interface> intfcList = internalPaths.get(0).getInterfaceList();
 						for (int j = 1; j < intfcList.size()-1; j++) {
-							bindedInterfaces++;
+//							bindedInterfaces++;
 							Interface internalIntfc = intfcList.get(j);
 							newUsedInterfaces1.add(intfcList.get(j));
 							DefaultMutableTreeNode internalNode = new DefaultMutableTreeNode(internalIntfc);
-							lastInputIntNode.add(internalNode);
-							lastInputIntNode = internalNode;
+							newLastInputIntNode.add(internalNode);
+							newLastInputIntNode = internalNode;
 						}
 					}
 				}
@@ -584,21 +606,21 @@ public class Provisioner {
 				newUsedInterfaces1.add(out);
 				
 				DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(out);
-				lastInputIntNode.add(outIntNode);
+				newLastInputIntNode.add(outIntNode);
 				
 				if(VAR_OUT.equals(interfaceTo.getInterfaceURI())){
-					if(limitExceeded(paths, newUsedInterfaces1, qtShortPaths, maxPathSize)){
+					Path path = new Path(outIntNode.getPath());
+					path.setQtBindedInterfaces(this.bindedInterfaces);
+					int qtBinds = path.newBinds();
+					if(limitExceeded(paths, path, qtShortPaths, maxPathSize, priorityOption)){
 						return;
 					}
 					
 					if(paths.size() >= qtShortPaths){
 						paths.remove(paths.size()-1);
 					}
-
-					Path path = new Path(outIntNode.getPath());
-					path.setQtBindedInterfaces(this.bindedInterfaces);
-
-					int j = getOrderedIndex(paths, path, declaredWeight, possibleWeight, fewPossibleEquip);
+					
+					int j = getOrderedIndex(paths, path, priorityOption);
 					
 					paths.add(j, path);
 
@@ -619,7 +641,7 @@ public class Provisioner {
 							DefaultMutableTreeNode possibleInIntNode = new DefaultMutableTreeNode(in);
 							outIntNode.add(possibleInIntNode);
 							
-							findPaths(possibleInIntNode, isSource, paths, interfaceTo, newUsedInterfaces2, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+							findPaths(possibleInIntNode, isSource, paths, interfaceTo, newUsedInterfaces2, qtShortPaths, maxPathSize, priorityOption);
 						}						
 					}	
 				}
@@ -627,23 +649,53 @@ public class Provisioner {
 		}		
 	}
 	
-	public int getOrderedIndex(List<Path> paths, Path path, int declaredWeight, int possibleWeight, boolean fewPossibleEquip){
+//	public int getOrderedIndex(List<Path> paths, Path path, int declaredWeight, int possibleWeight, boolean fewPossibleEquip){
+	public int getOrderedIndex(List<Path> paths, Path path, int priorityOption){
 		int i;
-		int pathSize = declaredWeight * path.getQtDeclared() + possibleWeight * path.getQtPossible();
+		
+		int valueToCompare=0;
+		switch (priorityOption) {
+		case 0:
+			valueToCompare = path.size();
+			break;
+		case 1:
+			valueToCompare = path.newBinds();
+			break;
+		case 2:
+			valueToCompare = path.getQtPossible();
+			break;
+		}
+		
+//		int pathSize = declaredWeight * path.getQtDeclared() + possibleWeight * path.getQtPossible();
 		for (i = 0; i < paths.size(); i++) {
-			int pathISize = declaredWeight * paths.get(i).getQtDeclared() + possibleWeight * paths.get(i).getQtPossible();
-			if(fewPossibleEquip){
-				//int x = paths.get(i).getQtPossible();
-				if(path.getQtPossible() < paths.get(i).getQtPossible()){
-					break;
-				}else if(path.getQtPossible() == paths.get(i).getQtPossible() && pathSize < pathISize){
-					break;
-				}				
-			}else{
-				if(pathSize < pathISize){
-					break;
-				}
-			}			
+//			int pathISize = declaredWeight * paths.get(i).getQtDeclared() + possibleWeight * paths.get(i).getQtPossible();
+			int vetValueToCompare=0;
+			switch (priorityOption) {
+			case 0:
+				vetValueToCompare = paths.get(i).size();
+				break;
+			case 1:
+				vetValueToCompare = paths.get(i).newBinds();
+				break;
+			case 2:
+				vetValueToCompare = paths.get(i).getQtPossible();
+				break;
+			}
+			
+			if(valueToCompare < vetValueToCompare) break;
+			
+//			if(fewPossibleEquip){
+//				//int x = paths.get(i).getQtPossible();
+//				if(path.getQtPossible() < paths.get(i).getQtPossible()){
+//					break;
+//				}else if(path.getQtPossible() == paths.get(i).getQtPossible() && pathSize < pathISize){
+//					break;
+//				}				
+//			}else{
+//				if(pathSize < pathISize){
+//					break;
+//				}
+//			}			
 		}
 		return i;
 	}
@@ -717,13 +769,13 @@ public class Provisioner {
 			List<Interface> INT_LIST = algorithmPart1(in, isSource);
 			
 			System.out.print("\nCurrent Path: "+path);
-			int chosenId = ConsoleUtil.chooseOne(INT_LIST, "Output Interfaces", "Choose an available Output Interface (VAR_OUT): ",0);
+			int chosenId = ConsoleUtil.chooseOne(INT_LIST, "Output Interfaces", "Choose an available Output Interface (VAR_OUT): ",0, true);
 			VAR_OUT = INT_LIST.get(chosenId).getInterfaceURI();
 			out = interfaces.get(VAR_OUT);
 
 			List<Path> internalPaths = getOrigPaths(in, out);
 			if(internalPaths.size() > 1){
-				int internalPathId = ConsoleUtil.chooseOne(internalPaths, "Internal Paths", "Choose an available internal path: ",0);
+				int internalPathId = ConsoleUtil.chooseOne(internalPaths, "Internal Paths", "Choose an available internal path: ",0, true);
 				List<Interface> intfcList = internalPaths.get(internalPathId).getInterfaceList();
 				for (int i = 1; i < intfcList.size()-1; i++) {
 					path.addInterface(intfcList.get(i), true);
@@ -750,7 +802,7 @@ public class Provisioner {
 				
 				//#D
 				System.out.print("\nCurrent Path: "+path);
-				int interfaceToId = ConsoleUtil.chooseOne(listInterfacesTo, "Input Interfaces", "Choose an available Input Interface (VAR_IN): ",0);
+				int interfaceToId = ConsoleUtil.chooseOne(listInterfacesTo, "Input Interfaces", "Choose an available Input Interface (VAR_IN): ",0, true);
 				VAR_IN = listInterfacesTo.get(interfaceToId).getInterfaceURI();
 				
 				//#22

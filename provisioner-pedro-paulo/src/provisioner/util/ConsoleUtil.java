@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ConsoleUtil {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T> int chooseOne(List<T> list, String listName, String message, int optional) throws Exception{
+	public static <T> int chooseOne(List<T> list, String listName, String message, int optional, boolean sortList) throws Exception{
 		List<Comparable> comparableList = (List<Comparable>) list;
 		System.out.println();
 		System.out.println("--- " + listName + " ---");
@@ -16,7 +16,7 @@ public class ConsoleUtil {
 			throw new Exception("Provisioning could not be performed. The list of avaiable interfaces is empty. Please try again using another path.");
 		}
 		
-		Collections.sort(comparableList);
+		if(sortList) Collections.sort(comparableList);
 		
 		for (int i = 0; i < list.size(); i+=1) {
 			int id = (i+1);
