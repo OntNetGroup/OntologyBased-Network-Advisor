@@ -3,6 +3,8 @@ package br.com.padtec.nopen.studio.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
@@ -26,9 +28,10 @@ public class PerformBind {
 	 * discover the rp for the binds and the component of
 	 * 
 	 */
-	public static boolean applyBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception {
-			
-			StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+	public static boolean applyBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement, String flag) throws Exception {
+			if(flag.equals("ITU")){
+				StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+			}
 		
 			String nameSource = dtoSourceElement.getName();
 			String typeSource = dtoSourceElement.getType();
@@ -37,17 +40,6 @@ public class PerformBind {
 			String idTarget = dtoTargetElement.getId();
 			String typeTarget = dtoTargetElement.getType();
 			String property =  RelationEnum.binds.toString();
-
-			String typeOutput = typeSource + "_Output";
-			String outputId = Util.generateUUID();
-			
-			String relation_source = null;
-			HashMap<String, String> source_componentOfs = new HashMap<String, String>();
-			
-			String typeInput = typeTarget + "_Input";
-			String inputId = Util.generateUUID();
-			String relation_target = null;
-			HashMap<String, String> target_componentOfs = new HashMap<String, String>();
 
 			if(canCreateBind(dtoSourceElement, dtoTargetElement)){
 				
@@ -100,6 +92,17 @@ public class PerformBind {
 					//Binds entre TFs 
 					//First, verify if the ports can have a RP between them
 					//if so, create the ports, RP and the relations between them
+					
+					String typeOutput = typeSource + "_Output";
+					String outputId = Util.generateUUID();
+					
+					String relation_source = null;
+					HashMap<String, String> source_componentOfs = new HashMap<String, String>();
+					
+					String typeInput = typeTarget + "_Input";
+					String inputId = Util.generateUUID();
+					String relation_target = null;
+					HashMap<String, String> target_componentOfs = new HashMap<String, String>();
 					
 					HashSet<String> rpsBetweenPorts = discoverRPBetweenPorts( typeOutput, typeInput, NOpenComponents.nopenRepository);
 					String rpTypeURI = rpsBetweenPorts.iterator().next();
@@ -191,7 +194,6 @@ public class PerformBind {
 								StudioComponents.studioRepository.getNamespace() + inputId
 						);
 						
-//						StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
 						
 						NOpenLog.appendLine(StudioComponents.studioRepository.getName()+":  Input "+inputId+" created at "+ typeTarget + ": "+nameTarget);
 	
@@ -223,7 +225,7 @@ public class PerformBind {
 	 * verify if the source's layer is client of the target's layer.
 	 */
 	static boolean isClient(String sourceURI, String targetURI, OKCoUploader repository){ 
-		//StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+
 		String tgtClassURI = repository.getNamespace() + ConceptEnum.Card_Layer.toString();
 		String relationSourceURI = repository.getNamespace() + RelationEnum.intermediates_up_Transport_Function_Card_Layer.toString();
 		String relationTargetURI = repository.getNamespace() + RelationEnum.intermediates_down_Transport_Function_Card_Layer.toString();
@@ -329,30 +331,46 @@ public class PerformBind {
 	}
 	
 	public static void applyEquipmentBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception{
-		
-	//	StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
-		
+				
 		String rangeClassName = ConceptEnum.Transport_Function.toString();
 		String sourceIndividualId = dtoSourceElement.getId();
 		String property = RelationEnum.is_interface_of.toString();
 		String targetIndividualId = dtoTargetElement.getId();
 		String[] tfSource = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(StudioComponents.studioRepository.getBaseModel(), sourceIndividualId, property, rangeClassName);
 		String[] tfTarget = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(StudioComponents.studioRepository.getBaseModel(), targetIndividualId, property, rangeClassName);
-		System.out.println();
+		List<String> typeTfSource = QueryUtil.getClassesURIFromIndividual(StudioComponents.studioRepository.getBaseModel(), StudioComponents.studioRepository.getNamespace() + tfSource[0]);
+		List<String> typeTfTarget = QueryUtil.getClassesURIFromIndividual(StudioComponents.studioRepository.getBaseModel(), StudioComponents.studioRepository.getNamespace() + tfTarget[0]);
+		Iterator<String> iterator = typeTfSource.iterator();
+		while(iterator.hasNext()){
+			String type = iterator.next();
+			if(QueryUtil.hasSubClass(StudioComponents.studioRepository.getBaseModel(), type) && QueryUtil.SubClass(StudioComponents.studioRepository.getBaseModel(), type).size() > 1){
+				iterator.remove();
+			}
+		}
+		iterator = typeTfTarget.iterator();
+		while(iterator.hasNext()){
+			String type = iterator.next();
+			if(QueryUtil.hasSubClass(StudioComponents.studioRepository.getBaseModel(), type)){
+				iterator.remove();
+			}
+		}
+		System.out.println(typeTfSource.size());
+		System.out.println(typeTfTarget.size());
+		
 		if(tfSource == null || tfTarget == null){
 			NOpenLog.appendLine("Error: The Transport Function " + dtoSourceElement.getName() + " cannot be bound to " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio.");
 			throw new Exception("Error: Unexpected relation between " + dtoSourceElement.getName() + " and " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio. ");
 		}
 		DtoJointElement newSource = new DtoJointElement();
-		newSource.setId(Util.generateUUID());
+		newSource.setId(tfSource[0]);
 		newSource.setName(tfSource[0]);
 		newSource.setType(rangeClassName);
 		DtoJointElement newTarget = new DtoJointElement();
-		newTarget.setId(Util.generateUUID());
+		newTarget.setId(tfTarget[0]);
 		newTarget.setName(tfTarget[0]);
 		newTarget.setType(rangeClassName);
 		System.out.println();
-		applyBinds(newSource, newTarget);
+		applyBinds(newSource, newTarget, "Equipment");
 	}
 	
 	public static boolean canCreateEquipmentBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception{
