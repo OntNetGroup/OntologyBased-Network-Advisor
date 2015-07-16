@@ -2237,7 +2237,7 @@ public class QueryUtil {
 	static public ArrayList<String> endOfGraph(InfModel model, String individualName, ArrayList<String> relationsNameList){
 		// Create a new query
 		String queryString = 
-		 "PREFIX ont: <" + model.getNsPrefixURI("") + "> "
+		 "PREFIX ont: <http://www.menthor.net/nOpenModel_light.owl#>"
 		+ "SELECT ?var WHERE { ";
 		if(relationsNameList.size() == 1){
 			queryString = queryString + " ont:" + individualName + " ont:" + relationsNameList.get(0) + "?var }";
@@ -2357,7 +2357,7 @@ public class QueryUtil {
 	
 	public static boolean hasSubClass(InfModel model, String classID){
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "PREFIX ont: <http://www.menthor.net/nOpenModel.owl#> "
 
 				+ "ASK "
 				+ "WHERE { ?subject rdfs:subClassOf <" + classID + "> ."
@@ -2372,7 +2372,7 @@ public class QueryUtil {
 	
 	public static ArrayList<String> SubClass(InfModel model, String classID){
 		String queryString = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+				+ "PREFIX ont: <http://www.menthor.net/nOpenModel.owl#> "
 
 				+ "SELECT ?subject "
 				+ "WHERE { ?subject rdfs:subClassOf <" + classID + "> ."
@@ -2394,7 +2394,7 @@ public class QueryUtil {
 
 	public static ArrayList<String> getRelationsBetweenClasses(InfModel model, String classSourceURI, String classTargetURI, String superPropertyURI){
 		String queryString =  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://nemo.inf.ufes.br/nOpenModel.owl#> "
+				+ "PREFIX ont: <http://www.menthor.net/nOpenModel.owl#> "
 				+ "SELECT ?x WHERE { "
 				+ "	?x rdfs:subPropertyOf <" + superPropertyURI + "> . "
 				+ "	?x rdfs:domain <" + classSourceURI + "> . "
@@ -2417,7 +2417,7 @@ public class QueryUtil {
 	}
 	
 	public static ArrayList<String> getRelationsBetweenIndividuals(InfModel model, String sourceURI, String targetURI){
-		String queryString = "PREFIX ont: <http://nemo.inf.ufes.br/NewProject.owl#> "
+		String queryString = "PREFIX ont: <http://www.menthor.net/nOpenModel_light.owl#> "
 				+ "SELECT ?property "
 				+ "WHERE { <" + sourceURI + "> ?property <" + targetURI + "> . "
 				+ "}";
