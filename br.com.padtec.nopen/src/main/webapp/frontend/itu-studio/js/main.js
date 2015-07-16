@@ -592,16 +592,16 @@ var Rappid = Backbone.Router.extend({
         
         this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
 
-        this.validator.on('invalid',function(message) {
-            
-            $('.statusbar-container').text(message).addClass('error');
-
-            _.delay(function() {
-
-                $('.statusbar-container').text('').removeClass('error');
-                
-            }, 3000);
-        });
+//        this.validator.on('invalid',function(message) {
+//            
+//            $('.statusbar-container').text(message).addClass('error');
+//
+//            _.delay(function() {
+//
+//                $('.statusbar-container').text('').removeClass('error');
+//                
+//            }, 3000);
+//        });
     },
 
     initializeToolbar: function() {

@@ -60,6 +60,7 @@
 		<script src="/nopen/frontend/provisioning/libs/provisioning.js"></script>
         
         <script src="/nopen/frontend/common/libs/nopen/nopen.js"></script>
+        <script src="/nopen/frontend/provisioning/src/nopen.provisioning.util.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.test.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.model.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.pre.js"></script>

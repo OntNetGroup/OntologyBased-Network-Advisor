@@ -54,7 +54,47 @@ nopen.provisioning.App = Backbone.View.extend({
 		var file = this.file;
 		var graph = app.graph;
 		var paper = app.paper;
+		var validator = app.validator;
 		
+		// validar inserção de links no grafo
+	    graph.on('add change:target change:source', function(eventName, cell) {
+	    	
+	    	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
+//	    	if(command.action === 'change:source') {
+//	    		nopen.provisioning.Util.generateAlertDialog('Invalid operation!');
+//	    		return;
+//	    	}
+//	    	if(command.data.previous.target) {
+//	    		if(command.data.previous.target.id) {
+//	    			nopen.provisioning.Util.generateAlertDialog('Invalid operation!');
+//	    			return;
+//	    		}
+//	    	}
+	    	console.log(cell);
+	    	console.log(eventName);
+	    	
+	    	var linkID = cell.id;
+	    	var link = graph.getCell(linkID).toJSON();
+	    	var sourceID = link.source.id;
+	        var targetID = link.target.id;
+	        
+	        if (sourceID && targetID) {
+	        	var targetElement = graph.getCell(targetID);
+	        	var targetSubtype = targetElement.attributes.subtype;
+
+	        	var sourceElement = graph.getCell(sourceID);
+	        	var sourceSubtype = sourceElement.attributes.subtype;
+	        	
+	        	var result = "result";
+	        	if(result === "success") {
+					return;
+				} else {
+					nopen.provisioning.Util.generateAlertDialog(result);
+				}
+	        } else {
+	        	nopen.provisioning.Util.generateAlertDialog('Please, connect to an Access Group');
+	        }
+	    }, app);
 	},
 
 	//Toolbar procedures
