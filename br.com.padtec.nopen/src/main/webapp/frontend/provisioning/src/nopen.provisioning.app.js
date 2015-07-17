@@ -62,6 +62,8 @@ nopen.provisioning.App = Backbone.View.extend({
 	    	console.log(cell);
 	    	console.log(eventName);
 	    	
+	    	return;
+	    	
 	    	// Check if cell is not a link
 	    	if (cell.attributes.type !== 'link') return;
 	    	
