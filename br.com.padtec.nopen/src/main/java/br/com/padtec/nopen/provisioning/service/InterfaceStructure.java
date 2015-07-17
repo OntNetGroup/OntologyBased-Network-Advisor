@@ -57,7 +57,7 @@ public class InterfaceStructure {
 			if(typePort == "Output") {
 				relationsNameList.add(RelationEnum.A_Card_OutputCard.toString());
 			}
-			else if(typePort == "Intput") {
+			else if(typePort == "Input") {
 				relationsNameList.add(RelationEnum.A_Card_InputCard.toString());
 			}
 			else {
@@ -66,6 +66,7 @@ public class InterfaceStructure {
 			
 			//get Output/Input ports by layer
 			layer = layer.substring(layer.indexOf("#")+1);
+			
 			ArrayList<String> ports = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relationsNameList);
 			for(String port : ports){
 				if(!hasBinds(repository.getBaseModel(), port)){

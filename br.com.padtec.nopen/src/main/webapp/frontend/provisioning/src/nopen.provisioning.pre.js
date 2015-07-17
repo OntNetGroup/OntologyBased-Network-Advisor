@@ -72,6 +72,9 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			}
 		};
 		
+		var source = undefined;
+		var target = undefined;
+		
 		function next() {
 			
 			$('.dialog .controls .control-button[data-action="showImage"]').show();
@@ -94,8 +97,8 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			
 			var link = links[currentLinkIndex - 1];
 			
-			var source = graph.getCell(link.source.id);
-			var target = graph.getCell(link.target.id);
+			source = graph.getCell(link.source.id);
+			target = graph.getCell(link.target.id);
 			
 			var sourceName = model.getEquipmentName(link.source);
 			var targetName = model.getEquipmentName(link.target);
@@ -206,10 +209,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 				$('.inputsList #expList li:not(:first)').remove();
 				
-				/*
-				 * CHANGE FOR A METHOD THAT GET INPUTS FROM OWL FILE
-				 */
-				var inputs = owl.getInputsTest();
+				var inputs = owl.getInputsFromOWL(target.id);
 				
 				var content = "";
 				$.each(inputs, function(layer, value) {

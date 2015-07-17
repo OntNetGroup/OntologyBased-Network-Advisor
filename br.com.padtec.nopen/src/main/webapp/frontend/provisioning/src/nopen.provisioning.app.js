@@ -35,10 +35,11 @@ nopen.provisioning.App = Backbone.View.extend({
 		this.initializeTestProcedures(app);
 		
 		//initialize procedures
-		this.initializeProvisioningFileProcedures(app);
 		this.initializeTopologyProcedures(app);
 		this.initializeToolbarProcedures(app);
 		this.initializeProvisioningGraphProcedures(app);
+		this.initializeProvisioningPaperProcedures(app);
+		this.initializeProvisioningFileProcedures(app);
 		
 	},
 	
@@ -57,15 +58,14 @@ nopen.provisioning.App = Backbone.View.extend({
 		var validator = app.validator;
 		
 		// validar inserção de links no grafo
-	    graph.on('add change:target change:source', function(eventName, cell) {
+	    graph.on('add change:target change:source', function(event, cell) {
 	    	
-	    	console.log(cell);
-	    	console.log(eventName);
+	    	console.log('CELL: ' + JSON.stringify(cell));
+	    	console.log(event);
 	    	
-	    	return;
 	    	
 	    	// Check if cell is not a link
-	    	if (cell.attributes.type !== 'link') return;
+	    	if (cell.type !== 'link') return;
 	    	
 	    	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
 //	    	if(command.action === 'change:source') {
@@ -100,6 +100,30 @@ nopen.provisioning.App = Backbone.View.extend({
 	        	nopen.provisioning.Util.generateAlertDialog('Please, connect to an Access Group');
 	        }
 	    }, app);
+	},
+	
+	//Provisioning paper procedures
+	initializeProvisioningPaperProcedures : function(app) {
+		
+		var paper = app.paper;
+		var graph = app.graph;
+		
+		// Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
+		var position = undefined;
+        paper.on('cell:pointerdown', function(cellView, evt) {
+        	var cell = graph.getCell(cellView.model.id);
+        	if(cell.type === 'link') return;
+        	
+        	position = cell.get('position');
+        });
+		
+        paper.on('cell:pointerup', function(cellView, evt) {
+        	var cell = graph.getCell(cellView.model.id);
+        	if(cell.type === 'link') return;
+        	
+        	cell.set('position', position);
+        });
+		
 	},
 
 	//Toolbar procedures

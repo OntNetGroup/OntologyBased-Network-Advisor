@@ -230,22 +230,6 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		
 		graph.clear();
 		
-		// Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
-		var position = undefined;
-        paper.on('cell:pointerdown', function(cellView, evt) {
-        	var cell = graph.getCell(cellView.model.id);
-        	if(cell.type === 'link') return;
-        	
-        	position = cell.get('position');
-        });
-		
-        paper.on('cell:pointerup', function(cellView, evt) {
-        	var cell = graph.getCell(cellView.model.id);
-        	if(cell.type === 'link') return;
-        	
-        	cell.set('position', position);
-        });
-        
         var index = 0;
 		_.each(subnetworks, function(element, tech) {
 			

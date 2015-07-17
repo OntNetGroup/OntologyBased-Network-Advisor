@@ -41,21 +41,13 @@ joint.shapes.provisioning.Subnetwork = joint.shapes.basic.Circle.extend({
 	}, joint.shapes.basic.Circle.prototype.defaults)
 
 });
+joint.shapes.provisioning.SubnetworkView = joint.dia.ElementView;
 
-joint.shapes.provisioning.Layer = joint.dia.Element.extend({
-
-	markup: ['<g class="rotatable">',
-             '<g class="scalable"><rect class="body"/></g>',
-             '<svg overflow="hidden" class="blackbox-wrap"/>',
-             '<rect class="header"/><text class="label"/>',
-             '<g class="lanes"/>',
-             '</g>'].join(''),
-
-    laneMarkup: '<g class="lane"><rect class="lane-body"/><rect class="lane-header"/><text class="lane-label"/></g>',
+joint.shapes.provisioning.Layer = joint.shapes.bpmn.Pool.extend({
 
     defaults: joint.util.deepSupplement({
 
-        type: 'bpmn.Pool',
+        type: 'provisioning.Layer',
         subtype: 'Layer_Network',
         technology: '',
         uppermostLayer: '',
@@ -65,49 +57,14 @@ joint.shapes.provisioning.Layer = joint.dia.Element.extend({
         },
         attrs: {
         	'.': { magnet: false },
-            '.body': {
-                fill: '#ffffff',
-                stroke: '#000000',
-                width: 500,
-                height: 200,
-            },
-            '.header': {
+        	'.header': {
                 fill:'#5799DA',
-                stroke: '#000000',
-                width: 20,
-                ref: '.body',
-                'ref-height': 1,
-            },
-            '.label': {
-                transform: 'rotate(-90)' ,
-                ref: '.header',
-                'ref-x': 10,
-                'ref-y': .5,
-                'font-family': 'Arial',
-                'font-size': 11,
-                'x-alignment': 'middle',
-                'text-anchor': 'middle'
-            },
-            '.lane-body': {
-                fill:'#ffffff',
-                stroke: '#000000',
-            },
-            '.lane-header': {
-                fill:'#ffffff',
-                stroke: '#000000',
-            },
-            '.lane-label': {
-                transform: 'rotate(-90)',
-                'text-anchor': 'middle',
-                'font-family': 'Arial',
-                'font-size': 10
             },
             '.blackbox-wrap': {
-                ref: '.body',
-                'ref-width': 1,
-                'ref-height': 1
+            	text: '',
             }
         }
 
-    }, joint.dia.Element.prototype.defaults)
+    }, joint.shapes.bpmn.Pool.prototype.defaults)
 });
+joint.shapes.provisioning.LayerView = joint.shapes.bpmn.PoolView;
