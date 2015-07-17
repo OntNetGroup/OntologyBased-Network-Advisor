@@ -388,7 +388,7 @@ public class EquipmentStudioController {
 		String[] templates = NOpenFileUtil.getAllTemplateJSONFileNames();
 		return NOpenFileUtil.parseStringToJSON("template", templates);		
 	}
-	
+
 	/**
 	 * Procedure to get all Templates saved.
 	 * @return
@@ -513,6 +513,30 @@ public class EquipmentStudioController {
 			ituFile.delete();
 		}
 	}	
+
+	/**
+	 * Procedure to delete an Equipment file.
+	 * @param filename
+	 */	
+	@RequestMapping("/deleteEquipment")
+	public @ResponseBody void deleteEquipment(@RequestParam("filename") String filename) {
+		File folder = new File(NOpenFileUtil.replaceSlash(NOpenFileUtil.equipmentJSONFolder + filename));
+		deleteFolder(folder);
+	}	
+
+	private void deleteFolder(File folder) {
+		File[] files = folder.listFiles();
+		if(files!=null) { //some JVMs return null for empty dirs
+			for(File f: files) {
+				if(f.isDirectory()) {
+					deleteFolder(f);
+				} else {
+					f.delete();
+				}
+			}
+		}
+		folder.delete();
+	}
 }
 
 
