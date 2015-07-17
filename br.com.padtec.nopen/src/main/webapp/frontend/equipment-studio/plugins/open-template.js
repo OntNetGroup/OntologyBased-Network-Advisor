@@ -40,7 +40,7 @@ function openFromURL(filename, graph){
 		success: function(data){
 			$("#filename").val(filename);
 			graph.fromJSON(data);
-		//	loadEquipments(filename);
+			loadEquipments(filename);
 		},
 		error : function(e) {
 			//alert("error: " + e.status);
@@ -188,7 +188,7 @@ function generateOpenTemplateDialog(graph, data){
 			success: function(data){
 				$("#filename").val(filename);
 				graph.fromJSON(data);
-			//	loadEquipments();
+				loadEquipments();
 				dialog.close();
 			},
 			error : function(e) {
