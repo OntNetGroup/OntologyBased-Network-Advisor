@@ -6,7 +6,7 @@ import java.util.List;
 public class DefaultRegister {
 	
 	public static String[] defaultTechs = new String[] {"OTN", "MEF"};
-	public static String[][] defaultLayers = new String[][] { {"ODU" , "OCh" , "OTUk" , "ODUk" , "OTS" , "OMS"}, {"Subscribers", "MEN"}};
+	public static String[][] defaultLayers = new String[][] { {"ODU2e" , "ODUk" , "OTU" , "OCh" , "OMS" , "OTS"}, {"Subscribers", "MEN"}};
 	public static String[] defaultServices = new String[] {"SimpleConnection", "1Plus1Connection", "1To1Connection","1ToNConnection"};
 	
 	//==================================================================================
