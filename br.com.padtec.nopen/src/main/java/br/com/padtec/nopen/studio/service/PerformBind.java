@@ -336,10 +336,14 @@ public class PerformBind {
 		String sourceIndividualId = dtoSourceElement.getId();
 		String property = RelationEnum.is_interface_of.toString();
 		String targetIndividualId = dtoTargetElement.getId();
+		
+		//first, we need to get the transport functions connected to the card's ports
 		String[] tfSource = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(StudioComponents.studioRepository.getBaseModel(), sourceIndividualId, property, rangeClassName);
 		String[] tfTarget = NOpenQueryUtil.getIndividualsNamesAtObjectPropertyRange(StudioComponents.studioRepository.getBaseModel(), targetIndividualId, property, rangeClassName);
+		//then we need to know their specific classes
 		List<String> typeTfSource = QueryUtil.getClassesURIFromIndividual(StudioComponents.studioRepository.getBaseModel(), StudioComponents.studioRepository.getNamespace() + tfSource[0]);
 		List<String> typeTfTarget = QueryUtil.getClassesURIFromIndividual(StudioComponents.studioRepository.getBaseModel(), StudioComponents.studioRepository.getNamespace() + tfTarget[0]);
+		
 		Iterator<String> iterator = typeTfSource.iterator();
 		while(iterator.hasNext()){
 			String type = iterator.next();
@@ -350,25 +354,29 @@ public class PerformBind {
 		iterator = typeTfTarget.iterator();
 		while(iterator.hasNext()){
 			String type = iterator.next();
-			if(QueryUtil.hasSubClass(StudioComponents.studioRepository.getBaseModel(), type)){
+			if(QueryUtil.hasSubClass(StudioComponents.studioRepository.getBaseModel(), type) && QueryUtil.SubClass(StudioComponents.studioRepository.getBaseModel(), type).size() > 1){
 				iterator.remove();
 			}
 		}
-		System.out.println(typeTfSource.size());
-		System.out.println(typeTfTarget.size());
 		
-		if(tfSource == null || tfTarget == null){
+		//if there is no transport function we cannot make the connection
+		if(tfSource.length == 0 || tfTarget.length == 0){
 			NOpenLog.appendLine("Error: The Transport Function " + dtoSourceElement.getName() + " cannot be bound to " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio.");
 			throw new Exception("Error: Unexpected relation between " + dtoSourceElement.getName() + " and " + dtoTargetElement.getName() + "because the equipments are not defined in ITUStudio. ");
 		}
+		
+		String finalTypeTfSource = typeTfSource.get(0).substring(typeTfSource.get(0).indexOf("#")+1);
+		String finalTypeTfTarget = typeTfTarget.get(0).substring(typeTfTarget.get(0).indexOf("#")+1);
+
+		//then we create joint elements with the transport functions to call the binds procedure
 		DtoJointElement newSource = new DtoJointElement();
 		newSource.setId(tfSource[0]);
 		newSource.setName(tfSource[0]);
-		newSource.setType(rangeClassName);
+		newSource.setType(finalTypeTfSource);
 		DtoJointElement newTarget = new DtoJointElement();
 		newTarget.setId(tfTarget[0]);
 		newTarget.setName(tfTarget[0]);
-		newTarget.setType(rangeClassName);
+		newTarget.setType(finalTypeTfTarget);
 		System.out.println();
 		applyBinds(newSource, newTarget, "Equipment");
 	}
