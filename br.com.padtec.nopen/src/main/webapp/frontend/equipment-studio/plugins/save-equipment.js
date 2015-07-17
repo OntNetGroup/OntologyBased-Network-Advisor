@@ -84,27 +84,23 @@ function generateSaveEquipmentDialog(graph){
 	};
 	
 	function copyITUEquipmentFiles(){
-		console.log($("#filename").val());
-		console.log($('#save-dialog').find(":selected").val());
-		console.log($("#save-filename").val());
-		if($("#filename").val() != $('#save-dialog').find(":selected").val()){
-			$.ajax({
-			   type: "POST",
-			   async: false,
-			   url: "copyITUEquipmentFiles.htm",
-			   data: {
-				 'oldPath': $("#filename").val(),
-				 'newPath': $('#save-dialog').find(":selected").val(),
-			   },
-			   success: function(){
-				   deletedITUFiles = [];
-				   index = 0;
-			   },
-			   error : function(e) {
-				   //alert("error: " + e.status);
-			   }
-			});
-		}
+
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "copyITUEquipmentFiles.htm",
+		   data: {
+			 'oldPath': $("#filename").val(),
+			 'newPath': $('#save-dialog').find(":selected").val(),
+		   },
+		   success: function(){
+			   deletedITUFiles = [];
+			   index = 0;
+		   },
+		   error : function(e) {
+			   //alert("error: " + e.status);
+		   }
+		});
 		
 	}
 //	
@@ -134,9 +130,6 @@ function generateSaveEquipmentDialog(graph){
 //	}
 	
 	function saveEquipment(){
-		
-		$('#filename').val($("#save-filename").val());
-		
 		
 		var saveDialog = new joint.ui.Dialog({
 			type: 'neutral' ,
