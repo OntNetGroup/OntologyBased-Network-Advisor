@@ -7,3 +7,14 @@
    background-color: #333;
    display: none;
 }
+
+.halo {
+/* 	color: #13D880; */
+
+   border: 2px dashed #13D880;
+   padding-right: 5px;
+   padding-bottom: 5px;
+   margin-top: -4px;
+   margin-left: -4px;
+
+}
