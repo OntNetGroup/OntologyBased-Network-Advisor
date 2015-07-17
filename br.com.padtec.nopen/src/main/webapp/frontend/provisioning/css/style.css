@@ -25,6 +25,10 @@ h1 {
 	text-align: center;
 }
 
+.provisioning.Layer, .provisioning.Subnetwork {
+	pointer-events: none;
+}
+
 #loading {
 	position: absolute;
 	top: 0;
@@ -98,3 +102,7 @@ hr {
 .link, .connection-wrap { 
 	pointer-events: none; 
 }
+
+
+    
+

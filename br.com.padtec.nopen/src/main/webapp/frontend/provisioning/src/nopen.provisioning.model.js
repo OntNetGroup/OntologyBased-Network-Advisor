@@ -222,11 +222,11 @@ nopen.provisioning.Model = Backbone.Model.extend({
 	
 	generateProvisioning : function(app, subnetworks) {
 		
-		//console.log('SUB LEN:' + JSON.stringify(subnetworks));
-		
 		var $this = this;
 		var graph = app.graph;
 		var paper = app.paper;
+		
+		var links = graph.getLinks();
 		
 		graph.clear();
 		
@@ -260,8 +260,6 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				equipmentOffset = Math.floor(16/subnetworks[tech].length)
 			}
 			
-			console.log('SUB LEN:' + subnetworks[tech].length);
-			
 			var equipIndex = 0;
 			_.each(subnetworks[tech], function(equipment, equipmentID) {
 				
@@ -285,8 +283,27 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			
 		}, this);
 		
+		$.each(links, function(index, link) {
+			
+			//link.attr('.pointer-events:', 'visiblePainted');
+			link.prop('z', 100);
+			console.log('LINK: ' + JSON.stringify(link));
+			graph.addCell(link);
+			
+		});
 		
+		//hide links
+		$this.hideLinks();
 		
+	},
+	
+	hideLinks : function() {
+		$('.link').hide();
+		$('.handle.e.link').show();
+	},
+	
+	showLink : function(linkId) {
+		$('.link[model-id="' + linkId + '"]').show();
 	},
 	
 	getLayerOffset : function(index) {

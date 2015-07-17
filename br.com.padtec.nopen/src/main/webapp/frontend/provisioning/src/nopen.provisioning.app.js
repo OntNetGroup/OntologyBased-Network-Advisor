@@ -60,10 +60,6 @@ nopen.provisioning.App = Backbone.View.extend({
 		// validar inserção de links no grafo
 	    graph.on('add change:target change:source', function(event, cell) {
 	    	
-	    	console.log('CELL: ' + JSON.stringify(cell));
-	    	console.log(event);
-	    	
-	    	
 	    	// Check if cell is not a link
 	    	if (cell.type !== 'link') return;
 	    	
@@ -107,6 +103,9 @@ nopen.provisioning.App = Backbone.View.extend({
 		
 		var paper = app.paper;
 		var graph = app.graph;
+		var validator = app.validator;
+		var link = app.link;
+		var model = this.model;
 		
 		// Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
 		var position = undefined;
@@ -124,6 +123,82 @@ nopen.provisioning.App = Backbone.View.extend({
         	cell.set('position', position);
         });
 		
+        var transition = false;
+        paper.on('cell:pointermove', function(cellView, evt, x, y) {
+        	
+        	var cell = graph.getCell(cellView.model.id);
+        	
+        	if(cell.get('type') === 'link') {
+        		transition = true;
+        	}
+        	
+        });
+        
+        paper.on('cell:pointerup', function(cellView, evt, x, y) {
+        	
+        	var cell = graph.getCell(cellView.model.id);
+        	console.log(cell.get('type'))
+
+        	if(cell.get('type') === 'link') {
+        		transition = false;
+        	}
+        	
+        });
+        
+        paper.on('cell:mouseover', function(cellView, evt) {
+        	
+        	var cell = graph.getCell(cellView.model.id);
+
+        	if(cell.get('subtype') !== 'Access_Group') return;
+        	
+        	cell.attr('circle/stroke', "red");
+        	cell.attr('circle/stroke-width', 3);
+        	cell.attr('text/display', 'normal');
+        	
+        	if(transition) return;
+        	
+        	$.each(graph.getLinks(), function(index, link) {
+        		
+        		//show links
+        		if(link.get('source').id === cell.id) {
+        			model.showLink(link.id);
+        			var connectedCell = graph.getCell(link.get('target').id);
+        			connectedCell.attr('circle/stroke', "blue");
+        			connectedCell.attr('circle/stroke-width', 3);
+        			connectedCell.attr('text/display', 'normal');
+        		}
+        		if(link.get('target').id === cell.id) {
+        			model.showLink(link.id);
+        			var connectedCell = graph.getCell(link.get('source').id)
+        			connectedCell.attr('circle/stroke', "blue");
+        			connectedCell.attr('circle/stroke-width', 3);
+        			connectedCell.attr('text/display', 'normal');
+        		}
+        		
+        	});
+        	
+        });
+        
+        paper.on('cell:mouseout', function(cellView, evt) {
+
+        	if(transition) return;
+        	
+        	var cell = graph.getCell(cellView.model.id);
+        	if(cell.get('subtype') !== 'Access_Group') return;
+        	
+        	$.each(graph.getElements(), function(index, cell) {
+        		if(cell.get('subtype') === 'Access_Group') {
+        			cell.attr('circle/stroke', "black");
+        			cell.attr('circle/stroke-width', 1);
+            		cell.attr('text/display', 'none');
+        		}
+        	});
+        	
+        	//hide links
+        	model.hideLinks();
+        	
+        });
+        
 	},
 
 	//Toolbar procedures

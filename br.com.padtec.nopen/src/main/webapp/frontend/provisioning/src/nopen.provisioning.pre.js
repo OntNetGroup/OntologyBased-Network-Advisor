@@ -19,6 +19,11 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		var model = this.app.model;
 		var links = [];
 		
+		if(graph.getLinks().length === 0 ) {
+			model.generateProvisioning(app, subnetworks);
+			return;
+		}
+		
 		$.each(graph.getLinks(), function(index, value) {
 			
 			var link = graph.getCell(value.id);

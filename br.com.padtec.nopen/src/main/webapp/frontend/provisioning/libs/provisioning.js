@@ -35,7 +35,7 @@ joint.shapes.provisioning.Subnetwork = joint.shapes.basic.Circle.extend({
 		size: { width: 400, height: 150 },
 	    attrs: {
 			'.': { magnet: false },
-	        text: { text: '', fill: '#000000', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
+	        text: { text: '', fill: '#BABABA', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
 	    }
 		
 	}, joint.shapes.basic.Circle.prototype.defaults)

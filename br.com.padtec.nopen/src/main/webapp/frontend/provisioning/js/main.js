@@ -28,7 +28,7 @@ var Rappid = Backbone.Router.extend({
         this.initializeToolbar();
         // Intentionally commented out. See the `initializeValidator()` method for reasons.
         // Uncomment for demo purposes.
-        // this.initializeValidator();
+        this.initializeValidator();
         // Commented out by default. You need to run `node channelHub.js` in order to make
         // channels working. See the documentation to the joint.com.Channel plugin for details.
         //this.initializeChannel('ws://jointjs.com:4141');

@@ -35,6 +35,9 @@ nopen.provisioning.File = Backbone.Model.extend({
 
 	//Method to open a provisioning file from URL
 	openFromURL : function(filename, graph) {
+		
+		var model = this.app.model;
+		
 		$.ajax({
 		   type: "POST",
 		   url: "openProvisioning.htm",
@@ -45,6 +48,9 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   success: function(data){
 			   $("#filename").val(filename);
 			   graph.fromJSON(data);
+			   
+			   //hide links
+			   model.hideLinks();
 		   },
 		   error : function(e) {
 			   //alert("error: " + e.status);
@@ -204,6 +210,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 	//Method to open a provisioning file from dialog
 	openProvisioning : function(graph) {
 		
+		var model = this.app.model;
 		var filename = $('input[name=provisioning]:checked', '#open').val();
 		
 		$.ajax({
@@ -216,6 +223,9 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   dataType: 'json',
 		   success: function(data){ 		   
 			   graph.fromJSON(data);
+			   
+			   //hide links
+			   model.hideLinks();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
@@ -266,6 +276,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 				dialog.open();
 				
 				function importTopology() {
+					graph.clear();
 					$this.importTopology(app);
 					dialog.close();
 				}
