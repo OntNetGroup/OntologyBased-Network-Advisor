@@ -260,7 +260,7 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	padding: 10px;
 }
 
-.preProvisioningContainer, .list {
+.preProvisioningContainer, .bindsContainer, .list {
 	overflow: hidden;
 	margin-top: 0px;
 	padding: 5px;

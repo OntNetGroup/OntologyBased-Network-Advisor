@@ -39,6 +39,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		this.initializeToolbarProcedures(app);
 		this.initializeProvisioningGraphProcedures(app);
 		this.initializeProvisioningPaperProcedures(app);
+		this.initializeProvisioningValidatorProcedures(app);
 		this.initializeProvisioningFileProcedures(app);
 		
 	},
@@ -201,6 +202,68 @@ nopen.provisioning.App = Backbone.View.extend({
         
 	},
 
+	//Validator procedures
+	initializeProvisioningValidatorProcedures : function(app) {
+		
+		var graph = app.graph;
+		var validator = app.validator;
+		var model = this.model;
+		
+		//create a dialog connection only if exist a target
+		validator.validate('change:target change:source', function(err, command, next) {
+
+			var cell = graph.getCell(command.data.id);
+			
+			if(!cell.attributes.target.id){
+				cell.remove();
+				return;
+			}
+			
+			var source = graph.getCell(cell.attributes.source.id);
+			var target = graph.getCell(cell.attributes.target.id);
+			
+			createConnectionDialog(cell, source, target);
+			
+		});
+		
+		//Generate connection dialog when drag a equipment to another
+		function createConnectionDialog(cell, source, target) {
+			
+			var sourceName = model.getEquipmentName(source);
+			var targetName = model.getEquipmentName(target);
+			
+			var content = 
+				'<div class="bindsContainer"><div class="outputsList"><div id="listContainer">' +
+				    '<ul id="expList" class="list"> <li class="outputs">' + sourceName + '</li> ' ;
+			
+			content = content + '</ul></div></div>';
+			content = content + 
+				'<div class="inputsList"><div id="listContainer">' +
+			    	'<ul id="expList" class="list"> <li class="inputs">' + targetName + '</li></ul>' + 
+			    '</div></div></div>';
+			
+			//Create dialog
+			var dialog = new joint.ui.Dialog({
+				width: 500,
+				type: 'neutral',
+				title: 'Create Connection',
+				content: content,
+				buttons: [
+				          { action: 'cancel', content: 'Cancel', position: 'left' },
+				          ]
+			});
+			dialog.on('action:cancel', cancel);
+			dialog.on('action:close', cancel);
+			dialog.open();
+			
+			function cancel() {
+				cell.remove();
+				dialog.close();
+			};
+		}
+		
+	},
+	
 	//Toolbar procedures
 	initializeToolbarProcedures : function(app) {
 		
