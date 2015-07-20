@@ -184,6 +184,7 @@ var Rappid = Backbone.Router.extend({
         this.selectionView.removeHandle('remove');
         this.selectionView.removeHandle('unlink');
         this.selectionView.removeHandle('resize');
+        this.selectionView.removeHandle('fork');
         
         // Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
         // Otherwise, initiate paper pan.
@@ -327,6 +328,7 @@ var Rappid = Backbone.Router.extend({
             halo.removeHandle('rotate');
             halo.removeHandle('remove');
             halo.removeHandle('resize');
+            halo.removeHandle('unlink');
             //halo.changeHandle('clone', { position: 'se' });
             
             //freetransform.render();
