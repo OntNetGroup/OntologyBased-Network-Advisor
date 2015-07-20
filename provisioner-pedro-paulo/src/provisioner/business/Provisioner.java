@@ -28,6 +28,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 public class Provisioner {
 	HashMap<String, Interface> interfaces = new HashMap<String, Interface>();
 	List<Interface> bindedInterfaces;
+	List<Interface> pathInterfaces;
 	List<Interface> originalBindedInterfaces = new ArrayList<Interface>();
 	HashMap<String, Interface> bindedInterfacesHash;
 	List<String> declaredEquip;
@@ -41,7 +42,7 @@ public class Provisioner {
 	long reasoningTimeExecPostInstances = 0;
 	long createInstancesTime = 0;
 	OntModel consistencyModel;
-	HashMap<Interface, List<Interface>> origPaths = new HashMap<Interface, List<Interface>>();
+	HashMap<Interface, List<Interface>> origPaths;// = new HashMap<Interface, List<Interface>>();
 	
 	public long getReasoningTimeExecPostInstances() {
 		return reasoningTimeExecPostInstances;
@@ -101,12 +102,6 @@ public class Provisioner {
 		//#17
 		reasoningTimeExecPostInstances = OWLUtil.runReasoner(okcoUploader, true, true, true);
 		System.out.println(PerformanceUtil.getExecutionMessage("createInstances", createInstancesTime));
-		List<IntBinds> intBinds = SPARQLQueries.getIntBinds(model, interfaces);
-		populaOrigPaths(intBinds, false);
-		List<IntBinds> internalIntBinds = SPARQLQueries.getInternalIntBinds(model, interfaces);
-		populaOrigPaths(internalIntBinds, true);
-//		intBinds.addAll(internalIntBinds);
-		refreshInterfaces();
 		
 	}
 	
@@ -238,6 +233,15 @@ public class Provisioner {
 		bindedInterfaces.addAll(originalBindedInterfaces);
 		Character provisionAgainOption;
 		do{
+			origPaths = new HashMap<Interface, List<Interface>>();
+			List<IntBinds> intBinds = SPARQLQueries.getIntBinds(model, interfaces);
+			populaOrigPaths(intBinds, false);
+			List<IntBinds> internalIntBinds = SPARQLQueries.getInternalIntBinds(model, interfaces);
+			populaOrigPaths(internalIntBinds, true);
+			
+			refreshInterfaces();
+			pathInterfaces = SPARQLQueries.getIntPaths(model, interfaces);
+			
 			for (String intfc : interfaces.keySet()) {
 				Interface in = interfaces.get(intfc);
 				in.clearInterfaceTo();
@@ -257,11 +261,17 @@ public class Provisioner {
 //			Character modeOption = ConsoleUtil.getCharOptionFromConsole("Choose provisioning mode: Automatically (A) or Manually (M)? ", modeOptions);
 			Character modeOption = 'a';
 			
+			Path path;
 			if(modeOption.equals('M') || modeOption.equals('m')){
-				callAlgorithmManual(interfaceFrom, interfaceTo);
+				path = callAlgorithmManual(interfaceFrom, interfaceTo);
 			}else{
-				callFindPaths(interfaceFrom, interfaceTo);
+				path = callFindPaths(interfaceFrom, interfaceTo);
 			}
+			
+			provisionSemiAuto(path);
+			
+			bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
+			createBindedInterfaceHash(bindedInterfaces);
 			
 			//#23
 			OWLUtil.runReasoner(okcoUploader, false, true, true);
@@ -388,7 +398,7 @@ public class Provisioner {
 	}
 	
 	@SuppressWarnings("resource")
-	public void callFindPaths(Interface interfaceFrom, Interface interfaceTo) throws Exception{
+	public Path callFindPaths(Interface interfaceFrom, Interface interfaceTo) throws Exception{
 //		int again = 0;
 		List<Path> paths;
 		int qtShortPaths = ConsoleUtil.getOptionFromConsole("Choose the maximum number of paths (-1 for no limit): ", 1, Integer.MAX_VALUE,0, true);
@@ -487,29 +497,33 @@ public class Provisioner {
 		fos.close();
 		
 		int path = ConsoleUtil.getOptionFromConsole(paths, "Choose path from list to be provisioned: ", paths.size(), false);
-		provisionSemiAuto(paths.get(path));
 		
-		bindedInterfaces = SPARQLQueries.getBindedInterfaces(model, interfaces);
-		createBindedInterfaceHash(bindedInterfaces);
+		return paths.get(path);
+		
 	}
 	
 	public void provisionSemiAuto(Path path) throws Exception{
 		boolean isSource = true;
-		for (int i = 1; i < path.size()-1; i+=2) {
-			Interface previousTo = path.getInterfaceList().get(i-1);
-			Interface from = path.getInterfaceList().get(i);
-			Interface to = path.getInterfaceList().get(i+1);
-			isSource = isStillInSource(isSource, from);
-			bindsInterfaces(from, to, isSource);
-			
-			createPath(previousTo, from);
-			createPath(from, to);
-			
-			if(!bindedInterfacesHash.containsKey(from.getInterfaceURI())){
-				bindedInterfacesHash.put(from.getInterfaceURI(), from);
+		for (int i = 0; i < path.size()-1; i++) {
+			Interface actualInt = path.getInterfaceList().get(i);
+			Interface nextInt = path.getInterfaceList().get(i+1);
+			int size = path.size();
+			if(i ==  path.size()-2){
+				System.out.println();
 			}
-			if(!bindedInterfacesHash.containsKey(to.getInterfaceURI())){
-				bindedInterfacesHash.put(to.getInterfaceURI(), to);
+			
+			isSource = isStillInSource(isSource, actualInt);
+			if(i%2==1){
+				bindsInterfaces(actualInt, nextInt, isSource);		
+			}			
+			
+			createPath(actualInt, nextInt);
+			
+			if(!bindedInterfacesHash.containsKey(actualInt.getInterfaceURI())){
+				bindedInterfacesHash.put(actualInt.getInterfaceURI(), actualInt);
+			}
+			if(!bindedInterfacesHash.containsKey(nextInt.getInterfaceURI())){
+				bindedInterfacesHash.put(nextInt.getInterfaceURI(), nextInt);
 			}
 		}
 	}
@@ -752,7 +766,7 @@ public class Provisioner {
 		}
 		return false;
 	}
-	public String callAlgorithmManual(Interface interfaceFrom, Interface interfaceTo) throws Exception{
+	public Path callAlgorithmManual(Interface interfaceFrom, Interface interfaceTo) throws Exception{
 		boolean isSource = true;
 		String VAR_OUT = "";
 		String VAR_IN = interfaceFrom.getInterfaceURI();
@@ -767,9 +781,9 @@ public class Provisioner {
 			Interface in = interfaces.get(VAR_IN);
 			path.addInterface(in);
 			
-			if(out != null){
-				createPath(out, in);
-			}
+//			if(out != null){
+//				createPath(out, in);
+//			}
 			
 			isSource = isStillInSource(isSource, in);
 			List<Interface> INT_LIST = algorithmPart1(in, isSource);
@@ -801,7 +815,7 @@ public class Provisioner {
 				path.addInterface(out);
 //				List<Path> x = getOrigPaths(in, out);
 				
-				createPath(in, out);
+//				createPath(in, out);
 				
 				isSource = isStillInSource(isSource, out);
 				List<Interface> listInterfacesTo = algorithmPart2(isSource, out);
@@ -815,13 +829,13 @@ public class Provisioner {
 				//in = new Interface(VAR_IN);
 				in = interfaces.get(VAR_IN);
 				
-				bindsInterfaces(out, in, isSource);
+//				bindsInterfaces(out, in, isSource);
 			}
 		} while (!VAR_OUT.equals(interfaceTo.getInterfaceURI()));//#20
 		
 //		path.addInterface(interfaceTo);
 				
-		return VAR_OUT;
+		return path;
 	}
 	
 	private void createPath(Interface int1, Interface int2) throws Exception {
