@@ -29814,8 +29814,8 @@ joint.dia.CommandManager = Backbone.Model.extend({
 	for (var i = batchCommand.length - 1; i >= 0; i--)  {
 
             var cmd = batchCommand[i], cell = this.graph.getCell(cmd.data.id);
-             console.log(cell);
-             console.log(cmd);
+//             console.log(cell);
+//             console.log(cmd);
             switch (cmd.action) {
 		     
             case 'add':

@@ -5,6 +5,7 @@ nopen.provisioning.App = Backbone.View.extend({
 	owl : undefined,
 	preProvisioning : undefined,
 	test : undefined,
+	util : undefined,
 	
 	initialize : function(){
 		console.log("Provisioning started!");
@@ -20,6 +21,8 @@ nopen.provisioning.App = Backbone.View.extend({
 		this.owl = new nopen.provisioning.OWL;
 		//create preProvisioning
 		this.preProvisioning = new nopen.provisioning.PreProvisioning;
+		//create util
+		this.util = new nopen.provisioning.Util;
 		
 		//create Test
 		this.test = new nopen.provisioning.Test;
@@ -208,6 +211,8 @@ nopen.provisioning.App = Backbone.View.extend({
 		var graph = app.graph;
 		var validator = app.validator;
 		var model = this.model;
+		var owl = this.owl;
+		var util = this.util;
 		
 		//create a dialog connection only if exist a target
 		validator.validate('change:target change:source', function(err, command, next) {
@@ -229,12 +234,30 @@ nopen.provisioning.App = Backbone.View.extend({
 		//Generate connection dialog when drag a equipment to another
 		function createConnectionDialog(cell, source, target) {
 			
+			var outputs = owl.getOutputsFromOWL(source.id);
+			
 			var sourceName = model.getEquipmentName(source);
 			var targetName = model.getEquipmentName(target);
 			
 			var content = 
 				'<div class="bindsContainer"><div class="outputsList"><div id="listContainer">' +
 				    '<ul id="expList" class="list"> <li class="outputs">' + sourceName + '</li> ' ;
+			
+			$.each(outputs, function(layer, value) {
+				
+				content = content + 
+				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+				
+				$.each(outputs[layer], function(key, output) {
+					content = content +
+						'<ul style="display: block;">' +
+			                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
+			            '</ul>';
+				});
+				
+				content = content + '</li>';
+				
+			});
 			
 			content = content + '</ul></div></div>';
 			content = content + 
@@ -256,10 +279,85 @@ nopen.provisioning.App = Backbone.View.extend({
 			dialog.on('action:close', cancel);
 			dialog.open();
 			
+			util.prepareList('.outputsList');
+			generateOutputEvents(source, target);
+			
 			function cancel() {
 				cell.remove();
 				dialog.close();
 			};
+			
+			//generate events to outputs list
+			function generateOutputEvents(source, target) {
+				
+				$('.outputsList #expList').find('li.outputItem').click( function(event) {
+					
+					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", true);
+					
+					$('.outputsList #expList li').removeClass('active');
+					$(this).toggleClass('active');
+					
+					$('.inputsList #expList li:not(:first)').remove();
+					
+					var inputs = owl.getInputsFromOWL(target.id);
+					
+					var content = "";
+					$.each(inputs, function(layer, value) {
+						
+						content = content + 
+						    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+						
+						$.each(inputs[layer], function(key, input) {
+							
+							content = content +
+								'<ul style="display: block;">' +
+					                '<li class="inputItem" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + input.name + '</li>' +
+					            '</ul>';
+							
+						});
+						
+						content = content + '</li>';
+						
+					});
+					
+					$('.inputsList #expList').append(content);
+					util.prepareList('.inputsList');
+					
+					generateInputEvents(source, target);
+					
+				});
+				
+			};
+			
+			//generate events to inputs list
+			function generateInputEvents(source, target) {
+				
+				$('.inputsList #expList').find('li.inputItem').click(function(event) {
+					
+					$('.inputsList #expList li').removeClass('active');
+					$(this).toggleClass('active');
+					
+					var output = {
+							"id": $('.outputItem.active').attr('id'),
+							"name": $('.outputItem.active').attr('value'),
+							"type": "Output_Card"
+					};
+					
+					var input = {
+							"id": $('.inputItem.active').attr('id'),
+							"name": $('.inputItem.active').attr('value'),
+							"type": "Input_Card"
+					};
+					
+					console.log('Out: ' + JSON.stringify(output));
+					console.log('In: ' + JSON.stringify(input));
+					
+					dialog.close();
+					
+				});
+				
+			};
+			
 		}
 		
 	},
