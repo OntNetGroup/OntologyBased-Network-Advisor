@@ -121,7 +121,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				$('.dialog .fg .image').remove();
 				$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
 				
-				prepareList('.outputsList');
+				util.prepareList('.outputsList');
 				generateOutputEvents();
 				changeSVGColor(sourceName, targetName);
 				
