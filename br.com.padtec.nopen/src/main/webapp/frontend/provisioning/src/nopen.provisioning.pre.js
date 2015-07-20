@@ -17,6 +17,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		var owl = this.app.owl;
 		var file = this.app.file;
 		var model = this.app.model;
+		var util = this.app.util;
 		var links = [];
 		
 		if(graph.getLinks().length === 0 ) {
@@ -91,7 +92,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 				model.generateProvisioning(app, subnetworks);
 				$('.viewport').show();
-				
+				$('#btn-zoom-to-fit').click();
 				return;
 			}
 			
@@ -140,7 +141,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
 				
 				$('.dialog .controls .control-button[data-action="next"]').text('Finish');
-				prepareList('.outputsList');
+				util.prepareList('.outputsList');
 				generateOutputEvents();
 				changeSVGColor(sourceName, targetName);
 				
@@ -236,7 +237,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				});
 				
 				$('.inputsList #expList').append(content);
-				prepareList('.inputsList');
+				util.prepareList('.inputsList');
 				
 				generateInputEvents();
 				
@@ -276,36 +277,6 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			});
 			
 		};
-		
-		//generate events to list
-		function prepareList(type) {
-			$(type + ' #expList').find('li:has(ul)').click( function(event) {
-				if (this == event.target) {
-					$(this).toggleClass('expanded');
-					$(this).children('ul').toggle('medium');
-				}
-				return false;
-			})
-			.addClass('collapsed').children('ul').hide();
-
-			//Create the toggle 
-			var toggle = false;
-			$('#listToggle').unbind('click').click(function(){
-				if(toggle == false){
-					$('.collapsed').addClass('expanded');
-					console.log($('.collapsed').children());
-					$('.collapsed').children().show('medium');
-					$('#listToggle').text("Collapse All");
-					toggle = true;
-				}else{
-					$('.collapsed').removeClass('expanded');
-					console.log($('.collapsed').children());
-					$('.collapsed').children().hide('medium');
-					$('#listToggle').text("Expand All");
-					toggle = false;          
-				}
-			});
-		}
 		
 	},
 	
