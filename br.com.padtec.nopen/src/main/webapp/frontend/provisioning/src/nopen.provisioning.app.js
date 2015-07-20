@@ -185,8 +185,6 @@ nopen.provisioning.App = Backbone.View.extend({
         
         paper.on('cell:mouseout', function(cellView, evt) {
 
-        	if(transition) return;
-        	
         	var cell = graph.getCell(cellView.model.id);
         	if(cell.get('subtype') !== 'Access_Group') return;
         	
@@ -197,6 +195,8 @@ nopen.provisioning.App = Backbone.View.extend({
             		cell.attr('text/display', 'none');
         		}
         	});
+        	
+        	if(transition) return;
         	
         	//hide links
         	model.hideLinks();
