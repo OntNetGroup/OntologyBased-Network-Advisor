@@ -411,21 +411,6 @@ public class StudioSpecificFactory {
 		InstanceFabricator.unsuperviseCard(StudioComponents.studioRepository, supervisorId, supervisorName, cardId, cardName);
 	}
 	
-	public static void canSupervise(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
-	{
-		//TODO
-	}
-
-	public static void canUnsupervise(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
-	{
-		//TODO
-	}
-	
-	public static void setTechnology(DtoJointElement dtoSupervisor, String technology) 
-	{
-		//TODO
-	}
-	
 	//=============================================================================================
 	// Specific: Link
 	//=============================================================================================
