@@ -13,23 +13,38 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class InterfaceStructure {
 	
-	/*public static String getPossibleConnections(String sourceEquipmentId, String targetEquipmentId,  OKCoUploader repository){
+	public static String[] getPossibleConnections(String sourceEquipmentId, String targetEquipmentId, String typeOfConnection, String typePort, OKCoUploader repository){
+		String[] result = new String[2];
+		if(typeOfConnection.equals("Horizontal")){
+			String resultSource = getInterfacesFromEquipment(sourceEquipmentId, "Output", repository);
+			String resultTarget = getInterfacesFromEquipment(targetEquipmentId, "Output", repository);
+			result[0] = resultSource;
+			result[1] = resultTarget;
+
+		}
+		else{
+			String resultSource = getInterfacesFromEquipment(sourceEquipmentId, typePort, repository);
+			String resultTarget = getInterfacesFromEquipment(sourceEquipmentId, typePort, repository);
+			result[0] = resultSource;
+			result[1] = resultTarget;
+		}
 		
-		String relation = null;
+		return result;
+		
+	}
+	
+	public static String getTypeOfConnection(String sourceEquipmentId, String targetEquipmentId, OKCoUploader repository){
+		String typeOfConnection = null;
 		ArrayList<String> layersSourceEquip = getLayersFromEquipment(repository.getBaseModel(), sourceEquipmentId);
 		ArrayList<String> layersTargetEquip = getLayersFromEquipment(repository.getBaseModel(), targetEquipmentId);
 		if((layersSourceEquip.contains(repository.getNamespace() + "OTS")) && (layersTargetEquip.contains(repository.getNamespace() + "OTS"))){
-			relation = "horizontal_links_to";
-			String typePort = "Output";
-			String result = getInterfacesFromEquipment(sourceEquipmentId, typePort, repository);
+			typeOfConnection = "Horizontal";
 		}
 		else{
-			relation = "vertical_links_to";
-		}
-		
-		return targetEquipmentId;
-		
-	}*/
+			typeOfConnection = "Vertical";
+		}	
+		return typeOfConnection;
+	}
 	
 	public static String getInterfacesFromEquipment(String equipmentId, String typePort, OKCoUploader repository){
 		return generateMappingInterfacesFromEquipment(equipmentId, typePort, repository);

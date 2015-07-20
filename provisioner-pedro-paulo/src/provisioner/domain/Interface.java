@@ -12,6 +12,7 @@ public class Interface implements Comparable<Interface>{
 	private List<String> lastMappedTfURI;
 	private boolean isSource;
 	private boolean isOutput;
+	private boolean alreadyProvisioned = false;
 	
 	private List<Interface> candidateInterfacesTo = new ArrayList<Interface>();
 	private HashMap<Interface, List<Path>> internalPaths = new HashMap<Interface, List<Path>>();
@@ -104,7 +105,11 @@ public class Interface implements Comparable<Interface>{
 		}
 		
 		String ret = interfaceURI;
-				
+			
+		if(alreadyProvisioned){
+			ret += " (already provisioned)";
+		}
+		
 		if(this.equipmentURI != null){
 			String equipmentURI;
 			String[] equipmentURISplit = this.equipmentURI.split("#");
@@ -138,5 +143,8 @@ public class Interface implements Comparable<Interface>{
 			}
 		}
 		return false;
+	}
+	public void setAlreadyProvisioned(boolean alreadyProvisioned) {
+		this.alreadyProvisioned = alreadyProvisioned;
 	}
 }

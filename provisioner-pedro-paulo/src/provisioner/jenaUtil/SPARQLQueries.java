@@ -595,7 +595,9 @@ public class SPARQLQueries {
 		    	System.out.println("- int1 URI: "+int1.toString()); 
 		    	System.out.println("- int2 URI: "+int2.toString());
 		    	Interface interfaceFrom = interfaces.get(int1.toString());
+		    	interfaceFrom.setAlreadyProvisioned(true);
 		    	Interface interfaceTo = interfaces.get(int2.toString());
+		    	interfaceTo.setAlreadyProvisioned(true);
 		    	if(!result.contains(interfaceFrom)) result.add(interfaceFrom);
 		    	if(!result.contains(interfaceTo)) result.add(interfaceTo);
 		    }
