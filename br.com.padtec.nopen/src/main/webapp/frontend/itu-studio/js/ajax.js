@@ -457,19 +457,19 @@ function canPerformBind(sourceID, sourceName, sourceType, targetID, targetName, 
  * SAVE & LOAD
  * ================================================*/
 
-function loadTTFAttributes() {
-	var result = "";
-	$.ajax({
-		type: "POST",
-		async: false,
-		url: "loadTTFAttributes.htm",
-		success: function(data){
-			result = data;
-		},
-		error : function(e) {
-			alert("error: " + e.status);
-		}
-	});
-
-	return result;
-}
+//function loadTTFAttributes() {
+//	var result = "";
+//	$.ajax({
+//		type: "POST",
+//		async: false,
+//		url: "loadTTFAttributes.htm",
+//		success: function(data){
+//			result = data;
+//		},
+//		error : function(e) {
+//			alert("error: " + e.status);
+//		}
+//	});
+//
+//	return result;
+//}
