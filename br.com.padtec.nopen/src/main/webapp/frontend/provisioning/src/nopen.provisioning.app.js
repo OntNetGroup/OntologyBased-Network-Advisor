@@ -110,6 +110,8 @@ nopen.provisioning.App = Backbone.View.extend({
 		var validator = app.validator;
 		var link = app.link;
 		var model = this.model;
+		var owl = this.owl;
+		var util = this.util;
 		
 		// Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
 		var position = undefined;
@@ -203,6 +205,110 @@ nopen.provisioning.App = Backbone.View.extend({
         	
         });
         
+      //Rigth click on mouse, show connections
+    	paper.$el.on('contextmenu', function(evt) { 
+    	    evt.stopPropagation(); // Stop bubbling so that the paper does not handle mousedown.
+    	    evt.preventDefault();  // Prevent displaying default browser context menu.
+    	    var cellView = paper.findView(evt.target);
+    	    if (cellView) {
+    	       // The context menu was brought up when clicking a cell view in the paper.
+
+    	       var cell = cellView.model;
+    	       if(cell.get('subtype') !== 'Access_Group') return;
+    	       
+    	       var connectedPorts = model.getConnectedPorts(cell);
+    	       createEquipmentConnectionDialog(cell, connectedPorts);
+    	       
+    	    }
+    	    
+    	});
+    	
+    	//Generate connection dialog when drag a equipment to another
+		function createEquipmentConnectionDialog(equipment, connectedPorts) {
+			
+			var outputs = owl.getOutputsFromOWL(equipment.id);
+			var inputs = owl.getInputsFromOWL(equipment.id);
+			var equipmentName = model.getEquipmentName(equipment);
+			
+			var content = 
+				'<div class="bindsContainer"><div class="outputsList"><div id="listContainer">' +
+				    '<ul id="expList" class="list"> <li class="outputs">Outputs</li> ' ;
+			
+			$.each(outputs, function(layer, value) {
+				
+				content = content + 
+				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+				
+				$.each(outputs[layer], function(key, output) {
+					if(!connectedPorts["Output_Card"][output.id]) {
+						content = content +
+							'<ul style="display: block;">' +
+				                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
+				            '</ul>';
+					} 
+					else {
+						var input = connectedPorts["Output_Card"][output.id];
+						
+						content = content +
+						'<ul style="display: block;">' +
+			                '<li class="outputItem connected" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + 
+			                	output.name +
+			                	'<span class="tag" id="' + input.id + '">' + input.name + '</span>' +
+			                '</li>' +
+			            '</ul>';
+					}
+				});
+				
+				content = content + '</li>';
+				
+			});
+			
+			content = content + '</ul></div></div>';
+			content = content + 
+				'<div class="inputsList"><div id="listContainer">' +
+			    	'<ul id="expList" class="list"> <li class="inputs">Inputs</li>';
+			
+			$.each(inputs, function(layer, value) {
+				
+				content = content + 
+				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+				
+				$.each(inputs[layer], function(key, input) {
+					content = content +
+						'<ul style="display: block;">' +
+			                '<li class="inputItem" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + input.name + '</li>' +
+			            '</ul>';
+				});
+				
+				content = content + '</li>';
+				
+			});
+			
+			content = content + '</ul></div></div></div>';
+			
+			//Create dialog
+			var dialog = new joint.ui.Dialog({
+				width: 500,
+				type: 'neutral',
+				title: equipmentName,
+				content: content,
+				buttons: [
+				          { action: 'cancel', content: 'Close', position: 'right' },
+				          ]
+			});
+			dialog.on('action:cancel', cancel);
+			dialog.on('action:close', cancel);
+			dialog.open();
+			
+			util.prepareList('.outputsList');
+			util.prepareList('.inputsList');
+			
+			function cancel() {
+				dialog.close();
+			};
+			
+		};
+        
 	},
 
 	//Validator procedures
@@ -227,12 +333,13 @@ nopen.provisioning.App = Backbone.View.extend({
 			var source = graph.getCell(cell.attributes.source.id);
 			var target = graph.getCell(cell.attributes.target.id);
 			
-			createConnectionDialog(cell, source, target);
+			var connectedPorts = model.getConnectedPorts(source);
+			createConnectionDialog(cell, source, target, connectedPorts);
 			
 		});
 		
 		//Generate connection dialog when drag a equipment to another
-		function createConnectionDialog(cell, source, target) {
+		function createConnectionDialog(cell, source, target, connectedPorts) {
 			
 			var outputs = owl.getOutputsFromOWL(source.id);
 			
@@ -249,10 +356,12 @@ nopen.provisioning.App = Backbone.View.extend({
 				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
 				
 				$.each(outputs[layer], function(key, output) {
-					content = content +
-						'<ul style="display: block;">' +
-			                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
-			            '</ul>';
+					if(!connectedPorts["Output_Card"][output.id]) {
+						content = content +
+							'<ul style="display: block;">' +
+				                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
+				            '</ul>';
+					}
 				});
 				
 				content = content + '</li>';

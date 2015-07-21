@@ -221,6 +221,61 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		
 	},
 	
+	//Method to get connected ports
+	getConnectedPorts : function(equipment) {
+		
+		var cards = this.getCards(equipment);
+		var ports = {
+				"Output_Card" : {},
+				"Input_Card" : [],
+		};
+		
+		$.each(cards, function(index, card) {
+			
+			$.each(card.connectedPorts, function(sourceId, target){
+				
+				if(target.type === "Input_Card") {
+					ports["Output_Card"][sourceId] = target;
+				} 
+				else {
+					ports["Input_Card"][sourceId] = target;
+				}
+				
+			});
+			
+		});
+		
+		console.log('Ports Connected: ' + JSON.stringify(ports));
+		
+		return ports;
+		
+	},
+	
+	//Method to get output connected ports
+	getOutputConnectedPorts : function(card) {
+		
+		var outputsPorts = [];
+		
+		$.each(card.connectedPorts, function(sourceId, target){
+			
+			if(target.type === "Input_Card") {
+				outputsPorts.push(sourceId);
+			}
+			
+		});
+		
+		console.log('Outputs Connected: ' + JSON.stringify(outputsPorts));
+		
+		return outputsPorts;
+		
+	},
+	
+	//Method to get input connected ports
+	getInputConnectedPorts : function(card) {
+		
+		
+	},
+	
 	getImplementedTechnologies : function() {
 		var result = "error";
 		$.ajax({

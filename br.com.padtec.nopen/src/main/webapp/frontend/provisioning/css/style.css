@@ -104,5 +104,28 @@ hr {
 }
 
 
+#expList .connected {
+	background-color: #EEE;
+}
+
+#expList .connected span.tag {
+/*   float: right; */
+  cursor:pointer;
+  color:#fff;
+  background:#1e8fc6;
+  margin-left: 5px;
+  padding-left: 5px;
+}
+#expList .connected span.tag:hover {
+  opacity:0.7;
+}
+#expList .connected span.tag:after {
+ content:"x";
+/*  border:1px solid; */
+ padding: 5px;
+ vertical-align: bottom;
+/*  margin:3px 0 10px 5px; */
+ font-size:12px;
+}
     
 
