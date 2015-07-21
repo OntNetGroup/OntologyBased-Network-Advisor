@@ -63,23 +63,8 @@ var Rappid = Backbone.Router.extend({
         this.initializeValidator();
         this.initializePortsBar();
         this.initializeCounters();
-        this.initializeAttributes();
     },
     
-    initializeAttributes: function() {
-    	this.initializeTTFAttributes();
-    	this.initializeAFAttributes();
-    },
-    
-    initializeTTFAttributes: function() {
-    	var TTFAttributes = loadTTFAttributes();
-    	this.TTFAttributesJSON = JSON.parse(TTFAttributes);
-    },
-    
-    initializeAFAttributes: function() {
-//    	var AFAttributes = loadAFAttributes();
-//    	this.AFAttributesJSON = JSON.parse(AFAttributes);
-    },
 
     // Create a graph, paper and wrap the paper in a PaperScroller.
     initializePaper: function() {
@@ -424,11 +409,6 @@ var Rappid = Backbone.Router.extend({
         	var inspectorInputs = inspectorDefs.inputs;
         	var inspectorGroups = inspectorDefs.groups;
         	
-            if(cellSubtype === SubtypeEnum.TRAIL_TERMINATION_FUNCTION && this.TTFAttributesJSON[cellParentSubtype]) {
-            	inspectorInputs = this.TTFAttributesJSON[cellParentSubtype];
-            }
-            
-            
             this.inspector = new joint.ui.Inspector({
                 inputs: inspectorInputs,
                 groups: inspectorGroups,

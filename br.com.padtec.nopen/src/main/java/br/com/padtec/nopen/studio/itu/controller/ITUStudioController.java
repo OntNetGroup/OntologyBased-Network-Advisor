@@ -367,34 +367,34 @@ public class ITUStudioController {
 	/**
 	 * @return: atributos de TTF, para cada camada, no formato JSON
 	 */
-	@RequestMapping(value = "/loadTTFAttributes", method = RequestMethod.POST)
-	public @ResponseBody String loadTTFAttributes()
-	{
-		String reference = "874.1"; //TODO: the reference must be gotten from a configuration file
-		String path = "itu-" + reference + "/";
-		path = NOpenFileUtil.replaceSlash(path);
-		NOpenFileUtil.createITUConfigurationRepository(path);
-		 
-		File file = new File(path + "ttf.json");
-
-		try {
-			if(!file.exists()){
-				String pathSource = "/attributes/itu-" + reference + "/ttf.json";
-				InputStream is = ITUStudioController.class.getResourceAsStream(pathSource);
-				StringWriter writer = new StringWriter();
-				IOUtils.copy(is, writer, "UTF-8");
-				String theString = writer.toString();
-				
-				File f = NOpenFileUtil.createFile(NOpenFileUtil.ituConfigurationJSONFolder + path, "ttf.json");
-				NOpenFileUtil.writeToFile(f, theString);
-			}
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		
-		return NOpenFileUtil.openItuConfigurationJSONFileAsString(path + "ttf.json");
-		
-	}
+//	@RequestMapping(value = "/loadTTFAttributes", method = RequestMethod.POST)
+//	public @ResponseBody String loadTTFAttributes()
+//	{
+//		String reference = "874.1"; //TODO: the reference must be gotten from a configuration file
+//		String path = "itu-" + reference + "/";
+//		path = NOpenFileUtil.replaceSlash(path);
+//		NOpenFileUtil.createITUConfigurationRepository(path);
+//		 
+//		File file = new File(path + "ttf.json");
+//
+//		try {
+//			if(!file.exists()){
+//				String pathSource = "/attributes/itu-" + reference + "/ttf.json";
+//				InputStream is = ITUStudioController.class.getResourceAsStream(pathSource);
+//				StringWriter writer = new StringWriter();
+//				IOUtils.copy(is, writer, "UTF-8");
+//				String theString = writer.toString();
+//				
+//				File f = NOpenFileUtil.createFile(NOpenFileUtil.ituConfigurationJSONFolder + path, "ttf.json");
+//				NOpenFileUtil.writeToFile(f, theString);
+//			}
+//		} catch (IOException e) {
+//		    e.printStackTrace();
+//		}
+//		
+//		return NOpenFileUtil.openItuConfigurationJSONFileAsString(path + "ttf.json");
+//		
+//	}
 	
 	/**
 	 * @param transportFunction: id, name and type of a transport function

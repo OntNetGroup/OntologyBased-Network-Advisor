@@ -32,11 +32,11 @@ function openFromURL(equipment, filename, graph, app){
 		}
 	});
 
-	// actually, now this procedure is used only to hide from the stencil the layers already on canvas
+	// actually, now this procedure is used only to hide from the stencil the layers already on canvas and increase the element counters
 	function loadCells(graph, app) {
 		
 		loadElements(graph, app);
-//		loadLinks(graph); all instatiation was made when EquipStudio was started
+		loadLinks(graph, app);
 	}
 	
 	function loadElements(graph, app) {
@@ -55,7 +55,7 @@ function openFromURL(equipment, filename, graph, app){
 		});
 		
 		loadLayers(layers, graph, app);
-//		loadTransportFunctions(transportFunctions, graph, app); all instatiation was made when EquipStudio was started
+		loadTransportFunctions(transportFunctions, graph, app);
 	}
 	
 	function loadLayers(layers, graph, app) {
@@ -73,22 +73,28 @@ function openFromURL(equipment, filename, graph, app){
 		$.each(transportFunctions, function(index, transportFunction){
 			
 			var tFunctionID = transportFunction.attributes.id;
-			var tFunctionName = transportFunction.attributes.attrs.text.text;
 			var tFunctionType = transportFunction.attributes.subtype;
+			var tFunctionName = getName(tFunctionType);
+			transportFunction.attr({
+				text: {text: tFunctionName}
+			});
+			nextName(tFunctionType);
 			
-			var parentID = transportFunction.attributes.parent;
-			var parent = graph.getCell(parentID);
+//			var parentID = transportFunction.attributes.parent;
+//			var parent = graph.getCell(parentID);
 			
-			if(parent) {
-				var parentSubtype = parent.attributes.subtype;
-				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, parentID, parentSubtype, 'Card_Layer');
-			} else {
-				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, app.cardID, app.cardName, 'Card');
-			}
+			
+			
+//			if(parent) { all instatiation was made when EquipStudio was started
+//				var parentSubtype = parent.attributes.subtype;
+//				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, parentID, parentSubtype, 'Card_Layer');
+//			} else {
+//				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, app.cardID, app.cardName, 'Card');
+//			}
 		});
 	}
 	
-	function loadLinks(graph) {
+	function loadLinks(graph, app) {
 		$.each(graph.getLinks(), function(index, link){
 			var linkID = link.attributes.id;
 			
@@ -104,7 +110,44 @@ function openFromURL(equipment, filename, graph, app){
 			var targetType = target.attributes.type;
 			var targetSubtype = target.attributes.subtype;
 			
-			performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
-		});
+			if(isInterface(target)) {
+				var portName = getName(targetSubtype);
+				target.attr({
+					text: {text: portName}
+				});
+    			nextName(targetSubtype);
+    			if(targetSubtype === SubtypeEnum.INPUT) {
+    				this.barIn.attributes.embeddedPorts[this.barIn.attributes.embeddedPorts.length] = targetID;
+    			} else {
+    				this.barOut.attributes.embeddedPorts[this.barOut.attributes.embeddedPorts.length] = targetID;
+    			}
+			}
+			
+//			performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID); all instatiation was made when EquipStudio was started
+		}, app);
 	}
+	
+	// Get name for properly element being added
+	function getName(elementSubtype) {
+		if(elementSubtype === SubtypeEnum.INPUT) return 'in_' +app.inPortCounter;
+		if(elementSubtype === SubtypeEnum.OUTPUT) return 'out_' +app.outPortCounter;
+		if(elementSubtype === SubtypeEnum.ADAPTATION_FUNCTION) return 'AF_' +app.AFCounter;
+		if(elementSubtype === SubtypeEnum.TRAIL_TERMINATION_FUNCTION) return 'TTF_' +app.TTFCounter;
+		if(elementSubtype === SubtypeEnum.MATRIX) return 'Matrix_' +app.MatrixCounter;
+	};
+	
+	// Increment the counter of the properly element
+	function nextName(elementSubtype) {
+		if(elementSubtype === SubtypeEnum.INPUT) app.inPortCounter++;
+		if(elementSubtype === SubtypeEnum.OUTPUT) app.outPortCounter++;
+		if(elementSubtype === SubtypeEnum.ADAPTATION_FUNCTION) app.AFCounter++;
+		if(elementSubtype === SubtypeEnum.TRAIL_TERMINATION_FUNCTION) app.TTFCounter++;
+		if(elementSubtype === SubtypeEnum.MATRIX) app.MatrixCounter++;
+	};
+	
+	//Check if cell is an interface
+	function isInterface(cell) {
+		var cellSubType = cell.attributes.subtype;
+		if(cellSubType === SubtypeEnum.OUTPUT || cellSubType === SubtypeEnum.INPUT) return true;
+	};
 }
