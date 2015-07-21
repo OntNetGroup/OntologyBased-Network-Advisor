@@ -7,6 +7,7 @@ import java.util.List;
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.RelationEnum;
+import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -184,5 +185,186 @@ public class NOpenQueryUtil {
 		QueryExecution qe = QueryExecutionFactory.create(query, model);
 		boolean result = qe.execAsk();			
 		return result;
+	}
+	
+	/** @author John Guerson */
+	public static String getSupervisorURI(OKCoUploader repository, String equipmentURI)
+	{
+		List<String> supervisors = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+			repository.getBaseModel(), 
+			equipmentURI, 
+			repository.getNamespace()+RelationEnum.INV_supervises_Equipment_Supervisor.toString(), 
+			repository.getNamespace()+ConceptEnum.Supervisor.toString()
+		);
+		if(supervisors.size()>0) return supervisors.get(0);
+		else return null;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getCardsURI(OKCoUploader repository, String supervisorURI)
+	{
+		List<String> cards = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+			repository.getBaseModel(), 
+			supervisorURI,
+			repository.getNamespace()+RelationEnum.INV_supervises_card_Card_Supervisor.toString(), 
+			repository.getNamespace()+ConceptEnum.Card.toString()
+		);
+		return cards;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getSubslotsURIFromCard(OKCoUploader repository, String cardURI)
+	{		
+		List<String> subslots = QueryUtil.getIndividualsURIAtObjectPropertyDomain(
+			repository.getBaseModel(), 
+			cardURI,
+			repository.getNamespace()+RelationEnum.A_Subslot_Card.toString(), 
+			repository.getNamespace()+ConceptEnum.Subslot.toString()
+		);		
+		return subslots;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getSlotsURIFromCard(OKCoUploader repository, String cardURI)
+	{		
+		List<String> slots = QueryUtil.getIndividualsURIAtObjectPropertyDomain(
+			repository.getBaseModel(), 
+			cardURI,
+			repository.getNamespace()+RelationEnum.A_Slot_Card.toString(), 
+			repository.getNamespace()+ConceptEnum.Slot.toString()
+		);		
+		return slots;
+	}
+		
+	/** @author John Guerson */
+	public static List<String> getSlotsURIFromSubSlot(OKCoUploader repository, String subslotURI)
+	{		
+		List<String> slots = QueryUtil.getIndividualsURIAtObjectPropertyDomain(
+			repository.getBaseModel(), 
+			subslotURI,
+			repository.getNamespace()+RelationEnum.A_Slot_Subslot.toString(), 
+			repository.getNamespace()+ConceptEnum.Slot.toString()
+		);		
+		return slots;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getShelfsURIFromSlot(OKCoUploader repository, String slotURI)
+	{		
+		List<String> shelfs = QueryUtil.getIndividualsURIAtObjectPropertyDomain(
+			repository.getBaseModel(), 
+			slotURI,
+			repository.getNamespace()+RelationEnum.A_Shelf_Slot.toString(), 
+			repository.getNamespace()+ConceptEnum.Shelf.toString()
+		);		
+		return shelfs;
+	}
+
+	/** @author John Guerson */
+	public static List<String> getRacksURIFromShelf(OKCoUploader repository, String shelfURI)
+	{		
+		List<String> racks = QueryUtil.getIndividualsURIAtObjectPropertyDomain(
+			repository.getBaseModel(), 
+			shelfURI,
+			repository.getNamespace()+RelationEnum.A_Rack_Shelf.toString(), 
+			repository.getNamespace()+ConceptEnum.Rack.toString()
+		);		
+		return racks;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getTFsURIFromCard(OKCoUploader repository, String cardURI)
+	{		
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+			repository.getBaseModel(), 
+			cardURI,
+			repository.getNamespace()+RelationEnum.A_Card_TFCardElement.toString(), 
+			repository.getNamespace()+ConceptEnum.TF_Card_Element.toString()
+		);		
+		return elems;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getPhysicalMediasURIFromCard(OKCoUploader repository, String cardURI)
+	{		
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+			repository.getBaseModel(), 
+			cardURI,
+			repository.getNamespace()+RelationEnum.A_Card_TFCardElement.toString(), 
+			repository.getNamespace()+ConceptEnum.Physical_Media.toString()
+		);		
+		return elems;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getMatrixURIFromCard(OKCoUploader repository, String cardURI)
+	{		
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+			repository.getBaseModel(), 
+			cardURI,
+			repository.getNamespace()+RelationEnum.A_Card_TFCardElement.toString(), 
+			repository.getNamespace()+ConceptEnum.Matrix.toString()
+		);		
+		return elems;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getAFsURIFromCard(OKCoUploader repository, String cardURI)
+	{		
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+			repository.getBaseModel(), 
+			cardURI,
+			repository.getNamespace()+RelationEnum.A_Card_TFCardElement.toString(), 
+			repository.getNamespace()+ConceptEnum.Adaptation_Function.toString()
+		);		
+		return elems;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getCardLayersURIFromCard(OKCoUploader repository, String cardURI)
+	{		
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+			repository.getBaseModel(), 
+			cardURI,
+			repository.getNamespace()+RelationEnum.A_Card_CardLayer.toString(), 
+			repository.getNamespace()+ConceptEnum.Card_Layer.toString()
+		);		
+		return elems;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getTTFURIFromCardLayer(OKCoUploader repository, String cardLayerURI)
+	{
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+				repository.getBaseModel(), 
+				cardLayerURI,
+				repository.getNamespace()+RelationEnum.A_CardLayer_TrailTerminationFunction.toString(), 
+				repository.getNamespace()+ConceptEnum.Trail_Termination_Function.toString()
+			);		
+			return elems;
+	}
+		
+	/** @author John Guerson */
+	public static List<String> getMatrixURIFromTTF(OKCoUploader repository, String ttfURI)
+	{
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+				repository.getBaseModel(), 
+				ttfURI,
+				repository.getNamespace()+RelationEnum.binds_Trail_Termination_Function_Matrix.toString(), 
+				repository.getNamespace()+ConceptEnum.Matrix.toString()
+			);		
+			return elems;
+	}
+	
+	/** @author John Guerson */
+	public static List<String> getAFURIFromTTF(OKCoUploader repository, String ttfURI)
+	{
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+				repository.getBaseModel(), 
+				ttfURI,
+				repository.getNamespace()+RelationEnum.binds_Trail_Termination_Function_Adaptation_Function.toString(), 
+				repository.getNamespace()+ConceptEnum.Adaptation_Function.toString()
+			);		
+			return elems;
 	}
 }
