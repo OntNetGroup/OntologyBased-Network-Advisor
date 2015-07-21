@@ -349,6 +349,9 @@ nopen.provisioning.App = Backbone.View.extend({
 							"type": "Input_Card"
 					};
 					
+					//connect target/source ports
+					model.connectPorts(source, output, target, input)
+					
 					console.log('Out: ' + JSON.stringify(output));
 					console.log('In: ' + JSON.stringify(input));
 					

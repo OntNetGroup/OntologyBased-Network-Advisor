@@ -388,7 +388,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		$.each(graph.getElements(), function(index, value){
 			
 			var equipment = graph.getCell(value.id);
-			var cards = model.getCards(equipment);
+			var cards = model.getCardsInPreProvisioning(equipment);
 			var equipmentName = equipment.attr('equipment/template');
 			
 			//open each card

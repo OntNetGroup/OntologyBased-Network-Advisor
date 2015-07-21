@@ -252,45 +252,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 	},
 	
-	getInputsTest : function() {
-		
-		var inputs = {
-		    "ODUk" : [ {
-		    	"id" : 123,
-				"name" : "In_1",
-		    }],
-		    "OPUk" : [{
-		    	"id" : 456,
-				"name" : "In_2",
-		    },
-		    {
-		    	"id" : 789,
-				"name" : "In_3",
-		    }],
-		}
-		
-		return inputs;
-	},
 	
-	getOutputsTest : function() {
-		
-		var outputs = {
-		    "ODUk" : [ {
-		    	"id" : 321,
-				"name" : "Out_1",
-		    }],
-		    "OPUk" : [{
-		    	"id" : 654,
-				"name" : "Out_2",
-		    },
-		    {
-		    	"id" : 987,
-				"name" : "Out_3",
-		    }],
-		}
-		
-		return outputs;
-	},
 	
 	//Method to get inputs from OWL file
 	getInputsFromOWL : function(equipmentId) {

@@ -31,8 +31,8 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			var source = graph.getCell(link.get('source').id);
 			var target = graph.getCell(link.get('target').id);
 			
-			var sourceCards = model.getCards(source);
-			var targetCards = model.getCards(target);
+			var sourceCards = model.getCardsInPreProvisioning(source);
+			var targetCards = model.getCardsInPreProvisioning(target);
 			
 			links.push({
 				'link' : link,

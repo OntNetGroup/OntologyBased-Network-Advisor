@@ -111,6 +111,42 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		
 	},
 	
+	//method to connect input/output ports
+	connectPorts : function(source, output, target, input) {
+		
+		var cards = undefined;
+		var connected = false;
+		
+		//connect input to output
+		cards = this.getCards(source);
+		var outputId = output.id;
+		
+		$.each(cards, function(index, card){
+			
+			if(!connected && card.outPorts[outputId]) {
+				card.connectedPorts[outputId] = input;
+				connected = true;
+			}
+			
+		});
+		
+		//connect output to input
+		cards = this.getCards(target);
+		var inputId = input.id;
+		connected = false;
+		
+		$.each(cards, function(index, card){
+			
+			if(!connected && card.outPorts[inputId]) {
+				card.connectedPorts[inputId] = output;
+				connected = true;
+			}
+			
+		});
+		
+	},
+	
+	
 	//Method do get layers as array of object ( layers = [{ "type" : "", "id" : "", "name" : "" },...] )
 	getLayers : function(equipment) {
 		
@@ -146,9 +182,33 @@ nopen.provisioning.Model = Backbone.Model.extend({
 	getCards : function(equipment) {
 		
 		var cards = [];
-		//var cells = element.attributes.attrs.equipment.data.cells;
-		var cells = equipment.attr('equipment/data').cells;
 		
+		//var equip = $.parseJSON(equipment);
+		var cells = equipment.get('equipment').data.cells;
+		
+		//var cells = equipment.attributes.attrs.equipment.data.cells;
+		//var cells = equipment.attr('equipment/data').cells;
+
+		$.each(cells, function(index, cell) {
+			
+			if(cell.subType === 'Card') {
+				cards.push(cell);
+			}
+			
+		})
+		
+		return cards;
+		
+	},
+	
+	//Method to get cards of a equipment
+	getCardsInPreProvisioning : function(equipment) {
+		
+		var cards = [];
+		
+		//var cells = equipment.attributes.attrs.equipment.data.cells;
+		var cells = equipment.attr('equipment/data').cells;
+
 		$.each(cells, function(index, cell) {
 			
 			if(cell.subType === 'Card') {
