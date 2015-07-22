@@ -34,28 +34,31 @@ nopen.provisioning.File = Backbone.Model.extend({
 	},      
 
 	//Method to open a provisioning file from URL
-	openFromURL : function(filename, graph) {
+	openFromURL : function(graph, filename) {
 		
-		var model = this.app.model;
+		//open provisioning
+		this.openProvisioning(graph, filename);
 		
-		$.ajax({
-		   type: "POST",
-		   url: "openProvisioning.htm",
-		   data: {
-			   'filename' : filename
-		   },
-		   dataType: 'json',
-		   success: function(data){
-			   $("#filename").val(filename);
-			   graph.fromJSON(data);
-			   
-			   //hide links
-			   model.hideLinks();
-		   },
-		   error : function(e) {
-			   //alert("error: " + e.status);
-		   }
-		});
+//		var model = this.app.model;
+//		
+//		$.ajax({
+//		   type: "POST",
+//		   url: "openProvisioning.htm",
+//		   data: {
+//			   'filename' : filename
+//		   },
+//		   dataType: 'json',
+//		   success: function(data){
+//			   $("#filename").val(filename);
+//			   graph.fromJSON(data);
+//			   
+//			   //hide links
+//			   model.hideLinks();
+//		   },
+//		   error : function(e) {
+//			   //alert("error: " + e.status);
+//		   }
+//		});
 	},
 	
 	//Method to generate a save provisioning dialog
@@ -195,7 +198,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 				dialog.open();
 				
 				function openProvisioning() {
-					$this.openProvisioning(graph);
+					var filename = $('input[name=provisioning]:checked', '#open').val();
+					$this.openProvisioning(graph, filename);
 					dialog.close();
 				}
 			   
@@ -208,10 +212,10 @@ nopen.provisioning.File = Backbone.Model.extend({
 	},
 	
 	//Method to open a provisioning file from dialog
-	openProvisioning : function(graph) {
+	openProvisioning : function(graph, filename) {
 		
 		var model = this.app.model;
-		var filename = $('input[name=provisioning]:checked', '#open').val();
+		var owl = this.app.owl;
 		
 		$.ajax({
 		   type: "POST",
@@ -223,6 +227,20 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   dataType: 'json',
 		   success: function(data){ 		   
 			   graph.fromJSON(data);
+			   
+			   //generate owl instances
+			   $.each(graph.getElements(), function(index, equipment) {
+				 
+				   if(equipment.get('subtype') === 'Access_Group') {
+					   
+					   var cards = model.getCards(equipment);
+					   $.each(cards, function(key, card) {
+						   owl.parseCardToOWL(equipment, card);
+					   });
+					   
+				   }
+				   
+			   });
 			   
 			   //hide links
 			   model.hideLinks();

@@ -274,10 +274,23 @@ nopen.provisioning.App = Backbone.View.extend({
 				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
 				
 				$.each(inputs[layer], function(key, input) {
-					content = content +
+					if(!connectedPorts["Input_Card"][input.id]) {
+						content = content +
+							'<ul style="display: block;">' +
+				                '<li class="inputItem" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + input.name + '</li>' +
+				            '</ul>';
+					}
+					else {
+						var output = connectedPorts["Input_Card"][input.id];
+						
+						content = content +
 						'<ul style="display: block;">' +
-			                '<li class="inputItem" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + input.name + '</li>' +
+						'<li class="inputItem connected" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + 
+								input.name +  
+			                	'<span class="tag" id="' + output.id + '">' + output.name + '</span>' +
+			                '</li>' +
 			            '</ul>';
+					}
 				});
 				
 				content = content + '</li>';
@@ -511,8 +524,8 @@ nopen.provisioning.App = Backbone.View.extend({
 		
 		//procedure to open a file from URL
 		if(file.getUrlParameter('provisioning')){
-        	var provisioning = file.getUrlParameter('provisioning');
-        	file.openFromURL(provisioning, app.graph);
+        	var filename = file.getUrlParameter('provisioning');
+        	file.openFromURL(graph, filename);
         }
 		
 		//procedure to save a provisioning file

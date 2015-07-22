@@ -109,7 +109,7 @@ hr {
 }
 
 #expList .connected span.tag {
-/*   float: right; */
+  float: right;
   cursor:pointer;
   color:#fff;
   background:#1e8fc6;
