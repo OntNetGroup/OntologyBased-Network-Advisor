@@ -155,3 +155,12 @@ rect[stroke-width]:hover{
 /*  margin:3px 0 10px 5px; */
  font-size:12px;
 }
+.stencil-paper-drag dragging {
+	heigth: 270px;
+	width: 150px;
+}
+
+#stencil-paper-drag dragging {
+	heigth: 270px;
+	width: 150px;
+}

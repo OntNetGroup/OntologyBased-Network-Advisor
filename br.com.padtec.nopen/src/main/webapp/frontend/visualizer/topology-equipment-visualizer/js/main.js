@@ -15,7 +15,7 @@ var Rappid = Backbone.Router.extend({
 	},
 
 	initializeEditor: function() {
-
+		$('.inspector-container').hide();
 		this.inspectorClosedGroups = {};
 
 		this.initializePaper();
@@ -342,6 +342,13 @@ var Rappid = Backbone.Router.extend({
 //			this.initializeHaloTooltips(halo);
 
 			this.createInspector(cellView);
+//			console.log(cellView.model.attributes.subType);
+            if(cellView.model.attributes.subType === 'Card'){
+            	
+                 	$('.inspector-container').show();
+            }else{
+            	$('.inspector-container').hide();
+            }
 
 			this.selectionView.cancelSelection();
 			this.selection.reset([cellView.model]);

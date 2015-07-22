@@ -14,13 +14,13 @@ function ituHandle(paper, graph){
 		
 		var equipment = graph.getCell(cellId);
 		
-		if((equipment.get('subType')) === 'supervisor'){
+		if((equipment.get('subType')) === 'Supervisor'){
 		
 			selectSupervisorWindow(equipment,graph);
 			
 		};
 		
-		if((equipment.get('subType')) === 'card') {
+		if((equipment.get('subType')) === 'Card') {
 			
 			$("#itu-iframe").empty();
 			
@@ -28,8 +28,8 @@ function ituHandle(paper, graph){
 		        $('#itu-dialog').dialog({
 		            modal: true,
 		            //show: 'scale',
-		            height: 500,
-					width: 500,
+		            height: 600,
+					width: 800,
 		            title: 'Dynamically Loaded Page',
 		            open: function ()
 		            {

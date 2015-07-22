@@ -25,6 +25,8 @@
 	href="/nopen/frontend/visualizer/equipment-visualizer/css/style.css" />
 	<link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/visualizer/equipment-visualizer/css/layout.css" />
+		<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/visualizer/equipment-visualizer/css/halo.css" />
 
 </head>
 <body>

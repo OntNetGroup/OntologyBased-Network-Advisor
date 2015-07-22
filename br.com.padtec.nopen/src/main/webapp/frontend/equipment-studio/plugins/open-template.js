@@ -40,105 +40,161 @@ function openFromURL(filename, graph){
 		success: function(data){
 			$("#filename").val(filename);
 			graph.fromJSON(data);
-			loadEquipments(filename);
+			loadEquipmentstoOWl(filename);
 		},
 		error : function(e) {
 			//alert("error: " + e.status);
 		}
 	});
 
-	function loadEquipments(filename){
-
+	function loadEquipmentstoOWl(filename){
+		
 		$.each(graph.getElements(), function(index, cell){
-
+			
+			/*
+			 * Supervisor > Cards
+			 * Slot > Card
+			 * Slot > Supervisor
+			 * Shelf > Slot
+			 * Rack > Shelf
+			 * Card > Matrix
+			 * Card > Input/Output
+			 * TTF/AF/Matrix > Input/Output
+			 */
+			
+			var elements = [];
+			var links = [];
+			
 			if(cell.get('subType') === 'Rack'){
-            //    console.log(cell.attributes);
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;				
 				app.RackCounter++
-				
-//				insertEquipmentholder(equipmentName , equipmentType, equipmentID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID);
-
-			};
+				var rack = {
+						"type" : "Rack",
+						"id" : cell.id,
+						"name" : cell.attributes.attrs.name.text,
+				};
+				elements.push(rack);
+			}
+			
 			if(cell.get('subType') === 'Shelf'){
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;
 				app.ShelfCounter++;
+				var shelf = {
+						"type" : "Shelf",
+						"id" : cell.get('id'),
+						"name" : cell.attributes.attrs.name.text,
+				};
+				elements.push(shelf);
 				
-				var parentID = cell.get('parent');
-				var parent = graph.getCell(parentID);
-				var containerType = parent.get('subType');
-				var containerID = parent.get('id');
-				var containerName = parent.attributes.attrs.name.text;
-				
-//				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				//Rack (R) > Shelf (Sh)
+				var linkShR = {
+						"sourceType" : "Shelf",
+						"targetType" : "Rack",
+						"source" : cell.get('id'),
+						"target" : cell.get('parent'),
+				};
+				links.push(linkShR);
 
 			}
 			if(cell.get('subType') === 'Slot'){
-
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;
 				app.SlotCounter++;
+				var slot = {
+						"type" : "Slot",
+						"id" : cell.get('id'),
+						"name" : cell.attributes.attrs.name.text,
+				};
+				elements.push(slot);
 				
-				var parentID = cell.get('parent');
-				var parent = graph.getCell(parentID);
-				var containerType = parent.get('subType');
-				var containerID = parent.get('id');
-				var containerName = parent.attributes.attrs.name.text;
-				
-//				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				//Slot (Sl) > Shelf (Sh)
+				var linkSlSh = {
+						"sourceType" : "Slot",
+						"targetType" : "Shelf",
+						"source" : cell.get('id'),
+						"target" : cell.get('parent'),
+				};
+				links.push(linkSlSh);
 
 			}
 
 			if(cell.get('subType')=== 'Card'){
-
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;
 				app.CardCounter++;
+				var card = {
+						"type" : "Card",
+						"id" : cell.get('id'),
+						"name" : cell.attributes.attrs.name.text,
+						
+				};
+				elements.push(card);
 				
-				var parentID = cell.get('parent');
-				var parent = graph.getCell(parentID);
-				var containerType = parent.get('subType');
-				var containerID = parent.get('id');
-				var containerName = parent.attributes.attrs.name.text;
+				//Slot (Sl) > Card (C)
+				var linkSlC = {
+						"sourceType" : "Card",
+						"targetType" : "Slot",
+						"source" : cell.get('id'),
+						"target" : cell.get('parent'),
+				};
+				links.push(linkSlC);
 				
-//				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				//Supervisor (S) > Card (C)
+				var linkSC = {
+						"sourceType" : "Card",
+						"targetType" : "Supervisor",
+						"source" : cell.get('id'),
+						"target" : cell.get('SupervisorID'),
+				};
+				links.push(linkSC);
 				
 				/*
 				 * TODO: load ITU elements of this card on the ontology
 				*/
-				instantiateITUElements(filename, equipmentID);
+				instantiateITUElements(filename, cell.get('id'));
 
 			}
 			if(cell.get('subType')=== 'Supervisor'){
-
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;
 				app.SupervisorCounter++;
+				var supervisor = {
+						"type" : "Supervisor",
+						"id" : cell.get('id'),
+						"name" : cell.attributes.attrs.name.text,
+						"tech" : cell.get('tech')
+				};
+				elements.push(supervisor);
 				
-				var parentID = cell.get('parent');
-				var parent = graph.getCell(parentID);
-				var containerType = parent.get('subType');
-				var containerID = parent.get('id');
-				var containerName = parent.attributes.attrs.name.text;
-				 
-				console.log(equipmentID , equipmentType , equipmentName , parentID , containerType , containerName);
-				
-//				insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				//Slot (Sl) > Supervisor (S)
+				var linkSlC = {
+						"sourceType" : "Supervisor",
+						"targetType" : "Slot",
+						"source" : cell.get('id'),
+						"target" : cell.get('parent'),
+				};
+				links.push(linkSlC);
 
 				//setTechnology(equipmentName, equipmentType, equipmentID , tech);
 
 			}
+			
+			console.log('Elements: ' + JSON.stringify(elements));
+			console.log('Links: ' + JSON.stringify(links));
+			
+			//execute parse
+			$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "parseEquipToOWL.htm",
+			   data: {
+				   'elements' : JSON.stringify(elements),
+				   'links' : JSON.stringify(links),
+			   },
+			   success: function(){
+				  console.log('PARSE OK!')
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+			
+			
+//			console.log('Equipment: ' + JSON.stringify(equipment));
+//			console.log('Card: ' + JSON.stringify(card));
+				
 		});
 	}
 
@@ -188,7 +244,8 @@ function generateOpenTemplateDialog(graph, data){
 			success: function(data){
 				$("#filename").val(filename);
 				graph.fromJSON(data);
-				loadEquipments();
+				//loadEquipments();
+				loadEquipmentstoOWl();
 				dialog.close();
 			},
 			error : function(e) {
@@ -197,94 +254,157 @@ function generateOpenTemplateDialog(graph, data){
 			}
 		});
 
-		function loadEquipments(){
-
+		
+		function loadEquipmentstoOWl(){
+			
 			$.each(graph.getElements(), function(index, cell){
-
+				
+				/*
+				 * Supervisor > Cards
+				 * Slot > Card
+				 * Slot > Supervisor
+				 * Shelf > Slot
+				 * Rack > Shelf
+				 * Card > Matrix
+				 * Card > Input/Output
+				 * TTF/AF/Matrix > Input/Output
+				 */
+				
+				var elements = [];
+				var links = [];
+				
 				if(cell.get('subType') === 'Rack'){
-	                console.log(cell.attributes);
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;				
 					app.RackCounter++
-					
-//					insertEquipmentholder(equipmentName , equipmentType, equipmentID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID);
-
-				};
+					var rack = {
+							"type" : "Rack",
+							"id" : cell.id,
+							"name" : cell.attributes.attrs.name.text,
+					};
+					elements.push(rack);
+				}
+				
 				if(cell.get('subType') === 'Shelf'){
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;
 					app.ShelfCounter++;
+					var shelf = {
+							"type" : "Shelf",
+							"id" : cell.get('id'),
+							"name" : cell.attributes.attrs.name.text,
+					};
+					elements.push(shelf);
 					
-					var parentID = cell.get('parent');
-					var parent = graph.getCell(parentID);
-					var containerType = parent.get('subType');
-					var containerID = parent.get('id');
-					var containerName = parent.attributes.attrs.name.text;
-					
-//					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+					//Rack (R) > Shelf (Sh)
+					var linkShR = {
+							"sourceType" : "Shelf",
+							"targetType" : "Rack",
+							"source" : cell.get('id'),
+							"target" : cell.get('parent'),
+					};
+					links.push(linkShR);
 
 				}
 				if(cell.get('subType') === 'Slot'){
-
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;
 					app.SlotCounter++;
+					var slot = {
+							"type" : "Slot",
+							"id" : cell.get('id'),
+							"name" : cell.attributes.attrs.name.text,
+					};
+					elements.push(slot);
 					
-					var parentID = cell.get('parent');
-					var parent = graph.getCell(parentID);
-					var containerType = parent.get('subType');
-					var containerID = parent.get('id');
-					var containerName = parent.attributes.attrs.name.text;
-					
-//					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+					//Slot (Sl) > Shelf (Sh)
+					var linkSlSh = {
+							"sourceType" : "Slot",
+							"targetType" : "Shelf",
+							"source" : cell.get('id'),
+							"target" : cell.get('parent'),
+					};
+					links.push(linkSlSh);
 
 				}
 
 				if(cell.get('subType')=== 'Card'){
-
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;
 					app.CardCounter++;
+					var card = {
+							"type" : "Card",
+							"id" : cell.get('id'),
+							"name" : cell.attributes.attrs.name.text,
+							
+					};
+					elements.push(card);
 					
-					var parentID = cell.get('parent');
-					var parent = graph.getCell(parentID);
-					var containerType = parent.get('subType');
-					var containerID = parent.get('id');
-					var containerName = parent.attributes.attrs.name.text;
+					//Slot (Sl) > Card (C)
+					var linkSlC = {
+							"sourceType" : "Card",
+							"targetType" : "Slot",
+							"source" : cell.get('id'),
+							"target" : cell.get('parent'),
+					};
+					links.push(linkSlC);
 					
-//					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+					//Supervisor (S) > Card (C)
+					var linkSC = {
+							"sourceType" : "Card",
+							"targetType" : "Supervisor",
+							"source" : cell.get('id'),
+							"target" : cell.get('SupervisorID'),
+					};
+					links.push(linkSC);
+					
+					/*
+					 * TODO: load ITU elements of this card on the ontology
+					*/
+					instantiateITUElements(filename, cell.get('id'));
 
 				}
 				if(cell.get('subType')=== 'Supervisor'){
-
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;
 					app.SupervisorCounter++;
+					var supervisor = {
+							"type" : "Supervisor",
+							"id" : cell.get('id'),
+							"name" : cell.attributes.attrs.name.text,
+							"tech" : cell.get('tech')
+					};
+					elements.push(supervisor);
 					
-					var parentID = cell.get('parent');
-					var parent = graph.getCell(parentID);
-					var containerType = parent.get('subType');
-					var containerID = parent.get('id');
-					var containerName = parent.attributes.attrs.name.text;
-					
-//					insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+					//Slot (Sl) > Supervisor (S)
+					var linkSlC = {
+							"sourceType" : "Supervisor",
+							"targetType" : "Slot",
+							"source" : cell.get('id'),
+							"target" : cell.get('parent'),
+					};
+					links.push(linkSlC);
 
-					//setTechnology(equipmentType, equipmentID , tech);
+					//setTechnology(equipmentName, equipmentType, equipmentID , tech);
 
 				}
+				
+				console.log('Elements: ' + JSON.stringify(elements));
+				console.log('Links: ' + JSON.stringify(links));
+				
+				//execute parse
+				$.ajax({
+				   type: "POST",
+				   async: false,
+				   url: "parseEquipToOWL.htm",
+				   data: {
+					   'elements' : JSON.stringify(elements),
+					   'links' : JSON.stringify(links),
+				   },
+				   success: function(){
+					  console.log('PARSE OK!')
+				   },
+				   error : function(e) {
+					   alert("error: " + e.status);
+				   }
+				});
+				
+				
+//				console.log('Equipment: ' + JSON.stringify(equipment));
+//				console.log('Card: ' + JSON.stringify(card));
+					
 			});
 		}
-
 	};
 }
 

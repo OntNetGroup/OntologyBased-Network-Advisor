@@ -16,13 +16,14 @@ var Rappid = Backbone.Router.extend({
 
 	initializeEditor: function() {
 
+		$('.inspector-container').hide();
 		this.inspectorClosedGroups = {};
 
+		
 		this.initializePaper();
 //		this.initializeStencil();
 		this.initializeSelection();
 		this.initializeHaloAndInspector();
-		$('.inspector-container').hide();
 //		this.initializeNavigator();
 		this.initializeClipboard();
 		this.initializeCommandManager();

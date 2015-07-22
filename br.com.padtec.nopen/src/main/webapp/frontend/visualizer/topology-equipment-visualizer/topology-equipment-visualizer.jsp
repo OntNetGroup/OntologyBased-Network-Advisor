@@ -25,6 +25,8 @@
 	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/style.css" />
 	<link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/layout.css" />
+	<link rel="stylesheet" type="text/css"
+	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/halo.css" />
 
 </head>
 <body>

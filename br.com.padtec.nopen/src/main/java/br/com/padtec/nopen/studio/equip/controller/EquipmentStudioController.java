@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.InstanceFabricator;
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
+import br.com.padtec.nopen.service.EquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.model.StudioSpecificFactory;
@@ -29,6 +31,24 @@ public class EquipmentStudioController {
 		return "equipment-studio/equipment-studio";
 	}
 
+	
+	/**
+	 * Create equipment in OWL by a JSON file
+	 * @param elements
+	 * @param links
+	 */
+	@RequestMapping(value = "/parseEquipToOWL", method = RequestMethod.POST)
+	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
+		
+		try {
+			EquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
+			EquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	/* ======================================================================================
 	 * GET
 	 * ======================================================================================*/
