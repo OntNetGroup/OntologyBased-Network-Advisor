@@ -507,7 +507,7 @@ public class Provisioner {
 		for (int i = 0; i < path.size()-1; i++) {
 			Interface actualInt = path.getInterfaceList().get(i);
 			Interface nextInt = path.getInterfaceList().get(i+1);
-			int size = path.size();
+//			int size = path.size();
 			if(i ==  path.size()-2){
 				System.out.println();
 			}
@@ -590,6 +590,7 @@ public class Provisioner {
 		Interface in = interfaces.get(VAR_IN);
 		Interface in_orig = interfaces.get(VAR_IN);
 		Path auxPath = new Path(lastInputIntNode.getPath());
+		auxPath.setQtBindedInterfaces(this.bindedInterfaces);
 		if(limitExceeded(paths, auxPath, qtShortPaths, maxPathSize, priorityOption, maxNewBindings, maxNewPossible)){
 			return;
 		}		
@@ -608,62 +609,75 @@ public class Provisioner {
 //				if(in_orig.getInterfaceURI().contains("in_int_Source_EQ1_CIC_01") && out.getInterfaceURI().contains("out_int_Sink_EQ4_CIC_01")){
 //					System.out.println();
 //				}
+				
 				List<Path> internalPaths = in_orig.getInternalPaths().get(out);
-				if(internalPaths != null){
-					if(internalPaths.size() == 1 && internalPaths.get(0).size() > 2){
-						List<Interface> intfcList = internalPaths.get(0).getInterfaceList();
+				int loopsForInternalPaths = 0;
+				if(internalPaths == null || internalPaths.size() == 0){
+					loopsForInternalPaths  = 1;
+				}else{
+					loopsForInternalPaths = internalPaths.size();
+				}
+				for (int k = 0; k < loopsForInternalPaths; k++) {
+					DefaultMutableTreeNode newLastInputIntNode2 = newLastInputIntNode;
+					List<Interface> newUsedInterfaces2 = new ArrayList<Interface>(); 
+					newUsedInterfaces2.addAll(newUsedInterfaces1);
+					if(internalPaths != null && internalPaths.size() > 0){
+						if(internalPaths.size() > 1){
+							System.out.println();
+						}
+						List<Interface> intfcList = internalPaths.get(k).getInterfaceList();
 						for (int j = 1; j < intfcList.size()-1; j++) {
 							Interface internalIntfc = intfcList.get(j);
-							newUsedInterfaces1.add(intfcList.get(j));
+							newUsedInterfaces2.add(intfcList.get(j));
 							DefaultMutableTreeNode internalNode = new DefaultMutableTreeNode(internalIntfc);
-							newLastInputIntNode.add(internalNode);
-							newLastInputIntNode = internalNode;
+							newLastInputIntNode2.add(internalNode);
+							newLastInputIntNode2 = internalNode;
 						}
 					}
-				}
-				
-				newUsedInterfaces1.add(out);
-				
-				DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(out);
-				newLastInputIntNode.add(outIntNode);
-				
-				if(VAR_OUT.equals(interfaceTo.getInterfaceURI())){
-					Path path = new Path(outIntNode.getPath());
-					path.setQtBindedInterfaces(this.bindedInterfaces);
-					int qtBinds = path.newBinds();
-					if(limitExceeded(paths, path, qtShortPaths, maxPathSize, priorityOption, maxNewBindings, maxNewPossible)){
-//						return;
-						continue;
-					}
 					
-					if(paths.size() >= qtShortPaths){
-						paths.remove(paths.size()-1);
-					}
+					newUsedInterfaces2.add(out);
 					
-					int j = getOrderedIndex(paths, path, priorityOption);
+					DefaultMutableTreeNode outIntNode = new DefaultMutableTreeNode(out);
+					newLastInputIntNode2.add(outIntNode);
 					
-					paths.add(j, path);
-
-					return;
-				}else{
-					List<Interface> listInterfacesTo = algorithmPart2(isSource, out);
-					for (int j = 0; j < listInterfacesTo.size(); j+=1) {
-						VAR_IN = listInterfacesTo.get(j).getInterfaceURI();
-						//in = new Interface(VAR_IN);
-						in = interfaces.get(VAR_IN);
-						isSource = isStillInSource(isSource, in);
+					if(VAR_OUT.equals(interfaceTo.getInterfaceURI())){
+						Path path = new Path(outIntNode.getPath());
+						path.setQtBindedInterfaces(this.bindedInterfaces);
+//						int qtBinds = path.newBinds();
+						if(limitExceeded(paths, path, qtShortPaths, maxPathSize, priorityOption, maxNewBindings, maxNewPossible)){
+//							return;
+							continue;
+						}
 						
-						if(!newUsedInterfaces1.contains(in)){
-							List<Interface> newUsedInterfaces2 = new ArrayList<Interface>(); 
-							newUsedInterfaces2.addAll(newUsedInterfaces1);
-							newUsedInterfaces2.add(in);
+						if(paths.size() >= qtShortPaths){
+							paths.remove(paths.size()-1);
+						}
+						
+						int j = getOrderedIndex(paths, path, priorityOption);
+						
+						paths.add(j, path);
+
+//						return;
+					}else{
+						List<Interface> listInterfacesTo = algorithmPart2(isSource, out);
+						for (int j = 0; j < listInterfacesTo.size(); j+=1) {
+							VAR_IN = listInterfacesTo.get(j).getInterfaceURI();
+							//in = new Interface(VAR_IN);
+							in = interfaces.get(VAR_IN);
+							isSource = isStillInSource(isSource, in);
 							
-							DefaultMutableTreeNode possibleInIntNode = new DefaultMutableTreeNode(in);
-							outIntNode.add(possibleInIntNode);
-							
-							findPaths(possibleInIntNode, isSource, paths, interfaceTo, newUsedInterfaces2, qtShortPaths, maxPathSize, priorityOption, maxNewBindings, maxNewPossible);
-						}						
-					}	
+							if(!newUsedInterfaces2.contains(in)){
+								List<Interface> newUsedInterfaces3 = new ArrayList<Interface>(); 
+								newUsedInterfaces3.addAll(newUsedInterfaces2);
+								newUsedInterfaces3.add(in);
+								
+								DefaultMutableTreeNode possibleInIntNode = new DefaultMutableTreeNode(in);
+								outIntNode.add(possibleInIntNode);
+								
+								findPaths(possibleInIntNode, isSource, paths, interfaceTo, newUsedInterfaces3, qtShortPaths, maxPathSize, priorityOption, maxNewBindings, maxNewPossible);
+							}						
+						}	
+					}
 				}
 			}								
 		}		

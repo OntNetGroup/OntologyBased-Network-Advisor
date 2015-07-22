@@ -1,11 +1,14 @@
 package provisioner.tester;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.SwingUtilities;
 
@@ -57,33 +60,46 @@ public class AutoTester {
 			String possibleFile = FileUtil.chooseFile("Choose a TXT file containing POSSIBLE instances: ", "resources/possible/", ".txt", "POSSIBLE instances chosen file: ",0);
 			
 			ArrayList<Test> tests = new ArrayList<Test>(); 
-			int option = 0;
-			do {
-				System.out.println("Configuring test " + tests.size());
-				Test test = new Test();
-				test.setDeclaredReplicationsFromConsole();
-				test.setMaxPathSizeFromConsole();
-				test.setQtShortPathsFromConsole();
-				
-				tests.add(test);
-				
-				option = ConsoleUtil.getOptionFromConsole("Do you want to configure one more test? 1-Yes, 0-No", 0, 1,0, false);
-			} while (option == 1);
+			ArrayList<Character> manualOrFile = new ArrayList<Character>();
+			manualOrFile.add('F');
+			manualOrFile.add('M');
 			
-//			int declaredReplications = ConsoleUtil.getOptionFromConsole("Choose the number of layer replications", 2, Integer.MAX_VALUE);
-			//int declaredReplications = 5;
-			
-			
-//			int qtShortPaths = ConsoleUtil.getOptionFromConsole("Choose the number of paths (enter 0 to show all)", 0, Integer.MAX_VALUE);
-			//int qtShortPaths = 10;
-//			int maxPathSize = ConsoleUtil.getOptionFromConsole("Choose the maximum number of interfaces in a path (enter 0 for no limit)", 0, Integer.MAX_VALUE);
-			//int maxPathSize = 10;
-			int declaredWeight = 1;
-			int possibleWeight = 1;
+			Character fromFile = ConsoleUtil.getCharOptionFromConsole("Do you want to configure tests from a file (F) or manually (M)?", manualOrFile);
+			if(fromFile.equals('M') || fromFile.equals('m')){
+				int option = 0;
+				do {
+					System.out.println("Configuring test " + tests.size());
+					Test test = new Test();
+					test.setDeclaredReplicationsFromConsole();
+					test.setQtShortPathsFromConsole();
+					test.setMaxPathSizeFromConsole();
+					test.setMaxNewBindingsFromConsole();
+					test.setMaxNewPossibleFromConsole();
+					test.setPriorityOptionFromConsole(possibleFile);
+					tests.add(test);
+					
+					option = ConsoleUtil.getOptionFromConsole("Do you want to configure one more test? 1-Yes, 0-No", 0, 1,0, false);
+				} while (option == 1);
+			}else{
+				String testsConfiguration = FileUtil.chooseFile("Choose a TXT file containing tests configuration:", "resources/tests/", ".txt", "tests configuration chosen file: ",0);
+				FileReader reader = new FileReader(new File(testsConfiguration));
+		        Scanner scanner = new Scanner(new BufferedReader(reader));
+		        while (scanner.hasNextLine()){
+		        	Test test = new Test();
+					test.setDeclaredReplications(scanner.nextInt());
+					test.setQtShortPaths(scanner.nextInt());
+					test.setMaxPathSize(scanner.nextInt());
+					test.setMaxNewBindings(scanner.nextInt());
+					test.setMaxNewPossible(scanner.nextInt());
+					test.setPriorityOption(scanner.nextInt());
+					tests.add(test);
+		        }
+		        scanner.close();
+		        
+			}
 			
 			int createPathsFile = ConsoleUtil.getOptionFromConsole("Do you want to export found paths to a file? 1-Yes, 0-No", 0, 1,0, false);
 			
-//			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 			Date now = new Date();
 			String nowStr = DateFormat.getInstance().format(now).replace("/", "-").replace(":", ".");
 			
@@ -96,7 +112,6 @@ public class AutoTester {
 			fosTestFile.write((execTimes).getBytes());
 			
 			for (Test test : tests) {
-//				fosTestFile.write(("Test " + tests.indexOf(test) + "\n").getBytes());
 				String unitTestDirStr = outTesterDir + nowStr +"/Test " + tests.indexOf(test) + "/";
 				File unitTestDir = new File(unitTestDirStr);
 				unitTestDir.mkdirs();
@@ -104,20 +119,17 @@ public class AutoTester {
 				FileOutputStream fosExecutionTimes = new FileOutputStream(executionTimes);
 				fosExecutionTimes.write(execTimes.getBytes());
 				
-				boolean fewPossibleEquip = false;
 				for (int i = 0; i < test.getDeclaredReplications(); i++) {
 					fosExecutionTimes.write((tests.indexOf(test) + "\t").getBytes());
 					fosTestFile.write((tests.indexOf(test) + "\t").getBytes());
 					Date beginDate = new Date();
-					executeForNReplications(i, possibleFile, declaredFile, owlBaseTBoxFile, owlConsistencyTBoxFile, fosTestFile, fosExecutionTimes, declaredWeight, fewPossibleEquip, test.getQtShortPaths(), test.getMaxPathSize(), possibleWeight, createPathsFile, unitTestDirStr);
+					executeForNReplications(i, possibleFile, declaredFile, owlBaseTBoxFile, owlConsistencyTBoxFile, fosTestFile, fosExecutionTimes, test.getQtShortPaths(), test.getMaxPathSize(), test.getPriorityOption(), test.getMaxNewBindings(), test.getMaxNewPossible(), createPathsFile, unitTestDirStr);
 					String totalTime = String.valueOf(PerformanceUtil.getExecutionTime(beginDate)) + "\n";
 					fosExecutionTimes.write(totalTime.getBytes());
 					fosTestFile.write(totalTime.getBytes());
 					
 				}
 				fosExecutionTimes.close();
-				
-//				fosTestFile.write(("\n\n").getBytes());
 			}		
 			
 			fosTestFile.close();
@@ -127,7 +139,7 @@ public class AutoTester {
 		}
 	}
 	
-	private static void executeForNReplications(int i, String possibleFile, String declaredFile, String owlBaseTBoxFile, String owlConsistencyTBoxFile, FileOutputStream fosTestFile, FileOutputStream fosExecutionTimes, int declaredWeight, boolean fewPossibleEquip, int qtShortPaths, int maxPathSize, int possibleWeight, int createPathsFile, String testDir) throws Exception{
+	private static void executeForNReplications(int i, String possibleFile, String declaredFile, String owlBaseTBoxFile, String owlConsistencyTBoxFile, FileOutputStream fosTestFile, FileOutputStream fosExecutionTimes, int qtShortPaths, int maxPathSize, int priorityOption, int maxNewBindings, int maxNewPossible, int createPathsFile, String testDir) throws Exception{
 		int possibleReplications = 1;
 		File execTime = new File(testDir + (i+1) + " replication(s)-Summary.txt");   
 		if(execTime.exists()){
@@ -174,7 +186,7 @@ public class AutoTester {
 		Interface interfaceTo = provisioner.getInterface(outInterfaceSrcURI);
 		
 		beginDate = new Date();
-		List<Path> pathsShorters = provisioner.findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, declaredWeight, possibleWeight, fewPossibleEquip);
+		List<Path> pathsShorters = provisioner.findPaths(interfaceFrom, interfaceTo, qtShortPaths, maxPathSize, priorityOption, maxNewBindings, maxNewPossible);
 		long nShortPathsTimeExec = PerformanceUtil.getExecutionTime(beginDate);
 		//String pathsExec = "Find paths execution for " + qtShortPaths + " paths with maximum size " + maxPathSize + ": " + nShortPathsTimeExec + "ms\n";
 		String aux2 = nShortPathsTimeExec + "\t";

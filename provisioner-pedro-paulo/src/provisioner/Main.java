@@ -32,8 +32,8 @@ public class Main {
 			
 			//#2
 			String declaredFile;
-//			declaredFile = FileUtil.chooseFile("Choose a TXT file containing DECLARED instances: ", "resources/declared/", ".txt", "DECLARED instances chosen file: ",0);
-			declaredFile = "resources/declared/SquarteTopology - Declared.txt";
+			declaredFile = FileUtil.chooseFile("Choose a TXT file containing DECLARED instances: ", "resources/declared/", ".txt", "DECLARED instances chosen file: ",0);
+//			declaredFile = "resources/declared/SquarteTopology - Declared.txt";
 			
 			//#14
 			String possibleFile;
