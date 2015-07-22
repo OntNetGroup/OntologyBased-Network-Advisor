@@ -2,16 +2,55 @@ package br.com.padtec.nopen.provisioning.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hp.hpl.jena.rdf.model.InfModel;
 
 import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
+import java.lang.reflect.Type;
+
 public class InterfaceStructure {
+	
+	public static String getPossibleTargetInputs(String sourceOutputId, String targetEquipmentId, OKCoUploader repository){
+		String interfaces = getInterfacesFromEquipment(targetEquipmentId, "Input", repository);
+		Gson gson = new Gson();
+		Type type = new TypeToken<HashMap<String,ArrayList<HashMap<String,String>>>>(){}.getType();
+		HashMap<String,ArrayList<HashMap<String,String>>> interfacesMap = gson.fromJson(interfaces, type);
+
+		for (Entry<String, ArrayList<HashMap<String, String>>> entrySet : interfacesMap.entrySet()) {
+			//for each layer, get the list of ports
+			ArrayList<HashMap<String,String>> listPorts = entrySet.getValue();
+			Iterator<HashMap<String,String>> iterator = listPorts.iterator();
+			while(iterator.hasNext()){
+				HashMap<String, String> it = iterator.next();
+				String portId = it.get("id");
+				System.out.println();
+				String srcIndividualUri = repository.getNamespace() + portId;
+				String relationURI = repository.getNamespace() + "INV.vertical_links_to";
+				String tgtClassURI = repository.getNamespace() + ConceptEnum.Output_Card.toString();
+				boolean hasVerticalConnection = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), srcIndividualUri, relationURI, tgtClassURI);
+				relationURI = repository.getNamespace() + "INV.horizontal_links_to";
+				boolean hasHorizontalConnection = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), srcIndividualUri, relationURI, tgtClassURI);
+				if(hasVerticalConnection || hasHorizontalConnection){
+					//remove from arraylist
+					it.remove("id");
+					it.remove("name");
+				}
+			}
+	    }
+		//remount the json string and return
+		String result = gson.toJson(interfacesMap);
+		return result;
+	}
+	
 	
 	public static String[] getPossibleConnections(String sourceEquipmentId, String targetEquipmentId, String typeOfConnection, String typePort, OKCoUploader repository){
 		String[] result = new String[2];
@@ -20,17 +59,14 @@ public class InterfaceStructure {
 			String resultTarget = getInterfacesFromEquipment(targetEquipmentId, "Output", repository);
 			result[0] = resultSource;
 			result[1] = resultTarget;
-
 		}
 		else{
 			String resultSource = getInterfacesFromEquipment(sourceEquipmentId, typePort, repository);
-			String resultTarget = getInterfacesFromEquipment(sourceEquipmentId, typePort, repository);
+			String resultTarget = getInterfacesFromEquipment(targetEquipmentId, typePort, repository);
 			result[0] = resultSource;
 			result[1] = resultTarget;
 		}
-		
 		return result;
-		
 	}
 	
 	public static String getTypeOfConnection(String sourceEquipmentId, String targetEquipmentId, OKCoUploader repository){
