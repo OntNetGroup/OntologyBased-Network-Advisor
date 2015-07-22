@@ -145,7 +145,7 @@ function openFromURL(filename, graph){
 				/*
 				 * TODO: load ITU elements of this card on the ontology
 				*/
-				instantiateITUElements(filename, cell.get('id'));
+//				instantiateITUElements(filename, cell.get('id'));
 
 			}
 			if(cell.get('subType')=== 'Supervisor'){
@@ -154,7 +154,6 @@ function openFromURL(filename, graph){
 						"type" : "Supervisor",
 						"id" : cell.get('id'),
 						"name" : cell.attributes.attrs.name.text,
-						"tech" : cell.get('tech')
 				};
 				elements.push(supervisor);
 				
@@ -265,7 +264,7 @@ function openFromURL(filename, graph){
 				/*
 				 * TODO: load ITU elements of this card on the ontology
 				*/
-				instantiateITUElements(filename, equipmentID);
+//				instantiateITUElements(filename, equipmentID);
 
 			}
 			if(cell.get('subType')=== 'Supervisor'){
@@ -447,7 +446,7 @@ function generateOpenTemplateDialog(graph, data){
 					/*
 					 * TODO: load ITU elements of this card on the ontology
 					*/
-					instantiateITUElements(filename, cell.get('id'));
+//					instantiateITUElements(filename, cell.get('id'));
 
 				}
 				if(cell.get('subType')=== 'Supervisor'){
@@ -456,7 +455,6 @@ function generateOpenTemplateDialog(graph, data){
 							"type" : "Supervisor",
 							"id" : cell.get('id'),
 							"name" : cell.attributes.attrs.name.text,
-							"tech" : cell.get('tech')
 					};
 					elements.push(supervisor);
 					

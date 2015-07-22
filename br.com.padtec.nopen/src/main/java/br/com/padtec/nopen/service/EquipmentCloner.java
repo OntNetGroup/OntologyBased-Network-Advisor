@@ -24,6 +24,16 @@ public class EquipmentCloner {
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0) {
 				InstanceFabricator.createEquipment(tgtRepository, pElem.getId(), pElem.getName());			
 			}
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Rack.toString())==0) {
+				InstanceFabricator.createRack(tgtRepository, pElem.getId(), pElem.getName());			
+			}
+			 if(pElem.getType().compareToIgnoreCase(ConceptEnum.Shelf.toString())==0) {
+				InstanceFabricator.createShelf(tgtRepository, pElem.getId(), pElem.getName());			
+			}
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0) {
+				InstanceFabricator.createSlot(tgtRepository, pElem.getId(), pElem.getName());			
+			}
+			
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0) {
 				InstanceFabricator.createSupervisor(tgtRepository, pElem.getId(), pElem.getName());
 			}

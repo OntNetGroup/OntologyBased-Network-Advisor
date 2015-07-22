@@ -41,8 +41,8 @@ public class EquipmentStudioController {
 	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
 		try {
-			EquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
-			EquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
+			EquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
+			EquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

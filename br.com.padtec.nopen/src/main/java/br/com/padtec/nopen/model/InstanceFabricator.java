@@ -595,6 +595,31 @@ public class InstanceFabricator {
 		NOpenLog.appendLine(repository.getName()+": Rack "+rackName+" created");
 	}
 	
+	
+	public static void createShelf(OKCoUploader repository, String shelfId, String shelfName) throws Exception
+	{
+		Individual i = FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+shelfId, 
+			repository.getNamespace()+ConceptEnum.Shelf.toString()
+		);
+		i.setLabel(shelfName,"EN");
+		
+		NOpenLog.appendLine(repository.getName()+": Shelf "+shelfName+" created");
+	}
+	
+
+	public static void createSlot(OKCoUploader repository, String slotId, String slotName) throws Exception
+	{
+		Individual i = FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+slotId, 
+			repository.getNamespace()+ConceptEnum.Slot.toString()
+		);
+		i.setLabel(slotName,"EN");
+		
+		NOpenLog.appendLine(repository.getName()+": Slot "+slotName+" created");
+	}
 	/**
 	 * @author John Guerson
 	 */
