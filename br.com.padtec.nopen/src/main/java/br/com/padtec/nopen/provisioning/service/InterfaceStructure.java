@@ -55,6 +55,23 @@ public class InterfaceStructure {
 		//create result hash
 		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
 
+		//create relations array
+		ArrayList<String> relationsNameList = new ArrayList<String>();
+		
+		//add Card > Card_layer relations in array  
+		relationsNameList.add(RelationEnum.INV_A_Card_CardLayer.toString());
+		
+		//add Card > Output/Input relations in array  
+		if(typePort == "Output") {
+			relationsNameList.add(RelationEnum.A_Card_OutputCard.toString());
+		}
+		else if(typePort == "Input") {
+			relationsNameList.add(RelationEnum.A_Card_InputCard.toString());
+		}
+		else {
+			relationsNameList.add(RelationEnum.componentOf.toString());
+		}
+		
 		//get layers
 		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
 		for(String layer : layers){
@@ -62,27 +79,11 @@ public class InterfaceStructure {
 			//create layer array
 			ArrayList<HashMap<String, String>> layerPortMapping = new ArrayList<HashMap<String, String>>();
 			
-			//create relations array
-			ArrayList<String> relationsNameList = new ArrayList<String>();
-			
-			//add Card > Card_layer relations in array  
-			relationsNameList.add(RelationEnum.INV_A_Card_CardLayer.toString());
-			
-			//add Card > Output/Input relations in array  
-			if(typePort == "Output") {
-				relationsNameList.add(RelationEnum.A_Card_OutputCard.toString());
-			}
-			else if(typePort == "Input") {
-				relationsNameList.add(RelationEnum.A_Card_InputCard.toString());
-			}
-			else {
-				relationsNameList.add(RelationEnum.componentOf.toString());
-			}
-			
 			//get Output/Input ports by layer
 			layer = layer.substring(layer.indexOf("#")+1);
 			
-			ArrayList<String> ports = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relationsNameList);
+			ArrayList<String> ports = new ArrayList<String>();
+			ports = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relationsNameList);
 			for(String port : ports){
 				if(!hasBinds(repository.getBaseModel(), port)){
 					//create port hash
@@ -123,6 +124,7 @@ public class InterfaceStructure {
 		//transform the result mapping in a JSON string
 		Gson gson = new Gson(); 
 		String json = gson.toJson(result);
+		System.out.println(json);
 				
 		return json;
 	}

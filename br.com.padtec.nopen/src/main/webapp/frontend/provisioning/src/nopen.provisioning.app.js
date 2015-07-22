@@ -143,7 +143,6 @@ nopen.provisioning.App = Backbone.View.extend({
         paper.on('cell:pointerup', function(cellView, evt, x, y) {
         	
         	var cell = graph.getCell(cellView.model.id);
-        	console.log(cell.get('type'))
 
         	if(cell.get('type') === 'link') {
         		transition = false;
@@ -217,6 +216,9 @@ nopen.provisioning.App = Backbone.View.extend({
     	       if(cell.get('subtype') !== 'Access_Group') return;
     	       
     	       var connectedPorts = model.getConnectedPorts(cell);
+    	       
+    	       console.log('connectedPorts' + JSON.stringify(connectedPorts));
+    	       
     	       createEquipmentConnectionDialog(cell, connectedPorts);
     	       
     	    }

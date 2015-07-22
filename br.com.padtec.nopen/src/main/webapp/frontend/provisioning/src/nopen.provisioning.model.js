@@ -111,6 +111,41 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		
 	},
 	
+	//method to connect input/output ports in pre provisioning
+	connectPortsInPreProvisioning : function(source, output, target, input) {
+		
+		var cards = undefined;
+		var connected = false;
+		
+		//connect input to output
+		cards = this.getCardsInPreProvisioning(source);
+		var outputId = output.id;
+		
+		$.each(cards, function(index, card){
+			
+			if(!connected && card.outPorts[outputId]) {
+				card.connectedPorts[outputId] = input;
+				connected = true;
+			}
+			
+		});
+		
+		//connect output to input
+		cards = this.getCardsInPreProvisioning(target);
+		var inputId = input.id;
+		connected = false;
+		
+		$.each(cards, function(index, card){
+			
+			if(!connected && card.inPorts[inputId]) {
+				card.connectedPorts[inputId] = output;
+				connected = true;
+			}
+			
+		});
+		
+	},
+	
 	//method to connect input/output ports
 	connectPorts : function(source, output, target, input) {
 		
@@ -137,7 +172,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		
 		$.each(cards, function(index, card){
 			
-			if(!connected && card.outPorts[inputId]) {
+			if(!connected && card.inPorts[inputId]) {
 				card.connectedPorts[inputId] = output;
 				connected = true;
 			}
@@ -227,7 +262,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		var cards = this.getCards(equipment);
 		var ports = {
 				"Output_Card" : {},
-				"Input_Card" : [],
+				"Input_Card" : {},
 		};
 		
 		$.each(cards, function(index, card) {
@@ -245,7 +280,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			
 		});
 		
-		console.log('Ports Connected: ' + JSON.stringify(ports));
+//		console.log('Ports Connected: ' + JSON.stringify(ports));
 		
 		return ports;
 		
@@ -342,6 +377,15 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		var paper = app.paper;
 		
 		var links = graph.getLinks();
+
+		//get cards in pre provisioning
+		var preCards = {};
+		$.each(graph.getElements(), function(index, equipment) {
+			var cards = $this.getCardsInPreProvisioning(equipment);
+			preCards[equipment.id] = cards;
+		});
+		
+		console.log('Pre Cards: ' + JSON.stringify(preCards));
 		
 		graph.clear();
 		
@@ -402,8 +446,34 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			
 			//link.attr('.pointer-events:', 'visiblePainted');
 			link.prop('z', 100);
-			console.log('LINK: ' + JSON.stringify(link));
+//			console.log('LINK: ' + JSON.stringify(link));
 			graph.addCell(link);
+			
+		});
+		
+		$.each(graph.getElements(), function(index, equipment) {
+			
+			if(equipment.get('subtype') === 'Access_Group') {
+				
+				var cells = equipment.get('equipment').data.cells;
+				
+				$.each(cells, function(index, cell) {
+					
+					if(cell.subType === 'Card') {
+						$.each(preCards[equipment.id], function(index, card) {
+							
+							if(card.id === cell.id) {
+								equipment.get('equipment').data.cells[index] = card;
+								console.log('CARD: ' + JSON.stringify(card));
+								console.log('SET NEW CARD! ' + JSON.stringify(equipment.get('equipment').data.cells[index]));
+							}
+							
+						});
+					}
+					
+				});
+				
+			}
 			
 		});
 		

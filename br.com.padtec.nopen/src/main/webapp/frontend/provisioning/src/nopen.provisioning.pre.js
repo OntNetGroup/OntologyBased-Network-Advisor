@@ -111,8 +111,6 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			
 			if(currentLinkIndex < links.length) {
 				
-				//var layers = model.getLayers(target);
-
 				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);
@@ -130,8 +128,6 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			//currentLinkIndex === links.length
 			else {
 				
-				//var layers = model.getLayers(target);
-
 				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);
@@ -271,8 +267,10 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 						"type": "Input_Card"
 				};
 				
-				console.log('Out: ' + JSON.stringify(output));
-				console.log('In: ' + JSON.stringify(input));
+				model.connectPortsInPreProvisioning(source, output, target, input);
+				
+//				console.log('Out: ' + JSON.stringify(output));
+//				console.log('In: ' + JSON.stringify(input));
 				
 			});
 			

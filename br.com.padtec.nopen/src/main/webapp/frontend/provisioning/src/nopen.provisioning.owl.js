@@ -208,8 +208,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			
 		});
 		
-		console.log('Elements: ' + JSON.stringify(elements));
-		console.log('Links: ' + JSON.stringify(links));
+//		console.log('Elements: ' + JSON.stringify(elements));
+//		console.log('Links: ' + JSON.stringify(links));
 		
 		//execute parse
 		$.ajax({
