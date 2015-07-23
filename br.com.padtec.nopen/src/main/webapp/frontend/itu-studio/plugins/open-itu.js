@@ -95,7 +95,8 @@ function openFromURL(equipment, filename, graph, app){
 	}
 	
 	function loadLinks(graph, app) {
-		$.each(graph.getLinks(), function(index, link){
+		var links = graph.getLinks();
+		$.each(links, function(index, link){
 			var linkID = link.attributes.id;
 			
 			var sourceID = link.attributes.source.id;
@@ -117,14 +118,14 @@ function openFromURL(equipment, filename, graph, app){
 				});
     			nextName(targetSubtype);
     			if(targetSubtype === SubtypeEnum.INPUT) {
-    				this.barIn.attributes.embeddedPorts[this.barIn.attributes.embeddedPorts.length] = targetID;
+    				app.barIn.attributes.embeddedPorts[app.barIn.attributes.embeddedPorts.length] = targetID;
     			} else {
-    				this.barOut.attributes.embeddedPorts[this.barOut.attributes.embeddedPorts.length] = targetID;
+    				app.barOut.attributes.embeddedPorts[app.barOut.attributes.embeddedPorts.length] = targetID;
     			}
 			}
 			
 //			performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID); all instatiation was made when EquipStudio was started
-		}, app);
+		});
 	}
 	
 	// Get name for properly element being added
