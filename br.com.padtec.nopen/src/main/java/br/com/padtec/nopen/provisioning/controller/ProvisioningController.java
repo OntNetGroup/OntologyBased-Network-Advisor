@@ -13,6 +13,7 @@ import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.EquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
+import br.com.padtec.okco.core.application.OKCoUploader;
 
 @Controller
 public class ProvisioningController {
@@ -190,6 +191,9 @@ public class ProvisioningController {
 		String result = null;
 		try {
 			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
+			String sourceOutputId = "a6903fe6-a3b8-49bb-8a7e-2180baa4b73b";
+			String targetEquipmentId = "6d893924-e6c5-4e06-9066-60544e756d9b";
+			String teste = InterfaceStructure.getPossibleTargetInputs(sourceOutputId, targetEquipmentId, ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
