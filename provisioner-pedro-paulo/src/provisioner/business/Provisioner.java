@@ -246,6 +246,9 @@ public class Provisioner {
 				Interface in = interfaces.get(intfc);
 				in.clearInterfaceTo();
 			}
+			
+			System.out.println(PerformanceUtil.getExecutionMessage("reasoningTimeExecPostInstances", reasoningTimeExecPostInstances));
+			System.out.println(PerformanceUtil.getExecutionMessage("createInstances", createInstancesTime));
 			//#10 and #11
 			int srcInt2ProvIndex = ConsoleUtil.chooseOne(this.getINT_SO_LIST(), "Input Interfaces", "Choose the Source Input Interface to be provisioned (INT_SOURCE): ",0, true, false);
 //			int srcInt2ProvIndex = 6;
@@ -258,8 +261,8 @@ public class Provisioner {
 			Interface interfaceTo = this.getINT_SK_LIST().get(tgtInt2ProvIndex);
 			//String equipToURI = INT_SK_LIST.get(tgtInt2ProvIndex+1);
 			
-//			Character modeOption = ConsoleUtil.getCharOptionFromConsole("Choose provisioning mode: Automatically (A) or Manually (M)? ", modeOptions);
-			Character modeOption = 'a';
+			Character modeOption = ConsoleUtil.getCharOptionFromConsole("Choose provisioning mode: Automatically (A) or Manually (M)? ", modeOptions);
+//			Character modeOption = 'a';
 			
 			Path path;
 			if(modeOption.equals('M') || modeOption.equals('m')){
@@ -427,7 +430,7 @@ public class Provisioner {
 			options.add("minimum number of interfaces of possible equipment");
 		}
 		
-		int priorityOption = ConsoleUtil.chooseOne(options, "Priority", "Choose the Priority:", 0, false, false);
+		int priorityOption = ConsoleUtil.chooseOne(options, "Priority", "Choose the Priority: ", 0, false, false);
 		
 		if(!this.possibleEquipFile.equals("")){
 //			option = 'S';
