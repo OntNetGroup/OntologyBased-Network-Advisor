@@ -142,11 +142,124 @@ function openFromURL(filename, graph){
 				};
 				links.push(linkSC);
 				
-				/*
-				 * TODO: load ITU elements of this card on the ontology
-				*/
-//				instantiateITUElements(filename, cell.get('id'));
-
+				//ITU Elements
+				var cardCells = loadCardElements(filename, card.id);
+				$.each(cardCells, function(index, element) {
+					
+					//Card_Layer
+					if(element.attributes.subtype === 'Card_Layer') {
+						//console.log('Layer: ' + JSON.stringify(element));
+						var layer = {
+								"type" : element.attributes.subtype,
+								"id" : element.attributes.lanes.label,
+								"name" : element.attributes.lanes.label,
+						};
+						elements.push(layer);
+						
+						//Card > Card_Layer
+						var link = {
+								"sourceType" : card.type,
+								"targetType" : element.attributes.subtype,
+								"source" : card.id,
+								"target" : element.attributes.lanes.label,
+						};
+						links.push(link);
+						
+					}
+					//Trail_Termination_Function
+					else if (element.attributes.subtype === 'Trail_Termination_Function') {
+						
+						var ttf = {
+								"type" : element.attributes.subtype,
+								"id" : element.attributes.id,
+								"name" : element.attributes.attrs.text.text,
+						}
+						elements.push(ttf);
+						
+						//Layer > TTF
+						var link = {
+								"sourceType" : "Card_Layer",
+								"targetType" : element.attributes.subtype,
+								"source" : element.attributes.subtype,
+								"target" : element.attributes.id
+						}
+					}
+					//Adaptation_Function
+					else if (element.attributes.subtype === 'Adaptation_Function') {
+					
+						var af = {
+								"type" : element.attributes.subtype,
+								"id" : element.attributes.id,
+								"name" : element.attributes.attrs.text.text,
+						}
+						elements.push(af);
+						
+						//Card_layer > AF
+						var link = {
+								"sourceType" : "Card_Layer",
+								"targetType" : element.attributes.subtype,
+								"source" : element.attributes.subtype,
+								"target" : element.attributes.id
+						};
+						links.push(link);
+						
+					}
+					//Matrix
+					else if (element.attributes.subtype === 'Matrix') {
+						
+						var matrix = {
+								"type" : element.attributes.subtype,
+								"id" : element.attributes.id,
+								"name" : element.attributes.attrs.text.text,
+						}
+						elements.push(matrix);
+						
+						//Card_layer > Matrix
+						var link = {
+								"sourceType" : "Card_Layer",
+								"targetType" : element.attributes.subtype,
+								"source" : element.attributes.subtype,
+								"target" : element.attributes.id
+						};
+						links.push(link);
+						
+					}
+					//Input_Card / Output_Card
+					else if (element.attributes.subtype === 'Input_Card' || element.attributes.subtype === 'Output_Card') {
+						
+						var inOut = {
+								"type" : element.attributes.subtype,
+								"id" : element.attributes.id,
+								"name" : element.attributes.attrs.text.text,
+						}
+						elements.push(inOut);
+						
+						//Card_layer > Input_Card/Output_Card
+						var link = {
+								"sourceType" : "Card_Layer",
+								"targetType" : element.attributes.subtype,
+								"source" : element.attributes.subtype,
+								"target" : element.attributes.id
+						};
+						links.push(link);
+						
+					}
+					//Links
+					else if(element.attributes.subtype === 'link') {
+						
+						var link = {
+								"sourceType" : getElementType(cardCells, element.attributes.source),
+								"targetType" : getElementType(cardCells, element.attributes.target),
+								"source" : element.attributes.source,
+								"target" : element.attributes.target
+						}
+						links.push(link);
+						
+					}
+					
+					
+				});
+				
 			}
 			if(cell.get('subType')=== 'Supervisor'){
 				app.SupervisorCounter++;
@@ -261,11 +374,6 @@ function openFromURL(filename, graph){
 //				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
 				
-				/*
-				 * TODO: load ITU elements of this card on the ontology
-				*/
-//				instantiateITUElements(filename, equipmentID);
-
 			}
 			if(cell.get('subType')=== 'Supervisor'){
 
@@ -443,10 +551,123 @@ function generateOpenTemplateDialog(graph, data){
 					};
 					links.push(linkSC);
 					
-					/*
-					 * TODO: load ITU elements of this card on the ontology
-					*/
-//					instantiateITUElements(filename, cell.get('id'));
+					//ITU Elements
+					var cardCells = loadCardElements(filename, card.id);
+					$.each(cardCells, function(index, element) {
+						
+						//Card_Layer
+						if(element.attributes.subtype === 'Card_Layer') {
+							//console.log('Layer: ' + JSON.stringify(element));
+							var layer = {
+									"type" : element.attributes.subtype,
+									"id" : element.attributes.lanes.label,
+									"name" : element.attributes.lanes.label,
+							};
+							elements.push(layer);
+							
+							//Card > Card_Layer
+							var link = {
+									"sourceType" : card.type,
+									"targetType" : element.attributes.subtype,
+									"source" : card.id,
+									"target" : element.attributes.lanes.label,
+							};
+							links.push(link);
+							
+						}
+						//Trail_Termination_Function
+						else if (element.attributes.subtype === 'Trail_Termination_Function') {
+							
+							var ttf = {
+									"type" : element.attributes.subtype,
+									"id" : element.attributes.id,
+									"name" : element.attributes.attrs.text.text,
+							}
+							elements.push(ttf);
+							
+							//Layer > TTF
+							var link = {
+									"sourceType" : "Card_Layer",
+									"targetType" : element.attributes.subtype,
+									"source" : element.attributes.subtype,
+									"target" : element.attributes.id
+							}
+						}
+						//Adaptation_Function
+						else if (element.attributes.subtype === 'Adaptation_Function') {
+						
+							var af = {
+									"type" : element.attributes.subtype,
+									"id" : element.attributes.id,
+									"name" : element.attributes.attrs.text.text,
+							}
+							elements.push(af);
+							
+							//Card_layer > AF
+							var link = {
+									"sourceType" : "Card_Layer",
+									"targetType" : element.attributes.subtype,
+									"source" : element.attributes.subtype,
+									"target" : element.attributes.id
+							};
+							links.push(link);
+							
+						}
+						//Matrix
+						else if (element.attributes.subtype === 'Matrix') {
+							
+							var matrix = {
+									"type" : element.attributes.subtype,
+									"id" : element.attributes.id,
+									"name" : element.attributes.attrs.text.text,
+							}
+							elements.push(matrix);
+							
+							//Card_layer > Matrix
+							var link = {
+									"sourceType" : "Card_Layer",
+									"targetType" : element.attributes.subtype,
+									"source" : element.attributes.subtype,
+									"target" : element.attributes.id
+							};
+							links.push(link);
+							
+						}
+						//Input_Card / Output_Card
+						else if (element.attributes.subtype === 'Input_Card' || element.attributes.subtype === 'Output_Card') {
+							
+							var inOut = {
+									"type" : element.attributes.subtype,
+									"id" : element.attributes.id,
+									"name" : element.attributes.attrs.text.text,
+							}
+							elements.push(inOut);
+							
+							//Card_layer > Input_Card/Output_Card
+							var link = {
+									"sourceType" : "Card_Layer",
+									"targetType" : element.attributes.subtype,
+									"source" : element.attributes.subtype,
+									"target" : element.attributes.id
+							};
+							links.push(link);
+							
+						}
+						//Links
+						else if(element.attributes.subtype === 'link') {
+							
+							var link = {
+									"sourceType" : getElementType(cardCells, element.attributes.source),
+									"targetType" : getElementType(cardCells, element.attributes.target),
+									"source" : element.attributes.source,
+									"target" : element.attributes.target
+							}
+							links.push(link);
+							
+						}
+						
+						
+					});
 
 				}
 				if(cell.get('subType')=== 'Supervisor'){
@@ -589,103 +810,42 @@ function generateOpenTemplateDialog(graph, data){
 	};
 }
 
-function instantiateITUElements(cardName, cardID) {
+//Method to get element type
+function getElementType(elements, elementId) {
+	
+	$.each(elements, function(index, element) {
+		
+		if(element.id == elementId) {
+			if(element.subtype) {
+				return element.subtype;
+			}
+			else if(element.subType) {
+				return element.subType;
+			}
+		}
+		
+	});
+	
+}
+
+function loadCardElements(eqName, cardID) {
 	var localGraph = new joint.dia.Graph;
-	var localApp = {
-			cardName : cardName,
-			cardID : cardID
-	};
 	
 	$.ajax({
 		type: "POST",
 		async: false,
 		url: "openITUFile.htm",
 		data: {
-			'path' : cardName,
+			'path' : eqName,
 			'filename' : cardID
 		},
 		dataType: 'json',
 		success: function(data){
 			localGraph.fromJSON(data);
-			loadCells(localGraph, localApp);
 		},
 		error : function(e) {
-//			alert("error: " + e.status);
+			alert("error: " + e.status);
 		}
 	});
-	
-	function loadCells(graph, app) {
-		
-		loadElements(graph, app);
-		loadLinks(graph);
-	}
-	
-	function loadElements(graph, app) {
-
-		var layers = [];
-		var transportFunctions = [];
-		
-		$.each(graph.getElements(), function(index, element){
-			var elementType = element.attributes.type;
-			if(elementType === TypeEnum.LAYER) {
-				layers[layers.length] = element;
-			}
-			if(elementType === TypeEnum.TRANSPORT_FUNCTION) {
-				transportFunctions[transportFunctions.length] = element;
-			}
-		});
-		
-		loadLayers(layers, graph, app);
-		loadTransportFunctions(transportFunctions, graph, app);
-	}
-	
-	function loadLayers(layers, graph, app) {
-
-		$.each(layers, function(index, layer){
-			var layerName = layer.attributes.lanes.label;
-			var layerID = layer.id;
-			insertLayer(layerID, layerName, app.cardID, app.cardName);
-//			app.hideLayer(layerName);
-		});
-	}
-	
-	function loadTransportFunctions(transportFunctions, graph, app) {
-		
-		$.each(transportFunctions, function(index, transportFunction){
-			
-			var tFunctionID = transportFunction.attributes.id;
-			var tFunctionName = transportFunction.attributes.attrs.text.text;
-			var tFunctionType = transportFunction.attributes.subtype;
-			
-			var parentID = transportFunction.attributes.parent;
-			var parent = graph.getCell(parentID);
-			
-			if(parent) {
-				var parentSubtype = parent.attributes.subtype;
-				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, parentID, parentSubtype, 'Card_Layer');
-			} else {
-				createTransportFunction(tFunctionID, tFunctionName, tFunctionType, app.cardID, app.cardName, 'Card');
-			}
-		});
-	}
-	
-	function loadLinks(graph) {
-		$.each(graph.getLinks(), function(index, link){
-			var linkID = link.attributes.id;
-			
-			var sourceID = link.attributes.source.id;
-			var source = graph.getCell(sourceID);
-			var sourceName = source.attributes.attrs.text.text;
-			var sourceType = source.attributes.type;
-			var sourceSubtype = source.attributes.subtype;
-			
-			var targetID = link.attributes.target.id;
-			var target = graph.getCell(targetID);
-			var targetName = target.attributes.attrs.text.text;
-			var targetType = target.attributes.type;
-			var targetSubtype = target.attributes.subtype;
-			
-			performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
-		});
-	}
+	return localGraph.getElements();
 }
