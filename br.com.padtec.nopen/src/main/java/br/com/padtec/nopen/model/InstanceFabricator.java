@@ -76,6 +76,90 @@ public class InstanceFabricator {
 		NOpenLog.appendLine(repository.getName()+": Input Card "+inCardName+" linked to Card "+cardName);
 	}
 	
+	public static void createLinkFromRackToShelf(OKCoUploader repository, String rackId, String rackName, String shelfId, String shelfName) throws Exception
+	{	
+		FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+rackId, 
+				repository.getNamespace()+RelationEnum.A_Rack_Shelf.toString(),
+				repository.getNamespace()+shelfId
+			);
+		
+		NOpenLog.appendLine(repository.getName()+": Shelf "+shelfName+" linked to Rack "+rackName);
+	}
+	
+	public static void createLinkFromShelfToSlot(OKCoUploader repository, String shelfId, String shelfName, String slotId, String slotName) throws Exception
+	{	
+		FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+shelfId, 
+				repository.getNamespace()+RelationEnum.A_Shelf_Slot.toString(),
+				repository.getNamespace()+slotId
+			);
+		
+		NOpenLog.appendLine(repository.getName()+": Slot "+slotName+" linked to Shelf "+shelfName);
+	}
+	
+	public static void createLinkFromSlotToSubSlot(OKCoUploader repository, String slotId, String slotName, String subslotId, String subslotName) throws Exception
+	{	
+		FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+slotId, 
+				repository.getNamespace()+RelationEnum.A_Slot_Subslot.toString(),
+				repository.getNamespace()+subslotId
+			);
+		
+		NOpenLog.appendLine(repository.getName()+": Subslot "+subslotName+" linked to Slot "+slotName);
+	}
+	
+	public static void createLinkFromSlotToCard(OKCoUploader repository, String slotId, String slotName, String cardId, String cardName) throws Exception
+	{	
+		FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+slotId, 
+				repository.getNamespace()+RelationEnum.A_Slot_Card.toString(),
+				repository.getNamespace()+cardId
+			);
+		
+		NOpenLog.appendLine(repository.getName()+": Card "+cardName+" linked to Slot "+slotName);
+	}
+	
+	public static void createLinkFromSubSlotToCard(OKCoUploader repository, String subslotId, String subslotName, String cardId, String cardName) throws Exception
+	{	
+		FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+subslotId, 
+				repository.getNamespace()+RelationEnum.A_Subslot_Card.toString(),
+				repository.getNamespace()+cardId
+			);
+		
+		NOpenLog.appendLine(repository.getName()+": Card "+cardName+" linked to Subslot "+subslotName);
+	}
+	
+	public static void createLinkFromSubSlotToSupervisor(OKCoUploader repository, String subslotId, String subslotName, String supervisorId, String supervisorName) throws Exception
+	{	
+		FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+subslotId, 
+				repository.getNamespace()+RelationEnum.A_Subslot_Supervisor.toString(),
+				repository.getNamespace()+supervisorId
+			);
+		
+		NOpenLog.appendLine(repository.getName()+": Supervisor "+supervisorName+" linked to Subslot "+subslotName);
+	}
+	
+	public static void createLinkFromSlotToSupervisor(OKCoUploader repository, String slotId, String slotName, String supervisorId, String supervisorName) throws Exception
+	{	
+		FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+slotId, 
+				repository.getNamespace()+RelationEnum.A_Slot_Supervisor.toString(),
+				repository.getNamespace()+supervisorId
+			);
+		
+		NOpenLog.appendLine(repository.getName()+": Supervisor "+supervisorName+" linked to Slot "+slotName);
+	}
+	
 	public static void createOutputCard(OKCoUploader repository, String outCardId, String outCardName) throws Exception
 	{	
 		Individual i = FactoryUtil.createInstanceIndividual(

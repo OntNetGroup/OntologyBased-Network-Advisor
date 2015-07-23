@@ -94,6 +94,55 @@ public class EquipmentCloner {
 		PLink[] links = (PLink[]) JointUtilManager.getJavaFromJSON(jsonLinks, PLink[].class);
 		for(PLink pLink: links)
 		{
+			/** Rack -> Shelf */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Rack.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Shelf.toString())==0){
+				InstanceFabricator.createLinkFromRackToShelf(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Shelf.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Rack.toString())==0){
+				InstanceFabricator.createLinkFromRackToShelf(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
+			}	
+			/** Shelf -> Slot */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Shelf.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0){
+				InstanceFabricator.createLinkFromShelfToSlot(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Shelf.toString())==0){
+				InstanceFabricator.createLinkFromShelfToSlot(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
+			}
+			/** Slot -> Subslot */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Subslot.toString())==0){
+				InstanceFabricator.createLinkFromSlotToSubSlot(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Subslot.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0){
+				InstanceFabricator.createLinkFromSlotToSubSlot(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
+			}
+			/** Slot -> Card */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
+				InstanceFabricator.createLinkFromSlotToCard(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0){
+				InstanceFabricator.createLinkFromSlotToCard(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
+			}
+			/** Subslot -> Card */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Subslot.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
+				InstanceFabricator.createLinkFromSubSlotToCard(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Subslot.toString())==0){
+				InstanceFabricator.createLinkFromSubSlotToCard(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
+			}
+			/** Slot -> Supervisor */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0){
+				InstanceFabricator.createLinkFromSlotToSupervisor(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0){
+				InstanceFabricator.createLinkFromSlotToSupervisor(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
+			}
+			/** Subslot -> Supervisor */
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Subslot.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0){
+				InstanceFabricator.createLinkFromSubSlotToSupervisor(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());				 
+			}
+			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Subslot.toString())==0){
+				InstanceFabricator.createLinkFromSubSlotToSupervisor(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
+			}
 			/** Card -> Input Card */
 			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Input_Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Card.toString())==0){
 				InstanceFabricator.createLinkFromCardToInputCard(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());				 

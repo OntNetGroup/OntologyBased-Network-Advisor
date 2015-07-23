@@ -75,6 +75,7 @@ public class AttributeRecognizer {
 						if(isClient) tpType = "client-"+tpType;
 						String jsonFileName = layer.toLowerCase()+variable.toLowerCase()+"-"+tpType.toLowerCase()+"-grouping.json";
 						InputStream s = AttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);
+						System.out.println(jsonFileName);
 						StringWriter writer = new StringWriter();
 						IOUtils.copy(s, writer, "UTF-8");
 						
@@ -85,6 +86,7 @@ public class AttributeRecognizer {
 					if(isClient) tpType = "client-"+tpType;
 					String jsonFileName = layer.toLowerCase()+variable.toLowerCase()+"-"+tpType.toLowerCase()+"-grouping.json";
 					InputStream s = AttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);
+					System.out.println(jsonFileName);
 					StringWriter writer = new StringWriter();
 					IOUtils.copy(s, writer, "UTF-8");
 					
