@@ -34,10 +34,10 @@ public class InterfaceStructure {
 				String portId = it.get("id");
 				System.out.println();
 				String srcIndividualUri = repository.getNamespace() + portId;
-				String relationURI = repository.getNamespace() + "INV.vertical_links_to";
+				String relationURI = repository.getNamespace() + RelationEnum.INV_vertical_links_to_Input_Card_Output_Card.toString();
 				String tgtClassURI = repository.getNamespace() + ConceptEnum.Output_Card.toString();
 				boolean hasVerticalConnection = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), srcIndividualUri, relationURI, tgtClassURI);
-				relationURI = repository.getNamespace() + "INV.horizontal_links_to";
+				relationURI = repository.getNamespace() + RelationEnum.horizontal_links_to_Output_Card_Output_Card.toString();
 				boolean hasHorizontalConnection = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), srcIndividualUri, relationURI, tgtClassURI);
 				if(hasVerticalConnection || hasHorizontalConnection){
 					//remove from arraylist
