@@ -185,7 +185,7 @@ public class ProvisioningController {
 	 * @param equipmentId
 	 * @return
 	 */
-	@RequestMapping(value = "/getOutputsFromOWL", method = RequestMethod.POST)
+	@RequestMapping(value= "/getOutputsFromOWL", method = RequestMethod.POST)
 	protected @ResponseBody String getOutputsFromOWL(@RequestParam("equipmentId") String equipmentId){
 		String result = null;
 		try {

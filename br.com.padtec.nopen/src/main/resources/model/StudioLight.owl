@@ -565,6 +565,12 @@
     
 
 
+    <!-- http://www.menthor.net/nOpenModel_light.owl#INV.horizontal_links_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/nOpenModel_light.owl#INV.horizontal_links_to"/>
+    
+
+
     <!-- http://www.menthor.net/nOpenModel_light.owl#INV.implements -->
 
     <owl:ObjectProperty rdf:about="http://www.menthor.net/nOpenModel_light.owl#INV.implements"/>
@@ -757,6 +763,12 @@
     
 
 
+    <!-- http://www.menthor.net/nOpenModel_light.owl#INV.vertical_links_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/nOpenModel_light.owl#INV.vertical_links_to"/>
+    
+
+
     <!-- http://www.menthor.net/nOpenModel_light.owl#binds -->
 
     <owl:ObjectProperty rdf:about="http://www.menthor.net/nOpenModel_light.owl#binds">
@@ -928,6 +940,14 @@
     <owl:ObjectProperty rdf:about="http://www.menthor.net/nOpenModel_light.owl#has_path.Reference_Point.Reference_Point">
         <owl:inverseOf rdf:resource="http://www.menthor.net/nOpenModel_light.owl#INV.has_path.Reference_Point.Reference_Point"/>
         <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/nOpenModel_light.owl#has_path"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/nOpenModel_light.owl#horizontal_links_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/nOpenModel_light.owl#horizontal_links_to">
+        <owl:inverseOf rdf:resource="http://www.menthor.net/nOpenModel_light.owl#INV.horizontal_links_to"/>
     </owl:ObjectProperty>
     
 
@@ -1161,6 +1181,14 @@
 
     <owl:ObjectProperty rdf:about="http://www.menthor.net/nOpenModel_light.owl#supervises_card">
         <owl:inverseOf rdf:resource="http://www.menthor.net/nOpenModel_light.owl#INV.supervises_card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/nOpenModel_light.owl#vertical_links_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/nOpenModel_light.owl#vertical_links_to">
+        <owl:inverseOf rdf:resource="http://www.menthor.net/nOpenModel_light.owl#INV.vertical_links_to"/>
     </owl:ObjectProperty>
     
 
@@ -1672,6 +1700,20 @@
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#has_path"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
         <swrl:body>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -1681,14 +1723,22 @@
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_input"/>
+                                    </rdf:Description>
+                                </rdf:first>
                                 <rdf:rest>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                                         <rdf:first>
                                             <rdf:Description>
                                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose.composed_output"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose.composed_output.linked"/>
                                                 <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
                                             </rdf:Description>
                                         </rdf:first>
@@ -1699,30 +1749,22 @@
                                                 <rdf:first>
                                                     <rdf:Description>
                                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.bindsToP"/>
-                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_so.compose"/>
+                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose.composed_output.linked"/>
+                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
                                                     </rdf:Description>
                                                 </rdf:first>
                                             </rdf:Description>
                                         </rdf:rest>
                                     </rdf:Description>
                                 </rdf:rest>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_so"/>
-                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_input"/>
-                                    </rdf:Description>
-                                </rdf:first>
                             </rdf:Description>
                         </rdf:rest>
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Input"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_so"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_so.compose"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Output"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose.composed_output"/>
                             </rdf:Description>
                         </rdf:first>
                     </rdf:Description>
@@ -1730,13 +1772,16 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TrailTerminationFunction_TrailTerminationFunctionOutput"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Input"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
         </swrl:body>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
         <swrl:head>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -1744,168 +1789,76 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.bindsToP"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#componentOf"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#x"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#z"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
         </swrl:head>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
         <swrl:body>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsMAF"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
-                    </rdf:Description>
-                </rdf:first>
                 <rdf:rest>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsMAF"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsMAF.down"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_down"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#componentOf"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#y"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#z"/>
                             </rdf:Description>
                         </rdf:first>
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#y"/>
+                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#z"/>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#x"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#y"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                    </rdf:Description>
+                                </rdf:rest>
                                 <rdf:first>
                                     <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsMAF.down"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#x"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#z"/>
                                     </rdf:Description>
                                 </rdf:first>
                             </rdf:Description>
                         </rdf:rest>
                     </rdf:Description>
                 </rdf:rest>
-            </rdf:Description>
-        </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_down"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_up"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMTTF"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMTTF.compose"/>
-                    </rdf:Description>
-                </rdf:first>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMTTF"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
-                            </rdf:Description>
-                        </rdf:first>
-                        <rdf:rest>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMTTF.compose"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
-                                    </rdf:Description>
-                                </rdf:first>
-                            </rdf:Description>
-                        </rdf:rest>
-                    </rdf:Description>
-                </rdf:rest>
-            </rdf:Description>
-        </swrl:body>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.compose"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
-                            </rdf:Description>
-                        </rdf:first>
-                    </rdf:Description>
-                </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.compose"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#componentOf"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#x"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#y"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
         </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_down"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
@@ -1926,15 +1879,39 @@
         <swrl:body>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_AdaptationFunction_AdaptationFunctionInput"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_af"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_af.compose"/>
+                    </rdf:Description>
+                </rdf:first>
                 <rdf:rest>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TrailTerminationFunction_TrailTerminationFunctionOutput"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
+                            </rdf:Description>
+                        </rdf:first>
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                                 <rdf:rest>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
+                                            </rdf:Description>
+                                        </rdf:first>
                                         <rdf:rest>
                                             <rdf:Description>
                                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -1948,14 +1925,6 @@
                                                 </rdf:first>
                                             </rdf:Description>
                                         </rdf:rest>
-                                        <rdf:first>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
-                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
-                                            </rdf:Description>
-                                        </rdf:first>
                                     </rdf:Description>
                                 </rdf:rest>
                                 <rdf:first>
@@ -1968,24 +1937,8 @@
                                 </rdf:first>
                             </rdf:Description>
                         </rdf:rest>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TrailTerminationFunction_TrailTerminationFunctionOutput"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
-                            </rdf:Description>
-                        </rdf:first>
                     </rdf:Description>
                 </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_AdaptationFunction_AdaptationFunctionInput"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_af"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_af.compose"/>
-                    </rdf:Description>
-                </rdf:first>
             </rdf:Description>
         </swrl:body>
     </rdf:Description>
@@ -1998,120 +1951,8 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_down"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedAFtoTTF"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedAFtoTTF.compose"/>
-                    </rdf:Description>
-                </rdf:first>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:rest>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedAFtoTTF.compose"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
-                                    </rdf:Description>
-                                </rdf:first>
-                            </rdf:Description>
-                        </rdf:rest>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedAFtoTTF"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
-                            </rdf:Description>
-                        </rdf:first>
-                    </rdf:Description>
-                </rdf:rest>
-            </rdf:Description>
-        </swrl:body>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.maps"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
-                            </rdf:Description>
-                        </rdf:first>
-                        <rdf:rest>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.has_interface"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.maps.compose"/>
-                                    </rdf:Description>
-                                </rdf:first>
-                            </rdf:Description>
-                        </rdf:rest>
-                    </rdf:Description>
-                </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Output"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.maps"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.maps.compose"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.has_interface"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#is_interface_of"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.bindsToP"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.bindedAFtoTTF"/>
                         <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
                     </rdf:Description>
                 </rdf:first>
@@ -2120,31 +1961,31 @@
         <swrl:body>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_AdaptationFunction_AdaptationFunctionOutput"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af"/>
+                    </rdf:Description>
+                </rdf:first>
                 <rdf:rest>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Input"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_sk"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_sk.compose"/>
-                            </rdf:Description>
-                        </rdf:first>
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_sk"/>
-                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_input"/>
-                                    </rdf:Description>
-                                </rdf:first>
                                 <rdf:rest>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
+                                            </rdf:Description>
+                                        </rdf:first>
                                         <rdf:rest>
                                             <rdf:Description>
                                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -2152,34 +1993,34 @@
                                                 <rdf:first>
                                                     <rdf:Description>
                                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.bindsToP"/>
-                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_sk.compose"/>
+                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.bindedAFtoTTF"/>
+                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap.link_input_ttf.compose"/>
                                                     </rdf:Description>
                                                 </rdf:first>
                                             </rdf:Description>
                                         </rdf:rest>
-                                        <rdf:first>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
-                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
-                                            </rdf:Description>
-                                        </rdf:first>
                                     </rdf:Description>
                                 </rdf:rest>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap.link_input_ttf"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_input"/>
+                                    </rdf:Description>
+                                </rdf:first>
                             </rdf:Description>
                         </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TrailTerminationFunction_TrailTerminationFunctionInput"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap.link_input_ttf"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap.link_input_ttf.compose"/>
+                            </rdf:Description>
+                        </rdf:first>
                     </rdf:Description>
                 </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TrailTerminationFunction_TrailTerminationFunctionOutput"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
-                    </rdf:Description>
-                </rdf:first>
             </rdf:Description>
         </swrl:body>
     </rdf:Description>
@@ -2241,15 +2082,29 @@
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.has_interface"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#is_interface_of"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
         <swrl:body>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.mc_connect"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.mc_connect.paths"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#has_path"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Output"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.maps"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.maps.compose"/>
                     </rdf:Description>
                 </rdf:first>
                 <rdf:rest>
@@ -2258,9 +2113,9 @@
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.mc_connect"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#mc"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.maps"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
                             </rdf:Description>
                         </rdf:first>
                         <rdf:rest>
@@ -2270,8 +2125,8 @@
                                 <rdf:first>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.mc_connect.paths"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.has_interface"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Output_Card.maps.compose"/>
                                     </rdf:Description>
                                 </rdf:first>
                             </rdf:Description>
@@ -2280,20 +2135,6 @@
                 </rdf:rest>
             </rdf:Description>
         </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#has_path"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
@@ -2304,13 +2145,124 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#componentOf"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#x"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#z"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_up"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
         </swrl:head>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.compose"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.compose"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TrailTerminationFunction_TrailTerminationFunctionOutput"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Input"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_sk"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_sk.compose"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_sk"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_input"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.bindsToP"/>
+                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_sk.compose"/>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.bindsToP"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
         <swrl:body>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -2320,44 +2272,20 @@
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#componentOf"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#y"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#z"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsAFtoTTF"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
                             </rdf:Description>
                         </rdf:first>
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:rest>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                        <rdf:first>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#x"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#y"/>
-                                            </rdf:Description>
-                                        </rdf:first>
-                                        <rdf:rest>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                                <rdf:first>
-                                                    <rdf:Description>
-                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
-                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#y"/>
-                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#z"/>
-                                                    </rdf:Description>
-                                                </rdf:first>
-                                            </rdf:Description>
-                                        </rdf:rest>
-                                    </rdf:Description>
-                                </rdf:rest>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
                                 <rdf:first>
                                     <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#x"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#z"/>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsAFtoTTF.compose"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
                                     </rdf:Description>
                                 </rdf:first>
                             </rdf:Description>
@@ -2367,13 +2295,96 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#componentOf"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#x"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#y"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsAFtoTTF"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsAFtoTTF.compose"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
         </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_up"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF.bindedMTTF"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF.bindedMTTF.compose"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF.bindedMTTF"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF.bindedMTTF.compose"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_up"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
@@ -2411,14 +2422,6 @@
                                 <rdf:rest>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                        <rdf:first>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
-                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
-                                            </rdf:Description>
-                                        </rdf:first>
                                         <rdf:rest>
                                             <rdf:Description>
                                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -2432,6 +2435,14 @@
                                                 </rdf:first>
                                             </rdf:Description>
                                         </rdf:rest>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
+                                            </rdf:Description>
+                                        </rdf:first>
                                     </rdf:Description>
                                 </rdf:rest>
                                 <rdf:first>
@@ -2459,6 +2470,45 @@
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsMAF"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsMAF.down"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_down"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsMAF.down"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsMAF"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:body>
         <swrl:head>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -2467,38 +2517,12 @@
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
                         <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_up"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_down"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
         </swrl:head>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.compose"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
-                            </rdf:Description>
-                        </rdf:first>
-                    </rdf:Description>
-                </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.compose"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:body>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
@@ -2509,9 +2533,9 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_up"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.bindsMAF"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
@@ -2522,9 +2546,9 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF.bindedMTTF"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF.bindedMTTF.compose"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_AdaptationFunction_AdaptationFunctionInput"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp.link_input_af"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp.link_input_af.compose"/>
                     </rdf:Description>
                 </rdf:first>
                 <rdf:rest>
@@ -2533,35 +2557,48 @@
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp.link_input_af"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_input"/>
+                                    </rdf:Description>
+                                </rdf:first>
                                 <rdf:rest>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.bindsMAF"/>
+                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp.link_input_af.compose"/>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                            </rdf:Description>
+                                        </rdf:rest>
                                         <rdf:first>
                                             <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF.bindedMTTF.compose"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
                                             </rdf:Description>
                                         </rdf:first>
                                     </rdf:Description>
                                 </rdf:rest>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF.bindedMTTF"/>
-                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
-                                    </rdf:Description>
-                                </rdf:first>
                             </rdf:Description>
                         </rdf:rest>
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMAF"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_Matrix_MatrixOutput"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m"/>
                             </rdf:Description>
                         </rdf:first>
                     </rdf:Description>
@@ -2571,6 +2608,32 @@
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.compose"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.compose"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
         <swrl:head>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -2579,23 +2642,18 @@
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
                         <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_up"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_down"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
         </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
         <swrl:body>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsAFtoTTF"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsAFtoTTF.compose"/>
-                    </rdf:Description>
-                </rdf:first>
                 <rdf:rest>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -2606,7 +2664,7 @@
                                 <rdf:first>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsAFtoTTF.compose"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMTTF.compose"/>
                                         <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
                                     </rdf:Description>
                                 </rdf:first>
@@ -2616,42 +2674,56 @@
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
                                 <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindsAFtoTTF"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMTTF"/>
                                 <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
                             </rdf:Description>
                         </rdf:first>
                     </rdf:Description>
                 </rdf:rest>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMTTF"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedMTTF.compose"/>
+                    </rdf:Description>
+                </rdf:first>
             </rdf:Description>
         </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.up"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_up"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
         <swrl:body>
             <rdf:Description>
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths.connect"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#connects"/>
+                    </rdf:Description>
+                </rdf:first>
                 <rdf:rest>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#has_path"/>
-                            </rdf:Description>
-                        </rdf:first>
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths.connect"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths.connect.inv_path"/>
-                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#has_path"/>
-                                    </rdf:Description>
-                                </rdf:first>
                                 <rdf:rest>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -2665,18 +2737,26 @@
                                         </rdf:first>
                                     </rdf:Description>
                                 </rdf:rest>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths.connect"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths.connect.inv_path"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#has_path"/>
+                                    </rdf:Description>
+                                </rdf:first>
                             </rdf:Description>
                         </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#has_path"/>
+                            </rdf:Description>
+                        </rdf:first>
                     </rdf:Description>
                 </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths.connect"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#connects"/>
-                    </rdf:Description>
-                </rdf:first>
             </rdf:Description>
         </swrl:body>
         <swrl:head>
@@ -2705,38 +2785,12 @@
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:rest>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                        <rdf:rest>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                                <rdf:first>
-                                                    <rdf:Description>
-                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.bindsMAF"/>
-                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp.link_input_af.compose"/>
-                                                    </rdf:Description>
-                                                </rdf:first>
-                                            </rdf:Description>
-                                        </rdf:rest>
-                                        <rdf:first>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp"/>
-                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
-                                            </rdf:Description>
-                                        </rdf:first>
-                                    </rdf:Description>
-                                </rdf:rest>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
                                 <rdf:first>
                                     <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp.link_input_af"/>
-                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_input"/>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.mc_connect.paths"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
                                     </rdf:Description>
                                 </rdf:first>
                             </rdf:Description>
@@ -2744,9 +2798,9 @@
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_Matrix_MatrixOutput"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.mc_connect"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#mc"/>
                             </rdf:Description>
                         </rdf:first>
                     </rdf:Description>
@@ -2754,91 +2808,9 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_AdaptationFunction_AdaptationFunctionInput"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp.link_input_af"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.composed_output_m.linked_fp.link_input_af.compose"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Matrix.bindsMAF"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:rest>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input"/>
-                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_input"/>
-                                    </rdf:Description>
-                                </rdf:first>
-                                <rdf:rest>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                        <rdf:rest>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                                <rdf:first>
-                                                    <rdf:Description>
-                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose.composed_output.linked"/>
-                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.paths"/>
-                                                    </rdf:Description>
-                                                </rdf:first>
-                                            </rdf:Description>
-                                        </rdf:rest>
-                                        <rdf:first>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose.composed_output"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose.composed_output.linked"/>
-                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
-                                            </rdf:Description>
-                                        </rdf:first>
-                                    </rdf:Description>
-                                </rdf:rest>
-                            </rdf:Description>
-                        </rdf:rest>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Output"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose.composed_output"/>
-                            </rdf:Description>
-                        </rdf:first>
-                    </rdf:Description>
-                </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Input"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.link_input.compose"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.mc_connect"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Reference_Point.mc_connect.paths"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#has_path"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
@@ -2866,9 +2838,65 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_AdaptationFunction_AdaptationFunctionOutput"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedAFtoTTF"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedAFtoTTF.compose"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedAFtoTTF.compose"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                            </rdf:Description>
+                        </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.bindedAFtoTTF"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Transport_Function.down"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#intermediates_down"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TrailTerminationFunction_TrailTerminationFunctionOutput"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
                     </rdf:Description>
                 </rdf:first>
                 <rdf:rest>
@@ -2877,9 +2905,9 @@
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TrailTerminationFunction_TrailTerminationFunctionInput"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap.link_input_ttf"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap.link_input_ttf.compose"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#A_TransportFunction_Input"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_so"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_so.compose"/>
                             </rdf:Description>
                         </rdf:first>
                         <rdf:rest>
@@ -2888,14 +2916,22 @@
                                 <rdf:first>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap.link_input_ttf"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_so"/>
                                         <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_input"/>
                                     </rdf:Description>
                                 </rdf:first>
                                 <rdf:rest>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
+                                            </rdf:Description>
+                                        </rdf:first>
                                         <rdf:rest>
                                             <rdf:Description>
                                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
@@ -2903,20 +2939,12 @@
                                                 <rdf:first>
                                                     <rdf:Description>
                                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#SameIndividualAtom"/>
-                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.bindedAFtoTTF"/>
-                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap.link_input_ttf.compose"/>
+                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.bindsToP"/>
+                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.composed_output_ttf.linked_fep.link_input_pm_so.compose"/>
                                                     </rdf:Description>
                                                 </rdf:first>
                                             </rdf:Description>
                                         </rdf:rest>
-                                        <rdf:first>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.composed_output_af.linked_ap"/>
-                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#links_output"/>
-                                            </rdf:Description>
-                                        </rdf:first>
                                     </rdf:Description>
                                 </rdf:rest>
                             </rdf:Description>
@@ -2932,8 +2960,8 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Adaptation_Function.bindedAFtoTTF"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/nOpenModel_light.owl#Trail_Termination_Function.bindsToP"/>
                         <swrl:propertyPredicate rdf:resource="http://www.menthor.net/nOpenModel_light.owl#binds"/>
                     </rdf:Description>
                 </rdf:first>
