@@ -12,7 +12,9 @@ public class Interface implements Comparable<Interface>{
 	private List<String> lastMappedTfURI;
 	private boolean isSource;
 	private boolean isOutput;
-	private boolean alreadyProvisioned = false;
+	private boolean alreadyProvisioned = false;//means that an interface has the relation path
+	private boolean mapsMatrixSinkInput = false;
+	private boolean mapsMatrixSourceOutput = false;
 	
 	private List<Interface> candidateInterfacesTo = new ArrayList<Interface>();
 	private HashMap<Interface, List<Path>> internalPaths = new HashMap<Interface, List<Path>>();
@@ -26,6 +28,21 @@ public class Interface implements Comparable<Interface>{
 		this.isSource = isSource;
 		this.isOutput = isOutput;
 		
+	}
+	public boolean isAlreadyProvisioned() {
+		return alreadyProvisioned;
+	}
+	public boolean isMapsMatrixSinkInput() {
+		return mapsMatrixSinkInput;
+	}
+	public boolean isMapsMatrixSourceOutput() {
+		return mapsMatrixSourceOutput;
+	}
+	public void setMapsMatrixSinkInput(boolean mapsMatrixSinkInput) {
+		this.mapsMatrixSinkInput = mapsMatrixSinkInput;
+	}
+	public void setMapsMatrixSourceOutput(boolean mapsMatrixSourceOutput) {
+		this.mapsMatrixSourceOutput = mapsMatrixSourceOutput;
 	}
 	public HashMap<Interface, List<Path>> getInternalPaths() {
 		return internalPaths;

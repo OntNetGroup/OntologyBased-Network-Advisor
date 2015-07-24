@@ -103,6 +103,15 @@ public class Provisioner {
 		reasoningTimeExecPostInstances = OWLUtil.runReasoner(okcoUploader, true, true, true);
 		System.out.println(PerformanceUtil.getExecutionMessage("createInstances", createInstancesTime));
 		
+		origPaths = new HashMap<Interface, List<Interface>>();
+		List<IntBinds> intBinds = SPARQLQueries.getIntBinds(model, interfaces);
+		populaOrigPaths(intBinds, false);
+		List<IntBinds> internalIntBinds = SPARQLQueries.getInternalIntBinds(model, interfaces);
+		populaOrigPaths(internalIntBinds, true);
+		
+		refreshInterfaces();
+		pathInterfaces = SPARQLQueries.getIntPaths(model, interfaces);
+		
 	}
 	
 	public void populaOrigPaths(List<IntBinds> intBinds, boolean internalPath){
@@ -233,14 +242,7 @@ public class Provisioner {
 		bindedInterfaces.addAll(originalBindedInterfaces);
 		Character provisionAgainOption;
 		do{
-			origPaths = new HashMap<Interface, List<Interface>>();
-			List<IntBinds> intBinds = SPARQLQueries.getIntBinds(model, interfaces);
-			populaOrigPaths(intBinds, false);
-			List<IntBinds> internalIntBinds = SPARQLQueries.getInternalIntBinds(model, interfaces);
-			populaOrigPaths(internalIntBinds, true);
 			
-			refreshInterfaces();
-			pathInterfaces = SPARQLQueries.getIntPaths(model, interfaces);
 			
 			for (String intfc : interfaces.keySet()) {
 				Interface in = interfaces.get(intfc);
@@ -280,6 +282,15 @@ public class Provisioner {
 			OWLUtil.runReasoner(okcoUploader, false, true, true);
 			
 			provisionAgainOption = ConsoleUtil.getCharOptionFromConsole("Would you like to provision another path? Yes (Y) or No (N): ", provisionAgainOptions);
+			
+			origPaths = new HashMap<Interface, List<Interface>>();
+			List<IntBinds> intBinds = SPARQLQueries.getIntBinds(model, interfaces);
+			populaOrigPaths(intBinds, false);
+			List<IntBinds> internalIntBinds = SPARQLQueries.getInternalIntBinds(model, interfaces);
+			populaOrigPaths(internalIntBinds, true);
+			
+			refreshInterfaces();
+			pathInterfaces = SPARQLQueries.getIntPaths(model, interfaces);
 		}while(provisionAgainOption.equals('Y') || provisionAgainOption.equals('y'));
 	}
 	
@@ -301,6 +312,14 @@ public class Provisioner {
 		for (Interface intfcFrom : this.interfaces.values()) {
 //			i++;
 			String mappedTfURI = SPARQLQueries.getMappedTFFrom(model, intfcFrom.getInterfaceURI());
+			
+			List<String> tfTypes = SPARQLQueries.getTfTypesMappedByInterface(model, intfcFrom.getInterfaceURI());
+			if(tfTypes.contains(ns+"Matrix_Source") && intfcFrom.isOutput()){
+				intfcFrom.setMapsMatrixSourceOutput(true);
+			}
+			if(tfTypes.contains(ns+"Matrix_Sink") && !intfcFrom.isOutput()){
+				intfcFrom.setMapsMatrixSinkInput(true);
+			}
 			List<String> lastMappedTfURI = SPARQLQueries.getLastBindedTFFrom(model, mappedTfURI, intfcFrom.isSource());
 			intfcFrom.setLastMappedTfURI(lastMappedTfURI);
 			intfcFrom.setMappedTfURI(mappedTfURI);
@@ -317,7 +336,7 @@ public class Provisioner {
 						intfcFrom.addInternalPaths(intfcTo, internalPath);
 					}
 				}
-			}
+			}			
 		}
 	}
 
@@ -629,12 +648,20 @@ public class Provisioner {
 							System.out.println();
 						}
 						List<Interface> intfcList = internalPaths.get(k).getInterfaceList();
+						boolean jump = false;
 						for (int j = 1; j < intfcList.size()-1; j++) {
 							Interface internalIntfc = intfcList.get(j);
+							if(internalIntfc.isAlreadyProvisioned() && (internalIntfc.isMapsMatrixSinkInput() || internalIntfc.isMapsMatrixSourceOutput())){
+								jump = true;
+								break;							
+							}
 							newUsedInterfaces2.add(intfcList.get(j));
 							DefaultMutableTreeNode internalNode = new DefaultMutableTreeNode(internalIntfc);
 							newLastInputIntNode2.add(internalNode);
 							newLastInputIntNode2 = internalNode;
+						}
+						if(jump){
+							continue;
 						}
 					}
 					
