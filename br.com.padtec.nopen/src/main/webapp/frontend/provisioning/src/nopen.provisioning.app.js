@@ -50,6 +50,13 @@ nopen.provisioning.App = Backbone.View.extend({
 	//Test procedures
 	initializeTestProcedures : function(app) {
 		//this.test.execute(app);
+		
+		var test = this.test;
+		
+//		$('#btn-pre').click(function(){
+//			test.executeMatrixDialog(app);
+//		});
+		
 	},
 	
 	
@@ -61,45 +68,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		var paper = app.paper;
 		var validator = app.validator;
 		
-		// validar inserção de links no grafo
-	    graph.on('add change:target change:source', function(event, cell) {
-	    	
-	    	// Check if cell is not a link
-	    	if (cell.type !== 'link') return;
-	    	
-	    	// impedir a troca de target ou source (quando o usuário arrasta uma das pontas da 'seta')
-//	    	if(command.action === 'change:source') {
-//	    		nopen.provisioning.Util.generateAlertDialog('Invalid operation!');
-//	    		return;
-//	    	}
-//	    	if(command.data.previous.target) {
-//	    		if(command.data.previous.target.id) {
-//	    			nopen.provisioning.Util.generateAlertDialog('Invalid operation!');
-//	    			return;
-//	    		}
-//	    	}
-	    	var linkID = cell.id;
-	    	var link = graph.getCell(linkID).toJSON();
-	    	var sourceID = link.source.id;
-	        var targetID = link.target.id;
-	        
-	        if (sourceID && targetID) {
-	        	var targetElement = graph.getCell(targetID);
-	        	var targetSubtype = targetElement.attributes.subtype;
-
-	        	var sourceElement = graph.getCell(sourceID);
-	        	var sourceSubtype = sourceElement.attributes.subtype;
-	        	
-	        	var result = "result";
-	        	if(result === "success") {
-					return;
-				} else {
-					nopen.provisioning.Util.generateAlertDialog(result);
-				}
-	        } else {
-	        	nopen.provisioning.Util.generateAlertDialog('Please, connect to an Access Group');
-	        }
-	    }, app);
+		
 	},
 	
 	//Provisioning paper procedures
@@ -321,6 +290,13 @@ nopen.provisioning.App = Backbone.View.extend({
 			function cancel() {
 				dialog.close();
 			};
+			
+			$('span.tag').click(function(){
+				
+				var id = this.id;
+				var parentId = $(this).closest('li').attr('id');
+				
+			});
 			
 		};
         

@@ -96,13 +96,12 @@ hr {
 
 /*LINKS*/
 
-.link-tools .tool-remove { display: none }
+/* .link-tools .tool-remove { display: none } */
 .link-tools .tool-options { display: none }
 .marker-arrowheads { display: none }
 .link, .connection-wrap { 
 	pointer-events: none; 
 }
-
 
 #expList .connected {
 	background-color: #EEE;

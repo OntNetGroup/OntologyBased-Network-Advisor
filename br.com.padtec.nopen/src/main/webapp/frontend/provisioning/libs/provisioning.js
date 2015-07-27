@@ -68,3 +68,20 @@ joint.shapes.provisioning.Layer = joint.shapes.bpmn.Pool.extend({
     }, joint.shapes.bpmn.Pool.prototype.defaults)
 });
 joint.shapes.provisioning.LayerView = joint.shapes.bpmn.PoolView;
+
+joint.shapes.provisioning.Matrix = joint.shapes.devs.Model.extend({
+
+    defaults: joint.util.deepSupplement({
+
+        type: 'provisioning.Matrix',
+        size: { width: 200, height: 300 },
+        attrs: {
+            '.body': { fill: '#808080' },
+            '.label': { text: 'Matrix', fill: '#FFFFFF' },
+            '.inPorts .port-body': { fill: 'PaleGreen' },
+            '.outPorts .port-body': { fill: 'Tomato' }
+        }
+
+    }, joint.shapes.devs.Model.prototype.defaults)
+});
+joint.shapes.provisioning.MatrixView = joint.shapes.devs.ModelView;

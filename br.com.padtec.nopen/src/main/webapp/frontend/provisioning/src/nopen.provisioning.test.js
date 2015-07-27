@@ -12,6 +12,137 @@ nopen.provisioning.Test = Backbone.Model.extend({
 		this.app = app;
 	},
 	
+	executeMatrixDialog : function(app) {
+		
+		var graph = new joint.dia.Graph;
+		var paper = new joint.dia.Paper({ 
+			width: 500, 
+			height: 320, 
+			model: graph, 
+			gridSize: 1,
+			defaultLink: new joint.dia.Link(),
+			validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+//	            if (magnetS && magnetS.getAttribute('type') === 'input') return false;
+//	            if (cellViewS === cellViewT) return false;
+				
+//				if(magnetT && magnetT.getAttribute('type') === 'output') return true;
+	            return magnetT && magnetT.getAttribute('type') === 'output';
+	        },
+	        markAvailable: true
+		});
+
+		var dialog = new joint.ui.Dialog({
+		    width: 500,
+		    closeButton: false,
+		    title: 'Test Matrix',
+		    clickOutside: false,
+			modal: false,
+		    content: paper.$el,
+		    buttons: [
+			          { action: 'next', content: 'Next', position: 'right' },
+			]
+		});
+		dialog.on('action:next', next);
+		dialog.open();
+		
+		//block outside
+		$('#black_overlay').show();
+		
+		function next() {
+			dialog.close();
+			$('#black_overlay').hide();
+		};
+
+		var outputs = [];
+		outputs.push('out_1');
+		outputs.push('out_2');
+		
+		var c1 = new joint.shapes.provisioning.Matrix({
+		    position: {
+		        x: 90,
+		        y: 10
+		    },
+		    size: {
+		        width: 300,
+		        height: 300
+		    },
+		    inPorts: ['in_1', 'in_2', 'in_3', 'in_4', 'in_5', 'in_6', 'in_7', 'in_8'],
+		    outPorts: outputs,
+		    attrs: {
+	            '.inPorts circle': {
+//	                magnet: 'passive',
+	                type: 'input'
+	            },
+	            '.outPorts circle': {
+	            	magnet: 'passive',
+	                type: 'output'
+	            }
+	        }
+		});
+		
+		graph.addCell(c1);
+		
+//		$('circle').bind("contextmenu",function(e){
+//			alert(this.id);
+//	    });
+		
+		$('.port-label').attr('pointer-events', 'normal');
+		$('.port-label').attr('cursor', 'pointer');
+				
+		$('.port-label').hover(function(){
+			$(this).attr("fill", "blue");
+		}, function(){
+			$(this).attr("fill", "black");
+	    });
+		
+		$('.port-label').click(function(){
+			alert(this.id);
+	    });
+		
+		var commandManager = new joint.dia.CommandManager({ graph: graph });
+		var validator = new joint.dia.Validator({ commandManager: commandManager });
+		
+		validator.validate('change:target change:source', function(err, command, next) {
+
+			var cell = graph.getCell(command.data.id);
+			
+			console.log(JSON.stringify(cell));
+			
+			if(!cell.attributes.target.id || cell.attributes.target.port === cell.attributes.source.port){
+				cell.remove();
+				return;
+			}
+			
+			$.each($('.port-label'), function(index, value) {
+				
+				if(cell.attributes.source.port === $(this).text()) {
+					
+					console.log($(this).closest('.port-body').id);
+					
+				}
+				
+			});
+			
+			
+		});
+		
+		paper.on('cell:pointerdown', function(cellView, evt) {
+        	var cell = graph.getCell(cellView.model.id);
+        	if(cell.get('type') === 'link') return;
+        	
+        	position = cell.get('position');
+        });
+		
+        paper.on('cell:pointerup', function(cellView, evt) {
+        	var cell = graph.getCell(cellView.model.id);
+        	if(cell.get('type') === 'link') return;
+        	
+        	cell.set('position', position);
+        });
+		//graph.addCells([c1, a1, a2, a3]);
+		
+	},
+	
 	execute : function(app) {
 		
 		var $this = this;
