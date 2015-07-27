@@ -175,28 +175,28 @@ public class InterfaceStructure {
 		
 		//create result hash
 		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
-
-		//create relations array
-		ArrayList<String> relationsNameList = new ArrayList<String>();
-		
-		//add Card > Card_layer relations in array  
-		relationsNameList.add(RelationEnum.INV_A_Card_CardLayer.toString());
-		
-		//add Card > Output/Input relations in array  
-		if(typePort == "Output") {
-			relationsNameList.add(RelationEnum.A_Card_OutputCard.toString());
-		}
-		else if(typePort == "Input") {
-			relationsNameList.add(RelationEnum.A_Card_InputCard.toString());
-		}
-		else {
-			relationsNameList.add(RelationEnum.componentOf.toString());
-		}
 		
 		//get layers
 		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
 		for(String layer : layers){
 
+			//create relations array
+			ArrayList<String> relationsNameList = new ArrayList<String>();
+			
+			//add Card > Output/Input relations in array  
+			if(typePort == "Output") {
+				relationsNameList.add(RelationEnum.intermediates_up_Transport_Function_Card_Layer.toString());
+				relationsNameList.add(RelationEnum.INV_is_interface_of_Output_Card_Transport_Function.toString());
+			}
+			else if(typePort == "Input") {
+				relationsNameList.add(RelationEnum.intermediates_down_Transport_Function_Card_Layer.toString());
+				relationsNameList.add(RelationEnum.INV_is_interface_of_Input_Card_Transport_Function.toString());
+			}
+			else {
+				relationsNameList.add(RelationEnum.componentOf.toString());
+			}
+			
+			
 			//create layer array
 			ArrayList<HashMap<String, String>> layerPortMapping = new ArrayList<HashMap<String, String>>();
 			
