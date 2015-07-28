@@ -203,7 +203,7 @@ public class ProvisioningController {
 	 * @param equipmentId
 	 * @return
 	 */
-	@RequestMapping(value= "/getOutputsFromOWL", method = RequestMethod.POST)
+	@RequestMapping(value= "/getTypeOfConnectionFromOWL", method = RequestMethod.POST)
 	protected @ResponseBody String getTypeOfConnection(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId){
 		String result = null;
 		try {
