@@ -15,7 +15,7 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 public class AttributeRecognizer {
 
 	/** @author John Guerson */
-	public static void run(String equipmentURI, OKCoUploader srcRepository) throws Exception
+	public static Map<String,String> run(String equipmentURI, OKCoUploader srcRepository) throws Exception
 	{
 		/** tf <-> json content */
 		Map<String,String> attrMap = new HashMap<String,String>();
@@ -94,5 +94,6 @@ public class AttributeRecognizer {
 				}
 			}
 		}		
+		return attrMap;
 	}
 }

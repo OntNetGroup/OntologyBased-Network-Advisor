@@ -1,11 +1,9 @@
-package br.com.padtec.nopen.studio.model;
+package br.com.padtec.nopen.model;
 
-import br.com.padtec.nopen.model.DtoJointElement;
-import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.service.NOpenLog;
-import br.com.padtec.nopen.studio.service.StudioComponents;
+import br.com.padtec.okco.core.application.OKCoUploader;
 
-public class StudioSpecificFactory {
+public class SpecificDtoFabricator {
 	
 	//=============================================================================================
 	// Specific: Transport Function
@@ -42,7 +40,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createTransportFunction(DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer) throws Exception
+	public static void createTransportFunction(OKCoUploader repository, DtoJointElement dtoTransportFunction, DtoJointElement dtoContainer) throws Exception
 	{
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();
@@ -54,11 +52,11 @@ public class StudioSpecificFactory {
 		
 		if(tfType.equals("TTF") && containerType.equals("layer")) 
 		{
-			InstanceFabricator.createTTFAtLayer(StudioComponents.studioRepository, tfId, tfName, containerId, containerName);						
+			InstanceFabricator.createTTFAtLayer(repository, tfId, tfName, containerId, containerName);						
 		}
 		else if(tfType.equals("AF") && containerType.equals("card")) 
 		{
-			InstanceFabricator.createAFAtCard(StudioComponents.studioRepository,tfId, tfName, containerId, containerName);						
+			InstanceFabricator.createAFAtCard(repository,tfId, tfName, containerId, containerName);						
 		}else{
 			
 			NOpenLog.appendLine("Error: Unexpected creation of Transport Function "+tfType+"::"+tfName+" at "+containerType+"::"+containerName+"");
@@ -69,7 +67,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void deleteTransportFunction(DtoJointElement dtoTransportFunction) throws Exception 
+	public static void deleteTransportFunction(OKCoUploader repository, DtoJointElement dtoTransportFunction) throws Exception 
 	{	
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();
@@ -77,7 +75,7 @@ public class StudioSpecificFactory {
 		
 		if(tfType.equals("TTF") || tfType.equals("AF"))
 		{
-			InstanceFabricator.deleteTF(StudioComponents.studioRepository,tfId, tfName, tfType);						
+			InstanceFabricator.deleteTF(repository,tfId, tfName, tfType);						
 		}
 		else {			
 			NOpenLog.appendLine("Error: Unexpected deletion of Transport Function "+tfType+"::"+tfName);
@@ -97,7 +95,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createPort(DtoJointElement dtoPort, DtoJointElement dtoTransportFunction) throws Exception 
+	public static void createPort(OKCoUploader repository, DtoJointElement dtoPort, DtoJointElement dtoTransportFunction) throws Exception 
 	{
 		String tfType = dtoTransportFunction.getType();		
 		String tfId = dtoTransportFunction.getId();		
@@ -111,22 +109,22 @@ public class StudioSpecificFactory {
 		{
 			if(tfType.equals("AF"))	
 			{
-				InstanceFabricator.createAFInput(StudioComponents.studioRepository,portId, portName, tfId, tfName);								
+				InstanceFabricator.createAFInput(repository,portId, portName, tfId, tfName);								
 			}
 			if(tfType.equals("TTF")) 
 			{
-				InstanceFabricator.createTTFInput(StudioComponents.studioRepository,portId, portName, tfId, tfName);				
+				InstanceFabricator.createTTFInput(repository,portId, portName, tfId, tfName);				
 			}
 		}
 		else if(portType.equals("out")) 
 		{
 			if(tfType.equals("AF"))
 			{
-				InstanceFabricator.createAFOutput(StudioComponents.studioRepository,portId, portName, tfId, tfName);				
+				InstanceFabricator.createAFOutput(repository,portId, portName, tfId, tfName);				
 			}
 			if(tfType.equals("TTF"))
 			{
-				InstanceFabricator.createTTFOutput(StudioComponents.studioRepository,portId, portName, tfId, tfName);								
+				InstanceFabricator.createTTFOutput(repository,portId, portName, tfId, tfName);								
 			}
 		
 		} else {
@@ -139,7 +137,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void deletePort(DtoJointElement dtoPort) throws Exception 
+	public static void deletePort(OKCoUploader repository, DtoJointElement dtoPort) throws Exception 
 	{				
 		String portType = dtoPort.getType();		
 		String portId = dtoPort.getId();
@@ -147,7 +145,7 @@ public class StudioSpecificFactory {
 		
 		if(portType.equals("in") || portType.equals("out"))
 		{
-			InstanceFabricator.deletePort(StudioComponents.studioRepository,portId, portName, portType);						
+			InstanceFabricator.deletePort(repository,portId, portName, portType);						
 		}		
 		else{			
 			NOpenLog.appendLine("Error: Unexpected deletion of Port "+portType+"::"+portName);
@@ -167,7 +165,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void insertContainer(DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception 
+	public static void insertContainer(OKCoUploader repository, DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception 
 	{		
 		String containerType = dtoContainer.getType();
 		String containerId = dtoContainer.getId();
@@ -179,7 +177,7 @@ public class StudioSpecificFactory {
 		
 		if(containerType.equals("layer"))
 		{
-			InstanceFabricator.insertLayerLink(StudioComponents.studioRepository,containerId, containerName, cardId, cardName);						
+			InstanceFabricator.insertLayerLink(repository,containerId, containerName, cardId, cardName);						
 		}		
 		else{			
 			NOpenLog.appendLine("Error: Unexpected insertion of Container "+containerType+"::"+containerName+" at "+cardType+"::"+cardName+"");
@@ -190,7 +188,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void deleteContainer(DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
+	public static void deleteContainer(OKCoUploader repository, DtoJointElement dtoContainer, DtoJointElement dtoCard) throws Exception
 	{	
 		String containerType = dtoContainer.getType();
 		String containerId = dtoContainer.getId();
@@ -202,7 +200,7 @@ public class StudioSpecificFactory {
 		
 		if(containerType.equals("layer"))
 		{
-			InstanceFabricator.removeLayerLink(StudioComponents.studioRepository,containerId, containerName, cardId, cardName);						
+			InstanceFabricator.removeLayerLink(repository,containerId, containerName, cardId, cardName);						
 		}		
 		else{
 			
@@ -214,7 +212,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void changeContainer(DtoJointElement dtoTransportFunction, DtoJointElement srcContainer, DtoJointElement tgtContainer, DtoJointElement dtoCard)  throws Exception
+	public static void changeContainer(OKCoUploader repository, DtoJointElement dtoTransportFunction, DtoJointElement srcContainer, DtoJointElement tgtContainer, DtoJointElement dtoCard)  throws Exception
 	{	
 		String srcContainerType = srcContainer.getType();
 		String srcContainerId = srcContainer.getId();
@@ -232,7 +230,7 @@ public class StudioSpecificFactory {
 		{
 			if(tfType.equals("TTF")) 
 			{
-				InstanceFabricator.changeLayerOfTTF(StudioComponents.studioRepository,tfId, tfName, srcContainerId, srcContainerName, tgtContainerId, tgtContainerName);								
+				InstanceFabricator.changeLayerOfTTF(repository,tfId, tfName, srcContainerId, srcContainerName, tgtContainerId, tgtContainerName);								
 			}
 		}		
 		else{
@@ -245,7 +243,7 @@ public class StudioSpecificFactory {
 	// Specific: Equipment Holder
 	//=============================================================================================
 	
-	public static void createEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
+	public static void createEquipmentholder(OKCoUploader repository, DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
 	{
 		String holderType = dtoEquipmentholder.getType();		
 		String holderId = dtoEquipmentholder.getId();		
@@ -257,27 +255,27 @@ public class StudioSpecificFactory {
 		
 		if(holderType.equals("card") && containerType.equals("slot"))
 		{
-			InstanceFabricator.createCardAtSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);			
+			InstanceFabricator.createCardAtSlot(repository,holderId, holderName, containerId, containerName);			
 		}
 		else if(holderType.equals("card") && containerType.equals("subslot"))
 		{
-			InstanceFabricator.createCardAtSubSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);			
+			InstanceFabricator.createCardAtSubSlot(repository,holderId, holderName, containerId, containerName);			
 		}		
 		else if(holderType.equals("slot") && containerType.equals("shelf"))
 		{
-			InstanceFabricator.createSlotAtShelf(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
+			InstanceFabricator.createSlotAtShelf(repository,holderId, holderName, containerId, containerName);						
 		}
 		else if(holderType.equals("subslot") && containerType.equals("slot"))
 		{
-			InstanceFabricator.createSubSlotAtSlot(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
+			InstanceFabricator.createSubSlotAtSlot(repository,holderId, holderName, containerId, containerName);						
 		}
 		else if(holderType.equals("shelf")  && containerType.equals("rack"))
 		{
-			InstanceFabricator.createShelfAtRack(StudioComponents.studioRepository,holderId, holderName, containerId, containerName);						
+			InstanceFabricator.createShelfAtRack(repository,holderId, holderName, containerId, containerName);						
 		}
 		else if(holderType.equals("rack"))
 		{
-			InstanceFabricator.createRack(StudioComponents.studioRepository,holderId, holderName);						
+			InstanceFabricator.createRack(repository,holderId, holderName);						
 		}
 		else {
 			NOpenLog.appendLine("Error: Unexpected creation of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
@@ -285,7 +283,7 @@ public class StudioSpecificFactory {
 		}
 	}
 
-	public static void deleteEquipmentholder(DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
+	public static void deleteEquipmentholder(OKCoUploader repository, DtoJointElement dtoEquipmentholder, DtoJointElement dtoContainer) throws Exception 
 	{
 		String holderType = dtoEquipmentholder.getType();		
 		String holderId = dtoEquipmentholder.getId();		
@@ -295,23 +293,23 @@ public class StudioSpecificFactory {
 		String containerName = dtoContainer.getName();
 		
 		if(holderType.equals("card")) {
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);			
+			InstanceFabricator.deleteEquipment(repository,holderId, holderName, holderType);			
 		}
 		else if(holderType.equals("slot"))
 		{
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);	
+			InstanceFabricator.deleteEquipment(repository,holderId, holderName, holderType);	
 		}
 		else if(holderType.equals("subslot"))
 		{
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);	
+			InstanceFabricator.deleteEquipment(repository,holderId, holderName, holderType);	
 		}
 		else if(holderType.equals("shelf")) 
 		{
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);		
+			InstanceFabricator.deleteEquipment(repository,holderId, holderName, holderType);		
 		}
 		else if(holderType.equals("rack"))
 		{
-			InstanceFabricator.deleteEquipment(StudioComponents.studioRepository,holderId, holderName, holderType);		
+			InstanceFabricator.deleteEquipment(repository,holderId, holderName, holderType);		
 		}
 		else {
 			NOpenLog.appendLine("Error: Unexpected deletion of Equipment "+holderType+"::"+holderName+" at "+containerType+"::"+containerName+"");
@@ -328,36 +326,36 @@ public class StudioSpecificFactory {
 	// Specific: Shelf
 	//=============================================================================================
 	
-	public static void deleteShelf(DtoJointElement dtoShelf) throws Exception 
+	public static void deleteShelf(OKCoUploader repository, DtoJointElement dtoShelf) throws Exception 
 	{	
 		String holderId = dtoShelf.getId();		
 		String holderName = dtoShelf.getName();
 		
-		InstanceFabricator.deleteShelf(StudioComponents.studioRepository,holderId,holderName);	
+		InstanceFabricator.deleteShelf(repository,holderId,holderName);	
 	}
 
 	//=============================================================================================
 	// Specific: Slot
 	//=============================================================================================
 	
-	public static void deleteSlot(DtoJointElement dtoSlot) throws Exception 
+	public static void deleteSlot(OKCoUploader repository, DtoJointElement dtoSlot) throws Exception 
 	{				
 		String holderId = dtoSlot.getId();		
 		String holderName = dtoSlot.getName();		
 				
-		InstanceFabricator.deleteSlot(StudioComponents.studioRepository,holderId,holderName);
+		InstanceFabricator.deleteSlot(repository,holderId,holderName);
 	}
 
 	//=============================================================================================
 	// Specific: Card
 	//=============================================================================================
 	
-	public static void deleteCard(DtoJointElement dtoCard) 
+	public static void deleteCard(OKCoUploader repository, DtoJointElement dtoCard) 
 	{
 		String holderId = dtoCard.getId();		
 		String holderName = dtoCard.getName();		
 				
-		InstanceFabricator.deleteCard(StudioComponents.studioRepository,holderId,holderName);
+		InstanceFabricator.deleteCard(repository,holderId,holderName);
 	}
 	
 	public static String[] elementsWithNoConnection(DtoJointElement dtoCard) 
@@ -370,26 +368,26 @@ public class StudioSpecificFactory {
 	// Specific: Supervisor
 	//=============================================================================================
 	
-	public static void createSupervisor(DtoJointElement dtoSupervisor, DtoJointElement dtoHolder) throws Exception 
+	public static void createSupervisor(OKCoUploader repository, DtoJointElement dtoSupervisor, DtoJointElement dtoHolder) throws Exception 
 	{
-		String supervisorId = dtoSupervisor.getId();		
-		String supervisorName = dtoSupervisor.getName();		
+		///String supervisorId = dtoSupervisor.getId();		
+		//String supervisorName = dtoSupervisor.getName();		
 			
-		String holderId = dtoHolder.getId();		
-		String holderName = dtoHolder.getName();	
+		//String holderId = dtoHolder.getId();		
+		//String holderName = dtoHolder.getName();	
 		return ;
-		//InstanceFabricator.createSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName, holderId, holderName);
+		//InstanceFabricator.createSupervisor(repository, supervisorId, supervisorName, holderId, holderName);
 	}	
 	
-	public static void deleteSupervisor(DtoJointElement dtoSupervisor) 
+	public static void deleteSupervisor(OKCoUploader repository, DtoJointElement dtoSupervisor) 
 	{
 		String supervisorId = dtoSupervisor.getId();		
 		String supervisorName = dtoSupervisor.getName();		
 				
-		InstanceFabricator.deleteSupervisor(StudioComponents.studioRepository, supervisorId, supervisorName);
+		InstanceFabricator.deleteSupervisor(repository, supervisorId, supervisorName);
 	}
 		
-	public static void superviseCard(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) throws Exception 
+	public static void superviseCard(OKCoUploader repository, DtoJointElement dtoSupervisor, DtoJointElement dtoCard) throws Exception 
 	{
 		String supervisorId = dtoSupervisor.getId();		
 		String supervisorName = dtoSupervisor.getName();		
@@ -397,10 +395,10 @@ public class StudioSpecificFactory {
 		String cardId = dtoCard.getId();		
 		String cardName = dtoCard.getName();	
 		
-		InstanceFabricator.superviseCard(StudioComponents.studioRepository, supervisorId, supervisorName, cardId, cardName);
+		InstanceFabricator.superviseCard(repository, supervisorId, supervisorName, cardId, cardName);
 	}
 	
-	public static void unsuperviseCard(DtoJointElement dtoSupervisor, DtoJointElement dtoCard)  throws Exception 
+	public static void unsuperviseCard(OKCoUploader repository, DtoJointElement dtoSupervisor, DtoJointElement dtoCard)  throws Exception 
 	{
 		String supervisorId = dtoSupervisor.getId();		
 		String supervisorName = dtoSupervisor.getName();		
@@ -408,7 +406,7 @@ public class StudioSpecificFactory {
 		String cardId = dtoSupervisor.getId();		
 		String cardName = dtoSupervisor.getName();	
 		
-		InstanceFabricator.unsuperviseCard(StudioComponents.studioRepository, supervisorId, supervisorName, cardId, cardName);
+		InstanceFabricator.unsuperviseCard(repository, supervisorId, supervisorName, cardId, cardName);
 	}
 	
 	public static void canSupervise(DtoJointElement dtoSupervisor, DtoJointElement dtoCard) 
@@ -433,7 +431,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void deleteLink(DtoJointElement dtoLink, DtoJointElement srcTFunction, DtoJointElement tgtTFunction)  throws Exception
+	public static void deleteLink(OKCoUploader repository, DtoJointElement dtoLink, DtoJointElement srcTFunction, DtoJointElement tgtTFunction)  throws Exception
 	{		
 		String srcType = srcTFunction.getType();
 		String srcId = srcTFunction.getId();
@@ -445,12 +443,12 @@ public class StudioSpecificFactory {
 		
 		if(srcType.equals("TTF") && tgtType.equals("AF"))
 		{
-			InstanceFabricator.deleteLinkFromTTFToAF(StudioComponents.studioRepository,srcId, srcName, tgtId, tgtName);						
+			InstanceFabricator.deleteLinkFromTTFToAF(repository,srcId, srcName, tgtId, tgtName);						
 		}
 		
 		else if(srcType.equals("AF") && tgtType.equals("TTF"))
 		{
-			InstanceFabricator.deleteLinkFromAFToTTF(StudioComponents.studioRepository,srcId, srcName, tgtId, tgtName);						
+			InstanceFabricator.deleteLinkFromAFToTTF(repository,srcId, srcName, tgtId, tgtName);						
 		}
 		else{
 			NOpenLog.appendLine("Error: Unexpected deletion of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");
@@ -461,7 +459,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createLink(DtoJointElement dtoSourceTFunction, DtoJointElement dtoTargetTFunction, DtoJointElement dtoLink) throws Exception
+	public static void createLink(OKCoUploader repository, DtoJointElement dtoSourceTFunction, DtoJointElement dtoTargetTFunction, DtoJointElement dtoLink) throws Exception
 	{	
 		String srcTfType = dtoSourceTFunction.getType();		
 		String srcTfId = dtoSourceTFunction.getId();		
@@ -473,12 +471,12 @@ public class StudioSpecificFactory {
 		
 		if(srcTfType.equals("TTF") && tgtTfType.equals("AF"))
 		{
-			InstanceFabricator.createLinkFromTTFToAF(StudioComponents.studioRepository,srcTfId, srcName, tgtTfId, tgtName);						
+			InstanceFabricator.createLinkFromTTFToAF(repository,srcTfId, srcName, tgtTfId, tgtName);						
 		}
 		
 		else if(srcTfType.equals("AF") && tgtTfType.equals("TTF"))
 		{
-			InstanceFabricator.createLinkFromAFToTTF(StudioComponents.studioRepository,srcTfId, srcName, tgtTfId, tgtName);						
+			InstanceFabricator.createLinkFromAFToTTF(repository,srcTfId, srcName, tgtTfId, tgtName);						
 		}
 		else{
 			NOpenLog.appendLine("Error: Unexpected creation of Link from "+srcTfType+"::"+srcName+" to "+tgtTfType+"::"+tgtName+"");
@@ -489,7 +487,7 @@ public class StudioSpecificFactory {
 	/**
 	 * @author John Guerson
 	 */
-	public static void canCreateLink(DtoJointElement dtoSourceTFunction, DtoJointElement dtoTargetTFunction) throws Exception
+	public static void canCreateLink(OKCoUploader repository, DtoJointElement dtoSourceTFunction, DtoJointElement dtoTargetTFunction) throws Exception
 	{	
 		String srcTfType = dtoSourceTFunction.getType();				
 		String srcTfName = dtoSourceTFunction.getName();
