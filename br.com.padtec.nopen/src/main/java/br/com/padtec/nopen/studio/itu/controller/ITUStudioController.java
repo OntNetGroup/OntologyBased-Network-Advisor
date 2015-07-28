@@ -139,7 +139,7 @@ public class ITUStudioController {
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
 		
 		try{
-			SpecificDtoFabricator.createLink(StudioComponents.studioRepository,dtoSourceTFunction, dtoTargetTFunction);
+			SpecificDtoFabricator.createLinkBetweenTFs(StudioComponents.studioRepository,dtoSourceTFunction, dtoTargetTFunction);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -160,7 +160,7 @@ public class ITUStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		try{
-			SpecificDtoFabricator.deleteContainer(StudioComponents.studioRepository,dtoContainer, dtoCard);
+			SpecificDtoFabricator.deleteLinkFromCardLayerToLayer(StudioComponents.studioRepository,dtoContainer, dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -206,7 +206,7 @@ public class ITUStudioController {
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
 			
 		try{
-			SpecificDtoFabricator.deleteLink(StudioComponents.studioRepository, dtoSourceTFunction, dtoTargetTFunction); 
+			SpecificDtoFabricator.deleteLinkBetweenTFs(StudioComponents.studioRepository, dtoSourceTFunction, dtoTargetTFunction); 
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -263,7 +263,7 @@ public class ITUStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 		
 		try{
-			SpecificDtoFabricator.changeContainer(StudioComponents.studioRepository,dtoTransportFunction, dtoSourceContainer, dtoTargetContainer, dtoCard); 
+			SpecificDtoFabricator.changeLayerOfTTF(StudioComponents.studioRepository,dtoTransportFunction, dtoSourceContainer, dtoTargetContainer, dtoCard); 
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -309,7 +309,7 @@ public class ITUStudioController {
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
 		
 		try{
-			SpecificDtoFabricator.canCreateLink(StudioComponents.studioRepository,dtoSourceTFunction, dtoTargetTFunction);
+			SpecificDtoFabricator.canCreateLinkBetweenTFs(StudioComponents.studioRepository,dtoSourceTFunction, dtoTargetTFunction);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
