@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.service.EquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
+import br.com.padtec.nopen.studio.service.StudioComponents;
 
 @Controller
 public class VisualizerController {
@@ -46,5 +48,21 @@ public class VisualizerController {
 	public String ituVisualizerRequest() 
 	{
 		return "visualizer/itu-visualizer/itu-visualizer";
+	}
+	
+	/**
+	 * Create equipment in OWL by a JSON file
+	 * @param elements
+	 * @param links
+	 */
+	@RequestMapping(value = "/parseEquipToOWL", method = RequestMethod.POST)
+	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
+		
+		try {
+			EquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
+			EquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

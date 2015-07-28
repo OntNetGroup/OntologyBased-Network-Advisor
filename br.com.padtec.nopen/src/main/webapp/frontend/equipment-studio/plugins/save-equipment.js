@@ -33,7 +33,7 @@ function generateSaveEquipmentDialog(graph){
 		]
 	});
 	
-	$("#save-filename").val($('#save-dialog').find(":selected").val());
+$('#save-dialog').find(":selected").val();
 	
 	dialog.on('action:save', checkEquipmentFile);
 	dialog.on('action:cancel', cancel);

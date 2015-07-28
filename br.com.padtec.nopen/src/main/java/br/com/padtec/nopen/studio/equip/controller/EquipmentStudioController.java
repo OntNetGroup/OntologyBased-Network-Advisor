@@ -32,12 +32,12 @@ public class EquipmentStudioController {
 
 	
 	/**
-	 * Create equipment in OWL by a JSON file
+	 * Load a pre-existing template in OWL by a JSON file
 	 * @param elements
 	 * @param links
 	 */
-	@RequestMapping(value = "/parseEquipToOWL", method = RequestMethod.POST)
-	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
+	@RequestMapping(value = "/parseTemplateToOWL", method = RequestMethod.POST)
+	protected @ResponseBody void parseTemplateToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
 		try {
 			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);

@@ -1,4 +1,4 @@
-function graphHandler(app, graph) {
+function graphHandler(app, graph , paper) {
 	
 	
 //	$.getJSON('/otn-protocol', { get_param: 'value' }, function(data) {
@@ -27,5 +27,18 @@ graph.on('change' , function (cell) {
 		cell.set('position', cell.previous('position'));
 
 	},this);
+
+paper.on('cell:pointerclick', function( cellView , evt, x, y) {
+	
+	var cellId = cellView.model.id;
+	var equipment = graph.getCell(cellId);
+	
+	if(equipment.get('subType') === 'Card'){
+		equipment.prop('attributes','otn');
+		console.log(equipment);
+		console.log(cellView);
+	};
+	
+},this);
 
 };
