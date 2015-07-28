@@ -137,20 +137,25 @@ public class InterfaceStructure {
 	}
 	
 	
-	public static String[] getPossibleConnections(String sourceEquipmentId, String targetEquipmentId, String typeOfConnection, String typePort, OKCoUploader repository){
-		String[] result = new String[2];
+	public static String getPossibleConnections(String sourceEquipmentId, String targetEquipmentId, String typeOfConnection, String typePort, OKCoUploader repository){
+		String[] connections = new String[2];
+		String result = null;
 		if(typeOfConnection.equals("Horizontal")){
 			String resultSource = getInterfacesFromEquipment(sourceEquipmentId, "Output", repository);
 			String resultTarget = getInterfacesFromEquipment(targetEquipmentId, "Output", repository);
-			result[0] = resultSource;
-			result[1] = resultTarget;
+			connections[0] = resultSource;
+			connections[1] = resultTarget;
 		}
 		else{
 			String resultSource = getInterfacesFromEquipment(sourceEquipmentId, typePort, repository);
 			String resultTarget = getInterfacesFromEquipment(targetEquipmentId, typePort, repository);
-			result[0] = resultSource;
-			result[1] = resultTarget;
+			connections[0] = resultSource;
+			connections[1] = resultTarget;
 		}
+		
+		Gson gson = new Gson();
+		result = gson.toJson(connections);
+		
 		return result;
 	}
 	
