@@ -191,9 +191,23 @@ public class ProvisioningController {
 		String result = null;
 		try {
 			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
-			String sourceOutputId = "a6903fe6-a3b8-49bb-8a7e-2180baa4b73b";
-			String targetEquipmentId = "6d893924-e6c5-4e06-9066-60544e756d9b";
-			String teste = InterfaceStructure.getPossibleTargetInputs(sourceOutputId, targetEquipmentId, ProvisioningComponents.provisioningRepository);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * Method to get the type of the connection between two equipments
+	 * @param equipmentSourceId, equipmentTargetId
+	 * @return
+	 */
+	@RequestMapping(value= "/getTypeOfConnectionFromOWL", method = RequestMethod.POST)
+	protected @ResponseBody String getTypeOfConnection(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId){
+		String result = null;
+		try {
+			result = InterfaceStructure.getTypeOfConnection(equipmentSourceId, equipmentTargetId, ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -23,7 +23,7 @@ function ituHandle(paper, graph){
 		if((equipment.get('subType')) === 'Card') {
 			
 			$("#itu-iframe").empty();
- console.log($("#filename").val());
+			console.log($("#filename").val());
 			var filename = cellView.model.attr('equipment/template');
 			
 			$(function ()    {
