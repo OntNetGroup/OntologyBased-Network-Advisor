@@ -441,6 +441,20 @@ public class ITUStudioController {
 	}
 	
 	/**
+	 * Procedure to open a ITU file of a Equipment.
+	 * @param path
+	 * @param ituFilename
+	 * @return
+	 */
+	@RequestMapping(value = "/openITUFileEquipment", method = RequestMethod.POST)
+	protected @ResponseBody String openITUFileEquipment(@RequestParam("path") String path, @RequestParam("filename") String ituFilename)
+	{		
+		path = path + "/itu/" + ituFilename + ".json";
+		path = NOpenFileUtil.replaceSlash(path);		
+		return NOpenFileUtil.openEquipmentJSONFileAsString(path);		
+	}
+	
+	/**
 	 * Procedure to save all ITU files of a Equipment.
 	 * @param path
 	 * @param ituFilename
