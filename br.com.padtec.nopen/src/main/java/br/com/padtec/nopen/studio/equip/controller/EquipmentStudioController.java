@@ -209,7 +209,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
 
 		try{
-			PerformBind.canCreateEquipmentBinds(dtoSourceElement, dtoTargetElement);
+			PerformBind.canCreateEquipmentBinds(dtoSourceElement, dtoTargetElement, StudioComponents.studioRepository);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
