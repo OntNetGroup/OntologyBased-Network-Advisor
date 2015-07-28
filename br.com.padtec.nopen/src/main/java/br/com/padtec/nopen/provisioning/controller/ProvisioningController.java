@@ -223,7 +223,7 @@ public class ProvisioningController {
 	protected @ResponseBody String getPossibleConnections(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId){
 		String result = null;
 		try {
-			result = InterfaceStructure.getPossibleConnections(equipmentSourceId, equipmentTargetId, "Horizontal", "Output", ProvisioningComponents.provisioningRepository);
+			result = InterfaceStructure.getPossibleConnections(equipmentSourceId, equipmentTargetId, ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

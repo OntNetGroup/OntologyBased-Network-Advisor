@@ -158,8 +158,8 @@ public class PerformBind {
 				relation_source = source_componentOfs.get(NOpenComponents.nopenRepository.getNamespace() + typeSource + "_Output");
 				relation_target = target_componentOfs.get(NOpenComponents.nopenRepository.getNamespace() + typeTarget + "_Input");
 				
-				relation_source = relation_source.replace("http://www.menthor.net/nOpenModel.owl", repository.getNamespace());
-				relation_target = relation_target.replace("http://www.menthor.net/nOpenModel.owl", repository.getNamespace());
+				relation_source = relation_source.replace("http://www.menthor.net/nOpenModel.owl#", repository.getNamespace());
+				relation_target = relation_target.replace("http://www.menthor.net/nOpenModel.owl#", repository.getNamespace());
 				
 				//create the relation between tf and output
 				FactoryUtil.createInstanceRelation( 
