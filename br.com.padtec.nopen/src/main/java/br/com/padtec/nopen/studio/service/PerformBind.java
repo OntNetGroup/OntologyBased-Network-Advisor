@@ -200,9 +200,14 @@ public class PerformBind {
 	 * discover the rp for the binds and the component of
 	 * 
 	 */
-	public static boolean applyBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement, String flag, OKCoUploader repository) throws Exception {
+	public synchronized static boolean applyBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement, String flag, OKCoUploader repository) throws Exception {
 			if(flag.equals("ITU")){
-				repository.getReasoner().run(repository.getBaseModel());
+				new Thread(){
+					@Override
+					public void run(){
+						StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
+					}
+				}.start();
 			}
 			boolean result = false;
 			String nameSource = dtoSourceElement.getName();
