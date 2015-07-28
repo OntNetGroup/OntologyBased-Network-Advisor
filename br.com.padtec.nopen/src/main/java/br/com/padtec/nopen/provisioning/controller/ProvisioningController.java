@@ -203,8 +203,8 @@ public class ProvisioningController {
 	 * @param equipmentSourceId, equipmentTargetId
 	 * @return
 	 */
-	@RequestMapping(value= "/getTypeOfConnectionFromOWL", method = RequestMethod.POST)
-	protected @ResponseBody String getTypeOfConnection(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId){
+	@RequestMapping(value= "/getConnectionTypeFromOWL", method = RequestMethod.POST)
+	protected @ResponseBody String getConnectionTypeFromOWL(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId){
 		String result = null;
 		try {
 			result = InterfaceStructure.getTypeOfConnection(equipmentSourceId, equipmentTargetId, ProvisioningComponents.provisioningRepository);
