@@ -133,15 +133,18 @@ nopen.provisioning.App = Backbone.View.extend({
         	
         	$.each(graph.getLinks(), function(index, link) {
         		
+        		var source = graph.getCell(link.get('source').id);
+        		var target = graph.getCell(link.get('target').id);
+        		
         		//show links
-        		if(link.get('source').id === cell.id) {
+        		if(link.get('source').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
         			model.showLink(link.id);
         			var connectedCell = graph.getCell(link.get('target').id);
         			connectedCell.attr('circle/stroke', "blue");
         			connectedCell.attr('circle/stroke-width', 3);
         			connectedCell.attr('text/display', 'normal');
         		}
-        		if(link.get('target').id === cell.id) {
+        		if(link.get('target').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
         			model.showLink(link.id);
         			var connectedCell = graph.getCell(link.get('source').id)
         			connectedCell.attr('circle/stroke', "blue");
@@ -468,6 +471,10 @@ nopen.provisioning.App = Backbone.View.extend({
 	//Toolbar procedures
 	initializeToolbarProcedures : function(app) {
 		
+		var graph = app.graph;
+		var model = this.model;
+		var util = this.util;
+		
 		$('#loading').hide();
 	    $(document).ajaxStart(function() {
 	    	$('#loading').show();
@@ -488,6 +495,48 @@ nopen.provisioning.App = Backbone.View.extend({
 				$('.paper-container').css({
 					right: 241,
 				});
+			}
+			
+		});
+		
+		$('#btn-layer').click(function(){
+			
+			var content = 'Choose a techology: <select class="technology">';
+			
+			$.each(graph.getElements(), function(index, element) {
+				
+				if(element.get('subtype') === 'Layer_Network') {
+					content = content + '<option value="' + element.get('technology') + '">' + element.get('technology') + '</option>';
+				}
+				
+			})
+			
+			content = content + '</select>';
+			
+			var dialog = new joint.ui.Dialog({
+			    width: 250,
+			    closeButton: false,
+			    title: 'Change Technology',
+			    clickOutside: false,
+				modal: false,
+			    content: content,
+			    buttons: [
+				          { action: 'cancel', content: 'Cancel', position: 'right' },
+				          { action: 'ok', content: 'Ok', position: 'right' },
+				]
+			});
+			dialog.on('action:cancel', cancel);
+			dialog.on('action:ok', changeTechnology);
+			dialog.open();
+			
+			function cancel() {
+				dialog.close();
+			}
+			
+			function changeTechnology() {
+				var tech = $( ".technology option:selected" ).text();
+				model.showTech(graph, tech);
+				dialog.close();
 			}
 			
 		});

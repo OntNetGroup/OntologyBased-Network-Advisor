@@ -127,4 +127,8 @@ hr {
  font-size:12px;
 }
     
-
+.dialog .technology {
+	font-size: 20px;
+    width: 100%;
+    margin-top: 10px;
+}

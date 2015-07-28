@@ -390,7 +390,12 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		graph.clear();
 		
         var index = 0;
+        var initialTech = undefined;
 		_.each(subnetworks, function(element, tech) {
+			
+			if(!initialTech) {
+				initialTech = tech;
+			}
 			
 			var uppermostLayer = $this.getUppermostLayer(tech);
 			var layerNetwork = Stencil.createLayerNetwork(tech, uppermostLayer);
@@ -412,7 +417,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			}
 			
 			subnetwork.translate(subnetworkPosition.x, subnetworkPosition.y);
-			//layerNetwork.embed(subnetwork);
+			layerNetwork.embed(subnetwork);
 
 			var equipmentOffset = 0;
 			if(subnetworks[tech].length > 0 && subnetworks[tech].length <= 16) {
@@ -434,7 +439,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				accessGroup.set('position', position);
 				
 				equipIndex ++;
-				//subnetwork.embed(accessGroup);
+				subnetwork.embed(accessGroup);
 				
 			}, this);
 			
@@ -479,6 +484,42 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		
 		//hide links
 		$this.hideLinks();
+		$this.showTech(graph, initialTech);
+		
+		
+	},
+	
+	showTech : function(graph, tech) {
+
+		var $this = this;
+		
+		$.each(graph.getElements(), function(index, element) {
+			element.attr('.rotatable', { display : 'none' });
+		});
+
+		$.each(graph.getElements(), function(index, element) {
+			
+			if(element.get('subtype') === 'Layer_Network' && element.get('technology') === tech) {
+				element.attr('.rotatable', { display : 'normal' });
+				console.log('EMBEDS: ' + element.get('embeds')[0]);
+				$this.showEmbeds(graph, element.get('embeds')[0]);
+			}
+			
+		});
+		
+	},
+	
+	showEmbeds : function(graph, elementId) {
+		
+		var $this = this;
+		var embeddedElement = graph.getCell(elementId);
+		embeddedElement.attr('.rotatable', { display : 'normal' });
+		
+		if(embeddedElement.get('embeds')) {
+			$.each(embeddedElement.get('embeds'), function(index, element) {
+				$this.showEmbeds(graph, element);
+			});
+		}
 		
 	},
 	

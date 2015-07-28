@@ -19,6 +19,7 @@
      </div>
      <button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom to fit"><img src="/nopen/frontend/provisioning/img/zoomtofit.png" alt="Zoom To Fit"/></button>
      <button id="btn-show-hide-inspector" class="btn" data-tooltip="Show/Hide Inspector"><img src="/nopen/frontend/provisioning/img/show_hide.png" alt="Show/Hide Inspector"/></button>
+     <button id="btn-layer" class="btn" data-tooltip="Change Technology"><img src="/nopen/frontend/provisioning/img/layer.png" alt="Change Technology"/></button>
 <!--      <button id="btn-fullscreen" class="btn" data-tooltip="Toggle Fullscreen Mode"><img src="/nopen/frontend/provisioning/img/fullscreen.png" alt="Fullscreen"/></button> -->
 <!--      <button id="btn-to-front" class="btn" data-tooltip="Bring Object to Front">to front</button> -->
 <!--      <button id="btn-to-back" class="btn" data-tooltip="Send Object to Back">to back</button> -->

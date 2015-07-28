@@ -13,7 +13,10 @@ joint.shapes.provisioning.AccessGroup = joint.shapes.basic.Circle.extend({
 		size: { width: 30, height: 30 },
 			
 		attrs: {
-			'.': { magnet: true }
+			'.': { magnet: true },
+			'.rotatable': {
+            	display: 'none',
+            }
 		},
 		
 		id : '',
@@ -35,7 +38,10 @@ joint.shapes.provisioning.Subnetwork = joint.shapes.basic.Circle.extend({
 		size: { width: 400, height: 150 },
 	    attrs: {
 			'.': { magnet: false },
-	        text: { text: '', fill: '#BABABA', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 }
+	        text: { text: '', fill: '#BABABA', 'font-size': 14, stroke: '#000000', 'stroke-width': 0 },
+	        '.rotatable': {
+            	display: 'none',
+            }
 	    }
 		
 	}, joint.shapes.basic.Circle.prototype.defaults)
@@ -62,6 +68,9 @@ joint.shapes.provisioning.Layer = joint.shapes.bpmn.Pool.extend({
             },
             '.blackbox-wrap': {
             	text: '',
+            },
+            '.rotatable': {
+            	display: 'none',
             }
         }
 
@@ -79,7 +88,7 @@ joint.shapes.provisioning.Matrix = joint.shapes.devs.Model.extend({
             '.body': { fill: '#808080' },
             '.label': { text: 'Matrix', fill: '#FFFFFF' },
             '.inPorts .port-body': { fill: 'PaleGreen' },
-            '.outPorts .port-body': { fill: 'Tomato' }
+            '.outPorts .port-body': { fill: 'Tomato' },
         }
 
     }, joint.shapes.devs.Model.prototype.defaults)
