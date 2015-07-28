@@ -177,7 +177,7 @@ public class SpecificDtoFabricator {
 		
 		if(containerType.equals("layer"))
 		{
-			InstanceFabricator.insertLayerLink(repository,containerId, containerName, cardId, cardName);						
+			InstanceFabricator.createLinkFromCardToCardLayer(repository,containerId, containerName, cardId, cardName);						
 		}		
 		else{			
 			NOpenLog.appendLine("Error: Unexpected insertion of Container "+containerType+"::"+containerName+" at "+cardType+"::"+cardName+"");
@@ -200,7 +200,7 @@ public class SpecificDtoFabricator {
 		
 		if(containerType.equals("layer"))
 		{
-			InstanceFabricator.removeLayerLink(repository,containerId, containerName, cardId, cardName);						
+			InstanceFabricator.deleteLinkFromCardToCardLayer(repository,containerId, containerName, cardId, cardName);						
 		}		
 		else{
 			
@@ -431,7 +431,7 @@ public class SpecificDtoFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void deleteLink(OKCoUploader repository, DtoJointElement dtoLink, DtoJointElement srcTFunction, DtoJointElement tgtTFunction)  throws Exception
+	public static void deleteLink(OKCoUploader repository, DtoJointElement srcTFunction, DtoJointElement tgtTFunction)  throws Exception
 	{		
 		String srcType = srcTFunction.getType();
 		String srcId = srcTFunction.getId();
@@ -459,7 +459,7 @@ public class SpecificDtoFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createLink(OKCoUploader repository, DtoJointElement dtoSourceTFunction, DtoJointElement dtoTargetTFunction, DtoJointElement dtoLink) throws Exception
+	public static void createLink(OKCoUploader repository, DtoJointElement dtoSourceTFunction, DtoJointElement dtoTargetTFunction) throws Exception
 	{	
 		String srcTfType = dtoSourceTFunction.getType();		
 		String srcTfId = dtoSourceTFunction.getId();		

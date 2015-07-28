@@ -27,7 +27,7 @@ public class GeneralDtoFabricator {
 		
 		else if(elemType.compareToIgnoreCase("IN")==0 || elemType.compareToIgnoreCase("OUT")==0)  SpecificDtoFabricator.createPort(repository,dtoElement, dtoContainer);
 		
-		else if(elemType.compareToIgnoreCase("LAYER")==0)  SpecificDtoFabricator.insertContainer(repository, dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("CARD_LAYER")==0)  SpecificDtoFabricator.insertContainer(repository, dtoElement, dtoContainer);
 		
 		else if(elemType.compareToIgnoreCase("CARD")==0)  SpecificDtoFabricator.createEquipmentholder(repository,dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("SLOT")==0) SpecificDtoFabricator.createEquipmentholder(repository, dtoElement, dtoContainer);
@@ -86,7 +86,7 @@ public class GeneralDtoFabricator {
 	 * @author John Guerson
 	 */
 	@SuppressWarnings("unused")
-	public static void createConnection(OKCoUploader repository, DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement, DtoJointElement dtoConnection) throws Exception
+	public static void createConnection(OKCoUploader repository, DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception
 	{
 		String srcType = dtoSourceElement.getType();		
 		String srcId = dtoSourceElement.getId();		
@@ -96,8 +96,8 @@ public class GeneralDtoFabricator {
 		String tgtId = dtoTargetElement.getId();
 		String tgtName = dtoTargetElement.getName();
 		
-		if(srcType.compareToIgnoreCase("TTF")==0 && tgtType.compareToIgnoreCase("AF")==0)  SpecificDtoFabricator.createLink(repository, dtoSourceElement, dtoTargetElement, dtoConnection);		
-		else if(srcType.compareToIgnoreCase("AF")==0 && tgtType.compareToIgnoreCase("TTF")==0)  SpecificDtoFabricator.createLink(repository, dtoSourceElement, dtoTargetElement, dtoConnection);
+		if(srcType.compareToIgnoreCase("TTF")==0 && tgtType.compareToIgnoreCase("AF")==0)  SpecificDtoFabricator.createLink(repository, dtoSourceElement, dtoTargetElement);		
+		else if(srcType.compareToIgnoreCase("AF")==0 && tgtType.compareToIgnoreCase("TTF")==0)  SpecificDtoFabricator.createLink(repository, dtoSourceElement, dtoTargetElement);
 		
 		else {
 			NOpenLog.appendLine("Error: Unexpected creation of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");
@@ -109,7 +109,7 @@ public class GeneralDtoFabricator {
 	 * @author John Guerson
 	 */
 	@SuppressWarnings("unused")
-	public static void deleteConnection(OKCoUploader repository, DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement, DtoJointElement dtoConnection) throws Exception
+	public static void deleteConnection(OKCoUploader repository, DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement) throws Exception
 	{
 		String srcType = dtoSourceElement.getType();		
 		String srcId = dtoSourceElement.getId();		
@@ -119,8 +119,8 @@ public class GeneralDtoFabricator {
 		String tgtId = dtoTargetElement.getId();
 		String tgtName = dtoTargetElement.getName();
 		
-		if(srcType.compareToIgnoreCase("TTF")==0 && tgtType.compareToIgnoreCase("AF")==0)  SpecificDtoFabricator.deleteLink(repository, dtoSourceElement, dtoTargetElement, dtoConnection);		
-		else if(srcType.compareToIgnoreCase("AF")==0 && tgtType.compareToIgnoreCase("TTF")==0)  SpecificDtoFabricator.deleteLink(repository, 	dtoSourceElement, dtoTargetElement, dtoConnection);
+		if(srcType.compareToIgnoreCase("TTF")==0 && tgtType.compareToIgnoreCase("AF")==0)  SpecificDtoFabricator.deleteLink(repository, dtoSourceElement, dtoTargetElement);		
+		else if(srcType.compareToIgnoreCase("AF")==0 && tgtType.compareToIgnoreCase("TTF")==0)  SpecificDtoFabricator.deleteLink(repository, dtoSourceElement, dtoTargetElement);
 		
 		else {
 			NOpenLog.appendLine("Error: Unexpected deletion of Link from "+srcType+"::"+srcName+" to "+tgtType+"::"+tgtName+"");

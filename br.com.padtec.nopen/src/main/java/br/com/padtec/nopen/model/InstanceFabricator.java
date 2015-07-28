@@ -558,31 +558,16 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void insertLayerLink(OKCoUploader repository, String layerId, String layerName, String cardId, String cardName) throws Exception 
+	public static void deleteLinkFromCardToCardLayer(OKCoUploader repository, String cardLayerId, String cardLayerName, String cardId, String cardName)
 	{
-//		FactoryUtil.createInstanceRelation(
-//			repository.getBaseModel(), 
-//			repository.getNamespace()+cardId, 
-//			repository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
-//			repository.getNamespace()+layerId
-//		);
-//		
-//		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" inserted at Card: "+cardName);
-	}
+		FactoryUtil.deleteObjectProperty(
+			repository.getBaseModel(),
+			repository.getNamespace()+cardId, 
+			repository.getNamespace()+RelationEnum.A_Card_CardLayer,
+			repository.getNamespace()+cardLayerId
+		);		
 		
-	/**
-	 * @author John Guerson
-	 */
-	public static void removeLayerLink(OKCoUploader repository, String layerId, String layerName, String cardId, String cardName)
-	{
-//		FactoryUtil.deleteObjectProperty(
-//			repository.getBaseModel(),
-//			repository.getNamespace()+cardId, 
-//			repository.getNamespace()+RelationEnum.ComponentOf3_Card_Layer,
-//			repository.getNamespace()+layerId
-//		);		
-//		
-//		NOpenLog.appendLine(repository.getName()+": Layer "+layerName+" removed from Card "+cardName);
+		NOpenLog.appendLine(repository.getName()+": Card Layer "+cardLayerName+" deleted from Card "+cardName);
 	}
 	
 	/**

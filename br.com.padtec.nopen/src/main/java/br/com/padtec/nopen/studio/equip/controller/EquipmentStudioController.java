@@ -15,7 +15,7 @@ import com.jointjs.util.JointUtilManager;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.model.SpecificDtoFabricator;
-import br.com.padtec.nopen.service.EquipmentCloner;
+import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.service.PerformBind;
@@ -40,8 +40,8 @@ public class EquipmentStudioController {
 	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
 		try {
-			EquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
-			EquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
+			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
+			NOpenEquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

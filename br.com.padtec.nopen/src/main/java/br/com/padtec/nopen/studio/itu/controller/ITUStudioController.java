@@ -137,10 +137,9 @@ public class ITUStudioController {
 	{
 		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
-		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
 		
 		try{
-			SpecificDtoFabricator.createLink(StudioComponents.studioRepository,dtoSourceTFunction, dtoTargetTFunction, dtoLink);
+			SpecificDtoFabricator.createLink(StudioComponents.studioRepository,dtoSourceTFunction, dtoTargetTFunction);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -205,10 +204,9 @@ public class ITUStudioController {
 	{
 		DtoJointElement dtoSourceTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(sourceTFunction, DtoJointElement.class);
 		DtoJointElement dtoTargetTFunction = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetTFunction, DtoJointElement.class);
-		DtoJointElement dtoLink = (DtoJointElement) JointUtilManager.getJavaFromJSON(link, DtoJointElement.class);
-	
+			
 		try{
-			SpecificDtoFabricator.deleteLink(StudioComponents.studioRepository,dtoLink, dtoSourceTFunction, dtoTargetTFunction); 
+			SpecificDtoFabricator.deleteLink(StudioComponents.studioRepository, dtoSourceTFunction, dtoTargetTFunction); 
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
