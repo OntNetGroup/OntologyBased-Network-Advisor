@@ -200,7 +200,7 @@ public class ProvisioningController {
 	
 	/**
 	 * Method to get the type of the connection between two equipments
-	 * @param equipmentId
+	 * @param equipmentSourceId, equipmentTargetId
 	 * @return
 	 */
 	@RequestMapping(value= "/getTypeOfConnectionFromOWL", method = RequestMethod.POST)
