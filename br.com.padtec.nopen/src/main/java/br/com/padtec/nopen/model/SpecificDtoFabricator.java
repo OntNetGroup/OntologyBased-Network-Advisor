@@ -47,16 +47,22 @@ public class SpecificDtoFabricator {
 		String tfName = dtoTransportFunction.getName();
 		
 		if(dtoContainer!=null){
+			
 			String containerType = dtoContainer.getType();
 			String containerId = dtoContainer.getId();
 			String containerName = dtoContainer.getName();		
-			if(tfType.compareToIgnoreCase("TTF")==0 && containerType.compareToIgnoreCase("LAYER")==0) 
-			{
+			
+			if(tfType.compareToIgnoreCase("TTF")==0 && containerType.compareToIgnoreCase("LAYER")==0){
 				InstanceFabricator.createTTFAtLayer(repository, tfId, tfName, containerId, containerName);						
 			}
-			else if(tfType.compareToIgnoreCase("AF")==0 && containerType.compareToIgnoreCase("CARD")==0) 
-			{
-				InstanceFabricator.createAFAtCard(repository,tfId, tfName, containerId, containerName);						
+			else if(tfType.compareToIgnoreCase("AF")==0 && containerType.compareToIgnoreCase("CARD")==0) {
+				InstanceFabricator.createAFAtCard(repository,tfId, tfName, containerId, containerName);				
+			} 
+			else if(tfType.compareToIgnoreCase("MATRIX")==0 && containerType.compareToIgnoreCase("CARD")==0) {
+				InstanceFabricator.createMatrixAtCard(repository,tfId, tfName, containerId, containerName);
+			}
+			else if(tfType.compareToIgnoreCase("PHYSICAL_MEDIA")==0 && containerType.compareToIgnoreCase("CARD")==0){
+				InstanceFabricator.createMatrixAtCard(repository,tfId, tfName, containerId, containerName);
 			}else{			
 				NOpenLog.appendLine("Error: Unexpected creation of Transport Function "+tfType+"::"+tfName+" at "+containerType+"::"+containerName+"");
 				throw new Exception("Unexpected creation of Transport Function "+tfType+"::"+tfName+" at "+containerType+"::"+containerName+"");			
@@ -64,9 +70,12 @@ public class SpecificDtoFabricator {
 		}else{
 			if(tfType.compareToIgnoreCase("TTF")==0) {
 				InstanceFabricator.createTTF(repository, tfId, tfName);						
-			}
-			else if(tfType.compareToIgnoreCase("AF")==0){			
-				InstanceFabricator.createAF(repository,tfId, tfName);						
+			} else if(tfType.compareToIgnoreCase("AF")==0){			
+				InstanceFabricator.createAF(repository,tfId, tfName);
+			} else if(tfType.compareToIgnoreCase("MATRIX")==0){			
+				InstanceFabricator.createMatrix(repository,tfId, tfName);
+			} else if(tfType.compareToIgnoreCase("PHYSICAL_MEDIA")==0){			
+				InstanceFabricator.createPhysicalMedia(repository,tfId, tfName);
 			}else{			
 				NOpenLog.appendLine("Error: Unexpected creation of Transport Function "+tfType+"::"+tfName);
 				throw new Exception("Unexpected creation of Transport Function "+tfType+"::"+tfName);			
@@ -117,22 +126,24 @@ public class SpecificDtoFabricator {
 			String tfId = dtoTransportFunction.getId();		
 			String tfName = dtoTransportFunction.getName();
 			
-			if(portType.compareToIgnoreCase("IN")==0) 
-			{
+			if(portType.compareToIgnoreCase("IN")==0){
 				if(tfType.compareToIgnoreCase("AF")==0){
-					InstanceFabricator.createAFInput(repository,portId, portName, tfId, tfName);								
+					InstanceFabricator.createAFInputAtAF(repository,portId, portName, tfId, tfName);								
 				}else if(tfType.compareToIgnoreCase("TTF")==0){
-					InstanceFabricator.createTTFInput(repository,portId, portName, tfId, tfName);				
+					InstanceFabricator.createTTFInputAtTTF(repository,portId, portName, tfId, tfName);				
+				}else if(tfType.compareToIgnoreCase("MATRIX")==0){
+					InstanceFabricator.createMatrixInputAtMatrix(repository,portId, portName, tfId, tfName);				
 				}else{
 					InstanceFabricator.createInput(repository, portId, portName);					
 				}
 			}
-			else if(portType.compareToIgnoreCase("OUT")==0) 
-			{
+			else if(portType.compareToIgnoreCase("OUT")==0) {
 				if(tfType.compareToIgnoreCase("AF")==0) {
 					InstanceFabricator.createAFOutput(repository,portId, portName, tfId, tfName);				
 				} else if(tfType.compareToIgnoreCase("TTF")==0){
 					InstanceFabricator.createTTFOutput(repository,portId, portName, tfId, tfName);				
+				} else if(tfType.compareToIgnoreCase("MATRIX")==0){
+					InstanceFabricator.createMatrixOutputAtMatrix(repository,portId, portName, tfId, tfName);
 				}else{
 					InstanceFabricator.createOutput(repository, portId, portName);					
 				}
@@ -143,9 +154,20 @@ public class SpecificDtoFabricator {
 		}else{
 			if(portType.compareToIgnoreCase("IN")==0) {				
 				InstanceFabricator.createInput(repository,portId, portName);			
-			}
-			else if(portType.compareToIgnoreCase("OUT")==0) {				
-				InstanceFabricator.createOutput(repository,portId, portName);							
+			} else if(portType.compareToIgnoreCase("OUT")==0) {				
+				InstanceFabricator.createOutput(repository,portId, portName);
+			}else if(portType.compareToIgnoreCase("MATRIX_INPUT")==0) {				
+				InstanceFabricator.createMatrixInput(repository,portId, portName);			
+			}else if(portType.compareToIgnoreCase("MATRIX_OUTPUT")==0) {				
+				InstanceFabricator.createMatrixOutput(repository,portId, portName);
+			}else if(portType.compareToIgnoreCase("AF_OUTPUT")==0) {				
+				InstanceFabricator.createAFOutput(repository,portId, portName);
+			}else if(portType.compareToIgnoreCase("AF_INPUT")==0) {				
+				InstanceFabricator.createAFInput(repository,portId, portName);
+			}else if(portType.compareToIgnoreCase("TTF_INPUT")==0) {				
+				InstanceFabricator.createTTFInput(repository,portId, portName);
+			}else if(portType.compareToIgnoreCase("TTF_OUTPUT")==0) {				
+				InstanceFabricator.createTTFOutput(repository,portId, portName);
 			}else{				
 				NOpenLog.appendLine("Error: Unexpected creation of Port "+portType+"::"+portName);
 				throw new Exception("Unexpected creation of Port "+portType+"::"+portName);	

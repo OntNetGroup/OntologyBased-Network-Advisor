@@ -21,25 +21,44 @@ public class GeneralDtoFabricator {
 		
 		if(elemType.compareToIgnoreCase("TTF")==0) SpecificDtoFabricator.createTransportFunction(repository,dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("AF")==0) SpecificDtoFabricator.createTransportFunction(repository,dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("MATRIX")==0) SpecificDtoFabricator.createTransportFunction(repository,dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("PHYSICAL_MEDIA")==0) SpecificDtoFabricator.createTransportFunction(repository,dtoElement, dtoContainer);
+		
 		else if(elemType.compareToIgnoreCase("IN")==0) SpecificDtoFabricator.createPort(repository,dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("OUT")==0)  SpecificDtoFabricator.createPort(repository,dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("MATRIX_INPUT")==0) SpecificDtoFabricator.createPort(repository,dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("MATRIX_OUTPUT")==0) SpecificDtoFabricator.createPort(repository,dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("AF_INPUT")==0) SpecificDtoFabricator.createPort(repository,dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("AF_OUTPUT")==0) SpecificDtoFabricator.createPort(repository,dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("TTF_INPUT")==0) SpecificDtoFabricator.createPort(repository,dtoElement, dtoContainer);
+		else if(elemType.compareToIgnoreCase("TTF_OUTPUT")==0) SpecificDtoFabricator.createPort(repository,dtoElement, dtoContainer);
+		
 		else if(elemType.compareToIgnoreCase("OUTPUT_CARD")==0)  SpecificDtoFabricator.createOutputCard(repository,dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("INPUT_CARD")==0)  SpecificDtoFabricator.createInputCard(repository,dtoElement, dtoContainer);
+		
 		else if(elemType.compareToIgnoreCase("CARD")==0)  SpecificDtoFabricator.createEquipmentHolder(repository,dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("SLOT")==0) SpecificDtoFabricator.createEquipmentHolder(repository, dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("SUBSLOT")==0)  SpecificDtoFabricator.createEquipmentHolder(repository, dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("SHELF")==0)  SpecificDtoFabricator.createEquipmentHolder(repository,dtoElement, dtoContainer);
 		else if(elemType.compareToIgnoreCase("RACK")==0)  SpecificDtoFabricator.createEquipmentHolder(repository, dtoElement, dtoContainer);		
+		
 		else if (elemType.compareToIgnoreCase("SUPERVISOR")==0)  SpecificDtoFabricator.createSupervisor(repository, dtoElement, dtoContainer);
+		
 		else if(elemType.compareToIgnoreCase("CARD_LAYER")==0)  SpecificDtoFabricator.createCardLayer(repository, dtoElement, dtoContainer);
+		
 		else if(elemType.compareToIgnoreCase("EQUIPMENT")==0) SpecificDtoFabricator.createEquipment(repository,dtoElement, dtoContainer);
 		
 		else {
-			String containerType = dtoContainer.getType();
-			String containerId = dtoContainer.getId();
-			String containerName = dtoContainer.getName();
-			NOpenLog.appendLine("Error: Unexpected creation of element "+elemType+"::"+elemName+" at container "+containerType+"::"+containerName+"");
-			throw new Exception("Unexpected creation of element "+elemType+"::"+elemName+" at container "+containerType+"::"+containerName+"");			
+			if(dtoContainer!=null){
+				String containerType = dtoContainer.getType();
+				String containerId = dtoContainer.getId();
+				String containerName = dtoContainer.getName();
+				NOpenLog.appendLine("Error: Unexpected creation of element "+elemType+"::"+elemName+" at container "+containerType+"::"+containerName+"");
+				throw new Exception("Unexpected creation of element "+elemType+"::"+elemName+" at container "+containerType+"::"+containerName+"");			
+			}else{
+				NOpenLog.appendLine("Error: Unexpected creation of element "+elemType+"::"+elemName);
+				throw new Exception("Unexpected creation of element "+elemType+"::"+elemName);			
+			}
 		}		
 	}
 	

@@ -349,6 +349,44 @@ public class InstanceFabricator {
 		
 		NOpenLog.appendLine(repository.getName()+": Matrix Input "+mName+" created");
 	}
+
+	public static void createMatrixInputAtMatrix(OKCoUploader repository, String mId, String mName, String matrixId, String matrixName) throws Exception
+	{
+		Individual i = FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+mId, 
+			repository.getNamespace()+ConceptEnum.Matrix_Input.toString()
+		);		
+		i.setLabel(mName,"EN");
+		
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+matrixId, 
+			repository.getNamespace()+RelationEnum.A_Matrix_MatrixInput.toString(),
+			repository.getNamespace()+mId
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Matrix Input "+mName+" created at Matrix "+matrixName);
+	}
+
+	public static void createMatrixOutputAtMatrix(OKCoUploader repository, String mId, String mName, String matrixId, String matrixName) throws Exception
+	{
+		Individual i = FactoryUtil.createInstanceIndividual(
+			repository.getBaseModel(), 
+			repository.getNamespace()+mId, 
+			repository.getNamespace()+ConceptEnum.Matrix_Output.toString()
+		);		
+		i.setLabel(mName,"EN");
+		
+		FactoryUtil.createInstanceRelation(
+			repository.getBaseModel(), 
+			repository.getNamespace()+matrixId, 
+			repository.getNamespace()+RelationEnum.A_Matrix_MatrixOutput.toString(),
+			repository.getNamespace()+mId
+		);
+		
+		NOpenLog.appendLine(repository.getName()+": Matrix Output "+mName+" created at Matrix "+matrixName);
+	}
 	
 	public static void createMatrixOutput(OKCoUploader repository, String mId, String mName) throws Exception
 	{
@@ -494,7 +532,7 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createAFInput(OKCoUploader repository, String inputId, String inputName, String afId, String afName) throws Exception
+	public static void createAFInputAtAF(OKCoUploader repository, String inputId, String inputName, String afId, String afName) throws Exception
 	{
 		Individual i = FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
@@ -562,7 +600,7 @@ public class InstanceFabricator {
 	/**
 	 * @author John Guerson
 	 */
-	public static void createTTFInput(OKCoUploader repository, String inputId, String inputName, String ttfId, String ttfName) throws Exception
+	public static void createTTFInputAtTTF(OKCoUploader repository, String inputId, String inputName, String ttfId, String ttfName) throws Exception
 	{
 		Individual i = FactoryUtil.createInstanceIndividual(
 			repository.getBaseModel(), 
