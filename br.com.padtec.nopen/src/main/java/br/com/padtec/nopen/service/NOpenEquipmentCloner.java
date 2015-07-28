@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
+import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
@@ -13,14 +14,20 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 
 import com.jointjs.util.JointUtilManager;
 
-public class EquipmentCloner {
+public class NOpenEquipmentCloner {
 	
 	/** @author John Guerson */
 	public static void cloneEquipmentFromJSON(String jsonEquipments, OKCoUploader tgtRepository) throws Exception
 	{					
-		PElement[] elems = (PElement[]) JointUtilManager.getJavaFromJSON(jsonEquipments, PElement[].class);				
+		PElement[] elems = (PElement[]) JointUtilManager.getJavaFromJSON(jsonEquipments, PElement[].class);		
 		for(PElement pElem: elems)
 		{
+			DtoJointElement dtoElem = new DtoJointElement();
+			dtoElem.setId(pElem.getId());
+			dtoElem.setName(pElem.getName());
+			dtoElem.setType(pElem.getType());
+			
+			
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0) {
 				InstanceFabricator.createEquipment(tgtRepository, pElem.getId(), pElem.getName());			
 			}
@@ -32,8 +39,7 @@ public class EquipmentCloner {
 			}
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Slot.toString())==0) {
 				InstanceFabricator.createSlot(tgtRepository, pElem.getId(), pElem.getName());			
-			}
-			
+			}			
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0) {
 				InstanceFabricator.createSupervisor(tgtRepository, pElem.getId(), pElem.getName());
 			}
@@ -42,18 +48,6 @@ public class EquipmentCloner {
 			}
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0) {
 				InstanceFabricator.createCardLayer(tgtRepository, pElem.getId(), pElem.getName());
-			}
-			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function.toString())==0) {
-				InstanceFabricator.createAF(tgtRepository, pElem.getId(), pElem.getName()); 
-			}
-			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Matrix.toString())==0) {
-				InstanceFabricator.createMatrix(tgtRepository, pElem.getId(), pElem.getName());
-			}
-			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Physical_Media.toString())==0) {
-				InstanceFabricator.createPhysicalMedia(tgtRepository, pElem.getId(), pElem.getName());
-			}
-			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Trail_Termination_Function.toString())==0) {
-				InstanceFabricator.createTTF(tgtRepository, pElem.getId(), pElem.getName());
 			}
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Input_Card.toString())==0) {
 				InstanceFabricator.createInputCard(tgtRepository, pElem.getId(), pElem.getName());
@@ -67,24 +61,41 @@ public class EquipmentCloner {
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Input.toString())==0) {
 				InstanceFabricator.createInput(tgtRepository, pElem.getId(), pElem.getName()); 
 			}
-			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function_Input.toString())==0){
-				InstanceFabricator.createAFInput(tgtRepository, pElem.getId(), pElem.getName());
+			
+			
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Trail_Termination_Function.toString())==0) {
+				InstanceFabricator.createTTF(tgtRepository, pElem.getId(), pElem.getName());
 			}
-			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function_Output.toString())==0) {
-				InstanceFabricator.createAFOutput(tgtRepository, pElem.getId(), pElem.getName()); 
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function.toString())==0) {
+				InstanceFabricator.createAF(tgtRepository, pElem.getId(), pElem.getName()); 
 			}
-			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Matrix_Input.toString())==0) {
-				InstanceFabricator.createMatrixInput(tgtRepository, pElem.getId(), pElem.getName()); 
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Matrix.toString())==0) {
+				InstanceFabricator.createMatrix(tgtRepository, pElem.getId(), pElem.getName());
 			}
-			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Matrix_Output.toString())==0) {
-				InstanceFabricator.createMatrixOutput(tgtRepository, pElem.getId(), pElem.getName());
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Physical_Media.toString())==0) {
+				InstanceFabricator.createPhysicalMedia(tgtRepository, pElem.getId(), pElem.getName());
 			}
+			
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Trail_Termination_Function_Input.toString())==0) {
 				InstanceFabricator.createTTFInput(tgtRepository, pElem.getId(), pElem.getName()); 
 			}
 			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Trail_Termination_Function_Output.toString())==0) {
 				InstanceFabricator.createTTFOutput(tgtRepository, pElem.getId(), pElem.getName());
 			}
+			
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function_Input.toString())==0){
+				InstanceFabricator.createAFInput(tgtRepository, pElem.getId(), pElem.getName());
+			}
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Adaptation_Function_Output.toString())==0) {
+				InstanceFabricator.createAFOutput(tgtRepository, pElem.getId(), pElem.getName()); 
+			}
+			
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Matrix_Input.toString())==0) {
+				InstanceFabricator.createMatrixInput(tgtRepository, pElem.getId(), pElem.getName()); 
+			}
+			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Matrix_Output.toString())==0) {
+				InstanceFabricator.createMatrixOutput(tgtRepository, pElem.getId(), pElem.getName());
+			}			
 		}		
 	}
 	
@@ -156,7 +167,7 @@ public class EquipmentCloner {
 			}
 			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Card.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Output_Card.toString())==0){
 				InstanceFabricator.createLinkFromCardToOutputCard(tgtRepository, pLink.getSource(), pLink.getSource(), pLink.getTarget(), pLink.getTarget());
-			}			
+			}
 			/** Equipment -> Supervisor */
 			if(pLink.getSourceType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0 && pLink.getTargetType().compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0){
 				InstanceFabricator.createLinkFromSupervisorToEquipment(tgtRepository, pLink.getTarget(), pLink.getTarget(), pLink.getSource(), pLink.getSource());
@@ -217,7 +228,7 @@ public class EquipmentCloner {
 			
 		/** Supervisor */
 		String supervisorURI = NOpenQueryUtil.getSupervisorURI(srcRepository, equipmentURI);
-		InstanceFabricator.createSupervisor(tgtRepository, supervisorURI, supervisorURI, equipmentURI, equipmentURI);
+		InstanceFabricator.createSupervisorForEquipment(tgtRepository, supervisorURI, supervisorURI, equipmentURI, equipmentURI);
 		
 		/** Cards */
 		List<String> cards = NOpenQueryUtil.getCardsURI(srcRepository, supervisorURI);

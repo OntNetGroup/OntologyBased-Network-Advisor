@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
-import br.com.padtec.nopen.service.EquipmentCloner;
+import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
@@ -158,8 +158,8 @@ public class ProvisioningController {
 	protected @ResponseBody void parseCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
 		try {
-			EquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
-			EquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
+			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
+			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -208,6 +208,22 @@ public class ProvisioningController {
 		String result = null;
 		try {
 			result = InterfaceStructure.getTypeOfConnection(equipmentSourceId, equipmentTargetId, ProvisioningComponents.provisioningRepository);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * Method to get the type of the connection between two equipments
+	 * @param equipmentSourceId, equipmentTargetId
+	 * @return
+	 */
+	@RequestMapping(value= "/getPossibleConnectionsFromOWL", method = RequestMethod.POST)
+	protected @ResponseBody String getPossibleConnections(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId){
+		String result = null;
+		try {
+			result = InterfaceStructure.getPossibleConnections(equipmentSourceId, equipmentTargetId, ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

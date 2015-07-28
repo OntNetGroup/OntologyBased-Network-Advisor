@@ -12,10 +12,10 @@ import org.apache.commons.io.IOUtils;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
-public class AttributeRecognizer {
+public class NOpenAttributeRecognizer {
 
 	/** @author John Guerson */
-	public static void run(String equipmentURI, OKCoUploader srcRepository) throws Exception
+	public static Map<String,String> run(String equipmentURI, OKCoUploader srcRepository) throws Exception
 	{
 		/** tf <-> json content */
 		Map<String,String> attrMap = new HashMap<String,String>();
@@ -74,7 +74,7 @@ public class AttributeRecognizer {
 						tpType = "ctp";
 						if(isClient) tpType = "client-"+tpType;
 						String jsonFileName = layer.toLowerCase()+variable.toLowerCase()+"-"+tpType.toLowerCase()+"-grouping.json";
-						InputStream s = AttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);
+						InputStream s = NOpenAttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);
 						System.out.println(jsonFileName);
 						StringWriter writer = new StringWriter();
 						IOUtils.copy(s, writer, "UTF-8");
@@ -85,7 +85,7 @@ public class AttributeRecognizer {
 					tpType = "ttp";
 					if(isClient) tpType = "client-"+tpType;
 					String jsonFileName = layer.toLowerCase()+variable.toLowerCase()+"-"+tpType.toLowerCase()+"-grouping.json";
-					InputStream s = AttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);
+					InputStream s = NOpenAttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);
 					System.out.println(jsonFileName);
 					StringWriter writer = new StringWriter();
 					IOUtils.copy(s, writer, "UTF-8");
@@ -94,5 +94,6 @@ public class AttributeRecognizer {
 				}
 			}
 		}		
+		return attrMap;
 	}
 }

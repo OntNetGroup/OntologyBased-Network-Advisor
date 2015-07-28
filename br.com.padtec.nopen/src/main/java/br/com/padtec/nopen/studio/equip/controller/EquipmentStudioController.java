@@ -10,17 +10,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jointjs.util.JointUtilManager;
+
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.InstanceFabricator;
-import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
-import br.com.padtec.nopen.service.EquipmentCloner;
+import br.com.padtec.nopen.model.SpecificDtoFabricator;
+import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
-import br.com.padtec.nopen.studio.model.StudioSpecificFactory;
 import br.com.padtec.nopen.studio.service.PerformBind;
 import br.com.padtec.nopen.studio.service.StudioComponents;
-
-import com.jointjs.util.JointUtilManager;
 
 @Controller
 public class EquipmentStudioController {
@@ -41,8 +40,8 @@ public class EquipmentStudioController {
 	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
 		try {
-			EquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
-			EquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
+			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
+			NOpenEquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,7 +119,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoContainer = (DtoJointElement) JointUtilManager.getJavaFromJSON(container, DtoJointElement.class);
 
 		try{
-			StudioSpecificFactory.deleteEquipmentholder(dtoEquipmentholder, dtoContainer);
+			SpecificDtoFabricator.deleteEquipmentholder(StudioComponents.studioRepository,dtoEquipmentholder, dtoContainer);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -144,7 +143,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 
 		try{
-			StudioSpecificFactory.superviseCard(dtoSupervisor, dtoCard);
+			SpecificDtoFabricator.superviseCard(StudioComponents.studioRepository,dtoSupervisor, dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -164,7 +163,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoCard = (DtoJointElement) JointUtilManager.getJavaFromJSON(card, DtoJointElement.class);
 
 		try{
-			StudioSpecificFactory.unsuperviseCard(dtoSupervisor, dtoCard);
+			SpecificDtoFabricator.unsuperviseCard(StudioComponents.studioRepository,dtoSupervisor, dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -185,7 +184,7 @@ public class EquipmentStudioController {
 
 
 		try{
-			StudioSpecificFactory.setTechnology(dtosupervisor, technology);
+			SpecificDtoFabricator.setTechnology(dtosupervisor, technology);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -210,7 +209,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoTargetElement = (DtoJointElement) JointUtilManager.getJavaFromJSON(targetElement, DtoJointElement.class);
 
 		try{
-			PerformBind.canCreateEquipmentBinds(dtoSourceElement, dtoTargetElement);
+			PerformBind.canCreateEquipmentBinds(dtoSourceElement, dtoTargetElement, StudioComponents.studioRepository);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -231,7 +230,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
 
 		try{
-			StudioSpecificFactory.canSupervise(dtoSupervisor, dtoCard);
+			SpecificDtoFabricator.canSupervise(dtoSupervisor, dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -251,7 +250,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoSupervisor = (DtoJointElement) JointUtilManager.getJavaFromJSON(supervisor, DtoJointElement.class);
 
 		try{
-			StudioSpecificFactory.canUnsupervise(dtoSupervisor, dtoCard);
+			SpecificDtoFabricator.canUnsupervise(dtoSupervisor, dtoCard);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
@@ -273,7 +272,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoEquipment = (DtoJointElement) JointUtilManager.getJavaFromJSON(equipment, DtoJointElement.class);
 
 		try{
-			StudioSpecificFactory.setEquipmentName(dtoEquipment);
+			SpecificDtoFabricator.setEquipmentName(dtoEquipment);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
