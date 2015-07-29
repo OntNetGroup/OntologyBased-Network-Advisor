@@ -2459,4 +2459,16 @@ public class QueryUtil {
 		return value;
 		
 	}
+	
+	
+	/* If class A_classURI is subkind of B_classURI, then return true; else, return false
+	 * 
+	 * */
+	public boolean isSubkindOf(String A_classURI, String B_classURI, InfModel model){
+		List<String> supertypes = getAllSupertypesURIs(model, A_classURI);
+		if(supertypes.contains(B_classURI)){
+			return true;
+		}
+		return false;
+	}
 }
