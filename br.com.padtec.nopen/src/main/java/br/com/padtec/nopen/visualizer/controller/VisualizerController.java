@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.service.NOpenAttributeRecognizer;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.studio.service.StudioComponents;
@@ -65,4 +66,20 @@ public class VisualizerController {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Create equipment in OWL by a JSON file
+	 * @param card
+	 */
+	@RequestMapping(value = "/getcardAttributes", method = RequestMethod.POST)
+	protected @ResponseBody void getcardAttributes(@RequestParam("card") String card){
+		
+		try {
+			NOpenAttributeRecognizer.run(card, StudioComponents.studioRepository);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
