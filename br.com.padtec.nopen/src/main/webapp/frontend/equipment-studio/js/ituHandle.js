@@ -180,7 +180,7 @@ function ituHandle(paper, graph, validator){
 				            	$.each($('#itu-iframe').get(0).contentWindow.app.graph.getElements(), function(index, value) {
 				            		
 				            		if(value.get('subtype') === 'Input_Card') {
-				            			cell.attr('.inPort/fill', '#1AFF00');
+				            			cell.attr('.inPort/fill', '#f1c40f');
 						            	cell.attr('.inPort/stroke', '#000000');
 						            	hasIn = true;
 						            	
@@ -189,7 +189,7 @@ function ituHandle(paper, graph, validator){
 				            		}
 				            		
 				            		if(value.get('subtype') === 'Output_Card') {
-				            			cell.attr('.outPort/fill', '#1AFF00');
+				            			cell.attr('.outPort/fill', '#e9967a');
 						            	cell.attr('.outPort/stroke', '#000000');
 						            	hasOut = true;
 						            	
@@ -319,17 +319,17 @@ function ituHandle(paper, graph, validator){
 	});
 	
 	//delete link if not exist a target
-//	validator.validate('add', function(err, command, next) {
-//         Precisa ser refeito pois está interferindo na remoção de equipamentos tambem.
-//		var cell = graph.getCell(command.data.id);
-//		
-////		if(isNotLink(cell)) return;
-//		
-//		if(!cell.attributes.target.id){
-//			cell.remove();
-//		}
-//		
-//	});
+	validator.validate('add', function(err, command, next) {
+		var cell = graph.getCell(command.data.id);
+		
+		if(!cell) return;
+        if(cell.get('type') !== 'link') return;
+		
+		if(!cell.get('target').id){
+			cell.remove();
+		}
+		
+	});
 	
 	//create a dialog connection only if exist a target
 	validator.validate('change:target change:source', function(err, command, next) {
@@ -510,7 +510,7 @@ function ituHandle(paper, graph, validator){
 	
 			
 			
-var result = EquipStudioPerformBind(sourceID, sourceName, sourceType, targetID, targetName, targetType);
+			var result = EquipStudioPerformBind(sourceID, sourceName, sourceType, targetID, targetName, targetType);
         	
         	if(result === "success") {
         		dialog.close();
