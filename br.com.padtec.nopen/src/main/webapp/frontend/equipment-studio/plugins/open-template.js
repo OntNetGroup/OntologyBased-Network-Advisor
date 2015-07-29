@@ -204,95 +204,7 @@ function openFromURL(filename, graph){
 			}
 		});
 	}
-	function loadEquipments(filename){
 
-		$.each(graph.getElements(), function(index, cell){
-
-			if(cell.get('subType') === 'Rack'){
-            //    console.log(cell.attributes);
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;				
-				app.RackCounter++
-				
-//				insertEquipmentholder(equipmentName , equipmentType, equipmentID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID);
-
-			};
-			if(cell.get('subType') === 'Shelf'){
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;
-				app.ShelfCounter++;
-				
-				var parentID = cell.get('parent');
-				var parent = graph.getCell(parentID);
-				var containerType = parent.get('subType');
-				var containerID = parent.get('id');
-				var containerName = parent.attributes.attrs.name.text;
-				
-//				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-
-			}
-			if(cell.get('subType') === 'Slot'){
-
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;
-				app.SlotCounter++;
-				
-				var parentID = cell.get('parent');
-				var parent = graph.getCell(parentID);
-				var containerType = parent.get('subType');
-				var containerID = parent.get('id');
-				var containerName = parent.attributes.attrs.name.text;
-				
-//				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-
-			}
-
-			if(cell.get('subType')=== 'Card'){
-
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;
-				app.CardCounter++;
-				
-				var parentID = cell.get('parent');
-				var parent = graph.getCell(parentID);
-				var containerType = parent.get('subType');
-				var containerID = parent.get('id');
-				var containerName = parent.attributes.attrs.name.text;
-				
-//				insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-				
-			}
-			if(cell.get('subType')=== 'Supervisor'){
-
-				var equipmentID = cell.get('id');
-				var equipmentType = cell.get('subType');
-				var equipmentName = cell.attributes.attrs.name.text;
-				app.SupervisorCounter++;
-				
-				var parentID = cell.get('parent');
-				var parent = graph.getCell(parentID);
-				var containerType = parent.get('subType');
-				var containerID = parent.get('id');
-				var containerName = parent.attributes.attrs.name.text;
-				 
-				console.log(equipmentID , equipmentType , equipmentName , parentID , containerType , containerName);
-				
-//				insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-				EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-
-				//setTechnology(equipmentName, equipmentType, equipmentID , tech);
-
-			}
-		});
-	}
 
 }
 
@@ -340,7 +252,6 @@ function generateOpenTemplateDialog(graph, data){
 			success: function(data){
 				$("#filename").val(filename);
 				graph.fromJSON(data);
-				//loadEquipments();
 				loadEquipmentstoOWl();
 				dialog.close();
 			},
@@ -507,95 +418,7 @@ function generateOpenTemplateDialog(graph, data){
 					instanciateITUElements(filename, card);
 				}
 			});
-		}
-		
-		function loadEquipments(){
-
-			$.each(graph.getElements(), function(index, cell){
-
-				if(cell.get('subType') === 'Rack'){
-	                console.log(cell.attributes);
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;				
-					app.RackCounter++
-					
-//					insertEquipmentholder(equipmentName , equipmentType, equipmentID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID);
-
-				};
-				if(cell.get('subType') === 'Shelf'){
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;
-					app.ShelfCounter++;
-					
-					var parentID = cell.get('parent');
-					var parent = graph.getCell(parentID);
-					var containerType = parent.get('subType');
-					var containerID = parent.get('id');
-					var containerName = parent.attributes.attrs.name.text;
-					
-//					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-
-				}
-				if(cell.get('subType') === 'Slot'){
-
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;
-					app.SlotCounter++;
-					
-					var parentID = cell.get('parent');
-					var parent = graph.getCell(parentID);
-					var containerType = parent.get('subType');
-					var containerID = parent.get('id');
-					var containerName = parent.attributes.attrs.name.text;
-					
-//					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-
-				}
-
-				if(cell.get('subType')=== 'Card'){
-
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;
-					app.CardCounter++;
-					
-					var parentID = cell.get('parent');
-					var parent = graph.getCell(parentID);
-					var containerType = parent.get('subType');
-					var containerID = parent.get('id');
-					var containerName = parent.attributes.attrs.name.text;
-					
-//					insertEquipmentholder(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-
-				}
-				if(cell.get('subType')=== 'Supervisor'){
-
-					var equipmentID = cell.get('id');
-					var equipmentType = cell.get('subType');
-					var equipmentName = cell.attributes.attrs.name.text;
-					app.SupervisorCounter++;
-					
-					var parentID = cell.get('parent');
-					var parent = graph.getCell(parentID);
-					var containerType = parent.get('subType');
-					var containerID = parent.get('id');
-					var containerName = parent.attributes.attrs.name.text;
-					
-//					insertSupervisor(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-					EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-
-					//setTechnology(equipmentType, equipmentID , tech);
-
-				}
-			});
-		}
+		}		
 
 	};
 }
