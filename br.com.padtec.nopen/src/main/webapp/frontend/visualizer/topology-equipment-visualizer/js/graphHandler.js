@@ -34,9 +34,25 @@ paper.on('cell:pointerclick', function( cellView , evt, x, y) {
 	var equipment = graph.getCell(cellId);
 	
 	if(equipment.get('subType') === 'Card'){
-		equipment.prop('attributes','otn');
+		equipment.prop('attributes','');
 		console.log(equipment);
 		console.log(cellView);
+		
+		$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "getcardAttributes.htm",
+			   data: {
+				   'card' : cellId
+			   },
+//			   dataType: 'json',
+			   success: function(data){
+				   console.log(data);
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
 	};
 	
 },this);
