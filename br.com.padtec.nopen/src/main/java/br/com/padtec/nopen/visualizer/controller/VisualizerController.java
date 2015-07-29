@@ -71,8 +71,8 @@ public class VisualizerController {
 	 * Create equipment in OWL by a JSON file
 	 * @param card
 	 */
-	@RequestMapping(value = "/getcardAttributes", method = RequestMethod.POST)
-	protected @ResponseBody void getcardAttributes(@RequestParam("card") String card){
+	@RequestMapping(value = "/getCardAttributes", method = RequestMethod.POST)
+	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card){
 		
 		try {
 			NOpenAttributeRecognizer.run(card, StudioComponents.studioRepository);

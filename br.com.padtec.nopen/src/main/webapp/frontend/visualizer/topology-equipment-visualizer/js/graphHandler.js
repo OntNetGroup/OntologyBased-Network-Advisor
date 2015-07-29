@@ -41,7 +41,7 @@ paper.on('cell:pointerclick', function( cellView , evt, x, y) {
 		$.ajax({
 			   type: "POST",
 			   async: false,
-			   url: "getcardAttributes.htm",
+			   url: "getCardAttributes.htm",
 			   data: {
 				   'card' : cellId
 			   },
