@@ -226,7 +226,7 @@ public class PerformBind {
 	/*
 	 * given two ports discover the rp between them.
 	 */
-	static HashSet<String> discoverRPBetweenPorts(String type_output, String type_input, OKCoUploader repository){
+	public static HashSet<String> discoverRPBetweenPorts(String type_output, String type_input, OKCoUploader repository){
 		HashSet<String> rp = new HashSet<String>();
 		rp = NOpenQueryUtil.discoverRPBetweenPorts(type_output, type_input, repository.getBaseModel());
 		
