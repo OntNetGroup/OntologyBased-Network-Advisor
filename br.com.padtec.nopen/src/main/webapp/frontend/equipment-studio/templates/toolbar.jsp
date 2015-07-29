@@ -33,3 +33,9 @@
  <div class="inspector-container"></div>
  <div class="navigator-container"></div>
  <div class="statusbar-container"><span class="rt-colab"></span></div>
+ 
+ <!-- LOADING -->
+<div id="loading">
+	<img src="frontend/provisioning/img/ajax-loader.gif" class="ajax-loader">
+</div>
+ 

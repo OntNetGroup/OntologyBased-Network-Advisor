@@ -52,7 +52,7 @@
 				src="/nopen/frontend/visualizer/equipment-visualizer/img/zoomtofit.png"
 				alt="Zoom To Fit" />
 		</button>
-<!-- 		 <button id="btn-show-hide-inspector" class="btn" data-tooltip="Show/Hide Inspector"><img src="/nopen/frontend/provisioning/img/show_hide.png" alt="Show/Hide Inspector"/></button> -->
+<!-- 		 <button id="btn-show-hide-inspector" class="btn" data-tooltip="Show/Hide Inspector"><img src="/nopen/frontend/visualizer/equipment-visualizer/img/show_hide.png" alt="Show/Hide Inspector"/></button> -->
 	</div>
 	<div class="stencil-container" style="display: none" >
 		<label>Stencil</label>

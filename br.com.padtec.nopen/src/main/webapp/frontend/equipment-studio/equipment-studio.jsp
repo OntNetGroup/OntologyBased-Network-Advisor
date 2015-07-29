@@ -128,6 +128,14 @@
 		var app = new Rappid;
 		Backbone.history.start();
 
+		$('#loading').hide();
+	    $(document).ajaxStart(function() {
+	    	$('#loading').show();
+	    })
+	    .ajaxStop(function() {
+	        $('#loading').hide();
+	    });
+		
 		resizing(app.graph);
 		equipmentHandle(app, app.graph);
 		ituHandle(app.paper, app.graph, app.validator);
