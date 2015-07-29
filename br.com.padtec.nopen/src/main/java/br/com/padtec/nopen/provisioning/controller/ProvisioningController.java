@@ -220,10 +220,10 @@ public class ProvisioningController {
 	 * @return
 	 */
 	@RequestMapping(value= "/getPossibleConnectionsFromOWL", method = RequestMethod.POST)
-	protected @ResponseBody String getPossibleConnections(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId){
+	protected @ResponseBody String getPossibleConnectionsFromOWL(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId, @RequestParam("connectionType") String connectionType){
 		String result = null;
 		try {
-			result = InterfaceStructure.getPossibleConnections(equipmentSourceId, equipmentTargetId, ProvisioningComponents.provisioningRepository);
+			result = InterfaceStructure.getPossibleConnections(equipmentSourceId, equipmentTargetId, ProvisioningComponents.provisioningRepository, connectionType);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

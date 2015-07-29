@@ -256,6 +256,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	getConnectionTypeFromOWL : function(equipmentSourceId, equipmentTargetId) {
 		
 		var connectionType = undefined;
+		var $this = this;
 		
 		$.ajax({
 		   type: "POST",
@@ -275,6 +276,53 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		});
 		
 		return connectionType;
+	},
+	
+	getPossibleConnectionsFromOWL : function(equipmentSourceId, equipmentTargetId) {
+		
+		var connectionType = undefined;
+		var $this = this;
+		var connections = undefined;
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "getConnectionTypeFromOWL.htm",
+		   data: {
+			   'equipmentSourceId' : equipmentSourceId,
+			   'equipmentTargetId' : equipmentTargetId,
+		   },
+		   success: function(connectionType){
+			   //connectionType = data;
+			   console.log('connectionType: ' + connectionType)
+			   
+			   $.ajax({
+				   type: "POST",
+				   async: false,
+				   url: "getPossibleConnectionsFromOWL.htm",
+				   data: {
+					   'equipmentSourceId' : equipmentSourceId,
+					   'equipmentTargetId' : equipmentTargetId,
+					   'connectionType' : connectionType,
+				   },
+				   dataType: 'json',
+				   success: function(connections){
+					   console.log('connections: ' + JSON.stringify(connections))
+				   },
+				   error : function(e) {
+					   alert("error: " + e.status);
+				   }
+				});
+			   
+			   
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+		return connectionType;
+		
 	},
 	
 	//Method to get inputs from OWL file

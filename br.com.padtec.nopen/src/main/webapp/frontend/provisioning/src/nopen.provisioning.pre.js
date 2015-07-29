@@ -111,7 +111,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			
 			if(currentLinkIndex < links.length) {
 				
-				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
+				var connections = owl.getPossibleConnectionsFromOWL(source.id, target.id);
 				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);
@@ -129,6 +129,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			//currentLinkIndex === links.length
 			else {
 				
+				var connections = owl.getPossibleConnectionsFromOWL(source.id, target.id);
 				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				content = createContent(sourceName, targetName, outputs);

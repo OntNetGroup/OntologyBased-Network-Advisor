@@ -137,8 +137,8 @@ public class InterfaceStructure {
 	}
 	
 	
-	public static String getPossibleConnections(String sourceEquipmentId, String targetEquipmentId, OKCoUploader repository){
-		String typeOfConnection = getTypeOfConnection(sourceEquipmentId, targetEquipmentId, repository);
+	public static String getPossibleConnections(String sourceEquipmentId, String targetEquipmentId, OKCoUploader repository, String typeOfConnection){
+		//String typeOfConnection = getTypeOfConnection(sourceEquipmentId, targetEquipmentId, repository);
 		HashMap<String, String> map = new HashMap<String,String>();
 		String result = null;
 		if(typeOfConnection.equals("Horizontal")){
