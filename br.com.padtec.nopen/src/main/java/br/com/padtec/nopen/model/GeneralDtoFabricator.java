@@ -68,9 +68,9 @@ public class GeneralDtoFabricator {
 			throw new Exception("Argument is null. Unexpected deletion of connection involving "+tgtId+"::"+tgtType);		
 		}
 		
-		List<String> relations = QueryUtil.getPossibleSubRelations(repository.getBaseModel(), repository.getNamespace()+srcId, repository.getNamespace()+RelationEnum.componentOf.toString(), repository.getNamespace()+tgtId);
-		//ArrayList<String> list = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcId, repository.getNamespace()+tgtId, repository.getNamespace()+RelationEnum.componentOf.toString());
-		String specificRelation = relations.get(0);
+		//List<String> relations = QueryUtil.getPossibleSubRelations(repository.getBaseModel(), repository.getNamespace()+srcId, repository.getNamespace()+RelationEnum.componentOf.toString(), repository.getNamespace()+tgtId);
+		ArrayList<String> list = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcType, repository.getNamespace()+tgtType, repository.getNamespace()+RelationEnum.componentOf.toString());
+		String specificRelation = list.get(0);
 		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
