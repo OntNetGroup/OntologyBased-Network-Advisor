@@ -16,6 +16,7 @@ import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.Util;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
+import br.com.padtec.nopen.model.ProvisioningRelationEnum;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.service.NOpenComponents;
 import br.com.padtec.nopen.service.NOpenLog;
@@ -289,18 +290,22 @@ public class InterfaceStructure {
 	}
 
 	private static ArrayList<String> getLayersFromEquipment(InfModel model, String individualName) {
-		ArrayList<String> relationsNameList = new ArrayList<String>();
+		ArrayList<String> relationsNameList = new ArrayList<String>();/*
 		relationsNameList.add(RelationEnum.INV_supervises_Equipment_Supervisor.toString());
 		relationsNameList.add(RelationEnum.supervises_card_Supervisor_Card.toString());
-		relationsNameList.add(RelationEnum.A_Card_CardLayer.toString());
+		relationsNameList.add(RelationEnum.A_Card_CardLayer.toString());*/
+		relationsNameList.add(ProvisioningRelationEnum.A_Equipment_Card.toString());
+		relationsNameList.add(ProvisioningRelationEnum.A_Card_CardLayer.toString());
 		return QueryUtil.endOfGraph(model, individualName, relationsNameList);
 	}
 	
-	public static void applyPreProvisioningBinds(String equipmentSourceId, String equipmentTargetId, OKCoUploader repository) throws Exception {
-		String OutputCardSourceId = null;
-		String OutputCardTargetId = null;
-		applyVerticalBinds(OutputCardSourceId, OutputCardTargetId, repository);
-		applyHorizontalBinds(equipmentSourceId, equipmentTargetId, repository);
+	public static void applyPreProvisioningBinds(String typeOfConnection, String SourceId, String TargetId, OKCoUploader repository) throws Exception {
+		if(typeOfConnection.equals("Vertical")){
+			applyVerticalBinds(SourceId, TargetId, repository);
+		}
+		else{
+			applyHorizontalBinds(SourceId, TargetId, repository);
+		}
 	}
 
 
