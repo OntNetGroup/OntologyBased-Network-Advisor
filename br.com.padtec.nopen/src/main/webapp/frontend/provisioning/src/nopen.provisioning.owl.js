@@ -30,12 +30,12 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var links = [];
 		
 		//Supervisor
-		var supervisor = {
-				"type" : "Supervisor",
-				"id" : card.SupervisorID,
-				"name" : card.Supervisor,
-		};
-		elements.push(supervisor);
+//		var supervisor = {
+//				"type" : "Supervisor",
+//				"id" : card.SupervisorID,
+//				"name" : card.Supervisor,
+//		};
+//		elements.push(supervisor);
 		
 		//Equipment
 		var equip = {
@@ -54,22 +54,22 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		elements.push(equipCard);
 		
 		//Supervisor (S) > Equipment (E)
-		var linkSE = {
-				"sourceType" : "Supervisor",
-				"targetType" : "Equipment",
-				"source" : card.SupervisorID,
-				"target" : equipment.id,
-		};
-		links.push(linkSE);
+//		var linkSE = {
+//				"sourceType" : "Supervisor",
+//				"targetType" : "Equipment",
+//				"source" : card.SupervisorID,
+//				"target" : equipment.id,
+//		};
+//		links.push(linkSE);
 		
 		//Supervisor (S) > Card (C)
-		var linkSC = {
-				"sourceType" : "Supervisor",
-				"targetType" : card.subType,
-				"source" : card.SupervisorID,
-				"target" : card.id,
-		};
-		links.push(linkSC);
+//		var linkSC = {
+//				"sourceType" : "Supervisor",
+//				"targetType" : card.subType,
+//				"source" : card.SupervisorID,
+//				"target" : card.id,
+//		};
+//		links.push(linkSC);
 		
 		//ITU Elements
 		var cardCells = card.attrs.data.cells;
