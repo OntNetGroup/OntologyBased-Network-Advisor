@@ -1,47 +1,47 @@
 function showTechnologyWindow(techs , cell){
 
-	var content = '<div id="tech-dialog" title="Set Supervisor Technology">'
-		+ 'Technology: <select>';
-	for(var i = 0; i < techs.length; i++){
-		content += '<option value="'+techs[i]+'">'+techs[i]+'</option>';
-	}
-	content += '</select>';
-	+ '</div>'
-
-	var dialog = new joint.ui.Dialog({
-		width: 300,
-		type: 'neutral',
-		title: 'Set Supervisor Technology',
-		content: content,
-		modal: true ,
-		closeButton: false ,
-		close: CloseFunction,
-		buttons: [
-		          { action: 'save', content: 'Save', position: 'left' }
-		],	          
-	});
-	dialog.open();
-	
-	function CloseFunction(){
-		cell.set('tech', ($('#tech-dialog').find(":selected").val()) );
-		dialog.close();
-	};
-
-	($('#tech-dialog').on( "dialogclose", function(dialogclose) {
-		cell.set('tech', ($('#tech-dialog').find(":selected").val()));
-		dialog.close();
-	} ));
-
-	dialog.on('action:save', function(){
-		
-		console.log(cell.id);
-		console.log(cell.attributes.attrs.name.text);
-		console.log(cell.attributes.subType);
-
-		var result = setTechnology( cell.attributes.attrs.name.text ,cell.attributes.subType, cell.id , ($('#tech-dialog').find(":selected").val()));
-		if(result === "success"){
-			cell.set('tech', ($('#tech-dialog').find(":selected").val()) );
-			dialog.close();
+//	var content = '<div id="tech-dialog" title="Set Supervisor Technology">'
+//		+ 'Technology: <select>';
+//	for(var i = 0; i < techs.length; i++){
+//		content += '<option value="'+techs[i]+'">'+techs[i]+'</option>';
+//	}
+//	content += '</select>';
+//	+ '</div>'
+//
+//	var dialog = new joint.ui.Dialog({
+//		width: 300,
+//		type: 'neutral',
+//		title: 'Set Supervisor Technology',
+//		content: content,
+//		modal: true ,
+//		closeButton: false ,
+//		close: CloseFunction,
+//		buttons: [
+//		          { action: 'save', content: 'Save', position: 'left' }
+//		],	          
+//	});
+//	dialog.open();
+//	
+//	function CloseFunction(){
+//		cell.set('tech', ($('#tech-dialog').find(":selected").val()) );
+//		dialog.close();
+//	};
+//
+//	($('#tech-dialog').on( "dialogclose", function(dialogclose) {
+//		cell.set('tech', ($('#tech-dialog').find(":selected").val()));
+//		dialog.close();
+//	} ));
+//
+//	dialog.on('action:save', function(){
+//		
+//		console.log(cell.id);
+//		console.log(cell.attributes.attrs.name.text);
+//		console.log(cell.attributes.subType);
+//
+//		var result = setTechnology( cell.attributes.attrs.name.text ,cell.attributes.subType, cell.id , ($('#tech-dialog').find(":selected").val()));
+//		if(result === "success"){
+//			cell.set('tech', ($('#tech-dialog').find(":selected").val()) );
+//			dialog.close();
 			
 			var Supervisor = cell;
 	
@@ -69,16 +69,16 @@ function showTechnologyWindow(techs , cell){
 				selectSupervisorWindow(Supervisor, nsCards, sCards, app.graph);
 			}
 			
-		}else{
-		    new joint.ui.Dialog({
-			type: 'alert',
-			width: 400,
-			title: 'Alert',
-			content: result,
-			}).open();	
-		}
+//		}else{
+//		    new joint.ui.Dialog({
+//			type: 'alert',
+//			width: 400,
+//			title: 'Alert',
+//			content: result,
+//			}).open();	
+//		}
 		
-	});
+	
 	
 }; 
 

@@ -485,14 +485,14 @@ function ituHandle(paper, graph, validator){
 			
 			//outPort index -> inPort index
 			source.attributes.connectedPorts[sourceIndex] = {};
-			source.attributes.connectedPorts[sourceIndex]["id"] = targetIndex;
-			source.attributes.connectedPorts[sourceIndex]["name"] = target.attributes.inPorts[targetIndex];
-			source.attributes.connectedPorts[sourceIndex]["type"] = "Input_Card";
-			
+			source.attributes.connectedPorts[sourceIndex]["id"] = sourceIndex;
+			source.attributes.connectedPorts[sourceIndex]["name"] = source.attributes.outPorts[sourceIndex];
+			source.attributes.connectedPorts[sourceIndex]["type"] = "Output_Card";
+	
 			target.attributes.connectedPorts[targetIndex] = {};
-			target.attributes.connectedPorts[targetIndex]["id"] = sourceIndex;
-			target.attributes.connectedPorts[targetIndex]["name"] = source.attributes.outPorts[sourceIndex];
-			target.attributes.connectedPorts[targetIndex]["type"] = "Output_Card";
+			target.attributes.connectedPorts[targetIndex]["id"] = targetIndex;
+			target.attributes.connectedPorts[targetIndex]["name"] = target.attributes.inPorts[targetIndex];
+			target.attributes.connectedPorts[targetIndex]["type"] = "Input_Card";
 			
 //			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
 //			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")

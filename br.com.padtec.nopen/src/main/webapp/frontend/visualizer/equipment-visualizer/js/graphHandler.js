@@ -1,4 +1,4 @@
-function graphHandler(app, graph) {
+function graphHandler(app, graph , paper) {
 	
 
 graph.on('change' , function (cell) {
@@ -20,4 +20,7 @@ graph.on('change' , function (cell) {
 
 	},this);
 
+paper.on('blank:pointerdown' , function(){
+	$('.inspector-container').hide();
+	});
 };
