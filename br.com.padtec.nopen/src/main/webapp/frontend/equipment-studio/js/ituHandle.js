@@ -498,7 +498,8 @@ function ituHandle(paper, graph, validator){
 //			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
 
 			
-//			console.log(source.attributes.connectedPorts[sourceIndex]);
+			console.log(source.attributes.connectedPorts[sourceIndex]);
+			console.log(target.attributes.connectedPorts[targetIndex]);
 	
 			var	sourceID = source.attributes.connectedPorts[sourceIndex]["id"]
 			var	sourceName = source.attributes.connectedPorts[sourceIndex]["name"];

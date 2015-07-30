@@ -58,16 +58,18 @@ function openFromURL(filename, graph){
 								"id" : cell.id,
 								"name" : cell.attributes.attrs.name.text,
 						};
+						console.log(rack);
 						elements.push(rack);
 					}
 					
-					if(cell.get('subType') === 'Shelf'){
+					else if(cell.get('subType') === 'Shelf'){
 						app.ShelfCounter++;
 						var shelf = {
 								"type" : "Shelf",
 								"id" : cell.get('id'),
 								"name" : cell.attributes.attrs.name.text,
 						};
+						console.log(shelf);
 						elements.push(shelf);
 						
 						//Rack (R) > Shelf (Sh)
@@ -77,16 +79,18 @@ function openFromURL(filename, graph){
 								"source" : cell.get('id'),
 								"target" : cell.get('parent'),
 						};
+						console.log(linkShR);
 						links.push(linkShR);
 
 					}
-					if(cell.get('subType') === 'Slot'){
+					else if(cell.get('subType') === 'Slot'){
 						app.SlotCounter++;
 						var slot = {
 								"type" : "Slot",
 								"id" : cell.get('id'),
 								"name" : cell.attributes.attrs.name.text,
 						};
+						console.log(slot);
 						elements.push(slot);
 						
 						//Slot (Sl) > Shelf (Sh)
@@ -96,11 +100,12 @@ function openFromURL(filename, graph){
 								"source" : cell.get('id'),
 								"target" : cell.get('parent'),
 						};
+						console.log(linkSlSh);
 						links.push(linkSlSh);
 
 					}
 
-					if(cell.get('subType')=== 'Card'){
+					else if(cell.get('subType')=== 'Card'){
 						app.CardCounter++;
 						var card = {
 								"type" : "Card",
@@ -129,7 +134,7 @@ function openFromURL(filename, graph){
 						links.push(linkSC);
 						
 					}
-					if(cell.get('subType')=== 'Supervisor'){
+					else if(cell.get('subType')=== 'Supervisor'){
 						app.SupervisorCounter++;
 						var supervisor = {
 								"type" : "Supervisor",
@@ -154,28 +159,35 @@ function openFromURL(filename, graph){
 					console.log('Elements: ' + JSON.stringify(elements));
 					console.log('Links: ' + JSON.stringify(links));
 						
+					
+					//execute parse
+					$.ajax({
+					   type: "POST",
+					   async: false,
+					   url: "parseEquipToOWL.htm",
+					   data: {
+						   'elements' : JSON.stringify(elements),
+						   'links' : JSON.stringify(links),
+					   },
+					   success: function(){
+						  console.log('PARSE OK!')
+					   },
+					   error : function(e) {
+						   alert("error: " + e.status);
+					   }
+					});
+					
 				});
+					
+	
+					
+					
+//					console.log('Equipment: ' + JSON.stringify(equipment));
+//					console.log('Card: ' + JSON.stringify(card));
+					
+				
 
-				//execute parse
-				$.ajax({
-				   type: "POST",
-				   async: false,
-				   url: "parseEquipToOWL.htm",
-				   data: {
-					   'elements' : JSON.stringify(elements),
-					   'links' : JSON.stringify(links),
-				   },
-				   success: function(){
-					  console.log('PARSE OK!')
-				   },
-				   error : function(e) {
-					   alert("error: " + e.status);
-				   }
-				});
 				
-				
-//				console.log('Equipment: ' + JSON.stringify(equipment));
-//				console.log('Card: ' + JSON.stringify(card));
 				
 				//ITU Elements
 				$.each(graph.getElements(), function(index, cell){
