@@ -164,19 +164,9 @@ public class NOpenEquipmentCloner {
 			dtoTarget.setId(targetId);
 			dtoTarget.setType(targetType);			
 			
-			if(isTF(sourceType) && isTF(targetType)){
-				// "binds"
+			if((isTF(sourceType) || isInterface(sourceType)) && (isTF(targetType))){			
 				PerformBind.applyBindsWithoutVerification(dtoSource, dtoTarget, tgtRepository);
-			}
-			else if(isTF(targetType) && isInterface(sourceType)){
-				// "is interface of"
-				FactoryUtil.createInstanceRelation(
-					tgtRepository.getBaseModel(), 
-					tgtRepository.getNamespace()+sourceId, 
-					tgtRepository.getNamespace()+RelationEnum.is_interface_of.toString(),
-					tgtRepository.getNamespace()+targetId
-				);
-			}
+			}			
 			else {
 				// "componentOf"
 				FactoryUtil.createInstanceRelation(

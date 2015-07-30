@@ -23,7 +23,8 @@ function ituHandle(paper, graph){
 		if((equipment.get('subType')) === 'Card') {
 			
 			$("#itu-iframe").empty();
-			console.log($("#filename").val());
+			var cardSupervisor = cellView.model.attributes.Supervisor;
+			console.log(cardSupervisor);
 			var filename = cellView.model.attr('equipment/template');
 			
 			$(function ()    {
@@ -36,7 +37,7 @@ function ituHandle(paper, graph){
 		            open: function ()
 		            {
 //		                $('#itu-iframe').attr('src','/nopen/itu-visualizer.htm');
-		                $("#itu-iframe").attr('src','/nopen/itu-visualizer.htm?equipment=' + $("#filename").val() + '&card=' + cellId);
+		                $("#itu-iframe").attr('src','/nopen/itu-visualizer.htm?equipment=' + cardSupervisor + '&card=' + cellId);
 		            },
 		            close: function() {
 		            }

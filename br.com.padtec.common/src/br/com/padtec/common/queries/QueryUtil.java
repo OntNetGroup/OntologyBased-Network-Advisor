@@ -2394,7 +2394,6 @@ public class QueryUtil {
 
 	public static ArrayList<String> getRelationsBetweenClasses(InfModel model, String classSourceURI, String classTargetURI, String superPropertyURI){
 		String queryString =  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
-				+ "PREFIX ont: <http://www.menthor.net/nOpenModel.owl#> "
 				+ "SELECT ?x WHERE { "
 				+ "	?x rdfs:subPropertyOf <" + superPropertyURI + "> . "
 				+ "	?x rdfs:domain <" + classSourceURI + "> . "
@@ -2458,5 +2457,17 @@ public class QueryUtil {
 		}
 		return value;
 		
+	}
+	
+	
+	/* If class A_classURI is subkind of B_classURI, then return true; else, return false
+	 * 
+	 * */
+	public boolean isSubkindOf(String A_classURI, String B_classURI, InfModel model){
+		List<String> supertypes = getAllSupertypesURIs(model, A_classURI);
+		if(supertypes.contains(B_classURI)){
+			return true;
+		}
+		return false;
 	}
 }
