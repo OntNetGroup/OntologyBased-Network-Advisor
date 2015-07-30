@@ -9,6 +9,8 @@ import br.com.padtec.nopen.model.GeneralDtoFabricator;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
+import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.studio.service.PerformBind;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
@@ -51,7 +53,13 @@ public class NOpenEquipmentCloner {
 			/** generic creation of elements (
 			 *  no container indicates that only the given instance will be created
 			 */
-			GeneralDtoFabricator.createElement(tgtRepository, dtoElem, null);
+			if(tgtRepository.equals(ProvisioningComponents.provisioningRepository)){
+				GeneralDtoFabricator.createProvisioningElement(tgtRepository, dtoElem, null);
+			}
+			else{
+				GeneralDtoFabricator.createElement(tgtRepository, dtoElem, null);
+			}
+			
 			
 			//===============================================================			
 //			if(pElem.getType().compareToIgnoreCase(ConceptEnum.Equipment.toString())==0) {
@@ -166,7 +174,10 @@ public class NOpenEquipmentCloner {
 			
 			if((isTF(sourceType) || isInterface(sourceType)) && (isTF(targetType))){			
 				PerformBind.applyBindsWithoutVerification(dtoSource, dtoTarget, tgtRepository);
-			}			
+			}
+			else if(isInterface(sourceType) && isInterface(targetType)){
+				InterfaceStructure.applyPreProvisioningBinds("Vertical", sourceId, targetId, tgtRepository);
+			}
 			else {
 				// "componentOf"
 				FactoryUtil.createInstanceRelation(
