@@ -13,7 +13,6 @@ import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
-import br.com.padtec.okco.core.application.OKCoUploader;
 
 @Controller
 public class ProvisioningController {
