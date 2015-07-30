@@ -117,7 +117,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 //				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
-//				var connections = owl.getPossibleConnectionsFromOWL(source.id, target.id);
+				var connections2 = owl.getPossibleConnectionsFromOWL(source.id, target.id);
 				var connections = test.getConnections(); 
 				
 				content = createConnectionContent(source, target, connectionType, connections)
@@ -140,7 +140,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 //				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
-//				var connections = owl.getPossibleConnectionsFromOWL(source.id, target.id);
+				var connections2 = owl.getPossibleConnectionsFromOWL(source.id, target.id);
 				var connections = test.getConnections(); 
 				
 				console.log('connections: ' + JSON.stringify(connections));
