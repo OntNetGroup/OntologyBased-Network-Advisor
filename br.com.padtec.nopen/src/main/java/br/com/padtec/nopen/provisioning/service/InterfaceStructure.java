@@ -155,7 +155,8 @@ public class InterfaceStructure {
 		}
 		
 		Gson gson = new Gson();
-		result = gson.toJson("");
+		result = gson.toJson(map);
+		System.out.println(result);
 		
 		return result;
 	}
