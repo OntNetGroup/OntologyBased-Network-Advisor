@@ -45,8 +45,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		};
 		elements.push(equip);
 		
-		
-		console.log('CARD: ' + JSON.stringify(card));
 		//Card
 		var equipCard = {
 				"type" : card.subType,
@@ -210,8 +208,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			
 		});
 		
-		console.log('Elements: ' + JSON.stringify(elements));
-		console.log('Links: ' + JSON.stringify(links));
+//		console.log('Elements: ' + JSON.stringify(elements));
+//		console.log('Links: ' + JSON.stringify(links));
 		
 		//execute parse
 		$.ajax({

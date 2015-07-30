@@ -82,7 +82,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		var owl = this.owl;
 		var util = this.util;
 		
-		// Garantir que as interfaces de entrada e saída permaneçam contidas em suas respectivas barras
+		// keep equipment position
 		var position = undefined;
         paper.on('cell:pointerdown', function(cellView, evt) {
         	var cell = graph.getCell(cellView.model.id);
@@ -98,6 +98,75 @@ nopen.provisioning.App = Backbone.View.extend({
         	cell.set('position', position);
         });
 		
+        //handle with equipment click
+        var clicked = false;
+        paper.on('cell:pointerclick', function(cellView, evt) {
+        	
+        	var cell = graph.getCell(cellView.model.id);
+
+        	if(cell.get('subtype') !== 'Access_Group') {
+        		
+        		$.each(graph.getElements(), function(index, cell) {
+            		if(cell.get('subtype') === 'Access_Group') {
+            			cell.attr('circle/stroke', "black");
+            			cell.attr('circle/stroke-width', 1);
+                		cell.attr('text/display', 'none');
+            		}
+            	});
+        		
+        		clicked = false;
+        		return;
+        	}
+        	
+        	cell.attr('circle/stroke', "red");
+        	cell.attr('circle/stroke-width', 3);
+        	cell.attr('text/display', 'normal');
+        	
+        	$.each(graph.getLinks(), function(index, link) {
+        		
+        		var source = graph.getCell(link.get('source').id);
+        		var target = graph.getCell(link.get('target').id);
+        		
+        		//show links
+        		if(link.get('source').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
+        			model.showLink(link.id);
+        			var connectedCell = graph.getCell(link.get('target').id);
+        			connectedCell.attr('circle/stroke', "blue");
+        			connectedCell.attr('circle/stroke-width', 3);
+        			connectedCell.attr('text/display', 'normal');
+        		}
+        		if(link.get('target').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
+        			model.showLink(link.id);
+        			var connectedCell = graph.getCell(link.get('source').id)
+        			connectedCell.attr('circle/stroke', "blue");
+        			connectedCell.attr('circle/stroke-width', 3);
+        			connectedCell.attr('text/display', 'normal');
+        		}
+        		
+        	});
+        	
+        	clicked = true;
+        	
+        });
+        
+        paper.on('blank:pointerclick', function(evt, x, y) {
+        	
+        	$.each(graph.getElements(), function(index, cell) {
+        		if(cell.get('subtype') === 'Access_Group') {
+        			cell.attr('circle/stroke', "black");
+        			cell.attr('circle/stroke-width', 1);
+            		cell.attr('text/display', 'none');
+        		}
+        	});
+        	
+        	//hide links
+        	model.hideLinks();
+        	
+        	clicked = false;
+        	
+        });
+        
+     	//handle with link movement and equipment hover
         var transition = false;
         paper.on('cell:pointermove', function(cellView, evt, x, y) {
         	
@@ -124,6 +193,7 @@ nopen.provisioning.App = Backbone.View.extend({
         	var cell = graph.getCell(cellView.model.id);
 
         	if(cell.get('subtype') !== 'Access_Group') return;
+        	if(clicked) return;
         	
         	cell.attr('circle/stroke', "red");
         	cell.attr('circle/stroke-width', 3);
@@ -160,6 +230,7 @@ nopen.provisioning.App = Backbone.View.extend({
 
         	var cell = graph.getCell(cellView.model.id);
         	if(cell.get('subtype') !== 'Access_Group') return;
+        	if(clicked) return;
         	
         	$.each(graph.getElements(), function(index, cell) {
         		if(cell.get('subtype') === 'Access_Group') {
