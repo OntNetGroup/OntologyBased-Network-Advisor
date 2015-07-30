@@ -1,8 +1,13 @@
 package br.com.padtec.nopen.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntModel;
 
 import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.service.NOpenLog;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
@@ -62,12 +67,22 @@ public class GeneralDtoFabricator {
 			NOpenLog.appendLine("Error: Argument is null. Unexpected deletion of connection involving "+tgtId+"::"+tgtType);
 			throw new Exception("Argument is null. Unexpected deletion of connection involving "+tgtId+"::"+tgtType);		
 		}
+
+		System.out.println(QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcType, repository.getNamespace()+tgtType, repository.getNamespace()+RelationEnum.componentOf.toString()));
 		
-		FactoryUtil.createInstanceRelation(
-			repository.getBaseModel(), 
-			repository.getNamespace()+srcId, 
-			repository.getNamespace()+RelationEnum.componentOf.toString(),
-			repository.getNamespace()+tgtId
-		);
+		if(QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcType, repository.getNamespace()+tgtType, repository.getNamespace()+RelationEnum.componentOf.toString()).contains(repository.getNamespace()+RelationEnum.componentOf.toString())){
+			//List<String> relations = QueryUtil.getPossibleSubRelations(repository.getBaseModel(), repository.getNamespace()+srcId, repository.getNamespace()+RelationEnum.componentOf.toString(), repository.getNamespace()+tgtId);
+			ArrayList<String> list = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcType, repository.getNamespace()+tgtType, repository.getNamespace()+RelationEnum.componentOf.toString());
+			String specificRelation = list.get(0);
+			
+			FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+srcId, 
+				repository.getNamespace()+specificRelation,
+				repository.getNamespace()+tgtId
+			);
+
+		}
+		
 	}
 }
