@@ -64,7 +64,7 @@ function openFromURL(equipment, filename, graph, app){
 			var layerName = layer.attributes.lanes.label;
 			var layerID = layer.id;
 //			insertLayer(layerID, layerName, app.cardID, app.cardName); all instatiation was made when EquipStudio was started
-			app.hideLayer(layerName);
+//			app.hideLayer(layerName);
 		});
 	}
 	

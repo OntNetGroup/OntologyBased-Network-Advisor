@@ -24,7 +24,7 @@ var InspectorDefs = {
 				subType: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Type of the equipment.' } } },
 				Supervisor: {type: 'text', group: 'specific', index: 3, label: 'Supervisor', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Name of the Supervisor of the Card.' } }},
 //				id: { type: 'text', group: 'data', index: 3, label: 'ID', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'ID of the equipment.' } } },
-				attributes: {type: 'text' , group: 'attributes' ,index: 4, label: 'Attributes' , attrs: 'input' , 'label' : {'data-tooltip': 'www.' }}, 
+				attributes: {type: 'text' , group: 'attributes' ,index: 4, label: 'Attributes' , attrs: {'label' : {'data-tooltip': 'www.' } } }, 
 			},
 			groups: CommonInspectorGroups
 

@@ -32,9 +32,17 @@ public class ITUStudioController {
 		return "itu-studio/itu-studio";
 	}
 	
+	
 	/* ======================================================================================
-	 * Get
+	 * GET
 	 * ======================================================================================*/
+
+	/** Procedure to get all the technologies */
+	@RequestMapping(value = "/getTechnologies", method = RequestMethod.POST)
+	public @ResponseBody String[] getTechnologies()
+	{   
+		return NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());		
+	}
 	
 	/** Get all layers name */
 	@RequestMapping(value = "/allLayers", method = RequestMethod.POST)

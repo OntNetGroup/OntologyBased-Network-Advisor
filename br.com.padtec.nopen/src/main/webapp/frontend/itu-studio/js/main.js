@@ -285,22 +285,32 @@ var Rappid = Backbone.Router.extend({
     },
 
     initializeLayers: function() {
-    	var techName = "OTN";
-    	var layerNames = getLayerNames(techName);
+//    	var techName = "OTN";
+//    	var layerNames = getLayerNames(techName);
     	
-    	_.each(layerNames, function(layerName, index){
-    		var layer = new Layer({
-//    			subtype: layerName,
-    			attrs: {
-    				'.': { magnet: false, value: layerName },
-    				'.header': { fill: '#5799DA' }
-    			},
-    			lanes: { 
-    				label: layerName
-    			}
-    		});
-    		Stencil.shapes.layers[index] = layer;
-    	});
+//    	_.each(layerNames, function(layerName, index){
+//    		var layer = new Layer({
+//    			attrs: {
+//    				'.': { magnet: false, value: layerName },
+//    				'.header': { fill: '#5799DA' }
+//    			},
+//    			lanes: { 
+//    				label: layerName
+//    			}
+//    		});
+//    		Stencil.shapes.layers[index] = layer;
+//    	});
+    	
+    	var layer = new Layer({
+			attrs: {
+				'.': { magnet: false, value: 'layer' },
+				'.header': { fill: '#5799DA' }
+			},
+			lanes: { 
+				label: 'Layer'
+			}
+		});
+		Stencil.shapes.layers[0] = layer;
     },
     
     initializeStencilTooltips: function() {

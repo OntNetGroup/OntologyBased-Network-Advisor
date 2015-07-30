@@ -2,49 +2,55 @@ function validator(validator, graph, app) {
     
     
     // validar inserção de camadas no grafo
-    validator.validate('add', isNotLink, isLayer, _.bind(function(err, command, next) {
-    	        	
-    	var cell = command.data.attributes;
-    	var cellSubType = cell.subtype;
-    	
-		var layerID = command.data.id;
-		var layerName = cell.lanes.label;
-		var cardID = this.cardID;
-		var cardName = this.cardName;
-
-		var position = cell.position;
-		var size = cell.size;
-		var area = g.rect(position.x, position.y, size.width, size.height);
-		
-		var parent;
-		// get all elements below the added one
-		_.each(graph.getElements(), function(e) {
-		
-			var position = e.attributes.position;
-			var size = e.attributes.size;
-			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
-				parent = e;
-			}
-		});
-		
-		if(parent) { // existe elemento abaixo
-			Util.generateAlertDialog('Another element in the way!');
-			return next('Another element in the way!');
-		} else {
-			// consultar ontologia para inserção de camada no card
-			var result = insertLayer(layerID, layerName, cardID, cardName);
-			var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layerName+ '"]';
-			
-			if(result === "success") {
-				$(element).hide();
-				return next(err);
-			} else {
-				Util.generateAlertDialog(result);
-				return next(result);
-			}
-		}
-		
-    }, app));
+//    validator.validate('add', isNotLink, isLayer, _.bind(function(err, command, next) {
+//    	        	
+//		var cardID = this.cardID;
+//		var cardName = this.cardName;
+//
+//		var position = cell.position;
+//		var size = cell.size;
+//		var area = g.rect(position.x, position.y, size.width, size.height);
+//		
+//		var technologies = getTechnologies();
+//		
+//		var parent;
+//		// get all elements below the added one
+//		_.each(graph.getElements(), function(e) {
+//		
+//			var position = e.attributes.position;
+//			var size = e.attributes.size;
+//			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+//				parent = e;
+//			}
+//		});
+//		
+//		if(parent) { // existe elemento abaixo
+//			Util.generateAlertDialog('Another element in the way!');
+//			return next('Another element in the way!');
+//		} else {
+//			
+//			/*
+//			 * TODO: 	abrir um modal contendo: 
+//			 * 				- um combobox para selecionar a tecnologia;
+//			 * 				- escolhida a tecnologia, um combobox para selecionar a camada;
+//			 * 				- um botão para prosseguir.
+//			 */
+//			
+//			
+//			// consultar ontologia para inserção de camada no card
+//			var result = insertLayer(layerID, layerName, cardID, cardName);
+////			var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layerName+ '"]';
+//			
+//			if(result === "success") {
+////				$(element).hide();
+//				return next(err);
+//			} else {
+//				Util.generateAlertDialog(result);
+//				return next(result);
+//			}
+//		}
+//		
+//    }, app));
     
     
     // validar a remoção de links do grafo
@@ -135,11 +141,11 @@ function validator(validator, graph, app) {
 		var cardName = this.cardName;
 		var cardType = this.cardType;
 		
-		var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +containerName+ '"]';
+//		var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +containerName+ '"]';
 		
 		var result = deleteContainer(containerName, containerType, cardID, cardName, cardType);
 		if(result === "success") {
-			$(element).show();
+//			$(element).show();
 			return next(err);
 		} else {
 			this.skipOntologyAddHandler = true;

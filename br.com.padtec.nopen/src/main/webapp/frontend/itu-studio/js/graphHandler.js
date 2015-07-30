@@ -133,6 +133,111 @@ function graphHandler(graph, app) {
 		};
 	}, app);
 	
+	// validar inserção de camadas no grafo
+	graph.on('add', function(cell) {
+		if(isLink(cell)) return;
+		if(isNotLayer(cell)) return;
+		if(this.skipOntologyAddHandler) {
+    		this.skipOntologyAddHandler = false;
+    		return;
+    	}
+		var cardID = this.cardID;
+		var cardName = this.cardName;
+
+		var position = cell.attributes.position;
+		var size = cell.attributes.size;
+		var area = g.rect(position.x, position.y, size.width, size.height);
+		
+		var technologies = getTechnologies();
+		
+		var parent;
+		// get all elements below the added one
+		_.each(graph.getElements(), function(e) {
+		
+			var position = e.attributes.position;
+			var size = e.attributes.size;
+			if (e.id !== cell.id && area.intersect(g.rect(position.x, position.y, size.width, size.height))) {
+				parent = e;
+			}
+		});
+		
+		if(parent) { // existe elemento abaixo
+			Util.generateAlertDialog('Another element in the way!');
+			this.skipOntologyRemoveHandler = true;
+			cell.remove();
+		} else {
+			
+			generateDialog(technologies);
+			
+		}
+		
+
+		// Generate a Dialog with technologies and layers
+		function generateDialog(technologies){
+			
+			var content = '<form id="addLayer">';
+			content = content + 'Technology: <select class="technology">';
+			for(var i = 0; i < technologies.length; i++){
+					content = content + '<option value="' + technologies[i] + '">' + technologies[i] + '</option>';
+			}
+			
+			content = content + '</select><br>'
+			content = content + 'Layer: <select class="layer"/>';
+			content = content +  '</form>';
+			
+			var dialog = new joint.ui.Dialog({
+				width: 300,
+				type: 'neutral',
+				title: 'Technology and Layer',
+				content: content,
+				buttons: [
+					{ action: 'cancel', content: 'Cancel', position: 'left' },
+					{ action: 'add', content: 'Add', position: 'left' }
+				]
+			});
+			dialog.on('action:select-layer', dialog.close);
+			dialog.on('action:add', insertLayer);
+			dialog.on('action:cancel', dialog.close);
+			dialog.open();
+			
+			$('.technology').change(function(){
+				loadLayers($(this).val());
+			});
+			
+			function loadLayers(selectedTechnology) {
+				var layers = getLayerNames(selectedTechnology);
+				var layerCombobox = $('.technology');
+				
+				console.log('blah');
+				
+				while(layerCombobox.length)
+					layerCombobox.remove(0);
+				
+				
+			};
+			
+			function insertLayer(){
+				
+				var layer = $('select[name=layer]:selected').val();
+				
+				// consultar ontologia para inserção de camada no card
+				var result = insertLayer(layerID, layerName, cardID, cardName);
+//				var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layerName+ '"]';
+				
+				if(result === "success") {
+//					$(element).hide();
+				} else {
+					Util.generateAlertDialog(result);
+					this.skipOntologyRemoveHandler = true;
+					cell.remove();
+				}
+
+			};
+			
+		};
+		
+	}, app);
+	
 	// validar inserção de interfaces no grafo
     graph.on('add', function(cell) {
 
@@ -250,6 +355,11 @@ function graphHandler(graph, app) {
 	//Check if cell is a layer
 	function isLayer(cell) {
 		if (cell.attributes.type === TypeEnum.LAYER) return true;
+	};
+
+	//Check if cell is not a layer
+	function isNotLayer(cell) {
+		if (cell.attributes.type !== TypeEnum.LAYER) return true;
 	};
 	
 	// Get name for properly element being added

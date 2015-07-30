@@ -46,18 +46,6 @@ public class EquipmentStudioController {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	/* ======================================================================================
-	 * GET
-	 * ======================================================================================*/
-
-	/** Procedure to get all the technologies */
-	@RequestMapping(value = "/getTechnologies", method = RequestMethod.POST)
-	public @ResponseBody String[] getTechnologies()
-	{   
-		return NOpenQueryUtil.getAllTechnologiesNames(StudioComponents.studioRepository.getBaseModel());		
-	}
 
 	/* ======================================================================================
 	 * Create

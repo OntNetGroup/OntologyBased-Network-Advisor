@@ -57,13 +57,15 @@ public class VisualizerController {
 	 * @param links
 	 */
 	@RequestMapping(value = "/parseEquipToOWL", method = RequestMethod.POST)
-	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
+	protected @ResponseBody String parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
 		try {
 			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
 			NOpenEquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
+			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error";
 		}
 	}
 	
