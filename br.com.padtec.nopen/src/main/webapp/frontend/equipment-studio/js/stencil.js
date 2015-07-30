@@ -53,7 +53,6 @@ Stencil.shapes = {
 		                    //Supervisor
 		                    new joint.shapes.basic.Rect({
 		                    	subType : 'Supervisor' ,
-		                    	tech : '' ,
 		                    	size: { width: 10, height: 20 },
 		                    	attrs: {
 		                    		rect: {

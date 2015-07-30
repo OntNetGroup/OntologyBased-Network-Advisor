@@ -113,7 +113,7 @@
 			openFromURL(equipment, app.graph);
 		}
 
-		 graphHandler(app, app.graph);
+		 graphHandler(app, app.graph , app.paper);
 		
 		$('.toolbar-container').append(
 				'<div style="display: inline;margin-left:10px">&#155; '

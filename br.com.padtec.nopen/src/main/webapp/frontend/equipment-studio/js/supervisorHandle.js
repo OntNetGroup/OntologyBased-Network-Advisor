@@ -74,13 +74,7 @@ function supervisorHandle(paper, graph){
    
 	   cellId = cellView.model.id;	   
 		
-		var Supervisor = graph.getCell(cellId);
-		
-		if((Supervisor.get('tech')) === ''){
-			
-			showTechnologyWindow(getTechnologies() , Supervisor);
-			
-		} else {
+		var Supervisor = graph.getCell(cellId);		 
 			
 			var elementos = graph.getElements();
 			//console.log('elementos' , elementos);
@@ -94,8 +88,7 @@ function supervisorHandle(paper, graph){
                    if((check.get('SupervisorID') === (Supervisor.id))){
                 	   sCards.push(check);
                    }else{
-                	   if((check.get('SupervisorID') === '')){
-                    	   
+                	   if((check.get('SupervisorID') === '')){                    	   
                 		   nsCards.push(check);
                        }
                    }
@@ -105,7 +98,7 @@ function supervisorHandle(paper, graph){
 			if(Supervisor.get('subType') === 'Supervisor'){
 				selectSupervisorWindow(Supervisor, nsCards, sCards, graph);
 			}
-		}
+		
    })
    
 }

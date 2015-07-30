@@ -207,7 +207,7 @@ var Rappid = Backbone.Router.extend({
     
     // Create and populate stencil.
     initializeStencil: function(tech) {
-    	this.cardTech = tech;
+    	this.cardTech = "OTN";
 
     	this.initializeLayers();
     	
@@ -285,7 +285,7 @@ var Rappid = Backbone.Router.extend({
     },
 
     initializeLayers: function() {
-    	var techName = this.cardTech;
+    	var techName = "OTN";
     	var layerNames = getLayerNames(techName);
     	
     	_.each(layerNames, function(layerName, index){

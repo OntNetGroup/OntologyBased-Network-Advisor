@@ -12,6 +12,7 @@ function getLayerNames(techName) {
 		url: "techLayers.htm",
 		data: {
 			'techName': techName
+//			'tecName': "OTN",
 		},
 		success: function(data){ 		   
 			result = data;
