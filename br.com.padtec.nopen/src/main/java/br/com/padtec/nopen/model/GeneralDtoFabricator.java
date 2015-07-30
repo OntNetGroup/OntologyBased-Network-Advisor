@@ -67,16 +67,22 @@ public class GeneralDtoFabricator {
 			NOpenLog.appendLine("Error: Argument is null. Unexpected deletion of connection involving "+tgtId+"::"+tgtType);
 			throw new Exception("Argument is null. Unexpected deletion of connection involving "+tgtId+"::"+tgtType);		
 		}
+
+		System.out.println(QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcType, repository.getNamespace()+tgtType, repository.getNamespace()+RelationEnum.componentOf.toString()));
 		
-		//List<String> relations = QueryUtil.getPossibleSubRelations(repository.getBaseModel(), repository.getNamespace()+srcId, repository.getNamespace()+RelationEnum.componentOf.toString(), repository.getNamespace()+tgtId);
-		ArrayList<String> list = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcType, repository.getNamespace()+tgtType, repository.getNamespace()+RelationEnum.componentOf.toString());
-		String specificRelation = list.get(0);
+		if(QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcType, repository.getNamespace()+tgtType, repository.getNamespace()+RelationEnum.componentOf.toString()).contains(repository.getNamespace()+RelationEnum.componentOf.toString())){
+			//List<String> relations = QueryUtil.getPossibleSubRelations(repository.getBaseModel(), repository.getNamespace()+srcId, repository.getNamespace()+RelationEnum.componentOf.toString(), repository.getNamespace()+tgtId);
+			ArrayList<String> list = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcType, repository.getNamespace()+tgtType, repository.getNamespace()+RelationEnum.componentOf.toString());
+			String specificRelation = list.get(0);
+			
+			FactoryUtil.createInstanceRelation(
+				repository.getBaseModel(), 
+				repository.getNamespace()+srcId, 
+				repository.getNamespace()+specificRelation,
+				repository.getNamespace()+tgtId
+			);
+
+		}
 		
-		FactoryUtil.createInstanceRelation(
-			repository.getBaseModel(), 
-			repository.getNamespace()+srcId, 
-			repository.getNamespace()+specificRelation,
-			repository.getNamespace()+tgtId
-		);
 	}
 }
