@@ -45,11 +45,13 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		};
 		elements.push(equip);
 		
+		
+		console.log('CARD: ' + JSON.stringify(card));
 		//Card
 		var equipCard = {
 				"type" : card.subType,
 				"id" : card.id,
-				"name" : card.subType,
+				"name" : card.attrs.name.text,
 		};
 		elements.push(equipCard);
 		
@@ -101,7 +103,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				var ttf = {
 						"type" : element.subtype,
 						"id" : element.id,
-						"name" : element.subtype,
+						"name" : element.attrs.text.text,
 				}
 				elements.push(ttf);
 				
@@ -119,7 +121,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				var af = {
 						"type" : element.subtype,
 						"id" : element.id,
-						"name" : element.subtype,
+						"name" : element.attrs.text.text,
 				}
 				elements.push(af);
 				
@@ -139,7 +141,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				var matrix = {
 						"type" : element.subtype,
 						"id" : element.id,
-						"name" : element.subtype,
+						"name" : element.attrs.text.text,
 				}
 				elements.push(matrix);
 				
@@ -208,8 +210,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			
 		});
 		
-//		console.log('Elements: ' + JSON.stringify(elements));
-//		console.log('Links: ' + JSON.stringify(links));
+		console.log('Elements: ' + JSON.stringify(elements));
+		console.log('Links: ' + JSON.stringify(links));
 		
 		//execute parse
 		$.ajax({
