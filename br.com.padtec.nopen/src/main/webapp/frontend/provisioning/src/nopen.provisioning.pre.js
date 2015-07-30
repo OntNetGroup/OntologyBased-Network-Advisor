@@ -18,6 +18,9 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		var file = this.app.file;
 		var model = this.app.model;
 		var util = this.app.util;
+		
+		var test = this.app.test;
+		
 		var links = [];
 		
 		if(graph.getLinks().length === 0 ) {
@@ -111,17 +114,22 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			
 			if(currentLinkIndex < links.length) {
 				
-				var connections = owl.getPossibleConnectionsFromOWL(source.id, target.id);
-				var outputs = owl.getOutputsFromOWL(source.id);
+//				var outputs = owl.getOutputsFromOWL(source.id);
 				
-				content = createContent(sourceName, targetName, outputs);
+				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
+//				var connections = owl.getPossibleConnectionsFromOWL(source.id, target.id);
+				var connections = test.getConnections(); 
+				
+				content = createConnectionContent(source, target, connectionType, connections)
 				
 				$('.dialog .body').html(content);
 				$('.dialog .fg .image').remove();
 				$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
 				
-				util.prepareList('.outputsList');
-				generateOutputEvents();
+				util.prepareList('.sourceList');
+				util.prepareList('.targetList');
+				
+				generateConnectionEvents();
 				changeSVGColor(sourceName, targetName);
 				
 				currentLinkIndex++;
@@ -129,22 +137,137 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			//currentLinkIndex === links.length
 			else {
 				
-				var connections = owl.getPossibleConnectionsFromOWL(source.id, target.id);
-				var outputs = owl.getOutputsFromOWL(source.id);
+//				var outputs = owl.getOutputsFromOWL(source.id);
 				
-				content = createContent(sourceName, targetName, outputs);
+				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
+//				var connections = owl.getPossibleConnectionsFromOWL(source.id, target.id);
+				var connections = test.getConnections(); 
+				
+				console.log('connections: ' + JSON.stringify(connections));
+				content = createConnectionContent(source, target, connectionType, connections)
 				
 				$('.dialog .body').html(content);
 				$('.dialog .fg .image').remove();
 				$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
 				
 				$('.dialog .controls .control-button[data-action="next"]').text('Finish');
-				util.prepareList('.outputsList');
-				generateOutputEvents();
+				
+				util.prepareList('.sourceList');
+				util.prepareList('.targetList');
+				
+				generateConnectionEvents();
 				changeSVGColor(sourceName, targetName);
 				
 				currentLinkIndex++;
 			}
+			
+		};
+		
+		//create connection content
+		function createConnectionContent(source, target, connectionType, connections) {
+			
+			var sourceId = source.id
+			var targetId = target.id;
+			
+			var sourceName = model.getEquipmentName(source);
+			var targetName = model.getEquipmentName(target);
+			
+			console.log('sourceId: ' + sourceId);
+			console.log('targetId: ' + targetId);
+			
+			var content = 
+				'<div class="preProvisioningContainer">' +
+					'<div class="connectionType"><b>Connection Type:</b> ' + connectionType + '</div>' +
+					'<div class="sourceList"><div id="listContainer">' +
+				    '<ul id="expList" class="list"> <li class="sourcePorts">' + sourceName + '</li> ' ;
+			
+			$.each(connections[sourceId], function(layer, value) {
+				
+				content = content + 
+				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+				
+				$.each(connections[sourceId][layer], function(key, port) {
+					
+					content = content +
+						'<ul style="display: block;">' +
+			                '<li class="sourcePort" id="' + port.id + '" value="' + port.name + '" class="collapsed expanded">' + port.name + '</li>' +
+			            '</ul>';
+					
+				});
+				
+				content = content + '</li>';
+				
+			});
+			
+			content = content + '</ul></div></div>';
+			content = content + 
+			'<div class="targetList"><div id="listContainer">' +
+		    	'<ul id="expList" class="list"> <li class="targetPorts">' + targetName + '</li>';
+			
+			$.each(connections[targetId], function(layer, value) {
+				
+				content = content + 
+				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+				
+				$.each(connections[targetId][layer], function(key, port) {
+					
+					content = content +
+						'<ul style="display: block;">' +
+			                '<li class="targetPort" id="' + port.id + '" value="' + port.name + '" class="collapsed expanded">' + port.name + '</li>' +
+			            '</ul>';
+					
+				});
+				
+				content = content + '</li>';
+				
+			});
+			
+			content = content + '</ul></div></div></div>';
+			
+			return content;
+			
+		};
+		
+		//generate events to connections list
+		function generateConnectionEvents() {
+			
+			$('.sourceList #expList').find('li.sourcePort').click( function(event) {
+				
+				$('.sourceList #expList li').removeClass('active');
+				$(this).toggleClass('active');
+				
+				if($('.targetList #expList li').hasClass('active')) {
+					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+				}
+				
+			});
+			
+			$('.targetList #expList').find('li.targetPort').click( function(event) {
+				
+				$('.targetList #expList li').removeClass('active');
+				$(this).toggleClass('active');
+				
+				if($('.sourceList #expList li').hasClass('active')) {
+					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+				}
+				
+			});
+		}
+		
+		//change SVG color of topology
+		function changeSVGColor(sourceName, targetName) {
+			
+			//Set SVG elements
+			$('.rotatable').each(function(){
+				if($(this).text() === targetName || $(this).text() === sourceName) {
+					var id = $(this).attr('id');
+					$('#' + id + ' circle').attr('fill', "#FFF200");
+				}
+				else {
+					var id = $(this).attr('id');
+					$('#' + id + ' circle').attr('fill', "#00c6ff");
+				}
+			})
 			
 		};
 		
@@ -182,22 +305,6 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			//content = content + '<div class="image">' + file.getTopologySVG() + '</div>'
 
 			return content;
-			
-		};
-		
-		function changeSVGColor(sourceName, targetName) {
-			
-			//Set SVG elements
-			$('.rotatable').each(function(){
-				if($(this).text() === targetName || $(this).text() === sourceName) {
-					var id = $(this).attr('id');
-					$('#' + id + ' circle').attr('fill', "#FFF200");
-				}
-				else {
-					var id = $(this).attr('id');
-					$('#' + id + ' circle').attr('fill', "#00c6ff");
-				}
-			})
 			
 		};
 		

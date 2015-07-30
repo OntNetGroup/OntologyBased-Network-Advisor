@@ -266,7 +266,12 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	padding: 5px;
 }
 
-.inputs, .outputs {
+.connectionType {
+	padding: 10px;
+	margin-top: -10px;
+}
+
+.sourcePorts, .targetPorts, .inputs, .outputs {
 	font-weight: bold;
 	border-top-right-radius: 5px;
 	border-top-left-radius: 5px;
@@ -276,12 +281,11 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	margin-top: 0px;
 }
 
-
-.inputItem:hover, .inputItem.active, .outputItem:hover, .outputItem.active {
+.sourcePort:hover, .targetPort:hover, .sourcePort.active, .targetPort.active, .inputItem:hover, .inputItem.active, .outputItem:hover, .outputItem.active {
 	background-color: #EEE;
 }
 
-.outputsList, .inputList {
+.sourceList, .targetList, .outputsList, .inputList {
 	width: 50%;
 	float: left;
 }
