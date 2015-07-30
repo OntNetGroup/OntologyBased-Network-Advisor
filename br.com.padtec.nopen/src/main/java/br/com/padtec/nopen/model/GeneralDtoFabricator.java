@@ -1,8 +1,10 @@
 package br.com.padtec.nopen.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntModel;
 
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.QueryUtil;
@@ -66,8 +68,9 @@ public class GeneralDtoFabricator {
 			throw new Exception("Argument is null. Unexpected deletion of connection involving "+tgtId+"::"+tgtType);		
 		}
 		
-		ArrayList<String> list = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcId, repository.getNamespace()+tgtId, repository.getNamespace()+RelationEnum.componentOf.toString());
-		String specificRelation = list.get(0);
+		List<String> relations = QueryUtil.getPossibleSubRelations(repository.getBaseModel(), repository.getNamespace()+srcId, repository.getNamespace()+RelationEnum.componentOf.toString(), repository.getNamespace()+tgtId);
+		//ArrayList<String> list = QueryUtil.getRelationsBetweenClasses(repository.getBaseModel(), repository.getNamespace()+srcId, repository.getNamespace()+tgtId, repository.getNamespace()+RelationEnum.componentOf.toString());
+		String specificRelation = relations.get(0);
 		
 		FactoryUtil.createInstanceRelation(
 			repository.getBaseModel(), 
