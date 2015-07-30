@@ -18,8 +18,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		/*
 		 * Supervisor > Equipment
 		 * Supervisor > Card
-		 * Layer > TTF
-		 * Card > Layer
+		 * Card_Layer > TTF
+		 * Card > Card_Layer
 		 * Card > AF
 		 * Card > Matrix
 		 * Card > Input/Output
@@ -73,6 +73,9 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 		//ITU Elements
 		var cardCells = card.attrs.data.cells;
+		
+		
+		
 		$.each(cardCells, function(index, element) {
 			
 			//Card_Layer
@@ -105,13 +108,15 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				}
 				elements.push(ttf);
 				
-				//Layer > TTF
+				//Card_Layer > TTF
+				
 				var link = {
 						"sourceType" : $this.getElementType(cardCells, element.parent),
 						"targetType" : element.subtype,
-						"source" : element.source,
-						"target" : element.target
+						"source" : element.parent,
+						"target" : element.id
 				}
+				links.push(link);
 			}
 			//Adaptation_Function
 			else if (element.subtype === 'Adaptation_Function') {
@@ -173,19 +178,19 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				links.push(link);
 				
 			}
+			
 			//Links
-			else if(element.subtype === 'link') {
+			else if(element.type === 'link') {
 				
 				var link = {
-						"sourceType" : $this.getElementType(cardCells, element.source),
-						"targetType" : $this.getElementType(cardCells, element.target),
-						"source" : element.source,
-						"target" : element.target
+						"sourceType" : $this.getElementType(cardCells, element.source.id),
+						"targetType" : $this.getElementType(cardCells, element.target.id),
+						"source" : element.source.id,
+						"target" : element.target.id
 				}
 				links.push(link);
 				
 			}
-			
 			
 		});
 		
@@ -237,18 +242,23 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	//Method to get element type
 	getElementType : function(elements, elementId) {
 		
+		var type = undefined;
+		
 		$.each(elements, function(index, element) {
 			
-			if(element.id == elementId) {
+			if(element.id === elementId) {
+				
 				if(element.subtype) {
-					return element.subtype;
+					type = element.subtype;
 				}
 				else if(element.subType) {
-					return element.subType;
+					type = element.subType;
 				}
 			}
 			
 		});
+		
+		return type;
 		
 	},
 	

@@ -199,7 +199,7 @@ nopen.provisioning.App = Backbone.View.extend({
         	cell.attr('circle/stroke-width', 3);
         	cell.attr('text/display', 'normal');
         	
-        	if(transition) return;
+//        	if(transition) return;
         	
         	$.each(graph.getLinks(), function(index, link) {
         		
@@ -240,7 +240,7 @@ nopen.provisioning.App = Backbone.View.extend({
         		}
         	});
         	
-        	if(transition) return;
+//        	if(transition) return;
         	
         	//hide links
         	model.hideLinks();
