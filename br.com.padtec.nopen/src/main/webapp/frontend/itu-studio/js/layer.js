@@ -14,6 +14,7 @@ Layer = joint.dia.Element.extend({
 
         type: 'bpmn.Pool',
         subtype: 'Card_Layer',
+        technology: '',
         size: {
             width: 800,
             height: 400

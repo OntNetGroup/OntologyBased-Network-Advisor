@@ -205,10 +205,9 @@ function graphHandler(graph, app) {
 			dialog.open();
 			
 			$('#black_overlay').show();
-			
 
 			function cancel() {
-				this.skipOntologyRemoveHandler = true;
+				app.skipOntologyRemoveHandler = true;
 				cell.remove();
 				dialog.close();
 				$('#black_overlay').hide();
@@ -242,22 +241,21 @@ function graphHandler(graph, app) {
 				
 				var layerName = $('.layer').val();
 				var techName = $('.technology').val();
+				var result = undefined;
 				
-				cell.technology = techName;
-				cell.attr({
-					text: {text: layerName}
-				});
-				console.log(cell);
+				cell.prop('technology', techName);
+				cell.prop('lanes/label', layerName);
 				
-				// consultar ontologia para inserção de camada no card
-				var result = insertLayer(layerID, layerName, cardID, cardName);
-//				var element = '.stencil-container .viewport .element.bpmn.Pool[value="' +layerName+ '"]';
-				
-				if(result === "success") {
-//					$(element).hide();
+				if(layerName) {
+					// consultar ontologia para inserção de camada no card
+					result = insertLayer(layerID, layerName, cardID, cardName);
 				} else {
+					result = 'All layers of ' +techName+ ' are already in the card';
+				}
+				
+				if(result !== "success") {
 					Util.generateAlertDialog(result);
-					this.skipOntologyRemoveHandler = true;
+					app.skipOntologyRemoveHandler = true;
 					cell.remove();
 				}
 
