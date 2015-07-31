@@ -49,6 +49,9 @@ function openFromURL(filename, graph){
 
 	function loadEquipmentstoOWl(filename){
 		
+		var elements = [];
+		var links = [];
+		
 		$.each(graph.getElements(), function(index, cell){
 			
 			/*
@@ -61,9 +64,6 @@ function openFromURL(filename, graph){
 			 * Card > Input/Output
 			 * TTF/AF/Matrix > Input/Output
 			 */
-			
-			var elements = [];
-			var links = [];
 			
 			if(cell.get('subType') === 'Rack'){
 				app.RackCounter++
@@ -165,31 +165,29 @@ function openFromURL(filename, graph){
 
 			}
 			
-			console.log('Elements: ' + JSON.stringify(elements));
-			console.log('Links: ' + JSON.stringify(links));
-			
-			//execute parse
-			$.ajax({
-			   type: "POST",
-			   async: false,
-			   url: "parseEquipToOWL.htm",
-			   data: {
-				   'elements' : JSON.stringify(elements),
-				   'links' : JSON.stringify(links),
-			   },
-			   success: function(){
-				  console.log('PARSE OK!')
-			   },
-			   error : function(e) {
-				   alert("error: " + e.status);
-			   }
-			});
-			
-//			console.log('Equipment: ' + JSON.stringify(equipment));
-//			console.log('Card: ' + JSON.stringify(card));
 			
 		});
+		
+		console.log('Elements: ' + JSON.stringify(elements));
+		console.log('Links: ' + JSON.stringify(links));
 
+		//execute parse
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "parseEquipToOWL.htm",
+		   data: {
+			   'elements' : JSON.stringify(elements),
+			   'links' : JSON.stringify(links),
+		   },
+		   success: function(){
+			  console.log('PARSE OK!')
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
 	
 		
 		//ITU Elements
@@ -265,6 +263,9 @@ function generateOpenTemplateDialog(graph, data){
 		
 		function loadEquipmentstoOWl(){
 			
+			var elements = [];
+			var links = [];
+			
 			$.each(graph.getElements(), function(index, cell){
 				
 				/*
@@ -277,9 +278,6 @@ function generateOpenTemplateDialog(graph, data){
 				 * Card > Input/Output
 				 * TTF/AF/Matrix > Input/Output
 				 */
-				
-				var elements = [];
-				var links = [];
 				
 				if(cell.get('subType') === 'Rack'){
 					app.RackCounter++
@@ -302,10 +300,10 @@ function generateOpenTemplateDialog(graph, data){
 					
 					//Rack (R) > Shelf (Sh)
 					var linkShR = {
-							"sourceType" : "Shelf",
-							"targetType" : "Rack",
-							"source" : cell.get('id'),
-							"target" : cell.get('parent'),
+							"sourceType" : "Rack",
+							"targetType" : "Shelf",
+							"source" : cell.get('parent'),
+							"target" : cell.get('id'),
 					};
 					links.push(linkShR);
 
@@ -319,12 +317,12 @@ function generateOpenTemplateDialog(graph, data){
 					};
 					elements.push(slot);
 					
-					//Slot (Sl) > Shelf (Sh)
+					//Shelf (Sh) > Slot (Sl)
 					var linkSlSh = {
-							"sourceType" : "Slot",
-							"targetType" : "Shelf",
-							"source" : cell.get('id'),
-							"target" : cell.get('parent'),
+							"sourceType" : "Shelf",
+							"targetType" : "Slot",
+							"source" : cell.get('parent'),
+							"target" : cell.get('id'),
 					};
 					links.push(linkSlSh);
 
@@ -342,22 +340,22 @@ function generateOpenTemplateDialog(graph, data){
 					
 					//Slot (Sl) > Card (C)
 					var linkSlC = {
-							"sourceType" : "Card",
-							"targetType" : "Slot",
-							"source" : cell.get('id'),
-							"target" : cell.get('parent'),
+							"sourceType" : "Slot",
+							"targetType" : "Card",
+							"source" : cell.get('parent'),
+							"target" : cell.get('id'),
 					};
 					links.push(linkSlC);
 					
 					//Supervisor (S) > Card (C)
 					var linkSC = {
-							"sourceType" : "Card",
-							"targetType" : "Supervisor",
-							"source" : cell.get('id'),
-							"target" : cell.get('SupervisorID'),
+							"sourceType" : "Supervisor",
+							"targetType" : "Card",
+							"source" : cell.get('SupervisorID'),
+							"target" : cell.get('id'),
 					};
 					links.push(linkSC);
-
+					
 				}
 				if(cell.get('subType')=== 'Supervisor'){
 					app.SupervisorCounter++;
@@ -370,10 +368,10 @@ function generateOpenTemplateDialog(graph, data){
 					
 					//Slot (Sl) > Supervisor (S)
 					var linkSlC = {
-							"sourceType" : "Supervisor",
-							"targetType" : "Slot",
-							"source" : cell.get('id'),
-							"target" : cell.get('parent'),
+							"sourceType" : "Slot",
+							"targetType" : "Supervisor",
+							"source" : cell.get('parent'),
+							"target" : cell.get('id'),
 					};
 					links.push(linkSlC);
 
@@ -381,10 +379,11 @@ function generateOpenTemplateDialog(graph, data){
 
 				}
 				
-				console.log('Elements: ' + JSON.stringify(elements));
-				console.log('Links: ' + JSON.stringify(links));								
+				
 			});
-
+			
+//			console.log('Elements: ' + JSON.stringify(elements));
+//			console.log('Links: ' + JSON.stringify(links));
 
 			//execute parse
 			$.ajax({
@@ -427,12 +426,16 @@ function generateOpenTemplateDialog(graph, data){
 function instanciateITUElements(filename, card) {
 
 	var ITUelements = [], ITUlinks = [];
-	
-	var cardCells = loadCardElements(filename, card.id);
-	$.each(cardCells, function(index, element) {
+
+	var ITUGraph = loadCardElements(filename, card.id);
+
+	var cardElements = ITUGraph.getElements();
+	$.each(cardElements, function(index, element) {
+		
 		
 		//Card_Layer
 		if(element.attributes.subtype === 'Card_Layer') {
+			
 			//console.log('Layer: ' + JSON.stringify(element));
 			var layer = {
 					"type" : element.attributes.subtype,
@@ -468,6 +471,7 @@ function instanciateITUElements(filename, card) {
 					"source" : element.attributes.parent,
 					"target" : element.attributes.id
 			}
+			ITUlinks.push(link);
 		}
 		//Adaptation_Function
 		else if (element.attributes.subtype === 'Adaptation_Function') {
@@ -529,38 +533,40 @@ function instanciateITUElements(filename, card) {
 			ITUlinks.push(link);
 			
 		}
-		//Links
-		else if(element.attributes.type === 'link') {
-			
-			var link = {
-					"sourceType" : getElementType(cardCells, element.attributes.source),
-					"targetType" : getElementType(cardCells, element.attributes.target),
-					"source" : element.attributes.source,
-					"target" : element.attributes.target
-			}
-			ITUlinks.push(link);
+		
+	});
+	
+	var cardLinks = ITUGraph.getLinks();
+	$.each(cardLinks, function(index, element) {
+		
+		var link = {
+				"sourceType" : getElementType(cardElements, element.attributes.source.id),
+				"targetType" : getElementType(cardElements, element.attributes.target.id),
+				"source" : element.attributes.source.id,
+				"target" : element.attributes.target.id
 		}
+		ITUlinks.push(link);
 		
-		console.log('Elements: ' + JSON.stringify(ITUelements));
-		console.log('Links: ' + JSON.stringify(ITUlinks));
-		
-		//execute parse
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "parseEquipToOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(ITUelements),
-			   'links' : JSON.stringify(ITUlinks),
-		   },
-		   success: function(){
-			  console.log('PARSE OK!')
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-		
+	});
+	
+	console.log('Elements: ' + JSON.stringify(ITUelements));
+	console.log('Links: ' + JSON.stringify(ITUlinks));
+	
+	//execute parse
+	$.ajax({
+	   type: "POST",
+	   async: false,
+	   url: "parseEquipToOWL.htm",
+	   data: {
+		   'elements' : JSON.stringify(ITUelements),
+		   'links' : JSON.stringify(ITUlinks),
+	   },
+	   success: function(){
+		  console.log('PARSE OK!')
+	   },
+	   error : function(e) {
+		   alert("error: " + e.status);
+	   }
 	});
 	
 	
@@ -587,19 +593,22 @@ function instanciateITUElements(filename, card) {
 //Method to get element type
 function getElementType(elements, elementId) {
 	
+	var type = undefined;
+	
 	$.each(elements, function(index, element) {
 		
 		if(element.id == elementId) {
-			if(element.subtype) {
-				return element.subtype;
+			if(element.attributes.subtype) {
+				type = element.attributes.subtype;
 			}
 			else if(element.subType) {
-				return element.subType;
+				type = element.attributes.subType;
 			}
 		}
 		
 	});
 	
+	return type;
 }
 
 function loadCardElements(eqName, cardID) {
@@ -621,5 +630,6 @@ function loadCardElements(eqName, cardID) {
 			alert("error: " + e.status);
 		}
 	});
-	return localGraph.getElements();
+	
+	return localGraph;
 }
