@@ -72,7 +72,7 @@ public class ITUStudioController {
 		DtoJointElement dtoContent = (DtoJointElement) JointUtilManager.getJavaFromJSON(content, DtoJointElement.class);
 		
 		try{
-			InstanceFabricator.createComponentOfRelation(dtoContainer, dtoContent);
+			InstanceFabricator.createComponentOfRelation(dtoContainer, dtoContent, StudioComponents.studioRepository);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
