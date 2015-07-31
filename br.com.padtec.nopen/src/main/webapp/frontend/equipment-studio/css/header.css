@@ -16,9 +16,13 @@
 
 .menu a {
 	text-decoration: none;
-	font-family: 'Kaushan Script',cursive;
+/* 	font-family: 'Kaushan Script',cursive; */
 	color: #FFF;
-	font-size: 18px;
+	font-size: 20px;
+}
+
+.menu a:hover {
+	text-decoration: underline;
 }
 
 .menu-button span {

@@ -166,7 +166,37 @@ function ituHandle(paper, graph, validator){
 			            	//If changes were not discarded
 			            	if(!$('#itu-iframe').get(0).contentWindow.discardChanges) {
 			            	
-				            	var cell = graph.getCell(cellId);
+			            		//get card
+			            		var cell = graph.getCell(cellId);
+			            		
+			            		
+			            		
+			            		/* =========================
+			            		 * SET SUPERVISOR TECHNOLOGY
+			            		 * ========================= */
+			            		 
+			            		var technology = [];
+			            		$.each($('#itu-iframe').get(0).contentWindow.app.graph.getElements(), function(index, element) {
+			            			
+			            			if(element.subtype === 'Card_Layer') {
+			            				console.log('ELEMENT: ' + JSON.stringify(element));
+			            			}
+			            			
+			            		});
+			            		
+			            		console.log('CELL: ' + JSON.stringify(cell));
+			            		
+//			            		if(technology[0]) {
+			            			var supervisor = graph.getCell(cell.get('SupervisorID'));
+			            			//supervisor.set('tech', technology[0]);
+			            			console.log('SUPERVISOR TECH: ' + JSON.stringify(supervisor));
+			            			supervisor.set('tech', 'MEF');
+			            			
+//			            		}
+			            		
+			            		
+			            		
+				            	
 				            	var hasIn = false, hasOut = false;
 				            	
 				            	cell.attr(".inPort/title", "");

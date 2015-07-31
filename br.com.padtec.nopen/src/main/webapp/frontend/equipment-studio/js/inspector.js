@@ -153,7 +153,7 @@ var InspectorDefs = {
 //				}
 				},
 				subType: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Type of the equipment.' } } },
-//				tech: { type : 'text' , group: 'specific', index: 3, label: 'Technology', attrs: {'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Technology of the Supervisor.' }}},
+				tech: { type : 'text' , group: 'specific', index: 3, label: 'Technology', attrs: {'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'Technology of the Supervisor.' }}},
 				id: { type: 'text', group: 'data', index: 3, label: 'ID', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'ID of the equipment.' } } }
 			},
 			groups: CommonInspectorGroups

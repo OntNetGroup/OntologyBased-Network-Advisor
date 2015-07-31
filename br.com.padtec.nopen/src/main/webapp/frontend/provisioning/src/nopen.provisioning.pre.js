@@ -172,9 +172,6 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			var sourceName = model.getEquipmentName(source);
 			var targetName = model.getEquipmentName(target);
 			
-			console.log('sourceId: ' + sourceId);
-			console.log('targetId: ' + targetId);
-			
 			var content = 
 				'<div class="preProvisioningContainer">' +
 					'<div class="connectionType"><b>Connection Type:</b> ' + connectionType + '</div>' +

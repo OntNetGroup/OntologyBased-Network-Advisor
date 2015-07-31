@@ -3,7 +3,7 @@
 		<a  href=home.htm><span><img src="/nopen/frontend/common/img/logo.png"/></span></a>
 	</div>
 	<div class="title">
-		&#155; Provisioning
+		&#155; <a  href=home.htm> NOpen </a> &#155; Provisioning
 	</div>
 </div>
 		
