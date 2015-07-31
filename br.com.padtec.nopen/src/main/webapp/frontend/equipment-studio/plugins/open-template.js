@@ -49,9 +49,6 @@ function openFromURL(filename, graph){
 
 	function loadEquipmentstoOWl(filename){
 		
-		var elements = [];
-		var links = [];
-		
 		$.each(graph.getElements(), function(index, cell){
 			
 			/*
@@ -65,6 +62,9 @@ function openFromURL(filename, graph){
 			 * TTF/AF/Matrix > Input/Output
 			 */
 			
+			var elements = [];
+			var links = [];
+			
 			if(cell.get('subType') === 'Rack'){
 				app.RackCounter++
 				var rack = {
@@ -72,49 +72,54 @@ function openFromURL(filename, graph){
 						"id" : cell.id,
 						"name" : cell.attributes.attrs.name.text,
 				};
+				console.log(rack);
 				elements.push(rack);
 			}
 			
-			if(cell.get('subType') === 'Shelf'){
+			else if(cell.get('subType') === 'Shelf'){
 				app.ShelfCounter++;
 				var shelf = {
 						"type" : "Shelf",
 						"id" : cell.get('id'),
 						"name" : cell.attributes.attrs.name.text,
 				};
+				console.log(shelf);
 				elements.push(shelf);
 				
 				//Rack (R) > Shelf (Sh)
 				var linkShR = {
-						"sourceType" : "Rack",
-						"targetType" : "Shelf",
-						"source" : cell.get('parent'),
-						"target" : cell.get('id'),
+						"sourceType" : "Shelf",
+						"targetType" : "Rack",
+						"source" : cell.get('id'),
+						"target" : cell.get('parent'),
 				};
+				console.log(linkShR);
 				links.push(linkShR);
 
 			}
-			if(cell.get('subType') === 'Slot'){
+			else if(cell.get('subType') === 'Slot'){
 				app.SlotCounter++;
 				var slot = {
 						"type" : "Slot",
 						"id" : cell.get('id'),
 						"name" : cell.attributes.attrs.name.text,
 				};
+				console.log(slot);
 				elements.push(slot);
 				
-				//Shelf (Sh) > Slot (Sl)
+				//Slot (Sl) > Shelf (Sh)
 				var linkSlSh = {
-						"sourceType" : "Shelf",
-						"targetType" : "Slot",
-						"source" : cell.get('parent'),
-						"target" : cell.get('id'),
+						"sourceType" : "Slot",
+						"targetType" : "Shelf",
+						"source" : cell.get('id'),
+						"target" : cell.get('parent'),
 				};
+				console.log(linkSlSh);
 				links.push(linkSlSh);
 
 			}
 
-			if(cell.get('subType')=== 'Card'){
+			else if(cell.get('subType')=== 'Card'){
 				app.CardCounter++;
 				var card = {
 						"type" : "Card",
@@ -126,24 +131,24 @@ function openFromURL(filename, graph){
 				
 				//Slot (Sl) > Card (C)
 				var linkSlC = {
-						"sourceType" : "Slot",
-						"targetType" : "Card",
-						"source" : cell.get('parent'),
-						"target" : cell.get('id'),
+						"sourceType" : "Card",
+						"targetType" : "Slot",
+						"source" : cell.get('id'),
+						"target" : cell.get('parent'),
 				};
 				links.push(linkSlC);
 				
 				//Supervisor (S) > Card (C)
 				var linkSC = {
-						"sourceType" : "Supervisor",
-						"targetType" : "Card",
-						"source" : cell.get('SupervisorID'),
-						"target" : cell.get('id'),
+						"sourceType" : "Card",
+						"targetType" : "Supervisor",
+						"source" : cell.get('id'),
+						"target" : cell.get('SupervisorID'),
 				};
 				links.push(linkSC);
 				
 			}
-			if(cell.get('subType')=== 'Supervisor'){
+			else if(cell.get('subType')=== 'Supervisor'){
 				app.SupervisorCounter++;
 				var supervisor = {
 						"type" : "Supervisor",
@@ -154,10 +159,10 @@ function openFromURL(filename, graph){
 				
 				//Slot (Sl) > Supervisor (S)
 				var linkSlC = {
-						"sourceType" : "Slot",
-						"targetType" : "Supervisor",
-						"source" : cell.get('parent'),
-						"target" : cell.get('id'),
+						"sourceType" : "Supervisor",
+						"targetType" : "Slot",
+						"source" : cell.get('id'),
+						"target" : cell.get('parent'),
 				};
 				links.push(linkSlC);
 
@@ -165,29 +170,28 @@ function openFromURL(filename, graph){
 
 			}
 			
+			console.log('Elements: ' + JSON.stringify(elements));
+			console.log('Links: ' + JSON.stringify(links));
+				
+			
+			//execute parse
+			$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "parseEquipToOWL.htm",
+			   data: {
+				   'elements' : JSON.stringify(elements),
+				   'links' : JSON.stringify(links),
+			   },
+			   success: function(){
+				  console.log('PARSE OK!')
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
 			
 		});
-		
-		console.log('Elements: ' + JSON.stringify(elements));
-		console.log('Links: ' + JSON.stringify(links));
-
-		//execute parse
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "parseEquipToOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(elements),
-			   'links' : JSON.stringify(links),
-		   },
-		   success: function(){
-			  console.log('PARSE OK!')
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-		
 	
 		
 		//ITU Elements
