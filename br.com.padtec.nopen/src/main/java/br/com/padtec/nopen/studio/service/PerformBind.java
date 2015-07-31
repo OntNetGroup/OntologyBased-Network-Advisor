@@ -99,7 +99,17 @@ public class PerformBind {
 			//create the componentOf relation between target and the card 
 			
 			List<String> card = QueryUtil.getIndividualsURIAtObjectPropertyRange(repository.getBaseModel(), repository.getNamespace() + idSource, repository.getNamespace() + RelationEnum.INV_componentOf.toString(), repository.getNamespace() + ConceptEnum.Card.toString());
-			String cardId = card.get(0).substring(card.get(0).indexOf("#")+1);
+			String cardId = null;
+			if(!card.isEmpty()){
+				cardId = card.get(0).substring(card.get(0).indexOf("#")+1);
+			}else{
+				ArrayList<String> relationsToGetCard = new ArrayList<String>();
+				relationsToGetCard.add(RelationEnum.INV_A_CardLayer_TrailTerminationFunction.toString());
+				relationsToGetCard.add(RelationEnum.INV_A_Card_CardLayer.toString());
+				ArrayList<String> result = QueryUtil.endOfGraph(repository.getBaseModel(), idSource, relationsToGetCard);
+				cardId = result.get(0).substring(result.get(0).indexOf("#")+1);
+			}
+			
 			
 			specificPropertyURIs = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + ConceptEnum.Card.toString(), NOpenComponents.nopenRepository.getNamespace() + typeTarget, NOpenComponents.nopenRepository.getNamespace() + RelationEnum.componentOf.toString());
 			String specificInterfaceComponentOf = specificPropertyURIs.get(0);
@@ -138,14 +148,14 @@ public class PerformBind {
 			String rpTypeInNOpen = NOpenComponents.nopenRepository.getNamespace() + rpType;
 			String typeOutputNOpen = NOpenComponents.nopenRepository.getNamespace() + typeOutput;
 			String typeInputNOpen = NOpenComponents.nopenRepository.getNamespace() + typeInput;
-			String propertyOutputRPInNOpen = NOpenComponents.nopenRepository.getNamespace() + RelationEnum.INV_links_output.toString();
+			String propertyOutputRPInNOpen = NOpenComponents.nopenRepository.getNamespace() + RelationEnum.links_output.toString();
 			String propertyInputRPInNOpen = NOpenComponents.nopenRepository.getNamespace() + RelationEnum.links_input.toString();
 			
-			ArrayList<String> relationOutRpInNOpen = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), typeOutputNOpen, rpTypeInNOpen, propertyOutputRPInNOpen);
+			ArrayList<String> relationOutRpInNOpen = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), rpTypeInNOpen, typeOutputNOpen, propertyOutputRPInNOpen);
 			ArrayList<String> relationInRpInNOpen = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), rpTypeInNOpen, typeInputNOpen, propertyInputRPInNOpen);
 			
-			String relationOutRp = relationOutRpInNOpen.get(0);
-			relationOutRp = relationOutRp.substring(relationOutRp.indexOf("#") + 1);
+			String relationRpOut = relationOutRpInNOpen.get(0);
+			relationRpOut = relationRpOut.substring(relationRpOut.indexOf("#") + 1);
 			
 			String relationInRp = relationInRpInNOpen.get(0);
 			relationInRp = relationInRp.substring(relationInRp.indexOf("#") + 1);
@@ -177,9 +187,9 @@ public class PerformBind {
 			//create relation between output and reference point
 			FactoryUtil.createInstanceRelation(
 					repository.getBaseModel(), 
-					repository.getNamespace() + outputId, 
-					repository.getNamespace() + relationOutRp,
-					repository.getNamespace() + rpId
+					repository.getNamespace() + rpId, 
+					repository.getNamespace() + relationRpOut,
+					repository.getNamespace() + outputId
 				);
 			
 			//create relation between input and reference point
