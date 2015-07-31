@@ -470,6 +470,9 @@ function ituHandle(paper, graph, validator){
 				var id = $(this).attr('id');
 				var idParent = $(this).parent().attr('id');
 				
+				console.log('ID: ' + id);
+				console.log('idParent: ' + idParent);
+				
 				var port1 = undefined, port2 = undefined;
 				$.each(graph.getElements(), function(index, c) {
 					
@@ -490,6 +493,9 @@ function ituHandle(paper, graph, validator){
 				var removed = false;
 				$.each(graph.getLinks(), function(index, l) {
 					//check if link already removed
+					
+					console.log('LINK: ' + JSON.stringify(l));
+					
 					if(!removed) {
 						if(l.get('source').id === port1 && l.get('target').id === port2) {
 							l.remove();
@@ -510,38 +516,18 @@ function ituHandle(paper, graph, validator){
 		//handle with in connections
 		$('.connectionIn').delegate('td.disconnected', 'click', function() {
 			
+			
 			var sourceIndex = $('.connectionOut td.active').attr('id');
 			var targetIndex = $(this).attr('id');
 			
-			//outPort index -> inPort index
-			source.attributes.connectedPorts[sourceIndex] = {};
-			source.attributes.connectedPorts[sourceIndex]["id"] = sourceIndex;
-			source.attributes.connectedPorts[sourceIndex]["name"] = source.attributes.outPorts[sourceIndex];
-			source.attributes.connectedPorts[sourceIndex]["type"] = "Output_Card";
-	
-			target.attributes.connectedPorts[targetIndex] = {};
-			target.attributes.connectedPorts[targetIndex]["id"] = targetIndex;
-			target.attributes.connectedPorts[targetIndex]["name"] = target.attributes.inPorts[targetIndex];
-			target.attributes.connectedPorts[targetIndex]["type"] = "Input_Card";
 			
-//			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
-//			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
-
+			var targetName = target.attributes.inPorts[targetIndex];
+			var targetType = "Input_Card";
 			
-			console.log(source.attributes.connectedPorts[sourceIndex]);
-			console.log(target.attributes.connectedPorts[targetIndex]);
-	
-			var	sourceID = source.attributes.connectedPorts[sourceIndex]["id"]
-			var	sourceName = source.attributes.connectedPorts[sourceIndex]["name"];
-			var sourceType = source.attributes.connectedPorts[sourceIndex]["type"];	
+			var sourceName = source.attributes.outPorts[sourceIndex]
+			var sourceType = "Output_Card";
 			
-			var targetID = target.attributes.connectedPorts[targetIndex]["id"];
-			var targetName = target.attributes.connectedPorts[targetIndex]["name"];
-			var targetType = target.attributes.connectedPorts[targetIndex]["type"];
-	
-			
-			
-			var result = EquipStudioPerformBind(sourceID, sourceName, sourceType, targetID, targetName, targetType);
+			var result = EquipStudioPerformBind(sourceIndex, sourceName, sourceType, targetIndex, targetName, targetType);
         	
         	if(result === "success") {
         		dialog.close();
@@ -554,6 +540,26 @@ function ituHandle(paper, graph, validator){
 				}).open();		
 			}
 			
+			
+			//outPort index -> inPort index
+        	//connect source -> target
+			source.attributes.connectedPorts[sourceIndex] = {};
+			source.attributes.connectedPorts[sourceIndex]["id"] = targetIndex;
+			source.attributes.connectedPorts[sourceIndex]["name"] = target.attributes.inPorts[targetIndex];
+			source.attributes.connectedPorts[sourceIndex]["type"] = "Input_Card";
+	
+			//connect target -> source
+			target.attributes.connectedPorts[targetIndex] = {};
+			target.attributes.connectedPorts[targetIndex]["id"] = sourceIndex;
+			target.attributes.connectedPorts[targetIndex]["name"] = source.attributes.outPorts[sourceIndex];
+			target.attributes.connectedPorts[targetIndex]["type"] = "Output_Card";
+			
+//			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
+//			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
+			
+			console.log(source.attributes.connectedPorts[sourceIndex]);
+			console.log(target.attributes.connectedPorts[targetIndex]);
+	
 			
 		});
 		
