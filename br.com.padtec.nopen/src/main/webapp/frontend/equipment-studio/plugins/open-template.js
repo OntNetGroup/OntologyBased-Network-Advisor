@@ -569,25 +569,6 @@ function instanciateITUElements(filename, card) {
 	   }
 	});
 	
-	
-	if(ITUelements) {	
-		//execute parse
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "parseEquipToOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(ITUelements),
-			   'links' : JSON.stringify(ITUlinks),
-		   },
-		   success: function(data){
-			  console.log(data);
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
-	}
 }
 
 //Method to get element type
