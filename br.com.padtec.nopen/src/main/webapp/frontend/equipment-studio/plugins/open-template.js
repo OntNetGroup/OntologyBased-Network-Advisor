@@ -620,8 +620,12 @@ function loadCardElements(eqName, cardID) {
 // instancia os elementos ITU no OWL usando os metodos da Jordana (insertContainer e performBind)
 function instanciateITUElementsJordana(filename, card) {
 	var localGraph = loadCardElements(filename, card.id);
+	var localApp = {
+			cardID : card.id,
+			cardName : card.name
+	};
 	
-	loadCells(localGraph);
+	loadCells(localGraph, localApp);
 }
 
 function loadCells(graph, app) {
@@ -665,7 +669,7 @@ function loadTransportFunctions(transportFunctions, graph, app) {
 		
 		var tFunctionID = transportFunction.attributes.id;
 		var tFunctionType = transportFunction.attributes.subtype;
-		var tFunctionName = getName(tFunctionType);
+		var tFunctionName = transportFunction.attributes.attrs.text.text;
 //		transportFunction.attr({
 //			text: {text: tFunctionName}
 //		});
@@ -673,8 +677,6 @@ function loadTransportFunctions(transportFunctions, graph, app) {
 		
 		var parentID = transportFunction.attributes.parent;
 		var parent = graph.getCell(parentID);
-		
-		
 		
 		if(parent) {
 			var parentSubtype = parent.attributes.subtype;
