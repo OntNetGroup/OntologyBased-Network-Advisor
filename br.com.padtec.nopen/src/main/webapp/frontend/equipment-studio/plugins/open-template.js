@@ -86,10 +86,10 @@ function openFromURL(filename, graph){
 				
 				//Rack (R) > Shelf (Sh)
 				var linkShR = {
-						"sourceType" : "Shelf",
-						"targetType" : "Rack",
-						"source" : cell.get('id'),
-						"target" : cell.get('parent'),
+						"sourceType" : "Rack",
+						"targetType" : "Shelf",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
 				};
 				links.push(linkShR);
 
@@ -103,12 +103,12 @@ function openFromURL(filename, graph){
 				};
 				elements.push(slot);
 				
-				//Slot (Sl) > Shelf (Sh)
+				//Shelf (Sh) > Slot (Sl)
 				var linkSlSh = {
-						"sourceType" : "Slot",
-						"targetType" : "Shelf",
-						"source" : cell.get('id'),
-						"target" : cell.get('parent'),
+						"sourceType" : "Shelf",
+						"targetType" : "Slot",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
 				};
 				links.push(linkSlSh);
 
@@ -126,19 +126,19 @@ function openFromURL(filename, graph){
 				
 				//Slot (Sl) > Card (C)
 				var linkSlC = {
-						"sourceType" : "Card",
-						"targetType" : "Slot",
-						"source" : cell.get('id'),
-						"target" : cell.get('parent'),
+						"sourceType" : "Slot",
+						"targetType" : "Card",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
 				};
 				links.push(linkSlC);
 				
 				//Supervisor (S) > Card (C)
 				var linkSC = {
-						"sourceType" : "Card",
-						"targetType" : "Supervisor",
-						"source" : cell.get('id'),
-						"target" : cell.get('SupervisorID'),
+						"sourceType" : "Supervisor",
+						"targetType" : "Card",
+						"source" : cell.get('SupervisorID'),
+						"target" : cell.get('id'),
 				};
 				links.push(linkSC);
 				
@@ -154,10 +154,10 @@ function openFromURL(filename, graph){
 				
 				//Slot (Sl) > Supervisor (S)
 				var linkSlC = {
-						"sourceType" : "Supervisor",
-						"targetType" : "Slot",
-						"source" : cell.get('id'),
-						"target" : cell.get('parent'),
+						"sourceType" : "Slot",
+						"targetType" : "Supervisor",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
 				};
 				links.push(linkSlC);
 
