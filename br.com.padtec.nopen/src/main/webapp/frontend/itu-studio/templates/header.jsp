@@ -3,7 +3,7 @@
 		<a  href=#><span><img src="/nopen/frontend/common/img/logo.png"/></span></a>
 	</div>
 	<div class="title">
-		NOpen &#155; Equipment Studio &#155; ITU Studio
+		NOPEn &#155; Equipment Studio &#155; ITU Studio
 	</div>
 </div>
 		
