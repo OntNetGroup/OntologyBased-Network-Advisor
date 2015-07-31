@@ -15,18 +15,18 @@ import br.com.padtec.okco.core.application.OKCoUploader;
 public class NOpenAttributeRecognizer {
 
 	/** @author John Guerson */
-	public static Map<String,String> run(String equipmentURI, OKCoUploader srcRepository) throws Exception
+	public static Map<String,String> run(String cardURI, OKCoUploader srcRepository) throws Exception
 	{
 		/** tf <-> json content */
 		Map<String,String> attrMap = new HashMap<String,String>();
 		
 		/** Supervisor */
-		String supervisorURI = NOpenQueryUtil.getSupervisorURI(srcRepository, equipmentURI);
+//		String supervisorURI = NOpenQueryUtil.getSupervisorURI(srcRepository, equipmentURI);
 		
 		/** Cards */
-		List<String> cards = NOpenQueryUtil.getCardsURI(srcRepository, supervisorURI);				
-		for(String cardURI: cards)
-		{			
+//		List<String> cards = NOpenQueryUtil.getCardsURI(srcRepository, supervisorURI);				
+//		for(String cardURI: cards)
+//		{			
 			/** Card Layers */
 			List<String> layers = new ArrayList<String>();
 			layers = NOpenQueryUtil.getCardLayersURIFromCard(srcRepository, cardURI);			
@@ -93,7 +93,7 @@ public class NOpenAttributeRecognizer {
 					attrMap.put(ttfURI,writer.toString());
 				}
 			}
-		}		
+//		}		
 		return attrMap;
 	}
 }
