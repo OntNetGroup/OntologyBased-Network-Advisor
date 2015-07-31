@@ -305,6 +305,9 @@ var Rappid = Backbone.Router.extend({
 			attrs: {
 				'.': { magnet: false, value: 'layer' },
 				'.header': { fill: '#5799DA' }
+			},
+			lanes: {
+				label: 'Layer'
 			}
 		});
 		Stencil.shapes.layers[0] = layer;
