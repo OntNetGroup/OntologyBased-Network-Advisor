@@ -13,7 +13,6 @@ Layer = joint.dia.Element.extend({
     defaults: joint.util.deepSupplement({
 
         type: 'bpmn.Pool',
-//        subtype: '',
         subtype: 'Card_Layer',
         size: {
             width: 800,
