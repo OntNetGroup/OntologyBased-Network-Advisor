@@ -185,9 +185,9 @@ public class PerformBind {
 			//create relation between input and reference point
 			FactoryUtil.createInstanceRelation(
 					repository.getBaseModel(), 
-					repository.getNamespace() + inputId, 
+					repository.getNamespace() + rpId, 
 					repository.getNamespace() + relationInRp,
-					repository.getNamespace() + rpId
+					repository.getNamespace() + inputId
 				);
 			
 							
