@@ -23,8 +23,9 @@ function openFromURL(filename, graph){
 		   },
 		   dataType: 'json',
 		   success: function(data){
+			   $("#filename").val(filename);
 			   graph.fromJSON(data)
-			   loadITUFiles(graph);
+//			   loadITUFiles(graph);
 		   },
 		   error : function(e) {
 			   //alert("error: " + e.status);

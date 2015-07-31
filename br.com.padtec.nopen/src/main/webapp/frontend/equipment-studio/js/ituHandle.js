@@ -178,21 +178,16 @@ function ituHandle(paper, graph, validator){
 			            		var technology = [];
 			            		$.each($('#itu-iframe').get(0).contentWindow.app.graph.getElements(), function(index, element) {
 			            			
-			            			if(element.subtype === 'Card_Layer') {
-			            				console.log('ELEMENT: ' + JSON.stringify(element));
+			            			if(element.attributes.subtype === 'Card_Layer') {
+			            				technology.push(element.attributes.technology);
 			            			}
 			            			
 			            		});
 			            		
-			            		console.log('CELL: ' + JSON.stringify(cell));
-			            		
-//			            		if(technology[0]) {
+			            		if(technology[0]) {
 			            			var supervisor = graph.getCell(cell.get('SupervisorID'));
-			            			//supervisor.set('tech', technology[0]);
-			            			console.log('SUPERVISOR TECH: ' + JSON.stringify(supervisor));
-			            			supervisor.set('tech', 'MEF');
-			            			
-//			            		}
+			            			supervisor.set('tech', technology[0]);
+			            		}
 			            		
 			            		
 			            		

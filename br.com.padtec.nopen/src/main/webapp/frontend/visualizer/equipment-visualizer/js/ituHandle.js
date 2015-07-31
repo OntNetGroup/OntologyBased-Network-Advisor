@@ -33,7 +33,7 @@ function ituHandle(paper, graph){
 		            title: 'Dynamically Loaded Page',
 		            open: function ()
 		            {
-		                $('#itu-iframe').attr('src','/nopen/itu-visualizer.htm');
+		                $('#itu-iframe').attr('src','/nopen/itu-visualizer.htm?equipment=' + $("#filename").val() + '&card=' + cellId);
 		            },
 		            close: function() {
 		            }

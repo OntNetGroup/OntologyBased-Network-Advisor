@@ -24,8 +24,8 @@ function openFromURL(filename, graph){
 		   dataType: 'json',
 		   success: function(data){
 			   graph.fromJSON(data)
-			   loadITUFiles(graph);
-			   loadEquipmentstoOWl();
+//			   loadITUFiles(graph);
+//			   loadEquipmentstoOWl();
 		   },
 		   error : function(e) {
 			   //alert("error: " + e.status);

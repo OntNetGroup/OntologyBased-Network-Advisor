@@ -129,7 +129,7 @@
 		
 		
 		
-$('#btn-show-hide-inspector').click(function(){
+		$('#btn-show-hide-inspector').click(function(){
 			
 			if($('.inspector-container').is(':visible')) {
 				$('.inspector-container').hide();

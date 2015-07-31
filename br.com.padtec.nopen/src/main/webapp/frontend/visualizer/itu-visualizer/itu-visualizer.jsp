@@ -38,25 +38,24 @@
 		<script src="/nopen/frontend/visualizer/itu-visualizer/js/layer.js"></script>
        	<script src="/nopen/frontend/visualizer/itu-visualizer/js/stencil.js"></script>
         <script src="/nopen/frontend/visualizer/itu-visualizer/js/main.js"></script>
+        
+        <script src="/nopen/frontend/visualizer/itu-visualizer/plugins/open-itu.js"></script>
 
         <script>
             var app = new Rappid;
             Backbone.history.start();
-             
-            //check if windows is a iframe
-            if(window.self !== window.top){
-	            if(!(parent.cardArray[parent.cellId] === undefined)){
-	            	app.graph.fromJSON(parent.cardArray[parent.cellId]);
-	            }
-            }
+            
+            if (getUrlParameter('equipment') && getUrlParameter('card')) {
+    			var equipment = getUrlParameter('equipment');
+    			var card = getUrlParameter('card');
+    			openFromURL(equipment, card, app.graph);
+    		}
             
             $('#btn-zoom-to-fit').click();
             
             $('#btn-back').click(function(){
             	parent.closeIframe();
             });
-          
-            
         </script>
     </body>
 </html>

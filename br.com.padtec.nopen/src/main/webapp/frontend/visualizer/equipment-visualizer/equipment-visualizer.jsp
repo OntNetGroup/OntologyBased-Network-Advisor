@@ -101,6 +101,8 @@
 		<iframe id="itu-iframe" src="" scrolling="no"></iframe>
 		<!--  File name: <input type="text" id="save-filename" /> -->
 	</div>
+	
+	<input type="text" id="filename" style="display: none" />
 
 	<script>
 		var app = new Rappid;
@@ -128,8 +130,7 @@
 		ituHandle(app.paper, app.graph);
 		
 		
-		
-$('#btn-show-hide-inspector').click(function(){
+		$('#btn-show-hide-inspector').click(function(){
 			
 			if($('.inspector-container').is(':visible')) {
 				$('.inspector-container').hide();
