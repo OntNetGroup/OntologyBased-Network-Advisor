@@ -12,6 +12,7 @@ import br.com.padtec.common.util.Util;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.RelationEnum;
+import br.com.padtec.nopen.service.ContainerStructure;
 import br.com.padtec.nopen.service.NOpenComponents;
 import br.com.padtec.nopen.service.NOpenLog;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
@@ -28,7 +29,8 @@ public class PerformBind {
 		String idTarget = dtoTargetElement.getId();
 		String typeTarget = dtoTargetElement.getType();
 		String property =  RelationEnum.binds.toString();
-
+		
+		
 		if(typeTarget.equals(ConceptEnum.Output_Card.toString()) || typeTarget.equals(ConceptEnum.Input_Card.toString())){
 			String idPort = Util.generateUUID();
 			String typePort = typeSource + "_" + typeTarget.substring(0, typeTarget.indexOf("_"));
@@ -49,27 +51,65 @@ public class PerformBind {
 					true
 				);
 			
+			//specific componentOf between port and tf
+			ArrayList<String> specificPropertyURIs = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeSource, NOpenComponents.nopenRepository.getNamespace() + typePort, NOpenComponents.nopenRepository.getNamespace() + relation);
+			String specificComponentOf = specificPropertyURIs.get(0);
+			specificComponentOf = specificComponentOf.substring(specificComponentOf.indexOf("#")+1);
+			
 			FactoryUtil.createInstanceRelation(
 					repository.getBaseModel(), 
 					repository.getNamespace() + idPort, 
-					repository.getNamespace() + relation,
+					repository.getNamespace() + specificComponentOf,
 					repository.getNamespace() + idSource
 				);
+			
+			
+			List<String> superTypes = QueryUtil.getAllSupertypesURIs(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typePort);
+			String superTypePort = superTypes.get(0).substring(superTypes.get(0).indexOf("#")+1);
+			specificPropertyURIs = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeTarget, NOpenComponents.nopenRepository.getNamespace() + superTypePort, NOpenComponents.nopenRepository.getNamespace() + property);
+			String specificBinds = specificPropertyURIs.get(0);
+			specificBinds = specificBinds.substring(specificBinds.indexOf("#")+1);
 			
 			
 			FactoryUtil.createInstanceRelation(
 					repository.getBaseModel(), 
 					repository.getNamespace() + idTarget, 
-					repository.getNamespace() + property,
+					repository.getNamespace() + specificBinds,
 					repository.getNamespace() + idPort
 				);
 			
 			//create the relation between tf and input/output card
+
+			superTypes = QueryUtil.getTopSupertypesURIs(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeSource);
+			String superTypeTf = superTypes.get(0).substring(superTypes.get(0).indexOf("#")+1);
+			
+			specificPropertyURIs = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeTarget, NOpenComponents.nopenRepository.getNamespace() + superTypeTf, NOpenComponents.nopenRepository.getNamespace() + RelationEnum.is_interface_of.toString());
+			String specificInterfaceOf = specificPropertyURIs.get(0);
+			specificInterfaceOf = specificInterfaceOf.substring(specificInterfaceOf.indexOf("#")+1);
+
+			
 			FactoryUtil.createInstanceRelation(
 					repository.getBaseModel(), 
 					repository.getNamespace() + idTarget, 
-					repository.getNamespace() + RelationEnum.is_interface_of.toString(),
+					repository.getNamespace() + specificInterfaceOf,
 					repository.getNamespace() + idSource
+			);
+			
+			
+			//create the componentOf relation between target and the card 
+			
+			List<String> card = QueryUtil.getIndividualsURIAtObjectPropertyRange(repository.getBaseModel(), repository.getNamespace() + idSource, repository.getNamespace() + RelationEnum.INV_componentOf.toString(), repository.getNamespace() + ConceptEnum.Card.toString());
+			String cardId = card.get(0).substring(card.get(0).indexOf("#")+1);
+			
+			specificPropertyURIs = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + ConceptEnum.Card.toString(), NOpenComponents.nopenRepository.getNamespace() + typeTarget, NOpenComponents.nopenRepository.getNamespace() + RelationEnum.componentOf.toString());
+			String specificInterfaceComponentOf = specificPropertyURIs.get(0);
+			specificInterfaceComponentOf = specificInterfaceComponentOf.substring(specificInterfaceComponentOf.indexOf("#")+1);
+			
+			FactoryUtil.createInstanceRelation(
+					repository.getBaseModel(), 
+					repository.getNamespace() + cardId, 
+					repository.getNamespace() + specificInterfaceComponentOf,
+					repository.getNamespace() + idTarget
 			);
 			
 			return true;
@@ -137,7 +177,7 @@ public class PerformBind {
 			//create relation between output and reference point
 			FactoryUtil.createInstanceRelation(
 					repository.getBaseModel(), 
-					repository.getNamespace() + idSource, 
+					repository.getNamespace() + outputId, 
 					repository.getNamespace() + relationOutRp,
 					repository.getNamespace() + rpId
 				);
@@ -145,7 +185,7 @@ public class PerformBind {
 			//create relation between input and reference point
 			FactoryUtil.createInstanceRelation(
 					repository.getBaseModel(), 
-					repository.getNamespace() + idTarget, 
+					repository.getNamespace() + inputId, 
 					repository.getNamespace() + relationInRp,
 					repository.getNamespace() + rpId
 				);
