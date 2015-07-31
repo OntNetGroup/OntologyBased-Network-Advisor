@@ -2,10 +2,12 @@ package br.com.padtec.nopen.service;
 
 import com.jointjs.util.JointUtilManager;
 
+import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.GeneralDtoFabricator;
 import br.com.padtec.nopen.model.InstanceFabricator;
+import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
@@ -46,6 +48,18 @@ public class NOpenEquipmentCloner {
 		return false;
 	}
 	
+	private static boolean isCard(String type)
+	{
+		if(type.compareToIgnoreCase(ConceptEnum.Card.toString())==0) return true;		
+		return false;
+	}
+	
+	private static boolean isSupervisor(String type)
+	{
+		if(type.compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0) return true;		
+		return false;
+	}
+	
 	/** @author John Guerson */
 	public static void cloneLinksFromJSON(String jsonLinks, OKCoUploader tgtRepository) throws Exception
 	{
@@ -72,6 +86,14 @@ public class NOpenEquipmentCloner {
 			}
 			else if(isInterface(sourceType) && isInterface(targetType)){
 				InterfaceStructure.applyPreProvisioningBinds("Vertical", sourceId, targetId, tgtRepository);
+			}
+			else if(isSupervisor(sourceType) && isCard(targetType)){
+				FactoryUtil.createInstanceRelation(
+						tgtRepository.getBaseModel(), 
+						tgtRepository.getNamespace() + sourceId,			 
+						tgtRepository.getNamespace() + RelationEnum.supervises_card_Supervisor_Card.toString(),
+						tgtRepository.getNamespace() + targetId
+					);
 			}
 			else {
 				InstanceFabricator.createComponentOfRelation(dtoSource, dtoTarget, tgtRepository);
