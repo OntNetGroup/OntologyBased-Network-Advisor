@@ -332,52 +332,39 @@ nopen.provisioning.Test = Backbone.Model.extend({
 		
 	},
 	
-	getConnections : function() {
+	getConnections : function(sourceId, targetId) {
 		
-		var connections = {
-				"d6248eef-a611-40c5-9a2b-61af5b73bd60" : {
-					"ODUk" : [ {
-				    	"id" : 321,
-						"name" : "Out_1",
-				    }],
-				    "OPUk" : [{
-				    	"id" : 654,
-						"name" : "Out_2",
-				    },
-				    {
-				    	"id" : 987,
-						"name" : "Out_3",
-				    }],	
-				},
-				"be4a87fd-3911-4987-b0f3-5ce00d1197a4" : {
-				    "ODUk" : [ {
-				    	"id" : 231,
-						"name" : "Out_4",
-				    }],
-				    "OPUk" : [{
-				    	"id" : 564,
-						"name" : "Out_5",
-				    },
-				    {
-				    	"id" : 897,
-						"name" : "Out_6",
-				    }],
-				},
-//				"4609668b-e061-4e01-85b6-e9b063da8850" : {
-//					"ODUk" : [ {
-//				    	"id" : 123,
-//						"name" : "In_1",
-//				    }],
-//				    "OPUk" : [{
-//				    	"id" : 456,
-//						"name" : "In_2",
-//				    },
-//				    {
-//				    	"id" : 789,
-//						"name" : "In_3",
-//				    }],
-//				},
-		}
+		var connections = [];
+		
+		connections[sourceId] = {
+				"ODUk" : [ {
+			    	"id" : 321,
+					"name" : "Out_1",
+			    }],
+			    "OPUk" : [{
+			    	"id" : 654,
+					"name" : "Out_2",
+			    },
+			    {
+			    	"id" : 987,
+					"name" : "Out_3",
+			    }],	
+			};
+		
+		connections[targetId] = {
+				"ODUk" : [ {
+			    	"id" : 231,
+					"name" : "Out_4",
+			    }],
+			    "OPUk" : [{
+			    	"id" : 564,
+					"name" : "Out_5",
+			    },
+			    {
+			    	"id" : 897,
+					"name" : "Out_6",
+			    }],
+			}
 		
 		return connections;
 	},
