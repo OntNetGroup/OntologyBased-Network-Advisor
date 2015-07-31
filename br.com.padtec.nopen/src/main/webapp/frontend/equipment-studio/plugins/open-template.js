@@ -199,7 +199,8 @@ function openFromURL(filename, graph){
 						"name" : cell.attributes.attrs.name.text,
 						
 				};
-				instanciateITUElements(filename, card);
+//				instanciateITUElementsJohn(filename, card);
+				instanciateITUElementsJordana(filename, card);
 			}
 		});
 	}
@@ -415,7 +416,8 @@ function generateOpenTemplateDialog(graph, data){
 							"name" : cell.attributes.attrs.name.text,
 							
 					};
-					instanciateITUElements(filename, card);
+//					instanciateITUElementsJohn(filename, card);
+					instanciateITUElementsJordana(filename, card);
 				}
 			});
 		}		
@@ -423,7 +425,8 @@ function generateOpenTemplateDialog(graph, data){
 	};
 }
 
-function instanciateITUElements(filename, card) {
+// instancia os elementos ITU no OWL usando os metodos do John (parseEquipToOOWL)
+function instanciateITUElementsJohn(filename, card) {
 
 	var ITUelements = [], ITUlinks = [];
 
@@ -531,7 +534,6 @@ function instanciateITUElements(filename, card) {
 					"target" : element.attributes.id
 			};
 			ITUlinks.push(link);
-			
 		}
 		
 	});
@@ -613,4 +615,106 @@ function loadCardElements(eqName, cardID) {
 	});
 	
 	return localGraph;
+}
+
+// instancia os elementos ITU no OWL usando os metodos da Jordana (insertContainer e performBind)
+function instanciateITUElementsJordana(filename, card) {
+	var localGraph = loadCardElements(filename, card.id);
+	
+	loadCells(localGraph);
+}
+
+function loadCells(graph, app) {
+	
+	loadElements(graph, app);
+	loadLinks(graph, app);
+}
+
+function loadElements(graph, app) {
+
+	var layers = [];
+	var transportFunctions = [];
+	
+	$.each(graph.getElements(), function(index, element){
+		var elementType = element.attributes.type;
+		if(elementType === TypeEnum.LAYER) {
+			layers[layers.length] = element;
+		}
+		if(elementType === TypeEnum.TRANSPORT_FUNCTION) {
+			transportFunctions[transportFunctions.length] = element;
+		}
+	});
+	
+	loadLayers(layers, graph, app);
+	loadTransportFunctions(transportFunctions, graph, app);
+}
+
+function loadLayers(layers, graph, app) {
+
+	$.each(layers, function(index, layer){
+		var layerName = layer.attributes.lanes.label;
+		var layerID = layer.id;
+		insertLayer(layerID, layerName, app.cardID, app.cardName);
+//		app.hideLayer(layerName);
+	});
+}
+
+function loadTransportFunctions(transportFunctions, graph, app) {
+	
+	$.each(transportFunctions, function(index, transportFunction){
+		
+		var tFunctionID = transportFunction.attributes.id;
+		var tFunctionType = transportFunction.attributes.subtype;
+		var tFunctionName = getName(tFunctionType);
+//		transportFunction.attr({
+//			text: {text: tFunctionName}
+//		});
+//		nextName(tFunctionType);
+		
+		var parentID = transportFunction.attributes.parent;
+		var parent = graph.getCell(parentID);
+		
+		
+		
+		if(parent) {
+			var parentSubtype = parent.attributes.subtype;
+			createTransportFunction(tFunctionID, tFunctionName, tFunctionType, parentID, parentSubtype, 'Card_Layer');
+		} else {
+			createTransportFunction(tFunctionID, tFunctionName, tFunctionType, app.cardID, app.cardName, 'Card');
+		}
+	});
+}
+
+function loadLinks(graph, app) {
+	var links = graph.getLinks();
+	$.each(links, function(index, link){
+		var linkID = link.attributes.id;
+		
+		var sourceID = link.attributes.source.id;
+		var source = graph.getCell(sourceID);
+		var sourceName = source.attributes.attrs.text.text;
+		var sourceType = source.attributes.type;
+		var sourceSubtype = source.attributes.subtype;
+		
+		var targetID = link.attributes.target.id;
+		var target = graph.getCell(targetID);
+		var targetName = target.attributes.attrs.text.text;
+		var targetType = target.attributes.type;
+		var targetSubtype = target.attributes.subtype;
+		
+//		if(isInterface(target)) {
+//			var portName = getName(targetSubtype);
+//			target.attr({
+//				text: {text: portName}
+//			});
+//			nextName(targetSubtype);
+//			if(targetSubtype === SubtypeEnum.INPUT) {
+//				app.barIn.attributes.embeddedPorts[app.barIn.attributes.embeddedPorts.length] = targetID;
+//			} else {
+//				app.barOut.attributes.embeddedPorts[app.barOut.attributes.embeddedPorts.length] = targetID;
+//			}
+//		}
+		
+		performBind(sourceID, sourceName, sourceSubtype, targetID, targetName, targetSubtype, linkID);
+	});
 }
