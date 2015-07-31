@@ -1447,7 +1447,11 @@ public class InstanceFabricator {
 
 					if(typeTargetURI.equalsIgnoreCase(repository.getNamespace() + ConceptEnum.Card_Layer.toString())){
 						String layerPropertyURI = repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
-						String layerTypeURI = repository.getNamespace() + nameTarget;
+						String nameLayer = nameTarget;
+						if(nameTarget == null){
+							nameLayer = dtoContent.getId();
+						}
+						String layerTypeURI = repository.getNamespace() + nameLayer;
 						FactoryUtil.createInstanceRelation(
 								repository.getBaseModel(), 
 								targetURI,			 
