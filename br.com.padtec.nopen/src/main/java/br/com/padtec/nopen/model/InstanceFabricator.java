@@ -1398,20 +1398,20 @@ public class InstanceFabricator {
 	 * @author Jordana Salamon
 	 * @throws Exception 
 	 */
-	public static void createComponentOfRelation(DtoJointElement dtoContainer, DtoJointElement dtoContent) throws Exception{
+	public static void createComponentOfRelation(DtoJointElement dtoContainer, DtoJointElement dtoContent, OKCoUploader repository) throws Exception{
 		//create the property relation between source and target
 
 		if(!ContainerStructure.isTargetOfComponentOfRelation(dtoContent.getType()) && dtoContainer.getId() == null){ 
 			FactoryUtil.createInstanceIndividual(
-					StudioComponents.studioRepository.getBaseModel(),
-					StudioComponents.studioRepository.getNamespace() + dtoContent.getId(),
-					StudioComponents.studioRepository.getNamespace() + dtoContent.getType(),
+					repository.getBaseModel(),
+					repository.getNamespace() + dtoContent.getId(),
+					repository.getNamespace() + dtoContent.getType(),
 					true);
-			NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + dtoContent.getId() + " created. ");
+			NOpenLog.appendLine(repository.getName()+": " + dtoContent.getId() + " created. ");
 		}
 		else{	
-			String sourceURI = StudioComponents.studioRepository.getNamespace() + dtoContainer.getId();
-			String targetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getId();
+			String sourceURI = repository.getNamespace() + dtoContainer.getId();
+			String targetURI = repository.getNamespace() + dtoContent.getId();
 
 			String nameSource = dtoContainer.getName();
 			String typeSource = dtoContainer.getType();
@@ -1419,7 +1419,7 @@ public class InstanceFabricator {
 			String typeTarget = dtoContent.getType();
 
 				if(ContainerStructure.verifyContainerRelation(sourceURI, dtoContainer.getType(), targetURI, dtoContent.getType())){
-					String typeTargetURI = StudioComponents.studioRepository.getNamespace() + dtoContent.getType();
+					String typeTargetURI = repository.getNamespace() + dtoContent.getType();
 					String propertyURI = NOpenComponents.nopenRepository.getNamespace() + RelationEnum.componentOf.toString();
 					ArrayList<String> specificPropertyURIs = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeSource, NOpenComponents.nopenRepository.getNamespace() + typeTarget, propertyURI);
 					String property = null;
@@ -1436,20 +1436,20 @@ public class InstanceFabricator {
 						property = specificPropertyURIs.get(0).substring(specificPropertyURIs.get(0).indexOf("#")+1);
 					}
 					
-					String specificPropertyURI = StudioComponents.studioRepository.getNamespace() + property.substring(property.indexOf("#")+1);
+					String specificPropertyURI = repository.getNamespace() + property.substring(property.indexOf("#")+1);
 	
 					
 					FactoryUtil.createInstanceIndividual(
-							StudioComponents.studioRepository.getBaseModel(),
+							repository.getBaseModel(),
 							targetURI,
 							typeTargetURI,
 							true);
 
-					if(typeTargetURI.equalsIgnoreCase(StudioComponents.studioRepository.getNamespace() + ConceptEnum.Card_Layer.toString())){
-						String layerPropertyURI = StudioComponents.studioRepository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
-						String layerTypeURI = StudioComponents.studioRepository.getNamespace() + nameTarget;
+					if(typeTargetURI.equalsIgnoreCase(repository.getNamespace() + ConceptEnum.Card_Layer.toString())){
+						String layerPropertyURI = repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
+						String layerTypeURI = repository.getNamespace() + nameTarget;
 						FactoryUtil.createInstanceRelation(
-								StudioComponents.studioRepository.getBaseModel(), 
+								repository.getBaseModel(), 
 								targetURI,			 
 								layerPropertyURI,
 								layerTypeURI
@@ -1457,13 +1457,13 @@ public class InstanceFabricator {
 					}
 				
 					FactoryUtil.createInstanceRelation(
-						StudioComponents.studioRepository.getBaseModel(), 
+						repository.getBaseModel(), 
 						sourceURI,			 
 						specificPropertyURI,
 						targetURI
 					);
 				
-					NOpenLog.appendLine(StudioComponents.studioRepository.getName()+": " + nameSource + " linked with " + nameTarget);
+					NOpenLog.appendLine(repository.getName()+": " + nameSource + " linked with " + nameTarget);
 			}
 			else{
 				NOpenLog.appendLine("Error: " + nameSource + " cannot be connected to " + nameTarget + " because there is no \"componentOf\" relation between " + typeSource + " and " + typeTarget);

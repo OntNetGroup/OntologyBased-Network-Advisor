@@ -17,7 +17,6 @@ import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.model.SpecificDtoFabricator;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
-import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.service.PerformBind;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 
@@ -59,7 +58,7 @@ public class EquipmentStudioController {
 		DtoJointElement dtoContent = (DtoJointElement) JointUtilManager.getJavaFromJSON(content, DtoJointElement.class);
 
 		try{
-			InstanceFabricator.createComponentOfRelation(dtoContainer, dtoContent);
+			InstanceFabricator.createComponentOfRelation(dtoContainer, dtoContent, StudioComponents.studioRepository);
 		}catch(Exception e){
 			e.printStackTrace();
 			return e.getLocalizedMessage();
