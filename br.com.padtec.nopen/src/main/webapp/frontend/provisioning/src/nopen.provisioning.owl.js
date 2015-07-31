@@ -113,7 +113,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				var link = {
 						"sourceType" : $this.getElementType(cardCells, element.parent),
 						"targetType" : element.subtype,
-						"source" : element.parent,
+						"source" : $this.getLayerName(cardCells, element.parent),
 						"target" : element.id
 				}
 				links.push(link);
@@ -128,7 +128,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				}
 				elements.push(af);
 				
-				//Card_layer > AF
+				//Card > AF
 				var link = {
 						"sourceType" : card.subType,
 						"targetType" : element.subtype,
@@ -148,7 +148,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				}
 				elements.push(matrix);
 				
-				//Card_layer > Matrix
+				//Card > Matrix
 				var link = {
 						"sourceType" : card.subType,
 						"targetType" : element.subtype,
@@ -168,7 +168,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				}
 				elements.push(inOut);
 				
-				//Card_layer > Input_Card/Output_Card
+				//Card > Input_Card/Output_Card
 				var link = {
 						"sourceType" : card.subType,
 						"targetType" : element.subtype,
@@ -236,6 +236,24 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 //		console.log('Equipment: ' + JSON.stringify(equipment));
 //		console.log('Card: ' + JSON.stringify(card));
+		
+	},
+	
+	getLayerName : function(elements, layerId) {
+		
+		var layerName = undefined;
+		
+		$.each(elements, function(index, element) {
+			
+			if(element.id === layerId) {
+				if(element.subtype) {
+					layerName = element.lanes.label;
+				}
+			}
+			
+		});
+		
+		return layerName;
 		
 	},
 	
