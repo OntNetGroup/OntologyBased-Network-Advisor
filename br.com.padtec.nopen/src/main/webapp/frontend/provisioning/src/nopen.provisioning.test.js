@@ -338,30 +338,30 @@ nopen.provisioning.Test = Backbone.Model.extend({
 		
 		connections[sourceId] = {
 				"ODUk" : [ {
-			    	"id" : 321,
+			    	"id" : joint.util.uuid(),
 					"name" : "Out_1",
 			    }],
 			    "OPUk" : [{
-			    	"id" : 654,
+			    	"id" : joint.util.uuid(),
 					"name" : "Out_2",
 			    },
 			    {
-			    	"id" : 987,
+			    	"id" : joint.util.uuid(),
 					"name" : "Out_3",
 			    }],	
 			};
 		
 		connections[targetId] = {
 				"ODUk" : [ {
-			    	"id" : 231,
+			    	"id" : joint.util.uuid(),
 					"name" : "Out_4",
 			    }],
 			    "OPUk" : [{
-			    	"id" : 564,
+			    	"id" : joint.util.uuid(),
 					"name" : "Out_5",
 			    },
 			    {
-			    	"id" : 897,
+			    	"id" : joint.util.uuid(),
 					"name" : "Out_6",
 			    }],
 			}
