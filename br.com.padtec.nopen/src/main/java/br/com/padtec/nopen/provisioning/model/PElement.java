@@ -4,8 +4,7 @@ public class PElement {
 
 	String 	type,
 			id,
-			name,
-			parent;
+			name;
 
 	public PElement() {
 		
@@ -35,14 +34,5 @@ public class PElement {
 		this.name = name;
 	}
 
-	public String getParent() {
-		return parent;
-	}
-
-	public void setParent(String parent) {
-		this.parent = parent;
-	}
-			
-	
 	
 }
