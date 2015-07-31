@@ -104,10 +104,10 @@ rect[stroke-width]:hover{
 
 
 .ui-widget-header {
-	border: 1px solid #4297d7;
+	border-bottom: 2px solid #dcddee;
 	background: #5c9ccc url("images/ui-bg_gloss-wave_55_5c9ccc_500x100.png") 50% 50% repeat-x;
 	color: #ffffff;
-	font-weight: bold;
+	font-weight: normal;
 	heigth: 50px;
 }
 

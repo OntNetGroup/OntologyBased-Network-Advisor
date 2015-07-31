@@ -189,6 +189,12 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	background: #36A9E1;
 	border: 1px solid #6A6C8B;
     color: #FFF;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.supervisorPanel option:hover {
+	background-color: #EEE;
 }
 
 .ui-dialog .ui-dialog-buttonset .ui-button:hover {
@@ -212,7 +218,7 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 }
 
 .ui-widget-content {
-  border: 1px solid #1e8fc6;
+  border: 1px solid #FFFFFF;
 }
 
 .dialog .titlebar {
