@@ -5,6 +5,7 @@ import com.jointjs.util.JointUtilManager;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.GeneralDtoFabricator;
+import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
@@ -48,6 +49,8 @@ public class NOpenEquipmentCloner {
 	/** @author John Guerson */
 	public static void cloneLinksFromJSON(String jsonLinks, OKCoUploader tgtRepository) throws Exception
 	{
+		
+		System.out.println(jsonLinks);
 		PLink[] links = (PLink[]) JointUtilManager.getJavaFromJSON(jsonLinks, PLink[].class);
 		for(PLink pLink: links)
 		{
@@ -71,7 +74,8 @@ public class NOpenEquipmentCloner {
 				InterfaceStructure.applyPreProvisioningBinds("Vertical", sourceId, targetId, tgtRepository);
 			}
 			else {
-				GeneralDtoFabricator.createComponentOf(tgtRepository, dtoSource, dtoTarget);
+				InstanceFabricator.createComponentOfRelation(dtoTarget, dtoSource);
+				//GeneralDtoFabricator.createComponentOf(tgtRepository, dtoSource, dtoTarget);
 			}
 		}			
 	}
