@@ -143,6 +143,7 @@ function graphHandler(graph, app) {
     	}
 		var cardID = this.cardID;
 		var cardName = this.cardName;
+		var layerID = cell.id;
 
 		var position = cell.attributes.position;
 		var size = cell.attributes.size;
@@ -183,11 +184,14 @@ function graphHandler(graph, app) {
 			
 			content = content + '</select><br>'
 			content = content + 'Layer: <select class="layer"/>';
+			content = content + '<option value=""></option>'
 			content = content +  '</form>';
 			
 			var dialog = new joint.ui.Dialog({
 				width: 300,
 				type: 'neutral',
+				modal: false,
+				closeButton: false,
 				title: 'Technology and Layer',
 				content: content,
 				buttons: [
@@ -196,29 +200,54 @@ function graphHandler(graph, app) {
 				]
 			});
 			dialog.on('action:select-layer', dialog.close);
-			dialog.on('action:add', insertLayer);
-			dialog.on('action:cancel', dialog.close);
+			dialog.on('action:add', addLayer);
+			dialog.on('action:cancel', cancel);
 			dialog.open();
 			
+			$('#black_overlay').show();
+			
+
+			function cancel() {
+				this.skipOntologyRemoveHandler = true;
+				cell.remove();
+				dialog.close();
+				$('#black_overlay').hide();
+			}
+			
+			loadLayers($('.technology').val());
 			$('.technology').change(function(){
 				loadLayers($(this).val());
 			});
 			
 			function loadLayers(selectedTechnology) {
 				var layers = getLayerNames(selectedTechnology);
-				var layerCombobox = $('.technology');
+				var layerCombobox = $('.layer');
+
+				layerCombobox.empty();
 				
-				console.log('blah');
+				var layersOnPaper = app.getLayersOnPaper();
 				
-				while(layerCombobox.length)
-					layerCombobox.remove(0);
-				
+				_.each(layers, function(layer, i) {
+					if(!_.contains(layersOnPaper, layer)) {
+						layerCombobox.append($('<option>', {
+							value: layer,
+							text: layer
+						}));
+					}
+				});
 				
 			};
 			
-			function insertLayer(){
+			function addLayer(){
 				
-				var layer = $('select[name=layer]:selected').val();
+				var layerName = $('.layer').val();
+				var techName = $('.technology').val();
+				
+				cell.technology = techName;
+				cell.attr({
+					text: {text: layerName}
+				});
+				console.log(cell);
 				
 				// consultar ontologia para inserção de camada no card
 				var result = insertLayer(layerID, layerName, cardID, cardName);
@@ -232,6 +261,8 @@ function graphHandler(graph, app) {
 					cell.remove();
 				}
 
+				dialog.close();
+				$('#black_overlay').hide();
 			};
 			
 		};

@@ -277,7 +277,7 @@ var Rappid = Backbone.Router.extend({
     	
     	_.each(allElements, function(element, index) {
     		if(element.attributes.type === TypeEnum.LAYER) {
-    			layersOnPaper[index] = element.attributes.subtype;
+    			layersOnPaper[index] = element.attributes.lanes.label;
     		}
     	});
     	
@@ -305,9 +305,6 @@ var Rappid = Backbone.Router.extend({
 			attrs: {
 				'.': { magnet: false, value: 'layer' },
 				'.header': { fill: '#5799DA' }
-			},
-			lanes: { 
-				label: 'Layer'
 			}
 		});
 		Stencil.shapes.layers[0] = layer;
