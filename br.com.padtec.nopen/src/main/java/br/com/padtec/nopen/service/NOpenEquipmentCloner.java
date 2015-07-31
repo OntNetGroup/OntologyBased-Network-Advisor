@@ -74,7 +74,7 @@ public class NOpenEquipmentCloner {
 				InterfaceStructure.applyPreProvisioningBinds("Vertical", sourceId, targetId, tgtRepository);
 			}
 			else {
-				InstanceFabricator.createComponentOfRelation(dtoTarget, dtoSource);
+				InstanceFabricator.createComponentOfRelation(dtoSource, dtoTarget);
 				//GeneralDtoFabricator.createComponentOf(tgtRepository, dtoSource, dtoTarget);
 			}
 		}			
