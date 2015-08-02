@@ -11,7 +11,7 @@
 		
 <div class="row">
 
-	<div class="col-sm-8">	
+	<div class="col-sm-12">	
 		<div class="box"> 			
 			<div class="box-header" >
 				<h2><i class="icon-cogs"></i>Inference Settings</h2>

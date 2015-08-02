@@ -32,7 +32,7 @@
 	</div>
 	
 	<!-- ======================================================================= -->	
-	<div class="col-sm-4">	
+	<div class="col-sm-6">	
 		<div class="box"> 			
 			<div class="box-header" >
 				<h2><i class="icon-laptop"></i>Technologies</h2>
