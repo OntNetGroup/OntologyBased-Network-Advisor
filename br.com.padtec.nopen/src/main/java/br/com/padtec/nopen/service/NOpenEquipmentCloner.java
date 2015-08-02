@@ -64,7 +64,6 @@ public class NOpenEquipmentCloner {
 	public static void cloneLinksFromJSON(String jsonLinks, OKCoUploader tgtRepository) throws Exception
 	{
 		
-		System.out.println(jsonLinks);
 		PLink[] links = (PLink[]) JointUtilManager.getJavaFromJSON(jsonLinks, PLink[].class);
 		for(PLink pLink: links)
 		{
@@ -75,10 +74,12 @@ public class NOpenEquipmentCloner {
 
 			DtoJointElement dtoSource = new DtoJointElement();
 			dtoSource.setId(sourceId);
+			dtoSource.setName(sourceType);
 			dtoSource.setType(sourceType);
 			
 			DtoJointElement dtoTarget = new DtoJointElement();
 			dtoTarget.setId(targetId);
+			dtoTarget.setName(targetType);
 			dtoTarget.setType(targetType);			
 			
 			if((isTF(sourceType) || isInterface(sourceType)) && (isTF(targetType))){			
@@ -96,6 +97,8 @@ public class NOpenEquipmentCloner {
 					);
 			}
 			else {
+				System.out.println("dtoSource: " + dtoSource.toString());
+				System.out.println("dtoTarget: " + dtoTarget.toString());
 				InstanceFabricator.createComponentOfRelation(dtoSource, dtoTarget, tgtRepository);
 			}
 		}			
