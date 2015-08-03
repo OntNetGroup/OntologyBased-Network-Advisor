@@ -1454,7 +1454,7 @@ public class InstanceFabricator {
 					String layerPropertyURI = repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
 					String nameLayer = nameTarget;
 					
-					if(nameTarget == null){
+					if(nameTarget == dtoContent.getType()){
 						nameLayer = dtoContent.getId();
 					}
 					String layerTypeURI = repository.getNamespace() + nameLayer;
