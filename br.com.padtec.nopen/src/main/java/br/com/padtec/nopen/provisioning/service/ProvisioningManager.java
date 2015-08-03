@@ -1,9 +1,6 @@
 package br.com.padtec.nopen.provisioning.service;
 
-import java.util.ArrayList;
-
 import br.com.padtec.common.factory.FactoryUtil;
-import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -73,10 +70,14 @@ public class ProvisioningManager {
 		String prefix = "PREFIX ont: <" + namespace + "> " + 
 						"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ";
 		
+		//ont:TF_Card_Element e ont:Simple_Transport_Function
+		
 		String queryString = prefix +
-				"SELECT ?predicate WHERE { " +
-				"?predicate rdfs:domain ont:" + sourceType + " . " +
-				"?predicate rdfs:range ont:" + targetType + " }";
+				"SELECT * WHERE { " +
+					"?predicate rdfs:domain ont:" + sourceType + " . " +
+					"?predicate rdfs:range ?range . " +
+					"?range rdfs:subClassOf* ?rangeType . " +
+				 "}";
 		
 		System.out.println(queryString);
 		
@@ -92,7 +93,17 @@ public class ProvisioningManager {
 			QuerySolution row = results.next();
 		    
 		    RDFNode predicateNode = row.get("?predicate");
-		    predicate = predicateNode.toString();
+		    RDFNode rangeNode = row.get("?range");
+		    
+		    String range = rangeNode.toString().replace(namespace, "");
+		    
+		    if(targetType.equals(range)) {
+		    	predicate = predicateNode.toString();
+		    	break;
+		    }
+		    else {
+		    	predicate = predicateNode.toString();
+		    }
 		}
 		
 		System.out.println(predicate);
