@@ -141,7 +141,7 @@ public class InterfaceStructure {
 			ArrayList<String> relations = new ArrayList<String>();
 			relations.add(RelationEnum.instantiates_Card_Layer_Layer_Type.toString());
 			ArrayList<String> layerTypes = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relations);
-			//pra camada ser a mais acima, ela não pode ter cliente no mesmo equipamento
+			//pra camada ser a mais acima, ela nï¿½o pode ter cliente no mesmo equipamento
 			boolean hasClient = hasClientInEquipment(layerTypes.get(0), equipmentId, repository); 
 			if(hasClient){
 				it.remove();
@@ -268,7 +268,7 @@ public class InterfaceStructure {
 			ArrayList<String> ports = new ArrayList<String>();
 			ports = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relationsNameList);
 			for(String port : ports){
-				if(!hasBinds(repository.getBaseModel(), port)){ //na verdade é hasVerticalLinks or hasHorizontalLinks
+				if(!hasBinds(repository.getBaseModel(), port)){ //na verdade ï¿½ hasVerticalLinks or hasHorizontalLinks
 					//create port hash
 					HashMap<String, String> portMapping = new HashMap<String, String>();
 					

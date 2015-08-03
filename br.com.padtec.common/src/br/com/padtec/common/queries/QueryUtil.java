@@ -2240,7 +2240,7 @@ public class QueryUtil {
 		 "PREFIX ont: <" + model.getNsPrefixURI("")+ ">"
 		+ " SELECT ?var WHERE { ";
 		if(relationsNameList.size() == 1){
-			queryString = queryString + " ont:" + individualName + " ont:" + relationsNameList.get(0) + "?var }";
+			queryString = queryString + " ont:" + individualName + " ont:" + relationsNameList.get(0) + " ?var }";
 		}
 		else{
 			queryString = queryString + " ont:" + individualName + " " ;

@@ -158,14 +158,15 @@ public class ProvisioningController {
 	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
 	protected @ResponseBody void parseCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
-		ProvisioningManager provisioningManager = new ProvisioningManager(ProvisioningComponents.provisioningRepository);
+//		ProvisioningManager provisioningManager = new ProvisioningManager(ProvisioningComponents.provisioningRepository);
 		
 		try {
 //			ProvisioningReasoner.runInference(true);
-			provisioningManager.createElementsInOWL(elements);
-			provisioningManager.createLinksInOWL(links);
-//			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
-//			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
+//			provisioningManager.createElementsInOWL(elements);
+//			provisioningManager.createLinksInOWL(links);
+			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
+			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
+			
 			ProvisioningReasoner.runInference(true);
 		} catch (Exception e) {
 			e.printStackTrace();
