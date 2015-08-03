@@ -2238,7 +2238,7 @@ public class QueryUtil {
 		// Create a new query
 		String queryString = 
 		 "PREFIX ont: <http://www.menthor.net/nOpenModel_light.owl#>"
-		+ "SELECT ?var WHERE { ";
+		+ " SELECT ?var WHERE { ";
 		if(relationsNameList.size() == 1){
 			queryString = queryString + " ont:" + individualName + " ont:" + relationsNameList.get(0) + "?var }";
 		}
@@ -2252,6 +2252,8 @@ public class QueryUtil {
 				}
 			}
 		}
+		
+		System.out.println(queryString);
 		
 		Query query = QueryFactory.create(queryString); 
 		

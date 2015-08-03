@@ -53,6 +53,16 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		};
 		elements.push(equipCard);
 		
+		//Equipment (E) > Card (C)
+		var linkEC = {
+				"sourceType" : "Equipment",
+				"targetType" : card.subType,
+				"source" : equipment.id,
+				"target" : card.id,
+		};
+		links.push(linkEC);
+		
+		
 		//Supervisor (S) > Equipment (E)
 //		var linkSE = {
 //				"sourceType" : "Supervisor",

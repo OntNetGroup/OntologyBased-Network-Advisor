@@ -54,6 +54,12 @@ public class NOpenEquipmentCloner {
 		return false;
 	}
 	
+	private static boolean isCardLayer(String type)
+	{
+		if(type.compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0) return true;		
+		return false;
+	}
+	
 	private static boolean isSupervisor(String type)
 	{
 		if(type.compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0) return true;		
@@ -87,6 +93,24 @@ public class NOpenEquipmentCloner {
 			}
 			else if(isInterface(sourceType) && isInterface(targetType)){
 				InterfaceStructure.applyPreProvisioningBinds("Vertical", sourceId, targetId, tgtRepository);
+			}
+			else if(isTF(sourceType) && isInterface(targetType)){
+				if(targetType.compareToIgnoreCase(ConceptEnum.Output_Card.toString())==0)  {
+					FactoryUtil.createInstanceRelation(
+							tgtRepository.getBaseModel(), 
+							tgtRepository.getNamespace() + sourceId,			 
+							tgtRepository.getNamespace() + RelationEnum.INV_is_interface_of_Output_Card_Transport_Function.toString(),
+							tgtRepository.getNamespace() + targetId
+						);
+				}
+				else {
+					FactoryUtil.createInstanceRelation(
+							tgtRepository.getBaseModel(), 
+							tgtRepository.getNamespace() + sourceId,			 
+							tgtRepository.getNamespace() + RelationEnum.INV_is_interface_of_Input_Card_Transport_Function.toString(),
+							tgtRepository.getNamespace() + targetId
+						);
+				}
 			}
 			else if(isSupervisor(sourceType) && isCard(targetType)){
 				FactoryUtil.createInstanceRelation(
