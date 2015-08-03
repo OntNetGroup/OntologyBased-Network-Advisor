@@ -47,7 +47,9 @@ public class ContainerStructure {
 		String property = RelationEnum.componentOf.toString();
 		String propertyURI = StudioComponents.studioRepository.getNamespace() + property;
 		String tipo_targetURI = StudioComponents.studioRepository.getNamespace() + tipo_target;
-		Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), sourceURI, propertyURI, tipo_targetURI ); // <- não está atualizando
+		
+		Integer numberOfRelations = QueryUtil.getNumberOfOccurrences(StudioComponents.studioRepository.getBaseModel(), sourceURI, propertyURI, tipo_targetURI ); // <- nï¿½o estï¿½ atualizando
+		
 		String key = NOpenComponents.nopenRepository.getNamespace() + tipo_source + NOpenComponents.nopenRepository.getNamespace() + property + NOpenComponents.nopenRepository.getNamespace() + tipo_target; 
 		String cardinality = ContainerStructure.getContainerStructure().get(key);
 		

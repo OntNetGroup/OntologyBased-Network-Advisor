@@ -1407,7 +1407,7 @@ public class InstanceFabricator {
 					repository.getNamespace() + dtoContent.getId(),
 					repository.getNamespace() + dtoContent.getType(),
 					true);
-			NOpenLog.appendLine(repository.getName()+": " + dtoContent.getId() + " created. ");
+			NOpenLog.appendLine(repository.getName() + ": " + dtoContent.getId() + " created. ");
 		}
 		else{	
 			String sourceURI = repository.getNamespace() + dtoContainer.getId();
@@ -1419,10 +1419,13 @@ public class InstanceFabricator {
 			String typeTarget = dtoContent.getType();
 
 			if(ContainerStructure.verifyContainerRelation(sourceURI, dtoContainer.getType(), targetURI, dtoContent.getType())){
+				
 				String typeTargetURI = repository.getNamespace() + dtoContent.getType();
 				String propertyURI = NOpenComponents.nopenRepository.getNamespace() + RelationEnum.componentOf.toString();
+				
 				ArrayList<String> specificPropertyURIs = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeSource, NOpenComponents.nopenRepository.getNamespace() + typeTarget, propertyURI);
 				String property = null;
+				
 				if(specificPropertyURIs.isEmpty()){
 					List<String> supertypes = QueryUtil.getSupertypesURIs(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + typeTarget);
 					for(String s : supertypes){ 
@@ -1438,7 +1441,8 @@ public class InstanceFabricator {
 
 				String specificPropertyURI = repository.getNamespace() + property.substring(property.indexOf("#")+1);
 
-
+				System.out.println("PROP: " + specificPropertyURI);
+				
 				FactoryUtil.createInstanceIndividual(
 						repository.getBaseModel(),
 						targetURI,
@@ -1446,12 +1450,15 @@ public class InstanceFabricator {
 						true);
 
 				if(typeTargetURI.equalsIgnoreCase(repository.getNamespace() + ConceptEnum.Card_Layer.toString())){
+					
 					String layerPropertyURI = repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString();
 					String nameLayer = nameTarget;
+					
 					if(nameTarget == null){
 						nameLayer = dtoContent.getId();
 					}
 					String layerTypeURI = repository.getNamespace() + nameLayer;
+					
 					FactoryUtil.createInstanceRelation(
 							repository.getBaseModel(), 
 							targetURI,			 
@@ -1467,7 +1474,7 @@ public class InstanceFabricator {
 						targetURI
 						);
 
-				NOpenLog.appendLine(repository.getName()+": " + nameSource + " linked with " + nameTarget);
+				NOpenLog.appendLine(repository.getName() + ": " + nameSource + " linked with " + nameTarget);
 			}
 			else{
 				NOpenLog.appendLine("Error: " + nameSource + " cannot be connected to " + nameTarget + " because there is no \"componentOf\" relation between " + typeSource + " and " + typeTarget);

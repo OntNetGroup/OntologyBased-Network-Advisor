@@ -1,18 +1,19 @@
 package br.com.padtec.nopen.service;
 
-import com.jointjs.util.JointUtilManager;
-
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.GeneralDtoFabricator;
 import br.com.padtec.nopen.model.InstanceFabricator;
+import br.com.padtec.nopen.model.ProvisioningRelationEnum;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.studio.service.PerformBind;
 import br.com.padtec.okco.core.application.OKCoUploader;
+
+import com.jointjs.util.JointUtilManager;
 
 public class NOpenEquipmentCloner {
 	
@@ -54,15 +55,15 @@ public class NOpenEquipmentCloner {
 		return false;
 	}
 	
-	private static boolean isCardLayer(String type)
-	{
-		if(type.compareToIgnoreCase(ConceptEnum.Card_Layer.toString())==0) return true;		
-		return false;
-	}
-	
 	private static boolean isSupervisor(String type)
 	{
 		if(type.compareToIgnoreCase(ConceptEnum.Supervisor.toString())==0) return true;		
+		return false;
+	}
+	
+	private static boolean isEquipment(String type)
+	{
+		if(type.compareToIgnoreCase(ConceptEnum.Equipment.toString())==0) return true;		
 		return false;
 	}
 	
@@ -117,6 +118,14 @@ public class NOpenEquipmentCloner {
 						tgtRepository.getBaseModel(), 
 						tgtRepository.getNamespace() + sourceId,			 
 						tgtRepository.getNamespace() + RelationEnum.supervises_card_Supervisor_Card.toString(),
+						tgtRepository.getNamespace() + targetId
+					);
+			}
+			else if(isEquipment(sourceType) && isCard(targetType)){
+				FactoryUtil.createInstanceRelation(
+						tgtRepository.getBaseModel(), 
+						tgtRepository.getNamespace() + sourceId,			 
+						tgtRepository.getNamespace() + ProvisioningRelationEnum.A_Equipment_Card.toString(),
 						tgtRepository.getNamespace() + targetId
 					);
 			}
