@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
+import br.com.padtec.nopen.provisioning.service.ProvisioningReasoner;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
+import br.com.padtec.nopen.service.NOpenReasoner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
 @Controller
@@ -159,6 +161,7 @@ public class ProvisioningController {
 		try {
 			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
 			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
+			ProvisioningReasoner.runInference(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

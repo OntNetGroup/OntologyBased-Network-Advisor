@@ -2237,7 +2237,7 @@ public class QueryUtil {
 	static public ArrayList<String> endOfGraph(InfModel model, String individualName, ArrayList<String> relationsNameList){
 		// Create a new query
 		String queryString = 
-		 "PREFIX ont: <http://www.menthor.net/provisioning.owl#>"
+		 "PREFIX ont: <http://www.menthor.net/nOpenModel_light.owl#>"
 		+ " SELECT ?var WHERE { ";
 		if(relationsNameList.size() == 1){
 			queryString = queryString + " ont:" + individualName + " ont:" + relationsNameList.get(0) + "?var }";
