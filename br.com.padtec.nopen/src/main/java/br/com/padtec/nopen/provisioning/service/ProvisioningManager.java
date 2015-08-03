@@ -24,7 +24,11 @@ public class ProvisioningManager {
 		this.repository = repository;
 	}
 	
-	
+	/**
+	 * 
+	 * @param jsonElements
+	 * @throws Exception
+	 */
 	public void createElementsInOWL(String jsonElements) throws Exception {
 		
 		OntModel ontModel = this.repository.getBaseModel();
@@ -44,7 +48,11 @@ public class ProvisioningManager {
 		}		
 		
 	}
-	
+	/**
+	 * 
+	 * @param jsonLinks
+	 * @throws Exception
+	 */
 	public void createLinksInOWL(String jsonLinks) throws Exception {
 		
 		OntModel ontModel = this.repository.getBaseModel();
@@ -54,7 +62,7 @@ public class ProvisioningManager {
 		for(PLink link : links) {
 			
 			String subject = namespace + link.getSource();
-			String predicate = getPredicate(link.getSourceType(), link.getTargetType());
+			String predicate = getPredicateFromOWL(link.getSourceType(), link.getTargetType());
 			String object = namespace + link.getTarget();
 			
 			FactoryUtil.createInstanceRelation(ontModel, subject, predicate, object);
@@ -63,21 +71,29 @@ public class ProvisioningManager {
 		
 	}
 	
-	public String getPredicate(String sourceType, String targetType) {
+	/**
+	 * Procedure to get predicate from owl model
+	 * @param sourceType
+	 * @param targetType
+	 * @return
+	 */
+	public String getPredicateFromOWL(String sourceType, String targetType) {
 		
 		OntModel ontModel = this.repository.getBaseModel();
 		String namespace = this.repository.getNamespace();
+		
+		//Create string
 		String prefix = "PREFIX ont: <" + namespace + "> " + 
-						"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ";
-		
-		//ont:TF_Card_Element e ont:Simple_Transport_Function
-		
+						"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+						"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+						"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ";
 		String queryString = prefix +
-				"SELECT * WHERE { " +
-					"?predicate rdfs:domain ont:" + sourceType + " . " +
-					"?predicate rdfs:range ?range . " +
-					"?range rdfs:subClassOf* ?rangeType . " +
-				 "}";
+						"SELECT DISTINCT * WHERE { " +
+							"?predicate rdfs:domain ?domain . " +
+							"?predicate rdfs:range ?range . " +
+							"ont:" + sourceType + " rdfs:subClassOf*/owl:intersectionOf*/rdf:rest*/rdf:first*/rdfs:subClassOf* ?domain . " +
+							"ont:" + targetType + " rdfs:subClassOf*/owl:intersectionOf*/rdf:rest*/rdf:first*/rdfs:subClassOf* ?range . " +
+						 "}";
 		
 		System.out.println(queryString);
 		
@@ -88,26 +104,36 @@ public class ProvisioningManager {
 		ResultSet results = qe.execSelect();
 
 		String predicate = "";
+		boolean pred = true;
 		
 		while (results.hasNext()) {
 			QuerySolution row = results.next();
 		    
 		    RDFNode predicateNode = row.get("?predicate");
-		    RDFNode rangeNode = row.get("?range");
+		    String domain = row.get("?domain").toString().replace(namespace, "");
+		    String range = row.get("?range").toString().replace(namespace, "");
 		    
-		    String range = rangeNode.toString().replace(namespace, "");
+//		    System.out.println("domain: " + domain + " range: " + range);
+//		    System.out.println("predicate: " + predicateNode.toString());
 		    
-		    if(targetType.equals(range)) {
+		    //Set predicate with range == target type
+		    if(sourceType.equals(domain) && targetType.equals(range)) {
 		    	predicate = predicateNode.toString();
 		    	break;
 		    }
-		    else {
+		    else if(sourceType.equals(domain) || targetType.equals(range)) {
+		    	predicate = predicateNode.toString();
+		    	pred = false;
+		    }
+		    else if (pred){
 		    	predicate = predicateNode.toString();
 		    }
 		}
 		
+		System.out.println("source: " + sourceType);
+	    System.out.println("target: " + targetType);
 		System.out.println(predicate);
-
+		
 		return predicate;
 	}
 	
