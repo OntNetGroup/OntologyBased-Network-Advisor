@@ -132,6 +132,32 @@ public class InterfaceStructure {
 		return result;
 	}*/
 
+	public static String getOutputsUpperLayerFromEquipment(String equipmentId, OKCoUploader repository){
+		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
+		Iterator it = layers.iterator();
+		while(it.hasNext()){
+			String layer = (String) it.next();
+			//retira as camadas que tem clientes
+			ArrayList<String> relations = new ArrayList<String>();
+			relations.add(RelationEnum.instantiates_Card_Layer_Layer_Type.toString());
+			ArrayList<String> layerTypes = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relations);
+			//pra camada ser a mais acima, ela não pode ter cliente no mesmo equipamento
+			boolean hasClient = hasClientInEquipment(layerTypes.get(0), equipmentId, repository); 
+			if(hasClient){
+				it.remove();
+			}
+		}
+		
+		return null;
+	}
+	
+	
+	private static boolean hasClientInEquipment(String layerTypeId, String equipmentId, OKCoUploader repository) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 	public static String getPossibleTargetInputs(String sourceOutputId, String targetEquipmentId, OKCoUploader repository){
 		String interfaces = getInterfacesFromEquipment(targetEquipmentId, "Input", repository);
 		Gson gson = new Gson();
