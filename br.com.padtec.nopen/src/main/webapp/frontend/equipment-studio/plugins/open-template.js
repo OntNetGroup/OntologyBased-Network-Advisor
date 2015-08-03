@@ -49,6 +49,9 @@ function openFromURL(filename, graph){
 
 	function loadEquipmentstoOWl(filename){
 		
+		var elements = [];
+		var links = [];
+		
 		$.each(graph.getElements(), function(index, cell){
 			
 			/*
@@ -61,9 +64,6 @@ function openFromURL(filename, graph){
 			 * Card > Input/Output
 			 * TTF/AF/Matrix > Input/Output
 			 */
-			
-			var elements = [];
-			var links = [];
 			
 			if(cell.get('subType') === 'Rack'){
 				app.RackCounter++
@@ -107,12 +107,12 @@ function openFromURL(filename, graph){
 				console.log(slot);
 				elements.push(slot);
 				
-				//Slot (Sl) > Shelf (Sh)
+				//Shelf (Sl) > Slot (Sh)
 				var linkSlSh = {
-						"sourceType" : "Slot",
-						"targetType" : "Shelf",
-						"source" : cell.get('id'),
-						"target" : cell.get('parent'),
+						"sourceType" : "Shelf",
+						"targetType" : "Slot",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
 				};
 				console.log(linkSlSh);
 				links.push(linkSlSh);
@@ -131,19 +131,19 @@ function openFromURL(filename, graph){
 				
 				//Slot (Sl) > Card (C)
 				var linkSlC = {
-						"sourceType" : "Card",
-						"targetType" : "Slot",
-						"source" : cell.get('id'),
-						"target" : cell.get('parent'),
+						"sourceType" : "Slot",
+						"targetType" : "Card",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
 				};
 				links.push(linkSlC);
 				
 				//Supervisor (S) > Card (C)
 				var linkSC = {
-						"sourceType" : "Card",
-						"targetType" : "Supervisor",
-						"source" : cell.get('id'),
-						"target" : cell.get('SupervisorID'),
+						"sourceType" : "Supervisor",
+						"targetType" : "Card",
+						"source" : cell.get('SupervisorID'),
+						"target" : cell.get('id'),
 				};
 				links.push(linkSC);
 				
@@ -159,10 +159,10 @@ function openFromURL(filename, graph){
 				
 				//Slot (Sl) > Supervisor (S)
 				var linkSlC = {
-						"sourceType" : "Supervisor",
-						"targetType" : "Slot",
-						"source" : cell.get('id'),
-						"target" : cell.get('parent'),
+						"sourceType" : "Slot",
+						"targetType" : "Supervisor",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
 				};
 				links.push(linkSlC);
 
@@ -170,29 +170,29 @@ function openFromURL(filename, graph){
 
 			}
 			
-			console.log('Elements: ' + JSON.stringify(elements));
-			console.log('Links: ' + JSON.stringify(links));
-				
-			
-			//execute parse
-			$.ajax({
-			   type: "POST",
-			   async: false,
-			   url: "parseEquipToOWL.htm",
-			   data: {
-				   'elements' : JSON.stringify(elements),
-				   'links' : JSON.stringify(links),
-			   },
-			   success: function(){
-				  console.log('PARSE OK!')
-			   },
-			   error : function(e) {
-				   alert("error: " + e.status);
-			   }
-			});
-			
 		});
 	
+		
+		console.log('Elements: ' + JSON.stringify(elements));
+		console.log('Links: ' + JSON.stringify(links));
+			
+		
+		//execute parse
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "parseEquipToOWL.htm",
+		   data: {
+			   'elements' : JSON.stringify(elements),
+			   'links' : JSON.stringify(links),
+		   },
+		   success: function(){
+			  console.log('PARSE OK!')
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
 		
 		//ITU Elements
 		$.each(graph.getElements(), function(index, cell){
