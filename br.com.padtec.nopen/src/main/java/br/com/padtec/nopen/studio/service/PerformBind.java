@@ -58,9 +58,9 @@ public class PerformBind {
 			
 			FactoryUtil.createInstanceRelation(
 					repository.getBaseModel(), 
-					repository.getNamespace() + idPort, 
+					repository.getNamespace() + idSource, 
 					repository.getNamespace() + specificComponentOf,
-					repository.getNamespace() + idSource
+					repository.getNamespace() + idPort
 				);
 			
 			
