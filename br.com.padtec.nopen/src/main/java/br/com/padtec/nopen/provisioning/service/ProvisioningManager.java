@@ -57,7 +57,7 @@ public class ProvisioningManager {
 		for(PLink link : links) {
 			
 			String subject = namespace + link.getSource();
-			String predicate = namespace + getPredicate(link.getSourceType(), link.getTargetType());
+			String predicate = getPredicate(link.getSourceType(), link.getTargetType());
 			String object = namespace + link.getTarget();
 			
 			FactoryUtil.createInstanceRelation(ontModel, subject, predicate, object);
@@ -70,10 +70,11 @@ public class ProvisioningManager {
 		
 		OntModel ontModel = this.repository.getBaseModel();
 		String namespace = this.repository.getNamespace();
-		String prefix = "PREFIX ont: <" + namespace + ">";
+		String prefix = "PREFIX ont: <" + namespace + "> " + 
+						"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ";
 		
 		String queryString = prefix +
-				" SELECT ?predicate WHERE { " +
+				"SELECT ?predicate WHERE { " +
 				"?predicate rdfs:domain ont:" + sourceType + " . " +
 				"?predicate rdfs:range ont:" + targetType + " }";
 		
