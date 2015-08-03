@@ -25,9 +25,10 @@ public class ProvisioningManager {
 	}
 	
 	/**
-	 * 
+	 * Procedure to parse json elements to owl
 	 * @param jsonElements
 	 * @throws Exception
+	 * @author Lucas Bassetti
 	 */
 	public void createElementsInOWL(String jsonElements) throws Exception {
 		
@@ -48,10 +49,12 @@ public class ProvisioningManager {
 		}		
 		
 	}
+	
 	/**
-	 * 
+	 * Procedure to parse json links to owl
 	 * @param jsonLinks
 	 * @throws Exception
+	 * @author Lucas Bassetti
 	 */
 	public void createLinksInOWL(String jsonLinks) throws Exception {
 		
@@ -76,13 +79,14 @@ public class ProvisioningManager {
 	 * @param sourceType
 	 * @param targetType
 	 * @return
+	 * @author Lucas Bassetti
 	 */
 	public String getPredicateFromOWL(String sourceType, String targetType) {
 		
 		OntModel ontModel = this.repository.getBaseModel();
 		String namespace = this.repository.getNamespace();
 		
-		//Create string
+		//Create query string
 		String prefix = "PREFIX ont: <" + namespace + "> " + 
 						"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 						"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
@@ -97,12 +101,14 @@ public class ProvisioningManager {
 		
 		System.out.println(queryString);
 		
+		//execute query string
 		Query query = QueryFactory.create(queryString); 
 		
 		// Execute the query and obtain results
 		QueryExecution qe = QueryExecutionFactory.create(query, ontModel);
 		ResultSet results = qe.execSelect();
 
+		//get predicate from query result
 		String predicate = "";
 		boolean pred = true;
 		
@@ -113,10 +119,6 @@ public class ProvisioningManager {
 		    String domain = row.get("?domain").toString().replace(namespace, "");
 		    String range = row.get("?range").toString().replace(namespace, "");
 		    
-//		    System.out.println("domain: " + domain + " range: " + range);
-//		    System.out.println("predicate: " + predicateNode.toString());
-		    
-		    //Set predicate with range == target type
 		    if(sourceType.equals(domain) && targetType.equals(range)) {
 		    	predicate = predicateNode.toString();
 		    	break;

@@ -161,7 +161,7 @@ public class ProvisioningController {
 		ProvisioningManager provisioningManager = new ProvisioningManager(ProvisioningComponents.provisioningRepository);
 		
 		try {
-			ProvisioningReasoner.runInference(true);
+//			ProvisioningReasoner.runInference(true);
 			provisioningManager.createElementsInOWL(elements);
 			provisioningManager.createLinksInOWL(links);
 //			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
