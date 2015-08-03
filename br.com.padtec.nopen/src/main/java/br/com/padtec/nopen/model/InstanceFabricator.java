@@ -1440,8 +1440,6 @@ public class InstanceFabricator {
 				}
 
 				String specificPropertyURI = repository.getNamespace() + property.substring(property.indexOf("#")+1);
-
-				System.out.println("PROP: " + specificPropertyURI);
 				
 				FactoryUtil.createInstanceIndividual(
 						repository.getBaseModel(),

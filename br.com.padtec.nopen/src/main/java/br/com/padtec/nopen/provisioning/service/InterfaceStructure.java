@@ -212,7 +212,7 @@ public class InterfaceStructure {
 		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
 		
 		//get layers
-		System.out.println(repository.getBaseModel().getNsPrefixURI(""));
+		
 		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
 		for(String layer : layers){
 
