@@ -37,7 +37,7 @@ paper.on('cell:pointerclick', function( cellView , evt, x, y) {
 		equipment.prop('attributes','');
 		console.log(equipment);
 		console.log(cellView);
-		
+		 
 		$.ajax({
 			   type: "POST",
 			   async: false,
@@ -48,6 +48,7 @@ paper.on('cell:pointerclick', function( cellView , evt, x, y) {
 //			   dataType: 'json',
 			   success: function(data){
 				   console.log(data);
+//				   atributte.fromJSON(data);
 			   },
 			   error : function(e) {
 				   alert("error: " + e.status);

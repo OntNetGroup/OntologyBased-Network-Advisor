@@ -1,5 +1,7 @@
 package br.com.padtec.nopen.visualizer.controller;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -69,7 +71,7 @@ public class VisualizerController {
 		try {
 			pelems = (PElement[]) JointUtilManager.getJavaFromJSON(elements, PElement[].class);
 			plinks = (PLink[]) JointUtilManager.getJavaFromJSON(links, PLink[].class);
-			
+
 			// we are not going to clone the content in OWL anymore
 			// we are actually going to search for the attributes from these Java structures: PElements and PLinks
 //			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
@@ -90,7 +92,8 @@ public class VisualizerController {
 	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card){
 		
 		try {			
-			NOpenAttributeRecognizer.runfromCard(card, pelems, plinks);
+			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card, pelems, plinks);	
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

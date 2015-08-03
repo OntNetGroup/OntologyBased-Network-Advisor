@@ -14,194 +14,188 @@ function getUrlParameter(sParam)
 
 function openFromURL(filename, graph){
 	
+	$.ajax({
+		type: "POST",
+		url: "openTemplate.htm",
+		data: {
+			'filename' : filename
+		},
+		dataType: 'json',
+		success: function(data){
+//			$("#filename").val(filename);
+			graph.fromJSON(data);
+			loadEquipmentstoOWl(filename);
+		},
+		error : function(e) {
+			//alert("error: " + e.status);
+		}
+	});
+
+	function loadEquipmentstoOWl(filename){
+		
+		var elements = [];
+		var links = [];
+		
+		$.each(graph.getElements(), function(index, cell){
+			
+			/*
+			 * Supervisor > Cards
+			 * Slot > Card
+			 * Slot > Supervisor
+			 * Shelf > Slot
+			 * Rack > Shelf
+			 * Card > Matrix
+			 * Card > Input/Output
+			 * TTF/AF/Matrix > Input/Output
+			 */
+			
+			if(cell.get('subType') === 'Rack'){
+				app.RackCounter++
+				var rack = {
+						"type" : "Rack",
+						"id" : cell.id,
+						"name" : cell.attributes.attrs.name.text,
+				};
+//				console.log(rack);
+				elements.push(rack);
+			}
+			
+			else if(cell.get('subType') === 'Shelf'){
+				app.ShelfCounter++;
+				var shelf = {
+						"type" : "Shelf",
+						"id" : cell.get('id'),
+						"name" : cell.attributes.attrs.name.text,
+				};
+//				console.log(shelf);
+				elements.push(shelf);
+				
+				//Rack (R) > Shelf (Sh)
+				var linkShR = {
+						"sourceType" : "Rack",
+						"targetType" : "Shelf",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
+				};
+//				console.log(linkShR);
+				links.push(linkShR);
+
+			}
+			else if(cell.get('subType') === 'Slot'){
+				app.SlotCounter++;
+				var slot = {
+						"type" : "Slot",
+						"id" : cell.get('id'),
+						"name" : cell.attributes.attrs.name.text,
+				};
+//				console.log(slot);
+				elements.push(slot);
+				
+				//Shelf (Sl) > Slot (Sh)
+				var linkSlSh = {
+						"sourceType" : "Shelf",
+						"targetType" : "Slot",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
+				};
+//				console.log(linkSlSh);
+				links.push(linkSlSh);
+
+			}
+
+			else if(cell.get('subType')=== 'Card'){
+				app.CardCounter++;
+				var card = {
+						"type" : "Card",
+						"id" : cell.get('id'),
+						"name" : cell.attributes.attrs.name.text,
+						
+				};
+				elements.push(card);
+				
+				//Slot (Sl) > Card (C)
+				var linkSlC = {
+						"sourceType" : "Slot",
+						"targetType" : "Card",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
+				};
+				links.push(linkSlC);
+				
+				//Supervisor (S) > Card (C)
+				var linkSC = {
+						"sourceType" : "Supervisor",
+						"targetType" : "Card",
+						"source" : cell.get('SupervisorID'),
+						"target" : cell.get('id'),
+				};
+				links.push(linkSC);
+				
+			}
+			else if(cell.get('subType')=== 'Supervisor'){
+				app.SupervisorCounter++;
+				var supervisor = {
+						"type" : "Supervisor",
+						"id" : cell.get('id'),
+						"name" : cell.attributes.attrs.name.text,
+				};
+				elements.push(supervisor);
+				
+				//Slot (Sl) > Supervisor (S)
+				var linkSlC = {
+						"sourceType" : "Slot",
+						"targetType" : "Supervisor",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
+				};
+				links.push(linkSlC);
+
+				//setTechnology(equipmentName, equipmentType, equipmentID , tech);
+
+			}
+			
+		});
+	
+		
+		console.log('Elements: ' + JSON.stringify(elements));
+		console.log('Links: ' + JSON.stringify(links));
+			
+		
+		//execute parse
 		$.ajax({
 		   type: "POST",
 		   async: false,
-		   url: "openEquipment.htm",
+		   url: "parseEquipToOWL.htm",
 		   data: {
-			   'filename' : filename
+			   'elements' : JSON.stringify(elements),
+			   'links' : JSON.stringify(links),
 		   },
-		   dataType: 'json',
-		   success: function(data){
-			   graph.fromJSON(data)
-			   loadITUFiles(graph);
-			   loadEquipmentstoOWl();
+		   success: function(){
+			  console.log('PARSE OK!')
 		   },
 		   error : function(e) {
-			   //alert("error: " + e.status);
+			   alert("error: " + e.status);
 		   }
 		});
 		
-		function loadEquipmentstoOWl(){
-			
-			var elements = [];
-			var links = [];
-			
-			$.each(graph.getElements(), function(index, cell){
-				
-				/*
-				 * Supervisor > Cards
-				 * Slot > Card
-				 * Slot > Supervisor
-				 * Shelf > Slot
-				 * Rack > Shelf
-				 * Card > Matrix
-				 * Card > Input/Output
-				 * TTF/AF/Matrix > Input/Output
-				 */
-				
-				
-				if(cell.get('subType') === 'Rack'){
-					app.RackCounter++
-					var rack = {
-							"type" : "Rack",
-							"id" : cell.id,
-							"name" : cell.attributes.attrs.name.text,
-					};
-					console.log(rack);
-					elements.push(rack);
-				}
-				
-				else if(cell.get('subType') === 'Shelf'){
-					app.ShelfCounter++;
-					var shelf = {
-							"type" : "Shelf",
-							"id" : cell.get('id'),
-							"name" : cell.attributes.attrs.name.text,
-					};
-					console.log(shelf);
-					elements.push(shelf);
-					
-					//Rack (R) > Shelf (Sh)
-					var linkShR = {
-							"sourceType" : "Shelf",
-							"targetType" : "Rack",
-							"source" : cell.get('id'),
-							"target" : cell.get('parent'),
-					};
-					console.log(linkShR);
-					links.push(linkShR);
-
-				}
-				else if(cell.get('subType') === 'Slot'){
-					app.SlotCounter++;
-					var slot = {
-							"type" : "Slot",
-							"id" : cell.get('id'),
-							"name" : cell.attributes.attrs.name.text,
-					};
-					console.log(slot);
-					elements.push(slot);
-					
-					//Slot (Sl) > Shelf (Sh)
-					var linkSlSh = {
-							"sourceType" : "Slot",
-							"targetType" : "Shelf",
-							"source" : cell.get('id'),
-							"target" : cell.get('parent'),
-					};
-					console.log(linkSlSh);
-					links.push(linkSlSh);
-
-				}
-
-				else if(cell.get('subType') === 'Card'){
-					app.CardCounter++;
-					var card = {
-							"type" : "Card",
-							"id" : cell.get('id'),
-							"name" : cell.attributes.attrs.name.text,
-							
-					};
-					elements.push(card);
-					
-					//Slot (Sl) > Card (C)
-					var linkSlC = {
-							"sourceType" : "Card",
-							"targetType" : "Slot",
-							"source" : cell.get('id'),
-							"target" : cell.get('parent'),
-					};
-					links.push(linkSlC);
-					
-					//Supervisor (S) > Card (C)
-					var linkSC = {
-							"sourceType" : "Card",
-							"targetType" : "Supervisor",
-							"source" : cell.get('id'),
-							"target" : cell.get('SupervisorID'),
-					};
-					links.push(linkSC);
-					
-				}
-				else if(cell.get('subType')=== 'Supervisor'){
-					app.SupervisorCounter++;
-					var supervisor = {
-							"type" : "Supervisor",
-							"id" : cell.get('id'),
-							"name" : cell.attributes.attrs.name.text,
-					};
-					elements.push(supervisor);
-					
-					//Slot (Sl) > Supervisor (S)
-					var linkSlC = {
-							"sourceType" : "Supervisor",
-							"targetType" : "Slot",
-							"source" : cell.get('id'),
-							"target" : cell.get('parent'),
-					};
-					links.push(linkSlC);
-
-					//setTechnology(equipmentName, equipmentType, equipmentID , tech);
-
-				}
-				
-				
-			});
-					
-			console.log('Elements: ' + JSON.stringify(elements));
-			console.log('Links: ' + JSON.stringify(links));
-				
-			
-			//execute parse
-			$.ajax({
-			   type: "POST",
-			   async: false,
-			   url: "parseEquipToOWL.htm",
-			   data: {
-				   'elements' : JSON.stringify(elements),
-				   'links' : JSON.stringify(links),
-			   },
-			   success: function(){
-				  console.log('PARSE OK!')
-			   },
-			   error : function(e) {
-				   alert("error: " + e.status);
-			   }
-			});
-			
-					
-					
-//					console.log('Equipment: ' + JSON.stringify(equipment));
-//					console.log('Card: ' + JSON.stringify(card));
-					
-				
-
-				
-				
-				//ITU Elements
-				$.each(graph.getElements(), function(index, cell){
-					if(cell.get('subType')=== 'Card'){
-						var card = {
-								"type" : "Card",
-								"id" : cell.get('id'),
-								"name" : cell.attributes.attrs.name.text,
-								
-						};
-						instanciateITUElements(filename, card);
-					}
-				});
+		//ITU Elements
+		$.each(graph.getElements(), function(index, cell){
+			if(cell.get('subType')=== 'Card'){
+				var card = {
+						"type" : "Card",
+						"id" : cell.get('id'),
+						"name" : cell.attributes.attrs.name.text,
+						
+				};
+//				instanciateITUElementsJohn(filename, card);
+//				instanciateITUElementsJordana(filename, card);
+				instanciateITUElements(filename, card);
 			}
+		});
+	}
+
+
+}
 
 		function instanciateITUElements(filename, card) {
 
@@ -587,6 +581,6 @@ function openFromURL(filename, graph){
 			});
 			return localGraph.getElements();
 		}
-}
+
 
 
