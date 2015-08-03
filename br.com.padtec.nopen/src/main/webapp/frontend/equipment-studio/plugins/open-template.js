@@ -88,10 +88,10 @@ function openFromURL(filename, graph){
 				
 				//Rack (R) > Shelf (Sh)
 				var linkShR = {
-						"sourceType" : "Shelf",
-						"targetType" : "Rack",
-						"source" : cell.get('id'),
-						"target" : cell.get('parent'),
+						"sourceType" : "Rack",
+						"targetType" : "Shelf",
+						"source" : cell.get('parent'),
+						"target" : cell.get('id'),
 				};
 				console.log(linkShR);
 				links.push(linkShR);

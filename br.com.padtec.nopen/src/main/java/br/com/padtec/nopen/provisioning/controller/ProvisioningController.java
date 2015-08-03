@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
+import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.provisioning.service.ProvisioningReasoner;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
-import br.com.padtec.nopen.service.NOpenReasoner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
 @Controller
@@ -158,9 +158,13 @@ public class ProvisioningController {
 	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
 	protected @ResponseBody void parseCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
+		ProvisioningManager provisioningManager = new ProvisioningManager(ProvisioningComponents.provisioningRepository);
+		
 		try {
-			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
-			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
+			provisioningManager.createElementsInOWL(elements);
+			provisioningManager.createLinksInOWL(links);
+//			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
+//			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
 			ProvisioningReasoner.runInference(true);
 		} catch (Exception e) {
 			e.printStackTrace();
