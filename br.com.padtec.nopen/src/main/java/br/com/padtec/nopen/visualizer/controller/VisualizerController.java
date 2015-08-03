@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jointjs.util.JointUtilManager;
+
+import br.com.padtec.nopen.provisioning.model.PElement;
+import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.nopen.service.NOpenAttributeRecognizer;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
@@ -51,6 +55,9 @@ public class VisualizerController {
 		return "visualizer/itu-visualizer/itu-visualizer";
 	}
 	
+	protected static PElement[] pelems;
+	protected static PLink[] plinks;
+	
 	/**
 	 * Create equipment in OWL by a JSON file
 	 * @param elements
@@ -60,8 +67,14 @@ public class VisualizerController {
 	protected @ResponseBody String parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
 		try {
-			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
-			NOpenEquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
+			pelems = (PElement[]) JointUtilManager.getJavaFromJSON(elements, PElement[].class);
+			plinks = (PLink[]) JointUtilManager.getJavaFromJSON(links, PLink[].class);
+			
+			// we are not going to clone the content in OWL anymore
+			// we are actually going to search for the attributes from these Java structures: PElements and PLinks
+//			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
+//			NOpenEquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
+			
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,8 +89,8 @@ public class VisualizerController {
 	@RequestMapping(value = "/getCardAttributes", method = RequestMethod.POST)
 	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card){
 		
-		try {
-			NOpenAttributeRecognizer.run(card, StudioComponents.studioRepository);
+		try {			
+			NOpenAttributeRecognizer.runfromCard(card, pelems, plinks);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
