@@ -2,6 +2,8 @@ package br.com.padtec.nopen.provisioning.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
 import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.provisioning.service.ProvisioningReasoner;
-import br.com.padtec.nopen.service.NOpenEquipmentCloner;
-import br.com.padtec.nopen.service.NOpenReasoner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
 @Controller
@@ -181,13 +183,21 @@ public class ProvisioningController {
 	 */
 	@RequestMapping(value = "/getInputsFromOWL", method = RequestMethod.POST)
 	protected @ResponseBody String getInputsFromOWL(@RequestParam("equipmentId") String equipmentId){
-		String result = null;
+		
+		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
+		
 		try {
-//			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Input", ProvisioningComponents.provisioningRepository);
+			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Input", ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		
+		//transform the result mapping in a JSON string
+		Gson gson = new Gson(); 
+		String json = gson.toJson(result);
+		System.out.println(json);
+		
+		return json;
 	}
 	
 	/**
@@ -197,13 +207,21 @@ public class ProvisioningController {
 	 */
 	@RequestMapping(value= "/getOutputsFromOWL", method = RequestMethod.POST)
 	protected @ResponseBody String getOutputsFromOWL(@RequestParam("equipmentId") String equipmentId){
-		String result = null;
+		
+		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
+		
 		try {
-//			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
+			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		
+		//transform the result mapping in a JSON string
+		Gson gson = new Gson(); 
+		String json = gson.toJson(result);
+		System.out.println(json);
+		
+		return json;
 	}
 	
 	

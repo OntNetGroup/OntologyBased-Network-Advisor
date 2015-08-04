@@ -84,7 +84,16 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		var source = undefined;
 		var target = undefined;
 		
+		var sourcePort = undefined;
+		var targetPort = undefined;
+		
 		function next() {
+			
+			if(source && sourcePort && target && targetPort) {
+				console.log('sourcePort: ' + JSON.stringify(sourcePort));
+				console.log('targetPort: ' + JSON.stringify(targetPort));
+				model.connectPortsInPreProvisioning(source, sourcePort, target, targetPort);
+			}
 			
 			$('.dialog .controls .control-button[data-action="showImage"]').show();
 			
@@ -117,8 +126,8 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 //				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
-				var connections2 = owl.getPossibleConnectionsFromOWL(source.id, target.id);
-				var connections = test.getConnections(source.id, target.id); 
+				var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
+//				var connections = test.getConnections(source.id, target.id); 
 				
 				content = createConnectionContent(source, target, connectionType, connections)
 				
@@ -140,8 +149,8 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 //				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
-				var connections2 = owl.getPossibleConnectionsFromOWL(source.id, target.id);
-				var connections = test.getConnections(source.id, target.id); 
+				var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
+//				var connections = test.getConnections(source.id, target.id); 
 				
 				console.log('connections: ' + JSON.stringify(connections));
 				content = createConnectionContent(source, target, connectionType, connections)
@@ -187,7 +196,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 					
 					content = content +
 						'<ul style="display: block;">' +
-			                '<li class="sourcePort" id="' + port.id + '" value="' + port.name + '" class="collapsed expanded">' + port.name + '</li>' +
+			                '<li class="sourcePort" id="' + port.id + '" value="' + port.type + '" class="collapsed expanded">' + port.name + '</li>' +
 			            '</ul>';
 					
 				});
@@ -208,9 +217,11 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 				$.each(connections[targetId][layer], function(key, port) {
 					
+					console.log('PORT: ' + JSON.stringify(port));
+					
 					content = content +
 						'<ul style="display: block;">' +
-			                '<li class="targetPort" id="' + port.id + '" value="' + port.name + '" class="collapsed expanded">' + port.name + '</li>' +
+			                '<li class="targetPort" id="' + port.id + '" value="' + port.type + '" class="collapsed expanded">' + port.name + '</li>' +
 			            '</ul>';
 					
 				});
@@ -232,6 +243,12 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 				$('.sourceList #expList li').removeClass('active');
 				$(this).toggleClass('active');
+
+				sourcePort = {
+						"type": $(this).attr('value'),
+						"id": $(this).attr('id'),
+						"name": $(this).text(),
+				}
 				
 				if($('.targetList #expList li').hasClass('active')) {
 					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
@@ -243,6 +260,12 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 				$('.targetList #expList li').removeClass('active');
 				$(this).toggleClass('active');
+				
+				targetPort = {
+						"type": $(this).attr('value'),
+						"id": $(this).attr('id'),
+						"name": $(this).text(),
+				}
 				
 				if($('.sourceList #expList li').hasClass('active')) {
 					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
@@ -268,121 +291,123 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			
 		};
 		
-		//create content
-		function createContent(sourceName, targetName, outputs) {
-			
-			var content = 
-				'<div class="preProvisioningContainer"><div class="outputsList"><div id="listContainer">' +
-				    '<ul id="expList" class="list"> <li class="outputs">' + sourceName + '</li> ' ;
-			
-			$.each(outputs, function(layer, value) {
-				
-				content = content + 
-				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
-				
-				$.each(outputs[layer], function(key, output) {
-					
-					content = content +
-						'<ul style="display: block;">' +
-			                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
-			            '</ul>';
-					
-				});
-				
-				content = content + '</li>';
-				
-			});
-			
-			content = content + '</ul></div></div>';
-			content = content + 
-				'<div class="inputsList"><div id="listContainer">' +
-			    	'<ul id="expList" class="list"> <li class="inputs">' + targetName + '</li></ul>' + 
-			    '</div></div></div>';
-			
-			//content = content + '<div class="image">' + file.getTopologySVG() + '</div>'
-
-			return content;
-			
-		};
-		
-		//generate events to outputs list
-		function generateOutputEvents() {
-			
-			$('.outputsList #expList').find('li.outputItem').click( function(event) {
-				
-				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", true);
-				
-				$('.outputsList #expList li').removeClass('active');
-				$(this).toggleClass('active');
-				
-				$('.inputsList #expList li:not(:first)').remove();
-				
-				var inputs = owl.getInputsFromOWL(target.id);
-				
-				var content = "";
-				$.each(inputs, function(layer, value) {
-					
-					content = content + 
-					    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
-					
-					$.each(inputs[layer], function(key, input) {
-						
-						content = content +
-							'<ul style="display: block;">' +
-				                '<li class="inputItem" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + input.name + '</li>' +
-				            '</ul>';
-						
-					});
-					
-					content = content + '</li>';
-					
-				});
-				
-				$('.inputsList #expList').append(content);
-				util.prepareList('.inputsList');
-				
-				generateInputEvents();
-				
-			});
-			
-		};
-		
-		//generate events to inputs list
-		function generateInputEvents() {
-			
-			$('.inputsList #expList').find('li.inputItem').click(function(event) {
-				
-				$('.inputsList #expList li').removeClass('active');
-				$(this).toggleClass('active');
-				
-				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
-				
-			});
-			
-			$('.dialog .controls .control-button[data-action="next"]').click(function(event) {
-				
-				var output = {
-						"id": $('.outputItem.active').attr('id'),
-						"name": $('.outputItem.active').attr('value'),
-						"type": "Output_Card"
-				};
-				
-				var input = {
-						"id": $('.inputItem.active').attr('id'),
-						"name": $('.inputItem.active').attr('value'),
-						"type": "Input_Card"
-				};
-				
-				model.connectPortsInPreProvisioning(source, output, target, input);
-				
-//				console.log('Out: ' + JSON.stringify(output));
-//				console.log('In: ' + JSON.stringify(input));
-				
-			});
-			
-		};
-		
 	},
+		
+//		//create content
+//		function createContent(sourceName, targetName, outputs) {
+//			
+//			var content = 
+//				'<div class="preProvisioningContainer"><div class="outputsList"><div id="listContainer">' +
+//				    '<ul id="expList" class="list"> <li class="outputs">' + sourceName + '</li> ' ;
+//			
+//			$.each(outputs, function(layer, value) {
+//				
+//				content = content + 
+//				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+//				
+//				$.each(outputs[layer], function(key, output) {
+//					
+//					content = content +
+//						'<ul style="display: block;">' +
+//			                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
+//			            '</ul>';
+//					
+//				});
+//				
+//				content = content + '</li>';
+//				
+//			});
+//			
+//			content = content + '</ul></div></div>';
+//			content = content + 
+//				'<div class="inputsList"><div id="listContainer">' +
+//			    	'<ul id="expList" class="list"> <li class="inputs">' + targetName + '</li></ul>' + 
+//			    '</div></div></div>';
+//			
+//			//content = content + '<div class="image">' + file.getTopologySVG() + '</div>'
+//
+//			return content;
+//			
+//		};
+//		
+//		//generate events to outputs list
+//		function generateOutputEvents() {
+//			
+//			$('.outputsList #expList').find('li.outputItem').click( function(event) {
+//				
+//				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", true);
+//				
+//				$('.outputsList #expList li').removeClass('active');
+//				$(this).toggleClass('active');
+//				
+//				$('.inputsList #expList li:not(:first)').remove();
+//				
+//				var inputs = owl.getInputsFromOWL(target.id);
+//				
+//				var content = "";
+//				$.each(inputs, function(layer, value) {
+//					
+//					content = content + 
+//					    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+//					
+//					$.each(inputs[layer], function(key, input) {
+//						
+//						content = content +
+//							'<ul style="display: block;">' +
+//				                '<li class="inputItem" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + input.name + '</li>' +
+//				            '</ul>';
+//						
+//					});
+//					
+//					content = content + '</li>';
+//					
+//				});
+//				
+//				$('.inputsList #expList').append(content);
+//				util.prepareList('.inputsList');
+//				
+//				generateInputEvents();
+//				
+//			});
+//			
+//		};
+//		
+//		//generate events to inputs list
+//		function generateInputEvents() {
+//			
+//			$('.inputsList #expList').find('li.inputItem').click(function(event) {
+//				
+//				$('.inputsList #expList li').removeClass('active');
+//				$(this).toggleClass('active');
+//				
+//				$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+//				
+//			});
+//			
+//			$('.dialog .controls .control-button[data-action="next"]').click(function(event) {
+//				
+//				var output = {
+//						"id": $('.outputItem.active').attr('id'),
+//						"name": $('.outputItem.active').attr('value'),
+//						"type": "Output_Card"
+//				};
+//				
+//				var input = {
+//						"id": $('.inputItem.active').attr('id'),
+//						"name": $('.inputItem.active').attr('value'),
+//						"type": "Input_Card"
+//				};
+//				
+//				model.connectPortsInPreProvisioning(source, output, target, input);
+//				
+////				console.log('Out: ' + JSON.stringify(output));
+////				console.log('In: ' + JSON.stringify(input));
+//				
+//			});
+//			
+//		};
+//		
+//	},
 	
 	
 });

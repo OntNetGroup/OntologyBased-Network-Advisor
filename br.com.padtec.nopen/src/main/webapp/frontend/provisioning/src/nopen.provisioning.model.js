@@ -385,7 +385,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			preCards[equipment.id] = cards;
 		});
 		
-		console.log('Pre Cards: ' + JSON.stringify(preCards));
+//		console.log('Pre Cards: ' + JSON.stringify(preCards));
 		
 		graph.clear();
 		
@@ -469,8 +469,8 @@ nopen.provisioning.Model = Backbone.Model.extend({
 							
 							if(card.id === cell.id) {
 								equipment.get('equipment').data.cells[index] = card;
-								console.log('CARD: ' + JSON.stringify(card));
-								console.log('SET NEW CARD! ' + JSON.stringify(equipment.get('equipment').data.cells[index]));
+//								console.log('CARD: ' + JSON.stringify(card));
+//								console.log('SET NEW CARD! ' + JSON.stringify(equipment.get('equipment').data.cells[index]));
 							}
 							
 						});

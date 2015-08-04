@@ -248,12 +248,12 @@ public class InterfaceStructure {
 			
 			//add Card > Output/Input relations in array  
 			if(typePort == "Output") {
-				relationsNameList.add(RelationEnum.INV_intermediates_up_Card_Layer_Transport_Function.toString());
-				relationsNameList.add(RelationEnum.INV_is_interface_of_Input_Card_Transport_Function.toString());
-			}
-			else if(typePort == "Input") {
 				relationsNameList.add(RelationEnum.INV_intermediates_down_Card_Layer_Transport_Function.toString());
 				relationsNameList.add(RelationEnum.INV_is_interface_of_Output_Card_Transport_Function.toString());
+			}
+			else if(typePort == "Input") {
+				relationsNameList.add(RelationEnum.INV_intermediates_up_Card_Layer_Transport_Function.toString());
+				relationsNameList.add(RelationEnum.INV_is_interface_of_Input_Card_Transport_Function.toString());
 			}
 			else {
 				relationsNameList.add(RelationEnum.componentOf.toString());
@@ -285,6 +285,7 @@ public class InterfaceStructure {
 					//create port object
 					portMapping.put("id", port);
 					portMapping.put("name", label);
+					portMapping.put("type", typePort + "_Card");
 					
 					//add port hash in layer array
 					layerPortMapping.add(portMapping);

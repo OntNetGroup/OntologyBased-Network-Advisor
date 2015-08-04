@@ -63,7 +63,8 @@ public class OKCoUploader {
 	public OKCoUploader(String name)
 	{
 		setName(name);
-		reasoner = new HermitReasonerImpl();
+		reasoner = new PelletReasonerImpl();
+		//reasoner = new HermitReasonerImpl();
 	}
 	
 	public boolean isConsistencyModelValid(){
