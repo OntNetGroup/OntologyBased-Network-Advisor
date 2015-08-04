@@ -34,7 +34,7 @@ paper.on('cell:pointerclick', function( cellView , evt, x, y) {
 	var equipment = graph.getCell(cellId);
 	
 	if(equipment.get('subType') === 'Card'){
-		equipment.prop('attributes','');
+		equipment.prop('directionality','sink');
 		console.log(equipment);
 		console.log(cellView);
 		 
