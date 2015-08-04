@@ -13,7 +13,7 @@ public class Test {
 	int maxNewPossible;
 	
 	public void setDeclaredReplicationsFromConsole() {
-		this.declaredReplications = ConsoleUtil.getOptionFromConsole("Choose the number of layer replications", 2, Integer.MAX_VALUE,0, false);
+		this.declaredReplications = ConsoleUtil.getOptionFromConsole("Choose the number of layer replications: ", 2, Integer.MAX_VALUE,0, false);
 	}
 	public void setQtShortPathsFromConsole() {
 		this.qtShortPaths = ConsoleUtil.getOptionFromConsole("Choose the maximum number of paths (-1 for no limit): ", 1, Integer.MAX_VALUE,0, true);
@@ -47,7 +47,7 @@ public class Test {
 			options.add("minimum number of interfaces of possible equipment");
 		}
 		
-		this.priorityOption = ConsoleUtil.chooseOne(options, "Priority", "Choose the Priority:", 0, false, false);
+		this.priorityOption = ConsoleUtil.chooseOne(options, "Priority", "Choose the Priority: ", 0, false, false);
 	}
 	public int getDeclaredReplications() {
 		return declaredReplications;
@@ -60,9 +60,15 @@ public class Test {
 	}
 	public void setQtShortPaths(int qtShortPaths) {
 		this.qtShortPaths = qtShortPaths;
+		if(this.qtShortPaths == -1){
+			this.qtShortPaths = Integer.MAX_VALUE;
+		}
 	}
 	public void setMaxPathSize(int maxPathSize) {
 		this.maxPathSize = maxPathSize;
+		if(this.maxPathSize == -1){
+			this.maxPathSize = Integer.MAX_VALUE;
+		}
 	}	
 	public int getMaxNewBindings() {
 		return maxNewBindings;
@@ -78,9 +84,15 @@ public class Test {
 	}
 	public void setMaxNewBindings(int maxNewBindings) {
 		this.maxNewBindings = maxNewBindings;
+		if(this.maxNewBindings == -1){
+			this.maxNewBindings = Integer.MAX_VALUE;
+		}
 	}
 	public void setMaxNewPossible(int maxNewPossible) {
 		this.maxNewPossible = maxNewPossible;
+		if(this.maxNewPossible == -1){
+			this.maxNewPossible = Integer.MAX_VALUE;
+		}
 	}
 	public void setPriorityOption(int priorityOption) {
 		this.priorityOption = priorityOption;

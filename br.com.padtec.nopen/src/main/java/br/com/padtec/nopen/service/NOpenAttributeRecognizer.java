@@ -162,10 +162,12 @@ public class NOpenAttributeRecognizer {
 		/** tf <-> json content */
 		Map<String,String> attrMap = new HashMap<String,String>();
 		
+		System.out.println("Card:"+cardId); 
+//		System.out.println(links);
 		/** Card Layers */
 		List<String> layersNamesList = new ArrayList<String>();			
 		layersNamesList = getCardLayersIdFromCard(cardId, links);		
-		System.out.println(layersNamesList);
+		System.out.println("Layers:"+layersNamesList);
 		for(String layerName: layersNamesList)
 		{			
 			String layer = new String();
@@ -193,9 +195,10 @@ public class NOpenAttributeRecognizer {
 			
 			if(layerName.equals("OTS")) { layer = "OTS"; }
 			if(layerName.equals("OTSn")) { layer = "OTS"; variable = "n"; }
-			
+	
 			/** TTF */
 			List<String> ttfs = getTTFIdFromCardLayer(layerName, links);
+			System.out.println("Ttfs:"+ttfs);
 			for(String ttfId: ttfs){
 					
 				/** Matrix */
@@ -204,16 +207,18 @@ public class NOpenAttributeRecognizer {
 				
 				/**AF*/
 				List<String> afs = getAFIdFromTTF(ttfId, links);
+				System.out.println("Afs:"+afs);
 				for(String adId: afs){
 					
 					tpType = "ctp";
 					if(isClient) tpType = "client-"+tpType;
 					String jsonFileName = layer.toLowerCase()+variable.toLowerCase()+"-"+tpType.toLowerCase()+"-grouping.json";
-					InputStream s = NOpenAttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);
-					System.out.println(jsonFileName);
+					InputStream s = NOpenAttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);					
 					StringWriter writer = new StringWriter();
 					IOUtils.copy(s, writer, "UTF-8");
 					
+					System.out.println("AF:"+adId);
+					System.out.println("JSON:"+jsonFileName);
 					attrMap.put(adId, writer.toString());
 				}
 				
@@ -221,7 +226,8 @@ public class NOpenAttributeRecognizer {
 				if(isClient) tpType = "client-"+tpType;
 				String jsonFileName = layer.toLowerCase()+variable.toLowerCase()+"-"+tpType.toLowerCase()+"-grouping.json";
 				InputStream s = NOpenAttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);
-				System.out.println(jsonFileName);
+				System.out.println("TTF:"+ttfId);
+				System.out.println("JSON:"+jsonFileName);
 				StringWriter writer = new StringWriter();
 				IOUtils.copy(s, writer, "UTF-8");
 				

@@ -54,7 +54,7 @@ public class AutoTester {
 			//String owlTBoxFile = "resources/owl/TBox v5.2.owl";
 			String owlBaseTBoxFile = FileUtil.chooseFile("Choose an OWL file containing a Inference Model: ", "resources/owl/", ".owl", "TBOX chosen file: ",0);
 			String owlConsistencyTBoxFile = FileUtil.chooseFile("Choose an OWL file containing a Consistency Model: ", "resources/owl/", ".owl", "TBOX chosen file: ",0);
-			//String declaredFile = "resources/declared/Possível 2.1 - 1 Layer.txt";
+			//String declaredFile = "resources/declared/Possï¿½vel 2.1 - 1 Layer.txt";
 			String declaredFile = FileUtil.chooseFile("Choose a TXT file containing DECLARED instances:", "resources/declared/", ".txt", "POSSIBLE instances chosen file: ",0);
 			//String possibleFile = "resources/possible/Declarado 2.1 - Base.txt";
 			String possibleFile = FileUtil.chooseFile("Choose a TXT file containing POSSIBLE instances: ", "resources/possible/", ".txt", "POSSIBLE instances chosen file: ",0);
@@ -64,7 +64,7 @@ public class AutoTester {
 			manualOrFile.add('F');
 			manualOrFile.add('M');
 			
-			Character fromFile = ConsoleUtil.getCharOptionFromConsole("Do you want to configure tests from a file (F) or manually (M)?", manualOrFile);
+			Character fromFile = ConsoleUtil.getCharOptionFromConsole("Do you want to configure tests from a file (F) or manually (M)? ", manualOrFile);
 			if(fromFile.equals('M') || fromFile.equals('m')){
 				int option = 0;
 				do {
@@ -78,7 +78,7 @@ public class AutoTester {
 					test.setPriorityOptionFromConsole(possibleFile);
 					tests.add(test);
 					
-					option = ConsoleUtil.getOptionFromConsole("Do you want to configure one more test? 1-Yes, 0-No", 0, 1,0, false);
+					option = ConsoleUtil.getOptionFromConsole("Do you want to configure one more test? 1-Yes, 0-No: ", 0, 1,0, false);
 				} while (option == 1);
 			}else{
 				String testsConfiguration = FileUtil.chooseFile("Choose a TXT file containing tests configuration:", "resources/tests/", ".txt", "tests configuration chosen file: ",0);
@@ -98,7 +98,7 @@ public class AutoTester {
 		        
 			}
 			
-			int createPathsFile = ConsoleUtil.getOptionFromConsole("Do you want to export found paths to a file? 1-Yes, 0-No", 0, 1,0, false);
+			int createPathsFile = ConsoleUtil.getOptionFromConsole("Do you want to export found paths to a file? 1-Yes, 0-No: ", 0, 1,0, false);
 			
 			Date now = new Date();
 			String nowStr = DateFormat.getInstance().format(now).replace("/", "-").replace(":", ".");
