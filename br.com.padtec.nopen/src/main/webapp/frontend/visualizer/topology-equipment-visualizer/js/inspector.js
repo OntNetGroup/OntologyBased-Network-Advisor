@@ -1,9 +1,15 @@
 var CommonInspectorGroups = {
-		
-//		data: { label: 'General properties:', index: 1 , attrs: { 'data': { 'data-tooltip': 'General properties of the equipment.' } }},
+		'gcc0':{
+			gcc0: {label:'GCC0-tp-grouping' , index: 1 ,label:{'label': {'data-tooltip': 'This entity represents the function of terminating and/or originating of the GCC0 channels.'}} },
+		},
+		'gcc12tp':{
+			gcc12tp: {label:'GCC12-tp-grouping' , index: 3 ,label:{'label': {'data-tooltip': 'This entity represents the function of terminating and/or originating of the GCC0 channels.'}} },
+			 
+		},
+		data: { label: 'General properties:', index: 2 , attrs: { 'data': { 'data-tooltip': 'General properties of the equipment.' } }},
 //		specific: { label: 'Specific properties:', index: 2 , attrs: { 'data': { 'data-tooltip': 'Specific properties of the equipment.' } }},
 //        attributes: { label: 'Attributes:', index: 3 , attrs: { 'data': { 'data-tooltip': 'Attributes of the card.' } }},
-        gcc0: {label:'GCC0-tp-grouping' , index: 1 ,attrs:{'data': {'data-tooltip': 'This entity represents the function of terminating and/or originating of the GCC0 channels.'}} },
+        gcc12tp: {label:'GCC12-tp-grouping' , index: 3 ,label:{'label': {'data-tooltip': 'This entity represents the function of terminating and/or originating of the GCC0 channels.'}} },
         //    equipment: { label: 'Equipment', index: 2 },	
 //    presentation: { label: 'Presentation', index: 3 },
 //    geometry: { label: 'Geometry', index: 4 },
@@ -12,7 +18,23 @@ var CommonInspectorGroups = {
 
 var InspectorDefs = {
 		'Card':{
-//				inputs: {
+				groups: CommonInspectorGroups,	
+				
+				inputs: {
+					directionality: {type: 'select' , options:['sink','source','bidirectional'],group: 'gcc0',index: 1 , label: "Directionality", attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of the termination point. Valid values are sink, source,and bidirectional. This attribute is read-only.'}}},
+			        application: {type: 'text' ,group: 'gcc0',index: 2 , label: "Application", attrs: {'label' : {'data-tooltip': 'This attribute indicates the applications transported by the GCC channel. Example applications	are ECC, (user data channel). Valid values are string.This attribute is read-only.'}}},
+               		codirectional: {type: 'toggle',group: 'gcc12tp',index: 2 , label: "Codirectional", attrs: { 'label': {'data-tooltip': 'This attribute specifies the directionality of the GCC12_TP with respect to the associated ODUk_CTP.	The value of TRUE means that the sink part of the GCC12_TP terminates the same signal direction as the sink part of the ODUk_CTP. The Source part behaves similarly. This attribute is meaningful only on objects instantiated under ODUk_CTP, and at least	one among ODUk_CTP and the subordinate object has Directionality equal to Bidirectional. This attribute is read-only.'}}},
+					gccaccess: {type: 'select' , options:['gg1','gcc2','gcc1-plus-gcc2'],group: 'gcc12tp',index: 3 , label: "GCC Access", attrs: { 'label': {'data-tooltip': 'This attribute indicates the GCC access represented	by this entity. Valid values are: 1) GCC1 2) GCC2 3) GCC1 + GCC2.This attribute is read-only.'}}},
+					gccpassthrough : {type: 'toggle' ,group: 'gcc12tp',index: 4 , label: "GCC Pass Through", attrs: { 'label': {'data-tooltip': 'This attribute controls the selected GCC overhead<br> whether it is passed through or modified. Valid<br> 	values are TRUE and FALSE. The value of TRUE means<br> that the GCC overhead shall pass through unmodified<br> 	from the ODUk CTP input to the ODUk CTP output.<br> 	Otherwise shall be set to all 0s at the ODUk CTP<br> output after the extraction of the COMMS data. This<br> attribute is not meaningful on objects instantiated<br> under ODUk_TTP, and on objects with Directionality<br> equals to Source.'}}},
+
+				},
+				label: {'label':{'data-tooltip': 'This entity represents the function of terminating and/or originating of the GCC0 channels.'}
+				},
+				groups: 'data',
+
+				
+				
+//			inputs: {
 ////					name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of the Card.' } } },
 //					attrs: {
 //						name: {
@@ -38,11 +60,11 @@ var InspectorDefs = {
 			},
 			'gcc12-tp':{
 				inputs:{
-					directionality: {type: 'select' , option:['sink','source','bidirectional'],index: 1 , label: "Directionality", attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of the termination point. Valid values are sink, source,and bidirectional. This attribute is read-only.'}}},
-					codirectional: {type: 'toggle' ,index: 2 , label: "Codirectional", attrs: { 'label': {'data-tooltip': 'This attribute specifies the directionality of the GCC12_TP with respect to the associated ODUk_CTP.	The value of TRUE means that the sink part of the GCC12_TP terminates the same signal direction as the sink part of the ODUk_CTP. The Source part behaves similarly. This attribute is meaningful only on objects instantiated under ODUk_CTP, and at least	one among ODUk_CTP and the subordinate object has Directionality equal to Bidirectional. This attribute is read-only.'}}},
-					gccaccess: {type: 'select' , option:['gg1','gcc2','gcc1-plus-gcc2'],index: 3 , label: "GCC Access", attrs: { 'label': {'data-tooltip': 'This attribute indicates the GCC access represented	by this entity. Valid values are: 1) GCC1 2) GCC2 3) GCC1 + GCC2.This attribute is read-only.'}}},
-					gccpassthrough : {type: 'toggle' ,index: 4 , label: "GCC Pass Through", attrs: { 'label': {'data-tooltip': 'This attribute controls the selected GCC overhead<br> whether it is passed through or modified. Valid<br> 	values are TRUE and FALSE. The value of TRUE means<br> that the GCC overhead shall pass through unmodified<br> 	from the ODUk CTP input to the ODUk CTP output.<br> 	Otherwise shall be set to all 0s at the ODUk CTP<br> output after the extraction of the COMMS data. This<br> attribute is not meaningful on objects instantiated<br> under ODUk_TTP, and on objects with Directionality<br> equals to Source.'}}},
-					application: {type: 'text' ,index: 5 , label: "Application", attrs: {'label' : {'data-tooltip': 'This attribute indicates the applications transported by the GCC channel. Example applications	are ECC, (user data channel). Valid values are string.This attribute is read-only.'}}}
+					directionality: {type: 'select' , option:['sink','source','bidirectional'],group: 'gcc12tp',index: 1 , label: "Directionality", attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of the termination point. Valid values are sink, source,and bidirectional. This attribute is read-only.'}}},
+					codirectional: {type: 'toggle',group: 'gcc12tp',index: 2 , label: "Codirectional", attrs: { 'label': {'data-tooltip': 'This attribute specifies the directionality of the GCC12_TP with respect to the associated ODUk_CTP.	The value of TRUE means that the sink part of the GCC12_TP terminates the same signal direction as the sink part of the ODUk_CTP. The Source part behaves similarly. This attribute is meaningful only on objects instantiated under ODUk_CTP, and at least	one among ODUk_CTP and the subordinate object has Directionality equal to Bidirectional. This attribute is read-only.'}}},
+					gccaccess: {type: 'select' , option:['gg1','gcc2','gcc1-plus-gcc2'],group: 'gcc12tp',index: 3 , label: "GCC Access", attrs: { 'label': {'data-tooltip': 'This attribute indicates the GCC access represented	by this entity. Valid values are: 1) GCC1 2) GCC2 3) GCC1 + GCC2.This attribute is read-only.'}}},
+					gccpassthrough : {type: 'toggle' ,group: 'gcc12tp',index: 4 , label: "GCC Pass Through", attrs: { 'label': {'data-tooltip': 'This attribute controls the selected GCC overhead<br> whether it is passed through or modified. Valid<br> 	values are TRUE and FALSE. The value of TRUE means<br> that the GCC overhead shall pass through unmodified<br> 	from the ODUk CTP input to the ODUk CTP output.<br> 	Otherwise shall be set to all 0s at the ODUk CTP<br> output after the extraction of the COMMS data. This<br> attribute is not meaningful on objects instantiated<br> under ODUk_TTP, and on objects with Directionality<br> equals to Source.'}}},
+					application: {type: 'text',group: 'gcc12tp',index: 5 , label: "Application", attrs: {'label' : {'data-tooltip': 'This attribute indicates the applications transported by the GCC channel. Example applications	are ECC, (user data channel). Valid values are string.This attribute is read-only.'}}}
 				},
 				label: {'label':{'data-tooltip': 'This entity represents the function of terminating and/or originating of the GCC1 or GCC2 channels.'}}
 			},
@@ -135,7 +157,7 @@ var InspectorDefs = {
 			'otuk-ttp':{
 				
 			},
-			groups: 'gcc0-tp',			
+			groups: CommonInspectorGroups,			
 		}
 };
 

@@ -92,7 +92,7 @@ public class VisualizerController {
 	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card){
 		
 		try {			
-			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card, pelems, plinks);	
+			Map<String, Map<String, String>> result = NOpenAttributeRecognizer.runfromEquipment(card, StudioComponents.studioRepository);	
 			
 		} catch (Exception e) {
 			e.printStackTrace();
