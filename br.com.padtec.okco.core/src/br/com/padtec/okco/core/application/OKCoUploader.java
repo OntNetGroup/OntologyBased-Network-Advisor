@@ -56,6 +56,10 @@ public class OKCoUploader {
 	public String getName(){ return name; }
 	private void setName(String name){ this.name = name; }
 	
+	/**
+	 * SET DEFAULT REASONER
+	 * @param name
+	 */
 	public OKCoUploader(String name)
 	{
 		setName(name);

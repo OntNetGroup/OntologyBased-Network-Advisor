@@ -159,10 +159,10 @@ public class InterfaceStructure {
 
 
 	public static String getPossibleTargetInputs(String sourceOutputId, String targetEquipmentId, OKCoUploader repository){
-		String interfaces = getInterfacesFromEquipment(targetEquipmentId, "Input", repository);
-		Gson gson = new Gson();
-		Type type = new TypeToken<HashMap<String,ArrayList<HashMap<String,String>>>>(){}.getType();
-		HashMap<String,ArrayList<HashMap<String,String>>> interfacesMap = gson.fromJson(interfaces, type);
+		HashMap<String, ArrayList<HashMap<String, String>>> interfacesMap = getInterfacesFromEquipment(targetEquipmentId, "Input", repository);
+//		Gson gson = new Gson();
+//		Type type = new TypeToken<HashMap<String,ArrayList<HashMap<String,String>>>>(){}.getType();
+//		HashMap<String,ArrayList<HashMap<String,String>>> interfacesMap = gson.fromJson(interfaces, type);
 
 		for (Entry<String, ArrayList<HashMap<String, String>>> entrySet : interfacesMap.entrySet()) {
 			//for each layer, get the list of ports
@@ -186,6 +186,7 @@ public class InterfaceStructure {
 			}
 	    }
 		//remount the json string and return
+		Gson gson = new Gson();
 		String result = gson.toJson(interfacesMap);
 		return result;
 	}
@@ -193,17 +194,17 @@ public class InterfaceStructure {
 	
 	public static String getPossibleConnections(String sourceEquipmentId, String targetEquipmentId, OKCoUploader repository, String typeOfConnection){
 		//String typeOfConnection = getTypeOfConnection(sourceEquipmentId, targetEquipmentId, repository);
-		HashMap<String, String> map = new HashMap<String,String>();
+		HashMap<String, HashMap<String, ArrayList<HashMap<String, String>>>> map = new HashMap<String,HashMap<String, ArrayList<HashMap<String, String>>>>();
 		String result = null;
 		if(typeOfConnection.equals("Horizontal")){
-			String resultSource = getInterfacesFromEquipment(sourceEquipmentId, "Output", repository);
-			String resultTarget = getInterfacesFromEquipment(targetEquipmentId, "Output", repository);
+			HashMap<String, ArrayList<HashMap<String, String>>> resultSource = getInterfacesFromEquipment(sourceEquipmentId, "Output", repository);
+			HashMap<String, ArrayList<HashMap<String, String>>> resultTarget = getInterfacesFromEquipment(targetEquipmentId, "Output", repository);
 			map.put(sourceEquipmentId, resultSource);
 			map.put(targetEquipmentId, resultTarget);
 		}
 		else{
-			String resultSource = getInterfacesFromEquipment(sourceEquipmentId, "Output", repository);
-			String resultTarget = getInterfacesFromEquipment(targetEquipmentId, "Input", repository);
+			HashMap<String, ArrayList<HashMap<String, String>>> resultSource = getInterfacesFromEquipment(sourceEquipmentId, "Output", repository);
+			HashMap<String, ArrayList<HashMap<String, String>>> resultTarget = getInterfacesFromEquipment(targetEquipmentId, "Input", repository);
 			map.put(sourceEquipmentId, resultSource);
 			map.put(targetEquipmentId, resultTarget);
 		}
@@ -228,11 +229,11 @@ public class InterfaceStructure {
 		return typeOfConnection;
 	}
 	
-	public static String getInterfacesFromEquipment(String equipmentId, String typePort, OKCoUploader repository){
+	public static HashMap<String, ArrayList<HashMap<String, String>>> getInterfacesFromEquipment(String equipmentId, String typePort, OKCoUploader repository){
 		return generateMappingInterfacesFromEquipment(equipmentId, typePort, repository);
 	}
 	
-	private static String generateMappingInterfacesFromEquipment(String equipmentId, String typePort, OKCoUploader repository){
+	private static HashMap<String, ArrayList<HashMap<String, String>>> generateMappingInterfacesFromEquipment(String equipmentId, String typePort, OKCoUploader repository){
 		
 		//create result hash
 		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
@@ -247,12 +248,12 @@ public class InterfaceStructure {
 			
 			//add Card > Output/Input relations in array  
 			if(typePort == "Output") {
-				relationsNameList.add(RelationEnum.intermediates_up_Transport_Function_Card_Layer.toString());
-				relationsNameList.add(RelationEnum.INV_is_interface_of_Output_Card_Transport_Function.toString());
+				relationsNameList.add(RelationEnum.INV_intermediates_up_Card_Layer_Transport_Function.toString());
+				relationsNameList.add(RelationEnum.INV_is_interface_of_Input_Card_Transport_Function.toString());
 			}
 			else if(typePort == "Input") {
-				relationsNameList.add(RelationEnum.intermediates_down_Transport_Function_Card_Layer.toString());
-				relationsNameList.add(RelationEnum.INV_is_interface_of_Input_Card_Transport_Function.toString());
+				relationsNameList.add(RelationEnum.INV_intermediates_down_Card_Layer_Transport_Function.toString());
+				relationsNameList.add(RelationEnum.INV_is_interface_of_Output_Card_Transport_Function.toString());
 			}
 			else {
 				relationsNameList.add(RelationEnum.componentOf.toString());
@@ -309,7 +310,7 @@ public class InterfaceStructure {
 		String json = gson.toJson(result);
 		System.out.println(json);
 				
-		return json;
+		return result;
 	}
 
 	private static boolean hasBinds(InfModel model, String portId) {

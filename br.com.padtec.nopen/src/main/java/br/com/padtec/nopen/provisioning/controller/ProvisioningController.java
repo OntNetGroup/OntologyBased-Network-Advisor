@@ -14,6 +14,7 @@ import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.provisioning.service.ProvisioningReasoner;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
+import br.com.padtec.nopen.service.NOpenReasoner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 
 @Controller
@@ -158,14 +159,14 @@ public class ProvisioningController {
 	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
 	protected @ResponseBody void parseCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
-//		ProvisioningManager provisioningManager = new ProvisioningManager(ProvisioningComponents.provisioningRepository);
+		ProvisioningManager provisioningManager = new ProvisioningManager(ProvisioningComponents.provisioningRepository);
 		
 		try {
 //			ProvisioningReasoner.runInference(true);
-//			provisioningManager.createElementsInOWL(elements);
-//			provisioningManager.createLinksInOWL(links);
-			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
-			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
+			provisioningManager.createElementsInOWL(elements);
+			provisioningManager.createLinksInOWL(links);
+//			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
+//			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
 			
 			ProvisioningReasoner.runInference(true);
 		} catch (Exception e) {
@@ -182,7 +183,7 @@ public class ProvisioningController {
 	protected @ResponseBody String getInputsFromOWL(@RequestParam("equipmentId") String equipmentId){
 		String result = null;
 		try {
-			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Input", ProvisioningComponents.provisioningRepository);
+//			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Input", ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -198,7 +199,7 @@ public class ProvisioningController {
 	protected @ResponseBody String getOutputsFromOWL(@RequestParam("equipmentId") String equipmentId){
 		String result = null;
 		try {
-			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
+//			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
