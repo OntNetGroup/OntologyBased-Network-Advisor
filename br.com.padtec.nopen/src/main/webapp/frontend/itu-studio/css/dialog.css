@@ -28,6 +28,12 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
     font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
 }
 
+.dialog .technology, .dialog .layer {
+	width: 100%;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
 .dialog .bg {
     position: fixed;
     top: 0;

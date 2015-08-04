@@ -14,6 +14,11 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
 import com.jointjs.util.JointUtilManager;
 
 public class ProvisioningManager {
@@ -35,6 +40,8 @@ public class ProvisioningManager {
 		OntModel ontModel = this.repository.getBaseModel();
 		String namespace = this.repository.getNamespace();
 		
+		FactoryUtil factoryUtil = new FactoryUtil();
+		
 		PElement[] elements = (PElement[]) JointUtilManager.getJavaFromJSON(jsonElements, PElement[].class);		
 		for(PElement element : elements) {
 			
@@ -42,11 +49,25 @@ public class ProvisioningManager {
 			String classURI = namespace + element.getType();
 			
 			//create new individual
-			Individual individual = FactoryUtil.createInstanceIndividual(ontModel, individualURI, classURI);
+			//Individual individual = 
+			factoryUtil.createInstanceIndividualStatement(ontModel, individualURI, classURI, false);
 			//set individual label
-			individual.setLabel(element.getName(),"EN");	
+			//individual.setLabel(element.getName(),"EN");	
 			
-		}		
+			Resource individual = ontModel.createResource(individualURI);
+			
+			Statement stmt = ontModel.createStatement(individual, RDFS.label, ontModel.createLiteral(element.getName()));
+			factoryUtil.stmts.add(stmt);
+		}	
+		
+		ontModel.enterCriticalSection(Lock.READ);
+		try {
+			factoryUtil.processStatements(ontModel);
+			System.out.println("TERMINOU1");
+		} finally {
+			ontModel.leaveCriticalSection();
+		}
+		
 		
 	}
 	
@@ -58,8 +79,11 @@ public class ProvisioningManager {
 	 */
 	public void createLinksInOWL(String jsonLinks) throws Exception {
 		
+		
 		OntModel ontModel = this.repository.getBaseModel();
 		String namespace = this.repository.getNamespace();
+		
+		FactoryUtil factoryUtil = new FactoryUtil();
 		
 		PLink[] links = (PLink[]) JointUtilManager.getJavaFromJSON(jsonLinks, PLink[].class);
 		for(PLink link : links) {
@@ -68,11 +92,20 @@ public class ProvisioningManager {
 			String predicate = getPredicateFromOWL(link.getSourceType(), link.getTargetType());
 			String object = namespace + link.getTarget();
 			
-			FactoryUtil.createInstanceRelation(ontModel, subject, predicate, object);
+			factoryUtil.createInstanceRelationStatement(ontModel, subject, predicate, object, false);
 			
 		}
 		
+		ontModel.enterCriticalSection(Lock.READ);
+		try {
+			factoryUtil.processStatements(ontModel);
+			System.out.println("TERMINOU2");
+		} finally {
+			ontModel.leaveCriticalSection();
+		}
+		
 	}
+	
 	
 	/**
 	 * Procedure to get predicate from owl model
@@ -99,7 +132,7 @@ public class ProvisioningManager {
 							"ont:" + targetType + " rdfs:subClassOf*/owl:intersectionOf*/rdf:rest*/rdf:first*/rdfs:subClassOf* ?range . " +
 						 "}";
 		
-		System.out.println(queryString);
+//		System.out.println(queryString);
 		
 		//execute query string
 		Query query = QueryFactory.create(queryString); 
@@ -132,9 +165,9 @@ public class ProvisioningManager {
 		    }
 		}
 		
-		System.out.println("source: " + sourceType);
-	    System.out.println("target: " + targetType);
-		System.out.println(predicate);
+//		System.out.println("source: " + sourceType);
+//	    System.out.println("target: " + targetType);
+//		System.out.println(predicate);
 		
 		return predicate;
 	}

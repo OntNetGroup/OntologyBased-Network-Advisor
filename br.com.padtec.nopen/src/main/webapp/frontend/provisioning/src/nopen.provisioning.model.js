@@ -269,6 +269,8 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			
 			$.each(card.connectedPorts, function(sourceId, target){
 				
+				console.log('TARGET: ' + target.type);
+				
 				if(target.type === "Input_Card") {
 					ports["Output_Card"][sourceId] = target;
 				} 

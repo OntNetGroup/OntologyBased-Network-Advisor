@@ -170,10 +170,16 @@ public class ProvisioningController {
 //			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
 //			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
 			
-			ProvisioningReasoner.runInference(true);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping(value = "/executeReasoning", method = RequestMethod.POST)
+	protected @ResponseBody void executeReasoning(){
+		System.out.println("INFERIU");
+		ProvisioningReasoner.runInference(true);
 	}
 	
 	/**

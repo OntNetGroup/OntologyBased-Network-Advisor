@@ -184,7 +184,6 @@ function graphHandler(graph, app) {
 			
 			content = content + '</select><br>'
 			content = content + 'Layer: <select class="layer"/>';
-			content = content + '<option value=""></option>'
 			content = content +  '</form>';
 			
 			var dialog = new joint.ui.Dialog({

@@ -29,6 +29,12 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var elements = [];
 		var links = [];
 		
+		//Reference Point Counter
+		var fep_counter = 0, ap_counter = 0, fp_counter = 0;
+		//TF OUT/IN Counter
+		var ttf_out_counter = 0, ttf_in_counter = 0, af_out_counter = 0, af_in_counter = 0, matrix_out_counter = 0, matrix_in_counter = 0;
+		
+		
 		//Supervisor
 //		var supervisor = {
 //				"type" : "Supervisor",
@@ -192,9 +198,252 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			//Links
 			else if(element.type === 'link') {
 				
+				var sourceType = $this.getElementType(cardCells, element.source.id);
+				var targetType = $this.getElementType(cardCells, element.target.id);
+				
+				var ttf_out = undefined, ttf_in = undefined, af_out = undefined, af_in = undefined, matrix_out = undefined, matrix_in = undefined;
+				
+				if(sourceType === 'Trail_Termination_Function') {
+					
+					//Trail_Termination_Function_Output (TTF_OUT)
+					ttf_out = {
+						"type" : "Trail_Termination_Function_Output",
+						"id" : joint.util.uuid(),
+						"name" : "Trail_Termination_Function_Output_" + ttf_out_counter,
+					};
+					elements.push(ttf_out);
+					ttf_out_counter++;
+					
+					//Trail_Termination_Function (TTF) > Trail_Termination_Function_Output (TTFOUT)
+					var linkTTF_TTFOUT = {
+							"sourceType" : 'Trail_Termination_Function',
+							"targetType" : 'Trail_Termination_Function_Output',
+							"source" : element.source.id,
+							"target" : ttf_out.id,
+					}
+					links.push(linkTTF_TTFOUT);
+					
+				}
+				
+				if(targetType === 'Trail_Termination_Function') {
+				
+					//Trail_Termination_Function_Input (TTF_IN)
+					ttf_in = {
+						"type" : "Trail_Termination_Function_Input",
+						"id" : joint.util.uuid(),
+						"name" : "Trail_Termination_Function_Input_" + ttf_in_counter,
+					};
+					elements.push(ttf_in);
+					ttf_in_counter++;
+				
+					//Trail_Termination_Function (TTF) > Trail_Termination_Function_Intput (TTFIN)
+					var linkTTF_TTFIN = {
+							"sourceType" : 'Trail_Termination_Function',
+							"targetType" : 'Trail_Termination_Function_Input',
+							"source" : element.target.id,
+							"target" : ttf_in.id,
+					}
+					links.push(linkTTF_TTFIN);
+					
+				}
+				
+				if(sourceType === 'Adaptation_Function') {
+					
+					//Adaptation_Function_Output (AF_OUT)
+					af_out = {
+						"type" : "Adaptation_Function_Output",
+						"id" : joint.util.uuid(),
+						"name" : "Adaptation_Function_Output_" + af_out_counter,
+					};
+					elements.push(af_out);
+					af_out_counter++;
+					
+					//Adaptation_Function (AF) > Adaptation_Function_Output (AFOUT)
+					var linkAF_AFOUT = {
+							"sourceType" : 'Adaptation_Function',
+							"targetType" : 'Adaptation_Function_Output',
+							"source" : element.source.id,
+							"target" : af_out.id,
+					}
+					links.push(linkAF_AFOUT);
+					
+				}
+				
+				if(targetType === 'Adaptation_Function') {
+					
+					//Adaptation_Function_Input (AF_IN)
+					af_in = {
+						"type" : "Adaptation_Function_Input",
+						"id" : joint.util.uuid(),
+						"name" : "Adaptation_Function_Input_" + af_in_counter,
+					};
+					elements.push(af_in);
+					af_in_counter++;
+					
+					//Adaptation_Function (AF) > Adaptation_Function_Input (AFIN)
+					var linkAF_AFIN = {
+							"sourceType" : 'Adaptation_Function',
+							"targetType" : 'Adaptation_Function_Input',
+							"source" : element.target.id,
+							"target" : af_in.id,
+					}
+					links.push(linkAF_AFIN);
+					
+				}
+				
+				if(sourceType === 'Matrix') {
+					
+					//Matrix_Output (M_OUT)
+					matrix_out = {
+						"type" : "Matrix_Output",
+						"id" : joint.util.uuid(),
+						"name" : "Matrix_Output_" + matrix_out_counter,
+					};
+					elements.push(matrix_out);
+					matrix_out_counter++;
+					
+					//Matrix (M) > Matrix_Output (MOUT)
+					var linkM_MOUT = {
+							"sourceType" : 'Matrix',
+							"targetType" : 'Matrix_Output',
+							"source" : element.source.id,
+							"target" : matrix_out.id,
+					}
+					links.push(linkM_MOUT);
+					
+				}
+				
+				if(targetType === 'Matrix') {
+					
+					//Matrix_Input (M_IN)
+					matrix_in = {
+						"type" : "Matrix_Input",
+						"id" : joint.util.uuid(),
+						"name" : "Matrix_Input" + matrix_in_counter,
+					};
+					elements.push(matrix_in);
+					matrix_in_counter++;
+					
+					//Matrix (M) > Matrix_Input (MIN)
+					var linkM_MIN = {
+							"sourceType" : 'Matrix',
+							"targetType" : 'Matrix_Input',
+							"source" : element.target.id,
+							"target" : matrix_in.id,
+					}
+					links.push(linkM_MIN);
+					
+				}
+				
+				if(sourceType === 'Trail_Termination_Function' && (targetType === 'Adaptation_Function' || targetType === 'Matrix')) {
+					//Reference_Point FEP (FEP)
+					var rp = {
+							"type" : "FEP",
+							"id" : element.id,
+							"name" : "FEP_" + fep_counter,
+					};
+					elements.push(rp);
+					fep_counter++;
+					
+					//TTF_OUT (TTFOUT) > FEP (FEP)
+					var linkTTFOUT_FEP = {
+							"sourceType" : 'FEP',
+							"targetType" : 'Trail_Termination_Function_Output',
+							"source" : element.id,
+							"target" : ttf_out.id,
+					}
+					links.push(linkTTFOUT_FEP);
+					
+					if(targetType === 'Adaptation_Function') {
+						
+						//FEP (FEP) > AF_IN (AFIN)
+						var linFEP_AFIN = {
+								"sourceType" : 'FEP',
+								"targetType" : 'Adaptation_Function_Input',
+								"source" : element.id,
+								"target" : af_in.id,
+						}
+						links.push(linFEP_AFIN);
+						
+					}
+					else {
+						
+						//FEP (FEP) > MATRIX_IN (MIN)
+						var linkFEP_MIN = {
+								"sourceType" : 'FEP',
+								"targetType" : 'Matrix_Input',
+								"source" : element.id,
+								"target" : matrix_in.id,
+						}
+						links.push(linkFEP_MIN);
+						
+					}
+					
+				}
+				
+				if(sourceType === 'Adaptation_Function' && targetType === 'Trail_Termination_Function') {
+					//Reference_Point AP (AP)
+					var rp = {
+							"type" : "AP",
+							"id" : element.id,
+							"name" : "AP_" + ap_counter,
+					};
+					elements.push(rp);
+					ap_counter++;
+					
+					//AF_OUT (AFOUT) > AP (AP)
+					var linAFOUT_AP = {
+							"sourceType" : 'Adaptation_Function_Output',
+							"targetType" : 'AP',
+							"source" : af_out.id,
+							"target" : element.id,
+					}
+					links.push(linAFOUT_AP);
+					
+					//AP (AP) > TTF_IN (TTFIN)
+					var linkAP_TTFIN = {
+							"sourceType" : 'AP',
+							"targetType" : 'Trail_Termination_Function_Input',
+							"source" : element.id,
+							"target" : ttf_in.id,
+					}
+					links.push(linkAP_TTFIN);
+					
+				}
+				
+				if(sourceType === 'Matrix' && targetType === 'Adaptation_Function') {
+					//Reference_Point FP (FP)
+					var rp = {
+							"type" : "FP",
+							"id" : element.id,
+							"name" : "FP" + fp_counter,
+					};
+					elements.push(rp);
+					fp_counter++;
+					
+					//M_OUT (MOUT) > FP (FP)
+					var linkMOUT_FP = {
+							"sourceType" : 'Matrix_Output',
+							"targetType" : 'FP',
+							"source" : matrix_out.id,
+							"target" : element.id,
+					}
+					links.push(linkMOUT_FP);
+					
+					//FP (FP) > MIN (MIN)
+					var linkFP_MIN = {
+							"sourceType" : 'FP',
+							"targetType" : 'Adaptation_Function_Input',
+							"source" : element.id,
+							"target" : af_in.id,
+					}
+					links.push(linkFP_MIN);
+					
+				}
+				
 				var link = {
-						"sourceType" : $this.getElementType(cardCells, element.source.id),
-						"targetType" : $this.getElementType(cardCells, element.target.id),
+						"sourceType" : sourceType,
+						"targetType" : targetType,
 						"source" : element.source.id,
 						"target" : element.target.id
 				}
@@ -246,6 +495,23 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 //		console.log('Equipment: ' + JSON.stringify(equipment));
 //		console.log('Card: ' + JSON.stringify(card));
+		
+	},
+	
+	executeReasoning : function() {
+	
+		//execute parse
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "executeReasoning.htm",
+		   success: function(){
+			   //console.log('PARSE OK!')
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
 		
 	},
 	

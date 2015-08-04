@@ -440,7 +440,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 //		console.log(JSON.stringify(graph));
 		
-		
+		owl.executeReasoning();
 		//start pre provsioning
 		preProvisioning.start(app, subnetworks);
 	}

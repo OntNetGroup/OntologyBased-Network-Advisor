@@ -280,6 +280,7 @@ public class InterfaceStructure {
 					String label = QueryUtil.getLabelFromOWL(repository.getBaseModel(), port);
 					
 					//replace label language
+					label = label.replace("@en", "");
 					label = label.replace("@EN", "");
 					
 					//create port object

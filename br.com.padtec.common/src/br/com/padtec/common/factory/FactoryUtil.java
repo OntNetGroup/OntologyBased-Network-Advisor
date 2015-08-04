@@ -19,7 +19,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 public class FactoryUtil {
-	ArrayList<Statement> stmts = new ArrayList<Statement>();
+	public ArrayList<Statement> stmts = new ArrayList<Statement>();
 	List<String> newIndividuals = new ArrayList<String>();
 	
 	public List<String> getNewIndividuals() {
@@ -348,15 +348,15 @@ public class FactoryUtil {
 		if(model == null){
 			throw new Exception("The model is null.");
 		}
-		
-		System.out.println("\n"
-							+ "Executing createInstanceRelationStatement(" 
-							+ indvSourceURI.replace(model.getNsPrefixURI(""), "") 
-							+ ", " 
-							+ objectPropertyURI.replace(model.getNsPrefixURI(""), "") 
-							+ ", " 
-							+ indvTargetURI.replace(model.getNsPrefixURI(""), "") 
-							+ ")...");
+//		
+//		System.out.println("\n"
+//							+ "Executing createInstanceRelationStatement(" 
+//							+ indvSourceURI.replace(model.getNsPrefixURI(""), "") 
+//							+ ", " 
+//							+ objectPropertyURI.replace(model.getNsPrefixURI(""), "") 
+//							+ ", " 
+//							+ indvTargetURI.replace(model.getNsPrefixURI(""), "") 
+//							+ ")...");
 		//Create an object property between two individuals
 		Resource indvSource = model.createResource(indvSourceURI);
 		Resource indvTarget = model.createResource(indvTargetURI);
