@@ -29,11 +29,12 @@ var InspectorDefs = {
 //				},			
 			'gcc0-tp':{
 				inputs: {
-					directionality: {type: 'select' , option:['sink','source','bidirectional'],index: 1 , label: "Directionality", attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of the termination point. Valid values are sink, source,and bidirectional. This attribute is read-only.'}}},
-			        application: {type: 'text' ,index: 2 , label: "Application", attrs: {'label' : {'data-tooltip': 'This attribute indicates the applications transported by the GCC channel. Example applications	are ECC, (user data channel). Valid values are string.This attribute is read-only.'}}}
+					directionality: {type: 'select' , option:['sink','source','bidirectional'],group: 'gcc0',index: 1 , label: "Directionality", attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of the termination point. Valid values are sink, source,and bidirectional. This attribute is read-only.'}}},
+			        application: {type: 'text' ,group: 'gcc0',index: 2 , label: "Application", attrs: {'label' : {'data-tooltip': 'This attribute indicates the applications transported by the GCC channel. Example applications	are ECC, (user data channel). Valid values are string.This attribute is read-only.'}}}
 				},
 				label: {'label':{'data-tooltip': 'This entity represents the function of terminating and/or originating of the GCC0 channels.'}
-				}
+				},
+				groups: 'gcc0-tp',
 			},
 			'gcc12-tp':{
 				inputs:{
@@ -134,7 +135,7 @@ var InspectorDefs = {
 			'otuk-ttp':{
 				
 			},
-						
+			groups: 'gcc0-tp',			
 		}
 };
 

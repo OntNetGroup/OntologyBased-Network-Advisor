@@ -448,6 +448,7 @@ function openFromURL(filename, graph){
 							"source" : element.attributes.parent,
 							"target" : element.attributes.id
 					}
+					ITUlinks.push(link);
 				}
 				//Adaptation_Function
 				else if (element.attributes.subtype === 'Adaptation_Function') {
