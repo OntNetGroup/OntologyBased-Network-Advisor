@@ -495,7 +495,9 @@
 
     <!-- http://www.menthor.net/provisioning.owl#INV.connects -->
 
-    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.connects"/>
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.connects">
+        <owl:propertyDisjointWith rdf:resource="http://www.menthor.net/provisioning.owl#connects"/>
+    </owl:ObjectProperty>
     
 
 
@@ -544,13 +546,16 @@
     <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.has_connects_supported">
         <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
         <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+        <owl:propertyDisjointWith rdf:resource="http://www.menthor.net/provisioning.owl#has_connects_supported"/>
     </owl:ObjectProperty>
     
 
 
     <!-- http://www.menthor.net/provisioning.owl#INV.has_path -->
 
-    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.has_path"/>
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.has_path">
+        <owl:propertyDisjointWith rdf:resource="http://www.menthor.net/provisioning.owl#has_path"/>
+    </owl:ObjectProperty>
     
 
 
@@ -1988,16 +1993,25 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF.compose">
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMAF.bindedMTTF.compose">
         <rdf:type rdf:resource="&swrl;Variable"/>
     </rdf:Description>
-    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF">
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMAF.bindedMTTF">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMAF">
         <rdf:type rdf:resource="&swrl;Variable"/>
     </rdf:Description>
     <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function">
         <rdf:type rdf:resource="&swrl;Variable"/>
     </rdf:Description>
     <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.up">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF.compose">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF">
         <rdf:type rdf:resource="&swrl;Variable"/>
     </rdf:Description>
     <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.compose">
@@ -2033,6 +2047,39 @@
     <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.down">
         <rdf:type rdf:resource="&swrl;Variable"/>
     </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.link_input.compose">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.link_input">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.link_input.compose.composed_output">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.link_input.compose.composed_output.linked">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.paths">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.paths.connect">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.paths.connect.inv_path">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.supports">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.mc_connect">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point.mc_connect.paths">
+        <rdf:type rdf:resource="&swrl;Variable"/>
+    </rdf:Description>
     <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.bindedAFtoTTF.compose">
         <rdf:type rdf:resource="&swrl;Variable"/>
     </rdf:Description>
@@ -2056,161 +2103,6 @@
     </rdf:Description>
     <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function.bindsAFtoTTF">
         <rdf:type rdf:resource="&swrl;Variable"/>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="&swrl;Imp"/>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_CardLayer_TrailTerminationFunction"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF.compose"/>
-                    </rdf:Description>
-                </rdf:first>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;AtomList"/>
-                        <rdf:rest>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;AtomList"/>
-                                <rdf:rest rdf:resource="&rdf;nil"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF.compose"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
-                                    </rdf:Description>
-                                </rdf:first>
-                            </rdf:Description>
-                        </rdf:rest>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Matrix"/>
-                            </rdf:Description>
-                        </rdf:first>
-                    </rdf:Description>
-                </rdf:rest>
-            </rdf:Description>
-        </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:rest rdf:resource="&rdf;nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_up"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="&swrl;Imp"/>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;AtomList"/>
-                        <rdf:rest rdf:resource="&rdf;nil"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.compose"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
-                            </rdf:Description>
-                        </rdf:first>
-                    </rdf:Description>
-                </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_CardLayer_TrailTerminationFunction"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.compose"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:rest rdf:resource="&rdf;nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_up"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="&swrl;Imp"/>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;AtomList"/>
-                        <rdf:rest>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;AtomList"/>
-                                <rdf:rest rdf:resource="&rdf;nil"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsMAF.down"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.down"/>
-                                    </rdf:Description>
-                                </rdf:first>
-                            </rdf:Description>
-                        </rdf:rest>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsMAF"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsMAF.down"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_down"/>
-                            </rdf:Description>
-                        </rdf:first>
-                    </rdf:Description>
-                </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsMAF"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Matrix.Adaptation_Function"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:rest rdf:resource="&rdf;nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.down"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_down"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="&swrl;Imp"/>
@@ -2277,9 +2169,9 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.down"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_down"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#has_path.Reference_Point.Reference_Point"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
@@ -2290,35 +2182,61 @@
                 <rdf:rest>
                     <rdf:Description>
                         <rdf:type rdf:resource="&swrl;AtomList"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedAFtoTTF"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Adaptation_Function.Trail_Termination_Function"/>
-                            </rdf:Description>
-                        </rdf:first>
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="&swrl;AtomList"/>
-                                <rdf:rest rdf:resource="&rdf;nil"/>
                                 <rdf:first>
                                     <rdf:Description>
-                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedAFtoTTF.compose"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.down"/>
+                                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.link_input"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#links_input.Reference_Point.Input"/>
                                     </rdf:Description>
                                 </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.link_input.compose.composed_output"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.link_input.compose.composed_output.linked"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#links_output.Reference_Point.Output"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                                <rdf:rest rdf:resource="&rdf;nil"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
+                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.link_input.compose.composed_output.linked"/>
+                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths"/>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
                             </rdf:Description>
                         </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Output"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.link_input.compose"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.link_input.compose.composed_output"/>
+                            </rdf:Description>
+                        </rdf:first>
                     </rdf:Description>
                 </rdf:rest>
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_CardLayer_TrailTerminationFunction"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedAFtoTTF"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedAFtoTTF.compose"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Input"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.link_input"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.link_input.compose"/>
                     </rdf:Description>
                 </rdf:first>
             </rdf:Description>
@@ -2346,14 +2264,6 @@
                 <rdf:rest>
                     <rdf:Description>
                         <rdf:type rdf:resource="&swrl;AtomList"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsAFtoTTF"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Adaptation_Function"/>
-                            </rdf:Description>
-                        </rdf:first>
                         <rdf:rest>
                             <rdf:Description>
                                 <rdf:type rdf:resource="&swrl;AtomList"/>
@@ -2367,6 +2277,14 @@
                                 </rdf:first>
                             </rdf:Description>
                         </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsAFtoTTF"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Adaptation_Function"/>
+                            </rdf:Description>
+                        </rdf:first>
                     </rdf:Description>
                 </rdf:rest>
                 <rdf:first>
@@ -2379,6 +2297,547 @@
                 </rdf:first>
             </rdf:Description>
         </swrl:body>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&swrl;Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMAF.bindedMTTF"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMAF.bindedMTTF.compose"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                                        <rdf:rest rdf:resource="&rdf;nil"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMAF.bindedMTTF.compose"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                    </rdf:Description>
+                                </rdf:rest>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMAF"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMAF.bindedMTTF"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Matrix"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                            </rdf:Description>
+                        </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMAF"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Matrix.Adaptation_Function"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest rdf:resource="&rdf;nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_up"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&swrl;Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                <rdf:rest rdf:resource="&rdf;nil"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF.compose"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                            </rdf:Description>
+                        </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Matrix"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedMTTF.compose"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest rdf:resource="&rdf;nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_up"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&swrl;Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.compose"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                        <rdf:rest rdf:resource="&rdf;nil"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.compose"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest rdf:resource="&rdf;nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.up"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_up"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&swrl;Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#has_path.Reference_Point.Reference_Point"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths.connect"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths.connect.inv_path"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#has_path.Reference_Point.Reference_Point"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                                        <rdf:rest rdf:resource="&rdf;nil"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths.connect.inv_path"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.supports"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths.connect"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#connects.Reference_Point.Reference_Point"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest rdf:resource="&rdf;nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.supports"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#has_connects_supported"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&swrl;Imp"/>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest rdf:resource="&rdf;nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#has_path.Reference_Point.Reference_Point"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.mc_connect"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.mc_connect.paths"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#has_path.FEP.AP"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                <rdf:rest rdf:resource="&rdf;nil"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.mc_connect.paths"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.paths"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                            </rdf:Description>
+                        </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point.mc_connect"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#mc"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&swrl;Imp"/>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest rdf:resource="&rdf;nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.has_interface"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#is_interface_of.Input_Card.Transport_Function"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.maps"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Input_Card.Input"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                <rdf:rest rdf:resource="&rdf;nil"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.has_interface"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.maps.compose"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Input"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.maps"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.maps.compose"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:body>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&swrl;Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#y"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#z"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;DifferentIndividualsAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#x"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#z"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&swrl;DifferentIndividualsAtom"/>
+                                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#x"/>
+                                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#y"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                                <rdf:rest rdf:resource="&rdf;nil"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="&swrl;DifferentIndividualsAtom"/>
+                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#y"/>
+                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#z"/>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#x"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#y"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest rdf:resource="&rdf;nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#x"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#z"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&swrl;Imp"/>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest rdf:resource="&rdf;nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.down"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_down"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsMAF"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Matrix.Adaptation_Function"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                <rdf:rest rdf:resource="&rdf;nil"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsMAF.down"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.down"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                            </rdf:Description>
+                        </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsMAF"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindsMAF.down"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_down"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&swrl;Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;AtomList"/>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;AtomList"/>
+                                <rdf:rest rdf:resource="&rdf;nil"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
+                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedAFtoTTF.compose"/>
+                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.down"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                            </rdf:Description>
+                        </rdf:rest>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedAFtoTTF"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Adaptation_Function.Trail_Termination_Function"/>
+                            </rdf:Description>
+                        </rdf:first>
+                    </rdf:Description>
+                </rdf:rest>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_CardLayer_TrailTerminationFunction"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedAFtoTTF"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.bindedAFtoTTF.compose"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="&swrl;AtomList"/>
+                <rdf:rest rdf:resource="&rdf;nil"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
+                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function.down"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_down"/>
+                    </rdf:Description>
+                </rdf:first>
+            </rdf:Description>
+        </swrl:head>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="&swrl;Imp"/>
@@ -2422,142 +2881,6 @@
                 </rdf:first>
             </rdf:Description>
         </swrl:head>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="&swrl;Imp"/>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;AtomList"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#y"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#z"/>
-                            </rdf:Description>
-                        </rdf:first>
-                        <rdf:rest>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;AtomList"/>
-                                <rdf:rest>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="&swrl;AtomList"/>
-                                        <rdf:first>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="&swrl;DifferentIndividualsAtom"/>
-                                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#x"/>
-                                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#y"/>
-                                            </rdf:Description>
-                                        </rdf:first>
-                                        <rdf:rest>
-                                            <rdf:Description>
-                                                <rdf:type rdf:resource="&swrl;AtomList"/>
-                                                <rdf:rest rdf:resource="&rdf;nil"/>
-                                                <rdf:first>
-                                                    <rdf:Description>
-                                                        <rdf:type rdf:resource="&swrl;DifferentIndividualsAtom"/>
-                                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#y"/>
-                                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#z"/>
-                                                    </rdf:Description>
-                                                </rdf:first>
-                                            </rdf:Description>
-                                        </rdf:rest>
-                                    </rdf:Description>
-                                </rdf:rest>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="&swrl;DifferentIndividualsAtom"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#x"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#z"/>
-                                    </rdf:Description>
-                                </rdf:first>
-                            </rdf:Description>
-                        </rdf:rest>
-                    </rdf:Description>
-                </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#x"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#y"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:rest rdf:resource="&rdf;nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#x"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#z"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="&swrl;Imp"/>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:rest rdf:resource="&rdf;nil"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.has_interface"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#is_interface_of.Input_Card.Transport_Function"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:head>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="&swrl;AtomList"/>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;AtomList"/>
-                        <rdf:rest>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;AtomList"/>
-                                <rdf:rest rdf:resource="&rdf;nil"/>
-                                <rdf:first>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="&swrl;SameIndividualAtom"/>
-                                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.has_interface"/>
-                                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.maps.compose"/>
-                                    </rdf:Description>
-                                </rdf:first>
-                            </rdf:Description>
-                        </rdf:rest>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                                <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
-                                <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.maps"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#binds.Input_Card.Input"/>
-                            </rdf:Description>
-                        </rdf:first>
-                    </rdf:Description>
-                </rdf:rest>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="&swrl;IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Input"/>
-                        <swrl:argument2 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.maps"/>
-                        <swrl:argument1 rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card.maps.compose"/>
-                    </rdf:Description>
-                </rdf:first>
-            </rdf:Description>
-        </swrl:body>
     </rdf:Description>
 </rdf:RDF>
 

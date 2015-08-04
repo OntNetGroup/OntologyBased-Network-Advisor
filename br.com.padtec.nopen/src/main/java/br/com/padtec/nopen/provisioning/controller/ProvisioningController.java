@@ -178,7 +178,6 @@ public class ProvisioningController {
 	
 	@RequestMapping(value = "/executeReasoning", method = RequestMethod.POST)
 	protected @ResponseBody void executeReasoning(){
-		System.out.println("INFERIU");
 		ProvisioningReasoner.runInference(true);
 	}
 	

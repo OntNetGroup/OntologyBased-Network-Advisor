@@ -393,10 +393,10 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					
 					//AF_OUT (AFOUT) > AP (AP)
 					var linAFOUT_AP = {
-							"sourceType" : 'Adaptation_Function_Output',
-							"targetType" : 'AP',
-							"source" : af_out.id,
-							"target" : element.id,
+							"sourceType" : 'AP',
+							"targetType" : 'Adaptation_Function_Output',
+							"source" : element.id,
+							"target" : af_out.id,
 					}
 					links.push(linAFOUT_AP);
 					
@@ -423,10 +423,10 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					
 					//M_OUT (MOUT) > FP (FP)
 					var linkMOUT_FP = {
-							"sourceType" : 'Matrix_Output',
-							"targetType" : 'FP',
-							"source" : matrix_out.id,
-							"target" : element.id,
+							"sourceType" : 'FP',
+							"targetType" : 'Matrix_Output',
+							"source" : element.id,
+							"target" : matrix_out.id,
 					}
 					links.push(linkMOUT_FP);
 					

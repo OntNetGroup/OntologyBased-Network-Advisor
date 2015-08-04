@@ -250,6 +250,9 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   }
 		});
 		
+		//execute reasoning
+		owl.executeReasoning();
+		
 	},
 	
 	//method to generate import topology dialog
@@ -440,7 +443,9 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 //		console.log(JSON.stringify(graph));
 		
+		//execute reasoning
 		owl.executeReasoning();
+		
 		//start pre provsioning
 		preProvisioning.start(app, subnetworks);
 	}

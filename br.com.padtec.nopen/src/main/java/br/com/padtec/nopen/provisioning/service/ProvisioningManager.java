@@ -60,13 +60,15 @@ public class ProvisioningManager {
 			factoryUtil.stmts.add(stmt);
 		}	
 		
-		ontModel.enterCriticalSection(Lock.READ);
-		try {
-			factoryUtil.processStatements(ontModel);
-			System.out.println("TERMINOU1");
-		} finally {
-			ontModel.leaveCriticalSection();
-		}
+		factoryUtil.processStatements(ontModel);
+		
+//		ontModel.enterCriticalSection(Lock.READ);
+//		try {
+//			factoryUtil.processStatements(ontModel);
+//			System.out.println("TERMINOU1");
+//		} finally {
+//			ontModel.leaveCriticalSection();
+//		}
 		
 		
 	}
@@ -96,13 +98,15 @@ public class ProvisioningManager {
 			
 		}
 		
-		ontModel.enterCriticalSection(Lock.READ);
-		try {
-			factoryUtil.processStatements(ontModel);
-			System.out.println("TERMINOU2");
-		} finally {
-			ontModel.leaveCriticalSection();
-		}
+		factoryUtil.processStatements(ontModel);
+		
+//		ontModel.enterCriticalSection(Lock.READ);
+//		try {
+//			factoryUtil.processStatements(ontModel);
+//			System.out.println("TERMINOU2");
+//		} finally {
+//			ontModel.leaveCriticalSection();
+//		}
 		
 	}
 	
