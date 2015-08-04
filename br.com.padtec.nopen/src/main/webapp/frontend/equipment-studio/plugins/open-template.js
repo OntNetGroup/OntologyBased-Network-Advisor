@@ -181,7 +181,8 @@ function openFromURL(filename, graph){
 		$.ajax({
 		   type: "POST",
 		   async: false,
-		   url: "parseEquipToOWL.htm",
+//		   url: "parseEquipToOWL.htm",
+		   url: "parseTemplateToOWL.htm",
 		   data: {
 			   'elements' : JSON.stringify(elements),
 			   'links' : JSON.stringify(links),
@@ -394,7 +395,8 @@ function generateOpenTemplateDialog(graph, data){
 			$.ajax({
 			   type: "POST",
 			   async: false,
-			   url: "parseEquipToOWL.htm",
+//			   url: "parseEquipToOWL.htm",
+			   url: "parseTemplateToOWL.htm",
 			   data: {
 				   'elements' : JSON.stringify(elements),
 				   'links' : JSON.stringify(links),
