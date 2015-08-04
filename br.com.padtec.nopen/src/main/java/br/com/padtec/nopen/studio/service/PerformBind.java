@@ -98,9 +98,9 @@ public class PerformBind {
 			
 			//create the componentOf relation between target and the card 
 			
-			List<String> card = QueryUtil.getIndividualsURIAtObjectPropertyRange(repository.getBaseModel(), repository.getNamespace() + idSource, repository.getNamespace() + RelationEnum.INV_componentOf.toString(), repository.getNamespace() + ConceptEnum.Card.toString());
-			String cardId = null;
-			if(!card.isEmpty()){
+			//List<String> card = QueryUtil.getIndividualsURIAtObjectPropertyRange(repository.getBaseModel(), repository.getNamespace() + idSource, repository.getNamespace() + RelationEnum.INV_componentOf.toString(), repository.getNamespace() + ConceptEnum.Card.toString());
+			//String cardId = null;
+			/*if(!card.isEmpty()){
 				cardId = card.get(0).substring(card.get(0).indexOf("#")+1);
 			}else{
 				ArrayList<String> relationsToGetCard = new ArrayList<String>();
@@ -109,18 +109,18 @@ public class PerformBind {
 				ArrayList<String> result = QueryUtil.endOfGraph(repository.getBaseModel(), idSource, relationsToGetCard);
 				cardId = result.get(0).substring(result.get(0).indexOf("#")+1);
 			}
-			
+			*/
 			
 			specificPropertyURIs = QueryUtil.getRelationsBetweenClasses(NOpenComponents.nopenRepository.getBaseModel(), NOpenComponents.nopenRepository.getNamespace() + ConceptEnum.Card.toString(), NOpenComponents.nopenRepository.getNamespace() + typeTarget, NOpenComponents.nopenRepository.getNamespace() + RelationEnum.componentOf.toString());
 			String specificInterfaceComponentOf = specificPropertyURIs.get(0);
 			specificInterfaceComponentOf = specificInterfaceComponentOf.substring(specificInterfaceComponentOf.indexOf("#")+1);
 			
-			FactoryUtil.createInstanceRelation(
+		/*	FactoryUtil.createInstanceRelation(
 					repository.getBaseModel(), 
 					repository.getNamespace() + cardId, 
 					repository.getNamespace() + specificInterfaceComponentOf,
 					repository.getNamespace() + idTarget
-			);
+			);*/
 			
 			return true;
 			
@@ -252,12 +252,7 @@ public class PerformBind {
 	 */
 	public synchronized static boolean applyBinds(DtoJointElement dtoSourceElement, DtoJointElement dtoTargetElement, String flag, OKCoUploader repository) throws Exception {
 			if(flag.equals("ITU")){
-				new Thread(){
-					@Override
-					public void run(){
-						StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
-					}
-				}.start();
+				StudioComponents.studioRepository.getReasoner().run(StudioComponents.studioRepository.getBaseModel());
 			}
 			boolean result = false;
 			String nameSource = dtoSourceElement.getName();
