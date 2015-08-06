@@ -12,6 +12,7 @@ import com.jointjs.util.JointUtilManager;
 
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.NOpenAttributeRecognizer;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
@@ -92,7 +93,13 @@ public class VisualizerController {
 	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card){
 		
 		try {			
-			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card, pelems, plinks);	
+			for(PElement p: pelems){
+				System.out.println(p);
+			}
+			for(PLink p: plinks){
+				System.out.println(p);
+			}			
+			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card,pelems,plinks);	
 			
 		} catch (Exception e) {
 			e.printStackTrace();

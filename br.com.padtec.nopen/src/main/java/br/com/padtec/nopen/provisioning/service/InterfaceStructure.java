@@ -29,109 +29,6 @@ import java.lang.reflect.Type;
 
 public class InterfaceStructure {
 	
-/*	public static String getMatrixWithPorts(String equipmentId, OKCoUploader repository){
-		ArrayList<String> matrixes = getMatrixesFromEquipment(repository.getBaseModel(), equipmentId);
-		HashMap<String,ArrayList<HashMap<String,String>>> result = new HashMap<String,ArrayList<HashMap<String,String>>>();
-		for(String matrix : matrixes){
-			//create layer array
-			ArrayList<HashMap<String, String>> matrixPortMapping = new ArrayList<HashMap<String, String>>();
-			
-			//get Output/Input ports by layer
-			matrix = matrix.substring(matrix.indexOf("#")+1);
-			
-			ArrayList<String> ports = new ArrayList<String>();
-			
-			ArrayList<String> relationsNameList = new ArrayList<String>();
-			//add the inputs to the mapping
-			relationsNameList.add(repository.getNamespace() + RelationEnum.A_Matrix_MatrixInput.toString());
-			ports = QueryUtil.endOfGraph(repository.getBaseModel(), matrix, relationsNameList );
-			for(String port : ports){
-				//create port hash
-				HashMap<String, String> portMapping = new HashMap<String, String>();
-
-				//replace port namespace 
-				port = port.replace(repository.getNamespace(), "");
-
-				//get label of port
-				String label = QueryUtil.getLabelFromOWL(repository.getBaseModel(), port);
-
-				//replace label language
-				label = label.replace("@EN", "");
-
-				//create port object
-				portMapping.put("id", port);
-				portMapping.put("name", label);
-				portMapping.put("type", "Input");
-
-				//add port hash in layer array
-				matrixPortMapping.add(portMapping);
-			}
-			
-
-			//add the outputs to the mapping
-			relationsNameList.remove(relationsNameList.size()-1);
-			relationsNameList.add(repository.getNamespace() + RelationEnum.A_Matrix_MatrixOutput.toString());
-			ports = QueryUtil.endOfGraph(repository.getBaseModel(), matrix, relationsNameList );
-			for(String port : ports){
-					//create port hash
-				HashMap<String, String> portMapping = new HashMap<String, String>();
-
-				//replace port namespace 
-				port = port.replace(repository.getNamespace(), "");
-
-				//get label of port
-				String label = QueryUtil.getLabelFromOWL(repository.getBaseModel(), port);
-
-				//replace label language
-				label = label.replace("@EN", "");
-
-				//create port object
-				portMapping.put("id", port);
-				portMapping.put("name", label);
-				portMapping.put("type", "Output");
-
-				//add port hash in layer array
-				matrixPortMapping.add(portMapping);
-			}
-
-			
-			//add layer in result hash
-			if(matrixPortMapping.size() > 0) {
-				
-				//replace layer namespace 
-				matrix = matrix.replace(repository.getNamespace(), "");
-				
-				//put layer hash on result hash
-				result.put(matrix, matrixPortMapping);
-			}
-		}
-		
-		//transform the result mapping in a JSON string
-		Gson gson = new Gson(); 
-		String json = gson.toJson(result);
-		System.out.println(json);
-				
-		return json;
-	}
-
-
-	/*private static ArrayList<String> getMatrixesFromEquipment(InfModel model, String individualName) {
-		ArrayList<String> relationsNameList = new ArrayList<String>();
-		relationsNameList.add(RelationEnum.INV_supervises_Equipment_Supervisor.toString());
-		relationsNameList.add(RelationEnum.supervises_card_Supervisor_Card.toString());
-		relationsNameList.add(RelationEnum.A_Card_TFCardElement.toString());
-		ArrayList<String> result = QueryUtil.endOfGraph(model, individualName, relationsNameList);
-		Iterator<String> iterator = result.iterator();
-		while(iterator.hasNext()){
-			String tfCardElement = iterator.next();
-			String classURI = model.getNsPrefixURI("") + ConceptEnum.Matrix.toString();
-			if(!QueryUtil.isIndividualFromClass(model, tfCardElement, classURI )){
-				iterator.remove();
-			}
-		}
-		return result;
-	}*/
-
 	public static String getOutputsUpperLayerFromEquipment(String equipmentId, OKCoUploader repository){
 		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
 		Iterator it = layers.iterator();
@@ -141,7 +38,7 @@ public class InterfaceStructure {
 			ArrayList<String> relations = new ArrayList<String>();
 			relations.add(RelationEnum.instantiates_Card_Layer_Layer_Type.toString());
 			ArrayList<String> layerTypes = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relations);
-			//pra camada ser a mais acima, ela n�o pode ter cliente no mesmo equipamento
+			//pra camada ser a mais acima, ela nao pode ter cliente no mesmo equipamento
 			boolean hasClient = hasClientInEquipment(layerTypes.get(0), equipmentId, repository); 
 			if(hasClient){
 				it.remove();

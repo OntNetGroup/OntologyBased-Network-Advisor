@@ -333,6 +333,18 @@ public class NOpenQueryUtil {
 	}
 	
 	/** @author John Guerson */
+	public static List<String> getLayerTypeURIFromCardLayer(OKCoUploader repository, String cardLayerURI)
+	{		
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+			repository.getBaseModel(), 
+			cardLayerURI,
+			repository.getNamespace()+RelationEnum.instantiates_Card_Layer_Layer_Type.toString(), 
+			repository.getNamespace()+ConceptEnum.Layer_Type.toString()
+		);		
+		return elems;
+	}
+	
+	/** @author John Guerson */
 	public static List<String> getTTFURIFromCardLayer(OKCoUploader repository, String cardLayerURI)
 	{
 		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
