@@ -112,34 +112,38 @@ nopen.provisioning.Model = Backbone.Model.extend({
 	},
 	
 	//method to connect input/output ports in pre provisioning
-	connectPortsInPreProvisioning : function(source, output, target, input) {
+	connectPortsInPreProvisioning : function(source, sourcePort, target, targetPort) {
 		
 		var cards = undefined;
 		var connected = false;
 		
+		var sourcePortId = sourcePort.id;
+		var targetPortId = targetPort.id;
+		
 		//connect input to output
 		cards = this.getCardsInPreProvisioning(source);
-		var outputId = output.id;
-		
 		$.each(cards, function(index, card){
 			
-			if(!connected && card.outPorts[outputId]) {
-				card.connectedPorts[outputId] = input;
-				connected = true;
+			if(card.outPorts[sourcePortId]) {
+				card.connectedPorts[sourcePortId] = targetPort;
+			}
+			
+			if(card.inPorts[sourcePortId]) {
+				card.connectedPorts[sourcePortId] = targetPort;
 			}
 			
 		});
 		
 		//connect output to input
 		cards = this.getCardsInPreProvisioning(target);
-		var inputId = input.id;
-		connected = false;
-		
 		$.each(cards, function(index, card){
 			
-			if(!connected && card.inPorts[inputId]) {
-				card.connectedPorts[inputId] = output;
-				connected = true;
+			if(card.outPorts[targetPortId]) {
+				card.connectedPorts[targetPortId] = sourcePort;
+			}
+			
+			if(card.inPorts[targetPortId]) {
+				card.connectedPorts[targetPortId] = sourcePort;
 			}
 			
 		});
@@ -147,34 +151,38 @@ nopen.provisioning.Model = Backbone.Model.extend({
 	},
 	
 	//method to connect input/output ports
-	connectPorts : function(source, output, target, input) {
+	connectPorts : function(source, sourcePort, target, targetPort) {
 		
 		var cards = undefined;
 		var connected = false;
 		
+		var sourcePortId = sourcePort.id;
+		var targetPortId = targetPort.id;
+		
 		//connect input to output
 		cards = this.getCards(source);
-		var outputId = output.id;
-		
 		$.each(cards, function(index, card){
 			
-			if(!connected && card.outPorts[outputId]) {
-				card.connectedPorts[outputId] = input;
-				connected = true;
+			if(card.outPorts[sourcePortId]) {
+				card.connectedPorts[sourcePortId] = targetPort;
+			}
+			
+			if(card.inPorts[sourcePortId]) {
+				card.connectedPorts[sourcePortId] = targetPort;
 			}
 			
 		});
 		
 		//connect output to input
 		cards = this.getCards(target);
-		var inputId = input.id;
-		connected = false;
-		
 		$.each(cards, function(index, card){
 			
-			if(!connected && card.inPorts[inputId]) {
-				card.connectedPorts[inputId] = output;
-				connected = true;
+			if(card.outPorts[targetPortId]) {
+				card.connectedPorts[targetPortId] = sourcePort;
+			}
+			
+			if(card.inPorts[targetPortId]) {
+				card.connectedPorts[targetPortId] = sourcePort;
 			}
 			
 		});
@@ -260,24 +268,12 @@ nopen.provisioning.Model = Backbone.Model.extend({
 	getConnectedPorts : function(equipment) {
 		
 		var cards = this.getCards(equipment);
-		var ports = {
-				"Output_Card" : {},
-				"Input_Card" : {},
-		};
+		var ports = {};
 		
 		$.each(cards, function(index, card) {
 			
 			$.each(card.connectedPorts, function(sourceId, target){
-				
-				console.log('TARGET: ' + target.type);
-				
-				if(target.type === "Input_Card") {
-					ports["Output_Card"][sourceId] = target;
-				} 
-				else {
-					ports["Input_Card"][sourceId] = target;
-				}
-				
+				ports[sourceId] = target;
 			});
 			
 		});

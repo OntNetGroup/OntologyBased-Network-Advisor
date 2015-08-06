@@ -285,14 +285,14 @@ nopen.provisioning.App = Backbone.View.extend({
 				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
 				
 				$.each(outputs[layer], function(key, output) {
-					if(!connectedPorts["Output_Card"][output.id]) {
+					if(!connectedPorts[output.id]) {
 						content = content +
 							'<ul style="display: block;">' +
 				                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
 				            '</ul>';
 					} 
 					else {
-						var input = connectedPorts["Output_Card"][output.id];
+						var input = connectedPorts[output.id];
 						
 						content = content +
 						'<ul style="display: block;">' +
@@ -319,14 +319,14 @@ nopen.provisioning.App = Backbone.View.extend({
 				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
 				
 				$.each(inputs[layer], function(key, input) {
-					if(!connectedPorts["Input_Card"][input.id]) {
+					if(!connectedPorts[input.id]) {
 						content = content +
 							'<ul style="display: block;">' +
 				                '<li class="inputItem" id="' + input.id + '" title="Input" value="' + input.name + '" class="collapsed expanded">' + input.name + '</li>' +
 				            '</ul>';
 					}
 					else {
-						var output = connectedPorts["Input_Card"][input.id];
+						var output = connectedPorts[input.id];
 						
 						content = content +
 						'<ul style="display: block;">' +

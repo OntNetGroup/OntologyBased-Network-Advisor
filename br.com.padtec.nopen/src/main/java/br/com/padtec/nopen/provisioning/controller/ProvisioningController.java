@@ -200,7 +200,8 @@ public class ProvisioningController {
 		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
 		
 		try {
-			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Input", ProvisioningComponents.provisioningRepository);
+			result = ProvisioningManager.getPortsByLayerFromOWL(equipmentId, "Input_Card");
+			//result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Input", ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -224,7 +225,8 @@ public class ProvisioningController {
 		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
 		
 		try {
-			result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
+			result = ProvisioningManager.getPortsByLayerFromOWL(equipmentId, "Output_Card");
+			//result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
