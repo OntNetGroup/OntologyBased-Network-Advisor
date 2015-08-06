@@ -217,16 +217,42 @@ public class InterfaceStructure {
 	}
 	
 	public static String getTypeOfConnection(String sourceEquipmentId, String targetEquipmentId, OKCoUploader repository){
-		String typeOfConnection = null;
+		
+		String physicalLayer = "OTS";
+		String connectionType = "";
+		
 		ArrayList<String> layersSourceEquip = getLayersFromEquipment(repository.getBaseModel(), sourceEquipmentId);
 		ArrayList<String> layersTargetEquip = getLayersFromEquipment(repository.getBaseModel(), targetEquipmentId);
-		if((layersSourceEquip.contains(repository.getNamespace() + "OTS")) && (layersTargetEquip.contains(repository.getNamespace() + "OTS"))){
-			typeOfConnection = "Horizontal";
+		
+		boolean sourceLayer = false, 
+				targetLayer = false; 
+		
+		for(String layer : layersSourceEquip) {
+			layer = layer.replace(repository.getNamespace(), "");
+			String layerLabel = QueryUtil.getLabelFromOWL(repository.getBaseModel(), layer);
+			
+			if(layerLabel.equals(physicalLayer)) {
+				sourceLayer = true;
+			}
+		}
+		
+		for(String layer : layersTargetEquip) {
+			layer = layer.replace(repository.getNamespace(), "");
+			String layerLabel = QueryUtil.getLabelFromOWL(repository.getBaseModel(), layer);
+			
+			if(layerLabel.equals(physicalLayer)) {
+				targetLayer = true;
+			}
+		}
+		
+		if(sourceLayer && targetLayer){
+			connectionType = "Horizontal";
 		}
 		else{
-			typeOfConnection = "Vertical";
+			connectionType = "Vertical";
 		}	
-		return typeOfConnection;
+		
+		return connectionType;
 	}
 	
 	public static HashMap<String, ArrayList<HashMap<String, String>>> getInterfacesFromEquipment(String equipmentId, String typePort, OKCoUploader repository){
@@ -300,9 +326,11 @@ public class InterfaceStructure {
 				
 				//replace layer namespace 
 				layer = layer.replace(repository.getNamespace(), "");
+				//get label of layer
+				String layerLabel = QueryUtil.getLabelFromOWL(repository.getBaseModel(), layer);
 				
 				//put layer hash on result hash
-				result.put(layer, layerPortMapping);
+				result.put(layerLabel, layerPortMapping);
 			}
 			
 		}

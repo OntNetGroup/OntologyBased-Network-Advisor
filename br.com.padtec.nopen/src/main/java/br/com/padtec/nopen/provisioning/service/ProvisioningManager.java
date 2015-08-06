@@ -5,7 +5,6 @@ import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
-import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -17,7 +16,6 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
-import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import com.jointjs.util.JointUtilManager;
 
@@ -49,11 +47,9 @@ public class ProvisioningManager {
 			String classURI = namespace + element.getType();
 			
 			//create new individual
-			//Individual individual = 
 			factoryUtil.createInstanceIndividualStatement(ontModel, individualURI, classURI, false);
-			//set individual label
-			//individual.setLabel(element.getName(),"EN");	
 			
+			//set individual label
 			Resource individual = ontModel.createResource(individualURI);
 			
 			Statement stmt = ontModel.createStatement(individual, RDFS.label, ontModel.createLiteral(element.getName()));
@@ -61,15 +57,6 @@ public class ProvisioningManager {
 		}	
 		
 		factoryUtil.processStatements(ontModel);
-		
-//		ontModel.enterCriticalSection(Lock.READ);
-//		try {
-//			factoryUtil.processStatements(ontModel);
-//			System.out.println("TERMINOU1");
-//		} finally {
-//			ontModel.leaveCriticalSection();
-//		}
-		
 		
 	}
 	
@@ -90,9 +77,9 @@ public class ProvisioningManager {
 		PLink[] links = (PLink[]) JointUtilManager.getJavaFromJSON(jsonLinks, PLink[].class);
 		for(PLink link : links) {
 			
-			String subject = namespace + link.getSource();
-			String predicate = getPredicateFromOWL(link.getSourceType(), link.getTargetType());
-			String object = namespace + link.getTarget();
+			String subject = namespace + link.getSubject();
+			String predicate = namespace + link.getPredicate();
+			String object = namespace + link.getObject();
 			
 			factoryUtil.createInstanceRelationStatement(ontModel, subject, predicate, object, false);
 			
@@ -100,15 +87,36 @@ public class ProvisioningManager {
 		
 		factoryUtil.processStatements(ontModel);
 		
-//		ontModel.enterCriticalSection(Lock.READ);
-//		try {
-//			factoryUtil.processStatements(ontModel);
-//			System.out.println("TERMINOU2");
-//		} finally {
-//			ontModel.leaveCriticalSection();
-//		}
-		
 	}
+	
+	/**
+	 * Procedure to parse json links to owl
+	 * @param jsonLinks
+	 * @throws Exception
+	 * @author Lucas Bassetti
+	 */
+//	public void createLinksInOWL2(String jsonLinks) throws Exception {
+//		
+//		
+//		OntModel ontModel = this.repository.getBaseModel();
+//		String namespace = this.repository.getNamespace();
+//		
+//		FactoryUtil factoryUtil = new FactoryUtil();
+//		
+//		PLink[] links = (PLink[]) JointUtilManager.getJavaFromJSON(jsonLinks, PLink[].class);
+//		for(PLink link : links) {
+//			
+//			String subject = namespace + link.getSource();
+//			String predicate = getPredicateFromOWL(link.getSourceType(), link.getTargetType());
+//			String object = namespace + link.getTarget();
+//			
+//			factoryUtil.createInstanceRelationStatement(ontModel, subject, predicate, object, false);
+//			
+//		}
+//		
+//		factoryUtil.processStatements(ontModel);
+//		
+//	}
 	
 	
 	/**
@@ -175,5 +183,7 @@ public class ProvisioningManager {
 		
 		return predicate;
 	}
+	
+	
 	
 }

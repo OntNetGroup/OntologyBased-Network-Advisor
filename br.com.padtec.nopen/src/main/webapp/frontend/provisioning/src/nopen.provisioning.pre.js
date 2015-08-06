@@ -89,6 +89,11 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		
 		function next() {
 			
+//			if(currentLinkIndex === 1) {
+//				//execute reasoning
+//				owl.executeReasoning();
+//			}
+			
 			if(source && sourcePort && target && targetPort) {
 				console.log('sourcePort: ' + JSON.stringify(sourcePort));
 				console.log('targetPort: ' + JSON.stringify(targetPort));

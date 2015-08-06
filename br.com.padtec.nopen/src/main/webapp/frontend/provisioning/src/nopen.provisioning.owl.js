@@ -1,8 +1,31 @@
 nopen.provisioning.OWL = Backbone.Model.extend({
 	
 	app : undefined,
+	relationships : undefined,
 	
 	initialize : function() {
+		
+		var $this = this;
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "getModelRelationships.htm",
+		   dataType: 'json',
+		   success: function(relationships){
+			   $this.setRelationships(relationships);
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	},
+	
+	setRelationships : function(relationships) {
+		
+		this.relationships = relationships;
+		console.log(JSON.stringify(relationships));
 		
 	},
 	
@@ -12,6 +35,352 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	
 	//Method to parse card JSON file to generate OWL instances
 	parseCardToOWL : function(equipment, card) {
+		
+		var $this = this;
+		var relationships = this.relationships;
+		
+		/*
+		 * Supervisor > Equipment
+		 * Supervisor > Card
+		 * Card_Layer > TTF
+		 * Card > Card_Layer
+		 * Card > AF
+		 * Card > Matrix
+		 * Card > Input/Output
+		 * TTF/AF/Matrix > Input/Output
+		 */
+		
+		var elements = [];
+		var links = [];
+		
+		//Reference Point Counter
+		var fep_counter = 0, ap_counter = 0, fp_counter = 0;
+		//TF OUT/IN Counter
+		var ttf_out_counter = 0, ttf_in_counter = 0, af_out_counter = 0, af_in_counter = 0, matrix_out_counter = 0, matrix_in_counter = 0;
+		
+		//Equipment
+		var equip = $this.createElement("Equipment", equipment.id, equipment.attributes.attrs.text.text);
+		elements.push(equip);
+		
+		//Card
+		var equipCard = $this.createElement(card.subType, card.id, card.attrs.name.text); 
+		elements.push(equipCard);
+		
+		//Equipment (E) > Card (C)
+		var linkEC = $this.createLink(equipment.id, "Equipment", card.id, card.subType); 
+		links.push(linkEC);
+		
+		//ITU Elements
+		var cardCells = card.attrs.data.cells;
+		
+		$.each(cardCells, function(index, element) {
+			
+			//Card_Layer
+			if(element.subtype === 'Card_Layer') {
+				//console.log('Layer: ' + JSON.stringify(element));
+				var layer = $this.createElement(element.subtype, element.id, element.lanes.label); 
+				elements.push(layer);
+				
+				//Card > Card_Layer
+				var link = $this.createLink(card.id, card.subType, element.id, element.subtype);
+				links.push(link);
+			}
+			//Trail_Termination_Function
+			else if (element.subtype === 'Trail_Termination_Function') {
+				
+				var ttf = $this.createElement(element.subtype, element.id, element.attrs.text.text);
+				elements.push(ttf);
+				
+				//Card_Layer > TTF
+				var cardLayerType = $this.getElementType(cardCells, element.parent);
+				
+				var link = $this.createLink(element.parent, cardLayerType, element.id, element.subtype);
+				links.push(link);
+			}
+			//Adaptation_Function
+			else if (element.subtype === 'Adaptation_Function') {
+			
+				var af = $this.createElement(element.subtype, element.id, element.attrs.text.text);
+				elements.push(af);
+				
+				//Card > AF
+				var link = $this.createLink(card.id, card.subType, element.id, element.subtype);
+				links.push(link);
+				
+			}
+			//Matrix
+			else if (element.subtype === 'Matrix') {
+				
+				var matrix = $this.createElement(element.subtype, element.id, element.attrs.text.text);
+				elements.push(matrix);
+				
+				//Card > Matrix
+				var link = $this.createLink(card.id, card.subType, element.id, element.subtype);
+				links.push(link);
+				
+			}
+			//Input_Card / Output_Card
+			else if (element.subtype === 'Input_Card' || element.subtype === 'Output_Card') {
+				
+				var inOut = $this.createElement(element.subtype, element.id, element.attrs.text.text);
+				elements.push(inOut);
+				
+				//Card > Input_Card/Output_Card
+				var link = $this.createLink(card.id, card.subType, element.id, element.subtype);
+				links.push(link);
+				
+			}
+			
+			//Links
+			else if(element.type === 'link') {
+				
+				var sourceType = $this.getElementType(cardCells, element.source.id);
+				var targetType = $this.getElementType(cardCells, element.target.id);
+				
+				var ttf_out = undefined, ttf_in = undefined, af_out = undefined, af_in = undefined, matrix_out = undefined, matrix_in = undefined;
+				
+				if(sourceType === 'Trail_Termination_Function') {
+					
+					//Trail_Termination_Function_Output (TTF_OUT)
+					ttf_out = $this.createElement("Trail_Termination_Function_Output", element.source.id + "-out-" + ttf_out_counter, "Trail_Termination_Function_Output_" + ttf_out_counter); 
+					elements.push(ttf_out);
+					ttf_out_counter++;
+					
+					//Trail_Termination_Function (TTF) > Trail_Termination_Function_Output (TTFOUT)
+					var linkTTF_TTFOUT = $this.createLink(element.source.id, sourceType, ttf_out.id, ttf_out.type); 
+					links.push(linkTTF_TTFOUT);
+					
+				}
+				
+				if(targetType === 'Trail_Termination_Function') {
+				
+					//Trail_Termination_Function_Input (TTF_IN)
+					ttf_in = $this.createElement("Trail_Termination_Function_Input", element.target.id + "-in-" + ttf_in_counter, "Trail_Termination_Function_Input_" + ttf_in_counter);
+					elements.push(ttf_in);
+					ttf_in_counter++;
+				
+					//Trail_Termination_Function (TTF) > Trail_Termination_Function_Intput (TTFIN)
+					var linkTTF_TTFIN = $this.createLink(element.target.id, targetType, ttf_in.id, ttf_in.type);
+					links.push(linkTTF_TTFIN);
+					
+				}
+				
+				if(sourceType === 'Adaptation_Function') {
+					
+					//Adaptation_Function_Output (AF_OUT)
+					af_out = $this.createElement("Adaptation_Function_Output", element.source.id + "-out-" + af_out_counter, "Adaptation_Function_Output_" + af_out_counter);
+					elements.push(af_out);
+					af_out_counter++;
+					
+					//Adaptation_Function (AF) > Adaptation_Function_Output (AFOUT)
+					var linkAF_AFOUT = $this.createLink(element.source.id, sourceType, af_out.id, af_out.type);
+					links.push(linkAF_AFOUT);
+					
+				}
+				
+				if(targetType === 'Adaptation_Function') {
+					
+					//Adaptation_Function_Input (AF_IN)
+					af_in = $this.createElement("Adaptation_Function_Input", element.target.id + "-in-" + af_in_counter, "Adaptation_Function_Input" + af_in_counter);
+					elements.push(af_in);
+					af_in_counter++;
+					
+					//Adaptation_Function (AF) > Adaptation_Function_Input (AFIN)
+					var linkAF_AFIN = $this.createLink(element.target.id, targetType, af_in.id, af_in.type);
+					links.push(linkAF_AFIN);
+					
+				}
+				
+				if(sourceType === 'Matrix') {
+					
+					//Matrix_Output (M_OUT)
+					matrix_out = $this.createElement("Matrix_Output", element.source.id + "-out-" + matrix_out_counter, "Matrix_Output_" + matrix_out_counter);
+					elements.push(matrix_out);
+					matrix_out_counter++;
+					
+					//Matrix (M) > Matrix_Output (MOUT)
+					var linkM_MOUT = $this.createLink(element.source.id, sourceType, matrix_out.id, matrix_out.type);
+					links.push(linkM_MOUT);
+					
+				}
+				
+				if(targetType === 'Matrix') {
+					
+					//Matrix_Input (M_IN)
+					matrix_in = $this.createElement("Matrix_Input", element.target.id + "-in-" + matrix_in_counter, "Matrix_Input_" + matrix_in_counter);
+					elements.push(matrix_in);
+					matrix_in_counter++;
+					
+					//Matrix (M) > Matrix_Input (MIN)
+					var linkM_MIN = $this.createLink(element.target.id, targetType, matrix_in.id, matrix_in.type);
+					links.push(linkM_MIN);
+					
+				}
+				
+				if(sourceType === 'Trail_Termination_Function' && (targetType === 'Adaptation_Function' || targetType === 'Matrix')) {
+					//Reference_Point FEP (FEP)
+					var rp = $this.createElement("FEP", element.id, "FEP_" + fep_counter);
+					elements.push(rp);
+					fep_counter++;
+					
+					//TTF_OUT (TTFOUT) > FEP (FEP)
+					var linkTTFOUT_FEP = $this.createLink(element.id, "FEP", ttf_out.id, ttf_out.type);
+					links.push(linkTTFOUT_FEP);
+					
+					if(targetType === 'Adaptation_Function') {
+						
+						//FEP (FEP) > AF_IN (AFIN)
+						var linFEP_AFIN = $this.createLink(element.id, "FEP", af_in.id, af_in.type);
+						links.push(linFEP_AFIN);
+						
+					}
+					else {
+						
+						//FEP (FEP) > MATRIX_IN (MIN)
+						var linkFEP_MIN = $this.createLink(element.id, "FEP", matrix_in.id, matrix_in.type);
+						links.push(linkFEP_MIN);
+						
+					}
+					
+				}
+				
+				if(sourceType === 'Adaptation_Function' && targetType === 'Trail_Termination_Function') {
+					//Reference_Point AP (AP)
+					var rp = $this.createElement("AP", element.id, "AP_" + ap_counter);
+					elements.push(rp);
+					ap_counter++;
+					
+					//AF_OUT (AFOUT) > AP (AP)
+					var linAFOUT_AP = $this.createLink(element.id, "AP", af_out.id, af_out.type);
+					links.push(linAFOUT_AP);
+					
+					//AP (AP) > TTF_IN (TTFIN)
+					var linkAP_TTFIN = $this.createLink(element.id, "AP", ttf_in.id, ttf_in.type);
+					links.push(linkAP_TTFIN);
+					
+				}
+				
+				if(sourceType === 'Matrix' && targetType === 'Adaptation_Function') {
+					//Reference_Point FP (FP)
+					var rp = $this.createElement("FP", element.id, "FP_" + fp_counter);
+					elements.push(rp);
+					fp_counter++;
+					
+					//FP (FP) > M_OUT (MOUT)
+					var linkMOUT_FP = $this.createLink(element.id, "FP", matrix_out.id, matrix_out.type);
+					links.push(linkMOUT_FP);
+					
+					//FP (FP) > AFIN (AFIN)
+					var linkFP_AFIN = $this.createLink(element.id, "FP", af_in.id, af_in.type);
+					links.push(linkFP_AFIN);
+					
+				}
+				
+				var link = $this.createLink(element.source.id, sourceType, element.target.id, targetType);
+				links.push(link);
+				
+			}
+			
+		});
+		
+		var pLinks = [];
+		
+		$.each(links, function(key, link){
+			$.each(link, function(k, l){
+				pLinks.push(l)
+			});
+		});
+		
+		
+//		console.log('Elements: ' + JSON.stringify(elements));
+//		console.log('Links: ' + JSON.stringify(pLinks));
+		
+		//execute parse
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "parseCardToOWL.htm",
+		   data: {
+			   'elements' : JSON.stringify(elements),
+			   'links' : JSON.stringify(pLinks),
+		   },
+		   success: function(){
+			   //console.log('PARSE OK!')
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+	
+	
+	},
+	
+	
+	createLink : function(subject, subjectType, object, objectType) {
+		
+		var links = [];
+		var relationships = this.relationships;
+		
+		$.each(relationships[subjectType][objectType], function(key, predicate) {
+			
+			if(subjectType == objectType) {
+				if(predicate.indexOf("INV.") == 0 ) {
+					links.push({
+						"subjectType" : subjectType,
+						"subject" : subject,
+						"predicate" : predicate,
+						"objectType" : objectType,
+						"object" : object,
+					})
+				}
+			}
+			else {
+				
+				var hasInverse = false;
+				
+				$.each(links, function(index, link){
+					
+					if(link.subjectType == subjectType && link.objectType == objectType) {
+						if(link.predicate.indexOf(predicate.substring(0, 5)) >= 0 || predicate.indexOf(link.predicate.substring(0, 5)) >= 0) {
+							console.log('HAS PREDICATE: ' + predicate)
+							console.log('HAS PREDICATE2: ' + link.predicate)
+							hasInverse = true;
+						}
+					}
+					
+				});
+				
+				if(!hasInverse) {
+					links.push({
+						"subjectType" : subjectType,
+						"subject" : subject,
+						"predicate" : predicate,
+						"objectType" : objectType,
+						"object" : object,
+					})
+				}
+			}
+			
+		});
+		
+		return links;
+		
+	},
+	
+	createElement : function(type, id, name) {
+		
+		return element = {
+				"type" : type,
+				"id" : id,
+				"name" : name,
+		}
+		
+	},
+	
+	
+	
+	//Method to parse card JSON file to generate OWL instances
+	parseCardToOWL2 : function(equipment, card) {
 		
 		var $this = this;
 		
@@ -33,15 +402,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var fep_counter = 0, ap_counter = 0, fp_counter = 0;
 		//TF OUT/IN Counter
 		var ttf_out_counter = 0, ttf_in_counter = 0, af_out_counter = 0, af_in_counter = 0, matrix_out_counter = 0, matrix_in_counter = 0;
-		
-		
-		//Supervisor
-//		var supervisor = {
-//				"type" : "Supervisor",
-//				"id" : card.SupervisorID,
-//				"name" : card.Supervisor,
-//		};
-//		elements.push(supervisor);
 		
 		//Equipment
 		var equip = {
@@ -68,29 +428,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		};
 		links.push(linkEC);
 		
-		
-		//Supervisor (S) > Equipment (E)
-//		var linkSE = {
-//				"sourceType" : "Supervisor",
-//				"targetType" : "Equipment",
-//				"source" : card.SupervisorID,
-//				"target" : equipment.id,
-//		};
-//		links.push(linkSE);
-		
-		//Supervisor (S) > Card (C)
-//		var linkSC = {
-//				"sourceType" : "Supervisor",
-//				"targetType" : card.subType,
-//				"source" : card.SupervisorID,
-//				"target" : card.id,
-//		};
-//		links.push(linkSC);
-		
 		//ITU Elements
 		var cardCells = card.attrs.data.cells;
-		
-		
 		
 		$.each(cardCells, function(index, element) {
 			
@@ -99,7 +438,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				//console.log('Layer: ' + JSON.stringify(element));
 				var layer = {
 						"type" : element.subtype,
-						"id" : element.lanes.label,
+						"id" : element.id,
 						"name" : element.lanes.label,
 				};
 				elements.push(layer);
@@ -109,7 +448,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 						"sourceType" : card.subType,
 						"targetType" : element.subtype,
 						"source" : card.id,
-						"target" : element.lanes.label,
+						"target" : element.id,
 				};
 				links.push(link);
 				
@@ -129,7 +468,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				var link = {
 						"sourceType" : $this.getElementType(cardCells, element.parent),
 						"targetType" : element.subtype,
-						"source" : $this.getLayerName(cardCells, element.parent),
+						"source" : element.parent,
 						"target" : element.id
 				}
 				links.push(link);
@@ -471,6 +810,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			}
 			
 		});
+		
 		
 		console.log('Elements: ' + JSON.stringify(elements));
 		console.log('Links: ' + JSON.stringify(links));

@@ -198,7 +198,7 @@ public class FactoryUtil {
 	 */
 	public void createInstanceIndividualStatement(OntModel model, String individualURI, String classURI, boolean forceSuperTypes) throws Exception
 	{			
-		System.out.println("\nExecuting createInstanceIndividualStatement(" + individualURI + ")...");
+//		System.out.println("\nExecuting createInstanceIndividualStatement(" + individualURI + ")...");
 		//create the individualURI as from classURI
 		Resource ontClass = model.createResource(classURI);
 		Resource individual = model.createResource(individualURI);
@@ -348,15 +348,15 @@ public class FactoryUtil {
 		if(model == null){
 			throw new Exception("The model is null.");
 		}
-//		
-//		System.out.println("\n"
-//							+ "Executing createInstanceRelationStatement(" 
-//							+ indvSourceURI.replace(model.getNsPrefixURI(""), "") 
-//							+ ", " 
-//							+ objectPropertyURI.replace(model.getNsPrefixURI(""), "") 
-//							+ ", " 
-//							+ indvTargetURI.replace(model.getNsPrefixURI(""), "") 
-//							+ ")...");
+		
+		System.out.println("\n"
+							+ "Executing createInstanceRelationStatement(" 
+							+ indvSourceURI.replace(model.getNsPrefixURI(""), "") 
+							+ ", " 
+							+ objectPropertyURI.replace(model.getNsPrefixURI(""), "") 
+							+ ", " 
+							+ indvTargetURI.replace(model.getNsPrefixURI(""), "") 
+							+ ")...");
 		//Create an object property between two individuals
 		Resource indvSource = model.createResource(indvSourceURI);
 		Resource indvTarget = model.createResource(indvTargetURI);
@@ -758,7 +758,8 @@ public class FactoryUtil {
 	}
 
 	public void processStatements(OntModel model) {
-		model.add(this.stmts);		
+		model.add(this.stmts);
 		this.stmts.clear();
-	}	
+	}
+	
 }

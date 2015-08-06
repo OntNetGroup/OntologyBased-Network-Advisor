@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,13 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-
 import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.provisioning.service.ProvisioningReasoner;
+import br.com.padtec.nopen.provisioning.util.ProvisioningUtil;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
+
+import com.google.gson.Gson;
 
 @Controller
 public class ProvisioningController {
@@ -164,21 +166,29 @@ public class ProvisioningController {
 		ProvisioningManager provisioningManager = new ProvisioningManager(ProvisioningComponents.provisioningRepository);
 		
 		try {
-//			ProvisioningReasoner.runInference(true);
 			provisioningManager.createElementsInOWL(elements);
 			provisioningManager.createLinksInOWL(links);
-//			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, ProvisioningComponents.provisioningRepository);
-//			NOpenEquipmentCloner.cloneLinksFromJSON(links, ProvisioningComponents.provisioningRepository);
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	@RequestMapping(value = "/executeReasoning", method = RequestMethod.POST)
-	protected @ResponseBody void executeReasoning(){
+	protected @ResponseBody synchronized void executeReasoning(){
+		
+//		try {
+//			TimeUnit.SECONDS.sleep(5);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		ProvisioningReasoner.runInference(true);
+		
+	}
+	
+	@RequestMapping(value = "/getModelRelationships", method = RequestMethod.POST)
+	protected @ResponseBody String getModelRelationships(){
+		return ProvisioningUtil.generateJSONModelRelationships();
 	}
 	
 	/**
