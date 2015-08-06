@@ -1,42 +1,34 @@
 package br.com.padtec.nopen.provisioning.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.QueryUtil;
+import br.com.padtec.nopen.model.ProvisioningRelationEnum;
+import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
-import br.com.padtec.okco.core.application.OKCoUploader;
 
+import com.google.gson.Gson;
 import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import com.jointjs.util.JointUtilManager;
 
 public class ProvisioningManager {
 
-	public OKCoUploader repository;
-	
-	public ProvisioningManager(OKCoUploader repository) {
-		this.repository = repository;
-	}
-	
 	/**
 	 * Procedure to parse json elements to owl
 	 * @param jsonElements
 	 * @throws Exception
 	 * @author Lucas Bassetti
 	 */
-	public void createElementsInOWL(String jsonElements) throws Exception {
+	public static void createElementsInOWL(String jsonElements) throws Exception {
 		
-		OntModel ontModel = this.repository.getBaseModel();
-		String namespace = this.repository.getNamespace();
+		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
+		String namespace = ProvisioningComponents.provisioningRepository.getNamespace();
 		
 		FactoryUtil factoryUtil = new FactoryUtil();
 		
@@ -66,11 +58,11 @@ public class ProvisioningManager {
 	 * @throws Exception
 	 * @author Lucas Bassetti
 	 */
-	public void createLinksInOWL(String jsonLinks) throws Exception {
+	public static void createLinksInOWL(String jsonLinks) throws Exception {
 		
 		
-		OntModel ontModel = this.repository.getBaseModel();
-		String namespace = this.repository.getNamespace();
+		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
+		String namespace = ProvisioningComponents.provisioningRepository.getNamespace();
 		
 		FactoryUtil factoryUtil = new FactoryUtil();
 		
@@ -88,6 +80,122 @@ public class ProvisioningManager {
 		factoryUtil.processStatements(ontModel);
 		
 	}
+	
+	
+	public static String getConnectionInterfaces(String sourceEquipmentId, String targetEquipmentId, String connectionType) {
+		
+		HashMap<String, HashMap<String, ArrayList<HashMap<String, String>>>> connectionInterfaces = new HashMap<String,HashMap<String, ArrayList<HashMap<String, String>>>>();
+		
+		if(connectionType.equals("Horizontal")){
+			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card"));
+			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Output_Card"));
+		}
+		else{
+			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card"));
+			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Intput_Card"));
+		}
+		
+		Gson gson = new Gson();
+		return gson.toJson(connectionInterfaces);
+		
+	}
+	
+	public static HashMap<String, ArrayList<HashMap<String, String>>>  getPortsByLayerFromOWL(String equipmentId, String portType) {
+		
+		String namespace = ProvisioningComponents.provisioningRepository.getNamespace();
+		
+		//create result hash
+		HashMap<String, ArrayList<HashMap<String, String>>> outputPortsByLayer = new HashMap<String, ArrayList<HashMap<String, String>>>();
+		
+		ArrayList<String> predicates = new ArrayList<String>();
+		
+		predicates.add(ProvisioningRelationEnum.A_Equipment_Card.toString());
+		predicates.add(ProvisioningRelationEnum.A_Card_CardLayer.toString());
+		
+		ArrayList<String> layers = ProvisioningQuery.getObjectFromOWL(equipmentId, predicates);
+		
+		String 	lastLayerLabel = "",
+				layerLabel = "";
+		ArrayList<HashMap<String, String>> layerPortMapping = new ArrayList<HashMap<String, String>>();
+		
+		for(String layer : layers) {
+			
+			layer = layer.replace(namespace, "");
+			//get label of layer
+			layerLabel = ProvisioningQuery.getLabelFromOWL(layer);
+			
+			if(lastLayerLabel.equals("")) {
+				lastLayerLabel = layerLabel;
+			}
+			
+			predicates = new ArrayList<String>();
+			if(portType == "Output_Card") {
+				predicates.add(RelationEnum.INV_intermediates_up_Card_Layer_Transport_Function.toString());
+				predicates.add(RelationEnum.INV_is_interface_of_Output_Card_Transport_Function.toString());
+			}
+			else if(portType == "Input_Card") {
+				predicates.add(RelationEnum.INV_intermediates_down_Card_Layer_Transport_Function.toString());
+				predicates.add(RelationEnum.INV_is_interface_of_Input_Card_Transport_Function.toString());
+			}
+			
+			if(!lastLayerLabel.equals(layerLabel)) {
+				
+				//add layer in result hash
+				if(layerPortMapping.size() > 0) {
+					//put layer hash on result hash
+					outputPortsByLayer.put(lastLayerLabel, layerPortMapping);
+				}
+				
+				lastLayerLabel = layerLabel;
+				layerPortMapping = new ArrayList<HashMap<String, String>>();
+			}
+			
+			ArrayList<String> ports = ProvisioningQuery.getObjectFromOWL(layer, predicates);
+			for(String port : ports) {
+				
+				//create port hash
+				HashMap<String, String> portMapping = new HashMap<String, String>();
+				
+				//replace port namespace 
+				port = port.replace(namespace, "");
+				
+				//get label of port
+				String label = ProvisioningQuery.getLabelFromOWL(port);
+				
+				//replace label language
+				label = label.replace("@en", "");
+				label = label.replace("@EN", "");
+				
+				//create port object
+				portMapping.put("id", port);
+				portMapping.put("name", label);
+				portMapping.put("type", portType);
+				
+				//add port hash in layer array
+				layerPortMapping.add(portMapping);
+				
+			}
+			
+			
+		}
+		
+		if(!lastLayerLabel.equals("")) {
+			
+			//add layer in result hash
+			if(layerPortMapping.size() > 0) {
+				//put layer hash on result hash
+				outputPortsByLayer.put(lastLayerLabel, layerPortMapping);
+			}
+			
+		}
+		
+		return outputPortsByLayer;
+	}
+	
+	
+	
+	
+	
 	
 	/**
 	 * Procedure to parse json links to owl
@@ -118,71 +226,6 @@ public class ProvisioningManager {
 //		
 //	}
 	
-	
-	/**
-	 * Procedure to get predicate from owl model
-	 * @param sourceType
-	 * @param targetType
-	 * @return
-	 * @author Lucas Bassetti
-	 */
-	public String getPredicateFromOWL(String sourceType, String targetType) {
-		
-		OntModel ontModel = this.repository.getBaseModel();
-		String namespace = this.repository.getNamespace();
-		
-		//Create query string
-		String prefix = "PREFIX ont: <" + namespace + "> " + 
-						"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-						"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-						"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ";
-		String queryString = prefix +
-						"SELECT DISTINCT * WHERE { " +
-							"?predicate rdfs:domain ?domain . " +
-							"?predicate rdfs:range ?range . " +
-							"ont:" + sourceType + " rdfs:subClassOf*/owl:intersectionOf*/rdf:rest*/rdf:first*/rdfs:subClassOf* ?domain . " +
-							"ont:" + targetType + " rdfs:subClassOf*/owl:intersectionOf*/rdf:rest*/rdf:first*/rdfs:subClassOf* ?range . " +
-						 "}";
-		
-//		System.out.println(queryString);
-		
-		//execute query string
-		Query query = QueryFactory.create(queryString); 
-		
-		// Execute the query and obtain results
-		QueryExecution qe = QueryExecutionFactory.create(query, ontModel);
-		ResultSet results = qe.execSelect();
-
-		//get predicate from query result
-		String predicate = "";
-		boolean pred = true;
-		
-		while (results.hasNext()) {
-			QuerySolution row = results.next();
-		    
-		    RDFNode predicateNode = row.get("?predicate");
-		    String domain = row.get("?domain").toString().replace(namespace, "");
-		    String range = row.get("?range").toString().replace(namespace, "");
-		    
-		    if(sourceType.equals(domain) && targetType.equals(range)) {
-		    	predicate = predicateNode.toString();
-		    	break;
-		    }
-		    else if(sourceType.equals(domain) || targetType.equals(range)) {
-		    	predicate = predicateNode.toString();
-		    	pred = false;
-		    }
-		    else if (pred){
-		    	predicate = predicateNode.toString();
-		    }
-		}
-		
-//		System.out.println("source: " + sourceType);
-//	    System.out.println("target: " + targetType);
-//		System.out.println(predicate);
-		
-		return predicate;
-	}
 	
 	
 	

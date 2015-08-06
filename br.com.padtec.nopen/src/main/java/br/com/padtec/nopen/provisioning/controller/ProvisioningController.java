@@ -163,11 +163,9 @@ public class ProvisioningController {
 	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
 	protected @ResponseBody void parseCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
-		ProvisioningManager provisioningManager = new ProvisioningManager(ProvisioningComponents.provisioningRepository);
-		
 		try {
-			provisioningManager.createElementsInOWL(elements);
-			provisioningManager.createLinksInOWL(links);
+			ProvisioningManager.createElementsInOWL(elements);
+			ProvisioningManager.createLinksInOWL(links);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -263,9 +261,9 @@ public class ProvisioningController {
 	 */
 	@RequestMapping(value= "/getPossibleConnectionsFromOWL", method = RequestMethod.POST)
 	protected @ResponseBody String getPossibleConnectionsFromOWL(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId, @RequestParam("connectionType") String connectionType){
-		String result = null;
+		String result = "";
 		try {
-			result = InterfaceStructure.getPossibleConnections(equipmentSourceId, equipmentTargetId, ProvisioningComponents.provisioningRepository, connectionType);
+			result = ProvisioningManager.getConnectionInterfaces(equipmentSourceId, equipmentTargetId, connectionType);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

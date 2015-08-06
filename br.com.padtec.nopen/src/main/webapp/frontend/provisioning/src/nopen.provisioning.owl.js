@@ -13,6 +13,27 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		   url: "getModelRelationships.htm",
 		   dataType: 'json',
 		   success: function(relationships){
+			   
+			   $.each(relationships, function(source, sourceValue) {
+				   $.each(relationships[source], function(target, targetValue) {
+					   
+					   var relations = [];
+					   
+					   $.each(relationships[source][target], function(key, relation) {
+						   if(relation) {
+							   if(relation === "INV.binds.Adaptation_Function.Trail_Termination_Function" || relation === "INV.binds.Trail_Termination_Function.Adaptation_Function") {
+								   relationships[source][target].splice(key, 1);
+							   }
+							   else if(relation.indexOf("INV.") >= 0){
+								   if($this.hasInverse(relationships[source][target], relation)){
+									   relationships[source][target].splice(key, 1);
+								   }
+							   }
+						   }
+					   });
+				   });
+			   });
+			   
 			   $this.setRelationships(relationships);
 		   },
 		   error : function(e) {
@@ -20,6 +41,23 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		   }
 		});
 		
+	},
+	
+	hasInverse : function(relations, relation) {
+		
+		var hasInverse = false;
+		
+		$.each(relations, function(key, value) {
+			
+			if(relation && value) {
+				if(relation.substring(4, relation.lenght) === value.substring(0, value.lenght)) {
+					hasInverse = true;
+				}
+			}
+			
+		});
+		
+		return hasInverse;
 	},
 	
 	setRelationships : function(relationships) {
@@ -291,9 +329,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			});
 		});
 		
-		
-//		console.log('Elements: ' + JSON.stringify(elements));
-//		console.log('Links: ' + JSON.stringify(pLinks));
+		console.log('Elements: ' + JSON.stringify(elements));
+		console.log('Links: ' + JSON.stringify(pLinks));
 		
 		//execute parse
 		$.ajax({
@@ -323,43 +360,53 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 		$.each(relationships[subjectType][objectType], function(key, predicate) {
 			
-			if(subjectType == objectType) {
-				if(predicate.indexOf("INV.") == 0 ) {
-					links.push({
-						"subjectType" : subjectType,
-						"subject" : subject,
-						"predicate" : predicate,
-						"objectType" : objectType,
-						"object" : object,
-					})
-				}
-			}
-			else {
-				
-				var hasInverse = false;
-				
-				$.each(links, function(index, link){
-					
-					if(link.subjectType == subjectType && link.objectType == objectType) {
-						if(link.predicate.indexOf(predicate.substring(0, 5)) >= 0 || predicate.indexOf(link.predicate.substring(0, 5)) >= 0) {
-							console.log('HAS PREDICATE: ' + predicate)
-							console.log('HAS PREDICATE2: ' + link.predicate)
-							hasInverse = true;
-						}
-					}
-					
-				});
-				
-				if(!hasInverse) {
-					links.push({
-						"subjectType" : subjectType,
-						"subject" : subject,
-						"predicate" : predicate,
-						"objectType" : objectType,
-						"object" : object,
-					})
-				}
-			}
+			links.push({
+				"subjectType" : subjectType,
+				"subject" : subject,
+				"predicate" : predicate,
+				"objectType" : objectType,
+				"object" : object,
+			})
+			
+//			if(subjectType == objectType) {
+//				if(predicate.indexOf("INV.") == 0 ) {
+//					links.push({
+//						"subjectType" : subjectType,
+//						"subject" : subject,
+//						"predicate" : predicate,
+//						"objectType" : objectType,
+//						"object" : object,
+//					})
+//				}
+//			}
+//			else {
+//				
+//				var hasInverse = false;
+//				
+//				$.each(links, function(index, link){
+//					
+//					if(link.subjectType == subjectType && link.objectType == objectType) {
+//						if(link.predicate.indexOf(predicate.substring(0, 5)) >= 0) {
+//							//links[index].predicate = predicate;
+//							hasInverse = true;
+//						}
+//						else if(predicate.indexOf(link.predicate.substring(0, 5))) {
+//							hasInverse = true;
+//						}
+//					}
+//					
+//				});
+//				
+//				if(!hasInverse) {
+//					links.push({
+//						"subjectType" : subjectType,
+//						"subject" : subject,
+//						"predicate" : predicate,
+//						"objectType" : objectType,
+//						"object" : object,
+//					})
+//				}
+//			}
 			
 		});
 		

@@ -166,6 +166,8 @@ public class InterfaceStructure {
 		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
 		for(String layer : layers){
 
+			System.out.println("LAYER: " + layer);
+			
 			//create relations array
 			ArrayList<String> relationsNameList = new ArrayList<String>();
 			
@@ -189,31 +191,36 @@ public class InterfaceStructure {
 			//get Output/Input ports by layer
 			layer = layer.substring(layer.indexOf("#")+1);
 			
-			ArrayList<String> ports = new ArrayList<String>();
-			ports = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relationsNameList);
+			ArrayList<String> ports = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relationsNameList);
+			
 			for(String port : ports){
-				if(!hasBinds(repository.getBaseModel(), port)){ //na verdade � hasVerticalLinks or hasHorizontalLinks
-					//create port hash
-					HashMap<String, String> portMapping = new HashMap<String, String>();
+				
+				System.out.println("PORT: " + port);
+				
+				//create port hash
+				HashMap<String, String> portMapping = new HashMap<String, String>();
+				
+				//replace port namespace 
+				port = port.replace(repository.getNamespace(), "");
+				
+				//get label of port
+				String label = QueryUtil.getLabelFromOWL(repository.getBaseModel(), port);
+				
+				//replace label language
+				label = label.replace("@en", "");
+				label = label.replace("@EN", "");
+				
+				//create port object
+				portMapping.put("id", port);
+				portMapping.put("name", label);
+				portMapping.put("type", typePort + "_Card");
+				
+				//add port hash in layer array
+				layerPortMapping.add(portMapping);
+				
+//				if(!hasBinds(repository.getBaseModel(), port)){ //na verdade � hasVerticalLinks or hasHorizontalLinks
 					
-					//replace port namespace 
-					port = port.replace(repository.getNamespace(), "");
-					
-					//get label of port
-					String label = QueryUtil.getLabelFromOWL(repository.getBaseModel(), port);
-					
-					//replace label language
-					label = label.replace("@en", "");
-					label = label.replace("@EN", "");
-					
-					//create port object
-					portMapping.put("id", port);
-					portMapping.put("name", label);
-					portMapping.put("type", typePort + "_Card");
-					
-					//add port hash in layer array
-					layerPortMapping.add(portMapping);
-				}
+//				}
 				
 				
 			}
