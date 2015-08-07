@@ -9,7 +9,6 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class ProvisioningQuery {
@@ -19,6 +18,48 @@ public class ProvisioningQuery {
 					"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 					"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 					"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ";
+	
+	
+	public static boolean isConnectedPort (String port) {
+		
+		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
+		
+		//normal query
+		String queryString = prefix +
+				"SELECT ?port WHERE { ont:" + port + " ont:vertical_links_to ?port . }";
+				
+		System.out.println(queryString);
+		
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, ontModel);
+		ResultSet results = qe.execSelect();
+
+		//get result and put on label variable
+		if (results.hasNext()) {
+			return true;
+		}
+		
+		//inverse query
+		queryString = prefix +
+				"SELECT ?port WHERE { ont:" + port + " ont:INV.vertical_links_to ?port . }";
+			
+		System.out.println(queryString);
+		
+		query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		qe = QueryExecutionFactory.create(query, ontModel);
+		results = qe.execSelect();
+		
+		//get result and put on label variable
+		if (results.hasNext()) {
+			return true;
+		}
+		
+		return false;
+	}
 	
 	
 	/**

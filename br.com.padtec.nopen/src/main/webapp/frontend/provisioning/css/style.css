@@ -25,6 +25,10 @@ h1 {
 	text-align: center;
 }
 
+.highlighted {
+	outline: 0px;
+}
+
 .provisioning.Layer, .provisioning.Subnetwork {
 	pointer-events: none;
 }

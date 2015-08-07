@@ -538,22 +538,25 @@ function ituHandle(paper, graph, validator){
 			
 			//outPort index -> inPort index
         	//connect source -> target
-			source.attributes.connectedPorts[sourceIndex] = {};
-			source.attributes.connectedPorts[sourceIndex]["id"] = targetIndex;
-			source.attributes.connectedPorts[sourceIndex]["name"] = target.attributes.inPorts[targetIndex];
-			source.attributes.connectedPorts[sourceIndex]["type"] = "Input_Card";
-	
-			//connect target -> source
-			target.attributes.connectedPorts[targetIndex] = {};
-			target.attributes.connectedPorts[targetIndex]["id"] = sourceIndex;
-			target.attributes.connectedPorts[targetIndex]["name"] = source.attributes.outPorts[sourceIndex];
-			target.attributes.connectedPorts[targetIndex]["type"] = "Output_Card";
+			source.attributes.connectedPorts[sourceIndex] = {
+					'id' : targetIndex,
+					'name' : target.attributes.inPorts[targetIndex],
+					'type' : 'Input_Card',
+					'edge' : 'target',
+			};
+			
+			target.attributes.connectedPorts[targetIndex] = {
+					'id' : sourceIndex,
+					'name' : source.attributes.outPorts[sourceIndex],
+					'type' : 'Output_Card',
+					'edge' : 'source',
+			};
 			
 //			console.log("CONNECTION: " + source.attributes.connectedPorts[sourceIndex]);
 //			console.log("CONNECTION " + source.attributes.outPorts[sourceIndex] + " > " + target.attributes.inPorts[targetIndex] + " CREATED")
 			
-			console.log(source.attributes.connectedPorts[sourceIndex]);
-			console.log(target.attributes.connectedPorts[targetIndex]);
+			console.log(JSON.stringify(source.attributes.connectedPorts[sourceIndex]));
+			console.log(JSON.stringify(target.attributes.connectedPorts[targetIndex]));
 	
 			
 		});

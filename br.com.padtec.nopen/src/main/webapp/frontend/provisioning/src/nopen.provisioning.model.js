@@ -395,8 +395,8 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				initialTech = tech;
 			}
 			
-			var uppermostLayer = $this.getUppermostLayer(tech);
-			var layerNetwork = Stencil.createLayerNetwork(tech, uppermostLayer);
+			//var uppermostLayer = $this.getUppermostLayer(tech);
+			var layerNetwork = Stencil.createLayerNetwork(tech);
 			
 			layerNetwork.attributes.position = $this.getLayerOffset(index);
 			

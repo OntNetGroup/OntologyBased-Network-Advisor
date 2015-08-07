@@ -322,6 +322,25 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			
 		});
 		
+		//Input_Card/Output_Card > Input_Card/Output_Card
+		$.each(card.connectedPorts, function(portId, connectedPort) {
+			
+			console.log('connectedPort: ' + JSON.stringify(connectedPort));
+			
+			if(card.outPorts[portId]) {
+				if(connectedPort.edge === "target") {
+					var link = $this.createLink(portId, "Output_Card", connectedPort.id, connectedPort.type);
+					links.push(link);
+				}
+			}
+			else if(card.inPorts[portId]) {
+				var link = $this.createLink(portId, "Input_Card", connectedPort.id, connectedPort.type);
+				links.push(link);
+			}
+		});
+
+		
+		var pElements = elements;
 		var pLinks = [];
 		
 		$.each(links, function(key, link){
@@ -330,8 +349,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			});
 		});
 		
-		console.log('Elements: ' + JSON.stringify(elements));
-		console.log('Links: ' + JSON.stringify(pLinks));
+//		console.log('Elements: ' + JSON.stringify(pElements));
+//		console.log('Links: ' + JSON.stringify(pLinks));
 		
 		//execute parse
 		$.ajax({
@@ -339,7 +358,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		   async: false,
 		   url: "parseCardToOWL.htm",
 		   data: {
-			   'elements' : JSON.stringify(elements),
+			   'elements' : JSON.stringify(pElements),
 			   'links' : JSON.stringify(pLinks),
 		   },
 		   success: function(){

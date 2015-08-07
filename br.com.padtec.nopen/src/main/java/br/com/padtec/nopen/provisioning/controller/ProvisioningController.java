@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.padtec.nopen.provisioning.service.InterfaceStructure;
-import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.provisioning.service.ProvisioningReasoner;
 import br.com.padtec.nopen.provisioning.util.ProvisioningUtil;
@@ -32,15 +29,9 @@ public class ProvisioningController {
 	
 	@RequestMapping(value = "/openTopologyOnProvisioning", method = RequestMethod.POST)
 	protected @ResponseBody String openTopologyOnProvisioning(@RequestParam("filename") String filename){
-			
+		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
 		return NOpenFileUtil.openTopologyJSONFileAsString(filename);
-		
-//		ProvisioningManager provisioningManager = new ProvisioningManager();
-//		String json = provisioningManager.openProvisioning(filename);
-//		System.out.println(json);
-//		
-//		return json;
 		
 	}
 	
@@ -121,41 +112,6 @@ public class ProvisioningController {
 	}
 	
 	/**
-	 * Procedure that returns all technologies implemented by at least one equipment
-	 * @return: array containing the names of the technologies
-	 */
-	@RequestMapping(value = "/getImplementedTechnologies", method = RequestMethod.POST)
-	protected @ResponseBody String[] getImplementedTechnologies(){
-		return new String[]{"MEF", "OTN"}; //TODO
-	}
-	
-	/**
-	 * @param technology
-	 * @return: the uppermost layer of the given technology
-	 */
-	@RequestMapping(value = "/getUppermostLayer", method = RequestMethod.POST)
-	protected @ResponseBody String getUppermostLayer(@RequestParam("technology") String technology){
-		//TODO
-		if(technology.equals("OTN")) return "MEN";
-		if(technology.equals("MEF")) return "POUk";
-		return "none";
-	}
-	
-	/**
-	 * @param clientMEF: uppermost layer of some technology
-	 * @return: list of ids of equipments which implement that layer
-	 */
-	@RequestMapping(value = "/getEquipmentsByLayer", method = RequestMethod.POST)
-	protected @ResponseBody String[] getEquipmentsByLayer(@RequestParam("clientMEF") String clientMEF){
-		//TODO
-		String[] ids = new String[]{"id0", "id1", "id2", "id3", "id4", "id5", "id6", "id7", "id8", "id9", "id10", "id11", "id12", "id13", "id14", "id15"};
-		
-		if(clientMEF.equals("MEN")) return ids;
-		if(clientMEF.equals("POUk")) return new String[]{"idPOUk0", "idPOUk1", "idPOUk2"};
-		return null;
-	}
-	
-	/**
 	 * Create card elements in OWL by a JSON file
 	 * @param elements
 	 * @param links
@@ -174,19 +130,15 @@ public class ProvisioningController {
 	@RequestMapping(value = "/executeReasoning", method = RequestMethod.POST)
 	protected @ResponseBody synchronized void executeReasoning(){
 		
-//		try {
-//			TimeUnit.SECONDS.sleep(5);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		ProvisioningReasoner.runInference(true);
 		
 	}
 	
 	@RequestMapping(value = "/getModelRelationships", method = RequestMethod.POST)
 	protected @ResponseBody String getModelRelationships(){
+		
 		return ProvisioningUtil.generateJSONModelRelationships();
+		
 	}
 	
 	/**
@@ -200,8 +152,7 @@ public class ProvisioningController {
 		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
 		
 		try {
-			result = ProvisioningManager.getPortsByLayerFromOWL(equipmentId, "Input_Card");
-			//result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Input", ProvisioningComponents.provisioningRepository);
+			result = ProvisioningManager.getPortsByLayerFromOWL(equipmentId, "Input_Card", false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -225,8 +176,7 @@ public class ProvisioningController {
 		HashMap<String, ArrayList<HashMap<String, String>>> result = new HashMap<String, ArrayList<HashMap<String, String>>>();
 		
 		try {
-			result = ProvisioningManager.getPortsByLayerFromOWL(equipmentId, "Output_Card");
-			//result = InterfaceStructure.getInterfacesFromEquipment(equipmentId, "Output", ProvisioningComponents.provisioningRepository);
+			result = ProvisioningManager.getPortsByLayerFromOWL(equipmentId, "Output_Card", false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -249,7 +199,7 @@ public class ProvisioningController {
 	protected @ResponseBody String getConnectionTypeFromOWL(@RequestParam("equipmentSourceId") String equipmentSourceId, @RequestParam("equipmentTargetId") String equipmentTargetId){
 		String result = null;
 		try {
-			result = InterfaceStructure.getTypeOfConnection(equipmentSourceId, equipmentTargetId, ProvisioningComponents.provisioningRepository);
+			result = ProvisioningManager.getConnectionType(equipmentSourceId, equipmentTargetId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

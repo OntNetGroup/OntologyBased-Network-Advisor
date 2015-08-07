@@ -89,11 +89,6 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		
 		function next() {
 			
-//			if(currentLinkIndex === 1) {
-//				//execute reasoning
-//				owl.executeReasoning();
-//			}
-			
 			if(source && sourcePort && target && targetPort) {
 				console.log('sourcePort: ' + JSON.stringify(sourcePort));
 				console.log('targetPort: ' + JSON.stringify(targetPort));
@@ -132,7 +127,6 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
 				var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
-//				var connections = test.getConnections(source.id, target.id); 
 				
 				content = createConnectionContent(source, target, connectionType, connections)
 				
@@ -155,7 +149,6 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
 				var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
-//				var connections = test.getConnections(source.id, target.id); 
 				
 				console.log('connections: ' + JSON.stringify(connections));
 				content = createConnectionContent(source, target, connectionType, connections)
@@ -253,6 +246,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 						"type": $(this).attr('value'),
 						"id": $(this).attr('id'),
 						"name": $(this).text(),
+						"edge": "source",
 				}
 				
 				if($('.targetList #expList li').hasClass('active')) {
@@ -270,6 +264,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 						"type": $(this).attr('value'),
 						"id": $(this).attr('id'),
 						"name": $(this).text(),
+						"edge": "target",
 				}
 				
 				if($('.sourceList #expList li').hasClass('active')) {

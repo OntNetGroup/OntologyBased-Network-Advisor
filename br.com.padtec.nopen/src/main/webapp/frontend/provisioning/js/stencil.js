@@ -3,10 +3,10 @@ var Stencil = {};
 
 Stencil = {
 		
-		createLayerNetwork : function(tech, upLayer) {
+		createLayerNetwork : function(tech) {
 			return new joint.shapes.provisioning.Layer({
 		        technology: tech,
-		        uppermostLayer: upLayer,
+		        //uppermostLayer: upLayer,
 				lanes: { 
 					label: tech
 				}
