@@ -259,9 +259,7 @@ nopen.provisioning.App = Backbone.View.extend({
     	       if(cell.get('subtype') !== 'Access_Group') return;
     	       
     	       var connectedPorts = model.getConnectedPorts(cell);
-    	       
-    	       console.log('connectedPorts' + JSON.stringify(connectedPorts));
-    	       
+//    	       console.log('connectedPorts' + JSON.stringify(connectedPorts));
     	       createEquipmentConnectionDialog(cell, connectedPorts);
     	       
     	    }
@@ -421,7 +419,7 @@ nopen.provisioning.App = Backbone.View.extend({
 				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
 				
 				$.each(outputs[layer], function(key, output) {
-					if(!connectedPorts["Output_Card"][output.id]) {
+					if(!connectedPorts[output.id]) {
 						content = content +
 							'<ul style="display: block;">' +
 				                '<li class="outputItem" id="' + output.id + '" title="Output" value="' + output.name + '" class="collapsed expanded">' + output.name + '</li>' +
