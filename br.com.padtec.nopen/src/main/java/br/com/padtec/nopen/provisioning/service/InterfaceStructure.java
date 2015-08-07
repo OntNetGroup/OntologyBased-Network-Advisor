@@ -31,12 +31,13 @@ public class InterfaceStructure {
 	
 	public static String getOutputsUpperLayerFromEquipment(String equipmentId, OKCoUploader repository){
 		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
-		Iterator it = layers.iterator();
+		Iterator<String> it = layers.iterator();
 		while(it.hasNext()){
-			String layer = (String) it.next();
+			String next = (String) it.next();
 			//retira as camadas que tem clientes
 			ArrayList<String> relations = new ArrayList<String>();
 			relations.add(RelationEnum.instantiates_Card_Layer_Layer_Type.toString());
+			String layer = next.substring(next.indexOf("#")+1);
 			ArrayList<String> layerTypes = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relations);
 			//pra camada ser a mais acima, ela nao pode ter cliente no mesmo equipamento
 			boolean hasClient = hasClientInEquipment(layerTypes.get(0), equipmentId, repository); 
