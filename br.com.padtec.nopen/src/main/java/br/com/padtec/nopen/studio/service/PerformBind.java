@@ -41,14 +41,14 @@ public class PerformBind {
 					repository.getBaseModel(), 
 					repository.getNamespace() + idPort, 
 					repository.getNamespace() + typePort,
-					true
+					false
 				);
 			
 			FactoryUtil.createInstanceIndividual(
 					repository.getBaseModel(), 
 					repository.getNamespace() + idTarget, 
 					repository.getNamespace() + typeTarget,
-					true
+					false
 				);
 			
 			//specific componentOf between port and tf
@@ -60,7 +60,10 @@ public class PerformBind {
 					repository.getBaseModel(), 
 					repository.getNamespace() + idSource, 
 					repository.getNamespace() + specificComponentOf,
-					repository.getNamespace() + idPort
+					repository.getNamespace() + idPort,
+					false,
+					false,
+					false
 				);
 			
 			
@@ -75,7 +78,10 @@ public class PerformBind {
 					repository.getBaseModel(), 
 					repository.getNamespace() + idTarget, 
 					repository.getNamespace() + specificBinds,
-					repository.getNamespace() + idPort
+					repository.getNamespace() + idPort,
+					false,
+					false,
+					false
 				);
 			
 			//create the relation between tf and input/output card
@@ -92,7 +98,10 @@ public class PerformBind {
 					repository.getBaseModel(), 
 					repository.getNamespace() + idTarget, 
 					repository.getNamespace() + specificInterfaceOf,
-					repository.getNamespace() + idSource
+					repository.getNamespace() + idSource,
+					false,
+					false,
+					false
 			);
 			
 			
@@ -165,7 +174,7 @@ public class PerformBind {
 					repository.getBaseModel(), 
 					repository.getNamespace() + rpId, 
 					repository.getNamespace() + rpType,
-					true
+					false
 				);
 			
 			//create output
@@ -173,7 +182,7 @@ public class PerformBind {
 					repository.getBaseModel(), 
 					repository.getNamespace() + outputId, 
 					repository.getNamespace() + typeOutput,
-					true
+					false
 				);
 
 			//create input
@@ -181,7 +190,7 @@ public class PerformBind {
 					repository.getBaseModel(), 
 					repository.getNamespace() + inputId, 
 					repository.getNamespace() + typeInput,
-					true
+					false
 				);
 			
 			//create relation between output and reference point
@@ -189,7 +198,10 @@ public class PerformBind {
 					repository.getBaseModel(), 
 					repository.getNamespace() + rpId, 
 					repository.getNamespace() + relationRpOut,
-					repository.getNamespace() + outputId
+					repository.getNamespace() + outputId,
+					false,
+					false,
+					false
 				);
 			
 			//create relation between input and reference point
@@ -197,7 +209,10 @@ public class PerformBind {
 					repository.getBaseModel(), 
 					repository.getNamespace() + rpId, 
 					repository.getNamespace() + relationInRp,
-					repository.getNamespace() + inputId
+					repository.getNamespace() + inputId,
+					false,
+					false,
+					false
 				);
 			
 							
@@ -216,7 +231,10 @@ public class PerformBind {
 						repository.getBaseModel(), 
 						repository.getNamespace() + idSource, 
 						relation_source,
-						repository.getNamespace() + outputId
+						repository.getNamespace() + outputId,
+						false,
+						false,
+						false
 						);		
 				
 				NOpenLog.appendLine(repository.getName()+":  Output "+outputId+" created at "+ typeSource + ": "+nameSource);
@@ -227,7 +245,10 @@ public class PerformBind {
 						repository.getBaseModel(), 
 						repository.getNamespace() + idTarget, 
 						relation_target,
-						repository.getNamespace() + inputId
+						repository.getNamespace() + inputId,
+						false,
+						false,
+						false
 				);
 				
 				

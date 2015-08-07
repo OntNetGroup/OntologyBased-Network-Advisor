@@ -1406,7 +1406,7 @@ public class InstanceFabricator {
 					repository.getBaseModel(),
 					repository.getNamespace() + dtoContent.getId(),
 					repository.getNamespace() + dtoContent.getType(),
-					true);
+					false);
 			NOpenLog.appendLine(repository.getName() + ": " + dtoContent.getId() + " created. ");
 		}
 		else{	
@@ -1445,7 +1445,7 @@ public class InstanceFabricator {
 						repository.getBaseModel(),
 						targetURI,
 						typeTargetURI,
-						true);
+						false);
 
 				if(typeTargetURI.equalsIgnoreCase(repository.getNamespace() + ConceptEnum.Card_Layer.toString())){
 					
@@ -1461,7 +1461,10 @@ public class InstanceFabricator {
 							repository.getBaseModel(), 
 							targetURI,			 
 							layerPropertyURI,
-							layerTypeURI
+							layerTypeURI, 
+							false, 
+							false,
+							false
 							);
 				}
 
@@ -1469,7 +1472,10 @@ public class InstanceFabricator {
 						repository.getBaseModel(), 
 						sourceURI,			 
 						specificPropertyURI,
-						targetURI
+						targetURI,
+						false,
+						false,
+						false
 						);
 
 				NOpenLog.appendLine(repository.getName() + ": " + nameSource + " linked with " + nameTarget);
