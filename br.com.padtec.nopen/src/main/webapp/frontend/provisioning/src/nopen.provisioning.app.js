@@ -191,6 +191,7 @@ nopen.provisioning.App = Backbone.View.extend({
         });
         
         var transitionCell = undefined;
+        var hoverCell = undefined;
         paper.on('cell:mouseover', function(cellView, evt) {
         	
         	var cell = graph.getCell(cellView.model.id);
@@ -212,6 +213,11 @@ nopen.provisioning.App = Backbone.View.extend({
         	}
         	
         	if(clicked) {
+        		hoverCell = {
+        				'stroke' : cell.attr('circle/stroke'),
+        				'strokeWidth' : cell.attr('circle/stroke-width'),
+        				'textDisplay' : cell.attr('text/display'),
+        		}
         		if(cell.id !== cellClickedId) {
         			cell.attr('circle/stroke', "red");
                 	cell.attr('circle/stroke-width', 3);
@@ -263,9 +269,9 @@ nopen.provisioning.App = Backbone.View.extend({
         	
         	if(clicked) {
         		if(cell.id !== cellClickedId) {
-        			cell.attr('circle/stroke', "black");
-        			cell.attr('circle/stroke-width', 1);
-            		cell.attr('text/display', 'none');
+        			cell.attr('circle/stroke', hoverCell.stroke);
+        			cell.attr('circle/stroke-width', hoverCell.strokeWidth);
+            		cell.attr('text/display', hoverCell.textDisplay);
         		}
         		return;
         	}

@@ -410,7 +410,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			graph.addCell(subnetwork);
 			
 			var subnetworkPosition = {
-					x : layerPosition.x + 55,
+					x : layerPosition.x + 65,
 					y : layerPosition.y + 25,
 			}
 			

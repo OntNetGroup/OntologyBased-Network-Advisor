@@ -58,8 +58,8 @@ joint.shapes.provisioning.Layer = joint.shapes.bpmn.Pool.extend({
         technology: '',
         uppermostLayer: '',
         size: {
-            width: 500,
-            height: 200
+            width: 520,
+            height: 220
         },
         attrs: {
         	'.': { magnet: false },
