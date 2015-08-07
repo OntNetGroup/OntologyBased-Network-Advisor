@@ -267,7 +267,7 @@ public class NOpenAttributeRecognizer {
 			System.out.println("JSON:"+jsonFileName);				
 			System.out.println("Content:"+content);
 			
-			attrMap.put(adId, content);
+			attrMap.put(adId, jsonFileName.replace(".json", ""));
 			index++;
 		}
 
@@ -295,7 +295,7 @@ public class NOpenAttributeRecognizer {
 				System.out.println("JSON:"+jsonFileName);				
 				System.out.println("Content:"+content);
 								
-				attrMap.put(ttfId,content);			
+				attrMap.put(ttfId,jsonFileName.replace(".json", ""));			
 				index++;
 			}
 		}

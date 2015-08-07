@@ -248,6 +248,8 @@ var Rappid = Backbone.Router.extend({
 		}, this));
 	},
 
+//	eval("createInspector: function(cellView) {" + dateFn + "},"),
+	
 	createInspector: function(cellView) {
 		var cell = cellView.model || cellView;
 
@@ -340,7 +342,7 @@ var Rappid = Backbone.Router.extend({
 			halo.render();
 
 //			this.initializeHaloTooltips(halo);
-
+// Verificar atributos da cell nessa parte! e usar o eval
 			this.createInspector(cellView);
 //			console.log(cellView.model.attributes.subType);
             if(cellView.model.attributes.subType === 'Card'){
