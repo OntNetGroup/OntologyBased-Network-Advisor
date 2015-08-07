@@ -89,10 +89,17 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		
 		function next() {
 			
+			console.log('OI!')
+			
 			if(source && sourcePort && target && targetPort) {
 				console.log('sourcePort: ' + JSON.stringify(sourcePort));
 				console.log('targetPort: ' + JSON.stringify(targetPort));
 				model.connectPortsInPreProvisioning(source, sourcePort, target, targetPort);
+				
+				var sPort = owl.createElement(sourcePort.type, sourcePort.id, sourcePort.name);
+				var tPort = owl.createElement(targetPort.type, targetPort.id, targetPort.name);
+				
+				owl.connectPorts(sPort, tPort);
 			}
 			
 			$('.dialog .controls .control-button[data-action="showImage"]').show();

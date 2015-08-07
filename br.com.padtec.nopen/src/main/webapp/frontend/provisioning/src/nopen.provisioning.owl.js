@@ -7,6 +7,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 		var $this = this;
 		
+		//get model relationships from OWL
 		$.ajax({
 		   type: "POST",
 		   async: false,
@@ -26,6 +27,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 								   relationships[source][target].splice(key, 1);
 							   }
 							   else if(relation.indexOf("INV.") >= 0){
+								   //check if has inverse, if yes, delete it.
 								   if($this.hasInverse(relationships[source][target], relation)){
 									   relationships[source][target].splice(key, 1);
 								   }
@@ -61,6 +63,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		return hasInverse;
 	},
 	
+	//Method to set model relationships 
 	setRelationships : function(relationships) {
 		
 		this.relationships = relationships;
@@ -68,6 +71,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 	},
 	
+	//Methos to set the application variable
 	setApp : function(app) {
 		this.app = app;
 	},
@@ -372,7 +376,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	
 	},
 	
-	
+	//create a JOSN link.
 	createLink : function(subject, subjectType, object, objectType) {
 		
 		var links = [];
@@ -394,6 +398,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 	},
 	
+	//create a JSON element.
 	createElement : function(type, id, name) {
 		
 		return element = {
@@ -404,6 +409,44 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 	},
 	
+	//create connection between ports in OWL
+	connectPorts : function(sourcePort, targetPort) {
+		
+		var relationships = this.relationships;
+		
+		var links = [];
+		var elements = [];
+		
+		elements.push(sourcePort);
+		elements.push(targetPort);
+		
+		links.push({
+			"subjectType" : sourcePort.type,
+			"subject" : sourcePort.id,
+			"predicate" : relationships[sourcePort.type][targetPort.type][0],
+			"objectType" : targetPort.type,
+			"object" : targetPort.id,
+		})
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "connectPortsInOWL.htm",
+		   data: {
+			   'elements' : JSON.stringify(elements),
+			   'links' : JSON.stringify(links),
+		   },
+		   success: function(){
+//			   console.log('PORTS CONNECTED IN OWL!')
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	},
+	
+	//execute reasoning
 	executeReasoning : function() {
 	
 		//execute parse
@@ -421,6 +464,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 	},
 	
+	//Methos to get the layer by layer id
 	getLayerName : function(elements, layerId) {
 		
 		var layerName = undefined;
@@ -447,7 +491,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		$.each(elements, function(index, element) {
 			
 			if(element.id === elementId) {
-				
 				if(element.subtype) {
 					type = element.subtype;
 				}
@@ -488,6 +531,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		return connectionType;
 	},
 	
+	//Method do get possible connection ports (interfaces) from OWL
 	getPossibleConnectionsFromOWL : function(connectionType, equipmentSourceId, equipmentTargetId) {
 		
 		var $this = this;

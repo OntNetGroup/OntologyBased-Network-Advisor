@@ -127,6 +127,25 @@ public class ProvisioningController {
 		}
 	}
 	
+	/**
+	 * Connect ports in OWL by a JSON file
+	 * @param elements
+	 * @param links
+	 */
+	@RequestMapping(value = "/connectPortsInOWL", method = RequestMethod.POST)
+	protected @ResponseBody void connectPortsInOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
+		
+		try {
+			ProvisioningManager.createElementsInOWL(elements);
+			ProvisioningManager.createLinksInOWL(links);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Procedure to execute the provisioning reasoning
+	 */
 	@RequestMapping(value = "/executeReasoning", method = RequestMethod.POST)
 	protected @ResponseBody synchronized void executeReasoning(){
 		
@@ -134,11 +153,13 @@ public class ProvisioningController {
 		
 	}
 	
+	/**
+	 * Procedure to get a JSON model relationships
+	 * @return
+	 */
 	@RequestMapping(value = "/getModelRelationships", method = RequestMethod.POST)
 	protected @ResponseBody String getModelRelationships(){
-		
 		return ProvisioningUtil.generateJSONModelRelationships();
-		
 	}
 	
 	/**
