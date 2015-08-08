@@ -16,7 +16,8 @@ function openFromURL(filename, graph){
 	
 	$.ajax({
 		type: "POST",
-		url: "openTemplate.htm",
+		url: "openEquipment.htm",
+		async: false,
 		data: {
 			'filename' : filename
 		},
@@ -30,6 +31,8 @@ function openFromURL(filename, graph){
 			//alert("error: " + e.status);
 		}
 	});
+	
+	$('#btn-zoom-to-fit').click();
 
 	function loadEquipmentstoOWl(filename){
 		

@@ -116,10 +116,8 @@
 		 graphHandler(app, app.graph , app.paper);
 		
 		$('.toolbar-container').append(
-				'<div style="display: inline;margin-left:10px">&#155; '
+				'<div style="display:inline;margin-left:10px">&#155; '
 						+ equipment + '</div>');
-
-		$('#btn-zoom-to-fit').click();
 
 		$('#btn-back').click(function() {
 			parent.closeIframe();
