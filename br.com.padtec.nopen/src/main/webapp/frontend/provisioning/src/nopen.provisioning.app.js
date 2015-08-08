@@ -119,6 +119,17 @@ nopen.provisioning.App = Backbone.View.extend({
         		return;
         	}
         	
+        	$.each(graph.getElements(), function(index, cell) {
+        		if(cell.get('subtype') === 'Access_Group') {
+        			cell.attr('circle/stroke', "black");
+        			cell.attr('circle/stroke-width', 1);
+            		cell.attr('text/display', 'none');
+        		}
+        	});
+        	
+        	//hide links
+        	model.hideLinks();
+        	
         	cell.attr('circle/stroke', "red");
         	cell.attr('circle/stroke-width', 3);
         	cell.attr('text/display', 'normal');
