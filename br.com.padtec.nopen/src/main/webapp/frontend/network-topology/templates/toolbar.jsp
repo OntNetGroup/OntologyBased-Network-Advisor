@@ -7,6 +7,7 @@
 
      <button id="btn-pre" class="btn" data-tooltip="Preview XML"><img src="/nopen/frontend/network-topology/img/preview.png" alt="Preview XML"/></button>
      <button id="btn-export-xml" class="btn" data-tooltip="Export to XML"><img src="/nopen/frontend/network-topology/img/export.png" alt="Export to XML"/></button>
+     <button id="btn-export-yang" class="btn" data-tooltip="Export to YANG"><img src="/nopen/frontend/network-topology/img/export.png" alt="Export to YANG"/></button>
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window"><img src="/nopen/frontend/network-topology/img/pngfile.png" alt="PNG"/></button>
      <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/network-topology/img/print.png" alt="Print"/></button>
      

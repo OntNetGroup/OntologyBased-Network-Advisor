@@ -22,6 +22,17 @@ function exportTopology (graph, uuid) {
 	
 };
 
+function exportTopologyAsYANG (graph) {
+	var nodes = graph.getCells();
+	
+	_.each(nodes, function(index, node) {
+		var equipName = node;
+	});
+	
+	
+	
+};
+
 function previewTopology (graph, uuid) {
 	
 	var tnodeArray = getNodes(graph);
