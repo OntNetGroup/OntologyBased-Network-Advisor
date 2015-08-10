@@ -79,26 +79,7 @@ public class ProvisioningManager {
 		
 	}
 	
-	
-	public static String getConnectionInterfaces(String sourceEquipmentId, String targetEquipmentId, String connectionType) {
-		
-		HashMap<String, HashMap<String, ArrayList<HashMap<String, String>>>> connectionInterfaces = new HashMap<String,HashMap<String, ArrayList<HashMap<String, String>>>>();
-		
-		if(connectionType.equals("Horizontal")){
-			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", true));
-			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Output_Card", true));
-		}
-		else{
-			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", true));
-			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Intput_Card", true));
-		}
-		
-		Gson gson = new Gson();
-		return gson.toJson(connectionInterfaces);
-		
-	}
-	
-	public static String getConnectionType(String sourceEquipmentId, String targetEquipmentId){
+public static String getConnectionType(String sourceEquipmentId, String targetEquipmentId){
 		
 		String namespace = ProvisioningComponents.provisioningRepository.getNamespace();
 		
@@ -137,6 +118,24 @@ public class ProvisioningManager {
 		}	
 		
 		return connectionType;
+	}
+	
+	public static String getConnectionInterfaces(String sourceEquipmentId, String targetEquipmentId, String connectionType) {
+		
+		HashMap<String, HashMap<String, ArrayList<HashMap<String, String>>>> connectionInterfaces = new HashMap<String,HashMap<String, ArrayList<HashMap<String, String>>>>();
+		
+		if(connectionType.equals("Horizontal")){
+			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", true));
+			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Output_Card", true));
+		}
+		else{
+			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", true));
+			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Intput_Card", true));
+		}
+		
+		Gson gson = new Gson();
+		return gson.toJson(connectionInterfaces);
+		
 	}
 	
 	public static ArrayList<String> getLayersFromEquipment(String equipmentId) {
@@ -210,6 +209,7 @@ public class ProvisioningManager {
 				boolean excludePort = false;
 				if(excludeConnectedPorts) {
 					if(ProvisioningQuery.isConnectedPort(port)) {
+						System.out.println("PORT: " + port);
 						excludePort = true;
 					}
 				}

@@ -438,6 +438,9 @@ nopen.provisioning.App = Backbone.View.extend({
 		var owl = this.owl;
 		var util = this.util;
 		
+		var sourcePort = undefined;
+		var targetPort = undefined;
+		
 		//create a dialog connection only if exist a target
 		validator.validate('change:target change:source', function(err, command, next) {
 
@@ -451,13 +454,162 @@ nopen.provisioning.App = Backbone.View.extend({
 			var source = graph.getCell(cell.attributes.source.id);
 			var target = graph.getCell(cell.attributes.target.id);
 			
-			var connectedPorts = model.getConnectedPorts(source);
-			createConnectionDialog(cell, source, target, connectedPorts);
+			var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
+			var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
+			
+			var content = createConnectionContent(source, target, connectionType, connections);
+			
+			//Create dialog
+			var dialog = new joint.ui.Dialog({
+				width: 500,
+				type: 'neutral',
+				title: 'Create Connection',
+				content: content,
+				buttons: [
+				          { action: 'cancel', content: 'Cancel', position: 'left' },
+				          { action: 'create', content: 'Create', position: 'left' },
+				          ]
+			});
+			dialog.on('action:cancel', cancel);
+			dialog.on('action:close', cancel);
+			dialog.on('action:create', create);
+			dialog.open();
+			
+			util.prepareList('.sourceList');
+			util.prepareList('.targetList');
+			
+			generateConnectionEvents();
+			
+			function cancel() {
+				cell.remove();
+				dialog.close();
+			};
+			
+			function create() {
+				console.log('sourcePort: ' + JSON.stringify(sourcePort));
+				console.log('targetPort: ' + JSON.stringify(targetPort));
+				
+				//connect ports in JSON model
+				model.connectPorts(source, sourcePort, target, targetPort);
+				
+				var sPort = owl.createElement(sourcePort.type, sourcePort.id, sourcePort.name);
+				var tPort = owl.createElement(targetPort.type, targetPort.id, targetPort.name);
+				
+				//connect ports in OWL
+				owl.connectPorts(sPort, tPort);
+				
+				dialog.close();
+			};
 			
 		});
 		
+		
+		//create connection content
+		function createConnectionContent(source, target, connectionType, connections) {
+			
+			var sourceId = source.id
+			var targetId = target.id;
+			
+			var sourceName = model.getEquipmentName(source);
+			var targetName = model.getEquipmentName(target);
+			
+			var content = 
+				'<div class="bindsContainer">' +
+					'<div class="connectionType"><b>Connection Type:</b> ' + connectionType + '</div>' +
+					'<div class="sourceList"><div id="listContainer">' +
+				    '<ul id="expList" class="list"> <li class="sourcePorts">' + sourceName + '</li> ' ;
+			
+			$.each(connections[sourceId], function(layer, value) {
+				
+				content = content + 
+				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+				
+				$.each(connections[sourceId][layer], function(key, port) {
+					
+					content = content +
+						'<ul style="display: block;">' +
+			                '<li class="sourcePort" id="' + port.id + '" value="' + port.type + '" class="collapsed expanded">' + port.name + '</li>' +
+			            '</ul>';
+					
+				});
+				
+				content = content + '</li>';
+				
+			});
+			
+			content = content + '</ul></div></div>';
+			content = content + 
+			'<div class="targetList"><div id="listContainer">' +
+		    	'<ul id="expList" class="list"> <li class="targetPorts">' + targetName + '</li>';
+			
+			$.each(connections[targetId], function(layer, value) {
+				
+				content = content + 
+				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
+				
+				$.each(connections[targetId][layer], function(key, port) {
+					
+					console.log('PORT: ' + JSON.stringify(port));
+					
+					content = content +
+						'<ul style="display: block;">' +
+			                '<li class="targetPort" id="' + port.id + '" value="' + port.type + '" class="collapsed expanded">' + port.name + '</li>' +
+			            '</ul>';
+					
+				});
+				
+				content = content + '</li>';
+				
+			});
+			
+			content = content + '</ul></div></div></div>';
+			
+			return content;
+			
+		};
+		
+		//generate events to connections list
+		function generateConnectionEvents() {
+			
+			$('.sourceList #expList').find('li.sourcePort').click( function(event) {
+				
+				$('.sourceList #expList li').removeClass('active');
+				$(this).toggleClass('active');
+
+				sourcePort = {
+						"type": $(this).attr('value'),
+						"id": $(this).attr('id'),
+						"name": $(this).text(),
+						"edge": "source",
+				}
+				
+				if($('.targetList #expList li').hasClass('active')) {
+					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+				}
+				
+			});
+			
+			$('.targetList #expList').find('li.targetPort').click( function(event) {
+				
+				$('.targetList #expList li').removeClass('active');
+				$(this).toggleClass('active');
+				
+				targetPort = {
+						"type": $(this).attr('value'),
+						"id": $(this).attr('id'),
+						"name": $(this).text(),
+						"edge": "target",
+				}
+				
+				if($('.sourceList #expList li').hasClass('active')) {
+					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+				}
+				
+			});
+		}
+		
 		//Generate connection dialog when drag a equipment to another
-		function createConnectionDialog(cell, source, target, connectedPorts) {
+		function createConnectionDialog(source, target, connectionType, connections) {
 			
 			var outputs = owl.getOutputsFromOWL(source.id);
 			
