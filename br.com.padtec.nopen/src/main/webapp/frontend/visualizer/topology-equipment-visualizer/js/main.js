@@ -346,8 +346,7 @@ var Rappid = Backbone.Router.extend({
 			this.createInspector(cellView);
 //			console.log(cellView.model.attributes.subType);
             if(cellView.model.attributes.subType === 'Card'){
-            	
-                 	$('.inspector-container').show();
+                 $('.inspector-container').show();
             }else{
             	$('.inspector-container').hide();
             }
