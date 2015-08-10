@@ -50,7 +50,7 @@ public class HomeController {
 		
 	@RequestMapping("/advisor")
 	public String advisorRequest() {
-		return "advisor/index";
+		return "redirect:welcome.htm";
 	}
 	
 	/** Get the base model from studio as a string text */	

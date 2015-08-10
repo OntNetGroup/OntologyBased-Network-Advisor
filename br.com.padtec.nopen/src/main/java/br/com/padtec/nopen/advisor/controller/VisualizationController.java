@@ -50,7 +50,7 @@ public class VisualizationController {
 		HashMap<String, List<String>> g800List = AdvisorComponents.connects.getIndividualVSClassesMap(allIndividuals);;				
 		request.getSession().setAttribute("g800", g800List);
 
-		return "open-visualizer";
+		return "advisor/views/open-visualizer";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_network_visualization")
@@ -108,7 +108,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("nameSpace", OKCoComponents.repository.getNamespace());
 		request.getSession().setAttribute("size", AdvisorComponents.visualizator.getSize());
 		
-		return "show-visualization";
+		return "advisor/views/show-visualization";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_equipment_visualization_from_site")
@@ -128,7 +128,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("visualizationType", "fromSite");
 		request.getSession().setAttribute("site", selected_site);
 		
-		return "show-visualization";
+		return "advisor/views/show-visualization";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/open_g800_visualization_from_equip")
@@ -146,7 +146,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("visualizationType", "fromEquip");
 		request.getSession().setAttribute("equip", equip);
 		
-		return "show-visualization";
+		return "advisor/views/show-visualization";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/connects")
@@ -168,7 +168,7 @@ public class VisualizationController {
 		request.getSession().setAttribute("hashRPEquip", AdvisorComponents.connectsVisualizator.getHashRPEquip());
 		request.getSession().setAttribute("size", AdvisorComponents.connectsVisualizator.getSize());
 
-		return "connects";
+		return "advisor/views/connects";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/binds")
@@ -197,7 +197,7 @@ public class VisualizationController {
 
 		PerformanceUtil.printExecutionTime("/binds", beginDate);
 		
-		return "binds";
+		return "advisor/views/binds";
 	}	
 }
 
