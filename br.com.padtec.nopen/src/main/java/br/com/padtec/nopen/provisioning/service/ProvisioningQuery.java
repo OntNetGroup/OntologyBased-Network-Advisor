@@ -66,7 +66,7 @@ public class ProvisioningQuery {
 		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
 		
 		//create query string
-		String queryString = prefix + "SELECT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . }";
+		String queryString = prefix + "SELECT DISTINCT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . }";
 		
 		Query query = QueryFactory.create(queryString); 
 		
@@ -94,7 +94,7 @@ public class ProvisioningQuery {
 		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
 		
 		//create query string
-		String queryString = prefix + "SELECT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . FILTER NOT EXISTS { ?layer ont:is_client ?x . } }";
+		String queryString = prefix + "SELECT DISTINCT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . FILTER NOT EXISTS { ?layer ont:is_client ?x . } }";
 		
 		Query query = QueryFactory.create(queryString); 
 		
@@ -122,7 +122,7 @@ public class ProvisioningQuery {
 		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
 		
 		//create query string
-		String queryString = prefix + "SELECT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . FILTER NOT EXISTS { ?layer ont:INV.is_client ?x . } }";
+		String queryString = prefix + "SELECT DISTINCT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . FILTER NOT EXISTS { ?layer ont:INV.is_client ?x . } }";
 		
 		Query query = QueryFactory.create(queryString); 
 		

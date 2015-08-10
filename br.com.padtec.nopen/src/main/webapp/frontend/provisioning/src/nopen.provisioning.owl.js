@@ -124,6 +124,10 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				var layer = $this.createElement(element.subtype, element.id, element.lanes.label); 
 				elements.push(layer);
 				
+				//Card_Layer > Layer_Type
+				var link = $this.createLink(element.id, element.subtype, element.lanes.label, "Layer_Type");
+				links.push(link);
+				
 				//Card > Card_Layer
 				var link = $this.createLink(card.id, card.subType, element.id, element.subtype);
 				links.push(link);
