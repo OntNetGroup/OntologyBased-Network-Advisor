@@ -48,14 +48,14 @@ public class SindelController{
 		} catch (IOException e){
 			String error = "File not found: "+e.getLocalizedMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			return "index";
+			return "advisor/index";
 			
 		}catch (OKCoExceptionFileFormat e) {
 			String error = "File format error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
-			return "index";
+			return "advisor/index";
 		}
-		return "redirect:sindel";
+		return "redirect:sindel.htm";
 	}
 	
 	@RequestMapping(value = "/uploadSindelEquip", method = RequestMethod.POST)
@@ -94,7 +94,7 @@ public class SindelController{
 			request.getSession().setAttribute("errorMensage", error);			
 		}
 		
-		return "add-equipment";			
+		return "advisor/views/add-equipment";			
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value="/uploadEquipTypes")
@@ -140,7 +140,7 @@ public class SindelController{
 		}
 		request.getSession().setAttribute("action", "runParser");
 		
-		return "add-equipment";
+		return "advisor/views/add-equipment";
 	}
 			
 	@RequestMapping(method = RequestMethod.POST, value="/runEquipTypes")
@@ -221,7 +221,7 @@ public class SindelController{
 		 *  ========================================== */
 		AdvisorComponents.sindelUploader.clear();
 		
-		return "sindel";	
+		return "advisor/views/sindel";	
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/getSindel")
@@ -231,9 +231,9 @@ public class SindelController{
 		{
 			request.getSession().setAttribute("txtSindelCode", AdvisorComponents.sindelUploader.getSindelCode());
 			request.getSession().removeAttribute("loadOk");
-			return "getSindel";
+			return "advisor/views/get-sindel";
 		}else{
-			return "sindel";
+			return "advisor/views/sindel";
 		}
 	}
 	
@@ -352,12 +352,12 @@ public class SindelController{
 		{
 			String error = "Error! You need to load the model first.";
 			request.getSession().setAttribute("errorMensage", error);
-			return "index";
+			return "advisor/index";
 		}
 		
 		cleanEquipSindel(request);
 		
-		return "add-equipment";
+		return "advisor/views/add-equipment";
 	}
 
 }

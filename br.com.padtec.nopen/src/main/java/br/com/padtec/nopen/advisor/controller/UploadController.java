@@ -43,7 +43,7 @@ public class UploadController implements ServletContextAware{
 	{
 		request.getSession().removeAttribute("errorMensage");
 		request.getSession().removeAttribute("loadOk");
-		return "login";	
+		return "advisor/views/login";	
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/faq")
@@ -55,9 +55,9 @@ public class UploadController implements ServletContextAware{
 		{
 			request.getSession().removeAttribute("errorMensage");
 			request.getSession().removeAttribute("loadOk");
-			return "faq";
+			return "advisor/views/faq";
 		}else{
-			return "login";
+			return "advisor/views/login";
 		}
 	}
 	
@@ -70,9 +70,9 @@ public class UploadController implements ServletContextAware{
 		{
 			request.getSession().removeAttribute("errorMensage");
 			request.getSession().removeAttribute("loadOk");
-			return "about";
+			return "advisor/views/about";
 		}else{
-			return "login";
+			return "advisor/views/login";
 		}
 	}
 	
@@ -82,10 +82,10 @@ public class UploadController implements ServletContextAware{
 		if(username.equals("advisor") && password.equals("1234"))
 		{
 			request.getSession().setAttribute("login", "true");
-			return "redirect:welcome";
+			return "redirect:welcome.htm";
 		}else{
 			request.getSession().setAttribute("login", "false");
-			return "login";
+			return "advisor/views/login";
 		}
 	}
 		
@@ -110,9 +110,9 @@ public class UploadController implements ServletContextAware{
 			
 			PerformanceUtil.printExecutionTime("/welcome", beginDate);
 			
-			return "index";			
+			return "advisor/index";			
 		}else{
-			return "login";	
+			return "advisor/views/login";	
 		}
 	}
 	
@@ -180,43 +180,43 @@ public class UploadController implements ServletContextAware{
 			String error = "Ontology have inconsistence:" + e.toString() + ". Return the last consistent model state.";
 			request.getSession().setAttribute("errorMensage", error);			
 			OKCoComponents.repository.rollBack(false);			
-			return "index";			
+			return "advisor/index";			
 		}catch (OKCoExceptionInstanceFormat e){			
 			String error = "Entity format error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
 			OKCoComponents.repository.clear();
-			return "index";			
+			return "advisor/index";			
 		}catch (OKCoExceptionFileFormat e){			
 			String error = "File format error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
 			OKCoComponents.repository.clear();		
-			return "index";			
+			return "advisor/index";			
 		}catch (IOException e){
 			String error = "File not found.";
 			request.getSession().setAttribute("errorMensage", error);
 			OKCoComponents.repository.clear();	
-			return "index";			
+			return "advisor/index";			
 		}catch (OKCoExceptionNameSpace e){			
 			String error = "File namespace error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
 			OKCoComponents.repository.clear();
-			return "index";			
+			return "advisor/index";			
 		}catch (OKCoExceptionReasoner e){
 			String error = "Reasoner error: " + e.getMessage();
 			request.getSession().setAttribute("errorMensage", error);
 			OKCoComponents.repository.clear();
-			return "index";
+			return "advisor/index";
 		} catch (Exception e){
 			String error = e.getLocalizedMessage();
 			request.getSession().setAttribute("errorMensage", error);
 			OKCoComponents.repository.clear();
-			return "index";
+			return "advisor/index";
 		}	 
 		
 		PerformanceUtil.printExecutionTime("/uploadOwl", beginDate);
 		
 		request.getSession().removeAttribute("errorMensage");  
-		return "redirect:okco-list";
+		return "redirect:okco-list.htm";
 	}	
 	
 	@RequestMapping(method = RequestMethod.GET, value="/getModel")
@@ -229,11 +229,11 @@ public class UploadController implements ServletContextAware{
 		{
 			request.getSession().removeAttribute("loadOk");
 			request.getSession().setAttribute("model", OKCoComponents.repository.getBaseModelAsString());
-			return "okco-model";
+			return "advisor/views/okco-model";
 		}else{				
 			request.getSession().removeAttribute("model");
 			request.getSession().setAttribute("loadOk", "false");
-		    return "okco-index";
+		    return "advisor/views/okco-index";
 		}
 	}
 	

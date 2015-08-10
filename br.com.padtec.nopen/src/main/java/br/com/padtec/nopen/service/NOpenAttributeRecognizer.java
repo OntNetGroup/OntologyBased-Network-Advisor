@@ -2,7 +2,6 @@ package br.com.padtec.nopen.service;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -197,6 +196,7 @@ public class NOpenAttributeRecognizer {
 	
 	/** @author John Guerson 
 	 * @throws IOException */
+	@SuppressWarnings("unused")
 	public static Map<String,String> runfromCard(String cardId, List<PElement> pelems, List<PLink> links) throws IOException
 	{
 		/** tf <-> json content */

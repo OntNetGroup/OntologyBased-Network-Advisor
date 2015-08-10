@@ -46,7 +46,7 @@ function changedEquipmentCB(){
 								}else{ %>
 									<td style="padding-left: 30px;">
 										<a class="btn btn-success" 
-											href="open_network_visualization?visualization=allSites"> <i
+											href="open_network_visualization.htm?visualization=allSites"> <i
 												class="icon-zoom-in"></i>
 										</a> 
 								<% }
@@ -61,7 +61,7 @@ function changedEquipmentCB(){
 							}else{ %>
 								<td style="padding-left: 30px;">
 									<a class="btn btn-success" 
-										href="open_network_visualization?visualization=allEquipments"> <i
+										href="open_network_visualization.htm?visualization=allEquipments"> <i
 											class="icon-zoom-in"></i>
 									</a> 
 							<% }
@@ -75,7 +75,7 @@ function changedEquipmentCB(){
 								}else{ %>
 									<td style="padding-left: 30px;">
 										<a class="btn btn-success" 
-											href="open_network_visualization?visualization=allG800"> <i
+											href="open_network_visualization.htm?visualization=allG800"> <i
 												class="icon-zoom-in"></i>
 										</a> 
 								<% }
@@ -98,7 +98,7 @@ function changedEquipmentCB(){
 												<tr>
 													<td style="border-top:0;">
 														<a class="btn btn-success" 
-															href="open_equipment_visualization_from_site" onclick="this.href = 'open_equipment_visualization_from_site?selected='+strUser"> <i
+															href="open_equipment_visualization_from_site.htm" onclick="this.href = 'open_equipment_visualization_from_site.htm?selected='+strUser"> <i
 																class="icon-zoom-in"></i>
 														</a>
 													</td>
@@ -132,7 +132,7 @@ function changedEquipmentCB(){
 											<tr>
 												<td style="border-top:0;">
 													<a class="btn btn-success" 
-														href="open_g800_visualization_from_equip" onclick="this.href = 'open_g800_visualization_from_equip?selected='+strUserEquip"> <i
+														href="open_g800_visualization_from_equip.htm" onclick="this.href = 'open_g800_visualization_from_equip.htm?selected='+strUserEquip"> <i
 															class="icon-zoom-in"></i>
 													</a>
 												</td>
@@ -156,7 +156,7 @@ function changedEquipmentCB(){
 						<td><b>All network information</b></td>
 						<td style="padding-left: 30px;">
 							<a class="btn btn-success" 
-								href="open_network_visualization?visualization=allElements"> <i
+								href="open_network_visualization.htm?visualization=allElements"> <i
 									class="icon-zoom-in" ></i>
 							</a> 
 						</td>

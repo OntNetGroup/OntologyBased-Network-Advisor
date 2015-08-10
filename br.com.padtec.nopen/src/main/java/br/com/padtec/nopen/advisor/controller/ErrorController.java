@@ -11,6 +11,6 @@ public class ErrorController {
 	@RequestMapping(method = RequestMethod.GET, value="/ops")
 	public static String ops(HttpServletRequest request) 
 	{
-		return "ops";
+		return "advisor/views/ops";
 	}	
 }

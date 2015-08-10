@@ -16,6 +16,7 @@ import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.common.util.Util;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.model.DtoJointElement;
+import br.com.padtec.nopen.model.ProvisioningConceptEnum;
 import br.com.padtec.nopen.model.ProvisioningRelationEnum;
 import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.service.NOpenComponents;
@@ -29,17 +30,19 @@ import java.lang.reflect.Type;
 
 public class InterfaceStructure {
 	
+	
+	
+	
 	public static String getOutputsUpperLayerFromEquipment(String equipmentId, OKCoUploader repository){
 		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
 		Iterator<String> it = layers.iterator();
 		while(it.hasNext()){
 			String next = (String) it.next();
 			//retira as camadas que tem clientes
-			ArrayList<String> relations = new ArrayList<String>();
-			relations.add(RelationEnum.instantiates_Card_Layer_Layer_Type.toString());
+			String relation = ProvisioningRelationEnum.instantiates_Card_Layer_Layer_Type.toString();
 			String layer = next.substring(next.indexOf("#")+1);
-			ArrayList<String> layerTypes = QueryUtil.endOfGraph(repository.getBaseModel(), layer, relations);
-			//pra camada ser a mais acima, ela nao pode ter cliente no mesmo equipamento
+			List<String> layerTypes = QueryUtil.getIndividualsURIAtObjectPropertyRange(repository.getBaseModel(), repository.getNamespace() + layer, relation, repository.getNamespace() + ProvisioningConceptEnum.Layer_Type.toString());
+			//pra camada ser a mais acima, ela nao pode ter cliente no mesmo equipamento ou não pode ter cliente
 			boolean hasClient = hasClientInEquipment(layerTypes.get(0), equipmentId, repository); 
 			if(hasClient){
 				it.remove();
@@ -52,7 +55,27 @@ public class InterfaceStructure {
 	
 	private static boolean hasClientInEquipment(String layerTypeId, String equipmentId, OKCoUploader repository) {
 		// TODO Auto-generated method stub
-		return false;
+		List<String> clients = QueryUtil.getIndividualsURIAtObjectPropertyRange(repository.getBaseModel(), repository.getNamespace() + layerTypeId, repository.getNamespace() + ProvisioningRelationEnum.INV_is_client_Layer_Type_Layer_Type.toString(), repository.getNamespace() + ProvisioningConceptEnum.Layer_Type.toString());
+		if(clients.size() == 0){
+			//se nao tem cliente
+			return false;
+		} 
+		else { //tem cliente
+			ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
+			Iterator<String> it = layers.iterator();
+			while(it.hasNext()){
+				String next = (String) it.next();
+				
+				String relation = ProvisioningRelationEnum.instantiates_Card_Layer_Layer_Type.toString();
+				String layer = next.substring(next.indexOf("#")+1);
+				List<String> layerTypes = QueryUtil.getIndividualsURIAtObjectPropertyRange(repository.getBaseModel(), repository.getNamespace() + layer, relation, repository.getNamespace() + ProvisioningConceptEnum.Layer_Type.toString());
+				if(layerTypes.contains(repository.getNamespace() + layerTypeId)){
+					// se cliente esta no mesmo equipamento
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 

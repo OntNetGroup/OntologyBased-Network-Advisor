@@ -113,11 +113,15 @@
             });
             
             $('#btn-pre').click(function(){
-            	previewTopology(app.graph, uuid)
+            	previewTopology(app.graph, uuid);
             });
             
             $('#btn-export-xml').click(function(){
-            	exportTopology(app.graph, uuid)
+            	exportTopology(app.graph, uuid);
+            });
+            
+            $('#btn-export-yang').click(function(){
+            	exportTopologyAsYANG(app.graph);
             });
 
         </script>

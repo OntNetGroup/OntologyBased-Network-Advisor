@@ -17,6 +17,6 @@ public class SubRelationController {
 		 *  =================================================== */
 		AdvisorComponents.enforcer.run();	
 		
-		return "redirect::okco-details";
+		return "redirect::okco-details.htm";
 	}
 }
