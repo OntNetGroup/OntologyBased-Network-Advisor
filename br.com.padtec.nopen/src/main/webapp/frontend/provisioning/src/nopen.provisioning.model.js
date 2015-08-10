@@ -227,9 +227,9 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		var cards = [];
 		
 		//var equip = $.parseJSON(equipment);
-		var cells = equipment.get('equipment').data.cells;
+		//var cells = equipment.get('equipment').data.cells;
 		
-		//var cells = equipment.attributes.attrs.equipment.data.cells;
+		var cells = equipment.attributes.equipment.data.cells;
 		//var cells = equipment.attr('equipment/data').cells;
 
 		$.each(cells, function(index, cell) {

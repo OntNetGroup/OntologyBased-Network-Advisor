@@ -109,6 +109,10 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				dialog.close();
 				$('#black_overlay').hide();
 				
+				//execute reasoning
+				owl.executeReasoning();
+				
+				//generate provisioning
 				model.generateProvisioning(app, subnetworks);
 				$('.viewport').show();
 				$('#btn-zoom-to-fit').click();

@@ -142,7 +142,8 @@ public class NOpenFileUtil {
 	 * @param path
 	 */
 	public static void createProvisioningRepository(String path){
-		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningJSONFolder + path);	
+		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningJSONFolder + path);
+		NOpenFileUtil.createRepository(NOpenFileUtil.provisioningOWLFolder + path);	
 	}
 	
 	/**
@@ -288,6 +289,15 @@ public class NOpenFileUtil {
 	 */
 	public static File createProvisioningJSONFile(String filename){
 		return createFile(NOpenFileUtil.provisioningJSONFolder, filename + ".json");
+	}
+	
+	/**
+	 * Procedure for create a Provisioning OWL file.
+	 * @param filename 
+	 * @return
+	 */
+	public static File createProvisioningOWLFile(String filename){
+		return createFile(NOpenFileUtil.provisioningOWLFolder, filename + ".owl");
 	}
 
 	/** 
@@ -472,6 +482,15 @@ public class NOpenFileUtil {
     	return openFileAsString(NOpenFileUtil.provisioningJSONFolder, filename);
     }
 	
+    /**
+     * Procedure to open an Provisioning file as String.
+     * @param filename
+     * @return
+     */
+    public static String openProvisioningOWLFileAsString(String filename){
+    	return openFileAsString(NOpenFileUtil.provisioningOWLFolder, filename);
+    }
+    
     /**
      * Procedure to open an ITU configuration file as String.
      * @param filename

@@ -210,6 +210,11 @@ nopen.provisioning.App = Backbone.View.extend({
         	if(cell.get('subtype') !== 'Access_Group') return;
         	
         	if(transition) {
+        		hoverCell = {
+        				'stroke' : cell.attr('circle/stroke'),
+        				'strokeWidth' : cell.attr('circle/stroke-width'),
+        				'textDisplay' : cell.attr('text/display'),
+        		}
         		transitionCell = {
         				'stroke' : cell.attr('circle/stroke'),
         				'strokeWidth' : cell.attr('circle/stroke-width'),
@@ -280,6 +285,7 @@ nopen.provisioning.App = Backbone.View.extend({
         	
         	if(clicked) {
         		if(cell.id !== cellClickedId) {
+        			console.log('hoverCell:' + JSON.stringify(hoverCell));
         			cell.attr('circle/stroke', hoverCell.stroke);
         			cell.attr('circle/stroke-width', hoverCell.strokeWidth);
             		cell.attr('text/display', hoverCell.textDisplay);
@@ -454,7 +460,7 @@ nopen.provisioning.App = Backbone.View.extend({
 			var source = graph.getCell(cell.attributes.source.id);
 			var target = graph.getCell(cell.attributes.target.id);
 			
-			var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
+			var connectionType = "Vertical"; //owl.getConnectionTypeFromOWL(source.id, target.id);
 			var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
 			
 			var content = createConnectionContent(source, target, connectionType, connections);
@@ -466,8 +472,8 @@ nopen.provisioning.App = Backbone.View.extend({
 				title: 'Create Connection',
 				content: content,
 				buttons: [
-				          { action: 'cancel', content: 'Cancel', position: 'left' },
-				          { action: 'create', content: 'Create', position: 'left' },
+				          { action: 'create', content: 'Create', position: 'right' },
+				          { action: 'cancel', content: 'Cancel', position: 'right' },
 				          ]
 			});
 			dialog.on('action:cancel', cancel);
@@ -479,6 +485,8 @@ nopen.provisioning.App = Backbone.View.extend({
 			util.prepareList('.targetList');
 			
 			generateConnectionEvents();
+			
+			$('.dialog .controls .control-button[data-action="create"]').attr("disabled", true);
 			
 			function cancel() {
 				cell.remove();
@@ -502,7 +510,6 @@ nopen.provisioning.App = Backbone.View.extend({
 			};
 			
 		});
-		
 		
 		//create connection content
 		function createConnectionContent(source, target, connectionType, connections) {
@@ -584,7 +591,7 @@ nopen.provisioning.App = Backbone.View.extend({
 				}
 				
 				if($('.targetList #expList li').hasClass('active')) {
-					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+					$('.dialog .controls .control-button[data-action="create"]').attr("disabled", false);
 				}
 				
 			});
@@ -602,7 +609,7 @@ nopen.provisioning.App = Backbone.View.extend({
 				}
 				
 				if($('.sourceList #expList li').hasClass('active')) {
-					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+					$('.dialog .controls .control-button[data-action="create"]').attr("disabled", false);
 				}
 				
 			});

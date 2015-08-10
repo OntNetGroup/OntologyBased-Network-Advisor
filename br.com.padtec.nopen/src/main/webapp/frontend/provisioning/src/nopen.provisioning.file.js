@@ -228,19 +228,19 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   success: function(data){ 		   
 			   graph.fromJSON(data);
 			   
-			   //generate owl instances
-			   $.each(graph.getElements(), function(index, equipment) {
-				 
-				   if(equipment.get('subtype') === 'Access_Group') {
-					   
-					   var cards = model.getCards(equipment);
-					   $.each(cards, function(key, card) {
-						   owl.parseCardToOWL(equipment, card);
-					   });
-					   
-				   }
-				   
-			   });
+//			   //generate owl instances
+//			   $.each(graph.getElements(), function(index, equipment) {
+//				 
+//				   if(equipment.get('subtype') === 'Access_Group') {
+//					   
+//					   var cards = model.getCards(equipment);
+//					   $.each(cards, function(key, card) {
+//						   owl.parseCardToOWL(equipment, card);
+//					   });
+//					   
+//				   }
+//				   
+//			   });
 			   
 			   //hide links
 			   model.hideLinks();
@@ -251,7 +251,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		});
 		
 		//execute reasoning
-		owl.executeReasoning();
+//		owl.executeReasoning();
 		
 	},
 	

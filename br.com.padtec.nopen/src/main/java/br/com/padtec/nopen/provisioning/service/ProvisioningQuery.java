@@ -61,6 +61,90 @@ public class ProvisioningQuery {
 		return false;
 	}
 	
+	public static ArrayList<String> getAllLayersFromOWL() {
+		
+		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
+		
+		//create query string
+		String queryString = prefix + "SELECT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . }";
+		
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, ontModel);
+		ResultSet results = qe.execSelect();
+
+		ArrayList<String> layers = new ArrayList<String>();
+		
+		//get result and put on label variable
+		while (results.hasNext()) {
+			QuerySolution row = results.next();
+			String label = row.get("label").toString();
+			label = label.replace("@en", "");
+			label = label.replace("@EN", "");
+			layers.add(label);
+		}
+		
+		return layers;
+		
+	}
+	
+	public static ArrayList<String> getTopLayersFromOWL() {
+		
+		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
+		
+		//create query string
+		String queryString = prefix + "SELECT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . FILTER NOT EXISTS { ?layer ont:is_client ?x . } }";
+		
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, ontModel);
+		ResultSet results = qe.execSelect();
+
+		ArrayList<String> topLayers = new ArrayList<String>();
+		
+		//get result and put on label variable
+		while (results.hasNext()) {
+			QuerySolution row = results.next();
+			String label = row.get("label").toString();
+			label = label.replace("@en", "");
+			label = label.replace("@EN", "");
+			topLayers.add(label);
+		}
+		
+		return topLayers;
+		
+	}
+	
+	public static ArrayList<String> getBottomLayersFromOWL() {
+		
+		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
+		
+		//create query string
+		String queryString = prefix + "SELECT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . FILTER NOT EXISTS { ?layer ont:INV.is_client ?x . } }";
+		
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, ontModel);
+		ResultSet results = qe.execSelect();
+
+		ArrayList<String> bottomLayers = new ArrayList<String>();
+		
+		//get result and put on label variable
+		while (results.hasNext()) {
+			QuerySolution row = results.next();
+			String label = row.get("label").toString();
+			label = label.replace("@en", "");
+			label = label.replace("@EN", "");
+			bottomLayers.add(label);
+		}
+		
+		return bottomLayers;
+		
+	}
+	
 	
 	/**
 	 * Procedure to get objects from a specific subject individual of OWL
@@ -82,7 +166,7 @@ public class ProvisioningQuery {
 		queryString += 
 					" ?object . " +
 					" ?object rdfs:label ?label . " +
-				"}";
+				"} ORDER BY ?label ";
 				
 		System.out.println(queryString);
 		
@@ -132,6 +216,8 @@ public class ProvisioningQuery {
 		while (results.hasNext()) {
 			QuerySolution row = results.next();
 			label = row.get("label").toString();
+			label = label.replace("@en", "");
+			label = label.replace("@EN", "");
 		}
 		
 		return label;

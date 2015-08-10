@@ -99,7 +99,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		//Reference Point Counter
 		var fep_counter = 0, ap_counter = 0, fp_counter = 0;
 		//TF OUT/IN Counter
-		var ttf_out_counter = 0, ttf_in_counter = 0, af_out_counter = 0, af_in_counter = 0, matrix_out_counter = 0, matrix_in_counter = 0;
+		var ttf_out_counter = 0, ttf_in_counter = 0, af_out_counter = 0, af_in_counter = 0, matrix_out_counter = 0, matrix_in_counter = 0, pm_counter = 0;
 		
 		//Equipment
 		var equip = $this.createElement("Equipment", equipment.id, equipment.attributes.attrs.text.text);
@@ -341,8 +341,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				var link = $this.createLink(portId, "Input_Card", connectedPort.id, connectedPort.type);
 				links.push(link);
 			}
+			
 		});
-
 		
 		var pElements = elements;
 		var pLinks = [];
@@ -353,8 +353,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			});
 		});
 		
-//		console.log('Elements: ' + JSON.stringify(pElements));
-//		console.log('Links: ' + JSON.stringify(pLinks));
+		console.log('Elements: ' + JSON.stringify(pElements));
+		console.log('Links: ' + JSON.stringify(pLinks));
 		
 		//execute parse
 		$.ajax({
@@ -374,6 +374,198 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		});
 	
 	
+	},
+	
+	parseConnectedPorts : function(graph) {
+		
+		var $this = this;
+		var model = this.app.model;
+		
+		//Reference Point Counter
+		var fep_counter = 0, ap_counter = 0, fp_counter = 0;
+		//TF OUT/IN Counter
+		var ttf_out_counter = 0, ttf_in_counter = 0, af_out_counter = 0, af_in_counter = 0, matrix_out_counter = 0, matrix_in_counter = 0, pm_counter = 0;
+		
+		var elements = [];
+		var links = [];
+		
+		//generate owl instances
+		$.each(graph.getElements(), function(index, equipment) {
+
+			if(equipment.get('subtype') === 'Access_Group') {
+
+				var cards = model.getCards(equipment);
+				$.each(cards, function(key, card) {
+
+					console.log('PARSE CARD CONNECTED PORTS');
+					
+					//Input_Card/Output_Card > Input_Card/Output_Card
+					$.each(card.connectedPorts, function(portId, connectedPort) {
+						
+						console.log('connectedPort: ' + JSON.stringify(connectedPort));
+						
+						if(card.outPorts[portId]) {
+							
+							if(connectedPort.type === "Input_Card") {
+								
+								var tfSource = $this.getConnectedTFElement(graph, portId);
+								var tfTarget = $this.getConnectedTFElement(graph, connectedPort.id);
+								
+								var link = $this.createLink(portId, "Output_Card", connectedPort.id, connectedPort.type);
+								links.push(link);
+							}
+							else if(connectedPort.edge === "target") {
+								
+								var linkId = $this.getConnectedLinkId(cardCells, portId, connectedPort.id);
+								
+								var tfSource = $this.getConnectedTFElement(graph, portId);
+								var tfTarget = $this.getConnectedTFElement(graph, connectedPort.id);
+								
+								console.log('linkId: ' + linkId);
+								console.log('tfSource: ' + JSON.stringify(tfSource));
+								console.log('tfTarget: ' + JSON.stringify(tfTarget));
+								
+								
+								if(tfSource.type === 'Trail_Termination_Function' || tfTarget.type === 'Trail_Termination_Function') {
+									
+									//Physical_Media PM (PM)
+									var pm = $this.createElement("Physical_Media", linkId, "PM_" + pm_counter);
+									elements.push(pm);
+									
+									//Physical_Media PM (PM)
+									var pm_so = $this.createElement("PM_Input_So", linkId + '-so' + pm_counter, "PM_" + pm_counter);
+									elements.push(pm);
+									
+									//Physical_Media PM (PM)
+									var pm_sk = $this.createElement("PM_Input_Sk", linkId + '-sk' + pm_counter, "PM_" + pm_counter);
+									elements.push(pm);
+									
+									pm_counter++;
+									
+									//Physical_Media (PM) > PM_Input_So (PMSO) 
+									var link_PM_PMSO = $this.createLink(pm.id, "Physical_Media", pm_so.id, pm_so.type);
+									links.push(link_PM_PMSO);
+									
+									//Physical_Media (PM) > PM_Input_Sk (PMSK)
+									var link_PM_PMSK = $this.createLink(pm.id, "Physical_Media", pm_sk.id, pm_sk.type);
+									links.push(link_PM_PMSK);
+									
+									
+									//Reference_Point FEP (FEP)
+									var fep_pmso = $this.createElement("FEP", linkId + '-fep-pmso', "FEP_" + fep_counter);
+									elements.push(fep_pmso);
+									fep_counter++;
+									
+									//Trail_Termination_Function_Output (TTF_OUT)
+									var ttf_out_source = $this.createElement("Trail_Termination_Function_Output", tfSource.id + "-fep-pmso-out" + ttf_out_counter, "Trail_Termination_Function_Output_" + ttf_out_counter); 
+									elements.push(ttf_out_source);
+									ttf_out_counter++;
+									
+									//TTF > Trail_Termination_Function_Output (TTFOUT)
+									var link_TTF_TTFOUT = $this.createLink(tfSource.id, tfSource.type, ttf_out_source.id, ttf_out_source.type);
+									links.push(link_TTF_TTFOUT);
+									
+									//FEP > PM_Input_So (PMSO)
+									var link_FEP_PMSO = $this.createLink(fep_pmso.id, fep_pmso.type, pm_so.id, pm_so.type);
+									links.push(link_FEP_PMSO);
+									
+									//FEP > Trail_Termination_Function_Output (TTFOUT)
+									var link_FEP_TTFOUT = $this.createLink(fep_pmso.id, fep_pmso.type, ttf_out_source.id, ttf_out_source.type);
+									links.push(link_FEP_TTFOUT);
+									
+									
+									
+									
+									//Reference_Point FEP (FEP)
+									var fep_pmsk = $this.createElement("FEP", linkId + '-fep-pmsk', "FEP_" + fep_counter);
+									elements.push(fep_pmsk);
+									fep_counter++;
+									
+									//Trail_Termination_Function_Output (TTF_OUT)
+									ttf_out_target = $this.createElement("Trail_Termination_Function_Output", tfTarget.id + "-fep-pmsk-out" + ttf_out_counter, "Trail_Termination_Function_Output_" + ttf_out_counter); 
+									elements.push(ttf_out_target);
+									ttf_out_counter++;
+
+									//TTF > Trail_Termination_Function_Output (TTFOUT)
+									var link_TTF_TTFOUT = $this.createLink(tfTarget.id, tfTarget.type, ttf_out_target.id, ttf_out_target.type);
+									links.push(link_TTF_TTFOUT);
+									
+									//FEP > PM_Input_Sk (PMSK)
+									var link_FEP_PMSK = $this.createLink(fep_pmsk.id, fep_pmsk.type, pm_sk.id, pm_sk.type);
+									links.push(link_FEP_PMSK);
+									
+									//FEP > Trail_Termination_Function_Output (TTFOUT)
+									var link_FEP_TTFOUT = $this.createLink(fep_pmsk.id, fep_pmsk.type, ttf_out_target.id, ttf_out_target.type);
+									links.push(link_FEP_TTFOUT);
+									
+								}
+								
+								var link = $this.createLink(portId, "Output_Card", connectedPort.id, connectedPort.type);
+								links.push(link);
+							}
+						}
+//						else if(card.inPorts[portId]) {
+//							var link = $this.createLink(portId, "Input_Card", connectedPort.id, connectedPort.type);
+//							links.push(link);
+//						}
+					});
+					
+				});
+
+			}
+
+		});
+		
+	},
+	
+	getConnectedLinkId : function(elements, sourceId, targetId) {
+		
+		var linkId = undefined;
+		
+		$.each(elements, function(index, element) {
+			if(element.type === 'link') {
+				if(element.source.id === sourceId && element.target.id === targetId) {
+					linkId = element.id;
+				}
+			}
+		});
+		
+		return linkId;
+	},
+	
+	getConnectedTFElement : function(graph, portId) {
+		
+		var model = this.app.model;
+		var $this = this;
+		var tfElement = undefined;
+		
+		//generate owl instances
+		$.each(graph.getElements(), function(index, equipment) {
+
+			if(equipment.get('subtype') === 'Access_Group') {
+
+				var cards = model.getCards(equipment);
+				$.each(cards, function(key, card) {
+
+					//ITU Elements
+					var cardCells = card.attrs.data.cells;
+					
+					$.each(cardCells, function(key, element) {
+						//Links
+						if(element.type === 'link') {
+							if(element.target.id === portId) {
+								tfElement = {
+										'id' : element.source.id,
+										'type' : $this.getElementType(cardCells, element.source.id),
+								}
+							}
+						}
+					});
+				});
+			}
+		});
+		
+		return tfElement;
 	},
 	
 	//create a JOSN link.
@@ -412,6 +604,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	//create connection between ports in OWL
 	connectPorts : function(sourcePort, targetPort) {
 		
+		var $this = this;
 		var relationships = this.relationships;
 		
 		var links = [];
@@ -437,7 +630,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			   'links' : JSON.stringify(links),
 		   },
 		   success: function(){
-//			   console.log('PORTS CONNECTED IN OWL!')
+			   //execute reasoning
+			   $this.executeReasoning();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);

@@ -1,7 +1,11 @@
 package br.com.padtec.nopen.provisioning.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.provisioning.service.ProvisioningReasoner;
 import br.com.padtec.nopen.provisioning.util.ProvisioningUtil;
@@ -79,8 +84,13 @@ public class ProvisioningController {
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
 		
 		try {
-			File file = NOpenFileUtil.createProvisioningJSONFile(filename);
-			NOpenFileUtil.writeToFile(file, graph);
+			File jsonfile = NOpenFileUtil.createProvisioningJSONFile(filename);
+			NOpenFileUtil.writeToFile(jsonfile, graph);
+			
+			File owlFile = NOpenFileUtil.createProvisioningOWLFile(filename);
+			PrintWriter out = new PrintWriter(owlFile);
+			ProvisioningComponents.provisioningRepository.getBaseModel().write(out , "RDF/XML");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
@@ -106,7 +116,18 @@ public class ProvisioningController {
 	@RequestMapping(value = "/openProvisioning", method = RequestMethod.POST)
 	protected @ResponseBody String openProvisioning(@RequestParam("filename") String filename){
 		
-		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
+		//load owl file
+		String owlFile = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".owl");
+		
+		try {
+			InputStream in = new FileInputStream(NOpenFileUtil.provisioningOWLFolder + owlFile);
+			ProvisioningComponents.provisioningRepository.getBaseModel().read(in, null);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
 		return NOpenFileUtil.openProvisioningJSONFileAsString(filename);
 		
 	}

@@ -79,7 +79,7 @@ public class ProvisioningManager {
 		
 	}
 	
-public static String getConnectionType(String sourceEquipmentId, String targetEquipmentId){
+	public static String getConnectionType(String sourceEquipmentId, String targetEquipmentId){
 		
 		String namespace = ProvisioningComponents.provisioningRepository.getNamespace();
 		
@@ -125,12 +125,12 @@ public static String getConnectionType(String sourceEquipmentId, String targetEq
 		HashMap<String, HashMap<String, ArrayList<HashMap<String, String>>>> connectionInterfaces = new HashMap<String,HashMap<String, ArrayList<HashMap<String, String>>>>();
 		
 		if(connectionType.equals("Horizontal")){
-			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", true));
-			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Output_Card", true));
+			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", connectionType, true));
+			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Output_Card", connectionType, true));
 		}
 		else{
-			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", true));
-			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Intput_Card", true));
+			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", connectionType, true));
+			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Input_Card", connectionType, true));
 		}
 		
 		Gson gson = new Gson();
@@ -151,6 +151,10 @@ public static String getConnectionType(String sourceEquipmentId, String targetEq
 	
 	
 	public static HashMap<String, ArrayList<HashMap<String, String>>> getPortsByLayerFromOWL(String equipmentId, String portType, boolean excludeConnectedPorts) {
+		return getPortsByLayerFromOWL(equipmentId, portType, null, excludeConnectedPorts);
+	};
+	
+	public static HashMap<String, ArrayList<HashMap<String, String>>> getPortsByLayerFromOWL(String equipmentId, String portType, String connectionType, boolean excludeConnectedPorts) {
 		
 		String namespace = ProvisioningComponents.provisioningRepository.getNamespace();
 		
@@ -168,75 +172,98 @@ public static String getConnectionType(String sourceEquipmentId, String targetEq
 				layerLabel = "";
 		ArrayList<HashMap<String, String>> layerPortMapping = new ArrayList<HashMap<String, String>>();
 		
+		
+		ArrayList<String> possibleLayer = new ArrayList<String>();
+		if(connectionType == null) {
+			possibleLayer = ProvisioningQuery.getAllLayersFromOWL();
+		}
+		else if(connectionType.equals("Horizontal")) {
+			possibleLayer = ProvisioningQuery.getBottomLayersFromOWL();
+		}
+		else if (connectionType.equals("Vertical")) {
+			possibleLayer = ProvisioningQuery.getTopLayersFromOWL();
+		}
+		else {
+			possibleLayer = ProvisioningQuery.getAllLayersFromOWL();
+		}
+		
 		for(String layer : layers) {
 			
 			layer = layer.replace(namespace, "");
 			//get label of layer
 			layerLabel = ProvisioningQuery.getLabelFromOWL(layer);
 			
-			if(lastLayerLabel.equals("")) {
-				lastLayerLabel = layerLabel;
-			}
+			System.out.println(possibleLayer.toString());
+			System.out.println("layerLabel: " + layerLabel);
 			
-			predicates = new ArrayList<String>();
-			if(portType == "Output_Card") {
-				predicates.add(RelationEnum.INV_intermediates_up_Card_Layer_Transport_Function.toString());
-				predicates.add(RelationEnum.INV_is_interface_of_Output_Card_Transport_Function.toString());
-			}
-			else if(portType == "Input_Card") {
-				predicates.add(RelationEnum.INV_intermediates_down_Card_Layer_Transport_Function.toString());
-				predicates.add(RelationEnum.INV_is_interface_of_Input_Card_Transport_Function.toString());
-			}
+			if(possibleLayer.contains(layerLabel)) {
 			
-			if(!lastLayerLabel.equals(layerLabel)) {
-				
-				//add layer in result hash
-				if(layerPortMapping.size() > 0) {
-					//put layer hash on result hash
-					outputPortsByLayer.put(lastLayerLabel, layerPortMapping);
+				if(lastLayerLabel.equals("")) {
+					lastLayerLabel = layerLabel;
 				}
 				
-				lastLayerLabel = layerLabel;
-				layerPortMapping = new ArrayList<HashMap<String, String>>();
-			}
-			
-			ArrayList<String> ports = ProvisioningQuery.getObjectFromOWL(layer, predicates);
-			for(String port : ports) {
+				predicates = new ArrayList<String>();
+				if(portType == "Output_Card") {
+					predicates.add(RelationEnum.INV_intermediates_up_Card_Layer_Transport_Function.toString());
+					predicates.add(RelationEnum.INV_is_interface_of_Output_Card_Transport_Function.toString());
+				}
+				else if(portType == "Input_Card") {
+					predicates.add(RelationEnum.INV_intermediates_down_Card_Layer_Transport_Function.toString());
+					predicates.add(RelationEnum.INV_is_interface_of_Input_Card_Transport_Function.toString());
+				}
 				
-				//replace port namespace 
-				port = port.replace(namespace, "");
-				
-				boolean excludePort = false;
-				if(excludeConnectedPorts) {
-					if(ProvisioningQuery.isConnectedPort(port)) {
-						System.out.println("PORT: " + port);
-						excludePort = true;
+				if(!lastLayerLabel.equals(layerLabel)) {
+					
+					//add layer in result hash
+					if(layerPortMapping.size() > 0) {
+						//put layer hash on result hash
+						outputPortsByLayer.put(lastLayerLabel, layerPortMapping);
 					}
+					
+					lastLayerLabel = layerLabel;
+					layerPortMapping = new ArrayList<HashMap<String, String>>();
+					
+					System.out.println("NEW LAYER");
 				}
 				
-				if(!excludePort) {
-					//create port hash
-					HashMap<String, String> portMapping = new HashMap<String, String>();
+				ArrayList<String> ports = ProvisioningQuery.getObjectFromOWL(layer, predicates);
+				for(String port : ports) {
 					
-					//get label of port
-					String label = ProvisioningQuery.getLabelFromOWL(port);
+					//replace port namespace 
+					port = port.replace(namespace, "");
 					
-					//replace label language
-					label = label.replace("@en", "");
-					label = label.replace("@EN", "");
+					boolean excludePort = false;
+					if(excludeConnectedPorts) {
+						if(ProvisioningQuery.isConnectedPort(port)) {
+							System.out.println("PORT: " + port);
+							excludePort = true;
+						}
+					}
 					
-					//create port object
-					portMapping.put("id", port);
-					portMapping.put("name", label);
-					portMapping.put("type", portType);
+					if(!excludePort) {
+						//create port hash
+						HashMap<String, String> portMapping = new HashMap<String, String>();
+						
+						//get label of port
+						String label = ProvisioningQuery.getLabelFromOWL(port);
+						
+						System.out.println("PORT: " + label);
+						
+						//replace label language
+						label = label.replace("@en", "");
+						label = label.replace("@EN", "");
+						
+						//create port object
+						portMapping.put("id", port);
+						portMapping.put("name", label);
+						portMapping.put("type", portType);
+						
+						//add port hash in layer array
+						layerPortMapping.add(portMapping);
+					}
 					
-					//add port hash in layer array
-					layerPortMapping.add(portMapping);
 				}
-				
 			}
-			
-			
 		}
 		
 		if(!lastLayerLabel.equals("")) {
