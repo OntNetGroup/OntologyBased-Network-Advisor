@@ -251,47 +251,61 @@ var Rappid = Backbone.Router.extend({
 //	eval("createInspector: function(cellView) {" + dateFn + "},"),
 	
 	createInspector: function(cellView) {
-		var cell = cellView.model || cellView;
-
-		// No need to re-render inspector if the cellView didn't change.
-		if (!this.inspector || this.inspector.options.cell !== cell) {
-
-			if (this.inspector) {
-
-				this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {
-					return $(g).attr('data-name');
-				});
-
-				// Clean up the old inspector if there was one.
-				this.inspector.updateCell();
-//				this.inspector.remove();
-			}
-            if(cell.get('subType') === "Card"){
-            	var inspectorDefs = InspectorDefs[cell.get('subType')];
-    			//changed type(model) to subType
-    			this.inspector = new joint.ui.Inspector({
-    				inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,
-    						groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,
-    								cell: cell
-    			});
-
-    			this.initializeInspectorTooltips();
-
-    			this.inspector.render();
-    			$('.inspector-container').html(this.inspector.el);
-            }else{
-            	return;
-            }   
 		
 
-			if (this.inspectorClosedGroups[cell.id]) {
-
-				_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);
-
-			} else {
-				this.inspector.$('.group:not(:first-child)').addClass('closed');
-			}
+		var cell = cellView.model || cellView;
+		if (!this.inspector || this.inspector.options.cell !== cell) {
+			if (this.inspector) {this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {return $(g).attr('data-name');				});						this.inspector.updateCell();this.inspector.remove();			}
+			if(cell.get('subType') === "Card"){var inspectorDefs = InspectorDefs[cell.get('subType')];}else{return;}
+			
+			
+		eval("this.inspector = new joint.ui.Inspector({inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,cell: cell})");
+//			this.inspector = new joint.ui.Inspector({    				inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,    						groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,    								cell: cell    			});    				
+			this.initializeInspectorTooltips();this.inspector.render();$('.inspector-container').html(this.inspector.el); 	if (this.inspectorClosedGroups[cell.id]) {_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);} else {this.inspector.$('.group:not(:first-child)').addClass('closed');}		    
 		}
+
+		
+//		var cell = cellView.model || cellView;
+//
+//		// No need to re-render inspector if the cellView didn't change.
+//		if (!this.inspector || this.inspector.options.cell !== cell) {
+//
+//			if (this.inspector) {
+//
+//				this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {
+//					return $(g).attr('data-name');
+//				});
+//
+//				// Clean up the old inspector if there was one.
+//				this.inspector.updateCell();
+////				this.inspector.remove();
+//			}
+//            if(cell.get('subType') === "Card"){
+//            	var inspectorDefs = InspectorDefs[cell.get('subType')];
+//    			//changed type(model) to subType
+//    			this.inspector = new joint.ui.Inspector({
+//    				inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,
+//    						groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,
+//    								cell: cell
+//    			});
+//
+//    			this.initializeInspectorTooltips();
+//
+//    			this.inspector.render();
+//    			$('.inspector-container').html(this.inspector.el);
+//            }else{
+//            	return;
+//            }   
+//		
+//
+//			if (this.inspectorClosedGroups[cell.id]) {
+//
+//				_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);
+//
+//			} else {
+//				this.inspector.$('.group:not(:first-child)').addClass('closed');
+//			}
+//		}
 	},
 
 	initializeInspectorTooltips: function() {

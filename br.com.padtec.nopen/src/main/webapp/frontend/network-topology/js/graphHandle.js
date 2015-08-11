@@ -129,6 +129,9 @@ function generateDialog(data, cell){
 		   }
 		});
 
+		
+		//Change equipments id
+		
 	};
 	
 	

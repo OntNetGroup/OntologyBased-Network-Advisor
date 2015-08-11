@@ -22,104 +22,104 @@ var InspectorDefs = {
 
 			inputs: {
 
-//				order: 
-//				{ 
-//					type: "number",
-//					min: 0,
-//					max: 2147483647,
-//					label: "Order",
-//
-//					attrs:
-//					{
-//						"input":
-//						{
-//							"data-tooltip": 
-//								"This attribute indicates the order of the OTM,<br> which represents the maximum number of wavelengths <br>	that can be supported at the bit rate(s) supported<br> on the interface. See ITU-T Rec. G.709/Y.1331 for<br> details. This attribute is read-only."
-//						}
-//					}			
-//				},
-//
-//				reduced: 
-//				{ 
-//					type: "toggle",			
-//					label: "Reduced",
-//
-//					attrs:
-//					{
-//						"input":
-//						{
-//							"data-tooltip": 
-//								"This attribute indicates whether a reduced or full<br> functionality is supported at the interface. A value<br> of TRUE means reduced. A value of FALSE means full.<br> See ITU-T Rec.G.709/Y.1331 for details. This<br> attribute is read-only."
-//						}
-//					}			
-//				},		
-//
-//				bitrate:
-//				{
-//					type: "select",			
-//					options: ["1", "2", "3", "12","123","23"],
-//					label: "Bit Rate",
-//
-//					attrs:
-//					{
-//						"label":
-//						{
-//							"data-tooltip": 
-//								"This attribute is an index used to represent the<br> bit rate or set of bit rates supported on the<br> interface. Valid values are 1, 2, 3, 12, 123 and 23.<br> In the index, each digit k represents an approximate<br>bit rate supported by the interface. k = 1 means 2.5<br> Gbit/s, k = 2 means 10 Gbit/s, and k = 3 means 40<br>Gbit/s. Default value of this attribute is system <br>	specific. This attribute is read-only."
-//						}
-//					}		
-//				},
-//
-//				interfacetype:
-//				{
-//					type: "text",			
-//					label: "Interface Type",
-//
-//					attrs:
-//					{
-//						"input":
-//						{
-//							"data-tooltip": 
-//								"This attribute identifies the type of interface.<br> The value of this attribute will affect the<br> behaviour of the OTM with respect to<br> presence/absence of OOS processing and TCM<br> activation. For an IrDI interface, there is no OOS<br> processing and TCM activation is limited to n levels<br> as specified by a TCM level threshold.<br> Possible Values:<br> field 1: enumeration of IrDI or IaDI;<br>field 2: 10 character string for additional information.<br> Default Value:<br>field 1: IaDI;<br> field 2: vendor and/or provider specific.<br> Constraints to Provisioning – none identified.<br> Effect of Change in Value – change in behaviour in<br> accordance with value.<br> This attribute is read-only."
-//						}
-//					}			
-//				},
-//
-//				tcmmax:
-//				{		
-//					type: "range",			
-//					min: 1,
-//					max: 6,
-//					step: 1,
-//					label: "TCM Max",
-//
-//					attrs:
-//					{
-//						"input":
-//						{
-//							"data-tooltip": 
-//								"This attribute identifies the maximum number of TCM<br> levels allowed for any Optical Channel contained in<br> this OTM. A new TCM activation will be rejected if<br> the requested level is greater than the threshold.<br> If InterfaceType for the OTM is IaDI, then this<br> attribute is irrelevant.<br>Possible Values – integer from 0 to 6. n (IrDI),<br> where 0 < n < 7.<br> Default Value – Value will default to 3.<br>Constraints to Provisioning – cannot be modified to<br> new value if new value does not support the number <br>	of currently activated TCM levels for any contained<br> Optical Channel.<br>Effect of Change in Value – change in behaviour in <br>	accordance with value.<br>This attribute is read-write."
-//						}
-//					}			
-//				},
-//
-//				opticalreach:
-//				{
-//					type: "select",			
-//					options: ["intra-office", "short-haul", "long-haul"],
-//					defaultValue: "intra-office",
-//					label: "Bit Rate",
-//
-//					attrs:
-//					{
-//						'input': {'disabled' : 'disabled'},
-//						"label":
-//						{
-//							"data-tooltip": 
-//								"This attribute indicates the length the optical<br>signal may travel before requiring termination or <br>regeneration. Valid values are:<br>	1) intraOffice;<br>	2) shortHaul;<br>3) longHaul.<br>This attribute is read-only."
-//						}
-//					}			
-//				},
+				order: 
+				{ 
+					type: "number",
+					min: 0,
+					max: 2147483647,
+					label: "Order",
+
+					attrs:
+					{
+						"input":
+						{
+							"data-tooltip": 
+								"This attribute indicates the order of the OTM,<br> which represents the maximum number of wavelengths <br>	that can be supported at the bit rate(s) supported<br> on the interface. See ITU-T Rec. G.709/Y.1331 for<br> details. This attribute is read-only."
+						}
+					}			
+				},
+
+				reduced: 
+				{ 
+					type: "toggle",			
+					label: "Reduced",
+
+					attrs:
+					{
+						"input":
+						{
+							"data-tooltip": 
+								"This attribute indicates whether a reduced or full<br> functionality is supported at the interface. A value<br> of TRUE means reduced. A value of FALSE means full.<br> See ITU-T Rec.G.709/Y.1331 for details. This<br> attribute is read-only."
+						}
+					}			
+				},		
+
+				bitrate:
+				{
+					type: "select",			
+					options: ["1", "2", "3", "12","123","23"],
+					label: "Bit Rate",
+
+					attrs:
+					{
+						"label":
+						{
+							"data-tooltip": 
+								"This attribute is an index used to represent the<br> bit rate or set of bit rates supported on the<br> interface. Valid values are 1, 2, 3, 12, 123 and 23.<br> In the index, each digit k represents an approximate<br>bit rate supported by the interface. k = 1 means 2.5<br> Gbit/s, k = 2 means 10 Gbit/s, and k = 3 means 40<br>Gbit/s. Default value of this attribute is system <br>	specific. This attribute is read-only."
+						}
+					}		
+				},
+
+				interfacetype:
+				{
+					type: "text",			
+					label: "Interface Type",
+
+					attrs:
+					{
+						"input":
+						{
+							"data-tooltip": 
+								"This attribute identifies the type of interface.<br> The value of this attribute will affect the<br> behaviour of the OTM with respect to<br> presence/absence of OOS processing and TCM<br> activation. For an IrDI interface, there is no OOS<br> processing and TCM activation is limited to n levels<br> as specified by a TCM level threshold.<br> Possible Values:<br> field 1: enumeration of IrDI or IaDI;<br>field 2: 10 character string for additional information.<br> Default Value:<br>field 1: IaDI;<br> field 2: vendor and/or provider specific.<br> Constraints to Provisioning – none identified.<br> Effect of Change in Value – change in behaviour in<br> accordance with value.<br> This attribute is read-only."
+						}
+					}			
+				},
+
+				tcmmax:
+				{		
+					type: "range",			
+					min: 1,
+					max: 6,
+					step: 1,
+					label: "TCM Max",
+
+					attrs:
+					{
+						"input":
+						{
+							"data-tooltip": 
+								"This attribute identifies the maximum number of TCM<br> levels allowed for any Optical Channel contained in<br> this OTM. A new TCM activation will be rejected if<br> the requested level is greater than the threshold.<br> If InterfaceType for the OTM is IaDI, then this<br> attribute is irrelevant.<br>Possible Values – integer from 0 to 6. n (IrDI),<br> where 0 < n < 7.<br> Default Value – Value will default to 3.<br>Constraints to Provisioning – cannot be modified to<br> new value if new value does not support the number <br>	of currently activated TCM levels for any contained<br> Optical Channel.<br>Effect of Change in Value – change in behaviour in <br>	accordance with value.<br>This attribute is read-write."
+						}
+					}			
+				},
+
+				opticalreach:
+				{
+					type: "select",			
+					options: ["intra-office", "short-haul", "long-haul"],
+					defaultValue: "intra-office",
+					label: "Bit Rate",
+
+					attrs:
+					{
+						'input': {'disabled' : 'disabled'},
+						"label":
+						{
+							"data-tooltip": 
+								"This attribute indicates the length the optical<br>signal may travel before requiring termination or <br>regeneration. Valid values are:<br>	1) intraOffice;<br>	2) shortHaul;<br>3) longHaul.<br>This attribute is read-only."
+						}
+					}			
+				},
 
 
 			},
