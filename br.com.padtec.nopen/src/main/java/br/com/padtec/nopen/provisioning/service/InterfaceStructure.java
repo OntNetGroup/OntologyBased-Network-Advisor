@@ -30,9 +30,6 @@ import java.lang.reflect.Type;
 
 public class InterfaceStructure {
 	
-	
-	
-	
 	public static String getOutputsUpperLayerFromEquipment(String equipmentId, OKCoUploader repository){
 		ArrayList<String> layers = getLayersFromEquipment(repository.getBaseModel(), equipmentId);
 		Iterator<String> it = layers.iterator();
@@ -49,7 +46,19 @@ public class InterfaceStructure {
 			}
 		}
 		
-		return null;
+		// depois de remover as camadas que não são a ultima
+		ArrayList<HashMap<String, String>> outputs = new ArrayList<HashMap<String, String>>();
+		HashMap<String, ArrayList<HashMap<String, String>>> interfaces = getInterfacesFromEquipment(equipmentId, ProvisioningConceptEnum.Output.toString(), repository);
+		String key = layers.get(0);
+		if(interfaces.containsKey(key)){
+			outputs = interfaces.get(key);
+		}
+		
+		//remount the json string and return
+		Gson gson = new Gson();
+		String result = gson.toJson(outputs);
+		return result;
+		
 	}
 	
 	
