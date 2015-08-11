@@ -23,13 +23,112 @@ function exportTopology (graph, uuid) {
 };
 
 function exportTopologyAsYANG (graph) {
-	var nodes = graph.getCells();
+	var nodes = graph.getElements();
 	
-	_.each(nodes, function(index, node) {
-		var equipName = node;
+	/* for each node of topology, that is, for each equipment */
+	_.each(nodes, function(node) {
+		var equipName = node.attributes.attrs.text.text;
+		var equipGraph = new joint.dia.Graph;
+		
+		/* load equipment's joint */
+		$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "openEquipment.htm",
+			   data: {
+				   'filename' : equipName
+			   },
+			   dataType: 'json',
+			   success: function(data){
+				   equipGraph.fromJSON(data)
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+		
+		/* write YANG file */
+		fileYANG = 'otn-switch {\n';
+		
+		/* write <physical> */
+		fileYANG = fileYANG + 
+			'\tphysical {\n' +
+				'\t\tmanaged-element {\n' +
+					'\t\t\tracks {\n';
+		
+		_.each(equipGraph.getElements(), function(element) {
+			if(element.attributes.subType === 'Rack') {
+				writeFilePhysicalRecursively(element, equipGraph, '\t\t\t\t');
+			}
+		});
+		
+		fileYANG = fileYANG + '\t\t\t}\n' +
+				'\t\t}\n' +
+				'\t}\n';
+		
+		console.log(fileYANG);
 	});
 	
-	
+	function writeFilePhysicalRecursively(element, graph, totalIdent) {
+		var ident = '\t';
+		if(element === undefined) return;
+		
+		if(element.attributes.subType === 'Card') {
+			fileYANG = fileYANG + totalIdent + 'interface-entry ' + element.id + ' {\n';
+			/*
+			 * TODO:	para cada porta do card
+			 * 				imprimir sua camada e seu id/nome 
+			 */
+			fileYANG = fileYANG + totalIdent + ident + '}\n';
+			return;
+		}
+		
+		if(element.attributes.subType === 'Slot') {
+			fileYANG = 	fileYANG + totalIdent + 'slot-entry ' + element.id + ' {\n' +
+						totalIdent + ident + 'equipment {\n' +
+					totalIdent + ident + ident + 'interfaces {\n';
+			
+			var cardID = element.get('embeds')[0];
+			var card = graph.getCell(cardID);
+			writeFilePhysicalRecursively(card, graph, totalIdent+ident+ident+ident);
+			
+			fileYANG= 	fileYANG+ totalIdent + ident + ident + '}\n' +
+								totalIdent + ident + ident +	'installed-equipment-objectType ' + card.attributes.attrs.text.text + ';\n' +
+									totalIdent + ident + '}\n' +
+										totalIdent + '}\n';
+			return;
+		}
+		
+		if(element.attributes.subType === 'Shelf') {
+			fileYANG= 	fileYANG+ totalIdent + 'shelf-entry ' + element.id + ' {\n' +
+						totalIdent + ident + 'slots {\n';
+			
+			var slotIDs = element.get('embeds');
+			_.each(slotIDs, function(slotID) {
+				var slot = graph.getCell(slotID);
+				writeFilePhysicalRecursively(slot, graph, totalIdent+ident+ident);
+			});
+			
+			fileYANG= 	fileYANG+ totalIdent + ident + '}\n' +
+							totalIdent + '}\n';
+			return;
+		}
+		
+		if(element.attributes.subType === 'Rack') {
+			fileYANG= 	fileYANG+ totalIdent + 'rack-entry ' + element.id + ' {\n' +
+						totalIdent + ident + 'shelves {\n';
+			
+			var shelfIDs = element.get('embeds');
+			_.each(shelfIDs, function(shelfID) {
+				var shelf = graph.getCell(shelfID);
+				writeFilePhysicalRecursively(shelf, graph, totalIdent+ident+ident);
+			});
+			
+			fileYANG= 	fileYANG+ totalIdent + ident + '}\n' +
+						totalIdent + '}\n';
+			return;
+		}
+	}
 	
 };
 
