@@ -757,7 +757,6 @@ nopen.provisioning.App = Backbone.View.extend({
 		var graph = app.graph;
 		var model = this.model;
 		var util = this.util;
-		
 		$('#loading').hide();
 	    $(document).ajaxStart(function() {
 	    	$('#loading').show();

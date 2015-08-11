@@ -189,7 +189,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Trail_Termination_Function') {
 					
 					//Trail_Termination_Function_Output (TTF_OUT)
-					ttf_out = $this.createElement("Trail_Termination_Function_Output", element.source.id + "-out-" + ttf_out_counter, "Trail_Termination_Function_Output_" + ttf_out_counter); 
+					ttf_out = $this.createElement("Trail_Termination_Function_Output", joint.util.uuid(), "Trail_Termination_Function_Output_" + ttf_out_counter); 
 					elements.push(ttf_out);
 					ttf_out_counter++;
 					
@@ -202,7 +202,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(targetType === 'Trail_Termination_Function') {
 				
 					//Trail_Termination_Function_Input (TTF_IN)
-					ttf_in = $this.createElement("Trail_Termination_Function_Input", element.target.id + "-in-" + ttf_in_counter, "Trail_Termination_Function_Input_" + ttf_in_counter);
+					ttf_in = $this.createElement("Trail_Termination_Function_Input", joint.util.uuid(), "Trail_Termination_Function_Input_" + ttf_in_counter);
 					elements.push(ttf_in);
 					ttf_in_counter++;
 				
@@ -215,7 +215,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Adaptation_Function') {
 					
 					//Adaptation_Function_Output (AF_OUT)
-					af_out = $this.createElement("Adaptation_Function_Output", element.source.id + "-out-" + af_out_counter, "Adaptation_Function_Output_" + af_out_counter);
+					af_out = $this.createElement("Adaptation_Function_Output", joint.util.uuid(), "Adaptation_Function_Output_" + af_out_counter);
 					elements.push(af_out);
 					af_out_counter++;
 					
@@ -228,7 +228,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(targetType === 'Adaptation_Function') {
 					
 					//Adaptation_Function_Input (AF_IN)
-					af_in = $this.createElement("Adaptation_Function_Input", element.target.id + "-in-" + af_in_counter, "Adaptation_Function_Input" + af_in_counter);
+					af_in = $this.createElement("Adaptation_Function_Input", joint.util.uuid(), "Adaptation_Function_Input" + af_in_counter);
 					elements.push(af_in);
 					af_in_counter++;
 					
@@ -241,7 +241,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Matrix') {
 					
 					//Matrix_Output (M_OUT)
-					matrix_out = $this.createElement("Matrix_Output", element.source.id + "-out-" + matrix_out_counter, "Matrix_Output_" + matrix_out_counter);
+					matrix_out = $this.createElement("Matrix_Output", joint.util.uuid(), "Matrix_Output_" + matrix_out_counter);
 					elements.push(matrix_out);
 					matrix_out_counter++;
 					
@@ -254,7 +254,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(targetType === 'Matrix') {
 					
 					//Matrix_Input (M_IN)
-					matrix_in = $this.createElement("Matrix_Input", element.target.id + "-in-" + matrix_in_counter, "Matrix_Input_" + matrix_in_counter);
+					matrix_in = $this.createElement("Matrix_Input", joint.util.uuid(), "Matrix_Input_" + matrix_in_counter);
 					elements.push(matrix_in);
 					matrix_in_counter++;
 					
@@ -647,17 +647,19 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	//execute reasoning
 	executeReasoning : function() {
 	
+		$('.ajax-loader-message').append(' Execute Reasoning ... ');
+
 		//execute parse
 		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "executeReasoning.htm",
-		   success: function(){
-			   //console.log('PARSE OK!')
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
+			type: "POST",
+			async: false,
+			url: "executeReasoning.htm",
+			success: function(){
+				//console.log('PARSE OK!')
+			},
+			error : function(e) {
+				alert("error: " + e.status);
+			}
 		});
 		
 	},
