@@ -81,6 +81,8 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			}
 		};
 		
+		var connectionType = undefined;
+		
 		var source = undefined;
 		var target = undefined;
 		
@@ -92,14 +94,25 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			console.log('OI!')
 			
 			if(source && sourcePort && target && targetPort) {
-				console.log('sourcePort: ' + JSON.stringify(sourcePort));
-				console.log('targetPort: ' + JSON.stringify(targetPort));
+				
 				model.connectPortsInPreProvisioning(source, sourcePort, target, targetPort);
 				
-				var sPort = owl.createElement(sourcePort.type, sourcePort.id, sourcePort.name);
-				var tPort = owl.createElement(targetPort.type, targetPort.id, targetPort.name);
+				//add horizontal or vertical connection
 				
-				owl.connectPorts(sPort, tPort);
+				var tfSource = model.getTFElementConnectedToPortInPreProvisioning(source, sourcePort.id);
+				var tfTarget = model.getTFElementConnectedToPortInPreProvisioning(target, targetPort.id);
+				
+				if(connectionType === 'Horizontal') {
+					owl.addHorizontalConnection(tfSource, tfTarget);
+				}
+				else {
+					owl.addVerticalConnection(tfSource, tfTarget);
+				}
+				
+				var sourcePortElement = owl.createElement(sourcePort.type, sourcePort.id, sourcePort.name);
+				var targetPortElement = owl.createElement(targetPort.type, targetPort.id, targetPort.name);
+				
+				owl.connectPorts(sourcePortElement, targetPortElement);
 			}
 			
 			$('.dialog .controls .control-button[data-action="showImage"]').show();
@@ -110,7 +123,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				$('#black_overlay').hide();
 				
 				//execute reasoning
-				owl.executeReasoning();
+//				owl.executeReasoning();
 				
 				//generate provisioning
 				model.generateProvisioning(app, subnetworks);
@@ -136,7 +149,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 //				var outputs = owl.getOutputsFromOWL(source.id);
 				
-				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
+				connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
 				var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
 				
 				content = createConnectionContent(source, target, connectionType, connections)
@@ -158,7 +171,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				
 //				var outputs = owl.getOutputsFromOWL(source.id);
 				
-				var connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
+				connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
 				var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
 				
 				console.log('connections: ' + JSON.stringify(connections));

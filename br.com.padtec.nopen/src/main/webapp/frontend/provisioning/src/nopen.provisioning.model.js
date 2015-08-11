@@ -10,11 +10,105 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		this.app = app;
 	},
 	
+	//method to connect input/output ports in pre provisioning
+	connectPortsInPreProvisioning : function(source, sourcePort, target, targetPort) {
+		
+		var cards = undefined;
+		var connected = false;
+		
+		var sourcePortId = sourcePort.id;
+		var targetPortId = targetPort.id;
+		
+		//connect input to output
+		cards = this.getCardsInPreProvisioning(source);
+		$.each(cards, function(index, card){
+			
+			if(card.outPorts[sourcePortId]) {
+				card.connectedPorts[sourcePortId] = targetPort;
+			}
+			
+			if(card.inPorts[sourcePortId]) {
+				card.connectedPorts[sourcePortId] = targetPort;
+			}
+			
+		});
+		
+		//connect output to input
+		cards = this.getCardsInPreProvisioning(target);
+		$.each(cards, function(index, card){
+			
+			if(card.outPorts[targetPortId]) {
+				card.connectedPorts[targetPortId] = sourcePort;
+			}
+			
+			if(card.inPorts[targetPortId]) {
+				card.connectedPorts[targetPortId] = sourcePort;
+			}
+			
+		});
+		
+	},
+	
+	getTFElementConnectedToPortInPreProvisioning : function(equipment, portId) {
+		
+		var $this = this;
+		var tf = undefined;
+		
+		var cards = $this.getCardsInPreProvisioning(equipment)
+		$.each(cards, function(index, card) {
+			
+			//ITU Elements
+			var cardCells = card.attrs.data.cells;
+			
+			$.each(cardCells, function(key, element) {
+				
+				if(element.type === 'link') {
+					if(element.target.id === portId) {
+						tf = $this.getITUElementByIDInPreProvisioning(equipment, element.source.id);
+					}
+				}
+				
+			});
+			
+		});
+		
+		return tfElement = {
+				'type' : tf.subtype,
+				'id' : tf.id,
+				'name' : tf.attrs.text.text,
+		};
+		
+	},
+	
+	//Method to get a ITU element by the id of it.
+	getITUElementByIDInPreProvisioning : function(equipment, id) {
+		
+		var ituElement = undefined;
+		
+		var cards = this.getCardsInPreProvisioning(equipment);
+		$.each(cards, function(index, card) {
+			
+			var itus = card.attrs.data.cells;
+			$.each(itus, function(index, itu) {
+				
+				if(itu.id === id) {
+					ituElement = itu;
+				}
+				
+			});
+			
+		});
+		
+		return ituElement;
+	},
+	
+	
 	//Method to get equipment name
 	getEquipmentName : function(equipment) {
 		return equipment.attr('text/text')
 	},
 	
+	//Methos to get equipment technology
 	getEquipmentTechnology : function(equipment) {
 		
 		var tech = '';
@@ -28,25 +122,58 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		return tech;
 	},
 	
-	
-	//Method to get a ITU element by the id of it.
-	getITUElementByID : function(equipment, id) {
+	//Method to get out/in connected tf element by equipment and out/in port id
+	getTFElementConnectedToPort : function(equipment, portId) {
 		
-		var cards = this.getCards(equipment);
+		var $this = this;
+		var tf = undefined;
 		
+		var cards = $this.getCards(equipment)
 		$.each(cards, function(index, card) {
 			
-			var itus = card.attrs.data.cells;
-			$.each(itus, function(index, itu) {
+			//ITU Elements
+			var cardCells = card.attrs.data.cells;
+			
+			$.each(cardCells, function(key, element) {
 				
-				if(itu.id === id) {
-					return itu;
+				if(element.type === 'link') {
+					if(element.target.id === portId) {
+						tf = $this.getITUElementByID(equipment, element.source.id);
+					}
 				}
 				
 			});
 			
 		});
 		
+		return tfElement = {
+				'type' : tf.subtype,
+				'id' : tf.id,
+				'name' : tf.attrs.text.text,
+		};
+		
+	},
+	
+	//Method to get a ITU element by the id of it.
+	getITUElementByID : function(equipment, id) {
+		
+		var ituElement = undefined;
+		
+		var cards = this.getCards(equipment);
+		$.each(cards, function(index, card) {
+			
+			var itus = card.attrs.data.cells;
+			$.each(itus, function(index, itu) {
+				
+				if(itu.id === id) {
+					ituElement = itu;
+				}
+				
+			});
+			
+		});
+		
+		return ituElement;
 	},
 	
 	//Method do get inputs as array of object ( inputs = [{ "type" : "", "id" : "", "name" : "" },...] )
@@ -108,45 +235,6 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		});
 		
 		return inputs;
-		
-	},
-	
-	//method to connect input/output ports in pre provisioning
-	connectPortsInPreProvisioning : function(source, sourcePort, target, targetPort) {
-		
-		var cards = undefined;
-		var connected = false;
-		
-		var sourcePortId = sourcePort.id;
-		var targetPortId = targetPort.id;
-		
-		//connect input to output
-		cards = this.getCardsInPreProvisioning(source);
-		$.each(cards, function(index, card){
-			
-			if(card.outPorts[sourcePortId]) {
-				card.connectedPorts[sourcePortId] = targetPort;
-			}
-			
-			if(card.inPorts[sourcePortId]) {
-				card.connectedPorts[sourcePortId] = targetPort;
-			}
-			
-		});
-		
-		//connect output to input
-		cards = this.getCardsInPreProvisioning(target);
-		$.each(cards, function(index, card){
-			
-			if(card.outPorts[targetPortId]) {
-				card.connectedPorts[targetPortId] = sourcePort;
-			}
-			
-			if(card.inPorts[targetPortId]) {
-				card.connectedPorts[targetPortId] = sourcePort;
-			}
-			
-		});
 		
 	},
 	
@@ -250,7 +338,9 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		var cards = [];
 		
 		//var cells = equipment.attributes.attrs.equipment.data.cells;
-		var cells = equipment.attr('equipment/data').cells;
+		//var cells = equipment.attr('equipment/data').cells;
+		
+		var cells = equipment.attributes.attrs.equipment.data.cells;
 
 		$.each(cells, function(index, cell) {
 			

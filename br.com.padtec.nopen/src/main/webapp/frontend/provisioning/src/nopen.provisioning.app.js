@@ -500,10 +500,16 @@ nopen.provisioning.App = Backbone.View.extend({
 				//connect ports in JSON model
 				model.connectPorts(source, sourcePort, target, targetPort);
 				
+				//add vertical connection (FEP/FP/AP)
+				var tfSource = model.getTFElementConnectedToPort(source, sourcePort.id);
+				var tfTarget = model.getTFElementConnectedToPort(target, targetPort.id);
+				
+				owl.addVerticalConnection(tfSource, tfTarget);
+				
 				var sPort = owl.createElement(sourcePort.type, sourcePort.id, sourcePort.name);
 				var tPort = owl.createElement(targetPort.type, targetPort.id, targetPort.name);
 				
-				//connect ports in OWL
+				//connect ports directly in OWL and execute inference
 				owl.connectPorts(sPort, tPort);
 				
 				dialog.close();
@@ -737,6 +743,8 @@ nopen.provisioning.App = Backbone.View.extend({
 					
 					//connect target/source ports
 					model.connectPorts(source, output, target, input)
+					
+					
 					
 					console.log('Out: ' + JSON.stringify(output));
 					console.log('In: ' + JSON.stringify(input));

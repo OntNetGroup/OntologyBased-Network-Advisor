@@ -441,7 +441,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 			
 		});
 		
-//		console.log(JSON.stringify(graph));
+		//parse connected ports
+		owl.parseConnectedPortsToOWL(graph);
 		
 		//execute reasoning
 		owl.executeReasoning();

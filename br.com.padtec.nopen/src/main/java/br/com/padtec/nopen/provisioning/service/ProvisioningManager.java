@@ -79,25 +79,31 @@ public class ProvisioningManager {
 		
 	}
 	
+	/**
+	 * Procedure to get connection type from owl by source and target equipments
+	 * @param sourceEquipmentId
+	 * @param targetEquipmentId
+	 * @return
+	 */
 	public static String getConnectionType(String sourceEquipmentId, String targetEquipmentId){
 		
 		String namespace = ProvisioningComponents.provisioningRepository.getNamespace();
 		
-		String physicalLayer = "OTS";
+		ArrayList<String> physicalLayers = ProvisioningQuery.getBottomLayersFromOWL();
 		String connectionType = "";
 		
 		ArrayList<String> layersSourceEquip = getLayersFromEquipment(sourceEquipmentId);
 		ArrayList<String> layersTargetEquip = getLayersFromEquipment(targetEquipmentId);
 		
-		boolean sourceLayer = false, 
-				targetLayer = false; 
+		boolean isSourcePhysicalLayer = false, 
+				isTargetPhysicalLayer = false; 
 		
 		for(String layer : layersSourceEquip) {
 			layer = layer.replace(namespace, "");
 			String layerLabel = ProvisioningQuery.getLabelFromOWL(layer);
 			
-			if(layerLabel.equals(physicalLayer)) {
-				sourceLayer = true;
+			if(physicalLayers.contains(layerLabel)) {
+				isSourcePhysicalLayer = true;
 			}
 		}
 		
@@ -105,12 +111,12 @@ public class ProvisioningManager {
 			layer = layer.replace(namespace, "");
 			String layerLabel = ProvisioningQuery.getLabelFromOWL(layer);
 			
-			if(layerLabel.equals(physicalLayer)) {
-				targetLayer = true;
+			if(physicalLayers.contains(layerLabel)) {
+				isTargetPhysicalLayer = true;
 			}
 		}
 		
-		if(sourceLayer && targetLayer){
+		if(isSourcePhysicalLayer && isTargetPhysicalLayer){
 			connectionType = "Horizontal";
 		}
 		else{
@@ -120,6 +126,13 @@ public class ProvisioningManager {
 		return connectionType;
 	}
 	
+	/**
+	 * Procedure to get connection interfaces from OWL by source and target equipments and connection type.
+	 * @param sourceEquipmentId
+	 * @param targetEquipmentId
+	 * @param connectionType
+	 * @return
+	 */
 	public static String getConnectionInterfaces(String sourceEquipmentId, String targetEquipmentId, String connectionType) {
 		
 		HashMap<String, HashMap<String, ArrayList<HashMap<String, String>>>> connectionInterfaces = new HashMap<String,HashMap<String, ArrayList<HashMap<String, String>>>>();
@@ -138,6 +151,11 @@ public class ProvisioningManager {
 		
 	}
 	
+	/**
+	 * Procedure to get Layers of a equipment from OWL
+	 * @param equipmentId
+	 * @return
+	 */
 	public static ArrayList<String> getLayersFromEquipment(String equipmentId) {
 		
 		ArrayList<String> predicate = new ArrayList<String>();
@@ -149,11 +167,25 @@ public class ProvisioningManager {
 		
 	}
 	
-	
+	/**
+	 * Procedure to get ports of equipment by layer from OWL
+	 * @param equipmentId
+	 * @param portType
+	 * @param excludeConnectedPorts
+	 * @return
+	 */
 	public static HashMap<String, ArrayList<HashMap<String, String>>> getPortsByLayerFromOWL(String equipmentId, String portType, boolean excludeConnectedPorts) {
 		return getPortsByLayerFromOWL(equipmentId, portType, null, excludeConnectedPorts);
 	};
 	
+	/**
+	 * Procedure to get ports of equipment by layer from OWL
+	 * @param equipmentId
+	 * @param portType
+	 * @param connectionType
+	 * @param excludeConnectedPorts
+	 * @return
+	 */
 	public static HashMap<String, ArrayList<HashMap<String, String>>> getPortsByLayerFromOWL(String equipmentId, String portType, String connectionType, boolean excludeConnectedPorts) {
 		
 		String namespace = ProvisioningComponents.provisioningRepository.getNamespace();
@@ -223,7 +255,6 @@ public class ProvisioningManager {
 					lastLayerLabel = layerLabel;
 					layerPortMapping = new ArrayList<HashMap<String, String>>();
 					
-					System.out.println("NEW LAYER");
 				}
 				
 				ArrayList<String> ports = ProvisioningQuery.getObjectFromOWL(layer, predicates);
@@ -235,7 +266,6 @@ public class ProvisioningManager {
 					boolean excludePort = false;
 					if(excludeConnectedPorts) {
 						if(ProvisioningQuery.isConnectedPort(port)) {
-							System.out.println("PORT: " + port);
 							excludePort = true;
 						}
 					}
@@ -247,7 +277,7 @@ public class ProvisioningManager {
 						//get label of port
 						String label = ProvisioningQuery.getLabelFromOWL(port);
 						
-						System.out.println("PORT: " + label);
+//						System.out.println("PORT: " + label);
 						
 						//replace label language
 						label = label.replace("@en", "");
@@ -278,42 +308,6 @@ public class ProvisioningManager {
 		
 		return outputPortsByLayer;
 	}
-	
-	
-	
-	
-	
-	
-	/**
-	 * Procedure to parse json links to owl
-	 * @param jsonLinks
-	 * @throws Exception
-	 * @author Lucas Bassetti
-	 */
-//	public void createLinksInOWL2(String jsonLinks) throws Exception {
-//		
-//		
-//		OntModel ontModel = this.repository.getBaseModel();
-//		String namespace = this.repository.getNamespace();
-//		
-//		FactoryUtil factoryUtil = new FactoryUtil();
-//		
-//		PLink[] links = (PLink[]) JointUtilManager.getJavaFromJSON(jsonLinks, PLink[].class);
-//		for(PLink link : links) {
-//			
-//			String subject = namespace + link.getSource();
-//			String predicate = getPredicateFromOWL(link.getSourceType(), link.getTargetType());
-//			String object = namespace + link.getTarget();
-//			
-//			factoryUtil.createInstanceRelationStatement(ontModel, subject, predicate, object, false);
-//			
-//		}
-//		
-//		factoryUtil.processStatements(ontModel);
-//		
-//	}
-	
-	
 	
 	
 }

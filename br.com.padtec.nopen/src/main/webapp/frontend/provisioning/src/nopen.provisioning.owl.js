@@ -46,6 +46,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 	},
 	
+	//Method to check if a relation with specific domain and range has inverse
 	hasInverse : function(relations, relation) {
 		
 		var hasInverse = false;
@@ -95,11 +96,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 		var elements = [];
 		var links = [];
-		
-		//Reference Point Counter
-		var fep_counter = 0, ap_counter = 0, fp_counter = 0;
-		//TF OUT/IN Counter
-		var ttf_out_counter = 0, ttf_in_counter = 0, af_out_counter = 0, af_in_counter = 0, matrix_out_counter = 0, matrix_in_counter = 0, pm_counter = 0;
 		
 		//Equipment
 		var equip = $this.createElement("Equipment", equipment.id, equipment.attributes.attrs.text.text);
@@ -189,9 +185,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Trail_Termination_Function') {
 					
 					//Trail_Termination_Function_Output (TTF_OUT)
-					ttf_out = $this.createElement("Trail_Termination_Function_Output", joint.util.uuid(), "Trail_Termination_Function_Output_" + ttf_out_counter); 
+					ttf_out = $this.createElement("Trail_Termination_Function_Output", joint.util.uuid(), "Trail_Termination_Function_Output"); 
 					elements.push(ttf_out);
-					ttf_out_counter++;
 					
 					//Trail_Termination_Function (TTF) > Trail_Termination_Function_Output (TTFOUT)
 					var linkTTF_TTFOUT = $this.createLink(element.source.id, sourceType, ttf_out.id, ttf_out.type); 
@@ -202,9 +197,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(targetType === 'Trail_Termination_Function') {
 				
 					//Trail_Termination_Function_Input (TTF_IN)
-					ttf_in = $this.createElement("Trail_Termination_Function_Input", joint.util.uuid(), "Trail_Termination_Function_Input_" + ttf_in_counter);
+					ttf_in = $this.createElement("Trail_Termination_Function_Input", joint.util.uuid(), "Trail_Termination_Function_Input");
 					elements.push(ttf_in);
-					ttf_in_counter++;
 				
 					//Trail_Termination_Function (TTF) > Trail_Termination_Function_Intput (TTFIN)
 					var linkTTF_TTFIN = $this.createLink(element.target.id, targetType, ttf_in.id, ttf_in.type);
@@ -215,9 +209,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Adaptation_Function') {
 					
 					//Adaptation_Function_Output (AF_OUT)
-					af_out = $this.createElement("Adaptation_Function_Output", joint.util.uuid(), "Adaptation_Function_Output_" + af_out_counter);
+					af_out = $this.createElement("Adaptation_Function_Output", joint.util.uuid(), "Adaptation_Function_Output");
 					elements.push(af_out);
-					af_out_counter++;
 					
 					//Adaptation_Function (AF) > Adaptation_Function_Output (AFOUT)
 					var linkAF_AFOUT = $this.createLink(element.source.id, sourceType, af_out.id, af_out.type);
@@ -228,9 +221,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(targetType === 'Adaptation_Function') {
 					
 					//Adaptation_Function_Input (AF_IN)
-					af_in = $this.createElement("Adaptation_Function_Input", joint.util.uuid(), "Adaptation_Function_Input" + af_in_counter);
+					af_in = $this.createElement("Adaptation_Function_Input", joint.util.uuid(), "Adaptation_Function_Input");
 					elements.push(af_in);
-					af_in_counter++;
 					
 					//Adaptation_Function (AF) > Adaptation_Function_Input (AFIN)
 					var linkAF_AFIN = $this.createLink(element.target.id, targetType, af_in.id, af_in.type);
@@ -241,9 +233,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Matrix') {
 					
 					//Matrix_Output (M_OUT)
-					matrix_out = $this.createElement("Matrix_Output", joint.util.uuid(), "Matrix_Output_" + matrix_out_counter);
+					matrix_out = $this.createElement("Matrix_Output", joint.util.uuid(), "Matrix_Output");
 					elements.push(matrix_out);
-					matrix_out_counter++;
 					
 					//Matrix (M) > Matrix_Output (MOUT)
 					var linkM_MOUT = $this.createLink(element.source.id, sourceType, matrix_out.id, matrix_out.type);
@@ -254,9 +245,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(targetType === 'Matrix') {
 					
 					//Matrix_Input (M_IN)
-					matrix_in = $this.createElement("Matrix_Input", joint.util.uuid(), "Matrix_Input_" + matrix_in_counter);
+					matrix_in = $this.createElement("Matrix_Input", joint.util.uuid(), "Matrix_Input");
 					elements.push(matrix_in);
-					matrix_in_counter++;
 					
 					//Matrix (M) > Matrix_Input (MIN)
 					var linkM_MIN = $this.createLink(element.target.id, targetType, matrix_in.id, matrix_in.type);
@@ -266,36 +256,30 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				
 				if(sourceType === 'Trail_Termination_Function' && (targetType === 'Adaptation_Function' || targetType === 'Matrix')) {
 					//Reference_Point FEP (FEP)
-					var rp = $this.createElement("FEP", element.id, "FEP_" + fep_counter);
+					var rp = $this.createElement("FEP", element.id, "FEP");
 					elements.push(rp);
-					fep_counter++;
 					
 					//TTF_OUT (TTFOUT) > FEP (FEP)
 					var linkTTFOUT_FEP = $this.createLink(element.id, "FEP", ttf_out.id, ttf_out.type);
 					links.push(linkTTFOUT_FEP);
 					
 					if(targetType === 'Adaptation_Function') {
-						
 						//FEP (FEP) > AF_IN (AFIN)
 						var linFEP_AFIN = $this.createLink(element.id, "FEP", af_in.id, af_in.type);
 						links.push(linFEP_AFIN);
-						
 					}
 					else {
-						
 						//FEP (FEP) > MATRIX_IN (MIN)
 						var linkFEP_MIN = $this.createLink(element.id, "FEP", matrix_in.id, matrix_in.type);
 						links.push(linkFEP_MIN);
-						
 					}
 					
 				}
 				
 				if(sourceType === 'Adaptation_Function' && targetType === 'Trail_Termination_Function') {
 					//Reference_Point AP (AP)
-					var rp = $this.createElement("AP", element.id, "AP_" + ap_counter);
+					var rp = $this.createElement("AP", element.id, "AP");
 					elements.push(rp);
-					ap_counter++;
 					
 					//AF_OUT (AFOUT) > AP (AP)
 					var linAFOUT_AP = $this.createLink(element.id, "AP", af_out.id, af_out.type);
@@ -309,9 +293,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				
 				if(sourceType === 'Matrix' && targetType === 'Adaptation_Function') {
 					//Reference_Point FP (FP)
-					var rp = $this.createElement("FP", element.id, "FP_" + fp_counter);
+					var rp = $this.createElement("FP", element.id, "FP");
 					elements.push(rp);
-					fp_counter++;
 					
 					//FP (FP) > M_OUT (MOUT)
 					var linkMOUT_FP = $this.createLink(element.id, "FP", matrix_out.id, matrix_out.type);
@@ -330,24 +313,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			
 		});
 		
-		//Input_Card/Output_Card > Input_Card/Output_Card
-		$.each(card.connectedPorts, function(portId, connectedPort) {
-			
-			console.log('connectedPort: ' + JSON.stringify(connectedPort));
-			
-			if(card.outPorts[portId]) {
-				if(connectedPort.edge === "target") {
-					var link = $this.createLink(portId, "Output_Card", connectedPort.id, connectedPort.type);
-					links.push(link);
-				}
-			}
-			else if(card.inPorts[portId]) {
-				var link = $this.createLink(portId, "Input_Card", connectedPort.id, connectedPort.type);
-				links.push(link);
-			}
-			
-		});
-		
 		var pElements = elements;
 		var pLinks = [];
 		
@@ -357,8 +322,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			});
 		});
 		
-		console.log('Elements: ' + JSON.stringify(pElements));
-		console.log('Links: ' + JSON.stringify(pLinks));
+//		console.log('Elements: ' + JSON.stringify(pElements));
+//		console.log('Links: ' + JSON.stringify(pLinks));
 		
 		//execute parse
 		$.ajax({
@@ -380,197 +345,378 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	
 	},
 	
-	parseConnectedPorts : function(graph) {
+	parseConnectedPortsToOWL : function(graph) {
 		
 		var $this = this;
 		var model = this.app.model;
-		
-		//Reference Point Counter
-		var fep_counter = 0, ap_counter = 0, fp_counter = 0;
-		//TF OUT/IN Counter
-		var ttf_out_counter = 0, ttf_in_counter = 0, af_out_counter = 0, af_in_counter = 0, matrix_out_counter = 0, matrix_in_counter = 0, pm_counter = 0;
 		
 		var elements = [];
 		var links = [];
 		
-		//generate owl instances
-		$.each(graph.getElements(), function(index, equipment) {
+		$.each(graph.getElements(), function(index, value){
+			
+			var equipment = graph.getCell(value.id);
+			var cards = model.getCardsInPreProvisioning(equipment);
 
-			if(equipment.get('subtype') === 'Access_Group') {
-
-				var cards = model.getCards(equipment);
-				$.each(cards, function(key, card) {
-
-					console.log('PARSE CARD CONNECTED PORTS');
+			$.each(cards, function(key, card){
 					
-					//Input_Card/Output_Card > Input_Card/Output_Card
-					$.each(card.connectedPorts, function(portId, connectedPort) {
-						
-						console.log('connectedPort: ' + JSON.stringify(connectedPort));
-						
-						if(card.outPorts[portId]) {
+				//Input_Card/Output_Card > Input_Card/Output_Card
+				$.each(card.connectedPorts, function(portId, connectedPort) {
+					
+					if(card.outPorts[portId]) {
+						if(connectedPort.edge === "target") {
+							var link = $this.createLink(portId, "Output_Card", connectedPort.id, connectedPort.type);
+							links.push(link);
 							
-							if(connectedPort.type === "Input_Card") {
-								
-								var tfSource = $this.getConnectedTFElement(graph, portId);
-								var tfTarget = $this.getConnectedTFElement(graph, connectedPort.id);
-								
-								var link = $this.createLink(portId, "Output_Card", connectedPort.id, connectedPort.type);
-								links.push(link);
-							}
-							else if(connectedPort.edge === "target") {
-								
-								var linkId = $this.getConnectedLinkId(cardCells, portId, connectedPort.id);
-								
-								var tfSource = $this.getConnectedTFElement(graph, portId);
-								var tfTarget = $this.getConnectedTFElement(graph, connectedPort.id);
-								
-								console.log('linkId: ' + linkId);
-								console.log('tfSource: ' + JSON.stringify(tfSource));
-								console.log('tfTarget: ' + JSON.stringify(tfTarget));
-								
-								
-								if(tfSource.type === 'Trail_Termination_Function' || tfTarget.type === 'Trail_Termination_Function') {
-									
-									//Physical_Media PM (PM)
-									var pm = $this.createElement("Physical_Media", linkId, "PM_" + pm_counter);
-									elements.push(pm);
-									
-									//Physical_Media PM (PM)
-									var pm_so = $this.createElement("PM_Input_So", linkId + '-so' + pm_counter, "PM_" + pm_counter);
-									elements.push(pm);
-									
-									//Physical_Media PM (PM)
-									var pm_sk = $this.createElement("PM_Input_Sk", linkId + '-sk' + pm_counter, "PM_" + pm_counter);
-									elements.push(pm);
-									
-									pm_counter++;
-									
-									//Physical_Media (PM) > PM_Input_So (PMSO) 
-									var link_PM_PMSO = $this.createLink(pm.id, "Physical_Media", pm_so.id, pm_so.type);
-									links.push(link_PM_PMSO);
-									
-									//Physical_Media (PM) > PM_Input_Sk (PMSK)
-									var link_PM_PMSK = $this.createLink(pm.id, "Physical_Media", pm_sk.id, pm_sk.type);
-									links.push(link_PM_PMSK);
-									
-									
-									//Reference_Point FEP (FEP)
-									var fep_pmso = $this.createElement("FEP", linkId + '-fep-pmso', "FEP_" + fep_counter);
-									elements.push(fep_pmso);
-									fep_counter++;
-									
-									//Trail_Termination_Function_Output (TTF_OUT)
-									var ttf_out_source = $this.createElement("Trail_Termination_Function_Output", tfSource.id + "-fep-pmso-out" + ttf_out_counter, "Trail_Termination_Function_Output_" + ttf_out_counter); 
-									elements.push(ttf_out_source);
-									ttf_out_counter++;
-									
-									//TTF > Trail_Termination_Function_Output (TTFOUT)
-									var link_TTF_TTFOUT = $this.createLink(tfSource.id, tfSource.type, ttf_out_source.id, ttf_out_source.type);
-									links.push(link_TTF_TTFOUT);
-									
-									//FEP > PM_Input_So (PMSO)
-									var link_FEP_PMSO = $this.createLink(fep_pmso.id, fep_pmso.type, pm_so.id, pm_so.type);
-									links.push(link_FEP_PMSO);
-									
-									//FEP > Trail_Termination_Function_Output (TTFOUT)
-									var link_FEP_TTFOUT = $this.createLink(fep_pmso.id, fep_pmso.type, ttf_out_source.id, ttf_out_source.type);
-									links.push(link_FEP_TTFOUT);
-									
-									
-									
-									
-									//Reference_Point FEP (FEP)
-									var fep_pmsk = $this.createElement("FEP", linkId + '-fep-pmsk', "FEP_" + fep_counter);
-									elements.push(fep_pmsk);
-									fep_counter++;
-									
-									//Trail_Termination_Function_Output (TTF_OUT)
-									ttf_out_target = $this.createElement("Trail_Termination_Function_Output", tfTarget.id + "-fep-pmsk-out" + ttf_out_counter, "Trail_Termination_Function_Output_" + ttf_out_counter); 
-									elements.push(ttf_out_target);
-									ttf_out_counter++;
-
-									//TTF > Trail_Termination_Function_Output (TTFOUT)
-									var link_TTF_TTFOUT = $this.createLink(tfTarget.id, tfTarget.type, ttf_out_target.id, ttf_out_target.type);
-									links.push(link_TTF_TTFOUT);
-									
-									//FEP > PM_Input_Sk (PMSK)
-									var link_FEP_PMSK = $this.createLink(fep_pmsk.id, fep_pmsk.type, pm_sk.id, pm_sk.type);
-									links.push(link_FEP_PMSK);
-									
-									//FEP > Trail_Termination_Function_Output (TTFOUT)
-									var link_FEP_TTFOUT = $this.createLink(fep_pmsk.id, fep_pmsk.type, ttf_out_target.id, ttf_out_target.type);
-									links.push(link_FEP_TTFOUT);
-									
-								}
-								
-								var link = $this.createLink(portId, "Output_Card", connectedPort.id, connectedPort.type);
-								links.push(link);
-							}
+							var tfSource = model.getTFElementConnectedToPortInPreProvisioning(equipment, portId);
+							var tfTarget = model.getTFElementConnectedToPortInPreProvisioning(equipment, connectedPort.id);
+							
+							var connections = $this.createVerticalConnection(tfSource, tfTarget);
+							
+							//add elements and links in hash
+							$.each(connections.elements, function(key, element){
+								elements.push(element)
+							});
+							$.each(connections.links, function(key, link){
+								links.push(link)
+							});
+							
 						}
-//						else if(card.inPorts[portId]) {
-//							var link = $this.createLink(portId, "Input_Card", connectedPort.id, connectedPort.type);
-//							links.push(link);
-//						}
-					});
+					}
 					
 				});
-
-			}
-
+				
+			});
+			
+		});
+		
+		var pElements = elements;
+		var pLinks = [];
+		
+		$.each(links, function(key, link){
+			$.each(link, function(k, l){
+				pLinks.push(l)
+			});
+		});
+		
+		//execute parse
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "parseCardToOWL.htm",
+		   data: {
+			   'elements' : JSON.stringify(pElements),
+			   'links' : JSON.stringify(pLinks),
+		   },
+		   success: function(){
+			   //console.log('PARSE OK!')
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
 		});
 		
 	},
 	
-	getConnectedLinkId : function(elements, sourceId, targetId) {
+	addHorizontalConnection : function(tfSource, tfTarget) {
 		
-		var linkId = undefined;
+		var connections = this.createHorizontalConnection(tfSource, tfTarget);
 		
-		$.each(elements, function(index, element) {
-			if(element.type === 'link') {
-				if(element.source.id === sourceId && element.target.id === targetId) {
-					linkId = element.id;
-				}
-			}
+		var pElements = [];
+		var pLinks = [];
+		
+		$.each(connections.elements, function(key, element){
+			pElements.push(element)
 		});
 		
-		return linkId;
+		$.each(connections.links, function(key, link){
+			$.each(link, function(k, l){
+				pLinks.push(l)
+			});
+		});
+		
+		//execute parse
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "parseCardToOWL.htm",
+		   data: {
+			   'elements' : JSON.stringify(pElements),
+			   'links' : JSON.stringify(pLinks),
+		   },
+		   success: function(){
+			   //console.log('PARSE OK!')
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
 	},
 	
-	getConnectedTFElement : function(graph, portId) {
+	addVerticalConnection : function(tfSource, tfTarget) {
+		
+		var connections = this.createVerticalConnection(tfSource, tfTarget);
+		
+		var pElements = [];
+		var pLinks = [];
+		
+		$.each(connections.elements, function(key, element){
+			pElements.push(element)
+		});
+		
+		$.each(connections.links, function(key, link){
+			$.each(link, function(k, l){
+				pLinks.push(l)
+			});
+		});
+		
+		//execute parse
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "parseCardToOWL.htm",
+		   data: {
+			   'elements' : JSON.stringify(pElements),
+			   'links' : JSON.stringify(pLinks),
+		   },
+		   success: function(){
+			   //console.log('PARSE OK!')
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	},
+	
+	createHorizontalConnection : function(tfSource, tfTarget) {
+		
+		var $this = this;
+		
+		var elements = [];
+		var links = [];
+		
+		//Physical_Media PM (PM)
+		var pm = $this.createElement("Physical_Media", joint.util.uuid(), "PM_" + tfSource.name + "_" + tfTarget.name);
+		elements.push(pm);
+		
+		//Physical_Media PM_So (PMSO)
+		var pm_so = $this.createElement("PM_Input_So", joint.util.uuid(), "PM_SO_" + tfSource.name + "_" + tfTarget.name);
+		elements.push(pm);
+		
+		//Physical_Media PM_Sk (PMSK)
+		var pm_sk = $this.createElement("PM_Input_Sk", joint.util.uuid(), "PM_SK_" + tfSource.name + "_" + tfTarget.name);
+		elements.push(pm);
+		
+		
+		//Physical_Media (PM) > PM_Input_So (PMSO) 
+		var link_PM_PMSO = $this.createLink(pm.id, pm.type, pm_so.id, pm_so.type);
+		links.push(link_PM_PMSO);
+		
+		//Physical_Media (PM) > PM_Input_Sk (PMSK)
+		var link_PM_PMSK = $this.createLink(pm.id, pm.type, pm_sk.id, pm_sk.type);
+		links.push(link_PM_PMSK);
+		
+		
+		//Reference_Point FEP (FEP)
+		var fep_pmso = $this.createElement("FEP", joint.util.uuid(), "FEP");
+		elements.push(fep_pmso);
+		
+		//Trail_Termination_Function_Output (TTF_OUT)
+		var ttf_out_source = $this.createElement("Trail_Termination_Function_Output", joint.util.uuid(), "Trail_Termination_Function_Output"); 
+		elements.push(ttf_out_source);
+		
+		
+		//TTF > Trail_Termination_Function_Output (TTFOUT)
+		var link_TTF_TTFOUT = $this.createLink(tfSource.id, tfSource.type, ttf_out_source.id, ttf_out_source.type);
+		links.push(link_TTF_TTFOUT);
+		
+		//FEP > PM_Input_So (PMSO)
+		var link_FEP_PMSO = $this.createLink(fep_pmso.id, fep_pmso.type, pm_so.id, pm_so.type);
+		links.push(link_FEP_PMSO);
+		
+		//FEP > Trail_Termination_Function_Output (TTFOUT)
+		var link_FEP_TTFOUT = $this.createLink(fep_pmso.id, fep_pmso.type, ttf_out_source.id, ttf_out_source.type);
+		links.push(link_FEP_TTFOUT);
+		
+		
+		//Reference_Point FEP (FEP)
+		var fep_pmsk = $this.createElement("FEP", joint.util.uuid(), "FEP");
+		elements.push(fep_pmsk);
+		
+		//Trail_Termination_Function_Output (TTF_OUT)
+		ttf_out_target = $this.createElement("Trail_Termination_Function_Output", joint.util.uuid(), "Trail_Termination_Function_Output"); 
+		elements.push(ttf_out_target);
+
+		
+		//TTF > Trail_Termination_Function_Output (TTFOUT)
+		var link_TTF_TTFOUT = $this.createLink(tfTarget.id, tfTarget.type, ttf_out_target.id, ttf_out_target.type);
+		links.push(link_TTF_TTFOUT);
+		
+		//FEP > PM_Input_Sk (PMSK)
+		var link_FEP_PMSK = $this.createLink(fep_pmsk.id, fep_pmsk.type, pm_sk.id, pm_sk.type);
+		links.push(link_FEP_PMSK);
+		
+		//FEP > Trail_Termination_Function_Output (TTFOUT)
+		var link_FEP_TTFOUT = $this.createLink(fep_pmsk.id, fep_pmsk.type, ttf_out_target.id, ttf_out_target.type);
+		links.push(link_FEP_TTFOUT);
+		
+		var horizontalConnections = {
+				'elements' : elements,
+				'links' : links,
+		}
+		
+		return horizontalConnections;
+		
+	},
+	
+	createVerticalConnection : function(tfSource, tfTarget) {
+		
+		var $this = this;
+		
+		var elements = [];
+		var links = [];
 		
 		var model = this.app.model;
-		var $this = this;
-		var tfElement = undefined;
 		
-		//generate owl instances
-		$.each(graph.getElements(), function(index, equipment) {
-
-			if(equipment.get('subtype') === 'Access_Group') {
-
-				var cards = model.getCards(equipment);
-				$.each(cards, function(key, card) {
-
-					//ITU Elements
-					var cardCells = card.attrs.data.cells;
-					
-					$.each(cardCells, function(key, element) {
-						//Links
-						if(element.type === 'link') {
-							if(element.target.id === portId) {
-								tfElement = {
-										'id' : element.source.id,
-										'type' : $this.getElementType(cardCells, element.source.id),
-								}
-							}
-						}
-					});
-				});
+		var sourceType = tfSource.type;
+		var targetType = tfTarget.type;
+		
+		var ttf_out = undefined, ttf_in = undefined, af_out = undefined, af_in = undefined, matrix_out = undefined, matrix_in = undefined;
+		
+		if(sourceType === 'Trail_Termination_Function') {
+			
+			//Trail_Termination_Function_Output (TTF_OUT)
+			ttf_out = $this.createElement("Trail_Termination_Function_Output", joint.util.uuid(), "Trail_Termination_Function_Output"); 
+			elements.push(ttf_out);
+			
+			//Trail_Termination_Function (TTF) > Trail_Termination_Function_Output (TTFOUT)
+			var linkTTF_TTFOUT = $this.createLink(tfSource.id, sourceType, ttf_out.id, ttf_out.type); 
+			links.push(linkTTF_TTFOUT);
+			
+		}
+		
+		if(targetType === 'Trail_Termination_Function') {
+		
+			//Trail_Termination_Function_Input (TTF_IN)
+			ttf_in = $this.createElement("Trail_Termination_Function_Input", joint.util.uuid(), "Trail_Termination_Function_Input");
+			elements.push(ttf_in);
+		
+			//Trail_Termination_Function (TTF) > Trail_Termination_Function_Intput (TTFIN)
+			var linkTTF_TTFIN = $this.createLink(tfTarget.id, targetType, ttf_in.id, ttf_in.type);
+			links.push(linkTTF_TTFIN);
+			
+		}
+		
+		if(sourceType === 'Adaptation_Function') {
+			
+			//Adaptation_Function_Output (AF_OUT)
+			af_out = $this.createElement("Adaptation_Function_Output", joint.util.uuid(), "Adaptation_Function_Output");
+			elements.push(af_out);
+			
+			//Adaptation_Function (AF) > Adaptation_Function_Output (AFOUT)
+			var linkAF_AFOUT = $this.createLink(tfSource.id, sourceType, af_out.id, af_out.type);
+			links.push(linkAF_AFOUT);
+			
+		}
+		
+		if(targetType === 'Adaptation_Function') {
+			
+			//Adaptation_Function_Input (AF_IN)
+			af_in = $this.createElement("Adaptation_Function_Input", joint.util.uuid(), "Adaptation_Function_Input");
+			elements.push(af_in);
+			
+			//Adaptation_Function (AF) > Adaptation_Function_Input (AFIN)
+			var linkAF_AFIN = $this.createLink(tfTarget.id, targetType, af_in.id, af_in.type);
+			links.push(linkAF_AFIN);
+			
+		}
+		
+		if(sourceType === 'Matrix') {
+			
+			//Matrix_Output (M_OUT)
+			matrix_out = $this.createElement("Matrix_Output", joint.util.uuid(), "Matrix_Output");
+			elements.push(matrix_out);
+			
+			//Matrix (M) > Matrix_Output (MOUT)
+			var linkM_MOUT = $this.createLink(tfSource.id, sourceType, matrix_out.id, matrix_out.type);
+			links.push(linkM_MOUT);
+			
+		}
+		
+		if(targetType === 'Matrix') {
+			
+			//Matrix_Input (M_IN)
+			matrix_in = $this.createElement("Matrix_Input", joint.util.uuid(), "Matrix_Input");
+			elements.push(matrix_in);
+			
+			//Matrix (M) > Matrix_Input (MIN)
+			var linkM_MIN = $this.createLink(tfTarget.id, targetType, matrix_in.id, matrix_in.type);
+			links.push(linkM_MIN);
+			
+		}
+		
+		if(sourceType === 'Trail_Termination_Function' && (targetType === 'Adaptation_Function' || targetType === 'Matrix')) {
+			//Reference_Point FEP (FEP)
+			var fep = $this.createElement("FEP", joint.util.uuid(), "FEP");
+			elements.push(fep);
+			
+			//TTF_OUT (TTFOUT) > FEP (FEP)
+			var linkTTFOUT_FEP = $this.createLink(fep.id, fep.type, ttf_out.id, ttf_out.type);
+			links.push(linkTTFOUT_FEP);
+			
+			if(targetType === 'Adaptation_Function') {
+				//FEP (FEP) > AF_IN (AFIN)
+				var linFEP_AFIN = $this.createLink(fep.id, fep.type, af_in.id, af_in.type);
+				links.push(linFEP_AFIN);
 			}
-		});
+			else {
+				//FEP (FEP) > MATRIX_IN (MIN)
+				var linkFEP_MIN = $this.createLink(fep.id, fep.type, matrix_in.id, matrix_in.type);
+				links.push(linkFEP_MIN);
+			}
+			
+		}
 		
-		return tfElement;
+		if(sourceType === 'Adaptation_Function' && targetType === 'Trail_Termination_Function') {
+			//Reference_Point AP (AP)
+			var ap = $this.createElement("AP", joint.util.uuid(), "AP");
+			elements.push(ap);
+			
+			//AF_OUT (AFOUT) > AP (AP)
+			var linAFOUT_AP = $this.createLink(ap.id, ap.type, af_out.id, af_out.type);
+			links.push(linAFOUT_AP);
+			
+			//AP (AP) > TTF_IN (TTFIN)
+			var linkAP_TTFIN = $this.createLink(ap.id, ap.type, ttf_in.id, ttf_in.type);
+			links.push(linkAP_TTFIN);
+		}
+		
+		if(sourceType === 'Matrix' && targetType === 'Adaptation_Function') {
+			//Reference_Point FP (FP)
+			var fp = $this.createElement("FP", joint.util.uuid(), "FP");
+			elements.push(fp);
+			
+			//FP (FP) > M_OUT (MOUT)
+			var linkMOUT_FP = $this.createLink(fp.id, fp.type, matrix_out.id, matrix_out.type);
+			links.push(linkMOUT_FP);
+			
+			//FP (FP) > AFIN (AFIN)
+			var linkFP_AFIN = $this.createLink(fp.id, fp.type, af_in.id, af_in.type);
+			links.push(linkFP_AFIN);
+		}
+		
+		var verticalConnections = {
+				'elements' : elements,
+				'links' : links,
+		}
+		
+		return verticalConnections;
+		
 	},
+	
+	
 	
 	//create a JOSN link.
 	createLink : function(subject, subjectType, object, objectType) {
