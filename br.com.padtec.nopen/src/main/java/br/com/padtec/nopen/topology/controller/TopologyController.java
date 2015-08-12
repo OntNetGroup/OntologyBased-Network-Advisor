@@ -175,4 +175,18 @@ public class TopologyController {
 		
 	}
 	
+	/**
+	 * Procedure to pre open a specific Equipment to change it's id.
+	 * @param filename
+	 * @return
+	 */
+	@RequestMapping(value = "/openFileEquipment", method = RequestMethod.POST)
+	protected @ResponseBody String openEquipment(@RequestParam("filename") String filename)
+	{		
+		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
+		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
+		
+	}
+	
+	
 }

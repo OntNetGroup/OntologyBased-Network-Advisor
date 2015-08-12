@@ -1,3 +1,8 @@
+//Global var(provisorio)
+topologies:[];
+equipaments:[];
+ITUs:[];
+
 /**
  * Procedure to change/set Equipments to Nodes.
  * @param graph
@@ -35,7 +40,7 @@ function graphHandle(graph){
 			   url: "getAllEquipmentsToMatch.htm",
 			   dataType: 'json',
 			   success: function(data){ 		   
-				   generateDialog(data, cell)
+				   generateDialog(data, cell , graph)
 			   },
 			   error : function(e) {
 				   alert("error: " + e.status);
@@ -77,7 +82,7 @@ function graphHandle(graph){
  * @param data
  * @param cell
  */
-function generateDialog(data, cell){
+function generateDialog(data, cell , graph){
 	
 	var content = '<form id="match">';
 	for(var i = 0; i < Object.keys(data).length; i++){
@@ -103,6 +108,7 @@ function generateDialog(data, cell){
 			{ action: 'match', content: 'Match', position: 'left' }
 		]
 	});
+
 	dialog.on('action:match', matchEquipmentToNode);
 	dialog.on('action:cancel', dialog.close);
 	dialog.open();
@@ -110,6 +116,9 @@ function generateDialog(data, cell){
 	function matchEquipmentToNode(){
 		
 		var equipment = $('input[name=equipment]:checked', '#match').val();
+		console.log(equipment);
+		console.log(cell.id);
+		
 		
 		$.ajax({
 		   type: "POST",
@@ -121,7 +130,7 @@ function generateDialog(data, cell){
 		   success: function(data){
 			   cell.attr('equipment/template', equipment);
 			   cell.attr('text/text', equipment);
-				
+			   changegraphID(equipment,cell);
 			   dialog.close();
 		   },
 		   error : function(e) {
@@ -129,10 +138,126 @@ function generateDialog(data, cell){
 		   }
 		});
 
+		function changegraphID(equipment,cell){
+			
+
+				var ITUelements = [], ITUlinks = [];
+				
+//				var cardCells = changeEquipmentElements(filename, card.id);
+//				$.each(cardCells, function(index, element) {
+//					}),
+				
+				
+			
+			console.log(equipment);
+			console.log(graph);
+			var originalGraph = graph.toJSON();
+			openEquipment();
+			
+			function openEquipment(){
+				
+				var filename = equipment;
+
+//				function changeEquipmentElements(eqName, cardID) {
+					var equipGraph = new joint.dia.Graph;
+					
+					$.ajax({
+						type: "POST",
+						async: false,
+						url: "openFileEquipment.htm",
+						data: {
+							'filename' : filename
+						},
+						dataType: 'json',
+						success: function(data){
+							equipGraph.fromJSON(data);
+						},
+						error : function(e) {
+							alert("error: " + e.status);
+						}
+					});
+//					return equipGraph.getElements();
+					console.log(equipGraph);
+				
+			
+			
+			}
+
+			
+			
+			
+			
+			//			 var graph1 = graph.fromJSON(equipment);
+//			 console.log(graph1);
+//		//	console.log('equipmanet' , equipament);
+//			var elementos = equipament.getElements();
+//		//	console.log('elementos' , elementos);
+//			var equipSupervisor;
+//			var c = [];
+//	        var movingCards = [];
+//			
+//			for(var i = 0; i < elementos.length; i++){
+//				var check = elementos[i];
+//				//console.log(check);
+//				if((check.attributes.subType) === 'Supervisor'){
+//	               if((check.attributes.attrs.name.text === $('#save-dialog').find(":selected").val())){
+////	            	   equipsupervisor = equipament.getCell(check.id);
+//	               }else{
+//	            	   var parent = check.attributes.parent;
+//	            	   var grandParent = (equipament.getCell(parent)).attributes.parent;
+//	            	   console.log(grandParent);
+//	            	   (equipament.getCell(check.id)).remove();
+//	            	   (equipament.getCell(parent)).remove();
+//	            	   if ((equipament.getCell(grandParent)).getEmbeddedCells().length === 0){
+//	            		   (equipament.getCell(grandParent)).remove();
+//	            		   
+//	            	   }
+//	               }
+//				}
+//				if((check.attributes.subType) === 'Card'){
+//					if((check.attributes.Supervisor === $('#save-dialog').find(":selected").val())){
+//		            	   movingCards.push(check.id);
+//		               }else{
+//		            	   var parent = check.attributes.parent;
+//		            	   var grandParent = (equipament.getCell(parent)).attributes.parent;
+//		            	   console.log(grandParent);
+//		            	   (equipament.getCell(check.id)).remove();
+//		            	   (equipament.getCell(parent)).remove();
+//		            	   if ((equipament.getCell(grandParent)).getEmbeddedCells().length === 0){
+//		            		   (equipament.getCell(grandParent)).remove();
+//		            		   
+//		            	   }
+//		               }
+//				} 
+//				
+//				if((check.attributes.subType) === 'Slot'){
+//					if(check.getEmbeddedCells().length === 0){
+//						var parent = check.attributes.parent;
+//						(equipament.getCell(check.id)).remove();					
+//						 if ((equipament.getCell(parent)).getEmbeddedCells().length === 0){
+//		            		   (equipament.getCell(parent)).remove();   
+//		            	   }
+//					}
+//				}
+//				
+//				if((check.attributes.subType) === 'Shelf'){
+//					if(check.getEmbeddedCells().length === 0){
+//						(equipament.getCell(check.id)).remove();
+//					}
+//				}
+//			};		
+//			console.log(equipament);		
+//		}
+//		
+//		$.ajax({
+//			type: "POST",
+//			url: "create"
+//		});
+		
 		
 		//Change equipments id
 		
-	};
+//	};
 	
 	
 //	$("#dialog").html('');
@@ -151,7 +276,7 @@ function generateDialog(data, cell){
 //	      close: function() { }
 //	});
 	
-};
+}}}
 
 
 

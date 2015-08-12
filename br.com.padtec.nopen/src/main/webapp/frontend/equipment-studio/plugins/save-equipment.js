@@ -165,9 +165,9 @@ $('#save-dialog').find(":selected").val();
 		//JSON.stringify(graph.toJSON())
 		console.log($('#save-dialog').find(":selected").val());
 		// originalGraph = graph.toJSON();
-		var equipament = graph;
+		var equipment = graph;
 	//	console.log('equipmanet' , equipament);
-		var elementos = equipament.getElements();
+		var elementos = equipment.getElements();
 	//	console.log('elementos' , elementos);
 		var equipSupervisor;
 		var c = [];
@@ -181,12 +181,12 @@ $('#save-dialog').find(":selected").val();
 //            	   equipsupervisor = equipament.getCell(check.id);
                }else{
             	   var parent = check.attributes.parent;
-            	   var grandParent = (equipament.getCell(parent)).attributes.parent;
+            	   var grandParent = (equipment.getCell(parent)).attributes.parent;
             	   console.log(grandParent);
-            	   (equipament.getCell(check.id)).remove();
-            	   (equipament.getCell(parent)).remove();
-            	   if ((equipament.getCell(grandParent)).getEmbeddedCells().length === 0){
-            		   (equipament.getCell(grandParent)).remove();
+            	   (equipment.getCell(check.id)).remove();
+            	   (equipment.getCell(parent)).remove();
+            	   if ((equipment.getCell(grandParent)).getEmbeddedCells().length === 0){
+            		   (equipment.getCell(grandParent)).remove();
             		   
             	   }
                }
@@ -196,12 +196,12 @@ $('#save-dialog').find(":selected").val();
 	            	   movingCards.push(check.id);
 	               }else{
 	            	   var parent = check.attributes.parent;
-	            	   var grandParent = (equipament.getCell(parent)).attributes.parent;
+	            	   var grandParent = (equipment.getCell(parent)).attributes.parent;
 	            	   console.log(grandParent);
-	            	   (equipament.getCell(check.id)).remove();
-	            	   (equipament.getCell(parent)).remove();
-	            	   if ((equipament.getCell(grandParent)).getEmbeddedCells().length === 0){
-	            		   (equipament.getCell(grandParent)).remove();
+	            	   (equipment.getCell(check.id)).remove();
+	            	   (equipment.getCell(parent)).remove();
+	            	   if ((equipment.getCell(grandParent)).getEmbeddedCells().length === 0){
+	            		   (equipment.getCell(grandParent)).remove();
 	            		   
 	            	   }
 	               }
@@ -210,20 +210,20 @@ $('#save-dialog').find(":selected").val();
 			if((check.attributes.subType) === 'Slot'){
 				if(check.getEmbeddedCells().length === 0){
 					var parent = check.attributes.parent;
-					(equipament.getCell(check.id)).remove();					
-					 if ((equipament.getCell(parent)).getEmbeddedCells().length === 0){
-	            		   (equipament.getCell(parent)).remove();   
+					(equipment.getCell(check.id)).remove();					
+					 if ((equipment.getCell(parent)).getEmbeddedCells().length === 0){
+	            		   (equipment.getCell(parent)).remove();   
 	            	   }
 				}
 			}
 			
 			if((check.attributes.subType) === 'Shelf'){
 				if(check.getEmbeddedCells().length === 0){
-					(equipament.getCell(check.id)).remove();
+					(equipment.getCell(check.id)).remove();
 				}
 			}
 		};		
-		console.log(equipament);		
+		console.log(equipment);		
 	}
 	
 	
