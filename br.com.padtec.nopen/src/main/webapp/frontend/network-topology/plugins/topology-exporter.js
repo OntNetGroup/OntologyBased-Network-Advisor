@@ -58,7 +58,7 @@ function exportTopologyAsYANG (graph) {
 		
 		_.each(equipGraph.getElements(), function(element) {
 			if(element.attributes.subType === 'Rack') {
-				writeFilePhysicalRecursively(element, equipGraph, '\t\t\t\t');
+				writeFilePhysicalRecursively(element, equipGraph, '\t\t\t\t', equipName);
 			}
 		});
 		
@@ -69,11 +69,13 @@ function exportTopologyAsYANG (graph) {
 		console.log(fileYANG);
 	});
 	
-	function writeFilePhysicalRecursively(element, graph, totalIdent) {
+	function writeFilePhysicalRecursively(element, graph, totalIdent, filename) {
 		var ident = '\t';
 		if(element === undefined) return;
 		
 		if(element.attributes.subType === 'Card') {
+			parseITUElements(filename, element);
+			
 			fileYANG = fileYANG + totalIdent + 'interface-entry ' + element.id + ' {\n';
 			/*
 			 * TODO:	para cada porta do card
@@ -90,10 +92,10 @@ function exportTopologyAsYANG (graph) {
 			
 			var cardID = element.get('embeds')[0];
 			var card = graph.getCell(cardID);
-			writeFilePhysicalRecursively(card, graph, totalIdent+ident+ident+ident);
+			writeFilePhysicalRecursively(card, graph, totalIdent+ident+ident+ident, filename);
 			
 			fileYANG= 	fileYANG+ totalIdent + ident + ident + '}\n' +
-								totalIdent + ident + ident +	'installed-equipment-objectType ' + card.attributes.attrs.text.text + ';\n' +
+								totalIdent + ident + ident +	'installed-equipment-objectType ' + card.attributes.attrs.name.text + ';\n' +
 									totalIdent + ident + '}\n' +
 										totalIdent + '}\n';
 			return;
@@ -106,7 +108,7 @@ function exportTopologyAsYANG (graph) {
 			var slotIDs = element.get('embeds');
 			_.each(slotIDs, function(slotID) {
 				var slot = graph.getCell(slotID);
-				writeFilePhysicalRecursively(slot, graph, totalIdent+ident+ident);
+				writeFilePhysicalRecursively(slot, graph, totalIdent+ident+ident, filename);
 			});
 			
 			fileYANG= 	fileYANG+ totalIdent + ident + '}\n' +
@@ -121,13 +123,195 @@ function exportTopologyAsYANG (graph) {
 			var shelfIDs = element.get('embeds');
 			_.each(shelfIDs, function(shelfID) {
 				var shelf = graph.getCell(shelfID);
-				writeFilePhysicalRecursively(shelf, graph, totalIdent+ident+ident);
+				writeFilePhysicalRecursively(shelf, graph, totalIdent+ident+ident, filename);
 			});
 			
 			fileYANG= 	fileYANG+ totalIdent + ident + '}\n' +
 						totalIdent + '}\n';
 			return;
 		}
+	}
+	
+
+
+	function parseITUElements(filename, card) {
+		var ITUelements = [], ITUlinks = [];
+		
+		var cardCells = loadCardElements(filename, card.id);
+		$.each(cardCells, function(index, element) {
+			
+			//Card_Layer
+			if(element.attributes.subtype === 'Card_Layer') {
+				//console.log('Layer: ' + JSON.stringify(element));
+				var layer = {
+						"type" : element.attributes.subtype,
+						"id" : element.attributes.id,
+						"name" : element.attributes.lanes.label,
+				};
+				ITUelements.push(layer);
+				
+				//Card > Card_Layer
+				var link = {
+						"sourceType" : card.type,
+						"targetType" : element.attributes.subtype,
+						"source" : card.id,
+						"target" : element.attributes.id,
+				};
+				ITUlinks.push(link);
+				
+			}
+			//Trail_Termination_Function
+			else if (element.attributes.subtype === 'Trail_Termination_Function') {
+				
+				var ttf = {
+						"type" : element.attributes.subtype,
+						"id" : element.attributes.id,
+						"name" : element.attributes.attrs.text.text,
+				}
+				ITUelements.push(ttf);
+				
+				//Layer > TTF
+				var link = {
+						"sourceType" : "Card_Layer",
+						"targetType" : element.attributes.subtype,
+						"source" : element.attributes.parent,
+						"target" : element.attributes.id
+				}
+				ITUlinks.push(link);
+			}
+			//Adaptation_Function
+			else if (element.attributes.subtype === 'Adaptation_Function') {
+			
+				var af = {
+						"type" : element.attributes.subtype,
+						"id" : element.attributes.id,
+						"name" : element.attributes.attrs.text.text,
+				}
+				ITUelements.push(af);
+				
+				//Card_layer > AF
+				var link = {
+						"sourceType" : card.type,
+						"targetType" : element.attributes.subtype,
+						"source" : card.id,
+						"target" : element.attributes.id
+				};
+				ITUlinks.push(link);
+				
+			}
+			//Matrix
+			else if (element.attributes.subtype === 'Matrix') {
+				
+				var matrix = {
+						"type" : element.attributes.subtype,
+						"id" : element.attributes.id,
+						"name" : element.attributes.attrs.text.text,
+				}
+				ITUelements.push(matrix);
+				
+				//Card_layer > Matrix
+				var link = {
+						"sourceType" : card.type,
+						"targetType" : element.attributes.subtype,
+						"source" : card.id,
+						"target" : element.attributes.id
+				};
+				ITUlinks.push(link);
+				
+			}
+			//Input_Card / Output_Card
+			else if (element.attributes.subtype === 'Input_Card' || element.attributes.subtype === 'Output_Card') {
+				
+				var inOut = {
+						"type" : element.attributes.subtype,
+						"id" : element.attributes.id,
+						"name" : element.attributes.attrs.text.text,
+				}
+				ITUelements.push(inOut);
+				
+				//Card_layer > Input_Card/Output_Card
+				var link = {
+						"sourceType" : card.type,
+						"targetType" : element.attributes.subtype,
+						"source" : card.id,
+						"target" : element.attributes.id
+				};
+				ITUlinks.push(link);
+				
+			}
+			//Links
+			else if(element.attributes.type === 'link') {
+				
+				var link = {
+						"sourceType" : getElementType(cardCells, element.attributes.source),
+						"targetType" : getElementType(cardCells, element.attributes.target),
+						"source" : element.attributes.source,
+						"target" : element.attributes.target
+				}
+				ITUlinks.push(link);
+			}
+		});
+		
+		console.log('Elements: ' + JSON.stringify(ITUelements));
+		console.log('Links: ' + JSON.stringify(ITUlinks));
+		
+		//execute parse
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "parseEquipToOWL.htm",
+		   data: {
+			   'elements' : JSON.stringify(ITUelements),
+			   'links' : JSON.stringify(ITUlinks),
+		   },
+		   success: function(){
+			  console.log('PARSE OK!')
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+	}
+	
+
+	//Method to get element type
+	function getElementType(elements, elementId) {
+		
+		$.each(elements, function(index, element) {
+			
+			if(element.id == elementId) {
+				if(element.subtype) {
+					return element.subtype;
+				}
+				else if(element.subType) {
+					return element.subType;
+				}
+			}
+			
+		});
+		
+	}
+
+	function loadCardElements(eqName, cardID) {
+		var localGraph = new joint.dia.Graph;
+		
+		$.ajax({
+			type: "POST",
+			async: false,
+			url: "openITUFileEquipment.htm",
+			data: {
+				'path' : eqName,
+				'filename' : cardID
+			},
+			dataType: 'json',
+			success: function(data){
+				localGraph.fromJSON(data);
+			},
+			error : function(e) {
+				alert("error: " + e.status);
+			}
+		});
+		return localGraph.getElements();
 	}
 	
 };

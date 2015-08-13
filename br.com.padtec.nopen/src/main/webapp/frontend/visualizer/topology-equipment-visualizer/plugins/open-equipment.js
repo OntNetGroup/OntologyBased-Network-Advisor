@@ -406,7 +406,6 @@ function openFromURL(filename, graph){
 			});	
 			
 		}	
-		
-		
+
 
 
