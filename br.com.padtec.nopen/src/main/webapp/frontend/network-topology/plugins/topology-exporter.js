@@ -76,12 +76,19 @@ function exportTopologyAsYANG (graph) {
 		if(element.attributes.subType === 'Card') {
 			parseITUElements(filename, element);
 			
-			fileYANG = fileYANG + totalIdent + 'interface-entry ' + element.id + ' {\n';
-			/*
-			 * TODO:	para cada porta do card
-			 * 				imprimir sua camada e seu id/nome 
-			 */
-			fileYANG = fileYANG + totalIdent + ident + '}\n';
+			var cardElements = loadCardElements(filename, element.id);
+			var cardLinks = loadCardLinks(filename, element.id);
+			
+			/* para cada porta do card */
+			_.each(element.attribute.inPorts, function(inPort) {
+				fileYANG = fileYANG + totalIdent + 'interface-entry ' + inPort + ' {\n';
+				
+				// TODO: imprimir sua camada e seu id/nome 
+				
+
+				fileYANG = fileYANG + totalIdent + ident + '}\n';
+			});
+			
 			return;
 		}
 		
@@ -312,6 +319,28 @@ function exportTopologyAsYANG (graph) {
 			}
 		});
 		return localGraph.getElements();
+	}
+
+	function loadCardLinks(eqName, cardID) {
+		var localGraph = new joint.dia.Graph;
+		
+		$.ajax({
+			type: "POST",
+			async: false,
+			url: "openITUFileEquipment.htm",
+			data: {
+				'path' : eqName,
+				'filename' : cardID
+			},
+			dataType: 'json',
+			success: function(data){
+				localGraph.fromJSON(data);
+			},
+			error : function(e) {
+				alert("error: " + e.status);
+			}
+		});
+		return localGraph.getLinks();
 	}
 	
 };
