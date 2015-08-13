@@ -1,8 +1,9 @@
 //Global var(provisorio)
-topologies:[];
-equipaments:[];
-ITUs:[];
-
+topologies=[];
+equipments=[];
+itus=[];
+cards=[];
+supervisors=[];
 /**
  * Procedure to change/set Equipments to Nodes.
  * @param graph
@@ -141,7 +142,7 @@ function generateDialog(data, cell , graph){
 		function changegraphID(equipment,cell){
 			
 
-				var ITUelements = [], ITUlinks = [];
+//				var ITUelements = [], ITUlinks = [];
 				
 //				var cardCells = changeEquipmentElements(filename, card.id);
 //				$.each(cardCells, function(index, element) {
@@ -151,37 +152,71 @@ function generateDialog(data, cell , graph){
 			
 			console.log(equipment);
 			console.log(graph);
+			var equipName;
 			var originalGraph = graph.toJSON();
-			openEquipment();
-			
-			function openEquipment(){
+			var equipmentgraph = openEquipment();
+			console.log(equipmentgraph);
+			$.each(equipmentgraph.getElements(), function(index, cell){
 				
-				var filename = equipment;
-
-//				function changeEquipmentElements(eqName, cardID) {
-					var equipGraph = new joint.dia.Graph;
+				if(cell.get('subType') === 'Rack'){
+					console.log(cell.get('id'));
+					cell.set('id',joint.util.uuid());
+					console.log(cell.get('id'));
+				}
+				
+				 if(cell.get('subType') === 'Shelf'){
+					cell.set('id',joint.util.uuid());
+				}
+				
+				 if(cell.get('subType') === 'Slot'){
+					cell.set('id',joint.util.uuid());
+				}
+				
+				 if(cell.get('subType') === 'Card'){
 					
-					$.ajax({
-						type: "POST",
-						async: false,
-						url: "openFileEquipment.htm",
-						data: {
-							'filename' : filename
-						},
-						dataType: 'json',
-						success: function(data){
-							equipGraph.fromJSON(data);
-						},
-						error : function(e) {
-							alert("error: " + e.status);
-						}
-					});
-//					return equipGraph.getElements();
-					console.log(equipGraph);
+					
+					
+						var temporaryITU = new joint.dia.Graph;
+						
+						$.ajax({
+							type: "POST",
+							async: false,
+							url: "openITUFileEquipment.htm",
+							data: {
+								'path' : equipment,
+								'filename' : cell.id
+							},
+							dataType: 'json',
+							success: function(data){
+								temporaryITU.fromJSON(data);
+							},
+							error : function(e) {
+								alert("error: " + e.status);
+							}
+						});
+						
+						itus.push(temporaryITU);
+					   console.log(itus);
+					
+					cell.set('id',joint.util.uuid());
+					cards.push(cell.get('id'));
+					console.log(cards);
+				}
 				
+				 if(cell.get('subType') === 'Supervisor'){
+					cell.set('id',joint.util.uuid());
+					supervisors.push(cell.get('id'));
+					console.log(supervisors);
+				}
+				
+				
+			});
+			
+			equipments.push(equipmentgraph);
+			console.log(equipmentgraph);
+			console.log(equipments);
 			
 			
-			}
 
 			
 			
@@ -276,7 +311,37 @@ function generateDialog(data, cell , graph){
 //	      close: function() { }
 //	});
 	
-}}}
+}
+		function openEquipment(){
+			
+			var filename = equipment;
+
+//			function changeEquipmentElements(eqName, cardID) {
+				var temporary = new joint.dia.Graph;
+				
+				$.ajax({
+					type: "POST",
+					async: false,
+					url: "openFileEquipment.htm",
+					data: {
+						'filename' : filename
+					},
+					dataType: 'json',
+					success: function(data){
+						temporary.fromJSON(data);
+					},
+					error : function(e) {
+						alert("error: " + e.status);
+					}
+				});
+//				return equipGraph.getElements();
+				
+			   return temporary;
+		
+		
+		}		
+	
+	}}
 
 
 
