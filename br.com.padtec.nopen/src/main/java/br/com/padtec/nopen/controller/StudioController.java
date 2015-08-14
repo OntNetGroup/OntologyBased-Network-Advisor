@@ -89,6 +89,15 @@ public class StudioController {
 		}
 		
 		dir.delete();
+		
+		String owlPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.provisioningOWLFolder + filename + "/");
+		File owlDir = new File(owlPath);
+		
+		for(File file : owlDir.listFiles()){ 
+			file.delete();
+		}
+		
+		owlDir.delete();
 	}
 	
 }

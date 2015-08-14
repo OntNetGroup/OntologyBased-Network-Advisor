@@ -105,6 +105,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 	
 	//Method to get equipment name
 	getEquipmentName : function(equipment) {
+		console.log(JSON.stringify(equipment));
 		return equipment.attr('text/text')
 	},
 	

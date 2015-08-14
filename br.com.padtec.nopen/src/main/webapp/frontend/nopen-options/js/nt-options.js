@@ -3,7 +3,7 @@ function getTopologies(){
 	var content
 	
 	$.ajax({
-	   type: "GET",
+	   type: "POST",
 	   async: false,
 	   url: "getAllTopologies.htm",
 	   dataType: 'json',

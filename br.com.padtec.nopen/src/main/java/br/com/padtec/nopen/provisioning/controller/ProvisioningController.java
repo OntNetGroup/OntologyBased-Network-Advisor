@@ -32,6 +32,11 @@ public class ProvisioningController {
 		return "provisioning/provisioning";
 	}	
 	
+	/**
+	 * 
+	 * @param filename
+	 * @return
+	 */
 	@RequestMapping(value = "/openTopologyOnProvisioning", method = RequestMethod.POST)
 	protected @ResponseBody String openTopologyOnProvisioning(@RequestParam("filename") String filename){
 		
@@ -40,19 +45,17 @@ public class ProvisioningController {
 		
 	}
 	
-	@RequestMapping(value = "/openEquipmentOnProvisioning", method = RequestMethod.POST)
-	protected @ResponseBody String openEquipmentOnProvisioning(@RequestParam("filename") String filename){
+	/**
+	 * 
+	 * @param filename
+	 * @param nodeId
+	 * @return
+	 */
+	@RequestMapping(value = "/openTopologyEquipmentOnProvisioning", method = RequestMethod.POST)
+	protected @ResponseBody String openTopologyEquipmentOnProvisioning(@RequestParam("filename") String filename, @RequestParam("nodeId") String nodeId){
 			
-		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
-		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
-		
-	}
-	
-	@RequestMapping(value = "/openITUOnProvisioning", method = RequestMethod.POST)
-	protected @ResponseBody String openITUOnProvisioning(@RequestParam("equipment") String equipment, @RequestParam("filename") String filename){
-			
-		filename = NOpenFileUtil.replaceSlash(equipment + "/itu/" + filename + ".json");
-		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
+		filename = NOpenFileUtil.replaceSlash(filename + "/equipments/" + nodeId + ".json");
+		return NOpenFileUtil.openTopologyJSONFileAsString(filename);
 		
 	}
 	

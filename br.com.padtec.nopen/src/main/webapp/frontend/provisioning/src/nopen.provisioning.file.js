@@ -262,21 +262,21 @@ nopen.provisioning.File = Backbone.Model.extend({
 		var $this = this;
 		
 		$.ajax({
-		   type: "GET",
+		   type: "POST",
 		   async: false,
 		   url: "getAllTopologies.htm",
 		   dataType: 'json',
-		   success: function(data){
+		   success: function(topologies){
 			   
 			   	var content = '<form id="open-topology">';
-				for(var i = Object.keys(data).length-1; i >= 0; i--){
-					if(i == Object.keys(data).length-1){
-						content = content + '<input type="radio" name="topology" value="' + data[i].topology + '" checked>' 
-								+ '<label>' + data[i].topology + '</label> <br>';
+				for(var i = 0 ; i < topologies.length; i++){
+					if(i == 0){
+						content = content + '<input type="radio" name="topology" value="' + topologies[i].topology + '" checked>' 
+								+ '<label>' + topologies[i].topology + '</label> <br>';
 					}
 					else{
-						content = content + '<input type="radio" name="topology" value="' + data[i].topology + '">' 
-								+ '<label>' + data[i].topology + '</label><br>';
+						content = content + '<input type="radio" name="topology" value="' + topologies[i].topology + '">' 
+								+ '<label>' + topologies[i].topology + '</label><br>';
 					}
 
 				}
@@ -298,7 +298,10 @@ nopen.provisioning.File = Backbone.Model.extend({
 				
 				function importTopology() {
 					graph.clear();
-					$this.importTopology(app);
+					
+					var filename = $('input[name=topology]:checked', '#open-topology').val();
+					$this.importTopology(app, filename);
+					
 					dialog.close();
 				}
 			   
@@ -311,25 +314,26 @@ nopen.provisioning.File = Backbone.Model.extend({
 	},
 	
 	//method to import topology
-	importTopology : function(app) {
+	importTopology : function(app, filename) {
 		
 		var graph = app.graph;
 		var $this = this;
 		
-		var filename = $('input[name=topology]:checked', '#open-topology').val();
-		
 		$.ajax({
 		   type: "POST",
-		   async: true,
+		   async: false,
 		   url: "openTopologyOnProvisioning.htm",
 		   data: {
 			   'filename' : filename
 		   },
 		   dataType: 'json',
-		   success: function(data){ 		   
-			   graph.fromJSON(data);
+		   success: function(topology){ 	
+			   
+			   console.log('TOPOLOGY: ' + JSON.stringify(topology));
+			   
+			   graph.fromJSON(topology);
 			   //import equipments
-			   $this.importEquipments(app);
+			   $this.importEquipments(app, filename);
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
@@ -338,7 +342,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		$.ajax({
 		   type: "POST",
-		   async: true,
+		   async: false,
 		   url: "openTopologySVG.htm",
 		   data: {
 			   'filename' : filename
@@ -355,37 +359,50 @@ nopen.provisioning.File = Backbone.Model.extend({
 	},
 	
 	//Method to import equipments
-	importEquipments : function(app) {
+	importEquipments : function(app, filename) {
 	
 		var graph = app.graph;
 		var $this = this;
 		var model = this.app.model;
+		var preProvisioning = this.app.preProvisioning;
+		var owl = this.app.owl;
 		
 		var subnetworks = {};
 		
 		//open each equipments
-		$.each(graph.getElements(), function(index, value){
+		$.each(graph.getElements(), function(index, node){
 			
-			var element = graph.getCell(value.id);
-			var filename = element.attr('equipment/template');
+			var equipment = graph.getCell(node.id);
+			
 			$.ajax({
 			   type: "POST",
 			   async: false,
-			   url: "openEquipmentOnProvisioning.htm",
+			   url: "openTopologyEquipmentOnProvisioning.htm",
 			   data: {
-				   'filename' : filename
+				   'filename' : filename,
+				   'nodeId' : node.id
 			   },
 			   dataType: 'json',
-			   success: function(data){
+			   success: function(equip){
 				   //add equipment data on element equipment data attribute
-				   element.attr('equipment/data', data)
-				   var tech = model.getEquipmentTechnology(data);
+				   equipment.attr('equipment/data', equip)
+				   var tech = model.getEquipmentTechnology(equip);
 				   
 				   if(!subnetworks[tech]) {
 					   subnetworks[tech] = [];
 				   }
 				   
-				   subnetworks[tech].push(element);
+				   subnetworks[tech].push(equipment);
+				   
+				   var cards = model.getCardsInPreProvisioning(equipment);
+				   
+				   $.each(cards, function(index, card){
+					   
+					   //create instances in OWL file
+					   owl.parseCardToOWL(equipment, card);
+					   
+				   });
+				   
 			   },
 			   error : function(e) {
 				   alert("error: " + e.status);
@@ -394,7 +411,15 @@ nopen.provisioning.File = Backbone.Model.extend({
 			
 		});
 		
-		this.importITUFiles(app, subnetworks);
+		//parse connected ports
+		owl.parseConnectedPortsToOWL(graph);
+		
+		//execute reasoning
+		owl.executeReasoning();
+		
+		//start pre provsioning
+		preProvisioning.start(app, subnetworks);
+		
 	},
 	
 	//import itu files

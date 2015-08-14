@@ -57,6 +57,7 @@
         
         <!-- SOURCE -->
 
+		<script src="/nopen/frontend/network-topology/libs/topology.js"></script>
 		<script src="/nopen/frontend/provisioning/libs/provisioning.js"></script>
         
         <script src="/nopen/frontend/common/libs/nopen/nopen.js"></script>
