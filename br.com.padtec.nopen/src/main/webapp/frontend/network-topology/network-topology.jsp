@@ -84,11 +84,6 @@
 			<iframe id="equipment-iframe" src="" scrolling="no"></iframe>
 		</div>
 		
-
-<!-- 		<div id="save-dialog" title="Save Topology" style="display:none"> -->
-<!-- 			File name: <input type="text" id="save-filename" /> -->
-<!-- 		</div> -->
-
         <script>
             // Uncomment the following line and comment the line after if you
             // want to use channels.
@@ -100,46 +95,6 @@
             var topology = new nopen.topology.App();
             topology.start(app);
             
-//             graphHandle(app.graph);
-//             paperHandle(app.paper);
-            
-//             if(getUrlParameter('topology')){
-//             	var topology = getUrlParameter('topology');
-//             	openFromURL(topology, app.graph);
-//             }
-            
-//             var uuid = joint.util.uuid();
-
-//             $('#btn-save').click(function(){
-//             	if(checkNodeEquipments(app.graph)){
-//             		generateSaveTopologyDialog(app.paper, app.graph);
-//             	}
-//             });
-            
-//             $('#btn-open').click(function(){	
-//             	getTopologies(app.graph);      	
-//             });
-            
-//             $('#btn-import-xml').click(function(){
-//             	$('#file').click();
-// 			});
-            
-//             $('#file').change(function(){
-//             	importTopology(app.graph);
-//             });
-            
-//             $('#btn-pre').click(function(){
-//             	previewTopology(app.graph, uuid);
-//             });
-            
-//             $('#btn-export-xml').click(function(){
-//             	exportTopology(app.graph, uuid);
-//             });
-            
-//             $('#btn-export-yang').click(function(){
-//             	exportTopologyAsYANG(app.graph);
-//             });
-
         </script>
     </body>
 </html>

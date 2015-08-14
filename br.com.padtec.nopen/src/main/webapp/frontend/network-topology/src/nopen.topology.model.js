@@ -23,10 +23,6 @@ nopen.topology.Model = Backbone.Model.extend({
 	},
 	
 	addNewEquipment : function (nodeId, equipment) {
-		
-		if(this.equipments[nodeId]) {
-			delete this.equipments[nodeId];
-		}
 		this.equipments[nodeId] = equipment;
 	},
 	

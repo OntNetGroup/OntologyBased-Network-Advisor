@@ -153,6 +153,33 @@ nopen.topology.App = Backbone.View.extend({
             
 		});
 		
+		// Procedure to open a Equipment Template
+		paper.on('cell:pointerdblclick', function(cellView, evt, x, y) {    
+		   
+			var node = cellView.model;
+			var equipmentName = node.attr('equipment/name');
+		    
+	    	$(function () {
+	            $('#equipment-dialog').dialog({
+	                modal: true,
+	                height: 800,
+	    			width: 600,
+	                title: 'Dynamically Loaded Page',
+	                open: function ()
+	                {
+	                    $('#equipment-iframe').attr('src','/nopen/topology-equipment-visualizer.htm?equipment=' + equipmentName);
+	                },
+	                close: function() {
+	                }
+	            });
+	        });	
+	    	
+	    });
+		
+	},
+	
+	closeIframe : function(){
+		$('#equipment-dialog').dialog("close");
 	},
 	
 });
