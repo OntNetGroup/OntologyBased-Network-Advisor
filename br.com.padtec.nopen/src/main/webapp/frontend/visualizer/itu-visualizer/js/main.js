@@ -63,8 +63,8 @@ var Rappid = Backbone.Router.extend({
         this.graph = new joint.dia.Graph;
 		
         this.paper = new joint.dia.Paper({
-            width: 1000,
-            height: 1000,
+            width: window.width,
+            height: window.height,
             gridSize: 10,
             perpendicularLinks: true,
             model: this.graph,

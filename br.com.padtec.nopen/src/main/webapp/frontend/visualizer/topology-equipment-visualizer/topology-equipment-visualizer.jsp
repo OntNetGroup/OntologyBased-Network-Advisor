@@ -106,7 +106,8 @@
 		var app = new Rappid;
 		Backbone.history.start();
 
-		
+		var equipments = parent.topology.model.equipments;
+		console.log(equipments);
 		
 		if (getUrlParameter('equipment')) {
 			var equipment = getUrlParameter('equipment');
@@ -120,7 +121,8 @@
 						+ equipment + '</div>');
 
 		$('#btn-back').click(function() {
-			parent.closeIframe();
+			parent.topology.closeIframe();
+           
 		});
 
 		ituHandle(app.paper, app.graph);

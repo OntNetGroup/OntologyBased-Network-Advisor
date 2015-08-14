@@ -14,18 +14,18 @@ function ituHandle(paper, graph){
 		
 		var equipment = graph.getCell(cellId);
 
-		if((equipment.get('subType')) === 'Supervisor'){
-		
-			selectSupervisorWindow(equipment,graph);
-			
-		};
-
 		if((equipment.get('subType')) === 'Card') {
 			
+			console.log(equipment);
+			
 			$("#itu-iframe").empty();
+			
 			var cardSupervisor = cellView.model.attributes.Supervisor;
+			
 			console.log(cardSupervisor);
+			
 			var filename = cellView.model.attr('equipment/template');
+			console.log(filename);
 			
 			$(function ()    {
 		        $('#itu-dialog').dialog({

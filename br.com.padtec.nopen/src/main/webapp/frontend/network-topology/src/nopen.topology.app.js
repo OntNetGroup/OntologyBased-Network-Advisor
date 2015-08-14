@@ -157,8 +157,11 @@ nopen.topology.App = Backbone.View.extend({
 		paper.on('cell:pointerdblclick', function(cellView, evt, x, y) {    
 		   
 			var node = cellView.model;
+			var equipment = topology.model.equipments;
+			console.log(equipment);
 			var equipmentName = node.attr('equipment/name');
-		    
+		    console.log(node);
+		    console.log(equipmentName);
 	    	$(function () {
 	            $('#equipment-dialog').dialog({
 	                modal: true,
