@@ -39,26 +39,6 @@ nopen.provisioning.File = Backbone.Model.extend({
 		//open provisioning
 		this.openProvisioning(graph, filename);
 		
-//		var model = this.app.model;
-//		
-//		$.ajax({
-//		   type: "POST",
-//		   url: "openProvisioning.htm",
-//		   data: {
-//			   'filename' : filename
-//		   },
-//		   dataType: 'json',
-//		   success: function(data){
-//			   $("#filename").val(filename);
-//			   graph.fromJSON(data);
-//			   
-//			   //hide links
-//			   model.hideLinks();
-//		   },
-//		   error : function(e) {
-//			   //alert("error: " + e.status);
-//		   }
-//		});
 	},
 	
 	//Method to generate a save provisioning dialog
