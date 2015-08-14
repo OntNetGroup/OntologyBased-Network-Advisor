@@ -156,12 +156,18 @@ nopen.topology.App = Backbone.View.extend({
 		// Procedure to open a Equipment Template
 		paper.on('cell:pointerdblclick', function(cellView, evt, x, y) {    
 		   
+			var model = this.model;
+			
 			var node = cellView.model;
-			var equipment = topology.model.equipments;
+			var equipment = model.equipments;
+			
 			console.log(equipment);
+			
 			var equipmentName = node.attr('equipment/name');
+			
 		    console.log(node);
 		    console.log(equipmentName);
+		    
 	    	$(function () {
 	            $('#equipment-dialog').dialog({
 	                modal: true,
