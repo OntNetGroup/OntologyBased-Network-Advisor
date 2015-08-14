@@ -94,6 +94,25 @@ public class TopologyController {
 		
 	}
 	
+	@RequestMapping(value = "/saveTopologyEquipment", method = RequestMethod.POST)
+	protected @ResponseBody void saveTopologyEquipment(@RequestParam("filename") String filename, @RequestParam("nodeId") String nodeId, @RequestParam("equipment") String equipment){
+		
+		String equipmentRepository = NOpenFileUtil.replaceSlash(filename + "/equipments/");
+		
+		NOpenFileUtil.createTopologyRepository(equipmentRepository);
+		filename = NOpenFileUtil.replaceSlash(filename + "/equipments/" + nodeId);
+		
+		try {
+			File file = NOpenFileUtil.createTopologyJSONFile(filename);
+			NOpenFileUtil.writeToFile(file, equipment);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	/**
 	 * Procedure to get all Topology saved files.
 	 * @return

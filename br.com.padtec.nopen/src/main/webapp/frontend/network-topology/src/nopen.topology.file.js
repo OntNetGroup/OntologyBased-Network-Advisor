@@ -80,12 +80,6 @@ nopen.topology.File = Backbone.Model.extend({
 		
 	},
 	
-	openCard : function(filename) {
-		
-		
-		
-	},
-	
 	getAllTopologies : function(graph) {
 		
 		var topologies = [];
@@ -174,6 +168,7 @@ nopen.topology.File = Backbone.Model.extend({
 		$.ajax({
 		   type: "POST",
 		   url: "openTopology.htm",
+		   async: false,
 		   data: {
 			   'filename' : filename
 		   },
@@ -256,6 +251,8 @@ nopen.topology.File = Backbone.Model.extend({
 	
 	saveTopology : function(app, filename){
 		
+		var $this = this;
+		
 		var graph = app.graph;
 		var paper = app.paper;
 		
@@ -269,18 +266,62 @@ nopen.topology.File = Backbone.Model.extend({
 		$.ajax({
 		   type: "POST",
 		   url: "saveTopology.htm",
+		   async: false,
 		   data: {
 			 'filename': filename,
 			 'graph': JSON.stringify(graph.toJSON()),
 			 'svg' : topologySVG,
 		   },
 		   success: function(){ 		   
-			   alert(filename + ' saved successfully!');
+			   $this.saveTopologyEquipment(filename);
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
 		   }
 		});
+		
+	},
+	
+	saveTopologyEquipment : function(filename) {
+		
+		var model = this.app.model;
+
+		var equipments = model.getEquipments();
+		
+		$.each(equipments, function(nodeId, equipment) {
+			
+			console.log('nodeId: ' + nodeId);
+			console.log('equipment: ' + equipment);
+			
+			$.ajax({
+			   type: "POST",
+			   url: "saveTopologyEquipment.htm",
+			   async: false,
+			   data: {
+				 'filename': filename,
+				 'nodeId': nodeId,
+				 'equipment' : JSON.stringify(equipment),
+			   },
+			   success: function(){ 		   
+				   
+			   },
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+			
+		});
+		
+		var saveDialog = new joint.ui.Dialog({
+			type: 'neutral' ,
+			width: 420,
+			draggable: false,
+			title: 'Topology Saved! ',
+			content: 'The Topology ' + filename + ' was saved',
+			open: function() {}
+		});
+		
+		saveDialog.open();
 		
 	},
 	

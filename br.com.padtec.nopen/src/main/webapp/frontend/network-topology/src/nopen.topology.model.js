@@ -11,7 +11,15 @@ nopen.topology.Model = Backbone.Model.extend({
 		this.app = app;
 	},
 	
+	getEquipments : function() {
+		return this.equipments;
+	},
+	
 	addNewEquipment : function (nodeId, equipment) {
+		
+		if(this.equipments[nodeId]) {
+			delete this.equipments[nodeId];
+		}
 		this.equipments[nodeId] = equipment;
 	},
 	
@@ -24,15 +32,17 @@ nopen.topology.Model = Backbone.Model.extend({
 		var $this = this;
 		var file = this.app.file;
 		
+		var equipments = file.getAllEquipments();
+		
 		var content = '<form id="match">';
-		for(var i = 0; i < Object.keys(data).length; i++){
+		for(var i = 0; i < equipments.length; i++){
 			if(i == 0){
-				content = content + '<input type="radio" name="equipment" value="' + data[i].equipment + '" checked>' 
-						+ '<label>' + data[i].equipment + '</label> <br>';
+				content = content + '<input type="radio" name="equipment" value="' + equipments[i].equipment + '" checked>' 
+						+ '<label>' + equipments[i].equipment + '</label> <br>';
 			}
 			else{
-				content = content + '<input type="radio" name="equipment" value="' + data[i].equipment + '">' 
-						+ '<label>' + data[i].equipment + '</label><br>';
+				content = content + '<input type="radio" name="equipment" value="' + equipments[i].equipment + '">' 
+						+ '<label>' + equipments[i].equipment + '</label><br>';
 			}
 
 		}
@@ -56,20 +66,50 @@ nopen.topology.Model = Backbone.Model.extend({
 		function matchEquipmentToNode() {
 			
 			var filename = $('input[name=equipment]:checked', '#match').val();
-			var equipment = file.openEquipment(filename); 
 			
+			//match equipment to node
+			$this.matchEquipmentToNode(node, filename);
 			
-			
-			
-			$this.matchEquipmentToNode(equipment, node);
+			dialog.close();
 		}
 		
 	},
 	
-	matchEquipmentToNode : function(equipment, node) {
+	matchEquipmentToNode : function(node, filename) {
 		
-		node.attr('equipment/id', equipment.id);
-		node.attr('equipment/name', equipment.name);
+		var $this = this;
+		var file = this.app.file;
+		var util = this.app.util;
+		
+		//open equipment
+		var equipment = file.openEquipment(filename);
+		
+		//open cards
+		$.each(equipment.cells, function(index, element) {
+			
+			if(element.subType === 'Card') {
+				var cardId = element.id;
+				var card = file.openEquipmentCard(filename, cardId);
+				
+				//add card in card data
+				equipment.cells[index].attrs.data = card;
+			}
+			
+		});
+		
+		//generate new ids
+		equipment = util.generateNewEquipmentIDs(equipment);
+		
+		//add new equipment
+		$this.addNewEquipment(node.id, equipment);
+		
+		node.attr('text/text', filename);
+		
+		node.attr('equipment/id', node.id);
+		node.attr('equipment/name', filename);
+		
+		//print equipments
+		$this.printEquipments();
 		
 	},
 	

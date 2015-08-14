@@ -61,65 +61,8 @@ nopen.topology.App = Backbone.View.extend({
 			//Add Node
 			if(cell.get('subtype') == "Node") {
 				
-				var equipments = file.getAllEquipments();
-				
-				var content = '<form id="match">';
-				for(var i = 0; i < equipments.length; i++){
-					if(i == 0){
-						content = content + '<input type="radio" name="equipment" value="' + equipments[i].equipment + '" checked>' 
-								+ '<label>' + equipments[i].equipment + '</label> <br>';
-					}
-					else{
-						content = content + '<input type="radio" name="equipment" value="' + equipments[i].equipment + '">' 
-								+ '<label>' + equipments[i].equipment + '</label><br>';
-					}
-
-				}
-				content = content +  '</form>';
-				
-				var dialog = new joint.ui.Dialog({
-					width: 300,
-					type: 'neutral',
-					title: 'Match Equipment to Node',
-					content: content,
-					buttons: [
-						{ action: 'cancel', content: 'Cancel', position: 'left' },
-						{ action: 'match', content: 'Match', position: 'left' }
-					]
-				});
-
-				dialog.on('action:match', matchEquipmentToNode);
-				dialog.on('action:cancel', dialog.close);
-				dialog.open();
-				
-				function matchEquipmentToNode() {
-					
-					var nodeId = cell.id;
-					
-					var filename = $('input[name=equipment]:checked', '#match').val();
-					var equipment = file.openEquipment(filename);
-					
-					$.each(equipment.cells, function(index, element) {
-						
-						if(element.subType === 'Card') {
-							var cardId = element.id;
-							var card = file.openEquipmentCard(filename, cardId);
-							
-							//add card in card data
-							equipment.cells[index].attrs.data = card;
-						}
-						
-					});
-					
-					equipment = util.generateNewEquipmentIDs(equipment);
-					
-					model.addNewEquipment(nodeId, equipment);
-					
-					//model.printEquipments();
-					
-					dialog.close();
-					
-				}
+				//generate match equipment to node dialog
+				model.generetaMatchEquipmentToNodeDialog(cell);
 				
 			}
 			
@@ -132,6 +75,39 @@ nopen.topology.App = Backbone.View.extend({
 		var paper = app.paper;
 		var file = this.file;
 		var model = this.model;
+		
+		paper.on('cell:pointerup', function(cellView, evt) {
+
+            if (cellView.model instanceof joint.dia.Link || app.selection.contains(cellView.model)) return;
+
+            var halo = new joint.ui.Halo({ graph: app.graph, paper: app.paper, cellView: cellView });
+
+            halo.addHandle({ name: 'setting', position: 'ne', icon: '/nopen/frontend/network-topology/img/setting.png' });
+            halo.on('action:setting:pointerdown', function(evt) {
+            	
+            	//generate match equipment to node dialog
+            	model.generetaMatchEquipmentToNodeDialog(cellView.model);
+            	
+                evt.stopPropagation();
+                //alert('My custom action.');
+            });
+            
+            halo.removeHandle('fork');
+            halo.removeHandle('clone');
+            halo.removeHandle('rotate');
+            //halo.changeHandle('clone', { position: 'se' });
+            
+            //freetransform.render();
+            halo.render();
+
+            app.initializeHaloTooltips(halo);
+
+            app.createInspector(cellView);
+
+            app.selectionView.cancelSelection();
+            app.selection.reset([cellView.model]);
+            
+		});
 		
 	},
 	

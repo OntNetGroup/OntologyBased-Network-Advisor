@@ -298,45 +298,36 @@ var Rappid = Backbone.Router.extend({
 
     initializeHaloAndInspector: function() {
 
-        this.paper.on('cell:pointerup', function(cellView, evt) {
-
-            if (cellView.model instanceof joint.dia.Link || this.selection.contains(cellView.model)) return;
-
-            // In order to display halo link magnets on top of the freetransform div we have to create the
-            // freetransform first. This is necessary for IE9+ where pointer-events don't work and we wouldn't
-            // be able to access magnets hidden behind the div.
-            //var freetransform = new joint.ui.FreeTransform({ graph: this.graph, paper: this.paper, cell: cellView.model });
-            var halo = new joint.ui.Halo({ graph: this.graph, paper: this.paper, cellView: cellView });
-
-            halo.addHandle({ name: 'setting', position: 'ne', icon: '/nopen/frontend/network-topology/img/setting.png' });
-            halo.on('action:setting:pointerdown', function(evt) {
-            	
-            	equipmentSettings(cellView.model);
-            	
-                evt.stopPropagation();
-                //alert('My custom action.');
-            });
-            
-            // As we're using the FreeTransform plugin, there is no need for an extra resize tool in Halo.
-            // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
-            // handles nicely spread around the elements.
-            //halo.removeHandle('resize');
-            halo.removeHandle('fork');
-            halo.removeHandle('clone');
-            halo.removeHandle('rotate');
-            //halo.changeHandle('clone', { position: 'se' });
-            
-            //freetransform.render();
-            halo.render();
-
-            this.initializeHaloTooltips(halo);
-
-            this.createInspector(cellView);
-
-            this.selectionView.cancelSelection();
-            this.selection.reset([cellView.model]);
-            
-        }, this);
+//        this.paper.on('cell:pointerup', function(cellView, evt) {
+//
+//            if (cellView.model instanceof joint.dia.Link || this.selection.contains(cellView.model)) return;
+//
+//            // In order to display halo link magnets on top of the freetransform div we have to create the
+//            // freetransform first. This is necessary for IE9+ where pointer-events don't work and we wouldn't
+//            // be able to access magnets hidden behind the div.
+//            //var freetransform = new joint.ui.FreeTransform({ graph: this.graph, paper: this.paper, cell: cellView.model });
+//            var halo = new joint.ui.Halo({ graph: this.graph, paper: this.paper, cellView: cellView });
+//
+//            // As we're using the FreeTransform plugin, there is no need for an extra resize tool in Halo.
+//            // Therefore, remove the resize tool handle and reposition the clone tool handle to make the
+//            // handles nicely spread around the elements.
+//            //halo.removeHandle('resize');
+//            halo.removeHandle('fork');
+//            halo.removeHandle('clone');
+//            halo.removeHandle('rotate');
+//            //halo.changeHandle('clone', { position: 'se' });
+//            
+//            //freetransform.render();
+//            halo.render();
+//
+//            this.initializeHaloTooltips(halo);
+//
+//            this.createInspector(cellView);
+//
+//            this.selectionView.cancelSelection();
+//            this.selection.reset([cellView.model]);
+//            
+//        }, this);
 
         this.paper.on('link:options', function(evt, cellView, x, y) {
 
