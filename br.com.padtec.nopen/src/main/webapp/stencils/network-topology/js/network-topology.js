@@ -14,7 +14,7 @@ Stencil.shapes = {
 			    size: { width: 5, height: 5 },
 			    attrs: {
 			    	circle: { fill: '#00c6ff' },
-			    	text: { text: 'NODE', 'font-size': 8, display: '', 'ref-y': .5  }
+			    	text: { text: 'NODE', 'font-size': 8, display: '', 'ref-y': .5  },
 			    }
 			})
 		]

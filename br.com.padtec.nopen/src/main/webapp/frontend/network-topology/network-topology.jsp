@@ -41,12 +41,12 @@
         <script src="/nopen/core/rappid_api/js/joint.js"></script>
         <script src="/nopen/core/rappid_api/js/joint.all.js"></script>
 
-		<!-- PLUGINS -->
+<!-- 		<!-- PLUGINS --> -->
         
-        <script src="/nopen/frontend/network-topology/plugins/topology-exporter.js"></script>
-        <script src="/nopen/frontend/network-topology/plugins/topology-importer.js"></script>
-        <script src="/nopen/frontend/network-topology/plugins/save-topology.js"></script>
-        <script src="/nopen/frontend/network-topology/plugins/open-topology.js"></script>
+<!--         <script src="/nopen/frontend/network-topology/plugins/topology-exporter.js"></script> -->
+<!--         <script src="/nopen/frontend/network-topology/plugins/topology-importer.js"></script> -->
+<!--         <script src="/nopen/frontend/network-topology/plugins/save-topology.js"></script> -->
+<!--         <script src="/nopen/frontend/network-topology/plugins/open-topology.js"></script> -->
 
 		<!-- JS -->
 		
@@ -60,10 +60,20 @@
         <script src="/nopen/frontend/network-topology/js/graphHandle.js"></script>
         <script src="/nopen/frontend/network-topology/js/paperHandle.js"></script>
         
+        <!-- SOURCE -->
+
+		<script src="/nopen/frontend/network-topology/libs/topology.js"></script>
+        
+        <script src="/nopen/frontend/common/libs/nopen/nopen.js"></script>
+        <script src="/nopen/frontend/network-topology/src/nopen.topology.util.js"></script>
+        <script src="/nopen/frontend/network-topology/src/nopen.topology.model.js"></script>
+        <script src="/nopen/frontend/network-topology/src/nopen.topology.file.js"></script>
+        <script src="/nopen/frontend/network-topology/src/nopen.topology.app.js"></script>
+        
         <!-- STENCILS -->
         
-        <script src="/nopen/stencils/network-topology/js/network-topology.js"></script>
-
+        <script src="/nopen/frontend/network-topology/js/stencil.js"></script>
+        
 		 <!-- DIALOGS -->
 
 		<input type="text" id="filename" style="display:none"/>
@@ -84,45 +94,49 @@
             var app = new Rappid;
             Backbone.history.start();
 
-            graphHandle(app.graph);
-            paperHandle(app.paper);
+          	//Start provisioning
+            var topology = new nopen.topology.App();
+            topology.start(app);
             
-            if(getUrlParameter('topology')){
-            	var topology = getUrlParameter('topology');
-            	openFromURL(topology, app.graph);
-            }
+//             graphHandle(app.graph);
+//             paperHandle(app.paper);
             
-            var uuid = joint.util.uuid();
+//             if(getUrlParameter('topology')){
+//             	var topology = getUrlParameter('topology');
+//             	openFromURL(topology, app.graph);
+//             }
+            
+//             var uuid = joint.util.uuid();
 
-            $('#btn-save').click(function(){
-            	if(checkNodeEquipments(app.graph)){
-            		generateSaveTopologyDialog(app.paper, app.graph);
-            	}
-            });
+//             $('#btn-save').click(function(){
+//             	if(checkNodeEquipments(app.graph)){
+//             		generateSaveTopologyDialog(app.paper, app.graph);
+//             	}
+//             });
             
-            $('#btn-open').click(function(){	
-            	getTopologies(app.graph);      	
-            });
+//             $('#btn-open').click(function(){	
+//             	getTopologies(app.graph);      	
+//             });
             
-            $('#btn-import-xml').click(function(){
-            	$('#file').click();
-			});
+//             $('#btn-import-xml').click(function(){
+//             	$('#file').click();
+// 			});
             
-            $('#file').change(function(){
-            	importTopology(app.graph);
-            });
+//             $('#file').change(function(){
+//             	importTopology(app.graph);
+//             });
             
-            $('#btn-pre').click(function(){
-            	previewTopology(app.graph, uuid);
-            });
+//             $('#btn-pre').click(function(){
+//             	previewTopology(app.graph, uuid);
+//             });
             
-            $('#btn-export-xml').click(function(){
-            	exportTopology(app.graph, uuid);
-            });
+//             $('#btn-export-xml').click(function(){
+//             	exportTopology(app.graph, uuid);
+//             });
             
-            $('#btn-export-yang').click(function(){
-            	exportTopologyAsYANG(app.graph);
-            });
+//             $('#btn-export-yang').click(function(){
+//             	exportTopologyAsYANG(app.graph);
+//             });
 
         </script>
     </body>

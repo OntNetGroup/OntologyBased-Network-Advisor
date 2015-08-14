@@ -98,7 +98,7 @@ public class TopologyController {
 	 * Procedure to get all Topology saved files.
 	 * @return
 	 */
-	@RequestMapping(value = "/getAllTopologies", method = RequestMethod.GET)
+	@RequestMapping(value = "/getAllTopologies", method = RequestMethod.POST)
 	protected @ResponseBody String getAllTopologies(){
 			
 		String[] topologies = NOpenFileUtil.getAllTopologyJSONFileNames();
@@ -136,7 +136,7 @@ public class TopologyController {
 	 * Procedure to get all Equipment templates.
 	 * @return
 	 */
-	@RequestMapping(value = "/getAllEquipmentsToMatch", method = RequestMethod.GET)
+	@RequestMapping(value = "/getAllEquipmentsToMatch", method = RequestMethod.POST)
 	protected @ResponseBody String getAllEquipmentsToMatch(){
 		 
 		String[] equipments = NOpenFileUtil.getAllEquipmentJSONFileNames();
@@ -180,12 +180,19 @@ public class TopologyController {
 	 * @param filename
 	 * @return
 	 */
-	@RequestMapping(value = "/openFileEquipment", method = RequestMethod.POST)
-	protected @ResponseBody String openEquipment(@RequestParam("filename") String filename)
+	@RequestMapping(value = "/openEquipmentInTopology", method = RequestMethod.POST)
+	protected @ResponseBody String openEquipmentInTopology(@RequestParam("filename") String filename)
 	{		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
 		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
 		
+	}
+	
+	@RequestMapping(value = "/openEquipmentCardInTopology", method = RequestMethod.POST)
+	protected @ResponseBody String openEquipmentCardInTopology(@RequestParam("filename") String filename, @RequestParam("cardName") String cardName)
+	{		
+		filename = NOpenFileUtil.replaceSlash(filename + "/itu/" + cardName + ".json");	
+		return NOpenFileUtil.openEquipmentJSONFileAsString(filename);
 	}
 	
 	

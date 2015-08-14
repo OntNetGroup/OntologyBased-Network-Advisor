@@ -26,7 +26,7 @@ joint.shapes.provisioning.AccessGroup = joint.shapes.basic.Circle.extend({
 
 	
 });
-joint.shapes.provisioning.EquipmentView = joint.dia.ElementView;
+joint.shapes.provisioning.AccessGroupView = joint.dia.ElementView;
 
 joint.shapes.provisioning.Subnetwork = joint.shapes.basic.Circle.extend({
 	

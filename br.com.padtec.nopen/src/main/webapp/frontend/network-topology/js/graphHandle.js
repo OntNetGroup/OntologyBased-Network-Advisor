@@ -322,7 +322,7 @@ function generateDialog(data, cell , graph){
 				$.ajax({
 					type: "POST",
 					async: false,
-					url: "openFileEquipment.htm",
+					url: "openEquipmentInTopology.htm",
 					data: {
 						'filename' : filename
 					},
