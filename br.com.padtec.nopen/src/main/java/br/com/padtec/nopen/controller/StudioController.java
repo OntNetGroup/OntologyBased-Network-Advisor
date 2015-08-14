@@ -36,7 +36,18 @@ public class StudioController {
 	@RequestMapping("/deleteTopology")
 	public @ResponseBody void deleteTopolopgy(@RequestParam("filename") String filename) {
 		
+		String equipmentsPath = NOpenFileUtil.replaceSlash(NOpenFileUtil.topologyJSONFolder + filename + "/equipments/");
+		
+		File equipmentsDir = new File(equipmentsPath);
+		
+		for(File file : equipmentsDir.listFiles()){ 
+			file.delete();
+		}
+		
+		equipmentsDir.delete();
+		
 		String path = NOpenFileUtil.replaceSlash(NOpenFileUtil.topologyJSONFolder + filename + "/");
+		
 		File dir = new File(path);
 		
 		for(File file : dir.listFiles()){ 

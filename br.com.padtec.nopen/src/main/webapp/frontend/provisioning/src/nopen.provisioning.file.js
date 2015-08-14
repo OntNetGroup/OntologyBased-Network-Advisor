@@ -102,7 +102,9 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		var $this = this;
 		
-		if($("#save-filename").val() == ""){
+		var filename = $("#save-filename").val();
+		
+		if(filename == ""){
 			$('#name-error-message').show();
 		}
 		else{
@@ -111,18 +113,18 @@ nopen.provisioning.File = Backbone.Model.extend({
 			   async: false,
 			   url: "checkProvisioningFile.htm",
 			   data: {
-				 'filename': $("#save-filename").val(),
+				 'filename': filename,
 			   },
 			   success: function(data){ 		   
 				   
 				   if(data == "exist"){		   
 					   if (confirm('The file already exist, do you want to replace it?')) {
-						   $this.saveProvisioning(graph);
+						   $this.saveProvisioning(graph, filename);
 						   dialog.close();
 					   } 
 				   }
 				   else{
-					   $this.saveProvisioning(graph);
+					   $this.saveProvisioning(graph, filename);
 					   dialog.close();
 				   }
 			   },
@@ -136,25 +138,34 @@ nopen.provisioning.File = Backbone.Model.extend({
 	},
 	
 	//Method to save a provisioning file
-	saveProvisioning : function(graph, dialog) {
+	saveProvisioning : function(graph, filename) {
 		
-		$('#filename').val($("#save-filename").val());
+		$('#filename').val(filename);
 		
 		$.ajax({
 		   type: "POST",
 		   async: false,
 		   url: "saveProvisioning.htm",
 		   data: {
-			 'filename': $("#save-filename").val(),
+			 'filename': filename,
 			 'graph': JSON.stringify(graph.toJSON()),
 		   },
-		   success: function(){ 		   
-			   alert($("#save-filename").val() + ' saved successfully!');
-		   },
+		   success: function(){},
 		   error : function(e) {
 			   alert("error: " + e.status);
 		   }
 		});
+		
+		var saveDialog = new joint.ui.Dialog({
+			type: 'neutral' ,
+			width: 420,
+			draggable: false,
+			title: 'Provisioning Saved! ',
+			content: 'The Provisioning ' + filename + ' was saved',
+			open: function() {}
+		});
+		
+		saveDialog.open();
 		
 	},
 	
