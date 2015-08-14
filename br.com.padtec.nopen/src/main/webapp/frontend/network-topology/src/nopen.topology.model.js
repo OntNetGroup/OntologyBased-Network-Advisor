@@ -1,14 +1,21 @@
 nopen.topology.Model = Backbone.Model.extend({
 	
 	app : undefined,
+	
+	topologyId : undefined,
 	equipments : undefined,
 	
 	initialize : function(){
+		this.topologyId = joint.util.uuid();
 		this.equipments = {};
 	},
 	
 	setApp : function(app) {
 		this.app = app;
+	},
+	
+	getTopologyId : function() {
+		return this.topologyId;
 	},
 	
 	getEquipments : function() {

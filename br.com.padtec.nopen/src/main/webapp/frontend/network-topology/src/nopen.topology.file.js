@@ -165,6 +165,8 @@ nopen.topology.File = Backbone.Model.extend({
 	
 	openTopology : function(graph, filename){
 		
+		var $this = this;
+		
 		$.ajax({
 		   type: "POST",
 		   url: "openTopology.htm",
@@ -175,11 +177,41 @@ nopen.topology.File = Backbone.Model.extend({
 		   dataType: 'json',
 		   success: function(data){ 		   
 			   graph.fromJSON(data);
+			   
+			   $.each(graph.getElements(), function(index, node) {
+				   $this.openTopologyEquipment(filename, node.id);
+			   });
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
 		   }
 		});
+		
+	},
+	
+	openTopologyEquipment : function(filename, nodeId) {
+		
+		var $this = this;
+		var model = this.app.model;
+		
+		$.ajax({
+		   type: "POST",
+		   url: "openTopologyEquipment.htm",
+		   async: false,
+		   data: {
+			   'filename' : filename,
+			   'nodeId' : nodeId,
+		   },
+		   dataType: 'json',
+		   success: function(equipment){ 		   
+			   model.addNewEquipment(nodeId, equipment);
+		   },
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+//		model.printEquipments();
 		
 	},
 	
@@ -290,9 +322,6 @@ nopen.topology.File = Backbone.Model.extend({
 		
 		$.each(equipments, function(nodeId, equipment) {
 			
-			console.log('nodeId: ' + nodeId);
-			console.log('equipment: ' + equipment);
-			
 			$.ajax({
 			   type: "POST",
 			   url: "saveTopologyEquipment.htm",
@@ -324,5 +353,7 @@ nopen.topology.File = Backbone.Model.extend({
 		saveDialog.open();
 		
 	},
+	
+	
 	
 });

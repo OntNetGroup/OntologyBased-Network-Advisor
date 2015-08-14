@@ -3,6 +3,8 @@ nopen.topology.App = Backbone.View.extend({
 	file : undefined,
 	model : undefined,
 	util : undefined,
+	exporter : undefined,
+	importer : undefined,
 	
 	initialize : function(){
 		console.log("Provisioning started!");
@@ -16,13 +18,21 @@ nopen.topology.App = Backbone.View.extend({
 		this.model = new nopen.topology.Model;
 		//create util
 		this.util = new nopen.topology.Util;
+		//create exporter
+		this.exporter = new nopen.topology.Exporter;
+		//create importer
+		this.importer = new nopen.topology.Importer;
 		
 		//set app
 		this.file.setApp(this);
 		this.util.setApp(this);
 		this.model.setApp(this);
+		this.exporter.setApp(this);
+		this.importer.setApp(this);
 		
 		this.initializeTopologyFileProcedures(app);
+		this.initializeTopologyExporterProcedures(app);
+		this.initializeTopologyImporterProcedures(app);
 		this.initializeTopologyGraphProcedures(app);
 		this.initializeTopologyPaperProcedures(app);
 		
@@ -45,6 +55,40 @@ nopen.topology.App = Backbone.View.extend({
 		$('#btn-save').click(function(){
 			//All equipments need to be matched
          	file.generateSaveTopologyDialog(app);
+         });
+		
+	},
+	
+	initializeTopologyExporterProcedures : function(app) {
+		
+		var graph = app.graph;
+		var exporter = this.exporter
+		
+		$('#btn-pre').click(function(){
+			exporter.previewTopology(graph);
+         });
+        
+         $('#btn-export-xml').click(function(){
+        	 exporter.exportTopology(graph);
+         });
+        
+         $('#btn-export-yang').click(function(){
+        	 exporter.exportTopologyAsYANG(graph);
+         });
+		
+	},
+	
+	initializeTopologyImporterProcedures : function(app) {
+		
+		var graph = app.graph;
+		var importer = this.importer
+		
+		$('#btn-import-xml').click(function(){
+         	$('#file').click();
+		});
+
+         $('#file').change(function(){
+         	importer.importTopology(graph);
          });
 		
 	},

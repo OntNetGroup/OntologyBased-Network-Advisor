@@ -151,6 +151,15 @@ public class TopologyController {
 		
 	}
 	
+	
+	@RequestMapping(value = "/openTopologyEquipment", method = RequestMethod.POST)
+	protected @ResponseBody String openTopologyEquipment(@RequestParam("filename") String filename, @RequestParam("nodeId") String nodeId){
+		
+		filename = NOpenFileUtil.replaceSlash(filename + "/equipments/" + nodeId + ".json");	
+		return NOpenFileUtil.openTopologyJSONFileAsString(filename);
+		
+	}
+	
 	/**
 	 * Procedure to get all Equipment templates.
 	 * @return
