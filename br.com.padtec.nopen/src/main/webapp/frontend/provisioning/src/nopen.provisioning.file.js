@@ -217,21 +217,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   },
 		   dataType: 'json',
 		   success: function(data){ 		   
-			   graph.fromJSON(data);
 			   
-//			   //generate owl instances
-//			   $.each(graph.getElements(), function(index, equipment) {
-//				 
-//				   if(equipment.get('subtype') === 'Access_Group') {
-//					   
-//					   var cards = model.getCards(equipment);
-//					   $.each(cards, function(key, card) {
-//						   owl.parseCardToOWL(equipment, card);
-//					   });
-//					   
-//				   }
-//				   
-//			   });
+			   graph.fromJSON(data);
 			   
 			   //hide links
 			   model.hideLinks();
@@ -240,10 +227,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 			   alert("error: " + e.status);
 		   }
 		});
-		
-		//execute reasoning
-//		owl.executeReasoning();
-		
+
 	},
 	
 	//method to generate import topology dialog
@@ -312,16 +296,13 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		$.ajax({
 		   type: "POST",
-		   async: false,
+		   async: true,
 		   url: "openTopologyOnProvisioning.htm",
 		   data: {
 			   'filename' : filename
 		   },
 		   dataType: 'json',
 		   success: function(topology){ 	
-			   
-			   console.log('TOPOLOGY: ' + JSON.stringify(topology));
-			   
 			   graph.fromJSON(topology);
 			   //import equipments
 			   $this.importEquipments(app, filename);
@@ -333,7 +314,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		$.ajax({
 		   type: "POST",
-		   async: false,
+		   async: true,
 		   url: "openTopologySVG.htm",
 		   data: {
 			   'filename' : filename
@@ -412,59 +393,5 @@ nopen.provisioning.File = Backbone.Model.extend({
 		preProvisioning.start(app, subnetworks);
 		
 	},
-	
-	//import itu files
-	importITUFiles : function(app, subnetworks) {
-
-		var graph = app.graph;
-		var $this = this;
-		var model = this.app.model;
-		var preProvisioning = this.app.preProvisioning;
-		var owl = this.app.owl;
-		
-		$.each(graph.getElements(), function(index, value){
-			
-			var equipment = graph.getCell(value.id);
-			var cards = model.getCardsInPreProvisioning(equipment);
-			var equipmentName = equipment.attr('equipment/template');
-			
-			//open each card
-			$.each(cards, function(index, card){
-				
-				var filename = card.id;
-				
-				$.ajax({
-				   type: "POST",
-				   async: false,
-				   url: "openITUOnProvisioning.htm",
-				   data: {
-					   'equipment' : equipmentName,
-					   'filename' : filename
-				   },
-				   dataType: 'json',
-				   success: function(data){
-					   //add ITU data in card data attribute
-					   card.attrs.data = data;
-					   //create instances in OWL file
-					   owl.parseCardToOWL(equipment, card);
-				   },
-				   error : function(e) {
-					   //alert("error: " + e.status);
-				   }
-				});
-				
-			});
-			
-		});
-		
-		//parse connected ports
-		owl.parseConnectedPortsToOWL(graph);
-		
-		//execute reasoning
-		owl.executeReasoning();
-		
-		//start pre provsioning
-		preProvisioning.start(app, subnetworks);
-	}
 	
 });
