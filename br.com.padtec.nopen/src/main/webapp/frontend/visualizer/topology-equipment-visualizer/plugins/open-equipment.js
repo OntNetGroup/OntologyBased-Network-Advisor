@@ -34,10 +34,11 @@ function openFromURL(filename, graph){
 
 	var elementos = parent.topology.model.equipments;
 	console.log(elementos);
-	$.each(parent.topology.model.getEquipments(), function(index, equipment){
-		
-		 if(equipment === filename){
+	$.each(parent.topology.model.equipments, function(index, value){
+		alert( index + ": " + value);
+		 if(index === filename){
 			 console.log("YES");
+			 graph.fromJSON(value);
 		 } 
 	}),
 	
@@ -48,23 +49,23 @@ function openFromURL(filename, graph){
 //		}
 //	}
 	
-	$.ajax({
-		type: "POST",
-		url: "openEquipment.htm",
-		async: false,
-		data: {
-			'filename' : filename
-		},
-		dataType: 'json',
-		success: function(data){
-//			$("#filename").val(filename);
-			graph.fromJSON(data);
-			loadEquipmentstoOWl(filename);
-		},
-		error : function(e) {
-			//alert("error: " + e.status);
-		}
-	});
+//	$.ajax({
+//		type: "POST",
+//		url: "openEquipment.htm",
+//		async: false,
+//		data: {
+//			'filename' : filename
+//		},
+//		dataType: 'json',
+//		success: function(data){
+////			$("#filename").val(filename);
+//			graph.fromJSON(data);
+//			loadEquipmentstoOWl(filename);
+//		},
+//		error : function(e) {
+//			//alert("error: " + e.status);
+//		}
+//	});
 	
 	$('#btn-zoom-to-fit').click();
 
