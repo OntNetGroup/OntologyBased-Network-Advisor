@@ -303,33 +303,49 @@ public class PerformBind {
 	/*
 	 * verify if the source's layer is client of the target's layer.
 	 */
-	static boolean isClient(String sourceURI, String targetURI, OKCoUploader repository){ 
+	static boolean isClient(String sourceId, String targetId, OKCoUploader repository){ 
 
 		String tgtClassURI = repository.getNamespace() + ConceptEnum.Card_Layer.toString();
-		String relationSourceURI = repository.getNamespace() + RelationEnum.intermediates_up_Transport_Function_Card_Layer.toString();
-		String relationTargetURI = repository.getNamespace() + RelationEnum.intermediates_down_Transport_Function_Card_Layer.toString();
+		String relationDownURI = repository.getNamespace() + RelationEnum.intermediates_down_Transport_Function_Card_Layer.toString();
+		String relationUpURI = repository.getNamespace() + RelationEnum.intermediates_up_Transport_Function_Card_Layer.toString();
 		
-		//verifica se o tf_source tem a relação de intermediates_up e se o tf_target tem a relação de intermediates_down
-		boolean tfSourceHasIntermediatesUpRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), sourceURI, relationSourceURI, tgtClassURI );
+		String sourceURI = repository.getNamespace() + sourceId;
+		String targetURI = repository.getNamespace() + targetId;
 		
-		boolean tfTargetHasIntermediatesDownRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), targetURI, relationTargetURI, tgtClassURI );
+		//verifica se o tf_source tem a relação de intermediates_down e se o tf_target tem a relação de intermediates_up
+		boolean tfSourceHasIntermediatesDownRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), sourceURI, relationDownURI, tgtClassURI );
+		boolean tfSourceHasIntermediatesUpRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), sourceURI, relationUpURI, tgtClassURI );
 		
-		if(!tfSourceHasIntermediatesUpRelation || !tfTargetHasIntermediatesDownRelation){
+		boolean tfTargetHasIntermediatesUpRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), targetURI, relationUpURI, tgtClassURI );
+		boolean tfTargetHasIntermediatesDownRelation = QueryUtil.hasTargetIndividualFromClass(repository.getBaseModel(), targetURI, relationDownURI, tgtClassURI );
+		
+		if((!tfSourceHasIntermediatesUpRelation && !tfSourceHasIntermediatesDownRelation) || (!tfTargetHasIntermediatesUpRelation && !tfTargetHasIntermediatesDownRelation)){
 			return true;
 		}
-		else if(tfSourceHasIntermediatesUpRelation && tfTargetHasIntermediatesDownRelation){
+		else if((tfSourceHasIntermediatesUpRelation && tfTargetHasIntermediatesDownRelation) || (tfSourceHasIntermediatesDownRelation && tfTargetHasIntermediatesUpRelation)){
 			//pega o card_layer do tf_source e o card_layer do tf_target
-			String cardLayerUpSource = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), sourceURI, relationSourceURI).get(0);
-			String cardLayerDownTarget = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), targetURI, relationTargetURI).get(0);
+			String cardLayerSource;
+			String cardLayerTarget; 
+			if(tfSourceHasIntermediatesUpRelation){
+				cardLayerSource = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), sourceURI, relationUpURI).get(0);
+			} else{
+				cardLayerSource = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), sourceURI, relationDownURI).get(0);
+			}
+			if(tfTargetHasIntermediatesUpRelation){
+				cardLayerTarget = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), targetURI, relationUpURI).get(0);
+			} else{
+				cardLayerTarget = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), targetURI, relationDownURI).get(0);
+			}
+			
 			
 			//pega a camada do card_layer do tf_source e a camada do card_layer do tf_target
-			String layerUpSource = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), cardLayerUpSource, repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString()).get(0);
-			String layerDownTarget = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), cardLayerDownTarget, repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString()).get(0);
+			String layerSource = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), cardLayerSource, repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString()).get(0);
+			String layerTarget = QueryUtil.getIndividualsURIAtPropertyRange(repository.getBaseModel(), cardLayerTarget, repository.getNamespace() + RelationEnum.instantiates_Card_Layer_Layer_Type.toString()).get(0);
 			
 			//pega as relações entre as camadas
 			ArrayList<String> relationsBetweenLayerSourceAndLayerTarget = new ArrayList<String>();
-			relationsBetweenLayerSourceAndLayerTarget = QueryUtil.getRelationsBetweenIndividuals(repository.getBaseModel(), layerUpSource, layerDownTarget);
-
+			relationsBetweenLayerSourceAndLayerTarget = QueryUtil.getRelationsBetweenIndividuals(repository.getBaseModel(), layerSource, layerTarget);
+			
 			//se entre a camada do tf_source e a camada do tf_target existir a relação de is_client, então retorna true
 			if(relationsBetweenLayerSourceAndLayerTarget.contains(repository.getNamespace() + RelationEnum.is_client_Layer_Type_Layer_Type.toString())){
 				return true;
