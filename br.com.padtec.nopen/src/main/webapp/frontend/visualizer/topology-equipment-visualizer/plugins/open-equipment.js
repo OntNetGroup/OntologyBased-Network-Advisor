@@ -1,4 +1,3 @@
-
 function getUrlParameterID(sParam)
 {
     var sPageURL = window.location.search.substring(1);
@@ -32,6 +31,22 @@ function getUrlParameterName(sParam)
 }   
 
 function openFromURL(filename, graph){
+
+	var elementos = parent.topology.model.equipments;
+	console.log(elementos);
+	$.each(parent.topology.model.getEquipments(), function(index, equipment){
+		
+		 if(equipment === filename){
+			 console.log("YES");
+		 } 
+	}),
+	
+//	for(var i=0;i < elementos.length;i++){
+//		console.log(elementos[i]);
+//		if(elementos[i] === filename){
+//			console.log(elementos[i]);
+//		}
+//	}
 	
 	$.ajax({
 		type: "POST",

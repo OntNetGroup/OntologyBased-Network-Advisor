@@ -106,28 +106,16 @@
 		var app = new Rappid;
 		Backbone.history.start();
 
-		var elementos = parent.topology.model.equipments;
-		console.log(parent.topology.model);
 
 		if (getUrlParameterName('equipment')) {
 			var name = getUrlParameterName('equipment');
 			console.log(name);
-// 			openFromURL(equipment, app.graph);
 		}
 		
 		if (getUrlParameterID('equipment')) {
 			var equipment = getUrlParameterID('equipment');
 			console.log(equipment);
-			for (var i = 0; i < elementos.length; i++){
-				var check = elementos[i];
-				console.log(check);
-		// 				if (equipment === equipments[i]){
-//			console.log("a");
-//		}
-	}
-			
-			
-// 			openFromURL(equipment, app.graph);
+			openFromURL(equipment, app.graph);
 		}
 
 		
