@@ -106,19 +106,37 @@
 		var app = new Rappid;
 		Backbone.history.start();
 
-		var equipments = parent.topology.model.equipments;
-		console.log(equipments);
+		var elementos = parent.topology.model.equipments;
+		console.log(parent.topology.model);
+
+		if (getUrlParameterName('equipment')) {
+			var name = getUrlParameterName('equipment');
+			console.log(name);
+// 			openFromURL(equipment, app.graph);
+		}
 		
-		if (getUrlParameter('equipment')) {
-			var equipment = getUrlParameter('equipment');
-			openFromURL(equipment, app.graph);
+		if (getUrlParameterID('equipment')) {
+			var equipment = getUrlParameterID('equipment');
+			console.log(equipment);
+			for (var i = 0; i < elementos.length; i++){
+				var check = elementos[i];
+				console.log(check);
+		// 				if (equipment === equipments[i]){
+//			console.log("a");
+//		}
+	}
+			
+			
+// 			openFromURL(equipment, app.graph);
 		}
 
+		
+		
 		 graphHandler(app, app.graph , app.paper);
 		
 		$('.toolbar-container').append(
 				'<div style="display:inline;margin-left:10px">&#155; '
-						+ equipment + '</div>');
+						+ name + '</div>');
 
 		$('#btn-back').click(function() {
 			parent.topology.closeIframe();

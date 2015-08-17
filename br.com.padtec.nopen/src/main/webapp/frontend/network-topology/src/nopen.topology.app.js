@@ -1,3 +1,4 @@
+var equipID;
 nopen.topology.App = Backbone.View.extend({
 	
 	file : undefined,
@@ -23,12 +24,13 @@ nopen.topology.App = Backbone.View.extend({
 		//create importer
 		this.importer = new nopen.topology.Importer;
 		
+		
 		//set app
 		this.file.setApp(this);
 		this.util.setApp(this);
 		this.model.setApp(this);
 		this.exporter.setApp(this);
-		this.importer.setApp(this);
+		this.importer.setApp(this);		
 		
 		this.initializeTopologyFileProcedures(app);
 		this.initializeTopologyExporterProcedures(app);
@@ -120,6 +122,7 @@ nopen.topology.App = Backbone.View.extend({
 		var file = this.file;
 		var model = this.model;
 		
+		
 		paper.on('cell:pointerup', function(cellView, evt) {
 
             if (cellView.model instanceof joint.dia.Link || app.selection.contains(cellView.model)) return;
@@ -155,18 +158,17 @@ nopen.topology.App = Backbone.View.extend({
 		
 		// Procedure to open a Equipment Template
 		paper.on('cell:pointerdblclick', function(cellView, evt, x, y) {    
-		   
+		    
 			var model = this.model;
 			
 			var node = cellView.model;
-			var equipment = model.equipments;
-			
+			var equipment = topology.model.equipments;
 			console.log(equipment);
 			
 			var equipmentName = node.attr('equipment/name');
-			
-		    console.log(node);
-		    console.log(equipmentName);
+			var equipmentID = node.attr('equipment/id');
+			equipID = node.attr('equipment/id');
+//		    console.log(equipmentName);
 		    
 	    	$(function () {
 	            $('#equipment-dialog').dialog({
@@ -176,7 +178,7 @@ nopen.topology.App = Backbone.View.extend({
 	                title: 'Dynamically Loaded Page',
 	                open: function ()
 	                {
-	                    $('#equipment-iframe').attr('src','/nopen/topology-equipment-visualizer.htm?equipment=' + equipmentName);
+	                    $('#equipment-iframe').attr('src','/nopen/topology-equipment-visualizer.htm?'+ equipmentName + '=' + equipmentID);
 	                },
 	                close: function() {
 	                }
@@ -186,6 +188,7 @@ nopen.topology.App = Backbone.View.extend({
 	    });
 		
 	},
+	
 	
 	closeIframe : function(){
 		$('#equipment-dialog').dialog("close");
