@@ -12,6 +12,8 @@ nopen.topology.Util = Backbone.Model.extend({
 	
 	generateNewEquipmentIDs : function(equipment) {
 		
+		console.log('equipment: ' + JSON.stringify(equipment));
+		
 		var ids = {};
 		
 		//create new ids
@@ -71,6 +73,9 @@ nopen.topology.Util = Backbone.Model.extend({
 				});
 				
 				$.each(element.connectedPorts, function(key, port) {
+					
+					port.id = ids[port.id]
+					
 					element.connectedPorts[ids[key]] = port;
 					delete element.connectedPorts[key];
 				});
@@ -108,6 +113,8 @@ nopen.topology.Util = Backbone.Model.extend({
 			}
 			
 		});
+		
+		console.log('equipment2: ' + JSON.stringify(equipment));
 		
 //		console.log('IDs: ' + JSON.stringify(ids));
 		

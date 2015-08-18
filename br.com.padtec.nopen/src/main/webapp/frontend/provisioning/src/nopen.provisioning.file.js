@@ -387,7 +387,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		owl.parseConnectedPortsToOWL(graph);
 		
 		//execute reasoning
-		owl.executeReasoning();
+		//owl.executeReasoning();
 		
 		//start pre provsioning
 		preProvisioning.start(app, subnetworks);

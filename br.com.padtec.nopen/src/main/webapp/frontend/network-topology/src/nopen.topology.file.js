@@ -215,9 +215,32 @@ nopen.topology.File = Backbone.Model.extend({
 		
 	},
 	
+	isAllNodesMatched : function(app) {
+		
+		var graph = app.graph;
+		var isAllNodesMatched = true;
+		
+		$.each(graph.getElements(), function(index, node) {
+			
+			if(node.attr('equipment/id') === '') {
+				isAllNodesMatched = false;
+			}
+			
+		});
+		
+		return isAllNodesMatched;
+		
+	},
+	
 	generateSaveTopologyDialog : function(app){
 		
 		var $this = this;
+		
+		//check if all nodes are matched
+		if(!$this.isAllNodesMatched(app)) {
+			alert('All nodes need to be matched!');
+			return;
+		}
 		
 		var content = '<div id="save-dialog" title="Save Topology">'
 			+ 'Name: <input type="text" id="save-filename" value="' + $('#filename').val() + '"/>'

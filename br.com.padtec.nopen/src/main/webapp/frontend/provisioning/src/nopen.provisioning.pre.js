@@ -38,7 +38,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			var targetCards = model.getCardsInPreProvisioning(target);
 			
 			links.push({
-				'link' : link,
+				'id' : link.id,
 				'source' : source,
 				'target' : target,
 			});
@@ -82,6 +82,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		};
 		
 		var connectionType = undefined;
+		var hasPossibleConnection = false;
 		
 		var source = undefined;
 		var target = undefined;
@@ -91,9 +92,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		
 		function next() {
 			
-			console.log('OI!')
-			
-			if(source && sourcePort && target && targetPort) {
+			if(hasPossibleConnection && source && sourcePort && target && targetPort) {
 				
 				model.connectPortsInPreProvisioning(source, sourcePort, target, targetPort);
 				
@@ -112,7 +111,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				var sourcePortElement = owl.createElement(sourcePort.type, sourcePort.id, sourcePort.name);
 				var targetPortElement = owl.createElement(targetPort.type, targetPort.id, targetPort.name);
 				
-				owl.connectPorts(sourcePortElement, targetPortElement);
+				owl.connectPortsWithoutReasoning(sourcePortElement, targetPortElement);
 			}
 			
 			$('.dialog .controls .control-button[data-action="showImage"]').show();
@@ -123,7 +122,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				$('#black_overlay').hide();
 				
 				//execute reasoning
-//				owl.executeReasoning();
+				owl.executeReasoning();
 				
 				//generate provisioning
 				model.generateProvisioning(app, subnetworks);
@@ -145,49 +144,59 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			var sourceName = model.getEquipmentName(link.source);
 			var targetName = model.getEquipmentName(link.target);
 			
-			if(currentLinkIndex < links.length) {
+			if(currentLinkIndex <= links.length) {
+				
+				if(currentLinkIndex === links.length) {
+					$('.dialog .controls .control-button[data-action="next"]').text('Finish');
+				}
 				
 //				var outputs = owl.getOutputsFromOWL(source.id);
 				
 				connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
 				var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
 				
-				content = createConnectionContent(source, target, connectionType, connections)
-				
-				$('.dialog .body').html(content);
-				$('.dialog .fg .image').remove();
-				$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
-				
-				util.prepareList('.sourceList');
-				util.prepareList('.targetList');
-				
-				generateConnectionEvents();
-				changeSVGColor(sourceName, targetName);
-				
-				currentLinkIndex++;
-			}
-			//currentLinkIndex === links.length
-			else {
-				
-//				var outputs = owl.getOutputsFromOWL(source.id);
-				
-				connectionType = owl.getConnectionTypeFromOWL(source.id, target.id);
-				var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
-				
-				console.log('connections: ' + JSON.stringify(connections));
-				content = createConnectionContent(source, target, connectionType, connections)
-				
-				$('.dialog .body').html(content);
-				$('.dialog .fg .image').remove();
-				$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
-				
-				$('.dialog .controls .control-button[data-action="next"]').text('Finish');
-				
-				util.prepareList('.sourceList');
-				util.prepareList('.targetList');
-				
-				generateConnectionEvents();
-				changeSVGColor(sourceName, targetName);
+				//if there aren't ports to connected, go to next step
+				if(Object.keys(connections[target.id]).length === 0 || Object.keys(connections[source.id]).length === 0) {
+					
+					var sourceName = model.getEquipmentName(source);
+					var targetName = model.getEquipmentName(target);
+					
+					content = "No possible connection between " + sourceName + " and " + targetName + ".";
+					$('.dialog .body').html(content);
+					$('.dialog .fg .image').remove();
+					$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
+					
+					$('.dialog .controls .control-button[data-action="next"]').attr("disabled", false);
+					
+					//set has possible connection to false
+					hasPossibleConnection = false;
+					
+					//remove link from graph
+					var removeLink = graph.getCell(link.id);
+					removeLink.remove();
+					
+				}
+				//if there are ports to connect, connect them
+				else {
+					//console.log('connections: ' + JSON.stringify(connections));
+					content = createConnectionContent(source, target, connectionType, connections)
+					
+					$('.dialog .body').html(content);
+					$('.dialog .fg .image').remove();
+					$('.dialog .fg').append('<div class="image">' + file.getTopologySVG() + '</div>');
+					
+					util.prepareList('.sourceList');
+					util.prepareList('.targetList');
+					
+					//generate events to connect ports
+					generateConnectionEvents();
+					
+					//change topology svg image color
+					changeTopologySVGColor(sourceName, targetName);
+					
+					//set has possible connection to true
+					hasPossibleConnection = true;
+				}
 				
 				currentLinkIndex++;
 			}
@@ -299,7 +308,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 		}
 		
 		//change SVG color of topology
-		function changeSVGColor(sourceName, targetName) {
+		function changeTopologySVGColor(sourceName, targetName) {
 			
 			//Set SVG elements
 			$('.rotatable').each(function(){

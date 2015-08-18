@@ -790,6 +790,42 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		
 	},
 	
+	//create connection between ports in OWL
+	connectPortsWithoutReasoning : function(sourcePort, targetPort) {
+		
+		var $this = this;
+		var relationships = this.relationships;
+		
+		var links = [];
+		var elements = [];
+		
+		elements.push(sourcePort);
+		elements.push(targetPort);
+		
+		links.push({
+			"subjectType" : sourcePort.type,
+			"subject" : sourcePort.id,
+			"predicate" : relationships[sourcePort.type][targetPort.type][0],
+			"objectType" : targetPort.type,
+			"object" : targetPort.id,
+		})
+		
+		$.ajax({
+		   type: "POST",
+		   async: false,
+		   url: "connectPortsInOWL.htm",
+		   data: {
+			   'elements' : JSON.stringify(elements),
+			   'links' : JSON.stringify(links),
+		   },
+		   success: function(){},
+		   error : function(e) {
+			   alert("error: " + e.status);
+		   }
+		});
+		
+	},
+	
 	//execute reasoning
 	executeReasoning : function() {
 	

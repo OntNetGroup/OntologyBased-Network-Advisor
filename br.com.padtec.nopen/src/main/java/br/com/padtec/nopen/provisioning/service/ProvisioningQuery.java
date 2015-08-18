@@ -43,7 +43,7 @@ public class ProvisioningQuery {
 		
 		//inverse query
 		queryString = prefix +
-				"SELECT ?port WHERE { ont:" + port + " ont:INV.vertical_links_to|ont:INV.horizontal_links_to ?port . }";
+				"SELECT ?port WHERE { ?port ont:vertical_links_to|ont:horizontal_links_to ont:" + port + " . }";
 			
 		System.out.println(queryString);
 		
