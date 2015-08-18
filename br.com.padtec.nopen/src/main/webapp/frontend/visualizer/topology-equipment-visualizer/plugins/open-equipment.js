@@ -39,8 +39,10 @@ function openFromURL(filename, graph){
 		 if(index === filename){
 			 console.log("YES");
 			 graph.fromJSON(value);
+			
 		 } 
 	}),
+	 loadEquipmentstoOWl(filename);
 	
 //	for(var i=0;i < elementos.length;i++){
 //		console.log(elementos[i]);
@@ -58,7 +60,7 @@ function openFromURL(filename, graph){
 //		},
 //		dataType: 'json',
 //		success: function(data){
-////			$("#filename").val(filename);
+////		$("#filename").val(filename);
 //			graph.fromJSON(data);
 //			loadEquipmentstoOWl(filename);
 //		},
@@ -67,7 +69,7 @@ function openFromURL(filename, graph){
 //		}
 //	});
 	
-	$('#btn-zoom-to-fit').click();
+//	$('#btn-zoom-to-fit').click();
 
 	function loadEquipmentstoOWl(filename){
 		
@@ -223,11 +225,10 @@ function openFromURL(filename, graph){
 						"type" : "Card",
 						"id" : cell.get('id'),
 						"name" : cell.attributes.attrs.name.text,
-						
+						"data" : cell.attributes.attrs.data
 				};
-//				instanciateITUElementsJohn(filename, card);
-//				instanciateITUElementsJordana(filename, card);
-				instanciateITUElements(filename, card);
+				console.log(card);
+//				instanciateITUElements(name, card);
 			}
 		});
 	}
@@ -235,11 +236,11 @@ function openFromURL(filename, graph){
 
 }
 
-		function instanciateITUElements(filename, card) {
+		function instanciateITUElements(name, card) {
 
 			var ITUelements = [], ITUlinks = [];
 			
-			var cardCells = loadCardElements(filename, card.id);
+			var cardCells = loadCardElements(name, card.id);
 			$.each(cardCells, function(index, element) {
 				
 				//Card_Layer

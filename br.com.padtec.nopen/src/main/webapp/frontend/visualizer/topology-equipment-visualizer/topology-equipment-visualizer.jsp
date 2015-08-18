@@ -106,7 +106,10 @@
 		var app = new Rappid;
 		Backbone.history.start();
 
-
+		var element = parent.topology.model;
+		console.log(element);
+		
+		
 		if (getUrlParameterName('equipment')) {
 			var name = getUrlParameterName('equipment');
 			console.log(name);
