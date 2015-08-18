@@ -347,7 +347,7 @@ public class PerformBind {
 			relationsBetweenLayerSourceAndLayerTarget = QueryUtil.getRelationsBetweenIndividuals(repository.getBaseModel(), layerSource, layerTarget);
 			
 			//se entre a camada do tf_source e a camada do tf_target existir a relação de is_client, então retorna true
-			if(relationsBetweenLayerSourceAndLayerTarget.contains(repository.getNamespace() + RelationEnum.is_client_Layer_Type_Layer_Type.toString())){
+			if(relationsBetweenLayerSourceAndLayerTarget.contains(repository.getNamespace() + RelationEnum.INV_is_client_Layer_Type_Layer_Type.toString())){
 				return true;
 			}
 		}
