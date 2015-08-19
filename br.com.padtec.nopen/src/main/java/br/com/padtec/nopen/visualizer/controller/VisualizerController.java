@@ -71,8 +71,9 @@ public class VisualizerController {
 		
 		try {
 			pelems = (PElement[]) JointUtilManager.getJavaFromJSON(elements, PElement[].class);
+			System.out.println(pelems);
 			plinks = (PLink[]) JointUtilManager.getJavaFromJSON(links, PLink[].class);
-
+			System.out.println(plinks);
 			// we are not going to clone the content in OWL anymore
 			// we are actually going to search for the attributes from these Java structures: PElements and PLinks
 //			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
