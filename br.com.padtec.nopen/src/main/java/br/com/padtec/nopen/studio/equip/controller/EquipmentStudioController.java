@@ -19,8 +19,6 @@ import com.jointjs.util.JointUtilManager;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.model.SpecificDtoFabricator;
-import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
-import br.com.padtec.nopen.service.NOpenComponents;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.studio.service.PerformBind;
