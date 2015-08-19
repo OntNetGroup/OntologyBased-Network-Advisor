@@ -127,6 +127,7 @@ public class NOpenFileUtil {
 	 */
 	public static void createTemplateRepository(String path){
 		NOpenFileUtil.createRepository(NOpenFileUtil.templateJSONFolder + path);	
+		NOpenFileUtil.createRepository(NOpenFileUtil.templateOWLFolder + path);	
 	}
 	
 	/**

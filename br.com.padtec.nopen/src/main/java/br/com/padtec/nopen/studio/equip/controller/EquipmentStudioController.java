@@ -1,7 +1,11 @@
 package br.com.padtec.nopen.studio.equip.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
@@ -15,6 +19,8 @@ import com.jointjs.util.JointUtilManager;
 import br.com.padtec.nopen.model.DtoJointElement;
 import br.com.padtec.nopen.model.InstanceFabricator;
 import br.com.padtec.nopen.model.SpecificDtoFabricator;
+import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
+import br.com.padtec.nopen.service.NOpenComponents;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.studio.service.PerformBind;
@@ -331,12 +337,15 @@ public class EquipmentStudioController {
 	public @ResponseBody void saveTemplate(@RequestParam("filename") String filename, @RequestParam("graph") String graph) 
 	{
 		NOpenFileUtil.createTemplateRepository(filename);
-
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
 
 		try {
-			File file = NOpenFileUtil.createTemplateJSONFile(filename);
-			NOpenFileUtil.writeToFile(file, graph);
+			File jsonfile = NOpenFileUtil.createTemplateJSONFile(filename);
+			NOpenFileUtil.writeToFile(jsonfile, graph);
+			
+			File owlFile = NOpenFileUtil.createTemplateOWLFile(filename);
+			PrintWriter out = new PrintWriter(owlFile);
+			StudioComponents.studioRepository.getBaseModel().write(out , "RDF/XML");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -414,6 +423,17 @@ public class EquipmentStudioController {
 	@RequestMapping(value = "/openTemplate", method = RequestMethod.POST)
 	protected @ResponseBody String openTemplate(@RequestParam("filename") String filename)
 	{		
+		//load owl file
+		String owlFile = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".owl");
+		
+		try {
+			InputStream in = new FileInputStream(NOpenFileUtil.templateOWLFolder + owlFile);
+			StudioComponents.studioRepository.getBaseModel().read(in, null);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
 		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");	
 		return NOpenFileUtil.openTemplateJSONFileAsString(filename);
 
