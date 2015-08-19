@@ -30,31 +30,7 @@ graph.on('change' , function (cell) {
 
 paper.on('cell:pointerclick', function( cellView , evt, x, y) {
 	
-	var cellId = cellView.model.id;
-	var equipment = graph.getCell(cellId);
 	
-	if(equipment.get('subType') === 'Card'){
-		equipment.prop('directionality','sink');
-		console.log(equipment);
-		console.log(cellView);
-		 
-		$.ajax({
-			   type: "POST",
-			   async: false,
-			   url: "getCardAttributes.htm",
-			   data: {
-				   'card' : cellId
-			   },
-//			   dataType: 'json',
-			   success: function(data){
-				   console.log(data);
-//				   atributte.fromJSON(data);
-			   },
-			   error : function(e) {
-				   alert("error: " + e.status);
-			   }
-			});
-	};
 	
 },this);
 
