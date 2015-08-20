@@ -143,7 +143,7 @@ public class ProvisioningManager {
 		}
 		else{
 			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", connectionType, true));
-			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Input_Card", connectionType, true));
+			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Output_Card", connectionType, true));
 		}
 		
 		Gson gson = new Gson();

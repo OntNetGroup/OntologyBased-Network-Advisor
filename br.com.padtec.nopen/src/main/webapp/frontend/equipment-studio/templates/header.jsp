@@ -3,7 +3,7 @@
 		<a  href=home.htm><span><img src="/nopen/frontend/common/img/logo.png"/></span></a>
 	</div>
 	<div class="title">
-		&#155; <a  href=home.htm> NOPEn </a> &#155; Equipment Studio
+		&#155; <a  href=home.htm> NOPEn </a> &#155; <a href="es-options.htm"> Equipment Studio </a>
 	</div>
 </div>
 		

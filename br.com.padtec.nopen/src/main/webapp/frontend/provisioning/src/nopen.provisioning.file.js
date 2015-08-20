@@ -141,7 +141,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 			width: 420,
 			draggable: false,
 			title: 'Provisioning Saved! ',
-			content: 'The Provisioning ' + filename + ' was saved',
+			content: 'The file ' + filename + ' was saved',
 			open: function() {}
 		});
 		
