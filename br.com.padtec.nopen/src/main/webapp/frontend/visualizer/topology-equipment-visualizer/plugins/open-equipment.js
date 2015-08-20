@@ -277,6 +277,7 @@ function openFromURL(filename, graph){
 					var link = {
 							"sourceType" : "Card_Layer",
 							"targetType" : element.attributes.subtype,
+							
 							"source" : element.attributes.parent,
 							"target" : element.attributes.id
 					}

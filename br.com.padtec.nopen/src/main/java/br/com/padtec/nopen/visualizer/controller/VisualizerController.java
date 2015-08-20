@@ -72,6 +72,7 @@ public class VisualizerController {
 		try {
 			pelems = (PElement[]) JointUtilManager.getJavaFromJSON(elements, PElement[].class);
 			System.out.println(pelems);
+			System.out.println(links);
 			plinks = (PLink[]) JointUtilManager.getJavaFromJSON(links, PLink[].class);
 			System.out.println(plinks);
 			// we are not going to clone the content in OWL anymore
@@ -94,13 +95,14 @@ public class VisualizerController {
 	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card){
 		
 		try {			
-			for(PElement p: pelems){
-				System.out.println(p);
+			for(PElement e: pelems){
+				System.out.println(e);
 			}
-			for(PLink p: plinks){
-				System.out.println(p);
-			}			
-			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card,pelems,plinks);	
+			for(PLink l: plinks){
+				System.out.println(l);
+			}	
+			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card, pelems, plinks);
+//			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card,pelems,plinks);	
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -365,10 +365,14 @@ var Rappid = Backbone.Router.extend({
             	
             	var ITUelements = [], ITUlinks = [];
             	
+            	
+            	
                  $('.inspector-container').show();
                  
                 var cellId = cellView.model.id;
              	var card = app.graph.getCell(cellId);
+             	console.log(card);
+             	console.log(card.attributes.subType);
              	console.log(card.attributes.attrs.data.cells);
              	
         		$.each(card.attributes.attrs.data.cells , function(index, element) {
@@ -387,9 +391,9 @@ var Rappid = Backbone.Router.extend({
     					
     					//Card > Card_Layer
     					var link = {
-    							"sourceType" : card.type,
+    							"sourceType" : card.attributes.subType,
     							"targetType" : element.subtype,
-    							"source" : card.id,
+    							"source" : card.attributes.id,
     							"target" : element.id,
     					};
     					ITUlinks.push(link);
@@ -426,9 +430,9 @@ var Rappid = Backbone.Router.extend({
     					
     					//Card_layer > AF
     					var link = {
-    							"sourceType" : card.type,
+    							"sourceType" : card.attributes.subType,
     							"targetType" : element.subtype,
-    							"source" : card.id,
+    							"source" : card.attributes.id,
     							"target" : element.id
     					};
     					ITUlinks.push(link);
@@ -446,9 +450,9 @@ var Rappid = Backbone.Router.extend({
     					
     					//Card_layer > Matrix
     					var link = {
-    							"sourceType" : card.type,
+    							"sourceType" : card.attributes.subType,
     							"targetType" : element.subtype,
-    							"source" : card.id,
+    							"source" : card.attributes.id,
     							"target" : element.id
     					};
     					ITUlinks.push(link);
@@ -466,9 +470,9 @@ var Rappid = Backbone.Router.extend({
     					
     					//Card_layer > Input_Card/Output_Card
     					var link = {
-    							"sourceType" : card.type,
+    							"sourceType" : card.attributes.subType,
     							"targetType" : element.subtype,
-    							"source" : card.id,
+    							"source" : card.attributes.id,
     							"target" : element.id
     					};
     					ITUlinks.push(link);
@@ -497,6 +501,7 @@ var Rappid = Backbone.Router.extend({
     			   url: "parseEquipToOWL.htm",
     			   data: {
     				   'elements' : JSON.stringify(ITUelements),
+//    				   'links' : JSON.stringify(ITUlinks),
     				   'links' : JSON.stringify(ITUlinks),
     			   },
     			   success: function(){
