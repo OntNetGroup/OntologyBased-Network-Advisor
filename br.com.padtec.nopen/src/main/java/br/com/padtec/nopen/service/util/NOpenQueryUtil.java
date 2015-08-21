@@ -369,6 +369,18 @@ public class NOpenQueryUtil {
 	}
 	
 	/** @author John Guerson */
+	public static List<String> getMatrixURIFromAF(OKCoUploader repository, String afURI)
+	{
+		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(
+				repository.getBaseModel(), 
+				afURI,
+				repository.getNamespace()+RelationEnum.INV_binds_Matrix_Adaptation_Function.toString(), 
+				repository.getNamespace()+ConceptEnum.Matrix.toString()
+			);		
+			return elems;
+	}
+	
+	/** @author John Guerson */
 	public static List<String> getAFURIFromTTF(OKCoUploader repository, String ttfURI)
 	{
 		List<String> elems = QueryUtil.getIndividualsURIAtObjectPropertyRange(

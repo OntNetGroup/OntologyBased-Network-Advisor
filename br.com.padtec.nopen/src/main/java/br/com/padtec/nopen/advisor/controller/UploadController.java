@@ -22,6 +22,7 @@ import br.com.padtec.common.dto.DtoResult;
 import br.com.padtec.common.reasoning.HermitReasonerImpl;
 import br.com.padtec.common.util.PerformanceUtil;
 import br.com.padtec.okco.core.application.OKCoComponents;
+import br.com.padtec.okco.core.application.OKCoUploader;
 import br.com.padtec.okco.core.exception.OKCoExceptionFileFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
 import br.com.padtec.okco.core.exception.OKCoExceptionNameSpace;
@@ -129,7 +130,7 @@ public class UploadController implements ServletContextAware{
 		
 		String resultMessage = new String();
 		try{
-
+			
 			OKCoComponents.repository.uploadBaseModel(g800Path,OKCoComponents.repository.isReasonOnLoading() ? "on" : "off","hermit");
 			
 		}catch (InconsistentOntologyException e){
