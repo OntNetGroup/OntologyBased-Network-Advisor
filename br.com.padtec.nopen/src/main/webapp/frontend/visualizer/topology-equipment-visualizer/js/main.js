@@ -107,19 +107,19 @@ var Rappid = Backbone.Router.extend({
 		this.snapLines = new joint.ui.Snaplines({ paper: this.paper });
 	},
 
-		
+
 	initializeLinkTooltips: function(cell) {
 
 		if (cell instanceof joint.dia.Link) {
-			var linkView = this.paper.findViewByModel(cell);
-			new joint.ui.Tooltip({
-				className: 'tooltip small',
-				target: linkView.$('.tool-options'),
-				content: 'Click to open Inspector for this link',
-				left: linkView.$('.tool-options'),
-				direction: 'left'
-				
-			});
+//			var linkView = this.paper.findViewByModel(cell);
+//			new joint.ui.Tooltip({
+//			className: 'tooltip small',
+//			target: linkView.$('.tool-options'),
+//			content: 'Click to open Inspector for this link',
+//			left: linkView.$('.tool-options'),
+//			direction: 'left'
+
+//			});
 		}
 	},
 
@@ -132,13 +132,13 @@ var Rappid = Backbone.Router.extend({
 			width: 220,
 			groups: Stencil.groups,
 //			search: {
-//				'*': ['subType','attrs/text/text','attrs/.label/text'],
-//				'org.Member': ['attrs/.rank/text','attrs/.name/text']
+//			'*': ['subType','attrs/text/text','attrs/.label/text'],
+//			'org.Member': ['attrs/.rank/text','attrs/.name/text']
 //			}
 		});
 
 		$('.stencil-container').append(this.stencil.render().el);	
-		
+
 		this.stencil.$el.on('contextmenu', function(evt) { evt.preventDefault(); });
 		$('.stencil-paper-drag').on('contextmenu', function(evt) { evt.preventDefault(); });
 
@@ -193,7 +193,7 @@ var Rappid = Backbone.Router.extend({
 		this.selectionView = new joint.ui.SelectionView({ paper: this.paper, graph: this.graph, model: this.selection });
 		this.selectionView.removeHandle('rotate');
 		this.selectionView.removeHandle('remove');
-		
+
 		// Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
 		// Otherwise, initiate paper pan.
 		this.paper.on('blank:pointerdown', function(evt, x, y) {
@@ -230,81 +230,81 @@ var Rappid = Backbone.Router.extend({
 		KeyboardJS.on('delete, backspace', _.bind(function(evt, keys) {
 
 //			if (!$.contains(evt.target, this.paper.el)) {
-//				// remove selected elements from the paper only if the target is the paper
-//				return;
+//			// remove selected elements from the paper only if the target is the paper
+//			return;
 //			}
-//
+
 //			this.commandManager.initBatchCommand();
 //			this.selection.invoke('remove');
 //			this.commandManager.storeBatchCommand();
 //			this.selectionView.cancelSelection();
-//
+
 //			// Prevent Backspace from navigating one page back (happens in FF).
 //			if (_.contains(keys, 'backspace') && !$(evt.target).is("input, textarea")) {
-//
-//				evt.preventDefault();
+
+//			evt.preventDefault();
 //			}
 
 		}, this));
 	},
 
 //	eval("createInspector: function(cellView) {" + dateFn + "},"),
-	
+
 	createInspector: function(cellView) {
-		
+
 
 		var cell = cellView.model || cellView;
 		if (!this.inspector || this.inspector.options.cell !== cell) {
 			if (this.inspector) {this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {return $(g).attr('data-name');				});						this.inspector.updateCell();this.inspector.remove();			}
 			if(cell.get('subType') === "Card"){var inspectorDefs = InspectorDefs[cell.get('subType')];}else{return;}
-			
-			
-		eval("this.inspector = new joint.ui.Inspector({inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,cell: cell})");
+
+
+			eval("this.inspector = new joint.ui.Inspector({inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,cell: cell})");
 //			this.inspector = new joint.ui.Inspector({    				inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,    						groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,    								cell: cell    			});    				
 			this.initializeInspectorTooltips();this.inspector.render();$('.inspector-container').html(this.inspector.el); 	if (this.inspectorClosedGroups[cell.id]) {_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);} else {this.inspector.$('.group:not(:first-child)').addClass('closed');}		    
 		}
 
-		
+
 //		var cell = cellView.model || cellView;
-//
+
 //		// No need to re-render inspector if the cellView didn't change.
 //		if (!this.inspector || this.inspector.options.cell !== cell) {
-//
-//			if (this.inspector) {
-//
-//				this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {
-//					return $(g).attr('data-name');
-//				});
-//
-//				// Clean up the old inspector if there was one.
-//				this.inspector.updateCell();
-////				this.inspector.remove();
-//			}
-//            if(cell.get('subType') === "Card"){
-//            	var inspectorDefs = InspectorDefs[cell.get('subType')];
-//    			//changed type(model) to subType
-//    			this.inspector = new joint.ui.Inspector({
-//    				inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,
-//    						groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,
-//    								cell: cell
-//    			});
-//
-//    			this.initializeInspectorTooltips();
-//
-//    			this.inspector.render();
-//    			$('.inspector-container').html(this.inspector.el);
-//            }else{
-//            	return;
-//            }   
-//		
-//
-//			if (this.inspectorClosedGroups[cell.id]) {
-//
-//				_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);
-//
-//			} else {
-//				this.inspector.$('.group:not(:first-child)').addClass('closed');
-//			}
+
+//		if (this.inspector) {
+
+//		this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {
+//		return $(g).attr('data-name');
+//		});
+
+//		// Clean up the old inspector if there was one.
+//		this.inspector.updateCell();
+////		this.inspector.remove();
+//		}
+//		if(cell.get('subType') === "Card"){
+//		var inspectorDefs = InspectorDefs[cell.get('subType')];
+//		//changed type(model) to subType
+//		this.inspector = new joint.ui.Inspector({
+//		inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,
+//		groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,
+//		cell: cell
+//		});
+
+//		this.initializeInspectorTooltips();
+
+//		this.inspector.render();
+//		$('.inspector-container').html(this.inspector.el);
+//		}else{
+//		return;
+//		}   
+
+
+//		if (this.inspectorClosedGroups[cell.id]) {
+
+//		_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);
+
+//		} else {
+//		this.inspector.$('.group:not(:first-child)').addClass('closed');
+//		}
 //		}
 	},
 
@@ -348,196 +348,59 @@ var Rappid = Backbone.Router.extend({
 			// descomentar para inserir a borda de redimensionamento
 			//freetransform.render();
 			halo.removeHandle('fork');
-            halo.removeHandle('clone');
-            halo.removeHandle('rotate');
-        	halo.removeHandle('link');
-        	halo.removeHandle('unlink');
-        	halo.removeHandle('remove');
+			halo.removeHandle('clone');
+			halo.removeHandle('rotate');
+			halo.removeHandle('link');
+			halo.removeHandle('unlink');
+			halo.removeHandle('remove');
 			halo.render();
 
 //			this.initializeHaloTooltips(halo);
-          // Verificar atributos da cell nessa parte! e usar o eval
-			
-			
+			// Verificar atributos da cell nessa parte! e usar o eval
+
+
 			this.createInspector(cellView);
 //			console.log(cellView.model.attributes.subType);
-            if(cellView.model.attributes.subType === 'Card'){
-            	
-            	var ITUelements = [], ITUlinks = [];
-            	
-            	
-            	
-                 $('.inspector-container').show();
-                 
-                var cellId = cellView.model.id;
-             	var card = app.graph.getCell(cellId);
-             	console.log(card);
-             	console.log(card.attributes.subType);
-             	console.log(card.attributes.attrs.data.cells);
-             	
-        		$.each(card.attributes.attrs.data.cells , function(index, element) {
-    				
-        			console.log(index);
-        			console.log(element);
-    				//Card_Layer
-    				if(element.subtype === 'Card_Layer') {
-    					//console.log('Layer: ' + JSON.stringify(element));
-    					var layer = {
-    							"type" : element.subtype,
-    							"id" : element.id,
-    							"name" : element.lanes.label,
-    					};
-    					ITUelements.push(layer);
-    					
-    					//Card > Card_Layer
-    					var link = {
-    							"sourceType" : card.attributes.subType,
-    							"targetType" : element.subtype,
-    							"source" : card.attributes.id,
-    							"target" : element.id,
-    					};
-    					ITUlinks.push(link);
-    					
-    				}
-    				//Trail_Termination_Function
-    				else if (element.subtype === 'Trail_Termination_Function') {
-    					
-    					var ttf = {
-    							"type" : element.subtype,
-    							"id" : element.id,
-    							"name" : element.attrs.text.text,
-    					}
-    					ITUelements.push(ttf);
-    					
-    					//Layer > TTF
-    					var link = {
-    							"sourceType" : "Card_Layer",
-    							"targetType" : element.subtype,
-    							"source" : element.parent,
-    							"target" : element.id
-    					}
-    					ITUlinks.push(link);
-    				}
-    				//Adaptation_Function
-    				else if (element.subtype === 'Adaptation_Function') {
-    				
-    					var af = {
-    							"type" : element.subtype,
-    							"id" : element.id,
-    							"name" : element.attrs.text.text,
-    					}
-    					ITUelements.push(af);
-    					
-    					//Card_layer > AF
-    					var link = {
-    							"sourceType" : card.attributes.subType,
-    							"targetType" : element.subtype,
-    							"source" : card.attributes.id,
-    							"target" : element.id
-    					};
-    					ITUlinks.push(link);
-    					
-    				}
-    				//Matrix
-    				else if (element.subtype === 'Matrix') {
-    					
-    					var matrix = {
-    							"type" : element.subtype,
-    							"id" : element.id,
-    							"name" : element.attrs.text.text,
-    					}
-    					ITUelements.push(matrix);
-    					
-    					//Card_layer > Matrix
-    					var link = {
-    							"sourceType" : card.attributes.subType,
-    							"targetType" : element.subtype,
-    							"source" : card.attributes.id,
-    							"target" : element.id
-    					};
-    					ITUlinks.push(link);
-    					
-    				}
-    				//Input_Card / Output_Card
-    				else if (element.subtype === 'Input_Card' || element.subtype === 'Output_Card') {
-    					
-    					var inOut = {
-    							"type" : element.subtype,
-    							"id" : element.id,
-    							"name" : element.attrs.text.text,
-    					}
-    					ITUelements.push(inOut);
-    					
-    					//Card_layer > Input_Card/Output_Card
-    					var link = {
-    							"sourceType" : card.attributes.subType,
-    							"targetType" : element.subtype,
-    							"source" : card.attributes.id,
-    							"target" : element.id
-    					};
-    					ITUlinks.push(link);
-    					
-    				}
-    				//Links
-    				else if(element.type === 'link') {
-    					
-    					var link = {
-    							"sourceType" : getElementType(card.attributes.attrs.data.cells, element.source),
-    							"targetType" : getElementType(card.attributes.attrs.data.cells, element.target),
-    							"source" : element.source,
-    							"target" : element.target
-    					}
-    					ITUlinks.push(link);
-    				}
-    			});
-    			
-    			console.log('Elements: ' + JSON.stringify(ITUelements));
-    			console.log('Links: ' + JSON.stringify(ITUlinks));
-    			
-    			//execute parse
-    			$.ajax({
-    			   type: "POST",
-    			   async: false,
-    			   url: "parseEquipToOWL.htm",
-    			   data: {
-    				   'elements' : JSON.stringify(ITUelements),
-//    				   'links' : JSON.stringify(ITUlinks),
-    				   'links' : JSON.stringify(ITUlinks),
-    			   },
-    			   success: function(){
-    				  console.log('PARSE OK!')
-    			   },
-    			   error : function(e) {
-    				   alert("error: " + e.status);
-    			   }
-    			});
-             	
-             	
-             		card.prop('directionality','sink');
-             		console.log(card);
-             		console.log(cellView);
-             		 
-             		$.ajax({
-             			   type: "POST",
-             			   async: false,
-             			   url: "getCardAttributes.htm",
-             			   data: {
-             				   'card' : cellId
-             			   },
-//             			   dataType: 'json',
-             			   success: function(data){
-             				   console.log(data);
-//             				   atributte.fromJSON(data);
-             			   },
-             			   error : function(e) {
-             				   alert("error: " + e.status);
-             			   }
-             			});
-             	
-             		this.createInspector(cellView);
-            }else{
-            	$('.inspector-container').hide();
-            }
+			if(cellView.model.attributes.subType === 'Card'){
+
+				var ITUelements = [], ITUlinks = [];
+
+
+
+				$('.inspector-container').show();
+
+				var cellId = cellView.model.id;
+				var card = app.graph.getCell(cellId);
+				console.log(card);
+				console.log(card.attributes.subType);
+				console.log(card.attributes.attrs.data.cells);
+
+//				card.prop('directionality','sink');
+				console.log(card);
+				console.log(cellView);
+
+				$.ajax({
+					type: "POST",
+					async: false,
+					url: "getCardAttributes.htm",
+					data: {
+						'card' : cellId,
+						'supervisor' : name
+					},
+//					dataType: 'json',
+					success: function(data){
+						console.log(data);
+//						atributte.fromJSON(data);
+					},
+					error : function(e) {
+						alert("error: " + e.status);
+					}
+				});
+
+				this.createInspector(cellView);
+			}else{
+				$('.inspector-container').hide();
+			}
 
 			this.selectionView.cancelSelection();
 			this.selection.reset([cellView.model]);
@@ -589,22 +452,22 @@ var Rappid = Backbone.Router.extend({
 		// left: halo.$('.clone'),
 		// padding: 15
 		// });
-		new joint.ui.Tooltip({
-			className: 'tooltip small',
-			target: halo.$('.unlink'),
-			content: 'Click to break all connections to other objects',
-			direction: 'right',
-			right: halo.$('.unlink'),
-			padding: 15
-		});
-		new joint.ui.Tooltip({
-			className: 'tooltip small',
-			target: halo.$('.link'),
-			content: 'Click and drag to connect the object',
-			direction: 'left',
-			left: halo.$('.link'),
-			padding: 15
-		});
+//		new joint.ui.Tooltip({
+//		className: 'tooltip small',
+//		target: halo.$('.unlink'),
+//		content: 'Click to break all connections to other objects',
+//		direction: 'right',
+//		right: halo.$('.unlink'),
+//		padding: 15
+//		});
+//		new joint.ui.Tooltip({
+//		className: 'tooltip small',
+//		target: halo.$('.link'),
+//		content: 'Click and drag to connect the object',
+//		direction: 'left',
+//		left: halo.$('.link'),
+//		padding: 15
+//		});
 		// new joint.ui.Tooltip({
 		// className: 'tooltip small',
 		// target: halo.$('.rotate'),
@@ -620,47 +483,47 @@ var Rappid = Backbone.Router.extend({
 		this.clipboard = new joint.ui.Clipboard;
 
 //		KeyboardJS.on('ctrl + c', _.bind(function() {
-//			// Copy all selected elements and their associated links.
-//			this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
+//		// Copy all selected elements and their associated links.
+//		this.clipboard.copyElements(this.selection, this.graph, { translate: { dx: 20, dy: 20 }, useLocalStorage: true });
 //		}, this));
-//
+
 //		KeyboardJS.on('ctrl + v', _.bind(function() {
-//
-//			this.selectionView.cancelSelection();
-//
-//			this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
-//
-//			// Make sure pasted elements get selected immediately. This makes the UX better as
-//			// the user can immediately manipulate the pasted elements.
-//			this.clipboard.each(function(cell) {
-//
-//				if (cell.get('type') === 'link') return;
-//
-//				// Push to the selection not to the model from the clipboard but put the model into the graph.
-//				// Note that they are different models. There is no views associated with the models
-//				// in clipboard.
-//				this.selection.add(this.graph.getCell(cell.id));
-//				this.selectionView.createSelectionBox(cell.findView(this.paper));
-//
-//			}, this);
-//
+
+//		this.selectionView.cancelSelection();
+
+//		this.clipboard.pasteCells(this.graph, { link: { z: -1 }, useLocalStorage: true });
+
+//		// Make sure pasted elements get selected immediately. This makes the UX better as
+//		// the user can immediately manipulate the pasted elements.
+//		this.clipboard.each(function(cell) {
+
+//		if (cell.get('type') === 'link') return;
+
+//		// Push to the selection not to the model from the clipboard but put the model into the graph.
+//		// Note that they are different models. There is no views associated with the models
+//		// in clipboard.
+//		this.selection.add(this.graph.getCell(cell.id));
+//		this.selectionView.createSelectionBox(cell.findView(this.paper));
+
+//		}, this);
+
 //		}, this));
 
 //		KeyboardJS.on('ctrl + x', _.bind(function() {
-//
-//			var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
-//			this.commandManager.initBatchCommand();
-//			_.invoke(originalCells, 'remove');
-//			this.commandManager.storeBatchCommand();
-//			this.selectionView.cancelSelection();
+
+//		var originalCells = this.clipboard.copyElements(this.selection, this.graph, { useLocalStorage: true });
+//		this.commandManager.initBatchCommand();
+//		_.invoke(originalCells, 'remove');
+//		this.commandManager.storeBatchCommand();
+//		this.selectionView.cancelSelection();
 //		}, this));
 	},
 
-	  initializeCommandManager: function() {
+	initializeCommandManager: function() {
 
-	        this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
+		this.commandManager = new joint.dia.CommandManager({ graph: this.graph });
 
-	    },
+	},
 
 	initializeValidator: function() {
 
@@ -669,7 +532,7 @@ var Rappid = Backbone.Router.extend({
 
 		this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
 
-		
+
 		// this.validator.validate('change:position change:size add', _.bind(function(err, command, next) {
 
 		// if (command.action === 'add' && command.batch) return next();
@@ -861,5 +724,5 @@ var Rappid = Backbone.Router.extend({
 		var roomUrl = location.href.replace(location.hash, '') + '#' + room;
 		$('.statusbar-container .rt-colab').html('Send this link to a friend to <b>collaborate in real-time</b>: <a href="' + roomUrl + '" target="_blank">' + roomUrl + '</a>');
 	}
-	
+
 });

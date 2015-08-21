@@ -69,7 +69,7 @@ function openFromURL(filename, graph){
 //		}
 //	});
 	
-//	$('#btn-zoom-to-fit').click();
+
 
 	function loadEquipmentstoOWl(filename){
 		

@@ -90,9 +90,10 @@ public class VisualizerController {
 	/**
 	 * Create equipment in OWL by a JSON file
 	 * @param card
+	 * @param supervisor
 	 */
 	@RequestMapping(value = "/getCardAttributes", method = RequestMethod.POST)
-	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card){
+	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor){
 		
 		try {			
 			for(PElement e: pelems){
@@ -101,9 +102,8 @@ public class VisualizerController {
 			for(PLink l: plinks){
 				System.out.println(l);
 			}	
-			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card, pelems, plinks);
+			Map<String, String> data = NOpenAttributeRecognizer.runFromOWLPath(card, supervisor);
 //			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card,pelems,plinks);	
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
