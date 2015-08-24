@@ -322,10 +322,20 @@ public class NOpenAttributeRecognizer {
 		return result;
 	}
 	    
-	/** @author John Guerson */
-	public static void runFromOWLPath(String fileName, String path) throws InconsistentOntologyException, OKCoExceptionInstanceFormat, OKCoExceptionNameSpace, OKCoExceptionReasoner, IOException{
+	 /** @author John Guerson 
+	 * @throws Exception */
+	public static Map<String, String>  runFromOWLPath(String cardURI, String fileName) throws Exception{
+		String path = System.getProperty("user.home") + "\\nopen\\repository\\template\\owl\\";
+		
+		return runFromOWLPath(cardURI, fileName,path);	
+	}
+		
+	/** @author John Guerson 
+	 * @throws Exception */
+	public static Map<String, String>  runFromOWLPath(String cardURI, String fileName, String path) throws Exception{
 		OKCoUploader repository = new OKCoUploader(fileName.replace(".owl", ""));
-		repository.uploadBaseModel(path, "off", "hermit");		
+		repository.uploadBaseModel(path, "off", "hermit");	
+		return runfromCard(cardURI, repository);
 	}
 	
 	/** @author John Guerson */
