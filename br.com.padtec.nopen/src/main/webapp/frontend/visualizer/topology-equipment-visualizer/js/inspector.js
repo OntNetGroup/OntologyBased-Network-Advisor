@@ -139,15 +139,8 @@ var InspectorDefs = {
 ////			id: { type: 'text', group: 'data', index: 3, label: 'ID', attrs: { 'input': {'disabled' : 'disabled'},'label': { 'data-tooltip': 'ID of the equipment.' } } },
 //			attributes: {type: 'text' , group: 'attributes' ,index: 4, label: 'Attributes' , attrs: {'input' : {'data-tooltip': 'www.' } } }, 
 //			},			
-			'gcc0-tp':{
-				inputs: {
-					directionality: {type: 'select' , option:['sink','source','bidirectional'],group: 'gcc0',index: 1 , label: "Directionality", attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of the termination point. Valid values are sink, source,and bidirectional. This attribute is read-only.'}}},
-					application: {type: 'text' ,group: 'gcc0',index: 2 , label: "Application", attrs: {'input' : {'data-tooltip': 'This attribute indicates the applications transported by the GCC channel. Example applications	are ECC, (user data channel). Valid values are string.This attribute is read-only.'}}}
-				},
-				label: {'label':{'data-tooltip': 'This entity represents the function of terminating and/or originating of the GCC0 channels.'}
-				},
-				groups: 'gcc0-tp',
-			},
+			'gcc0-tp':{	inputs: {directionality: {type: 'select' , option:['sink','source','bidirectional'],group: 'gcc0',index: 1 , label: "Directionality", attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of the termination point.<br> Valid values are sink, source,and bidirectional. This attribute is read-only.'}}},application: {type: 'text' ,group: 'gcc0',index: 2 , label: "Application", attrs: {'input' : {'data-tooltip': 'This attribute indicates the applications transported by the GCC channel. Example applications	are ECC, (user data channel). Valid values are string.This attribute is read-only.'}}}},label: {'label':{'data-tooltip': 'This entity represents the function of terminating and/or originating of the GCC0 channels.'}		},	groups: 'gcc0-tp',	},
+			
 			'gcc12-tp':{
 				inputs:{
 					directionality: {type: 'select' , option:['sink','source','bidirectional'],group: 'gcc12tp',index: 1 , label: "Directionality", attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of the termination point. Valid values are sink, source,and bidirectional. This attribute is read-only.'}}},

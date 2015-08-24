@@ -17,6 +17,7 @@ import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
+import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
@@ -325,8 +326,8 @@ public class NOpenAttributeRecognizer {
 	 /** @author John Guerson 
 	 * @throws Exception */
 	public static Map<String, String>  runFromOWLPath(String cardURI, String fileName) throws Exception{
-		String path = System.getProperty("user.home") + "\\nopen\\repository\\template\\owl\\";
-		
+//		String path = System.getProperty("user.home") + "\\nopen\\repository\\template\\owl\\";
+		String path = NOpenFileUtil.templateOWLFolder;
 		return runFromOWLPath(cardURI, fileName,path);	
 	}
 		
