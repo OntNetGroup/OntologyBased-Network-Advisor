@@ -59,6 +59,7 @@
         <script src="/nopen/frontend/network-topology/js/main.js"></script>
         <script src="/nopen/frontend/network-topology/js/graphHandle.js"></script>
         <script src="/nopen/frontend/network-topology/js/paperHandle.js"></script>
+		<script src="/nopen/frontend/itu-studio/js/subtypeEnum.js"></script>
         
         <!-- SOURCE -->
 
