@@ -42,6 +42,7 @@ public class BaseModelRepositoryImpl implements BaseModelRepository {
     	InputStream  in= FileManager.get().open(inputFileName);
 		if (in == null) throw new IllegalArgumentException("File: " + inputFileName + " not found");				
 		baseOntModel.read(in,null);		
+		baseNameSpace = baseOntModel.getNsPrefixURI("");
 	}
 	
 	/**
@@ -76,6 +77,7 @@ public class BaseModelRepositoryImpl implements BaseModelRepository {
 	{
 		if (in == null) throw new IllegalArgumentException("File not found");
 		baseOntModel.read(in,null);	
+		baseNameSpace = baseOntModel.getNsPrefixURI("");
 	}
 	
 	/**
@@ -99,7 +101,7 @@ public class BaseModelRepositoryImpl implements BaseModelRepository {
 	 */
 	public String getNameSpace()
 	{
-		baseNameSpace = baseOntModel.getNsPrefixURI("");;
+		baseNameSpace = baseOntModel.getNsPrefixURI("");
 		return baseNameSpace;
 	}
 

@@ -45,7 +45,11 @@ public class NOpenFileUtil {
 	 */
 	public void setPath(String path) {
 		
+		System.out.println("+++!+!!+!+!+!  "+path);
+		
 		NOpenFileUtil.path = System.getProperty("user.home") + path;
+		
+		System.out.println("+++!+!!+!+!+!  "+NOpenFileUtil.path );
 		
 		NOpenFileUtil.topologyJSONFolder = NOpenFileUtil.path + "/nopen/repository/topology/json/";
 		
@@ -77,6 +81,8 @@ public class NOpenFileUtil {
 			NOpenFileUtil.ituConfigurationJSONFolder = NOpenFileUtil.ituConfigurationJSONFolder.replaceAll("/", "\\\\");
 		}
 
+		System.out.println("!!!! "+NOpenFileUtil.templateOWLFolder);
+		
 		NOpenFileUtil.createRepository(NOpenFileUtil.topologyJSONFolder);
 		
 		NOpenFileUtil.createRepository(NOpenFileUtil.templateJSONFolder);

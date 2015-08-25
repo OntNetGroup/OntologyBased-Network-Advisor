@@ -2,28 +2,22 @@ package br.com.padtec.nopen.service;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
-import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
-import br.com.padtec.okco.core.application.OKCoComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
-import br.com.padtec.okco.core.exception.OKCoExceptionInstanceFormat;
-import br.com.padtec.okco.core.exception.OKCoExceptionNameSpace;
-import br.com.padtec.okco.core.exception.OKCoExceptionReasoner;
 
 public class NOpenAttributeRecognizer {
 
@@ -335,7 +329,10 @@ public class NOpenAttributeRecognizer {
 	 * @throws Exception */
 	public static Map<String, String>  runFromOWLPath(String cardURI, String fileName, String path) throws Exception{
 		OKCoUploader repository = new OKCoUploader(fileName.replace(".owl", ""));
-		repository.uploadBaseModel(path, "off", "hermit");	
+		String entirePath = path+fileName+"\\"+fileName+".owl";
+		File file = new File(entirePath);
+		InputStream targetStream = new FileInputStream(file);
+		repository.uploadBaseModel(targetStream, "off", "hermit");	
 		return runfromCard(cardURI, repository);
 	}
 	
