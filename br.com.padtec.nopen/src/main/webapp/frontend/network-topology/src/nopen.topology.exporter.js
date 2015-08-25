@@ -38,11 +38,13 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			/* write YANG file */
 			fileYANG = 'otn-switch {\n';
 			
-			/* write <physical> */
+			/* ======= write <physical> and <interfaces> ====== */
 			fileYANG = fileYANG + 
 				'\tphysical {\n' +
 					'\t\tmanaged-element {\n' +
 						'\t\t\tracks {\n';
+			
+			fileInterfaces = '\tinterfaces {\n';
 			
 			_.each(equipGraph.getElements(), function(element) {
 				if(element.attributes.subType === 'Rack') {
@@ -51,8 +53,13 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			});
 			
 			fileYANG = fileYANG + '\t\t\t}\n' +
-					'\t\t}\n' +
-					'\t}\n';
+								'\t\t}\n' +
+							'\t}\n';
+			
+			fileYANG = fileYANG + fileInterfaces + '\t}\n';
+			/* ======= ======= ======= ====== */
+			
+			fileYANG = fileYANG + '}';
 			
 			console.log(fileYANG);
 		});
@@ -73,6 +80,9 @@ nopen.topology.Exporter = Backbone.Model.extend({
 				
 				/* para cada porta do card */
 				_.each(inPorts, function(inPort) {
+					fileInterfaces = fileInterfaces + '\t\tinterface-entry ' + element.attributes.parent + ' ' + inPort.id + '{\n' +
+															'\t\t\timplemented-layers {\n';
+					
 					fileYANG = fileYANG + totalIdent + 'interface-entry ' + inPort.id + ' {\n';
 					
 					var neighbors = getNeighbors(inPort.id, cardGraph);
@@ -82,12 +92,18 @@ nopen.topology.Exporter = Backbone.Model.extend({
 						}
 					});
 
+					fileInterfaces = fileInterfaces + '\t\t\t}\n' +
+													'\t\t}\n';
+					
 					fileYANG = fileYANG + totalIdent + ident + '}\n';
 					
 
 					
 					function writeImplementedLayerEntryRecursively(element, prevElement, graph, totalIdent, filename) {
 						if(graph.getCell(element).attributes.subtype === SubtypeEnum.OUTPUT) return;
+						
+						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + '<camada> ' + element + '-input;\n';
+						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + '<camada> ' + element + '-output;\n';
 						
 						fileYANG = fileYANG + totalIdent + '\timplemented-layer-entry ' + '<camada> ' + element + '-input;\n';
 						fileYANG = fileYANG + totalIdent + '\timplemented-layer-entry ' + '<camada> ' + element + '-output;\n';
@@ -105,6 +121,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			}
 			
 			if(element.attributes.subType === 'Slot') {
+				
 				fileYANG = 	fileYANG + totalIdent + 'slot-entry ' + element.id + ' {\n' +
 							totalIdent + ident + 'equipment {\n' +
 						totalIdent + ident + ident + 'interfaces {\n';
