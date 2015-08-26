@@ -38,11 +38,13 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			/* write YANG file */
 			fileYANG = 'otn-switch {\n';
 			
-			/* write <physical> */
+			/* ======= write <physical> and <interfaces> ====== */
 			fileYANG = fileYANG + 
 				'\tphysical {\n' +
 					'\t\tmanaged-element {\n' +
 						'\t\t\tracks {\n';
+			
+			fileInterfaces = '\tinterfaces {\n';
 			
 			_.each(equipGraph.getElements(), function(element) {
 				if(element.attributes.subType === 'Rack') {
@@ -51,8 +53,13 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			});
 			
 			fileYANG = fileYANG + '\t\t\t}\n' +
-					'\t\t}\n' +
-					'\t}\n';
+								'\t\t}\n' +
+							'\t}\n';
+			
+			fileYANG = fileYANG + fileInterfaces + '\t}\n';
+			/* ======= ======= ======= ====== */
+			
+			fileYANG = fileYANG + '}';
 			
 			console.log(fileYANG);
 		});
@@ -63,24 +70,58 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			
 			if(element.attributes.subType === 'Card') {
 				parseITUElements(filename, element);
+				//TODO: pegar os atributos desse card
 				
-				var cardElements = loadCardElements(filename, element.id);
-				var cardLinks = loadCardLinks(filename, element.id);
+				
+				var cardGraph = loadCardGraph(filename, element.id);
+				var cardElements = cardGraph.getElements();
+				var cardLinks = cardGraph.getLinks();
+				var inPorts = getCardInPorts(cardGraph);
 				
 				/* para cada porta do card */
-				_.each(element.attribute.inPorts, function(inPort) {
-					fileYANG = fileYANG + totalIdent + 'interface-entry ' + inPort + ' {\n';
+				_.each(inPorts, function(inPort) {
+					fileInterfaces = fileInterfaces + '\t\tinterface-entry ' + element.attributes.parent + ' ' + inPort.id + '{\n' +
+															'\t\t\timplemented-layers {\n';
 					
-					// TODO: imprimir sua camada e seu id/nome 
+					fileYANG = fileYANG + totalIdent + 'interface-entry ' + inPort.id + ' {\n';
+					
+					var neighbors = getNeighbors(inPort.id, cardGraph);
+					_.each(neighbors, function(neighbor, index) {
+						if(neighbor !== inPort.id) {
+							writeImplementedLayerEntryRecursively(neighbor, inPort.id, cardGraph, totalIdent + ident, filename);
+						}
+					});
+
+					fileInterfaces = fileInterfaces + '\t\t\t}\n' +
+													'\t\t}\n';
+					
+					fileYANG = fileYANG + totalIdent + ident + '}\n';
 					
 
-					fileYANG = fileYANG + totalIdent + ident + '}\n';
+					
+					function writeImplementedLayerEntryRecursively(element, prevElement, graph, totalIdent, filename) {
+						if(graph.getCell(element).attributes.subtype === SubtypeEnum.OUTPUT) return;
+						
+						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + '<camada> ' + element + '-input;\n';
+						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + '<camada> ' + element + '-output;\n';
+						
+						fileYANG = fileYANG + totalIdent + '\timplemented-layer-entry ' + '<camada> ' + element + '-input;\n';
+						fileYANG = fileYANG + totalIdent + '\timplemented-layer-entry ' + '<camada> ' + element + '-output;\n';
+						
+						var neighbors = getNeighbors(element, cardGraph);
+						_.each(neighbors, function(neighbor, index) {
+							if(neighbor !== prevElement) {
+								writeImplementedLayerEntryRecursively(neighbor, element, cardGraph, totalIdent, filename);
+							}
+						});
+					}
 				});
 				
 				return;
 			}
 			
 			if(element.attributes.subType === 'Slot') {
+				
 				fileYANG = 	fileYANG + totalIdent + 'slot-entry ' + element.id + ' {\n' +
 							totalIdent + ident + 'equipment {\n' +
 						totalIdent + ident + ident + 'interfaces {\n';
@@ -288,28 +329,14 @@ nopen.topology.Exporter = Backbone.Model.extend({
 		}
 
 		function loadCardElements(eqName, cardID) {
-			var localGraph = new joint.dia.Graph;
-			
-			$.ajax({
-				type: "POST",
-				async: false,
-				url: "openITUFileEquipment.htm",
-				data: {
-					'path' : eqName,
-					'filename' : cardID
-				},
-				dataType: 'json',
-				success: function(data){
-					localGraph.fromJSON(data);
-				},
-				error : function(e) {
-					alert("error: " + e.status);
-				}
-			});
-			return localGraph.getElements();
+			return loadCardGraph(eqName, cardID).getElements();
+		}
+		
+		function loadCardLinks(eqName, cardID) {
+			return loadCardGraph(eqName, cardID).getLinks();
 		}
 
-		function loadCardLinks(eqName, cardID) {
+		function loadCardGraph(eqName, cardID) {
 			var localGraph = new joint.dia.Graph;
 			
 			$.ajax({
@@ -328,7 +355,46 @@ nopen.topology.Exporter = Backbone.Model.extend({
 					alert("error: " + e.status);
 				}
 			});
-			return localGraph.getLinks();
+			return localGraph;
+		}
+		
+		//procedure to get the links connected to an element
+		function getLinks(elementID, graph) {
+			var links = graph.getLinks();
+			var connectedLinks = [];
+			
+			_.each(links, function(link, index) {
+				if(link.attributes.target.id === elementID || link.attributes.source.id === elementID) {
+					connectedLinks[connectedLinks.length] = link;
+				}
+			});
+			
+			return connectedLinks;
+		}
+		
+		//procedure to get the neighbors of an element
+		function getNeighbors(elementID, graph) {
+			var connectedLinks = getLinks(elementID, graph);
+			var neighbors = [];
+			
+			_.each(connectedLinks, function(link, index) {
+				neighbors[neighbors.length] = link.attributes.target.id === elementID ? link.attributes.source.id : link.attributes.target.id;
+			});
+			
+			return neighbors;
+		}
+		
+		//procedure to get the input ports of a card
+		function getCardInPorts(graph) {
+			var inPorts = [];
+			
+			_.each(graph.getElements(), function(element) {
+				if(element.attributes.subtype === SubtypeEnum.INPUT || element.attributes.subtype === SubtypeEnum.OUTPUT) {
+					inPorts[inPorts.length] = element;
+				}
+			});
+			
+			return inPorts;
 		}
 		
 	},
