@@ -219,14 +219,14 @@ public class ProvisioningManager {
 			possibleLayer = ProvisioningQuery.getAllLayersFromOWL();
 		}
 		
+		System.out.println(possibleLayer.toString());
+		System.out.println("layers: " + layers.toString());
+		
 		for(String layer : layers) {
 			
 			layer = layer.replace(namespace, "");
 			//get label of layer
 			layerLabel = ProvisioningQuery.getLabelFromOWL(layer);
-			
-			System.out.println(possibleLayer.toString());
-			System.out.println("layerLabel: " + layerLabel);
 			
 			if(possibleLayer.contains(layerLabel)) {
 			
@@ -289,7 +289,9 @@ public class ProvisioningManager {
 						portMapping.put("type", portType);
 						
 						//add port hash in layer array
-						layerPortMapping.add(portMapping);
+						if(!layerPortMapping.contains(portMapping)){
+							layerPortMapping.add(portMapping);
+						}
 					}
 					
 				}

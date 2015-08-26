@@ -834,10 +834,11 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		//execute parse
 		$.ajax({
 			type: "POST",
-			async: false,
+			//async: false,
 			url: "executeReasoning.htm",
 			success: function(){
 				//console.log('PARSE OK!')
+				$('.ajax-loader-message').empty();
 			},
 			error : function(e) {
 				alert("error: " + e.status);

@@ -527,8 +527,17 @@ nopen.provisioning.App = Backbone.View.extend({
 			var targetName = model.getEquipmentName(target);
 			
 			var content = 
-				'<div class="bindsContainer">' +
-					'<div class="connectionType"><b>Connection Type:</b> ' + connectionType + '</div>' +
+				'<div class="connectsService">' +
+					'<div class="serviceLabel">' +
+						'<label><b>Select a Service:</b></label>' +
+					'</div>' +
+					'<select>' +
+						'<option value="none"></option>' +
+						'<option value="SimpleConnection">Simple Connection</option>' +
+					'</select>' +
+				'</div><hr/>' +
+				'<div class="connectsContainer">' +
+//					'<div class="connectionType"><b>Connection Type:</b> ' + connectionType + '</div>' +
 					'<div class="sourceList"><div id="listContainer">' +
 				    '<ul id="expList" class="list"> <li class="sourcePorts">' + sourceName + '</li> ' ;
 			
@@ -584,6 +593,23 @@ nopen.provisioning.App = Backbone.View.extend({
 		//generate events to connections list
 		function generateConnectionEvents() {
 			
+			$('.connectsService select').change(function() {
+				
+				var service = $(this).val();
+				if(service === 'none') {
+					$('.dialog .controls .control-button[data-action="create"]').attr("disabled", true);
+					
+					$('.sourceList #expList li').removeClass('active');
+					$('.targetList #expList li').removeClass('active');
+					
+					$('.connectsContainer').hide();
+				}
+				else {
+					$('.connectsContainer').show();
+				}
+				
+			});
+			
 			$('.sourceList #expList').find('li.sourcePort').click( function(event) {
 				
 				$('.sourceList #expList li').removeClass('active');
@@ -630,7 +656,7 @@ nopen.provisioning.App = Backbone.View.extend({
 			var targetName = model.getEquipmentName(target);
 			
 			var content = 
-				'<div class="bindsContainer"><div class="outputsList"><div id="listContainer">' +
+				'<div class="connectsContainer"><div class="outputsList"><div id="listContainer">' +
 				    '<ul id="expList" class="list"> <li class="outputs">' + sourceName + '</li> ' ;
 			
 			$.each(outputs, function(layer, value) {

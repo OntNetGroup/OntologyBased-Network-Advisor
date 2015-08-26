@@ -44,4 +44,5 @@
 <!-- LOADING -->
 <div id="loading">
 	<img src="frontend/provisioning/img/ajax-loader.gif" class="ajax-loader">
+	<span class="ajax-loader-message"></span>
 </div>

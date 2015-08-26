@@ -260,7 +260,7 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	padding: 10px;
 }
 
-.preProvisioningContainer, .bindsContainer, .list {
+.preProvisioningContainer, .connectsContainer, .list {
 	overflow: hidden;
 	margin-top: 0px;
 	padding: 5px;
@@ -413,4 +413,27 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 	font-size: 20px;
     width: 100%;
     margin-top: 10px;
+}
+
+
+.dialog .connectsContainer {
+	display: none;
+}
+
+.dialog .connectsService {
+	padding: 10px;
+}
+
+.dialog .connectsService .serviceLabel {
+	border-left: 5px solid #1E8FC6;
+    padding: 2px;
+}
+
+.dialog .connectsService .serviceLabel label {
+	margin-left: 2px;
+}
+
+.dialog .connectsService select {
+	margin-top: 10px;
+	width: 100%;
 }

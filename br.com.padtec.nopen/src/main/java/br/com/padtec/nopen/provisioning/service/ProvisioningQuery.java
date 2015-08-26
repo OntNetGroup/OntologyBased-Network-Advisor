@@ -82,6 +82,9 @@ public class ProvisioningQuery {
 			String label = row.get("label").toString();
 			label = label.replace("@en", "");
 			label = label.replace("@EN", "");
+			
+			System.out.println("LABEL: " + label);
+			
 			layers.add(label);
 		}
 		
