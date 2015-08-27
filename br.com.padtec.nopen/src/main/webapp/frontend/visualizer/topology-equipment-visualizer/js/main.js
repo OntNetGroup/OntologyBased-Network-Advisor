@@ -657,7 +657,7 @@ var Rappid = Backbone.Router.extend({
 					url: "getCardAttributes.htm",
 					data: {
 						'card' : cellId,
-						'supervisor' : 'otn-switch',
+						'supervisor' : 'test',
 					},
 //					dataType: 'json',
 					success: function(data){

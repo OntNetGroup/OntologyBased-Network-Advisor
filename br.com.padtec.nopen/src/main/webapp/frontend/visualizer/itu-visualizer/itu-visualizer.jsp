@@ -45,10 +45,19 @@
             var app = new Rappid;
             Backbone.history.start();
             
-            if (getUrlParameter('equipment') && getUrlParameter('card')) {
+            if (getUrlParameter('equipment') && getUrlParameter('card') && getUrlParameter('visualizer')) {
     			var equipment = getUrlParameter('equipment');
     			var card = getUrlParameter('card');
-    			openFromURL(equipment, card, app.graph);
+    			var visualizer = getUrlParameter('visualizer');
+//     			console.log(visualizer);
+    			if(visualizer === 'true'){
+    				
+    				openFromURLVisualizer(equipment,card , app.graph);
+    			
+    			}else{
+    				
+    				openFromURL(equipment, card, app.graph);
+    			}
     		}
             
             $('#btn-zoom-to-fit').click();

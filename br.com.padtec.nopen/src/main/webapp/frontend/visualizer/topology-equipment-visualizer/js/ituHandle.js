@@ -37,7 +37,7 @@ function ituHandle(paper, graph){
 		            open: function ()
 		            {
 //		                $('#itu-iframe').attr('src','/nopen/itu-visualizer.htm');
-		                $("#itu-iframe").attr('src','/nopen/itu-visualizer.htm?equipment=' + cardSupervisor + '&card=' + cellId);
+		                $("#itu-iframe").attr('src','/nopen/itu-visualizer.htm?equipment=' + cardSupervisor + '&card=' + cellId + '&visualizer=' + false);
 		            },
 		            close: function() {
 		            }
