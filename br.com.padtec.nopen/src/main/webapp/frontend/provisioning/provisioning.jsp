@@ -39,10 +39,15 @@
         	<%@include file="templates/toolbar.jsp"%>
 		</div>
 		<div id="black_overlay"></div>
+		
 		<!-- JS CORE -->
 
         <script src="/nopen/core/rappid_api/js/joint.js"></script>
         <script src="/nopen/core/rappid_api/js/joint.all.js"></script>
+
+		<!-- STARDOG -->
+
+		<script src="/nopen/core/stardog/stardog.js"></script>
 
 		<!-- JS -->
 		
@@ -67,6 +72,7 @@
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.pre.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.owl.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.file.js"></script>
+        <script src="/nopen/frontend/provisioning/src/nopen.provisioning.connection.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.app.js"></script>
         
         <!-- STENCILS -->

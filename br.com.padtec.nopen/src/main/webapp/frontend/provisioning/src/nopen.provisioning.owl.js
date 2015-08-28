@@ -77,10 +77,60 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		this.app = app;
 	},
 	
+	//Method to convert elements to triples
+	convertElementsToTriples : function(elements) {
+		
+		var triples = [];
+		
+		$.each(elements, function(index, element) {
+			
+			if(element.id) {
+				
+				triples.push({
+					's' : 'onto:' + element.id,
+					'p' : 'rdf:type',
+					'o' : 'onto:' + element.type,
+				})
+				
+				triples.push({
+					's' : 'onto:' + element.id,
+					'p' : 'rdfs:label',
+					'o' : 'onto:' + element.name,
+				})
+				
+			}
+			
+			
+		});
+		
+		return triples;
+	},
+	
+	//Method to convert links to triples
+	convertLinksToTriples : function(links) {
+		
+		var triples = [];
+		
+		$.each(links, function(index, link) {
+			
+			if(link.subject && link.predicate && link.object) {
+				triples.push({
+					's' : 'onto:' + link.subject,
+					'p' : 'onto:' + link.predicate,
+					'o' : 'onto:' + link.object,
+				})
+			}
+			
+		});
+		
+		return triples;
+	},
+	
 	//Method to parse card JSON file to generate OWL instances
 	parseCardToOWL : function(equipment, card) {
 		
 		var $this = this;
+		var connection = this.app.connection;
 		var relationships = this.relationships;
 		
 		/*
@@ -321,6 +371,14 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				pLinks.push(l)
 			});
 		});
+		
+//		var eTriples = $this.convertElementsToTriples(pElements);
+//		var lTriples = $this.convertLinksToTriples(pLinks);
+		
+//		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
+//		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+//		
+//		connection.testQuery();
 		
 //		console.log('Elements: ' + JSON.stringify(pElements));
 //		console.log('Links: ' + JSON.stringify(pLinks));
@@ -829,7 +887,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	//execute reasoning
 	executeReasoning : function() {
 	
-		$('.ajax-loader-message').append(' Execute Reasoning ... ');
+		$('.ajax-loader-message label').append(' Executing Reasoner ... ');
 
 		//execute parse
 		$.ajax({
@@ -838,7 +896,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			url: "executeReasoning.htm",
 			success: function(){
 				//console.log('PARSE OK!')
-				$('.ajax-loader-message').empty();
+				$('.ajax-loader-message label').empty();
 			},
 			error : function(e) {
 				alert("error: " + e.status);

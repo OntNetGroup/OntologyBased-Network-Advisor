@@ -41,26 +41,30 @@ h1 {
 	height: 100%;
 	z-index: 100000;
 	background-color: white;
-	opacity: .6;
+	opacity: .8;
 }
 
-.ajax-loader {
-	position: absolute;
-	left: 50%;
+/* .ajax-loader { */
+.loading-container {
+	position: relative;
+	background: #FFF;
 	top: 50%;
-	margin-left: -32px; /* -1 * image width / 2 */
-	margin-top: -32px; /* -1 * image height / 2 */
-	display: block;
-	z-index: 100000;
+	text-align: center;
 }
 
 .ajax-loader-message {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	margin-top: -32px; /* -1 * image height / 2 */
-	display: block;
-	z-index: 100000;
+	display: inline;
+	color: #505050;
+/* 	position: absolute; */
+/* 	left: 50%; */
+/* 	top: 50%; */
+/* 	margin-top: -32px; -1 * image height / 2 */
+/* 	display: block; */
+/* 	z-index: 100000; */
+}
+
+.ajax-loader-message label {
+	margin-left: 5px;	
 }
 
 .btn {

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
@@ -19,18 +18,13 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-import org.semanticweb.owlapi.reasoner.ConsoleProgressMonitor;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredClassAssertionAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredEquivalentClassAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredEquivalentDataPropertiesAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredEquivalentObjectPropertyAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredInverseObjectPropertiesAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredOntologyGenerator;
 import org.semanticweb.owlapi.util.InferredPropertyAssertionGenerator;
 import org.semanticweb.owlapi.util.InferredSubClassAxiomGenerator;
-import org.semanticweb.owlapi.util.InferredSubDataPropertyAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredSubObjectPropertyAxiomGenerator;
 
 import br.com.padtec.common.persistence.BaseModelRepository;
@@ -44,6 +38,8 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class HermitReasonerImpl extends OntologyReasoner {
 
+	boolean started = true;
+	
 	/** 
 	 * Runs the inference using Pellet
 	 * 
@@ -80,13 +76,13 @@ public class HermitReasonerImpl extends OntologyReasoner {
 		}
 		
 		//Hermit Configuration		
-		Configuration config = new Configuration();
-		ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
-		config.reasonerProgressMonitor = progressMonitor;		
+//		Configuration config = new Configuration();
+//		ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
+//		config.reasonerProgressMonitor = progressMonitor;		
 		
 		//Create Hermit        
-		OWLReasoner hermit = new Reasoner.ReasonerFactory().createReasoner(o, config);
-				
+		OWLReasoner hermit = new Reasoner.ReasonerFactory().createReasoner(o);
+		 
 		//Used to read in OntModel		
 		OntModel model = baseModel;		
 		//model.read(in,null);
@@ -113,28 +109,34 @@ public class HermitReasonerImpl extends OntologyReasoner {
         List<InferredAxiomGenerator<? extends OWLAxiom>> gens = new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>();
         
         //InferredEntityAxiomGenerator
-        if(this.inferHierarchies){
-        	//gens.add(new InferredDisjointClassesAxiomGenerator());				//InferredClassAxiomGenerator
-        	gens.add(new InferredEquivalentClassAxiomGenerator());					//InferredClassAxiomGenerator
+        if(this.inferHierarchies && started){
+        	
     		gens.add(new InferredSubClassAxiomGenerator());							//InferredClassAxiomGenerator
-    		
-    		//gens.add(new InferredDataPropertyCharacteristicAxiomGenerator());		//InferredDataPropertyAxiomGenerator
-    		gens.add(new InferredEquivalentDataPropertiesAxiomGenerator());			//InferredDataPropertyAxiomGenerator
-    		gens.add(new InferredSubDataPropertyAxiomGenerator());					//InferredDataPropertyAxiomGenerator
-    		
-    		gens.add(new InferredEquivalentObjectPropertyAxiomGenerator());			//InferredObjectPropertyAxiomGenerator
-    		gens.add(new InferredInverseObjectPropertiesAxiomGenerator());			//InferredObjectPropertyAxiomGenerator
-    		//gens.add(new InferredObjectPropertyCharacteristicAxiomGenerator());	//InferredObjectPropertyAxiomGenerator
     		gens.add(new InferredSubObjectPropertyAxiomGenerator());				//InferredObjectPropertyAxiomGenerator
+        	gens.add(new InferredInverseObjectPropertiesAxiomGenerator());			//InferredObjectPropertyAxiomGenerator
+        	
+//        	gens.add(new InferredDisjointClassesAxiomGenerator());				//InferredClassAxiomGenerator
+//        	gens.add(new InferredEquivalentClassAxiomGenerator());					//InferredClassAxiomGenerator
+//        	gens.add(new InferredDataPropertyCharacteristicAxiomGenerator());		//InferredDataPropertyAxiomGenerator
+//    		gens.add(new InferredEquivalentDataPropertiesAxiomGenerator());			//InferredDataPropertyAxiomGenerator
+//    		gens.add(new InferredSubDataPropertyAxiomGenerator());					//InferredDataPropertyAxiomGenerator
+//    		gens.add(new InferredEquivalentObjectPropertyAxiomGenerator());			//InferredObjectPropertyAxiomGenerator
+//    		gens.add(new InferredObjectPropertyCharacteristicAxiomGenerator());	//InferredObjectPropertyAxiomGenerator
+    		
+    		System.out.println("AQUI1");
         }
-        if(this.inferAssertions){
+        if(this.inferAssertions && !started){
         	gens.add(new InferredClassAssertionAxiomGenerator()); 					//InferredIndividualAxiomGenerator
     		gens.add(new InferredPropertyAssertionGenerator());						//InferredIndividualAxiomGenerator
+    		
+    		System.out.println("AQUI2");
         }
 		
 		InferredOntologyGenerator iog = new InferredOntologyGenerator(hermit, gens);
 		iog.fillOntology(m, o);
 
+		System.out.println("AQUI3");
+		
 		ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
         try {
 			m.saveOntology(o, new RDFXMLOntologyFormat(), baos2);
@@ -150,15 +152,20 @@ public class HermitReasonerImpl extends OntologyReasoner {
 //		long tempo = System.currentTimeMillis() - antes;        
 //		System.out.printf("Hermit executed in %d miliseconds.%n", tempo);
 		
-		Node thingNode = Node.createURI("http://www.w3.org/2002/07/owl#Thing");
-		RDFNode thingRdfNode = model.getRDFNode(thingNode);
-		model.removeAll(null, null, thingRdfNode);
+		if(started) {
+			Node thingNode = Node.createURI("http://www.w3.org/2002/07/owl#Thing");
+			RDFNode thingRdfNode = model.getRDFNode(thingNode);
+			model.removeAll(null, null, thingRdfNode);
+			
+			Property topOP = model.getProperty("http://www.w3.org/2002/07/owl#topObjectProperty");
+			model.removeAll(null, topOP, null);
+			
+			Property topDP = model.getProperty("http://www.w3.org/2002/07/owl#topDataProperty");
+			model.removeAll(null, topDP, null);
+			
+			started = false;
+		}
 		
-		Property topOP = model.getProperty("http://www.w3.org/2002/07/owl#topObjectProperty");
-		model.removeAll(null, topOP, null);
-		
-		Property topDP = model.getProperty("http://www.w3.org/2002/07/owl#topDataProperty");
-		model.removeAll(null, topDP, null);
 		return model;
 	}
 }

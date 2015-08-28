@@ -43,6 +43,10 @@
 
 <!-- LOADING -->
 <div id="loading">
-	<img src="frontend/provisioning/img/ajax-loader.gif" class="ajax-loader">
-	<span class="ajax-loader-message"></span>
+	<div class="loading-container">
+		<img src="frontend/provisioning/img/ajax-loader.gif" class="ajax-loader">
+		<div class="ajax-loader-message">
+			<label></label>
+		</div>
+	</div>
 </div>

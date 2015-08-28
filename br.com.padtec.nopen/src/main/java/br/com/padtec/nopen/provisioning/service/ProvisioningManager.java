@@ -30,7 +30,7 @@ public class ProvisioningManager {
 		PElement[] targetPorts = (PElement[]) JointUtilManager.getJavaFromJSON(targetPortsJSON, PElement[].class);
 		ArrayList<String> predicates = new ArrayList<String>();
 		
-		if(connectionType == "Horizontal") {
+		if(connectionType == "Horizontal_ST") {
 			predicates.add(ProvisioningRelationEnum.is_interface_of.toString());
 			predicates.add(ProvisioningRelationEnum.componentOf.toString());
 			predicates.add(ProvisioningRelationEnum.INV_links_output.toString());

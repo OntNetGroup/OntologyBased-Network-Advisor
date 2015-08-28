@@ -6,6 +6,7 @@ nopen.provisioning.App = Backbone.View.extend({
 	preProvisioning : undefined,
 	test : undefined,
 	util : undefined,
+	connection : undefined,
 	
 	initialize : function(){
 		console.log("Provisioning started!");
@@ -23,6 +24,8 @@ nopen.provisioning.App = Backbone.View.extend({
 		this.preProvisioning = new nopen.provisioning.PreProvisioning;
 		//create util
 		this.util = new nopen.provisioning.Util;
+		//create connection
+//		this.connection = new nopen.provisioning.Connection;
 		
 		//create Test
 		this.test = new nopen.provisioning.Test;
