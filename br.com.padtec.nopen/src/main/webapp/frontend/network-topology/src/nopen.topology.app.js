@@ -173,8 +173,8 @@ nopen.topology.App = Backbone.View.extend({
 	    	$(function () {
 	            $('#equipment-dialog').dialog({
 	                modal: true,
-	                height: 800,
-	    			width: 600,
+	                height: 600,
+	    			width: 800,
 	                title: 'Dynamically Loaded Page',
 	                open: function ()
 	                {
