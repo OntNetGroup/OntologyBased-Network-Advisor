@@ -12,13 +12,14 @@ function ituHandle(paper, graph){
 	
 		cellId = cellView.model.id;
 		
+		
 		var equipment = graph.getCell(cellId);
 		
-		if((equipment.get('subType')) === 'Supervisor'){
-		
-			selectSupervisorWindow(equipment,graph);
-			
-		};
+//		if((equipment.get('subType')) === 'Supervisor'){
+//		
+//			selectSupervisorWindow(equipment,graph);
+//			
+//		};
 		
 		if((equipment.get('subType')) === 'Card') {
 			
@@ -28,12 +29,12 @@ function ituHandle(paper, graph){
 		        $('#itu-dialog').dialog({
 		            modal: true,
 		            //show: 'scale',
-		            height: 600,
-					width: 800,
+		            height: 800,
+					width: 600,
 		            title: 'Dynamically Loaded Page',
 		            open: function ()
 		            {
-		                $('#itu-iframe').attr('src','/nopen/itu-visualizer.htm?equipment=' + $("#filename").val() + '&card=' + cellId);
+		                $('#itu-iframe').attr('src','/nopen/itu-visualizer.htm?equipment=' + $("#filename").val() + '&card=' + cellId + '&visualizer=' + true);
 		            },
 		            close: function() {
 		            }
