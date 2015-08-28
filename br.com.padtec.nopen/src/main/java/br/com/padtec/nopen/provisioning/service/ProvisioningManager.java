@@ -19,6 +19,58 @@ import com.jointjs.util.JointUtilManager;
 public class ProvisioningManager {
 
 	/**
+	 * Procedure to get target ports that has path with source port 
+	 * @param sourcePort
+	 * @param targetPortsJSON
+	 * @param connectionType
+	 * @return
+	 */
+	public static String hasPath(String sourcePort, String targetPortsJSON, String connectionType) {
+		
+		PElement[] targetPorts = (PElement[]) JointUtilManager.getJavaFromJSON(targetPortsJSON, PElement[].class);
+		ArrayList<String> predicates = new ArrayList<String>();
+		
+		if(connectionType == "Horizontal") {
+			predicates.add(ProvisioningRelationEnum.is_interface_of.toString());
+			predicates.add(ProvisioningRelationEnum.componentOf.toString());
+			predicates.add(ProvisioningRelationEnum.INV_links_output.toString());
+			predicates.add(ProvisioningRelationEnum.has_path.toString());
+			predicates.add(ProvisioningRelationEnum.links_output.toString());
+			predicates.add(ProvisioningRelationEnum.INV_componentOf.toString());
+			predicates.add(ProvisioningRelationEnum.INV_is_interface_of.toString());
+		}
+		else {
+			predicates.add(ProvisioningRelationEnum.is_interface_of.toString());
+			predicates.add(ProvisioningRelationEnum.componentOf.toString());
+			predicates.add(ProvisioningRelationEnum.INV_links_input.toString());
+			predicates.add(ProvisioningRelationEnum.has_path.toString());
+			predicates.add(ProvisioningRelationEnum.links_input.toString());
+			predicates.add(ProvisioningRelationEnum.INV_componentOf.toString());
+			predicates.add(ProvisioningRelationEnum.INV_is_interface_of.toString());
+		}
+		
+		ArrayList<HashMap<String, String>> resultPorts = new ArrayList<HashMap<String, String>>();
+		
+		//check if each target port has path with source port
+		for(PElement targetPort : targetPorts) {
+			
+			HashMap<String, String> hasPath = new HashMap<String, String>();
+			
+			if(ProvisioningQuery.askToOWL(sourcePort, predicates, targetPort.getId())){
+				hasPath.put(targetPort.getId(), "true");
+			}
+			else {
+				hasPath.put(targetPort.getId(), "false");
+			}
+			
+			resultPorts.add(hasPath);
+		}
+		
+		Gson gson = new Gson();
+		return gson.toJson(resultPorts);
+	}
+	
+	/**
 	 * Procedure to parse json elements to owl
 	 * @param jsonElements
 	 * @throws Exception
@@ -137,13 +189,13 @@ public class ProvisioningManager {
 		
 		HashMap<String, HashMap<String, ArrayList<HashMap<String, String>>>> connectionInterfaces = new HashMap<String,HashMap<String, ArrayList<HashMap<String, String>>>>();
 		
-		if(connectionType.equals("Horizontal")){
+		if(connectionType.equals("Horizontal") || connectionType.equals("Horizontal_ST")){
 			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", connectionType, true));
 			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Output_Card", connectionType, true));
 		}
 		else{
 			connectionInterfaces.put(sourceEquipmentId, getPortsByLayerFromOWL(sourceEquipmentId, "Output_Card", connectionType, true));
-			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Output_Card", connectionType, true));
+			connectionInterfaces.put(targetEquipmentId, getPortsByLayerFromOWL(targetEquipmentId, "Input_Card", connectionType, true));
 		}
 		
 		Gson gson = new Gson();
@@ -212,7 +264,7 @@ public class ProvisioningManager {
 		else if(connectionType.equals("Horizontal")) {
 			possibleLayer = ProvisioningQuery.getBottomLayersFromOWL();
 		}
-		else if (connectionType.equals("Vertical")) {
+		else if (connectionType.equals("Horizontal_ST") || connectionType.equals("Vertical")) {
 			possibleLayer = ProvisioningQuery.getTopLayersFromOWL();
 		}
 		else {

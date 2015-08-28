@@ -416,7 +416,7 @@ file, You can obtain one at http://jointjs.com/license/rappid_academic_v1.txt
 }
 
 
-.dialog .connectsContainer {
+.dialog .connectsContainer, .dialog .horizontalLine  {
 	display: none;
 }
 

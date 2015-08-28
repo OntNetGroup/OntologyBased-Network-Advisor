@@ -61,6 +61,40 @@ public class ProvisioningQuery {
 		return false;
 	}
 	
+	public static boolean askToOWL(String subject, ArrayList<String> predicates, String object) {
+		
+		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();
+		
+		String queryString = prefix +
+				"ASK { ont:" + subject + " ont:" + predicates.get(0);
+		
+		for(int i = 1; i < predicates.size(); i++) {
+			queryString += "/ont:" + predicates.get(i);
+		}
+		
+		queryString += " ont:" + object + " . }" ;
+				
+		System.out.println(queryString);
+		
+		Query query = QueryFactory.create(queryString); 
+		
+		// Execute the query and obtain results
+		QueryExecution qe = QueryExecutionFactory.create(query, ontModel);
+		ResultSet results = qe.execSelect();
+		
+		//get result and put on label variable
+		if(results.hasNext()) {
+			QuerySolution row = results.next();
+		    String result = row.get("Result").toString();
+		    
+		   if(result.equals("True")) {
+			   return true;
+		   }
+		}
+		
+		return false;
+	}
+	
 	public static ArrayList<String> getAllLayersFromOWL() {
 		
 		OntModel ontModel = ProvisioningComponents.provisioningRepository.getBaseModel();

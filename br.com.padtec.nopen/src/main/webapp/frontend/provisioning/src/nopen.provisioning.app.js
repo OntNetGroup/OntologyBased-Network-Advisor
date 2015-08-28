@@ -460,7 +460,8 @@ nopen.provisioning.App = Backbone.View.extend({
 			var source = graph.getCell(cell.attributes.source.id);
 			var target = graph.getCell(cell.attributes.target.id);
 			
-			var connectionType = "Vertical"; //owl.getConnectionTypeFromOWL(source.id, target.id);
+			//Horizontal Same Technology (ST)
+			var connectionType = "Horizontal_ST"; //owl.getConnectionTypeFromOWL(source.id, target.id);
 			var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
 			
 			var content = createConnectionContent(source, target, connectionType, connections);
@@ -535,7 +536,7 @@ nopen.provisioning.App = Backbone.View.extend({
 						'<option value="none"></option>' +
 						'<option value="SimpleConnection">Simple Connection</option>' +
 					'</select>' +
-				'</div><hr/>' +
+				'</div><hr class="horizontalLine"/>' +
 				'<div class="connectsContainer">' +
 //					'<div class="connectionType"><b>Connection Type:</b> ' + connectionType + '</div>' +
 					'<div class="sourceList"><div id="listContainer">' +
@@ -599,13 +600,18 @@ nopen.provisioning.App = Backbone.View.extend({
 				if(service === 'none') {
 					$('.dialog .controls .control-button[data-action="create"]').attr("disabled", true);
 					
-					$('.sourceList #expList li').removeClass('active');
-					$('.targetList #expList li').removeClass('active');
+					$('.sourceList #expList .collapsed').children().hide('medium');
+					$('.targetList #expList .collapsed').children().hide('medium');
+					
+					$('.sourceList #expList li').removeClass('expanded').removeClass('active');
+					$('.targetList #expList li').removeClass('expanded').removeClass('active');
 					
 					$('.connectsContainer').hide();
+					$('.horizontalLine').hide();
 				}
 				else {
 					$('.connectsContainer').show();
+					$('.horizontalLine').show();
 				}
 				
 			});

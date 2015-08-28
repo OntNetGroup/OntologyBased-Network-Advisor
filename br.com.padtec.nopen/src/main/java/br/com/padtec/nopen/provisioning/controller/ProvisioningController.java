@@ -151,6 +151,19 @@ public class ProvisioningController {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * @param sourcePort
+	 * @param targetPorts
+	 * @param connectionType
+	 * @return
+	 */
+	@RequestMapping(value = "/hasPath", method = RequestMethod.POST)
+	protected @ResponseBody String hasPath(@RequestParam("sourcePort") String sourcePort, @RequestParam("targetPorts") String targetPorts, @RequestParam("connectionType") String connectionType){
+		return ProvisioningManager.hasPath(sourcePort, targetPorts, connectionType);
+	}
+	
 	/**
 	 * Connect ports in OWL by a JSON file
 	 * @param elements
