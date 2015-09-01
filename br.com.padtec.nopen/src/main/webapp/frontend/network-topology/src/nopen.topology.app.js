@@ -3,6 +3,7 @@ nopen.topology.App = Backbone.View.extend({
 	
 	file : undefined,
 	model : undefined,
+	owl : undefined,
 	util : undefined,
 	exporter : undefined,
 	importer : undefined,
@@ -17,6 +18,8 @@ nopen.topology.App = Backbone.View.extend({
 		this.file = new nopen.topology.File;
 		//create model
 		this.model = new nopen.topology.Model;
+		//create owl
+		this.owl = new nopen.topology.OWL;
 		//create util
 		this.util = new nopen.topology.Util;
 		//create exporter
@@ -29,6 +32,7 @@ nopen.topology.App = Backbone.View.extend({
 		this.file.setApp(this);
 		this.util.setApp(this);
 		this.model.setApp(this);
+		this.owl.setApp(this);
 		this.exporter.setApp(this);
 		this.importer.setApp(this);		
 		

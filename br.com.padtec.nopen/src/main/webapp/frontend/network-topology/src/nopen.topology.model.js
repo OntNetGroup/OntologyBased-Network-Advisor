@@ -30,10 +30,15 @@ nopen.topology.Model = Backbone.Model.extend({
 		console.log('Equipments: ' + JSON.stringify(this.equipments));
 	},
 	
+	saveCardstoOWL : function(){
+		owl.parseCardToOWL(this.equipments);
+	},
+	
 	generetaMatchEquipmentToNodeDialog : function(node) {
 		
 		var $this = this;
 		var file = this.app.file;
+		var owl = this.app.owl;
 		
 		var equipments = file.getAllEquipments();
 		
@@ -79,10 +84,11 @@ nopen.topology.Model = Backbone.Model.extend({
 	},
 	
 	matchEquipmentToNode : function(node, filename) {
-		
+		var OwlCards = [];
 		var $this = this;
 		var file = this.app.file;
 		var util = this.app.util;
+		var owl = this.app.owl;
 		
 		//open equipment
 		var equipment = file.openEquipment(filename);
@@ -93,9 +99,10 @@ nopen.topology.Model = Backbone.Model.extend({
 			if(element.subType === 'Card') {
 				var cardId = element.id;
 				var card = file.openEquipmentCard(filename, cardId);
-				
+				console.log(card);
 				//add card in card data
 				equipment.cells[index].attrs.data = card;
+				owl.parseCardToOWL(node , element);
 			}
 			
 		});
@@ -113,6 +120,7 @@ nopen.topology.Model = Backbone.Model.extend({
 		
 		//print equipments
 		$this.printEquipments();
+
 		
 	},
 	

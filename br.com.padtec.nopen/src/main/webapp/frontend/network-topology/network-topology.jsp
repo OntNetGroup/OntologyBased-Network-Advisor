@@ -68,6 +68,7 @@
         <script src="/nopen/frontend/common/libs/nopen/nopen.js"></script>
         <script src="/nopen/frontend/network-topology/src/nopen.topology.util.js"></script>
         <script src="/nopen/frontend/network-topology/src/nopen.topology.model.js"></script>
+        <script src="/nopen/frontend/network-topology/src/nopen.topology.owl.js"></script>
         <script src="/nopen/frontend/network-topology/src/nopen.topology.file.js"></script>
         <script src="/nopen/frontend/network-topology/src/nopen.topology.exporter.js"></script>
         <script src="/nopen/frontend/network-topology/src/nopen.topology.importer.js"></script>
