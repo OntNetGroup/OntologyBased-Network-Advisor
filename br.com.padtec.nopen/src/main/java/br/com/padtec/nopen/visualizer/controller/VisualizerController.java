@@ -13,10 +13,12 @@ import com.jointjs.util.JointUtilManager;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
+import br.com.padtec.nopen.provisioning.service.ProvisioningManager;
 import br.com.padtec.nopen.service.NOpenAttributeRecognizer;
 import br.com.padtec.nopen.service.NOpenEquipmentCloner;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.studio.service.StudioComponents;
+import br.com.padtec.nopen.topology.service.TopologyManager;
 
 @Controller
 public class VisualizerController {
@@ -62,29 +64,38 @@ public class VisualizerController {
 	protected static PLink[] plinks;
 	
 	/**
-	 * Create equipment in OWL by a JSON file
+	 * Create card in OWL by a JSON file
 	 * @param elements
 	 * @param links
 	 */
-	@RequestMapping(value = "/parseEquipToOWL", method = RequestMethod.POST)
-	protected @ResponseBody String parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
+	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
+	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
+		
 		
 		try {
-			pelems = (PElement[]) JointUtilManager.getJavaFromJSON(elements, PElement[].class);
-			System.out.println(pelems);
-			System.out.println(links);
-			plinks = (PLink[]) JointUtilManager.getJavaFromJSON(links, PLink[].class);
-			System.out.println(plinks);
-			// we are not going to clone the content in OWL anymore
-			// we are actually going to search for the attributes from these Java structures: PElements and PLinks
-//			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
-//			NOpenEquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
-			
-			return "success";
+			TopologyManager.createElementsInOWL(elements);
+			TopologyManager.createLinksInOWL(links);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "error";
+
 		}
+		
+//		try {
+//			pelems = (PElement[]) JointUtilManager.getJavaFromJSON(elements, PElement[].class);
+//			System.out.println(pelems);
+//			System.out.println(links);
+//			plinks = (PLink[]) JointUtilManager.getJavaFromJSON(links, PLink[].class);
+//			System.out.println(plinks);
+//			// we are not going to clone the content in OWL anymore
+//			// we are actually going to search for the attributes from these Java structures: PElements and PLinks
+////			NOpenEquipmentCloner.cloneEquipmentFromJSON(elements, StudioComponents.studioRepository);
+////			NOpenEquipmentCloner.cloneLinksFromJSON(links, StudioComponents.studioRepository);
+//			
+//			return "success";
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return "error";
+//		}
 	}
 	
 	/**
