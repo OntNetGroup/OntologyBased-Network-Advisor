@@ -106,12 +106,13 @@ public class VisualizerController {
 	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor){
 		
 		try {			
-			for(PElement e: pelems){
-				System.out.println(e);
-			}
-			for(PLink l: plinks){
-				System.out.println(l);
-			}	
+//			for(PElement e: pelems){
+//				System.out.println(e);
+//			}
+//			for(PLink l: plinks){
+//				System.out.println(l);
+//			}	
+			
 			Map<String, String> data = NOpenAttributeRecognizer.runFromOWL(card , supervisor);
 //			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card,pelems,plinks);	
 		} catch (Exception e) {
