@@ -68,7 +68,7 @@ public class VisualizerController {
 	 * @param elements
 	 * @param links
 	 */
-	@RequestMapping(value = "/parseCardToOWL", method = RequestMethod.POST)
+	@RequestMapping(value = "/parseEquipToOWL", method = RequestMethod.POST)
 	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
 		
 		
