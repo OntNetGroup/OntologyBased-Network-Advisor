@@ -68,10 +68,9 @@ public class VisualizerController {
 	 * @param elements
 	 * @param links
 	 */
-	@RequestMapping(value = "/parseEquipToOWL", method = RequestMethod.POST)
-	protected @ResponseBody void parseEquipToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
-		
-		
+	@RequestMapping(value = "/parsetopologyCardToOWL", method = RequestMethod.POST)
+	protected @ResponseBody void parsetopologyCardToOWL(@RequestParam("elements") String elements, @RequestParam("links") String links){
+			
 		try {
 			TopologyManager.createElementsInOWL(elements);
 			TopologyManager.createLinksInOWL(links);
@@ -113,7 +112,7 @@ public class VisualizerController {
 			for(PLink l: plinks){
 				System.out.println(l);
 			}	
-			Map<String, String> data = NOpenAttributeRecognizer.runFromOWLPath(card, supervisor);
+			Map<String, String> data = NOpenAttributeRecognizer.runFromOWL(card , supervisor);
 //			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card,pelems,plinks);	
 		} catch (Exception e) {
 			e.printStackTrace();

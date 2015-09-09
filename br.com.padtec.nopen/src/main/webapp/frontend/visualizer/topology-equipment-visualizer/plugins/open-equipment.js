@@ -201,22 +201,22 @@ function openFromURL(filename, graph){
 		console.log('Links: ' + JSON.stringify(links));
 			
 		
-		//execute parse
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "parseEquipToOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(elements),
-			   'links' : JSON.stringify(links),
-		   },
-		   success: function(){
-			  console.log('PARSE OK!')
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+//		//execute parse
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "parseEquipToOWL.htm",
+//		   data: {
+//			   'elements' : JSON.stringify(elements),
+//			   'links' : JSON.stringify(links),
+//		   },
+//		   success: function(){
+//			  console.log('PARSE OK!')
+//		   },
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 		
 		//ITU Elements
 		$.each(graph.getElements(), function(index, cell){
@@ -360,21 +360,21 @@ function openFromURL(filename, graph){
 			console.log('Links: ' + JSON.stringify(ITUlinks));
 			
 			//execute parse
-			$.ajax({
-			   type: "POST",
-			   async: false,
-			   url: "parseEquipToOWL.htm",
-			   data: {
-				   'elements' : JSON.stringify(ITUelements),
-				   'links' : JSON.stringify(ITUlinks),
-			   },
-			   success: function(){
-				  console.log('PARSE OK!')
-			   },
-			   error : function(e) {
-				   alert("error: " + e.status);
-			   }
-			});
+//			$.ajax({
+//			   type: "POST",
+//			   async: false,
+//			   url: "parseEquipToOWL.htm",
+//			   data: {
+//				   'elements' : JSON.stringify(ITUelements),
+//				   'links' : JSON.stringify(ITUlinks),
+//			   },
+//			   success: function(){
+//				  console.log('PARSE OK!')
+//			   },
+//			   error : function(e) {
+//				   alert("error: " + e.status);
+//			   }
+//			});
 		}
 
 		//Method to get element type

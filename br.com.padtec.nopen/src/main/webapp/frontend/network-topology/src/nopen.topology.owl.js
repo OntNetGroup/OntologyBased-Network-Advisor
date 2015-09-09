@@ -334,7 +334,7 @@ nopen.topology.OWL = Backbone.Model.extend({
 		$.ajax({
 		   type: "POST",
 		   async: false,
-		   url: "parseCardToOWL.htm",
+		   url: "parsetopologyCardToOWL.htm",
 		   data: {
 			   'elements' : JSON.stringify(pElements),
 			   'links' : JSON.stringify(pLinks),

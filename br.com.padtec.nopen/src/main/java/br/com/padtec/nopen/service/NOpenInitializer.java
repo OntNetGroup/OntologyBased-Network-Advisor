@@ -8,6 +8,7 @@ import br.com.padtec.nopen.model.RelationEnum;
 import br.com.padtec.nopen.provisioning.service.ProvisioningInitializer;
 import br.com.padtec.nopen.service.util.NOpenUtilities;
 import br.com.padtec.nopen.studio.service.StudioInitializer;
+import br.com.padtec.nopen.topology.service.TopologyInitializer;
 
 public class NOpenInitializer {
 	
@@ -33,6 +34,10 @@ public class NOpenInitializer {
 		
 		eMsg  = ProvisioningInitializer.uploadProvisioningTBox(false);
 		if(!eMsg.isEmpty()) {throw new Exception(eMsg); }
+		
+		eMsg  = TopologyInitializer.uploadTopologyTBox(false);
+		if(!eMsg.isEmpty()) {throw new Exception(eMsg); }
+		
 		
 		ContainerStructure.buildContainerStructure(NOpenComponents.nopenRepository.getNamespace() + RelationEnum.componentOf.toString());
 		

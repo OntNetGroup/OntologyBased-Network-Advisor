@@ -17,6 +17,7 @@ import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
 import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
+import br.com.padtec.nopen.topology.service.TopologyComponents;
 import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class NOpenAttributeRecognizer {
@@ -318,23 +319,30 @@ public class NOpenAttributeRecognizer {
 	}
 	    
 	 /** @author John Guerson 
-	 * @throws Exception */
-	public static Map<String, String>  runFromOWLPath(String cardURI, String fileName) throws Exception{
-//		String path = System.getProperty("user.home") + "\\nopen\\repository\\template\\owl\\";
-		String path = NOpenFileUtil.templateOWLFolder;
-		return runFromOWLPath(cardURI, fileName,path);	
-	}
-		
-	/** @author John Guerson 
-	 * @throws Exception */
-	public static Map<String, String>  runFromOWLPath(String cardURI, String fileName, String path) throws Exception{
-		OKCoUploader repository = new OKCoUploader(fileName.replace(".owl", ""));
-		String entirePath = path+fileName+"\\"+fileName+".owl";
-		File file = new File(entirePath);
-		InputStream targetStream = new FileInputStream(file);
-		repository.uploadBaseModel(targetStream, "off", "hermit");	
-		return runfromCard(cardURI, repository);
-	}
+		 * @throws Exception */
+		public static Map<String, String>  runFromOWL(String cardURI, String fileName) throws Exception{
+			OKCoUploader repository = TopologyComponents.topologyRepository;
+			return runfromCard(cardURI, repository);	
+		}
+	 
+//	 /** @author John Guerson 
+//	 * @throws Exception */
+//	public static Map<String, String>  runFromOWLPath(String cardURI, String fileName) throws Exception{
+////		String path = System.getProperty("user.home") + "\\nopen\\repository\\template\\owl\\";
+//		String path = NOpenFileUtil.templateOWLFolder;
+//		return runFromOWLPath(cardURI, fileName,path);	
+//	}
+			
+//	/** @author John Guerson 
+//	 * @throws Exception */
+//	public static Map<String, String>  runFromOWLPath(String cardURI, String fileName, String path) throws Exception{
+//		OKCoUploader repository = new OKCoUploader(fileName.replace(".owl", ""));
+//		String entirePath = path+fileName+"\\"+fileName+".owl";
+//		File file = new File(entirePath);
+//		InputStream targetStream = new FileInputStream(file);
+//		repository.uploadBaseModel(targetStream, "off", "hermit");	
+//		return runfromCard(cardURI, repository);
+//	}
 	
 	/** @author John Guerson */
 	@SuppressWarnings("unused")

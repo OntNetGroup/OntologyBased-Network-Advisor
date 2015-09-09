@@ -272,7 +272,7 @@ var Rappid = Backbone.Router.extend({
 					var elementname = opt[i].name;
 					var input = "directionality: {type: 'select' , options:['sink','source','bidirectional'], index: 1 , group: 'ochctp"+elementname+"', label: 'Directionality', attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of <br>the termination point. Valid values are<br> sink, source,and bidirectional.<br> This attribute is read-only.'}}},";
 					var group = "ochctp"+elementname+": {label: 'OCH CTP "+elementname+"' },";
-
+                    cell.prop('directionality','source');
 					a = a+input;
 					b = b+group;
 					console.log(a);
@@ -284,7 +284,9 @@ var Rappid = Backbone.Router.extend({
 					var elementname = opt[i].name;
 					var input = "operationalstate: {type: 'select' , options:['enabled','disabled'],index: 1 ,group:'ochnim"+elementname+"', label: 'Operational State', attrs: { 'label': {'data-tooltip': 'This attribute is generally defined in ITU-T Rec.<br> X.731 and the behaviour description for<br> operationalState in ITU-T Rec. M.3100.<br>Possible Values – Enabled and Disabled. See ITU-T<br> Recs. X.731 and M.3100 for details.<br>Default Value – Actual state of resource at the time<br> the object is created. If there is a period of time<br> during the initialization process where the<br> operational state is unknown, then the resource will<br> be considered disabled until initialization has<br> completed and the state updated accordingly.<br>Constraints to Provisioning – N/A.<br>Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>This attribute is read-only.'}}},currentproblemlist:{type: 'number', min: '0', max: '2147483647' ,index: 2 ,group:'ochnim"+elementname+"', label: 'Current Problem List', attrs: {'input' : {'data-tooltip': 'This attribute indicates the actual payload type<br> signal received. This attribute is read-only.'}}},";
 					var group = "ochnim"+elementname+": { label: 'OCH NIM "+elementname+"'},";
-
+                    cell.prop('operationalstate','');
+                    cell.prop('currentproblemlist','');
+                    cell.prop('operationalstate','');
 					a = a+input;
 					b = b+group;
 					console.log(a);
@@ -295,7 +297,7 @@ var Rappid = Backbone.Router.extend({
 					var elementname = opt[i].name; 
 					var input = "directionality: {type: 'select' , options:['sink','source','bidirectional'],group: 'gcc0tp"+elementname+"',index: 1 , label: 'Directionality', attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of <br>the termination point. Valid values are<br> sink, source,and bidirectional.<br> This attribute is read-only.'}}},application: {type: 'text' ,group: 'gcc0tp"+elementname+"',index: 2 , label: 'Application', attrs: {'input' : {'data-tooltip': 'This attribute indicates the <br>applications transported by the <br>GCC channel. Example applications <br>are ECC(user data channel).<br> Valid values are string.<br>This attribute is read-only.'}}},";
 					var group = "gcc0tp"+elementname+": { label: 'GCC0 tp "+elementname+"' },";
-
+					cell.prop('directionality','');
 					a = a+input;
 					b = b+group;
 					console.log(a);
@@ -307,7 +309,11 @@ var Rappid = Backbone.Router.extend({
 					var elementname = opt[i].name; 
 					var input = "directionality: {type: 'select' , options:['sink','source','bidirectional'],group: 'gcc12tp"+elementname+"',index: 1 , label: 'Directionality', attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality<br> of the termination point. Valid <br>values are sink, source,and bidirectional.<br> This attribute is read-only.'}}},codirectional: {type: 'toggle',group: 'gcc12tp"+elementname+"',index: 2 , label: 'Codirectional', attrs: { 'label': {'data-tooltip': 'This attribute specifies<br> the directionality of <br>the GCC12_TP with respect to <br>the associated ODUk_CTP.<br>The value of TRUE means that<br> the sink part <br>of the GCC12_TP terminates the same signal<br> direction as the sink part of the ODUk_CTP.<br>The Source part behaves similarly.<br>This attribute is meaningful only on objects instantiated<br> under ODUk_CTP,<br> and at least	one among ODUk_CTP and the subordinate <br>object has Directionality equal to Bidirectional.<br> This attribute is read-only.'}}},gccaccess: {type: 'select' , options:['gg1','gcc2','gcc1-plus-gcc2'],group: 'gcc12tp"+elementname+"',index: 3 , label: 'GCC Access', attrs: { 'label': {'data-tooltip': 'This attribute indicates the GCC access <br>represented	by this entity.<br> Valid values are: <br>1) GCC1 <br>2) GCC2 <br>3) GCC1 + GCC2.<br>This attribute is read-only.'}}},gccpassthrough : {type: 'toggle' ,group: 'gcc12tp"+elementname+"',index: 4 , label: 'GCC Pass Through', attrs: { 'label': {'data-tooltip': 'This attribute controls the<br> selected GCC overhead<br> whether it is passed through or modified. Valid<br> 	values are TRUE and FALSE.<br>The value of TRUE means<br> that the GCC overhead shall pass through unmodified<br> from the ODUk CTP input to the ODUk CTP output.<br> Otherwise shall be set to all 0s at the ODUk CTP<br> output after the extraction of the COMMS data. This<br> attribute is not meaningful on objects instantiated<br> under ODUk_TTP, and on objects with Directionality<br> equals to Source.'}}},application: {type: 'text',group: 'gcc12tp"+elementname+"',index: 5 , label: 'Application', attrs: {'input' : {'data-tooltip': 'This attribute indicates the applications <br>transported by the GCC channel.<br> Example applications	are ECC,<br> (user data channel).<br> Valid values are string.<br>This attribute is read-only.'}}},";
 					var group = "gcc12tp"+elementname+": { label: 'GCC12 TP "+elementname+"'}";
-
+					cell.prop('directionality','');
+					cell.prop('codirectional','');
+					cell.prop('gcc-access','');
+					cell.prop('gccpassthrough','');
+					cell.prop('application','');
 					a = a+input;
 					b = b+group;
 					console.log(a);
