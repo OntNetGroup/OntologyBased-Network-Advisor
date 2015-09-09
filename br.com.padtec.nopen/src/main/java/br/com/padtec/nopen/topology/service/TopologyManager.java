@@ -14,7 +14,6 @@ import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
-import br.com.padtec.nopen.provisioning.service.ProvisioningComponents;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.studio.service.StudioComponents;
 
@@ -50,8 +49,8 @@ public class TopologyManager {
 	 */
 	public static void createElementsInOWL(String jsonElements) throws Exception {
 		
-		OntModel ontModel = TopologyComponents.topologyRepository.getBaseModel();
-		String namespace = TopologyComponents.topologyRepository.getNamespace();
+		OntModel ontModel =  StudioComponents.studioRepository.getBaseModel();
+		String namespace = StudioComponents.studioRepository.getNamespace();
 		
 		FactoryUtil factoryUtil = new FactoryUtil();
 		
@@ -83,8 +82,8 @@ public class TopologyManager {
 	 */
 	public static void createLinksInOWL(String jsonLinks) throws Exception {
 		
-		OntModel ontModel = TopologyComponents.topologyRepository.getBaseModel();
-		String namespace = TopologyComponents.topologyRepository.getNamespace();
+		OntModel ontModel =  StudioComponents.studioRepository.getBaseModel();
+		String namespace = StudioComponents.studioRepository.getNamespace();
 		
 		FactoryUtil factoryUtil = new FactoryUtil();
 		
