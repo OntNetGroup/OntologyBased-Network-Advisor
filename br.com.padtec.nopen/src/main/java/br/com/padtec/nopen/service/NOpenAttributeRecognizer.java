@@ -3,7 +3,6 @@ package br.com.padtec.nopen.service;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -318,10 +317,25 @@ public class NOpenAttributeRecognizer {
 		return result;
 	}
 	    
+//	 public static void main(String[] args) throws Exception {
+//		 OKCoUploader test = new OKCoUploader("attributes-recognizer-test");
+//		 System.out.print("Loading Ontology... ");
+//		 test.uploadBaseModel("test/topology.owl", "off", "hermit");
+//		 System.out.println("[OK]");
+//		 runfromCard("http://www.menthor.net/nOpenModel_light.owl#50d54bc4-9b4c-4031-b21e-32dad94f358f", test);
+//	 }
+	 
 	 /** @author John Guerson 
 		 * @throws Exception */
 		public static Map<String, String>  runFromOWL(String cardURI, String fileName) throws Exception{
 			OKCoUploader repository = TopologyComponents.topologyRepository;
+			//============================================
+			//write owl to a file. We use this for tests.
+			String path = NOpenFileUtil.templateOWLFolder;
+			File f = new File(path+"topology.owl");
+			if (f.exists()) f.delete();
+			NOpenFileUtil.writeToFile(new File(path+"topology.owl"), repository.getBaseModelAsString());
+			//============================================
 			return runfromCard(cardURI, repository);	
 		}
 	 
