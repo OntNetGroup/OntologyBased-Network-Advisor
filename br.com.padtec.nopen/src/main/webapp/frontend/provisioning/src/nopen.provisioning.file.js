@@ -120,6 +120,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 	//Method to save a provisioning file
 	saveProvisioning : function(graph, filename) {
 		
+		var connection = this.app.connection;
+		
 		$('#filename').val(filename);
 		
 		$.ajax({
@@ -135,6 +137,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 			   alert("error: " + e.status);
 		   }
 		});
+		
+		connection.saveNamedGraph(filename);
 		
 		var saveDialog = new joint.ui.Dialog({
 			type: 'neutral' ,
@@ -205,6 +209,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 	//Method to open a provisioning file from dialog
 	openProvisioning : function(graph, filename) {
 		
+		var connection = this.app.connection;
+		
 		var model = this.app.model;
 		var owl = this.app.owl;
 		
@@ -227,6 +233,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 			   alert("error: " + e.status);
 		   }
 		});
+		
+		connection.loadNamedGraph(filename);
 
 	},
 	

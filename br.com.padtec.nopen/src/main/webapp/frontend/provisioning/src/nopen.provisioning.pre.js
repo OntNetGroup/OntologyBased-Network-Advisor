@@ -122,7 +122,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				$('#black_overlay').hide();
 				
 				//execute reasoning
-				owl.executeReasoning();
+//				owl.executeReasoning();
 				
 				//generate provisioning
 				model.generateProvisioning(app, subnetworks);

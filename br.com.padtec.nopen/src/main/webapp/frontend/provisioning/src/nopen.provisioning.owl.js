@@ -64,6 +64,37 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		return hasInverse;
 	},
 	
+	
+	hasPath : function(sourcePort, targetPorts, connectionType) {
+		
+		var connection = this.app.connectionl
+		
+		var resultPorts = [];
+		
+		var predicates = [
+		                  'ont:is_interface_of',
+		                  'ont:componentOf',
+		                  'ont:links_output',
+		                  'ont:has_path',
+		                  'ont:links_output',
+		                  'ont:INV.componentOf',
+		                  'ont:INV.is_interface_of'
+		                  ];
+		
+		var subject = 'ont:' + sourcePort.id;
+		
+		$.each(targetPorts, function(index, targetPort) {
+			var object = 'ont:' + targetPort.id;
+			resultPorts[targetPort.id] = connection.askQuery(subject, predicates, object);
+		});
+		
+		console.log('RESULT PORTS: ' + JSON.stringify(resultPorts));
+		
+		return resultPorts;
+		
+	},
+	
+	
 	//Method to set model relationships 
 	setRelationships : function(relationships) {
 		
@@ -87,15 +118,15 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			if(element.id) {
 				
 				triples.push({
-					's' : 'onto:' + element.id,
+					's' : 'ont:' + element.id,
 					'p' : 'rdf:type',
-					'o' : 'onto:' + element.type,
+					'o' : 'ont:' + element.type,
 				})
 				
 				triples.push({
-					's' : 'onto:' + element.id,
+					's' : 'ont:' + element.id,
 					'p' : 'rdfs:label',
-					'o' : 'onto:' + element.name,
+					'o' : '"' + element.name + '"',
 				})
 				
 			}
@@ -115,9 +146,9 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			
 			if(link.subject && link.predicate && link.object) {
 				triples.push({
-					's' : 'onto:' + link.subject,
-					'p' : 'onto:' + link.predicate,
-					'o' : 'onto:' + link.object,
+					's' : 'ont:' + link.subject,
+					'p' : 'ont:' + link.predicate,
+					'o' : 'ont:' + link.object,
 				})
 			}
 			
@@ -372,11 +403,11 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			});
 		});
 		
-//		var eTriples = $this.convertElementsToTriples(pElements);
-//		var lTriples = $this.convertLinksToTriples(pLinks);
+		var eTriples = $this.convertElementsToTriples(pElements);
+		var lTriples = $this.convertLinksToTriples(pLinks);
 		
-//		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
-//		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
 //		
 //		connection.testQuery();
 		
@@ -384,26 +415,28 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 //		console.log('Links: ' + JSON.stringify(pLinks));
 		
 		//execute parse
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "parseCardToOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(pElements),
-			   'links' : JSON.stringify(pLinks),
-		   },
-		   success: function(){
-			   //console.log('PARSE OK!')
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "parseCardToOWL.htm",
+//		   data: {
+//			   'elements' : JSON.stringify(pElements),
+//			   'links' : JSON.stringify(pLinks),
+//		   },
+//		   success: function(){
+//			   //console.log('PARSE OK!')
+//		   },
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 	
 	
 	},
 	
 	parseConnectedPortsToOWL : function(graph) {
+		
+		var connection = this.app.connection;
 		
 		var $this = this;
 		var model = this.app.model;
@@ -457,27 +490,36 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			});
 		});
 		
+		var eTriples = $this.convertElementsToTriples(pElements);
+		var lTriples = $this.convertLinksToTriples(pLinks);
+		
+		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		
 		//execute parse
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "parseCardToOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(pElements),
-			   'links' : JSON.stringify(pLinks),
-		   },
-		   success: function(){
-			   //console.log('PARSE OK!')
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "parseCardToOWL.htm",
+//		   data: {
+//			   'elements' : JSON.stringify(pElements),
+//			   'links' : JSON.stringify(pLinks),
+//		   },
+//		   success: function(){
+//			   //console.log('PARSE OK!')
+//		   },
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 		
 	},
 	
 	addHorizontalConnection : function(tfSource, tfTarget) {
 		
+		var connection = this.app.connection;
+		
+		var $this = this;
 		var connections = this.createHorizontalConnection(tfSource, tfTarget);
 		
 		var pElements = [];
@@ -493,27 +535,36 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			});
 		});
 		
+		var eTriples = $this.convertElementsToTriples(pElements);
+		var lTriples = $this.convertLinksToTriples(pLinks);
+		
+		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		
 		//execute parse
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "parseCardToOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(pElements),
-			   'links' : JSON.stringify(pLinks),
-		   },
-		   success: function(){
-			   //console.log('PARSE OK!')
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "parseCardToOWL.htm",
+//		   data: {
+//			   'elements' : JSON.stringify(pElements),
+//			   'links' : JSON.stringify(pLinks),
+//		   },
+//		   success: function(){
+//			   //console.log('PARSE OK!')
+//		   },
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 		
 	},
 	
 	addVerticalConnection : function(tfSource, tfTarget) {
 		
+		var connection = this.app.connection;
+		
+		var $this = this;
 		var connections = this.createVerticalConnection(tfSource, tfTarget);
 		
 		var pElements = [];
@@ -529,22 +580,28 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			});
 		});
 		
+		var eTriples = $this.convertElementsToTriples(pElements);
+		var lTriples = $this.convertLinksToTriples(pLinks);
+		
+		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		
 		//execute parse
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "parseCardToOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(pElements),
-			   'links' : JSON.stringify(pLinks),
-		   },
-		   success: function(){
-			   //console.log('PARSE OK!')
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "parseCardToOWL.htm",
+//		   data: {
+//			   'elements' : JSON.stringify(pElements),
+//			   'links' : JSON.stringify(pLinks),
+//		   },
+//		   success: function(){
+//			   //console.log('PARSE OK!')
+//		   },
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 		
 	},
 	
@@ -812,8 +869,12 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	//create connection between ports in OWL
 	connectPorts : function(sourcePort, targetPort) {
 		
+		var connection = this.app.connection;
+		
 		var $this = this;
 		var relationships = this.relationships;
+		
+		var connection = this.app.connection;
 		
 		var links = [];
 		var elements = [];
@@ -829,28 +890,36 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			"object" : targetPort.id,
 		})
 		
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "connectPortsInOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(elements),
-			   'links' : JSON.stringify(links),
-		   },
-		   success: function(){
-			   //execute reasoning
-			   $this.executeReasoning();
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+		var eTriples = $this.convertElementsToTriples(elements);
+		var lTriples = $this.convertLinksToTriples(links);
+		
+		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "connectPortsInOWL.htm",
+//		   data: {
+//			   'elements' : JSON.stringify(elements),
+//			   'links' : JSON.stringify(links),
+//		   },
+//		   success: function(){
+//			   //execute reasoning
+//			   $this.executeReasoning();
+//		   },
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 		
 	},
 	
 	//create connection between ports in OWL
 	connectPortsWithoutReasoning : function(sourcePort, targetPort) {
 		
+		var connection = this.app.connection;
+		
 		var $this = this;
 		var relationships = this.relationships;
 		
@@ -868,19 +937,25 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			"object" : targetPort.id,
 		})
 		
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "connectPortsInOWL.htm",
-		   data: {
-			   'elements' : JSON.stringify(elements),
-			   'links' : JSON.stringify(links),
-		   },
-		   success: function(){},
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+		var eTriples = $this.convertElementsToTriples(elements);
+		var lTriples = $this.convertLinksToTriples(links);
+		
+		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "connectPortsInOWL.htm",
+//		   data: {
+//			   'elements' : JSON.stringify(elements),
+//			   'links' : JSON.stringify(links),
+//		   },
+//		   success: function(){},
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 		
 	},
 	
@@ -952,51 +1027,176 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var connectionType = undefined;
 		var $this = this;
 		
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "getConnectionTypeFromOWL.htm",
-		   data: {
-			   'equipmentSourceId' : equipmentSourceId,
-			   'equipmentTargetId' : equipmentTargetId,
-		   },
-		   success: function(data){
-			   connectionType = data;
-			   console.log('connectionType: ' + connectionType)
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+		connectionType = 'Horizontal';
+		
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "getConnectionTypeFromOWL.htm",
+//		   data: {
+//			   'equipmentSourceId' : equipmentSourceId,
+//			   'equipmentTargetId' : equipmentTargetId,
+//		   },
+//		   success: function(data){
+//			   connectionType = data;
+//			   console.log('connectionType: ' + connectionType)
+//		   },
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 		
 		return connectionType;
+	},
+	
+	getPortsByLayerFromOWL : function(equipmentId, portType, connectionType, checkConnectedPorts) {
+		
+		var resultPorts = {};
+		
+		var namespace = "http://www.menthor.net/provisioning.owl#";
+		
+		var connection = this.app.connection;
+		var $this = this;
+		
+		var predicates = [
+		                  'ont:A_Equipment_Card',
+		                  'ont:A_Card_CardLayer'
+		                  ];
+		
+		var subject = 'ont:' + equipmentId;
+		var layers = connection.selectObjectsQuery(subject, predicates);
+		
+		var possibleLayers = undefined;
+		
+		if(connectionType) {
+			if(connectionType === 'Vertical' || connectionType === 'Horizontal_ST') {
+				possibleLayers = connection.selectTopLayers();
+			}
+			else if(connectionType === 'Horizontal' ){
+				possibleLayers = connection.selectBottomLayers();
+			}
+			else {
+				possibleLayers = connection.selectAllLayers();
+			}
+		}
+		else {
+			possibleLayers = connection.selectAllLayers();
+		}
+		
+		$.each(layers, function(index, layer) {
+			
+			var layerLabel = connection.selectLabelQuery(layer); 
+			
+			existLayer = false;
+			
+			$.each(possibleLayers, function(key, possibleLayer) {
+				if(layerLabel === possibleLayer) {
+					existLayer = true;
+				}
+			})
+			
+			if(existLayer) {
+				
+				predicates = [];
+				if(portType === 'Output_Card') {
+					predicates = [
+				                  'ont:INV.intermediates_up',
+				                  'ont:INV.is_interface_of.Output_Card.Transport_Function'
+				                  ];
+				}
+				else if(portType === 'Input_Card') {
+					predicates = [
+				                  'ont:INV.intermediates_down',
+				                  'ont:INV.is_interface_of.Input_Card.Transport_Function'
+				                  ];
+				}
+				
+				layer = layer.replace(namespace, 'ont:');
+				var ports = connection.selectObjectsQuery(layer, predicates);
+				
+				$.each(ports, function(key, port) {
+					
+					var portLabel = connection.selectLabelQuery(port); 
+					
+					var portId = port.replace(namespace, '');
+					var containsPort = false;
+					
+					var isConnectedPort = false;
+					
+					if(checkConnectedPorts) {
+						isConnectedPort = connection.askIsConnectedPort(portId);
+					}
+					
+					if(!isConnectedPort) {
+						
+						if(!resultPorts[layerLabel]) {
+							resultPorts[layerLabel] = [];
+						}
+						
+						$.each(resultPorts[layerLabel], function(key, resultPort) {
+							if(resultPort.id === portId) {
+								containsPort = true;
+							}
+						});
+						
+						if(!containsPort) {
+							resultPorts[layerLabel].push({
+								'id': portId,
+								'name': portLabel,
+								'type': portType,
+							});
+						}
+					}
+					
+				});
+				
+			}
+			
+		});
+		
+		return resultPorts;
+		
+		
 	},
 	
 	//Method do get possible connection ports (interfaces) from OWL
 	getPossibleConnectionsFromOWL : function(connectionType, equipmentSourceId, equipmentTargetId) {
 		
 		var $this = this;
-		var connections = undefined;
+		var connections = [];
 
-		$.ajax({
-			type: "POST",
-			async: false,
-			url: "getPossibleConnectionsFromOWL.htm",
-			data: {
-				'equipmentSourceId' : equipmentSourceId,
-				'equipmentTargetId' : equipmentTargetId,
-				'connectionType' : connectionType,
-			},
-			dataType: 'json',
-			success: function(data){
-				console.log('connections: ' + JSON.stringify(data))
-				connections = data;
-			},
-			error : function(e) {
-				alert("error: " + e.status);
-			}
-		});
+		if(connectionType === 'Horizontal' || connectionType === 'Horizontal_ST') {
+			connections[equipmentSourceId] = this.getPortsByLayerFromOWL(equipmentSourceId, 'Output_Card', connectionType, true);
+			connections[equipmentTargetId] = this.getPortsByLayerFromOWL(equipmentTargetId, 'Output_Card', connectionType, true);
+		}
+		else {
+			connections[equipmentSourceId] = this.getPortsByLayerFromOWL(equipmentSourceId, 'Output_Card', connectionType, true);
+			connections[equipmentTargetId] = this.getPortsByLayerFromOWL(equipmentTargetId, 'Input_Card', connectionType, true);
+		}
+		
+		
+		
+//		$.ajax({
+//			type: "POST",
+//			async: false,
+//			url: "getPossibleConnectionsFromOWL.htm",
+//			data: {
+//				'equipmentSourceId' : equipmentSourceId,
+//				'equipmentTargetId' : equipmentTargetId,
+//				'connectionType' : connectionType,
+//			},
+//			dataType: 'json',
+//			success: function(data){
+//				console.log('connections: ' + JSON.stringify(data))
+//				connections = data;
+//			},
+//			error : function(e) {
+//				alert("error: " + e.status);
+//			}
+//		});
 
+		console.log('connections: ' + JSON.stringify(connections))
+		
 		return connections;
 		
 	},
@@ -1004,23 +1204,23 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	//Method to get inputs from OWL file
 	getInputsFromOWL : function(equipmentId) {
 		
-		var inputs = {};
+		var inputs = this.getPortsByLayerFromOWL(equipmentId, 'Input_Card', 'All', false);
 		
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "getInputsFromOWL.htm",
-		   data: {
-			   'equipmentId' : equipmentId,
-		   },
-		   dataType: 'json',
-		   success: function(data){
-			   inputs = data;
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "getInputsFromOWL.htm",
+//		   data: {
+//			   'equipmentId' : equipmentId,
+//		   },
+//		   dataType: 'json',
+//		   success: function(data){
+//			   inputs = data;
+//		   },
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 		
 		return inputs;
 	},
@@ -1028,23 +1228,23 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	//Method to get outputs from OWL file
 	getOutputsFromOWL : function(equipmentId) {
 		
-		var outputs = {};
+		var outputs = this.getPortsByLayerFromOWL(equipmentId, 'Output_Card', 'All', false);
 		
-		$.ajax({
-		   type: "POST",
-		   async: false,
-		   url: "getOutputsFromOWL.htm",
-		   data: {
-			   'equipmentId' : equipmentId,
-		   },
-		   dataType: 'json',
-		   success: function(data){
-			   outputs = data;
-		   },
-		   error : function(e) {
-			   alert("error: " + e.status);
-		   }
-		});
+//		$.ajax({
+//		   type: "POST",
+//		   async: false,
+//		   url: "getOutputsFromOWL.htm",
+//		   data: {
+//			   'equipmentId' : equipmentId,
+//		   },
+//		   dataType: 'json',
+//		   success: function(data){
+//			   outputs = data;
+//		   },
+//		   error : function(e) {
+//			   alert("error: " + e.status);
+//		   }
+//		});
 		
 		return outputs;
 	},

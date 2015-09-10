@@ -26,8 +26,10 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 	
 	database : "nopen",
 	
-	prefix : "onto",
-	namespcae: "http://www.menthor.net/provisioning.owl#",
+	prefix : "ont",
+	namespace: "http://www.menthor.net/provisioning.owl#",
+	
+	namedGraph: "http://localhost:8080/nopen/provisioning.htm",
 	
 	initialize : function() {
 
@@ -55,6 +57,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		var $this = this;
 		var exist = false;
 		
+		var namedGraph = this.namedGraph;
 		var database = this.database;
 		
 		this.connection.listDBs(function(data) {
@@ -70,6 +73,13 @@ nopen.provisioning.Connection = Backbone.Model.extend({
     			$this.createDB();
     		}
         }); 
+		
+		var query = 'CLEAR GRAPH <' + namedGraph + '>';
+		this.connection.query({
+			"database" : database,
+			"query": query,  
+		},
+		function () {});
 		
 	},
 	
@@ -89,7 +99,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 			"database" : database,
 			"options" : {
 				"database.namespaces" : [
-					"onto=http://www.menthor.net/provisioning.owl#",
+					"ont=http://www.menthor.net/provisioning.owl#",
 				],
 //				"icv.reasoning.enabled" : true,
 			},
@@ -105,67 +115,267 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		
 	},
 	
+	saveNamedGraph : function(newNamedGraph) {
+		
+		var namedGraph = this.namedGraph;
+		
+		var query = 'CLEAR GRAPH <' + newNamedGraph + '>';
+		this.executeNamedGraphQuery(query);
+		
+		query = 'COPY <' + namedGraph + '> TO <' + newNamedGraph + '>';
+		this.executeNamedGraphQuery(query);
+		
+	},
+	
+	loadNamedGraph : function(loadedNamedGraph) {
+		
+		var namedGraph = this.namedGraph;
+		
+		var query = 'CLEAR GRAPH <' + namedGraph + '>';
+		this.executeNamedGraphQuery(query);
+		
+		query = 'COPY <' + loadedNamedGraph + '> TO <' + namedGraph + '>';
+		this.executeNamedGraphQuery(query);
+		
+	},
+	
+	deleteNamedGraph : function(deletedNamedGraph) {
+		
+		var query = 'CLEAR GRAPH <' + loadedNamedGraph + '>';
+		this.executeNamedGraphQuery(query);
+		
+	},
+	
 	save : function(triples, namedGraph) {
 		
 		var database = this.database;
 		var connection = this.connection;
 		
-		var query = 'INSERT DATA {';
+		var namedGraph = this.namedGraph;
+		var query = 'INSERT DATA { GRAPH <' + namedGraph + '> {';
 		
 		$.each(triples, function(index, triple) {
 			
-//			var query = 'INSERT DATA { GRAPH <' + namedGraph + '> { ' + triple.s + ' ' + triple.p + ' ' + triple.o + ' . } }';
 			query = query + ' ' + triple.s + ' ' + triple.p + ' ' + triple.o + ' . ';
 			
 		});
 		
-		query = query + '}';
+		query = query + '} }';
 		console.log(query);
 		
 		connection.query({
 			"database" : database,
 			"query": query,
-//			"reasoning" : true,
 		},
 		function (data) {});
 		
+	},
+	
+	selectAllLayers : function() {
+		var query = 'SELECT DISTINCT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . }'
+		return this.selectLayer(query);	
+	},
+	
+	selectTopLayers : function() {
+		var query = 'SELECT DISTINCT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . FILTER NOT EXISTS { ?layer ont:is_client ?x . } }'
+		return this.selectLayer(query);	
+	},
+	
+	selectBottomLayers : function() {
+		var query = 'SELECT DISTINCT ?label WHERE { ?layer rdf:type ont:Layer_Type . ?layer rdfs:label ?label . FILTER NOT EXISTS { ?layer ont:INV.is_client ?x . } }'
+		return this.selectLayer(query);	
+	},
+	
+	selectLayer : function(query) {
 		
-//		var query = 'CLEAR GRAPH <' + namedGraph + '>';
-//		connection.query({
-//			"database" : database,
-//			"query": query,  
-//		},
-//		function () {
-//			
-//			
-//			
-//		});
+		var layers = [];
+		
+		jQuery.ajaxSetup({async:false});
+		
+		var result = this.executeQuery(query);
+		
+		$.each(result, function(index, layer) {
+			layers.push(layer.label.value);
+		})
+		
+		console.log(JSON.stringify(layers));
+		
+		return layers;
 		
 	},
 	
-	insertQuery : function(graph, triples) {
+	selectLabelQuery : function(subject) {
 		
+		var namedGraph = this.namedGraph;
+		query = 'SELECT ?label { GRAPH <' + namedGraph + '> { <' + subject + '> rdfs:label ?label . } }';
 		
+		var result = this.executeQuery(query);
 		
-		//document.
+		var label = result[0].label.value;
+		//label = label.replace(this.namespace, '');
+		
+		return label;
+		
 	},
 	
-	selectQuery : function() {
+	selectObjectsQuery : function(subject, predicates) {
 		
-		var query = 'SELECT * WHERE { GRAPH ?g { <' + document.URL + '> ?y ?z . } }';
-		var result = "";
+		var namedGraph = this.namedGraph;
+		var query = 'SELECT * { GRAPH <' + namedGraph + '> { ' + subject
 		
-		this.connection.query({
-			database: "testDB",
-			query: query,  
-		},
-		function (data) {
-			console.log(JSON.stringify(data));
-			result = JSON.stringify(data);
+		$.each(predicates, function(index, predicate){
+			
+			if(index === 0) {
+				query = query + ' ' + predicate;
+			}
+			else {
+				query = query + '/' + predicate;
+			}
+			
 		});
+			
+		query = query + ' ?o . } }';
+		
+//		console.log('QUERY: ' + query);
+		
+		var result = this.executeQueryWithReasoning(query);
+		
+		var objects = [];
+		
+		$.each(result, function(index, object) {
+			objects.push(object.o.value);
+		})
+		
+		return objects;
+		
+	},
+	
+	askIsConnectedPort : function(port) {
+
+		var namedGraph = this.namedGraph;
+		
+		var isConnectedPort = false; 
+		
+		var query = 'SELECT ?port { GRAPH <' + namedGraph + '>  { ont:' + port + ' ont:vertical_links_to|ont:horizontal_links_to ?port . } }'; 
+		var result = this.executeQueryWithReasoning(query);
+		
+		if(result.length > 0) {
+			isConnectedPort = true;
+		}
+		else {
+			query = 'SELECT ?port { GRAPH <' + namedGraph + '>  { ?port ont:vertical_links_to|ont:horizontal_links_to ont:' + port + ' . } }';
+			result = this.executeQueryWithReasoning(query);
+			
+			if(result.length > 0) {
+				isConnectedPort = true;
+			}
+		}
+		
+		return isConnectedPort;
+		
+	},
+	
+	askQuery : function(subject, predicates, object) {
+		
+		var namedGraph = this.namedGraph;
+		
+		var query = 'ASK { GRAPH <' + namedGraph + '> { ' + subject
+			
+		$.each(predicates, function(index, predicate){
+			
+			if(index === 0) {
+				query = query + ' ' + predicate;
+			}
+			else {
+				query = query + '/' + predicate;
+			}
+			
+		});
+			
+		query = query + ' ' + object + ' . } }';
+		
+		var result = this.executeAskQueryWithReasoning(query);
 		
 		return result;
 	},
+	
+	executeQueryWithReasoning : function(query) {
+		
+		var result = undefined;
+		
+		jQuery.ajaxSetup({async:false});
+		
+		this.connection.query({
+	        database: "nopen",
+	        query: query,  
+	        reasoning: true,
+		},
+		function (data) {
+//	        console.log(JSON.stringify(data.results.bindings));
+	        result = data.results.bindings;
+	    });
+		
+		jQuery.ajaxSetup({async:true});
+		
+		return result;
+	},
+	
+	executeAskQueryWithReasoning : function(query) {
+		
+		var result = undefined;
+		
+		jQuery.ajaxSetup({async:false});
+		
+		this.connection.query({
+	        database: "nopen",
+	        query: query,  
+	        reasoning: true,
+		},
+		function (data) {
+	        result = data;
+	    });
+		
+		jQuery.ajaxSetup({async:true});
+		
+		return result;
+	},
+	
+	executeQuery : function(query) {
+		
+		var result = undefined;
+		
+		jQuery.ajaxSetup({async:false});
+		
+		this.connection.query({
+	        database: "nopen",
+	        query: query,  
+		},
+		function (data) {
+//	        console.log(JSON.stringify(data));
+	        result = data.results.bindings;
+	    });
+		
+		jQuery.ajaxSetup({async:true});
+		
+		return result;
+	},
+	
+	executeNamedGraphQuery : function(query) {
+		
+		var result = undefined;
+		
+		jQuery.ajaxSetup({async:false});
+		
+		this.connection.query({
+	        database: "nopen",
+	        query: query,  
+		},
+		function (data) { });
+		
+		jQuery.ajaxSetup({async:true});
+		
+	},	
+	
 	
 	testQuery : function() {
 		
@@ -195,7 +405,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 //		var query = ' INSERT DATA { np:Test rdf:type owl:Class .' + 
 //					' np:Test rdfs:label "Test" . }';
 			
-		var query = ' SELECT * WHERE { ?x onto:has_path ?y . } ';
+		var query = ' SELECT * WHERE { ?x ont:has_path ?y . } ';
 			
 		this.connection.query({
 	        database: "nopen",
@@ -218,4 +428,38 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		
 	},
 
+	insertQuery : function(graph, triples) {
+		
+		
+//		var query = 'CLEAR GRAPH <' + namedGraph + '>';
+//		connection.query({
+//			"database" : database,
+//			"query": query,  
+//		},
+//		function () {
+//			
+//			
+//			
+//		});
+		
+		//document.
+	},
+	
+	selectQueryTest : function() {
+		
+		var query = 'SELECT * WHERE { GRAPH ?g { <' + document.URL + '> ?y ?z . } }';
+		var result = "";
+		
+		this.connection.query({
+			database: "testDB",
+			query: query,  
+		},
+		function (data) {
+			console.log(JSON.stringify(data));
+			result = JSON.stringify(data);
+		});
+		
+		return result;
+	},
+	
 });

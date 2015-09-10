@@ -25,7 +25,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		//create util
 		this.util = new nopen.provisioning.Util;
 		//create connection
-//		this.connection = new nopen.provisioning.Connection;
+		this.connection = new nopen.provisioning.Connection;
 		
 		//create Test
 		this.test = new nopen.provisioning.Test;
@@ -55,6 +55,12 @@ nopen.provisioning.App = Backbone.View.extend({
 		//this.test.execute(app);
 		
 		var test = this.test;
+		var owl = this.owl;
+		var connection = this.connection;
+		
+		connection.selectAllLayers();
+		connection.selectTopLayers();
+		connection.selectBottomLayers();
 		
 //		$('#btn-pre').click(function(){
 //			test.executeMatrixDialog(app);
@@ -311,7 +317,7 @@ nopen.provisioning.App = Backbone.View.extend({
         	
         });
         
-      //Rigth click on mouse, show connections
+      //Right click on mouse, show connections
     	paper.$el.on('contextmenu', function(evt) { 
     	    evt.stopPropagation(); // Stop bubbling so that the paper does not handle mousedown.
     	    evt.preventDefault();  // Prevent displaying default browser context menu.
@@ -324,14 +330,14 @@ nopen.provisioning.App = Backbone.View.extend({
     	       
     	       var connectedPorts = model.getConnectedPorts(cell);
 //    	       console.log('connectedPorts' + JSON.stringify(connectedPorts));
-    	       createEquipmentConnectionDialog(cell, connectedPorts);
+    	       createEquipmentDialog(cell, connectedPorts);
     	       
     	    }
     	    
     	});
     	
-    	//Generate connection dialog when drag a equipment to another
-		function createEquipmentConnectionDialog(equipment, connectedPorts) {
+    	//Generate equipment dialog when right click on an equipment 
+		function createEquipmentDialog(equipment, connectedPorts) {
 			
 			var outputs = owl.getOutputsFromOWL(equipment.id);
 			var inputs = owl.getInputsFromOWL(equipment.id);
