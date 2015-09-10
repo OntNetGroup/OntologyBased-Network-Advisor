@@ -2,7 +2,6 @@ package br.com.padtec.nopen.service;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,13 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
-import br.com.padtec.nopen.service.util.NOpenFileUtil;
 import br.com.padtec.nopen.service.util.NOpenQueryUtil;
 import br.com.padtec.nopen.topology.service.TopologyComponents;
-import br.com.padtec.okco.core.application.OKCoUploader;
 
 public class NOpenAttributeRecognizer {
 
@@ -327,16 +325,23 @@ public class NOpenAttributeRecognizer {
 	 
 	 /** @author John Guerson 
 		 * @throws Exception */
-		public static Map<String, String>  runFromOWL(String cardURI, String fileName) throws Exception{
-			OKCoUploader repository = TopologyComponents.topologyRepository;
+		public static Map<String, String>  runFromOWL(String cardURI, String fileName) throws Exception{			
 			//============================================
 			//write owl to a file. We use this for tests.
-			String path = NOpenFileUtil.templateOWLFolder;
-			File f = new File(path+"topology.owl");
-			if (f.exists()) f.delete();
-			NOpenFileUtil.writeToFile(new File(path+"topology.owl"), repository.getBaseModelAsString());
-			//============================================
-			return runfromCard(cardURI, repository);	
+			//String path = NOpenFileUtil.templateOWLFolder;
+			//File f = new File(path+"topology.owl");
+			//if (f.exists()) f.delete();
+			//NOpenFileUtil.writeToFile(new File(path+"topology.owl"), TopologyComponents.topologyRepository.getBaseModelAsString());
+			//============================================			
+			if(!isCardPresent(cardURI)){
+				System.err.println("Card Not Present: "+cardURI);
+				System.err.println("These are the cards that are present in the ontology: ");
+				for(String s: QueryUtil.getIndividualsURI(TopologyComponents.topologyRepository.getBaseModel(),TopologyComponents.topologyRepository.getNamespace()+ConceptEnum.Card.toString())){
+					System.err.println(s);
+				}
+				return null;
+			}
+			return runfromCard(cardURI);	
 		}
 	 
 //	 /** @author John Guerson 
@@ -358,22 +363,30 @@ public class NOpenAttributeRecognizer {
 //		return runfromCard(cardURI, repository);
 //	}
 	
+	public static boolean isCardPresent(String cardURI){
+		for(String s: QueryUtil.getIndividualsURI(TopologyComponents.topologyRepository.getBaseModel(),TopologyComponents.topologyRepository.getNamespace()+ConceptEnum.Card.toString())){
+			if(s.equals(cardURI)) return true;			
+		}
+		return false;
+		
+	}
+	
 	/** @author John Guerson */
 	@SuppressWarnings("unused")
-	public static Map<String, String> runfromCard(String cardURI, OKCoUploader srcRepository) throws Exception
+	public static Map<String, String> runfromCard(String cardURI) throws Exception
 	{		
 		/** tf <-> json content */
 		Map<String,String> attrMap = new HashMap<String,String>();
-		
+				
 		/** Card Layers*/
 		List<String> cardLayers = new ArrayList<String>();
-		cardLayers = NOpenQueryUtil.getCardLayersURIFromCard(srcRepository, cardURI);
+		cardLayers = NOpenQueryUtil.getCardLayersURIFromCard(TopologyComponents.topologyRepository, cardURI);
 		System.out.println("Card Layers: "+cardLayers);
 		
 		/** Layer Types */
 		List<String> layerTypes = new ArrayList<String>();
 		for(String l: cardLayers) { 
-			layerTypes.addAll(NOpenQueryUtil.getLayerTypeURIFromCardLayer(srcRepository, l)); 
+			layerTypes.addAll(NOpenQueryUtil.getLayerTypeURIFromCardLayer(TopologyComponents.topologyRepository, l)); 
 		}
 		System.out.println("Layer Types: "+layerTypes);
 						
@@ -414,13 +427,13 @@ public class NOpenAttributeRecognizer {
 		/**AF*/
 		String tpType = new String();
 		boolean isClient = false;
-		List<String> afs = NOpenQueryUtil.getAFsURIFromCard(srcRepository, cardURI);
+		List<String> afs = NOpenQueryUtil.getAFsURIFromCard(TopologyComponents.topologyRepository, cardURI);
 		System.out.println("Afs:"+afs);
 		int index=0;
 		for(String adId: afs){
 			
 			/** Matrix */
-			List<String> matrizes = NOpenQueryUtil.getMatrixURIFromAF(srcRepository, adId);
+			List<String> matrizes = NOpenQueryUtil.getMatrixURIFromAF(TopologyComponents.topologyRepository, adId);
 			if(matrizes.size()>0) isClient=true;
 			
 			tpType = "ctp";				
@@ -444,13 +457,13 @@ public class NOpenAttributeRecognizer {
 			/** TTF */
 			tpType = new String();
 			isClient = false;
-			List<String> ttfs = NOpenQueryUtil.getTTFURIFromCardLayer(srcRepository, cardLayer);
+			List<String> ttfs = NOpenQueryUtil.getTTFURIFromCardLayer(TopologyComponents.topologyRepository, cardLayer);
 			System.out.println("Ttfs:"+ttfs);
 			index=0;
 			for(String ttfId: ttfs){
 				
 				/** Matrix */
-				List<String> matrizes = NOpenQueryUtil.getMatrixURIFromTTF(srcRepository, ttfId);
+				List<String> matrizes = NOpenQueryUtil.getMatrixURIFromTTF(TopologyComponents.topologyRepository, ttfId);
 				if(matrizes.size()>0) isClient=true;
 			
 				tpType = "ttp";
