@@ -1,16 +1,20 @@
 package br.com.padtec.nopen.topology.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.springframework.stereotype.Controller;
 
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import com.jointjs.util.JointUtilManager;
 
+import br.com.padtec.common.dto.DtoInstance;
 import br.com.padtec.common.factory.FactoryUtil;
+import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
 import br.com.padtec.nopen.provisioning.model.PLink;
@@ -22,7 +26,7 @@ public class TopologyManager {
 
 	public HashSet<String> getAllTemplateEquipment(){
 		HashSet<String> equipments = new HashSet<String>();
-		equipments = NOpenQueryUtil.getAllTemplateEquipment(StudioComponents.studioRepository.getBaseModel());		
+		equipments = NOpenQueryUtil.getAllTemplateEquipment(TopologyComponents.topologyRepository.getBaseModel());		
 		
 		return equipments;
 		
@@ -30,14 +34,14 @@ public class TopologyManager {
 	
 	public void connectTFLayer(String idTF, String relation, String idLayer) throws Exception{
 		//Save Transport Function
-		String idTFURI = StudioComponents.studioRepository.getNamespace()+idTF;
-		String TFURI = StudioComponents.studioRepository.getNamespace()+ConceptEnum.Transport_Function.toString();
-		FactoryUtil.createInstanceIndividual(StudioComponents.studioRepository.getBaseModel(), idTFURI, TFURI);
+		String idTFURI = TopologyComponents.topologyRepository.getNamespace()+idTF;
+		String TFURI = TopologyComponents.topologyRepository.getNamespace()+ConceptEnum.Transport_Function.toString();
+		FactoryUtil.createInstanceIndividual(TopologyComponents.topologyRepository.getBaseModel(), idTFURI, TFURI);
 
 		// Create relation between Transport Function and Layer
-		String relationURI = StudioComponents.studioRepository.getNamespace()+relation; //ComponentOf7
-		String layerURI = StudioComponents.studioRepository.getNamespace()+idLayer; //
-		FactoryUtil.createInstanceRelation(StudioComponents.studioRepository.getBaseModel(),TFURI, relationURI, layerURI);
+		String relationURI = TopologyComponents.topologyRepository.getNamespace()+relation; //ComponentOf7
+		String layerURI = TopologyComponents.topologyRepository.getNamespace()+idLayer; //
+		FactoryUtil.createInstanceRelation(TopologyComponents.topologyRepository.getBaseModel(),TFURI, relationURI, layerURI);
 
 	}
 	
@@ -49,8 +53,8 @@ public class TopologyManager {
 	 */
 	public static void createElementsInOWL(String jsonElements) throws Exception {
 		
-		OntModel ontModel =  StudioComponents.studioRepository.getBaseModel();
-		String namespace = StudioComponents.studioRepository.getNamespace();
+		OntModel ontModel =  TopologyComponents.topologyRepository.getBaseModel();
+		String namespace = TopologyComponents.topologyRepository.getNamespace();
 		
 		FactoryUtil factoryUtil = new FactoryUtil();
 		
@@ -72,6 +76,12 @@ public class TopologyManager {
 		
 		factoryUtil.processStatements(ontModel);
 		
+		ArrayList<DtoInstance> instances = (ArrayList<DtoInstance>) DtoQueryUtil.getIndividualsFromClass(ontModel, namespace+"#Card_Layer");
+		
+		for (DtoInstance dtoInstance : instances) {
+			DtoQueryUtil.getRelationsFrom(ontModel, dtoInstance.getNs());
+		}
+		
 	}
 	
 	/**
@@ -82,8 +92,8 @@ public class TopologyManager {
 	 */
 	public static void createLinksInOWL(String jsonLinks) throws Exception {
 		
-		OntModel ontModel =  StudioComponents.studioRepository.getBaseModel();
-		String namespace = StudioComponents.studioRepository.getNamespace();
+		OntModel ontModel =  TopologyComponents.topologyRepository.getBaseModel();
+		String namespace = TopologyComponents.topologyRepository.getNamespace();
 		
 		FactoryUtil factoryUtil = new FactoryUtil();
 		
