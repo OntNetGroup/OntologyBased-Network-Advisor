@@ -504,8 +504,8 @@ nopen.provisioning.App = Backbone.View.extend({
 				title: 'Create Connection',
 				content: content,
 				buttons: [
-				          { action: 'create', content: 'Create', position: 'right' },
 				          { action: 'cancel', content: 'Cancel', position: 'right' },
+				          { action: 'create', content: 'Create', position: 'right' },
 				          ]
 			});
 			dialog.on('action:cancel', cancel);
