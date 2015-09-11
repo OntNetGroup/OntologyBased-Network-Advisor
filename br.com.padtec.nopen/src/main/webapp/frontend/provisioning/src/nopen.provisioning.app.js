@@ -106,216 +106,238 @@ nopen.provisioning.App = Backbone.View.extend({
         	
         	cell.set('position', position);
         });
-		
-        //handle with equipment click
-        var clicked = false;
-        var cellClickedId = undefined;
-        paper.on('cell:pointerclick', function(cellView, evt) {
-        	
-        	var cell = graph.getCell(cellView.model.id);
-
-        	if(cell.get('subtype') !== 'Access_Group') {
-        		
-        		$.each(graph.getElements(), function(index, cell) {
-            		if(cell.get('subtype') === 'Access_Group') {
-            			cell.attr('circle/stroke', "black");
-            			cell.attr('circle/stroke-width', 1);
-                		cell.attr('text/display', 'none');
-            		}
-            	});
-        		
-        		clicked = false;
-        		return;
-        	}
-        	
-        	$.each(graph.getElements(), function(index, cell) {
-        		if(cell.get('subtype') === 'Access_Group') {
-        			cell.attr('circle/stroke', "black");
-        			cell.attr('circle/stroke-width', 1);
-            		cell.attr('text/display', 'none');
-        		}
-        	});
-        	
-        	//hide links
-        	model.hideLinks();
-        	
-        	cell.attr('circle/stroke', "red");
-        	cell.attr('circle/stroke-width', 3);
-        	cell.attr('text/display', 'normal');
-        	
-        	$.each(graph.getLinks(), function(index, link) {
-        		
-        		var source = graph.getCell(link.get('source').id);
-        		var target = graph.getCell(link.get('target').id);
-        		
-        		//show links
-        		if(link.get('source').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
-        			model.showLink(link.id);
-        			var connectedCell = graph.getCell(link.get('target').id);
-        			connectedCell.attr('circle/stroke', "blue");
-        			connectedCell.attr('circle/stroke-width', 3);
-        			connectedCell.attr('text/display', 'normal');
-        		}
-        		if(link.get('target').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
-        			model.showLink(link.id);
-        			var connectedCell = graph.getCell(link.get('source').id)
-        			connectedCell.attr('circle/stroke', "blue");
-        			connectedCell.attr('circle/stroke-width', 3);
-        			connectedCell.attr('text/display', 'normal');
-        		}
-        		
-        	});
-        	
-        	clicked = true;
-        	cellClickedId = cell.id;
-        	
-        });
         
-        paper.on('blank:pointerclick', function(evt, x, y) {
-        	
-        	$.each(graph.getElements(), function(index, cell) {
-        		if(cell.get('subtype') === 'Access_Group') {
-        			cell.attr('circle/stroke', "black");
-        			cell.attr('circle/stroke-width', 1);
-            		cell.attr('text/display', 'none');
-        		}
-        	});
-        	
-        	//hide links
-        	model.hideLinks();
-        	
-        	clicked = false;
-        	
-        });
-        
-     	//handle with link movement and equipment hover
-        var transition = false;
-        paper.on('cell:pointermove', function(cellView, evt, x, y) {
-        	
-        	var cell = graph.getCell(cellView.model.id);
-        	
-        	if(cell.get('type') === 'link') {
-        		transition = true;
-        	}
-        	
-        });
-        
-        paper.on('cell:pointerup', function(cellView, evt, x, y) {
-        	
-        	var cell = graph.getCell(cellView.model.id);
-
-        	if(cell.get('type') === 'link') {
-        		transition = false;
-        	}
-        	
-        });
-        
-        var transitionCell = undefined;
-        var hoverCell = undefined;
         paper.on('cell:mouseover', function(cellView, evt) {
-        	
+
         	var cell = graph.getCell(cellView.model.id);
 
         	if(cell.get('subtype') !== 'Access_Group') return;
-        	
-        	if(transition) {
-        		hoverCell = {
-        				'stroke' : cell.attr('circle/stroke'),
-        				'strokeWidth' : cell.attr('circle/stroke-width'),
-        				'textDisplay' : cell.attr('text/display'),
-        		}
-        		transitionCell = {
-        				'stroke' : cell.attr('circle/stroke'),
-        				'strokeWidth' : cell.attr('circle/stroke-width'),
-        				'textDisplay' : cell.attr('text/display'),
-        		}	
-        		if(cell.id !== cellClickedId) {
-        			cell.attr('circle/stroke', "limegreen");
-        			cell.attr('circle/stroke-width', 3);
-        			cell.attr('text/display', 'normal');
-        		}
-            	return;
-        	}
-        	
-        	if(clicked) {
-        		hoverCell = {
-        				'stroke' : cell.attr('circle/stroke'),
-        				'strokeWidth' : cell.attr('circle/stroke-width'),
-        				'textDisplay' : cell.attr('text/display'),
-        		}
-        		if(cell.id !== cellClickedId) {
-        			cell.attr('circle/stroke', "red");
-                	cell.attr('circle/stroke-width', 3);
-                	cell.attr('text/display', 'normal');
-        		}
-        		return;
-        	}
-        	
-        	cell.attr('circle/stroke', "red");
-        	cell.attr('circle/stroke-width', 3);
-        	cell.attr('text/display', 'normal');
-        	
-        	$.each(graph.getLinks(), function(index, link) {
-        		
-        		var source = graph.getCell(link.get('source').id);
-        		var target = graph.getCell(link.get('target').id);
-        		
-        		//show links
-        		if(link.get('source').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
-        			model.showLink(link.id);
-        			var connectedCell = graph.getCell(link.get('target').id);
-        			connectedCell.attr('circle/stroke', "blue");
-        			connectedCell.attr('circle/stroke-width', 3);
-        			connectedCell.attr('text/display', 'normal');
-        		}
-        		if(link.get('target').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
-        			model.showLink(link.id);
-        			var connectedCell = graph.getCell(link.get('source').id)
-        			connectedCell.attr('circle/stroke', "blue");
-        			connectedCell.attr('circle/stroke-width', 3);
-        			connectedCell.attr('text/display', 'normal');
-        		}
-        		
-        	});
-        	
+
+        	cell.attr('circle/stroke', "limegreen");
+			cell.attr('circle/stroke-width', 3);
+			
         });
         
         paper.on('cell:mouseout', function(cellView, evt) {
-
+        	
         	var cell = graph.getCell(cellView.model.id);
+
         	if(cell.get('subtype') !== 'Access_Group') return;
-        	
-        	if(transition) {
-        		cell.attr('circle/stroke', transitionCell.stroke);
-    			cell.attr('circle/stroke-width', transitionCell.strokeWidth);
-        		cell.attr('text/display', transitionCell.textDisplay);
-        		return;
-        	}
-        	
-        	if(clicked) {
-        		if(cell.id !== cellClickedId) {
-        			console.log('hoverCell:' + JSON.stringify(hoverCell));
-        			cell.attr('circle/stroke', hoverCell.stroke);
-        			cell.attr('circle/stroke-width', hoverCell.strokeWidth);
-            		cell.attr('text/display', hoverCell.textDisplay);
-        		}
-        		return;
-        	}
-        	
-        	$.each(graph.getElements(), function(index, cell) {
-        		if(cell.get('subtype') === 'Access_Group') {
-        			cell.attr('circle/stroke', "black");
-        			cell.attr('circle/stroke-width', 1);
-            		cell.attr('text/display', 'none');
-        		}
-        	});
-        	
-//        	if(transition) return;
-        	
-        	//hide links
-        	model.hideLinks();
+
+        	cell.attr('circle/stroke', "black");
+			cell.attr('circle/stroke-width', 1);
         	
         });
+        
+//        //handle with equipment click
+//        var clicked = false;
+//        var cellClickedId = undefined;
+//        paper.on('cell:pointerclick', function(cellView, evt) {
+//        	
+//        	var cell = graph.getCell(cellView.model.id);
+//
+//        	if(cell.get('subtype') !== 'Access_Group') {
+//        		
+//        		$.each(graph.getElements(), function(index, cell) {
+//            		if(cell.get('subtype') === 'Access_Group') {
+//            			cell.attr('circle/stroke', "black");
+//            			cell.attr('circle/stroke-width', 1);
+//                		cell.attr('text/display', 'none');
+//            		}
+//            	});
+//        		
+//        		clicked = false;
+//        		return;
+//        	}
+//        	
+//        	$.each(graph.getElements(), function(index, cell) {
+//        		if(cell.get('subtype') === 'Access_Group') {
+//        			cell.attr('circle/stroke', "black");
+//        			cell.attr('circle/stroke-width', 1);
+//            		cell.attr('text/display', 'none');
+//        		}
+//        	});
+//        	
+//        	//hide links
+//        	model.hideLinks();
+//        	
+//        	cell.attr('circle/stroke', "red");
+//        	cell.attr('circle/stroke-width', 3);
+//        	cell.attr('text/display', 'normal');
+//        	
+//        	$.each(graph.getLinks(), function(index, link) {
+//        		
+//        		var source = graph.getCell(link.get('source').id);
+//        		var target = graph.getCell(link.get('target').id);
+//        		
+//        		//show links
+//        		if(link.get('source').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
+//        			model.showLink(link.id);
+//        			var connectedCell = graph.getCell(link.get('target').id);
+//        			connectedCell.attr('circle/stroke', "blue");
+//        			connectedCell.attr('circle/stroke-width', 3);
+//        			connectedCell.attr('text/display', 'normal');
+//        		}
+//        		if(link.get('target').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
+//        			model.showLink(link.id);
+//        			var connectedCell = graph.getCell(link.get('source').id)
+//        			connectedCell.attr('circle/stroke', "blue");
+//        			connectedCell.attr('circle/stroke-width', 3);
+//        			connectedCell.attr('text/display', 'normal');
+//        		}
+//        		
+//        	});
+//        	
+//        	clicked = true;
+//        	cellClickedId = cell.id;
+//        	
+//        });
+//        
+//        paper.on('blank:pointerclick', function(evt, x, y) {
+//        	
+//        	$.each(graph.getElements(), function(index, cell) {
+//        		if(cell.get('subtype') === 'Access_Group') {
+//        			cell.attr('circle/stroke', "black");
+//        			cell.attr('circle/stroke-width', 1);
+//            		cell.attr('text/display', 'none');
+//        		}
+//        	});
+//        	
+//        	//hide links
+//        	model.hideLinks();
+//        	
+//        	clicked = false;
+//        	
+//        });
+//        
+//     	//handle with link movement and equipment hover
+//        var transition = false;
+//        paper.on('cell:pointermove', function(cellView, evt, x, y) {
+//        	
+//        	var cell = graph.getCell(cellView.model.id);
+//        	
+//        	if(cell.get('type') === 'link') {
+//        		transition = true;
+//        	}
+//        	
+//        });
+//        
+//        paper.on('cell:pointerup', function(cellView, evt, x, y) {
+//        	
+//        	var cell = graph.getCell(cellView.model.id);
+//
+//        	if(cell.get('type') === 'link') {
+//        		transition = false;
+//        	}
+//        	
+//        });
+//        
+//        var transitionCell = undefined;
+//        var hoverCell = undefined;
+//        paper.on('cell:mouseover', function(cellView, evt) {
+//        	
+//        	var cell = graph.getCell(cellView.model.id);
+//
+//        	if(cell.get('subtype') !== 'Access_Group') return;
+//        	
+//        	if(transition) {
+//        		hoverCell = {
+//        				'stroke' : cell.attr('circle/stroke'),
+//        				'strokeWidth' : cell.attr('circle/stroke-width'),
+//        				'textDisplay' : cell.attr('text/display'),
+//        		}
+//        		transitionCell = {
+//        				'stroke' : cell.attr('circle/stroke'),
+//        				'strokeWidth' : cell.attr('circle/stroke-width'),
+//        				'textDisplay' : cell.attr('text/display'),
+//        		}	
+//        		if(cell.id !== cellClickedId) {
+//        			cell.attr('circle/stroke', "limegreen");
+//        			cell.attr('circle/stroke-width', 3);
+//        			cell.attr('text/display', 'normal');
+//        		}
+//            	return;
+//        	}
+//        	
+//        	if(clicked) {
+//        		hoverCell = {
+//        				'stroke' : cell.attr('circle/stroke'),
+//        				'strokeWidth' : cell.attr('circle/stroke-width'),
+//        				'textDisplay' : cell.attr('text/display'),
+//        		}
+//        		if(cell.id !== cellClickedId) {
+//        			cell.attr('circle/stroke', "red");
+//                	cell.attr('circle/stroke-width', 3);
+//                	cell.attr('text/display', 'normal');
+//        		}
+//        		return;
+//        	}
+//        	
+//        	cell.attr('circle/stroke', "red");
+//        	cell.attr('circle/stroke-width', 3);
+//        	cell.attr('text/display', 'normal');
+//        	
+//        	$.each(graph.getLinks(), function(index, link) {
+//        		
+//        		var source = graph.getCell(link.get('source').id);
+//        		var target = graph.getCell(link.get('target').id);
+//        		
+//        		//show links
+//        		if(link.get('source').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
+//        			model.showLink(link.id);
+//        			var connectedCell = graph.getCell(link.get('target').id);
+//        			connectedCell.attr('circle/stroke', "blue");
+//        			connectedCell.attr('circle/stroke-width', 3);
+//        			connectedCell.attr('text/display', 'normal');
+//        		}
+//        		if(link.get('target').id === cell.id && source.attr('.rotatable/display') === 'normal' && target.attr('.rotatable/display') === 'normal') {
+//        			model.showLink(link.id);
+//        			var connectedCell = graph.getCell(link.get('source').id)
+//        			connectedCell.attr('circle/stroke', "blue");
+//        			connectedCell.attr('circle/stroke-width', 3);
+//        			connectedCell.attr('text/display', 'normal');
+//        		}
+//        		
+//        	});
+//        	
+//        });
+//        
+//        paper.on('cell:mouseout', function(cellView, evt) {
+//
+//        	var cell = graph.getCell(cellView.model.id);
+//        	if(cell.get('subtype') !== 'Access_Group') return;
+//        	
+//        	if(transition) {
+//        		cell.attr('circle/stroke', transitionCell.stroke);
+//    			cell.attr('circle/stroke-width', transitionCell.strokeWidth);
+//        		cell.attr('text/display', transitionCell.textDisplay);
+//        		return;
+//        	}
+//        	
+//        	if(clicked) {
+//        		if(cell.id !== cellClickedId) {
+//        			console.log('hoverCell:' + JSON.stringify(hoverCell));
+//        			cell.attr('circle/stroke', hoverCell.stroke);
+//        			cell.attr('circle/stroke-width', hoverCell.strokeWidth);
+//            		cell.attr('text/display', hoverCell.textDisplay);
+//        		}
+//        		return;
+//        	}
+//        	
+//        	$.each(graph.getElements(), function(index, cell) {
+//        		if(cell.get('subtype') === 'Access_Group') {
+//        			cell.attr('circle/stroke', "black");
+//        			cell.attr('circle/stroke-width', 1);
+//            		cell.attr('text/display', 'none');
+//        		}
+//        	});
+//        	
+////        	if(transition) return;
+//        	
+//        	//hide links
+//        	model.hideLinks();
+//        	
+//        });
         
       //Right click on mouse, show connections
     	paper.$el.on('contextmenu', function(evt) { 
@@ -522,6 +544,8 @@ nopen.provisioning.App = Backbone.View.extend({
 				//connect ports directly in OWL and execute inference
 				owl.connectPorts(sPort, tPort);
 				
+				model.hideLinks();
+				
 				dialog.close();
 			};
 			
@@ -536,15 +560,32 @@ nopen.provisioning.App = Backbone.View.extend({
 			var sourceName = model.getEquipmentName(source);
 			var targetName = model.getEquipmentName(target);
 			
+			var tech = model.getTech(graph);
+			
+			if(tech === 'OTN') {
+				techSelectContent = '<select>' +
+										'<option value="none"></option>' +
+										'<option value="SimpleConnection">Simple Connection</option>' +
+										'<option value="1+1">1+1</option>' +
+										'<option value="1:1">1:1</option>' +
+										'<option value="1:n">1:n</option>' +
+									'</select>';
+			}
+			else if (tech === 'MEF') {
+				techSelectContent = '<select>' +
+										'<option value="none"></option>' +
+										'<option value="E-Line">E-Line</option>' +
+										'<option value="E-Tree">E-Tree</option>' +
+										'<option value="MultipointToMultipoint">Multipoint to Multipoint</option>' +
+									'</select>';
+			}
+			
 			var content = 
 				'<div class="connectsService">' +
 					'<div class="serviceLabel">' +
 						'<label><b>Select a Service:</b></label>' +
 					'</div>' +
-					'<select>' +
-						'<option value="none"></option>' +
-						'<option value="SimpleConnection">Simple Connection</option>' +
-					'</select>' +
+					techSelectContent +
 				'</div><hr class="horizontalLine"/>' +
 				'<div class="connectsContainer">' +
 //					'<div class="connectionType"><b>Connection Type:</b> ' + connectionType + '</div>' +

@@ -574,7 +574,8 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		$this.hideLinks();
 		$this.showTech(graph, initialTech);
 		
-		
+		//set initial technology
+		$('#technology').val(initialTech);
 	},
 	
 	showTech : function(graph, tech) {
@@ -597,6 +598,23 @@ nopen.provisioning.Model = Backbone.Model.extend({
 		
 	},
 	
+	getTech : function(graph) {
+		
+		var tech = undefined;
+		
+		$.each(graph.getElements(), function(index, element) {
+			
+			console.log('display: ' + element.attr('.rotatable/display'));
+			
+			if(element.attr('.rotatable/display') === 'normal' && element.get('subtype') === 'Layer_Network') {
+				tech = element.get('technology');
+			}
+			
+		});
+		
+		return tech;
+	},
+	
 	showEmbeds : function(graph, elementId) {
 		
 		var $this = this;
@@ -617,7 +635,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 	},
 	
 	showLink : function(linkId) {
-		$('.link[model-id="' + linkId + '"]').show();
+//		$('.link[model-id="' + linkId + '"]').show();
 	},
 	
 	getLayerOffset : function(index) {

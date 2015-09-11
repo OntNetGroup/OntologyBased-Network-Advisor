@@ -27,7 +27,7 @@ Stencil = {
 				id : equipmentID,
 				equipment : equipment,
 				attrs: {
-			        text: { text: equipment.name, 'y': '3em', 'display': 'none' }
+			        text: { text: equipment.name, 'y': '3em', 'display': 'normal' }
 			    }
 			});
 		}
