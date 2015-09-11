@@ -322,24 +322,16 @@ public class NOpenAttributeRecognizer {
 //		 System.out.println("[OK]");
 //		 runfromCard("http://www.menthor.net/nOpenModel_light.owl#50d54bc4-9b4c-4031-b21e-32dad94f358f", test);
 //	 }
-	 
+	   
 	 /** @author John Guerson 
 		 * @throws Exception */
-		public static Map<String, String>  runFromOWL(String cardURI, String fileName) throws Exception{			
-			//============================================
-			//write owl to a file. We use this for tests.
-			//String path = NOpenFileUtil.templateOWLFolder;
-			//File f = new File(path+"topology.owl");
-			//if (f.exists()) f.delete();
-			//NOpenFileUtil.writeToFile(new File(path+"topology.owl"), TopologyComponents.topologyRepository.getBaseModelAsString());
-			//============================================			
+		public static Map<String, String>  runFromOWL(String cardId, String fileName) throws Exception{						
+			String cardURI = TopologyComponents.topologyRepository.getNamespace()+cardId;
 			if(!isCardPresent(cardURI)){
-				System.err.println("Card Not Present: "+cardURI);
-				System.err.println("These are the cards that are present in the ontology: ");
+				System.err.println("Card Not Present: "+cardURI);				
 				for(String s: QueryUtil.getIndividualsURI(TopologyComponents.topologyRepository.getBaseModel(),TopologyComponents.topologyRepository.getNamespace()+ConceptEnum.Card.toString())){
 					System.err.println(s);
-				}
-				return null;
+				}				
 			}
 			return runfromCard(cardURI);	
 		}
@@ -399,7 +391,7 @@ public class NOpenAttributeRecognizer {
 		{			
 			String layer = new String();
 			String variable = new String();	
-			String layerTypeName = layerTypes.get(i);
+			String layerTypeName = layerTypes.get(i).replace(TopologyComponents.topologyRepository.getNamespace(), "");
 			if(layerTypeName.compareToIgnoreCase("ODU")==0)  { layer = "ODU"; variable = "k"; }
 			if(layerTypeName.compareToIgnoreCase("ODU2e")==0){ layer = "ODU"; variable = "k"; }
 			if(layerTypeName.compareToIgnoreCase("ODUk")==0) { layer = "ODU"; variable = "k"; }
