@@ -103,7 +103,14 @@ public class VisualizerController {
 		
 		try {			
 
-			Map<String, String> data = NOpenAttributeRecognizer.runFromOWL(card , supervisor);
+			NOpenAttributeRecognizer.recognize(card, supervisor);
+			
+			// a map from a TF name to its respective grouping
+			Map<String, String> data = NOpenAttributeRecognizer.getNameMap();
+			
+			//a map from a TF identifier to its respective grouping
+			Map<String, String> data2 = NOpenAttributeRecognizer.getIdMap();
+			
 			result = data;	
 //			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card,pelems,plinks);	
 		} catch (Exception e) {
