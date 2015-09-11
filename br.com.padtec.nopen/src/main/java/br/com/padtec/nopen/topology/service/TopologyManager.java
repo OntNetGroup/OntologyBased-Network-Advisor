@@ -13,6 +13,7 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 import com.jointjs.util.JointUtilManager;
 
 import br.com.padtec.common.dto.DtoInstance;
+import br.com.padtec.common.dto.DtoInstanceRelation;
 import br.com.padtec.common.factory.FactoryUtil;
 import br.com.padtec.common.queries.DtoQueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
@@ -63,7 +64,7 @@ public class TopologyManager {
 			
 			String individualURI = namespace + element.getId();
 			String classURI = namespace + element.getType();
-			
+			System.out.println(classURI);
 			//create new individual
 			factoryUtil.createInstanceIndividualStatement(ontModel, individualURI, classURI, false);
 			
@@ -76,11 +77,8 @@ public class TopologyManager {
 		
 		factoryUtil.processStatements(ontModel);
 		
-		ArrayList<DtoInstance> instances = (ArrayList<DtoInstance>) DtoQueryUtil.getIndividualsFromClass(ontModel, namespace+"#Card_Layer");
+	
 		
-		for (DtoInstance dtoInstance : instances) {
-			DtoQueryUtil.getRelationsFrom(ontModel, dtoInstance.getNs());
-		}
 		
 	}
 	
@@ -109,6 +107,13 @@ public class TopologyManager {
 		}
 		
 		factoryUtil.processStatements(ontModel);
+		
+		ArrayList<DtoInstance> instances = (ArrayList<DtoInstance>) DtoQueryUtil.getIndividualsFromClass(ontModel, "Card");
+		
+		for (DtoInstance dtoInstance : instances) {
+			ArrayList<DtoInstanceRelation>rel= (ArrayList<DtoInstanceRelation>) DtoQueryUtil.getRelationsFrom(ontModel, dtoInstance.getNs()+dtoInstance.getName());
+			System.err.println(rel);
+		}
 		
 	}
 	

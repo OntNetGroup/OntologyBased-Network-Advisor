@@ -14,6 +14,11 @@ var Rappid = Backbone.Router.extend({
         this.initializeEditor();
     },
 
+    initializeCounters: function() {
+        this.NodeCounter = 0;
+        
+    },
+    
     initializeEditor: function() {
 
         this.inspectorClosedGroups = {};
@@ -26,6 +31,7 @@ var Rappid = Backbone.Router.extend({
         this.initializeClipboard();
         this.initializeCommandManager();
         this.initializeToolbar();
+        this.initializeCounters();
         // Intentionally commented out. See the `initializeValidator()` method for reasons.
         // Uncomment for demo purposes.
         // this.initializeValidator();
