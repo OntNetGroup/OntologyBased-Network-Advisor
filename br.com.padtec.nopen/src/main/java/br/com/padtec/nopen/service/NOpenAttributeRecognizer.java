@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hp.hpl.jena.ontology.Individual;
+
 import br.com.padtec.common.queries.QueryUtil;
 import br.com.padtec.nopen.model.ConceptEnum;
 import br.com.padtec.nopen.provisioning.model.PElement;
@@ -300,20 +302,7 @@ public class NOpenAttributeRecognizer {
 		return attrMap;
 	}
 	
-	 public static String readFile (InputStream s) throws IOException
-	{
-		String result = new String();
-					
-		DataInputStream in = new DataInputStream(s);
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String strLine;			
-		while ((strLine = br.readLine()) != null)   
-		{	
-			result += strLine+"\n";
-		}
-		in.close();		
-		return result;
-	}
+	 
 	    
 //	 public static void main(String[] args) throws Exception {
 //		 OKCoUploader test = new OKCoUploader("attributes-recognizer-test");
@@ -355,6 +344,21 @@ public class NOpenAttributeRecognizer {
 //		return runfromCard(cardURI, repository);
 //	}
 	
+	public static String readFile (InputStream s) throws IOException
+	{
+		String result = new String();
+					
+		DataInputStream in = new DataInputStream(s);
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String strLine;			
+		while ((strLine = br.readLine()) != null)   
+		{	
+			result += strLine+"\n";
+		}
+		in.close();		
+		return result;
+	}
+
 	public static boolean isCardPresent(String cardURI){
 		for(String s: QueryUtil.getIndividualsURI(TopologyComponents.topologyRepository.getBaseModel(),TopologyComponents.topologyRepository.getNamespace()+ConceptEnum.Card.toString())){
 			if(s.equals(cardURI)) return true;			
@@ -422,10 +426,10 @@ public class NOpenAttributeRecognizer {
 		List<String> afs = NOpenQueryUtil.getAFsURIFromCard(TopologyComponents.topologyRepository, cardURI);
 		System.out.println("Afs:"+afs);
 		int index=0;
-		for(String adId: afs){
+		for(String afId: afs){
 			
 			/** Matrix */
-			List<String> matrizes = NOpenQueryUtil.getMatrixURIFromAF(TopologyComponents.topologyRepository, adId);
+			List<String> matrizes = NOpenQueryUtil.getMatrixURIFromAF(TopologyComponents.topologyRepository, afId);
 			if(matrizes.size()>0) isClient=true;
 			
 			tpType = "ctp";				
@@ -434,11 +438,18 @@ public class NOpenAttributeRecognizer {
 			InputStream s = NOpenAttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);					
 			String content = new String();
 			if(s!=null) content = readFile(s);
-			System.out.println("AF:"+adId);
+			
+			System.out.println("Getting Label for: "+afId);
+			Individual ind = TopologyComponents.topologyRepository.getBaseModel().getIndividual(afId);
+			String afName = new String();
+			if(ind!=null) afName = ind.getLabel(null); 
+			if(afName==null || afName.isEmpty()) afName = afId;
+			
+			System.out.println("AF:"+afName);
 			System.out.println("JSON:"+jsonFileName);				
 			System.out.println("Content:"+content);
 			
-			attrMap.put(adId, jsonFileName.replace(".json", ""));
+			attrMap.put(afId, jsonFileName.replace(".json", ""));
 			index++;
 		}
 		
@@ -464,11 +475,18 @@ public class NOpenAttributeRecognizer {
 				InputStream s = NOpenAttributeRecognizer.class.getResourceAsStream("/attributes/itu-874.1/"+jsonFileName);
 				String content = new String();
 				if(s!=null) content = readFile(s);
-				System.out.println("TTF:"+ttfId);
+
+				System.out.println("Getting Label for: "+ttfId);
+				Individual ind = TopologyComponents.topologyRepository.getBaseModel().getIndividual(ttfId);
+				String ttfName = new String();
+				if(ind!=null) ttfName = ind.getLabel(null);
+				if(ttfName==null || ttfName.isEmpty()) ttfName = ttfId;
+				
+				System.out.println("TTF:"+ttfName);
 				System.out.println("JSON:"+jsonFileName);				
-				System.out.println("Content:"+content);
-								
-				attrMap.put(ttfId,jsonFileName.replace(".json", ""));			
+				System.out.println("Content:"+content);	
+					
+				attrMap.put(ttfName,jsonFileName.replace(".json", ""));			
 				index++;
 			}
 		}
