@@ -31,7 +31,7 @@ nopen.topology.Model = Backbone.Model.extend({
 	},
 
 	saveCardstoOWL : function(){
-		owl.parseCardToOWL(this.equipments);
+		owl.parseCardToOWL(this.equipment);
 	},
 
 	generetaMatchEquipmentToNodeDialog : function(node) {
@@ -102,14 +102,21 @@ nopen.topology.Model = Backbone.Model.extend({
 				console.log(card);
 				//add card in card data
 				equipment.cells[index].attrs.data = card;
-				owl.parseCardToOWL(node , element);
 			}
 
 		});
 
 		//generate new ids
 		equipment = util.generateNewEquipmentIDs(equipment);
-
+		
+		$.each(equipment.cells, function(index, element){
+			
+			if(element.subType === 'Card') {
+				owl.parseCardToOWL(node , element);
+			}
+			
+		});
+		
 		//add new equipment
 		$this.addNewEquipment(node.id, equipment);
 
