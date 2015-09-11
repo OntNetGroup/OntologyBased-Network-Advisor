@@ -123,7 +123,7 @@ nopen.topology.Model = Backbone.Model.extend({
 		node.attr('text/text', topology.model.getName(filename));
 
 		node.attr('equipment/id', node.id);
-		node.attr('equipment/name', topology.model.getName(filename));
+		node.attr('equipment/name', filename);
 		
 		topology.model.nextName();
 		

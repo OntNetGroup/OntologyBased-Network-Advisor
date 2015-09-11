@@ -77,6 +77,8 @@
         <!-- STENCILS -->
         
         <script src="/nopen/frontend/network-topology/js/stencil.js"></script>
+        <script src="/nopen/frontend/network-topology/js/jszip.js"></script>
+        <script src="/nopen/frontend/network-topology/js/FileSaver.js"></script>
         
 		 <!-- DIALOGS -->
 
