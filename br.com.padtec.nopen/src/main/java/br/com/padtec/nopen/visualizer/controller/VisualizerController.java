@@ -95,23 +95,22 @@ public class VisualizerController {
 	 * Create equipment in OWL by a JSON file
 	 * @param card
 	 * @param supervisor
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/getCardAttributes", method = RequestMethod.POST)
-	protected @ResponseBody void getCardAttributes(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor){
+	protected @ResponseBody Map<String, String> getCardAttributes(@RequestParam("card") String card,@RequestParam("supervisor") String supervisor) throws Exception{
+		Map<String, String> result = null;
 		
 		try {			
-//			for(PElement e: pelems){
-//				System.out.println(e);
-//			}
-//			for(PLink l: plinks){
-//				System.out.println(l);
-//			}	
-			
+
 			Map<String, String> data = NOpenAttributeRecognizer.runFromOWL(card , supervisor);
+			result = data;	
 //			Map<String, String> result = NOpenAttributeRecognizer.runfromCard(card,pelems,plinks);	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return result;
 	}
 	
 	
