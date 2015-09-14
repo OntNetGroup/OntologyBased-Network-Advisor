@@ -39,13 +39,12 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			fileYANG = 'otn-switch {\n';
 			
 			/* ======= write <logical> ====== */
-			fileYANG = fileYANG +
-				'\tlogical {\n' +
+			fileLogical = '\tlogical {\n' +
 					'\t\totn-switch-cross-connections {\n';
 			
 			var crossConnections = equipGraph.getLinks();
 			_.each(crossConnections, function(connection) {
-				fileYANG = fileYANG +
+				fileLogical = fileLogical +
 							'\t\t\tcross-connection-entry ' + connection.id + ' {\n' +
 										'\t\t\t\tconnection {\n';
 				
@@ -54,41 +53,32 @@ nopen.topology.Exporter = Backbone.Model.extend({
 				
 				var typeOfConnection = 2;
 				var slotIn = equipGraph.getCell(connectionSource).attributes.parent;
-				var ifaceIn = connectionTarget;
+				var ifaceIn = connectionTarget.id;
 				var slotOut = equipGraph.getCell(connectionTarget).attributes.parent;
-				var ifaceOut = connectionSource;
+				var ifaceOut = connectionSource.id;
 				
-				fileYANG = fileYANG +
+				fileLogical = fileLogical +
 							'\t\t\t\t\ttype-of-connection\t' 		+ typeOfConnection + ';\n' +
 							'\t\t\t\t\tslot-in\t\t\t\t' 			+ slotIn + ';\n' +
 							'\t\t\t\t\tiface-in\t\t\t' 				+ ifaceIn + ';\n' +
 							'\t\t\t\t\tslot-out\t\t\t' 				+ slotOut + ';\n' +
 							'\t\t\t\t\tiface-out\t\t\t' 			+ ifaceOut + ';\n';
 				
-				fileYANG = fileYANG +
-							'\t\t\t\t}\n' +
-							'\t\t\t}\n';
+				fileLogical = fileLogical +	'\t\t\t\t}\n' +
+											'\t\t\t}\n';
 			});
 			
-			fileYANG = fileYANG + '\t\t}\n' +
-								'\t}\n';
+			fileLogical = fileLogical + '\t\t}\n';
 			
 			
-			/* ======= write <protocols> ====== */
-			fileYANG = fileYANG +
-				'\tprotocols {\n' +
-					'\t\totn {\n';
+			fileProtocols = '\t\tprotocols {\n' +
+								'\t\t\totn {\n';
 			
-			
-			
-			fileYANG = fileYANG + '\t\t}\n' +
-			'\t}\n';
 			
 			/* ======= write <physical> and <interfaces> ====== */
-			fileYANG = fileYANG + 
-				'\tphysical {\n' +
+			filePhysical = '\tphysical {\n' +
 					'\t\tmanaged-element {\n' +
-						'\t\t\tracks {\n';
+								'\t\t\tracks {\n';
 			
 			fileInterfaces = '\tinterfaces {\n';
 			
@@ -98,21 +88,31 @@ nopen.topology.Exporter = Backbone.Model.extend({
 				}
 			});
 			
-			fileYANG = fileYANG + '\t\t\t}\n' +
-								'\t\t}\n' +
-							'\t}\n';
+			fileProtocols = fileProtocols + '\t\t\t}\n' +
+											'\t\t}\n' +
+											'\t}\n';
 			
-			fileYANG = fileYANG + fileInterfaces + '\t}\n';
+			filePhysical = filePhysical + 	'\t\t\t}\n' +
+											'\t\t}\n' +
+											'\t}\n';
+			
+			fileInterfaces = fileInterfaces + '\t}\n';
 			/* ================================================= */
 			
-			fileYANG = fileYANG + '}';
+			fileYANG = fileYANG + fileLogical + fileProtocols + filePhysical + fileInterfaces + '}';
 			
+			var equipInstanceName = node.attributes.attrs.text.text;
 			var zip = new JSZip();
-			zip.file(equipName + ".yang", fileYANG);
+			zip.file(equipInstanceName + ".yang", fileYANG);
 			var blob = zip.generate({type:"blob"});
-//			saveAs(blob, equipName + ".zip");
+//			saveAs(blob, equipInstanceName + ".zip");
 			
-			console.log(fileYANG);
+			console.log(equipInstanceName);
+//			console.log(fileYANG);
+//			console.log(fileLogical);
+//			console.log(fileProtocols);
+//			console.log(filePhysical);
+//			console.log(fileInterfaces);
 			
 		});
 		
@@ -135,7 +135,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 					fileInterfaces = fileInterfaces + '\t\tinterface-entry ' + element.attributes.parent + ' ' + inPort.id + '{\n' +
 															'\t\t\timplemented-layers {\n';
 					
-					fileYANG = fileYANG + totalIdent + 'interface-entry ' + inPort.id + ' {\n';
+					filePhysical = filePhysical + totalIdent + 'interface-entry ' + inPort.id + ' {\n';
 					
 					var neighbors = getNeighbors(inPort.id, cardGraph);
 					_.each(neighbors, function(neighbor, index) {
@@ -147,18 +147,28 @@ nopen.topology.Exporter = Backbone.Model.extend({
 					fileInterfaces = fileInterfaces + '\t\t\t}\n' +
 													'\t\t}\n';
 					
-					fileYANG = fileYANG + totalIdent + ident + '}\n';
+					filePhysical = filePhysical + totalIdent + ident + '}\n';
 					
 
 					
 					function writeImplementedLayerEntryRecursively(element, prevElement, graph, totalIdent, filename) {
 						if(graph.getCell(element).attributes.subtype === SubtypeEnum.OUTPUT) return;
+						var implementedLayer = 'oduk-client-ctp';
 						
-						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + '<camada> ' + element + '-input;\n';
-						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + '<camada> ' + element + '-output;\n';
+						fileProtocols = fileProtocols + '\t\t\t\tlayer-entry ' + implementedLayer + ' ' + element + ' {\n' +
+																	'\t\t\t\t\t' + implementedLayer + ' {\n';
 						
-						fileYANG = fileYANG + totalIdent + '\timplemented-layer-entry ' + '<camada> ' + element + '-input;\n';
-						fileYANG = fileYANG + totalIdent + '\timplemented-layer-entry ' + '<camada> ' + element + '-output;\n';
+						//TODO:	para cada atributo da camada, faça:
+						//			imprimir(nome do atributo \t valor do atributo ;)
+						
+						fileProtocols = fileProtocols +	'\t\t\t\t\t}\n' +
+														'\t\t\t\t}\n';
+												
+						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + implementedLayer + ' ' + element + '-input;\n';
+						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + implementedLayer + ' ' + element + '-output;\n';
+						
+						filePhysical = filePhysical + totalIdent + '\timplemented-layer-entry ' + implementedLayer + ' ' + element + '-input;\n';
+						filePhysical = filePhysical + totalIdent + '\timplemented-layer-entry ' + implementedLayer + ' ' + element + '-output;\n';
 						
 						var neighbors = getNeighbors(element, cardGraph);
 						_.each(neighbors, function(neighbor, index) {
@@ -174,7 +184,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			
 			if(element.attributes.subType === 'Slot') {
 				
-				fileYANG = 	fileYANG + totalIdent + 'slot-entry ' + element.id + ' {\n' +
+				filePhysical = 	filePhysical + totalIdent + 'slot-entry ' + element.id + ' {\n' +
 							totalIdent + ident + 'equipment {\n' +
 						totalIdent + ident + ident + 'interfaces {\n';
 				
@@ -182,7 +192,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 				var card = graph.getCell(cardID);
 				writeFilePhysicalRecursively(card, graph, totalIdent+ident+ident+ident, filename);
 				
-				fileYANG= 	fileYANG+ totalIdent + ident + ident + '}\n' +
+				filePhysical =	filePhysical+ totalIdent + ident + ident + '}\n' +
 									totalIdent + ident + ident +	'installed-equipment-objectType ' + card.attributes.attrs.name.text + ';\n' +
 										totalIdent + ident + '}\n' +
 											totalIdent + '}\n';
@@ -190,7 +200,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			}
 			
 			if(element.attributes.subType === 'Shelf') {
-				fileYANG= 	fileYANG+ totalIdent + 'shelf-entry ' + element.id + ' {\n' +
+				filePhysical =	filePhysical+ totalIdent + 'shelf-entry ' + element.id + ' {\n' +
 							totalIdent + ident + 'slots {\n';
 				
 				var slotIDs = element.get('embeds');
@@ -199,13 +209,13 @@ nopen.topology.Exporter = Backbone.Model.extend({
 					writeFilePhysicalRecursively(slot, graph, totalIdent+ident+ident, filename);
 				});
 				
-				fileYANG= 	fileYANG+ totalIdent + ident + '}\n' +
+				filePhysical = filePhysical + totalIdent + ident + '}\n' +
 								totalIdent + '}\n';
 				return;
 			}
 			
 			if(element.attributes.subType === 'Rack') {
-				fileYANG= 	fileYANG+ totalIdent + 'rack-entry ' + element.id + ' {\n' +
+				filePhysical = filePhysical+ totalIdent + 'rack-entry ' + element.id + ' {\n' +
 							totalIdent + ident + 'shelves {\n';
 				
 				var shelfIDs = element.get('embeds');
@@ -214,7 +224,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 					writeFilePhysicalRecursively(shelf, graph, totalIdent+ident+ident, filename);
 				});
 				
-				fileYANG= 	fileYANG+ totalIdent + ident + '}\n' +
+				filePhysical = filePhysical+ totalIdent + ident + '}\n' +
 							totalIdent + '}\n';
 				return;
 			}
