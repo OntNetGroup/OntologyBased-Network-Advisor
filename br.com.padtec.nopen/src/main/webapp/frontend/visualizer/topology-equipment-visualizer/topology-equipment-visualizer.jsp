@@ -130,6 +130,8 @@
 						+ name + '</div>');
 
 		$('#btn-back').click(function() {
+// 			salvar os cards
+			
 			parent.topology.closeIframe();
            
 		});
