@@ -32,7 +32,7 @@ function ituHandle(paper, graph){
 		            modal: true,
 		            //show: 'scale',
 		            height: 800,
-	    			width: 600,
+	    			width: 800,
 		            title: 'Dynamically Loaded Page',
 		            open: function ()
 		            {

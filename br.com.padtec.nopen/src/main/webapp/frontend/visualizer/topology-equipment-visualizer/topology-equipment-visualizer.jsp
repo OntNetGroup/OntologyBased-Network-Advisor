@@ -138,8 +138,7 @@
 
 		ituHandle(app.paper, app.graph);
 		
-		
-		
+
 		$('#btn-show-hide-inspector').click(function(){
 			
 			if($('.inspector-container').is(':visible')) {

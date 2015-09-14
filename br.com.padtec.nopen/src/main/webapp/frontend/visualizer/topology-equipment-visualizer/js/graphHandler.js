@@ -28,10 +28,9 @@ graph.on('change' , function (cell) {
 
 	},this);
 
-paper.on('cell:pointerclick', function( cellView , evt, x, y) {
+graph.on('all', function(a){
+	console.log(a);
 	
-	
-	
-},this);
+});
 
 };
