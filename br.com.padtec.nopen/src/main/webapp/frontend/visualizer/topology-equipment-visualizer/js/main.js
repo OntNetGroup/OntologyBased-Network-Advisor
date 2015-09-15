@@ -281,6 +281,7 @@ var Rappid = Backbone.Router.extend({
 					console.log(a);
 					console.log(b);
 					cell.prop('directionality'+elementname+'','');
+					console.log(cell);
 				};
 
 				if(element === "och-nim-grouping"){
@@ -290,6 +291,7 @@ var Rappid = Backbone.Router.extend({
                     cell.prop('operationalstate"+elementname+""+elementname+"','');
                     cell.prop('currentproblemlist'+elementname,'');
                     cell.prop('operationalstate'+elementname,'');
+                    console.log(cell);
 					a = a+input;
 					b = b+group;
 					i++;

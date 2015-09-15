@@ -123,19 +123,19 @@ public class HermitReasonerImpl extends OntologyReasoner {
 //    		gens.add(new InferredEquivalentObjectPropertyAxiomGenerator());			//InferredObjectPropertyAxiomGenerator
 //    		gens.add(new InferredObjectPropertyCharacteristicAxiomGenerator());	//InferredObjectPropertyAxiomGenerator
     		
-    		System.out.println("AQUI1");
+    		
         }
         if(this.inferAssertions && !started){
         	gens.add(new InferredClassAssertionAxiomGenerator()); 					//InferredIndividualAxiomGenerator
     		gens.add(new InferredPropertyAssertionGenerator());						//InferredIndividualAxiomGenerator
     		
-    		System.out.println("AQUI2");
+    		
         }
 		
 		InferredOntologyGenerator iog = new InferredOntologyGenerator(hermit, gens);
 		iog.fillOntology(m, o);
 
-		System.out.println("AQUI3");
+		
 		
 		ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
         try {
