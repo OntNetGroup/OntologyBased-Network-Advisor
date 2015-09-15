@@ -274,25 +274,28 @@ var Rappid = Backbone.Router.extend({
 					var elementname = index;
 					var input = "directionality"+elementname+": {type: 'select' , options:['sink','source','bidirectional'], index: 1 , group: 'ochctp"+elementname+"', label: 'directionality ', attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of <br>the termination point. Valid values are<br> sink, source,and bidirectional.<br> This attribute is read-only.'}}},";
 					var group = "ochctp"+elementname+": {label: 'OCH CTP "+elementname+"', index: "+i+" },";
-                    cell.prop('directionality','source');
+                   
+					cell.prop(elementname,i);
+					cell.prop(elementname, {'name':elementname,'grouping':'och-ctp-grouping','directionality':''});
+
 					a = a+input;
 					b = b+group;
 					i++;
 					console.log(a);
 					console.log(b);
-					cell.prop('directionality'+elementname+'','');
+				
 					console.log(cell);
 				};
 
 				if(element === "och-nim-grouping"){
 					var elementname = index;
-					var input = "operationalstate"+elementname+""+elementname+": {type: 'select' , options:['enabled','disabled'],index: 1 ,group:'ochnim"+elementname+"', label: 'Operational State', attrs: { 'label': {'data-tooltip': 'This attribute is generally defined in ITU-T Rec.<br> X.731 and the behaviour description for<br> operationalstate"+elementname+""+elementname+" in ITU-T Rec. M.3100.<br>Possible Values – Enabled and Disabled. See ITU-T<br> Recs. X.731 and M.3100 for details.<br>Default Value – Actual state of resource at the time<br> the object is created. If there is a period of time<br> during the initialization process where the<br> operational state is unknown, then the resource will<br> be considered disabled until initialization has<br> completed and the state updated accordingly.<br>Constraints to Provisioning – N/A.<br>Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>This attribute is read-only.'}}},currentproblemlist"+elementname+":{type: 'number', min: '0', max: '2147483647' ,index: 2 ,group:'ochnim"+elementname+"', label: 'Current Problem List', attrs: {'input' : {'data-tooltip': 'This attribute indicates the actual payload type<br> signal received. This attribute is read-only.'}}},";
+					var input = "operationalstate"+elementname+": {type: 'select' , options:['enabled','disabled'],index: 1 ,group:'ochnim"+elementname+"', label: 'Operational State', attrs: { 'label': {'data-tooltip': 'This attribute is generally defined in ITU-T Rec.<br> X.731 and the behaviour description for<br> operationalstate in ITU-T Rec. M.3100.<br>Possible Values – Enabled and Disabled. See ITU-T<br> Recs. X.731 and M.3100 for details.<br>Default Value – Actual state of resource at the time<br> the object is created. If there is a period of time<br> during the initialization process where the<br> operational state is unknown, then the resource will<br> be considered disabled until initialization has<br> completed and the state updated accordingly.<br>Constraints to Provisioning – N/A.<br>Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>This attribute is read-only.'}}},currentproblemlist"+elementname+":{type: 'number', min: '0', max: '2147483647' ,index: 2 ,group:'ochnim"+elementname+"', label: 'Current Problem List', attrs: {'input' : {'data-tooltip': 'This attribute indicates the actual payload type<br> signal received. This attribute is read-only.'}}},";
 					var group = "ochnim"+elementname+": { label: 'OCH NIM "+elementname+"', index: "+i+"},";
-                    cell.prop('operationalstate"+elementname+""+elementname+"','');
-                    cell.prop('currentproblemlist'+elementname,'');
-                    cell.prop('operationalstate'+elementname,'');
+					cell.prop(elementname,i);
+					cell.prop(elementname, {'name':elementname,'grouping':'och-nim-grouping','operationalstate':'','currentproblemlist':''});
                     console.log(cell);
-					a = a+input;
+					
+                    a = a+input;
 					b = b+group;
 					i++;
 					console.log(a);
@@ -301,10 +304,11 @@ var Rappid = Backbone.Router.extend({
 				};
 				if(element === "gcc0-tp-grouping"){
 					var elementname = index; 
-					var input = "directionality"+elementname+": {type: 'select' , options:['sink','source','bidirectional'],group: 'gcc0tp"+elementname+"',index: 1 , label: 'directionality ', attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of <br>the termination point. Valid values are<br> sink, source,and bidirectional.<br> This attribute is read-only.'}}},application: {type: 'text' ,group: 'gcc0tp"+elementname+"',index: 2 , label: 'Application', attrs: {'input' : {'data-tooltip': 'This attribute indicates the <br>applications transported by the <br>GCC channel. Example applications <br>are ECC(user data channel).<br> Valid values are string.<br>This attribute is read-only.'}}},";
+					var input = "directionality"+elementname+": {type: 'select' , options:['sink','source','bidirectional'],group: 'gcc0tp"+elementname+"',index: 1 , label: 'directionality ', attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality of <br>the termination point. Valid values are<br> sink, source,and bidirectional.<br> This attribute is read-only.'}}},application"+elementname+": {type: 'text' ,group: 'gcc0tp"+elementname+"',index: 2 , label: 'Application', attrs: {'input' : {'data-tooltip': 'This attribute indicates the <br>applications transported by the <br>GCC channel. Example applications <br>are ECC(user data channel).<br> Valid values are string.<br>This attribute is read-only.'}}},";
 					var group = "gcc0tp"+elementname+": { label: 'GCC0 tp "+elementname+"', index: "+i+" },";
 					
-					cell.prop('directionality'+elementname,'');
+					cell.prop(elementname,i);
+					cell.prop(elementname, {'name':elementname,'grouping':'gcc0-tp-grouping','application':'','directionality':''});
 					console.log(cell);
 					
 					a = a+input;
@@ -319,11 +323,10 @@ var Rappid = Backbone.Router.extend({
 					var elementname = index; 
 					var input = "directionality"+elementname+": {type: 'select' , options:['sink','source','bidirectional'],group: 'gcc12tp"+elementname+"',index: 1 , label: 'directionality ', attrs: { 'label': {'data-tooltip': 'This attribute indicates the directionality<br> of the termination point. Valid <br>values are sink, source,and bidirectional.<br> This attribute is read-only.'}}},codirectional: {type: 'toggle',group: 'gcc12tp"+elementname+"',index: 2 , label: 'Codirectional', attrs: { 'label': {'data-tooltip': 'This attribute specifies<br> the directionality of <br>the GCC12_TP with respect to <br>the associated ODUk_CTP.<br>The value of TRUE means that<br> the sink part <br>of the GCC12_TP terminates the same signal<br> direction as the sink part of the ODUk_CTP.<br>The Source part behaves similarly.<br>This attribute is meaningful only on objects instantiated<br> under ODUk_CTP,<br> and at least	one among ODUk_CTP and the subordinate <br>object has directionality equal to Bidirectional.<br> This attribute is read-only.'}}},gccaccess: {type: 'select' , options:['gg1','gcc2','gcc1-plus-gcc2'],group: 'gcc12tp"+elementname+"',index: 3 , label: 'GCC Access', attrs: { 'label': {'data-tooltip': 'This attribute indicates the GCC access <br>represented	by this entity.<br> Valid values are: <br>1) GCC1 <br>2) GCC2 <br>3) GCC1 + GCC2.<br>This attribute is read-only.'}}},gccpassthrough : {type: 'toggle' ,group: 'gcc12tp"+elementname+"',index: 4 , label: 'GCC Pass Through', attrs: { 'label': {'data-tooltip': 'This attribute controls the<br> selected GCC overhead<br> whether it is passed through or modified. Valid<br> 	values are TRUE and FALSE.<br>The value of TRUE means<br> that the GCC overhead shall pass through unmodified<br> from the ODUk CTP input to the ODUk CTP output.<br> Otherwise shall be set to all 0s at the ODUk CTP<br> output after the extraction of the COMMS data. This<br> attribute is not meaningful on objects instantiated<br> under ODUk_TTP, and on objects with directionality<br> equals to Source.'}}},application: {type: 'text',group: 'gcc12tp"+elementname+"',index: 5 , label: 'Application', attrs: {'input' : {'data-tooltip': 'This attribute indicates the applications <br>transported by the GCC channel.<br> Example applications	are ECC,<br> (user data channel).<br> Valid values are string.<br>This attribute is read-only.'}}},";
 					var group = "gcc12tp"+elementname+": { label: 'GCC12 TP "+elementname+"', index: "+i+"}";
-					cell.prop('directionality'+elementname,'');
-					cell.prop('codirectional'+elementname,'');
-					cell.prop('gcc-access'+elementname,'');
-					cell.prop('gccpassthrough'+elementname,'');
-					cell.prop('application'+elementname,'');
+					
+					cell.prop(elementname, {'name':elementname,'grouping':'gcc12-tp-grouping','directionality':'','codirectional':'','gcc-access':'','gccpassthrough':'','application':''});
+					cell.prop(elementname,i);
+
 					console.log(cell);
 					
 					a = a+input;
@@ -356,9 +359,9 @@ var Rappid = Backbone.Router.extend({
 					i++;
 					console.log(a);
 					console.log(b);
-					cell.prop('operationalstate'+elementname,'');
-					cell.prop('directionality'+elementname,'');
-					cell.prop('adiministrativestate'+elementname,'');
+					
+					cell.prop(elementname, {'name':elementname,'grouping':'och-ttp-grouping','operationalstate':'','directionality':'','adiministrativestate':''});
+					cell.prop(elementname,i);
 					console.log(cell);
 				};
 
@@ -419,9 +422,9 @@ var Rappid = Backbone.Router.extend({
 				i++;
 				console.log(a);
 				console.log(b);
-				cell.prop('operationalstate'+elementname,'');
-				cell.prop('directionality'+elementname,'');
-				cell.prop('currentproblemlist'+elementname,'');
+				;
+				cell.prop(elementname,i);
+				cell.prop(elementname, {'name':elementname,'grouping':'oduk-ctp-grouping','operationalstate':'','directionality':'','currentproblemlist':''});
 				console.log(cell);
 				};
 				
@@ -447,18 +450,8 @@ var Rappid = Backbone.Router.extend({
 				console.log(a);
 				console.log(b);
 				
-				cell.prop('k'+elementname,'');
-				cell.prop('operationalstate'+elementname,'');
-				cell.prop('txti'+elementname,'');
-				cell.prop('exdapi'+elementname,'');
-				cell.prop('timactdisabled'+elementname,'');
-				cell.prop('degthr'+elementname,'');
-				cell.prop('acti'+elementname,'');
-				cell.prop('exsapi'+elementname,'');
-				cell.prop('degm'+elementname,'');
-				cell.prop('timdetmode'+elementname,'');
-				cell.prop('currentproblemlist'+elementname,'');
-				cell.prop('positionseg'+elementname,'');
+				cell.prop(elementname, {'name':elementname,'grouping':'oduk-ttp-grouping','k':'','operationalstate':'','txti':'','exdapi':'','timactdisabled':'','degthr':'','acti':'','exsapi':'','degm':'','timdetmode':'','currentproblemlist':'','positionseg':''});
+				cell.prop(elementname,i);
 				console.log(cell);
 				};
 				
@@ -551,17 +544,8 @@ var Rappid = Backbone.Router.extend({
 				console.log(a);
 				console.log(b);
 				
-				cell.prop('directionality'+elementname,'');
-				cell.prop('operationalstate'+elementname,'');
-				cell.prop('aprstatus'+elementname,'');
-				cell.prop('txti'+elementname,'');
-				cell.prop('aprcntrl'+elementname,'');
-				cell.prop('exsapi'+elementname,'');
-				cell.prop('acti'+elementname,'');
-				cell.prop('timdetmode'+elementname,'');
-				cell.prop('exdapi'+elementname,'');
-				cell.prop('timactdisabled'+elementname,'');
-				cell.prop('currentproblemlist'+elementname,'');
+				cell.prop(elementname, {'name':elementname,'grouping':'otsn-ttp-grouping','directionality':'','operationalstate':'','aprstatus':'','txti':'','aprcntrl':'','exsapi':'','acti':'','timdetmode':'','exdapi':'','timactdisabled':'','currentproblemlist':''});
+				cell.prop(elementname,i);
 				console.log(cell);
 				
 				};
@@ -576,37 +560,23 @@ var Rappid = Backbone.Router.extend({
 				console.log(a);
 				console.log(b);
 				
-				cell.prop('k'+elementname,'');
-				cell.prop('sinkadaptactive'+elementname,'');
-				cell.prop('sourceadaptactive'+elementname,'');
-				cell.prop('directionality'+elementname,'');
-				cell.prop('currentproblemlist'+elementname,'');
+				cell.prop(elementname, {'name':elementname,'grouping':'otuk-ctp-grouping','k':'','sinkadaptactive':'','sourceadaptactive':'','directionality':'','currentproblemlist':''});
+				cell.prop(elementname,i);
 				console.log(cell);
 				
 				};
 				
 				if(element === "otuk-ttp-grouping"){
 				var elementname = index;
-				var input = "operationalstate"+elementname+""+elementname+":{type: 'select',options: ['enabled','disabled'],label: 'Operational State',group:'otukttp"+elementname+"',attrs:{'label':{'data-tooltip':'This attribute is generally defined in ITU-T Rec.<br> X.731 and the behaviour description for <br>operationalstate"+elementname+" in ITU-T Rec. M.3100.<br>Possible Values – Enabled and Disabled. See ITU-T <br>Recs. X.731 and M.3100 for details.<br>	Default Value – Actual state of resource at the time<br> the object is created. If there is a period of time<br>during the initialization process where the<br> operational state is unknown, then the resource will <br>be considered disabled until initialization has<br> completed and the state updated accordingly.<br>Constraints to Provisioning – N/A.<br>Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>This attribute is read-only.'}}},directionality"+elementname+": {type: 'select',options: ['sink','source','bidirectional'],label: 'directionality ',group:'otukttp"+elementname+"',attrs:{'label':{'data-tooltip': 'This attribute indicates the directionality of the<br> termination point. Valid values are sink, source,<br>and bidirectional. This attribute is read-only.'}}},txti"+elementname+":{type: 'text',group: 'otukttp"+elementname+"',label: 'TX TI',attrs:{'input':{'data-tooltip':'The Trail Trace Identifier (TTI) information,<br>provisioned by the managing system at the<br>termination source, to be placed in the TTI overhead<br>position of the source of a trail for transmission.<br>This attribute is read-write.'}}},exdapi"+elementname+":{type: 'text',group: 'otukttp"+elementname+"',label: 'EX DAPI',attrs:{'input':{'data-tooltip':'The Expected Destination Access Point Identifier<br>(ExDAPI), provisioned by the managing system, to be<br>compared with the TTI accepted at the overhead<br>position of the sink for the purpose of checking the<br>integrity of connectivity. This attribute is<br>read-write.'}}},exsapi"+elementname+":{type: 'text',group: 'otukttp"+elementname+"',label: 'EX SAPI',attrs:{'input':{'data-tooltip':'The Expected Source Access Point Identifier<br>(ExSAPI), provisioned by the managing system, to be<br>compared with the TTI accepted at the overhead<br>position of the sink for the purpose of checking the<br>integrity of connectivity. This attribute is<br>read-write.'}}},acti"+elementname+":{type: 'text',group: 'otukttp"+elementname+"',label: 'AC TI',attrs:{'input':{'data-tooltip': 'The Trail Trace Identifier (TTI) information<br>recovered (Accepted) from the TTI overhead position<br>at the sink of a trail. This attribute is read-only.'}}},timdetmode"+elementname+":{type: 'select',options: ['off','dapi','sapi','both'],group: 'otukttp"+elementname+"',label: 'TIM DET Mode',attrs:{'label':{'data-tooltip':'This attribute indicates the mode of the Trace<br>Identifier Mismatch (TIM) Detection function. Valid<br>values are: off, dapi, sapi, both. This attribute is<br>read-write.'}}},timactdisabled"+elementname+":{type: 'toggle',group: 'otukttp"+elementname+"',label: 'TIM ACT Disabled',attrs:{'input':{'data-tooltip':'This attribute provides the control capability for the<br>managing system to enable or disable the Consequent<br>Action function when detecting Trace Identifier Mismatch<br>(TIM) at the trail termination sink. The value of TRUE<br>means disabled. This attribute is read-write.'}}},degthr"+elementname+":{type: 'number',min: 0,max: 2147483647,index: 7,group:'otukttp"+elementname+"',label: 'DEG THR',	attrs:{'input':{'data-tooltip': 'This attribute indicates the threshold level for<br> declaring a performance monitoring (PM) Second to be<br> bad. A PM Second is declared bad if the percentage<br> of detected errored blocks in that second is greater<br> than or equal to the specified threshold level.<br> Valid values are integers in units of percentages.<br> This attribute is read-write.'}}},	degm"+elementname+":{type: 'number',min: 0,max: 2147483647,index:8,group:'otukttp"+elementname+"',label: 'DEG M',attrs:{'input':{'data-tooltip': 'This attribute indicates the threshold level for<br> declaring a Degraded Signal defect (dDEG). A dDEG<br> shall be declared if DegM consecutive bad PM Seconds<br> are detected. This attribute is read-write.'}}},k"+elementname+":{type: 'range',min: 1,max: 3,step: 1,group: 'otukttp"+elementname+"',label: 'k',attrs:{'input':{'data-tooltip':'This attribute specifies the index k that is used<br>to represent a supported bit rate and the different<br>versions of OPUk, ODUk and OTUk. Valid values for<br>this attribute are integers 1, 2 and 3.<br>k = 1 represents an approximate bit rate of 2.5 Gbit/s;<br>k = 2 represents an approximate bit rate of 10 Gbit/s; and<br>k = 3 represents an approximate bit rate of 40 Gbit/s.<br>This attribute is read-only.' }}},currentproblemlist"+elementname+":{type: 'number',min: 1,max: 31,label: 'Current Problem List',group:'otukttp"+elementname+"',attrs:{'input':{'data-tooltip':'This attribute indicates the failure conditions of the entity.<br>Possible values of this attribute include decimal <br> numbers between 1 and 31, representing:<br>1)no defect;<br>2)TIM (Trail Trace Identifier Mismatch);<br>3) DEG (Signal Degraded);<br>4) BDI (Backward Defect Indication);<br>5) SSF (Server Signal Fail).<br>This attribute is read-only.'}}},";
+				var input = "operationalstate:{type: 'select',options: ['enabled','disabled'],label: 'Operational State',group:'otukttp"+elementname+"',attrs:{'label':{'data-tooltip':'This attribute is generally defined in ITU-T Rec.<br> X.731 and the behaviour description for <br>operationalstate in ITU-T Rec. M.3100.<br>Possible Values – Enabled and Disabled. See ITU-T <br>Recs. X.731 and M.3100 for details.<br>	Default Value – Actual state of resource at the time<br> the object is created. If there is a period of time<br>during the initialization process where the<br> operational state is unknown, then the resource will <br>be considered disabled until initialization has<br> completed and the state updated accordingly.<br>Constraints to Provisioning – N/A.<br>Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>This attribute is read-only.'}}},directionality: {type: 'select',options: ['sink','source','bidirectional'],label: 'directionality ',group:'otukttp"+elementname+"',attrs:{'label':{'data-tooltip': 'This attribute indicates the directionality of the<br> termination point. Valid values are sink, source,<br>and bidirectional. This attribute is read-only.'}}},txti"+elementname+":{type: 'text',group: 'otukttp"+elementname+"',label: 'TX TI',attrs:{'input':{'data-tooltip':'The Trail Trace Identifier (TTI) information,<br>provisioned by the managing system at the<br>termination source, to be placed in the TTI overhead<br>position of the source of a trail for transmission.<br>This attribute is read-write.'}}},exdapi"+elementname+":{type: 'text',group: 'otukttp"+elementname+"',label: 'EX DAPI',attrs:{'input':{'data-tooltip':'The Expected Destination Access Point Identifier<br>(ExDAPI), provisioned by the managing system, to be<br>compared with the TTI accepted at the overhead<br>position of the sink for the purpose of checking the<br>integrity of connectivity. This attribute is<br>read-write.'}}},exsapi"+elementname+":{type: 'text',group: 'otukttp"+elementname+"',label: 'EX SAPI',attrs:{'input':{'data-tooltip':'The Expected Source Access Point Identifier<br>(ExSAPI), provisioned by the managing system, to be<br>compared with the TTI accepted at the overhead<br>position of the sink for the purpose of checking the<br>integrity of connectivity. This attribute is<br>read-write.'}}},acti"+elementname+":{type: 'text',group: 'otukttp"+elementname+"',label: 'AC TI',attrs:{'input':{'data-tooltip': 'The Trail Trace Identifier (TTI) information<br>recovered (Accepted) from the TTI overhead position<br>at the sink of a trail. This attribute is read-only.'}}},timdetmode"+elementname+":{type: 'select',options: ['off','dapi','sapi','both'],group: 'otukttp"+elementname+"',label: 'TIM DET Mode',attrs:{'label':{'data-tooltip':'This attribute indicates the mode of the Trace<br>Identifier Mismatch (TIM) Detection function. Valid<br>values are: off, dapi, sapi, both. This attribute is<br>read-write.'}}},timactdisabled"+elementname+":{type: 'toggle',group: 'otukttp"+elementname+"',label: 'TIM ACT Disabled',attrs:{'input':{'data-tooltip':'This attribute provides the control capability for the<br>managing system to enable or disable the Consequent<br>Action function when detecting Trace Identifier Mismatch<br>(TIM) at the trail termination sink. The value of TRUE<br>means disabled. This attribute is read-write.'}}},degthr"+elementname+":{type: 'number',min: 0,max: 2147483647,index: 7,group:'otukttp"+elementname+"',label: 'DEG THR',	attrs:{'input':{'data-tooltip': 'This attribute indicates the threshold level for<br> declaring a performance monitoring (PM) Second to be<br> bad. A PM Second is declared bad if the percentage<br> of detected errored blocks in that second is greater<br> than or equal to the specified threshold level.<br> Valid values are integers in units of percentages.<br> This attribute is read-write.'}}},	degm"+elementname+":{type: 'number',min: 0,max: 2147483647,index:8,group:'otukttp"+elementname+"',label: 'DEG M',attrs:{'input':{'data-tooltip': 'This attribute indicates the threshold level for<br> declaring a Degraded Signal defect (dDEG). A dDEG<br> shall be declared if DegM consecutive bad PM Seconds<br> are detected. This attribute is read-write.'}}},k"+elementname+":{type: 'range',min: 1,max: 3,step: 1,group: 'otukttp"+elementname+"',label: 'k',attrs:{'input':{'data-tooltip':'This attribute specifies the index k that is used<br>to represent a supported bit rate and the different<br>versions of OPUk, ODUk and OTUk. Valid values for<br>this attribute are integers 1, 2 and 3.<br>k = 1 represents an approximate bit rate of 2.5 Gbit/s;<br>k = 2 represents an approximate bit rate of 10 Gbit/s; and<br>k = 3 represents an approximate bit rate of 40 Gbit/s.<br>This attribute is read-only.' }}},currentproblemlist"+elementname+":{type: 'number',min: 1,max: 31,label: 'Current Problem List',group:'otukttp"+elementname+"',attrs:{'input':{'data-tooltip':'This attribute indicates the failure conditions of the entity.<br>Possible values of this attribute include decimal <br> numbers between 1 and 31, representing:<br>1)no defect;<br>2)TIM (Trail Trace Identifier Mismatch);<br>3) DEG (Signal Degraded);<br>4) BDI (Backward Defect Indication);<br>5) SSF (Server Signal Fail).<br>This attribute is read-only.'}}},";
 				var group = "otukttp"+elementname+": { label: 'OTUk ttp "+elementname+"', index: "+i+" },";
 				a = a+input;
 				b = b+group;
 				i++;
 				console.log(a);
 				console.log(b);
-				
-				cell.prop('operationalstate'+elementname,'');
-				cell.prop('txti'+elementname,'');
-				cell.prop('exdapi'+elementname,'');
-				cell.prop('directionality'+elementname,'');
-				cell.prop('exsapi'+elementname,'');
-				cell.prop('acti'+elementname,'');
-				cell.prop('timdetmode'+elementname,'');
-				cell.prop('timactdisabled'+elementname,'');
-				cell.prop('degthr'+elementname,'');
-				cell.prop('degm'+elementname,'');
-				cell.prop('currentproblemlist'+elementname,'');
-				cell.prop('k'+elementname,'');
+				cell.prop(elementname, {'name':elementname,'grouping':'otuk-ttp-grouping','k' :'','operationalstate':'','txti':'','exdapi':'','directionality':'','exsapi':'','acti':'','timdetmode':'','timactdisabled':'','degthr':'','degm':'','currentproblemlist':'',});
+				cell.prop(elementname,i);
 				console.log(cell);
 				};
 				

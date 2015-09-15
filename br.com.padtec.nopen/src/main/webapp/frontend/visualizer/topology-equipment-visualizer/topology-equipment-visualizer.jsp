@@ -131,7 +131,18 @@
 
 		$('#btn-back').click(function() {
 // 			salvar os cards
-			
+			var a = app.graph.getElements();
+			console.log(a);
+			$.each(a, function(index, element){
+				console.log(index);
+				console.log(element);
+				if(element.attributes.subType === 'Card'){
+					var b = element.attributes;
+					var c = element.id;
+					parent.topology.model.equipments.filename;
+					console.log(parent.topology.model.equipments);
+				}
+			});
 			parent.topology.closeIframe();
            
 		});
