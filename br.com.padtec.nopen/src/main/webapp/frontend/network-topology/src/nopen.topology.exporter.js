@@ -13,6 +13,8 @@ nopen.topology.Exporter = Backbone.Model.extend({
 	exportTopologyAsYANG : function(graph) {
 		var nodes = graph.getElements();
 		
+		var zip = new JSZip();
+		
 		/* for each node of topology, that is, for each equipment */
 		_.each(nodes, function(node) {
 			var equipName = node.attributes.attrs.equipment.name;
@@ -102,9 +104,9 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			fileYANG = fileYANG + fileLogical + fileProtocols + filePhysical + fileInterfaces + '}';
 			
 			var equipInstanceName = node.attributes.attrs.text.text;
-			var zip = new JSZip();
+//			var zip = new JSZip();
 			zip.file(equipInstanceName + ".yang", fileYANG);
-			var blob = zip.generate({type:"blob"});
+//			var blob = zip.generate({type:"blob"});
 //			saveAs(blob, equipInstanceName + ".zip");
 			
 			console.log(equipInstanceName);
@@ -115,6 +117,10 @@ nopen.topology.Exporter = Backbone.Model.extend({
 //			console.log(fileInterfaces);
 			
 		});
+
+		var blob = zip.generate({type:"blob"});
+		saveAs(blob, "topology.zip");
+		
 		
 		function writeFilePhysicalRecursively(element, graph, totalIdent, filename) {
 			var ident = '\t';
