@@ -35,7 +35,7 @@ function openFromURL(filename, graph){
 	var elementos = parent.topology.model.equipments;
 	console.log(elementos);
 	$.each(parent.topology.model.equipments, function(index, value){
-		console.log( index + " : " + value);
+//		console.log( index + " : " + value);
 		 if(index === filename){
 //			 console.log("YES");
 			 graph.fromJSON(value);

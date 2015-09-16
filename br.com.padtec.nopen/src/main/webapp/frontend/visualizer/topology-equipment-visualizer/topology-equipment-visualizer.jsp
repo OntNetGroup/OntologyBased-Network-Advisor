@@ -23,9 +23,9 @@
 	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/dialog.css" />
 <link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/style.css" />
-	<link rel="stylesheet" type="text/css"
+<link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/layout.css" />
-	<link rel="stylesheet" type="text/css"
+<link rel="stylesheet" type="text/css"
 	href="/nopen/frontend/visualizer/topology-equipment-visualizer/css/halo.css" />
 
 </head>
@@ -52,16 +52,20 @@
 				src="/nopen/frontend/visualizer/topology-equipment-visualizer/img/zoomtofit.png"
 				alt="Zoom To Fit" />
 		</button>
-		 <button id="btn-show-hide-inspector" class="btn" data-tooltip="Show/Hide Inspector"><img src="/nopen/frontend/visualizer/topology-equipment-visualizer/img/show_hide.png" alt="Show/Hide Inspector"/></button>
+		<button id="btn-show-hide-inspector" class="btn"
+			data-tooltip="Show/Hide Inspector">
+			<img
+				src="/nopen/frontend/visualizer/topology-equipment-visualizer/img/show_hide.png"
+				alt="Show/Hide Inspector" />
+		</button>
 	</div>
-	<div class="stencil-container" style="display: none" >
+	<div class="stencil-container" style="display: none">
 		<label>Stencil</label>
 		<button class="btn-expand" title="Expand all">+</button>
 		<button class="btn-collapse" title="Collapse all">-</button>
 	</div>
 	<div class="paper-container"></div>
-	<div class="inspector-container">
-	</div>
+	<div class="inspector-container"></div>
 	<!-- JS CORE -->
 
 	<script src="/nopen/core/rappid_api/js/joint.js"></script>
@@ -85,9 +89,9 @@
 		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/inspector.js"></script>
 	<script
 		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/main.js"></script>
-		<script
+	<script
 		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/graphHandler.js"></script>
-	<script	
+	<script
 		src="/nopen/frontend/visualizer/topology-equipment-visualizer/js/ituHandle.js"></script>
 
 	<!-- PLUGINS -->
@@ -107,66 +111,94 @@
 		Backbone.history.start();
 
 		var element = parent.topology.model;
-		console.log(element);
-		
-		
+		// 		console.log(element);
+
 		if (getUrlParameterName('equipment')) {
 			var name = getUrlParameterName('equipment');
-			console.log(name);
+			// 			console.log(name);
 		}
-		
+
 		if (getUrlParameterID('equipment')) {
 			var equipment = getUrlParameterID('equipment');
 			console.log(equipment);
 			openFromURL(equipment, app.graph);
 		}
 
-		
-		
-		 graphHandler(app, app.graph , app.paper);
-		
-		$('.toolbar-container').append(
-				'<div style="display:inline;margin-left:10px">&#155; '
-						+ name + '</div>');
+		graphHandler(app, app.graph, app.paper);
 
-		$('#btn-back').click(function() {
-// 			salvar os cards
-			var a = app.graph.getElements();
-			console.log(a);
-			$.each(a, function(index, element){
-				console.log(index);
-				console.log(element);
-				if(element.attributes.subType === 'Card'){
-					var b = element.attributes;
-					var c = element.id;
-					parent.topology.model.equipments.filename;
+		$('.toolbar-container').append(
+				'<div style="display:inline;margin-left:10px">&#155; ' + name
+						+ '</div>');
+
+		$('#btn-back').click(
+				function() {
+					// 			salvar os cards
+					var a = app.graph.getElements();
+// 					console.log(a);
+					$.each(a, function(index, element) {
+						// 				console.log(index);						
+						if (element.attributes.subType === 'Card') {
+							console.log(element);
+							var b = element.attributes;
+							console.log("Novo card");
+							console.log(b);
+							var c = element.id;
+							// 					console.log(parent.topology.model.equipments);
+							$.each(parent.topology.model.equipments, function(ind, value) {
+// 								console.log(value);
+								if(ind === getUrlParameterID('equipment')) {
+									console.log(value);
+									console.log("found equipment!");
+									
+									$.each(value,function(end,valor){
+										console.log("Endereço");
+										console.log(end);
+										console.log("VALOR");
+										console.log(valor);
+
+										for(var i=0;i<valor.length;i++) {
+// 	 										console.log("VALUE");
+// 	 										console.log(valor[i]);
+	 										if (valor[i].id === c) {
+	 											console.log("FOUND CARD!");
+	 											console.log(valor[i]);
+	 											valor[i] = b;
+	 											console.log("NEW CARD!");
+	 											console.log(valor[i]);
+	 										}
+	 									};
+										
+										
+										
+									});
+									
+
+								}
+							});
+						}
+					});
 					console.log(parent.topology.model.equipments);
-				}
-			});
-			parent.topology.closeIframe();
-           
-		});
+					parent.topology.closeIframe();
+
+				});
 
 		ituHandle(app.paper, app.graph);
-		
 
-		$('#btn-show-hide-inspector').click(function(){
-			
-			if($('.inspector-container').is(':visible')) {
+		$('#btn-show-hide-inspector').click(function() {
+
+			if ($('.inspector-container').is(':visible')) {
 				$('.inspector-container').hide();
 				$('.paper-container').css({
-					right: 0,
+					right : 0,
 				});
 			} else {
 				$('.inspector-container').show();
 				$('.paper-container').css({
-					right: 241,
+					right : 241,
 				});
 			}
-			
+
 		});
-		
-		
 	</script>
 </body>
 </html>
