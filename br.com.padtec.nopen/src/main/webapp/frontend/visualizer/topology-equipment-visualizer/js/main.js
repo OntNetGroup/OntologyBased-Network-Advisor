@@ -276,7 +276,7 @@ var Rappid = Backbone.Router.extend({
 					var group = "ochctp_"+elementname+": {label: 'OCH CTP _"+elementname+"', index: "+i+" },";
                     var attr1 = 'directionality_'+elementname;
 					//cell.prop(elementname,i);
-					cell.prop(elementname, {'name':elementname,'grouping':'och-ctp-grouping', attr1 :''});
+					cell.prop(elementname, {'name':elementname,'grouping':'och-ctp-grouping',});
 
 					a = a+input;
 					b = b+group;
@@ -295,7 +295,7 @@ var Rappid = Backbone.Router.extend({
 					var attr1 = 'operationalstate_'+elementname;
 					var attr2 = 'currentproblemlist_'+elementname;
 					
-					cell.prop(elementname, {'name':elementname,'grouping':'och-nim-grouping',attr1:'', attr2:'' });
+					cell.prop(elementname, {'name':elementname,'grouping':'och-nim-grouping',});
                     console.log(cell);
 					
                     a = a+input;
@@ -313,7 +313,7 @@ var Rappid = Backbone.Router.extend({
 					//cell.prop(elementname,i);
 					var attr1= 'directionality_'+elementname ;
 					var attr2= 'application_'+elementname ;
-					cell.prop(elementname, {'name':elementname,'grouping':'gcc0-tp-grouping', attr1:'', attr2:''});
+					cell.prop(elementname, {'name':elementname,'grouping':'gcc0-tp-grouping', });
 					console.log(cell);
 					
 					a = a+input;
@@ -334,7 +334,7 @@ var Rappid = Backbone.Router.extend({
 					var attr3 = 'gccaccess_'+elementname;
 					var attr4 = 'gccpassthrough_'+elementname;
 					var attr5 = 'application_'+elementname;
-					cell.prop(elementname, {'name':elementname,'grouping':'gcc12-tp-grouping',attr1:'',attr2:'',attr3:'',attr4:'',attr5:''});
+					cell.prop(elementname, {'name':elementname,'grouping':'gcc12-tp-grouping',});
 					//cell.prop(elementname,i);
 
 					console.log(cell);
@@ -374,7 +374,7 @@ var Rappid = Backbone.Router.extend({
 					var attr2 = 'directionality_'+elementname;
 					var attr3 = 'adiministrativestate_'+elementname;
 					
-					cell.prop(elementname, {'name':elementname,'grouping':'och-ttp-grouping',attr1:'',attr2:'',attr3:''});
+					cell.prop(elementname, {'name':elementname,'grouping':'och-ttp-grouping',});
 					//cell.prop(elementname,i);
 					console.log(cell);
 				};
@@ -442,7 +442,7 @@ var Rappid = Backbone.Router.extend({
 				var attr3 = 'currentproblemlist_'+elementname;
 				
 				//cell.prop(elementname,i);
-				cell.prop(elementname, {'name':elementname,'grouping':'oduk-ctp-grouping',attr1:'',attr2:'',attr3:''});
+				cell.prop(elementname, {'name':elementname,'grouping':'oduk-ctp-grouping',});
 				console.log(cell);
 				};
 				
@@ -483,7 +483,7 @@ var Rappid = Backbone.Router.extend({
 				var attr13 = 'tcmfieldinuse_'+elementname;
 				
 				
-				cell.prop(elementname, {'name':elementname,'grouping':'oduk-ttp-grouping',attr1:'',attr2:'',attr3:'',attr4:'',attr5:'',attr6:'',attr7:'',attr8:'',attr9:'',attr10:'',attr11:'',attr12:'',attr13:''});
+				cell.prop(elementname, {'name':elementname,'grouping':'oduk-ttp-grouping',});
 				//cell.prop(elementname,i);
 				console.log(cell);
 				};
@@ -589,7 +589,7 @@ var Rappid = Backbone.Router.extend({
 				var attr10 = 'timactdisabled_'+elementname;
 				var attr11 = 'currentproblemlist_'+elementname;
 				
-				cell.prop(elementname, {'name':elementname,'grouping':'otsn-ttp-grouping',attr1:'',attr2:'',attr3:'',attr4:'',attr5:'',attr6:'',attr7:'',attr8:'',attr9:'',attr10:'',attr11:''});
+				cell.prop(elementname, {'name':elementname,'grouping':'otsn-ttp-grouping',});
 				//cell.prop(elementname,i);
 				console.log(cell);
 				
@@ -610,7 +610,7 @@ var Rappid = Backbone.Router.extend({
 				var attr4 = 'directionality_'+elementname;
 				var attr5 = 'currentproblemlist_'+elementname;
 				
-				cell.prop(elementname, {'name':elementname,'grouping':'otuk-ctp-grouping',attr1:'',attr2:'',attr3:'',attr4:'',attr5:''});
+				cell.prop(elementname, {'name':elementname,'grouping':'otuk-ctp-grouping',});
 				//cell.prop(elementname,i);
 				console.log(cell);
 				
@@ -640,7 +640,7 @@ var Rappid = Backbone.Router.extend({
 				var attr11 = 'degm_'+elementname;
 				var attr12 = 'currentproblemlist_'+elementname;
 				
-				cell.prop(elementname, {'name':elementname,'grouping':'otuk-ttp-grouping', attr1 :'',attr2:'', attr3:'',attr10:'',attr4:'',attr5:'',attr6:'',attr7:'',attr8:'',attr11:'',attr9:'',attr12:'',});
+				cell.prop(elementname, {'name':elementname,'grouping':'otuk-ttp-grouping', });
 				//cell.prop(elementname,i);
 				console.log(cell);
 				};
