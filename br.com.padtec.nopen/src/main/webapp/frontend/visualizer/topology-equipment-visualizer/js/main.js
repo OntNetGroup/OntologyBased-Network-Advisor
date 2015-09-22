@@ -625,6 +625,8 @@ var Rappid = Backbone.Router.extend({
 				i++;
 				console.log(a);
 				console.log(b);
+				
+				
 				var attr1 = 'k_'+elementname;
 				var attr2 = 'operationalstate_'+elementname ;
 				var attr3 = 'txti_'+elementname;
