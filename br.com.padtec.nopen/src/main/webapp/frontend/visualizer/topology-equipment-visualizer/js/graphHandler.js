@@ -10,7 +10,8 @@ function graphHandler(app, graph , paper) {
 //	});
 
 graph.on('change' , function (cell) {
-		//The equipment cant be removed from inside the equipmentholder
+	
+//	The equipment can't be removed from inside the equipmentholder
 		var parentId = cell.get('parent');
 		if (!parentId) return;
 
@@ -28,9 +29,9 @@ graph.on('change' , function (cell) {
 
 	},this);
 
-graph.on('all', function(a){
-	console.log(a);
-	
-});
+//graph.on('all', function(a){
+//	console.log(a);
+//	
+//});
 
 };

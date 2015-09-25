@@ -90,7 +90,7 @@ var Rappid = Backbone.Router.extend({
 
 		this.paperScroller.center();
 
-		this.graph.on('add', this.initializeLinkTooltips, this);
+//		this.graph.on('add', this.initializeLinkTooltips, this);
 
 		$('.paper-scroller').on('mousewheel DOMMouseScroll', _.bind(function(evt) {
 
