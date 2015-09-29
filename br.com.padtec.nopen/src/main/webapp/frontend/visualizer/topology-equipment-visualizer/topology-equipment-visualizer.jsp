@@ -183,6 +183,8 @@
 				});
 
 		ituHandle(app.paper, app.graph);
+		
+// 		$('#btn-zoom-to-fit').click();
 
 		$('#btn-show-hide-inspector').click(function() {
 

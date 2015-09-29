@@ -29,9 +29,5 @@ graph.on('change' , function (cell) {
 
 	},this);
 
-//graph.on('all', function(a){
-//	console.log(a);
-//	
-//});
 
 };

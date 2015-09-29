@@ -99,7 +99,7 @@ nopen.topology.Model = Backbone.Model.extend({
 			if(element.subType === 'Card') {
 				var cardId = element.id;
 				var card = file.openEquipmentCard(filename, cardId);
-				console.log(card);
+//				console.log(card);
 				//add card in card data
 				equipment.cells[index].attrs.data = card;
 			}

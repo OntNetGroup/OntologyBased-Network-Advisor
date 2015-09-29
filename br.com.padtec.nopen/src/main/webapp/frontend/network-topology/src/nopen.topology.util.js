@@ -12,7 +12,7 @@ nopen.topology.Util = Backbone.Model.extend({
 	
 	generateNewEquipmentIDs : function(equipment) {
 		
-		console.log('equipment: ' + JSON.stringify(equipment));
+//		console.log('equipment: ' + JSON.stringify(equipment));
 		
 		var ids = {};
 		
@@ -114,7 +114,7 @@ nopen.topology.Util = Backbone.Model.extend({
 			
 		});
 		
-		console.log('equipment2: ' + JSON.stringify(equipment));
+//		console.log('equipment2: ' + JSON.stringify(equipment));
 		
 //		console.log('IDs: ' + JSON.stringify(ids));
 		

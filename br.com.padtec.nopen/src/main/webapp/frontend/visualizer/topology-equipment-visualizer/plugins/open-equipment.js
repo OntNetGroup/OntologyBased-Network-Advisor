@@ -5,7 +5,7 @@ function getUrlParameterID(sParam)
     for (var i = 0; i < sURLVariables.length; i++) 
     {
         var sParameterName = sURLVariables[i].split('=');
-        console.log(sParameterName);
+//        console.log(sParameterName);
 //        if (sParameterName[0] == sParam) 
 //        {
         	return sParameterName[1];
@@ -21,7 +21,7 @@ function getUrlParameterName(sParam)
     for (var i = 0; i < sURLVariables.length; i++) 
     {
         var sParameterName = sURLVariables[i].split('=');
-        console.log(sParameterName);
+//        console.log(sParameterName);
 //        if (sParameterName[0] == sParam) 
 //        {        	
         	return sParameterName[0];
@@ -33,7 +33,7 @@ function getUrlParameterName(sParam)
 function openFromURL(filename, graph){
 
 	var elementos = parent.topology.model.equipments;
-	console.log(elementos);
+//	console.log(elementos);
 	$.each(parent.topology.model.equipments, function(index, value){
 //		console.log( index + " : " + value);
 		 if(index === filename){

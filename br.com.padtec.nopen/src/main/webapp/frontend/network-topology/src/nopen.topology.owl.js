@@ -100,7 +100,7 @@ nopen.topology.OWL = Backbone.Model.extend({
 		
 		//Equipment
 //		model.node.id
-		console.log(model);
+//		console.log(model);
 		var equip = $this.createElement("Equipment", equipment.id, equipment.attributes.attrs.text.text);
 //		var equip = $this.createElement("Equipment", equipment.id, equipment.attributes.attrs.text.text);
 		elements.push(equip);
