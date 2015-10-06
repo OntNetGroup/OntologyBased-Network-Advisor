@@ -81,18 +81,26 @@ public class ProvisioningController {
 	 * @param graph
 	 */
 	@RequestMapping(value = "/saveProvisioning", method = RequestMethod.POST)
-	protected @ResponseBody void saveProvisioning(@RequestParam("filename") String filename, @RequestParam("graph") String graph){
+	protected @ResponseBody void saveProvisioning(@RequestParam("path") String path, @RequestParam("filename") String filename, @RequestParam("graph") String graph){
+
+		boolean isMainFile = false;
 		
-		NOpenFileUtil.createProvisioningRepository(filename);
-		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename);
+		if(path.equals(filename)) {
+			isMainFile = true;
+		}
+		
+		NOpenFileUtil.createProvisioningRepository(path);
+		path = NOpenFileUtil.replaceSlash(path + "/" + filename);
 		
 		try {
-			File jsonfile = NOpenFileUtil.createProvisioningJSONFile(filename);
+			File jsonfile = NOpenFileUtil.createProvisioningJSONFile(path);
 			NOpenFileUtil.writeToFile(jsonfile, graph);
 			
-			File owlFile = NOpenFileUtil.createProvisioningOWLFile(filename);
-			PrintWriter out = new PrintWriter(owlFile);
-			ProvisioningComponents.provisioningRepository.getBaseModel().write(out , "RDF/XML");
+			if(!isMainFile) {
+				File owlFile = NOpenFileUtil.createProvisioningOWLFile(path);
+				PrintWriter out = new PrintWriter(owlFile);
+				ProvisioningComponents.provisioningRepository.getBaseModel().write(out , "RDF/XML");
+			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -117,21 +125,25 @@ public class ProvisioningController {
 	 * @return
 	 */
 	@RequestMapping(value = "/openProvisioning", method = RequestMethod.POST)
-	protected @ResponseBody String openProvisioning(@RequestParam("filename") String filename){
+	protected @ResponseBody String openProvisioning(@RequestParam("path") String path, @RequestParam("filename") String filename){
 		
-		//load owl file
-		String owlFile = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".owl");
+		if(!path.equals(filename)) {
+			
+			//load owl file
+			String owlFile = NOpenFileUtil.replaceSlash(path + "/" + filename + ".owl");
+			
+			try {
+				InputStream in = new FileInputStream(NOpenFileUtil.provisioningOWLFolder + owlFile);
+				ProvisioningComponents.provisioningRepository.getBaseModel().read(in, null);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			
+		}
 		
-		try {
-			InputStream in = new FileInputStream(NOpenFileUtil.provisioningOWLFolder + owlFile);
-			ProvisioningComponents.provisioningRepository.getBaseModel().read(in, null);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		
-		filename = NOpenFileUtil.replaceSlash(filename + "/" + filename + ".json");
-		return NOpenFileUtil.openProvisioningJSONFileAsString(filename);
+		path = NOpenFileUtil.replaceSlash(path + "/" + filename + ".json");
+		return NOpenFileUtil.openProvisioningJSONFileAsString(path);
 		
 	}
 	

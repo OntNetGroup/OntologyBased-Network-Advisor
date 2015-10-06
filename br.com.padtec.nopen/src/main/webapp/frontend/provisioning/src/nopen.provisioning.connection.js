@@ -103,7 +103,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 				],
 //				"icv.reasoning.enabled" : true,
 			},
-			"reasoning" : "SL",
+//			"reasoning" : "SL",
 			"files" : [],	
 		};
 		

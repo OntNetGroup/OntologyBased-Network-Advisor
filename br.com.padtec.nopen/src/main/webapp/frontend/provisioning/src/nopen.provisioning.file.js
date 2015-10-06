@@ -124,13 +124,54 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		$('#filename').val(filename);
 		
+		var ids = [];
+		
+		$.each(graph.getElements(), function(index, element) {
+			ids.push(element.id);
+			
+			$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "saveProvisioning.htm",
+			   data: {
+				 'path': filename,
+				 'filename': element.id,
+				 'graph': JSON.stringify(element),
+			   },
+			   success: function(){},
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+		})
+		
+		$.each(graph.getLinks(), function(index, link) {
+			ids.push(link.id);
+			
+			$.ajax({
+			   type: "POST",
+			   async: false,
+			   url: "saveProvisioning.htm",
+			   data: {
+				 'path': filename,
+				 'filename': link.id,
+				 'graph': JSON.stringify(link),
+			   },
+			   success: function(){},
+			   error : function(e) {
+				   alert("error: " + e.status);
+			   }
+			});
+		})
+		
 		$.ajax({
 		   type: "POST",
 		   async: false,
 		   url: "saveProvisioning.htm",
 		   data: {
+			 'path': filename,
 			 'filename': filename,
-			 'graph': JSON.stringify(graph.toJSON()),
+			 'graph': JSON.stringify(ids),
 		   },
 		   success: function(){},
 		   error : function(e) {
@@ -219,12 +260,38 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   async: false,
 		   url: "openProvisioning.htm",
 		   data: {
+			   'path' : filename,
 			   'filename' : filename
 		   },
 		   dataType: 'json',
-		   success: function(data){ 		   
+		   success: function(ids){ 		   
 			   
-			   graph.fromJSON(data);
+			   var elements = {
+					   cells : [],
+			   };
+			   
+			   $.each(ids, function(index, id) {
+				   
+				   $.ajax({
+					   type: "POST",
+					   async: false,
+					   url: "openProvisioning.htm",
+					   data: {
+						   'path' : filename,
+						   'filename' : id
+					   },
+					   dataType: 'json',
+					   success: function(data){
+						   elements.cells.push(data);
+					   },
+					   error : function(e) {
+						   alert("error: " + e.status);
+					   }
+				   });
+				   
+			   })
+			   
+			   graph.fromJSON(elements);
 			   
 			   //hide links
 			   model.hideLinks();
