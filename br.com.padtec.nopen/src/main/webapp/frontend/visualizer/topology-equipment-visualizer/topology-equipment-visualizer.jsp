@@ -110,12 +110,10 @@
 		var app = new Rappid;
 		Backbone.history.start();
 
-		var element = parent.topology.model;
-		// 		console.log(element);
+		// 		var element = parent.topology.model;
 
 		if (getUrlParameterName('equipment')) {
 			var name = getUrlParameterName('equipment');
-			// 			console.log(name);
 		}
 
 		if (getUrlParameterID('equipment')) {
@@ -132,47 +130,31 @@
 
 		$('#btn-back').click(
 				function() {
-					// 			salvar os cards
+					//salvar os cards
 					var a = app.graph.getElements();
-// 					console.log(a);
+					//console.log(a);
 					$.each(a, function(index, element) {
-						// 				console.log(index);						
+						//console.log(index);						
 						if (element.attributes.subType === 'Card') {
-							console.log(element);
+							//b-> Card a ser modificado , c-> id desse card
 							var b = element.attributes;
-							console.log("Novo card");
-							console.log(b);
 							var c = element.id;
-							// 					console.log(parent.topology.model.equipments);
-							$.each(parent.topology.model.equipments, function(ind, value) {
-// 								console.log(value);
-								if(ind === getUrlParameterID('equipment')) {
-									console.log(value);
-									console.log("found equipment!");
-									
-									$.each(value,function(end,valor){
-										console.log("Endereço");
-										console.log(end);
-										console.log("VALOR");
-										console.log(valor);
-
-										for(var i=0;i<valor.length;i++) {
-// 	 										console.log("VALUE");
-// 	 										console.log(valor[i]);
-	 										if (valor[i].id === c) {
-	 											console.log("FOUND CARD!");
-	 											console.log(valor[i]);
-	 											valor[i] = b;
-	 											console.log("NEW CARD!");
-	 											console.log(valor[i]);
-	 										}
-	 									};
-										
-										
-										
+// 					Procurar o equipamento no topology.model para trocar os cards salvos dentro do no pelos novos cards	
+							$.each(parent.topology.model.equipments, function(i, value) {
+								if (i === getUrlParameterID('equipment')) {
+// 									console.log("found equipment!");
+									$.each(value, function(end, valor) {
+//                                  Trocar todos os cards antifos pelos novos
+										for (var i = 0; i < valor.length; i++) {
+											if (valor[i].id === c) {
+												console.log("Old card:");
+												console.log(valor[i]);
+												valor[i] = b;
+												console.log("New card:");
+												console.log(valor[i]);
+											}
+										};
 									});
-									
-
 								}
 							});
 						}
@@ -183,8 +165,8 @@
 				});
 
 		ituHandle(app.paper, app.graph);
-		
-// 		$('#btn-zoom-to-fit').click();
+
+		//$('#btn-zoom-to-fit').click();
 
 		$('#btn-show-hide-inspector').click(function() {
 

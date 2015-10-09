@@ -179,7 +179,10 @@ nopen.topology.File = Backbone.Model.extend({
 			   graph.fromJSON(data);
 			   
 			   $.each(graph.getElements(), function(index, node) {
-				   $this.openTopologyEquipment(filename, node.id);
+
+				 
+				   $this.openTopologyEquipment(filename, node.id , node);
+				   
 			   });
 		   },
 		   error : function(e) {
@@ -189,10 +192,11 @@ nopen.topology.File = Backbone.Model.extend({
 		
 	},
 	
-	openTopologyEquipment : function(filename, nodeId) {
+	openTopologyEquipment : function(filename, nodeId , node) {
 		
 		var $this = this;
 		var model = this.app.model;
+		var owl = this.app.owl;
 		
 		$.ajax({
 		   type: "POST",
@@ -203,8 +207,16 @@ nopen.topology.File = Backbone.Model.extend({
 			   'nodeId' : nodeId,
 		   },
 		   dataType: 'json',
-		   success: function(equipment){ 		   
-			   model.addNewEquipment(nodeId, equipment);
+		   success: function(equipment){ 	
+			   
+				$.each(equipment.cells, function(index, element){
+					if(element.subType === 'Card') {
+						owl.parseCardToOWL(node , element);
+					}	
+				});
+			 
+				model.addNewEquipment(nodeId, equipment);
+			   
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);

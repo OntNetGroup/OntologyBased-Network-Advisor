@@ -278,6 +278,8 @@ var Rappid = Backbone.Router.extend({
 					//cell.prop(elementname,i);
 					cell.prop(elementname, {'name':elementname,'grouping':'och-ctp-grouping',});
 
+					eval("cell.prop(elementname, {'name':elementname,'grouping':'och-client-ctp-grouping','directionality_"+elementname+"':''});");
+					
 					a = a+input;
 					b = b+group;
 					i++;
@@ -429,8 +431,8 @@ var Rappid = Backbone.Router.extend({
 				var input = "k_"+elementname+":{type:'range',min:'1',max:'3',step:'1',index:1,group:'odukclientctp_"+elementname+"',label:'k',attrs:{'label': {'data-tooltip' : 'This attribute specifies the index k that is used<br> to represent a supported bit rate and the different<br> versions of OPUk, ODUk and OTUk. Valid values for<br> this attribute are integers 1, 2 and 3.<br>k = 1 represents an approximate bit rate of 2.5 Gbit/s;<br>k = 2 represents an approximate bit rate of 10 Gbit/s; and<br>k = 3 represents an approximate bit rate of 40 Gbit/s.<br>This attribute is read-only.'}}},	adaptationtype_"+elementname+":{type: 'number',	min: 0,max: 2147483647,index:2,group:'odukclientctp_"+elementname+"',label: 'Adaptation Type',attrs:{'input':{'data-tooltip':'This attribute indicates the type of the supported<br> adaptation function at the interface port. Valid<br> values of this attribute include integers between 1 and 63, representing:<br>1) CBR;<br>2) ATMvp;<br>3) GFP;<br>4) NULL;<br>5) PRBS;<br>6) RSn.<br>This attribute is read-only.'}}},sinadaptactive_"+elementname+":{type: 'toggle',index:3,group:'odukclientctp_"+elementname+"',label: 'Sink Adapt Active',	attrs:{'input':{'data-tooltip':'This attribute allows for activation or<br> deactivation the sink adaptation function. The value<br> of TRUE means active. This attribute is read-write.'}}},sourceadaptactive_"+elementname+":{type: 'toggle',index:4,group:'odukclientctp_"+elementname+"',label: 'Source Adapt Active',attrs:{'input':{'data-tooltip':'This attribute allows for activation or deactivation<br> the source adaptation function. The value of TRUE<br> means activate. This attribute is read-write.'}}},payloadtypeac_"+elementname+":{type: 'number',min: 0,max: 2147483647,index:5,group:'odukclientctp_"+elementname+"',label: 'Payload Type AC',attrs:{'input':{'data-tooltip':'This attribute indicates the actual payload type<br> signal received. This attribute is read-only.'}}},operationalstate_"+elementname+":{type: 'select',options: ['enabled','disabled'],index:6,group:'odukclientctp_"+elementname+"',label:'Operational State',attrs:{'label':{'data-tooltip':'This attribute is generally defined in ITU-T Rec.<br> X.731 and the behaviour description for<br> operationalstate_"+elementname+"_"+elementname+" in ITU-T Rec. M.3100.<br>Possible Values – Enabled and Disabled. See ITU-T<br>Recs. X.731 and M.3100 for details.<br>Default Value – Actual state of resource at the time<br>the object is created. If there is a period of time<br>during the initialization process where the<br>operational state is unknown, then the resource will<br> be considered disabled until initialization has<br>completed and the state updated accordingly.<br>Constraints to Provisioning – N/A.<br>Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>This attribute is read-only.'}}},directionality_"+elementname+":{type: 'select',options: ['sink','source','bidirectional'],index:7,group:'odukclientctp_"+elementname+"',label: 'directionality ',attrs:{'label':{'data-tooltip':'This attribute indicates the directionality of the<br> termination point. Valid values are sink, source,<br> and bidirectional. This attribute is read-only.'}}},currentproblemlist_"+elementname+":{type: 'number',min: 1,max: 15,index:8,group:'odukclientctp_"+elementname+"',label: 'Current Problem List',attrs:{'input':{'data-tooltip':'This attribute indicates the failure conditions of the entity.<br>Possible values of this attribute include decimal <br> numbers between 1 and 31, representing:<br>1)no defect;<br>2)TIM (Trail Trace Identifier Mismatch);<br>3) DEG (Signal Degraded);<br>4) BDI (Backward Defect Indication);<br>5) SSF (Server Signal Fail).<br>This attribute is read-only.' }}},";
 				var group = "odukclientctp_"+elementname+": { label: 'ODUk client CTP _"+elementname+"', index: "+i+" },";
 
-				cell.prop(elementname, {'name':elementname,'grouping':'oduk-client-ctp-grouping',});
-				
+//				cell.prop(elementname, {'name':elementname,'grouping':'oduk-client-ctp-grouping','k_"+elementname+"':'','adaptationtype_"+elementname+"':'','sinadaptactive_"+elementname+"':'',});
+//				
 				
 				a = a+input;
 				b = b+group;
@@ -448,10 +450,12 @@ var Rappid = Backbone.Router.extend({
 				i++;
 				console.log(a);
 				console.log(b);
+//				eval("cell.prop(elementname, {'name':elementname,'grouping':'oduk-client-ctp-grouping','operationalstate_"+elementname+"':'','directionality_"+elementname+"':'','currentproblemlist_"+elementname+"':'',});");
+//				cell.prop(elementname, {'name':elementname,'grouping':'oduk-client-ctp-grouping','operationalstate_"+elementname+"':'','directionality_"+elementname+"':'','currentproblemlist_"+elementname+"':'',});
 				
-				var attr1 = 'operationalstate_'+elementname;
-				var attr2 = 'directionality_'+elementname; 
-				var attr3 = 'currentproblemlist_'+elementname;
+//				var attr1 = 'operationalstate_'+elementname;
+//				var attr2 = 'directionality_'+elementname; 
+//				var attr3 = 'currentproblemlist_'+elementname;
 				
 				//cell.prop(elementname,i);
 				cell.prop(elementname, {'name':elementname,'grouping':'oduk-ctp-grouping',});

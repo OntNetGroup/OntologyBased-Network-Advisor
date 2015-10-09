@@ -168,12 +168,11 @@ nopen.topology.App = Backbone.View.extend({
 			var node = cellView.model;
 			var equipment = topology.model.equipments;
 			
-			
 			var equipmentName = node.attr('equipment/name');
 			var equipmentID = node.attr('equipment/id');
 			equipID = node.attr('equipment/id');
-
-		    
+			
+			
 	    	$(function () {
 	            $('#equipment-dialog').dialog({
 	                modal: true,
