@@ -11,14 +11,19 @@ nopen.topology.Exporter = Backbone.Model.extend({
 	},
 	
 	exportTopologyAsYANG : function(graph) {
+		
+		var model = this.app.model;
 		var nodes = graph.getElements();
 		
 		var zip = new JSZip();
 		
 		/* for each node of topology, that is, for each equipment */
 		_.each(nodes, function(node) {
+			var equipID = node.attributes.attrs.equipment.id;
 			var equipName = node.attributes.attrs.equipment.name;
 			var equipGraph = new joint.dia.Graph;
+			
+			var equipmentCells = model.equipments[equipID].cells;
 			
 			/* load equipment's joint */
 			$.ajax({
@@ -83,12 +88,11 @@ nopen.topology.Exporter = Backbone.Model.extend({
 								'\t\t\tracks {\n';
 			
 			fileInterfaces = '\tinterfaces {\n';
-			
 			_.each(equipGraph.getElements(), function(element) {
 				if(element.attributes.subType === 'Rack') {
-					writeFilePhysicalRecursively(element, equipGraph, '\t\t\t\t', equipName);
+					writeFilePhysicalRecursively(element, equipGraph, '\t\t\t\t', equipName, equipmentCells);
 				}
-			});
+			}, this);
 			
 			fileProtocols = fileProtocols + '\t\t\t}\n' +
 											'\t\t}\n' +
@@ -104,10 +108,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 			fileYANG = fileYANG + fileLogical + fileProtocols + filePhysical + fileInterfaces + '}';
 			
 			var equipInstanceName = node.attributes.attrs.text.text;
-//			var zip = new JSZip();
 			zip.file(equipInstanceName + ".yang", fileYANG);
-//			var blob = zip.generate({type:"blob"});
-//			saveAs(blob, equipInstanceName + ".zip");
 			
 			console.log(equipInstanceName);
 //			console.log(fileYANG);
@@ -122,21 +123,28 @@ nopen.topology.Exporter = Backbone.Model.extend({
 		saveAs(blob, "topology.zip");
 		
 		
-		function writeFilePhysicalRecursively(element, graph, totalIdent, filename) {
+		function writeFilePhysicalRecursively(element, graph, totalIdent, filename, equipmentCells) {
 			var ident = '\t';
 			if(element === undefined) return;
 			
 			if(element.attributes.subType === 'Card') {
-//				parseITUElements(filename, element);
-				//TODO: pegar os atributos desse card
+				// pegar os atributos desse card
+				var cardAttributes = undefined;
 				
+				_.each(equipmentCells, function(cell) {
+					if(cell.type === 'equipment.Card') {
+						if(cell.attrs.name.text === element.attributes.attrs.name.text) {
+							cardAttributes = cell;
+						}
+					}
+				}, this);
 				
 				var cardGraph = loadCardGraph(filename, element.id);
 				var cardElements = cardGraph.getElements();
 				var cardLinks = cardGraph.getLinks();
 				var inPorts = getCardInPorts(cardGraph);
 				
-				/* para cada porta do card */
+				/* para cada porta de entrada do card */
 				_.each(inPorts, function(inPort) {
 					fileInterfaces = fileInterfaces + '\t\tinterface-entry ' + element.attributes.parent + ' ' + inPort.id + '{\n' +
 															'\t\t\timplemented-layers {\n';
@@ -146,40 +154,57 @@ nopen.topology.Exporter = Backbone.Model.extend({
 					var neighbors = getNeighbors(inPort.id, cardGraph);
 					_.each(neighbors, function(neighbor, index) {
 						if(neighbor !== inPort.id) {
-							writeImplementedLayerEntryRecursively(neighbor, inPort.id, cardGraph, totalIdent + ident, filename);
+							writeImplementedLayerEntryRecursively(neighbor, inPort.id, cardGraph, totalIdent + ident, cardAttributes);
 						}
-					});
+					}, this);
 
 					fileInterfaces = fileInterfaces + '\t\t\t}\n' +
 													'\t\t}\n';
 					
 					filePhysical = filePhysical + totalIdent + ident + '}\n';
 					
-
-					
-					function writeImplementedLayerEntryRecursively(element, prevElement, graph, totalIdent, filename) {
+					function writeImplementedLayerEntryRecursively(element, prevElement, graph, totalIdent, cardAttributes) {
 						if(graph.getCell(element).attributes.subtype === SubtypeEnum.OUTPUT) return;
-						var implementedLayer = 'oduk-client-ctp';
 						
-						fileProtocols = fileProtocols + '\t\t\t\tlayer-entry ' + implementedLayer + ' ' + element + ' {\n' +
-																	'\t\t\t\t\t' + implementedLayer + ' {\n';
+						var cell = graph.getCell(element);
+						var cellName = cell.attributes.attrs.text.text;
+						var cellInfo = cardAttributes[cellName];
 						
-						//TODO:	para cada atributo da camada, faça:
-						//			imprimir(nome do atributo \t valor do atributo ;)
-						
-						fileProtocols = fileProtocols +	'\t\t\t\t\t}\n' +
-														'\t\t\t\t}\n';
-												
-						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + implementedLayer + ' ' + element + '-input;\n';
-						fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + implementedLayer + ' ' + element + '-output;\n';
-						
-						filePhysical = filePhysical + totalIdent + '\timplemented-layer-entry ' + implementedLayer + ' ' + element + '-input;\n';
-						filePhysical = filePhysical + totalIdent + '\timplemented-layer-entry ' + implementedLayer + ' ' + element + '-output;\n';
+						if(cellInfo) {
+							var implementedLayer = cellInfo.grouping;
+							implementedLayer = implementedLayer.slice(0,-9);
+							
+							fileProtocols = fileProtocols + '\t\t\t\tlayer-entry ' + implementedLayer + ' ' + element + ' {\n' +
+																		'\t\t\t\t\t' + implementedLayer + ' {\n';
+							// para cada atributo da camada, faça:
+							//		imprimir(nome do atributo \t valor do atributo ;)
+							for(var cardAttribute in cardAttributes) {
+								var pos = cardAttribute.indexOf(cellName);
+								if(pos > 0) {
+									var attributeSplit = cardAttribute.split('_');
+									var attributeName = attributeSplit[0];
+									var attributeValue = cardAttributes[cardAttribute];
+									
+									if(attributeValue) {									
+										fileProtocols = fileProtocols+ '\t\t\t\t\t\t' +attributeName+ ' "' +attributeValue+ '";\n';
+									}
+								}
+							}
+							
+							fileProtocols = fileProtocols +	'\t\t\t\t\t}\n' +
+															'\t\t\t\t}\n';
+													
+							fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + implementedLayer + ' ' + element + '-input;\n';
+							fileInterfaces = fileInterfaces + '\t\t\t\tlayer-entry ' + implementedLayer + ' ' + element + '-output;\n';
+							
+							filePhysical = filePhysical + totalIdent + '\timplemented-layer-entry ' + implementedLayer + ' ' + element + '-input;\n';
+							filePhysical = filePhysical + totalIdent + '\timplemented-layer-entry ' + implementedLayer + ' ' + element + '-output;\n';
+						}
 						
 						var neighbors = getNeighbors(element, cardGraph);
 						_.each(neighbors, function(neighbor, index) {
 							if(neighbor !== prevElement) {
-								writeImplementedLayerEntryRecursively(neighbor, element, cardGraph, totalIdent, filename);
+								writeImplementedLayerEntryRecursively(neighbor, element, cardGraph, totalIdent, cardAttributes);
 							}
 						});
 					}
@@ -196,7 +221,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 				
 				var cardID = element.get('embeds')[0];
 				var card = graph.getCell(cardID);
-				writeFilePhysicalRecursively(card, graph, totalIdent+ident+ident+ident, filename);
+				writeFilePhysicalRecursively(card, graph, totalIdent+ident+ident+ident, filename, equipmentCells);
 				
 				filePhysical =	filePhysical+ totalIdent + ident + ident + '}\n' +
 									totalIdent + ident + ident +	'installed-equipment-objectType ' + card.attributes.attrs.name.text + ';\n' +
@@ -212,7 +237,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 				var slotIDs = element.get('embeds');
 				_.each(slotIDs, function(slotID) {
 					var slot = graph.getCell(slotID);
-					writeFilePhysicalRecursively(slot, graph, totalIdent+ident+ident, filename);
+					writeFilePhysicalRecursively(slot, graph, totalIdent+ident+ident, filename, equipmentCells);
 				});
 				
 				filePhysical = filePhysical + totalIdent + ident + '}\n' +
@@ -227,7 +252,7 @@ nopen.topology.Exporter = Backbone.Model.extend({
 				var shelfIDs = element.get('embeds');
 				_.each(shelfIDs, function(shelfID) {
 					var shelf = graph.getCell(shelfID);
-					writeFilePhysicalRecursively(shelf, graph, totalIdent+ident+ident, filename);
+					writeFilePhysicalRecursively(shelf, graph, totalIdent+ident+ident, filename, equipmentCells);
 				});
 				
 				filePhysical = filePhysical+ totalIdent + ident + '}\n' +
