@@ -141,7 +141,9 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 			source = graph.getCell(link.source.id);
 			target = graph.getCell(link.target.id);
 			
+			console.log(model);
 			var sourceName = model.getEquipmentName(link.source);
+			console.log(sourceName);
 			var targetName = model.getEquipmentName(link.target);
 			
 			if(currentLinkIndex <= links.length) {
@@ -158,8 +160,8 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				//if there aren't ports to connected, go to next step
 				if(Object.keys(connections[target.id]).length === 0 || Object.keys(connections[source.id]).length === 0) {
 					
-					var sourceName = model.getEquipmentName(source);
-					var targetName = model.getEquipmentName(target);
+					var sourceName = model.getEquipmentName(link.source);
+					var targetName = model.getEquipmentName(link.target);
 					
 					content = "No possible connection between " + sourceName + " and " + targetName + ".";
 					$('.dialog .body').html(content);

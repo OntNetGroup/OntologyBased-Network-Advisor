@@ -516,6 +516,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			_.each(subnetworks[tech], function(equipment, equipmentID) {
 				
 				var equip = equipment.attributes.attrs.equipment;
+				equip.name = equipment.attributes.attrs.text.text;
 				var accessGroup = Stencil.createAccessGroup(equipment.id, equip);
 				graph.addCell(accessGroup);
 				
