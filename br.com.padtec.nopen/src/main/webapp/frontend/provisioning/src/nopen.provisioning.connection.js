@@ -211,6 +211,9 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 
 		var result = this.executeQuery(query);
 
+		if(!result[0]){
+			return "--";
+		}
 		var label = result[0].label.value;
 		//label = label.replace(this.namespace, '');
 

@@ -7,6 +7,7 @@ nopen.provisioning.App = Backbone.View.extend({
 	test : undefined,
 	util : undefined,
 	connection : undefined,
+	algorithm : undefined,
 	
 	initialize : function(){
 		console.log("Provisioning started!");
@@ -27,6 +28,8 @@ nopen.provisioning.App = Backbone.View.extend({
 		//create connection
 		this.connection = new nopen.provisioning.Connection;
 		
+		this.algorithm = new nopen.provisioning.Algorithm;
+		
 		//create Test
 		this.test = new nopen.provisioning.Test;
 		this.test.setApp(this);
@@ -36,6 +39,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		this.owl.setApp(this);
 		this.preProvisioning.setApp(this);
 		this.model.setApp(this);
+		this.algorithm.setApp(this);
 
 		//initailize tests
 		this.initializeTestProcedures(app);
@@ -474,6 +478,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		var model = this.model;
 		var owl = this.owl;
 		var util = this.util;
+		var algorithm = this.algorithm;
 		
 		var sourcePort = undefined;
 		var targetPort = undefined;
@@ -494,6 +499,7 @@ nopen.provisioning.App = Backbone.View.extend({
 			//Horizontal Same Technology (ST)
 			var connectionType = "Horizontal_ST"; //owl.getConnectionTypeFromOWL(source.id, target.id);
 			var connections = owl.getPossibleConnectionsFromOWL(connectionType, source.id, target.id);
+			console.log('connections: ' + JSON.stringify(connections))
 			
 			var content = createConnectionContent(source, target, connectionType, connections);
 			
@@ -526,25 +532,25 @@ nopen.provisioning.App = Backbone.View.extend({
 			};
 			
 			function create() {
-				console.log('sourcePort: ' + JSON.stringify(sourcePort));
-				console.log('targetPort: ' + JSON.stringify(targetPort));
+				algorithm.checkProvisioningConnection(sourcePort, targetPort);
 				
-				//connect ports in JSON model
-				model.connectPorts(source, sourcePort, target, targetPort);
 				
-				//add vertical connection (FEP/FP/AP)
-				var tfSource = model.getTFElementConnectedToPort(source, sourcePort.id);
-				var tfTarget = model.getTFElementConnectedToPort(target, targetPort.id);
-				
-				owl.addVerticalConnection(tfSource, tfTarget);
-				
-				var sPort = owl.createElement(sourcePort.type, sourcePort.id, sourcePort.name);
-				var tPort = owl.createElement(targetPort.type, targetPort.id, targetPort.name);
-				
-				//connect ports directly in OWL and execute inference
-				owl.connectPorts(sPort, tPort);
-				
-				model.hideLinks();
+//				//connect ports in JSON model
+//				model.connectPorts(source, sourcePort, target, targetPort);
+//				
+//				//add vertical connection (FEP/FP/AP)
+//				var tfSource = model.getTFElementConnectedToPort(source, sourcePort.id);
+//				var tfTarget = model.getTFElementConnectedToPort(target, targetPort.id);
+//				
+//				owl.addVerticalConnection(tfSource, tfTarget);
+//				
+//				var sPort = owl.createElement(sourcePort.type, sourcePort.id, sourcePort.name);
+//				var tPort = owl.createElement(targetPort.type, targetPort.id, targetPort.name);
+//				
+//				//connect ports directly in OWL and execute inference
+//				owl.connectPorts(sPort, tPort);
+//				
+//				model.hideLinks();
 				
 				dialog.close();
 			};

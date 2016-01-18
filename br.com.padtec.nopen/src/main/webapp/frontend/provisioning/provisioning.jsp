@@ -73,6 +73,7 @@
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.owl.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.file.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.connection.js"></script>
+        <script src="/nopen/frontend/provisioning/src/nopen.provisioning.algorithm.js"></script>
         <script src="/nopen/frontend/provisioning/src/nopen.provisioning.app.js"></script>
         
         <!-- STENCILS -->
