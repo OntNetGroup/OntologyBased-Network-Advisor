@@ -192,7 +192,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 		//ITU Elements
 		var cardCells = card.attrs.data.cells;
-
+		
 		$.each(cardCells, function(index, element) {
 
 			//Card_Layer
@@ -272,6 +272,22 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					//Trail_Termination_Function (TTF) > Trail_Termination_Function_Output (TTFOUT)
 					var linkTTF_TTFOUT = $this.createLink(element.source.id, sourceType, ttf_out.id, ttf_out.type); 
 					links.push(linkTTF_TTFOUT);
+					
+					if(targetType === 'Input_Card'){
+						//Trail_Termination_Function_Input (TTF_IN)
+						ttf_in = $this.createElement("Trail_Termination_Function_Input", joint.util.uuid(), "Trail_Termination_Function_Input");
+						elements.push(ttf_in);
+						
+						//INPUT_CARD > TRAIL_TERMINATION_FUNCTION_INPUT(TTFIN)
+						var linkTTFIN_IN = $this.createLink(element.target.id , targetType , ttf_in.id, ttf_in.type);
+						links.push(linkTTFIN_IN);
+					}
+					
+					if(targetType === 'Output_Card'){
+						//OUTPUT_CARD > TRAIL_TERMINATION_FUNCTION_OUTPUT(TTFOUT)
+						var linkTTFOUT_OUT = $this.createLink(element.target.id , targetType , ttf_out.id , ttf_out.type);
+						links.push(linkTTFOUT_OUT);
+					}
 
 				}
 
@@ -284,7 +300,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					//Trail_Termination_Function (TTF) > Trail_Termination_Function_Intput (TTFIN)
 					var linkTTF_TTFIN = $this.createLink(element.target.id, targetType, ttf_in.id, ttf_in.type);
 					links.push(linkTTF_TTFIN);
-
+					
 				}
 
 				if(sourceType === 'Adaptation_Function') {
@@ -296,7 +312,23 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					//Adaptation_Function (AF) > Adaptation_Function_Output (AFOUT)
 					var linkAF_AFOUT = $this.createLink(element.source.id, sourceType, af_out.id, af_out.type);
 					links.push(linkAF_AFOUT);
-
+					
+					if(targetType === 'Input_Card'){
+						//Adaptation_Function_Input (AF_IN)
+						af_in = $this.createElement("Adaptation_Function_Input", joint.util.uuid(), "Adaptation_Function_Input");
+						elements.push(af_in);
+						
+						//INPUT_CARD > Adaption_FUNCTION_INPUT(AFIN)
+						var linkAFIN_IN = $this.createLink(element.target.id , targetType , af_in.id, af_in.type);
+						links.push(linkAFIN_IN);
+					}
+					
+					if(targetType === 'Output_Card'){
+						//OUTPUT_CARD > Adaption_FUNCTION_OUTPUT(AFOUT)
+						var linkAFOUT_OUT = $this.createLink(element.target.id , targetType ,  af_out.id, af_out.type);
+						links.push(linkAFOUT_OUT);
+					}
+					
 				}
 
 				if(targetType === 'Adaptation_Function') {
@@ -320,6 +352,22 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					//Matrix (M) > Matrix_Output (MOUT)
 					var linkM_MOUT = $this.createLink(element.source.id, sourceType, matrix_out.id, matrix_out.type);
 					links.push(linkM_MOUT);
+					
+					if(targetType === 'Input_Card'){
+						//Matrix_Input (M_IN)
+						matrix_in = $this.createElement("Matrix_Input", joint.util.uuid(), "Matrix_Input");
+						elements.push(matrix_in);
+						
+						//INPUT_CARD > Matrix_INPUT(MIN)
+						var linkMIN_IN = $this.createLink(element.target.id , targetType ,matrix_in.id, matrix_in.type);
+						links.push(linkMIN_IN);
+					}
+					
+					if(targetType === 'Output_Card'){
+						//OUTPUT_CARD > Matrix_OUTPUT(MOUT)
+						var linkMOUT_OUT = $this.createLink(element.target.id , targetType ,  matrix_out.id, matrix_out.type);
+						links.push(linkMOUT_OUT);
+					}
 
 				}
 
@@ -332,7 +380,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					//Matrix (M) > Matrix_Input (MIN)
 					var linkM_MIN = $this.createLink(element.target.id, targetType, matrix_in.id, matrix_in.type);
 					links.push(linkM_MIN);
-
+					
 				}
 
 				if(sourceType === 'Trail_Termination_Function' && (targetType === 'Adaptation_Function' || targetType === 'Matrix')) {
