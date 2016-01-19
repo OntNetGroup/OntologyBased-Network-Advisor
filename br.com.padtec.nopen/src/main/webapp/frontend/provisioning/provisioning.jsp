@@ -19,7 +19,7 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/layout.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/paper.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/inspector.css" />
-<!--         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/navigator.css" /> -->
+<!--    <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/navigator.css" /> -->
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/stencil.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/halo.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/selection.css" />
@@ -28,7 +28,6 @@
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/freetransform.css" />
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/style.css" />  
         <link rel="stylesheet" type="text/css" href="/nopen/frontend/provisioning/css/header.css" />
-
 		<link rel="stylesheet" type="text/css" href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css"/>
     </head>
     <body>
@@ -52,8 +51,7 @@
 		<!-- JS -->
 		
 		<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
-		<script src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
-		
+		<script src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>		
         <script src="/nopen/frontend/provisioning/js/keyboard.js"></script>
         <script src="/nopen/frontend/provisioning/js/inspector.js"></script> 
         <script src="/nopen/frontend/provisioning/js/layerNetwork.js"></script> 

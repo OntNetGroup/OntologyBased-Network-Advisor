@@ -327,6 +327,8 @@ function graphHandler(graph, app) {
 						cell.attr({
 							text: {text: portName}
 						});
+						cell.prop('TF', {'name':tFunctionName ,'type':tFunctionType,'id':transportFunctionID,});
+						console.log(cell);
 		    			nextName(portType);
 					} else {
 						Util.generateAlertDialog(result);
