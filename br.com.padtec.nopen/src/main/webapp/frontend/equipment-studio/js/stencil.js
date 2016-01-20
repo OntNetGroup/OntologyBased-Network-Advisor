@@ -7,7 +7,6 @@ Stencil.groups = {
 
 Stencil.shapes = {
 
-
 		equipment: [
 		            
 		            //Rack

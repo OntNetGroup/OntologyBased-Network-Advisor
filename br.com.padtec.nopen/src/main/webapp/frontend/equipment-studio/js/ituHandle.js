@@ -211,6 +211,7 @@ function ituHandle(paper, graph, validator){
 						            	
 						            	cell.attributes.inPorts[value.id] = value.attr('text/text');
 						            	inIds.push(value.id);
+						            	cell.attributes.tfIn = value.attributes.TF;
 				            		}
 				            		
 				            		if(value.get('subtype') === 'Output_Card') {
@@ -220,6 +221,7 @@ function ituHandle(paper, graph, validator){
 						            	
 						            	cell.attributes.outPorts[value.id] = value.attr('text/text');
 						            	outIds.push(value.id);
+						            	cell.attributes.tfOut = value.attributes.TF;
 				            		}
 				            		
 				            	});
