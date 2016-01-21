@@ -26,7 +26,7 @@ function EquipStudioInsertContainer(equipmentName ,equipmentType, equipmentID ,c
 		} ,
 		success: function(data){ 		   
 			result = data;
-			console.log('data' , result);
+//			console.log('data' , result);
 		},
 		error : function(e) {
 			alert("error: " + e.status);

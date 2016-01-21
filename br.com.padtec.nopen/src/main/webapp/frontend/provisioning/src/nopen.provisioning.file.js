@@ -421,6 +421,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 			
 			var equipment = graph.getCell(node.id);
 			
+			
 			$.ajax({
 			   type: "POST",
 			   async: false,
@@ -432,7 +433,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 			   dataType: 'json',
 			   success: function(equip){
 				   //add equipment data on element equipment data attribute
-				   equipment.attr('equipment/data', equip)
+				   equipment.attr('equipment/data', equip);
+
 				   var tech = model.getEquipmentTechnology(equip);
 				   
 				   if(!subnetworks[tech]) {
@@ -440,7 +442,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 				   }
 				   
 				   subnetworks[tech].push(equipment);
-				   
+				   AQUI FAZER
 				   var cards = model.getCardsInPreProvisioning(equipment);
 				   
 				   $.each(cards, function(index, card){

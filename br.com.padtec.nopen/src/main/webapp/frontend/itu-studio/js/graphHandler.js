@@ -327,7 +327,12 @@ function graphHandler(graph, app) {
 						cell.attr({
 							text: {text: portName}
 						});
-						cell.prop( 'TF' , {'name':  tFunctionName ,'id': transportFunctionID ,'type': tFunctionType });
+//						if(!cell.TF){
+//							cell['TF'] = [];
+//						}
+
+//						var tf = {'name':  tFunctionName ,'id': transportFunctionID ,'type': tFunctionType };
+						cell.prop('tf',{'name':  tFunctionName ,'id': transportFunctionID ,'type': tFunctionType });
 						console.log(cell);
 		    			nextName(portType);
 					} else {

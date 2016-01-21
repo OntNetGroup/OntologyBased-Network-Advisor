@@ -72,6 +72,14 @@ nopen.topology.Util = Backbone.Model.extend({
 					delete element.outPorts[key];
 				});
 				
+				$.each(element.TFIn, function(key, value) {
+					element.TFIn[key].id = ids[value.id] ;
+				});
+				
+				$.each(element.TFOut, function(key, value) {
+					element.TFOut[key].id = ids[value.id] ;
+				});
+				
 				$.each(element.connectedPorts, function(key, port) {
 					
 					port.id = ids[port.id]

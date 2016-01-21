@@ -211,7 +211,16 @@ function ituHandle(paper, graph, validator){
 						            	
 						            	cell.attributes.inPorts[value.id] = value.attr('text/text');
 						            	inIds.push(value.id);
-						            	cell.attributes.tfIn = value.attributes.TF;
+//						            	console.log(value);
+						            
+						            	if(!cell.attributes.TFIn){
+											cell.prop('TFIn',[]);
+										}
+
+										var tfIn = value.attributes.tf;
+										cell.attributes.TFIn.push(tfIn);
+										console.log(cell);
+//						            	cell.attributes.tfIn = value.attributes.TF;
 				            		}
 				            		
 				            		if(value.get('subtype') === 'Output_Card') {
@@ -221,7 +230,17 @@ function ituHandle(paper, graph, validator){
 						            	
 						            	cell.attributes.outPorts[value.id] = value.attr('text/text');
 						            	outIds.push(value.id);
-						            	cell.attributes.tfOut = value.attributes.TF;
+						            	
+						            	if(!cell.attributes.TFOut){
+											cell.prop('TFOut',[]);
+										}
+
+										var tfOut = value.attributes.tf;
+										cell.attributes.TFOut.push(tfOut);
+										console.log(cell);
+						            	
+//						            	cell.attributes.tfOut = value.attributes.TF;
+						            	console.log(value);
 				            		}
 				            		
 				            	});
