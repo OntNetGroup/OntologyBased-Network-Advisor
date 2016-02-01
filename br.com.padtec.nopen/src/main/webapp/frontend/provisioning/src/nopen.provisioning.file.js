@@ -442,14 +442,18 @@ nopen.provisioning.File = Backbone.Model.extend({
 				   }
 				   
 				   subnetworks[tech].push(equipment);
-				   AQUI FAZER
+//				   AQUI FAZER
 				   var cards = model.getCardsInPreProvisioning(equipment);
 				   
 				   $.each(cards, function(index, card){
-					   
-					   //create instances in OWL file
-					   owl.parseCardToOWL(equipment, card);
-					   
+					   try {
+						   //create instances in OWL file
+						   owl.parseCardToOWL(equipment, card);
+						}
+						catch(err) {
+						    console.log(err.stack);
+						    console.log(card);
+						}
 				   });
 				   
 			   },
@@ -465,6 +469,9 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		//execute reasoning
 		//owl.executeReasoning();
+		
+		//Generate haspath
+//		owl.generateHasPaths();
 		
 		//start pre provsioning
 		preProvisioning.start(app, subnetworks);

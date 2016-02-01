@@ -101,7 +101,6 @@ public class InterfaceStructure {
 			while(iterator.hasNext()){
 				HashMap<String, String> it = iterator.next();
 				String portId = it.get("id");
-				System.out.println();
 				String srcIndividualUri = repository.getNamespace() + portId;
 				String relationURI = repository.getNamespace() + RelationEnum.INV_vertical_links_to_Input_Card_Output_Card.toString();
 				String tgtClassURI = repository.getNamespace() + ConceptEnum.Output_Card.toString();

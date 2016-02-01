@@ -55,7 +55,9 @@
 						be considered disabled until initialization has<br> 
 						completed and the state updated accordingly.<br>
 						Constraints to Provisioning – N/A.<br>
-						Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>
+			
+			
+					Effect of Change in Value – See ITU-T Recs. X.731 and M.3100.<br>
 						This attribute is read-only."
 				}
 			}			
