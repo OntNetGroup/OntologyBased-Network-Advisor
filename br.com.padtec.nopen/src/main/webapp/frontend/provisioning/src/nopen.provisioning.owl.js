@@ -103,7 +103,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 	},
 
-	//Methos to set the application variable
+	//Method to set the application variable
 	setApp : function(app) {
 		this.app = app;
 	},
@@ -264,19 +264,19 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				var ttf_out = undefined, ttf_in = undefined, af_out = undefined, af_in = undefined, matrix_out = undefined, matrix_in = undefined;
 
 				if(sourceType === 'Trail_Termination_Function') {
-                     
+
 					if(targetType === 'Input_Card'){
-						
+
 						//Trail_Termination_Function_Input (TTF_IN)
 						ttf_in = $this.createElement("Trail_Termination_Function_Input", joint.util.uuid(), "Trail_Termination_Function_Input");
 						elements.push(ttf_in);
 
 						//Trail_Termination_Function (TTF) > Trail_Termination_Function_Intput (TTFIN)
-						var linkTTF_TTFIN = $this.createLink(element.target.id, targetType, ttf_in.id, ttf_in.type);
+						var linkTTF_TTFIN = $this.createLink(element.source.id, sourceType, ttf_in.id, ttf_in.type);
 						links.push(linkTTF_TTFIN);
-						
+
 					}else{
-						
+
 						//Trail_Termination_Function_Output (TTF_OUT)
 						ttf_out = $this.createElement("Trail_Termination_Function_Output", joint.util.uuid(), "Trail_Termination_Function_Output"); 
 						elements.push(ttf_out);
@@ -302,17 +302,17 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Adaptation_Function') {
 
 					if(targetType === 'Input_Card'){
-						
+
 						//Adaptation_Function_Input (AF_IN)
 						af_in = $this.createElement("Adaptation_Function_Input", joint.util.uuid(), "Adaptation_Function_Input");
 						elements.push(af_in);
 
 						//Adaptation_Function (AF) > Adaptation_Function_Input (AFIN)
-						var linkAF_AFIN = $this.createLink(element.target.id, targetType, af_in.id, af_in.type);
+						var linkAF_AFIN = $this.createLink(element.source.id, sourceType, af_in.id, af_in.type);
 						links.push(linkAF_AFIN);
-						
+
 					}else{
-					
+
 						//Adaptation_Function_Output (AF_OUT)
 						af_out = $this.createElement("Adaptation_Function_Output", joint.util.uuid(), "Adaptation_Function_Output");
 						elements.push(af_out);
@@ -320,7 +320,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 						//Adaptation_Function (AF) > Adaptation_Function_Output (AFOUT)
 						var linkAF_AFOUT = $this.createLink(element.source.id, sourceType, af_out.id, af_out.type);
 						links.push(linkAF_AFOUT);
-						
+
 					}
 				}
 
@@ -339,15 +339,15 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Matrix') {
 
 					if(targetType === 'Input_Card'){
-						
+
 						//Matrix_Input (M_IN)
 						matrix_in = $this.createElement("Matrix_Input", joint.util.uuid(), "Matrix_Input");
 						elements.push(matrix_in);
 
 						//Matrix (M) > Matrix_Input (MIN)
-						var linkM_MIN = $this.createLink(element.target.id, targetType, matrix_in.id, matrix_in.type);
+						var linkM_MIN = $this.createLink(element.source.id, sourceType, matrix_in.id, matrix_in.type);
 						links.push(linkM_MIN);
-						
+
 					}else{
 						//Matrix_Output (M_OUT)
 						matrix_out = $this.createElement("Matrix_Output", joint.util.uuid(), "Matrix_Output");
@@ -370,17 +370,17 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					links.push(linkM_MIN);
 
 				}
-				
-				
+
+
 				if(sourceType === 'Trail_Termination_Function' && targetType === 'Input_Card'){
-					
+
 					//INPUT_CARD > TRAIL_TERMINATION_FUNCTION_INPUT(TTFIN)
 					var linkTTFIN_IN = $this.createLink(element.target.id , targetType , ttf_in.id, ttf_in.type);
 					links.push(linkTTFIN_IN);
 				}
 
 				if(sourceType === 'Trail_Termination_Function' && targetType === 'Output_Card'){
-					
+
 					//OUTPUT_CARD > TRAIL_TERMINATION_FUNCTION_OUTPUT(TTFOUT)
 					var linkTTFOUT_OUT = $this.createLink(element.target.id , targetType , ttf_out.id , ttf_out.type);
 					links.push(linkTTFOUT_OUT);
@@ -397,8 +397,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 					if(targetType === 'Adaptation_Function') {
 						//FEP (FEP) > AF_IN (AFIN)
-						var linFEP_AFIN = $this.createLink(element.id, "FEP", af_in.id, af_in.type);
-						links.push(linFEP_AFIN);
+						var linkFEP_AFIN = $this.createLink(element.id, "FEP", af_in.id, af_in.type);
+						links.push(linkFEP_AFIN);
 					}
 					else {
 						//FEP (FEP) > MATRIX_IN (MIN)
@@ -408,38 +408,38 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 				}
 
-				
+
 				if(sourceType === 'Adaptation_Function' && targetType === 'Input_Card'){
-					
+
 					//INPUT_CARD > Adaption_FUNCTION_INPUT(AFIN)
 					var linkAFIN_IN = $this.createLink(element.target.id , targetType , af_in.id, af_in.type);
 					links.push(linkAFIN_IN);
 				}
 
 				if(sourceType === 'Adaptation_Function' && targetType === 'Output_Card'){
-											
+
 					//OUTPUT_CARD > Adaption_FUNCTION_OUTPUT(AFOUT)
 					var linkAFOUT_OUT = $this.createLink(element.target.id , targetType ,  af_out.id, af_out.type);
 					links.push(linkAFOUT_OUT);
 				}
-				
+
 				if(sourceType === 'Adaptation_Function' && targetType === 'Trail_Termination_Function') {
 					//Reference_Point AP (AP)
 					var rp = $this.createElement("AP", element.id, "AP");
 					elements.push(rp);
 
 					//AF_OUT (AFOUT) > AP (AP)
-					var linAFOUT_AP = $this.createLink(element.id, "AP", af_out.id, af_out.type);
-					links.push(linAFOUT_AP);
+					var linkAFOUT_AP = $this.createLink(element.id, "AP", af_out.id, af_out.type);
+					links.push(linkAFOUT_AP);
 
 					//AP (AP) > TTF_IN (TTFIN)
 					var linkAP_TTFIN = $this.createLink(element.id, "AP", ttf_in.id, ttf_in.type);
 					links.push(linkAP_TTFIN);
 
 				}
-				
+
 				if(sourceType === 'Matrix' && targetType === 'Input_Card'){
-					
+
 					//INPUT_CARD > Matrix_INPUT(MIN)
 					var linkMIN_IN = $this.createLink(element.target.id , targetType ,matrix_in.id, matrix_in.type);
 					links.push(linkMIN_IN);
@@ -517,39 +517,40 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	parseConnectedPortsToOWL : function(graph) {
 
 		var connection = this.app.connection;
-
+		var relationships = this.relationships;
+		
 		var $this = this;
 		var model = this.app.model;
 
 		var elements = [];
 		var links = [];
 		var portf = {};
-		
+
 		$.each(graph.getElements(), function(index, value){
 
 			var equipment = graph.getCell(value.id);
 			var cards = model.getCardsInPreProvisioning(equipment);
-			
-			
-	        // popular uma hash com as ids de tfout->outpor e tfin->inport
+
+
+			// popular uma hash com as ids de tfout->outpor e tfin->inport
 			$.each(cards, function(key, card){
 				var icount = 0;
 				var jcount = 0;
-				
+
 				$.each(card.inPorts, function(inportId,inportName){ 
 					portf[inportId]= card.TFIn[icount].id;
 					icount++;
 				});
-				
+
 				$.each(card.outPorts, function(outportId,outportName){ 
 					portf[outportId]= card.TFOut[jcount].id;
 					jcount++;
 				});	
-				
+
 			});
-			
-			console.log(portf);
-			
+
+//			console.log(portf);
+
 			$.each(cards, function(key, card){
 
 				//Input_Card/Output_Card > Input_Card/Output_Card
@@ -560,13 +561,69 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 							var link = $this.createLink(portId, "Output_Card", connectedPort.id, connectedPort.type);
 							links.push(link);
 
-							//
-							
-//							connection.executequery.
-	
-							
-							//
-							
+							if(connectedPort.type === "Input_Card"){
+								var tfout = connection.selectTFOutFromTF(portf[portId], portId);
+								var tfin = connection.selectTFInFromTF(portf[connectedPort.id], connectedPort.id);
+								var tfouttype = connection.getTFType(portf[portId]);
+								var tfintype = connection.getTFType(portf[connectedPort.id]);
+
+//								console.log(tfouttype);
+//								console.log(tfintype);
+
+								var idlink = joint.util.uuid();
+								if(tfintype === 'Adaptation_Function' && tfouttype === 'Matrix') {
+									console.log('saci');
+									//Reference_Point FP (FP)
+									var rp = $this.createElement("FP", idlink, "FP");
+									elements.push(rp);
+
+									//FP (FP) > M_OUT (MOUT)
+									var linkMOUT_FP = $this.createLink(idlink, "FP", tfin, 'Adaptation_Function_Input');
+									links.push(linkMOUT_FP);
+
+									//FP (FP) > AFIN (AFIN)
+									var linkFP_AFIN = $this.createLink(idlink, "FP", tfout, 'Matrix_Output');
+									links.push(linkFP_AFIN);
+
+								}
+
+								if(tfintype === 'Adaptation_Function' && tfouttype === 'Trail_Termination_Function') {
+									console.log('saci');
+									//Reference_Point AP (AP)
+									var rp = $this.createElement("AP", idlink, "AP");
+									elements.push(rp);
+
+									//AF_OUT (AFOUT) > AP (AP)
+									var linkAFOUT_AP = $this.createLink(idlink, "AP", tfout, 'Trail_Termination_Function_Output');
+									links.push(linkAFOUT_AP);
+
+									//AP (AP) > TTF_IN (TTFIN)
+									var linkAP_TTFIN = $this.createLink(idlink, "AP", tfin, 'Adaptation_Function_Input');
+									links.push(linkAP_TTFIN);
+
+								}
+
+								if(tfintype === 'Matrix' && tfouttype === 'Trail_Termination_Function') {
+									console.log('saci');
+									//Reference_Point FEP (FEP)
+									var rp = $this.createElement("FEP", idlink, "FEP");
+									elements.push(rp);
+
+									//TTF_OUT (TTFOUT) > FEP (FEP)
+									var linkTTFOUT_FEP = $this.createLink(idlink, "FEP", tfin, 'Matrix_Input');
+									links.push(linkTTFOUT_FEP);
+
+									//FEP (FEP) > MATRIX_IN (MIN)
+									var linkFEP_MIN = $this.createLink(idlink, "FEP", tfout, 'Trail_Termination_Function_Output');
+									links.push(linkFEP_MIN);
+
+								}
+
+//								console.log(links);
+							}
+
+
+
 							var tfSource = model.getTFElementConnectedToPortInPreProvisioning(equipment, portId);
 							var tfTarget = model.getTFElementConnectedToPortInPreProvisioning(equipment, connectedPort.id);
 
@@ -606,30 +663,43 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
 
 		//execute parse
+		//execute parse
 //		$.ajax({
-//		type: "POST",
-//		async: false,
-//		url: "parseCardToOWL.htm",
-//		data: {
-//		'elements' : JSON.stringify(pElements),
-//		'links' : JSON.stringify(pLinks),
-//		},
-//		success: function(){
-//		//console.log('PARSE OK!')
-//		},
-//		error : function(e) {
-//		alert("error: " + e.status);
-//		}
+//			type: "POST",
+//			async: false,
+//			url: "savetojena.htm",
+//			data: {
+//				'elements' : JSON.stringify(pElements),
+//				'links' : JSON.stringify(pLinks),
+//			},
+//			success: function(){
+//				console.log('saved!')
+//			},
+//			error : function(e) {
+//				alert("error: " + e.status);
+//			}
 //		});
 
 	},
+	
+	generateHasPaths: function(){
+		
+		var connection = this.app.connection;
+		
+		//querry para retornar todos os reference points
+		var has_paths = connection.getRPInAndRPOut();
+		
+		connection.insertHasPath(has_paths);
+		
+		
+	},
 
-	addHorizontalConnection : function(tfSource, tfTarget) {
+	addHorizontalConnection : function(tfSource, tfTarget , sourcePort , targetPort) {
 
 		var connection = this.app.connection;
 
 		var $this = this;
-		var connections = this.createHorizontalConnection(tfSource, tfTarget);
+		var connections = this.createHorizontalConnection(tfSource, tfTarget , sourcePort , targetPort);
 
 		var pElements = [];
 		var pLinks = [];
@@ -647,24 +717,26 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var eTriples = $this.convertElementsToTriples(pElements);
 		var lTriples = $this.convertLinksToTriples(pLinks);
 
-		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
-		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(eTriples,"http://localhost:8080/nopen/provisioning.htm");
+		connection.save(lTriples,"http://localhost:8080/nopen/provisioning.htm");
 
-		//execute parse
+		
+		
+//		//execute parse
 //		$.ajax({
-//		type: "POST",
-//		async: false,
-//		url: "parseCardToOWL.htm",
-//		data: {
-//		'elements' : JSON.stringify(pElements),
-//		'links' : JSON.stringify(pLinks),
-//		},
-//		success: function(){
-//		//console.log('PARSE OK!')
-//		},
-//		error : function(e) {
-//		alert("error: " + e.status);
-//		}
+//			type: "POST",
+//			async: false,
+//			url: "savetojena.htm",
+//			data: {
+//				'elements' : JSON.stringify(pElements),
+//				'links' : JSON.stringify(pLinks),
+//			},
+//			success: function(){
+//				console.log('saved!')
+//			},
+//			error : function(e) {
+//				alert("error: " + e.status);
+//			}
 //		});
 
 	},
@@ -714,9 +786,10 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 	},
 
-	createHorizontalConnection : function(tfSource, tfTarget) {
+	createHorizontalConnection : function(tfSource, tfTarget , sourcePort , targetPort ) {
 
 		var $this = this;
+		var connection = this.app.connection;
 
 		var elements = [];
 		var links = [];
@@ -748,44 +821,35 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		elements.push(fep_pmso);
 
 		//Trail_Termination_Function_Output (TTF_OUT)
-		var ttf_out_source = $this.createElement("Trail_Termination_Function_Output", joint.util.uuid(), "Trail_Termination_Function_Output"); 
-		elements.push(ttf_out_source);
-
-
-		//TTF > Trail_Termination_Function_Output (TTFOUT)
-		var link_TTF_TTFOUT = $this.createLink(tfSource.id, tfSource.type, ttf_out_source.id, ttf_out_source.type);
-		links.push(link_TTF_TTFOUT);
+		var ttf_out_source_id = connection.selectTFOutFromTF(tfSource.id , sourcePort.id);
+		var ttf_out_source_type = "Trail_Termination_Function_Output";
 
 		//FEP > PM_Input_So (PMSO)
 		var link_FEP_PMSO = $this.createLink(fep_pmso.id, fep_pmso.type, pm_so.id, pm_so.type);
 		links.push(link_FEP_PMSO);
 
 		//FEP > Trail_Termination_Function_Output (TTFOUT)
-		var link_FEP_TTFOUT = $this.createLink(fep_pmso.id, fep_pmso.type, ttf_out_source.id, ttf_out_source.type);
+		var link_FEP_TTFOUT = $this.createLink(fep_pmso.id, fep_pmso.type, ttf_out_source_id, ttf_out_source_type);
 		links.push(link_FEP_TTFOUT);
-
 
 		//Reference_Point FEP (FEP)
 		var fep_pmsk = $this.createElement("FEP", joint.util.uuid(), "FEP");
 		elements.push(fep_pmsk);
 
 		//Trail_Termination_Function_Output (TTF_OUT)
-		ttf_out_target = $this.createElement("Trail_Termination_Function_Output", joint.util.uuid(), "Trail_Termination_Function_Output"); 
-		elements.push(ttf_out_target);
-
-
-		//TTF > Trail_Termination_Function_Output (TTFOUT)
-		var link_TTF_TTFOUT = $this.createLink(tfTarget.id, tfTarget.type, ttf_out_target.id, ttf_out_target.type);
-		links.push(link_TTF_TTFOUT);
+		var ttf_out_target_id = connection.selectTFOutFromTF(tfTarget.id , targetPort.id);
+		var ttf_out_target_type = "Trail_Termination_Function_Output";
 
 		//FEP > PM_Input_Sk (PMSK)
 		var link_FEP_PMSK = $this.createLink(fep_pmsk.id, fep_pmsk.type, pm_sk.id, pm_sk.type);
 		links.push(link_FEP_PMSK);
 
 		//FEP > Trail_Termination_Function_Output (TTFOUT)
-		var link_FEP_TTFOUT = $this.createLink(fep_pmsk.id, fep_pmsk.type, ttf_out_target.id, ttf_out_target.type);
+		var link_FEP_TTFOUT = $this.createLink(fep_pmsk.id, fep_pmsk.type, ttf_out_target_id, ttf_out_target_type);
 		links.push(link_FEP_TTFOUT);
 
+		connection.createHasPathfromPM(fep_pmso.id , fep_pmsk.id);
+		
 		var horizontalConnections = {
 				'elements' : elements,
 				'links' : links,
