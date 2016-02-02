@@ -1,0 +1,1475 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.menthor.net/provisioning.owl#"
+     xml:base="http://www.menthor.net/provisioning.owl"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:provisioning="http://www.menthor.net/provisioning.owl#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.menthor.net/provisioning.owl#"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_AdaptationFunction_AdaptationFunctionInput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_AdaptationFunction_AdaptationFunctionInput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Input"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_AdaptationFunction_AdaptationFunctionInput"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function_Input"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_AdaptationFunction_AdaptationFunctionOutput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_AdaptationFunction_AdaptationFunctionOutput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Output"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_AdaptationFunction_AdaptationFunctionOutput"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function_Output"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_CardLayer_TrailTerminationFunction -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_CardLayer_TrailTerminationFunction">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_CardLayer_TrailTerminationFunction"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_Card_CardLayer -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_Card_CardLayer">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_Card_CardLayer"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_Card_InputCard -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_Card_InputCard">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_Card_InputCard"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_Card_OutputCard -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_Card_OutputCard">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_Card_OutputCard"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_Card_TFCardElement -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_Card_TFCardElement">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_Card_TFCardElement"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#TF_Card_Element"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_Equipment_Card -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_Equipment_Card">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_Equipment_Card"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Equipment"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_Matrix_MatrixInput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_Matrix_MatrixInput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Input"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_Matrix_MatrixInput"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Matrix"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Matrix_Input"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_Matrix_MatrixOutput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_Matrix_MatrixOutput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Output"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_Matrix_MatrixOutput"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Matrix"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Matrix_Output"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_PhysicalMedia_PMInputSk -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_PhysicalMedia_PMInputSk">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Input"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_PhysicalMedia_PMInputSk"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Physical_Media"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#PM_Input_Sk"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_PhysicalMedia_PMInputSo -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_PhysicalMedia_PMInputSo">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Input"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_PhysicalMedia_PMInputSo"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Physical_Media"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#PM_Input_So"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_Technology_LayerType -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_Technology_LayerType">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_Technology_LayerType"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Technology"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_TrailTerminationFunction_TrailTerminationFunctionInput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_TrailTerminationFunction_TrailTerminationFunctionInput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Input"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_TrailTerminationFunction_TrailTerminationFunctionInput"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function_Input"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_TrailTerminationFunction_TrailTerminationFunctionOutput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_TrailTerminationFunction_TrailTerminationFunctionOutput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#A_TransportFunction_Output"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_TrailTerminationFunction_TrailTerminationFunctionOutput"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function_Output"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_TransportFunction_Input -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_TransportFunction_Input">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_TransportFunction_Input"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#A_TransportFunction_Output -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#A_TransportFunction_Output">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.A_TransportFunction_Output"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Output"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_AdaptationFunction_AdaptationFunctionInput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_AdaptationFunction_AdaptationFunctionInput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function_Input"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_AdaptationFunction_AdaptationFunctionOutput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_AdaptationFunction_AdaptationFunctionOutput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function_Output"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_CardLayer_TrailTerminationFunction -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_CardLayer_TrailTerminationFunction">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_Card_CardLayer -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_Card_CardLayer">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_Card_InputCard -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_Card_InputCard">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_Card_OutputCard -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_Card_OutputCard">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_Card_TFCardElement -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_Card_TFCardElement">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#TF_Card_Element"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_Equipment_Card -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_Equipment_Card">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Equipment"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_Matrix_MatrixInput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_Matrix_MatrixInput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Matrix_Input"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Matrix"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_Matrix_MatrixOutput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_Matrix_MatrixOutput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Matrix_Output"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Matrix"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_PhysicalMedia_PMInputSk -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_PhysicalMedia_PMInputSk">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#PM_Input_Sk"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Physical_Media"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_PhysicalMedia_PMInputSo -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_PhysicalMedia_PMInputSo">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#PM_Input_So"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Physical_Media"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_Technology_LayerType -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_Technology_LayerType">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Technology"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_TrailTerminationFunction_TrailTerminationFunctionInput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_TrailTerminationFunction_TrailTerminationFunctionInput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function_Input"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_TrailTerminationFunction_TrailTerminationFunctionOutput -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_TrailTerminationFunction_TrailTerminationFunctionOutput">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function_Output"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_TransportFunction_Input -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_TransportFunction_Input">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.A_TransportFunction_Output -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.A_TransportFunction_Output">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.componentOf"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Output"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.binds -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.binds">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#binds"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.binds.Adaptation_Function.Trail_Termination_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.binds.Adaptation_Function.Trail_Termination_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.binds"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#binds.Adaptation_Function.Trail_Termination_Function"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.binds.Input_Card.Input -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.binds.Input_Card.Input">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.binds"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#binds.Input_Card.Input"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.binds.Matrix.Adaptation_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.binds.Matrix.Adaptation_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.binds"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#binds.Matrix.Adaptation_Function"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Matrix"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.binds.Output_Card.Output -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.binds.Output_Card.Output">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.binds"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#binds.Output_Card.Output"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Output"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.binds.Trail_Termination_Function.Adaptation_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.binds.Trail_Termination_Function.Adaptation_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.binds"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Adaptation_Function"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.binds.Trail_Termination_Function.Matrix -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.binds.Trail_Termination_Function.Matrix">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.binds"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Matrix"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Matrix"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.binds.Trail_Termination_Function.Physical_Media -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.binds.Trail_Termination_Function.Physical_Media">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.binds"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Physical_Media"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Physical_Media"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.componentOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.componentOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#componentOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.connects -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.connects">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#connects"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.connects.Reference_Point.Reference_Point -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.connects.Reference_Point.Reference_Point">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.connects"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#connects.Reference_Point.Reference_Point"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.has_connects_supported -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.has_connects_supported">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#has_connects_supported"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.has_path -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.has_path">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#has_path"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.horizontal_links_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.horizontal_links_to">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#horizontal_links_to"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.implements -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.implements">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#implements"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.implements.Equipment.Technology -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.implements.Equipment.Technology">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.implements"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#implements.Equipment.Technology"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Technology"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Equipment"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.implements.Technology.Service -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.implements.Technology.Service">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.implements"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#implements.Technology.Service"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Service"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Technology"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.instantiates -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.instantiates">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#instantiates"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.intermediates_down -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.intermediates_down">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_down"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.intermediates_up -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.intermediates_up">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#intermediates_up"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.is_client -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.is_client">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#is_client"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.is_interface_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.is_interface_of">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#is_interface_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.is_interface_of.Input_Card.Transport_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.is_interface_of.Input_Card.Transport_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.is_interface_of"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#is_interface_of.Input_Card.Transport_Function"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.is_interface_of.Output_Card.Transport_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.is_interface_of.Output_Card.Transport_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.is_interface_of"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#is_interface_of.Output_Card.Transport_Function"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.is_physical_connected -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.is_physical_connected">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#is_physical_connected"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Equipment"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Equipment"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.links_input -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.links_input">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#links_input"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.links_input.Reference_Point.Input -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.links_input.Reference_Point.Input">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.links_input"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#links_input.Reference_Point.Input"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.links_output -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.links_output">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#links_output"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.links_output.Reference_Point.Output -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.links_output.Reference_Point.Output">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#INV.links_output"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#links_output.Reference_Point.Output"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Output"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.mc -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.mc">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#mc"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#FEP"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#FP"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#INV.vertical_links_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#INV.vertical_links_to">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.menthor.net/provisioning.owl#vertical_links_to"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#binds -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#binds">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#binds.Adaptation_Function.Trail_Termination_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#binds.Adaptation_Function.Trail_Termination_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#binds"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#binds.Input_Card.Input -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#binds.Input_Card.Input">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#binds"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#binds.Matrix.Adaptation_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#binds.Matrix.Adaptation_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#binds"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Matrix"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#binds.Output_Card.Output -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#binds.Output_Card.Output">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#binds"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Output"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Adaptation_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Adaptation_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#binds"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Adaptation_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Matrix -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Matrix">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#binds"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Matrix"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Physical_Media -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#binds.Trail_Termination_Function.Physical_Media">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#binds"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Trail_Termination_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Physical_Media"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#componentOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#componentOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#connects -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#connects">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#connects.Reference_Point.Reference_Point -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#connects.Reference_Point.Reference_Point">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#connects"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#has_connects_supported -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#has_connects_supported">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#has_path -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#has_path">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#links_input.Reference_Point.Input"/>
+            <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#INV.A_TransportFunction_Input"/>
+            <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#A_TransportFunction_Output"/>
+            <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#INV.links_output.Reference_Point.Output"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#horizontal_links_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#horizontal_links_to">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#implements -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#implements">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#implements.Equipment.Technology -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#implements.Equipment.Technology">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#implements"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Equipment"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Technology"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#implements.Technology.Service -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#implements.Technology.Service">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#implements"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Technology"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Service"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#instantiates -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#instantiates">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#intermediates_down -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#intermediates_down">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#intermediates_up -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#intermediates_up">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#is_client -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#is_client">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#is_interface_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#is_interface_of">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#is_interface_of.Input_Card.Transport_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#is_interface_of.Input_Card.Transport_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#is_interface_of"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#is_interface_of.Output_Card.Transport_Function -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#is_interface_of.Output_Card.Transport_Function">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#is_interface_of"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#is_physical_connected -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#is_physical_connected">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Equipment"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Equipment"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#links_input -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#links_input">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#links_input.Reference_Point.Input -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#links_input.Reference_Point.Input">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#links_input"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#links_output -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#links_output">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#links_output.Reference_Point.Output -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#links_output.Reference_Point.Output">
+        <rdfs:subPropertyOf rdf:resource="http://www.menthor.net/provisioning.owl#links_output"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Output"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#mc -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#mc">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#FP"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#FEP"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#vertical_links_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.menthor.net/provisioning.owl#vertical_links_to">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Output_Card"/>
+        <rdfs:range rdf:resource="http://www.menthor.net/provisioning.owl#Input_Card"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Layer_Type.name -->
+
+    <owl:DatatypeProperty rdf:about="http://www.menthor.net/provisioning.owl#Layer_Type.name">
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Technology.name -->
+
+    <owl:DatatypeProperty rdf:about="http://www.menthor.net/provisioning.owl#Technology.name">
+        <rdfs:domain rdf:resource="http://www.menthor.net/provisioning.owl#Technology"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#AP -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#AP">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Adaptation_Function -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Adaptation_Function">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Simple_Transport_Function"/>
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#TF_Card_Element"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Simple_Transport_Function"/>
+                    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#TF_Card_Element"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Adaptation_Function_Input -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Adaptation_Function_Input">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Adaptation_Function_Output -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Adaptation_Function_Output">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Output"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Card -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Card"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Card_Layer -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Card_Layer"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Equipment -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Equipment"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#FEP -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#FEP">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#FP -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#FP">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Input -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Input"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Input_Card -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Input_Card"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Layer_Type -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Matrix -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Matrix">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#TF_Card_Element"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Matrix_Input -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Matrix_Input">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Matrix_Output -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Matrix_Output">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Output"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Output -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Output"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Output_Card -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Output_Card"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#PM_Input_Sk -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#PM_Input_Sk">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#PM_Input_So -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#PM_Input_So">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Physical_Media -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Physical_Media">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Simple_Transport_Function"/>
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#TF_Card_Element"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#Simple_Transport_Function"/>
+                    <rdf:Description rdf:about="http://www.menthor.net/provisioning.owl#TF_Card_Element"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Reference_Point -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Reference_Point"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Service -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Service"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Simple_Transport_Function -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Simple_Transport_Function">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#TF_Card_Element -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#TF_Card_Element">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Technology -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Technology"/>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Trail_Termination_Function -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Trail_Termination_Function">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Simple_Transport_Function"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Trail_Termination_Function_Input -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Trail_Termination_Function_Input">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Input"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Trail_Termination_Function_Output -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Trail_Termination_Function_Output">
+        <rdfs:subClassOf rdf:resource="http://www.menthor.net/provisioning.owl#Output"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Transport_Function -->
+
+    <owl:Class rdf:about="http://www.menthor.net/provisioning.owl#Transport_Function"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Ethernet -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#Ethernet">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <INV.A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#MEF"/>
+        <INV.componentOf rdf:resource="http://www.menthor.net/provisioning.owl#MEF"/>
+        <is_client rdf:resource="http://www.menthor.net/provisioning.owl#MEN"/>
+        <rdfs:label xml:lang="en">Ethernet</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#MEF -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#MEF">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Technology"/>
+        <A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#Ethernet"/>
+        <A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#MEN"/>
+        <A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#Subscribers"/>
+        <componentOf rdf:resource="http://www.menthor.net/provisioning.owl#Ethernet"/>
+        <componentOf rdf:resource="http://www.menthor.net/provisioning.owl#MEN"/>
+        <componentOf rdf:resource="http://www.menthor.net/provisioning.owl#Subscribers"/>
+        <rdfs:label xml:lang="en">MEF</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#MEN -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#MEN">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <INV.A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#MEF"/>
+        <INV.componentOf rdf:resource="http://www.menthor.net/provisioning.owl#MEF"/>
+        <INV.is_client rdf:resource="http://www.menthor.net/provisioning.owl#Ethernet"/>
+        <is_client rdf:resource="http://www.menthor.net/provisioning.owl#Subscribers"/>
+        <rdfs:label xml:lang="en">MEN</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#OCh -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#OCh">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <INV.A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.is_client rdf:resource="http://www.menthor.net/provisioning.owl#OMS"/>
+        <is_client rdf:resource="http://www.menthor.net/provisioning.owl#OTU"/>
+        <rdfs:label xml:lang="en">OCh</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#ODU2e -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#ODU2e">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <INV.A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.is_client rdf:resource="http://www.menthor.net/provisioning.owl#ODUk"/>
+        <rdfs:label xml:lang="en">ODU2e</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#ODUk -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#ODUk">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <INV.A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.is_client rdf:resource="http://www.menthor.net/provisioning.owl#OTU"/>
+        <is_client rdf:resource="http://www.menthor.net/provisioning.owl#ODU2e"/>
+        <rdfs:label xml:lang="en">ODUk</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#OMS -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#OMS">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <INV.A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.is_client rdf:resource="http://www.menthor.net/provisioning.owl#OTS"/>
+        <is_client rdf:resource="http://www.menthor.net/provisioning.owl#OCh"/>
+        <rdfs:label xml:lang="en">OMS</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#OTN -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#OTN">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Technology"/>
+        <A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OCh"/>
+        <A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#ODU2e"/>
+        <A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#ODUk"/>
+        <A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OMS"/>
+        <A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OTS"/>
+        <A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OTU"/>
+        <componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OCh"/>
+        <componentOf rdf:resource="http://www.menthor.net/provisioning.owl#ODU2e"/>
+        <componentOf rdf:resource="http://www.menthor.net/provisioning.owl#ODUk"/>
+        <componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OMS"/>
+        <componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OTS"/>
+        <componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OTU"/>
+        <rdfs:label xml:lang="en">OTN</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#OTS -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#OTS">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <INV.A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <is_client rdf:resource="http://www.menthor.net/provisioning.owl#OMS"/>
+        <rdfs:label xml:lang="en">OTS</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#OTU -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#OTU">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <INV.A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.componentOf rdf:resource="http://www.menthor.net/provisioning.owl#OTN"/>
+        <INV.is_client rdf:resource="http://www.menthor.net/provisioning.owl#OCh"/>
+        <is_client rdf:resource="http://www.menthor.net/provisioning.owl#ODUk"/>
+        <rdfs:label xml:lang="en">OTU</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#SimpleConnection -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#SimpleConnection">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Service"/>
+        <rdfs:label xml:lang="en">SimpleConnection</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#Subscribers -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#Subscribers">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Layer_Type"/>
+        <INV.A_Technology_LayerType rdf:resource="http://www.menthor.net/provisioning.owl#MEF"/>
+        <INV.componentOf rdf:resource="http://www.menthor.net/provisioning.owl#MEF"/>
+        <INV.is_client rdf:resource="http://www.menthor.net/provisioning.owl#MEN"/>
+        <rdfs:label xml:lang="en">Subscribers</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#1Plus1Connection -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#1Plus1Connection">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Service"/>
+        <rdfs:label xml:lang="en">1Plus1Connection</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#1To1Connection -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#1To1Connection">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Service"/>
+        <rdfs:label xml:lang="en">1To1Connection</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.menthor.net/provisioning.owl#1ToNConnection -->
+
+    <owl:NamedIndividual rdf:about="http://www.menthor.net/provisioning.owl#1ToNConnection">
+        <rdf:type rdf:resource="http://www.menthor.net/provisioning.owl#Service"/>
+        <rdfs:label xml:lang="en">1ToNConnection</rdfs:label>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.1.3.20151118-2017) https://github.com/owlcs/owlapi -->
+
