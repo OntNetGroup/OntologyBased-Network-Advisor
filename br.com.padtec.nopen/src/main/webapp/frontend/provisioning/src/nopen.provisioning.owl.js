@@ -1287,6 +1287,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				layer = layer.replace(namespace, 'ont:');
 
 				if(connectionType === 'Horizontal_ST'){
+					
 					var ports = connection.selectPortsOfMatrixType(layer);
 
 					$.each(ports, function(key, port) {

@@ -15,6 +15,7 @@ nopen.provisioning.Algorithm = Backbone.Model.extend({
 	checkProvisioningConnection : function(source, target){
 		console.log('sourcePort: ' + JSON.stringify(source));
 		console.log('targetPort: ' + JSON.stringify(target));
+		
 	}
 
 });
