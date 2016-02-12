@@ -532,7 +532,8 @@ nopen.provisioning.App = Backbone.View.extend({
 			};
 			
 			function create() {
-				algorithm.checkProvisioningConnection(sourcePort, targetPort);
+				var type = $(".connectsService").find(":selected").text();
+				algorithm.doProvisioning(type, sourcePort, targetPort);
 				
 				
 //				//connect ports in JSON model
@@ -604,7 +605,7 @@ nopen.provisioning.App = Backbone.View.extend({
 				    	'<li class="layer" value="' + layer + '" class="collapsed expanded">' + layer ;
 				
 				$.each(connections[sourceId][layer], function(key, port) {
-					
+					console.log('PORTsource: ' + JSON.stringify(port));
 					content = content +
 						'<ul style="display: block;">' +
 			                '<li class="sourcePort" id="' + port.id + '" value="' + port.type + '" class="collapsed expanded">' + port.name + '</li>' +
@@ -628,7 +629,7 @@ nopen.provisioning.App = Backbone.View.extend({
 				
 				$.each(connections[targetId][layer], function(key, port) {
 					
-					console.log('PORT: ' + JSON.stringify(port));
+					console.log('PORTtarget: ' + JSON.stringify(port));
 					
 					content = content +
 						'<ul style="display: block;">' +

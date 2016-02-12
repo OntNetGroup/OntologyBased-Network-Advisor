@@ -105,7 +105,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 					owl.addHorizontalConnection(tfSource, tfTarget , sourcePort , targetPort);
 				}
 				else {
-					owl.addVerticalConnection(tfSource, tfTarget);
+//					owl.addVerticalConnection(tfSource, tfTarget);
 				}
 				
 				var sourcePortElement = owl.createElement(sourcePort.type, sourcePort.id, sourcePort.name);

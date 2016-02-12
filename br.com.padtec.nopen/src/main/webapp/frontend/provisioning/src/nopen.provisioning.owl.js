@@ -65,41 +65,11 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	},
 
 
-	hasPath : function(sourcePort, targetPorts, connectionType) {
-
-		var connection = this.app.connectionl
-
-		var resultPorts = [];
-
-		var predicates = [
-		                  'ont:is_interface_of',
-		                  'ont:componentOf',
-		                  'ont:links_output',
-		                  'ont:has_path',
-		                  'ont:links_output',
-		                  'ont:INV.componentOf',
-		                  'ont:INV.is_interface_of'
-		                  ];
-
-		var subject = 'ont:' + sourcePort.id;
-
-		$.each(targetPorts, function(index, targetPort) {
-			var object = 'ont:' + targetPort.id;
-			resultPorts[targetPort.id] = connection.askQuery(subject, predicates, object);
-		});
-
-		console.log('RESULT PORTS: ' + JSON.stringify(resultPorts));
-
-		return resultPorts;
-
-	},
-
-
 	//Method to set model relationships 
 	setRelationships : function(relationships) {
 
 		this.relationships = relationships;
-		console.log(JSON.stringify(relationships));
+//		console.log(JSON.stringify(relationships));
 
 	},
 
@@ -518,7 +488,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 		var connection = this.app.connection;
 		var relationships = this.relationships;
-		
+
 		var $this = this;
 		var model = this.app.model;
 
@@ -572,7 +542,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 								var idlink = joint.util.uuid();
 								if(tfintype === 'Adaptation_Function' && tfouttype === 'Matrix') {
-									console.log('saci');
 									//Reference_Point FP (FP)
 									var rp = $this.createElement("FP", idlink, "FP");
 									elements.push(rp);
@@ -588,7 +557,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 								}
 
 								if(tfintype === 'Adaptation_Function' && tfouttype === 'Trail_Termination_Function') {
-									console.log('saci');
 									//Reference_Point AP (AP)
 									var rp = $this.createElement("AP", idlink, "AP");
 									elements.push(rp);
@@ -604,7 +572,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 								}
 
 								if(tfintype === 'Matrix' && tfouttype === 'Trail_Termination_Function') {
-									console.log('saci');
 									//Reference_Point FEP (FEP)
 									var rp = $this.createElement("FEP", idlink, "FEP");
 									elements.push(rp);
@@ -616,27 +583,23 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 									//FEP (FEP) > MATRIX_IN (MIN)
 									var linkFEP_MIN = $this.createLink(idlink, "FEP", tfout, 'Trail_Termination_Function_Output');
 									links.push(linkFEP_MIN);
-
 								}
-
 //								console.log(links);
 							}
-
-
 
 							var tfSource = model.getTFElementConnectedToPortInPreProvisioning(equipment, portId);
 							var tfTarget = model.getTFElementConnectedToPortInPreProvisioning(equipment, connectedPort.id);
 
-							var connections = $this.createVerticalConnection(tfSource, tfTarget);
+//							var connections = $this.createVerticalConnection(tfSource, tfTarget);
 
 							//add elements and links in hash
 							//DEBUGAR PROCURAR TF IN E TF OUT
-							$.each(connections.elements, function(key, element){
-								elements.push(element)
-							});
-							$.each(connections.links, function(key, link){
-								links.push(link)
-							});
+//							$.each(connections.elements, function(key, element){
+//							elements.push(element)
+//							});
+//							$.each(connections.links, function(key, link){
+//							links.push(link)
+//							});
 
 						}
 					}
@@ -662,36 +625,19 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
 		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
 
-		//execute parse
-		//execute parse
-//		$.ajax({
-//			type: "POST",
-//			async: false,
-//			url: "savetojena.htm",
-//			data: {
-//				'elements' : JSON.stringify(pElements),
-//				'links' : JSON.stringify(pLinks),
-//			},
-//			success: function(){
-//				console.log('saved!')
-//			},
-//			error : function(e) {
-//				alert("error: " + e.status);
-//			}
-//		});
 
 	},
-	
+
 	generateHasPaths: function(){
-		
+
 		var connection = this.app.connection;
-		
+
 		//querry para retornar todos os reference points
 		var has_paths = connection.getRPInAndRPOut();
-		
+
 		connection.insertHasPath(has_paths);
-		
-		
+
+
 	},
 
 	addHorizontalConnection : function(tfSource, tfTarget , sourcePort , targetPort) {
@@ -719,25 +665,6 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 		connection.save(eTriples,"http://localhost:8080/nopen/provisioning.htm");
 		connection.save(lTriples,"http://localhost:8080/nopen/provisioning.htm");
-
-		
-		
-//		//execute parse
-//		$.ajax({
-//			type: "POST",
-//			async: false,
-//			url: "savetojena.htm",
-//			data: {
-//				'elements' : JSON.stringify(pElements),
-//				'links' : JSON.stringify(pLinks),
-//			},
-//			success: function(){
-//				console.log('saved!')
-//			},
-//			error : function(e) {
-//				alert("error: " + e.status);
-//			}
-//		});
 
 	},
 
@@ -800,11 +727,11 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 		//Physical_Media PM_So (PMSO)
 		var pm_so = $this.createElement("PM_Input_So", joint.util.uuid(), "PM_SO_" + tfSource.name + "_" + tfTarget.name);
-		elements.push(pm);
+		elements.push(pm_so);
 
 		//Physical_Media PM_Sk (PMSK)
 		var pm_sk = $this.createElement("PM_Input_Sk", joint.util.uuid(), "PM_SK_" + tfSource.name + "_" + tfTarget.name);
-		elements.push(pm);
+		elements.push(pm_sk);
 
 
 		//Physical_Media (PM) > PM_Input_So (PMSO) 
@@ -849,7 +776,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		links.push(link_FEP_TTFOUT);
 
 		connection.createHasPathfromPM(fep_pmso.id , fep_pmsk.id);
-		
+
 		var horizontalConnections = {
 				'elements' : elements,
 				'links' : links,
@@ -1013,6 +940,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var relationships = this.relationships;
 
 		$.each(relationships[subjectType][objectType], function(key, predicate) {
+
+//			console.log(subjectType + " "+predicate+" "+objectType);
 
 			links.push({
 				"subjectType" : subjectType,
@@ -1287,7 +1216,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				layer = layer.replace(namespace, 'ont:');
 
 				if(connectionType === 'Horizontal_ST'){
-					
+
 					var ports = connection.selectPortsOfMatrixType(layer);
 
 					$.each(ports, function(key, port) {

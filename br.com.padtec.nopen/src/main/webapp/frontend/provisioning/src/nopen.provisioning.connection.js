@@ -160,7 +160,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		});
 
 		query = query + '} }';
-		console.log(query);
+//		console.log(query);
 		jQuery.ajaxSetup({async:false});
 		connection.query({
 			"database" : database,
@@ -251,6 +251,38 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		return objects;
 
 	},
+	selectQuery : function(subject, predicates) {
+
+		var namedGraph = this.namedGraph;
+		var query = 'SELECT * { GRAPH <' + namedGraph + '> { ' + subject
+		var namespace = this.namespace;
+		
+		$.each(predicates, function(index, predicate){
+
+			if(index === 0) {
+				query = query + ' ' + predicate;
+			}
+			else {
+				query = query + '/' + predicate;
+			}
+
+		});
+
+		query = query + ' ?o . } }';
+
+//		console.log('QUERY: ' + query);
+
+		var result = this.executeQueryWithReasoning(query);
+
+		var objects = [];
+
+		$.each(result, function(index, object) {
+			objects.push(object.o.value.replace(namespace, 'ont:'));
+		})
+
+		return objects;
+
+	},
 
 	selectTFOutFromTF: function(tf,port) {
 
@@ -276,7 +308,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		var result = this.executeQueryWithReasoning(query);
 		var toreturn;
 		$.each(result, function(index, object) {
-			console.log(object.types.value);
+//			console.log(object.types.value);
 			if(object.types.value === 'http://www.menthor.net/provisioning.owl#Adaptation_Function'){
 				toreturn = object.types.value.replace(namespace, '');
 				return false;
@@ -292,8 +324,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		})
 		return toreturn;
 	},
-
-
+	
 	selectPortsOfMatrixType : function(layer){
 //		var query = 'SELECT ?o { GRAPH <' + this.namedGraph + '>  {' + layer + ' ont:INV.intermediates_up ?x . ?x rdf:type ont:Matrix . ?x ont:INV.is_interface_of.Output_Card.Transport_Function ?o . } } ORDER BY ?o';
 		var query = 'SELECT ?out_port { GRAPH <' + this.namedGraph + '>  {' + layer + ' ont:INV.A_Card_CardLayer/ont:A_Card_OutputCard ?out_port . } }';
@@ -307,7 +338,110 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 
 		return objects;
 	},
+	/*
+	 * A funcao recebe output_cards, pega os rp e verifica o has_path
+	 * */
+	getConnectionBetweenReferencePoints : function(outcard_source, outcard_sink){
+		
+		var namedGraph = this.namedGraph;
+		var namespace = this.namespace;
+		
+		var query = 'SELECT ?rp_source ?rp_target { GRAPH <' + namedGraph + '> ' +
+		'{	ont:' + outcard_source + ' ont:binds.Output_Card.Output/ont:INV.links_output ?rp_source . ' +
+		'ont:' + outcard_sink + ' ont:binds.Output_Card.Output/ont:INV.links_output ?rp_target . ' +
+		'} }';
+		
+		console.log(query);
+		
+		var result = this.executeQueryWithReasoning(query);
+		
+		var rp = [];
 
+		$.each(result, function(index, object) {
+			rp.push({
+				'rp_so' : object.rp_source.value.replace(namespace, 'ont:'),
+				'rp_sk' : object.rp_target.value.replace(namespace, 'ont:')
+			});
+		})
+
+		return rp;
+	
+	},
+
+	connectAllOTSRp : function(equipment){
+		var namedGraph = this.namedGraph;
+		
+		var query = 'SELECT ?rp { GRAPH <' + namedGraph + '> {' +	
+			          '?layer a ont:Card_Layer .' +
+					  '?layer rdfs:label ?layer_label.' +
+					  'Filter (?layer_label = "OTS").'  +
+					  '?layer ont:INV.A_Card_CardLayer ?card.' +
+					  '?card ont:INV.A_Equipment_Card ?equip .' +
+		               '?card rdfs:label ?card_label .' +
+					  '?equip rdfs:label ?equip_label .' +
+					  'FILTER (?equip_label = '+ equipment +').' +
+					  '?card ont:A_Card_OutputCard ?output_card .' +
+					  '?output_card ont:binds ?tf_out .' +
+					  '?tf_out ont:INV.links_output ?rp .' +  
+					  '} }';
+		
+		console.log(query);
+		
+       var result = this.executeQueryWithReasoning(query);
+		
+		var rp = [];
+
+		$.each(result, function(index, object) {
+			rp.push(object.rp.value.replace(namespace, 'ont:'));
+		});
+		
+		for (var i = 0; i < rp.length; i++){
+			for(var j = 0; j < rp.length; j++){
+				if(i != j){
+					
+					this.insertTriple(rp[i], 'ont:has_path' , rp[j]);
+				}
+			}
+		}
+	
+
+		
+		
+		return rp;
+		
+		
+	},
+	
+	askHasPathSo : function(rp_so,rp_sk){
+		var namedGraph = this.namedGraph;
+
+		var query = 'ASK { GRAPH <' + namedGraph + '> { ' + 
+			rp_so+' ont:vertical_path_so* ?pmso . '+
+			rp_sk+' ont:vertical_path_so* ?pmsk . '+
+			'?pmso ont:has_path ?pmsk} }';
+
+//		console.log(query);
+		
+		var result = this.executeAskQueryWithReasoning(query);
+
+		return result.boolean;
+
+	},
+
+	askHasPathSk : function(rp_so,rp_sk){
+		var namedGraph = this.namedGraph;
+
+		var query = 'ASK { GRAPH <' + namedGraph + '> { ' + 
+			rp_so+' ont:vertical_path_sk* '+rp_sk+' } }';
+			
+//		console.log(query);
+		
+		var result = this.executeAskQueryWithReasoning(query);
+
+		return result.boolean;
+
+	},
+	
 	selectCardLabelFromPort : function(card){
 		var query = 'SELECT ?card_label { GRAPH <' + this.namedGraph + '>  {?card ont:A_Card_OutputCard ont:' + card + ' . ?card rdfs:label ?card_label } }';
 		var result = this.executeQueryWithReasoning(query);
@@ -358,9 +492,32 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 
 		query = query + ' ' + object + ' . } }';
 
+//		console.log(query);
 		var result = this.executeAskQueryWithReasoning(query);
 
-		return result;
+		return result.boolean;
+	},
+	
+	insertTriple : function(subject, predicate, object){
+		
+		var database = this.database;
+		var connection = this.connection;
+
+		var namedGraph = this.namedGraph;
+		var query = 'INSERT DATA { GRAPH <' + namedGraph + '> {';
+
+		query = query + ' ' + subject + ' ' + predicate + ' ' + object + ' . ';
+
+		query = query + '} }';
+		console.log(query);
+		jQuery.ajaxSetup({async:false});
+		connection.query({
+			"database" : database,
+			"query": query,
+		},
+		function (data) {});
+		jQuery.ajaxSetup({async:true});
+		
 	},
 
 	executeQueryWithReasoning : function(query) {
@@ -471,7 +628,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 //		var query = ' INSERT DATA { np:Test rdf:type owl:Class .' + 
 //		' np:Test rdfs:label "Test" . }';
 		var database = this.database;
-		
+
 		var query = ' SELECT * WHERE { ?x ont:has_path ?y . } ';
 
 		this.connection.query({
@@ -522,10 +679,10 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 	createHasPathfromPM: function(RpIn , RPOut){
 		var connection = this.connection;
 		var database = this.database;
-
 		var namedGraph = this.namedGraph;
+
 		var query = 'INSERT DATA { GRAPH <' + namedGraph + '> {ont:' + RpIn + ' ont:has_path ont:' + RPOut + ' . }}';
-		console.log(query);
+//		console.log(query);
 
 		connection.query({
 			"database" : database,
@@ -546,7 +703,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		});
 
 		query = query + '} }';
-		console.log(query);
+//		console.log(query);
 
 		connection.query({
 			"database" : database,
