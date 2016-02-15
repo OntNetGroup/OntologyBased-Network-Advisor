@@ -1239,7 +1239,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 						if(!gambiarra){
 							resultPorts[layerLabel].push({
 								'id': portId,
-								'name': connection.selectCardLabelFromPort(portId)+": "+portLabel,
+								'name': portLabel,
+								'exname': connection.selectCardLabelFromPort(portId)+": "+portLabel,
 								'type': portType,
 							});
 						}
@@ -1276,7 +1277,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 							if(!containsPort) {
 								resultPorts[layerLabel].push({
 									'id': portId,
-									'name': connection.selectCardLabelFromPort(portId)+": "+portLabel,
+									'name': portLabel,
+									'exname': connection.selectCardLabelFromPort(portId)+": "+portLabel, 
 									'type': portType,
 								});
 							}

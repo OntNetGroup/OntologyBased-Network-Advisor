@@ -229,7 +229,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 					
 					content = content +
 						'<ul style="display: block;">' +
-			                '<li class="sourcePort" id="' + port.id + '" value="' + port.type + '" class="collapsed expanded">' + port.name + '</li>' +
+			                '<li class="sourcePort" id="' + port.id + '" value="' + port.type + '" class="collapsed expanded" namer="' + port.name + '">' + port.exname + '</li>' +
 			            '</ul>';
 					
 				});
@@ -254,7 +254,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 					
 					content = content +
 						'<ul style="display: block;">' +
-			                '<li class="targetPort" id="' + port.id + '" value="' + port.type + '" class="collapsed expanded">' + port.name + '</li>' +
+			                '<li class="targetPort" id="' + port.id + '" value="' + port.type + '" class="collapsed expanded" namer="' + port.name + '">' + port.exname + '</li>' +
 			            '</ul>';
 					
 				});
@@ -280,7 +280,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 				sourcePort = {
 						"type": $(this).attr('value'),
 						"id": $(this).attr('id'),
-						"name": $(this).text(),
+						"name": $(this).attr('namer'),
 						"edge": "source",
 				}
 				

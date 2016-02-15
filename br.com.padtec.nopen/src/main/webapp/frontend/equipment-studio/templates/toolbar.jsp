@@ -5,6 +5,8 @@
 	 <button id="btn-open" class="btn" data-tooltip="Open Template"><img src="/nopen/frontend/equipment-studio/img/open.png" alt="Open"/></button>
 	 <button id="btn-saveequip" class="btn" data-tooltip="Save Equipment"><img src="/nopen/frontend/equipment-studio/img/save.png" alt="Save Equipment"/></button>
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a New Window"><img src="/nopen/frontend/equipment-studio/img/pngfile.png" alt="PNG"/></button>
+     <button id="btn-svg" class="btn" data-tooltip="Open as SVG in a New Window"><img src="/nopen/frontend/equipment-studio/img/pngfile.png" alt="SVG"/></button>
+     
 <!-- <button id="btn-print-file" class="btn" data-tooltip="Save all imgs index in a file">save index to file</button>  -->
 <!-- <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/equipment-studio/img/print.png" alt="Print"/></button> -->     
      <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="/nopen/frontend/equipment-studio/img/zoomin.png" alt="Zoom in"/></button>
@@ -25,7 +27,7 @@
      <input type="checkbox" id="snapline-switch" checked/>
  </div>
  <div class="stencil-container">
-     <label>Stencil</label>
+     <label>Equipment & Holders</label>
      <button class="btn-expand" title="Expand all">+</button>
      <button class="btn-collapse" title="Collapse all">-</button>
  </div>
