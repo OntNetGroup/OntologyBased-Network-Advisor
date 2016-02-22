@@ -46,7 +46,7 @@
 	href="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.css" />
 </head>
 <body>
-
+	<script src="/nopen/core/pathseg/pathseg.js"></script>
 	<!-- TEMPLATES -->
 	<div class="template">
 		<%@include file="templates/header.jsp"%>
@@ -66,7 +66,8 @@
 	<!-- JS -->
 
 	<script src="/nopen/frontend/common/libs/jquery/jquery.js"></script>
-	<script	src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
+	<script
+		src="/nopen/frontend/common/libs/jquery-ui/redmond/jquery-ui.js"></script>
 	<script src="/nopen/frontend/provisioning/js/keyboard.js"></script>
 	<script src="/nopen/frontend/provisioning/js/inspector.js"></script>
 	<script src="/nopen/frontend/provisioning/js/layerNetwork.js"></script>
@@ -90,6 +91,8 @@
 	<script
 		src="/nopen/frontend/provisioning/src/nopen.provisioning.owl.js"></script>
 	<script
+		src="/nopen/frontend/provisioning/src/nopen.provisioning.Dijkstra.js"></script>
+	<script
 		src="/nopen/frontend/provisioning/src/nopen.provisioning.file.js"></script>
 	<script
 		src="/nopen/frontend/provisioning/src/nopen.provisioning.connection.js"></script>
@@ -107,18 +110,17 @@
 	<input type="text" id="filename" style="display: none" />
 
 	<script>
-            // Uncomment the following line and comment the line after if you
-            // want to use channels.
-            //var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
-            var app = new Rappid;
-           	Backbone.history.start();
-            
-            //Start provisioning
-            var provisioning = new nopen.provisioning.App();
-            provisioning.start(app);
-            
-            //var uuid = joint.util.uuid();
+		// Uncomment the following line and comment the line after if you
+		// want to use channels.
+		//var app = new Rappid({ channelUrl: 'ws://localhost:4141' });
+		var app = new Rappid;
+		Backbone.history.start();
 
-        </script>
+		//Start provisioning
+		var provisioning = new nopen.provisioning.App();
+		provisioning.start(app);
+
+		//var uuid = joint.util.uuid();
+	</script>
 </body>
 </html>
