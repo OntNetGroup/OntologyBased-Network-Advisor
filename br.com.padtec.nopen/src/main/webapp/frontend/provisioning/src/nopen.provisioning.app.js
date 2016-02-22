@@ -536,7 +536,16 @@ nopen.provisioning.App = Backbone.View.extend({
 			
 			function create() {
 				var type = $(".connectsService").find(":selected").text();
-				algorithm.doProvisioning(type, sourcePort, targetPort);
+			    var equipments = {
+			    		"source" : source,
+			    		"target" : target,
+			    };
+			    var ports = {
+			    		"source" : sourcePort,
+			    		"target" : targetPort
+			    };
+			    
+				algorithm.doProvisioning(type, equipments , ports);
 				
 				
 //				//connect ports in JSON model

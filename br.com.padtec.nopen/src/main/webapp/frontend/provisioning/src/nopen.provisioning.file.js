@@ -428,8 +428,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 		for(var node in graph){
 			g.addVertex(node, graph[node]);
 		}
-		
-		console.log(this.printhash(g,hash));
+		this.app.algorithm.setTopology(g);
+//		console.log(this.printhash(g,hash));
 	},
 	
 	printhash : function(g, hash){

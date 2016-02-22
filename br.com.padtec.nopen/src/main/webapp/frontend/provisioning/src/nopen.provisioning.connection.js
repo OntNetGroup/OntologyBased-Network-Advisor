@@ -251,6 +251,24 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		return objects;
 
 	},
+	getPossibleCrossConnections : function (rp){
+		var query = "select rps { GRAPH <http://localhost:8080/nopen/provisioning.htm> {" +
+				"  ont:fc0685c8-d99f-4e8e-a1dc-4e71346eb2ff ont:links_output.Reference_Point.Output/ont:INV.A_Matrix_MatrixOutput ?matrix ." +
+				"  ?matrix ont:A_Matrix_MatrixOutput ?output ." +
+				"  ?output ont:INV.links_output ?rps ." +
+				"  FILTER (?rps != ont:fc0685c8-d99f-4e8e-a1dc-4e71346eb2ff)" +
+				"} }";
+		
+		var result = this.executeQueryWithReasoning(query);
+
+		var objects = [];
+
+		$.each(result, function(index, object) {
+			objects.push(object.rs.value);
+		})
+
+		return objects;
+	},
 	selectQuery : function(subject, predicates) {
 
 		var namedGraph = this.namedGraph;
@@ -359,13 +377,28 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 
 		$.each(result, function(index, object) {
 			rp.push({
-				'rp_so' : object.rp_source.value.replace(namespace, 'ont:'),
-				'rp_sk' : object.rp_target.value.replace(namespace, 'ont:')
+				'rp_so' : object.rp_source.value.replace(namespace, ''),
+				'rp_sk' : object.rp_target.value.replace(namespace, '')
 			});
 		})
 
 		return rp;
 	
+	},
+	
+	askNextEquipmentPath : function(rp,nextEquipment){
+		
+		var query = "ASK { GRAPH <"+this.namedGraph+">  { " +
+				rp+" ont:vertical_path_so* ?rps. " +
+				"?rps ont:links_input/a ont:PM_Input_So . " +
+				"?rps ont:physical_path ?rpsk . " +
+				"?rpsk ont:links_output ?out . " +
+				"?out ont:INV.componentOf* "+nextEquipment +
+				"} } ";
+		
+		var result = this.executeAskQueryWithReasoning(query);
+
+		return result.boolean;
 	},
 
 	connectAllOTSRp : function(equipment){
