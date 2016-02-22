@@ -8,6 +8,7 @@ nopen.provisioning.App = Backbone.View.extend({
 	util : undefined,
 	connection : undefined,
 	algorithm : undefined,
+	dijkstra : undefined,
 	
 	initialize : function(){
 		console.log("Provisioning started!");
@@ -29,6 +30,8 @@ nopen.provisioning.App = Backbone.View.extend({
 		this.connection = new nopen.provisioning.Connection;
 		
 		this.algorithm = new nopen.provisioning.Algorithm;
+		
+		this.dijkstra = new nopen.provisioning.Dijkstra;
 		
 		//create Test
 		this.test = new nopen.provisioning.Test;

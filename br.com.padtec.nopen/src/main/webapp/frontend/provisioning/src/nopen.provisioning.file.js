@@ -4,7 +4,6 @@ nopen.provisioning.File = Backbone.Model.extend({
 	topologySVG : undefined,
 	
 	initialize : function(){
-		
 	},
 	
 	setApp : function(app) {
@@ -365,7 +364,6 @@ nopen.provisioning.File = Backbone.Model.extend({
 	
 	//method to import topology
 	importTopology : function(app, filename) {
-		
 		var graph = app.graph;
 		var $this = this;
 		
@@ -379,8 +377,11 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   dataType: 'json',
 		   success: function(topology){ 	
 			   graph.fromJSON(topology);
+			   //import graphTopology
+			   $this.importGraphTopology(topology);
 			   //import equipments
 			   $this.importEquipments(app, filename);
+			   
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
@@ -403,6 +404,49 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   }
 		});
 		
+	},
+	
+	importGraphTopology : function(jtopology){
+		var graph = [];
+		var hash = [];
+		//processing nodes
+		$.each(jtopology.cells, function(i, cell){
+			if(cell.type === "topology.Node"){
+				hash[cell.id] = cell.attrs.text.text;
+				if(!graph[cell.id]){
+					graph[cell.id] = {};
+				}
+			}
+			if(cell.type === "link"){
+				graph[cell.source.id][cell.target.id] = 1;
+				graph[cell.target.id][cell.source.id] = 1;
+			}
+		});
+		
+		var g = new this.app.dijkstra.Graph(this.app);
+		
+		for(var node in graph){
+			g.addVertex(node, graph[node]);
+		}
+		
+		console.log(this.printhash(g,hash));
+	},
+	
+	printhash : function(g, hash){
+		var s = "";
+		for(var node in hash ){
+			for(var nnode in hash){
+				if(hash[node] !== hash[nnode]){
+					s += "path "+hash[node]+" to "+hash[nnode];
+					var t = g.shortestPath(node,nnode)
+					for(var nnnode in t){
+						s += hash[t[nnnode]];
+					}
+					
+				}
+			}
+		}
+		return s;
 	},
 	
 	//Method to import equipments
