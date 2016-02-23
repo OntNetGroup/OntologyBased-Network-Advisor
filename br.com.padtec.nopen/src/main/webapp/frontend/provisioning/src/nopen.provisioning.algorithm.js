@@ -19,6 +19,14 @@ nopen.provisioning.Algorithm = Backbone.Model.extend({
 	doProvisioning: function(type,equipments,ports) {
 		var rps = this.connection.getConnectionBetweenReferencePoints(ports.source.id,ports.target.id);
 		var paths = this.topology.shortestPath(equipments.source.id, equipments.target.id);
+		var s = "";
+		var connection = this.connection;
+		
+		$.each(paths, function(i, p){
+			s+="  "+connection.selectQuery("ont:"+p,["rdfs:label"]);
+		});
+		s+=connection.selectQuery("ont:"+equipments.source.id,["rdfs:label"]);
+		console.log(s);
 		if(!paths){
 			console.log('god is the king of black cocade');
 			return;
@@ -29,113 +37,110 @@ nopen.provisioning.Algorithm = Backbone.Model.extend({
 		}
 	},
 
-//	simpleConnection : function(rps,source,target){
-//	var connection = this.connection;
-//	var rp_so, rp_sk;
-
-//	$.each(rps, function(index, rp){
-//	rp_so = rp.rp_so;
-//	rp_sk = rp.rp_sk;
-//	});
-
-
-//	var rp = rp_so;
-
-//	do{
-//	console.log(rp+" : "+this.connection.selectQuery(rp, ["a"]));
-//	var vertical_rps = this.connection.selectQuery(rp, ["ont:vertical_path_so"]);
-
-//	$.each(vertical_rps, function(index, vertical_rp){
-////	console.log(vertical_rp + '-so--' + connection.askHasPathSo(vertical_rp, rp_sk));
-//	if(connection.askHasPathSo(vertical_rp, rp_sk)){
-//	if(connection.askQuery(vertical_rp, ["a"], "ont:FP")){
-//	connection.insertTriple(rp, "ont:mc", vertical_rp);
-//	}	
-//	rp = vertical_rp;
-//	return false;
-//	}
-//	});	
-
-//	}while(!connection.askQuery(rp, ["ont:links_input", "a"], "ont:PM_Input_So"))
-
-//	rp = this.connection.selectQuery(rp, ["ont:has_path"])[0];
-
-//	do{
-//	console.log(rp+" : "+this.connection.selectQuery(rp, ["a"]));
-//	var vertical_rps = this.connection.selectQuery(rp, ["ont:vertical_path_sk"]);
-
-//	$.each(vertical_rps, function(index, vertical_rp){
-////	console.log(vertical_rp + '-sk--' + connection.askHasPathSk(vertical_rp, rp_sk));
-//	if(connection.askHasPathSk(vertical_rp, rp_sk)){
-//	if(connection.askQuery(rp, ["a"], "ont:FP")){
-//	connection.insertTriple(vertical_rp, "ont:mc", rp);
-//	}	
-//	rp = vertical_rp;
-//	return false;
-//	}
-//	});	
-
-//	}while(rp != rp_sk)
-
-//	console.log(rp);
-
-//	},
-
 	simpleConnection : function(rps,ports,p){
-		var connection = this.connection;
-		var rp_so, rp_sk;
-		var paths = p.reverse();
+		function vertical_path_so(rp,paths){
+			
+			do{
+				var vertical_rps = connection.selectQuery(rp, ["ont:vertical_path_so"]);
 
-		$.each(rps, function(index, rp){
-			rp_so = rp.rp_so;
-			rp_sk = rp.rp_sk;
-		});
+				$.each(vertical_rps, function(index, vertical_rp){
+					if(connection.askNextEquipmentPath(vertical_rp, "ont:"+paths[0])){
+						if(connection.askQuery(vertical_rp, ["a"], "ont:FP")){
+							if(!connection.askQuery(rp, ["ont:mc"], vertical_rp))
+								connection.insertTriple(rp, "ont:mc", vertical_rp);
+						}	
+						rp = vertical_rp;
+						return false;
+					}
+				});	
+			}while(!(connection.askQuery(rp, ["ont:links_input", "a"], "ont:PM_Input_So") || connection.askQuery(rp, ["ont:links_input", "a"], "ont:PM_Input_Sk")))
+			var ret = connection.selectQuery(rp, ["ont:physical_path"]);
+			if(ret.length == 0){
+				ret = connection.selectQuery(rp, ["ont:INV.physical_path"]);
+			}
+			return ret[0];	
+		}
 
-		var rp = "ont:"+rp_so;
+		function vertical_path_intermediates(rp,paths){
+			var rp_result = undefined;
+			do{
+				var vertical_rps = connection.selectQuery(rp, ["ont:vertical_path_sk"]);
 
-
-		do{
-			var vertical_rps = this.connection.selectQuery(rp, ["ont:vertical_path_so"]);
-
-			$.each(vertical_rps, function(index, vertical_rp){
-				if(connection.askNextEquipmentPath(vertical_rp, "ont:"+paths[0])){
-					if(connection.askQuery(vertical_rp, ["a"], "ont:FP")){
-						if(!connection.askQuery(rp, ["ont:mc"], vertical_rp))
-							connection.insertTriple(rp, "ont:mc", vertical_rp);
+				$.each(vertical_rps, function(index, vertical_rp){
+					if(connection.askQuery(rp, ["a"], "ont:FP")){
+						var pccs = connection.getPossibleCrossConnections(rp);
+						$.each(pccs, function(index, pcc){
+							if(connection.askNextEquipmentPath(pcc, "ont:"+paths[0])){
+								connection.insertTriple(rp, "ont:cc", pcc);
+								rp_result = pcc;
+								return false;
+							}
+						});
+						if(rp_result){
+							return false;
+						}
 					}	
 					rp = vertical_rp;
 					return false;
+				});	
+				if(rp_result){
+					return rp_result;
 				}
-			});	
-		}while(!connection.askQuery(rp, ["ont:links_input", "a"], "ont:PM_Input_So"))
-
-		paths.splice(0, 1);	
-		rp = this.connection.selectQuery(rp, ["ont:physical_path"])[0];
-
-		if(paths.length == 1){
-			
+			}while(true)
 		}
+
+		function vertical_path_sk(rp,rp_sk){
+			do{
+				var vertical_rps = connection.selectQuery(rp, ["ont:vertical_path_sk"]);
+				$.each(vertical_rps, function(index, vertical_rp){
+					if(connection.askHasPathSk(vertical_rp, rp_sk)){
+						if(connection.askQuery(rp, ["a"], "ont:FP")){
+							connection.insertTriple(vertical_rp, "ont:mc", rp);
+						}	
+						rp = vertical_rp;
+						return false;
+					}
+				});	
+
+			}while(rp != rp_sk)
+			return rp;
+		}
+		//count time
+		var start = new Date().getTime();
 		
+		var connection = this.connection;
+		var rp_so, rp_sk;
+		var paths = p.reverse();
+		
+		$.each(rps, function(index, rp){
+			rp_so = "ont:"+rp.rp_so;
+			rp_sk = "ont:"+rp.rp_sk;
+		});
+
+		var s = "";
+		$.each(paths, function(i, pp){
+			s+="  "+connection.selectQuery("ont:"+pp,["rdfs:label"]);
+		});
+		console.log(s);
+		
+		var rp = rp_so;
+
 		do{
-			var vertical_rps = this.connection.selectQuery(rp, ["ont:vertical_path_sk"]);
-
-			$.each(vertical_rps, function(index, vertical_rp){
-				if(connection.askQuery(rp, ["a"], "ont:FP")){
-					var pccs = connection.getPossibleCrossConnections(rp);
-					$.each(pccs, function(index, pcc){
-						if(connection.askNextEquipmentPath(pcc, "ont:"+paths[0])){
-							connection.insertTriple(rp, "ont:cc", pcc);
-						}
-					});
-					
-				}	
-				rp = vertical_rp;
-				return false;
-			});	
-
+			console.log("vertical_path_so!"+ connection.selectQuery("ont:"+paths[0],["rdfs:label"]));
+			rp = vertical_path_so(rp,paths);
+			paths.splice(0, 1);	
+			if(paths.length == 0){
+				console.log("vertical_path_sk!");
+				rp = vertical_path_sk(rp,rp_sk);
+			}else{
+				console.log("vertical_path_intermediates!"+ connection.selectQuery("ont:"+paths[0],["rdfs:label"]));
+				rp = vertical_path_intermediates(rp,paths);	
+			}
 		}while(rp != rp_sk)
-			console.log(rp);
 
+		var end = new Date().getTime();
+		var time = (end - start)/1000;
+		console.log("Provisioned in: "+time+"s");		
 	},
 
 });
