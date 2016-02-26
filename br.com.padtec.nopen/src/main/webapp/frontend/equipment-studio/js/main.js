@@ -349,14 +349,15 @@ var Rappid = Backbone.Router.extend({
 			// descomentar para inserir a borda de redimensionamento
 			//freetransform.render();
 			halo.removeHandle('fork');
-            halo.removeHandle('clone');
+			if(cellView.model.attributes.subType !== 'Card'){
+				halo.removeHandle('clone');
+			}
             halo.removeHandle('rotate');
         	halo.removeHandle('link');
         	halo.removeHandle('unlink');
         	halo.removeHandle('remove');
         	halo.addHandle({ name: 'newremove', position: 'nw', icon: '/nopen/frontend/equipment-studio/img/remove.png' });
-        	
-        	
+//        	halo.addHandle({name:'newclone', position:'n' , icon: '/nopen/frontend/equipment-studio/img/clone.png'});
 			halo.render();
 
 			this.initializeHaloTooltips(halo);
@@ -365,6 +366,14 @@ var Rappid = Backbone.Router.extend({
 
 			this.selectionView.cancelSelection();
 			this.selection.reset([cellView.model]);
+			
+//			halo.on('action:newclone:pointerdown',function(evt) {
+//				console.log(evt);
+//				
+//			     var cell = cellView.model;
+//				cell.clone();
+//			   console.log(cell);
+//			});
 			
 			halo.on('action:newremove:pointerdown', function(evt) {
 	//		    console.log(cellView.model);
@@ -398,44 +407,52 @@ var Rappid = Backbone.Router.extend({
 
 		new joint.ui.Tooltip({
 			className: 'tooltip small',
-			target: halo.$('.remove'),
+			target: halo.$('.newremove'),
 			content: 'Click to remove the object',
 			direction: 'right',
-			right: halo.$('.remove'),
+			right: halo.$('.newremove'),
 			padding: 15
 		});
-		// new joint.ui.Tooltip({
-		// className: 'tooltip small',
-		// target: halo.$('.fork'),
-		// content: 'Click and drag to clone and connect the object in one go',
-		// direction: 'left',
-		// left: halo.$('.fork'),
-		// padding: 15
-		// });
-		// new joint.ui.Tooltip({
-		// className: 'tooltip small',
-		// target: halo.$('.clone'),
-		// content: 'Click and drag to clone the object',
-		// direction: 'left',
-		// left: halo.$('.clone'),
-		// padding: 15
-		// });
-		new joint.ui.Tooltip({
-			className: 'tooltip small',
-			target: halo.$('.unlink'),
-			content: 'Click to break all connections to other objects',
-			direction: 'right',
-			right: halo.$('.unlink'),
-			padding: 15
-		});
-		new joint.ui.Tooltip({
-			className: 'tooltip small',
-			target: halo.$('.link'),
-			content: 'Click and drag to connect the object',
-			direction: 'left',
-			left: halo.$('.link'),
-			padding: 15
-		});
+//		new joint.ui.Tooltip({
+//			className: 'tooltip small',
+//			target: halo.$('.remove'),
+//			content: 'Click to remove the object',
+//			direction: 'right',
+//			right: halo.$('.remove'),
+//			padding: 15
+//		});
+////		 new joint.ui.Tooltip({
+//		 className: 'tooltip small',
+//		 target: halo.$('.fork'),
+//		 content: 'Click and drag to clone and connect the object in one go',
+//		 direction: 'left',
+//		 left: halo.$('.fork'),
+//		 padding: 15
+//		 });
+		 new joint.ui.Tooltip({
+		 className: 'tooltip small',
+		 target: halo.$('.clone'),
+		 content: 'Click and drag to clone the object',
+		 direction: 'left',
+		 left: halo.$('.clone'),
+		 padding: 15
+		 });
+//		new joint.ui.Tooltip({
+//			className: 'tooltip small',
+//			target: halo.$('.unlink'),
+//			content: 'Click to break all connections to other objects',
+//			direction: 'right',
+//			right: halo.$('.unlink'),
+//			padding: 15
+//		});
+//		new joint.ui.Tooltip({
+//			className: 'tooltip small',
+//			target: halo.$('.link'),
+//			content: 'Click and drag to connect the object',
+//			direction: 'left',
+//			left: halo.$('.link'),
+//			padding: 15
+//		});
 		// new joint.ui.Tooltip({
 		// className: 'tooltip small',
 		// target: halo.$('.rotate'),

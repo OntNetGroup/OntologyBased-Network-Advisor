@@ -1,30 +1,30 @@
 function showselectSupervisorWindow(cell){
-			
-			var Supervisor = cell;
-	
-			var elementos = (app.graph).getElements();
-			//console.log('elementos' , elementos);
-			var c = [];
-            var nsCards = [];
-            var sCards = [];
-			
-			for(var i = 0; i < elementos.length; i++){
-				var check = elementos[i];
-				if((check.attributes.subType) === 'Card'){
-                   if((check.get('SupervisorID') === (Supervisor.id))){
-                	   sCards.push(check);
-                   }else{
-                	   if((check.get('SupervisorID') === '')){
-                    	   
-                		   nsCards.push(check);
-                       }
-                   }
+
+	var Supervisor = cell;
+
+	var elementos = (app.graph).getElements();
+	//console.log('elementos' , elementos);
+	var c = [];
+	var nsCards = [];
+	var sCards = [];
+
+	for(var i = 0; i < elementos.length; i++){
+		var check = elementos[i];
+		if((check.attributes.subType) === 'Card'){
+			if((check.get('SupervisorID') === (Supervisor.id))){
+				sCards.push(check);
+			}else{
+				if((check.get('SupervisorID') === '')){
+
+					nsCards.push(check);
 				}
-			};
-			
-			if(Supervisor.get('subType') === 'Supervisor'){
-				selectSupervisorWindow(Supervisor, nsCards, sCards, app.graph);
-			}		
+			}
+		}
+	};
+
+	if(Supervisor.get('subType') === 'Supervisor'){
+		selectSupervisorWindow(Supervisor, nsCards, sCards, app.graph);
+	}		
 }; 
 
 function equipmentHandle(app, graph){
@@ -35,7 +35,7 @@ function equipmentHandle(app, graph){
 
 	// when a cell is added on another one, it should be embedded
 	graph.on('add', function(cell) {
-       
+
 		//console.log(JSON.stringify(cell));
 		if(cell.get('type') === 'link') return;
 
@@ -61,7 +61,7 @@ function equipmentHandle(app, graph){
 		if(parent) {
 
 			var filhos = parent.getEmbeddedCells().length;
-			var soa = parent.getEmbeddedCells() ;
+//			var soa = parent.getEmbeddedCells() ;
 
 			var pposition = parent.get('position');
 			var psize = parent.get('size');
@@ -73,226 +73,227 @@ function equipmentHandle(app, graph){
 			if(parent.get('subType') === 'Rack') {                   
 				//equipamento em um Rack
 				// consultar ontologia para inserção 
+				if(equipmentType === 'Rack' && equipmentID !== containerID){
+					console.log('let it clone');
+				}else{
+
+					var result = EquipStudioInsertContainer(equipmentName , equipmentType, equipmentID ,containerName , containerType , containerID);
+					//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);
+					if(result === "success") {
+
+						parent.embed(cell);
+						cell.attr({
+							name: { text: equipmentName},
+						});
+						nextName(equipmentType);
+
+						var a = parent.get('embeds');
+						var maior = 0;
+						for (var i = 0; i < a.length; i++) {
+							var Shelf = graph.getCell(a[i]);
+
+							Shelf.set('position', {
+								x: ((pposition.x) + 15) ,
+								y: (pposition.y + 20 + (i*(80))) 
+							});
 
 
-				var result = EquipStudioInsertContainer(equipmentName , equipmentType, equipmentID ,containerName , containerType , containerID);
-				//console.log('try to insert equipment ' +equipmentID+ ' name: ' +equipmentName+ ';type: ' +equipmentType+ ';container: ' +containerID+ ';conatainer: ' +containerType);
+						}
+						parent.set('size' , { 
+							width: psize.width  ,
+							height:	265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
+						});
+					} else {
+						new joint.ui.Dialog({
+							type: 'alert',
+							width: 400,
+							title: 'Alert',
+							content: result,
+						}).open();	
+//						cell.remove(true);
+						cell.remove();
+					}
+				}
+			}
+
+
+			if(parent.get('subType') === 'Shelf'){
+				//equipamento em uma Shelf
+				var grandparentId = parent.get('parent');
+				if (!grandparentId) return;
+				var grandparent = graph.getCell(grandparentId);
+
+				var containerType = parent.get('subType');
+				var containerID = parent.get('id');
+
+				var result = EquipStudioInsertContainer( equipmentName , equipmentType, equipmentID ,containerName, containerType , containerID);
 				if(result === "success") {
+					parent.embed(cell)
 
-					parent.embed(cell);
 					cell.attr({
 						name: { text: equipmentName},
 					});
 					nextName(equipmentType);
 
-					var a = parent.get('embeds');
+					var b = parent.get('embeds');
 					var maior = 0;
-					for (var i = 0; i < a.length; i++) {
-						var Shelf = graph.getCell(a[i]);
-
-						Shelf.set('position', {
-							x: ((pposition.x) + 15) ,
-							y: (pposition.y + 20 + (i*(80))) 
+					for (var i = 0; i < b.length; i++) {
+						var Slot = graph.getCell(b[i]);
+						Slot.set('position', {
+							x: pposition.x + 20 + ((i) * (42.5)) ,
+							y: pposition.y + 7 
 						});
-
 
 					}
 					parent.set('size' , { 
-						width: psize.width  ,
-						height:	265 + ((parent.getEmbeddedCells().length - (2) ) * 77.5)
+						width: 105 + ((parent.getEmbeddedCells().length - (1) ) * 42.5) ,
+						height:	parent.get('size').height
 					});
-				} else {
-					 new joint.ui.Dialog({
+
+					var c = grandparent.get('embeds');
+					var maior = (parent.get('size').width);
+					var maiorShelf1 = parent;
+					for (var i = 0; i < c.length; i++) {
+						var Shelf1 = graph.getCell(c[i]);
+						if (Shelf1){							
+							if (maior < (Shelf1.get('size').width)) {
+								maior = (Shelf1.get('size').width);
+								maiorShelf1 = Shelf1;
+							}
+							grandparent.set ('size' , {
+								width: maiorShelf1.get('size').width + 40 ,
+								height: grandparent.get('size').height
+							});
+						}
+					};
+				}else{
+
+					cell.remove();
+					new joint.ui.Dialog({
 						type: 'alert',
 						width: 400,
 						title: 'Alert',
 						content: result,
 					}).open();	
-//					 cell.remove(true);
-					 cell.remove();
 				}
-			}else{
-				if(parent.get('subType') === 'Shelf'){
-					//equipamento em uma Shelf
-					var grandparentId = parent.get('parent');
-					if (!grandparentId) return;
-					var grandparent = graph.getCell(grandparentId);
+			}
 
-					var containerType = parent.get('subType');
-					var containerID = parent.get('id');
 
-					var result = EquipStudioInsertContainer( equipmentName , equipmentType, equipmentID ,containerName, containerType , containerID);
-					if(result === "success") {
-						parent.embed(cell)
+			if(parent.get('subType') === 'Slot'){
+				//equipamento em um Slot
+				var containerType = parent.get('subType');
+				var containerID = parent.get('id');
+
+
+				var newpositionx;
+				if (parent.getEmbeddedCells().length === '0'){
+					newpositionx = pposition.x + 6;
+				}else {
+					//Um Card por Slot
+					newpositionx = pposition.x + 6 + ((filhos) * (29));
+				};
+				var result = EquipStudioInsertContainer( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+				if(result === "success") {
+					// Se já possuir um Card (confirmar o metodo para Card e Supervisor)
+
+
+					if (parent.getEmbeddedCells().length === 1){	
+						new joint.ui.Dialog({
+							type: 'alert',
+							width: 400,
+							title: 'Alert',
+							content: 'A Slot can only contain one Card.'
+						}).open();
+						cell.remove();
+					}else{		
+
+						if (cell.get('subType') === 'Supervisor'){									
+
+							parent.embed(cell);
+							showselectSupervisorWindow(cell);									
+
+							cell.set('size' , {
+								width: 10 ,
+								height: 20							
+							});
+							cell.set('position' , {
+								x : newpositionx ,
+								y : ((pposition.y) + 16)
+							});
+
+							cell.attr({
+								name: { text: equipmentName},
+							});
+
+							nextName(equipmentType);
+						};
+
+						if (cell.get('subType') === 'Card'){									
+							parent.embed(cell);	
+
+							cell.set('size' , {
+								width: 10 ,
+								height: 20							
+							});
+							cell.set('position' , {
+								x : newpositionx ,
+								y : ((pposition.y) + 16)
+							});
+
+							cell.attr({
+								name: { text: equipmentName},
+							});
+							nextName(equipmentType);
+
+						};
+					}
+				}else{
+
+					var result = EquipStudioInsertContainer( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
+					if (result === "success"){
+						parent.embed(cell);
+						showselectSupervisorWindow(cell);
+
+						cell.set('size' , {
+							width: 10 ,
+							height: 20							
+						});
+						cell.set('position' , {
+							x : newpositionx ,
+							y : ((pposition.y) + 16)
+						});
 
 						cell.attr({
 							name: { text: equipmentName},
 						});
 						nextName(equipmentType);
 
-						var b = parent.get('embeds');
-						var maior = 0;
-						for (var i = 0; i < b.length; i++) {
-							var Slot = graph.getCell(b[i]);
-							Slot.set('position', {
-								x: pposition.x + 20 + ((i) * (42.5)) ,
-								y: pposition.y + 7 
-							});
-
-						}
-						parent.set('size' , { 
-							width: 105 + ((parent.getEmbeddedCells().length - (1) ) * 42.5) ,
-							height:	parent.get('size').height
-						});
-
-						var c = grandparent.get('embeds');
-						var maior = (parent.get('size').width);
-						var maiorShelf1 = parent;
-						for (var i = 0; i < c.length; i++) {
-							var Shelf1 = graph.getCell(c[i]);
-							if (Shelf1){							
-								if (maior < (Shelf1.get('size').width)) {
-									maior = (Shelf1.get('size').width);
-									maiorShelf1 = Shelf1;
-								}
-								grandparent.set ('size' , {
-									width: maiorShelf1.get('size').width + 40 ,
-									height: grandparent.get('size').height
-								});
-							}
-						};
 					}else{
 
+						new joint.ui.Dialog({
+							type: 'alert',
+							width: 400,
+							title: 'Alert',
+							content: result,
+						}).open();
 						cell.remove();
-                       new joint.ui.Dialog({
-						type: 'alert',
-						width: 400,
-						title: 'Alert',
-						content: result,
-						}).open();	
-					}
-				}else {
-					if(parent.get('subType') === 'Slot'){
-						//equipamento em um Slot
-						var containerType = parent.get('subType');
-						var containerID = parent.get('id');
 
-
-						var newpositionx;
-						if (parent.getEmbeddedCells().length === '0'){
-							newpositionx = pposition.x + 6;
-						}else {
-							//Um Card por Slot
-							newpositionx = pposition.x + 6 + ((filhos) * (29));
-						};
-						var result = EquipStudioInsertContainer( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-						if(result === "success") {
-							// Se já possuir um Card (confirmar o metodo para Card e Supervisor)
-
-
-							if (parent.getEmbeddedCells().length === 1){	
-								new joint.ui.Dialog({
-									type: 'alert',
-									width: 400,
-									title: 'Alert',
-									content: 'A Slot can only contain one Card.'
-								}).open();
-								cell.remove();
-							}else{		
-								
-								if (cell.get('subType') === 'Supervisor'){									
-	
-									parent.embed(cell);
-									showselectSupervisorWindow(cell);									
-	
-									cell.set('size' , {
-										width: 10 ,
-										height: 20							
-									});
-									cell.set('position' , {
-										x : newpositionx ,
-										y : ((pposition.y) + 16)
-									});
-									
-									cell.attr({
-										name: { text: equipmentName},
-									});
-									
-									nextName(equipmentType);
-								};
-
-								if (cell.get('subType') === 'Card'){									
-									parent.embed(cell);	
-
-									cell.set('size' , {
-										width: 10 ,
-										height: 20							
-									});
-									cell.set('position' , {
-										x : newpositionx ,
-										y : ((pposition.y) + 16)
-									});
-
-									cell.attr({
-										name: { text: equipmentName},
-									});
-									nextName(equipmentType);
-
-								};
-							}
-						}else{
-
-							var result = EquipStudioInsertContainer( equipmentName ,equipmentType, equipmentID ,containerName, containerType , containerID);
-							if (result === "success"){
-								parent.embed(cell);
-								showselectSupervisorWindow(cell);
-
-								cell.set('size' , {
-									width: 10 ,
-									height: 20							
-								});
-								cell.set('position' , {
-									x : newpositionx ,
-									y : ((pposition.y) + 16)
-								});
-
-								cell.attr({
-									name: { text: equipmentName},
-								});
-								nextName(equipmentType);
-
-							}else{
-
-								new joint.ui.Dialog({
-									type: 'alert',
-									width: 400,
-									title: 'Alert',
-									content: result,
-								}).open();
-								cell.remove();
-
-							}
-						}
 					}
 				}
 			}
+
 		}else{
 			//Only the Rack can be inserted into the graph without an equipment holder	
+
 			var result = EquipStudioInsertContainer(equipmentName , equipmentType, equipmentID);
 			if(result === "success") {    
-
 				cell.attr({
 					name: { text: equipmentName},
 				});
 				nextName(equipmentType);
-
-
 			}else{
-				
-	
-				
 				cell.remove();
-	      new joint.ui.Dialog({
+				new joint.ui.Dialog({
 					type: 'alert',
 					width: 400,
 					title: 'Error',
@@ -300,9 +301,17 @@ function equipmentHandle(app, graph){
 				}).open();
 			}
 
-		}
 
+		}
 	}, this);
+
+	graph.on('clone' , function (e) {
+		console.log(e);
+
+
+
+
+	},this); 
 
 	graph.on('remove' , function (cell) {
 

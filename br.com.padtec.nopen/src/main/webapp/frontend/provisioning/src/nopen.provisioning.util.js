@@ -13,7 +13,7 @@ nopen.provisioning.Util = Backbone.Model.extend({
 			}
 			return false;
 		})
-		.addClass('collapsed').children('ul').hide();
+//		.addClass('collapsed').children('ul').hide();
 
 		//Create the toggle 
 		var toggle = false;
