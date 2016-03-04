@@ -45,7 +45,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		$this = this;	
 		
 		var content = '<div id="save-dialog" title="Graph Name:">'
-			+ 'Name: <input type="text" id="graph-filename" value="' + $('#graph-filename').val() + '"/>'
+			+ 'Name: <input type="text" id="save-filename" value="' + $("#filename").val() + '"/>'
 			+ '</div>'
 			+ '<div id="name-error-message">' + 'Name cannot be empty!' + '</div>';
 			
@@ -67,7 +67,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		
 		function check(){
 			
-			var filename = $("#graph-filename").val();
+			var filename = $("#save-filename").val();
 			
 			if(filename == ""){
 				$('#name-error-message').show();
@@ -178,25 +178,25 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 
 	saveNamedGraph : function(newNamedGraph) {
 
-		var namedGraph = this.namedGraph;
-
-		var query = 'CLEAR GRAPH <' + newNamedGraph + '>';
-		this.executeNamedGraphQuery(query);
-
-		query = 'COPY <' + namedGraph + '> TO <' + newNamedGraph + '>';
-		this.executeNamedGraphQuery(query);
+//		var namedGraph = this.namedGraph;
+//
+//		var query = 'CLEAR GRAPH <' + newNamedGraph + '>';
+//		this.executeNamedGraphQuery(query);
+//
+//		query = 'COPY <' + namedGraph + '> TO <' + newNamedGraph + '>';
+//		this.executeNamedGraphQuery(query);
 
 	},
 
 	loadNamedGraph : function(loadedNamedGraph) {
 
-		var namedGraph = this.namedGraph;
-
-		var query = 'CLEAR GRAPH <' + namedGraph + '>';
-		this.executeNamedGraphQuery(query);
-
-		query = 'COPY <' + loadedNamedGraph + '> TO <' + namedGraph + '>';
-		this.executeNamedGraphQuery(query);
+//		var namedGraph = this.namedGraph;
+//
+//		var query = 'CLEAR GRAPH <' + namedGraph + '>';
+//		this.executeNamedGraphQuery(query);
+//
+//		query = 'COPY <' + loadedNamedGraph + '> TO <' + namedGraph + '>';
+//		this.executeNamedGraphQuery(query);
 
 	},
 

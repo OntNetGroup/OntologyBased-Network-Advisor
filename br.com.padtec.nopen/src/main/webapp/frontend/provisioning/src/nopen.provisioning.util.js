@@ -1,7 +1,7 @@
 nopen.provisioning.Util = Backbone.Model.extend({
 	
 	initialize : function() {
-		
+		console.log("Provisioning UTIL started!");
 	},
 	
 	//generate events to list

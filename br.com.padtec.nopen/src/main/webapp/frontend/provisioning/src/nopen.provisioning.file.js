@@ -44,9 +44,10 @@ nopen.provisioning.File = Backbone.Model.extend({
 	generateSaveProvisioningDialog : function(graph) {
 		
 		var $this = this;
+		var namedgraph = this.app.connection.namedGraph;
 		
 		var content = '<div id="save-dialog" title="Save Provisioning">'
-			+ 'Name: <input type="text" id="save-filename" value="' + $("#graph-filename").val() + '"/>'
+			+ 'Name: <input type="text" id="save-filename" value="' + namedgraph + '"/>'
 			+ '</div>'
 			+ '<div id="name-error-message">' + 'Name cannot be empty!' + '</div>';
 			
@@ -122,13 +123,19 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		var connection = this.app.connection;
 		
+		console.log($('#filename').val());
 		$('#filename').val(filename);
+		console.log(graph.getElements());
+		console.log(graph.getLinks());
+		console.log(filename);
+		var elements =[];
+		var links = [];
 		
 		var ids = [];
 		
 		$.each(graph.getElements(), function(index, element) {
 			ids.push(element.id);
-			
+			elements.push(element);
 			$.ajax({
 			   type: "POST",
 			   async: false,
@@ -294,7 +301,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 			   graph.fromJSON(elements);
 			   
 			   //hide links
-			   model.hideLinks();
+//			   model.hideLinks();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);

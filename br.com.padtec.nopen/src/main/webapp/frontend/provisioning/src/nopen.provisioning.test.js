@@ -5,7 +5,7 @@ nopen.provisioning.Test = Backbone.Model.extend({
 	app : undefined,
 	
 	initialize : function() {
-		
+		console.log("Provisioning test started!");
 	},
 	
 	setApp : function(app) {

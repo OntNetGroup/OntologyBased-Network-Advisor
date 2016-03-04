@@ -3,7 +3,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 	app : undefined,
 	
 	initialize : function() {
-		
+		console.log("Provisioning model started!");
 	},
 	
 	setApp : function(app) {

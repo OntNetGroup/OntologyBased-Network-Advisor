@@ -3,7 +3,7 @@ nopen.provisioning.PreProvisioning = Backbone.Model.extend({
 	app : undefined,
 
 	inititalize : function() {
-
+		console.log("Pre-Provisioning started!");
 
 	},
 

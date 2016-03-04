@@ -4,7 +4,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	relationships : undefined,
 
 	initialize : function() {
-
+		console.log("Provisioning owl started!");
 		var $this = this;
 
 		//get model relationships from OWL
