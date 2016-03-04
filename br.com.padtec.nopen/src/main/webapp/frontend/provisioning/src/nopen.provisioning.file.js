@@ -46,7 +46,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		var $this = this;
 		
 		var content = '<div id="save-dialog" title="Save Provisioning">'
-			+ 'Name: <input type="text" id="save-filename" value="' + $('#filename').val() + '"/>'
+			+ 'Name: <input type="text" id="save-filename" value="' + $("#graph-filename").val() + '"/>'
 			+ '</div>'
 			+ '<div id="name-error-message">' + 'Name cannot be empty!' + '</div>';
 			
@@ -81,8 +81,9 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		var $this = this;
 		
-		var filename = $("#save-filename").val();
-		
+//		var filename = $("#save-filename").val();
+		var filename = $this.app.connection.namedGraph.replace('http://localhost:8080/','')
+		console.log(filename);
 		if(filename == ""){
 			$('#name-error-message').show();
 		}
@@ -178,7 +179,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   }
 		});
 		
-		connection.saveNamedGraph(filename);
+//		connection.saveNamedGraph(filename);
 		
 		var saveDialog = new joint.ui.Dialog({
 			type: 'neutral' ,
@@ -300,7 +301,8 @@ nopen.provisioning.File = Backbone.Model.extend({
 		   }
 		});
 		
-		connection.loadNamedGraph(filename);
+//		connection.loadNamedGraph(filename);
+		connection.setNamedGraph(filename);
 
 	},
 	

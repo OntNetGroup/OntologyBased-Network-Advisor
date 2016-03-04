@@ -29,15 +29,76 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 	prefix : "ont",
 	namespace: "http://www.menthor.net/provisioning.owl#",
 
-	namedGraph: "http://localhost:8080/nopen/provisioning.htm",
+	namedGraph: "",
+//	namedGraph: "http://localhost:8080/nopen/provisioning.htm",
 
 	initialize : function() {
-
-		this.initializeConnection();
-		this.initializeDB();
+        
+		this.initializeNamedGraph();
+//		this.initializeConnection();
+//		this.initializeDB();
 
 	},
 
+	initializeNamedGraph: function() {
+	    
+		$this = this;	
+		
+		var content = '<div id="save-dialog" title="Graph Name:">'
+			+ 'Name: <input type="text" id="graph-filename" value="' + $('#graph-filename').val() + '"/>'
+			+ '</div>'
+			+ '<div id="name-error-message">' + 'Name cannot be empty!' + '</div>';
+			
+		var dialog = new joint.ui.Dialog({
+			width: 300,
+			type: 'neutral',
+			title: 'Graph Name:',
+			content: content,
+			buttons: [
+				{ action: 'cancel', content: 'Cancel', position: 'left' },
+				{ action: 'save', content: 'Save', position: 'left' }
+			]
+		});
+		
+		dialog.on('action:save', check);
+		dialog.on('action:cancel', cancel);
+
+		dialog.open();
+		
+		function check(){
+			
+			var filename = $("#graph-filename").val();
+			
+			if(filename == ""){
+				$('#name-error-message').show();
+			}
+			else{
+				$this.setNamedGraph(filename);
+//				this.initializeConnection();
+//				this.initializeDB();
+				dialog.close();
+			}
+		}
+		
+		function cancel(){
+			dialog.close();
+		}
+		
+		
+	},
+	
+	setNamedGraph: function(namedgraph,opt) {
+		console.log(this.namedGraph);
+		this.namedGraph = 'http://localhost:8080/'+namedgraph;
+		console.log(this.namedGraph);
+		if(opt){
+			console.log('opt');
+		}else{
+			this.initializeConnection();
+			this.initializeDB();
+		}
+	},
+	
 	initializeConnection : function() {
 
 		var endpoint = this.endpoint;
@@ -74,12 +135,12 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 			}
 		}); 
 
-		var query = 'CLEAR GRAPH <' + namedGraph + '>';
-		this.connection.query({
-			"database" : database,
-			"query": query,  
-		},
-		function () {});
+//		var query = 'CLEAR GRAPH <' + namedGraph + '>';
+//		this.connection.query({
+//			"database" : database,
+//			"query": query,  
+//		},
+//		function () {});
 
 	},
 

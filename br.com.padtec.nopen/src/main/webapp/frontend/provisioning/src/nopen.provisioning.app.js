@@ -60,15 +60,15 @@ nopen.provisioning.App = Backbone.View.extend({
 	//Test procedures
 	initializeTestProcedures : function(app) {
 		//this.test.execute(app);
-		
-		var test = this.test;
-		var owl = this.owl;
-		var connection = this.connection;
-		
-		connection.selectAllLayers();
-		connection.selectTopLayers();
-		connection.selectBottomLayers();
-		
+//		
+//		var test = this.test;
+//		var owl = this.owl;
+//		var connection = this.connection;
+//		
+//		connection.selectAllLayers();
+//		connection.selectTopLayers();
+//		connection.selectBottomLayers();
+//		
 //		$('#btn-pre').click(function(){
 //			test.executeMatrixDialog(app);
 //		});

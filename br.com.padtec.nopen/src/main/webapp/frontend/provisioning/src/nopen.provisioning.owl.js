@@ -456,8 +456,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var eTriples = $this.convertElementsToTriples(pElements);
 		var lTriples = $this.convertLinksToTriples(pLinks);
 
-		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
-		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(eTriples, connection.namedGraph);
+		connection.save(lTriples, connection.namedGraph);
 
 //		connection.testQuery();
 
@@ -622,8 +622,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var eTriples = $this.convertElementsToTriples(pElements);
 		var lTriples = $this.convertLinksToTriples(pLinks);
 
-		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
-		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(eTriples, connection.namedGraph);
+		connection.save(lTriples, connection.namedGraph);
 
 
 	},
@@ -663,8 +663,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var eTriples = $this.convertElementsToTriples(pElements);
 		var lTriples = $this.convertLinksToTriples(pLinks);
 
-		connection.save(eTriples,"http://localhost:8080/nopen/provisioning.htm");
-		connection.save(lTriples,"http://localhost:8080/nopen/provisioning.htm");
+		connection.save(eTriples,connection.namedGraph);
+		connection.save(lTriples,connection.namedGraph);
 
 	},
 
@@ -691,8 +691,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var eTriples = $this.convertElementsToTriples(pElements);
 		var lTriples = $this.convertLinksToTriples(pLinks);
 
-		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
-		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(eTriples, connection.namedGraph);
+		connection.save(lTriples, connection.namedGraph);
 
 		//execute parse
 //		$.ajax({
@@ -995,8 +995,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var eTriples = $this.convertElementsToTriples(elements);
 		var lTriples = $this.convertLinksToTriples(links);
 
-		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
-		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(eTriples, connection.namedGraph);
+		connection.save(lTriples, connection.namedGraph);
 
 //		$.ajax({
 //		type: "POST",
@@ -1042,8 +1042,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var eTriples = $this.convertElementsToTriples(elements);
 		var lTriples = $this.convertLinksToTriples(links);
 
-		connection.save(eTriples, "http://localhost:8080/nopen/provisioning.htm");
-		connection.save(lTriples, "http://localhost:8080/nopen/provisioning.htm");
+		connection.save(eTriples, connection.namedGraph);
+		connection.save(lTriples, connection.namedGraph);
 
 //		$.ajax({
 //		type: "POST",
