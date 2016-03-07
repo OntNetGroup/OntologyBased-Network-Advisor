@@ -4,6 +4,9 @@
 	 <button id="btn-open" class="btn" data-tooltip="Open Provisioning File"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open Provisioning File"/> Open</button>
 	 <button id="btn-open-topology" class="btn" data-tooltip="Import topology"><img src="/nopen/frontend/provisioning/img/open.png" alt="Open Topology"/> Import Topology</button>
 
+     <button id="btn-clear-graph" class="btn" data-tooltip="Clear actual graph in the database"><img src="" alt="Clear Graph"/> Clear Graph</button>
+
+
      <button id="btn-png" class="btn" data-tooltip="Open as PNG in a new window"><img src="/nopen/frontend/provisioning/img/pngfile.png" alt="PNG"/></button>
 <!--      <button id="btn-print" class="btn" data-tooltip="Open a Print Dialog"><img src="/nopen/frontend/provisioning/img/print.png" alt="Print"/></button> -->
 <!--      <button id="btn-import-xml" class="btn" data-tooltip="Import XML File"><img src="/nopen/frontend/provisioning/img/import.png" alt="Import XML"/></button> -->

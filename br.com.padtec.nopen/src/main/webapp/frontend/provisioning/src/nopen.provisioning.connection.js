@@ -99,6 +99,21 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		}
 	},
 	
+	clearGraph: function() {
+		var database = this.database;
+		var namedGraph = this.namedGraph;
+        console.log(this.namedGraph);
+		
+    	var query = 'CLEAR GRAPH <' + namedGraph + '>';
+		this.connection.query({
+			"database" : database,
+			"query": query,  
+		},
+		function () {});
+		
+	},
+	
+	
 	initializeConnection : function() {
 
 		var endpoint = this.endpoint;

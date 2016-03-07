@@ -54,6 +54,7 @@ nopen.provisioning.App = Backbone.View.extend({
 		this.initializeProvisioningPaperProcedures(app);
 		this.initializeProvisioningValidatorProcedures(app);
 		this.initializeProvisioningFileProcedures(app);
+		this.initializeProvisioningConnectionProcedures(app);
 		
 	},
 	
@@ -957,6 +958,21 @@ nopen.provisioning.App = Backbone.View.extend({
         });
 		
 	},
+	
+	//Provisioning connection procedures
+	initializeProvisioningConnectionProcedures : function(app) {
+		
+		var connection = this.connection;
+		var graph = app.graph;
+		
+		//procedure to clear a provisioning graph in database 
+		$('#btn-clear-graph').click(function(){
+        	connection.clearGraph();   	
+        });
+		
+		
+	},
+	
 	
 	//Topology procedures
 	initializeTopologyProcedures : function(app) {
