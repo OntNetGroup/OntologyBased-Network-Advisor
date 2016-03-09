@@ -29,7 +29,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 	prefix : "ont",
 	namespace: "http://www.menthor.net/provisioning.owl#",
 
-	namedGraph: "",
+	namedGraph: "http://localhost:8080/",
 //	namedGraph: "http://localhost:8080/nopen/provisioning.htm",
 
 	initialize : function() {
@@ -96,6 +96,9 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		}else{
 			this.initializeConnection();
 			this.initializeDB();
+			this.selectAllLayers();
+			this.selectTopLayers();
+			this.selectBottomLayers();
 		}
 	},
 	
@@ -393,7 +396,9 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 
 		var query = 'SELECT * { GRAPH <' + this.namedGraph + '>  {ont:'+ tf +' ont:A_TransportFunction_Input ?tfin .	ont:'+ port +' ont:binds.Input_Card.Input ?tfin	} }';
 
+		console.log(query);
 		var result = this.executeQuery(query);
+		console.log(result[0].tfin.value);
 		return result[0].tfin.value.replace(this.namespace, '');
 	},
 

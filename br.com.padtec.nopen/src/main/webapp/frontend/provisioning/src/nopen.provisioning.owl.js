@@ -502,7 +502,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			var cards = model.getCardsInPreProvisioning(equipment);
 
 
-			// popular uma hash com as ids de tfout->outpor e tfin->inport
+			// popular uma hash com as ids de tfout->outport e tfin->inport
 			$.each(cards, function(key, card){
 				var icount = 0;
 				var jcount = 0;
@@ -532,6 +532,11 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 							links.push(link);
 
 							if(connectedPort.type === "Input_Card"){
+								console.log(portf);
+								console.log(portf[portId]);
+								console.log(portf[connectedPort.id]);
+								console.log();
+								
 								var tfout = connection.selectTFOutFromTF(portf[portId], portId);
 								var tfin = connection.selectTFInFromTF(portf[connectedPort.id], connectedPort.id);
 								var tfouttype = connection.getTFType(portf[portId]);
