@@ -508,8 +508,9 @@ nopen.provisioning.Model = Backbone.Model.extend({
 			layerNetwork.embed(subnetwork);
 
 			var equipmentOffset = 0;
-			if(subnetworks[tech].length > 0 && subnetworks[tech].length <= 16) {
-				equipmentOffset = Math.floor(16/subnetworks[tech].length)
+			if(subnetworks[tech].length > 0 && subnetworks[tech].length <= 32) {
+//				equipmentOffset = Math.floor(16/subnetworks[tech].length)
+				equipmentOffset = Math.floor(32/subnetworks[tech].length);
 			}
 			
 			var equipIndex = 0;
