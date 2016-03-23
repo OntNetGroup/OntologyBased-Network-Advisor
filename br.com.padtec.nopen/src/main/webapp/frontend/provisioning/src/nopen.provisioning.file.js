@@ -301,7 +301,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 			   graph.fromJSON(elements);
 			   
 			   //hide links
-//			   model.hideLinks();
+			   model.hideLinks();
 		   },
 		   error : function(e) {
 			   alert("error: " + e.status);
