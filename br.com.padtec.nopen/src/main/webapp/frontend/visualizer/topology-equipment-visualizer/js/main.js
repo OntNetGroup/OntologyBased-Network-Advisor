@@ -56,8 +56,8 @@ var Rappid = Backbone.Router.extend({
 
 		this.paper = new joint.dia.Paper({
 			//el: $('#paper-reparenting'),
-			width: 800,
-			height: 600,
+			width: window.width,
+			height: window.height,
 			gridSize: 10,
 			perpendicularLinks: true,
 			model: this.graph,
@@ -687,11 +687,11 @@ var Rappid = Backbone.Router.extend({
 				
 			}),
 
-			eval("this.inspector = new joint.ui.Inspector({inputs: {"+a+"},groups:{ "+b+" },cellView: cellView})");
+//			eval("this.inspector = new joint.ui.Inspector({inputs: {"+a+"},groups:{ "+b+" },cellView: cellView})");
 
 
 //			eval("this.inspector = new joint.ui.Inspector({inputs: {myproperty: { type: 'range', min: 0, max: 30, defaultValue: 1, group: 'mydata', index: 1 }, attrs: {text: {text: { type: 'textarea', group: 'text', index: 1 },'font-size': { type: 'number', group: 'text', index: 2 }}}},groups: {mydata: { label: 'My Data', index: 1 },text: { label: 'Text', index: 2 } },cellView: cellView})");
-//			eval("this.inspector = new joint.ui.Inspector({inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,cell: cell})");
+			eval("this.inspector = new joint.ui.Inspector({inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,cell: cell})");
 //			this.inspector = new joint.ui.Inspector({    				inputs: inspectorDefs ? inspectorDefs.inputs : CommonInspectorInputs,    						groups: inspectorDefs ? inspectorDefs.groups : CommonInspectorGroups,    								cell: cell    			});    				
 
 			this.initializeInspectorTooltips();this.inspector.render();$('.inspector-container').html(this.inspector.el); 	if (this.inspectorClosedGroups[cell.id]) {_.each(this.inspectorClosedGroups[cell.id], this.inspector.closeGroup, this.inspector);} else {this.inspector.$('.group:not(:first-child)').addClass('closed');}		    
@@ -753,46 +753,46 @@ var Rappid = Backbone.Router.extend({
 //			console.log(cellView.model.attributes.subType);
 			if(cellView.model.attributes.subType === 'Card'){
 
-				var ITUelements = [], ITUlinks = [];
+//				var ITUelements = [], ITUlinks = [];
 
+				$('.inspector-container').hide();
 
+//				$('.inspector-container').show();
 
-				$('.inspector-container').show();
-
-				var cellId = cellView.model.id;
-				var card = app.graph.getCell(cellId);
+//				var cellId = cellView.model.id;
+//				var card = app.graph.getCell(cellId);
 //				console.log(card);
 //				console.log(card.attributes.subType);
 //				console.log(card.attributes.attrs.data.cells);
 
 //				card.prop('directionality','sink');
-				console.log(card);
-				console.log(cellView);
-				var opt;
-				$.ajax({
-					type: "POST",
-					async: false,
-					url: "getCardAttributes.htm",
-					data: {
-						'card' : cellId,
-						'supervisor' : 'test',
-					},
-//					dataType: 'json',
-					success: function(data){
-						console.log(data);
-						opt = data;
-//						atributte.fromJSON(data);
-					},
-					error : function(e) {
-						alert("error: " + e.status);
-					}
-				});
+//				console.log(card);
+//				console.log(cellView);
+//				var opt;
+//				$.ajax({
+//					type: "POST",
+//					async: false,
+//					url: "getCardAttributes.htm",
+//					data: {
+//						'card' : cellId,
+//						'supervisor' : 'test',
+//					},
+////					dataType: 'json',
+//					success: function(data){
+//						console.log(data);
+//						opt = data;
+////						atributte.fromJSON(data);
+//					},
+//					error : function(e) {
+//						alert("error: " + e.status);
+//					}
+//				});
 
 //				console.log(opt.length);
-				console.log(opt);
+//				console.log(opt);
 				
-				
-				this.createInspector(cellView,opt);
+//				this.createInspector(cellView
+//				this.createInspector(cellView,opt);
 			}else{
 				$('.inspector-container').hide();
 			}
@@ -810,27 +810,27 @@ var Rappid = Backbone.Router.extend({
 
 	initializeNavigator: function() {
 
-		var navigator = this.navigator = new joint.ui.Navigator({
-			width: 240,
-			height: 115,
-			paperScroller: this.paperScroller,
-			zoomOptions: { max: 5, min: 0.2 }
-		});
-
-		navigator.$el.appendTo('.navigator-container');
-		navigator.render();
+//		var navigator = this.navigator = new joint.ui.Navigator({
+//			width: 240,
+//			height: 115,
+//			paperScroller: this.paperScroller,
+//			zoomOptions: { max: 5, min: 0.2 }
+//		});
+//
+//		navigator.$el.appendTo('.navigator-container');
+//		navigator.render();
 	},
 
 	initializeHaloTooltips: function(halo) {
 
-		new joint.ui.Tooltip({
-			className: 'tooltip small',
-			target: halo.$('.remove'),
-			content: 'Click to remove the object',
-			direction: 'right',
-			right: halo.$('.remove'),
-			padding: 15
-		});
+//		new joint.ui.Tooltip({
+//			className: 'tooltip small',
+//			target: halo.$('.remove'),
+//			content: 'Click to remove the object',
+//			direction: 'right',
+//			right: halo.$('.remove'),
+//			padding: 15
+//		});
 		// new joint.ui.Tooltip({
 		// className: 'tooltip small',
 		// target: halo.$('.fork'),

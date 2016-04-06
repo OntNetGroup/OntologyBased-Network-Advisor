@@ -2,7 +2,7 @@
 
 var CommonInspectorGroups = {
 		
-    data: { label: 'Data', index: 1 }
+    data: { label: 'Attributes', index: 1 }
 };
 
 
@@ -61,28 +61,28 @@ var InspectorDefs = {
 
     'basic.Rect': {
 
-    	inputs: {
-//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } }
-    		attrs: {
-				text: {
-					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
-				}
-    		}
-    	},
-    	groups: CommonInspectorGroups
+//    	inputs: {
+////    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } }
+//    		attrs: {
+//				text: {
+//					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+//				}
+//    		}
+//    	},
+//    	groups: CommonInspectorGroups
     },
     
     'basic.Circle': {
-
-    	inputs: {
-//    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } }
-			attrs: {
-				text: {
-					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
-				}
-			}
-    	},
-    	groups: CommonInspectorGroups
+//
+//    	inputs: {
+////    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of interface.' } } }
+//			attrs: {
+//				text: {
+//					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+//				}
+//			}
+//    	},
+//    	groups: CommonInspectorGroups
     },
 
     // Transport Function
@@ -90,13 +90,15 @@ var InspectorDefs = {
     
     'basic.Path': {
     	inputs: {
+				
+    		k:{type: 'select' , options:['1','2','3'],index:1,group:'data',label:'k',attrs:{'label': {'data-tooltip' : 'This attribute specifies the index k that is used<br> to represent a supported bit rate and the different<br> versions of OPUk, ODUk and OTUk. Valid values for<br> this attribute are integers 1, 2 and 3.<br>k = 1 represents an approximate bit rate of 2.5 Gbit/s;<br>k = 2 represents an approximate bit rate of 10 Gbit/s; and<br>k = 3 represents an approximate bit rate of 40 Gbit/s.<br>This attribute is read-only.'}}},	
 //    		name: { type: 'text', group: 'data', index: 1, label: 'Name', attrs: { 'label': { 'data-tooltip': 'Name of transport function.' } } }
 			attrs: {
 				text: {
-					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
+//					text: { type: 'text', group: 'data', label: 'Name', index: 1 }
 				}
 			},
-    		subtype: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'} } }
+//    		subtype: { type: 'text', group: 'data', index: 2, label: 'Type', attrs: { 'input': {'disabled' : 'disabled'} } }
     	},
     	groups: CommonInspectorGroups
     },
@@ -105,11 +107,11 @@ var InspectorDefs = {
     // -----
     
     'bpmn.Pool': {
-    	inputs: {
-    		lanes: {
-				label: { type: 'text', group: 'data', label: 'Layer', index: 1, attrs: { 'input': {'disabled' : 'disabled'} } }
-    		}
-    	},
-    	groups: CommonInspectorGroups
+//    	inputs: {
+//    		lanes: {
+//				label: { type: 'text', group: 'data', label: 'Layer', index: 1, attrs: { 'input': {'disabled' : 'disabled'} } }
+//    		}
+//    	},
+//    	groups: CommonInspectorGroups
     }
 };

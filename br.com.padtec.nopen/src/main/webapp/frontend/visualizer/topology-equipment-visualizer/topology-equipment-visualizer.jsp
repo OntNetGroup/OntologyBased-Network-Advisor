@@ -59,11 +59,11 @@
 				alt="Show/Hide Inspector" />
 		</button>
 	</div>
-	<div class="stencil-container" style="display: none">
-		<label>Stencil</label>
-		<button class="btn-expand" title="Expand all">+</button>
-		<button class="btn-collapse" title="Collapse all">-</button>
-	</div>
+<!-- 	<div class="stencil-container" style="display: none"> -->
+<!-- 		<label>Stencil</label> -->
+<!-- 		<button class="btn-expand" title="Expand all">+</button> -->
+<!-- 		<button class="btn-collapse" title="Collapse all">-</button> -->
+<!-- 	</div> -->
 	<div class="paper-container"></div>
 	<div class="inspector-container"></div>
 	<!-- JS CORE -->
@@ -144,7 +144,7 @@
 								if (i === getUrlParameterID('equipment')) {
 // 									console.log("found equipment!");
 									$.each(value, function(end, valor) {
-//                                  Trocar todos os cards antifos pelos novos
+//                                  Trocar todos os cards antigos pelos novos
 										for (var i = 0; i < valor.length; i++) {
 											if (valor[i].id === c) {
 												console.log("Old card:");
@@ -166,7 +166,7 @@
 
 		ituHandle(app.paper, app.graph);
 
-		//$('#btn-zoom-to-fit').click();
+		$('#btn-zoom-to-fit').click();
 
 		$('#btn-show-hide-inspector').click(function() {
 

@@ -28,38 +28,16 @@ function openFromURL(equipment, filename, graph){
 	var elementos = parent.app.graph.attributes.cells.models;
 	console.log(elementos);
 	$.each(elementos, function(index, value){
-		console.log( index + ": " + value);
+		console.log( index + " : " + value);
 		if(value.id === filename){
 			console.log('found card!');
 			graph.fromJSON(value.attributes.attrs.data);
-
 		}
-
-
 //		if(index === filename){
 //		console.log("YES");
 ////		graph.fromJSON(value);
-
 //		} 
 	})
-
-//	$.ajax({
-//	type: "POST",
-//	async: false,
-//	url: "openITUFileEquipment.htm",
-//	data: {
-//	'path' : equipment,
-//	'filename' : filename
-//	},
-//	dataType: 'json',
-//	success: function(data){
-//	graph.fromJSON(data);
-//	},
-//	error : function(e) {
-//	//alert("error: " + e.status);
-//	}
-//	});
-
 }
 
 function openFromURLVisualizer(equipment, filename , graph){

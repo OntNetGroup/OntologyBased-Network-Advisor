@@ -199,60 +199,60 @@ var Rappid = Backbone.Router.extend({
     // Create and populate stencil.
     initializeStencil: function() {
 
-    	this.initializeLayers();
+//    	this.initializeLayers();
     	
-        this.stencil = new joint.ui.Stencil({
-            graph: this.graph,
-            paper: this.paper,
-            width: 240,
-            groups: Stencil.groups,
-            search: {
-                '*': ['type','attrs/text/text','attrs/.label/text', 'subtype'],
-                'org.Member': ['attrs/.rank/text','attrs/.name/text']
-            }
-        });
+//        this.stencil = new joint.ui.Stencil({
+//            graph: this.graph,
+//            paper: this.paper,
+//            width: 240,
+//            groups: Stencil.groups,
+////            search: {
+////                '*': ['type','attrs/text/text','attrs/.label/text', 'subtype'],
+////                'org.Member': ['attrs/.rank/text','attrs/.name/text']
+////            }
+//        });
 
-        $('.stencil-container').append(this.stencil.render().el);
+//        $('.stencil-container').append(this.stencil.render().el);
 
-        this.stencil.$el.on('contextmenu', function(evt) { evt.preventDefault(); });
-        $('.stencil-paper-drag').on('contextmenu', function(evt) { evt.preventDefault(); });
-
-        var layoutOptions = {
-            columnWidth: this.stencil.options.width / 2 - 10,
-            columns: 2,
-            rowHeight: 80,
-            resizeToFit: true,
-            dy: 10,
-            dx: 10
-        };
-        
-        var layersLayoutOptions = {
-            columnWidth: this.stencil.options.width - 10,
-            columns: 1,
-            rowHeight: 80,
-            resizeToFit: true,
-            dy: 10,
-            dx: 10
-        };
-
-        _.each(Stencil.groups, function(group, name) {
-            
-            this.stencil.load(Stencil.shapes[name], name);
-            if(name === 'layers') joint.layout.GridLayout.layout(this.stencil.getGraph(name), layersLayoutOptions);
-            else joint.layout.GridLayout.layout(this.stencil.getGraph(name), layoutOptions);
-            this.stencil.getPaper(name).fitToContent(1, 1, 10);
-
-        }, this);
-		
-        this.stencil.on('filter', function(graph) {
-            joint.layout.GridLayout.layout(graph, layoutOptions);
-        });
-
-        $('.stencil-container .btn-expand').on('click', _.bind(this.stencil.openGroups, this.stencil));
-        $('.stencil-container .btn-collapse').on('click', _.bind(this.stencil.closeGroups, this.stencil));
-
-        this.initializeStencilTooltips();
-        this.hideLayersAlreadyOnPaper();
+//        this.stencil.$el.on('contextmenu', function(evt) { evt.preventDefault(); });
+//        $('.stencil-paper-drag').on('contextmenu', function(evt) { evt.preventDefault(); });
+//
+//        var layoutOptions = {
+//            columnWidth: this.stencil.options.width / 2 - 10,
+//            columns: 2,
+//            rowHeight: 80,
+//            resizeToFit: true,
+//            dy: 10,
+//            dx: 10
+//        };
+//        
+//        var layersLayoutOptions = {
+//            columnWidth: this.stencil.options.width - 10,
+//            columns: 1,
+//            rowHeight: 80,
+//            resizeToFit: true,
+//            dy: 10,
+//            dx: 10
+//        };
+//
+//        _.each(Stencil.groups, function(group, name) {
+//            
+//            this.stencil.load(Stencil.shapes[name], name);
+//            if(name === 'layers') joint.layout.GridLayout.layout(this.stencil.getGraph(name), layersLayoutOptions);
+//            else joint.layout.GridLayout.layout(this.stencil.getGraph(name), layoutOptions);
+//            this.stencil.getPaper(name).fitToContent(1, 1, 10);
+//
+//        }, this);
+//		
+//        this.stencil.on('filter', function(graph) {
+//            joint.layout.GridLayout.layout(graph, layoutOptions);
+//        });
+//
+//        $('.stencil-container .btn-expand').on('click', _.bind(this.stencil.openGroups, this.stencil));
+//        $('.stencil-container .btn-collapse').on('click', _.bind(this.stencil.closeGroups, this.stencil));
+//
+//        this.initializeStencilTooltips();
+//        this.hideLayersAlreadyOnPaper();
     },
     
     hideLayersAlreadyOnPaper: function() {
@@ -298,19 +298,19 @@ var Rappid = Backbone.Router.extend({
     
     initializeStencilTooltips: function() {
 
-        // Create tooltips for all the shapes in stencil.
-        _.each(this.stencil.graphs, function(graph) {
-
-            graph.get('cells').each(function(cell) {
-
-                new joint.ui.Tooltip({
-                    target: '.stencil [model-id="' + cell.id + '"]',
-                    content: cell.get('subtype'),
-                    left: '.stencil',
-                    direction: 'left'
-                });
-            });
-        });
+//        // Create tooltips for all the shapes in stencil.
+//        _.each(this.stencil.graphs, function(graph) {
+//
+//            graph.get('cells').each(function(cell) {
+//
+//                new joint.ui.Tooltip({
+//                    target: '.stencil [model-id="' + cell.id + '"]',
+//                    content: cell.get('subtype'),
+//                    left: '.stencil',
+//                    direction: 'left'
+//                });
+//            });
+//        });
     },
 
     initializeSelection: function() {
@@ -319,6 +319,7 @@ var Rappid = Backbone.Router.extend({
         this.selectionView = new joint.ui.SelectionView({ paper: this.paper, graph: this.graph, model: this.selection });
 
         this.selectionView.removeHandle('rotate');
+        this.selectionView.removeHandle('remove');
         
         // Initiate selecting when the user grabs the blank area of the paper while the Shift key is pressed.
         // Otherwise, initiate paper pan.
@@ -377,10 +378,14 @@ var Rappid = Backbone.Router.extend({
     createInspector: function(cellView) {
 
         var cell = cellView.model || cellView;
-
+         console.log(cellView.model);
         // No need to re-render inspector if the cellView didn't change.
         if (!this.inspector || this.inspector.options.cell !== cell) {
-            
+        	
+        	if(!cell.attributes.k){
+        		cell.prop(k);
+        		cell.set('k', 1);
+        	}
             if (this.inspector) {
 
                 this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {
@@ -412,25 +417,27 @@ var Rappid = Backbone.Router.extend({
             } else {
                 this.inspector.$('.group:not(:first-child)').addClass('closed');
             }
+            cellView.model = cell;
+            console.log(cellView.model);
         }
     },
 
     initializeInspectorTooltips: function() {
-        
-        this.inspector.on('render', function() {
-
-            this.inspector.$('[data-tooltip]').each(function() {
-
-                var $label = $(this);
-                new joint.ui.Tooltip({
-                    target: $label,
-                    content: $label.data('tooltip'),
-                    right: '.inspector',
-                    direction: 'right'
-                });
-            });
-            
-        }, this);
+//        
+//        this.inspector.on('render', function() {
+//
+//            this.inspector.$('[data-tooltip]').each(function() {
+//
+//                var $label = $(this);
+//                new joint.ui.Tooltip({
+//                    target: $label,
+//                    content: $label.data('tooltip'),
+//                    right: '.inspector',
+//                    direction: 'right'
+//                });
+//            });
+//            
+//        }, this);
     },
 
     initializeHaloAndInspector: function() {
@@ -463,6 +470,9 @@ var Rappid = Backbone.Router.extend({
             halo.removeHandle('clone');
             halo.removeHandle('rotate');
         	halo.removeHandle('unlink');
+        	halo.removeHandle('resize');
+        	halo.removeHandle('remove');
+        	halo.removeHandle('link');
             
             if(_.contains(['in', 'out'], cellSubtype)) {
             	halo.removeHandle('link');
@@ -476,6 +486,8 @@ var Rappid = Backbone.Router.extend({
 
             this.initializeHaloTooltips(halo);
 
+            $('.inspector-container').show();
+            
             this.createInspector(cellView);
 
             this.selectionView.cancelSelection();
@@ -491,54 +503,54 @@ var Rappid = Backbone.Router.extend({
 
     initializeHaloTooltips: function(halo) {
 
-        new joint.ui.Tooltip({
-            className: 'tooltip small',
-            target: halo.$('.remove'),
-            content: 'Click to remove the object',
-            direction: 'right',
-            right: halo.$('.remove'),
-            padding: 15
-        });
-         new joint.ui.Tooltip({
-             className: 'tooltip small',
-             target: halo.$('.fork'),
-             content: 'Click and drag to clone and connect the object in one go',
-             direction: 'left',
-             left: halo.$('.fork'),
-             padding: 15
-         });
-         new joint.ui.Tooltip({
-             className: 'tooltip small',
-             target: halo.$('.clone'),
-             content: 'Click and drag to clone the object',
-             direction: 'left',
-             left: halo.$('.clone'),
-             padding: 15
-         });
-        new joint.ui.Tooltip({
-            className: 'tooltip small',
-            target: halo.$('.unlink'),
-            content: 'Click to break all connections to other objects',
-            direction: 'right',
-            right: halo.$('.unlink'),
-            padding: 15
-        });
-        new joint.ui.Tooltip({
-            className: 'tooltip small',
-            target: halo.$('.link'),
-            content: 'Click and drag to connect the object',
-            direction: 'left',
-            left: halo.$('.link'),
-            padding: 15
-        });
-         new joint.ui.Tooltip({
-             className: 'tooltip small',
-             target: halo.$('.rotate'),
-             content: 'Click and drag to rotate the object',
-             direction: 'right',
-             right: halo.$('.rotate'),
-             padding: 15
-         });
+//        new joint.ui.Tooltip({
+//            className: 'tooltip small',
+//            target: halo.$('.remove'),
+//            content: 'Click to remove the object',
+//            direction: 'right',
+//            right: halo.$('.remove'),
+//            padding: 15
+//        });
+//         new joint.ui.Tooltip({
+//             className: 'tooltip small',
+//             target: halo.$('.fork'),
+//             content: 'Click and drag to clone and connect the object in one go',
+//             direction: 'left',
+//             left: halo.$('.fork'),
+//             padding: 15
+//         });
+//         new joint.ui.Tooltip({
+//             className: 'tooltip small',
+//             target: halo.$('.clone'),
+//             content: 'Click and drag to clone the object',
+//             direction: 'left',
+//             left: halo.$('.clone'),
+//             padding: 15
+//         });
+//        new joint.ui.Tooltip({
+//            className: 'tooltip small',
+//            target: halo.$('.unlink'),
+//            content: 'Click to break all connections to other objects',
+//            direction: 'right',
+//            right: halo.$('.unlink'),
+//            padding: 15
+//        });
+//        new joint.ui.Tooltip({
+//            className: 'tooltip small',
+//            target: halo.$('.link'),
+//            content: 'Click and drag to connect the object',
+//            direction: 'left',
+//            left: halo.$('.link'),
+//            padding: 15
+//        });
+//         new joint.ui.Tooltip({
+//             className: 'tooltip small',
+//             target: halo.$('.rotate'),
+//             content: 'Click and drag to rotate the object',
+//             direction: 'right',
+//             right: halo.$('.rotate'),
+//             padding: 15
+//         });
     },
 
     initializeClipboard: function() {
@@ -555,18 +567,18 @@ var Rappid = Backbone.Router.extend({
 
     initializeValidator: function() {
         
-        this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
-
-        this.validator.on('invalid',function(message) {
-            
-            $('.statusbar-container').text(message).addClass('error');
-
-            _.delay(function() {
-
-                $('.statusbar-container').text('').removeClass('error');
-                
-            }, 3000);
-        });
+//        this.validator = new joint.dia.Validator({ commandManager: this.commandManager });
+//
+//        this.validator.on('invalid',function(message) {
+//            
+//            $('.statusbar-container').text(message).addClass('error');
+//
+//            _.delay(function() {
+//
+//                $('.statusbar-container').text('').removeClass('error');
+//                
+//            }, 3000);
+//        });
     },
 
     initializeToolbar: function() {

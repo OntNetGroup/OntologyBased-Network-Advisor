@@ -42,6 +42,7 @@ body {
 
 .paper-scroller {
    background-color: hsla(220,11%,97%,.95);
+  
 }
 .paper-scroller > .paper {
    /* Grid background image */
@@ -50,7 +51,7 @@ body {
 }
 
 svg {
-	pointer-events: none;
+/* 	pointer-events: none; */
 }
 
 .element.bpmn.Pool svg {
@@ -68,11 +69,22 @@ svg {
 
 .paper-scroller{
 	
-	height: 500px;
-	width: 500px;
-  	padding-left: 0px;
+	 height: 650px;
+	width: 900px;
+	padding-left: 0px;
   	padding-top: 0px;
 	
 }
 
+.link-tools .tool-remove { 
+	display: none 
+	
+	}
 
+.link-tools  { 
+	display: none 
+	}
+
+	 .tool-remove { 
+	display: none 	
+	}

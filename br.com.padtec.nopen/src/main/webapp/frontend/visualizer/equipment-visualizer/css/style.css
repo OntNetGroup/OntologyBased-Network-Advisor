@@ -81,3 +81,13 @@ rect[stroke-width]:hover{
 	stroke-width: 2;
 }
 
+.link-tools .tool-remove { display: none }
+
+
+.link-tools  { 
+	display: none 
+	}
+
+	 .tool-remove { 
+	display: none 	
+	}
