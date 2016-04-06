@@ -99,7 +99,21 @@ nopen.topology.Model = Backbone.Model.extend({
 			if(element.subType === 'Card') {
 				var cardId = element.id;
 				var card = file.openEquipmentCard(filename, cardId);
-//				console.log(card);
+				console.log("aqui");
+				console.log(card);
+				$.each(card.cells, function (k,e){
+					if(e.subtype === "Adaptation_Function"){
+						e.k = 3;
+						console.log("esse");
+						console.log(e);
+					}	
+				if(e.subtype === "Trail_Termination_Function"){
+					e.k = 3;
+					console.log("esse");
+					console.log(e);
+				}	
+				});
+				
 				//add card in card data
 				equipment.cells[index].attrs.data = card;
 			}
