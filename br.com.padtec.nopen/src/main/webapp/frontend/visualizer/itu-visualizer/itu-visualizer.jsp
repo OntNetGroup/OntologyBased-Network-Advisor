@@ -18,6 +18,8 @@
 		     <button id="btn-zoom-in" class="btn" data-tooltip="Zoom In"><img src="/nopen/frontend/visualizer/itu-visualizer/img/zoomin.png" alt="Zoom in"/></button>
 		     <button id="btn-zoom-out" class="btn" data-tooltip="Zoom Out"><img src="/nopen/frontend/visualizer/itu-visualizer/img/zoomout.png" alt="Zoom out"/></button>
 		     <button id="btn-zoom-to-fit" class="btn" data-tooltip="Zoom To Fit"><img src="/nopen/frontend/visualizer/itu-visualizer/img/zoomtofit.png" alt="Zoom To Fit"/></button>
+	         
+	         
 	         <button id="btn-show-hide-inspector" class="btn" data-tooltip="Show/Hide Inspector"><img src="/nopen/frontend/visualizer/topology-equipment-visualizer/img/show_hide.png"	alt="Show/Hide Inspector" />
 		</button>
 		</div>
@@ -56,47 +58,51 @@
     			var visualizer = getUrlParameter('visualizer');
 //     			console.log(visualizer);
     			if(visualizer === 'true'){
-    				
+    				$('#btn-show-hide-inspector').empty().removeClass('#btn-show-hide-inspector');
+    				$('.inspector-container').empty().removeClass('inspector-container');
     				openFromURLVisualizer(equipment,card , app.graph);
-    			
+    			    
     			}else{
     				
     				openFromURL(equipment, card, app.graph);
+    				$('#btn-show-hide-inspector').click(function() {
+
+    	    			if ($('.inspector-container').is(':visible')) {
+    	    				$('.inspector-container').hide();
+    	    				$('.paper-container').css({
+    	    					right : 0,
+    	    				});
+    	    			} else {
+    	    				$('.inspector-container').show();
+    	    				$('.paper-container').css({
+    	    					right : 241,
+    	    				});
+    	    			}
+    	    		});
     			}
     		}
             
             $('#btn-zoom-to-fit').click();
             
-    		$('#btn-show-hide-inspector').click(function() {
-
-    			if ($('.inspector-container').is(':visible')) {
-    				$('.inspector-container').hide();
-    				$('.paper-container').css({
-    					right : 0,
-    				});
-    			} else {
-    				$('.inspector-container').show();
-    				$('.paper-container').css({
-    					right : 241,
-    				});
-    			}
-    		});
+    	
             
-    		$('#btn-show-hide-inspector').click();
+//     		$('#btn-show-hide-inspector').click();
     		
             $('#btn-back').click(function(){
             	//salvar o itu
-            	var a = app.graph.getElements();
-            	var equipID = parent.equipment;
-            	$.each(parent.parent.topology.model.equipments[equipID].cells, function(i, value) {
-            		if(value.id === getUrlParameter('card') ){
-            			console.log("FOUND CARD!");
-            			value.attrs.data = a;
-            		}
-				});
-
-            	
-            	parent.closeIframe();
+            	if(getUrlParameter('visualizer')==='true'){
+            		parent.closeIframe();
+            	}else{
+            		var a = app.graph.getElements();
+                	var equipID = parent.equipment;
+                	$.each(parent.parent.topology.model.equipments[equipID].cells, function(i, value) {
+                		if(value.id === getUrlParameter('card') ){
+                			console.log("FOUND CARD!");
+                			value.attrs.data = a;
+                		}
+    				});
+            		parent.closeIframe();
+            	}
             });
         </script>
     </body>

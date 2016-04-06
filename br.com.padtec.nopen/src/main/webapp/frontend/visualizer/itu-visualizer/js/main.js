@@ -92,49 +92,49 @@ var Rappid = Backbone.Router.extend({
 
         	// RF: Inserir restrições de conexão entre os nós
             validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-            	console.log('validate connection');
-            	if(!linkView) return false;
-            	
-            	/* Prevent linking to ports already being used */
-        		var portUsed = _.find(this.model.getLinks(), function(link) {
-
-    				return ((link.id !== linkView.model.id &&
-    						link.get('target').id === cellViewT.model.id) &&
-    						(cellViewT.model.get('subtype') === 'in' || cellViewT.model.get('subtype') === 'out'));
-        		});
-        		
-        		// if (portUsed) return false; -> doesn't work!
-        		if (!portUsed) {} else return false;
-        		
-        		// Prevent loop linking
-        		if(cellViewS === cellViewT) return false;
-        		
-        		// Conexão entre dois transport functions
-        		var sourceTFunctionID = cellViewS.model.id;
-        		var sourceTFunctionName = cellViewS.model.attributes.attrs.text.text;
-        		var sourceTFunctionType = cellViewS.model.attributes.subtype;
-        		
-        		var targetTFunctionID = cellViewT.model.id;
-        		var targetTFunctionName = cellViewT.model.attributes.attrs.text.text;
-        		var targetTFunctionType = cellViewT.model.attributes.subtype;
-        		console.log('try to connect ' +sourceTFunctionID+ ' and ' +targetTFunctionID);
-        		
-        		return canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType);
+//            	console.log('validate connection');
+//            	if(!linkView) return false;
+//            	
+//            	/* Prevent linking to ports already being used */
+//        		var portUsed = _.find(this.model.getLinks(), function(link) {
+//
+//    				return ((link.id !== linkView.model.id &&
+//    						link.get('target').id === cellViewT.model.id) &&
+//    						(cellViewT.model.get('subtype') === 'in' || cellViewT.model.get('subtype') === 'out'));
+//        		});
+//        		
+//        		// if (portUsed) return false; -> doesn't work!
+//        		if (!portUsed) {} else return false;
+//        		
+//        		// Prevent loop linking
+//        		if(cellViewS === cellViewT) return false;
+//        		
+//        		// Conexão entre dois transport functions
+//        		var sourceTFunctionID = cellViewS.model.id;
+//        		var sourceTFunctionName = cellViewS.model.attributes.attrs.text.text;
+//        		var sourceTFunctionType = cellViewS.model.attributes.subtype;
+//        		
+//        		var targetTFunctionID = cellViewT.model.id;
+//        		var targetTFunctionName = cellViewT.model.attributes.attrs.text.text;
+//        		var targetTFunctionType = cellViewT.model.attributes.subtype;
+//        		console.log('try to connect ' +sourceTFunctionID+ ' and ' +targetTFunctionID);
+//        		
+//        		return canCreateLink(sourceTFunctionID, sourceTFunctionName, sourceTFunctionType, targetTFunctionID, targetTFunctionName, targetTFunctionType);
             },
             
 	         // RF: Inserir 'containmnet rules' aos nós
         	validateEmbedding: function(childView, parentView) {
-        		console.log('validate embedding');
-        		
-        		// se alguma interface tenta ser colocada sobre algum elemento
-        		if(childView.model.get('subtype') === 'in') {
-        			if(parentView.model !== this.barIn) return false;
-        		}
-        		if(childView.model.get('subtype') === 'out') {
-        			if(parentView.model !== this.barOut) return false;
-        		}
-        		
-        		return true;
+//        		console.log('validate embedding');
+//        		
+//        		// se alguma interface tenta ser colocada sobre algum elemento
+//        		if(childView.model.get('subtype') === 'in') {
+//        			if(parentView.model !== this.barIn) return false;
+//        		}
+//        		if(childView.model.get('subtype') === 'out') {
+//        			if(parentView.model !== this.barOut) return false;
+//        		}
+//        		
+//        		return true;
         	}
         });
 
@@ -185,14 +185,14 @@ var Rappid = Backbone.Router.extend({
     initializeLinkTooltips: function(cell) {
         if (cell instanceof joint.dia.Link) {
 
-            var linkView = this.paper.findViewByModel(cell);
-            new joint.ui.Tooltip({
-                className: 'tooltip small',
-                target: linkView.$('.tool-options'),
-                content: 'Click to open Inspector for this link',
-                left: linkView.$('.tool-options'),
-                direction: 'left'
-            });
+//            var linkView = this.paper.findViewByModel(cell);
+//            new joint.ui.Tooltip({
+//                className: 'tooltip small',
+//                target: linkView.$('.tool-options'),
+//                content: 'Click to open Inspector for this link',
+//                left: linkView.$('.tool-options'),
+//                direction: 'left'
+//            });
         }
     },
     
@@ -377,15 +377,19 @@ var Rappid = Backbone.Router.extend({
 
     createInspector: function(cellView) {
 
+    	if(getUrlParameter('visualizer')==='true'){
+    		return;
+    	}
+    	
         var cell = cellView.model || cellView;
-         console.log(cellView.model);
+//         console.log(cellView.model);
         // No need to re-render inspector if the cellView didn't change.
         if (!this.inspector || this.inspector.options.cell !== cell) {
         	
-        	if(!cell.attributes.k){
-        		cell.prop(k);
-        		cell.set('k', 1);
-        	}
+//        	if(!cell.attributes.k){
+//        		cell.prop(k);
+//        		cell.set('k', 1);
+//        	}
             if (this.inspector) {
 
                 this.inspectorClosedGroups[this.inspector.options.cell.id] = _.map(app.inspector.$('.group.closed'), function(g) {
@@ -417,27 +421,27 @@ var Rappid = Backbone.Router.extend({
             } else {
                 this.inspector.$('.group:not(:first-child)').addClass('closed');
             }
-            cellView.model = cell;
-            console.log(cellView.model);
+//            cellView.model = cell;
+//            console.log(cellView.model);
         }
     },
 
     initializeInspectorTooltips: function() {
-//        
-//        this.inspector.on('render', function() {
-//
-//            this.inspector.$('[data-tooltip]').each(function() {
-//
-//                var $label = $(this);
-//                new joint.ui.Tooltip({
-//                    target: $label,
-//                    content: $label.data('tooltip'),
-//                    right: '.inspector',
-//                    direction: 'right'
-//                });
-//            });
-//            
-//        }, this);
+        
+        this.inspector.on('render', function() {
+
+            this.inspector.$('[data-tooltip]').each(function() {
+
+                var $label = $(this);
+                new joint.ui.Tooltip({
+                    target: $label,
+                    content: $label.data('tooltip'),
+                    right: '.inspector',
+                    direction: 'right'
+                });
+            });
+            
+        }, this);
     },
 
     initializeHaloAndInspector: function() {
