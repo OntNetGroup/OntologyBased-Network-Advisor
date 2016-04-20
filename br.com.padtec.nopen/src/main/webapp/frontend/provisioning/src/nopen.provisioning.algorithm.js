@@ -48,9 +48,7 @@ nopen.provisioning.Algorithm = Backbone.Model.extend({
 			
 			do{
 				var vertical_rps = connection.selectQuery(rp, ["ont:vertical_path_so"]);
-                if(connection.askQuery(vertical_rp, ["a"], "ap? ou fp?")){
-                	//salva o rp! numa hash
-                }
+             
 				$.each(vertical_rps, function(index, vertical_rp){
 					console.log(vertical_rps);
 					if(connection.askNextEquipmentPath(vertical_rp, "ont:"+paths[0])){
@@ -58,6 +56,8 @@ nopen.provisioning.Algorithm = Backbone.Model.extend({
 						console.log(tfk);
 						//se tfk for maior ou indefinido
 						if (!tfk){
+							//sempre que nao tiver k sera um FP sendo assim é mais facil usalo como referencia para pegar a matriz seguindo a ordem rf output matrix output e dela pegando a matriz
+							
 							if(connection.askQuery(vertical_rp, ["a"], "ont:FP")){
 								if(!connection.askQuery(rp, ["ont:mc"], vertical_rp)) //guardar matriz(rp ?matriz?veto?hash?)
 									connection.insertTriple(rp, "ont:mc", vertical_rp);
@@ -74,7 +74,7 @@ nopen.provisioning.Algorithm = Backbone.Model.extend({
 							rp = vertical_rp;
 							return false;
 						}else{
-							// salvar o vertical path quando for um ap(matrix->af)? ou quando for um (?) ttf->Matriz?
+							
 							//se tfk  < provisioningK voltar para a matriz anterior
 							//caso nao enha matriz anterior ai vc retorna que nao é possivel
 						}
@@ -145,6 +145,7 @@ nopen.provisioning.Algorithm = Backbone.Model.extend({
 		var connection = this.connection;
 		var rp_so, rp_sk;
 		var paths = p.reverse();
+		var provisioningk = 3;
 		
 		$.each(rps, function(index, rp){
 			rp_so = "ont:"+rp.rp_so;
