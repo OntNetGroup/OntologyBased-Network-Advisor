@@ -87,7 +87,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 
 		var cards = this.getCardsInPreProvisioning(equipment);
 		$.each(cards, function(index, card) {
-
+            console.log(card);
 			var itus = card.attrs.data.cells;
 			$.each(itus, function(index, itu) {
 
@@ -368,7 +368,7 @@ nopen.provisioning.Model = Backbone.Model.extend({
 
 		});
 
-//		console.log('Ports Connected: ' + JSON.stringify(ports));
+		console.log('Ports Connected: ' + JSON.stringify(ports));
 
 		return ports;
 
@@ -512,9 +512,9 @@ nopen.provisioning.Model = Backbone.Model.extend({
 				var equipIndex = 0;
 				_.each(subnetworks[tech], function(equipment, equipmentID) {
 
-					console.log(equipment);
+//					console.log(equipment);
 					var equipPosition = equipment.attributes.position;
-					console.log(equipPosition);
+//					console.log(equipPosition);
 					var equip = equipment.attributes.attrs.equipment;
 					equip.name = equipment.attributes.attrs.text.text;
 					var accessGroup = Stencil.createAccessGroup(equipment.id, equip);

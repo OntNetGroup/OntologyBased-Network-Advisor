@@ -87,6 +87,14 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 			if(element.id) {
 
+				if(element.k){
+					triples.push({
+						's' : 'ont:' + element.id,
+						'p' : 'ont:k',
+						'o' :  element.k,
+					})
+				}
+				
 				triples.push({
 					's' : 'ont:' + element.id,
 					'p' : 'rdf:type',
@@ -134,6 +142,8 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		var connection = this.app.connection;
 		var relationships = this.relationships;
 
+		var model = this.app.model;
+		
 		/*
 		 * Supervisor > Equipment
 		 * Supervisor > Card
@@ -182,7 +192,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			//Trail_Termination_Function
 			else if (element.subtype === 'Trail_Termination_Function') {
 
-				var ttf = $this.createElement(element.subtype, element.id, element.attrs.text.text);
+				var ttf = $this.createElement(element.subtype, element.id, element.attrs.text.text , element.k);
 				elements.push(ttf);
 
 				//Card_Layer > TTF
@@ -194,7 +204,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			//Adaptation_Function
 			else if (element.subtype === 'Adaptation_Function') {
 
-				var af = $this.createElement(element.subtype, element.id, element.attrs.text.text);
+				var af = $this.createElement(element.subtype, element.id, element.attrs.text.text , element.k);
 				elements.push(af);
 
 				//Card > AF
@@ -359,8 +369,16 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Trail_Termination_Function' && (targetType === 'Adaptation_Function' || targetType === 'Matrix')) {
 					//Reference_Point FEP (FEP)
 					var rp = $this.createElement("FEP", element.id, "FEP");
+				     rp["k"] = 3;
 					elements.push(rp);
+//					console.log(rp);
+					
+//					console.log("AAAQQQQQUUUUUUUIIIIII!!!!!!!!!!");
+//					console.log(element.source);
 
+//					var elemento = model.getITUElementByIDInPreProvisioning(equipment.id ,element.source.id);
+//					console.log(elemento);
+//					console.log("AAAAQQQQQQQUUUI!!!!!!!!!!");
 					//TTF_OUT (TTFOUT) > FEP (FEP)
 					var linkTTFOUT_FEP = $this.createLink(element.id, "FEP", ttf_out.id, ttf_out.type);
 					links.push(linkTTFOUT_FEP);
@@ -396,8 +414,11 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Adaptation_Function' && targetType === 'Trail_Termination_Function') {
 					//Reference_Point AP (AP)
 					var rp = $this.createElement("AP", element.id, "AP");
+					rp["k"] = 3;
 					elements.push(rp);
 
+//					var k = $this.createElement("k",af.)
+					
 					//AF_OUT (AFOUT) > AP (AP)
 					var linkAFOUT_AP = $this.createLink(element.id, "AP", af_out.id, af_out.type);
 					links.push(linkAFOUT_AP);
@@ -532,10 +553,9 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 							links.push(link);
 
 							if(connectedPort.type === "Input_Card"){
-								console.log(portf);
-								console.log(portf[portId]);
-								console.log(portf[connectedPort.id]);
-								console.log();
+//								console.log(portf);
+//								console.log(portf[portId]);
+//								console.log(portf[connectedPort.id]);
 								
 								var tfout = connection.selectTFOutFromTF(portf[portId], portId);
 								var tfin = connection.selectTFInFromTF(portf[connectedPort.id], connectedPort.id);
@@ -564,6 +584,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 								if(tfintype === 'Adaptation_Function' && tfouttype === 'Trail_Termination_Function') {
 									//Reference_Point AP (AP)
 									var rp = $this.createElement("AP", idlink, "AP");
+									rp["k"] = 3;
 									elements.push(rp);
 
 									//AF_OUT (AFOUT) > AP (AP)
@@ -579,8 +600,9 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 								if(tfintype === 'Matrix' && tfouttype === 'Trail_Termination_Function') {
 									//Reference_Point FEP (FEP)
 									var rp = $this.createElement("FEP", idlink, "FEP");
+									rp["k"] = 3;
 									elements.push(rp);
-
+									
 									//TTF_OUT (TTFOUT) > FEP (FEP)
 									var linkTTFOUT_FEP = $this.createLink(idlink, "FEP", tfin, 'Matrix_Input');
 									links.push(linkTTFOUT_FEP);
@@ -880,6 +902,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		if(sourceType === 'Trail_Termination_Function' && (targetType === 'Adaptation_Function' || targetType === 'Matrix')) {
 			//Reference_Point FEP (FEP)
 			var fep = $this.createElement("FEP", joint.util.uuid(), "FEP");
+			fep["k"] = 3;
 			elements.push(fep);
 
 			//TTF_OUT (TTFOUT) > FEP (FEP)
@@ -902,7 +925,9 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		if(sourceType === 'Adaptation_Function' && targetType === 'Trail_Termination_Function') {
 			//Reference_Point AP (AP)
 			var ap = $this.createElement("AP", joint.util.uuid(), "AP");
+			ap["k"] = 3;
 			elements.push(ap);
+		
 
 			//AF_OUT (AFOUT) > AP (AP)
 			var linAFOUT_AP = $this.createLink(ap.id, ap.type, af_out.id, af_out.type);
@@ -916,6 +941,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		if(sourceType === 'Matrix' && targetType === 'Adaptation_Function') {
 			//Reference_Point FP (FP)
 			var fp = $this.createElement("FP", joint.util.uuid(), "FP");
+			
 			elements.push(fp);
 
 			//FP (FP) > M_OUT (MOUT)
@@ -965,10 +991,12 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	//create a JSON element.
 	createElement : function(type, id, name) {
 
+		
 		return element = {
 				"type" : type,
 				"id" : id,
 				"name" : name,
+				
 		}
 
 	},

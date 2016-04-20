@@ -88,9 +88,9 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 	},
 	
 	setNamedGraph: function(namedgraph,opt) {
-		console.log(this.namedGraph);
+//		console.log(this.namedGraph);
 		this.namedGraph = 'http://localhost:8080/'+namedgraph;
-		console.log(this.namedGraph);
+//		console.log(this.namedGraph);
 		if(opt){
 			console.log('opt');
 		}else{
@@ -105,7 +105,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 	clearGraph: function() {
 		var database = this.database;
 		var namedGraph = this.namedGraph;
-        console.log(this.namedGraph);
+//        console.log(this.namedGraph);
 		
     	var query = 'CLEAR GRAPH <' + namedGraph + '>';
 		this.connection.query({
@@ -142,7 +142,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		this.connection.listDBs(function(data) {
 			_.each(data.databases, function (dbName) {
 				if(dbName === database) {
-					console.log('Database: ' + dbName);
+//					console.log('Database: ' + dbName);
 					exist = true;
 				}
 			});
@@ -189,7 +189,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 		this.connection.createDB(
 				options,
 				function(data) {
-					console.log('DATABASE CREATED!');
+//					console.log('DATABASE CREATED!');
 				});
 
 	},
@@ -370,7 +370,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 
 		query = query + ' ?o . } }';
 
-//		console.log('QUERY: ' + query);
+		console.log('QUERY: ' + query);
 
 		var result = this.executeQueryWithReasoning(query);
 
@@ -396,7 +396,7 @@ nopen.provisioning.Connection = Backbone.Model.extend({
 
 		var query = 'SELECT * { GRAPH <' + this.namedGraph + '>  {ont:'+ tf +' ont:A_TransportFunction_Input ?tfin .	ont:'+ port +' ont:binds.Input_Card.Input ?tfin	} }';
 
-		console.log(query);
+//		console.log(query);
 		var result = this.executeQuery(query);
 		console.log(result[0].tfin.value);
 		return result[0].tfin.value.replace(this.namespace, '');

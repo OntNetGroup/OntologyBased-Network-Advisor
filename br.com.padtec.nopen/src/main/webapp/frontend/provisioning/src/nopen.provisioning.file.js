@@ -84,7 +84,7 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 //		var filename = $("#save-filename").val();
 		var filename = $this.app.connection.namedGraph.replace('http://localhost:8080/','')
-		console.log(filename);
+//		console.log(filename);
 		if(filename == ""){
 			$('#name-error-message').show();
 		}
@@ -123,11 +123,11 @@ nopen.provisioning.File = Backbone.Model.extend({
 		
 		var connection = this.app.connection;
 		
-		console.log($('#filename').val());
+//		console.log($('#filename').val());
 		$('#filename').val(filename);
-		console.log(graph.getElements());
-		console.log(graph.getLinks());
-		console.log(filename);
+//		console.log(graph.getElements());
+//		console.log(graph.getLinks());
+//		console.log(filename);
 		var elements =[];
 		var links = [];
 		
