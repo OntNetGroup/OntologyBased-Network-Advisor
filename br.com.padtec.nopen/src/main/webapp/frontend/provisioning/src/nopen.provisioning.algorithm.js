@@ -57,7 +57,6 @@ nopen.provisioning.Algorithm = Backbone.Model.extend({
 						//se tfk for maior ou indefinido
 						if (!tfk){
 							//sempre que nao tiver k sera um FP sendo assim é mais facil usalo como referencia para pegar a matriz seguindo a ordem rf output matrix output e dela pegando a matriz
-							
 							if(connection.askQuery(vertical_rp, ["a"], "ont:FP")){
 								if(!connection.askQuery(rp, ["ont:mc"], vertical_rp)) //guardar matriz(rp ?matriz?veto?hash?)
 									connection.insertTriple(rp, "ont:mc", vertical_rp);

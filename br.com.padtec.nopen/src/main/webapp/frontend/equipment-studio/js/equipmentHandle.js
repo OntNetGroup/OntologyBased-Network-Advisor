@@ -518,7 +518,7 @@ function equipmentHandle(app, graph){
 	});
 
 	graph.on('change' , function (cell) {
-		//The equipment cant be removed from inside the equipmentholder
+		//The equipment can't be removed from inside the equipment holder
 		var parentId = cell.get('parent');
 		if (!parentId) return;
 
@@ -536,6 +536,7 @@ function equipmentHandle(app, graph){
 
 	},this);
 
+	//
 	function getName(equipmentSubtype) {
 		if(equipmentSubtype === 'Rack') return 'Rack_' +app.RackCounter;
 		if(equipmentSubtype === 'Shelf') return 'Shelf_' +app.ShelfCounter;

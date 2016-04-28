@@ -87,6 +87,14 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 
 			if(element.id) {
 
+				if(element.kres){
+					triples.push({
+						's' : 'ont:' + element.id,
+						'p' : 'ont:kres',
+						'o' :  element.kres,
+					})
+				}
+				
 				if(element.k){
 					triples.push({
 						's' : 'ont:' + element.id,
@@ -370,6 +378,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					//Reference_Point FEP (FEP)
 					var rp = $this.createElement("FEP", element.id, "FEP");
 				     rp["k"] = 3;
+				     rp["kres"] = 3;
 					elements.push(rp);
 //					console.log(rp);
 					
@@ -415,6 +424,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 					//Reference_Point AP (AP)
 					var rp = $this.createElement("AP", element.id, "AP");
 					rp["k"] = 3;
+					rp["kres"] = 3;
 					elements.push(rp);
 
 //					var k = $this.createElement("k",af.)
@@ -585,6 +595,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 									//Reference_Point AP (AP)
 									var rp = $this.createElement("AP", idlink, "AP");
 									rp["k"] = 3;
+									rp["kres"] = 3;
 									elements.push(rp);
 
 									//AF_OUT (AFOUT) > AP (AP)
@@ -601,6 +612,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 									//Reference_Point FEP (FEP)
 									var rp = $this.createElement("FEP", idlink, "FEP");
 									rp["k"] = 3;
+									rp["kres"] = 3;
 									elements.push(rp);
 									
 									//TTF_OUT (TTFOUT) > FEP (FEP)
@@ -903,6 +915,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			//Reference_Point FEP (FEP)
 			var fep = $this.createElement("FEP", joint.util.uuid(), "FEP");
 			fep["k"] = 3;
+			fep["kres"] = 3;
 			elements.push(fep);
 
 			//TTF_OUT (TTFOUT) > FEP (FEP)
@@ -926,6 +939,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 			//Reference_Point AP (AP)
 			var ap = $this.createElement("AP", joint.util.uuid(), "AP");
 			ap["k"] = 3;
+			ap["kres"] = 3;
 			elements.push(ap);
 		
 
