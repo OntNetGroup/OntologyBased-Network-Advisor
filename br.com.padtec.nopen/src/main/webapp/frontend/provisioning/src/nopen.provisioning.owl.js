@@ -377,17 +377,21 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Trail_Termination_Function' && (targetType === 'Adaptation_Function' || targetType === 'Matrix')) {
 					//Reference_Point FEP (FEP)
 					var rp = $this.createElement("FEP", element.id, "FEP");
-				     rp["k"] = 3;
-				     rp["kres"] = 3;
+					//ttf->af(slot vai ser o k do af) , já ttf -> matriz(ñ tem slot)
+                     if(targetType === 'Adaptation_Function'){
+                    	 var slotId = element.target.id;
+                    	 var slotValue;
+                    	 for(var i=0; i < elements.length;i++){
+                    		 if(elements[i].id == slotId){
+                    			 slotValue = elements[i].k;
+                    			 break;
+                    		 }
+                    	 }
+                     }					
+					rp["t_slot"] = slotValue;
+				    rp["c_slot"] = 0;
 					elements.push(rp);
-//					console.log(rp);
 					
-//					console.log("AAAQQQQQUUUUUUUIIIIII!!!!!!!!!!");
-//					console.log(element.source);
-
-//					var elemento = model.getITUElementByIDInPreProvisioning(equipment.id ,element.source.id);
-//					console.log(elemento);
-//					console.log("AAAAQQQQQQQUUUI!!!!!!!!!!");
 					//TTF_OUT (TTFOUT) > FEP (FEP)
 					var linkTTFOUT_FEP = $this.createLink(element.id, "FEP", ttf_out.id, ttf_out.type);
 					links.push(linkTTFOUT_FEP);
@@ -423,11 +427,17 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Adaptation_Function' && targetType === 'Trail_Termination_Function') {
 					//Reference_Point AP (AP)
 					var rp = $this.createElement("AP", element.id, "AP");
-					rp["k"] = 3;
-					rp["kres"] = 3;
+                    	 var slotId = element.target.id;
+                    	 var slotValue;
+                    	 for(var i=0; i < elements.length;i++){
+                    		 if(elements[i].id == slotId){
+                    			 slotValue = elements[i].k;
+                    			 break;
+                    		 }
+                    	 }
+					rp["t_slot"] = slotValue;
+				    rp["c_slot"] = 0;
 					elements.push(rp);
-
-//					var k = $this.createElement("k",af.)
 					
 					//AF_OUT (AFOUT) > AP (AP)
 					var linkAFOUT_AP = $this.createLink(element.id, "AP", af_out.id, af_out.type);
@@ -456,6 +466,17 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 				if(sourceType === 'Matrix' && targetType === 'Adaptation_Function') {
 					//Reference_Point FP (FP)
 					var rp = $this.createElement("FP", element.id, "FP");
+                    	 var slotId = element.target.id;
+                    	 var slotValue;
+                    	 for(var i=0; i < elements.length;i++){
+                    		 if(elements[i].id == slotId){
+                    			 slotValue = elements[i].k;
+                    			 break;
+                    		 }
+                    	 }                			
+					rp["t_slot"] = slotValue;
+				    rp["c_slot"] = 0;
+					elements.push(rp);
 					elements.push(rp);
 
 					//FP (FP) > M_OUT (MOUT)
@@ -579,6 +600,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 								if(tfintype === 'Adaptation_Function' && tfouttype === 'Matrix') {
 									//Reference_Point FP (FP)
 									var rp = $this.createElement("FP", idlink, "FP");
+									console.log('testTTTTTTTTTT');
 									elements.push(rp);
 
 									//FP (FP) > M_OUT (MOUT)
@@ -594,6 +616,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 								if(tfintype === 'Adaptation_Function' && tfouttype === 'Trail_Termination_Function') {
 									//Reference_Point AP (AP)
 									var rp = $this.createElement("AP", idlink, "AP");
+									console.log('test!!!!');
 									rp["k"] = 3;
 									rp["kres"] = 3;
 									elements.push(rp);
@@ -611,6 +634,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 								if(tfintype === 'Matrix' && tfouttype === 'Trail_Termination_Function') {
 									//Reference_Point FEP (FEP)
 									var rp = $this.createElement("FEP", idlink, "FEP");
+									console.log('test');
 									rp["k"] = 3;
 									rp["kres"] = 3;
 									elements.push(rp);
@@ -914,6 +938,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		if(sourceType === 'Trail_Termination_Function' && (targetType === 'Adaptation_Function' || targetType === 'Matrix')) {
 			//Reference_Point FEP (FEP)
 			var fep = $this.createElement("FEP", joint.util.uuid(), "FEP");
+			console.log('test');
 			fep["k"] = 3;
 			fep["kres"] = 3;
 			elements.push(fep);
@@ -938,6 +963,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		if(sourceType === 'Adaptation_Function' && targetType === 'Trail_Termination_Function') {
 			//Reference_Point AP (AP)
 			var ap = $this.createElement("AP", joint.util.uuid(), "AP");
+			console.log('test');
 			ap["k"] = 3;
 			ap["kres"] = 3;
 			elements.push(ap);
@@ -955,7 +981,7 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 		if(sourceType === 'Matrix' && targetType === 'Adaptation_Function') {
 			//Reference_Point FP (FP)
 			var fp = $this.createElement("FP", joint.util.uuid(), "FP");
-			
+			console.log('test');
 			elements.push(fp);
 
 			//FP (FP) > M_OUT (MOUT)
@@ -1003,16 +1029,23 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 	},
 
 	//create a JSON element.
-	createElement : function(type, id, name) {
+	createElement : function(type, id, name,k) {
 
-		
-		return element = {
-				"type" : type,
-				"id" : id,
-				"name" : name,
-				
+		if(k){
+			return element = {
+					"type" : type,
+					"id" : id,
+					"name" : name,
+					"k" : k,
+			}
+		}else{
+			return element = {
+					"type" : type,
+					"id" : id,
+					"name" : name,
+					
+			}	
 		}
-
 	},
 
 	//create connection between ports in OWL
