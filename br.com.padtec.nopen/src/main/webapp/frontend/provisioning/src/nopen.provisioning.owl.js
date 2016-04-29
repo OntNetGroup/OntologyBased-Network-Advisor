@@ -592,15 +592,38 @@ nopen.provisioning.OWL = Backbone.Model.extend({
 								var tfin = connection.selectTFInFromTF(portf[connectedPort.id], connectedPort.id);
 								var tfouttype = connection.getTFType(portf[portId]);
 								var tfintype = connection.getTFType(portf[connectedPort.id]);
-
-//								console.log(tfouttype);
-//								console.log(tfintype);
+								console.log('tfin');
+								console.log(tfin);
+								console.log(portf[connectedPort.id]);
+//                              console.log(connectedPort.id);
+                              console.log(tfintype);
+                              console.log('tfout');
+                              
+//                              console.log(tfout);
+//                              console.log(portf[portId]);
+//                              console.log(portId);
+//                              console.log(tfouttype);
+                             
+								var tfout
+								var tfoutk;
+                                var tfink; 
+                                if(tfintype === "Adaptation_Function"){
+                                	var tfink = connection.selectQuery('ont:'+portf[connectedPort.id] , ["ont:k"])['0'];
+                                	console.log(tfink);
+                                }
+                                if(tfouttype === "Adaptation_Function"||"Trail_Termination_Function"){
+                                	var tfoutk = connection.selectQuery('ont:'+portf[portId] , ["ont:k"])['0'];
+                                }
+								console.log(tfouttype);
+								console.log(tfintype);
 
 								var idlink = joint.util.uuid();
 								if(tfintype === 'Adaptation_Function' && tfouttype === 'Matrix') {
 									//Reference_Point FP (FP)
 									var rp = $this.createElement("FP", idlink, "FP");
 									console.log('testTTTTTTTTTT');
+									rp["t_slot"] = tfink;
+								    rp["c_slot"] = 0;
 									elements.push(rp);
 
 									//FP (FP) > M_OUT (MOUT)
